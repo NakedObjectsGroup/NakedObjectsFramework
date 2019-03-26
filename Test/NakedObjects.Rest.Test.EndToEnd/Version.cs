@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
     [TestClass]
-    //[Ignore]
     public class Version : AbstractSecondaryResource {
         protected override string Filename() {
             return "Version";

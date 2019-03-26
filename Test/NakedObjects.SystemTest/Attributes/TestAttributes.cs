@@ -628,42 +628,6 @@ namespace NakedObjects.SystemTest.Attributes {
             Assert.AreEqual(3, obj.Actions.Count());
         }
 
-        [TestMethod, Ignore] //Pending re-introduction of NakedObjectsType attribute
-        public virtual void NakedObjectsType_ReflectOver_All() {
-            var obj = NewTestObject<NakedObjectsIgnore3>();
-            //results should be same as for NakedObjectsIgnore1:
-            Assert.AreEqual(3, obj.Properties.Count());
-            Assert.AreEqual(1, obj.Actions.Count());
-        }
-
-        [TestMethod, Ignore] //Pending re-introduction of NakedObjectsType attribute
-        public virtual void NakedObjectsType_ReflectOver_TypeOnly() {
-            var obj = NewTestObject<NakedObjectsIgnore4>();
-            Assert.AreEqual(0, obj.Actions.Count());
-            Assert.AreEqual(0, obj.Properties.Count());
-        }
-
-        [TestMethod, Ignore] //Pending re-introduction of NakedObjectsType attribute
-        public virtual void NakedObjectsType_ReflectOver_ExplicitlyIncludedMembersOnly() {
-            var obj = NewTestObject<NakedObjectsIgnore5>();
-            Assert.AreEqual(1, obj.Actions.Count());
-            Assert.AreEqual(2, obj.Properties.Count());
-        }
-
-        [TestMethod, Ignore] //Pending re-introduction of NakedObjectsType attribute
-        public virtual void NakedObjectsType_ReflectOver_TypeOnly_OnSubClass() {
-            var obj = NewTestObject<NakedObjectsIgnore6>();
-            Assert.AreEqual(0, obj.Actions.Count());
-            Assert.AreEqual(0, obj.Properties.Count());
-        }
-
-        [TestMethod, Ignore] //Pending re-introduction of NakedObjectsType attribute
-        public virtual void NakedObjectsType_ReflectOver_ExplicitlyIncludedMembersOnly_OnSubClass() {
-            var obj = NewTestObject<NakedObjectsIgnore7>();
-            Assert.AreEqual(2, obj.Actions.Count());
-            Assert.AreEqual(3, obj.Properties.Count());
-        }
-
         #endregion
 
         #region Named

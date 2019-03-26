@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -155,7 +157,7 @@ namespace NakedObjects.SystemTest.Util {
 
         private Runs FindTypeFromLoadedAssembliesTenTimes(Func<string, Type> funcUnderTest, IList<string> typeList) {
             var totalElapsed = 0L;
-            var indRuns = new List<long>();
+            var indRuns = new BlockingCollection<long>();
 
             for (int i = 0; i < 10; i++) {
                 var elapsed = FindTypeFromLoadedAssemblies(funcUnderTest, typeList);
@@ -166,7 +168,7 @@ namespace NakedObjects.SystemTest.Util {
             return new Runs {IndividualRuns = indRuns.ToArray(), TotalRun = totalElapsed};
         }
 
-        private Task<long> CreateTask(Func<string, Type> funcUnderTest, IList<string> typeList, IList<long> indRuns) {
+        private Task<long> CreateTask(Func<string, Type> funcUnderTest, IList<string> typeList, BlockingCollection<long> indRuns) {
             return Task<long>.Factory.StartNew(() => {
                 var elapsed = FindTypeFromLoadedAssemblies(funcUnderTest, typeList);
                 indRuns.Add(elapsed);
@@ -175,7 +177,7 @@ namespace NakedObjects.SystemTest.Util {
         }
 
         private Runs FindTypeFromLoadedAssembliesInParallel(Func<string, Type> funcUnderTest, IList<string>[] typeLists) {
-            var indRuns = new List<long>();
+            var indRuns = new BlockingCollection<long>();
 
             Task<long>[] tasks = typeLists.Select(list => CreateTask(funcUnderTest, list, indRuns)).ToArray();
 

@@ -48,7 +48,6 @@ namespace RestfulObjects.Test.EndToEnd {
             Helpers.TestResponse(refProp, FilePrefix + "Before", newRef, Methods.Put, Codes.Succeeded);
         }
 
-        //[Ignore]
         [TestMethod]
         public void DeleteValueProperty() {
             Helpers.TestResponse(valueProp, FilePrefix + "After-ValueProperty", null, Methods.Delete);

@@ -69,7 +69,6 @@ namespace NakedObjects.SystemTest.Util {
         }
 
         [TestMethod]
-        [Ignore] // unreliable
         public void TestFindTypeFromLoadedAssembliesInParallelRandomSelection() {
             TestHarnessFindTypeFromLoadedAssembliesInParallelRandomSelection(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
@@ -90,13 +89,11 @@ namespace NakedObjects.SystemTest.Util {
         }
 
         [TestMethod]
-        [Ignore] // fails occasionally investigate
         public void TestFindTypeFromLoadedAssembliesInParallelRandomOrderTenTimes() {
             TestHarnessFindTypeFromLoadedAssembliesInParallelRandomOrderTenTimes(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }
 
         [TestMethod]
-        [Ignore] // fails occasionally investigate
         public void TestFindTypeFromLoadedAssembliesInParallelRandomSelectionTenTimes() {
             TestHarnessFindTypeFromLoadedAssembliesInParallelRandomSelectionTenTimes(TypeUtils.GetTypeFromLoadedAssembliesInternal);
         }

@@ -134,122 +134,121 @@ namespace NakedObjects.SystemTest.Reflect {
             Assert.IsTrue(interval.Milliseconds < 1000);
         }
 
-        // todo 
+        // Comment this block out - serialization a no go at the moment.
+        // However useful example code if we need to revisit this type of thing later.
         // this still fails - looks to be one of the facets on the OneToOneSpecImmutable causing a BinaryHeader error
         // need further investigation
         // how about wring a test that serialises/deserialises all facets ?
-        [TestMethod]
-        [Ignore] // #9221
-        public void SerializeAdventureworks() {
-            // load adventurework
+        //[TestMethod]
+        //public void SerializeAdventureworks() {
+        //    // load adventurework
 
-            AssemblyHook.EnsureAssemblyLoaded();
+        //    AssemblyHook.EnsureAssemblyLoaded();
 
-            Type[] types = AdventureWorksTypes();
-            IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(types, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
+        //    Type[] types = AdventureWorksTypes();
+        //    IUnityContainer container = GetContainer();
+        //    var rc = new ReflectorConfiguration(types, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
 
-            container.RegisterInstance<IReflectorConfiguration>(rc);
+        //    container.RegisterInstance<IReflectorConfiguration>(rc);
 
-            var reflector = container.Resolve<IReflector>();
+        //    var reflector = container.Resolve<IReflector>();
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+        //    var stopwatch = new Stopwatch();
+        //    stopwatch.Start();
 
-            reflector.Reflect();
-            stopwatch.Stop();
-            TimeSpan reflectInterval = stopwatch.Elapsed;
-            Console.WriteLine("reflect {0}", reflectInterval);
+        //    reflector.Reflect();
+        //    stopwatch.Stop();
+        //    TimeSpan reflectInterval = stopwatch.Elapsed;
+        //    Console.WriteLine("reflect {0}", reflectInterval);
 
-            Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
+        //    Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
 
-            var cache = container.Resolve<ISpecificationCache>();
+        //    var cache = container.Resolve<ISpecificationCache>();
 
-            //var f1 =
-            //    cache.AllSpecifications().SelectMany(s => s.Fields)
-            //        .Select(s => s.Spec)
-            //        .Where(s => s != null)
-            //        .OfType<OneToOneAssociationSpecImmutable>()
-            //        .SelectMany(s => s.GetFacets())
-            //        .Select(f => f.GetType().FullName)
-            //        .Distinct();
+        //    //var f1 =
+        //    //    cache.AllSpecifications().SelectMany(s => s.Fields)
+        //    //        .Select(s => s.Spec)
+        //    //        .Where(s => s != null)
+        //    //        .OfType<OneToOneAssociationSpecImmutable>()
+        //    //        .SelectMany(s => s.GetFacets())
+        //    //        .Select(f => f.GetType().FullName)
+        //    //        .Distinct();
 
-            //foreach (var f in f1) {
-            //    Console.WriteLine(" field facet  {0}", f);
-            //}
+        //    //foreach (var f in f1) {
+        //    //    Console.WriteLine(" field facet  {0}", f);
+        //    //}
 
-            Directory.CreateDirectory(@"c:\testmetadata");
+        //    Directory.CreateDirectory(@"c:\testmetadata");
 
-            const string file = @"c:\testmetadata\metadataAW.bin";
+        //    const string file = @"c:\testmetadata\metadataAW.bin";
 
-            SerializeDeserialize(cache, file);
-        }
+        //    SerializeDeserialize(cache, file);
+        //}
 
-        private void SerializeDeserialize(ISpecificationCache cache, string file) {
-            var stopwatch = new Stopwatch();
-            IUnityContainer container = GetContainer();
+        //private void SerializeDeserialize(ISpecificationCache cache, string file) {
+        //    var stopwatch = new Stopwatch();
+        //    IUnityContainer container = GetContainer();
 
-            stopwatch.Start();
+        //    stopwatch.Start();
 
-            cache.Serialize(file);
+        //    cache.Serialize(file);
 
-            stopwatch.Stop();
-            TimeSpan serializeInterval = stopwatch.Elapsed;
-            stopwatch.Reset();
+        //    stopwatch.Stop();
+        //    TimeSpan serializeInterval = stopwatch.Elapsed;
+        //    stopwatch.Reset();
 
-            // and roundtrip 
+        //    // and roundtrip 
 
-            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(
-                new PerResolveLifetimeManager(), new InjectionConstructor(file));
+        //    container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(
+        //        new PerResolveLifetimeManager(), new InjectionConstructor(file));
 
-            stopwatch.Start();
-            var newCache = container.Resolve<ISpecificationCache>();
-            stopwatch.Stop();
-            TimeSpan deserializeInterval = stopwatch.Elapsed;
-            stopwatch.Reset();
+        //    stopwatch.Start();
+        //    var newCache = container.Resolve<ISpecificationCache>();
+        //    stopwatch.Stop();
+        //    TimeSpan deserializeInterval = stopwatch.Elapsed;
+        //    stopwatch.Reset();
 
-            CompareCaches(cache, newCache);
+        //    CompareCaches(cache, newCache);
 
-            Console.WriteLine("serialize {0} deserialize {1} ", serializeInterval,
-                deserializeInterval);
-        }
+        //    Console.WriteLine("serialize {0} deserialize {1} ", serializeInterval,
+        //        deserializeInterval);
+        //}
 
-        [TestMethod]
-        [Ignore] // #9221
-        public void SerializeAdventureworksByType() {
-            // load adventurework
+        //[TestMethod]
+        //public void SerializeAdventureworksByType() {
+        //    // load adventurework
 
-            AssemblyHook.EnsureAssemblyLoaded();
+        //    AssemblyHook.EnsureAssemblyLoaded();
 
-            int count = AdventureWorksTypes().Count();
+        //    int count = AdventureWorksTypes().Count();
 
-            Type[] spec51 = AdventureWorksTypes().Skip(50).Take(1).ToArray();
-            Type[] types = AdventureWorksTypes().Take(20).ToArray();
-            IUnityContainer container = GetContainer();
-            var rc = new ReflectorConfiguration(types, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
+        //    Type[] spec51 = AdventureWorksTypes().Skip(50).Take(1).ToArray();
+        //    Type[] types = AdventureWorksTypes().Take(20).ToArray();
+        //    IUnityContainer container = GetContainer();
+        //    var rc = new ReflectorConfiguration(types, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
 
-            container.RegisterInstance<IReflectorConfiguration>(rc);
+        //    container.RegisterInstance<IReflectorConfiguration>(rc);
 
-            var reflector = container.Resolve<IReflector>();
+        //    var reflector = container.Resolve<IReflector>();
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+        //    var stopwatch = new Stopwatch();
+        //    stopwatch.Start();
 
-            reflector.Reflect();
-            stopwatch.Stop();
-            TimeSpan reflectInterval = stopwatch.Elapsed;
-            stopwatch.Reset();
+        //    reflector.Reflect();
+        //    stopwatch.Stop();
+        //    TimeSpan reflectInterval = stopwatch.Elapsed;
+        //    stopwatch.Reset();
 
-            Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
+        //    Assert.IsTrue(reflector.AllObjectSpecImmutables.Any());
 
-            var cache = container.Resolve<ISpecificationCache>();
+        //    var cache = container.Resolve<ISpecificationCache>();
 
-            Directory.CreateDirectory(@"c:\testmetadata");
+        //    Directory.CreateDirectory(@"c:\testmetadata");
 
-            const string file = @"c:\testmetadata\metadataAWT.bin";
+        //    const string file = @"c:\testmetadata\metadataAWT.bin";
 
-            SerializeDeserialize(cache, file);
-        }
+        //    SerializeDeserialize(cache, file);
+        //}
 
         [TestMethod]
         public void SerializeAdventureworksFacets() {
