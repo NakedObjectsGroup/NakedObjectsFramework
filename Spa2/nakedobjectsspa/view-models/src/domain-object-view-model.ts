@@ -269,4 +269,8 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         const prefix = mode === InteractionMode.Edit || mode === InteractionMode.Transient ? `${Msg.editing} - ` : '';
         return `${prefix}${this.title}`;
     }
+
+    public friendTypeName() {
+        return Ro.friendlyTypeName(this.domainType);
+    }
 }

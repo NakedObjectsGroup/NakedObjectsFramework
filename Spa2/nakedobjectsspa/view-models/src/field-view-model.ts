@@ -325,4 +325,8 @@ export abstract class FieldViewModel extends MessageViewModel {
         // reference
         return new Ro.Value(this.reference ? { href: this.reference, title: this.value!.toString() } : null);
     }
+
+    public friendlyTypeName() {
+        return Ro.friendlyTypeName(this.returnType);
+    }
 }
