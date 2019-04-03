@@ -23,7 +23,7 @@ namespace AdventureWorksModel
             Property(t => t.DepartmentID).HasColumnName("DepartmentID");
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.GroupName).HasColumnName("GroupName");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

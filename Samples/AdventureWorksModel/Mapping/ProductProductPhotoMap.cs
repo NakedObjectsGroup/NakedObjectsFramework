@@ -22,7 +22,7 @@ namespace AdventureWorksModel
             Property(t => t.ProductID).HasColumnName("ProductID");
             Property(t => t.ProductPhotoID).HasColumnName("ProductPhotoID");
             Property(t => t.Primary).HasColumnName("Primary");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             HasRequired(t => t.Product)

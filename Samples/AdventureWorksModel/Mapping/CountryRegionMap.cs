@@ -22,7 +22,7 @@ namespace AdventureWorksModel
             ToTable("CountryRegion", "Person");
             Property(t => t.CountryRegionCode).HasColumnName("CountryRegionCode");
             Property(t => t.Name).HasColumnName("Name");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

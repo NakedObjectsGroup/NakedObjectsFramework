@@ -20,7 +20,7 @@ namespace AdventureWorksModel
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.CostRate).HasColumnName("CostRate");
             Property(t => t.Availability).HasColumnName("Availability");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

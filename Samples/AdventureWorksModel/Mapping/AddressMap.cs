@@ -39,7 +39,7 @@ namespace AdventureWorksModel
             Property(t => t.StateProvinceID).HasColumnName("StateProvinceID");
             Property(t => t.PostalCode).HasColumnName("PostalCode");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             HasRequired(t => t.StateProvince).WithMany().HasForeignKey(t =>t.StateProvinceID);

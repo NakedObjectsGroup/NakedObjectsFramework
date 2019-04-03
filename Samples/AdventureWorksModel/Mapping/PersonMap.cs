@@ -46,7 +46,7 @@ namespace AdventureWorksModel
             Property(t => t.EmailPromotion).HasColumnName("EmailPromotion");
             Property(t => t.AdditionalContactInfo).HasColumnName("AdditionalContactInfo");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             HasOptional(t => t.Employee).WithRequired(t => t.PersonDetails);
         }

@@ -21,7 +21,7 @@ namespace AdventureWorksModel
             Property(t => t.CatalogDescription).HasColumnName("CatalogDescription");
             Property(t => t.Instructions).HasColumnName("Instructions");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }
 }

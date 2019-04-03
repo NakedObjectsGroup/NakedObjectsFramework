@@ -29,7 +29,7 @@ namespace AdventureWorksModel
             Property(t => t.Bin).HasColumnName("Bin");
             Property(t => t.Quantity).HasColumnName("Quantity");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             HasRequired(t => t.Location).WithMany().HasForeignKey(t => t.LocationID);

@@ -35,7 +35,7 @@ namespace AdventureWorksModel
             Property(t => t.UnitPriceDiscount).HasColumnName("UnitPriceDiscount");
             Property(t => t.LineTotal).HasColumnName("LineTotal").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
             // Relationships
             HasRequired(t => t.SalesOrderHeader)
