@@ -30,7 +30,7 @@ namespace AdventureWorksModel
             Property(t => t.CardNumber).HasColumnName("CardNumber");
             Property(t => t.ExpMonth).HasColumnName("ExpMonth");
             Property(t => t.ExpYear).HasColumnName("ExpYear");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             HasMany(t => t.PersonLinks).WithRequired(t => t.CreditCard);
         }

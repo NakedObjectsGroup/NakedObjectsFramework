@@ -18,7 +18,7 @@ namespace AdventureWorksModel
             ToTable("ContactType", "Person");
             Property(t => t.ContactTypeID).HasColumnName("ContactTypeID");
             Property(t => t.Name).HasColumnName("Name");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
         }
     }
 }

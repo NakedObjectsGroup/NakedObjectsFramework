@@ -30,7 +30,7 @@ namespace AdventureWorksModel
             Property(t => t.PreferredVendorStatus).HasColumnName("PreferredVendorStatus");
             Property(t => t.ActiveFlag).HasColumnName("ActiveFlag");
             Property(t => t.PurchasingWebServiceURL).HasColumnName("PurchasingWebServiceURL");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
         }
     }
 }

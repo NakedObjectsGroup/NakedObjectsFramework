@@ -22,7 +22,7 @@ namespace AdventureWorksModel
             Property(t => t.TaxRate).HasColumnName("TaxRate");
             Property(t => t.Name).HasColumnName("Name");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
             HasRequired(t => t.StateProvince).WithMany().HasForeignKey(t => t.StateProvinceID);

@@ -38,7 +38,7 @@ namespace AdventureWorksModel
             Property(t => t.Status).HasColumnName("Status");
             Property(t => t.DocumentSummary).HasColumnName("DocumentSummary");
             Property(t => t.Document1).HasColumnName("Document");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
         }
     }
 }

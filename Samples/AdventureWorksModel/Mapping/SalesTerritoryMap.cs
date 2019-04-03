@@ -33,7 +33,7 @@ namespace AdventureWorksModel
             Property(t => t.CostYTD).HasColumnName("CostYTD");
             Property(t => t.CostLastYear).HasColumnName("CostLastYear");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
         }
     }
 }

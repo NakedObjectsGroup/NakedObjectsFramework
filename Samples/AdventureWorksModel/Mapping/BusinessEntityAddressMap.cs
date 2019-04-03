@@ -14,7 +14,7 @@ namespace AdventureWorksModel {
             Property(t => t.AddressTypeID).HasColumnName("AddressTypeID");
             Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             //Relationships
             HasRequired(t => t.Address).WithMany().HasForeignKey(t => t.AddressID);

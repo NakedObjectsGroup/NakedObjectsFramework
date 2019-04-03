@@ -74,7 +74,7 @@ namespace AdventureWorksModel
             Property(t => t.SellEndDate).HasColumnName("SellEndDate");
             Property(t => t.DiscontinuedDate).HasColumnName("DiscontinuedDate");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
             HasOptional(t => t.ProductModel)

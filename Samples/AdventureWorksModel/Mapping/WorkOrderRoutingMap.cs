@@ -33,7 +33,7 @@ namespace AdventureWorksModel
             Property(t => t.ActualResourceHrs).HasColumnName("ActualResourceHrs");
             Property(t => t.PlannedCost).HasColumnName("PlannedCost");
             Property(t => t.ActualCost).HasColumnName("ActualCost");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
             HasRequired(t => t.Location).WithMany().HasForeignKey(t => t.LocationID);

@@ -29,7 +29,7 @@ namespace AdventureWorksModel
             Property(t => t.ReceivedQty).HasColumnName("ReceivedQty");
             Property(t => t.RejectedQty).HasColumnName("RejectedQty");
             Property(t => t.StockedQty).HasColumnName("StockedQty").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
             HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);

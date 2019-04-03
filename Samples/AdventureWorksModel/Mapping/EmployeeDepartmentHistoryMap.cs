@@ -24,7 +24,7 @@ namespace AdventureWorksModel
             Property(t => t.ShiftID).HasColumnName("ShiftID");
             Property(t => t.StartDate).HasColumnName("StartDate");
             Property(t => t.EndDate).HasColumnName("EndDate");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
             HasRequired(t => t.Department).WithMany().HasForeignKey(t => t.DepartmentID);

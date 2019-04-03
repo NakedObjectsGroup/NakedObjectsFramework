@@ -25,7 +25,7 @@ namespace AdventureWorksModel
             Property(t => t.UnitMeasureCode).HasColumnName("UnitMeasureCode");
             Property(t => t.BOMLevel).HasColumnName("BOMLevel");
             Property(t => t.PerAssemblyQty).HasColumnName("PerAssemblyQty");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
             HasOptional(t => t.Product).WithMany().HasForeignKey(t => t.ProductAssemblyID);

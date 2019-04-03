@@ -23,7 +23,7 @@ namespace AdventureWorksModel
             ToTable("Currency", "Sales");
             Property(t => t.CurrencyCode).HasColumnName("CurrencyCode");
             Property(t => t.Name).HasColumnName("Name");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
         }
     }
 }

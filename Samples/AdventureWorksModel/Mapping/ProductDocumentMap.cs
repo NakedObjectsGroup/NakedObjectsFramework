@@ -21,7 +21,7 @@ namespace AdventureWorksModel
             ToTable("ProductDocument", "Production");
             Property(t => t.ProductID).HasColumnName("ProductID");
             Property(t => t.DocumentID).HasColumnName("DocumentID");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
             HasRequired(t => t.Document).WithMany().HasForeignKey(t => t.DocumentID);

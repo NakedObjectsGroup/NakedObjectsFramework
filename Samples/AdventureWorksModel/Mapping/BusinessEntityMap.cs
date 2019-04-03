@@ -11,7 +11,7 @@ namespace AdventureWorksModel {
             // Table & Column Mappings
             ToTable("BusinessEntity", "Person");
             Property(t => t.BusinessEntityRowguid).HasColumnName("rowguid");
-            Property(t => t.BusinessEntityModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.BusinessEntityModifiedDate).HasColumnName("ModifiedDate");
 
             HasMany(t => t.Addresses).WithRequired(t => t.BusinessEntity);
         }

@@ -21,7 +21,7 @@ namespace AdventureWorksModel
             ToTable("PersonCreditCard", "Sales");
             Property(t => t.PersonID).HasColumnName("BusinessEntityID");
             Property(t => t.CreditCardID).HasColumnName("CreditCardID");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
             HasRequired(t => t.Person).WithMany().HasForeignKey(t => t.PersonID);

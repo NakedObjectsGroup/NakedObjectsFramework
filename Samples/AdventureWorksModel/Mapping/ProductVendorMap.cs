@@ -34,7 +34,7 @@ namespace AdventureWorksModel
             Property(t => t.MaxOrderQty).HasColumnName("MaxOrderQty");
             Property(t => t.OnOrderQty).HasColumnName("OnOrderQty");
             Property(t => t.UnitMeasureCode).HasColumnName("UnitMeasureCode");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             // Relationships
             HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);
