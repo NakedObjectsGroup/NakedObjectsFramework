@@ -4,10 +4,10 @@ import { inject, TestBed } from '@angular/core/testing';
 import * as Ro from '@nakedobjects/restful-objects';
 import * as momentNs from 'moment';
 import { ConfigService } from './config.service';
-import * as Constants from './constants';
 import { MaskService } from './mask.service';
 
 const moment = momentNs;
+const supportedDateFormats = ['D/M/YYYY', 'D/M/YY', 'D MMM YYYY', 'D MMMM YYYY', 'D MMM YY', 'D MMMM YY'];
 
 describe('MaskService', () => {
 
@@ -162,7 +162,7 @@ describe('MaskService', () => {
 
         function testFormat(toTest: string, valid: boolean, expected: Date) {
 
-            const m = moment(toTest, Constants.supportedDateFormats, 'en-GB', true);
+            const m = moment(toTest, supportedDateFormats, 'en-GB', true);
 
             expect(m.isValid()).toBe(valid);
 

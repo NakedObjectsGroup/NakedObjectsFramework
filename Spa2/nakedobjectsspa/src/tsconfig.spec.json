@@ -14,7 +14,8 @@
     },
     "files": [
       "test.ts",
-      "polyfills.ts"
+      "polyfills.ts",
+      "../services/src/mask.service.spec.ts"
     ],
     "include": [
     ],
