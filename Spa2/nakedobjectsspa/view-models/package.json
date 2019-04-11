@@ -40,7 +40,7 @@
         "dest": "../dist/nakedobjects-view-models"
     },
     "name": "@nakedobjects/view-models",
-    "version": "10.0.0-rc.2",
+    "version": "10.0.0",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -74,8 +74,8 @@
     "dependencies": {
         "lodash": "~4.17.11",
         "lodash-es": "~4.17.11",
-        "@nakedobjects/restful-objects": "^10.0.0-rc.1",
-        "@nakedobjects/services": "^10.0.0-rc.1"
+        "@nakedobjects/restful-objects": "^10.0.0",
+        "@nakedobjects/services": "^10.0.0"
     },
     "peerDependencies": {
         "@angular/animations": "~7.2.0",

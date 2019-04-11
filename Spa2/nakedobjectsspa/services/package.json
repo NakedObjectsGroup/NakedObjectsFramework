@@ -50,7 +50,7 @@
         "dest": "../dist/nakedobjects-services"
     },
     "name": "@nakedobjects/services",
-    "version": "10.0.0-rc.1",
+    "version": "10.0.0",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -86,7 +86,7 @@
         "lodash": "~4.17.11",
         "lodash-es": "~4.17.11",
         "moment": "2.22.2",
-        "@nakedobjects/restful-objects": "^10.0.0-rc.1"
+        "@nakedobjects/restful-objects": "^10.0.0"
     },
     "peerDependencies": {
         "@angular/animations": "~7.2.0",
