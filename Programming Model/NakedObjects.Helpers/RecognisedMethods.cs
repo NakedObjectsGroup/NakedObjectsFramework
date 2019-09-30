@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,7 +24,6 @@ namespace NakedObjects {
         public bool HidePropertyDefault() {
             throw new NotImplementedException();
         }
-
 
         /// <summary>
         /// Dynamically hides all the actions on the object, except where overridden by a Hide method associated with a specific action.
@@ -55,57 +54,57 @@ namespace NakedObjects {
         #region LifeCycle methods
 
         ///Life cycle method called whem object is first created. This is the instance's logical creation. This method will not be called when the object is retrieved from persistent storage into memory.
-        public void Created() {}
+        public void Created() { }
 
         /// <summary>
         /// Life cycle method called when object has just been removed from the persistent store. At this point the object will exist in memory, but no longer exist in the persistent store.
         /// </summary>
-        public void Deleted() {}
+        public void Deleted() { }
 
         /// <summary>
         /// Life cycle method called when object is just about to be removed from the persistent store. At this point the object still exists in the persistent store.
         /// </summary>
-        public void Deleting() {}
+        public void Deleting() { }
 
         /// <summary>
         ///  Life cycle method called when object has just been loaded in from the persistent store. At this point the object has had its state fully restored. Loaded will be called after the object has been loaded and before the transaction has completed. When retrieving an object via the user interface this means that Loaded will have been called by the time the object appears on the screen. However, if you are processing objects programmatically - whether from within a user action or from an external call - then be aware that the Loaded might not be called on any (or all) of the objects being processed until the very end of the transaction. So if your method involves loading objects and processing them, you cannot assume that Loaded will have been called before you get hold of each object. In general, it is recommended that you use Loaded only for very simple, non-invasive purposes, such as calculating a total for display purposes before an object is returned to the user.
         /// </summary>
-        public void Loaded() {}
+        public void Loaded() { }
 
         /// <summary>
         /// Life cycle method called when object is just about to be loaded from the persistent store. At this point the object exists in memory but has not had its state restored.
         /// </summary>
-        public void Loading() {}
+        public void Loading() { }
 
         /// <summary>
         /// Life cycle method called if the persistor throws an exception when object is persisted. Typically this will be a DataUpdateException or an OptimisticConcurrencyException. 
         /// </summary>
-        private void OnPersistingError() {}
+        private void OnPersistingError() { }
 
         /// <summary>
         ///Life cycle method called if the object persistor throws an exception when object is being updated. Works in a similar manner to OnPersistingError.
         /// </summary>
-        public void OnUpdatingError() {}
+        public void OnUpdatingError() { }
 
         /// <summary>
         /// Life cycle method called after a transient object has been persisted. Unlike Persisting(), this method will be a separate transaction to the persisting of the object, but still within a single over-arching transacton
         /// </summary>
-        public void Persisted() {}
+        public void Persisted() { }
 
         /// <summary>
         /// Life cycle method called when a transient object is just about to be persisted via the object store, as part of the same transaction. At this point the object exists only in memory and not in the persistent store.
         /// </summary>
-        public void Persisting() {}
+        public void Persisting() { }
 
         /// <summary>
         /// Life cycle method called when a modified persistent object has just been saved to the persistent store. At this point the object in the persistent store will be in its new state.       
         /// </summary>
-        public void Updated() {}
+        public void Updated() { }
 
         /// <summary>
         /// Life cycle method called when a persistent object has just been modified and is about to be saved to the persistent store. At this point the object's data held in the persistent store will not yet have been modified.
         /// </summary>
-        public void Updating() {}
+        public void Updating() { }
 
         #endregion
 
@@ -145,7 +144,7 @@ namespace NakedObjects {
         /// <summary>
         /// Called when the user (rather than programmatic code) clears a reference field, or blanks (so there is no entry) a value field. Changing a property from one value to another value, is deemed by the framework to be a 'clear field', immediately followed by a 'modify field'. 
         /// </summary>
-        public void ClearAProperty() {}
+        public void ClearAProperty() { }
 
         /// <summary>
         ///  Called when the user (rather than programmatic code) sets a reference or value field. This is typically used to trigger other behaviours such as updating a total.
@@ -154,7 +153,6 @@ namespace NakedObjects {
         public void ModifyAProperty(string value) {
             throw new NotImplementedException();
         }
-
 
         /// <summary>
         /// Specifies the default value to be provided for a property, when the object is first created.
@@ -378,5 +376,5 @@ namespace NakedObjects {
     /// This class serves only as illustration for the RecognisedMethods -  it contains no executable code.
     /// A domain type need not extend any type, implement any interface, nor adopt any attribute.  
     /// </summary>
-    public class ADomainType {}
+    public class ADomainType { }
 }

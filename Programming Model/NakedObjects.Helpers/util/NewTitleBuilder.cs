@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -11,7 +11,6 @@ using System.Reflection;
 using System.Text;
 
 namespace NakedObjects {
-
     [Obsolete("Use Container.NewTitleBuilder() method")]
     public class NewTitleBuilder {
         private const string Space = " ";
@@ -24,24 +23,16 @@ namespace NakedObjects {
         private string separator;
         private StringBuilder title;
 
-        #region Constructors
+        public static string ListTitleProperties {
+            get {
+                var str = new StringBuilder();
+                foreach (Type type in titleFrom.Keys) {
+                    str.AppendLine(type + " -> " + titleFrom[type].GetType().Name);
+                }
 
-        /// <summary>
-        ///     Creates a new, empty, TitleBuilder object
-        /// </summary>
-        public NewTitleBuilder() {
-            title = new StringBuilder();
+                return str.ToString();
+            }
         }
-
-        /// <summary>
-        ///     Creates a new TitleBuilder object, containing the Title of the specified object
-        /// </summary>
-        public NewTitleBuilder(object obj)
-            : this() {
-            this.obj = obj;
-        }
-
-        #endregion
 
         #region Private
 
@@ -69,7 +60,7 @@ namespace NakedObjects {
             }
 
             if (titleFrom[type] == null) {
-                MethodInfo formatMethod = type.GetMethod("ToString", new[] {typeof (string)});
+                MethodInfo formatMethod = type.GetMethod("ToString", new[] {typeof(string)});
                 if (formatMethod != null) {
                     titleFrom[type] = new TitleFromFormattingToString(formatMethod);
                 }
@@ -83,16 +74,6 @@ namespace NakedObjects {
         }
 
         #endregion
-
-        public static string ListTitleProperties {
-            get {
-                var str = new StringBuilder();
-                foreach (Type type in titleFrom.Keys) {
-                    str.AppendLine(type + " -> " + titleFrom[type].GetType().Name);
-                }
-                return str.ToString();
-            }
-        }
 
         /// <summary>
         ///     Determines if the specified object's Title (from its <c>ToString()</c> method) is empty. Will
@@ -128,11 +109,14 @@ namespace NakedObjects {
                 if (joiner != null && title.Length > 0) {
                     title.Append(joiner);
                 }
+
                 if (appendWithSpace && title.Length > 0) {
                     title.Append(" ");
                 }
+
                 title.Append(TitleOrToString(obj, pattern));
             }
+
             joiner = separator;
             appendWithSpace = false;
             pattern = null;
@@ -209,6 +193,7 @@ namespace NakedObjects {
             if (continuation != null) {
                 length -= continuation.Length;
             }
+
             int end = Math.Min(start + length, last - 1);
             if (end >= length) {
                 title = new StringBuilder(title.ToString(0, end));
@@ -219,6 +204,7 @@ namespace NakedObjects {
                             break;
                         }
                     }
+
                     end--;
                 }
                 else {
@@ -228,9 +214,29 @@ namespace NakedObjects {
                         }
                     }
                 }
+
                 title.Length = end;
                 title.Append(continuation);
             }
         }
+
+        #region Constructors
+
+        /// <summary>
+        ///     Creates a new, empty, TitleBuilder object
+        /// </summary>
+        public NewTitleBuilder() {
+            title = new StringBuilder();
+        }
+
+        /// <summary>
+        ///     Creates a new TitleBuilder object, containing the Title of the specified object
+        /// </summary>
+        public NewTitleBuilder(object obj)
+            : this() {
+            this.obj = obj;
+        }
+
+        #endregion
     }
 }

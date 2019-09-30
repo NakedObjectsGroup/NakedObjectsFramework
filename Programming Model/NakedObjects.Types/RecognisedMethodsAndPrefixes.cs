@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -11,15 +11,18 @@ namespace NakedObjects {
     /// (associated with an action or property).
     /// </summary>
     public static class RecognisedMethodsAndPrefixes {
+        #region Standard methods ignored as actions
 
-        #region Type-level methods
+        public static readonly string GetEnumeratorMethod;
+
+        #endregion
+
+        //Defines methods in domain models that are recognised by the NOF and result in
+        //specific behaviour. (See also OtherIgnoredMethods).
         public static readonly string TitleMethod;
         public static readonly string ToStringMethod;
         public static readonly string MenuMethod;
         public static readonly string IconNameMethod;
-        #endregion
-
-        #region LifeCycle methods
         public static readonly string CreatedMethod;
         public static readonly string DeletedMethod;
         public static readonly string DeletingMethod;
@@ -31,9 +34,27 @@ namespace NakedObjects {
         public static readonly string UpdatingMethod;
         public static readonly string OnPersistingErrorMethod;
         public static readonly string OnUpdatingErrorMethod;
-        #endregion
 
-        #region Complementary methods for actions or properties
+        public static string[] RecognisedMethods = new string[] {
+            CreatedMethod,
+            DeletedMethod,
+            DeletingMethod,
+            IconNameMethod,
+            LoadedMethod,
+            LoadingMethod,
+            MenuMethod,
+            OnPersistingErrorMethod,
+            OnUpdatingErrorMethod,
+            PersistedMethod,
+            PersistingMethod,
+            TitleMethod,
+            ToStringMethod,
+            UpdatedMethod,
+            UpdatingMethod
+        };
+
+        //Defines the prefixes recognised by NOF for 'complementary' methods associated
+        //with an action or property.
         public static readonly string AutoCompletePrefix;
         public static readonly string ChoicesPrefix;
         public static readonly string ClearPrefix;
@@ -44,46 +65,19 @@ namespace NakedObjects {
         public static readonly string ParameterDefaultPrefix;
         public static readonly string ParameterChoicesPrefix;
         public static readonly string ValidatePrefix;
-        #endregion
 
-        #region Standard methods ignored as actions
-        public static readonly string GetEnumeratorMethod;
-        #endregion
-
-        //Defines methods in domain models that are recognised by the NOF and result in
-        //specific behaviour. (See also OtherIgnoredMethods).
-        public static string[] RecognisedMethods = new string[] {
-                CreatedMethod,
-                DeletedMethod,
-                DeletingMethod,
-                IconNameMethod,
-                LoadedMethod,
-                LoadingMethod,
-                MenuMethod,
-                OnPersistingErrorMethod,
-                OnUpdatingErrorMethod,
-                PersistedMethod,
-                PersistingMethod,
-                TitleMethod,
-                ToStringMethod,
-                UpdatedMethod,
-                UpdatingMethod
-            };
-
-        //Defines the prefixes recognised by NOF for 'complementary' methods associated
-        //with an action or property.
         public static string[] RecognisedPrefixes = new string[] {
-                AutoCompletePrefix,
-                ChoicesPrefix,
-                ClearPrefix,
-                DefaultPrefix,
-                DisablePrefix,
-                HidePrefix,
-                ModifyPrefix,
-                ParameterChoicesPrefix,
-                ParameterDefaultPrefix,
-                ValidatePrefix
-            };
+            AutoCompletePrefix,
+            ChoicesPrefix,
+            ClearPrefix,
+            DefaultPrefix,
+            DisablePrefix,
+            HidePrefix,
+            ModifyPrefix,
+            ParameterChoicesPrefix,
+            ParameterDefaultPrefix,
+            ValidatePrefix
+        };
 
         //Defines any other methods (not included in AllRecognisedMethods) that are
         //recognised by the NOF but solely for the purpose of not rendering them
@@ -93,6 +87,7 @@ namespace NakedObjects {
         };
 
         #region Value definitions
+
         static RecognisedMethodsAndPrefixes() {
             ParameterDefaultPrefix = "Default";
             ParameterChoicesPrefix = "Choices";
@@ -121,6 +116,19 @@ namespace NakedObjects {
             OnPersistingErrorMethod = "OnPersistingError";
             OnUpdatingErrorMethod = "OnUpdatingError";
         }
+
+        #endregion
+
+        #region Type-level methods
+
+        #endregion
+
+        #region LifeCycle methods
+
+        #endregion
+
+        #region Complementary methods for actions or properties
+
         #endregion
     }
 }

@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,66 +24,6 @@ namespace NakedObjects.Services {
 
         #endregion
 
-        #region Implementation of IObjectFinder
-
-        public virtual T FindObject<T>(string compoundKey) {
-            Type type = GetAssociatedObjectType(compoundKey);
-
-            if (typeof (IHasGuid).IsAssignableFrom(type)) {
-                MethodInfo m = GetType().GetMethod("FindObjectByGuid", BindingFlags.Instance | BindingFlags.NonPublic);
-                MethodInfo gm = m.MakeGenericMethod(new[] {type});
-                return (T) gm.Invoke(this, new[] {compoundKey});
-            }
-            Dictionary<string, object> keyDict = CreateKeyDictionary(type, compoundKey);
-            if (keyDict.Any()) {
-                return FindByKeys<T>(type, keyDict);
-            }
-            throw new DomainException(string.Format(ProgrammingModel.CompoundKeyHasNoKeyValues, compoundKey));
-        }
-
-
-        public virtual string GetCompoundKey<T>(T obj) {
-            var compoundKey = new StringBuilder();
-            //In all cases, the key starts with the fully-qualified type name
-            string typeAsString = CodeFromType(obj);
-            compoundKey.Append((obj == null) ? null : typeAsString);
-
-            if (typeof (IHasGuid).IsAssignableFrom(typeof (T))) {
-                compoundKey.Append("|");
-                var objWithGuid = (IHasGuid) obj;
-                compoundKey.Append(objWithGuid.Guid.ToString()); //but must generate this dynamically
-            }
-            else {
-                PropertyInfo[] keyProperties = Container.GetKeys(obj.GetType());
-                if (!keyProperties.Any()) {
-                    throw new DomainException(string.Format(ProgrammingModel.NoKeysDefined, obj));
-                }
-                foreach (PropertyInfo key in keyProperties) {
-                    compoundKey.Append("|");
-                    compoundKey.Append((obj == null) ? null : key.GetValue(obj, null).ToString());
-                }
-            }
-            return compoundKey.ToString();
-        }
-
-        public object FindBySingleIntegerKey(Type type, int key) {
-            return FindByKey<object>(type, key);
-        }
-
-        public T FindBySingleIntegerKey<T>(int key) where T : class {
-            return (T) FindByKeyGeneric<T>(key);
-        }
-
-        private TActual FindObjectByGuid<TActual>(string compoundKey) where TActual : class, IHasGuid {
-            var guidFromKey = new Guid(compoundKey.Split('|').ElementAt(1));
-            IQueryable<TActual> q = from t in Container.Instances<TActual>()
-                where t.Guid == guidFromKey
-                select t;
-            return q.FirstOrDefault();
-        }
-
-        #endregion
-
         protected object FindByKeyGeneric<TActual>(object id) where TActual : class {
             return Container.FindByKey<TActual>(id);
         }
@@ -94,6 +34,7 @@ namespace NakedObjects.Services {
                 MethodInfo gm = m.MakeGenericMethod(new[] {type});
                 return (T) gm.Invoke(this, new[] {id});
             }
+
             return default(T);
         }
 
@@ -112,6 +53,7 @@ namespace NakedObjects.Services {
                 MethodInfo gm = m.MakeGenericMethod(new[] {type});
                 return (T) gm.Invoke(this, new[] {keyDict});
             }
+
             return default(T);
         }
 
@@ -120,10 +62,12 @@ namespace NakedObjects.Services {
             if (string.IsNullOrEmpty(typeAsString)) {
                 throw new DomainException(string.Format(ProgrammingModel.CompoundKeyDoesNotContainType, compoundKey));
             }
+
             Type type = TypeFromCode(typeAsString);
             if (type == null) {
                 throw new DomainException(string.Format(ProgrammingModel.TypeCannotBeFound, typeAsString));
             }
+
             return type;
         }
 
@@ -145,18 +89,18 @@ namespace NakedObjects.Services {
                 object value = null;
                 Type propType = keyProperties[i].PropertyType;
                 try {
-                    if (propType == typeof (string)) {
+                    if (propType == typeof(string)) {
                         value = stringValue;
                     }
-                    else if (propType == typeof (int)) {
+                    else if (propType == typeof(int)) {
                         value = int.Parse(stringValue);
                     }
-                    else if (propType == typeof (short)) {
+                    else if (propType == typeof(short)) {
                         value = short.Parse(stringValue);
                     }
-                    else if (propType == typeof (char)) {
+                    else if (propType == typeof(char)) {
                         value = char.Parse(stringValue);
-                    } 
+                    }
                     else if (propType == typeof(DateTime)) {
                         value = DateTime.Parse(stringValue);
                     }
@@ -167,12 +111,12 @@ namespace NakedObjects.Services {
                 catch (FormatException) {
                     throw new DomainException(string.Format(ProgrammingModel.KeyTypeMismatch, stringValue, propType));
                 }
+
                 keyDict.Add(keyProperties[i].Name, value);
             }
 
             return keyDict;
         }
-
 
         private string[] ExtractKeyValuesAsStrings(string compoundKey) {
             string[] keyStrings = compoundKey.Split('|');
@@ -182,8 +126,72 @@ namespace NakedObjects.Services {
             foreach (string keyString in keyStrings.Skip(1)) {
                 keyValues.Add(keyString);
             }
+
             return keyValues.ToArray();
         }
+
+        #region Implementation of IObjectFinder
+
+        public virtual T FindObject<T>(string compoundKey) {
+            Type type = GetAssociatedObjectType(compoundKey);
+
+            if (typeof(IHasGuid).IsAssignableFrom(type)) {
+                MethodInfo m = GetType().GetMethod("FindObjectByGuid", BindingFlags.Instance | BindingFlags.NonPublic);
+                MethodInfo gm = m.MakeGenericMethod(new[] {type});
+                return (T) gm.Invoke(this, new[] {compoundKey});
+            }
+
+            Dictionary<string, object> keyDict = CreateKeyDictionary(type, compoundKey);
+            if (keyDict.Any()) {
+                return FindByKeys<T>(type, keyDict);
+            }
+
+            throw new DomainException(string.Format(ProgrammingModel.CompoundKeyHasNoKeyValues, compoundKey));
+        }
+
+        public virtual string GetCompoundKey<T>(T obj) {
+            var compoundKey = new StringBuilder();
+            //In all cases, the key starts with the fully-qualified type name
+            string typeAsString = CodeFromType(obj);
+            compoundKey.Append((obj == null) ? null : typeAsString);
+
+            if (typeof(IHasGuid).IsAssignableFrom(typeof(T))) {
+                compoundKey.Append("|");
+                var objWithGuid = (IHasGuid) obj;
+                compoundKey.Append(objWithGuid.Guid.ToString()); //but must generate this dynamically
+            }
+            else {
+                PropertyInfo[] keyProperties = Container.GetKeys(obj.GetType());
+                if (!keyProperties.Any()) {
+                    throw new DomainException(string.Format(ProgrammingModel.NoKeysDefined, obj));
+                }
+
+                foreach (PropertyInfo key in keyProperties) {
+                    compoundKey.Append("|");
+                    compoundKey.Append((obj == null) ? null : key.GetValue(obj, null).ToString());
+                }
+            }
+
+            return compoundKey.ToString();
+        }
+
+        public object FindBySingleIntegerKey(Type type, int key) {
+            return FindByKey<object>(type, key);
+        }
+
+        public T FindBySingleIntegerKey<T>(int key) where T : class {
+            return (T) FindByKeyGeneric<T>(key);
+        }
+
+        private TActual FindObjectByGuid<TActual>(string compoundKey) where TActual : class, IHasGuid {
+            var guidFromKey = new Guid(compoundKey.Split('|').ElementAt(1));
+            IQueryable<TActual> q = from t in Container.Instances<TActual>()
+                where t.Guid == guidFromKey
+                select t;
+            return q.FirstOrDefault();
+        }
+
+        #endregion
 
         #region Convert between Type and string representation (code) for Type
 
@@ -195,9 +203,11 @@ namespace NakedObjects.Services {
             Type type = obj.GetType().GetProxiedType();
             return type.FullName;
         }
+
         #endregion
 
         #region Instances
+
         protected IQueryable<T> InstancesGeneric<T>() where T : class {
             return Container.Instances<T>();
         }
@@ -205,9 +215,10 @@ namespace NakedObjects.Services {
         public IQueryable<T> Instances<T>(Type type) {
             if (!typeof(T).IsAssignableFrom(type)) throw new DomainException(type + " does not implement " + typeof(T));
             MethodInfo m = GetType().GetMethod("InstancesGeneric", BindingFlags.Instance | BindingFlags.NonPublic);
-            MethodInfo gm = m.MakeGenericMethod(new[] { type });
+            MethodInfo gm = m.MakeGenericMethod(new[] {type});
             return gm.Invoke(this, new object[] { }) as IQueryable<T>;
         }
+
         #endregion
     }
 }

@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using NakedObjects.Services;
 
 namespace NakedObjects.Util {
     /// <summary>
@@ -39,6 +38,7 @@ namespace NakedObjects.Util {
             if (typeCandidate == null) {
                 return null;
             }
+
             if (!requiredType.IsAssignableFrom(typeCandidate)) {
                 return null;
             }
@@ -50,6 +50,7 @@ namespace NakedObjects.Util {
             if (typeCandidate.IsPublic || typeCandidate.IsNestedPublic) {
                 return typeCandidate;
             }
+
             return null;
         }
 
@@ -57,6 +58,7 @@ namespace NakedObjects.Util {
             lock (TypeCache) {
                 TypeCache.Clear();
             }
+
             lock (AssemblyCache) {
                 AssemblyCache.Clear();
             }
@@ -67,9 +69,10 @@ namespace NakedObjects.Util {
                 string typeName = name.Remove(name.LastIndexOf('?'));
                 Type type = GetTypeFromLoadedAssembliesInternal(typeName);
                 if (type != null) {
-                    return typeof (Nullable<>).GetGenericTypeDefinition().MakeGenericType(type).FullName;
+                    return typeof(Nullable<>).GetGenericTypeDefinition().MakeGenericType(type).FullName;
                 }
             }
+
             return name;
         }
 
@@ -120,9 +123,9 @@ namespace NakedObjects.Util {
                     }
                 }
             }
+
             return null;
         }
-
 
         public static Type GetType(string typeName) {
             return GetTypeFromLoadedAssembliesInternal(typeName);
@@ -132,6 +135,7 @@ namespace NakedObjects.Util {
             if (classCandidateName == null) {
                 return null;
             }
+
             try {
                 Type classCandidate = GetType(classCandidateName);
                 return ImplementingTypeOrNull(classCandidate, requiredType);
@@ -150,7 +154,7 @@ namespace NakedObjects.Util {
         }
 
         public static bool IsString(Type type) {
-            return type.Equals(typeof (string));
+            return type.Equals(typeof(string));
         }
 
         public static bool IsPublic(Type type) {
@@ -180,7 +184,6 @@ namespace NakedObjects.Util {
         public static bool IsNakedObjectsProxy(string typeName) {
             return typeName.StartsWith(NakedObjectsProxyPrefix);
         }
-
 
         public static bool IsCastleProxy(Type type) {
             return IsCastleProxy(type.FullName ?? "");
@@ -230,22 +233,22 @@ namespace NakedObjects.Util {
             return IsProxy(type) ? type.BaseType : type;
         }
 
-
         public static T CreateGenericInstance<T>(Type genericTypeDefinition,
-            Type[] genericTypeParms,
-            object[] constructorParms) {
+                                                 Type[] genericTypeParms,
+                                                 object[] constructorParms) {
             Type genericType = genericTypeDefinition.MakeGenericType(genericTypeParms);
             var constructorTypes = new List<Type>();
             foreach (object obj in constructorParms) {
                 constructorTypes.Add(obj.GetType());
             }
+
             ConstructorInfo ctor = genericType.GetConstructor(constructorTypes.ToArray());
             var constructedObject = (T) ctor.Invoke(constructorParms);
             return constructedObject;
         }
 
         public static bool IsNullableType(Type type) {
-            return type.IsGenericType && (typeof (Nullable<>).Equals(type.GetGenericTypeDefinition()));
+            return type.IsGenericType && (typeof(Nullable<>).Equals(type.GetGenericTypeDefinition()));
         }
 
         public static Type GetNulledType(Type type) {
@@ -257,7 +260,7 @@ namespace NakedObjects.Util {
         }
 
         public static bool IsEnum(Type type) {
-            return (typeof (Enum).IsAssignableFrom(type));
+            return (typeof(Enum).IsAssignableFrom(type));
         }
 
         public static bool IsIntegralValueForEnum(object obj) {
@@ -297,7 +300,6 @@ namespace NakedObjects.Util {
             return target is TTarget && GetProperty(expr).Name == memberName;
         }
 
-
         // ** Lifted from MSDN **  
         //    The identity most users would expect MemberInfos (other than Type) to have is not what Reflection provides.
         //    So for example most folks would expect the following program to print true instead of false:
@@ -320,7 +322,6 @@ namespace NakedObjects.Util {
         // We can’t make them match because that would be a breaking change. However here is a little code snippet
         // that will do the comparison using the latter definition of identity. This will work for all subclasses of
         // MemberInfo (Type, MethodBase, MethodInfo, ConstructorInfo, FieldInfo, PropertyInfo and EventInfo):
-
 
         public static bool MemberInfoEquals(this MemberInfo lhs, MemberInfo rhs) {
             if (lhs == rhs) {

@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -146,6 +146,7 @@ namespace NakedObjects {
         T GetService<T>();
 
         #region Titles
+
         /// <summary>
         /// Convenience method to get hold of the title of any domain object,
         /// without needing to know whether that is defined by a Title() method,
@@ -169,6 +170,7 @@ namespace NakedObjects {
         ///     Creates a new ITitleBuilder object, containing the specified text
         /// </summary>
         ITitleBuilder NewTitleBuilder(string text);
+
         #endregion
     }
 }

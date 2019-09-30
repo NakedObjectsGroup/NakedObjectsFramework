@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -12,111 +12,10 @@ using System.Text;
 using NakedObjects.Util;
 
 namespace NakedObjects {
-
-     [Obsolete("Use Container.NewTitleBuilder() method")]
+    [Obsolete("Use Container.NewTitleBuilder() method")]
     public class TitleBuilder {
         private const string Space = " ";
         private static readonly IDictionary<Type, Title> titleFrom = new Dictionary<Type, Title>();
-
-        #region Constructors
-
-        /// <summary>
-        ///     Creates a new, empty, TitleBuilder object
-        /// </summary>
-        public TitleBuilder() {
-            Title = new StringBuilder();
-        }
-
-        /// <summary>
-        ///     Creates a new TitleBuilder object, containing the Title of the specified object
-        /// </summary>
-        public TitleBuilder(object obj)
-            : this() {
-            Concat(obj);
-        }
-
-        /// <summary>
-        ///     Creates a new TitleBuilder object, containing the Title of the specified object
-        /// </summary>
-        public TitleBuilder(object obj, string defaultTitle)
-            : this() {
-            if (IsEmpty(obj, null)) {
-                Concat(defaultTitle);
-            }
-            else {
-                Concat(obj);
-            }
-        }
-
-        /// <summary>
-        ///     Creates a new Title object, containing the specified text
-        /// </summary>
-        public TitleBuilder(string text)
-            : this() {
-            Concat(text);
-        }
-
-        #endregion
-
-        #region Private
-
-        internal static string TitleOrToString(object obj, string format) {
-            Type type = obj.GetType();
-
-            lock (titleFrom) {
-                if (titleFrom.ContainsKey(type) && titleFrom[type] != null) {
-                    return titleFrom[type].GetTitle(obj, format);
-                }
-
-                titleFrom[type] = null;
-
-                MethodInfo titleMethod = type.GetMethod("Title", Type.EmptyTypes);
-                if (titleMethod != null) {
-                    titleFrom[type] = new TitleFromTitleMethod(titleMethod);
-                }
-
-                if (titleFrom[type] == null) {
-               
-                    PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-                    foreach (PropertyInfo property in properties) {
-                        if (Attribute.GetCustomAttribute(property, typeof(TitleAttribute)) != null) {
-                            titleFrom[type] = new TitleFromProperty(property);
-                        }
-                    }
-                }
-
-                if (titleFrom[type] == null && format != null) {
-                    MethodInfo formatMethod = type.GetMethod("ToString", new[] {typeof (string)});
-                    if (formatMethod != null) {
-                        titleFrom[type] = new TitleFromFormattingToString(formatMethod);
-                    }
-                }
-
-                if (titleFrom[type] == null) {
-                    titleFrom[type] = new TitleFromToString();
-                }
-
-                return titleFrom[type].GetTitle(obj, format);
-            }
-        }
-
-        private void AppendJoiner(string joiner) {
-            if (Title.Length > 0) {
-                Title.Append(joiner);
-            }
-        }
-
-        private void AppendWithSpace(string str) {
-            AppendSpace();
-            Title.Append(str);
-        }
-
-        private void AppendWithSpace(object obj, string format) {
-            AppendSpace();
-            Title.Append(TitleOrToString(obj, format));
-        }
-
-        #endregion
 
         protected StringBuilder Title { get; set; }
 
@@ -128,6 +27,7 @@ namespace NakedObjects {
                         str.AppendLine(type + " -> " + titleFrom[type].GetType().Name);
                     }
                 }
+
                 return str.ToString();
             }
         }
@@ -156,6 +56,7 @@ namespace NakedObjects {
             if (!IsEmpty(obj, null)) {
                 AppendWithSpace(obj, null);
             }
+
             return this;
         }
 
@@ -176,6 +77,7 @@ namespace NakedObjects {
             else {
                 AppendWithSpace(defaultValue);
             }
+
             return this;
         }
 
@@ -189,6 +91,7 @@ namespace NakedObjects {
             if (!IsEmpty(text)) {
                 AppendWithSpace(text);
             }
+
             return this;
         }
 
@@ -202,6 +105,7 @@ namespace NakedObjects {
                 AppendJoiner(joiner);
                 AppendWithSpace(obj, null);
             }
+
             return this;
         }
 
@@ -227,6 +131,7 @@ namespace NakedObjects {
                 AppendJoiner(joiner);
                 AppendWithSpace(obj, format);
             }
+
             return this;
         }
 
@@ -242,6 +147,7 @@ namespace NakedObjects {
                 AppendJoiner(joiner);
                 AppendWithSpace(text);
             }
+
             return this;
         }
 
@@ -257,6 +163,7 @@ namespace NakedObjects {
             if (Title.Length > 0) {
                 Title.Append(Space);
             }
+
             return this;
         }
 
@@ -318,6 +225,7 @@ namespace NakedObjects {
                 AppendJoiner(joiner);
                 Concat(obj);
             }
+
             return this;
         }
 
@@ -335,6 +243,7 @@ namespace NakedObjects {
             if (!IsEmpty(obj, format)) {
                 AppendJoiner(joiner);
             }
+
             Concat(obj, format, defaultValue);
             return this;
         }
@@ -358,17 +267,119 @@ namespace NakedObjects {
             if (noWords < 1) {
                 throw new ArgumentException("Truncation must be to one or more words");
             }
+
             string[] words = Title.ToString().Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
             if (noWords >= words.Length) {
                 return this;
             }
+
             Title = new StringBuilder();
             for (int i = 0; i < noWords; i++) {
                 Title.Append(words[i]).Append(" ");
             }
+
             Title.Append("...");
             return this;
         }
+
+        #region Constructors
+
+        /// <summary>
+        ///     Creates a new, empty, TitleBuilder object
+        /// </summary>
+        public TitleBuilder() {
+            Title = new StringBuilder();
+        }
+
+        /// <summary>
+        ///     Creates a new TitleBuilder object, containing the Title of the specified object
+        /// </summary>
+        public TitleBuilder(object obj)
+            : this() {
+            Concat(obj);
+        }
+
+        /// <summary>
+        ///     Creates a new TitleBuilder object, containing the Title of the specified object
+        /// </summary>
+        public TitleBuilder(object obj, string defaultTitle)
+            : this() {
+            if (IsEmpty(obj, null)) {
+                Concat(defaultTitle);
+            }
+            else {
+                Concat(obj);
+            }
+        }
+
+        /// <summary>
+        ///     Creates a new Title object, containing the specified text
+        /// </summary>
+        public TitleBuilder(string text)
+            : this() {
+            Concat(text);
+        }
+
+        #endregion
+
+        #region Private
+
+        internal static string TitleOrToString(object obj, string format) {
+            Type type = obj.GetType();
+
+            lock (titleFrom) {
+                if (titleFrom.ContainsKey(type) && titleFrom[type] != null) {
+                    return titleFrom[type].GetTitle(obj, format);
+                }
+
+                titleFrom[type] = null;
+
+                MethodInfo titleMethod = type.GetMethod("Title", Type.EmptyTypes);
+                if (titleMethod != null) {
+                    titleFrom[type] = new TitleFromTitleMethod(titleMethod);
+                }
+
+                if (titleFrom[type] == null) {
+                    PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                    foreach (PropertyInfo property in properties) {
+                        if (Attribute.GetCustomAttribute(property, typeof(TitleAttribute)) != null) {
+                            titleFrom[type] = new TitleFromProperty(property);
+                        }
+                    }
+                }
+
+                if (titleFrom[type] == null && format != null) {
+                    MethodInfo formatMethod = type.GetMethod("ToString", new[] {typeof(string)});
+                    if (formatMethod != null) {
+                        titleFrom[type] = new TitleFromFormattingToString(formatMethod);
+                    }
+                }
+
+                if (titleFrom[type] == null) {
+                    titleFrom[type] = new TitleFromToString();
+                }
+
+                return titleFrom[type].GetTitle(obj, format);
+            }
+        }
+
+        private void AppendJoiner(string joiner) {
+            if (Title.Length > 0) {
+                Title.Append(joiner);
+            }
+        }
+
+        private void AppendWithSpace(string str) {
+            AppendSpace();
+            Title.Append(str);
+        }
+
+        private void AppendWithSpace(object obj, string format) {
+            AppendSpace();
+            Title.Append(TitleOrToString(obj, format));
+        }
+
+        #endregion
     }
 
     // Title invokers
@@ -410,9 +421,10 @@ namespace NakedObjects {
 
     internal class TitleFromToString : Title {
         internal override string GetTitle(object obj, string format) {
-            if (typeof (Enum).IsAssignableFrom(obj.GetType())) {
+            if (typeof(Enum).IsAssignableFrom(obj.GetType())) {
                 return NameUtils.NaturalName(obj.ToString());
             }
+
             return obj.ToString();
         }
     }

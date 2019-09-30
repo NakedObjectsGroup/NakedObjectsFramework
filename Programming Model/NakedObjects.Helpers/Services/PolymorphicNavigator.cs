@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,14 +17,6 @@ namespace NakedObjects.Services {
     ///     injected ITypeCodeMapper if one has been registered.  Otherwise uses the default of fully-qualified type name.
     /// </summary>
     public class PolymorphicNavigator {
-        #region Injected Services
-
-        public IDomainObjectContainer Container { set; protected get; }
-
-        public ITypeCodeMapper TypeCodeMapper { set; protected get; }
-
-        #endregion
-
         /// <summary>
         ///     Searches all polymorphic links of type TLink to find those associated with the value
         ///     then returns a queryable of those links' owners.
@@ -72,7 +64,6 @@ namespace NakedObjects.Services {
             }
         }
 
-
         public virtual TLink AddLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
             where TRole : class, IHasIntegerId
             where TLink : class, IPolymorphicLink<TRole, TOwner>, new()
@@ -116,16 +107,18 @@ namespace NakedObjects.Services {
                     Container.DisposeInstance(link);
                     return null;
                 }
+
                 link.AssociatedRoleObject = value;
                 return link;
             }
+
             ThrowExceptionIfIdIsZero(value);
             if (Container.IsPersistent(owner) && value != null) {
                 return AddLink<TLink, TRole, TOwner>(value, owner);
             }
+
             return null;
         }
-
 
         public virtual TRole RoleObjectFromLink<TLink, TRole, TOwner>(ref TRole role, TLink link, TOwner owner)
             where TRole : class, IHasIntegerId
@@ -156,6 +149,7 @@ namespace NakedObjects.Services {
                 MethodInfo gm = m.MakeGenericMethod(new[] {sysType});
                 return (T) gm.Invoke(this, new[] {id});
             }
+
             return default(T);
         }
 
@@ -163,12 +157,21 @@ namespace NakedObjects.Services {
             return Container.FindByKey<TActual>(id);
         }
 
+        #region Injected Services
+
+        public IDomainObjectContainer Container { set; protected get; }
+
+        public ITypeCodeMapper TypeCodeMapper { set; protected get; }
+
+        #endregion
+
         #region Convert between Type and string representation (code) for Type
 
         private Type TypeFromCode(string code) {
             if (TypeCodeMapper != null) {
                 return TypeCodeMapper.TypeFromCode(code);
             }
+
             return TypeUtils.GetType(code);
         }
 
@@ -177,6 +180,7 @@ namespace NakedObjects.Services {
             if (TypeCodeMapper != null) {
                 return TypeCodeMapper.CodeFromType(type);
             }
+
             return type.FullName;
         }
 
