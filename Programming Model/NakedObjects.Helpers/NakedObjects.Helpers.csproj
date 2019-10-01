@@ -13,10 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.3" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Attributes\NakedObjects.Attributes.csproj" />
     <ProjectReference Include="..\NakedObjects.PMResources\NakedObjects.PMResources.csproj" />
     <ProjectReference Include="..\Nakedobjects.Types\NakedObjects.Types.csproj" />
