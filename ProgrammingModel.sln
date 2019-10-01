@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.PMResources", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Types", "Programming Model\NakedObjects.Types\NakedObjects.Types.csproj", "{203F9A5E-120F-4543-97F9-E779B436D88A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.ProgrammingModel", "Programming Model\NakedObjects.ProgrammingModel\NakedObjects.ProgrammingModel.csproj", "{DE0E2EE5-A689-4C33-95D5-4626B50C55A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{203F9A5E-120F-4543-97F9-E779B436D88A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{203F9A5E-120F-4543-97F9-E779B436D88A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{203F9A5E-120F-4543-97F9-E779B436D88A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE0E2EE5-A689-4C33-95D5-4626B50C55A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE0E2EE5-A689-4C33-95D5-4626B50C55A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE0E2EE5-A689-4C33-95D5-4626B50C55A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE0E2EE5-A689-4C33-95D5-4626B50C55A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
