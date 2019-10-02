@@ -1,5 +1,5 @@
 <Project ToolsVersion="4.0" DefaultTargets="ProgrammingModelPackage"  xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Target Name="ProgrammingModelPackage">
-    <Exec Command='appveyor PushArtifact "Programming Model\NakedObjects.ProgrammingModel\bin\Debug\NakedObjects.ProgrammingModel.10.0.0-beta01.nupkg"'/>
+    <Exec Command='appveyor PushArtifact "Programming Model\NakedObjects.ProgrammingModel\bin\Debug\NakedObjects.ProgrammingModel.11.0.0-beta01.nupkg"'/>
   </Target>
 </Project>
