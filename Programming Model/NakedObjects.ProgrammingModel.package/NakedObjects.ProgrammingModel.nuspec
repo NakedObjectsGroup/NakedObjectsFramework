@@ -12,7 +12,7 @@
     <description>Naked Objects Programming Model. Add to a Model project (class library) for useful Attributes and Helper classes.</description>
     <tags>naked objects nakedobjects</tags>
     <dependencies>
-      <group targetFramework=".NETCoreApp3.0"/>
+      <group targetFramework="netcoreapp3.0"/>
     </dependencies>
   </metadata>
   <files>
