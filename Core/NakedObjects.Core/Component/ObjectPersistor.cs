@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,7 +27,7 @@ namespace NakedObjects.Core.Component {
     /// the store specific portion of the logic. 
     /// </summary>
     public sealed class ObjectPersistor : IObjectPersistor {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (ObjectPersistor));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectPersistor));
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IObjectStore objectStore;
 
@@ -62,7 +62,7 @@ namespace NakedObjects.Core.Component {
         }
 
         public void AddPersistedObject(INakedObjectAdapter nakedObjectAdapter) {
-            if (!nakedObjectAdapter.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
+            if (!nakedObjectAdapter.Spec.ContainsFacet(typeof(IComplexTypeFacet))) {
                 objectStore.ExecuteCreateObjectCommand(nakedObjectAdapter);
             }
         }
@@ -75,14 +75,16 @@ namespace NakedObjects.Core.Component {
             if (field.ReturnSpec.HasNoIdentity) {
                 return;
             }
+
             INakedObjectAdapter reference = field.GetNakedObject(nakedObjectAdapter);
             if (reference == null || reference.ResolveState.IsResolved()) {
                 return;
             }
+
             if (!reference.ResolveState.IsPersistent()) {
                 return;
             }
-           
+
             // don't log object - its ToString() may use the unresolved field or unresolved collection              
             objectStore.ResolveField(nakedObjectAdapter, field);
         }
@@ -95,7 +97,6 @@ namespace NakedObjects.Core.Component {
         }
 
         public int CountField(INakedObjectAdapter nakedObjectAdapter, string field) {
-
             var spec = nakedObjectAdapter.Spec as IObjectSpec;
             Trace.Assert(spec != null);
 
@@ -128,16 +129,16 @@ namespace NakedObjects.Core.Component {
                 if (nakedObjectAdapter.Oid is AggregateOid) {
                     return;
                 }
-               
+
                 // don't log object - it's ToString() may use the unresolved field, or unresolved collection
-                    
+
                 objectStore.ResolveImmediately(nakedObjectAdapter);
             }
         }
 
         public void ObjectChanged(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager, IMetamodelManager metamodel) {
             if (nakedObjectAdapter.ResolveState.RespondToChangesInPersistentObjects()) {
-                if (nakedObjectAdapter.Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
+                if (nakedObjectAdapter.Spec.ContainsFacet(typeof(IComplexTypeFacet))) {
                     nakedObjectAdapter.Updating();
                     nakedObjectAdapter.Updated();
                 }
@@ -146,11 +147,13 @@ namespace NakedObjects.Core.Component {
                     if (spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && nakedObjectAdapter.ResolveState.IsPersistent())) {
                         throw new NotPersistableException(Log.LogAndReturn("cannot change immutable object"));
                     }
+
                     nakedObjectAdapter.Updating();
 
                     if (!spec.IsNeverPersisted()) {
                         objectStore.ExecuteSaveObjectCommand(nakedObjectAdapter);
                     }
+
                     nakedObjectAdapter.Updated();
                 }
             }
@@ -160,7 +163,6 @@ namespace NakedObjects.Core.Component {
         }
 
         public void DestroyObject(INakedObjectAdapter nakedObjectAdapter) {
-
             nakedObjectAdapter.Deleting();
             objectStore.ExecuteDestroyObjectCommand(nakedObjectAdapter);
             nakedObjectAdapter.ResolveState.Handle(Events.DestroyEvent);
@@ -168,7 +170,6 @@ namespace NakedObjects.Core.Component {
         }
 
         public object CreateObject(ITypeSpec spec) {
-
             Type type = TypeUtils.GetType(spec.FullName);
             return objectStore.CreateInstance(type);
         }
@@ -185,11 +186,14 @@ namespace NakedObjects.Core.Component {
                             instances.Add(instance);
                         }
                     }
+
                     return instances;
                 }
+
                 return Instances(spec);
             }
-            return new object[] {};
+
+            return new object[] { };
         }
 
         public void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost) {
@@ -214,6 +218,7 @@ namespace NakedObjects.Core.Component {
             if (spec.IsInterface || spec.IsAbstract) {
                 return spec.Subclasses.SelectMany(GetLeafNodes);
             }
+
             return new[] {spec};
         }
     }

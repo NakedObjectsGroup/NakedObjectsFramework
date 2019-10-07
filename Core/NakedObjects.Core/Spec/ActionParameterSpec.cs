@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,10 +25,11 @@ namespace NakedObjects.Core.Spec {
         private readonly IActionParameterSpecImmutable actionParameterSpecImmutable;
         private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodel;
-        private readonly int number;
         private readonly IActionSpec parentAction;
         private readonly IObjectPersistor persistor;
+
         private readonly ISession session;
+
         // cache 
         private bool checkedForElementSpec;
         private Tuple<string, IObjectSpec>[] choicesParameters;
@@ -51,7 +52,7 @@ namespace NakedObjects.Core.Spec {
             Assert.AssertNotNull(persistor);
 
             this.metamodel = metamodel;
-            this.number = number;
+            this.Number = number;
             parentAction = actionSpec;
             this.actionParameterSpecImmutable = actionParameterSpecImmutable;
             this.manager = manager;
@@ -79,6 +80,7 @@ namespace NakedObjects.Core.Spec {
                 if (!isAutoCompleteEnabled.HasValue) {
                     isAutoCompleteEnabled = ContainsFacet<IAutoCompleteFacet>();
                 }
+
                 return isAutoCompleteEnabled.Value;
             }
         }
@@ -88,6 +90,7 @@ namespace NakedObjects.Core.Spec {
                 if (!isChoicesEnabled.HasValue) {
                     isChoicesEnabled = !IsMultipleChoicesEnabled && actionParameterSpecImmutable.IsChoicesEnabled;
                 }
+
                 return isChoicesEnabled.Value;
             }
         }
@@ -98,13 +101,12 @@ namespace NakedObjects.Core.Spec {
                     isMultipleChoicesEnabled = Spec.IsCollectionOfBoundedSet(ElementSpec) ||
                                                Spec.IsCollectionOfEnum(ElementSpec) || actionParameterSpecImmutable.IsMultipleChoicesEnabled;
                 }
+
                 return isMultipleChoicesEnabled.Value;
             }
         }
 
-        public virtual int Number {
-            get { return number; }
-        }
+        public virtual int Number { get; }
 
         public virtual IActionSpec Action {
             get { return parentAction; }
@@ -127,6 +129,7 @@ namespace NakedObjects.Core.Spec {
                 if (!isMandatory.HasValue) {
                     isMandatory = GetFacet<IMandatoryFacet>().IsMandatory;
                 }
+
                 return isMandatory.Value;
             }
         }
@@ -178,8 +181,9 @@ namespace NakedObjects.Core.Spec {
         public bool IsNullable {
             get {
                 if (!isNullable.HasValue) {
-                    isNullable = ContainsFacet(typeof (INullableFacet));
+                    isNullable = ContainsFacet(typeof(INullableFacet));
                 }
+
                 return isNullable.Value;
             }
         }
@@ -187,9 +191,9 @@ namespace NakedObjects.Core.Spec {
         public Tuple<string, IObjectSpec>[] GetChoicesParameters() {
             if (choicesParameters == null) {
                 var choicesFacet = GetFacet<IActionChoicesFacet>();
-                choicesParameters = choicesFacet == null ? new Tuple<string, IObjectSpec>[] {} :
-                    choicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, metamodel.GetSpecification(t.Item2))).ToArray();
+                choicesParameters = choicesFacet == null ? new Tuple<string, IObjectSpec>[] { } : choicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, metamodel.GetSpecification(t.Item2))).ToArray();
             }
+
             return choicesParameters;
         }
 

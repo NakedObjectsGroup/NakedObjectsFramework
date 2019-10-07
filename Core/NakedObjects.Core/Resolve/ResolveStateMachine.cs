@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,13 +20,13 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Resolve {
     public sealed class ResolveStateMachine : IResolveStateMachine {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ResolveStateMachine));
-
         #region Delegates
 
         public delegate IResolveState EventHandler(INakedObjectAdapter no, IResolveStateMachine rsm, ISession s);
 
         #endregion
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ResolveStateMachine));
 
         private readonly List<HistoryEvent> history = new List<HistoryEvent>();
 
@@ -61,107 +61,143 @@ namespace NakedObjects.Core.Resolve {
             return CurrentState.ToString();
         }
 
+        #region Nested type: HistoryEvent
+
+        private class HistoryEvent {
+            // ReSharper disable once NotAccessedField.Local
+            // for viewing via debugger
+            private StackTrace trace;
+
+            public HistoryEvent(IResolveState startState, IResolveState endState, IResolveEvent rEvent, bool fullTrace) {
+                StartState = startState;
+                EndState = endState;
+                Event = rEvent;
+                TimeStamp = DateTime.Now;
+                Notes = new List<string>();
+                if (fullTrace) {
+                    trace = new StackTrace(2, true);
+                }
+            }
+
+            private IList<string> Notes { get; }
+            private IResolveState StartState { get; }
+            private IResolveState EndState { get; }
+            private IResolveEvent Event { get; }
+            private DateTime TimeStamp { get; }
+
+            public void AddNote(string note) {
+                Notes.Add(note);
+            }
+
+            public override string ToString() {
+                string notes = Notes.Aggregate("", (s1, s2) => s1 + ":" + s2);
+                return $"Transition from: {StartState} to: {EndState} by: {Event} at: {TimeStamp} with: {notes}";
+            }
+        }
+
+        #endregion
+
         #region Events
 
         #region Nested type: DestroyEvent
 
-        public sealed class DestroyEvent : IResolveEvent {}
+        public sealed class DestroyEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: EndPartResolvingEvent
 
-        public sealed class EndPartResolvingEvent : IResolveEvent {}
+        public sealed class EndPartResolvingEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: EndPartSetupEvent
 
-        public sealed class EndPartSetupEvent : IResolveEvent {}
+        public sealed class EndPartSetupEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: EndResolvingEvent
 
-        public sealed class EndResolvingEvent : IResolveEvent {}
+        public sealed class EndResolvingEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: EndSerializingEvent
 
-        public sealed class EndSerializingEvent : IResolveEvent {}
+        public sealed class EndSerializingEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: EndSetupEvent
 
-        public sealed class EndSetupEvent : IResolveEvent {}
+        public sealed class EndSetupEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: EndUpdatingEvent
 
-        public sealed class EndUpdatingEvent : IResolveEvent {}
+        public sealed class EndUpdatingEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: InitializeAggregateEvent
 
-        public sealed class InitializeAggregateEvent : IResolveEvent {}
+        public sealed class InitializeAggregateEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: InitializePersistentEvent
 
-        public sealed class InitializePersistentEvent : IResolveEvent {}
+        public sealed class InitializePersistentEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: InitializeTransientEvent
 
-        public sealed class InitializeTransientEvent : IResolveEvent {}
+        public sealed class InitializeTransientEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: ResetEvent
 
-        public sealed class ResetEvent : IResolveEvent {}
+        public sealed class ResetEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: StartPartResolvingEvent
 
-        public sealed class StartPartResolvingEvent : IResolveEvent {}
+        public sealed class StartPartResolvingEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: StartPartSetupEvent
 
-        public sealed class StartPartSetupEvent : IResolveEvent {}
+        public sealed class StartPartSetupEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: StartResolvingEvent
 
-        public sealed class StartResolvingEvent : IResolveEvent {}
+        public sealed class StartResolvingEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: StartSerializingEvent
 
-        public sealed class StartSerializingEvent : IResolveEvent {}
+        public sealed class StartSerializingEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: StartSetupEvent
 
-        public sealed class StartSetupEvent : IResolveEvent {}
+        public sealed class StartSetupEvent : IResolveEvent { }
 
         #endregion
 
         #region Nested type: StartUpdatingEvent
 
-        public sealed class StartUpdatingEvent : IResolveEvent {}
+        public sealed class StartUpdatingEvent : IResolveEvent { }
 
         #endregion
 
@@ -322,6 +358,7 @@ namespace NakedObjects.Core.Resolve {
                 if (EventMap.ContainsKey(rEvent)) {
                     return EventMap[rEvent](owner, rsm, s);
                 }
+
                 throw new ResolveException(Log.LogAndReturn($"Unknown event {rEvent} in state {this}"));
             }
         }
@@ -546,42 +583,6 @@ namespace NakedObjects.Core.Resolve {
         }
 
         #endregion
-
-        #endregion
-
-        #region Nested type: HistoryEvent
-
-        private class HistoryEvent {
-            // ReSharper disable once NotAccessedField.Local
-            // for viewing via debugger
-            private StackTrace trace;
-
-            public HistoryEvent(IResolveState startState, IResolveState endState, IResolveEvent rEvent, bool fullTrace) {
-                StartState = startState;
-                EndState = endState;
-                Event = rEvent;
-                TimeStamp = DateTime.Now;
-                Notes = new List<string>();
-                if (fullTrace) {
-                    trace = new StackTrace(2, true);
-                }
-            }
-
-            private IList<string> Notes { get; }
-            private IResolveState StartState { get; }
-            private IResolveState EndState { get; }
-            private IResolveEvent Event { get; }
-            private DateTime TimeStamp { get; }
-
-            public void AddNote(string note) {
-                Notes.Add(note);
-            }
-
-            public override string ToString() {
-                string notes = Notes.Aggregate("", (s1, s2) => s1 + ":" + s2);
-                return $"Transition from: {StartState} to: {EndState} by: {Event} at: {TimeStamp} with: {notes}";
-            }
-        }
 
         #endregion
     }

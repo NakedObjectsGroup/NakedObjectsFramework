@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -10,21 +10,20 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Core.Reflect {
     public abstract class ConsentAbstract : IConsent {
-        private readonly Exception exception;
         private readonly string reason;
 
         protected internal ConsentAbstract() {
-            exception = null;
+            Exception = null;
             reason = null;
         }
 
         protected internal ConsentAbstract(string reason) {
-            exception = null;
+            Exception = null;
             this.reason = reason;
         }
 
         protected internal ConsentAbstract(Exception exception) {
-            this.exception = exception;
+            this.Exception = exception;
             reason = exception != null ? exception.Message : null;
         }
 
@@ -37,9 +36,7 @@ namespace NakedObjects.Core.Reflect {
             get { return reason ?? ""; }
         }
 
-        public virtual Exception Exception {
-            get { return exception; }
-        }
+        public virtual Exception Exception { get; }
 
         /// <summary>
         ///     Returns true if this object is giving permission

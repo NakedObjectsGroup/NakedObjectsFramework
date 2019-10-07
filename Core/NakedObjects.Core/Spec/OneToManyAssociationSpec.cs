@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,16 +18,14 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public sealed class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToManyAssociationSpec {
-        private readonly IObjectSpec elementSpec;
-        private readonly bool isASet;
         private readonly IObjectPersistor persistor;
 
         public OneToManyAssociationSpec(IMetamodelManager metamodel, IOneToManyAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor)
             : base(metamodel, association, session, lifecycleManager, manager) {
             this.persistor = persistor;
-            isASet = association.ContainsFacet<IIsASetFacet>();
+            IsASet = association.ContainsFacet<IIsASetFacet>();
 
-            elementSpec = MetamodelManager.GetSpecification(association.ElementSpec);
+            ElementSpec = MetamodelManager.GetSpecification(association.ElementSpec);
         }
 
         public override bool IsChoicesEnabled {
@@ -44,13 +42,9 @@ namespace NakedObjects.Core.Spec {
             return GetCollection(inObjectAdapter);
         }
 
-        public override IObjectSpec ElementSpec {
-            get { return elementSpec; }
-        }
+        public override IObjectSpec ElementSpec { get; }
 
-        public override bool IsASet {
-            get { return isASet; }
-        }
+        public override bool IsASet { get; }
 
         public override bool IsEmpty(INakedObjectAdapter inObjectAdapter) {
             return Count(inObjectAdapter) == 0;
@@ -76,7 +70,7 @@ namespace NakedObjects.Core.Spec {
             return TypeOfDefaultValue.Implicit;
         }
 
-        public override void ToDefault(INakedObjectAdapter target) {}
+        public override void ToDefault(INakedObjectAdapter target) { }
 
         #endregion
 
@@ -97,6 +91,7 @@ namespace NakedObjects.Core.Spec {
             if (collection == null) {
                 return null;
             }
+
             INakedObjectAdapter adapterFor = Manager.CreateAggregatedAdapter(inObjectAdapter, ((IAssociationSpec) this).Id, collection);
             SetResolveStateForDerivedCollections(adapterFor);
             return adapterFor;

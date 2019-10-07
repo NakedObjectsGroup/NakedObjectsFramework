@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,14 +19,6 @@ namespace NakedObjects.Core.Interactions {
     ///     Defining this as a separate interface makes for a more stable API, however.
     /// </para>
     internal sealed class InteractionContext : IInteractionContext {
-        private readonly IIdentifier id;
-        private readonly InteractionType interactionType;
-        private readonly bool programmatic;
-        private readonly INakedObjectAdapter proposedArgument;
-        private readonly INakedObjectAdapter[] proposedArguments;
-        private readonly ISession session;
-        private readonly INakedObjectAdapter target;
-
         private InteractionContext(InteractionType interactionType,
                                    ISession session,
                                    bool programmatic,
@@ -34,13 +26,13 @@ namespace NakedObjects.Core.Interactions {
                                    IIdentifier id,
                                    INakedObjectAdapter proposedArgument,
                                    INakedObjectAdapter[] arguments) {
-            this.interactionType = interactionType;
-            this.programmatic = programmatic;
-            this.id = id;
-            this.session = session;
-            this.target = target;
-            this.proposedArgument = proposedArgument;
-            proposedArguments = arguments;
+            this.InteractionType = interactionType;
+            this.IsProgrammatic = programmatic;
+            this.Id = id;
+            this.Session = session;
+            this.Target = target;
+            this.ProposedArgument = proposedArgument;
+            ProposedArguments = arguments;
         }
 
         #region IInteractionContext Members
@@ -57,9 +49,7 @@ namespace NakedObjects.Core.Interactions {
         /// <para>
         ///     Will be set for all interactions.
         /// </para>
-        public InteractionType InteractionType {
-            get { return interactionType; }
-        }
+        public InteractionType InteractionType { get; }
 
         /// <summary>
         ///     The  user or role <see cref="ISession" /> that is performing this interaction.
@@ -67,16 +57,12 @@ namespace NakedObjects.Core.Interactions {
         /// <para>
         ///     Will be set for all interactions.
         /// </para>
-        public ISession Session {
-            get { return session; }
-        }
+        public ISession Session { get; }
 
         /// <summary>
         ///     How the interaction was initiated
         /// </summary>
-        public bool IsProgrammatic {
-            get { return programmatic; }
-        }
+        public bool IsProgrammatic { get; }
 
         /// <summary>
         ///     The target object that this interaction is with.
@@ -84,9 +70,7 @@ namespace NakedObjects.Core.Interactions {
         /// <para>
         ///     Will be set for all interactions.
         /// </para>
-        public INakedObjectAdapter Target {
-            get { return target; }
-        }
+        public INakedObjectAdapter Target { get; }
 
         /// <summary>
         ///     The identifier of the object or member that is being identified with.
@@ -99,9 +83,7 @@ namespace NakedObjects.Core.Interactions {
         /// <para>
         ///     Will be set for all interactions.
         /// </para>
-        public IIdentifier Id {
-            get { return id; }
-        }
+        public IIdentifier Id { get; }
 
         /// <summary>
         ///     The proposed value for a property, or object being added/removed from a collection.
@@ -118,9 +100,7 @@ namespace NakedObjects.Core.Interactions {
         ///     <c>null</c> otherwise.  In the case of the collection interactions, may be safely downcast
         ///     to <see cref="INakedObjectAdapter" />
         /// </para>
-        public INakedObjectAdapter ProposedArgument {
-            get { return proposedArgument; }
-        }
+        public INakedObjectAdapter ProposedArgument { get; }
 
         /// <summary>
         ///     The arguments for a proposed action invocation.
@@ -129,9 +109,7 @@ namespace NakedObjects.Core.Interactions {
         ///     Will be set if the <see cref="InteractionType" /> type is <see cref="Architecture.Interactions.InteractionType.ActionInvoke" />;
         ///     <c>null</c> otherwise.
         /// </para>
-        public INakedObjectAdapter[] ProposedArguments {
-            get { return proposedArguments; }
-        }
+        public INakedObjectAdapter[] ProposedArguments { get; }
 
         /// <summary>
         ///     Convenience to allow implementors of <see cref="IValidatingInteractionAdvisor" /> etc to determine

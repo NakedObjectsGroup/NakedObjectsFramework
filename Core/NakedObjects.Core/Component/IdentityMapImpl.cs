@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,10 +16,10 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class IdentityMapImpl : IIdentityMap {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (IdentityMapImpl));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(IdentityMapImpl));
         private readonly IIdentityAdapterMap identityAdapterMap;
-        private readonly IOidGenerator oidGenerator;
         private readonly INakedObjectAdapterMap nakedObjectAdapterMap;
+        private readonly IOidGenerator oidGenerator;
         private readonly IDictionary<object, object> unloadedObjects = new Dictionary<object, object>();
 
         public IdentityMapImpl(IOidGenerator oidGenerator, IIdentityAdapterMap identityAdapterMap, INakedObjectAdapterMap nakedObjectAdapterMap) {
@@ -57,9 +57,10 @@ namespace NakedObjects.Core.Component {
             if (nakedObjectAdapter.Spec.IsObject) {
                 nakedObjectAdapterMap.Add(obj, nakedObjectAdapter);
             }
+
             // order is important - add to identity map after poco map 
             identityAdapterMap.Add(nakedObjectAdapter.Oid, nakedObjectAdapter);
-            
+
             nakedObjectAdapter.LoadAnyComplexTypes();
         }
 
@@ -98,7 +99,6 @@ namespace NakedObjects.Core.Component {
         }
 
         public void Unloaded(INakedObjectAdapter nakedObjectAdapter) {
- 
             // If an object is unloaded while its poco still exist then accessing that poco via the reflector will
             // create a different NakedObjectAdapter and no OID will exist to identify - hence the adapter will appear as
             // transient and will no longer be usable as a persistent object
@@ -107,6 +107,7 @@ namespace NakedObjects.Core.Component {
             if (oid != null) {
                 identityAdapterMap.Remove(oid);
             }
+
             nakedObjectAdapterMap.Remove(nakedObjectAdapter);
         }
 

@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,15 +22,14 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class LifeCycleManager : ILifecycleManager {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (LifeCycleManager));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(LifeCycleManager));
         private readonly IDomainObjectInjector injector;
         private readonly IMetamodelManager metamodel;
         private readonly INakedObjectManager nakedObjectManager;
+        private readonly IDictionary<Type, object> nonPersistedObjectCache = new Dictionary<Type, object>();
         private readonly IObjectPersistor objectPersistor;
         private readonly IOidGenerator oidGenerator;
         private readonly IPersistAlgorithm persistAlgorithm;
-        private readonly IDictionary<Type, object> nonPersistedObjectCache = new Dictionary<Type, object>();
-
 
         public LifeCycleManager(
             IMetamodelManager metamodel,
@@ -39,7 +38,7 @@ namespace NakedObjects.Core.Component {
             IDomainObjectInjector injector,
             IObjectPersistor objectPersistor,
             INakedObjectManager nakedObjectManager
-            ) {
+        ) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(persistAlgorithm);
             Assert.AssertNotNull(oidGenerator);
@@ -67,9 +66,10 @@ namespace NakedObjects.Core.Component {
         ///     Factory (for transient instance)
         /// </summary>
         public INakedObjectAdapter CreateInstance(IObjectSpec spec) {
-            if (spec.ContainsFacet(typeof (IComplexTypeFacet))) {
+            if (spec.ContainsFacet(typeof(IComplexTypeFacet))) {
                 throw new TransientReferenceException(Log.LogAndReturn(Resources.NakedObjects.NoTransientInline));
             }
+
             object obj = CreateObject(spec);
             INakedObjectAdapter adapter = nakedObjectManager.CreateInstanceAdapter(obj);
             InitializeNewObject(adapter);
@@ -89,8 +89,10 @@ namespace NakedObjects.Core.Component {
                 if (!adapter.Spec.Equals(spec)) {
                     throw new AdapterException(Log.LogAndReturn($"Mapped adapter is for a different type of object: {spec.FullName}; {adapter}"));
                 }
+
                 return adapter;
             }
+
             object obj = CreateObject(spec);
             return nakedObjectManager.AdapterForExistingObject(obj, oid);
         }
@@ -120,9 +122,11 @@ namespace NakedObjects.Core.Component {
             if (IsPersistent(nakedObjectAdapter)) {
                 throw new NotPersistableException(Log.LogAndReturn($"Object already persistent: {nakedObjectAdapter}"));
             }
+
             if (nakedObjectAdapter.Spec.Persistable == PersistableType.Transient) {
                 throw new NotPersistableException(Log.LogAndReturn($"Object must be kept transient: {nakedObjectAdapter}"));
             }
+
             ITypeSpec spec = nakedObjectAdapter.Spec;
             if (spec is IServiceSpec) {
                 throw new NotPersistableException(Log.LogAndReturn($"Cannot persist services: {nakedObjectAdapter}"));
@@ -140,7 +144,7 @@ namespace NakedObjects.Core.Component {
 
             // todo fix - temp hack
             //if (!vmoid.IsFinal) {
-                vmoid.UpdateKeys(nakedObjectAdapter.Spec.GetFacet<IViewModelFacet>().Derive(nakedObjectAdapter, nakedObjectManager, injector), true);
+            vmoid.UpdateKeys(nakedObjectAdapter.Spec.GetFacet<IViewModelFacet>().Derive(nakedObjectAdapter, nakedObjectManager, injector), true);
             //}
         }
 
@@ -164,6 +168,7 @@ namespace NakedObjects.Core.Component {
             if (cache) {
                 return nonPersistedObjectCache.ContainsKey(type) ? nonPersistedObjectCache[type] : (nonPersistedObjectCache[type] = CreateNotPersistedObject(type));
             }
+
             return CreateNotPersistedObject(type);
         }
 

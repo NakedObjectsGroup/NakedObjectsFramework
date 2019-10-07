@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,10 +40,12 @@ namespace NakedObjects.Core.Container {
             if (persistentObject == null) {
                 throw new ArgumentException(Log.LogAndReturn(Resources.NakedObjects.DisposeReferenceError));
             }
+
             INakedObjectAdapter adapter = framework.NakedObjectManager.GetAdapterFor(persistentObject);
             if (!IsPersistent(persistentObject)) {
                 throw new DisposeFailedException(Log.LogAndReturn(string.Format(Resources.NakedObjects.NotPersistentMessage, adapter)));
             }
+
             framework.Persistor.DestroyObject(adapter);
         }
 
@@ -66,17 +68,18 @@ namespace NakedObjects.Core.Container {
             if (IsPersistent(transientObject)) {
                 throw new PersistFailedException(Log.LogAndReturn(string.Format(Resources.NakedObjects.AlreadyPersistentMessage, adapter)));
             }
+
             Validate(adapter);
             framework.LifecycleManager.MakePersistent(adapter);
             transientObject = adapter.GetDomainObject<T>();
         }
 
         public T NewTransientInstance<T>() where T : new() {
-            return (T) NewTransientInstance(typeof (T));
+            return (T) NewTransientInstance(typeof(T));
         }
 
         public T NewViewModel<T>() where T : IViewModel, new() {
-            return (T) NewViewModel(typeof (T));
+            return (T) NewViewModel(typeof(T));
         }
 
         public IViewModel NewViewModel(Type type) {
@@ -84,6 +87,7 @@ namespace NakedObjects.Core.Container {
             if (spec.IsViewModel) {
                 return framework.LifecycleManager.CreateViewModel(spec).GetDomainObject<IViewModel>();
             }
+
             return null;
         }
 
@@ -177,6 +181,7 @@ namespace NakedObjects.Core.Container {
             if (format == null) {
                 return adapter.TitleString();
             }
+
             return adapter.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(format, adapter, framework.NakedObjectManager);
         }
 

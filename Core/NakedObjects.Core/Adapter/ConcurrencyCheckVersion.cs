@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -12,14 +12,12 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter {
     public sealed class ConcurrencyCheckVersion : IVersion, IEncodedToStrings {
+        private const string Wildcard = "*";
         private readonly DateTime time;
-        private readonly string user;
         private readonly object version;
 
-        private const string Wildcard = "*";
-
         public ConcurrencyCheckVersion(string user, DateTime time, object version) {
-            this.user = user;
+            this.User = user;
             this.time = time;
             this.version = version;
         }
@@ -28,7 +26,7 @@ namespace NakedObjects.Core.Adapter {
             Assert.AssertNotNull(metamodel);
             var helper = new StringDecoderHelper(metamodel, strings);
 
-            user = helper.GetNextString();
+            User = helper.GetNextString();
             time = new DateTime(helper.GetNextLong());
             version = helper.GetNextObject();
         }
@@ -38,7 +36,7 @@ namespace NakedObjects.Core.Adapter {
         public string[] ToEncodedStrings() {
             var helper = new StringEncoderHelper();
 
-            helper.Add(user);
+            helper.Add(User);
             helper.Add(time.Ticks);
             helper.Add(version);
 
@@ -53,7 +51,7 @@ namespace NakedObjects.Core.Adapter {
 
         #region IVersion Members
 
-        public string User => user;
+        public string User { get; }
 
         public DateTime? Time => time;
 

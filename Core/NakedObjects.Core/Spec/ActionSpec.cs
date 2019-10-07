@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,19 +24,20 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (ActionSpec));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ActionSpec));
         private readonly IActionSpecImmutable actionSpecImmutable;
         private readonly SpecFactory memberFactory;
-        private readonly INakedObjectManager nakedObjectManager;
-        private readonly IActionParameterSpec[] parametersSpec;
-        private readonly IServicesManager servicesManager;
         private readonly IMessageBroker messageBroker;
+        private readonly INakedObjectManager nakedObjectManager;
+        private readonly IServicesManager servicesManager;
         private readonly ITransactionManager transactionManager;
         private IObjectSpec elementSpec;
         private Where? executedWhere;
         private bool? hasReturn;
         private bool? isFinderMethod;
+
         private ITypeSpec onSpec;
+
         // cached values     
         private IObjectSpec returnSpec;
 
@@ -54,7 +55,7 @@ namespace NakedObjects.Core.Spec {
             this.messageBroker = messageBroker;
             this.transactionManager = transactionManager;
             int index = 0;
-            parametersSpec = this.actionSpecImmutable.Parameters.Select(pp => this.memberFactory.CreateParameter(pp, this, index++)).ToArray();
+            Parameters = this.actionSpecImmutable.Parameters.Select(pp => this.memberFactory.CreateParameter(pp, this, index++)).ToArray();
         }
 
         private IActionInvocationFacet ActionInvocationFacet {
@@ -96,6 +97,7 @@ namespace NakedObjects.Core.Spec {
                 if (!executedWhere.HasValue) {
                     executedWhere = GetFacet<IExecutedFacet>().ExecutedWhere();
                 }
+
                 return executedWhere.Value;
             }
         }
@@ -109,6 +111,7 @@ namespace NakedObjects.Core.Spec {
                 if (!isFinderMethod.HasValue) {
                     isFinderMethod = actionSpecImmutable.IsFinderMethod;
                 }
+
                 return isFinderMethod.Value;
             }
         }
@@ -121,6 +124,7 @@ namespace NakedObjects.Core.Spec {
             if (result != null && result.Oid == null) {
                 result.SetATransientOid(new CollectionMemento(LifecycleManager, nakedObjectManager, MetamodelManager, nakedObjectAdapter, this, parameterSet));
             }
+
             return result;
         }
 
@@ -128,12 +132,15 @@ namespace NakedObjects.Core.Spec {
             if (target == null) {
                 return FindService();
             }
+
             if (target.Spec is IServiceSpec) {
                 return target;
             }
+
             if (IsContributedMethod) {
                 return FindService();
             }
+
             return target;
         }
 
@@ -149,9 +156,7 @@ namespace NakedObjects.Core.Spec {
             return actionSpecImmutable.GetFacets();
         }
 
-        public IActionParameterSpec[] Parameters {
-            get { return parametersSpec; }
-        }
+        public IActionParameterSpec[] Parameters { get; }
 
         /// <summary>
         ///     Returns true if the represented action returns something, else returns false
@@ -179,6 +184,7 @@ namespace NakedObjects.Core.Spec {
                     InteractionUtils.IsValid(GetParameter(i), ic, buf);
                 }
             }
+
             INakedObjectAdapter target = RealTarget(nakedObjectAdapter);
             ic = InteractionContext.InvokingAction(Session, false, target, Identifier, parameterSet);
             InteractionUtils.IsValid(this, ic, buf);
@@ -219,6 +225,7 @@ namespace NakedObjects.Core.Spec {
                     return serviceAdapter;
                 }
             }
+
             throw new FindObjectException(Log.LogAndReturn($"failed to find service for action {Name}"));
         }
 
@@ -226,6 +233,7 @@ namespace NakedObjects.Core.Spec {
             if (position >= Parameters.Length) {
                 throw new ArgumentException(Log.LogAndReturn($"GetParameter(int): only {Parameters.Length} parameters, position={position}"));
             }
+
             return Parameters[position];
         }
 
@@ -240,8 +248,10 @@ namespace NakedObjects.Core.Spec {
                 if (i > 0) {
                     sb.Append(",");
                 }
+
                 sb.Append(Parameters[i].Spec.ShortName);
             }
+
             sb.Append("}]");
             return sb.ToString();
         }

@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,6 +23,7 @@ namespace NakedObjects.Core.Container {
             if (!IsEmpty(obj, null)) {
                 AppendWithSpace(obj, null);
             }
+
             return this;
         }
 
@@ -43,6 +44,7 @@ namespace NakedObjects.Core.Container {
             else {
                 AppendWithSpace(defaultValue);
             }
+
             return this;
         }
 
@@ -56,6 +58,7 @@ namespace NakedObjects.Core.Container {
             if (!IsEmpty(text)) {
                 AppendWithSpace(text);
             }
+
             return this;
         }
 
@@ -69,6 +72,7 @@ namespace NakedObjects.Core.Container {
                 AppendJoiner(joiner);
                 AppendWithSpace(obj, null);
             }
+
             return this;
         }
 
@@ -94,6 +98,7 @@ namespace NakedObjects.Core.Container {
                 AppendJoiner(joiner);
                 AppendWithSpace(obj, format);
             }
+
             return this;
         }
 
@@ -109,6 +114,7 @@ namespace NakedObjects.Core.Container {
                 AppendJoiner(joiner);
                 AppendWithSpace(text);
             }
+
             return this;
         }
 
@@ -124,6 +130,7 @@ namespace NakedObjects.Core.Container {
             if (Title.Length > 0) {
                 Title.Append(Space);
             }
+
             return this;
         }
 
@@ -180,6 +187,7 @@ namespace NakedObjects.Core.Container {
                 AppendJoiner(joiner);
                 Concat(obj);
             }
+
             return this;
         }
 
@@ -197,6 +205,7 @@ namespace NakedObjects.Core.Container {
             if (!IsEmpty(obj, format)) {
                 AppendJoiner(joiner);
             }
+
             Concat(obj, format, defaultValue);
             return this;
         }
@@ -220,14 +229,17 @@ namespace NakedObjects.Core.Container {
             if (noWords < 1) {
                 throw new ArgumentException("Truncation must be to one or more words");
             }
+
             string[] words = Title.ToString().Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
             if (noWords >= words.Length) {
                 return this;
             }
+
             Title = new StringBuilder();
             for (int i = 0; i < noWords; i++) {
                 Title.Append(words[i]).Append(" ");
             }
+
             Title.Append("...");
             return this;
         }

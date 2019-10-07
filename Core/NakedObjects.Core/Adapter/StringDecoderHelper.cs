@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -7,10 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using System.Web;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
@@ -65,7 +63,7 @@ namespace NakedObjects.Core.Adapter {
 
         public T GetNextEnum<T>() {
             CheckCurrentIndex();
-            return (T) Enum.Parse(typeof (T), strings[index++]);
+            return (T) Enum.Parse(typeof(T), strings[index++]);
         }
 
         public string[] GetNextArray() {
@@ -75,6 +73,7 @@ namespace NakedObjects.Core.Adapter {
             for (int i = 0; i < count; i++) {
                 list.Add(GetNextString());
             }
+
             return list.ToArray();
         }
 
@@ -87,6 +86,7 @@ namespace NakedObjects.Core.Adapter {
             for (int i = 0; i < count; i++) {
                 list.Add(GetNextObject());
             }
+
             return list;
         }
 
@@ -99,6 +99,7 @@ namespace NakedObjects.Core.Adapter {
             for (int i = 0; i < count; i++) {
                 list.Add(GetNextEncodedToStrings());
             }
+
             return list;
         }
 
@@ -115,7 +116,8 @@ namespace NakedObjects.Core.Adapter {
             if (objectType == null) {
                 throw new Exception(Log.LogAndReturn($"Cannot find type for name: {type}"));
             }
-            if (objectType == typeof (string)) {
+
+            if (objectType == typeof(string)) {
                 return value;
             }
 
@@ -123,14 +125,16 @@ namespace NakedObjects.Core.Adapter {
                 return Enum.Parse(objectType, value);
             }
 
-            MethodInfo parseMethod = objectType.GetMethod("Parse", new[] {typeof (string)});
+            MethodInfo parseMethod = objectType.GetMethod("Parse", new[] {typeof(string)});
             if (parseMethod == null) {
                 throw new Exception(Log.LogAndReturn($"Cannot find Parse method on type: {objectType}"));
             }
+
             object result = parseMethod.Invoke(null, new object[] {value});
             if (result == null) {
                 throw new Exception(Log.LogAndReturn($"Failed to Parse value: {value} on type: {objectType}"));
             }
+
             return result;
         }
 
@@ -178,9 +182,11 @@ namespace NakedObjects.Core.Adapter {
             if (objectType == null) {
                 throw new Exception(Log.LogAndReturn($"Cannot find type for name: {type}"));
             }
-            if (!typeof (IEncodedToStrings).IsAssignableFrom(objectType)) {
+
+            if (!typeof(IEncodedToStrings).IsAssignableFrom(objectType)) {
                 throw new Exception(Log.LogAndReturn($"Type: {objectType} needs to be: {typeof(IEncodedToStrings)}"));
             }
+
             return (IEncodedToStrings) Activator.CreateInstance(objectType, metamodel, encodedData);
         }
 

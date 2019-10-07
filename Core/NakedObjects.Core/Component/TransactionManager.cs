@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,10 +13,9 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class TransactionManager : ITransactionManager {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (TransactionManager));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(TransactionManager));
         private readonly IObjectStore objectStore;
         private ITransaction transaction;
-        private int transactionLevel;
         private bool userAborted;
 
         public TransactionManager(IObjectStore objectStore) {
@@ -29,6 +28,7 @@ namespace NakedObjects.Core.Component {
                 if (transaction == null) {
                     return new NestedTransaction(objectStore);
                 }
+
                 return transaction;
             }
         }
@@ -38,17 +38,19 @@ namespace NakedObjects.Core.Component {
         public void StartTransaction() {
             if (transaction == null) {
                 transaction = new NestedTransaction(objectStore);
-                transactionLevel = 0;
+                TransactionLevel = 0;
                 userAborted = false;
                 objectStore.StartTransaction();
             }
-            transactionLevel++;
+
+            TransactionLevel++;
         }
 
         public bool FlushTransaction() {
             if (transaction != null) {
                 return transaction.Flush();
             }
+
             return false;
         }
 
@@ -56,7 +58,7 @@ namespace NakedObjects.Core.Component {
             if (transaction != null) {
                 transaction.Abort();
                 transaction = null;
-                transactionLevel = 0;
+                TransactionLevel = 0;
                 objectStore.AbortTransaction();
             }
         }
@@ -67,20 +69,20 @@ namespace NakedObjects.Core.Component {
         }
 
         public void EndTransaction() {
-            transactionLevel--;
-            if (transactionLevel == 0) {
+            TransactionLevel--;
+            if (TransactionLevel == 0) {
                 Transaction.Commit();
                 transaction = null;
             }
-            else if (transactionLevel < 0) {
-                transactionLevel = 0;
+            else if (TransactionLevel < 0) {
+                TransactionLevel = 0;
                 if (!userAborted) {
                     throw new TransactionException(Log.LogAndReturn("No transaction running to end"));
                 }
             }
         }
 
-        public int TransactionLevel => transactionLevel;
+        public int TransactionLevel { get; private set; }
 
         #endregion
     }

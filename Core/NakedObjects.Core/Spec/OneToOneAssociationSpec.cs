@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -53,6 +53,7 @@ namespace NakedObjects.Core.Spec {
                 if (!isFindMenuEnabled.HasValue) {
                     isFindMenuEnabled = ContainsFacet<IFindMenuFacet>();
                 }
+
                 return isFindMenuEnabled.Value;
             }
         }
@@ -63,8 +64,7 @@ namespace NakedObjects.Core.Spec {
 
         public override Tuple<string, IObjectSpec>[] GetChoicesParameters() {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
-            return propertyChoicesFacet == null ? new Tuple<string, IObjectSpec>[] {} :
-                propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, MetamodelManager.GetSpecification(t.Item2))).ToArray();
+            return propertyChoicesFacet == null ? new Tuple<string, IObjectSpec>[] { } : propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, MetamodelManager.GetSpecification(t.Item2))).ToArray();
         }
 
         public override INakedObjectAdapter[] GetChoices(INakedObjectAdapter target, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
@@ -76,6 +76,7 @@ namespace NakedObjects.Core.Spec {
                 if (enumFacet == null) {
                     return Manager.GetCollectionOfAdaptedObjects(objectOptions).ToArray();
                 }
+
                 return Manager.GetCollectionOfAdaptedObjects(enumFacet.GetChoices(target, objectOptions)).ToArray();
             }
 
@@ -87,6 +88,7 @@ namespace NakedObjects.Core.Spec {
             if (ReturnSpec.IsBoundedSet()) {
                 return Manager.GetCollectionOfAdaptedObjects(persistor.GetBoundedSet(ReturnSpec)).ToArray();
             }
+
             return null;
         }
 
@@ -124,7 +126,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public override bool IsInline {
-            get { return ReturnSpec.ContainsFacet(typeof (IComplexTypeFacet)); }
+            get { return ReturnSpec.ContainsFacet(typeof(IComplexTypeFacet)); }
         }
 
         public override INakedObjectAdapter GetDefault(INakedObjectAdapter fromObjectAdapter) {
@@ -160,10 +162,12 @@ namespace NakedObjects.Core.Spec {
             if (obj == null) {
                 return null;
             }
+
             var spec = (IObjectSpec) MetamodelManager.GetSpecification(obj.GetType());
-            if (spec.ContainsFacet(typeof (IComplexTypeFacet))) {
+            if (spec.ContainsFacet(typeof(IComplexTypeFacet))) {
                 return Manager.CreateAggregatedAdapter(fromObjectAdapter, ((IAssociationSpec) this).Id, obj);
             }
+
             return Manager.CreateAdapter(obj, null, null);
         }
 

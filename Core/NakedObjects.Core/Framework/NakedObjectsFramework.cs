@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -11,18 +11,6 @@ using NakedObjects.Core.Spec;
 
 namespace NakedObjects.Service {
     public sealed class NakedObjectsFramework : INakedObjectsFramework {
-        private readonly IDomainObjectInjector domainObjectInjector;
-        private readonly IFrameworkResolver frameworkResolver;
-        private readonly ILifecycleManager lifecycleManager;
-        private readonly IMessageBroker messageBroker;
-        private readonly IMetamodelManager metamodelManagerManager;
-        private readonly INakedObjectManager nakedObjectManager;
-        private readonly IObjectPersistor persistor;
-        private readonly IReflector reflector;
-        private readonly IServicesManager servicesManager;
-        private readonly ISession session;
-        private readonly ITransactionManager transactionManager;
-
         public NakedObjectsFramework(IMessageBroker messageBroker,
                                      ISession session,
                                      ILifecycleManager lifecycleManager,
@@ -36,17 +24,17 @@ namespace NakedObjects.Service {
                                      SpecFactory memberFactory,
                                      ITransactionManager transactionManager,
                                      IFrameworkResolver frameworkResolver) {
-            this.messageBroker = messageBroker;
-            this.session = session;
-            this.lifecycleManager = lifecycleManager;
-            this.servicesManager = servicesManager;
-            this.nakedObjectManager = nakedObjectManager;
-            this.persistor = persistor;
-            this.reflector = reflector;
-            this.metamodelManagerManager = metamodelManagerManager;
-            this.domainObjectInjector = domainObjectInjector;
-            this.transactionManager = transactionManager;
-            this.frameworkResolver = frameworkResolver;
+            this.MessageBroker = messageBroker;
+            this.Session = session;
+            this.LifecycleManager = lifecycleManager;
+            this.ServicesManager = servicesManager;
+            this.NakedObjectManager = nakedObjectManager;
+            this.Persistor = persistor;
+            this.Reflector = reflector;
+            this.MetamodelManager = metamodelManagerManager;
+            this.DomainObjectInjector = domainObjectInjector;
+            this.TransactionManager = transactionManager;
+            this.FrameworkResolver = frameworkResolver;
             domainObjectInjector.Framework = this;
             memberFactory.Initialize(this);
             nakedObjectFactory.Initialize(metamodelManagerManager, session, lifecycleManager, persistor, nakedObjectManager);
@@ -54,49 +42,27 @@ namespace NakedObjects.Service {
 
         #region INakedObjectsFramework Members
 
-        public IDomainObjectInjector DomainObjectInjector {
-            get { return domainObjectInjector; }
-        }
+        public IDomainObjectInjector DomainObjectInjector { get; }
 
-        public ITransactionManager TransactionManager {
-            get { return transactionManager; }
-        }
+        public ITransactionManager TransactionManager { get; }
 
-        public IFrameworkResolver FrameworkResolver {
-            get { return frameworkResolver; }
-        }
+        public IFrameworkResolver FrameworkResolver { get; }
 
-        public IMessageBroker MessageBroker {
-            get { return messageBroker; }
-        }
+        public IMessageBroker MessageBroker { get; }
 
-        public ISession Session {
-            get { return session; }
-        }
+        public ISession Session { get; }
 
-        public ILifecycleManager LifecycleManager {
-            get { return lifecycleManager; }
-        }
+        public ILifecycleManager LifecycleManager { get; }
 
-        public INakedObjectManager NakedObjectManager {
-            get { return nakedObjectManager; }
-        }
+        public INakedObjectManager NakedObjectManager { get; }
 
-        public IServicesManager ServicesManager {
-            get { return servicesManager; }
-        }
+        public IServicesManager ServicesManager { get; }
 
-        public IObjectPersistor Persistor {
-            get { return persistor; }
-        }
+        public IObjectPersistor Persistor { get; }
 
-        public IReflector Reflector {
-            get { return reflector; }
-        }
+        public IReflector Reflector { get; }
 
-        public IMetamodelManager MetamodelManager {
-            get { return metamodelManagerManager; }
-        }
+        public IMetamodelManager MetamodelManager { get; }
 
         #endregion
     }

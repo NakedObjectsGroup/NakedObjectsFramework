@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -114,6 +114,8 @@ namespace NakedObjects.Core.Adapter {
             Parameters = parameters.ToArray();
         }
 
+        #region ICollectionMemento Members
+
         public INakedObjectAdapter Target { get; }
         public IActionSpec Action { get; }
         public INakedObjectAdapter[] Parameters { get; }
@@ -122,15 +124,46 @@ namespace NakedObjects.Core.Adapter {
         public bool IsNotQueryable { get; set; }
 
         public object[] SelectedObjects {
-            get { return selectedObjects ?? new object[] {}; }
+            get { return selectedObjects ?? new object[] { }; }
             private set { selectedObjects = value; }
         }
+
+        public IOid Previous => null;
+
+        public bool IsTransient => true;
+
+        public bool HasPrevious => false;
+
+        public void CopyFrom(IOid oid) {
+            // do nothing
+        }
+
+        public ITypeSpec Spec => Target.Spec;
+
+        public ICollectionMemento NewSelectionMemento(object[] objects, bool isPaged) {
+            return new CollectionMemento(lifecycleManager, nakedObjectManager, metamodel, this, objects) {IsPaged = isPaged};
+        }
+
+        public INakedObjectAdapter RecoverCollection() {
+            INakedObjectAdapter nakedObjectAdapter = Action.Execute(Target, Parameters);
+
+            if (selectedObjects != null) {
+                IEnumerable<object> selected = nakedObjectAdapter.GetDomainObject<IEnumerable>().Cast<object>().Where(x => selectedObjects.Contains(x));
+                IList newResult = CollectionUtils.CloneCollectionAndPopulate(nakedObjectAdapter.Object, selected);
+                nakedObjectAdapter = nakedObjectManager.CreateAdapter(newResult, null, null);
+            }
+
+            nakedObjectAdapter.SetATransientOid(this);
+            return nakedObjectAdapter;
+        }
+
+        #endregion
 
         #region IEncodedToStrings Members
 
         public string[] ToEncodedStrings() {
             var helper = new StringEncoderHelper {Encode = true};
-            helper.Add(Action.ReturnSpec.EncodeTypeName(Action.ReturnSpec.IsCollection ? new[] {Action.ElementSpec} : new IObjectSpec[] {}));
+            helper.Add(Action.ReturnSpec.EncodeTypeName(Action.ReturnSpec.IsCollection ? new[] {Action.ElementSpec} : new IObjectSpec[] { }));
             helper.Add(Action.Id);
             helper.Add(Target.Oid as IEncodedToStrings);
 
@@ -171,26 +204,6 @@ namespace NakedObjects.Core.Adapter {
 
         #endregion
 
-        #region IOid Members
-
-        public IOid Previous => null;
-
-        public bool IsTransient => true;
-
-        public bool HasPrevious => false;
-
-        public void CopyFrom(IOid oid) {
-            // do nothing
-        }
-
-        public ITypeSpec Spec => Target.Spec;
-
-        #endregion
-
-        public ICollectionMemento NewSelectionMemento(object[] objects, bool isPaged) {
-            return new CollectionMemento(lifecycleManager, nakedObjectManager, metamodel, this, objects) {IsPaged = isPaged};
-        }
-
         private INakedObjectAdapter RestoreObject(IOid oid) {
             if (oid.IsTransient) {
                 return lifecycleManager.RecreateInstance(oid, oid.Spec);
@@ -201,19 +214,6 @@ namespace NakedObjects.Core.Adapter {
             }
 
             return lifecycleManager.LoadObject(oid, oid.Spec);
-        }
-
-        public INakedObjectAdapter RecoverCollection() {
-            INakedObjectAdapter nakedObjectAdapter = Action.Execute(Target, Parameters);
-
-            if (selectedObjects != null) {
-                IEnumerable<object> selected = nakedObjectAdapter.GetDomainObject<IEnumerable>().Cast<object>().Where(x => selectedObjects.Contains(x));
-                IList newResult = CollectionUtils.CloneCollectionAndPopulate(nakedObjectAdapter.Object, selected);
-                nakedObjectAdapter = nakedObjectManager.CreateAdapter(newResult, null, null);
-            }
-
-            nakedObjectAdapter.SetATransientOid(this);
-            return nakedObjectAdapter;
         }
     }
 }

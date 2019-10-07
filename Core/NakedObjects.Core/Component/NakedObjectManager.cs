@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,7 +20,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class NakedObjectManager : INakedObjectManager {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (NakedObjectManager));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(NakedObjectManager));
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
         private readonly IIdentityMap identityMap;
         private readonly IMetamodelManager metamodel;
@@ -54,6 +54,7 @@ namespace NakedObjects.Core.Component {
             if (nakedObjectAdapter != null && nakedObjectAdapter.Object != obj) {
                 throw new AdapterException(Log.LogAndReturn($"Mapped adapter is for different domain object: {obj}; {nakedObjectAdapter}"));
             }
+
             return nakedObjectAdapter;
         }
 
@@ -66,16 +67,20 @@ namespace NakedObjects.Core.Component {
             if (domainObject == null) {
                 return null;
             }
+
             if (oid == null) {
                 ITypeSpec objectSpec = metamodel.GetSpecification(domainObject.GetType());
-                if (objectSpec.ContainsFacet(typeof (IComplexTypeFacet))) {
+                if (objectSpec.ContainsFacet(typeof(IComplexTypeFacet))) {
                     return GetAdapterFor(domainObject);
                 }
+
                 if (objectSpec.HasNoIdentity) {
                     return AdapterForNoIdentityObject(domainObject);
                 }
+
                 return AdapterForExistingObject(domainObject, objectSpec);
             }
+
             return AdapterForExistingObject(domainObject, oid);
         }
 
@@ -103,9 +108,11 @@ namespace NakedObjects.Core.Component {
                 if (adapterFor != null) {
                     RemoveAdapter(adapterFor);
                 }
+
                 adapterFor = CreateAdapter(obj, oid, null);
                 adapterFor.OptimisticLock = new NullVersion();
             }
+
             Assert.AssertNotNull(adapterFor);
             return adapterFor;
         }
@@ -128,6 +135,7 @@ namespace NakedObjects.Core.Component {
             if (identityMap.IsIdentityKnown(oid)) {
                 return GetAdapterFor(oid);
             }
+
             return null;
         }
 
@@ -193,6 +201,7 @@ namespace NakedObjects.Core.Component {
                 adapter.ResolveState.Handle(Events.InitializePersistentEvent);
                 return adapter;
             }
+
             return null;
         }
 
@@ -210,6 +219,7 @@ namespace NakedObjects.Core.Component {
             if (versionObject != null) {
                 adapter.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
             }
+
             identityMap.AddAdapter(adapter);
             return adapter;
         }
@@ -228,6 +238,7 @@ namespace NakedObjects.Core.Component {
                 adapter.ResolveState.Handle(Events.StartResolvingEvent);
                 adapter.ResolveState.Handle(Events.EndResolvingEvent);
             }
+
             return adapter;
         }
     }

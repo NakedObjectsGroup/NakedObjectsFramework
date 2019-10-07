@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,9 +13,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter {
     public sealed class AggregateOid : IEncodedToStrings, IAggregateOid {
-        private readonly string fieldName;
         private readonly IMetamodelManager metamodel;
-        private readonly IOid parentOid;
         private readonly string typeName;
 
         public AggregateOid(IMetamodelManager metamodel, IOid oid, string id, string typeName) {
@@ -25,8 +23,8 @@ namespace NakedObjects.Core.Adapter {
             Assert.AssertNotNull(typeName);
 
             this.metamodel = metamodel;
-            parentOid = oid;
-            fieldName = id;
+            ParentOid = oid;
+            FieldName = id;
             this.typeName = typeName;
         }
 
@@ -35,28 +33,24 @@ namespace NakedObjects.Core.Adapter {
             this.metamodel = metamodel;
             var helper = new StringDecoderHelper(metamodel, strings);
             typeName = helper.GetNextString();
-            fieldName = helper.GetNextString();
+            FieldName = helper.GetNextString();
             if (helper.HasNext) {
-                parentOid = (IOid) helper.GetNextEncodedToStrings();
+                ParentOid = (IOid) helper.GetNextEncodedToStrings();
             }
         }
 
         #region IAggregateOid Members
 
-        public IOid ParentOid {
-            get { return parentOid; }
-        }
+        public IOid ParentOid { get; }
 
-        public string FieldName {
-            get { return fieldName; }
-        }
+        public string FieldName { get; }
 
         public IOid Previous {
             get { return null; }
         }
 
         public bool IsTransient {
-            get { return parentOid.IsTransient; }
+            get { return ParentOid.IsTransient; }
         }
 
         public void CopyFrom(IOid oid) {
@@ -78,10 +72,11 @@ namespace NakedObjects.Core.Adapter {
         public string[] ToEncodedStrings() {
             var helper = new StringEncoderHelper();
             helper.Add(typeName);
-            helper.Add(fieldName);
-            if (parentOid != null) {
-                helper.Add(parentOid as IEncodedToStrings);
+            helper.Add(FieldName);
+            if (ParentOid != null) {
+                helper.Add(ParentOid as IEncodedToStrings);
             }
+
             return helper.ToArray();
         }
 
@@ -95,25 +90,26 @@ namespace NakedObjects.Core.Adapter {
             if (obj == this) {
                 return true;
             }
+
             var otherOid = obj as AggregateOid;
             return otherOid != null && Equals(otherOid);
         }
 
         private bool Equals(AggregateOid otherOid) {
-            return otherOid.parentOid.Equals(parentOid) &&
-                   otherOid.fieldName.Equals(fieldName) &&
+            return otherOid.ParentOid.Equals(ParentOid) &&
+                   otherOid.FieldName.Equals(FieldName) &&
                    otherOid.typeName.Equals(typeName);
         }
 
         public override int GetHashCode() {
             int hashCode = 17;
-            hashCode = 37*hashCode + parentOid.GetHashCode();
-            hashCode = 37*hashCode + fieldName.GetHashCode();
+            hashCode = 37 * hashCode + ParentOid.GetHashCode();
+            hashCode = 37 * hashCode + FieldName.GetHashCode();
             return hashCode;
         }
 
         public override string ToString() {
-            return "AOID[" + parentOid + "," + fieldName + "]";
+            return "AOID[" + ParentOid + "," + FieldName + "]";
         }
     }
 

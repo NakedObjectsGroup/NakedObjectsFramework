@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,28 +19,23 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociationSpec {
-        private readonly INakedObjectManager manager;
-        private readonly IObjectSpec returnSpec;
-
         protected AssociationSpecAbstract(IMetamodelManager metamodel, IAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager)
             : base(association.Identifier.MemberName, association, session, lifecycleManager, metamodel) {
             Assert.AssertNotNull(manager);
 
-            this.manager = manager;
-            returnSpec = MetamodelManager.GetSpecification(association.ReturnSpec);
+            this.Manager = manager;
+            ReturnSpec = MetamodelManager.GetSpecification(association.ReturnSpec);
         }
 
         public virtual bool IsChoicesEnabled {
-            get { return ContainsFacet(typeof (IPropertyChoicesFacet)); }
+            get { return ContainsFacet(typeof(IPropertyChoicesFacet)); }
         }
 
         public virtual bool IsAutoCompleteEnabled {
-            get { return ContainsFacet(typeof (IAutoCompleteFacet)); }
+            get { return ContainsFacet(typeof(IAutoCompleteFacet)); }
         }
 
-        public INakedObjectManager Manager {
-            get { return manager; }
-        }
+        public INakedObjectManager Manager { get; }
 
         public virtual bool IsASet {
             get { return false; }
@@ -53,15 +48,13 @@ namespace NakedObjects.Core.Spec {
         ///     reference this will be type that the accessor returns. For a collection it will be the type of element,
         ///     not the type of collection.
         /// </summary>
-        public override IObjectSpec ReturnSpec {
-            get { return returnSpec; }
-        }
+        public override IObjectSpec ReturnSpec { get; }
 
         /// <summary>
         ///     Returns true if this field is persisted, and not calculated from other data in the object or used transiently.
         /// </summary>
         public virtual bool IsPersisted {
-            get { return !ContainsFacet(typeof (INotPersistedFacet)); }
+            get { return !ContainsFacet(typeof(INotPersistedFacet)); }
         }
 
         public virtual bool IsReadOnly {
@@ -98,14 +91,17 @@ namespace NakedObjects.Core.Spec {
                 if (when == WhenTo.UntilPersisted && !isPersistent) {
                     return new Veto(Resources.NakedObjects.FieldDisabledUntil);
                 }
+
                 if (when == WhenTo.OncePersisted && isPersistent) {
                     return new Veto(Resources.NakedObjects.FieldDisabledOnce);
                 }
+
                 ITypeSpec tgtSpec = target.Spec;
                 if (tgtSpec.IsAlwaysImmutable() || (tgtSpec.IsImmutableOncePersisted() && isPersistent)) {
                     return new Veto(Resources.NakedObjects.FieldDisabled);
                 }
             }
+
             var f = GetFacet<IDisableForContextFacet>();
             string reason = f == null ? null : f.DisabledReason(target);
 
@@ -130,9 +126,11 @@ namespace NakedObjects.Core.Spec {
                 if (isProtected == WhenTo.Always) {
                     return new Veto(Resources.NakedObjects.FieldNotEditable);
                 }
+
                 if (isProtected == WhenTo.OncePersisted && isPersistent) {
                     return new Veto(Resources.NakedObjects.FieldNotEditableNow);
                 }
+
                 if (isProtected == WhenTo.UntilPersisted && !isPersistent) {
                     return new Veto(Resources.NakedObjects.FieldNotEditableUntil);
                 }

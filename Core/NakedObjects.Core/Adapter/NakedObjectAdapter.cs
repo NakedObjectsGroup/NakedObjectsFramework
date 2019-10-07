@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,10 +27,7 @@ namespace NakedObjects.Core.Adapter {
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IObjectPersistor persistor;
         private readonly ISession session;
-        private string defaultTitle;
-        private object poco;
         private ITypeSpec spec;
-        private IVersion version;
 
         public NakedObjectAdapter(IMetamodelManager metamodel, ISession session, IObjectPersistor persistor, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, object poco, IOid oid) {
             Assert.AssertNotNull(metamodel);
@@ -39,25 +36,26 @@ namespace NakedObjects.Core.Adapter {
             if (poco is INakedObjectAdapter) {
                 throw new AdapterException(Log.LogAndReturn($"Adapter can't be used to adapt an adapter: {poco}"));
             }
+
             this.metamodel = metamodel;
             this.session = session;
             this.persistor = persistor;
             this.nakedObjectManager = nakedObjectManager;
             this.lifecycleManager = lifecycleManager;
 
-            this.poco = poco;
+            this.Object = poco;
             Oid = oid;
             ResolveState = new ResolveStateMachine(this, session);
-            version = new NullVersion();
+            Version = new NullVersion();
         }
 
-        private string DefaultTitle => defaultTitle;
-
-        #region INakedObjectAdapter Members
+        private string DefaultTitle { get; set; }
 
         private ITypeOfFacet TypeOfFacet => Spec.GetFacet<ITypeOfFacet>();
 
-        public object Object => poco;
+        #region INakedObjectAdapter Members
+
+        public object Object { get; private set; }
 
         /// <summary>
         ///     Returns the name of the icon to use to represent this object
@@ -72,18 +70,19 @@ namespace NakedObjects.Core.Adapter {
             get {
                 if (spec == null) {
                     spec = metamodel.GetSpecification(Object.GetType());
-                    defaultTitle = "A" + (" " + spec.SingularName).ToLower();
+                    DefaultTitle = "A" + (" " + spec.SingularName).ToLower();
                 }
+
                 return spec;
             }
         }
 
-        public IVersion Version => version;
+        public IVersion Version { get; private set; }
 
         public IVersion OptimisticLock {
             set {
                 if (ShouldSetVersion(value)) {
-                    version = value;
+                    Version = value;
                 }
             }
         }
@@ -99,10 +98,11 @@ namespace NakedObjects.Core.Adapter {
                 if (Spec.IsCollection && !Spec.IsParseable) {
                     return CollectionTitleString(Spec.GetFacet<ICollectionFacet>());
                 }
+
                 return Spec.GetTitle(this) ?? DefaultTitle;
             }
             catch (Exception e) {
-                throw new TitleException(Log.LogAndReturn("Exception on ToString POCO: " + (poco == null ? "unknown" : poco.GetType().FullName)), e);
+                throw new TitleException(Log.LogAndReturn("Exception on ToString POCO: " + (Object == null ? "unknown" : Object.GetType().FullName)), e);
             }
         }
 
@@ -116,7 +116,7 @@ namespace NakedObjects.Core.Adapter {
         ///     is replaced.
         /// </summary>
         public void ReplacePoco(object obj) {
-            poco = obj;
+            Object = obj;
         }
 
         public string ValidToPersist() {
@@ -130,6 +130,7 @@ namespace NakedObjects.Core.Adapter {
                     if (property.IsMandatory && property.IsEmpty(this)) {
                         return string.Format(Resources.NakedObjects.PropertyMandatory, objectSpec.ShortName, property.Name);
                     }
+
                     var associationSpec = property as IOneToOneAssociationSpec;
                     if (associationSpec != null) {
                         IConsent valid = associationSpec.IsAssociationValid(this, referencedObjectAdapter);
@@ -138,6 +139,7 @@ namespace NakedObjects.Core.Adapter {
                         }
                     }
                 }
+
                 if (property is IOneToOneAssociationSpec) {
                     if (referencedObjectAdapter != null && referencedObjectAdapter.ResolveState.IsTransient()) {
                         string referencedObjectMessage = referencedObjectAdapter.ValidToPersist();
@@ -152,13 +154,13 @@ namespace NakedObjects.Core.Adapter {
             return validateFacet == null ? null : validateFacet.Validate(this);
         }
 
-        public void SetATransientOid(IOid newOid) {       
+        public void SetATransientOid(IOid newOid) {
             Assert.AssertTrue("New Oid must be transient", newOid.IsTransient);
             Oid = newOid;
         }
 
         public void CheckLock(IVersion otherVersion) {
-            if (version != null && version.IsDifferent(otherVersion)) {
+            if (Version != null && Version.IsDifferent(otherVersion)) {
                 throw new ConcurrencyException(this);
             }
         }
@@ -168,9 +170,10 @@ namespace NakedObjects.Core.Adapter {
         public void LoadAnyComplexTypes() {
             if (Spec is IServiceSpec ||
                 Spec.IsViewModel ||
-                Spec.ContainsFacet(typeof (IComplexTypeFacet))) {
+                Spec.ContainsFacet(typeof(IComplexTypeFacet))) {
                 return;
             }
+
             persistor.LoadComplexTypes(this, ResolveState.IsGhost());
         }
 
@@ -213,7 +216,7 @@ namespace NakedObjects.Core.Adapter {
         #endregion
 
         private string CollectionTitleString(ICollectionFacet facet) {
-            int size =  CanCount() ? facet.AsEnumerable(this, nakedObjectManager).Count() : CollectionUtils.IncompleteCollection;
+            int size = CanCount() ? facet.AsEnumerable(this, nakedObjectManager).Count() : CollectionUtils.IncompleteCollection;
             var elementSpecification = TypeOfFacet == null ? null : metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel));
             return CollectionUtils.CollectionTitleString(elementSpecification, size);
         }
@@ -234,12 +237,13 @@ namespace NakedObjects.Core.Adapter {
             if (ResolveState.IsTransient() || ResolveState.IsResolved() || ResolveState.IsAggregated()) {
                 str.Append("title", TitleString());
             }
-            str.AppendAsHex("poco-hash", poco.GetHashCode());
+
+            str.AppendAsHex("poco-hash", Object.GetHashCode());
             return str.ToString();
         }
 
         private bool ShouldSetVersion(IVersion newVersion) {
-            return newVersion.IsDifferent(version);
+            return newVersion.IsDifferent(Version);
         }
 
         private void ToString(AsString str) {
@@ -252,6 +256,7 @@ namespace NakedObjects.Core.Adapter {
             else {
                 str.Append(":-");
             }
+
             str.AddComma();
             if (spec == null) {
                 str.Append("class", Object.GetType().FullName);
@@ -268,7 +273,7 @@ namespace NakedObjects.Core.Adapter {
                 str.Append("proxy", "None");
             }
 
-            str.Append("version", version == null ? null : version.AsSequence());
+            str.Append("version", Version == null ? null : Version.AsSequence());
         }
 
         private void CallCallback<T>() where T : ICallbackFacet {

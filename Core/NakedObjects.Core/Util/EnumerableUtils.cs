@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,43 +24,43 @@ namespace NakedObjects.Core.Util.Enumer {
         }
 
         public static int Count(this IEnumerable e) {
-            MethodInfo countMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "Count" && Enumerable.Count(m.GetParameters()) == 1);
+            MethodInfo countMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "Count" && Enumerable.Count(m.GetParameters()) == 1);
             MethodInfo gm = countMethod.MakeGenericMethod(e.ElementType());
             return (int) gm.Invoke(null, new object[] {e});
         }
 
         public static object First(this IEnumerable e) {
-            MethodInfo firstMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "First" && Enumerable.Count(m.GetParameters()) == 1);
+            MethodInfo firstMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "First" && Enumerable.Count(m.GetParameters()) == 1);
             MethodInfo gm = firstMethod.MakeGenericMethod(e.ElementType());
             return gm.Invoke(null, new object[] {e});
         }
 
         public static IEnumerable Take(this IEnumerable e, int count) {
-            MethodInfo takeMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "Take" && Enumerable.Count(m.GetParameters()) == 2);
+            MethodInfo takeMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "Take" && Enumerable.Count(m.GetParameters()) == 2);
             MethodInfo gm = takeMethod.MakeGenericMethod(e.ElementType());
             return (IEnumerable) gm.Invoke(null, new object[] {e, count});
         }
 
         public static IEnumerable Skip(this IEnumerable e, int count) {
-            MethodInfo takeMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "Skip" && Enumerable.Count(m.GetParameters()) == 2);
+            MethodInfo takeMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "Skip" && Enumerable.Count(m.GetParameters()) == 2);
             MethodInfo gm = takeMethod.MakeGenericMethod(e.ElementType());
             return (IEnumerable) gm.Invoke(null, new object[] {e, count});
         }
 
         public static bool Contains(this IEnumerable e, object item) {
-            MethodInfo containsMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "Contains" && Enumerable.Count(m.GetParameters()) == 2);
+            MethodInfo containsMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "Contains" && Enumerable.Count(m.GetParameters()) == 2);
             MethodInfo gm = containsMethod.MakeGenericMethod(e.ElementType());
             return (bool) gm.Invoke(null, new[] {e, item});
         }
 
         public static object[] ToArray(this IEnumerable e) {
-            MethodInfo toArrayMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "ToArray" && Enumerable.Count(m.GetParameters()) == 1);
+            MethodInfo toArrayMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "ToArray" && Enumerable.Count(m.GetParameters()) == 1);
             MethodInfo gm = toArrayMethod.MakeGenericMethod(e.ElementType());
             return (object[]) gm.Invoke(null, new object[] {e});
         }
 
         public static IList ToList(this IEnumerable e) {
-            MethodInfo toArrayMethod = typeof (Enumerable).GetMethods().Single(m => m.Name == "ToList" && Enumerable.Count(m.GetParameters()) == 1);
+            MethodInfo toArrayMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "ToList" && Enumerable.Count(m.GetParameters()) == 1);
             MethodInfo gm = toArrayMethod.MakeGenericMethod(e.ElementType());
             return (IList) gm.Invoke(null, new object[] {e});
         }

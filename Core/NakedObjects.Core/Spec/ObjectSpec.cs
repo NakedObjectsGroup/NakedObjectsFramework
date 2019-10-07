@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,16 +19,16 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Core.Spec {
     public sealed class ObjectSpec : TypeSpec, IObjectSpec {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectSpec));
-
-        private IDictionary<string, IActionSpec[]> locallyContributedActions = new Dictionary<string, IActionSpec[]>();
         private IActionSpec[] collectionContributedActions;
         private IActionSpec[] combinedActions;
         private IActionSpec[] contributedActions;
         private IActionSpec[] finderActions;
+
+        private readonly IDictionary<string, IActionSpec[]> locallyContributedActions = new Dictionary<string, IActionSpec[]>();
         private IAssociationSpec[] objectFields;
 
         public ObjectSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, IObjectSpecImmutable innerSpec) :
-            base(memberFactory, metamodelManager, nakedObjectManager, innerSpec) {}
+            base(memberFactory, metamodelManager, nakedObjectManager, innerSpec) { }
 
         private IActionSpec[] ContributedActions => contributedActions ?? (contributedActions = MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions));
 
@@ -54,6 +54,7 @@ namespace NakedObjects.Core.Spec {
                 ca.AddRange(ContributedActions);
                 combinedActions = ca.ToArray();
             }
+
             return combinedActions;
         }
 
@@ -79,9 +80,11 @@ namespace NakedObjects.Core.Spec {
             if (InnerSpec.ContainsFacet<INotPersistedFacet>()) {
                 return PersistableType.Transient;
             }
+
             if (InnerSpec.ContainsFacet<IProgramPersistableOnlyFacet>()) {
                 return PersistableType.ProgramPersistable;
             }
+
             return PersistableType.UserPersistable;
         }
     }

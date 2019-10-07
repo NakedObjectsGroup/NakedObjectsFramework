@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,13 +31,13 @@ namespace NakedObjects.Core.Util {
         }
 
         private static void ShallowCopyCollection(object fromCollection, object toCollection) {
-            MethodInfo cm = typeof (CopyUtils).GetMethod("ShallowCopyCollectionGeneric", BindingFlags.Static | BindingFlags.NonPublic);
+            MethodInfo cm = typeof(CopyUtils).GetMethod("ShallowCopyCollectionGeneric", BindingFlags.Static | BindingFlags.NonPublic);
             MethodInfo gcm = cm.MakeGenericMethod(toCollection.GetType().GetGenericArguments());
             gcm.Invoke(null, new[] {fromCollection, toCollection});
         }
 
         private static void ShallowUpdateCollection(object fromCollection, object toCollection) {
-            MethodInfo cm = typeof (CopyUtils).GetMethod("ShallowUpdateCollectionGeneric", BindingFlags.Static | BindingFlags.NonPublic);
+            MethodInfo cm = typeof(CopyUtils).GetMethod("ShallowUpdateCollectionGeneric", BindingFlags.Static | BindingFlags.NonPublic);
             MethodInfo gcm = cm.MakeGenericMethod(toCollection.GetType().GetGenericArguments());
             gcm.Invoke(null, new[] {fromCollection, toCollection});
         }
@@ -54,22 +54,15 @@ namespace NakedObjects.Core.Util {
         }
 
         private static void CopyCollectionProperties(object fromObject, object toObject) {
-            fromObject.GetType().GetProperties().
-                Where(p => CollectionUtils.IsCollection(p.PropertyType)).
-                ForEach(p => ShallowCopyCollection(p.GetValue(fromObject, null), p.GetValue(toObject, null)));
+            fromObject.GetType().GetProperties().Where(p => CollectionUtils.IsCollection(p.PropertyType)).ForEach(p => ShallowCopyCollection(p.GetValue(fromObject, null), p.GetValue(toObject, null)));
         }
 
         private static void UpdateCollectionProperties(object fromObject, object toObject) {
-            fromObject.GetType().GetProperties().
-                Where(p => CollectionUtils.IsCollection(p.PropertyType)).
-                ForEach(p => ShallowUpdateCollection(p.GetValue(fromObject, null), p.GetValue(toObject, null)));
+            fromObject.GetType().GetProperties().Where(p => CollectionUtils.IsCollection(p.PropertyType)).ForEach(p => ShallowUpdateCollection(p.GetValue(fromObject, null), p.GetValue(toObject, null)));
         }
 
         private static void CopyScalarProperties(object fromObject, object toObject) {
-            fromObject.GetType().GetProperties().
-                Where(p => !CollectionUtils.IsCollection(p.PropertyType)).
-                Where(p => p.CanRead && p.CanWrite).
-                ForEach(p => p.SetValue(toObject, p.GetValue(fromObject, null), null));
+            fromObject.GetType().GetProperties().Where(p => !CollectionUtils.IsCollection(p.PropertyType)).Where(p => p.CanRead && p.CanWrite).ForEach(p => p.SetValue(toObject, p.GetValue(fromObject, null), null));
         }
 
         public static void UpdateFromClone(object originalObject, object clonedObject) {

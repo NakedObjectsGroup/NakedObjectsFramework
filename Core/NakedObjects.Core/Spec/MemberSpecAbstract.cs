@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,11 +19,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Reflect {
     public abstract class MemberSpecAbstract : IMemberSpec {
-        private readonly string id;
-        private readonly ILifecycleManager lifecycleManager;
         private readonly IMemberSpecImmutable memberSpecImmutable;
-        private readonly IMetamodelManager metamodelManager;
-        private readonly ISession session;
 
         protected internal MemberSpecAbstract(string id, IMemberSpecImmutable memberSpec, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
             AssertArgNotNull(id, Resources.NakedObjects.NameNotSetMessage);
@@ -31,32 +27,24 @@ namespace NakedObjects.Core.Reflect {
             AssertArgNotNull(session);
             AssertArgNotNull(lifecycleManager);
 
-            this.id = id;
+            this.Id = id;
             memberSpecImmutable = memberSpec;
-            this.session = session;
-            this.lifecycleManager = lifecycleManager;
-            this.metamodelManager = metamodelManager;
+            this.Session = session;
+            this.LifecycleManager = lifecycleManager;
+            this.MetamodelManager = metamodelManager;
         }
 
-        public ISession Session {
-            get { return session; }
-        }
+        public ISession Session { get; }
 
-        public ILifecycleManager LifecycleManager {
-            get { return lifecycleManager; }
-        }
+        public ILifecycleManager LifecycleManager { get; }
 
-        protected IMetamodelManager MetamodelManager {
-            get { return metamodelManager; }
-        }
+        protected IMetamodelManager MetamodelManager { get; }
 
         public abstract IObjectSpec ElementSpec { get; }
 
         #region IMemberSpec Members
 
-        public virtual string Id {
-            get { return id; }
-        }
+        public virtual string Id { get; }
 
         public virtual IIdentifier Identifier {
             get { return memberSpecImmutable.Identifier; }
@@ -106,12 +94,12 @@ namespace NakedObjects.Core.Reflect {
         /// </summary>
         public virtual bool IsVisible(INakedObjectAdapter target) {
             IInteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
-            return InteractionUtils.IsVisible(this, ic, LifecycleManager, metamodelManager);
+            return InteractionUtils.IsVisible(this, ic, LifecycleManager, MetamodelManager);
         }
 
         public virtual bool IsVisibleWhenPersistent(INakedObjectAdapter target) {
             IInteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
-            return InteractionUtils.IsVisibleWhenPersistent(this, ic, LifecycleManager, metamodelManager);
+            return InteractionUtils.IsVisibleWhenPersistent(this, ic, LifecycleManager, MetamodelManager);
         }
 
         /// <summary>
@@ -125,7 +113,7 @@ namespace NakedObjects.Core.Reflect {
         }
 
         public bool IsNullable {
-            get { return memberSpecImmutable.ContainsFacet(typeof (INullableFacet)); }
+            get { return memberSpecImmutable.ContainsFacet(typeof(INullableFacet)); }
         }
 
         #endregion

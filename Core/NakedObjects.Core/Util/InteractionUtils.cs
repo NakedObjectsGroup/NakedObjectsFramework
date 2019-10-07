@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,6 +23,7 @@ namespace NakedObjects.Core.Util {
             foreach (IHidingInteractionAdvisor advisor in facets) {
                 buf.Append(advisor.Hides(ic, lifecycleManager, manager));
             }
+
             return IsVisible(buf);
         }
 
@@ -35,6 +36,7 @@ namespace NakedObjects.Core.Util {
                     buf.Append(advisor.Hides(ic, lifecycleManager, manager));
                 }
             }
+
             return IsVisible(buf);
         }
 
@@ -52,6 +54,7 @@ namespace NakedObjects.Core.Util {
             foreach (IDisablingInteractionAdvisor advisor in facets) {
                 buf.Append(advisor.Disables(ic));
             }
+
             return buf;
         }
 
@@ -69,6 +72,7 @@ namespace NakedObjects.Core.Util {
             foreach (IValidatingInteractionAdvisor advisor in facets) {
                 buf.Append(advisor.Invalidates(ic));
             }
+
             return buf;
         }
 
@@ -80,6 +84,7 @@ namespace NakedObjects.Core.Util {
             if (string.IsNullOrEmpty(message)) {
                 return Allow.Default;
             }
+
             return new Veto(message);
         }
     }
