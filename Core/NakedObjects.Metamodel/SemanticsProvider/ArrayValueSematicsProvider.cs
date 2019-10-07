@@ -102,24 +102,21 @@ namespace NakedObjects.Meta.SemanticsProvider {
         }
 
         protected override string DoEncode(T[] obj) {
-            var dcs = new DataContractSerializer(obj.GetType());
+            var serializer = new DataContractSerializer(obj.GetType());
             var stream = new MemoryStream();
-            dcs.WriteObject(stream, obj);
-            //var stream = new MemoryStream();
-            //new NetDataContractSerializer().Serialize(stream, obj);
+            serializer.WriteObject(stream, obj);
             stream.Position = 0;
             return new StreamReader(stream).ReadToEnd();
         }
 
         protected override T[] DoRestore(string data) {
-            var dcs = new DataContractSerializer(typeof(T[]));
+            var serializer = new DataContractSerializer(typeof(T[]));
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream);
             writer.Write(data);
             writer.Flush();
             stream.Position = 0;
-            //return (T[]) new NetDataContractSerializer().Deserialize(stream);
-            return (T[]) dcs.ReadObject(stream);
+            return (T[]) serializer.ReadObject(stream);
         }
 
         public override string ToString() {

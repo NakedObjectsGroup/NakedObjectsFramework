@@ -7,8 +7,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Web;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
@@ -149,25 +151,27 @@ namespace NakedObjects.Core.Adapter {
             return list.ToArray();
         }
 
-        //public object GetNextSerializable() {
-        //    string type = GetNextString();
-        //    string value = GetNextString();
-        //    if (type.Length == 0) {
-        //        // null object indicated by empty type string 
-        //        return null;
-        //    }
+        public object GetNextSerializable() {
+            string type = GetNextString();
+            string value = GetNextString();
+            if (type.Length == 0) {
+                // null object indicated by empty type string 
+                return null;
+            }
 
-        //    Type objectType = TypeUtils.GetType(type);
-        //    if (objectType == null) {
-        //        throw new Exception(Log.LogAndReturn($"Cannot find type for name: {type}"));
-        //    }
-        //    var stream = new MemoryStream();
-        //    var writer = new StreamWriter(stream);
-        //    writer.Write(value);
-        //    writer.Flush();
-        //    stream.Position = 0;
-        //    return new NetDataContractSerializer().Deserialize(stream);
-        //}
+            Type objectType = TypeUtils.GetType(type);
+            if (objectType == null) {
+                throw new Exception(Log.LogAndReturn($"Cannot find type for name: {type}"));
+            }
+
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            writer.Write(value);
+            writer.Flush();
+            stream.Position = 0;
+            var serializer = new DataContractSerializer(objectType);
+            return serializer.ReadObject(stream);
+        }
 
         public IEncodedToStrings GetNextEncodedToStrings() {
             string type = GetNextString();

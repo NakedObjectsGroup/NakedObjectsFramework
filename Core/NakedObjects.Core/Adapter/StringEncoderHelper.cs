@@ -8,7 +8,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Web;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Core.Util;
@@ -112,18 +114,19 @@ namespace NakedObjects.Core.Adapter {
             }
         }
 
-        //public void AddSerializable(object serializable) {
-        //    if (serializable == null) {
-        //        AddNullItem();
-        //    }
-        //    else {
-        //        strings.Add(serializable.GetType().FullName);
-        //        var stream = new MemoryStream();
-        //        new NetDataContractSerializer().Serialize(stream, serializable);
-        //        stream.Position = 0;
-        //        strings.Add(new StreamReader(stream).ReadToEnd());
-        //    }
-        //}
+        public void AddSerializable(object serializable) {
+            if (serializable == null) {
+                AddNullItem();
+            }
+            else {
+                strings.Add(serializable.GetType().FullName);
+                var stream = new MemoryStream();
+                var serializer = new DataContractSerializer(serializable.GetType());
+                serializer.WriteObject(stream, serializable);
+                stream.Position = 0;
+                strings.Add(new StreamReader(stream).ReadToEnd());
+            }
+        }
 
         public string[] ToArray() {
             if (Encode) {
