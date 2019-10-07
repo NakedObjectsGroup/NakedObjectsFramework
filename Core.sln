@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Core", "Core\N
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.FWResources", "Core\NakedObjects.FWResources\NakedObjects.FWResources.csproj", "{A5A1C610-10DE-4A3F-8A6B-A1D6D8CF3CFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Metamodel", "Core\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj", "{7D3DDF64-2092-449B-9F51-43CCACCD49BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Metamodel", "Core\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj", "{7D3DDF64-2092-449B-9F51-43CCACCD49BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.ParallelReflector", "Core\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj", "{19419F9F-A6E0-4CB0-B939-A86998B0543A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{7D3DDF64-2092-449B-9F51-43CCACCD49BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D3DDF64-2092-449B-9F51-43CCACCD49BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D3DDF64-2092-449B-9F51-43CCACCD49BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19419F9F-A6E0-4CB0-B939-A86998B0543A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19419F9F-A6E0-4CB0-B939-A86998B0543A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19419F9F-A6E0-4CB0-B939-A86998B0543A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19419F9F-A6E0-4CB0-B939-A86998B0543A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
