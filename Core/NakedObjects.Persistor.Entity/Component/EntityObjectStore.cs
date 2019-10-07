@@ -52,6 +52,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         #endregion
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(EntityObjectStore));
+        private readonly GetAdapterForDelegate getAdapterFor;
         private readonly IMetamodelManager metamodelManager;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly EntityOidGenerator oidGenerator;
@@ -59,7 +60,6 @@ namespace NakedObjects.Persistor.Entity.Component {
         private IDictionary<CodeFirstEntityContextConfiguration, LocalContext> contexts = new Dictionary<CodeFirstEntityContextConfiguration, LocalContext>();
         private CreateAdapterDelegate createAdapter;
         private CreateAggregatedAdapterDelegate createAggregatedAdapter;
-        private readonly GetAdapterForDelegate getAdapterFor;
         private Action<INakedObjectAdapter> handleLoaded;
         private IDomainObjectInjector injector;
         private Func<Type, ITypeSpec> loadSpecification;
