@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Reflector", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Persistor.Entity", "Core\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj", "{F8DDF8DB-BC84-4C84-9613-FD69CD10D673}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Unity", "Core\NakedObjects.Unity\NakedObjects.Unity.csproj", "{EB67D869-AB66-4330-A530-91F87D2A383C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Unity", "Core\NakedObjects.Unity\NakedObjects.Unity.csproj", "{EB67D869-AB66-4330-A530-91F87D2A383C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.CorePackage", "Core\NakedObjects.CorePackage\NakedObjects.CorePackage.csproj", "{A7757C28-8F14-4C3A-A0B4-CC0D8DF410E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,8 @@ Global
 		{EB67D869-AB66-4330-A530-91F87D2A383C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB67D869-AB66-4330-A530-91F87D2A383C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB67D869-AB66-4330-A530-91F87D2A383C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7757C28-8F14-4C3A-A0B4-CC0D8DF410E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7757C28-8F14-4C3A-A0B4-CC0D8DF410E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
