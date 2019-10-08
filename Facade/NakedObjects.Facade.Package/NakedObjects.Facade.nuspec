@@ -10,7 +10,7 @@
     <icon>images\icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>An internal API that sits between the NakedObjects.Rest server and the underlying core framework.</description>
-    <<dependencies>
+    <dependencies>
       <group targetFramework="netcoreapp3.0"/>
     </dependencies>
   </metadata>
