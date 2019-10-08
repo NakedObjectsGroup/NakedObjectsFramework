@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NakedObjects.Core</id>
+    <version>11.0.0-beta01</version>
+    <authors>Naked Objects Group Ltd</authors>
+    <owners>Naked Objects Group Ltd</owners>
+    <license type="expression">Apache-2.0</license>
+    <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
+    <icon>images\icon.png</icon>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Naked Objects is a framework that implements the 'naked objects' pattern for .NET.</summary>
+    <description>
+  This package is typically used indirectly e.g. by the NakedObjects.Run</description>
+    <tags>naked objects nakedobjects ddd domain driven design</tags>
+    <dependencies>
+      <dependency id="NakedObjects.ProgrammingModel" version="[11.0.0-beta01, 12)" />
+      <dependency id="Common.Logging" version="[3.4.1, 4)" />
+      <dependency id="Common.Logging.Core" version="[3.4.1, 4)" />
+      <dependency id="EntityFramework" version="[6.3.0, 7)" />
+      <dependency id="Unity" version="[5.11.1, 6)" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="icon.png" target="images\"/>
+    <file src="..\NakedObjects.Architecture\bin\Debug\**\*.dll" target="lib"/>
+    <file src="..\NakedObjects.Core\bin\Debug\**\*.dll" target="lib"/>
+    <file src="..\NakedObjects.FWResources\bin\Debug\**\*.dll" target="lib"/>
+    <file src="..\NakedObjects.Metamodel\bin\Debug\**\*.dll" target="lib"/>
+    <file src="..\NakedObjects.ParallelReflector\bin\Debug\**\*.dll" target="lib"/>
+    <file src="..\NakedObjects.Persistor.Entity\bin\Debug\**\*.dll" target="lib"/>
+    <file src="..\NakedObjects.Reflector\bin\Debug\**\*.dll" target="lib"/>
+    <file src="..\NakedObjects.Unity\bin\Debug\**\*.dll" target="lib"/>
+  </files>
+</package>
