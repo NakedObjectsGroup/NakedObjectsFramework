@@ -3,6 +3,6 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <NoBuild>true</NoBuild>
     <IncludeBuildOutput>false</IncludeBuildOutput>
-    <NuspecFile>..\NakedObjects.Core.package\NakedObjects.Core.nuspec</NuspecFile>
+    <NuspecFile>NakedObjects.Core.nuspec</NuspecFile>
   </PropertyGroup>
 </Project>

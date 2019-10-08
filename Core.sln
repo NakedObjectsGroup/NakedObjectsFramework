@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Persistor.Enti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Unity", "Core\NakedObjects.Unity\NakedObjects.Unity.csproj", "{EB67D869-AB66-4330-A530-91F87D2A383C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.CorePackage", "Core\NakedObjects.CorePackage\NakedObjects.CorePackage.csproj", "{A7757C28-8F14-4C3A-A0B4-CC0D8DF410E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Core.Package", "Core\NakedObjects.Core.Package\NakedObjects.Core.Package.csproj", "{88A39086-8464-4F40-9828-02421D455B12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,8 +59,10 @@ Global
 		{EB67D869-AB66-4330-A530-91F87D2A383C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB67D869-AB66-4330-A530-91F87D2A383C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB67D869-AB66-4330-A530-91F87D2A383C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A7757C28-8F14-4C3A-A0B4-CC0D8DF410E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A7757C28-8F14-4C3A-A0B4-CC0D8DF410E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88A39086-8464-4F40-9828-02421D455B12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88A39086-8464-4F40-9828-02421D455B12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88A39086-8464-4F40-9828-02421D455B12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88A39086-8464-4F40-9828-02421D455B12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
