@@ -14,11 +14,13 @@
   This package is typically used indirectly e.g. by the NakedObjects.Run</description>
     <tags>naked objects nakedobjects ddd domain driven design</tags>
     <dependencies>
-      <dependency id="NakedObjects.ProgrammingModel" version="[11.0.0-beta01, 12)" />
-      <dependency id="Common.Logging" version="[3.4.1, 4)" />
-      <dependency id="Common.Logging.Core" version="[3.4.1, 4)" />
-      <dependency id="EntityFramework" version="[6.3.0, 7)" />
-      <dependency id="Unity" version="[5.11.1, 6)" />
+      <group targetFramework="netcoreapp3.0">
+        <dependency id="NakedObjects.ProgrammingModel" version="[11.0.0-beta01, 12)" />
+        <dependency id="Common.Logging" version="[3.4.1, 4)" />
+        <dependency id="Common.Logging.Core" version="[3.4.1, 4)" />
+        <dependency id="EntityFramework" version="[6.3.0, 7)" />
+        <dependency id="Unity" version="[5.11.1, 6)" />
+      </group>
     </dependencies>
   </metadata>
   <files>
