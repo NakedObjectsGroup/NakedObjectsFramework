@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -12,13 +12,13 @@ using NakedObjects.Facade.Contexts;
 namespace NakedObjects.Facade {
     public abstract class WithContextNOSException : NakedObjectsFacadeException {
         private IList<ContextFacade> contexts;
-        protected WithContextNOSException() {}
-        protected WithContextNOSException(string message) : base(message) {}
-        protected WithContextNOSException(string message, Exception e) : base(message, e) {}
+        protected WithContextNOSException() { }
+        protected WithContextNOSException(string message) : base(message) { }
+        protected WithContextNOSException(string message, Exception e) : base(message, e) { }
 
-        protected WithContextNOSException(string message, IList<ContextFacade> contexts) : this(message, null, contexts) {}
+        protected WithContextNOSException(string message, IList<ContextFacade> contexts) : this(message, null, contexts) { }
 
-        protected WithContextNOSException(string message, ContextFacade context) : this(message, context, null) {}
+        protected WithContextNOSException(string message, ContextFacade context) : this(message, context, null) { }
 
         protected WithContextNOSException(string message, ContextFacade context, IList<ContextFacade> contexts) : this(message) {
             Contexts = contexts;
@@ -28,8 +28,9 @@ namespace NakedObjects.Facade {
         public IList<ContextFacade> Contexts {
             get {
                 if (contexts == null) {
-                    return ContextFacade == null ? new ContextFacade[] {} : new[] {ContextFacade};
+                    return ContextFacade == null ? new ContextFacade[] { } : new[] {ContextFacade};
                 }
+
                 return contexts;
             }
             private set { contexts = value; }

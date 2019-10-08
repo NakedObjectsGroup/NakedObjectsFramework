@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,7 @@ namespace NakedObjects.Facade {
         ObjectContextFacade GetObject(IObjectFacade objectFacade);
         ObjectContextFacade GetObject(IOidTranslation objectId);
         ObjectContextFacade PutObject(IOidTranslation objectId, ArgumentsContextFacade arguments);
-        PropertyContextFacade GetProperty(IOidTranslation objectId, string propertyName);       
+        PropertyContextFacade GetProperty(IOidTranslation objectId, string propertyName);
         PropertyContextFacade GetPropertyWithCompletions(IObjectFacade transient, string propertyName, ArgumentsContextFacade arguments);
         ActionContextFacade GetServiceAction(IOidTranslation serviceName, string actionName);
         ActionContextFacade GetObjectAction(IOidTranslation objectId, string actionName);
@@ -37,7 +37,9 @@ namespace NakedObjects.Facade {
         ITypeFacade GetDomainType(string typeName);
         ObjectContextFacade Persist(string typeName, ArgumentsContextFacade arguments);
         ObjectContextFacade GetTransient(string typeName, ArgumentsContextFacade arguments);
+
         IObjectFacade GetObject(object domainObject);
+
         // Do not remove; used in custom code
         void Inject(object toInject);
     }

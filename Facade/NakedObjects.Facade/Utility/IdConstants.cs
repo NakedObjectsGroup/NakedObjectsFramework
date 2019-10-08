@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -7,7 +7,6 @@
 
 namespace NakedObjects.Facade.Utility {
     public static class IdConstants {
-
         // viewdata keys 
         public const string NofMessages = "Nof-Messages";
         public const string NofWarnings = "Nof-Warnings";
@@ -20,7 +19,9 @@ namespace NakedObjects.Facade.Utility {
         public const string SystemMessages = "Messages";
         public const string PagingData = "Nof-PagingData";
         public const string NofEncryptDecrypt = "Nof-EncryptDecrypt";
+
         public const string CollectionFormat = "NofCollectionFormat";
+
         // sub keys 
         public const string PagingCurrentPage = "Nof-PagingCurrentPage";
         public const string PagingTotal = "Nof-PagingTotal";
@@ -107,7 +108,9 @@ namespace NakedObjects.Facade.Utility {
         public const string ClearHistoryAction = "ClearHistory";
         public const string ClearHistoryItemAction = "ClearHistoryItem";
         public const string ClearHistoryOthersAction = "ClearHistoryOthers";
+
         public const string ClearName = "Clear";
+
         // Class attributes for HTML buttons, to permit CSS styling
         public const string OkButtonClass = "nof-ok";
         public const string SaveButtonClass = "nof-save";
@@ -126,7 +129,9 @@ namespace NakedObjects.Facade.Utility {
         public const string MinButtonClass = "nof-minimize";
         public const string MaxButtonClass = "nof-maximize";
         public const string QueryOnlyClass = "nof-queryonly";
+
         public const string IdempotentClass = "nof-idempotent";
+
         // paging
         public const string PagingClass = "nof-paging";
         public const string CollectionFormatClass = "nof-collection-formats";
@@ -135,7 +140,9 @@ namespace NakedObjects.Facade.Utility {
         public const string PageKey = "page";
         public const string PageSizeKey = "pageSize";
         public const string FormatKey = "format";
+
         public const string ActiveClass = "active";
+
         // menus 
         public const string MenuItemDivider = "_";
     }
