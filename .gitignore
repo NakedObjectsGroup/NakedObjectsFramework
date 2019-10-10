@@ -37,3 +37,7 @@ Spa2/nakedobjectsspa/.vs/config/applicationhost.config
 .vs/
 Test/NakedObjects.PerformanceTest/Reflect/awnames.txt
 Test/NakedObjects.PerformanceTest/Reflect/dspnames.txt
+Core old
+Facade old
+Core old.sln
+Facade old.sln
