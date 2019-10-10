@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>RestfulObjects.Mvc</id>
-    <version>7.0.18</version>
+    <version>7.2.0</version>
     <title>NakedObjects.RestfulObjects.Mvc</title>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
@@ -15,7 +15,7 @@
     <description>Typically this package is only installed as a dependency of another package.</description>
     <dependencies>
       <dependency id="NakedObjects.Surface" version="[7.0.0, 8)" />
-      <dependency id="Newtonsoft.Json" version="[6.0.8, 7.0)" />
+      <dependency id="Newtonsoft.Json" version="[6.0.8, 10.0.0)" />
       <dependency id="Microsoft.AspNet.WebApi" version="[5.2.3, 6.0)" />
     </dependencies>
     <frameworkAssemblies>
