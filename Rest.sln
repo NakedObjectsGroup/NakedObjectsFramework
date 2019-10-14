@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Rest", "Rest\NakedObjects.Rest\NakedObjects.Rest.csproj", "{FEF1A08C-668F-40B5-99F2-671CF3E09FF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Rest.Snapshot", "Rest\NakedObjects.Rest.Snapshot\NakedObjects.Rest.Snapshot.csproj", "{4F3A4379-B9F4-4A1E-BE21-1E2ADB058603}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FEF1A08C-668F-40B5-99F2-671CF3E09FF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FEF1A08C-668F-40B5-99F2-671CF3E09FF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FEF1A08C-668F-40B5-99F2-671CF3E09FF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FEF1A08C-668F-40B5-99F2-671CF3E09FF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F3A4379-B9F4-4A1E-BE21-1E2ADB058603}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F3A4379-B9F4-4A1E-BE21-1E2ADB058603}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F3A4379-B9F4-4A1E-BE21-1E2ADB058603}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F3A4379-B9F4-4A1E-BE21-1E2ADB058603}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
