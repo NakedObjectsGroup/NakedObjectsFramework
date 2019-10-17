@@ -5,8 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Representations;
@@ -15,7 +15,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Strategies {
     [DataContract]
     public class PropertyMemberRepresentationStrategy : AbstractPropertyRepresentationStrategy {
-        public PropertyMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) :
+        public PropertyMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
             base(oidStrategy, req, propertyContext, flags) {}
 
         public override bool ShowChoices() {

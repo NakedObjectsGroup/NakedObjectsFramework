@@ -8,8 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Representations;
@@ -20,7 +20,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
     public class PropertyWithDetailsRepresentationStrategy : AbstractPropertyRepresentationStrategy {
         private readonly bool inline;
 
-        public PropertyWithDetailsRepresentationStrategy(bool inline, IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) :
+        public PropertyWithDetailsRepresentationStrategy(bool inline, IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
             base(oidStrategy, req, propertyContext, flags) {
             this.inline = inline;
         }

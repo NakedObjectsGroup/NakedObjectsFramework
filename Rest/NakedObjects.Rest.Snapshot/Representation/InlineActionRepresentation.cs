@@ -7,8 +7,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -27,7 +27,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             SetHeader(strategy.GetTarget());
         }
 
-        public static InlineActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
+        public static InlineActionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) {
             IConsentFacade consent = actionContext.Action.IsUsable(actionContext.Target);
 
             var strategy = AbstractActionRepresentationStrategy.GetStrategy(true, oidStrategy, req, actionContext, flags);

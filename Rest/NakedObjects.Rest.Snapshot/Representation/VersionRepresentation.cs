@@ -8,9 +8,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
@@ -18,7 +18,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class VersionRepresentation : Representation {
-        private VersionRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, IDictionary<string, string> capabilitiesMap, RestControlFlags flags)
+        private VersionRepresentation(IOidStrategy oidStrategy, HttpRequest req, IDictionary<string, string> capabilitiesMap, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SelfRelType = new VersionRelType(RelValues.Self, new UriMtHelper(oidStrategy, req));
             SetScalars();
@@ -77,7 +77,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, homePageRelType, Flags)};
         }
 
-        public static VersionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IDictionary<string, string> capabilities, RestControlFlags flags) {
+        public static VersionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IDictionary<string, string> capabilities, RestControlFlags flags) {
             return new VersionRepresentation(oidStrategy, req, capabilities, flags);
         }
     }

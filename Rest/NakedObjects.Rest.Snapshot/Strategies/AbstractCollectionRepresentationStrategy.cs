@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -16,7 +16,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest.Snapshot.Strategies {
     public abstract class AbstractCollectionRepresentationStrategy : MemberRepresentationStrategy {
-        protected AbstractCollectionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags)
+        protected AbstractCollectionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy, req, propertyContext, flags) {           
         }
 
@@ -84,7 +84,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return propertyContext.Property.DoNotCount && !propertyContext.Property.RenderEagerly;
         }
 
-        public static AbstractCollectionRepresentationStrategy GetStrategy(bool asTableColumn,  bool inline, IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) {
+        public static AbstractCollectionRepresentationStrategy GetStrategy(bool asTableColumn,  bool inline, IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
          
             if (asTableColumn) {
                 if (propertyContext.Property.DoNotCount) {

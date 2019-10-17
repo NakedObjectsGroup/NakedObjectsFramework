@@ -8,7 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Net.Http;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 
@@ -54,11 +54,11 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         }
 
 
-        public  object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade item, RestControlFlags flags) {
+        public  object GetChoiceValue(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade item, RestControlFlags flags) {
             return association != null ? RestUtils.GetChoiceValue(oidStrategy, req, item, association, flags) : RestUtils.GetChoiceValue(oidStrategy, req, item, parameter, flags);
         }
 
-        public UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade) {
+        public UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade objectFacade) {
             if (parameter != null) {
                 var parameterContext = new ParameterContextFacade {
                     Action = parameter.Action,

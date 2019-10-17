@@ -6,9 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Runtime.Serialization;
 using Common.Logging;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
@@ -18,7 +18,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
     public class HomePageRepresentation : Representation {
         private static readonly ILog Log = LogManager.GetLogger(typeof (HomePageRepresentation));
 
-        protected HomePageRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, RestControlFlags flags)
+        protected HomePageRepresentation(IOidStrategy oidStrategy, HttpRequest req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SelfRelType = new HomePageRelType(RelValues.Self, new UriMtHelper(oidStrategy, req));
             SetLinks(req);
@@ -40,7 +40,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Extensions = new MapRepresentation();
         }
 
-        private void SetLinks(HttpRequestMessage req) {
+        private void SetLinks(HttpRequest req) {
             var tempLinks = new List<LinkRepresentation> {
                 LinkRepresentation.Create(OidStrategy, SelfRelType, Flags),
                 LinkRepresentation.Create(OidStrategy, new UserRelType(new UriMtHelper(OidStrategy, req)), Flags),
@@ -52,7 +52,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Links = tempLinks.ToArray();
         }
 
-        public static HomePageRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, RestControlFlags flags) {
+        public static HomePageRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, RestControlFlags flags) {
             return new HomePageRepresentation(oidStrategy, req, flags);
         }
     }

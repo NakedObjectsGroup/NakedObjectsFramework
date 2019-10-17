@@ -8,8 +8,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -18,7 +18,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class ActionResultRepresentation : Representation {
-        protected ActionResultRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ActionResultContextFacade actionResult, RestControlFlags flags)
+        protected ActionResultRepresentation(IOidStrategy oidStrategy, HttpRequest req, ActionResultContextFacade actionResult, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SelfRelType = new ActionResultRelType(RelValues.Self, new UriMtHelper(OidStrategy, req, actionResult.ActionContext));
             SetResultType(actionResult);
@@ -65,7 +65,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Extensions = exts.Count > 0 ? RestUtils.CreateMap(exts) : new MapRepresentation();
         }
 
-        private void SetLinks(HttpRequestMessage req, ActionResultContextFacade actionResult) {
+        private void SetLinks(HttpRequest req, ActionResultContextFacade actionResult) {
             Links = actionResult.ActionContext.Action.IsQueryOnly ? new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(req, actionResult)))} : new LinkRepresentation[] {};
         }
 
@@ -81,7 +81,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             }
         }
 
-        private MapRepresentation CreateArguments(HttpRequestMessage req, ActionResultContextFacade actionResult) {
+        private MapRepresentation CreateArguments(HttpRequest req, ActionResultContextFacade actionResult) {
             var optionalProperties = new List<OptionalProperty>();
 
             foreach (ParameterContextFacade visibleParamContext in actionResult.ActionContext.VisibleParameters) {
@@ -120,7 +120,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return MapRepresentation.Create(optionalProperties.ToArray());
         }
 
-        public static ActionResultRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionResultContextFacade actionResult, RestControlFlags flags) {
+        public static ActionResultRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ActionResultContextFacade actionResult, RestControlFlags flags) {
             if (actionResult.HasResult) {
                 IRepresentation result;
 

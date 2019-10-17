@@ -7,8 +7,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -17,7 +17,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class PromptRepresentation : Representation {
-        protected PromptRepresentation(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags)
+        protected PromptRepresentation(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(propertyContext.Property.Id);
             SetChoices(propertyContext, req);
@@ -27,7 +27,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             SetHeader(propertyContext.Completions.IsListOfServices);
         }
 
-        protected PromptRepresentation(IOidStrategy oidStrategy, ParameterContextFacade parmContext, HttpRequestMessage req, RestControlFlags flags)
+        protected PromptRepresentation(IOidStrategy oidStrategy, ParameterContextFacade parmContext, HttpRequest req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(parmContext.Id);
             SetChoices(parmContext, req);
@@ -51,19 +51,19 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Choices)]
         public object[] Choices { get; set; }
 
-        private static UriMtHelper GetSelfHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req) {
+        private static UriMtHelper GetSelfHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req) {
             return new UriMtHelper(oidStrategy, req, propertyContext);
         }
 
-        private static UriMtHelper GetParentHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req) {
+        private static UriMtHelper GetParentHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req) {
             return new UriMtHelper(oidStrategy, req, propertyContext.Target);
         }
 
-        private void SetChoices(PropertyContextFacade propertyContext, HttpRequestMessage req) {
+        private void SetChoices(PropertyContextFacade propertyContext, HttpRequest req) {
             Choices = propertyContext.Completions.List.Select(c => RestUtils.GetChoiceValue(OidStrategy, req, c, propertyContext.Property, Flags)).ToArray();
         }
 
-        private void SetChoices(ParameterContextFacade paramContext, HttpRequestMessage req) {
+        private void SetChoices(ParameterContextFacade paramContext, HttpRequest req) {
             Choices = paramContext.Completions.List.Select(c => RestUtils.GetChoiceValue(OidStrategy, req, c, paramContext.Parameter, Flags)).ToArray();
         }
 
@@ -75,7 +75,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Extensions = new MapRepresentation();
         }
 
-        private void SetLinks(HttpRequestMessage req, ITypeFacade spec, RelType parentRelType) {
+        private void SetLinks(HttpRequest req, ITypeFacade spec, RelType parentRelType) {
             var tempLinks = new List<LinkRepresentation> {
                 LinkRepresentation.Create(OidStrategy, parentRelType, Flags),
                 LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)
@@ -88,11 +88,11 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
         }
 
-        public static PromptRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags) {
+        public static PromptRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags) {
             return new PromptRepresentation(oidStrategy, propertyContext, req, flags);
         }
 
-        public static Representation Create(IOidStrategy oidStrategy, ParameterContextFacade parmContext, HttpRequestMessage req, RestControlFlags flags) {
+        public static Representation Create(IOidStrategy oidStrategy, ParameterContextFacade parmContext, HttpRequest req, RestControlFlags flags) {
             return new PromptRepresentation(oidStrategy, parmContext, req, flags);
         }
     }

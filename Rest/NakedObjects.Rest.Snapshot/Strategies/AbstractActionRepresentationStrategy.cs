@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -19,7 +19,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         private readonly RelType self;
         private IEnumerable<ParameterRepresentation> parameterList;
 
-        protected AbstractActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags)
+        protected AbstractActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             Req = req;
             ActionContext = actionContext;
@@ -28,7 +28,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         protected ActionContextFacade ActionContext { get; }
 
-        protected HttpRequestMessage Req { get; }
+        protected HttpRequest Req { get; }
 
         public virtual bool ShowParameters() {
             return true;
@@ -150,7 +150,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return flags.InlineDetailsInActionMemberRepresentations || actionContext.Action.RenderEagerly;
         }
 
-        public static AbstractActionRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
+        public static AbstractActionRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) {
             AbstractActionRepresentationStrategy strategy;
             if (inline) {
                 if (actionContext.Target.IsViewModelEditView) {

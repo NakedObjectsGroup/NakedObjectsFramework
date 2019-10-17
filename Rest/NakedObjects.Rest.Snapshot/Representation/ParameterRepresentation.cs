@@ -8,8 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -18,7 +18,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class ParameterRepresentation : Representation {
-        protected ParameterRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade, FieldFacadeAdapter parameter, RestControlFlags flags)
+        protected ParameterRepresentation(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade objectFacade, FieldFacadeAdapter parameter, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetName(parameter);
             SetExtensions(req, objectFacade, parameter, flags);
@@ -42,7 +42,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Name = parameter.Id;
         }
 
-        private LinkRepresentation CreatePromptLink(HttpRequestMessage req, IObjectFacade objectFacade, FieldFacadeAdapter parameter) {
+        private LinkRepresentation CreatePromptLink(HttpRequest req, IObjectFacade objectFacade, FieldFacadeAdapter parameter) {
             var opts = new List<OptionalProperty>();
 
          
@@ -63,7 +63,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return LinkRepresentation.Create(OidStrategy, new PromptRelType(parameter.GetHelper(OidStrategy, req, objectFacade)), Flags, opts.ToArray());
         }
 
-        private void SetLinks(HttpRequestMessage req, IObjectFacade objectFacade, FieldFacadeAdapter parameter) {
+        private void SetLinks(HttpRequest req, IObjectFacade objectFacade, FieldFacadeAdapter parameter) {
             var tempLinks = new List<LinkRepresentation>();
 
             if (parameter.IsAutoCompleteEnabled || parameter.GetChoicesParameters().Any()) {
@@ -73,7 +73,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Links = tempLinks.ToArray();
         }
 
-        private void SetExtensions(HttpRequestMessage req, IObjectFacade objectFacade, FieldFacadeAdapter parameter, RestControlFlags flags) {
+        private void SetExtensions(HttpRequest req, IObjectFacade objectFacade, FieldFacadeAdapter parameter, RestControlFlags flags) {
             IDictionary<string, object> custom = null;
 
             if (IsUnconditionalChoices(parameter)) {
@@ -129,7 +129,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
 
-        private static LinkRepresentation CreateDefaultLink(IOidStrategy oidStrategy, HttpRequestMessage req, FieldFacadeAdapter parameter, IActionFacade action,  IObjectFacade defaultNakedObject, string title, RestControlFlags flags) {
+        private static LinkRepresentation CreateDefaultLink(IOidStrategy oidStrategy, HttpRequest req, FieldFacadeAdapter parameter, IActionFacade action,  IObjectFacade defaultNakedObject, string title, RestControlFlags flags) {
             var helper = new UriMtHelper(oidStrategy, req, defaultNakedObject);
             var relType = new DefaultRelType(action.Id, parameter.Id, helper);
 
@@ -137,7 +137,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
 
-        private static object CreateDefaultLinks(IOidStrategy oidStrategy, HttpRequestMessage req, FieldFacadeAdapter parameter, IActionFacade action, IObjectFacade defaultNakedObject, string title, RestControlFlags flags) {
+        private static object CreateDefaultLinks(IOidStrategy oidStrategy, HttpRequest req, FieldFacadeAdapter parameter, IActionFacade action, IObjectFacade defaultNakedObject, string title, RestControlFlags flags) {
             if (defaultNakedObject.Specification.IsCollection) {
                 return defaultNakedObject.ToEnumerable().Select(i => CreateDefaultLink(oidStrategy, req, parameter, action, i, i.TitleString, flags)).ToArray();
             }
@@ -145,7 +145,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
 
-        public static ParameterRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade, IActionParameterFacade parameter, RestControlFlags flags) {
+        public static ParameterRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade objectFacade, IActionParameterFacade parameter, RestControlFlags flags) {
             var optionals = new List<OptionalProperty>();
 
             if (parameter.IsChoicesEnabled != Choices.NotEnabled && !parameter.GetChoicesParameters().Any()) {
@@ -176,7 +176,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy, req, objectFacade, adapter, flags}, optionals);
         }
 
-        public static ParameterRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade, IAssociationFacade assoc, ActionContextFacade actionContext, RestControlFlags flags) {
+        public static ParameterRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade objectFacade, IAssociationFacade assoc, ActionContextFacade actionContext, RestControlFlags flags) {
             var optionals = new List<OptionalProperty>();
 
             if (assoc.IsChoicesEnabled != Choices.NotEnabled && !assoc.GetChoicesParameters().Any()) {

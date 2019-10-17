@@ -11,8 +11,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Net.Mime;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -146,7 +146,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return MapRepresentation.Create(parms);
         }
 
-        public static void AddChoices(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+        public static void AddChoices(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             if (propertyContext.Property.IsChoicesEnabled != Choices.NotEnabled && !propertyContext.Property.GetChoicesParameters().Any()) {
                 IObjectFacade[] choices = propertyContext.Property.GetChoices(propertyContext.Target, null);
                 object[] choicesArray = choices.Select(c => GetChoiceValue(oidStrategy, req, c, propertyContext.Property, flags)).ToArray();
@@ -160,11 +160,11 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return item.Specification.IsParseable ? value : LinkRepresentation.Create(oidStrategy, relType(), flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
-        public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade item, IAssociationFacade property, RestControlFlags flags) {
+        public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade item, IAssociationFacade property, RestControlFlags flags) {
             return GetChoiceValue(oidStrategy, item, () => new ChoiceRelType(property, new UriMtHelper(oidStrategy, req, item)), flags);
         }
 
-        public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade item, IActionParameterFacade parameter, RestControlFlags flags) {
+        public static object GetChoiceValue(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade item, IActionParameterFacade parameter, RestControlFlags flags) {
             return GetChoiceValue(oidStrategy, item, () => new ChoiceRelType(parameter, new UriMtHelper(oidStrategy, req, item)), flags);
         }
 
@@ -344,7 +344,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                    mediaType == "application/json";
         }
 
-        public static OptionalProperty CreateArgumentProperty(IOidStrategy oidStrategy, HttpRequestMessage req, Tuple<string, ITypeFacade> pnt, RestControlFlags flags) {
+        public static OptionalProperty CreateArgumentProperty(IOidStrategy oidStrategy, HttpRequest req, Tuple<string, ITypeFacade> pnt, RestControlFlags flags) {
            
             return new OptionalProperty(pnt.Item1, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)),
                 new OptionalProperty(JsonPropertyNames.Links, new LinkRepresentation[] {})));
@@ -407,7 +407,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                                                                  string[] columns,
                                                                  RelType rt,
                                                                  IOidStrategy oidStrategy,
-                                                                 HttpRequestMessage req,
+                                                                 HttpRequest req,
                                                                  RestControlFlags flags) {
             var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Title, SafeGetTitle(no))};
 
@@ -429,7 +429,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public static LinkRepresentation CreateTableRowValueLink(IObjectFacade no,
                                                                  PropertyContextFacade propertyContext,
                                                                  IOidStrategy oidStrategy,
-                                                                 HttpRequestMessage req,
+                                                                 HttpRequest req,
                                                                  RestControlFlags flags) {
             var columns = propertyContext.Property.TableViewData?.Item2;
             var rt = new ValueRelType(propertyContext.Property, new UriMtHelper(oidStrategy, req, no));
@@ -439,7 +439,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public static LinkRepresentation CreateTableRowValueLink(IObjectFacade no,
                                                                  ActionContextFacade actionContext,
                                                                  IOidStrategy oidStrategy,
-                                                                 HttpRequestMessage req,
+                                                                 HttpRequest req,
                                                                  RestControlFlags flags) {
             var columns = actionContext?.Action?.TableViewData?.Item2;
             var helper = new UriMtHelper(oidStrategy, req, no);

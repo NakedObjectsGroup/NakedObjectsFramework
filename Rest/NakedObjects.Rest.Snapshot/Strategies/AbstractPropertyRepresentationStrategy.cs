@@ -8,8 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -19,7 +19,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Strategies {
     [DataContract]
     public abstract class AbstractPropertyRepresentationStrategy : MemberRepresentationStrategy {
-        protected AbstractPropertyRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) :
+        protected AbstractPropertyRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
             base(oidStrategy, req, propertyContext, flags) {}
 
         protected IDictionary<string, object> CustomExtensions { get; set; }
@@ -165,7 +165,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                     propertyContext.Target.IsTransient;
         }
 
-        public static AbstractPropertyRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) {
+        public static AbstractPropertyRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
 
             if (flags.InlineCollectionItems) {
                 return new PropertyTableRowRepresentationStrategy(oidStrategy, req, propertyContext, flags);
@@ -196,7 +196,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             }
         }
 
-        public virtual object GetPropertyValue(IOidStrategy oidStrategy, HttpRequestMessage req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) {
+        public virtual object GetPropertyValue(IOidStrategy oidStrategy, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) {
             return Representation.GetPropertyValue(oidStrategy, req, property, target, flags, valueOnly, useDateOverDateTime);
         }
     }

@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
@@ -15,7 +15,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class TypeActionInvokeRepresentation : Representation {
-        protected TypeActionInvokeRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, TypeActionInvokeContext context, RestControlFlags flags)
+        protected TypeActionInvokeRepresentation(IOidStrategy oidStrategy, HttpRequest req, TypeActionInvokeContext context, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SelfRelType = new TypeActionInvokeRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, context));
             SetScalars(context);
@@ -49,7 +49,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Extensions = MapRepresentation.Create();
         }
 
-        private void SetLinks(HttpRequestMessage req, TypeActionInvokeContext context) {
+        private void SetLinks(HttpRequest req, TypeActionInvokeContext context) {
             string uri = new DomainTypeRelType(new UriMtHelper(OidStrategy, req, context.OtherSpecification)).GetUri().AbsoluteUri;
 
             var tempLinks = new List<LinkRepresentation> {
@@ -64,7 +64,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Links = tempLinks.ToArray();
         }
 
-        public static TypeActionInvokeRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, TypeActionInvokeContext context, RestControlFlags flags) {
+        public static TypeActionInvokeRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, TypeActionInvokeContext context, RestControlFlags flags) {
             return new TypeActionInvokeRepresentation(oidStrategy, req, context, flags);
         }
     }

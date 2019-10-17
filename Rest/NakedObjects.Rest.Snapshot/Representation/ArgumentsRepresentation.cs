@@ -7,8 +7,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -25,14 +25,14 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         #endregion
 
-        private static RefValueRepresentation CreateObjectRef(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade no, RestControlFlags flags) {
+        private static RefValueRepresentation CreateObjectRef(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade no, RestControlFlags flags) {
             var helper = new UriMtHelper(oidStrategy, req, no);
             ObjectRelType rt = new ObjectRelType(RelValues.Element, helper);
 
             return RefValueRepresentation.Create(oidStrategy, rt, flags);
         }
 
-        private static MapRepresentation GetMap(IOidStrategy oidStrategy, HttpRequestMessage req, ContextFacade context, RestControlFlags flags) {
+        private static MapRepresentation GetMap(IOidStrategy oidStrategy, HttpRequest req, ContextFacade context, RestControlFlags flags) {
             MapRepresentation value;
 
             // All reasons why we cannot create a linkrep
@@ -61,7 +61,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return Create(opts.ToArray());
         }
 
-        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ContextFacade contextFacade, IList<ContextFacade> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
+        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ContextFacade contextFacade, IList<ContextFacade> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
             var memberValues = contexts.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, req, c, flags))).ToList();
             IObjectFacade target = contexts.First().Target;
             MapRepresentation mapRepresentation;
@@ -89,7 +89,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return mapRepresentation;
         }
 
-        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ContextFacade context, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
+        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ContextFacade context, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
             var objectContext = context as ObjectContextFacade;
             var actionResultContext = context as ActionResultContextFacade;
             MapRepresentation mapRepresentation;
@@ -118,7 +118,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return mapRepresentation;
         }
 
-        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IList<ContextFacade> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
+        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IList<ContextFacade> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
             return Create(oidStrategy, req, null, contexts, format, flags, mt);
         }
     }

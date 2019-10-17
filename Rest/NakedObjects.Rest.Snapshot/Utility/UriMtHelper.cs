@@ -7,11 +7,10 @@
 
 using System;
 using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
-using System.Web;
 using Common.Logging;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Translation;
@@ -19,7 +18,7 @@ using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class UriMtHelper {
-        public static Func<HttpRequestMessage, string> GetAuthority;
+        public static Func<HttpRequest, string> GetAuthority;
         public static Func<string> GetApplicationPath;
         private static readonly ILog Logger = LogManager.GetLogger<UriMtHelper>();
         private readonly IActionFacade action;
@@ -34,13 +33,13 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         // for testing to allow to be stubbed 
         static UriMtHelper() {
-            GetAuthority = req => req.RequestUri.Authority;
+            GetAuthority = req => req.Host.ToUriComponent();
             //GetApplicationPath = () => HttpContext.Current.Request.ApplicationPath;
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req) {
             this.oidStrategy = oidStrategy;
-            prefix = new Uri(req.RequestUri.Scheme + "://" + GetAuthority(req));
+            prefix = new Uri(req.Scheme + "://" + GetAuthority(req));
 
             string applicationPath = GetApplicationPath();
 
@@ -49,11 +48,11 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             }
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IMenuFacade menuFacade) : this(oidStrategy, req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, IMenuFacade menuFacade) : this(oidStrategy, req) {
             CachedType = menuFacade.Id;
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade) : this(oidStrategy, req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade objectFacade) : this(oidStrategy, req) {
             this.objectFacade = objectFacade;
             spec = objectFacade.Specification;
             if (objectFacade.Specification.IsParseable) {
@@ -64,7 +63,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             CachedType = oid.DomainType;
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade objectFacade, string instanceId) : this(oidStrategy, req) {
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade objectFacade, string instanceId) : this(oidStrategy, req) {
             this.objectFacade = objectFacade;
             spec = objectFacade.Specification;
             if (objectFacade.Specification.IsParseable) {
@@ -75,7 +74,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             CachedType = oid.DomainType;
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext)
             : this(oidStrategy, req) {
             assoc = propertyContext.Property;
             objectFacade = propertyContext.Target;
@@ -88,7 +87,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             CachedType = oid.DomainType;
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, string instanceId)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, string instanceId)
             : this(oidStrategy, req) {
             assoc = propertyContext.Property;
             objectFacade = propertyContext.Target;
@@ -101,7 +100,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             CachedType = oid.DomainType;
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext)
             : this(oidStrategy, req) {
             action = actionContext.Action;
             objectFacade = actionContext.Target;
@@ -114,7 +113,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             CachedType = oid.DomainType;
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ParameterContextFacade parameterContext)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, ParameterContextFacade parameterContext)
             : this(oidStrategy, req) {
             action = parameterContext.Action;
             param = parameterContext.Parameter;
@@ -128,14 +127,14 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             CachedType = oid.DomainType;
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ITypeFacade spec)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, ITypeFacade spec)
             : this(oidStrategy, req) {
             this.spec = spec;
             cachedId = "";
             CachedType = RestUtils.SpecToPredefinedTypeString(spec, oidStrategy);
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, IAssociationFacade assoc, IObjectFacade objectFacade)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, IAssociationFacade assoc, IObjectFacade objectFacade)
             : this(oidStrategy, req) {
             IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = oid.InstanceId;
@@ -144,7 +143,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             spec = objectFacade.Specification;       
         }
 
-        public UriMtHelper(IOidStrategy oidStrategy, HttpRequestMessage req, TypeActionInvokeContext context)
+        public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, TypeActionInvokeContext context)
             : this(oidStrategy, req) {
             typeAction = context.Id;
             cachedId = "";
@@ -368,7 +367,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return new Uri($"{prefix}/{SegmentValues.Objects}/{CachedType}");
         }
 
-        public Uri GetRedirectUri(HttpRequestMessage req, string server, string oid) {
+        public Uri GetRedirectUri(HttpRequest req, string server, string oid) {
             CheckArgumentNotNull(oid, "object oid");
             var redirectPrefix = new Uri("http://" + server);
             //var template = new UriTemplate("objects/{oid}");

@@ -7,7 +7,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Representations;
@@ -15,7 +15,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest.Snapshot.Strategies {
     public class FormActionRepresentationStrategy : AbstractActionRepresentationStrategy {
-        public FormActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags)
+        public FormActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, req, actionContext, flags) {}
 
         protected override IEnumerable<ParameterRepresentation> GetParameterList() {

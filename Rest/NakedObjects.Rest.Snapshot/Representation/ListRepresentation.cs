@@ -7,8 +7,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -17,7 +17,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class ListRepresentation : Representation {
-        protected ListRepresentation(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
+        protected ListRepresentation(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequest req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             Value = listContext.List.Select(c => CreateObjectLink(oidStrategy, req, c)).ToArray();
             SelfRelType = new ListRelType(RelValues.Self, SegmentValues.Services, new UriMtHelper(oidStrategy, req, listContext.ElementType));
@@ -26,7 +26,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             SetHeader(listContext.IsListOfServices);
         }
 
-        protected ListRepresentation(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequestMessage req, RestControlFlags flags)
+        protected ListRepresentation(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequest req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             Value = menus.List.Where(m => m.MenuItems.Any()).Select(c => CreateMenuLink(oidStrategy, req, c)).ToArray();
             SelfRelType = new ListRelType(RelValues.Self, SegmentValues.Menus, new UriMtHelper(oidStrategy, req, menus.ElementType));
@@ -35,7 +35,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             SetHeader(true);
         }
 
-        protected ListRepresentation(IOidStrategy oidStrategy, IObjectFacade list, HttpRequestMessage req, RestControlFlags flags, ActionContextFacade actionContext)
+        protected ListRepresentation(IOidStrategy oidStrategy, IObjectFacade list, HttpRequest req, RestControlFlags flags, ActionContextFacade actionContext)
             : base(oidStrategy, flags) {
             Value = list.ToEnumerable().Select(no => CreateObjectLink(oidStrategy, req, no, actionContext)).ToArray();
 
@@ -67,15 +67,15 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Extensions = RestUtils.CreateMap(exts);
         }
 
-        private void SetLinks(HttpRequestMessage req) {
+        private void SetLinks(HttpRequest req) {
             Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, new HomePageRelType(RelValues.Up, new UriMtHelper(OidStrategy, req)), Flags)};
         }
 
-        private void SetLinks(HttpRequestMessage req, ITypeFacade spec) {
+        private void SetLinks(HttpRequest req, ITypeFacade spec) {
             Links = new LinkRepresentation[] {};
         }
 
-        private void SetLinks(HttpRequestMessage req, ActionContextFacade actionContext) {
+        private void SetLinks(HttpRequest req, ActionContextFacade actionContext) {
             SetLinks(req, actionContext.ElementSpecification);
         }
 
@@ -83,25 +83,25 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
         }
 
-        protected virtual LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade no, ActionContextFacade actionContext = null) {
+        protected virtual LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade no, ActionContextFacade actionContext = null) {
             var helper = new UriMtHelper(oidStrategy, req, no);
             ObjectRelType rt = no.Specification.IsService ? new ServiceRelType(helper) : new ObjectRelType(RelValues.Element, helper);
 
             return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
         }
 
-        private LinkRepresentation CreateMenuLink(IOidStrategy oidStrategy, HttpRequestMessage req, IMenuFacade menu) {
+        private LinkRepresentation CreateMenuLink(IOidStrategy oidStrategy, HttpRequest req, IMenuFacade menu) {
             var helper = new UriMtHelper(oidStrategy, req, menu);
             var rt = new MenuRelType(helper);
 
             return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, menu.Name));
         }
 
-        public static ListRepresentation Create(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags) {
+        public static ListRepresentation Create(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequest req, RestControlFlags flags) {
             return new ListRepresentation(oidStrategy, listContext, req, flags);
         }
 
-        public static ListRepresentation Create(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequestMessage req, RestControlFlags flags) {
+        public static ListRepresentation Create(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequest req, RestControlFlags flags) {
             return new ListRepresentation(oidStrategy, menus, req, flags);
         }
     }

@@ -7,8 +7,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -17,7 +17,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class CollectionValueRepresentation : Representation {
-        protected CollectionValueRepresentation(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags)
+        protected CollectionValueRepresentation(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(propertyContext);
             SetValue(propertyContext, req, flags);
@@ -39,7 +39,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Value)]
         public LinkRepresentation[] Value { get; set; }
 
-        private void SetValue(PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags) {
+        private void SetValue(PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags) {
             IEnumerable<IObjectFacade> collectionItems = propertyContext.Property.GetValue(propertyContext.Target).ToEnumerable();
             Value = collectionItems.Select(i => LinkRepresentation.Create(OidStrategy, new ValueRelType(propertyContext.Property, new UriMtHelper(OidStrategy, req, i)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i)))).ToArray();
         }
@@ -52,7 +52,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Extensions = new MapRepresentation();
         }
 
-        private void SetLinks(HttpRequestMessage req, PropertyContextFacade propertyContext, RelType parentRelType) {
+        private void SetLinks(HttpRequest req, PropertyContextFacade propertyContext, RelType parentRelType) {
             var tempLinks = new List<LinkRepresentation> {
                 LinkRepresentation.Create(OidStrategy, parentRelType, Flags),
                 LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)
@@ -66,7 +66,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             SetEtag(target);
         }
 
-        public static CollectionValueRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags) {
+        public static CollectionValueRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags) {
             return new CollectionValueRepresentation(oidStrategy, propertyContext, req, flags);
         }
     }

@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -20,7 +20,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         private readonly UriMtHelper objectUri;
         private readonly RelType self;
 
-        protected MemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags)
+        protected MemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             Req = req;
             PropertyContext = propertyContext;
@@ -28,7 +28,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             self = new MemberRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, propertyContext));
         }
 
-        protected HttpRequestMessage Req { get; }
+        protected HttpRequest Req { get; }
 
         protected PropertyContextFacade PropertyContext { get; }
 

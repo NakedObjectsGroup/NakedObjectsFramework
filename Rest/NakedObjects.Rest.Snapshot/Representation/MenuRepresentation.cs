@@ -8,8 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Utility;
@@ -19,7 +19,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class MenuRepresentation : Representation {
-        protected MenuRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, IMenuFacade menu, RestControlFlags flags)
+        protected MenuRepresentation(IOidStrategy oidStrategy, HttpRequest req, IMenuFacade menu, RestControlFlags flags)
             : base(oidStrategy, flags) {
             var helper = new UriMtHelper(oidStrategy, req, menu);
             SetScalars(menu);
@@ -53,7 +53,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Caching = CacheType.NonExpiring;
         }
 
-        private void SetLinksAndMembers(HttpRequestMessage req, IMenuFacade menu) {
+        private void SetLinksAndMembers(HttpRequest req, IMenuFacade menu) {
             var tempLinks = new List<LinkRepresentation> {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)};
 
             SetMembers(menu, req, tempLinks);
@@ -91,7 +91,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                    actionContextFacade.Action.IsUsable(actionContextFacade.Target).IsAllowed;
         }
 
-        private void SetMembers(IMenuFacade menu, HttpRequestMessage req, List<LinkRepresentation> tempLinks) {
+        private void SetMembers(IMenuFacade menu, HttpRequest req, List<LinkRepresentation> tempLinks) {
             var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(i)).Where(af => IsVisibleAndUsable(af.Item2));
 
             InlineActionRepresentation[] actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a.Item2, Flags)).ToArray();
@@ -107,7 +107,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Extensions = MapRepresentation.Create();
         }
 
-        public static MenuRepresentation Create(IOidStrategy oidStrategy, IMenuFacade menu, HttpRequestMessage req, RestControlFlags flags) {
+        public static MenuRepresentation Create(IOidStrategy oidStrategy, IMenuFacade menu, HttpRequest req, RestControlFlags flags) {
             return new MenuRepresentation(oidStrategy, req, menu, flags);
         }
 

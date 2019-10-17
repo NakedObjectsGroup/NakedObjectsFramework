@@ -8,8 +8,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -18,7 +18,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class PagedListRepresentation : ListRepresentation {
-        protected PagedListRepresentation(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags, ActionContextFacade actionContext)
+        protected PagedListRepresentation(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags, ActionContextFacade actionContext)
             : base(oidStrategy, Page(objectContext, flags, actionContext), req, flags, actionContext) {
             SetPagination(objectContext.Target, flags, actionContext);
             SetActions(oidStrategy, objectContext, req, flags);
@@ -58,20 +58,20 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Pagination = RestUtils.CreateMap(exts);
         }
 
-        private void SetActions(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags) {
+        private void SetActions(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
             InlineActionRepresentation[] actions = objectContext.VisibleActions.Select(a => InlineActionRepresentation.Create(oidStrategy, req, a, flags)).ToArray();
             Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
         }
 
-        public static ListRepresentation Create(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequestMessage req, RestControlFlags flags) {
+        public static ListRepresentation Create(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequest req, RestControlFlags flags) {
             return new PagedListRepresentation(oidStrategy, actionResultContext.Result, req, flags, actionResultContext.ActionContext);
         }
 
-        private LinkRepresentation CreateTableRowValueLink(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade no, ActionContextFacade actionContext) {
+        private LinkRepresentation CreateTableRowValueLink(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade no, ActionContextFacade actionContext) {
             return RestUtils.CreateTableRowValueLink(no, actionContext, OidStrategy, req, Flags);
         }
 
-        protected override LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequestMessage req, IObjectFacade no, ActionContextFacade actionContext = null) {
+        protected override LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade no, ActionContextFacade actionContext = null) {
             return !Flags.InlineCollectionItems ? base.CreateObjectLink(oidStrategy, req, no, actionContext) : CreateTableRowValueLink(oidStrategy, req, no, actionContext);
         }
     }

@@ -7,10 +7,8 @@
 
 using System;
 using System.IO;
-using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.ModelBinding;
 using Common.Logging;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json.Linq;
 using NakedObjects.Rest.Snapshot.Utility;
 

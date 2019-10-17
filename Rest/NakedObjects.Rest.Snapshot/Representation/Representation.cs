@@ -18,6 +18,7 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
 using Common.Logging;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
@@ -294,7 +295,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             }
         }
 
-        public static object GetPropertyValue(IOidStrategy oidStrategy, HttpRequestMessage req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) {
+        public static object GetPropertyValue(IOidStrategy oidStrategy, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) {
             IObjectFacade valueNakedObject = property.GetValue(target);
             
             if (valueNakedObject == null) {

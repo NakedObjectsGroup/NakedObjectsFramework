@@ -7,8 +7,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -23,7 +23,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Extensions = strategy.GetExtensions();
         } 
 
-        public static CollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
+        public static CollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(false, false, oidStrategy, req, propertyContext, flags);
 
             var value = collectionRepresentationStrategy.GetValue();

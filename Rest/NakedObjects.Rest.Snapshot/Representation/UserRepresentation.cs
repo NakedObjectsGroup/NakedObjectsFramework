@@ -5,9 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Security.Principal;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
@@ -15,7 +15,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class UserRepresentation : Representation {
-        private UserRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, IPrincipal user, RestControlFlags flags)
+        private UserRepresentation(IOidStrategy oidStrategy, HttpRequest req, IPrincipal user, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SelfRelType = new UserRelType(RelValues.Self, new UriMtHelper(oidStrategy, req));
             SetLinks(new HomePageRelType(RelValues.Up, new UriMtHelper(oidStrategy, req)));
@@ -53,7 +53,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Extensions = new MapRepresentation();
         }
 
-        public static UserRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, IPrincipal user, RestControlFlags flags) {
+        public static UserRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IPrincipal user, RestControlFlags flags) {
             return new UserRepresentation(oidStrategy, req, user, flags);
         }
     }

@@ -10,11 +10,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.ServiceModel;
-using System.Web;
 using System.Web.Http;
-using System.Web.Routing;
 using Common.Logging;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Routing.Constraints;
+//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.AspNetCore.Routing;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Media;
@@ -23,8 +26,7 @@ using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest {
-    [ServiceContract]
-    public class RestfulObjectsControllerBase : ApiController {
+    public class RestfulObjectsControllerBase : ControllerBase {
         #region static and routes
 
         private static readonly ILog Logger = LogManager.GetLogger<RestfulObjectsControllerBase>();
@@ -73,13 +75,13 @@ namespace NakedObjects.Rest {
             return string.IsNullOrWhiteSpace(prefix) ? segment : prefix + "/" + segment;
         }
 
-        public static void AddRestRoutes(RouteCollection routes, string routePrefix = "") {
-            if (!string.IsNullOrWhiteSpace(routePrefix)) {
-                UriMtHelper.GetApplicationPath = () => {
-                    var appPath = HttpContext.Current.Request.ApplicationPath ?? "";
-                    return appPath + (appPath.EndsWith("/") ? "" : "/") + routePrefix;
-                };
-            }
+        public static void AddRestRoutes(IRouteBuilder routes, string routePrefix = "") {
+            //if (!string.IsNullOrWhiteSpace(routePrefix)) {
+            //    UriMtHelper.GetApplicationPath = () => {
+            //        var appPath = HttpContext.Current.Request.ApplicationPath ?? "";
+            //        return appPath + (appPath.EndsWith("/") ? "" : "/") + routePrefix;
+            //    };
+            //}
 
             var domainTypes = PrefixRoute(SegmentValues.DomainTypes, routePrefix);
             var services = PrefixRoute(SegmentValues.Services, routePrefix);
@@ -93,308 +95,308 @@ namespace NakedObjects.Rest {
             var menus = PrefixRoute(SegmentValues.Menus, routePrefix);
 
             // ReSharper disable RedundantArgumentName
-            routes.MapHttpRoute("GetInvokeIsTypeOf",
-                routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.TypeActions + "/{actionName}/" + SegmentValues.Invoke,
+            routes.MapRoute("GetInvokeIsTypeOf",
+                template: domainTypes + "/{typeName}/" + SegmentValues.TypeActions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "GetInvokeTypeActions"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidInvokeIsTypeOf",
-                routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.TypeActions + "/{actionName}/" + SegmentValues.Invoke,
+            routes.MapRoute("InvalidInvokeIsTypeOf",
+                template: domainTypes + "/{typeName}/" + SegmentValues.TypeActions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("GetInvokeOnService",
-                routeTemplate: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
+            routes.MapRoute("GetInvokeOnService",
+                template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "GetInvokeOnService"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("PutInvokeOnService",
-                routeTemplate: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
+            routes.MapRoute("PutInvokeOnService",
+                template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "PutInvokeOnService"},
-                constraints: new {httpMethod = new HttpMethodConstraint("PUT")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("PUT")}
                 );
 
-            routes.MapHttpRoute("PostInvokeOnService",
-                routeTemplate: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
+            routes.MapRoute("PostInvokeOnService",
+                template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "PostInvokeOnService"},
-                constraints: new {httpMethod = new HttpMethodConstraint("POST")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("POST")}
                 );
 
-            routes.MapHttpRoute("InvalidInvokeOnService",
-                routeTemplate: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
+            routes.MapRoute("InvalidInvokeOnService",
+                template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("GetInvoke",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
+            routes.MapRoute("GetInvoke",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "GetInvoke"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("PutInvoke",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
+            routes.MapRoute("PutInvoke",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "PutInvoke"},
-                constraints: new {httpMethod = new HttpMethodConstraint("PUT")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("PUT")}
                 );
 
-            routes.MapHttpRoute("PostInvoke",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
+            routes.MapRoute("PostInvoke",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "PostInvoke"},
-                constraints: new {httpMethod = new HttpMethodConstraint("POST")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("POST")}
                 );
 
-            routes.MapHttpRoute("InvalidInvoke",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
+            routes.MapRoute("InvalidInvoke",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("InvalidActionParameterType",
-                routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}",
+            routes.MapRoute("InvalidActionParameterType",
+                template: domainTypes + "/{typeName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("InvalidActionType",
-                routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Actions + "/{actionName}",
+            routes.MapRoute("InvalidActionType",
+                template: domainTypes + "/{typeName}/" + SegmentValues.Actions + "/{actionName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("GetAction",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}",
+            routes.MapRoute("GetAction",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}",
                 defaults: new {controller = "RestfulObjects", action = "GetAction"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidAction",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}",
+            routes.MapRoute("InvalidAction",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("InvalidCollectionType",
-                routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Collections + "/{propertyName}",
+            routes.MapRoute("InvalidCollectionType",
+                template: domainTypes + "/{typeName}/" + SegmentValues.Collections + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("DeleteCollection",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
+            routes.MapRoute("DeleteCollection",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "DeleteCollection"},
-                constraints: new {httpMethod = new HttpMethodConstraint("DELETE")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("DELETE")}
                 );
 
-            routes.MapHttpRoute("PostCollection",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
+            routes.MapRoute("PostCollection",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "PostCollection"},
-                constraints: new {httpMethod = new HttpMethodConstraint("POST")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("POST")}
                 );
 
-            routes.MapHttpRoute("GetCollection",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
+            routes.MapRoute("GetCollection",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "GetCollection"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidCollection",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
+            routes.MapRoute("InvalidCollection",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("InvalidPropertyType",
-                routeTemplate: domainTypes + "/{typeName}/" + SegmentValues.Properties + "/{propertyName}",
+            routes.MapRoute("InvalidPropertyType",
+                template: domainTypes + "/{typeName}/" + SegmentValues.Properties + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("DeleteProperty",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}",
+            routes.MapRoute("DeleteProperty",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "DeleteProperty"},
-                constraints: new {httpMethod = new HttpMethodConstraint("DELETE")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("DELETE")}
                 );
 
-            routes.MapHttpRoute("PutProperty",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}",
+            routes.MapRoute("PutProperty",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "PutProperty"},
-                constraints: new {httpMethod = new HttpMethodConstraint("PUT")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("PUT")}
                 );
 
-            routes.MapHttpRoute("GetProperty",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}",
+            routes.MapRoute("GetProperty",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "GetProperty"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidProperty",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}",
+            routes.MapRoute("InvalidProperty",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("PutObject",
-                routeTemplate: objects + "/{domainType}/{instanceId}",
+            routes.MapRoute("PutObject",
+                template: objects + "/{domainType}/{instanceId}",
                 defaults: new {controller = "RestfulObjects", action = "PutObject"},
-                constraints: new {httpMethod = new HttpMethodConstraint("PUT")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("PUT")}
                 );
 
-            routes.MapHttpRoute("GetObject",
-                routeTemplate: objects + "/{domainType}/{instanceId}",
+            routes.MapRoute("GetObject",
+                template: objects + "/{domainType}/{instanceId}",
                 defaults: new {controller = "RestfulObjects", action = "GetObject"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidObject",
-                routeTemplate: objects + "/{domainType}/{instanceId}",
+            routes.MapRoute("InvalidObject",
+                template: objects + "/{domainType}/{instanceId}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("PutPersistPropertyPrompt",
-                routeTemplate: objects + "/{domainType}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
+            routes.MapRoute("PutPersistPropertyPrompt",
+                template: objects + "/{domainType}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
                 defaults: new {controller = "RestfulObjects", action = "PutPersistPropertyPrompt"},
-                constraints: new {httpMethod = new HttpMethodConstraint("PUT")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("PUT")}
                 );
 
-            routes.MapHttpRoute("InvalidPersistPropertyPrompt",
-                routeTemplate: objects + "/{domainType}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
+            routes.MapRoute("InvalidPersistPropertyPrompt",
+                template: objects + "/{domainType}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("GetPropertyPrompt",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
+            routes.MapRoute("GetPropertyPrompt",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
                 defaults: new {controller = "RestfulObjects", action = "GetPropertyPrompt"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidPropertyPrompt",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
+            routes.MapRoute("InvalidPropertyPrompt",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("GetParameterPrompt",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}/" + SegmentValues.Prompt,
+            routes.MapRoute("GetParameterPrompt",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}/" + SegmentValues.Prompt,
                 defaults: new {controller = "RestfulObjects", action = "GetParameterPrompt"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidParameterPrompt",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}/" + SegmentValues.Prompt,
+            routes.MapRoute("InvalidParameterPrompt",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}/" + SegmentValues.Prompt,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("GetParameterPromptOnService",
-                routeTemplate: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}/" + SegmentValues.Prompt,
+            routes.MapRoute("GetParameterPromptOnService",
+                template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}/" + SegmentValues.Prompt,
                 defaults: new {controller = "RestfulObjects", action = "GetParameterPromptOnService"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidParameterPromptOnService",
-                routeTemplate: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}/" + SegmentValues.Prompt,
+            routes.MapRoute("InvalidParameterPromptOnService",
+                template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}/" + SegmentValues.Prompt,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("GetCollectionValue",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}/" + SegmentValues.CollectionValue,
+            routes.MapRoute("GetCollectionValue",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}/" + SegmentValues.CollectionValue,
                 defaults: new {controller = "RestfulObjects", action = "GetCollectionValue"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidCollectionValue",
-                routeTemplate: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.CollectionValue,
+            routes.MapRoute("InvalidCollectionValue",
+                template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.CollectionValue,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("Persist",
-                routeTemplate: objects + "/{domainType}",
+            routes.MapRoute("Persist",
+                template: objects + "/{domainType}",
                 defaults: new {controller = "RestfulObjects", action = "PostPersist"},
-                constraints: new {httpMethod = new HttpMethodConstraint("POST")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("POST")}
                 );
 
-            routes.MapHttpRoute("InvalidPersist",
-                routeTemplate: objects + "/{domainType}",
+            routes.MapRoute("InvalidPersist",
+                template: objects + "/{domainType}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("Image",
-                routeTemplate: images + "/{imageId}",
+            routes.MapRoute("Image",
+                template: images + "/{imageId}",
                 defaults: new {controller = "RestfulObjects", action = "GetImage"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidImage",
-                routeTemplate: images + "/{imageId}",
+            routes.MapRoute("InvalidImage",
+                template: images + "/{imageId}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("ServiceAction",
-                routeTemplate: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}",
+            routes.MapRoute("ServiceAction",
+                template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}",
                 defaults: new {controller = "RestfulObjects", action = "GetServiceAction"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidServiceAction",
-                routeTemplate: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}",
+            routes.MapRoute("InvalidServiceAction",
+                template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("Service",
-                routeTemplate: services + "/{serviceName}",
+            routes.MapRoute("Service",
+                template: services + "/{serviceName}",
                 defaults: new {controller = "RestfulObjects", action = "GetService"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidService",
-                routeTemplate: services + "/{serviceName}",
+            routes.MapRoute("InvalidService",
+                template: services + "/{serviceName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("Menu",
-                routeTemplate: menus + "/{menuName}",
+            routes.MapRoute("Menu",
+                template: menus + "/{menuName}",
                 defaults: new {controller = "RestfulObjects", action = "GetMenu"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidMenu",
-                routeTemplate: menus + "/{menuName}",
+            routes.MapRoute("InvalidMenu",
+                template: menus + "/{menuName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("InvalidDomainType",
-                routeTemplate: domainTypes + "/{typeName}",
+            routes.MapRoute("InvalidDomainType",
+                template: domainTypes + "/{typeName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("DomainTypes",
-                routeTemplate: domainTypes,
+            routes.MapRoute("DomainTypes",
+                template: domainTypes,
                 defaults: new {controller = "RestfulObjects", action = "GetDomainTypes"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidDomainTypes",
-                routeTemplate: domainTypes,
+            routes.MapRoute("InvalidDomainTypes",
+                template: domainTypes,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("Version",
-                routeTemplate: version,
+            routes.MapRoute("Version",
+                template: version,
                 defaults: new {controller = "RestfulObjects", action = "GetVersion"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidVersion",
-                routeTemplate: version,
+            routes.MapRoute("InvalidVersion",
+                template: version,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("Services",
-                routeTemplate: services,
+            routes.MapRoute("Services",
+                template: services,
                 defaults: new {controller = "RestfulObjects", action = "GetServices"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidServices",
-                routeTemplate: services,
+            routes.MapRoute("InvalidServices",
+                template: services,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("Menus",
-                routeTemplate: menus,
+            routes.MapRoute("Menus",
+                template: menus,
                 defaults: new {controller = "RestfulObjects", action = "GetMenus"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidMenus",
-                routeTemplate: menus,
+            routes.MapRoute("InvalidMenus",
+                template: menus,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("User",
-                routeTemplate: user,
+            routes.MapRoute("User",
+                template: user,
                 defaults: new {controller = "RestfulObjects", action = "GetUser"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidUser",
-                routeTemplate: user,
+            routes.MapRoute("InvalidUser",
+                template: user,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
-            routes.MapHttpRoute("Home",
-                routeTemplate: home,
+            routes.MapRoute("Home",
+                template: home,
                 defaults: new {controller = "RestfulObjects", action = "GetHome"},
-                constraints: new {httpMethod = new HttpMethodConstraint("GET")}
+                constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
                 );
 
-            routes.MapHttpRoute("InvalidHome",
-                routeTemplate: home,
+            routes.MapRoute("InvalidHome",
+                template: home,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
             // ReSharper restore RedundantArgumentName
         }

@@ -15,6 +15,7 @@ using System.Net.Http.Headers;
 using System.Security.Principal;
 using System.Web.Http;
 using Common.Logging;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -26,14 +27,14 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         private readonly ILog logger = LogManager.GetLogger<RestSnapshot>();
         private readonly IOidStrategy oidStrategy;
         private readonly Action populator;
-        private readonly HttpRequestMessage requestMessage;
+        private readonly HttpRequest requestMessage;
         private readonly IList<WarningHeaderValue> warningHeaders = new List<WarningHeaderValue>();
 
         static RestSnapshot() {
             AcceptHeaderStrict = true;
         }
 
-        private RestSnapshot(IOidStrategy oidStrategy, HttpRequestMessage req, bool validateAsJson) {
+        private RestSnapshot(IOidStrategy oidStrategy, HttpRequest req, bool validateAsJson) {
             this.oidStrategy = oidStrategy;
             requestMessage = req;
             if (validateAsJson) {
@@ -41,12 +42,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             }
         }
 
-        private RestSnapshot(IOidStrategy oidStrategy, ContextFacade context, HttpRequestMessage req, bool validateAsJson)
+        private RestSnapshot(IOidStrategy oidStrategy, ContextFacade context, HttpRequest req, bool validateAsJson)
             : this(oidStrategy, req, validateAsJson) {
             CheckForRedirection(oidStrategy, context, req);
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
+        public RestSnapshot(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
             : this(oidStrategy, objectContext, req, true) {
             populator = () => {
                 HttpStatusCode = httpStatusCode;
@@ -55,7 +56,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, IMenuFacade menu, HttpRequestMessage req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
+        public RestSnapshot(IOidStrategy oidStrategy, IMenuFacade menu, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
             : this(oidStrategy, req, true) {
             populator = () => {
                 HttpStatusCode = httpStatusCode;
@@ -64,7 +65,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, actionResultContext, req, true) {
             populator = () => {
                 Representation = ActionResultRepresentation.Create(oidStrategy, req, actionResultContext, flags);
@@ -72,7 +73,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
             populator = () => {
                 Representation = ListRepresentation.Create(oidStrategy, listContext, req, flags);
@@ -80,7 +81,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
             populator = () => {
                 Representation = ListRepresentation.Create(oidStrategy, menus, req, flags);
@@ -88,7 +89,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
             populator = () => {
                 Representation = PromptRepresentation.Create(oidStrategy, propertyContext, req, flags);
@@ -96,7 +97,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, ParameterContextFacade parmContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, ParameterContextFacade parmContext, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
             populator = () => {
                 Representation = PromptRepresentation.Create(oidStrategy, parmContext, req, flags);
@@ -104,7 +105,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequestMessage req, RestControlFlags flags, bool value)
+        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags, bool value)
             : this(oidStrategy, propertyContext, req, false) {
             FilterBlobsAndClobs(propertyContext, flags);
             populator = () => {
@@ -119,7 +120,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, ActionContextFacade actionContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, ActionContextFacade actionContext, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, actionContext, req, true) {
             populator = () => {
                 Representation = ActionRepresentation.Create(oidStrategy, req, actionContext, flags);
@@ -127,7 +128,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
 
             populator = () => {
@@ -136,7 +137,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, IDictionary<string, string> capabilities, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, IDictionary<string, string> capabilities, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
 
             populator = () => {
@@ -145,7 +146,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, IPrincipal user, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, IPrincipal user, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
 
             populator = () => {
@@ -154,7 +155,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, TypeActionInvokeContext typeActionInvokeContext, HttpRequestMessage req, RestControlFlags flags)
+        public RestSnapshot(IOidStrategy oidStrategy, TypeActionInvokeContext typeActionInvokeContext, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
 
             populator = () => {
@@ -163,7 +164,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, Exception exception, HttpRequestMessage req)
+        public RestSnapshot(IOidStrategy oidStrategy, Exception exception, HttpRequest req)
             : this(oidStrategy, req, true) {
 
             populator = () => {
@@ -213,7 +214,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return msg;
         }
 
-        private static void CheckForRedirection(IOidStrategy oidStrategy, ContextFacade context, HttpRequestMessage req) {
+        private static void CheckForRedirection(IOidStrategy oidStrategy, ContextFacade context, HttpRequest req) {
             var ocs = context as ObjectContextFacade;
             var arcs = context as ActionResultContextFacade;
             Tuple<string, string> redirected = (ocs != null ? ocs.Redirected : null) ?? (arcs?.Result != null ? arcs.Result.Redirected : null);
@@ -246,9 +247,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         }
 
         public bool RequestingAttachment() {
-            HttpHeaderValueCollection<MediaTypeWithQualityHeaderValue> incomingMediaTypes = requestMessage.Headers.Accept;
+            var incomingMediaTypes = requestMessage.Headers["Accept"];
 
-            if (!incomingMediaTypes.Any() || incomingMediaTypes.Any(mt => RestUtils.IsJsonMediaType(mt.MediaType))) {
+            if (!incomingMediaTypes.Any() || incomingMediaTypes.Any(RestUtils.IsJsonMediaType)) {
                 return false;
             }
 
@@ -257,9 +258,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public void ValidateIncomingMediaTypeAsJson() {
             if (AcceptHeaderStrict) {
-                HttpHeaderValueCollection<MediaTypeWithQualityHeaderValue> incomingMediaTypes = requestMessage.Headers.Accept;
+                var incomingMediaTypes = requestMessage.Headers["Accept"];
 
-                if (!incomingMediaTypes.Any() || incomingMediaTypes.Any(mt => RestUtils.IsJsonMediaType(mt.MediaType))) {
+                if (!incomingMediaTypes.Any() || incomingMediaTypes.Any(RestUtils.IsJsonMediaType)) {
                     return;
                 }
 
@@ -281,7 +282,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         private void ValidateOutgoingAttachmentMediaType() {
             var contentType = Representation.GetContentType();
 
-            List<string> incomingMediaTypes = requestMessage.Headers.Accept.Select(a => a.MediaType).ToList();
+            var incomingMediaTypes = requestMessage.Headers["Accept"];
             string outgoingMediaType = contentType == null ? "" : contentType.MediaType;
 
             if (!incomingMediaTypes.Contains(outgoingMediaType)) {
@@ -291,7 +292,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         private void ValidateOutgoingJsonMediaType() {
             var contentType = Representation.GetContentType();
-            List<NameValueHeaderValue> incomingParameters = requestMessage.Headers.Accept.SelectMany(a => a.Parameters).ToList();
+            var acceptParms = requestMessage.Headers["Accept"].Select(p => new MediaTypeHeaderValue(p));
+            List<NameValueHeaderValue> incomingParameters = acceptParms.SelectMany(a => a.Parameters).ToList();
 
             string[] incomingProfiles = incomingParameters.Where(nv => nv.Name == "profile").Select(nv => nv.Value).Distinct().ToArray();
             string[] outgoingProfiles = contentType != null ? contentType.Parameters.Where(nv => nv.Name == "profile").Select(nv => nv.Value).Distinct().ToArray() : new string[] {};
@@ -308,7 +310,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             }
         }
 
-        private void MapToRepresentation(Exception e, HttpRequestMessage req) {
+        private void MapToRepresentation(Exception e, HttpRequest req) {
             if (e is WithContextNOSException) {
                 ArgumentsRepresentation.Format format = e is BadPersistArgumentsException ? ArgumentsRepresentation.Format.Full : ArgumentsRepresentation.Format.MembersOnly;
                 RestControlFlags flags = e is BadPersistArgumentsException ? ((BadPersistArgumentsException) e).Flags : RestControlFlags.DefaultFlags();

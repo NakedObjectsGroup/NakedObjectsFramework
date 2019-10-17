@@ -5,9 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -16,7 +15,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class ScalarRepresentation : Representation {
-        protected ScalarRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextFacade objectContext, RestControlFlags flags)
+        protected ScalarRepresentation(IOidStrategy oidStrategy, HttpRequest req, ObjectContextFacade objectContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetScalars(objectContext);
             SetLinks(req, objectContext);
@@ -36,7 +35,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Value = RestUtils.ObjectToPredefinedType(objectContext.Target.Object);
         }
 
-        private void SetLinks(HttpRequestMessage req, ObjectContextFacade objectContext) {
+        private void SetLinks(HttpRequest req, ObjectContextFacade objectContext) {
             Links = new LinkRepresentation[] {};
         }
 
@@ -44,7 +43,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Extensions = MapRepresentation.Create();
         }
 
-        public static ScalarRepresentation Create(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags) {
+        public static ScalarRepresentation Create(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
             return new ScalarRepresentation(oidStrategy, req, objectContext, flags);
         }
     }

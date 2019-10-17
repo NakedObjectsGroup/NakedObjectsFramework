@@ -5,8 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -43,7 +43,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             SetEtag(target);
         }
 
-        public static ActionRepresentation Create(IOidStrategy oidStrategy, HttpRequestMessage req, ActionContextFacade actionContext, RestControlFlags flags) {
+        public static ActionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) {
             var actionRepresentationStrategy = AbstractActionRepresentationStrategy.GetStrategy(false, oidStrategy, req, actionContext, flags);
 
             return new ActionRepresentation(oidStrategy, actionRepresentationStrategy);

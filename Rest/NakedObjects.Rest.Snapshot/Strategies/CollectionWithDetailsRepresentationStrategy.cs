@@ -7,7 +7,7 @@
 
 using System;
 using System.Linq;
-using System.Net.Http;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Representations;
@@ -15,7 +15,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest.Snapshot.Strategies {
     public class CollectionWithDetailsRepresentationStrategy : AbstractCollectionRepresentationStrategy {
-        public CollectionWithDetailsRepresentationStrategy(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags)
+        public CollectionWithDetailsRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy, req, propertyContext, flags) {}
 
         public override LinkRepresentation[] GetValue() {

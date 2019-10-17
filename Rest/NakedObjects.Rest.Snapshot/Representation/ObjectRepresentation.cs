@@ -6,10 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Net.Http;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Translation;
@@ -19,7 +18,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class ObjectRepresentation : Representation {
-        protected ObjectRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextFacade objectContext, RestControlFlags flags)
+        protected ObjectRepresentation(IOidStrategy oidStrategy, HttpRequest req, ObjectContextFacade objectContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             var objectUri = GetHelper(oidStrategy, req, objectContext);
             SetScalars(objectContext);
@@ -41,7 +40,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Members)]
         public MapRepresentation Members { get; set; }
 
-        private UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequestMessage req, ObjectContextFacade objectContext) {
+        private UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequest req, ObjectContextFacade objectContext) {
             return new UriMtHelper(oidStrategy, req, objectContext.Target);
         }
 
@@ -63,7 +62,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
 
-        private LinkRepresentation[] CreateIsOfTypeLinks(HttpRequestMessage req, ObjectContextFacade objectContext) {
+        private LinkRepresentation[] CreateIsOfTypeLinks(HttpRequest req, ObjectContextFacade objectContext) {
             var spec = objectContext.Target.Specification;
 
             return new[] {
@@ -77,7 +76,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
 
-        private void SetLinksAndMembers(HttpRequestMessage req, ObjectContextFacade objectContext) {
+        private void SetLinksAndMembers(HttpRequest req, ObjectContextFacade objectContext) {
             var tempLinks = new List<LinkRepresentation>();
             if (!objectContext.Mutated && !IsProtoPersistent(objectContext.Target)) {
                 tempLinks.Add(LinkRepresentation.Create(OidStrategy, SelfRelType, Flags));
@@ -91,7 +90,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Links = tempLinks.ToArray();
         }
 
-        private void SetMembers(ObjectContextFacade objectContext, HttpRequestMessage req, List<LinkRepresentation> tempLinks) {
+        private void SetMembers(ObjectContextFacade objectContext, HttpRequest req, List<LinkRepresentation> tempLinks) {
             PropertyContextFacade[] visiblePropertiesAndCollections = objectContext.VisibleProperties;
 
             if (!Flags.BlobsClobs) {
@@ -203,12 +202,12 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                            useDateOverDateTime: false);
         }
 
-        public static ObjectRepresentation Create(IOidStrategy oidStrategy, IObjectFacade target, HttpRequestMessage req, RestControlFlags flags) {
+        public static ObjectRepresentation Create(IOidStrategy oidStrategy, IObjectFacade target, HttpRequest req, RestControlFlags flags) {
             ObjectContextFacade oc = target.FrameworkFacade.GetObject(target);
             return Create(oidStrategy, oc, req, flags);
         }
 
-        public static ObjectRepresentation Create(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags) {
+        public static ObjectRepresentation Create(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
             if (objectContext.Target != null && (objectContext.Specification.IsService || !IsProtoPersistent(objectContext.Target))) {
                 return CreateObjectWithOptionals(oidStrategy, objectContext, req, flags);
             }
@@ -216,7 +215,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return new ObjectRepresentation(oidStrategy, req, objectContext, flags);
         }
 
-        private static ObjectRepresentation CreateObjectWithOptionals(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequestMessage req, RestControlFlags flags) {
+        private static ObjectRepresentation CreateObjectWithOptionals(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
             IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectContext.Target);
 
             var props = new List<OptionalProperty>();

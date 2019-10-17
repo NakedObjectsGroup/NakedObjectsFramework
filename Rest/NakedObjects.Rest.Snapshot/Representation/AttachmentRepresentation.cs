@@ -10,6 +10,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Utility;
@@ -18,7 +19,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
     public class AttachmentRepresentation : Representation {
         private MediaTypeHeaderValue contentType;
 
-        public AttachmentRepresentation(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags)
+        public AttachmentRepresentation(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             SetContentType(propertyContext);
             SetContentDisposition(propertyContext);
@@ -69,7 +70,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             AsStream = no != null ? no.GetAttachment().Content : new MemoryStream();
         }
 
-        public static Representation Create(IOidStrategy oidStrategy, HttpRequestMessage req, PropertyContextFacade propertyContext, RestControlFlags flags) {
+        public static Representation Create(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
             return new AttachmentRepresentation(oidStrategy, req, propertyContext, flags);
         }
     }
