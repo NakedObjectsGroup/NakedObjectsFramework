@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Rest", "Rest\N
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.Test.Data", "Rest\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj", "{5885B9A9-4548-439F-8A6A-FB7530DBC4B0}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NakedObjects.Rest.Test", "Rest\NakedObjects.Rest.Test\NakedObjects.Rest.Test.fsproj", "{1E50C9C5-8907-482E-8155-3E5499EB57AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5885B9A9-4548-439F-8A6A-FB7530DBC4B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5885B9A9-4548-439F-8A6A-FB7530DBC4B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5885B9A9-4548-439F-8A6A-FB7530DBC4B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E50C9C5-8907-482E-8155-3E5499EB57AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E50C9C5-8907-482E-8155-3E5499EB57AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E50C9C5-8907-482E-8155-3E5499EB57AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E50C9C5-8907-482E-8155-3E5499EB57AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,17 +8,10 @@
     <Compile Remove="Model\AbstractModelBinder.cs" />
     <Compile Remove="Model\ArgumentMapBinder.cs" />
     <Compile Remove="Model\ArgumentMapUrlBinder.cs" />
-    <Compile Remove="Model\AttachmentValue.cs" />
-    <Compile Remove="Model\FileValue.cs" />
-    <Compile Remove="Model\JsonFileAdapter.cs" />
-    <Compile Remove="Model\ListValue.cs" />
-    <Compile Remove="Model\ModelBinderUtils.cs" />
     <Compile Remove="Model\PersistArgumentMapBinder.cs" />
     <Compile Remove="Model\PostedFileAdapter.cs" />
     <Compile Remove="Model\PromptArgumentMapBinder.cs" />
-    <Compile Remove="Model\ReferenceValue.cs" />
     <Compile Remove="Model\ReservedArgumentsBinder.cs" />
-    <Compile Remove="Model\ScalarValue.cs" />
     <Compile Remove="Model\SingleValueArgumentBinder.cs" />
     <Compile Remove="Model\SingleValueArgumentUrlBinder.cs" />
   </ItemGroup>
