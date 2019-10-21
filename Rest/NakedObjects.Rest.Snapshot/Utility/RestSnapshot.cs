@@ -16,6 +16,7 @@ using System.Security.Principal;
 using System.Web.Http;
 using Common.Logging;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Headers;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -247,9 +248,11 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         }
 
         public bool RequestingAttachment() {
-            var incomingMediaTypes = requestMessage.Headers["Accept"];
+            var headers = new RequestHeaders(requestMessage.Headers);
 
-            if (!incomingMediaTypes.Any() || incomingMediaTypes.Any(RestUtils.IsJsonMediaType)) {
+            var incomingMediaTypes = headers.Accept;
+
+            if (!incomingMediaTypes.Any() || incomingMediaTypes.Any(mt => RestUtils.IsJsonMediaType(mt.MediaType.ToString()))) {
                 return false;
             }
 
@@ -258,9 +261,10 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public void ValidateIncomingMediaTypeAsJson() {
             if (AcceptHeaderStrict) {
-                var incomingMediaTypes = requestMessage.Headers["Accept"];
+                var headers = new RequestHeaders(requestMessage.Headers);
+                var incomingMediaTypes = headers.Accept;
 
-                if (!incomingMediaTypes.Any() || incomingMediaTypes.Any(RestUtils.IsJsonMediaType)) {
+                if (!incomingMediaTypes.Any() || incomingMediaTypes.Any(mt => RestUtils.IsJsonMediaType(mt.MediaType.ToString()))) {
                     return;
                 }
 
@@ -281,8 +285,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         private void ValidateOutgoingAttachmentMediaType() {
             var contentType = Representation.GetContentType();
+            var headers = new RequestHeaders(requestMessage.Headers);
 
-            var incomingMediaTypes = requestMessage.Headers["Accept"];
+            var incomingMediaTypes = headers.Accept.Select(a => a.MediaType).ToList();
             string outgoingMediaType = contentType == null ? "" : contentType.MediaType;
 
             if (!incomingMediaTypes.Contains(outgoingMediaType)) {
@@ -292,11 +297,11 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         private void ValidateOutgoingJsonMediaType() {
             var contentType = Representation.GetContentType();
-            var acceptParms = requestMessage.Headers["Accept"].Select(p => new MediaTypeHeaderValue(p));
-            List<NameValueHeaderValue> incomingParameters = acceptParms.SelectMany(a => a.Parameters).ToList();
+            var headers = new RequestHeaders(requestMessage.Headers);
+            var incomingParameters = headers.Accept.SelectMany(a => a.Parameters).ToList();
 
-            string[] incomingProfiles = incomingParameters.Where(nv => nv.Name == "profile").Select(nv => nv.Value).Distinct().ToArray();
-            string[] outgoingProfiles = contentType != null ? contentType.Parameters.Where(nv => nv.Name == "profile").Select(nv => nv.Value).Distinct().ToArray() : new string[] {};
+            string[] incomingProfiles = incomingParameters.Where(nv => nv.Name.ToString() == "profile").Select(nv => nv.Value.ToString()).Distinct().ToArray();
+            string[] outgoingProfiles = contentType != null ? contentType.Parameters.Where(nv => nv.Name == "profile").Select(nv => nv.Value).Distinct().ToArray() : new string[] { };
 
             if (incomingProfiles.Any() && outgoingProfiles.Any() && !outgoingProfiles.Intersect(incomingProfiles).Any()) {
                 if (outgoingProfiles.Contains(UriMtHelper.GetJsonMediaType(RepresentationTypes.Error).Parameters.First().Value)) {

@@ -13,11 +13,10 @@ using System.Net.Http;
 using System.Web.Http;
 using Common.Logging;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Constraints;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.AspNetCore.Routing;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Media;
@@ -706,9 +705,10 @@ namespace NakedObjects.Rest {
         }
 
         private string GetIfMatchTag() {
+            var headers = new RequestHeaders(Request.Headers);
 
-            if (Request.Headers.IfMatch.Any()) {
-                string quotedTag = Request.Headers.IfMatch.First().Tag;
+            if (headers.IfMatch.Any()) {
+                string quotedTag = headers.IfMatch.First().Tag.ToString();
                 return quotedTag.Replace("\"", "");
             }
 
@@ -950,7 +950,7 @@ namespace NakedObjects.Rest {
                 SearchTerm = arguments.SearchTerm,
                 Page = arguments.Page,
                 PageSize = arguments.PageSize,
-                ExpectedActionType = GetExpectedMethodType(Request.Method)
+                ExpectedActionType = GetExpectedMethodType(new HttpMethod(Request.Method))
             }, valuesAndFlags.Item2);
         }
 
