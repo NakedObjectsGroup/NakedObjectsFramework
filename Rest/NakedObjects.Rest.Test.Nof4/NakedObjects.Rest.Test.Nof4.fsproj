@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.Rest.App\NakedObjects.Rest.App.csproj" />
     <ProjectReference Include="..\NakedObjects.Rest.Snapshot\NakedObjects.Rest.Snapshot.csproj" />
     <ProjectReference Include="..\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj" />
     <ProjectReference Include="..\NakedObjects.Rest.Test\NakedObjects.Rest.Test.fsproj" />

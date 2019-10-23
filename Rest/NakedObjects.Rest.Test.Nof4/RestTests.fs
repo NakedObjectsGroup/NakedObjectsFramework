@@ -30,6 +30,7 @@ open NakedObjects.Facade.Interface
 open NakedObjects.Architecture.Menu
 open NakedObjects.Menu
 open Unity.Lifetime
+open NakedObjects.Rest.App.Controllers
 
 [<TestFixture>]
 type ANof4Tests() = 
@@ -139,7 +140,7 @@ type ANof4Tests() =
             let menu3 = factory.NewMenu<ContributorService>(true)
             [| menu1; menu2; menu3 |]
         
-        member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()
+        member x.api =  x.GetConfiguredContainer().Resolve(typeof<RestfulObjectsController>, "") :?> RestfulObjectsController
         
         [<Test; Ignore("")>]
         member x.GetHomePage() = HomePage5.GetHomePage x.api
