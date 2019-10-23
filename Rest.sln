@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.Test.Data
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NakedObjects.Rest.Test", "Rest\NakedObjects.Rest.Test\NakedObjects.Rest.Test.fsproj", "{1E50C9C5-8907-482E-8155-3E5499EB57AD}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NakedObjects.Rest.Test.Nof4", "Rest\NakedObjects.Rest.Test.Nof4\NakedObjects.Rest.Test.Nof4.fsproj", "{F7CDCF62-9482-4C0C-9CF4-715585347F33}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{1E50C9C5-8907-482E-8155-3E5499EB57AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E50C9C5-8907-482E-8155-3E5499EB57AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E50C9C5-8907-482E-8155-3E5499EB57AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7CDCF62-9482-4C0C-9CF4-715585347F33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7CDCF62-9482-4C0C-9CF4-715585347F33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7CDCF62-9482-4C0C-9CF4-715585347F33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7CDCF62-9482-4C0C-9CF4-715585347F33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

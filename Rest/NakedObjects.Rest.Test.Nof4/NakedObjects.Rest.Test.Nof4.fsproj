@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="RestTestsHelpers.fs" />
+    <Compile Include="RestTests.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NakedObjects.Core" Version="11.0.0-beta01" />
+    <PackageReference Include="NakedObjects.Facade" Version="11.0.0-beta01" />
+    <PackageReference Include="NakedObjects.Facade.Impl" Version="11.0.0-beta01" />
+    <PackageReference Include="NakedObjects.ProgrammingModel" Version="11.0.0-beta01" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.Rest.Snapshot\NakedObjects.Rest.Snapshot.csproj" />
+    <ProjectReference Include="..\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj" />
+    <ProjectReference Include="..\NakedObjects.Rest.Test\NakedObjects.Rest.Test.fsproj" />
+    <ProjectReference Include="..\NakedObjects.Rest\NakedObjects.Rest.csproj" />
+  </ItemGroup>
+
+</Project>
