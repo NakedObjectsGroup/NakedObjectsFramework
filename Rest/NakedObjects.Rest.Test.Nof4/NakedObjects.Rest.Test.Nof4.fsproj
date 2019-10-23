@@ -5,9 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="testhost.dll.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Compile Include="RestTestsHelpers.fs" />
     <Compile Include="RestTests.fs" />
   </ItemGroup>
+
+  <ItemGroup />
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />

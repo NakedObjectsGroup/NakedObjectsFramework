@@ -136,6 +136,11 @@ let jsonSetMsgAndMediaType (msg : HttpRequest)  mt (url : string) =
     msg.Method <- HttpMethod.Get.ToString()
     let accept = new MediaTypeHeaderValue(mt)
     msg.Headers.Add("Accept", new StringValues(accept.ToString()))
+    let uri = new Uri(url)
+    msg.Scheme <- "http"
+    msg.Host <- new HostString(uri.Host)
+    msg.Path <- new PathString(uri.PathAndQuery)
+
     //msg.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(mt))
     //msg
 
