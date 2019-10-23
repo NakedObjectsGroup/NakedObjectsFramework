@@ -142,7 +142,7 @@ type ANof4Tests() =
         
         member x.api =  x.GetConfiguredContainer().Resolve(typeof<RestfulObjectsController>, "") :?> RestfulObjectsController
         
-        [<Test; Ignore("")>]
+        [<Test>]
         member x.GetHomePage() = HomePage5.GetHomePage x.api
         
     //    [<Test>]
