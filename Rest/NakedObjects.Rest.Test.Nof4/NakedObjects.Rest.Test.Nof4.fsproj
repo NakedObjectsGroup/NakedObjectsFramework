@@ -14,6 +14,7 @@
     <PackageReference Include="NakedObjects.Facade" Version="11.0.0-beta01" />
     <PackageReference Include="NakedObjects.Facade.Impl" Version="11.0.0-beta01" />
     <PackageReference Include="NakedObjects.ProgrammingModel" Version="11.0.0-beta01" />
+    <PackageReference Include="NakedObjects.Xat" Version="11.0.0-beta01" />
   </ItemGroup>
 
   <ItemGroup>
