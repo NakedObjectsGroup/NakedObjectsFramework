@@ -9,15 +9,9 @@ module HomePage5
 open NUnit.Framework
 open NakedObjects.Rest
 open System.Net
-open System.Net.Http.Headers
 open Newtonsoft.Json.Linq
 open NakedObjects.Rest.Snapshot.Constants
-open System.Web.Http
-open System.Linq
 open RestTestFunctions
-open Microsoft.AspNetCore.Http.Headers
-open Microsoft.AspNetCore.Http
-open Microsoft.AspNetCore.Mvc
 
 let simpleLinks = 
     [ TObjectJson(makeGetLinkProp RelValues.Self SegmentValues.HomePage RepresentationTypes.HomePage "")
@@ -26,19 +20,14 @@ let simpleLinks =
       TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Menus SegmentValues.Menus RepresentationTypes.List "" "System.Object" true)
       TObjectJson(makeGetLinkProp RelValues.Version SegmentValues.Version RepresentationTypes.Version "") ]
 
-
 let expectedSimple = 
     [ TProperty(JsonPropertyNames.Links, TArray(simpleLinks))
       TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
 let GetHomePage(api : RestfulObjectsControllerBase) = 
-    let mockContext = new ControllerContext()
-    mockContext.HttpContext <- new DefaultHttpContext()
-    api.ControllerContext <- mockContext
-   
+    setMockContext api
     let url = testRoot
-    //api.Request <- jsonGetMsg (url)
-    jsonSetMsgAndMediaType api.Request "application/json" url
+    jsonSetMsg api.Request url
     let args = CreateReservedArgs ""
     let result = api.GetHome(args)
     let jsonResult = readSnapshotToJson result

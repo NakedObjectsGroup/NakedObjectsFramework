@@ -18,6 +18,8 @@ open System.Linq
 open NakedObjects.Rest.Model
 open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.Primitives
+open NakedObjects.Rest
+open Microsoft.AspNetCore.Mvc
 
 let mapCodeToType (code : string) : string = code
 let mapTypeToCode (typ : string) : string = typ
@@ -130,9 +132,12 @@ let ComputeMD5HashFromString(s : string) =
 //    let abs = Math.Abs(i)
 //    abs.ToString(System.Globalization.CultureInfo.InvariantCulture)
 
+let setMockContext (api : RestfulObjectsControllerBase) = 
+    let mockContext = new ControllerContext()
+    mockContext.HttpContext <- new DefaultHttpContext()
+    api.ControllerContext <- mockContext
 
 let jsonSetMsgAndMediaType (msg : HttpRequest)  mt (url : string) = 
-    //let message = new HttpRequest(HttpMethod.Get, url)
     msg.Method <- HttpMethod.Get.ToString()
     let accept = new MediaTypeHeaderValue(mt)
     msg.Headers.Add("Accept", new StringValues(accept.ToString()))
@@ -150,6 +155,8 @@ let jsonSetMsgAndMediaType (msg : HttpRequest)  mt (url : string) =
 //    message
 
 //let jsonGetMsg url = jsonGetMsgAndMediaType "application/json" url
+
+let jsonSetMsg msg url = jsonSetMsgAndMediaType msg "application/json" url
 
 //let jsonGetMsgAndTag (url : string) tag = 
 //    let message = jsonGetMsgAndMediaType "application/json" url
