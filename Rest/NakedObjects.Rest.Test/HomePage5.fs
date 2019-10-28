@@ -37,40 +37,38 @@ let GetHomePage(api : RestfulObjectsControllerBase) =
     // assertNonExpiringCache result
     compareObject expectedSimple parsedResult
 
+let GetHomePageWithMediaType(api : RestfulObjectsControllerBase) =
+    setMockContext api
+    let url = testRoot
+    jsonSetMsgWithProfile api.Request url RepresentationTypes.HomePage
+    let args = CreateReservedArgs ""
+    let result = api.GetHome(args)
+    let jsonResult = readSnapshotToJson result
+    let parsedResult = JObject.Parse(jsonResult)
+    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+    Assert.AreEqual(new typeType(RepresentationTypes.HomePage), result.Content.Headers.ContentType)
+    //assertNonExpiringCache result
+    compareObject expectedSimple parsedResult
 
-//let GetHomePageWithMediaType(api : RestfulObjectsControllerBase) = 
-//    let url = testRoot
-//    let msg = jsonGetMsg (url)
-//    let args = CreateReservedArgs ""
-//    msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue("profile", (makeProfile RepresentationTypes.HomePage)))
-//    api.Request <- msg
-//    let result = api.GetHome(args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.HomePage), result.Content.Headers.ContentType)
-//    assertNonExpiringCache result
-//    compareObject expectedSimple parsedResult
+// 406   
+let NotAcceptableGetHomePage(api : RestfulObjectsControllerBase) = 
+    setMockContext api
+    let url = testRoot
+    jsonSetMsgWithProfile api.Request url RepresentationTypes.User
+    try 
+        let args = CreateReservedArgs ""
+        api.GetHome(args) |> ignore
+        Assert.Fail("expect exception")
+    with :? System.Web.Http.HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)
 
-//// 406   
-//let NotAcceptableGetHomePage(api : RestfulObjectsControllerBase) = 
-//    let url = testRoot
-//    let msg = jsonGetMsg (url)
-//    msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue("profile", (makeProfile RepresentationTypes.User)))
-//    try 
-//        let args = CreateReservedArgs ""
-//        api.Request <- msg
-//        api.GetHome(args) |> ignore
-//        Assert.Fail("expect exception")
-//    with :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)
-
-//let InvalidDomainModelGetHomePage(api : RestfulObjectsControllerBase) = 
-//    let argS = "x-ro-domain-model=invalid"
-//    let url = sprintf "%s?%s" testRoot argS
-//    let args = CreateReservedArgs argS
-//    api.Request <- jsonGetMsg (url)
-//    let result = api.GetHome(args)
-//    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Invalid domainModel: invalid\"", result.Headers.Warning.ToString())
-//    Assert.AreEqual("", jsonResult)
+let InvalidDomainModelGetHomePage(api : RestfulObjectsControllerBase) = 
+    setMockContext api
+    let argS = "x-ro-domain-model=invalid"    
+    let url = sprintf "%s?%s" testRoot argS
+    jsonSetMsg api.Request url  
+    let args = CreateReservedArgs argS
+    let result = api.GetHome(args)
+    let jsonResult = readSnapshotToJson result
+    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+    Assert.AreEqual("199 RestfulObjects \"Invalid domainModel: invalid\"", result.Headers.Warning.ToString())
+    Assert.AreEqual("", jsonResult)

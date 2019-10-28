@@ -9,7 +9,6 @@ module RestTestFunctions
 
 open System
 open System.Net.Http
-open System.Net.Http.Headers
 open System.IO
 open Newtonsoft.Json.Linq
 open NakedObjects.Rest.Snapshot.Constants
@@ -20,6 +19,7 @@ open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.Primitives
 open NakedObjects.Rest
 open Microsoft.AspNetCore.Mvc
+open Microsoft.Net.Http.Headers
 
 let mapCodeToType (code : string) : string = code
 let mapTypeToCode (typ : string) : string = typ
@@ -137,9 +137,11 @@ let setMockContext (api : RestfulObjectsControllerBase) =
     mockContext.HttpContext <- new DefaultHttpContext()
     api.ControllerContext <- mockContext
 
-let jsonSetMsgAndMediaType (msg : HttpRequest)  mt (url : string) = 
+let jsonSetMsgAndMediaType (msg : HttpRequest) url mt repType = 
     msg.Method <- HttpMethod.Get.ToString()
-    let accept = new MediaTypeHeaderValue(mt)
+    let accept = new MediaTypeHeaderValue(new StringSegment(mt))
+    if not (repType = "") then 
+        accept.Parameters.Add(new NameValueHeaderValue(new StringSegment("profile"), (makeProfile repType)))
     msg.Headers.Add("Accept", new StringValues(accept.ToString()))
     let uri = new Uri(url)
     msg.Scheme <- "http"
@@ -156,7 +158,9 @@ let jsonSetMsgAndMediaType (msg : HttpRequest)  mt (url : string) =
 
 //let jsonGetMsg url = jsonGetMsgAndMediaType "application/json" url
 
-let jsonSetMsg msg url = jsonSetMsgAndMediaType msg "application/json" url
+let jsonSetMsg msg url = jsonSetMsgAndMediaType msg url "application/json" ""
+
+let jsonSetMsgWithProfile msg url repType = jsonSetMsgAndMediaType msg url "application/json" repType
 
 //let jsonGetMsgAndTag (url : string) tag = 
 //    let message = jsonGetMsgAndMediaType "application/json" url
@@ -172,84 +176,84 @@ let msgWithContent url content =
     message.Content.Headers.ContentLength <- Nullable(int64(content.Length))
     message
 
-let msgWithoutContent url  = 
-    let message = new HttpRequestMessage()
-    message.RequestUri <- new Uri(url)
-    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"))
-    //message.Content.Headers.ContentLength <- Nullable(int64(0))
-    message
+//let msgWithoutContent url  = 
+//    let message = new HttpRequestMessage()
+//    message.RequestUri <- new Uri(url)
+//    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"))
+//    //message.Content.Headers.ContentLength <- Nullable(int64(0))
+//    message
 
-let msgWithoutContentWithTag url tag  = 
-    let message = new HttpRequestMessage()
-    message.RequestUri <- new Uri(url)
-    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"))
-    message.Headers.IfMatch.Add(new EntityTagHeaderValue(tag))
-    //message.Content.Headers.ContentLength <- Nullable(int64(0))
-    message
+//let msgWithoutContentWithTag url tag  = 
+//    let message = new HttpRequestMessage()
+//    message.RequestUri <- new Uri(url)
+//    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"))
+//    message.Headers.IfMatch.Add(new EntityTagHeaderValue(tag))
+//    //message.Content.Headers.ContentLength <- Nullable(int64(0))
+//    message
 
-let jsonMsgWithContent url content = 
-    let message = msgWithContent url content 
-    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"))
-   // message.Content.Headers.ContentType <- new MediaTypeWithQualityHeaderValue("application/json")
-    message
+//let jsonMsgWithContent url content = 
+//    let message = msgWithContent url content 
+//    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"))
+//   // message.Content.Headers.ContentType <- new MediaTypeWithQualityHeaderValue("application/json")
+//    message
 
-let jsonMsgWithContentAndTag url content tag = 
-    let message = msgWithContent url content 
-    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"))
-    message.Headers.IfMatch.Add(new EntityTagHeaderValue(tag))
-   // message.Content.Headers.ContentType <- new MediaTypeWithQualityHeaderValue("application/json")
-    message
+//let jsonMsgWithContentAndTag url content tag = 
+//    let message = msgWithContent url content 
+//    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"))
+//    message.Headers.IfMatch.Add(new EntityTagHeaderValue(tag))
+//   // message.Content.Headers.ContentType <- new MediaTypeWithQualityHeaderValue("application/json")
+//    message
 
-let xmlMsgWithContent url content = 
-    let message = msgWithContent url content 
-    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"))
-    //message.Content.Headers.ContentType <- new MediaTypeWithQualityHeaderValue("application/xml")
-    message
+//let xmlMsgWithContent url content = 
+//    let message = msgWithContent url content 
+//    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"))
+//    //message.Content.Headers.ContentType <- new MediaTypeWithQualityHeaderValue("application/xml")
+//    message
 
-let jsonPostMsg url content = 
-    let message = jsonMsgWithContent url content
-    message.Method <- HttpMethod.Post
-    message
+//let jsonPostMsg url content = 
+//    let message = jsonMsgWithContent url content
+//    message.Method <- HttpMethod.Post
+//    message
 
-let jsonPostMsgAndTag url content tag = 
-    let message = jsonMsgWithContentAndTag url content tag
-    message.Method <- HttpMethod.Post
-    message
+//let jsonPostMsgAndTag url content tag = 
+//    let message = jsonMsgWithContentAndTag url content tag
+//    message.Method <- HttpMethod.Post
+//    message
 
-let jsonDeleteMsg url  = 
-    let message = msgWithoutContent url
-    message.Method <- HttpMethod.Delete
-    message
+//let jsonDeleteMsg url  = 
+//    let message = msgWithoutContent url
+//    message.Method <- HttpMethod.Delete
+//    message
 
-let jsonDeleteMsgAndTag url tag = 
-    let message = msgWithoutContentWithTag url tag
-    message.Method <- HttpMethod.Delete
-    message
+//let jsonDeleteMsgAndTag url tag = 
+//    let message = msgWithoutContentWithTag url tag
+//    message.Method <- HttpMethod.Delete
+//    message
 
-let jsonPutMsg url content = 
-    let message = jsonMsgWithContent url content
-    message.Method <- HttpMethod.Put
-    message
+//let jsonPutMsg url content = 
+//    let message = jsonMsgWithContent url content
+//    message.Method <- HttpMethod.Put
+//    message
 
-let jsonPutMsgAndTag url content tag = 
-    let message = jsonMsgWithContentAndTag url content tag
-    message.Method <- HttpMethod.Put
-    message
+//let jsonPutMsgAndTag url content tag = 
+//    let message = jsonMsgWithContentAndTag url content tag
+//    message.Method <- HttpMethod.Put
+//    message
 
-let xmlPutMsg url content = 
-    let message = xmlMsgWithContent url content
-    message.Method <- HttpMethod.Put
-    message
+//let xmlPutMsg url content = 
+//    let message = xmlMsgWithContent url content
+//    message.Method <- HttpMethod.Put
+//    message
 
-let xmlDeleteMsg url content = 
-    let message = xmlMsgWithContent url content
-    message.Method <- HttpMethod.Delete
-    message
+//let xmlDeleteMsg url content = 
+//    let message = xmlMsgWithContent url content
+//    message.Method <- HttpMethod.Delete
+//    message
 
-let xmlPostMsg url content = 
-    let message = xmlMsgWithContent url content
-    message.Method <- HttpMethod.Post
-    message
+//let xmlPostMsg url content = 
+//    let message = xmlMsgWithContent url content
+//    message.Method <- HttpMethod.Post
+//    message
 
 let readSnapshotToJson (ss : HttpResponseMessage) = 
     // ReasAsStringAsync seems to hang so need to do this ......

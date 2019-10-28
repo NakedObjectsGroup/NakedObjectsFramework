@@ -145,14 +145,14 @@ type ANof4Tests() =
         [<Test>]
         member x.GetHomePage() = HomePage5.GetHomePage x.api
         
-    //    [<Test>]
-    //    member x.GetHomePageWithMediaType() = HomePage5.GetHomePageWithMediaType x.api
+        [<Test>]
+        member x.GetHomePageWithMediaType() = HomePage5.GetHomePageWithMediaType x.api
         
-    //    [<Test>]
-    //    member x.NotAcceptableGetHomePage() = HomePage5.NotAcceptableGetHomePage x.api
+        [<Test>]
+        member x.NotAcceptableGetHomePage() = HomePage5.NotAcceptableGetHomePage x.api
         
-    //    [<Test>]
-    //    member x.InvalidDomainModelGetHomePage() = HomePage5.InvalidDomainModelGetHomePage x.api
+        [<Test>]
+        member x.InvalidDomainModelGetHomePage() = HomePage5.InvalidDomainModelGetHomePage x.api
         
     //    [<Test>]
     //    member x.GetUser() = User6.GetUser x.api
