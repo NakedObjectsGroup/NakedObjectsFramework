@@ -213,7 +213,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.DomainTypes + "/{type}");
             //return template.BindByPosition(prefix, type);
 
-            return new Uri($"{prefix}/{SegmentValues.DomainTypes}/{type}");
+            return new Uri($"{prefix}{SegmentValues.DomainTypes}/{type}");
         }
 
         public Uri GetDomainTypeUri() {
@@ -228,7 +228,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.DomainTypes + "/{id}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Params + "/{paramId}");
             //return template.BindByPosition(prefix, CachedType, action.Id, param.Id);
 
-            return new Uri($"{prefix}/{SegmentValues.DomainTypes}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
+            return new Uri($"{prefix}{SegmentValues.DomainTypes}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
         }
 
         public Uri GetObjectParamUri() {
@@ -239,7 +239,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.Objects + "/{typeId}/{instanceId}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Params + "/{paramId}");
             //return template.BindByPosition(prefix, CachedType, cachedId, action.Id, param.Id);
 
-            return new Uri($"{prefix}/{SegmentValues.Objects}/{CachedType}/{cachedId}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
+            return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
         }
 
         public Uri GetServiceParamUri() {
@@ -250,7 +250,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.Services + "/{oid}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Params + "/{paramId}");
             //return template.BindByPosition(prefix, CachedType, action.Id, param.Id);
 
-            return new Uri($"{prefix}/{SegmentValues.Objects}/{CachedType}/{cachedId}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
+            return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
         }
 
         public Uri GetParamUri() {
@@ -264,7 +264,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.DomainTypes + "/{id}/" + SegmentValues.TypeActions + "/{action}/" + SegmentValues.Invoke);
             //return template.BindByPosition(prefix, CachedType, typeAction);
 
-            return new Uri($"{prefix}/{SegmentValues.DomainTypes}/{CachedType}/{SegmentValues.TypeActions}/{typeAction}/{SegmentValues.Invoke}");
+            return new Uri($"{prefix}{SegmentValues.DomainTypes}/{CachedType}/{SegmentValues.TypeActions}/{typeAction}/{SegmentValues.Invoke}");
         }
 
         public Uri GetObjectUri() {
@@ -274,7 +274,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.Objects + "/{typeId}/{instanceId}");
             //return template.BindByPosition(prefix, CachedType, cachedId);
 
-            return new Uri($"{prefix}/{SegmentValues.Objects}/{CachedType}/{cachedId}");
+            return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}");
         }
 
         public Uri GetServiceUri() {
@@ -283,7 +283,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.Services + "/{oid}");
             //return template.BindByPosition(prefix, CachedType);
 
-            return new Uri($"{prefix}/{SegmentValues.Services}/{CachedType}");
+            return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}");
         }
 
         public Uri GetIconUri() {
@@ -293,7 +293,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             CheckArgumentNotNull(iconName, "icon name");
             //return template.BindByPosition(prefix, iconName);
 
-            return new Uri($"{prefix}/{SegmentValues.Images}/{iconName}");
+            return new Uri($"{prefix}{SegmentValues.Images}/{iconName}");
         }
 
         public Uri GetInvokeUri() {
@@ -313,7 +313,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.Services + "/{oid}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Invoke + queryString);
             //return template.BindByPosition(prefix, CachedType, action.Id);
 
-            return new Uri($"{prefix}/{SegmentValues.Services}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Invoke}{queryString}");
+            return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Invoke}{queryString}");
         }
 
         private Uri GetObjectInvokeUri(string queryString) {
@@ -324,7 +324,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.Objects + "/{objectType}/{objectKey}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Invoke + queryString);
             //return template.BindByPosition(prefix, CachedType, cachedId, action.Id);
 
-            return new Uri($"{prefix}/{SegmentValues.Objects}/{CachedType}/{cachedId}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Invoke}{queryString}");
+            return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Invoke}{queryString}");
         }
 
         private Uri GetInvokeUri(string queryString) {
@@ -355,7 +355,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
             //var template = new UriTemplate("{fixed}");
             //return template.BindByPosition(prefix, name);
-            return new Uri($"{prefix}/{name}");
+            return new Uri($"{prefix}{name}");
         }
 
         public Uri GetObjectsPersistUri() {
@@ -364,7 +364,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.Objects + "/{objectType}");
             //return template.BindByPosition(prefix, CachedType);
 
-            return new Uri($"{prefix}/{SegmentValues.Objects}/{CachedType}");
+            return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}");
         }
 
         public Uri GetRedirectUri(HttpRequest req, string server, string oid) {
@@ -384,7 +384,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.Services + "/{id}/{memberType}/{memberId}");
             //return template.BindByPosition(prefix, CachedType, memberType, member.Id);
 
-            return new Uri($"{prefix}/{SegmentValues.Services}/{CachedType}/{memberType}/{member.Id}");
+            return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}/{memberType}/{member.Id}");
         }
 
         private Uri GetTypeMemberUri(IMemberFacade member, string memberType) {
@@ -395,7 +395,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.DomainTypes + "/{objectType}/{memberType}/{memberId}");
             //return template.BindByPosition(prefix, CachedType, memberType, member.Id);
 
-            return new Uri($"{prefix}/{SegmentValues.DomainTypes}/{CachedType}/{memberType}/{member.Id}");
+            return new Uri($"{prefix}{SegmentValues.DomainTypes}/{CachedType}/{memberType}/{member.Id}");
         }
 
         private Uri GetPersistentObjectMemberUri(IMemberFacade member, string memberType) {
@@ -406,7 +406,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.Objects + "/{objectType}/{objectId}/{memberType}/{memberId}");
             //return template.BindByPosition(prefix, CachedType, cachedId, memberType, member.Id);
 
-            return new Uri($"{prefix}/{SegmentValues.Objects}/{CachedType}/{cachedId}/{memberType}/{member.Id}");
+            return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}/{memberType}/{member.Id}");
 
         }
 
@@ -417,7 +417,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.Objects + "/{objectType}/{memberType}/{memberId}");
             //return template.BindByPosition(prefix, CachedType, memberType, member.Id);
 
-            return new Uri($"{prefix}/{SegmentValues.Objects}/{CachedType}/{memberType}/{member.Id}");
+            return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{memberType}/{member.Id}");
         }
 
         private Uri GetObjectMemberUri(IMemberFacade member, string memberType) {
@@ -530,7 +530,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.DomainTypes + "/{class}/" + SegmentValues.TypeActions + "/{action}/" + SegmentValues.Invoke);
             //return template.BindByPosition(prefix, CachedType, actionName);
 
-            return new Uri($"{prefix}/{SegmentValues.DomainTypes}/{CachedType}/{SegmentValues.TypeActions}/{actionName}/{SegmentValues.Invoke}");
+            return new Uri($"{prefix}{SegmentValues.DomainTypes}/{CachedType}/{SegmentValues.TypeActions}/{actionName}/{SegmentValues.Invoke}");
 
         }
 
@@ -628,7 +628,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.Menus + "/{oid}");
             //return template.BindByPosition(prefix, CachedType);
 
-            return new Uri($"{prefix}/{SegmentValues.Menus}/{CachedType}");
+            return new Uri($"{prefix}{SegmentValues.Menus}/{CachedType}");
         }
 
         public object GetMenuRelParameter() {
