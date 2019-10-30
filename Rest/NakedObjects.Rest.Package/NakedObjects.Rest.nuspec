@@ -20,7 +20,7 @@
   </metadata>
   <files>
     <file src="icon.png" target="images\"/>
-    <file src="..\NakedObjects.Rest\bin\Debug\**\*.dll" target="lib"/>
-    <file src="..\NakedObjects.Rest.Snapshot\bin\Debug\**\*.dll" target="lib"/>
+    <file src="..\NakedObjects.Rest\bin\Debug\**\NakedObjects.Rest.dll" target="lib"/>
+    <file src="..\NakedObjects.Rest.Snapshot\bin\Debug\**\NakedObjects.Rest.Snapshot.dll" target="lib"/>
   </files>
 </package>
