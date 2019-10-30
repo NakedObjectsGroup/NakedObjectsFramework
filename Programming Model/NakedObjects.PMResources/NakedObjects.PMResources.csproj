@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyName>NakedObjects.Resources</AssemblyName>
+    <AssemblyName>NakedObjects.PMResources</AssemblyName>
     <RootNamespace>NakedObjects.Resources</RootNamespace>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
     <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
