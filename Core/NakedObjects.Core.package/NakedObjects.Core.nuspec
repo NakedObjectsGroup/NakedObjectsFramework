@@ -25,13 +25,13 @@
   </metadata>
   <files>
     <file src="icon.png" target="images\"/>
-    <file src="..\NakedObjects.Architecture\bin\Debug\**\*.dll" target="lib"/>
-    <file src="..\NakedObjects.Core\bin\Debug\**\*.dll" target="lib"/>
-    <file src="..\NakedObjects.FWResources\bin\Debug\**\*.dll" target="lib"/>
-    <file src="..\NakedObjects.Metamodel\bin\Debug\**\*.dll" target="lib"/>
-    <file src="..\NakedObjects.ParallelReflector\bin\Debug\**\*.dll" target="lib"/>
-    <file src="..\NakedObjects.Persistor.Entity\bin\Debug\**\*.dll" target="lib"/>
-    <file src="..\NakedObjects.Reflector\bin\Debug\**\*.dll" target="lib"/>
-    <file src="..\NakedObjects.Unity\bin\Debug\**\*.dll" target="lib"/>
+    <file src="..\NakedObjects.Architecture\bin\Debug\**\NakedObjects.Architecture.dll" target="lib"/>
+    <file src="..\NakedObjects.Core\bin\Debug\**\NakedObjects.Core.dll" target="lib"/>
+    <file src="..\NakedObjects.FWResources\bin\Debug\**\NakedObjects.FWResources.dll" target="lib"/>
+    <file src="..\NakedObjects.Metamodel\bin\Debug\**\NakedObjects.Metamodel.dll" target="lib"/>
+    <file src="..\NakedObjects.ParallelReflector\bin\Debug\**\NakedObjects.ParallelReflector.dll" target="lib"/>
+    <file src="..\NakedObjects.Persistor.Entity\bin\Debug\**\NakedObjects.Persistor.Entity.dll" target="lib"/>
+    <file src="..\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.dll" target="lib"/>
+    <file src="..\NakedObjects.Unity\bin\Debug\**\NakedObjects.Unity.dll" target="lib"/>
   </files>
 </package>

@@ -17,9 +17,9 @@
   </metadata>
   <files>
     <file src="icon.png" target="images\"/>
-    <file src="..\NakedObjects.Attributes\bin\Debug\**\*.dll" target="lib"/>
-    <file src="..\NakedObjects.Helpers\bin\Debug\**\*.dll" target="lib"/>
-    <file src="..\NakedObjects.PMResources\bin\Debug\**\*.dll" target="lib"/>
-    <file src="..\NakedObjects.Types\bin\Debug\**\*.dll" target="lib"/>
+    <file src="..\NakedObjects.Attributes\bin\Debug\**\NakedObjects.Attributes.dll" target="lib"/>
+    <file src="..\NakedObjects.Helpers\bin\Debug\**\NakedObjects.Helpers.dll" target="lib"/>
+    <file src="..\NakedObjects.PMResources\bin\Debug\**\NakedObjects.PMResources.dll" target="lib"/>
+    <file src="..\NakedObjects.Types\bin\Debug\**\NakedObjects.Types.dll" target="lib"/>
   </files>
 </package>
