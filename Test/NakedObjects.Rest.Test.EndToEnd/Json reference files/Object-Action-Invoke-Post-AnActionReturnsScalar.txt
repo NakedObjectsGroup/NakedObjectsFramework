@@ -1,1 +1,0 @@
-{  "result": {    "value": 999,    "links": [],    "extensions": {}  },  "links": [],  "extensions": {},  "resultType": "scalar"}

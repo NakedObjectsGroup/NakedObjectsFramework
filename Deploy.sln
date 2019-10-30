@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksModel", "Samp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Rest.Test.Data", "Rest\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj", "{A1A3D1AE-5F9D-43CE-B279-6569E94F850F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.App.Demo", "Demo\NakedObjects.Rest.App.Demo\NakedObjects.Rest.App.Demo.csproj", "{712DF750-F17E-4310-B1F7-4DDDC9E9DAB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.Test.App", "Test\NakedObjects.Rest.Test.App\NakedObjects.Rest.Test.App.csproj", "{5D63CDC7-D4EE-442D-810F-9D5E2547B6EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{A1A3D1AE-5F9D-43CE-B279-6569E94F850F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1A3D1AE-5F9D-43CE-B279-6569E94F850F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1A3D1AE-5F9D-43CE-B279-6569E94F850F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{712DF750-F17E-4310-B1F7-4DDDC9E9DAB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{712DF750-F17E-4310-B1F7-4DDDC9E9DAB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{712DF750-F17E-4310-B1F7-4DDDC9E9DAB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{712DF750-F17E-4310-B1F7-4DDDC9E9DAB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D63CDC7-D4EE-442D-810F-9D5E2547B6EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D63CDC7-D4EE-442D-810F-9D5E2547B6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D63CDC7-D4EE-442D-810F-9D5E2547B6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D63CDC7-D4EE-442D-810F-9D5E2547B6EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

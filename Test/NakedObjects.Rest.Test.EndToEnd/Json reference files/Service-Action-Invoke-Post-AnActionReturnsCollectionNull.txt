@@ -1,6 +1,0 @@
-{
-  "result": null,
-  "links": [],
-  "extensions": {},
-  "resultType": "list"
-}

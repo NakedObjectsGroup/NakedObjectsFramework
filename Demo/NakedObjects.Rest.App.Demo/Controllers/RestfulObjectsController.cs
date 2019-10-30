@@ -1,17 +1,18 @@
-// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
 // Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Net;
 using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 using NakedObjects.Facade;
+using NakedObjects.Rest;
 using NakedObjects.Rest.Model;
 
-namespace NakedObjects.Rest.Test.App.Controllers {
+namespace MvcTestApp.Controllers {
+    //[Authorize]
     public class RestfulObjectsController : RestfulObjectsControllerBase {
         public RestfulObjectsController(IFrameworkFacade frameworkFacade) : base(frameworkFacade) {}
 
@@ -61,7 +62,7 @@ namespace NakedObjects.Rest.Test.App.Controllers {
         }
 
         [HttpPost]
-        public override HttpResponseMessage PostPersist(string domainType, ArgumentMap arguments) {
+        public override HttpResponseMessage PostPersist(string domainType,  ArgumentMap arguments) {
             return base.PostPersist(domainType, arguments);
         }
 
@@ -71,7 +72,7 @@ namespace NakedObjects.Rest.Test.App.Controllers {
         }
 
         [HttpPut]
-        public override HttpResponseMessage PutObject(string domainType, string instanceId,  ArgumentMap arguments) {
+        public override HttpResponseMessage PutObject(string domainType, string instanceId, ArgumentMap arguments) {
             return base.PutObject(domainType, instanceId, arguments);
         }
 
@@ -89,6 +90,7 @@ namespace NakedObjects.Rest.Test.App.Controllers {
         public override HttpResponseMessage GetAction(string domainType, string instanceId, string actionName,  ReservedArguments arguments) {
             return base.GetAction(domainType, instanceId, actionName, arguments);
         }
+
 
         [HttpPut]
         public override HttpResponseMessage PutProperty(string domainType, string instanceId, string propertyName,  SingleValueArgument argument) {
@@ -121,12 +123,12 @@ namespace NakedObjects.Rest.Test.App.Controllers {
         }
 
         [HttpPut]
-        public override HttpResponseMessage PutInvoke(string domainType, string instanceId, string actionName,  ArgumentMap arguments) {
+        public override HttpResponseMessage PutInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return base.PutInvoke(domainType, instanceId, actionName, arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetInvokeOnService(string serviceName, string actionName,  ArgumentMap arguments) {
+        public override HttpResponseMessage GetInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
             return base.GetInvokeOnService(serviceName, actionName, arguments);
         }
 
@@ -136,12 +138,12 @@ namespace NakedObjects.Rest.Test.App.Controllers {
         }
 
         [HttpPost]
-        public override HttpResponseMessage PostInvokeOnService(string serviceName, string actionName,  ArgumentMap arguments) {
+        public override HttpResponseMessage PostInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
             return base.PostInvokeOnService(serviceName, actionName, arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetInvokeTypeActions(string typeName, string actionName, ArgumentMap arguments) {
+        public override HttpResponseMessage GetInvokeTypeActions(string typeName, string actionName,  ArgumentMap arguments) {
             return base.GetInvokeTypeActions(typeName, actionName, arguments);
         }
 
@@ -151,7 +153,7 @@ namespace NakedObjects.Rest.Test.App.Controllers {
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetPropertyPrompt(string domainType, string instanceId, string propertyName,  ArgumentMap arguments) {
+        public override HttpResponseMessage GetPropertyPrompt(string domainType, string instanceId, string propertyName, ArgumentMap arguments) {
             return base.GetPropertyPrompt(domainType, instanceId, propertyName, arguments);
         }
 
@@ -161,7 +163,7 @@ namespace NakedObjects.Rest.Test.App.Controllers {
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetParameterPromptOnService(string serviceName, string actionName, string parmName,  ArgumentMap arguments) {
+        public override HttpResponseMessage GetParameterPromptOnService(string serviceName, string actionName, string parmName, ArgumentMap arguments) {
             return base.GetParameterPromptOnService(serviceName, actionName, parmName, arguments);
         }
 

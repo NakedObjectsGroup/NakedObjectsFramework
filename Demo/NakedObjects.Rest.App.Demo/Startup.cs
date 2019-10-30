@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace NakedObjects.Rest.Test.App
+namespace NakedObjects.Rest.App.Demo
 {
     public class Startup
     {
