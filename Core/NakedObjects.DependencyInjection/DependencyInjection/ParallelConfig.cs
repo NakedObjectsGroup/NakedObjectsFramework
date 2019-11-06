@@ -30,7 +30,7 @@ namespace NakedObjects.DependencyInjection {
             services.AddSingleton<IMenuFactory, MenuFactory>();
         }
 
-        public static void RegisterCoreScopedTypes<T>(IServiceCollection services) {
+        public static void RegisterCoreScopedTypes(IServiceCollection services) {
             services.AddScoped<INakedObjectAdapterMap, NakedObjectAdapterHashMap>();
             services.AddScoped<IIdentityAdapterMap, IdentityAdapterHashMap>();
             services.AddScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
