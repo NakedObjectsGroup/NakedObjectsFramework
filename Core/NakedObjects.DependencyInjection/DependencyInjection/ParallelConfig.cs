@@ -34,6 +34,8 @@ namespace NakedObjects.DependencyInjection {
             services.AddScoped<INakedObjectAdapterMap, NakedObjectAdapterHashMap>();
             services.AddScoped<IIdentityAdapterMap, IdentityAdapterHashMap>();
             services.AddScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
+            services.AddScoped<SpecFactory, SpecFactory>();
+            services.AddScoped<IMetamodelManager, MetamodelManager>();
             services.AddScoped<IOidGenerator, EntityOidGenerator>();
             services.AddScoped<IPersistAlgorithm, FlatPersistAlgorithm>();
             services.AddScoped<IObjectStore, EntityObjectStore>();
@@ -43,7 +45,7 @@ namespace NakedObjects.DependencyInjection {
             services.AddScoped<IObjectPersistor, ObjectPersistor>();
             services.AddScoped<IServicesManager, ServicesManager>();
             services.AddScoped<ILifecycleManager, LifeCycleManager>();
-            services.AddScoped<IMetamodelManager, MetamodelManager>();
+           
             services.AddScoped<IMessageBroker, MessageBroker>();
             services.AddScoped<INakedObjectsFramework, NakedObjectsFramework>();
             services.AddScoped<ISession, WindowsSession>();

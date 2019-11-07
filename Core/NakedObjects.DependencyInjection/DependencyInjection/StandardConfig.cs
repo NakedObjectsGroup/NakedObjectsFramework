@@ -33,6 +33,7 @@ namespace NakedObjects.DependencyInjection {
             services.AddScoped<INakedObjectAdapterMap, NakedObjectAdapterHashMap>();
             services.AddScoped<IIdentityAdapterMap, IdentityAdapterHashMap>();
             services.AddScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
+            services.AddScoped<SpecFactory, SpecFactory>();
             services.AddScoped<IOidGenerator, EntityOidGenerator>();
             services.AddScoped<IPersistAlgorithm, FlatPersistAlgorithm>();
             services.AddScoped<IObjectStore, EntityObjectStore>();
