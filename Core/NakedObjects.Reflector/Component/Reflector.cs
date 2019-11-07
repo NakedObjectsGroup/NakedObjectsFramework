@@ -36,8 +36,9 @@ namespace NakedObjects.Reflect.Component {
                          IMetamodelBuilder metamodel,
                          IReflectorConfiguration config,
                          IMenuFactory menuFactory,
-                         IFacetDecorator[] facetDecorators,
-                         IFacetFactory[] facetFactories) {
+                         IEnumerable<IFacetDecorator> facetDecorators,
+                         IEnumerable<IFacetFactory> facetFactories)
+        {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(config);
@@ -47,8 +48,8 @@ namespace NakedObjects.Reflect.Component {
             this.metamodel = metamodel;
             this.config = config;
             this.menuFactory = menuFactory;
-            facetDecoratorSet = new FacetDecoratorSet(facetDecorators);
-            FacetFactorySet = new FacetFactorySet(facetFactories);
+            facetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
+            FacetFactorySet = new FacetFactorySet(facetFactories.ToArray());
         }
 
         // exposed for testing
