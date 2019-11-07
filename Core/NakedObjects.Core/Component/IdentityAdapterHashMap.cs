@@ -16,16 +16,18 @@ namespace NakedObjects.Core.Component {
     public sealed class IdentityAdapterHashMap : IIdentityAdapterMap {
         private static readonly ILog Log;
         private readonly IDictionary<IOid, INakedObjectAdapter> adapters;
+        private readonly int capacity = 10; 
 
         static IdentityAdapterHashMap() {
             Log = LogManager.GetLogger(typeof(IdentityAdapterHashMap));
         }
 
-        public IdentityAdapterHashMap()
-            : this(10) { }
+        public IdentityAdapterHashMap() {
+            adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
+        }
 
-        public IdentityAdapterHashMap(IConfiguration config) {
-            var capacity = int.Parse(config.GetSection("NakedObjects")["HashMapCapacity"]);
+        public IdentityAdapterHashMap(IConfiguration config) : this() { 
+            capacity = int.Parse(config.GetSection("NakedObjects")["HashMapCapacity"]);
             adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
         }
 
