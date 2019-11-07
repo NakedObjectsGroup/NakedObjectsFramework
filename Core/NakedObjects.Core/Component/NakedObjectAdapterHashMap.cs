@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Common.Logging;
+using Microsoft.Extensions.Configuration;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 
@@ -16,7 +17,8 @@ namespace NakedObjects.Core.Component {
         private static readonly ILog Log = LogManager.GetLogger(typeof(NakedObjectAdapterHashMap));
         private readonly IDictionary<object, INakedObjectAdapter> domainObjects;
 
-        public NakedObjectAdapterHashMap(int capacity) {
+        public NakedObjectAdapterHashMap(IConfiguration config) {
+            var capacity = int.Parse(config.GetSection("NakedObjects")["HashMapCapacity"]);
             domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
         }
 

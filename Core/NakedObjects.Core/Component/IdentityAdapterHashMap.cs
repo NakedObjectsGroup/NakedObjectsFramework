@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Common.Logging;
+using Microsoft.Extensions.Configuration;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 
@@ -23,7 +24,8 @@ namespace NakedObjects.Core.Component {
         public IdentityAdapterHashMap()
             : this(10) { }
 
-        public IdentityAdapterHashMap(int capacity) {
+        public IdentityAdapterHashMap(IConfiguration config) {
+            var capacity = int.Parse(config.GetSection("NakedObjects")["HashMapCapacity"]);
             adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
         }
 
