@@ -22,10 +22,6 @@ using NakedObjects.Core.Fixture;
 using NakedObjects.Core.Util;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Unity;
-using Unity;
-using Unity.Injection;
-using Unity.Lifetime;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Xat {

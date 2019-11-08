@@ -13,7 +13,9 @@ using NakedObjects.Rest.Model;
 
 namespace NakedObjects.Rest.Test.App.Controllers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {
-        public RestfulObjectsController(IFrameworkFacade frameworkFacade) : base(frameworkFacade) {}
+        public RestfulObjectsController(IFrameworkFacade frameworkFacade) : base(frameworkFacade) {
+
+        }
 
         [HttpGet]
         public override HttpResponseMessage GetHome( ReservedArguments arguments) {

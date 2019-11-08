@@ -5,7 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NakedObjects.Facade.Impl" Version="11.0.0-beta01" />
     <PackageReference Include="NakedObjects.Rest" Version="11.0.0-beta01" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Samples\AdventureWorksModel\AdventureWorksModel.csproj" />
+  </ItemGroup>
+
 
 </Project>
