@@ -22,7 +22,7 @@ namespace NakedObjects.DependencyInjection {
     public static class ParallelConfig {
         public static void RegisterCoreSingletonTypes(IServiceCollection services) {
             services.AddSingleton<DefaultClassStrategy, DefaultClassStrategy>();
-            services.AddSingleton<IClassStrategy, CachingClassStrategy>();
+            services.AddSingleton<IClassStrategy>(p => new CachingClassStrategy(p.GetService<DefaultClassStrategy>()));
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
             services.AddSingleton<IReflector, ParallelReflector>();
             services.AddSingleton<IMetamodel, Metamodel>();
@@ -36,6 +36,7 @@ namespace NakedObjects.DependencyInjection {
             services.AddScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
             services.AddScoped<SpecFactory, SpecFactory>();
             services.AddScoped<IMetamodelManager, MetamodelManager>();
+            services.AddScoped<EntityOidGenerator, EntityOidGenerator>();
             services.AddScoped<IOidGenerator, EntityOidGenerator>();
             services.AddScoped<IPersistAlgorithm, FlatPersistAlgorithm>();
             services.AddScoped<IObjectStore, EntityObjectStore>();
@@ -49,7 +50,7 @@ namespace NakedObjects.DependencyInjection {
             services.AddScoped<IMessageBroker, MessageBroker>();
             services.AddScoped<INakedObjectsFramework, NakedObjectsFramework>();
             services.AddScoped<ISession, WindowsSession>();
-            //services.AddScoped<IFrameworkResolver, UnityFrameworkResolver>();
+            services.AddScoped<IFrameworkResolver>(p => new FrameworkResolver(p));
 
             //Temporary scaffolding
             services.AddScoped<NakedObjectFactory, NakedObjectFactory>();

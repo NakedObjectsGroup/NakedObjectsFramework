@@ -15,7 +15,7 @@ namespace NakedObjects.DependencyInjection
     public class ConfigHelpers {
         public static void RegisterFacetFactory(Type factory, IServiceCollection services, int order) {
             
-            services.AddSingleton(typeof(IFacetFactory), p => Activator.CreateInstance(factory, factory.Name, order));
+            services.AddSingleton(typeof(IFacetFactory), p => Activator.CreateInstance(factory,  order));
         }
 
         //public static void RegisterReplacementFacetFactory<TReplacement, TOriginal>(IServiceCollection services)
