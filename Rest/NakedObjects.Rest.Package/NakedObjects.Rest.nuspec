@@ -23,7 +23,9 @@
   </metadata>
   <files>
     <file src="icon.png" target="images\"/>
-    <file src="..\NakedObjects.Rest\bin\Debug\**\NakedObjects.Rest.dll" target="lib"/>
-    <file src="..\NakedObjects.Rest.Snapshot\bin\Debug\**\NakedObjects.Rest.Snapshot.dll" target="lib"/>
+    <file src="..\NakedObjects.Rest\bin\Debug\**\NakedObjects.Rest.dll" target="lib\netcoreapp3.0"/>
+    <file src="..\NakedObjects.Rest.Snapshot\bin\Debug\**\NakedObjects.Rest.Snapshot.dll" target="lib\netcoreapp3.0"/>
+    <file src="..\NakedObjects.Rest\bin\Debug\**\NakedObjects.Rest.pdb" target="lib\netcoreapp3.0"/>
+    <file src="..\NakedObjects.Rest.Snapshot\bin\Debug\**\NakedObjects.Rest.Snapshot.pdb" target="lib\netcoreapp3.0"/>
   </files>
 </package>
