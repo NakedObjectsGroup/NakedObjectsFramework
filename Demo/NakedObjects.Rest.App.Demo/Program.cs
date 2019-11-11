@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +15,9 @@ namespace NakedObjects.Rest.App.Demo
     {
         public static void Main(string[] args)
         {
+
+            DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
+
             CreateHostBuilder(args).Build().Run();
         }
 

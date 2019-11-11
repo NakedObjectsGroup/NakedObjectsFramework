@@ -19,7 +19,7 @@ using NakedObjects.Rest.Snapshot.Constants;
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class UriMtHelper {
         public static Func<HttpRequest, string> GetAuthority;
-        public static Func<string> GetApplicationPath;
+        public static Func<HttpRequest, string> GetApplicationPath;
         private static readonly ILog Logger = LogManager.GetLogger<UriMtHelper>();
         private readonly IActionFacade action;
         private readonly IAssociationFacade assoc;
@@ -34,14 +34,14 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         // for testing to allow to be stubbed 
         static UriMtHelper() {
             GetAuthority = req => req.Host.ToUriComponent();
-            //GetApplicationPath = () => HttpContext.Current.Request.ApplicationPath;
+            GetApplicationPath = req => req.PathBase;
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req) {
             this.oidStrategy = oidStrategy;
             prefix = new Uri(req.Scheme + "://" + GetAuthority(req));
 
-            string applicationPath = GetApplicationPath();
+            string applicationPath = GetApplicationPath(req);
 
             if (!string.IsNullOrEmpty(applicationPath)) {
                 prefix = new Uri(prefix, applicationPath);
