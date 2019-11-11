@@ -19,8 +19,8 @@
   </metadata>
   <files>
     <file src="icon.png" target="images\"/>
-    <file src="..\NakedObjects.Facade.Impl\bin\Debug\**\NakedObjects.Facade.Impl.dll" target="lib\netcoreapp3.0"/>
-    <file src="..\NakedObjects.Facade.Impl\bin\Debug\**\NakedObjects.Facade.Impl.pdb" target="lib\netcoreapp3.0"/>
+    <file src="..\NakedObjects.Facade.Impl\bin\Debug\**\NakedObjects.Facade.Impl.dll" target="lib"/>
+    <file src="..\NakedObjects.Facade.Impl\bin\Debug\**\NakedObjects.Facade.Impl.pdb" target="lib"/>
 
   </files>
 </package>
