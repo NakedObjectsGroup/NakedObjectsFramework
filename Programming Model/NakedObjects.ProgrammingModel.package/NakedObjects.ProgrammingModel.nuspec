@@ -17,13 +17,13 @@
   </metadata>
   <files>
     <file src="icon.png" target="images\"/>
-    <file src="..\NakedObjects.Attributes\bin\Debug\**\NakedObjects.Attributes.dll" target="lib\netcoreapp3.0"/>
-    <file src="..\NakedObjects.Helpers\bin\Debug\**\NakedObjects.Helpers.dll" target="lib\netcoreapp3.0"/>
-    <file src="..\NakedObjects.PMResources\bin\Debug\**\NakedObjects.PMResources.dll" target="lib\netcoreapp3.0"/>
-    <file src="..\NakedObjects.Types\bin\Debug\**\NakedObjects.Types.dll" target="lib\netcoreapp3.0"/>
-    <file src="..\NakedObjects.Attributes\bin\Debug\**\NakedObjects.Attributes.pdb" target="lib\netcoreapp3.0"/>
-    <file src="..\NakedObjects.Helpers\bin\Debug\**\NakedObjects.Helpers.pdb" target="lib\netcoreapp3.0"/>
-    <file src="..\NakedObjects.PMResources\bin\Debug\**\NakedObjects.PMResources.pdb" target="lib\netcoreapp3.0"/>
-    <file src="..\NakedObjects.Types\bin\Debug\**\NakedObjects.Types.pdb" target="lib\netcoreapp3.0"/>
+    <file src="..\NakedObjects.Attributes\bin\Debug\**\NakedObjects.Attributes.dll" target="lib"/>
+    <file src="..\NakedObjects.Helpers\bin\Debug\**\NakedObjects.Helpers.dll" target="lib"/>
+    <file src="..\NakedObjects.PMResources\bin\Debug\**\NakedObjects.PMResources.dll" target="lib"/>
+    <file src="..\NakedObjects.Types\bin\Debug\**\NakedObjects.Types.dll" target="lib"/>
+    <file src="..\NakedObjects.Attributes\bin\Debug\**\NakedObjects.Attributes.pdb" target="lib"/>
+    <file src="..\NakedObjects.Helpers\bin\Debug\**\NakedObjects.Helpers.pdb" target="lib"/>
+    <file src="..\NakedObjects.PMResources\bin\Debug\**\NakedObjects.PMResources.pdb" target="lib"/>
+    <file src="..\NakedObjects.Types\bin\Debug\**\NakedObjects.Types.pdb" target="lib"/>
   </files>
 </package>
