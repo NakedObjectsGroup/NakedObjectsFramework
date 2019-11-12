@@ -12,13 +12,14 @@ using Microsoft.AspNetCore.Mvc;
 using NakedObjects.Facade;
 using NakedObjects.Rest;
 using NakedObjects.Rest.Model;
+using NakedObjects.Rest.Snapshot.Representations;
 
 namespace NakedObjects.Rest.App.Controllers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {
         public RestfulObjectsController(IFrameworkFacade frameworkFacade) : base(frameworkFacade) {}
 
         [HttpGet]
-        public override HttpResponseMessage GetHome( ReservedArguments arguments) {
+        public override IRepresentation GetHome( ReservedArguments arguments) {
             return base.GetHome(arguments);
         }
 

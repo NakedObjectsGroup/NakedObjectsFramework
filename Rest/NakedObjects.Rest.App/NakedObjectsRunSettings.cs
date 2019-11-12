@@ -29,7 +29,7 @@ namespace NakedObjects.Rest.Test.App {
 
 		private static string[] ModelNamespaces { 
             get {
-                return new string[] { "RestfulObjects.Test.Data" }; //Add top-level namespace(s) that cover the domain model
+                return new string[] {}; //Add top-level namespace(s) that cover the domain model
             }			
 		}
 

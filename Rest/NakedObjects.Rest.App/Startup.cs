@@ -4,13 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.Rest.App
+namespace NakedObjects.Rest.Test.App
 {
     public class Startup
     {
@@ -25,24 +27,48 @@ namespace NakedObjects.Rest.App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMvc(options => options.EnableEndpointRouting = false);
+            services.AddHttpContextAccessor();
+            services.AddNakedObjects();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IReflector reflector)
         {
+            reflector.Reflect();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            //app.UseHttpsRedirection();
+
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllers();
+            //});
+
+            app.Use(async (context, nextMiddleware) => {
+                var a = context.Response;
+                // Some code here
+                await nextMiddleware();
+                // Some other code here
+
+                var b = context.Response;
             });
+
+
+
+            app.UseMvc(routeBuilder => RestfulObjectsControllerBase.AddRestRoutes(routeBuilder, ""));
+
+           
+
+            
         }
     }
 }

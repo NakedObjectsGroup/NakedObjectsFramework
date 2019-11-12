@@ -4,14 +4,12 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="NakedObjects.Core" Version="11.0.0-beta01" />
     <PackageReference Include="NakedObjects.Facade.Impl" Version="11.0.0-beta01" />
     <PackageReference Include="NakedObjects.Rest" Version="11.0.0-beta01" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>

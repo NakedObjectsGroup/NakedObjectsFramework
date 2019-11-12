@@ -22,6 +22,7 @@ using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Media;
 using NakedObjects.Rest.Model;
 using NakedObjects.Rest.Snapshot.Constants;
+using NakedObjects.Rest.Snapshot.Representations;
 using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest {
@@ -404,8 +405,13 @@ namespace NakedObjects.Rest {
 
         #region api
 
-        public virtual HttpResponseMessage GetHome(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Request, GetFlags(arguments)));
+        //public virtual HttpResponseMessage GetHome(ReservedArguments arguments) {
+        //    return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Request, GetFlags(arguments)));
+        //}
+
+        public virtual IRepresentation GetHome(ReservedArguments arguments)
+        {
+            return InitAndHandleErrors2(() => new RestSnapshot(OidStrategy, Request, GetFlags(arguments)));
         }
 
         public virtual HttpResponseMessage GetUser(ReservedArguments arguments) {
@@ -835,6 +841,77 @@ namespace NakedObjects.Rest {
                 return ErrorMsg(e);
             }
         }
+
+        private IRepresentation InitAndHandleErrors2(Func<RestSnapshot> f)
+        {
+            bool success = false;
+            Exception endTransactionError = null;
+            RestSnapshot ss;
+            try
+            {
+                FrameworkFacade.Start();
+                ss = f();
+                success = true;
+            }
+            catch (HttpResponseException)
+            {
+                throw;
+                // todo return ErrorRepresentation;
+            }
+            catch (NakedObjectsFacadeException e)
+            {
+                //return ErrorMsg(e);
+                // todo return ErrorRepresentation;
+                throw;
+            }
+            catch (Exception e)
+            {
+                Logger.ErrorFormat("Unhandled exception from frameworkFacade {0} {1}", e.GetType(), e.Message);
+                //return ErrorMsg(e);
+                // todo return ErrorRepresentation;
+                throw;
+            }
+            finally
+            {
+                try
+                {
+                    FrameworkFacade.End(success);
+                }
+                catch (Exception e)
+                {
+                    // can't return from finally 
+                    endTransactionError = e;
+                }
+            }
+
+            if (endTransactionError != null)
+            {
+                //return ErrorMsg(endTransactionError);
+            }
+
+            try
+            {
+                //return ConfigureMsg(ss.Populate());
+                ss.Populate();
+                return ss.Representation;
+            }
+            catch (HttpResponseException)
+            {
+                throw;
+            }
+            catch (NakedObjectsFacadeException e)
+            {
+                //return ErrorMsg(e);
+            }
+            catch (Exception e)
+            {
+                Logger.ErrorFormat("Unhandled exception while configuring message {0} {1}", e.GetType(), e.Message);
+                //return ErrorMsg(e);
+            }
+            throw new Exception();
+        }
+
+
 
         private HttpResponseMessage ErrorMsg(Exception e) {
             return ConfigureMsg(new RestSnapshot(OidStrategy, e, Request).Populate());

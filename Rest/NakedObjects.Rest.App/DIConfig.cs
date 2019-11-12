@@ -73,7 +73,7 @@ namespace NakedObjects.Rest.Test.App {
             services.AddTransient<IStringHasher, InvariantStringHasher>();
             services.AddTransient<IFrameworkFacade, FrameworkFacade>();
 
-
+            
             //Externals
             services.AddScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);
         }

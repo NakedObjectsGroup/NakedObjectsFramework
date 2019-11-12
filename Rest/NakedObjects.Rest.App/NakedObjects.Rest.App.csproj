@@ -9,6 +9,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NakedObjects.Core" Version="11.0.0-beta01" />
+    <PackageReference Include="NakedObjects.Facade.Impl" Version="11.0.0-beta01" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj" />
     <ProjectReference Include="..\NakedObjects.Rest\NakedObjects.Rest.csproj" />
   </ItemGroup>
 
