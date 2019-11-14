@@ -18,7 +18,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         public override HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
             var msg = new HttpResponseMessage {Content = new StringContent("")};
-            msg.Content.Headers.ContentType = GetContentType();
+            //msg.Content.Headers.ContentType = GetContentType();
             SetCaching(msg, cacheSettings);
             return msg;
         }

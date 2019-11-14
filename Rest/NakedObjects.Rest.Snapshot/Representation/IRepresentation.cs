@@ -8,7 +8,7 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
+
 
 namespace NakedObjects.Rest.Snapshot.Representations {
     public enum CacheType {
@@ -18,8 +18,8 @@ namespace NakedObjects.Rest.Snapshot.Representations {
     };
 
     public interface IRepresentation {
-        MediaTypeHeaderValue GetContentType();
-        EntityTagHeaderValue GetEtag();
+        Microsoft.Net.Http.Headers.MediaTypeHeaderValue GetContentType();
+        Microsoft.Net.Http.Headers.EntityTagHeaderValue GetEtag();
         CacheType GetCaching();
         string[] GetWarnings();
         HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings);

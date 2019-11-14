@@ -7,8 +7,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
+
 using Microsoft.AspNetCore.Http;
+using Microsoft.Net.Http.Headers;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;

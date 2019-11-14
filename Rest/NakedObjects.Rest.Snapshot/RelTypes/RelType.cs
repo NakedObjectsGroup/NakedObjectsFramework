@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
+
 using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
@@ -33,6 +33,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public abstract Uri GetUri();
 
-        public abstract MediaTypeHeaderValue GetMediaType(RestControlFlags flags);
+        public abstract Microsoft.Net.Http.Headers.MediaTypeHeaderValue GetMediaType(RestControlFlags flags);
     }
 }

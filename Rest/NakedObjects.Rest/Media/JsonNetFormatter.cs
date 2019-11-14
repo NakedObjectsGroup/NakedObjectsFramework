@@ -10,9 +10,10 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
+
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using NakedObjects.Rest.Snapshot.Representations;
 
@@ -23,7 +24,7 @@ namespace NakedObjects.Rest.Media {
         public JsonNetFormatter(JsonSerializerSettings jsonSerializerSettings) {
             this.jsonSerializerSettings = jsonSerializerSettings ?? new JsonSerializerSettings();
             this.jsonSerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-            SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
+            //SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
         }
 
         public override bool CanReadType(Type type) {

@@ -17,6 +17,7 @@ using System.Web.Http;
 using Common.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
+using Microsoft.Extensions.Primitives;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -188,7 +189,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public HttpStatusCode HttpStatusCode { get; private set; } = HttpStatusCode.OK;
 
-        public EntityTagHeaderValue Etag { get; set; }
+        public Microsoft.Net.Http.Headers.EntityTagHeaderValue Etag { get; set; }
 
         public HttpResponseMessage ConfigureMsg(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
             HttpResponseMessage msg = Representation.GetAsMessage(formatter, cacheSettings);
@@ -206,7 +207,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             }
 
             if (Etag != null) {
-                msg.Headers.ETag = Etag;
+               // msg.Headers.ETag = Etag;
             }
 
             ValidateOutgoingMediaType(Representation is AttachmentRepresentation);
@@ -285,10 +286,10 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         private void ValidateOutgoingAttachmentMediaType() {
             var contentType = Representation.GetContentType();
-            var headers = new RequestHeaders(requestMessage.Headers);
+            var headers = requestMessage.GetTypedHeaders();
 
             var incomingMediaTypes = headers.Accept.Select(a => a.MediaType).ToList();
-            string outgoingMediaType = contentType == null ? "" : contentType.MediaType;
+            var outgoingMediaType = contentType == null ? "" : contentType.MediaType;
 
             if (!incomingMediaTypes.Contains(outgoingMediaType)) {
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotAcceptable));
@@ -297,11 +298,11 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         private void ValidateOutgoingJsonMediaType() {
             var contentType = Representation.GetContentType();
-            var headers = new RequestHeaders(requestMessage.Headers);
+            var headers = requestMessage.GetTypedHeaders();
             var incomingParameters = headers.Accept.SelectMany(a => a.Parameters).ToList();
 
-            string[] incomingProfiles = incomingParameters.Where(nv => nv.Name.ToString() == "profile").Select(nv => nv.Value.ToString()).Distinct().ToArray();
-            string[] outgoingProfiles = contentType != null ? contentType.Parameters.Where(nv => nv.Name == "profile").Select(nv => nv.Value).Distinct().ToArray() : new string[] { };
+           var incomingProfiles = incomingParameters.Where(nv => nv.Name.ToString() == "profile").Select(nv => nv.Value).Distinct().ToArray();
+           var outgoingProfiles = contentType != null ? contentType.Parameters.Where(nv => nv.Name == "profile").Select(nv => nv.Value).Distinct().ToArray() : new StringSegment[] { };
 
             if (incomingProfiles.Any() && outgoingProfiles.Any() && !outgoingProfiles.Intersect(incomingProfiles).Any()) {
                 if (outgoingProfiles.Contains(UriMtHelper.GetJsonMediaType(RepresentationTypes.Error).Parameters.First().Value)) {

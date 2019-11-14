@@ -10,13 +10,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using Common.Logging;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Constraints;
+using Microsoft.Net.Http.Headers;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Media;
@@ -24,6 +27,8 @@ using NakedObjects.Rest.Model;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Representations;
 using NakedObjects.Rest.Snapshot.Utility;
+using CacheControlHeaderValue = System.Net.Http.Headers.CacheControlHeaderValue;
+using NameValueHeaderValue = System.Net.Http.Headers.NameValueHeaderValue;
 
 namespace NakedObjects.Rest {
     public class RestfulObjectsControllerBase : ControllerBase {
@@ -842,6 +847,91 @@ namespace NakedObjects.Rest {
             }
         }
 
+        private void SetCaching(ResponseHeaders m, RestSnapshot ss,  Tuple<int, int, int> cacheSettings)
+        {
+            int cacheTime = 0;
+
+            switch (ss.Representation.GetCaching())
+            {
+                case CacheType.Transactional:
+                    cacheTime = cacheSettings.Item1;
+                    break;
+                case CacheType.UserInfo:
+                    cacheTime = cacheSettings.Item2;
+                    break;
+                case CacheType.NonExpiring:
+                    cacheTime = cacheSettings.Item3;
+                    break;
+            }
+
+            if (cacheTime == 0)
+            {
+                m.CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue { NoCache = true };
+                //m.Pragma.Add(new NameValueHeaderValue("no-cache"));
+                m.Append(HeaderNames.Pragma, "no-cache");
+            }
+            else
+            {
+                m.CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue { MaxAge = new TimeSpan(0, 0, 0, cacheTime) };
+            }
+
+            DateTime now = DateTime.UtcNow;
+
+            m.Date = new DateTimeOffset(now);
+            m.Expires = new DateTimeOffset(now).Add(new TimeSpan(0, 0, 0, cacheTime));
+        }
+
+        private void SetHeaders(RestSnapshot ss) {
+            //HttpResponseMessage msg = Representation.GetAsMessage(formatter, cacheSettings);
+            var msg = ControllerContext.HttpContext.Response;
+            var responseHeaders = msg.GetTypedHeaders();
+
+            foreach (WarningHeaderValue w in ss.WarningHeaders)
+            {
+                //responseHeaders.Warning.Add(w);
+                responseHeaders.Append(HeaderNames.Warning, w.ToString());
+            }
+
+            foreach (string allowHeader in ss.AllowHeaders)
+            {
+                //responseHeaders.Allow.Add(a);
+                responseHeaders.Append(HeaderNames.Allow, allowHeader);
+            }
+
+            if (ss.Location != null)
+            {
+                responseHeaders.Location = ss.Location;
+            }
+
+            if (ss.Etag != null)
+            {
+                responseHeaders.ETag = ss.Etag;
+            }
+
+            Microsoft.Net.Http.Headers.MediaTypeHeaderValue ct = ss.Representation.GetContentType();
+
+            if (ct != null)
+            {
+                //formatter.SupportedMediaTypes.Add(ct);
+            }
+
+            //var content = new ObjectContent<Representation>(this, formatter);
+            //var msg = new HttpResponseMessage { Content = content };
+            responseHeaders.ContentType = ct;
+
+            SetCaching(responseHeaders, ss, CacheSettings);
+
+            //return msg;
+
+
+
+            ss.ValidateOutgoingMediaType(ss.Representation is AttachmentRepresentation);
+            msg.StatusCode = (int) ss.HttpStatusCode;
+
+            //return msg;
+        }
+
+
         private IRepresentation InitAndHandleErrors2(Func<RestSnapshot> f)
         {
             bool success = false;
@@ -893,6 +983,7 @@ namespace NakedObjects.Rest {
             {
                 //return ConfigureMsg(ss.Populate());
                 ss.Populate();
+                SetHeaders(ss);
                 return ss.Representation;
             }
             catch (HttpResponseException)

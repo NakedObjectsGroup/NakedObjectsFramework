@@ -9,8 +9,9 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
+
 using Microsoft.AspNetCore.Http;
+using Microsoft.Net.Http.Headers;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Utility;
@@ -33,10 +34,10 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         public override HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
             var content = new StreamContent(AsStream);
-            var msg = new HttpResponseMessage {Content = content};
-            msg.Content.Headers.ContentDisposition = ContentDisposition;
+            var msg = new HttpResponseMessage { Content = content };
+            //msg.Content.Headers.ContentDisposition = ContentDisposition;
 
-            msg.Content.Headers.ContentType = GetContentType();
+            //msg.Content.Headers.ContentType = GetContentType();
 
             SetCaching(msg, cacheSettings);
             return msg;

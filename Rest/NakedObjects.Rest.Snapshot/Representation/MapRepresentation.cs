@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
-using System.Net.Http.Headers;
+using Microsoft.Net.Http.Headers;
 using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest.Snapshot.Representations {

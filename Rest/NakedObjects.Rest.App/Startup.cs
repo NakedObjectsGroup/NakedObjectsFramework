@@ -62,13 +62,8 @@ namespace NakedObjects.Rest.Test.App
                 var b = context.Response;
             });
 
-
-
             app.UseMvc(routeBuilder => RestfulObjectsControllerBase.AddRestRoutes(routeBuilder, ""));
 
-           
-
-            
         }
     }
 }

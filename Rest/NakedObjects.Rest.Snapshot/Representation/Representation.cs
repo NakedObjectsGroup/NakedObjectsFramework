@@ -11,7 +11,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
+
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
@@ -19,6 +19,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Common.Logging;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Net.Http.Headers;
 using NakedObjects.Facade;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
@@ -46,12 +47,12 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         #region IRepresentation Members
 
-        public virtual MediaTypeHeaderValue GetContentType() {
+        public virtual Microsoft.Net.Http.Headers.MediaTypeHeaderValue GetContentType() {
             return SelfRelType != null ? SelfRelType.GetMediaType(Flags) : null;
         }
 
-        public EntityTagHeaderValue GetEtag() {
-            return Etag != null ? new EntityTagHeaderValue($"\"{Etag}\"") : null;
+        public Microsoft.Net.Http.Headers.EntityTagHeaderValue GetEtag() {
+            return Etag != null ? new Microsoft.Net.Http.Headers.EntityTagHeaderValue($"\"{Etag}\"") : null;
         }
 
         public CacheType GetCaching() {
@@ -79,15 +80,15 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         public virtual HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
-            MediaTypeHeaderValue ct = GetContentType();
+            Microsoft.Net.Http.Headers.MediaTypeHeaderValue ct = GetContentType();
 
             if (ct != null) {
-                formatter.SupportedMediaTypes.Add(ct);
+                //formatter.SupportedMediaTypes.Add(ct);
             }
 
             var content = new ObjectContent<Representation>(this, formatter);
             var msg = new HttpResponseMessage {Content = content};
-            msg.Content.Headers.ContentType = ct;
+            //msg.Content.Headers.ContentType = ct;
 
             SetCaching(msg, cacheSettings);
 
@@ -101,32 +102,32 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         #endregion
 
         protected void SetCaching(HttpResponseMessage m, Tuple<int, int, int> cacheSettings) {
-            int cacheTime = 0;
+            //int cacheTime = 0;
 
-            switch (GetCaching()) {
-                case CacheType.Transactional:
-                    cacheTime = cacheSettings.Item1;
-                    break;
-                case CacheType.UserInfo:
-                    cacheTime = cacheSettings.Item2;
-                    break;
-                case CacheType.NonExpiring:
-                    cacheTime = cacheSettings.Item3;
-                    break;
-            }
+            //switch (GetCaching()) {
+            //    case CacheType.Transactional:
+            //        cacheTime = cacheSettings.Item1;
+            //        break;
+            //    case CacheType.UserInfo:
+            //        cacheTime = cacheSettings.Item2;
+            //        break;
+            //    case CacheType.NonExpiring:
+            //        cacheTime = cacheSettings.Item3;
+            //        break;
+            //}
 
-            if (cacheTime == 0) {
-                m.Headers.CacheControl = new CacheControlHeaderValue {NoCache = true};
-                m.Headers.Pragma.Add(new NameValueHeaderValue("no-cache"));
-            }
-            else {
-                m.Headers.CacheControl = new CacheControlHeaderValue {MaxAge = new TimeSpan(0, 0, 0, cacheTime)};
-            }
+            //if (cacheTime == 0) {
+            //    m.Headers.CacheControl = new CacheControlHeaderValue {NoCache = true};
+            //    m.Headers.Pragma.Add(new NameValueHeaderValue("no-cache"));
+            //}
+            //else {
+            //    m.Headers.CacheControl = new CacheControlHeaderValue {MaxAge = new TimeSpan(0, 0, 0, cacheTime)};
+            //}
 
-            DateTime now = DateTime.UtcNow;
+            //DateTime now = DateTime.UtcNow;
 
-            m.Headers.Date = new DateTimeOffset(now);
-            m.Content.Headers.Expires = new DateTimeOffset(now).Add(new TimeSpan(0, 0, 0, cacheTime));
+            //m.Headers.Date = new DateTimeOffset(now);
+            //m.Content.Headers.Expires = new DateTimeOffset(now).Add(new TimeSpan(0, 0, 0, cacheTime));
         }
 
         protected string GetPropertyValueForEtag(IAssociationFacade property, IObjectFacade target) {
