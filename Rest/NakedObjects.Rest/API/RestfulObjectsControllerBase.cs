@@ -414,7 +414,7 @@ namespace NakedObjects.Rest {
         //    return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Request, GetFlags(arguments)));
         //}
 
-        public virtual IRepresentation GetHome(ReservedArguments arguments)
+        public virtual JsonResult GetHome(ReservedArguments arguments)
         {
             return InitAndHandleErrors2(() => new RestSnapshot(OidStrategy, Request, GetFlags(arguments)));
         }
@@ -932,7 +932,7 @@ namespace NakedObjects.Rest {
         }
 
 
-        private IRepresentation InitAndHandleErrors2(Func<RestSnapshot> f)
+        private JsonResult InitAndHandleErrors2(Func<RestSnapshot> f)
         {
             bool success = false;
             Exception endTransactionError = null;
@@ -984,7 +984,7 @@ namespace NakedObjects.Rest {
                 //return ConfigureMsg(ss.Populate());
                 ss.Populate();
                 SetHeaders(ss);
-                return ss.Representation;
+                return new JsonResult(ss.Representation);
             }
             catch (HttpResponseException)
             {

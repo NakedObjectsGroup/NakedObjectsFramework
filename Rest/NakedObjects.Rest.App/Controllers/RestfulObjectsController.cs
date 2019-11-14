@@ -19,7 +19,7 @@ namespace NakedObjects.Rest.App.Controllers {
         public RestfulObjectsController(IFrameworkFacade frameworkFacade) : base(frameworkFacade) {}
 
         [HttpGet]
-        public override IRepresentation GetHome( ReservedArguments arguments) {
+        public override JsonResult GetHome( ReservedArguments arguments) {
             return base.GetHome(arguments);
         }
 
