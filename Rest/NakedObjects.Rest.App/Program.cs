@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace NakedObjects.Rest.Test.App
+namespace NakedObjects.Rest.App
 {
     public class Program
     {

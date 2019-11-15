@@ -20,7 +20,7 @@ using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.DependencyInjection;
 
-namespace NakedObjects.Rest.Test.App {
+namespace NakedObjects.Rest.App {
 
     public class InvariantStringHasher : IStringHasher {
         public string GetHash(string toHash) {

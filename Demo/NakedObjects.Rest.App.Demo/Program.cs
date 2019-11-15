@@ -15,7 +15,6 @@ namespace NakedObjects.Rest.App.Demo
     {
         public static void Main(string[] args)
         {
-
             DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
 
             CreateHostBuilder(args).Build().Run();

@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Rest.Test.App;
 
 namespace NakedObjects.Rest.App.Demo
 {
@@ -36,6 +35,8 @@ namespace NakedObjects.Rest.App.Demo
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IReflector reflector)
         {
+            reflector.Reflect();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -52,8 +53,9 @@ namespace NakedObjects.Rest.App.Demo
             //    endpoints.MapControllers();
             //});
 
+
             app.UseMvc(routeBuilder => RestfulObjectsControllerBase.AddRestRoutes(routeBuilder, ""));
-            reflector.Reflect();
+
         }
     }
 }

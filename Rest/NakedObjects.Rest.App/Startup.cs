@@ -12,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.Rest.Test.App
+namespace NakedObjects.Rest.App
 {
     public class Startup
     {
@@ -53,14 +53,6 @@ namespace NakedObjects.Rest.Test.App
             //    endpoints.MapControllers();
             //});
 
-            app.Use(async (context, nextMiddleware) => {
-                var a = context.Response;
-                // Some code here
-                await nextMiddleware();
-                // Some other code here
-
-                var b = context.Response;
-            });
 
             app.UseMvc(routeBuilder => RestfulObjectsControllerBase.AddRestRoutes(routeBuilder, ""));
 

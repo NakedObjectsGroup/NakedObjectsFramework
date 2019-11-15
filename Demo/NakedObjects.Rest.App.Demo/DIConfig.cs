@@ -21,7 +21,9 @@ using NakedObjects.Facade.Translation;
 using NakedObjects.DependencyInjection;
 using NakedObjects.Rest.App.Demo;
 
-namespace NakedObjects.Rest.Test.App {
+namespace NakedObjects.Rest.App.Demo
+{
+
 
     public class InvariantStringHasher : IStringHasher {
         public string GetHash(string toHash) {

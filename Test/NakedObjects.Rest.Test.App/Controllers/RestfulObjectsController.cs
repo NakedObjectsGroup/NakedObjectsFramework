@@ -10,6 +10,7 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 using NakedObjects.Facade;
 using NakedObjects.Rest.Model;
+using NakedObjects.Rest.Snapshot.Representations;
 
 namespace NakedObjects.Rest.Test.App.Controllers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {
@@ -18,163 +19,162 @@ namespace NakedObjects.Rest.Test.App.Controllers {
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetHome( ReservedArguments arguments) {
+        public override JsonResult GetHome( ReservedArguments arguments) {
             return base.GetHome(arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetUser( ReservedArguments arguments) {
+        public override JsonResult GetUser( ReservedArguments arguments) {
             return base.GetUser(arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetServices( ReservedArguments arguments) {
+        public override JsonResult GetServices( ReservedArguments arguments) {
             return base.GetServices(arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetMenus( ReservedArguments arguments) {
+        public override JsonResult GetMenus( ReservedArguments arguments) {
             return base.GetMenus(arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetVersion( ReservedArguments arguments) {
+        public override JsonResult GetVersion( ReservedArguments arguments) {
             return base.GetVersion(arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetService(string serviceName,  ReservedArguments arguments) {
+        public override JsonResult GetService(string serviceName,  ReservedArguments arguments) {
             return base.GetService(serviceName, arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetMenu(string menuName,  ReservedArguments arguments) {
+        public override JsonResult GetMenu(string menuName,  ReservedArguments arguments) {
             return base.GetMenu(menuName, arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetServiceAction(string serviceName, string actionName,  ReservedArguments arguments) {
+        public override JsonResult GetServiceAction(string serviceName, string actionName,  ReservedArguments arguments) {
             return base.GetServiceAction(serviceName, actionName, arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetImage(string imageId,  ReservedArguments arguments) {
+        public override JsonResult GetImage(string imageId,  ReservedArguments arguments) {
             return base.GetImage(imageId, arguments);
         }
 
         [HttpPost]
-        public override HttpResponseMessage PostPersist(string domainType, ArgumentMap arguments) {
+        public override JsonResult PostPersist(string domainType, ArgumentMap arguments) {
             return base.PostPersist(domainType, arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetObject(string domainType, string instanceId,  ReservedArguments arguments) {
+        public override JsonResult GetObject(string domainType, string instanceId,  ReservedArguments arguments) {
             return base.GetObject(domainType, instanceId, arguments);
         }
 
         [HttpPut]
-        public override HttpResponseMessage PutObject(string domainType, string instanceId,  ArgumentMap arguments) {
+        public override JsonResult PutObject(string domainType, string instanceId,  ArgumentMap arguments) {
             return base.PutObject(domainType, instanceId, arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetProperty(string domainType, string instanceId, string propertyName,  ReservedArguments arguments) {
+        public override JsonResult GetProperty(string domainType, string instanceId, string propertyName,  ReservedArguments arguments) {
             return base.GetProperty(domainType, instanceId, propertyName, arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetCollection(string domainType, string instanceId, string propertyName,  ReservedArguments arguments) {
+        public override JsonResult GetCollection(string domainType, string instanceId, string propertyName,  ReservedArguments arguments) {
             return base.GetCollection(domainType, instanceId, propertyName, arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetAction(string domainType, string instanceId, string actionName,  ReservedArguments arguments) {
+        public override JsonResult GetAction(string domainType, string instanceId, string actionName,  ReservedArguments arguments) {
             return base.GetAction(domainType, instanceId, actionName, arguments);
         }
 
         [HttpPut]
-        public override HttpResponseMessage PutProperty(string domainType, string instanceId, string propertyName,  SingleValueArgument argument) {
+        public override JsonResult PutProperty(string domainType, string instanceId, string propertyName,  SingleValueArgument argument) {
             return base.PutProperty(domainType, instanceId, propertyName, argument);
         }
 
         [HttpDelete]
-        public override HttpResponseMessage DeleteProperty(string domainType, string instanceId, string propertyName,  ReservedArguments arguments) {
+        public override JsonResult DeleteProperty(string domainType, string instanceId, string propertyName,  ReservedArguments arguments) {
             return base.DeleteProperty(domainType, instanceId, propertyName, arguments);
         }
 
         [HttpPost]
-        public override HttpResponseMessage PostCollection(string domainType, string instanceId, string propertyName,  SingleValueArgument argument) {
+        public override JsonResult PostCollection(string domainType, string instanceId, string propertyName,  SingleValueArgument argument) {
             return base.PostCollection(domainType, instanceId, propertyName, argument);
         }
 
         [HttpDelete]
-        public override HttpResponseMessage DeleteCollection(string domainType, string instanceId, string propertyName,  SingleValueArgument argument) {
+        public override JsonResult DeleteCollection(string domainType, string instanceId, string propertyName,  SingleValueArgument argument) {
             return base.DeleteCollection(domainType, instanceId, propertyName, argument);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
+        public override JsonResult GetInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return base.GetInvoke(domainType, instanceId, actionName, arguments);
         }
 
         [HttpPost]
-        public override HttpResponseMessage PostInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
+        public override JsonResult PostInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return base.PostInvoke(domainType, instanceId, actionName, arguments);
         }
 
         [HttpPut]
-        public override HttpResponseMessage PutInvoke(string domainType, string instanceId, string actionName,  ArgumentMap arguments) {
+        public override JsonResult PutInvoke(string domainType, string instanceId, string actionName,  ArgumentMap arguments) {
             return base.PutInvoke(domainType, instanceId, actionName, arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetInvokeOnService(string serviceName, string actionName,  ArgumentMap arguments) {
+        public override JsonResult GetInvokeOnService(string serviceName, string actionName,  ArgumentMap arguments) {
             return base.GetInvokeOnService(serviceName, actionName, arguments);
         }
 
         [HttpPut]
-        public override HttpResponseMessage PutInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
+        public override JsonResult PutInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
             return base.PutInvokeOnService(serviceName, actionName, arguments);
         }
 
         [HttpPost]
-        public override HttpResponseMessage PostInvokeOnService(string serviceName, string actionName,  ArgumentMap arguments) {
+        public override JsonResult PostInvokeOnService(string serviceName, string actionName,  ArgumentMap arguments) {
             return base.PostInvokeOnService(serviceName, actionName, arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetInvokeTypeActions(string typeName, string actionName, ArgumentMap arguments) {
+        public override JsonResult GetInvokeTypeActions(string typeName, string actionName, ArgumentMap arguments) {
             return base.GetInvokeTypeActions(typeName, actionName, arguments);
         }
 
         [HttpPut]
-        public override HttpResponseMessage PutPersistPropertyPrompt(string domainType, string propertyName,  PromptArgumentMap promptArguments) {
+        public override JsonResult PutPersistPropertyPrompt(string domainType, string propertyName,  PromptArgumentMap promptArguments) {
             return base.PutPersistPropertyPrompt(domainType, propertyName, promptArguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetPropertyPrompt(string domainType, string instanceId, string propertyName,  ArgumentMap arguments) {
+        public override JsonResult GetPropertyPrompt(string domainType, string instanceId, string propertyName,  ArgumentMap arguments) {
             return base.GetPropertyPrompt(domainType, instanceId, propertyName, arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetParameterPrompt(string domainType, string instanceId, string actionName, string parmName, ArgumentMap arguments) {
+        public override JsonResult GetParameterPrompt(string domainType, string instanceId, string actionName, string parmName, ArgumentMap arguments) {
             return base.GetParameterPrompt(domainType, instanceId, actionName, parmName, arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetParameterPromptOnService(string serviceName, string actionName, string parmName,  ArgumentMap arguments) {
+        public override JsonResult GetParameterPromptOnService(string serviceName, string actionName, string parmName,  ArgumentMap arguments) {
             return base.GetParameterPromptOnService(serviceName, actionName, parmName, arguments);
         }
 
         [HttpGet]
-        public override HttpResponseMessage GetCollectionValue(string domainType, string instanceId, string propertyName,  ReservedArguments arguments) {
+        public override JsonResult GetCollectionValue(string domainType, string instanceId, string propertyName,  ReservedArguments arguments) {
             return base.GetCollectionValue(domainType, instanceId, propertyName, arguments);
         }
 
-        public virtual HttpResponseMessage InvalidMethod() {
-            return null;
-            //throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MethodNotAllowed));
+        public virtual JsonResult InvalidMethod() {
+            throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MethodNotAllowed));
         }
     }
 }

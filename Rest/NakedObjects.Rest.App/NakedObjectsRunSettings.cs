@@ -17,7 +17,7 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Value;
 using RestfulObjects.Test.Data;
 
-namespace NakedObjects.Rest.Test.App {
+namespace NakedObjects.Rest.App {
     public class NakedObjectsRunSettings {
 
 	    //Returning e.g. "restapi" creates the Restful Objects API on that root.
