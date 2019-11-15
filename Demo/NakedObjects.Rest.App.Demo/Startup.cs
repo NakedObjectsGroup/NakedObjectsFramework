@@ -46,7 +46,7 @@ namespace NakedObjects.Rest.App.Demo
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             //app.UseEndpoints(endpoints =>
             //{
