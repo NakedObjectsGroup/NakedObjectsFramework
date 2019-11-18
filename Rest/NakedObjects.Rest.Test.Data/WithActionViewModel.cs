@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Security;
-using NUnit.Framework;
+//using NUnit.Framework;
 
 namespace RestfulObjects.Test.Data {
     public class WithActionViewModel : WithAction, IViewModel {

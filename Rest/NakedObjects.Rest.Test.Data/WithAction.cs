@@ -12,7 +12,7 @@ using System.Globalization;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Security;
-using NUnit.Framework;
+//using NUnit.Framework;
 
 namespace RestfulObjects.Test.Data {
     public abstract class WithAction {
