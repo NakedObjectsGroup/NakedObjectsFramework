@@ -162,13 +162,13 @@ namespace RestfulObjects.Test.Data {
         }
 
         public static void Seed(string name = "RestTest") {
-            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME"))) {
-                // not running on azure - it's just test code 
-                Database.Delete(name);
-                (new CodeFirstContext(name)).Database.Create();
-            }
+            //if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME"))) {
+            //    // not running on azure - it's just test code 
+            //    Database.Delete(name);
+            //    (new CodeFirstContext(name)).Database.Create();
+            //}
 
-            CodeFirstInitializer.Seed();
+            //CodeFirstInitializer.Seed();
         }
     }
 
