@@ -154,9 +154,9 @@ namespace RestfulObjects.Test.Data {
             public static void Seed() {
 
 
-                using (var context = new CodeFirstContext("RestTest")) {
-                    SeedCodeFirstDatabase(context);
-                }
+                //using (var context = new CodeFirstContext("RestTest")) {
+                //    SeedCodeFirstDatabase(context);
+                //}
 
             }
         }
