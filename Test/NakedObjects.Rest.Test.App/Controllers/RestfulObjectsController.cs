@@ -174,7 +174,8 @@ namespace NakedObjects.Rest.Test.App.Controllers {
         }
 
         public virtual JsonResult InvalidMethod() {
-            throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MethodNotAllowed));
+            return null;
+            //throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MethodNotAllowed));
         }
     }
 }
