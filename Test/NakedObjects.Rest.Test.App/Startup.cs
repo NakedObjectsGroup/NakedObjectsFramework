@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Rest.App.Demo;
 
 namespace NakedObjects.Rest.Test.App
 {

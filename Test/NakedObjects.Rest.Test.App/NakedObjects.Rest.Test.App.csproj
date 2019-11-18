@@ -11,8 +11,9 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.7.0" />
   </ItemGroup>
 
+
   <ItemGroup>
-    <ProjectReference Include="..\..\Rest\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj" />
+    <ProjectReference Include="..\..\Samples\AdventureWorksModel\AdventureWorksModel.csproj" />
   </ItemGroup>
 
 </Project>

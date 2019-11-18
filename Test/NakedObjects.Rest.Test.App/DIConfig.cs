@@ -19,8 +19,11 @@ using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.DependencyInjection;
+using NakedObjects.Rest.App.Demo;
 
-namespace NakedObjects.Rest.Test.App {
+namespace NakedObjects.Rest.App.Demo
+{
+
 
     public class InvariantStringHasher : IStringHasher {
         public string GetHash(string toHash) {
@@ -73,7 +76,7 @@ namespace NakedObjects.Rest.Test.App {
             services.AddTransient<IStringHasher, InvariantStringHasher>();
             services.AddTransient<IFrameworkFacade, FrameworkFacade>();
 
-
+            
             //Externals
             services.AddScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);
         }
