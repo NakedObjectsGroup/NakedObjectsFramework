@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Net;
 using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,12 @@ namespace NakedObjects.Rest.Test.App.Controllers {
 
         [HttpGet]
         public override JsonResult GetHome( ReservedArguments arguments) {
-            return base.GetHome(arguments);
+            try {
+                return base.GetHome(arguments);
+            }
+            catch (Exception e) {
+                return new JsonResult($"{{ Error : {e.Message} }}");
+            }
         }
 
         [HttpGet]
