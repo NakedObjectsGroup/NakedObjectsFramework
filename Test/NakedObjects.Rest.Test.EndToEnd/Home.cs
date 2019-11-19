@@ -24,12 +24,12 @@ namespace RestfulObjects.Test.EndToEnd {
             DoGetResource();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void WithGenericAcceptHeader() {
             DoWithGenericAcceptHeader();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void WithProfileAcceptHeader() {
             DoWithProfileAcceptHeader();
         }
