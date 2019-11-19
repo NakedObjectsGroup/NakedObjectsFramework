@@ -17,6 +17,7 @@ using NakedObjects.Menu;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
+using RestfulObjects.Test.Data;
 
 namespace NakedObjects.Rest.App.Demo {
     public static class NakedObjectsRunSettings {
@@ -57,7 +58,8 @@ namespace NakedObjects.Rest.App.Demo {
                     typeof (OrderContributedActions),
                     typeof (CustomerContributedActions),
                     typeof (SpecialOfferContributedActions),
-                    typeof (ServiceWithNoVisibleActions)
+                    typeof (ServiceWithNoVisibleActions),
+                    typeof (ContributorService)
                 };
             }
         }
