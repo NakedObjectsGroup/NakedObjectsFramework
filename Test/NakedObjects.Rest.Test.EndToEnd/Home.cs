@@ -34,7 +34,7 @@ namespace RestfulObjects.Test.EndToEnd {
             DoWithProfileAcceptHeader();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void AttemptWithInvalidProfileAcceptHeader() {
             DoAttemptWithInvalidProfileAcceptHeader();
         }
@@ -44,12 +44,12 @@ namespace RestfulObjects.Test.EndToEnd {
             DoAttemptPost();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void AttemptPut() {
             DoAttemptPut();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void AttemptDelete() {
             DoAttemptDelete();
         }

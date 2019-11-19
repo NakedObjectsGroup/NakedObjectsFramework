@@ -21,6 +21,7 @@ using Microsoft.Extensions.Primitives;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
+
 using NakedObjects.Rest.Snapshot.Representations;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
@@ -269,7 +270,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                     return;
                 }
 
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotAcceptable));
+                throw new ValidationException((int)HttpStatusCode.NotAcceptable);
             }
         }
 
@@ -292,7 +293,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             var outgoingMediaType = contentType == null ? "" : contentType.MediaType;
 
             if (!incomingMediaTypes.Contains(outgoingMediaType)) {
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotAcceptable));
+                throw new ValidationException((int)HttpStatusCode.NotAcceptable);
             }
         }
 
@@ -311,12 +312,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 }
                 else {
                     // outgoing profile not included in incoming profiles and not already an error so throw a 406
-                    throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotAcceptable));
+                    throw new ValidationException((int)HttpStatusCode.NotAcceptable);
                 }
             }
         }
 
-        private void MapToRepresentation(Exception e, HttpRequest req) {
+        private void MapToRepresentation(System.Exception e, HttpRequest req) {
             if (e is WithContextNOSException) {
                 ArgumentsRepresentation.Format format = e is BadPersistArgumentsException ? ArgumentsRepresentation.Format.Full : ArgumentsRepresentation.Format.MembersOnly;
                 RestControlFlags flags = e is BadPersistArgumentsException ? ((BadPersistArgumentsException) e).Flags : RestControlFlags.DefaultFlags();
