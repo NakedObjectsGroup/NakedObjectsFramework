@@ -1,0 +1,29 @@
+{
+  "id": "AnAction",
+  "friendlyName": "An Action",
+  "description": "",
+  "hasParams": false,
+  "memberOrder": 0,
+  "links": [
+    {
+      "rel": "self",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/action-description\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithActionObject/actions/AnAction"
+    },
+    {
+      "rel": "up",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithActionObject"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/return-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/MostSimple"
+    }
+  ],
+  "parameters": [],
+  "extensions": {}
+}

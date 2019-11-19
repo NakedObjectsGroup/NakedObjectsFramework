@@ -1,0 +1,75 @@
+{
+  "name": "RestfulObjects.Test.Data.MostSimple",
+  "domainType": "MostSimple",
+  "friendlyName": "Most Simple",
+  "pluralName": "Most Simples",
+  "description": "",
+  "isService": false,
+  "extensions": {},
+  "links": [
+    {
+      "rel": "self",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/MostSimple"
+    }
+  ],
+  "members": [
+    {
+      "rel": "urn:org.restfulobjects:rels/property",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/MostSimple/properties/Id"
+    }
+  ],
+  "typeActions": [
+    {
+      "id": "isSubtypeOf",
+      "arguments": {
+        "supertype": {
+          "href": null
+        }
+      },
+      "rel": "urn:org.restfulobjects:rels/invoke;typeaction=\"isSubtypeOf\"",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/type-action-result\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/MostSimple/type-actions/isSubtypeOf/invoke"
+    },
+    {
+      "id": "isSupertypeOf",
+      "arguments": {
+        "subtype": {
+          "href": null
+        }
+      },
+      "rel": "urn:org.restfulobjects:rels/invoke;typeaction=\"isSupertypeOf\"",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/type-action-result\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/MostSimple/type-actions/isSupertypeOf/invoke"
+    },
+    {
+      "id": "filterSubtypesFrom",
+      "arguments": {
+        "subtypes": {
+          "href": null
+        }
+      },
+      "rel": "urn:org.restfulobjects:rels/invoke;typeaction=\"filterSubtypesFrom\"",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/type-action-result\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/MostSimple/type-actions/filterSubtypesFrom/invoke"
+    },
+    {
+      "id": "filterSupertypesFrom",
+      "arguments": {
+        "supertypes": {
+          "href": null
+        }
+      },
+      "rel": "urn:org.restfulobjects:rels/invoke;typeaction=\"filterSupertypesFrom\"",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/type-action-result\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/MostSimple/type-actions/filterSupertypesFrom/invoke"
+    }
+  ]
+}

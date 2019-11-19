@@ -1,0 +1,18 @@
+{
+  "id": "isSubtypeOf",
+  "value": true,
+  "links": [
+    {
+      "arguments": {
+        "supertype": {
+          "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithAction"
+        }
+      },
+      "rel": "self",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/type-action-result\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithActionObject/type-actions/isSubtypeOf/invoke"
+    }
+  ],
+  "extensions": {}
+}

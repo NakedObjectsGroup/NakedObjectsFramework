@@ -1,0 +1,43 @@
+{
+  "value": "2007-07-12T23:00:00Z",
+  "id": "ADateTimeValue",
+  "links": [
+    {
+      "rel": "up",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"RestfulObjects.Test.Data.WithValue\"",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/objects/RestfulObjects.Test.Data.WithValue/1"
+    },
+    {
+      "rel": "describedby",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/property-description\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/RestfulObjects.Test.Data.WithValue/properties/ADateTimeValue"
+    },
+    {
+      "arguments": {
+        "value": null
+      },
+      "rel": "urn:org.restfulobjects:rels/modify;property=\"ADateTimeValue\"",
+      "method": "PUT",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/objects/RestfulObjects.Test.Data.WithValue/1/properties/ADateTimeValue"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/clear;property=\"ADateTimeValue\"",
+      "method": "DELETE",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/object-property\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/objects/RestfulObjects.Test.Data.WithValue/1/properties/ADateTimeValue"
+    }
+  ],
+  "extensions": {
+    "friendlyName": "A Date Time Value",
+    "description": "A datetime value for testing",
+    "optional": true,
+    "memberOrder": 4,
+    "returnType": "string",
+    "format": "date-time",
+    "maxLength": 0,
+    "pattern": ""
+  }
+}

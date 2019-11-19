@@ -1,0 +1,157 @@
+{
+  "links": [
+    {
+      "rel": "self",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/type-list\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types"
+    },
+    {
+      "rel": "up",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/homepage\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/"
+    }
+  ],
+  "extensions": {},
+  "value": [
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/ContributorService"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/Immutable"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/IStreamResource"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/MostSimple"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/MostSimpleViewModel"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/RedirectedObject"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/RestDataRepository"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/TestTypeCodeMapper"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/VerySimple"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/VerySimpleEager"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithAction"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithActionObject"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithActionService"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithActionViewModel"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithAttachments"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithCollection"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithCollectionViewModel"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithDateTimeKey"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithReference"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithReferenceViewModel"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithScalars"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithValue"
+    },
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "method": "GET",
+      "type": "application/json; profile=\"urn:org.restfulobjects:repr-types/domain-type\"; charset=utf-8",
+      "href": "http://nakedobjectsrotest.azurewebsites.net/domain-types/WithValueViewModel"
+    }
+  ]
+}
