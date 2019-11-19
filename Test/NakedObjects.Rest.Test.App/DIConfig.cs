@@ -5,9 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Security.Principal;
-using System.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Configuration;
@@ -19,9 +17,8 @@ using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.DependencyInjection;
-using NakedObjects.Rest.App.Demo;
 
-namespace NakedObjects.Rest.App.Demo
+namespace NakedObjects.Rest.Test.App
 {
 
 
