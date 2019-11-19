@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
+    [TestClass, Ignore]
     public class ViewModelGet : ObjectAbstract {
         #region Helpers
 

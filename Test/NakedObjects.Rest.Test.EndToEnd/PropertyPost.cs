@@ -5,7 +5,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
+    [TestClass, Ignore]
     public class PropertyPost : PropertyAbstract {
         [TestMethod]
         public void AttemptPropertyPost() {

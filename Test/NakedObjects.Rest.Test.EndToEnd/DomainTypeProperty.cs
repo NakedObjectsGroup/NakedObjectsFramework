@@ -5,7 +5,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
+    [TestClass, Ignore]
     public class DomainTypePropertyTests {
         private const string dtp = Urls.DomainTypes + Urls.NameSpace + @"MostSimple/properties/Id";
      

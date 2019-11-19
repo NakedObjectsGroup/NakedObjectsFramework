@@ -10,7 +10,7 @@ namespace RestfulObjects.Test.EndToEnd {
      * These tests clear properties.  To avoid clashes with other tests, they create all the objects that they modify.
      */
 
-    [TestClass]
+    [TestClass, Ignore]
     public class PropertyDelete : PropertyAbstract {
         #region Helpers
 

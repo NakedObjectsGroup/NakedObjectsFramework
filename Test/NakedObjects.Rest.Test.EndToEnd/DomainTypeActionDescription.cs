@@ -5,7 +5,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass]
+    [TestClass, Ignore]
     public class DomainTypeActionDescriptionTests {
         private const string dt = Urls.DomainTypes + Urls.NameSpace + @"WithActionObject/actions/AnAction";
         
