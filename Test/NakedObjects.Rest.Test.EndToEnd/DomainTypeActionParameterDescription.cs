@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace RestfulObjects.Test.EndToEnd {
     [TestClass, Ignore]
     public class DomainTypeActionParameterDescriptionTests {
-        private const string dt = Urls.DomainTypes + Urls.NameSpace + @"WithActionObject/actions/AnActionReturnsScalarWithParameters/params/parm1";
+        private static string dt = Urls.DomainTypes + Urls.NameSpace + @"WithActionObject/actions/AnActionReturnsScalarWithParameters/params/parm1";
        
         [TestMethod]
         public void DomainTypeResource() {

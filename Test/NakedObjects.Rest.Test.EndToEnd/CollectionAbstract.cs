@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 namespace RestfulObjects.Test.EndToEnd {
     [TestClass, Ignore]
     public abstract class CollectionAbstract {
-        private const string Collections = Urls.Objects + Urls.WithCollection1 + Urls.Collections;
+        private static string Collections = Urls.Objects + Urls.WithCollection1 + Urls.Collections;
         protected static string vs1 = Urls.Objects + Urls.NameSpace + @"VerySimple/1";
         protected static string simpleSet = vs1 + Urls.Collections + "SimpleSet";
         protected static string simpleList = vs1 + Urls.Collections + "SimpleList";

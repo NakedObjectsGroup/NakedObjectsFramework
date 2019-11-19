@@ -7,20 +7,22 @@ namespace RestfulObjects.Test.EndToEnd {
     /// 
     /// </summary>
     public static class Urls {
-        public const string BaseUrl = @"http://nakedobjectsrotest.azurewebsites.net/";
-        //public const string BaseUrl = @"http://localhost:56703/";
+        public const string BaseUrlRemote = @"http://nakedobjectsrotest.azurewebsites.net/";
+        public const string BaseUrlLocal = @"http://localhost:5000/";
+
+        public static string BaseUrl => Helpers.UseLocalUrl ? BaseUrlLocal : BaseUrlRemote;
 
         public const string NameSpace = "";
 
-        public const string User = BaseUrl + @"user/";
-        public const string Version = BaseUrl + @"version/";
-        public const string Services = BaseUrl + @"services/";
-        public const string Objects = BaseUrl + @"objects/";
+        public static string User = BaseUrl + @"user/";
+        public static string Version = BaseUrl + @"version/";
+        public static string Services = BaseUrl + @"services/";
+        public static string Objects = BaseUrl + @"objects/";
         public const string Actions = @"/actions/";
         public const string Properties = @"/properties/";
         public const string Collections = @"/collections/";
         public const string Invoke = "/invoke";
-        public const string DomainTypes = BaseUrl + @"domain-types/";
+        public static string DomainTypes = BaseUrl + @"domain-types/";
         public const string TypeActions = @"/type-actions/";
 
 
@@ -46,6 +48,6 @@ namespace RestfulObjects.Test.EndToEnd {
         //Eager rendering
         public const string VerySimpleEager1 = NameSpace + @"VerySimpleEager/1";
 
-        public const string RestDataRepository = Services + NameSpace + @"RestDataRepository";
+        public static string RestDataRepository = Services + NameSpace + @"RestDataRepository";
     }
 }

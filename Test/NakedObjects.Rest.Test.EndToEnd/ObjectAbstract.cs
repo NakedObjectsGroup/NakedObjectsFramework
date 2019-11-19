@@ -7,7 +7,7 @@ namespace RestfulObjects.Test.EndToEnd {
     /// 
     /// </summary>
     public abstract class ObjectAbstract {
-        protected const string objectsUrl = Urls.Objects;
+        protected static string objectsUrl = Urls.Objects;
 
         protected virtual string FilePrefix {
             get { return "NO PREFIX SPECIFIED"; }

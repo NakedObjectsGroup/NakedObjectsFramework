@@ -684,6 +684,10 @@ namespace NakedObjects.Rest {
             });
         }
 
+        public virtual ActionResult InvalidMethod() {
+            return StatusCode((int) HttpStatusCode.MethodNotAllowed);
+        }
+
         private RestSnapshot GetInvokeIsTypeOf(string typeName, string actionName, ArgumentMap arguments) {
             return new RestSnapshot(OidStrategy, GetIsTypeOf(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments));
         }

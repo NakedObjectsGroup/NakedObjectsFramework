@@ -4,13 +4,13 @@
 
 namespace RestfulObjects.Test.EndToEnd {
     public abstract class PropertyAbstract {
-        protected const string withValuePropertiesGet = Urls.Objects + Urls.WithValue1 + Urls.Properties;
+        protected static string withValuePropertiesGet = Urls.Objects + Urls.WithValue1 + Urls.Properties;
 
-        protected const string withValuePropertiesSet = Urls.Objects + Urls.WithValue2 + Urls.Properties;
+        protected static string withValuePropertiesSet = Urls.Objects + Urls.WithValue2 + Urls.Properties;
 
-        protected const string withReferenceProperties = Urls.Objects + Urls.WithReference1 + Urls.Properties;
+        protected static string withReferenceProperties = Urls.Objects + Urls.WithReference1 + Urls.Properties;
 
-        protected const string withCollectionProperties = Urls.Objects + Urls.WithCollection1 + Urls.Properties;
+        protected static string withCollectionProperties = Urls.Objects + Urls.WithCollection1 + Urls.Properties;
 
         protected virtual string FilePrefix {
             get { return "NO PREFIX SPECIFIED"; }

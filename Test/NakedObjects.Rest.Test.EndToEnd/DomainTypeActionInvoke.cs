@@ -7,11 +7,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace RestfulObjects.Test.EndToEnd {
     [TestClass, Ignore]
     public class DomainTypeActionInvokeTests {
-        private const string withActionObjectTypeActions = Urls.DomainTypes + Urls.NameSpace + @"WithActionObject" + Urls.TypeActions;
-        private const string withActionTypeActions = Urls.DomainTypes + Urls.NameSpace + @"WithAction" + Urls.TypeActions;
+        private static string withActionObjectTypeActions = Urls.DomainTypes + Urls.NameSpace + @"WithActionObject" + Urls.TypeActions;
+        private static string withActionTypeActions = Urls.DomainTypes + Urls.NameSpace + @"WithAction" + Urls.TypeActions;
 
-        private const string isSubtypeOf = withActionObjectTypeActions + @"isSubtypeOf/invoke?supertype=" + Urls.NameSpace;
-        private const string isSupertypeOf = withActionTypeActions + @"isSupertypeOf/invoke?subtype=" + Urls.NameSpace;
+        private static string isSubtypeOf = withActionObjectTypeActions + @"isSubtypeOf/invoke?supertype=" + Urls.NameSpace;
+        private static string isSupertypeOf = withActionTypeActions + @"isSupertypeOf/invoke?subtype=" + Urls.NameSpace;
 
         [TestMethod]
         public void IsSubtypeOf() {

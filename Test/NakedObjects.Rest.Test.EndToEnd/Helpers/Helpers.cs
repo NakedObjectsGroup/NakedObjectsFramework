@@ -1,6 +1,6 @@
-﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net). 
-// All Rights Reserved. This code released under the terms of the 
-// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html) 
+﻿// Copyright © Naked Objects Group Ltd ( http://www.nakedobjects.net).
+// All Rights Reserved. This code released under the terms of the
+// Microsoft Public License (MS-PL) ( http://opensource.org/licenses/ms-pl.html)
 
 using System;
 using System.Globalization;
@@ -13,13 +13,14 @@ using Newtonsoft.Json.Linq;
 
 namespace RestfulObjects.Test.EndToEnd {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public static class Helpers {
         private const string SourceFiles = @"..\..\Json reference files";
         private const string Txt = ".txt";
         private static bool WriteFileIfNoneExists = false;
         private static bool WriteFileIfResponseDiffersFromExisting = false;
+        public static bool UseLocalUrl = false;
 
         public static bool UrlExistsForGet(string url) {
             WebRequest httpRequest = WebRequest.Create(url);
@@ -45,7 +46,7 @@ namespace RestfulObjects.Test.EndToEnd {
 
             httpRequest.KeepAlive = false;
             httpRequest.Method = method;
-            
+
 
             httpRequest.ContentType = @"application/json";
             if (acceptHeader != null) {
@@ -118,7 +119,7 @@ namespace RestfulObjects.Test.EndToEnd {
                     }
                 }
                 catch {
-                    // suppress failures 
+                    // suppress failures
                 }
 
                 Assert.Fail(e.Message + " " + content);
@@ -141,7 +142,7 @@ namespace RestfulObjects.Test.EndToEnd {
             return File.ReadAllText(PathTo(fileName));
         }
 
-        // for testcreation 
+        // for testcreation
 
         public static void WriteTestData(string fileName, string data) {
             File.WriteAllText(PathTo(fileName), data);
@@ -166,7 +167,12 @@ namespace RestfulObjects.Test.EndToEnd {
                 fileVersion = fileVersion.Replace("<nextId>", JsonRep.CurrentId.ToString(CultureInfo.InvariantCulture));
             }
 
-            // remove line endings so  it works on AV 
+            if (UseLocalUrl) {
+                fileVersion = fileVersion.Replace(Urls.BaseUrlRemote, Urls.BaseUrlLocal);
+            }
+
+
+            // remove line endings so  it works on AV
             fileVersion = fileVersion.Replace("\r", "").Replace("\n", "");
             result = result.Replace("\r", "").Replace("\n", "");
 
@@ -176,18 +182,18 @@ namespace RestfulObjects.Test.EndToEnd {
                     Assert.Fail("Results did not match file; file over-written with new version ");
                 }
                 else {
-                    
+
 
                     if (fileVersion != result) {
-                        
+
                         var len = fileVersion.Length >= result.Length ?  result.Length : fileVersion.Length;
-                        var firstChange = 0; 
+                        var firstChange = 0;
 
                         for (int i = 0; i < len; i++) {
 
                             if (fileVersion[i] != result[i]) {
                                 firstChange = i;
-                                break; 
+                                break;
                             }
                         }
 
@@ -231,7 +237,7 @@ namespace RestfulObjects.Test.EndToEnd {
             if (machineName == "STEF-LAPTOP") {
                 return @"C:\Users\Stefano\Documents\GitHub\NakedObjectsFramework\" + suffix;
             }
-     
+
             // Azure
             return @"C:\projects\nakedobjectsframework-5i2u0\" + suffix;
         }

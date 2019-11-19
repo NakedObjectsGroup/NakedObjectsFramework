@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace RestfulObjects.Test.EndToEnd {
     [TestClass, Ignore]
     public class DomainTypeTests {
-        private const string dt = Urls.DomainTypes + Urls.NameSpace + "MostSimple";
+        private static string dt = Urls.DomainTypes + Urls.NameSpace + "MostSimple";
    
         [TestMethod]
         public void DomainType() {

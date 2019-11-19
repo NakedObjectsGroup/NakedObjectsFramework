@@ -172,9 +172,5 @@ namespace NakedObjects.Rest.App.Controllers {
         public override JsonResult GetCollectionValue(string domainType, string instanceId, string propertyName,  ReservedArguments arguments) {
             return base.GetCollectionValue(domainType, instanceId, propertyName, arguments);
         }
-
-        public virtual JsonResult InvalidMethod() {
-            throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MethodNotAllowed));
-        }
     }
 }

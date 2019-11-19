@@ -174,9 +174,5 @@ namespace NakedObjects.Rest.App.Demo
             return base.GetCollectionValue(domainType, instanceId, propertyName, arguments);
         }
 
-        public virtual JsonResult InvalidMethod() {
-            return null;
-            //throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MethodNotAllowed));
-        }
     }
 }

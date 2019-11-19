@@ -39,7 +39,7 @@ namespace RestfulObjects.Test.EndToEnd {
             DoAttemptWithInvalidProfileAcceptHeader();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void AttemptPost() {
             DoAttemptPost();
         }
