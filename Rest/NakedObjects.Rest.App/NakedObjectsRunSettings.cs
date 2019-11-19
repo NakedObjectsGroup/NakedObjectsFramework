@@ -92,9 +92,9 @@ namespace NakedObjects.Rest.App {
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
 
-            CodeFirstContext.Seed("RestTest");
+            //CodeFirstContextLocal.Seed("RestTest");
             var config = new EntityObjectStoreConfiguration();
-            config.UsingCodeFirstContext(() => new CodeFirstContext("RestTest"));
+            config.UsingCodeFirstContext(() => new CodeFirstContextLocal("RestTest"));
             return config;
         }
 
