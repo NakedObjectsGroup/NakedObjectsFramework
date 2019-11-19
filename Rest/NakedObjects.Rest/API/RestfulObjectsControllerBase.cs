@@ -411,6 +411,9 @@ namespace NakedObjects.Rest {
 
         #region api
 
+        [FromQuery(Name = "x-ro-domain-model")]
+        public string DomainModel { get; set; }
+
 
         public virtual ActionResult GetHome(ReservedArguments arguments)
         {
@@ -933,6 +936,12 @@ namespace NakedObjects.Rest {
             //return msg;
         }
 
+        private void ValidateDomainModel() {
+            if (DomainModel != null && DomainModel != RestControlFlags.DomainModelType.Simple.ToString().ToLower() && DomainModel != RestControlFlags.DomainModelType.Formal.ToString().ToLower())
+            {
+                throw new ValidationException((int)HttpStatusCode.BadRequest);
+            }
+        }
 
         private ActionResult InitAndHandleErrors2(Func<RestSnapshot> f)
         {
@@ -940,6 +949,7 @@ namespace NakedObjects.Rest {
             Exception endTransactionError = null;
             RestSnapshot ss;
             try {
+                ValidateDomainModel();
                 FrameworkFacade.Start();
                 ss = f();
                 success = true;

@@ -54,17 +54,17 @@ namespace RestfulObjects.Test.EndToEnd {
             DoAttemptDelete();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void WithFormalDomainModel() {
             DoWithFormalDomainModel();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void WithSimpleDomainModel() {
             DoWithSimpleDomainModel();
         }
 
-        [TestMethod, Ignore] //http://restfulobjects.codeplex.com/workitem/26
+        [TestMethod] //http://restfulobjects.codeplex.com/workitem/26
         public override void AttemptWithDomainModelMalformed() {
             DoAttemptWithDomainModelMalformed();
         }
