@@ -100,7 +100,7 @@ namespace NakedObjects.Rest.Test.App
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig()
         {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingCodeFirstContext(() => new AdventureWorksContext());
+            config.UsingCodeFirstContext(() => new CodeFirstContext("RestTest"));
             return config;
         }
 
