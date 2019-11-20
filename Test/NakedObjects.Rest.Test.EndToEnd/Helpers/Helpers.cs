@@ -20,7 +20,7 @@ namespace RestfulObjects.Test.EndToEnd {
         private const string Txt = ".txt";
         private static bool WriteFileIfNoneExists = false;
         private static bool WriteFileIfResponseDiffersFromExisting = false;
-        public static bool UseLocalUrl = true;
+        public static bool UseLocalUrl = false;
 
         public static bool UrlExistsForGet(string url) {
             WebRequest httpRequest = WebRequest.Create(url);
