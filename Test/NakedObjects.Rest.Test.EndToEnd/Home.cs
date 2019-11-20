@@ -64,7 +64,7 @@ namespace RestfulObjects.Test.EndToEnd {
             DoWithSimpleDomainModel();
         }
 
-        [TestMethod] //http://restfulobjects.codeplex.com/workitem/26
+        [TestMethod] 
         public override void AttemptWithDomainModelMalformed() {
             DoAttemptWithDomainModelMalformed();
         }

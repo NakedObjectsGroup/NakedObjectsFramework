@@ -5,7 +5,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass, Ignore]
+    [TestClass]
     public class Version : AbstractSecondaryResource {
         protected override string Filename() {
             return "Version";
@@ -24,47 +24,47 @@ namespace RestfulObjects.Test.EndToEnd {
             DoGetResource();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void WithGenericAcceptHeader() {
             DoWithGenericAcceptHeader();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void WithProfileAcceptHeader() {
             DoWithProfileAcceptHeader();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void AttemptWithInvalidProfileAcceptHeader() {
             DoAttemptWithInvalidProfileAcceptHeader();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void AttemptPost() {
             DoAttemptPost();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void AttemptPut() {
             DoAttemptPut();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void AttemptDelete() {
             DoAttemptDelete();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void WithFormalDomainModel() {
             DoWithFormalDomainModel();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void WithSimpleDomainModel() {
             DoWithSimpleDomainModel();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void AttemptWithDomainModelMalformed() {
             DoAttemptWithDomainModelMalformed();
         }
