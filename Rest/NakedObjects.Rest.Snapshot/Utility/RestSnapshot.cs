@@ -224,7 +224,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
             if (redirected != null) {
                 Uri redirectAddress = new UriMtHelper(oidStrategy, req).GetRedirectUri(req, redirected.Item1, redirected.Item2);
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.MovedPermanently) {Headers = {Location = redirectAddress}});
+                throw new RedirectionException(redirectAddress);
             }
         }
 
@@ -240,9 +240,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             try {
                 populator();
                 return this;
-            }
-            catch (HttpResponseException) {
-                throw;
             }
             catch (Exception e) {
                 throw new GeneralErrorNOSException(e);

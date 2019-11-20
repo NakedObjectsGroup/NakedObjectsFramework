@@ -413,34 +413,34 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult GetHome(ReservedArguments arguments)
         {
-            return InitAndHandleErrors2(() => new RestSnapshot(OidStrategy, Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Request, GetFlags(arguments)));
         }
 
         public virtual ActionResult GetUser(ReservedArguments arguments) {
-            return InitAndHandleErrors2(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetUser(), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetUser(), Request, GetFlags(arguments)));
         }
 
         public virtual ActionResult GetServices(ReservedArguments arguments) {
-            return InitAndHandleErrors2(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetServices(), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetServices(), Request, GetFlags(arguments)));
         }
 
         public virtual ActionResult GetMenus(ReservedArguments arguments) {
-            return InitAndHandleErrors2(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetMainMenus(), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetMainMenus(), Request, GetFlags(arguments)));
         }
 
         public virtual ActionResult GetVersion(ReservedArguments arguments) {
-            return InitAndHandleErrors2(() => new RestSnapshot(OidStrategy, GetOptionalCapabilities(), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, GetOptionalCapabilities(), Request, GetFlags(arguments)));
         }
 
         public virtual ActionResult GetService(string serviceName, ReservedArguments arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 var oid = FrameworkFacade.OidTranslator.GetOidTranslation(serviceName);
                 return new RestSnapshot(OidStrategy, FrameworkFacade.GetService(oid), Request, GetFlags(arguments));
             });
         }
 
         public virtual ActionResult GetMenu(string menuName, ReservedArguments arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 if (string.IsNullOrEmpty(menuName)) {
                     throw new BadRequestNOSException();
                 }
@@ -454,25 +454,25 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult GetServiceAction(string serviceName, string actionName, ReservedArguments arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 var oid = FrameworkFacade.OidTranslator.GetOidTranslation(serviceName);
                 return new RestSnapshot(OidStrategy, FrameworkFacade.GetServiceAction(oid, actionName), Request, GetFlags(arguments));
             });
         }
 
         public virtual ActionResult GetImage(string imageId, ReservedArguments arguments) {
-            return InitAndHandleErrors2(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetImage(imageId), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetImage(imageId), Request, GetFlags(arguments)));
         }
 
         public virtual ActionResult GetObject(string domainType, string instanceId, ReservedArguments arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 var loid = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
                 return new RestSnapshot(OidStrategy, FrameworkFacade.GetObject(loid), Request, GetFlags(arguments));
             });
         }
 
         public virtual ActionResult GetPropertyPrompt(string domainType, string instanceId, string propertyName, ArgumentMap arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 var link = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
                 var obj = FrameworkFacade.GetObject(link);
@@ -482,7 +482,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult PutPersistPropertyPrompt(string domainType, string propertyName, PromptArgumentMap promptArguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 Tuple<ArgumentsContextFacade, RestControlFlags> persistArgs = ProcessPromptArguments(promptArguments);
                 Tuple<ArgumentsContextFacade, RestControlFlags> promptArgs = ProcessArgumentMap(promptArguments, false, false);
                 var obj = FrameworkFacade.GetTransient(domainType, persistArgs.Item1);
@@ -492,7 +492,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult GetParameterPrompt(string domainType, string instanceId, string actionName, string parmName, ArgumentMap arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 var link = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
                 ActionContextFacade action = FrameworkFacade.GetObjectActionWithCompletions(link, actionName, parmName, args.Item1);
@@ -503,7 +503,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult GetParameterPromptOnService(string serviceName, string actionName, string parmName, ArgumentMap arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 var link = FrameworkFacade.OidTranslator.GetOidTranslation(serviceName);
                 ActionContextFacade action = FrameworkFacade.GetServiceActionWithCompletions(link, actionName, parmName, args.Item1);
@@ -514,7 +514,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult PutObject(string domainType, string instanceId, ArgumentMap arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, true, false);
                 ObjectContextFacade context = FrameworkFacade.PutObject(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), args.Item1);
@@ -524,7 +524,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult PostPersist(string domainType, ArgumentMap arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessPersistArguments(arguments);
                 ObjectContextFacade context = FrameworkFacade.Persist(domainType, args.Item1);
@@ -534,7 +534,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult GetProperty(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
 
                 // found but a collection 
@@ -547,7 +547,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult GetCollection(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 try {
                     PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
 
@@ -564,7 +564,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult GetCollectionValue(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 try {
                     PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
 
@@ -581,11 +581,11 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult GetAction(string domainType, string instanceId, string actionName, ReservedArguments arguments) {
-            return InitAndHandleErrors2(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName), Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName), Request, GetFlags(arguments)));
         }
 
         public virtual ActionResult PutProperty(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentContextFacade, RestControlFlags> args = ProcessArgument(argument);
                 PropertyContextFacade context = FrameworkFacade.PutProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, args.Item1);
@@ -595,7 +595,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult DeleteProperty(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentContextFacade, RestControlFlags> args = ProcessDeleteArgument(arguments);
                 PropertyContextFacade context = FrameworkFacade.DeleteProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, args.Item1);
@@ -613,7 +613,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult GetInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false,  true);
                 ActionResultContextFacade context = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
                 VerifyNoError(context);
@@ -622,7 +622,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult PostInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, false);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
@@ -632,7 +632,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult PutInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, false);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, args.Item1);
@@ -642,7 +642,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult GetInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
                 VerifyNoError(result);
@@ -651,7 +651,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult PutInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
@@ -661,7 +661,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult PostInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, args.Item1);
@@ -671,7 +671,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult GetInvokeTypeActions(string typeName, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors2(() => {
+            return InitAndHandleErrors(() => {
                 switch (actionName) {
                     case WellKnownIds.IsSubtypeOf:
                     case WellKnownIds.IsSupertypeOf:
@@ -800,53 +800,6 @@ namespace NakedObjects.Rest {
             return MethodType.NonIdempotent;
         }
 
-        private HttpResponseMessage InitAndHandleErrors(Func<RestSnapshot> f) {
-            bool success = false;
-            Exception endTransactionError = null;
-            RestSnapshot ss;
-            try {
-                FrameworkFacade.Start();
-                ss = f();
-                success = true;
-            }
-            catch (HttpResponseException) {
-                throw;
-            }
-            catch (NakedObjectsFacadeException e) {
-                return ErrorMsg(e);
-            }
-            catch (Exception e) {
-                Logger.ErrorFormat("Unhandled exception from frameworkFacade {0} {1}", e.GetType(), e.Message);
-                return ErrorMsg(e);
-            }
-            finally {
-                try {
-                    FrameworkFacade.End(success);
-                }
-                catch (Exception e) {
-                    // can't return from finally 
-                    endTransactionError = e;
-                }
-            }
-
-            if (endTransactionError != null) {
-                return ErrorMsg(endTransactionError);
-            }
-
-            try {
-                return ConfigureMsg(ss.Populate());
-            }
-            catch (HttpResponseException) {
-                throw;
-            }
-            catch (NakedObjectsFacadeException e) {
-                return ErrorMsg(e);
-            }
-            catch (Exception e) {
-                Logger.ErrorFormat("Unhandled exception while configuring message {0} {1}", e.GetType(), e.Message);
-                return ErrorMsg(e);
-            }
-        }
 
         private void SetCaching(ResponseHeaders m, RestSnapshot ss,  Tuple<int, int, int> cacheSettings)
         {
@@ -939,7 +892,7 @@ namespace NakedObjects.Rest {
             }
         }
 
-        private ActionResult InitAndHandleErrors2(Func<RestSnapshot> f)
+        private ActionResult InitAndHandleErrors(Func<RestSnapshot> f)
         {
             bool success = false;
             Exception endTransactionError = null;
@@ -953,10 +906,12 @@ namespace NakedObjects.Rest {
             catch (ValidationException validationException) {
                 return StatusCode(validationException.StatusCode);
             }
-            //catch (HttpResponseException) {
-            //    throw;
-            //    // todo return ErrorRepresentation;
-            //}
+            catch (RedirectionException redirectionException) {
+                var msg = ControllerContext.HttpContext.Response;
+                var responseHeaders = msg.GetTypedHeaders();
+                responseHeaders.Location = redirectionException.RedirectAddress;
+                return StatusCode(redirectionException.StatusCode);
+            }
             catch (NakedObjectsFacadeException e) {
                 //return ErrorMsg(e);
                 // todo return ErrorRepresentation;
@@ -993,10 +948,6 @@ namespace NakedObjects.Rest {
             catch (ValidationException validationException)
             {
                 return StatusCode(validationException.StatusCode);
-            }
-            catch (HttpResponseException)
-            {
-                throw;
             }
             catch (NakedObjectsFacadeException e)
             {

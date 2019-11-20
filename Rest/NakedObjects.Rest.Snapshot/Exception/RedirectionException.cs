@@ -6,13 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Net;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
-    public class ValidationException : Exception {
-        public ValidationException(int statusCode) {
-            StatusCode = statusCode;
+    public class RedirectionException : Exception {
+        public RedirectionException(Uri redirectAddress) {
+            RedirectAddress = redirectAddress;
         }
 
-        public int StatusCode { get; }
+        public int StatusCode => (int)HttpStatusCode.MovedPermanently;
+        public Uri RedirectAddress { get; }
     }
 }
