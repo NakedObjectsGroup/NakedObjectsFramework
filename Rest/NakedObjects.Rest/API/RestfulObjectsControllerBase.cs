@@ -11,7 +11,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Web.Http;
 using Common.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -25,11 +24,8 @@ using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Media;
 using NakedObjects.Rest.Model;
 using NakedObjects.Rest.Snapshot.Constants;
-
 using NakedObjects.Rest.Snapshot.Representations;
 using NakedObjects.Rest.Snapshot.Utility;
-using CacheControlHeaderValue = System.Net.Http.Headers.CacheControlHeaderValue;
-using NameValueHeaderValue = System.Net.Http.Headers.NameValueHeaderValue;
 
 namespace NakedObjects.Rest {
     public class RestfulObjectsControllerBase : ControllerBase {

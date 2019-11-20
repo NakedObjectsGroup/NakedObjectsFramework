@@ -24,47 +24,47 @@ namespace RestfulObjects.Test.EndToEnd {
             DoGetResource();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void WithGenericAcceptHeader() {
             DoWithGenericAcceptHeader();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void WithProfileAcceptHeader() {
             DoWithProfileAcceptHeader();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void AttemptWithInvalidProfileAcceptHeader() {
             DoAttemptWithInvalidProfileAcceptHeader();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void AttemptPost() {
             DoAttemptPost();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void AttemptPut() {
             DoAttemptPut();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void AttemptDelete() {
             DoAttemptDelete();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void WithFormalDomainModel() {
             DoWithFormalDomainModel();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void WithSimpleDomainModel() {
             DoWithSimpleDomainModel();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public override void AttemptWithDomainModelMalformed() {
             DoAttemptWithDomainModelMalformed();
         }
