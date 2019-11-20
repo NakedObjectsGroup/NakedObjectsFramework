@@ -4,19 +4,17 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NakedObjects.Core" Version="11.0.0-beta01" />
     <PackageReference Include="NakedObjects.Facade.Impl" Version="11.0.0-beta01" />
     <PackageReference Include="System.Data.SqlClient" Version="4.7.0" />
   </ItemGroup>
 
+
   <ItemGroup>
-    <ProjectReference Include="..\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj" />
-    <ProjectReference Include="..\NakedObjects.Rest\NakedObjects.Rest.csproj" />
+    <ProjectReference Include="..\..\Rest\NakedObjects.Rest.Snapshot\NakedObjects.Rest.Snapshot.csproj" />
+    <ProjectReference Include="..\..\Rest\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj" />
+    <ProjectReference Include="..\..\Rest\NakedObjects.Rest\NakedObjects.Rest.csproj" />
   </ItemGroup>
 
 </Project>

@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
-using AdventureWorksModel;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;

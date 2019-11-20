@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Rest\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj" />
-    <ProjectReference Include="..\..\Samples\AdventureWorksModel\AdventureWorksModel.csproj" />
   </ItemGroup>
 
 </Project>
