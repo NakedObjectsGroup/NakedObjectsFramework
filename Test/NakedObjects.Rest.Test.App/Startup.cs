@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NakedObjects.Architecture.Component;
+using Newtonsoft.Json;
 
 namespace NakedObjects.Rest.Test.App
 {
@@ -17,9 +18,9 @@ namespace NakedObjects.Rest.Test.App
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddControllers();
+        public void ConfigureServices(IServiceCollection services) {
+            services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedObjects();
@@ -49,6 +50,8 @@ namespace NakedObjects.Rest.Test.App
           
 
             app.UseMvc(routeBuilder => RestfulObjectsControllerBase.AddRestRoutes(routeBuilder, ""));
+
+
 
         }
     }
