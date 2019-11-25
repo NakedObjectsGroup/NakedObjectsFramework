@@ -406,40 +406,70 @@ namespace NakedObjects.Rest {
         #endregion
 
         #region api
+        [FromQuery(Name = RestControlFlags.ValidateOnlyReserved)]
+        public bool ValidateOnly { get; set; }
 
-        [FromQuery(Name = "x-ro-domain-model")]
+        [FromQuery(Name = RestControlFlags.DomainTypeReserved)]
+        public string DomainType { get; set; }
+
+        [FromQuery(Name = RestControlFlags.ElementTypeReserved)]
+        public string ElementType { get; set; }
+
+        [FromQuery(Name = RestControlFlags.DomainModelReserved)]
         public string DomainModel { get; set; }
 
+        [FromQuery(Name = RestControlFlags.FollowLinksReserved)]
+        public bool? FollowLinks { get; set; }
 
-        public virtual ActionResult GetHome(ReservedArguments arguments)
+        [FromQuery(Name = RestControlFlags.SortByReserved)]
+        public bool SortBy { get; set; }
+
+        [FromQuery(Name = RestControlFlags.SearchTermReserved)]
+        public string SearchTerm { get; set; }
+
+        [FromQuery(Name = RestControlFlags.PageReserved)]
+        public int Page { get; set; }
+
+        [FromQuery(Name = RestControlFlags.PageSizeReserved)]
+        public int PageSize { get; set; }
+
+        [FromQuery(Name = RestControlFlags.InlinePropertyDetailsReserved)]
+        public bool? InlinePropertyDetails { get; set; }
+
+        [FromQuery(Name = RestControlFlags.InlineCollectionItemsReserved)]
+        public bool? InlineCollectionItems { get; set; }
+
+
+
+        public virtual ActionResult GetHome()
         {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Request, GetFlags(arguments)));
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, Request, GetFlags()));
         }
 
-        public virtual ActionResult GetUser(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetUser(), Request, GetFlags(arguments)));
+        public virtual ActionResult GetUser() {
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetUser(), Request, GetFlags()));
         }
 
-        public virtual ActionResult GetServices(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetServices(), Request, GetFlags(arguments)));
+        public virtual ActionResult GetServices() {
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetServices(), Request, GetFlags()));
         }
 
-        public virtual ActionResult GetMenus(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetMainMenus(), Request, GetFlags(arguments)));
+        public virtual ActionResult GetMenus() {
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetMainMenus(), Request, GetFlags()));
         }
 
-        public virtual ActionResult GetVersion(ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, GetOptionalCapabilities(), Request, GetFlags(arguments)));
+        public virtual ActionResult GetVersion() {
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, GetOptionalCapabilities(), Request, GetFlags()));
         }
 
-        public virtual ActionResult GetService(string serviceName, ReservedArguments arguments) {
+        public virtual ActionResult GetService(string serviceName) {
             return InitAndHandleErrors(() => {
                 var oid = FrameworkFacade.OidTranslator.GetOidTranslation(serviceName);
-                return new RestSnapshot(OidStrategy, FrameworkFacade.GetService(oid), Request, GetFlags(arguments));
+                return new RestSnapshot(OidStrategy, FrameworkFacade.GetService(oid), Request, GetFlags());
             });
         }
 
-        public virtual ActionResult GetMenu(string menuName, ReservedArguments arguments) {
+        public virtual ActionResult GetMenu(string menuName) {
             return InitAndHandleErrors(() => {
                 if (string.IsNullOrEmpty(menuName)) {
                     throw new BadRequestNOSException();
@@ -449,25 +479,25 @@ namespace NakedObjects.Rest {
                 if (menu == null) {
                     throw new MenuResourceNotFoundNOSException(menuName);
                 }
-                return new RestSnapshot(OidStrategy, menu, Request, GetFlags(arguments));
+                return new RestSnapshot(OidStrategy, menu, Request, GetFlags());
             });
         }
 
-        public virtual ActionResult GetServiceAction(string serviceName, string actionName, ReservedArguments arguments) {
+        public virtual ActionResult GetServiceAction(string serviceName, string actionName) {
             return InitAndHandleErrors(() => {
                 var oid = FrameworkFacade.OidTranslator.GetOidTranslation(serviceName);
-                return new RestSnapshot(OidStrategy, FrameworkFacade.GetServiceAction(oid, actionName), Request, GetFlags(arguments));
+                return new RestSnapshot(OidStrategy, FrameworkFacade.GetServiceAction(oid, actionName), Request, GetFlags());
             });
         }
 
-        public virtual ActionResult GetImage(string imageId, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetImage(imageId), Request, GetFlags(arguments)));
+        public virtual ActionResult GetImage(string imageId) {
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetImage(imageId), Request, GetFlags()));
         }
 
-        public virtual ActionResult GetObject(string domainType, string instanceId, ReservedArguments arguments) {
+        public virtual ActionResult GetObject(string domainType, string instanceId) {
             return InitAndHandleErrors(() => {
                 var loid = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
-                return new RestSnapshot(OidStrategy, FrameworkFacade.GetObject(loid), Request, GetFlags(arguments));
+                return new RestSnapshot(OidStrategy, FrameworkFacade.GetObject(loid), Request, GetFlags());
             });
         }
 
@@ -533,7 +563,7 @@ namespace NakedObjects.Rest {
             });
         }
 
-        public virtual ActionResult GetProperty(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
+        public virtual ActionResult GetProperty(string domainType, string instanceId, string propertyName) {
             return InitAndHandleErrors(() => {
                 PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
 
@@ -542,17 +572,17 @@ namespace NakedObjects.Rest {
                     throw new PropertyResourceNotFoundNOSException(propertyName);
                 }
 
-                return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(arguments), false);
+                return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(), false);
             });
         }
 
-        public virtual ActionResult GetCollection(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
+        public virtual ActionResult GetCollection(string domainType, string instanceId, string propertyName) {
             return InitAndHandleErrors(() => {
                 try {
                     PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
 
                     if (propertyContext.Property.IsCollection) {
-                        return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(arguments), false);
+                        return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(), false);
                     }
                     // found but not a collection 
                     throw new CollectionResourceNotFoundNOSException(propertyName);
@@ -563,13 +593,13 @@ namespace NakedObjects.Rest {
             });
         }
 
-        public virtual ActionResult GetCollectionValue(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
+        public virtual ActionResult GetCollectionValue(string domainType, string instanceId, string propertyName) {
             return InitAndHandleErrors(() => {
                 try {
                     PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
 
                     if (propertyContext.Property.IsCollection) {
-                        return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(arguments), true);
+                        return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(), true);
                     }
                     // found but not a collection 
                     throw new CollectionResourceNotFoundNOSException(propertyName);
@@ -580,8 +610,8 @@ namespace NakedObjects.Rest {
             });
         }
 
-        public virtual ActionResult GetAction(string domainType, string instanceId, string actionName, ReservedArguments arguments) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName), Request, GetFlags(arguments)));
+        public virtual ActionResult GetAction(string domainType, string instanceId, string actionName) {
+            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName), Request, GetFlags()));
         }
 
         public virtual ActionResult PutProperty(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
@@ -594,10 +624,10 @@ namespace NakedObjects.Rest {
             });
         }
 
-        public virtual ActionResult DeleteProperty(string domainType, string instanceId, string propertyName, ReservedArguments arguments) {
+        public virtual ActionResult DeleteProperty(string domainType, string instanceId, string propertyName) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
-                Tuple<ArgumentContextFacade, RestControlFlags> args = ProcessDeleteArgument(arguments);
+                Tuple<ArgumentContextFacade, RestControlFlags> args = ProcessDeleteArgument();
                 PropertyContextFacade context = FrameworkFacade.DeleteProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, args.Item1);
                 VerifyNoError(context);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2, false), args.Item2.ValidateOnly);
@@ -686,7 +716,7 @@ namespace NakedObjects.Rest {
         }
 
         private RestSnapshot GetInvokeIsTypeOf(string typeName, string actionName, ArgumentMap arguments) {
-            return new RestSnapshot(OidStrategy, GetIsTypeOf(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags(arguments));
+            return new RestSnapshot(OidStrategy, GetIsTypeOf(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags());
         }
 
         #endregion
@@ -701,18 +731,15 @@ namespace NakedObjects.Rest {
             }, arguments.Item2);
         }
 
-        private RestControlFlags GetFlags(ReservedArguments arguments) {
-            if (arguments.IsMalformed) {
-                throw new BadRequestNOSException("Malformed arguments"); // todo i18n
-            }
-            return RestControlFlags.FlagsFromArguments(arguments.ValidateOnly, 
-                arguments.Page,
-                arguments.PageSize, 
-                arguments.DomainModel,
+        private RestControlFlags GetFlags() {
+            return RestControlFlags.FlagsFromArguments(ValidateOnly, 
+                Page,
+                PageSize, 
+                DomainModel,
                 InlineDetailsInActionMemberRepresentations,
                 InlineDetailsInCollectionMemberRepresentations,
-                arguments.InlinePropertyDetails.HasValue ? arguments.InlinePropertyDetails.Value : InlineDetailsInPropertyMemberRepresentations,
-                arguments.InlineCollectionItems.HasValue && arguments.InlineCollectionItems.Value,
+                InlinePropertyDetails.HasValue ? InlinePropertyDetails.Value : InlineDetailsInPropertyMemberRepresentations,
+                InlineCollectionItems.HasValue && InlineCollectionItems.Value,
                 AllowMutatingActionOnImmutableObject);
         }
 
@@ -1016,7 +1043,7 @@ namespace NakedObjects.Rest {
             return HandleMalformed(() => {
                 ValidateArguments(argument);
                 object parm = argument.Value.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy);
-                return new Tuple<object, RestControlFlags>(parm, GetFlags(argument));
+                return new Tuple<object, RestControlFlags>(parm, GetFlags());
             });
         }
 
@@ -1024,7 +1051,7 @@ namespace NakedObjects.Rest {
             return HandleMalformed(() => {
                 ValidateArguments(arguments, errorIfNone);
                 Dictionary<string, object> dictionary = arguments.Map.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy));
-                return new Tuple<IDictionary<string, object>, RestControlFlags>(dictionary, GetFlags(arguments));
+                return new Tuple<IDictionary<string, object>, RestControlFlags>(dictionary, GetFlags());
             });
         }
 
@@ -1032,7 +1059,7 @@ namespace NakedObjects.Rest {
             return HandleMalformed(() => {
                 ValidateArguments(arguments, errorIfNone);
                 Dictionary<string, object> dictionary = arguments.MemberMap.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy));
-                return new Tuple<IDictionary<string, object>, RestControlFlags>(dictionary, GetFlags(arguments));
+                return new Tuple<IDictionary<string, object>, RestControlFlags>(dictionary, GetFlags());
             });
         }
 
@@ -1089,8 +1116,8 @@ namespace NakedObjects.Rest {
             return ToTuple(ExtractValueAndFlags(argument), GetIfMatchTag());
         }
 
-        private Tuple<ArgumentContextFacade, RestControlFlags> ProcessDeleteArgument(ReservedArguments arguments) {
-            return ToTuple(new Tuple<object, RestControlFlags>(null, GetFlags(arguments)), GetIfMatchTag());
+        private Tuple<ArgumentContextFacade, RestControlFlags> ProcessDeleteArgument() {
+            return ToTuple(new Tuple<object, RestControlFlags>(null, GetFlags()), GetIfMatchTag());
         }
 
         private static IDictionary<string, string> GetOptionalCapabilities() {
