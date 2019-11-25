@@ -913,15 +913,12 @@ namespace NakedObjects.Rest {
                 return StatusCode(redirectionException.StatusCode);
             }
             catch (NakedObjectsFacadeException e) {
-                //return ErrorMsg(e);
-                // todo return ErrorRepresentation;
-                throw;
+                return ErrorResult(e);
             }
             catch (Exception e) {
                 Logger.ErrorFormat("Unhandled exception from frameworkFacade {0} {1}", e.GetType(), e.Message);
-                //return ErrorMsg(e);
-                // todo return ErrorRepresentation;
-                throw;
+                return ErrorResult(e);
+            
             }
             finally {
                 try {
@@ -935,15 +932,13 @@ namespace NakedObjects.Rest {
 
             if (endTransactionError != null)
             {
-                //return ErrorMsg(endTransactionError);
+                return ErrorResult(endTransactionError);
             }
 
             try
             {
                 //return ConfigureMsg(ss.Populate());
-                ss.Populate();
-                SetHeaders(ss);
-                return new JsonResult(ss.Representation);
+                return RepresentationResult(ss);
             }
             catch (ValidationException validationException)
             {
@@ -951,20 +946,29 @@ namespace NakedObjects.Rest {
             }
             catch (NakedObjectsFacadeException e)
             {
-                //return ErrorMsg(e);
+                return ErrorResult(e);
             }
             catch (Exception e)
             {
                 Logger.ErrorFormat("Unhandled exception while configuring message {0} {1}", e.GetType(), e.Message);
-                //return ErrorMsg(e);
+                return ErrorResult(e);
             }
-            throw new Exception();
         }
 
 
+        //private HttpResponseMessage ErrorMsg(Exception e) {
+        //    return ConfigureMsg(new RestSnapshot(OidStrategy, e, Request).Populate());
+        //}
 
-        private HttpResponseMessage ErrorMsg(Exception e) {
-            return ConfigureMsg(new RestSnapshot(OidStrategy, e, Request).Populate());
+        private ActionResult ErrorResult(Exception e) {
+            var ss = new RestSnapshot(OidStrategy, e, Request);
+            return RepresentationResult(ss);
+        }
+
+        private ActionResult RepresentationResult(RestSnapshot ss) {
+            ss.Populate();
+            SetHeaders(ss);
+            return new JsonResult(ss.Representation);
         }
 
         private HttpResponseMessage ConfigureMsg(RestSnapshot snapshot) {

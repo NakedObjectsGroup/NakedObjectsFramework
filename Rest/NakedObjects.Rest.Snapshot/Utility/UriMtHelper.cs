@@ -298,26 +298,27 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         }
 
         public Uri GetInvokeUri() {
-            if (action.IsQueryOnly) {
-                return GetQueryInvokeUri();
-            }
-            if (action.IsIdempotent) {
-                return GetIdempotentUri();
-            }
-            return GetNonIdempotentUri();
+            //if (action.IsQueryOnly) {
+            //    return GetQueryInvokeUri();
+            //}
+            //if (action.IsIdempotent) {
+            //    return GetIdempotentUri();
+            //}
+            //return GetNonIdempotentUri();
+            return spec.IsService ? GetServiceInvokeUri() : GetObjectInvokeUri();
         }
 
-        private Uri GetServiceInvokeUri(string queryString) {
+        private Uri GetServiceInvokeUri() {
             CheckArgumentNotNull(CachedType, "service type");
             CheckArgumentNotNull(action.Id, "action id");
 
             //var template = new UriTemplate(SegmentValues.Services + "/{oid}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Invoke + queryString);
             //return template.BindByPosition(prefix, CachedType, action.Id);
 
-            return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Invoke}{queryString}");
+            return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Invoke}");
         }
 
-        private Uri GetObjectInvokeUri(string queryString) {
+        private Uri GetObjectInvokeUri() {
             CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(cachedId, "object key");
             CheckArgumentNotNull(action.Id, "action id");
@@ -325,27 +326,24 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.Objects + "/{objectType}/{objectKey}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Invoke + queryString);
             //return template.BindByPosition(prefix, CachedType, cachedId, action.Id);
 
-            return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Invoke}{queryString}");
+            return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Invoke}");
         }
 
-        private Uri GetInvokeUri(string queryString) {
-            return spec.IsService ? GetServiceInvokeUri(queryString) : GetObjectInvokeUri(queryString);
-        }
+        //private Uri GetInvokeUri() {
+        //    return spec.IsService ? GetServiceInvokeUri() : GetObjectInvokeUri();
+        //}
 
-        private Uri GetNonIdempotentUri() {
-            return GetInvokeUri("");
-        }
+        //private Uri GetNonIdempotentUri() {
+        //    return GetInvokeUri();
+        //}
 
-        private Uri GetIdempotentUri() {
-            return GetInvokeUri("");
-        }
+        //private Uri GetIdempotentUri() {
+        //    return GetInvokeUri();
+        //}
 
-        private Uri GetQueryInvokeUri() {
-            if (action.ParameterCount == 0) {
-                return GetInvokeUri("");
-            }
-            return GetInvokeUri(action.Parameters.Aggregate("?", (s, t) => s + t.Id + "={" + t.Id + "}&").TrimEnd('&'));
-        }
+        //private Uri GetQueryInvokeUri() {
+        //    return GetInvokeUri();
+        //}
 
         public Uri GetHomeUri() {
             return prefix;
