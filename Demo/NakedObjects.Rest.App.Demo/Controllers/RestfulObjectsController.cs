@@ -19,48 +19,48 @@ namespace NakedObjects.Rest.App.Demo
         public RestfulObjectsController(IFrameworkFacade frameworkFacade) : base(frameworkFacade) {}
 
         [HttpGet]
-        public override ActionResult GetHome( ReservedArguments arguments) {
-            return base.GetHome(arguments);
+        public override ActionResult GetHome() {
+            return base.GetHome();
         }
 
         [HttpGet]
-        public override ActionResult GetUser( ReservedArguments arguments) {
-            return base.GetUser(arguments);
+        public override ActionResult GetUser() {
+            return base.GetUser();
         }
 
         [HttpGet]
-        public override ActionResult GetServices( ReservedArguments arguments) {
-            return base.GetServices(arguments);
+        public override ActionResult GetServices() {
+            return base.GetServices();
         }
 
         [HttpGet]
-        public override ActionResult GetMenus( ReservedArguments arguments) {
-            return base.GetMenus(arguments);
+        public override ActionResult GetMenus() {
+            return base.GetMenus();
         }
 
         [HttpGet]
-        public override ActionResult GetVersion( ReservedArguments arguments) {
-            return base.GetVersion(arguments);
+        public override ActionResult GetVersion() {
+            return base.GetVersion();
         }
 
         [HttpGet]
-        public override ActionResult GetService(string serviceName,  ReservedArguments arguments) {
-            return base.GetService(serviceName, arguments);
+        public override ActionResult GetService(string serviceName) {
+            return base.GetService(serviceName);
         }
 
         [HttpGet]
-        public override ActionResult GetMenu(string menuName,  ReservedArguments arguments) {
-            return base.GetMenu(menuName, arguments);
+        public override ActionResult GetMenu(string menuName) {
+            return base.GetMenu(menuName);
         }
 
         [HttpGet]
-        public override ActionResult GetServiceAction(string serviceName, string actionName,  ReservedArguments arguments) {
-            return base.GetServiceAction(serviceName, actionName, arguments);
+        public override ActionResult GetServiceAction(string serviceName, string actionName) {
+            return base.GetServiceAction(serviceName, actionName);
         }
 
         [HttpGet]
-        public override ActionResult GetImage(string imageId,  ReservedArguments arguments) {
-            return base.GetImage(imageId, arguments);
+        public override ActionResult GetImage(string imageId) {
+            return base.GetImage(imageId);
         }
 
         [HttpPost]
@@ -69,8 +69,8 @@ namespace NakedObjects.Rest.App.Demo
         }
 
         [HttpGet]
-        public override ActionResult GetObject(string domainType, string instanceId,  ReservedArguments arguments) {
-            return base.GetObject(domainType, instanceId, arguments);
+        public override ActionResult GetObject(string domainType, string instanceId) {
+            return base.GetObject(domainType, instanceId);
         }
 
         [HttpPut]
@@ -79,18 +79,18 @@ namespace NakedObjects.Rest.App.Demo
         }
 
         [HttpGet]
-        public override ActionResult GetProperty(string domainType, string instanceId, string propertyName,  ReservedArguments arguments) {
-            return base.GetProperty(domainType, instanceId, propertyName, arguments);
+        public override ActionResult GetProperty(string domainType, string instanceId, string propertyName) {
+            return base.GetProperty(domainType, instanceId, propertyName);
         }
 
         [HttpGet]
-        public override ActionResult GetCollection(string domainType, string instanceId, string propertyName,  ReservedArguments arguments) {
-            return base.GetCollection(domainType, instanceId, propertyName, arguments);
+        public override ActionResult GetCollection(string domainType, string instanceId, string propertyName) {
+            return base.GetCollection(domainType, instanceId, propertyName);
         }
 
         [HttpGet]
-        public override ActionResult GetAction(string domainType, string instanceId, string actionName,  ReservedArguments arguments) {
-            return base.GetAction(domainType, instanceId, actionName, arguments);
+        public override ActionResult GetAction(string domainType, string instanceId, string actionName) {
+            return base.GetAction(domainType, instanceId, actionName);
         }
 
 
@@ -100,8 +100,8 @@ namespace NakedObjects.Rest.App.Demo
         }
 
         [HttpDelete]
-        public override ActionResult DeleteProperty(string domainType, string instanceId, string propertyName,  ReservedArguments arguments) {
-            return base.DeleteProperty(domainType, instanceId, propertyName, arguments);
+        public override ActionResult DeleteProperty(string domainType, string instanceId, string propertyName) {
+            return base.DeleteProperty(domainType, instanceId, propertyName);
         }
 
         [HttpPost]
@@ -170,8 +170,8 @@ namespace NakedObjects.Rest.App.Demo
         }
 
         [HttpGet]
-        public override ActionResult GetCollectionValue(string domainType, string instanceId, string propertyName,  ReservedArguments arguments) {
-            return base.GetCollectionValue(domainType, instanceId, propertyName, arguments);
+        public override ActionResult GetCollectionValue(string domainType, string instanceId, string propertyName) {
+            return base.GetCollectionValue(domainType, instanceId, propertyName);
         }
 
     }
