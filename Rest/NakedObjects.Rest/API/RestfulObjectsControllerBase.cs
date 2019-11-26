@@ -1008,14 +1008,8 @@ namespace NakedObjects.Rest {
             }
         }
 
-        private static void ValidateArguments(ReservedArguments arguments, bool errorIfNone = true) {
+        private static void ValidateArguments(ArgumentMap arguments, bool errorIfNone = true) {
             if (arguments.IsMalformed) {
-                throw new BadRequestNOSException("Malformed arguments"); // todo i18n
-            }
-
-            if (!string.IsNullOrEmpty(arguments.DomainModel) &&
-                arguments.DomainModel != RestControlFlags.DomainModelType.Simple.ToString().ToLower() &&
-                arguments.DomainModel != RestControlFlags.DomainModelType.Formal.ToString().ToLower()) {
                 throw new BadRequestNOSException("Malformed arguments"); // todo i18n
             }
 
@@ -1023,6 +1017,20 @@ namespace NakedObjects.Rest {
                 throw new BadRequestNOSException("Missing arguments"); // todo i18n
             }
         }
+
+        private static void ValidateArguments(SingleValueArgument arguments, bool errorIfNone = true)
+        {
+            if (arguments.IsMalformed)
+            {
+                throw new BadRequestNOSException("Malformed arguments"); // todo i18n
+            }
+
+            if (!arguments.HasValue && errorIfNone)
+            {
+                throw new BadRequestNOSException("Missing arguments"); // todo i18n
+            }
+        }
+
 
         private static T HandleMalformed<T>(Func<T> f) {
             try {
@@ -1105,9 +1113,7 @@ namespace NakedObjects.Rest {
                 Digest = ignoreConcurrency ? null : GetIfMatchTag(),
                 Values = valuesAndFlags.Item1,
                 ValidateOnly = valuesAndFlags.Item2.ValidateOnly,
-                SearchTerm = arguments.SearchTerm,
-                Page = arguments.Page,
-                PageSize = arguments.PageSize,
+              
                 ExpectedActionType = GetExpectedMethodType(new HttpMethod(Request.Method))
             }, valuesAndFlags.Item2);
         }

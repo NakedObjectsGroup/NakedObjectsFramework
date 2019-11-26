@@ -11,6 +11,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using Common.Logging;
 using Newtonsoft.Json;
@@ -25,6 +26,20 @@ namespace NakedObjects.Rest.Model {
         private static bool IsReservedName(string name) {
             return name.StartsWith(RestControlFlags.ReservedPrefix);
         }
+
+
+        public static Task<JObject> DeserializeJsonStreamAsync(Stream stream)
+        {
+            if (stream.CanRead)
+            {
+                using var streamReader = new StreamReader(stream, new UTF8Encoding(false, true));
+                using var jsonTextReader = new JsonTextReader(streamReader);
+                  
+                return JObject.LoadAsync(jsonTextReader);
+            }
+            return new Task<JObject>(() => new JObject());
+        }
+
 
         public static JObject DeserializeJsonStream(Stream stream) {
             if (stream.Length > 0) {
@@ -185,13 +200,13 @@ namespace NakedObjects.Rest.Model {
                 try {
                     populate(jObject, arg);
 
-                    arg.ValidateOnly = GetValidateOnlyFlag(jObject);
-                    arg.DomainModel = GetDomainModelValue(jObject);
-                    arg.SearchTerm = GetSearchTerm(jObject);
-                    arg.Page = GetPageValue(jObject);
-                    arg.PageSize = GetPageSizeValue(jObject);
-                    arg.InlinePropertyDetails = GetInlinePropertyDetailsFlag(jObject);
-                    arg.InlineCollectionItems = GetInlineCollectionItemsFlag(jObject);
+                    //arg.ValidateOnly = GetValidateOnlyFlag(jObject);
+                    //arg.DomainModel = GetDomainModelValue(jObject);
+                    //arg.SearchTerm = GetSearchTerm(jObject);
+                    //arg.Page = GetPageValue(jObject);
+                    //arg.PageSize = GetPageSizeValue(jObject);
+                    //arg.InlinePropertyDetails = GetInlinePropertyDetailsFlag(jObject);
+                    //arg.InlineCollectionItems = GetInlineCollectionItemsFlag(jObject);
                 }
                 catch (Exception e) {
                     Logger.ErrorFormat("Malformed argument map: {0}", e.Message);
@@ -294,7 +309,7 @@ namespace NakedObjects.Rest.Model {
             }
 
             var args = new ArgumentMap();
-            PopulateReservedArgs(collection, args);
+            //PopulateReservedArgs(collection, args);
             PopulateSimpleArgumentMap(collection, args);
             return args;
         }

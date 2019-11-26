@@ -163,9 +163,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
             var matches = Regex.Match(path, pattern);
 
-            if (matches != Match.Empty && matches.Captures.Count == 2) {
-                var objectType = matches.Captures[0].Value;
-                var objectKey = matches.Captures[1].Value;
+            if (matches != Match.Empty && matches.Groups.Count == 3) {
+                var objectType = matches.Groups[1].Value;
+                var objectKey = matches.Groups[2].Value;
 
                 return new[] { objectType, objectKey };
             }
@@ -193,9 +193,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
             var matches = Regex.Match(path, pattern);
 
-            if (matches != Match.Empty && matches.Captures.Count == 1)
+            if (matches != Match.Empty && matches.Groups.Count == 2)
             {
-                var typeId = matches.Captures[0].Value;
+                var typeId = matches.Groups[1].Value;
                 return typeId;
             }
 

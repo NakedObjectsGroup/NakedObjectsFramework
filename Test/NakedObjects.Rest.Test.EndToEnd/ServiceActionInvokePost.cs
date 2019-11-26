@@ -5,7 +5,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass, Ignore]
+    [TestClass]
     public class ServiceActionInvokePost : AbstractActionInvokePost {
         protected override string BaseUrl {
             get { return Urls.Services + Urls.WithActionService + Urls.Actions; }
@@ -15,82 +15,82 @@ namespace RestfulObjects.Test.EndToEnd {
             get { return "Service-Action-Invoke-Post-"; }
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsVoidWithParameters() {
             DoAnActionReturnsVoidWithParameters();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void SyntacticallyMalformedParameters() {
             DoSyntacticallyMalformedParameters();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void SemanticallyMalformedParameters() {
             DoSemanticallyMalformedParameters();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void ADisabledAction() {
             DoADisabledAction();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void ADisabledCollectionAction() {
             DoADisabledCollectionAction();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnAction() {
             DoAnAction();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AttemptInvokePostActionWithGet() {
             DoAttemptInvokePostActionWithGet();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AttemptInvokePostActionWithPut() {
             DoAttemptInvokePostActionWithPut();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AttemptInvokePutActionWithPost() {
             DoAttemptInvokePutActionWithPost();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AttemptInvokeGetActionWithPost() {
             DoAttemptInvokeGetActionWithPost();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsCollection() {
             DoAnActionReturnsCollection();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsCollectionEmpty() {
             DoAnActionReturnsCollectionEmpty();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsCollectionNull() {
             DoAnActionReturnsCollectionNull();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsCollectionWithParameters() {
             DoAnActionReturnsCollectionWithParameters();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsCollectionWithScalarParameters() {
             DoAnActionReturnsCollectionWithScalarParameters();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsNull() {
             DoAnActionReturnsNull();
         }
@@ -100,88 +100,88 @@ namespace RestfulObjects.Test.EndToEnd {
             DoAnActionReturnsObjectWithParameters();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsScalar() {
             DoAnActionReturnsScalar();
         }
 
-        [TestMethod]  // Must FIX !!
+        [TestMethod, Ignore]  // Must FIX !!
         public void AnActionReturnsScalarEmpty() {
             DoAnActionReturnsScalarEmpty();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsScalarNull() {
             DoAnActionReturnsScalarNull();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsScalarWithParameters() {
             DoAnActionReturnsScalarWithParameters();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsVoid() {
             DoAnActionReturnsVoid();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionWithDateTimeParm() {
             DoAnActionWithDateTimeParm();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionWithOptionalParm() {
             DoAnActionWithOptionalParm();
         }
 
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionWithReferenceParameter() {
             DoAnActionWithReferenceParameter();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionWithValueParameter() {
             DoAnActionWithValueParameter();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionWithValueParameterWithChoices() {
             DoAnActionWithValueParameterWithChoices();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnError() {
             DoAnError();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnErrorCollection() {
             DoAnErrorCollection();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void ParameterValidateOnlyGood() {
             DoParameterValidateOnlyGood();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void ParameterValidateOnlyBad() {
             DoParameterValidateOnlyBad();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AttemptInvalidParameters() {
             DoAttemptInvalidParameters();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AttemptInvalidJson() {
             DoAttemptInvalidJson();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void ValidateOnlyParameters() {
             DoValidateOnlyParameters();
         }

@@ -20,37 +20,37 @@ namespace RestfulObjects.Test.EndToEnd {
             DoADisabledQueryAction();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void InvokeGetActionWithPut() {
             DoInvokeGetActionWithPut();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionAnnotatedQueryOnly() {
             DoAnActionAnnotatedQueryOnly();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionAnnotatedQueryOnlyReturnsNull() {
             DoAnActionAnnotatedQueryOnlyReturnsNull();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsObjectWithParametersAnnotatedQueryOnly() {
             DoAnActionReturnsObjectWithParametersAnnotatedQueryOnly();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsObjectWithParameterAnnotatedQueryOnly() {
             DoAnActionReturnsObjectWithParameterAnnotatedQueryOnly();
         }
 
-        [TestMethod] //https://restfulobjects.codeplex.com/workitem/25
+        [TestMethod, Ignore] //https://restfulobjects.codeplex.com/workitem/25
         public void SyntacticallyMalformedParamsAsEncodedMap1() {
             DoSyntacticallyMalformedParamsAsEncodedMap1();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void SyntacticallyMalformedParamsAsEncodedMap2() {
             DoSyntacticallyMalformedParamsAsEncodedMap2();
         }
@@ -60,62 +60,62 @@ namespace RestfulObjects.Test.EndToEnd {
             DoAnActionReturnsQueryable();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void WithFormalDomainModel() {
             DoWithFormalDomainModel();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void WithSimpleDomainModel() {
             DoWithSimpleDomainModel();
         }
 
-        [TestMethod] //http://restfulobjects.codeplex.com/workitem/26
+        [TestMethod, Ignore] //http://restfulobjects.codeplex.com/workitem/26
         public void AttemptWithMalformedDomainModel() {
             DoAttemptWithMalformedDomainModel();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsQueryableWithParameters() {
             DoAnActionReturnsQueryableWithParameters();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsQueryableWithScalarParameters() {
             DoAnActionReturnsQueryableWithScalarParameters();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void ScalarParametersAsQueryString() {
             DoScalarParametersAsQueryString();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void SyntacticallyMalformedQueryString() {
             DoSyntacticallyMalformedQueryString();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void SemanticallyMalformedQueryString() {
             DoSemanticallyMalformedQueryString();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnErrorQuery() {
             DoAnErrorQuery();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void WithGenericAcceptHeader() {
             DoWithGenericAcceptHeader();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void WithProfileAcceptHeader() {
             DoWithProfileAcceptHeader();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public override void AttemptWithInvalidProfileAcceptHeader() {
             DoAttemptWithInvalidProfileAcceptHeader();
         }

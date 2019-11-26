@@ -5,13 +5,40 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using System.IO;
+using System.Threading.Tasks;
+using Common.Logging;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Newtonsoft.Json.Linq;
+
 namespace NakedObjects.Rest.Model {
-    public class ArgumentMapBinder : AbstractModelBinder {
-        public override bool BindModel(HttpActionContext actionContext, ModelBindingContext bindingContext) {
-            BindModelOnSuccessOrFail(bindingContext,
-                () => ModelBinderUtils.CreateArgumentMap(DeserializeJsonContent(actionContext)),
-                ModelBinderUtils.CreateArgumentMapForMalformedArgs);
-            return true;
+    public class ArgumentMapBinder : IModelBinder {
+
+
+        protected static async Task BindModelOnSuccessOrFail(ModelBindingContext bindingContext, Func<Task<ArgumentMap>> parseFunc, Func<Task<ArgumentMap>> failFunc)
+        {
+            try
+            {
+                bindingContext.Result = ModelBindingResult.Success(await parseFunc());
+            }
+            catch (Exception e)
+            {
+                LogManager.GetLogger<ArgumentMapBinder>().ErrorFormat("Parsing of request arguments failed: {0}", e.Message);
+                bindingContext.Result = ModelBindingResult.Success(await failFunc());
+            }
+        }
+
+        protected static async Task<JObject> DeserializeJsonContent(ModelBindingContext bindingContext) {
+            return await ModelBinderUtils.DeserializeJsonStreamAsync(bindingContext.HttpContext.Request.Body);
+        }
+
+        public Task BindModelAsync(ModelBindingContext bindingContext) {
+            return BindModelOnSuccessOrFail(bindingContext,
+                async () => ModelBinderUtils.CreateArgumentMap(await DeserializeJsonContent(bindingContext)),
+                () => new Task<ArgumentMap>(ModelBinderUtils.CreateArgumentMapForMalformedArgs));
+
+           
         }
     }
 }
