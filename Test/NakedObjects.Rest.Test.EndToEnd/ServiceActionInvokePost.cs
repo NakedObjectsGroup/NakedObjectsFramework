@@ -15,22 +15,22 @@ namespace RestfulObjects.Test.EndToEnd {
             get { return "Service-Action-Invoke-Post-"; }
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionReturnsVoidWithParameters() {
             DoAnActionReturnsVoidWithParameters();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void SyntacticallyMalformedParameters() {
             DoSyntacticallyMalformedParameters();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void SemanticallyMalformedParameters() {
             DoSemanticallyMalformedParameters();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void ADisabledAction() {
             DoADisabledAction();
         }
