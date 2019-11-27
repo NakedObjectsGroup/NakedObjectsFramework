@@ -35,62 +35,62 @@ namespace RestfulObjects.Test.EndToEnd {
             DoADisabledAction();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void ADisabledCollectionAction() {
             DoADisabledCollectionAction();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnAction() {
             DoAnAction();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptInvokePostActionWithGet() {
             DoAttemptInvokePostActionWithGet();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptInvokePostActionWithPut() {
             DoAttemptInvokePostActionWithPut();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptInvokePutActionWithPost() {
             DoAttemptInvokePutActionWithPost();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptInvokeGetActionWithPost() {
             DoAttemptInvokeGetActionWithPost();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionReturnsCollection() {
             DoAnActionReturnsCollection();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionReturnsCollectionEmpty() {
             DoAnActionReturnsCollectionEmpty();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionReturnsCollectionNull() {
             DoAnActionReturnsCollectionNull();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionReturnsCollectionWithParameters() {
             DoAnActionReturnsCollectionWithParameters();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionReturnsCollectionWithScalarParameters() {
             DoAnActionReturnsCollectionWithScalarParameters();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionReturnsNull() {
             DoAnActionReturnsNull();
         }
@@ -100,22 +100,22 @@ namespace RestfulObjects.Test.EndToEnd {
             DoAnActionReturnsObjectWithParameters();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionReturnsScalar() {
             DoAnActionReturnsScalar();
         }
 
-        [TestMethod, Ignore]  // Must FIX !!
+        [TestMethod]  
         public void AnActionReturnsScalarEmpty() {
             DoAnActionReturnsScalarEmpty();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionReturnsScalarNull() {
             DoAnActionReturnsScalarNull();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionReturnsScalarWithParameters() {
             DoAnActionReturnsScalarWithParameters();
         }
