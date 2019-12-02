@@ -84,6 +84,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
+       
+
         public RestSnapshot(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
             populator = () => {
@@ -140,6 +142,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
+      
+
         public RestSnapshot(IOidStrategy oidStrategy, IDictionary<string, string> capabilities, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
 
@@ -158,6 +162,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
+        
         public RestSnapshot(IOidStrategy oidStrategy, TypeActionInvokeContext typeActionInvokeContext, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
 

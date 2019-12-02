@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using Microsoft.AspNetCore.Mvc;
+
 namespace NakedObjects.Rest.Model {
     public class ReservedArguments {
         public virtual bool? InlinePropertyDetails { get; set; }
@@ -16,6 +18,19 @@ namespace NakedObjects.Rest.Model {
         public int Page { get; set; }
         public int PageSize { get; set; }
         public virtual bool HasValue => false;
+        public virtual bool? InlineCollectionItems { get; set; }
+    }
+
+    [ModelBinder(BinderType = typeof(ArgumentMapBinder))]
+    public class ArgumentMapWithReserved : ArgumentMap
+    {
+        public virtual bool? InlinePropertyDetails { get; set; }
+        public virtual bool ValidateOnly { get; set; }
+        public virtual string DomainModel { get; set; }
+        public virtual int ReservedArgumentsCount { get; set; }
+        public string SearchTerm { get; set; }
+        public int Page { get; set; }
+        public int PageSize { get; set; }
         public virtual bool? InlineCollectionItems { get; set; }
     }
 }

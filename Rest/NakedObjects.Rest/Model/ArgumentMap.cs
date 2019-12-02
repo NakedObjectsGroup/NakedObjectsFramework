@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace NakedObjects.Rest.Model {
 
     [ModelBinder(BinderType = typeof(ArgumentMapBinder))]
-    public class ArgumentMap {
+    public class ArgumentMap 
+    {
         public IDictionary<string, IValue> Map { get; set; }
 
         public bool HasValue => Map.Any();

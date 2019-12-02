@@ -5,45 +5,35 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Common.Logging;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Newtonsoft.Json.Linq;
 
 namespace NakedObjects.Rest.Model {
     public class ArgumentMapBinder : IModelBinder {
         #region IModelBinder Members
 
         public Task BindModelAsync(ModelBindingContext bindingContext) {
-            return BindModelOnSuccessOrFail(bindingContext,
-                async () => ModelBinderUtils.CreateArgumentMap(await DeserializeJsonContent(bindingContext)),
-                () => new Task<ArgumentMap>(ModelBinderUtils.CreateArgumentMapForMalformedArgs));
+            if (new HttpMethod(bindingContext.HttpContext.Request.Method) == HttpMethod.Get) {
+                return BindFromQuery(bindingContext);
+            }
+
+            return BindFromBody(bindingContext);
         }
 
         #endregion
 
-        protected static async Task BindModelOnSuccessOrFail(ModelBindingContext bindingContext, Func<Task<ArgumentMap>> parseFunc, Func<Task<ArgumentMap>> failFunc) {
-            try {
-                try {
-                    bindingContext.Result = ModelBindingResult.Success(await parseFunc());
-                }
-                catch (Exception e) {
-                    LogManager.GetLogger<ArgumentMapBinder>().ErrorFormat("Parsing of request arguments failed: {0}", e.Message);
-                    bindingContext.Result = ModelBindingResult.Success(await failFunc());
-                }
-            }
-            catch (Exception e) {
-                bindingContext.Result = ModelBindingResult.Failed();
-            }
+        private static Task BindFromBody(ModelBindingContext bindingContext) {
+            return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
+                async () => ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext)),
+                () => new Task<ArgumentMap>(ModelBinderUtils.CreateArgumentMapForMalformedArgs));
         }
 
-        protected static async Task<JObject> DeserializeJsonContent(ModelBindingContext bindingContext) {
-            if (bindingContext.HttpContext.Request.ContentLength > 0) {
-                return await ModelBinderUtils.DeserializeJsonStreamAsync(bindingContext.HttpContext.Request.Body);
-            }
-
-            return new JObject();
+        private static Task BindFromQuery(ModelBindingContext bindingContext) {
+            return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
+                async () => ModelBinderUtils.CreateSimpleArgumentMap(bindingContext.HttpContext.Request.QueryString.ToString()) ??
+                            ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeQueryString(bindingContext)),
+                () => new Task<ArgumentMap>(ModelBinderUtils.CreateArgumentMapForMalformedArgs));
         }
     }
 }

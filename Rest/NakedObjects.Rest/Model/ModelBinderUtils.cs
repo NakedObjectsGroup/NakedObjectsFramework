@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Common.Logging;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -30,14 +31,13 @@ namespace NakedObjects.Rest.Model {
 
         public static Task<JObject> DeserializeJsonStreamAsync(Stream stream)
         {
-            if (stream.CanRead)
-            {
-                using var streamReader = new StreamReader(stream, new UTF8Encoding(false, true));
-                using var jsonTextReader = new JsonTextReader(streamReader);
-                  
-                return JObject.LoadAsync(jsonTextReader);
+            if (!stream.CanRead) {
+                return new Task<JObject>(() => new JObject());
             }
-            return new Task<JObject>(() => new JObject());
+            
+            using var streamReader = new StreamReader(stream, new UTF8Encoding(false, true));
+            using var jsonTextReader = new JsonTextReader(streamReader);
+            return JObject.LoadAsync(jsonTextReader);
         }
 
 
@@ -182,7 +182,7 @@ namespace NakedObjects.Rest.Model {
         private static ArgumentMap CreatePromptArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate) {
             var arg = new PromptArgumentMap {MemberMap = new Dictionary<string, IValue>()};
 
-            InitArgumentMap(jObject, populate, arg);
+            InitArgumentMapWithReserved(jObject, populate, arg);
 
             return arg;
         }
@@ -195,18 +195,48 @@ namespace NakedObjects.Rest.Model {
             return arg;
         }
 
+        private static ArgumentMapWithReserved CreateArgumentMapWithReserved(JObject jObject, Action<JObject, ArgumentMap> populate)
+        {
+            var arg = new ArgumentMapWithReserved();
+
+            InitArgumentMapWithReserved(jObject, populate, arg);
+
+            return arg;
+        }
+
+        private static void InitArgumentMapWithReserved(JObject jObject, Action<JObject, ArgumentMap> populate, ArgumentMapWithReserved arg)
+        {
+            if (jObject != null)
+            {
+                try
+                {
+                    populate(jObject, arg);
+
+                    arg.ValidateOnly = GetValidateOnlyFlag(jObject);
+                    arg.DomainModel = GetDomainModelValue(jObject);
+                    arg.SearchTerm = GetSearchTerm(jObject);
+                    arg.Page = GetPageValue(jObject);
+                    arg.PageSize = GetPageSizeValue(jObject);
+                    arg.InlinePropertyDetails = GetInlinePropertyDetailsFlag(jObject);
+                    arg.InlineCollectionItems = GetInlineCollectionItemsFlag(jObject);
+                }
+                catch (Exception e)
+                {
+                    Logger.ErrorFormat("Malformed argument map: {0}", e.Message);
+                    arg.IsMalformed = true;
+                }
+            }
+            else
+            {
+                arg.Map = new Dictionary<string, IValue>();
+            }
+        }
+
+
         private static void InitArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate, ArgumentMap arg) {
             if (jObject != null) {
                 try {
                     populate(jObject, arg);
-
-                    //arg.ValidateOnly = GetValidateOnlyFlag(jObject);
-                    //arg.DomainModel = GetDomainModelValue(jObject);
-                    //arg.SearchTerm = GetSearchTerm(jObject);
-                    //arg.Page = GetPageValue(jObject);
-                    //arg.PageSize = GetPageSizeValue(jObject);
-                    //arg.InlinePropertyDetails = GetInlinePropertyDetailsFlag(jObject);
-                    //arg.InlineCollectionItems = GetInlineCollectionItemsFlag(jObject);
                 }
                 catch (Exception e) {
                     Logger.ErrorFormat("Malformed argument map: {0}", e.Message);
@@ -250,6 +280,11 @@ namespace NakedObjects.Rest.Model {
 
         public static ArgumentMap CreateArgumentMap(JObject jObject) {
             return CreateArgumentMap(jObject, PopulateArgumentMap);
+        }
+
+        public static ArgumentMapWithReserved CreateArgumentMapWithReserved(JObject jObject)
+        {
+            return CreateArgumentMapWithReserved(jObject, PopulateArgumentMap);
         }
 
         public static ArgumentMap CreatePersistArgMap(JObject jObject) {
@@ -312,6 +347,34 @@ namespace NakedObjects.Rest.Model {
             //PopulateReservedArgs(collection, args);
             PopulateSimpleArgumentMap(collection, args);
             return args;
+        }
+
+        public static async Task<JObject> DeserializeJsonContent(ModelBindingContext bindingContext) {
+            if (bindingContext.HttpContext.Request.ContentLength > 0) {
+                return await DeserializeJsonStreamAsync(bindingContext.HttpContext.Request.Body);
+            }
+
+            return new JObject();
+        }
+
+        public static async Task<JObject> DeserializeQueryString(ModelBindingContext bindingContext) {
+            using Stream stream = QueryStringToStream(bindingContext.HttpContext.Request.QueryString.ToString());
+            return await DeserializeJsonStreamAsync(stream);
+        }
+
+        public static async Task BindModelOnSuccessOrFail(ModelBindingContext bindingContext, Func<Task<ArgumentMap>> parseFunc, Func<Task<ArgumentMap>> failFunc) {
+            try {
+                try {
+                    bindingContext.Result = ModelBindingResult.Success(await parseFunc());
+                }
+                catch (Exception e) {
+                    LogManager.GetLogger<ArgumentMapBinder>().ErrorFormat("Parsing of request arguments failed: {0}", e.Message);
+                    bindingContext.Result = ModelBindingResult.Success(await failFunc());
+                }
+            }
+            catch (Exception e) {
+                bindingContext.Result = ModelBindingResult.Failed();
+            }
         }
     }
 }
