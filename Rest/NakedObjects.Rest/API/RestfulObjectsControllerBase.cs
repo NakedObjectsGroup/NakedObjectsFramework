@@ -906,19 +906,28 @@ namespace NakedObjects.Rest {
         }
 
         private void ValidateDomainModel() {
-            if (DomainModel != null && DomainModel != RestControlFlags.DomainModelType.Simple.ToString().ToLower() && DomainModel != RestControlFlags.DomainModelType.Formal.ToString().ToLower())
-            {
-                throw new ValidationException((int)HttpStatusCode.BadRequest);
+            if (DomainModel != null && DomainModel != RestControlFlags.DomainModelType.Simple.ToString().ToLower() && DomainModel != RestControlFlags.DomainModelType.Formal.ToString().ToLower()) {
+                throw new ValidationException((int) HttpStatusCode.BadRequest);
             }
         }
 
-        private ActionResult InitAndHandleErrors(Func<RestSnapshot> f)
-        {
+        private void ValidateBinding() {
+            if (ModelState.ErrorCount > 0) {
+                throw new BadRequestNOSException("Malformed arguments");
+            }
+        }
+
+        private void Validate() {
+            ValidateBinding();
+            ValidateDomainModel();
+        }
+
+        private ActionResult InitAndHandleErrors(Func<RestSnapshot> f) {
             bool success = false;
             Exception endTransactionError = null;
             RestSnapshot ss;
             try {
-                ValidateDomainModel();
+                Validate();
                 FrameworkFacade.Start();
                 ss = f();
                 success = true;

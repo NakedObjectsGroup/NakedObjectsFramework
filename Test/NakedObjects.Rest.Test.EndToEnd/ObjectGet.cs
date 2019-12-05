@@ -5,7 +5,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass, Ignore]
+    [TestClass]
     public class ObjectGet : ObjectAbstract {
         #region Helpers
 
@@ -66,7 +66,7 @@ namespace RestfulObjects.Test.EndToEnd {
             Object(Urls.WithReference1, "WithReference");
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void WithCollection() {
             Object(Urls.WithCollection1, "WithCollection");
         }
