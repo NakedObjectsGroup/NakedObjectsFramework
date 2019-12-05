@@ -110,9 +110,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                                                           bool inlineCollectionItems,
                                                           bool allowMutatingActionsOnImmutableObjects) {
             // validate domainModel 
-            if (domainModel != null && domainModel != DomainModelType.Simple.ToString().ToLower() && domainModel != DomainModelType.Formal.ToString().ToLower()) {
-                throw new BadRequestNOSException("Invalid domainModel: " + domainModel);
-            }
+            //if (domainModel != null && domainModel != DomainModelType.Simple.ToString().ToLower() && domainModel != DomainModelType.Formal.ToString().ToLower()) {
+            //    throw new BadRequestNOSException("Invalid domainModel: " + domainModel);
+            //}
 
             var controlFlags = new RestControlFlags {
                 ValidateOnly = validateOnly,            
