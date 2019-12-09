@@ -5,7 +5,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass, Ignore]
+    [TestClass]
     public class CollectionDelete : CollectionAbstract {
         #region Helpers
 
@@ -20,7 +20,7 @@ namespace RestfulObjects.Test.EndToEnd {
             base.InitializeVerySimple1();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void DeleteItemFromList() {
             Helpers.TestResponse(simpleList, FilePrefix + "DeleteItemFromList", simple1AsArgument.ToString(), Methods.Delete, Codes.Forbidden);
         }

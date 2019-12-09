@@ -5,7 +5,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass, Ignore]
+    [TestClass]
     public class CollectionPost : CollectionAbstract {
         #region Helpers
 
@@ -15,7 +15,7 @@ namespace RestfulObjects.Test.EndToEnd {
 
         #endregion
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void PostItemIntoList() {
             Helpers.TestResponse(simpleList, FilePrefix + "PostItemIntoList", simple1AsArgument.ToString(), Methods.Post, Codes.Forbidden);
         }

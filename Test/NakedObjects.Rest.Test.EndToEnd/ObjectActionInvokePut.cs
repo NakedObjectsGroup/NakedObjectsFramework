@@ -5,7 +5,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass, Ignore]
+    [TestClass]
     public class ObjectActionInvokePut : AbstractActionInvokePut {
         protected override string BaseUrl {
             get { return Urls.Objects + Urls.WithActionObject1 + Urls.Actions; }
@@ -16,17 +16,17 @@ namespace RestfulObjects.Test.EndToEnd {
         }
 
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionAnnotatedIdempotent() {
             DoAnActionAnnotatedIdempotent();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionAnnotatedIdempotentReturnsNull() {
             DoAnActionAnnotatedIdempotentReturnsNull();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AnActionReturnsObjectWithParametersAnnotatedIdempotent() {
             DoAnActionReturnsObjectWithParametersAnnotatedIdempotent();
         }

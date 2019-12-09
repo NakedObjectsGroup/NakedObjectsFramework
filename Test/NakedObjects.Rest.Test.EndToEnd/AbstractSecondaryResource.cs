@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
     //Abstraction of test classes for Home, User, Version, Service
-    [TestClass, Ignore]
+    [TestClass]
     public abstract class AbstractSecondaryResource {
         protected abstract string Filename();
 

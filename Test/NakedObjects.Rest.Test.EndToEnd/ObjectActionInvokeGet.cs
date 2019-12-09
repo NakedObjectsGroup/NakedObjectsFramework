@@ -5,7 +5,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass, Ignore]
+    [TestClass]
     public class ObjectActionInvokeGet : AbstractActionInvokeGet {
         protected override string BaseUrl {
             get { return Urls.Objects + Urls.WithActionObject1 + Urls.Actions; }
@@ -20,7 +20,7 @@ namespace RestfulObjects.Test.EndToEnd {
             DoADisabledQueryAction();
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void InvokeGetActionWithPut() {
             DoInvokeGetActionWithPut();
         }

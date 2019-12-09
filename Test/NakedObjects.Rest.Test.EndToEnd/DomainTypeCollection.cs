@@ -5,7 +5,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass, Ignore]
+    [TestClass]
     public class DomainTypeCollectionTests {
         private static string dtc = Urls.DomainTypes + Urls.NameSpace + @"WithCollection/collections/AnEmptyCollection";
         [TestMethod]

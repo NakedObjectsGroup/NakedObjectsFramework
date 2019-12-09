@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass, Ignore]
+    [TestClass]
     public abstract class CollectionAbstract {
         private static string Collections = Urls.Objects + Urls.WithCollection1 + Urls.Collections;
         protected static string vs1 = Urls.Objects + Urls.NameSpace + @"VerySimple/1";

@@ -5,7 +5,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass, Ignore]
+    [TestClass]
     public class ObjectActionDetails : AbstractActionDetails {
         protected override string BaseUrl {
             get { return Urls.Objects + Urls.WithActionObject1 + Urls.Actions; }
