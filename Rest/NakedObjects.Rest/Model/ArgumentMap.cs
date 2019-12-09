@@ -19,5 +19,7 @@ namespace NakedObjects.Rest.Model {
         public bool HasValue => Map.Any();
 
         public bool IsMalformed { get; set; } = false;
+
+        public ReservedArguments ReservedArguments { get; set; } = null;
     }
 }

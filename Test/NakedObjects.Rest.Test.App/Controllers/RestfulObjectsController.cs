@@ -66,7 +66,7 @@ namespace NakedObjects.Rest.Test.App.Controllers {
         }
 
         [HttpPost]
-        public override ActionResult PostPersist(string domainType, ArgumentMapWithReserved arguments) {
+        public override ActionResult PostPersist(string domainType, ArgumentMap arguments) {
             return base.PostPersist(domainType, arguments);
         }
 
@@ -76,7 +76,7 @@ namespace NakedObjects.Rest.Test.App.Controllers {
         }
 
         [HttpPut]
-        public override ActionResult PutObject(string domainType, string instanceId, ArgumentMapWithReserved arguments) {
+        public override ActionResult PutObject(string domainType, string instanceId, ArgumentMap arguments) {
             return base.PutObject(domainType, instanceId, arguments);
         }
 
@@ -121,12 +121,12 @@ namespace NakedObjects.Rest.Test.App.Controllers {
         }
 
         [HttpPost]
-        public override ActionResult PostInvoke(string domainType, string instanceId, string actionName, ArgumentMapWithReserved arguments) {
+        public override ActionResult PostInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return base.PostInvoke(domainType, instanceId, actionName, arguments);
         }
 
         [HttpPut]
-        public override ActionResult PutInvoke(string domainType, string instanceId, string actionName, ArgumentMapWithReserved arguments) {
+        public override ActionResult PutInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return base.PutInvoke(domainType, instanceId, actionName, arguments);
         }
 
@@ -136,12 +136,12 @@ namespace NakedObjects.Rest.Test.App.Controllers {
         }
 
         [HttpPut]
-        public override ActionResult PutInvokeOnService(string serviceName, string actionName, ArgumentMapWithReserved arguments) {
+        public override ActionResult PutInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
             return base.PutInvokeOnService(serviceName, actionName, arguments);
         }
 
         [HttpPost]
-        public override ActionResult PostInvokeOnService(string serviceName, string actionName, ArgumentMapWithReserved arguments) {
+        public override ActionResult PostInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
             return base.PostInvokeOnService(serviceName, actionName, arguments);
         }
 

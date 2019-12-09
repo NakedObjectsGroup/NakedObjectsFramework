@@ -9,9 +9,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace NakedObjects.Rest.Model {
-    public class PromptArgumentMap : ArgumentMapWithReserved {
+    public class PromptArgumentMap : ArgumentMap {
         public IDictionary<string, IValue> MemberMap { get; set; }
 
         public bool HasMembers => MemberMap.Any();
+
     }
 }

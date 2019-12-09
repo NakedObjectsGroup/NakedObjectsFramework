@@ -21,16 +21,16 @@ namespace NakedObjects.Rest.Model {
         public virtual bool? InlineCollectionItems { get; set; }
     }
 
-    [ModelBinder(BinderType = typeof(ArgumentMapBinder))]
-    public class ArgumentMapWithReserved : ArgumentMap
-    {
-        public virtual bool? InlinePropertyDetails { get; set; }
-        public virtual bool ValidateOnly { get; set; }
-        public virtual string DomainModel { get; set; }
-        public virtual int ReservedArgumentsCount { get; set; }
-        public string SearchTerm { get; set; }
-        public int Page { get; set; }
-        public int PageSize { get; set; }
-        public virtual bool? InlineCollectionItems { get; set; }
-    }
+    //[ModelBinder(BinderType = typeof(ArgumentMapBinder))]
+    //public class ArgumentMap : ArgumentMap
+    //{
+    //    public virtual bool? InlinePropertyDetails { get; set; }
+    //    public virtual bool ValidateOnly { get; set; }
+    //    public virtual string DomainModel { get; set; }
+    //    public virtual int ReservedArgumentsCount { get; set; }
+    //    public string SearchTerm { get; set; }
+    //    public int Page { get; set; }
+    //    public int PageSize { get; set; }
+    //    public virtual bool? InlineCollectionItems { get; set; }
+    //}
 }

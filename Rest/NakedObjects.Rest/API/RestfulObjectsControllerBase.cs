@@ -477,11 +477,11 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult GetPropertyPrompt(string domainType, string instanceId, string propertyName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                var argsContext = ProcessArgumentMap(arguments, false, true);
+                var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 var link = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
                 var obj = FrameworkFacade.GetObject(link);
                 var propertyContext = FrameworkFacade.GetPropertyWithCompletions(obj.Target, propertyName, argsContext);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags()), false);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, Request, flags), false);
             });
         }
 
@@ -497,27 +497,27 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult GetParameterPrompt(string domainType, string instanceId, string actionName, string parmName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                var argsContext = ProcessArgumentMap(arguments, false, true);
+                var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 var link = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
                 ActionContextFacade action = FrameworkFacade.GetObjectActionWithCompletions(link, actionName, parmName, argsContext);
                 ParameterContextFacade parm = action.VisibleParameters.Single(p => p.Id == parmName);
                 parm.Target = action.Target;
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, parm, Request, GetFlags()), false);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, parm, Request, flags), false);
             });
         }
 
         public virtual ActionResult GetParameterPromptOnService(string serviceName, string actionName, string parmName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                var argsContext = ProcessArgumentMap(arguments, false, true);
+                var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 var link = FrameworkFacade.OidTranslator.GetOidTranslation(serviceName);
                 ActionContextFacade action = FrameworkFacade.GetServiceActionWithCompletions(link, actionName, parmName, argsContext);
                 ParameterContextFacade parm = action.VisibleParameters.Single(p => p.Id == parmName);
                 parm.Target = action.Target;
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, parm, Request, GetFlags()), false);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, parm, Request, flags), false);
             });
         }
 
-        public virtual ActionResult PutObject(string domainType, string instanceId, ArgumentMapWithReserved arguments) {
+        public virtual ActionResult PutObject(string domainType, string instanceId, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 var (argsContext, flags) = ProcessArgumentMap(arguments, true, false);
@@ -527,7 +527,7 @@ namespace NakedObjects.Rest {
             });
         }
 
-        public virtual ActionResult PostPersist(string domainType, ArgumentMapWithReserved arguments) {
+        public virtual ActionResult PostPersist(string domainType, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessPersistArguments(arguments);
@@ -618,15 +618,14 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult GetInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                var argsContext = ProcessArgumentMap(arguments, false,  true);
-                var flags = GetFlags();
+                var (argsContext, flags) = ProcessArgumentMap(arguments, false,  true);
                 ActionResultContextFacade context = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, argsContext);
                 VerifyNoError(context);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, flags), flags.ValidateOnly);
             });
         }
 
-        public virtual ActionResult PostInvoke(string domainType, string instanceId, string actionName, ArgumentMapWithReserved arguments) {
+        public virtual ActionResult PostInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, false);
@@ -636,7 +635,7 @@ namespace NakedObjects.Rest {
             });
         }
 
-        public virtual ActionResult PutInvoke(string domainType, string instanceId, string actionName, ArgumentMapWithReserved arguments) {
+        public virtual ActionResult PutInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, false);
@@ -648,15 +647,14 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult GetInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                var argsContext = ProcessArgumentMap(arguments, false, true);
-                var flags = GetFlags();
+                var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 var result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, argsContext);
                 VerifyNoError(result);
                 return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, flags), flags.ValidateOnly);
             });
         }
 
-        public virtual ActionResult PutInvokeOnService(string serviceName, string actionName, ArgumentMapWithReserved arguments) {
+        public virtual ActionResult PutInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
@@ -666,7 +664,7 @@ namespace NakedObjects.Rest {
             });
         }
 
-        public virtual ActionResult PostInvokeOnService(string serviceName, string actionName, ArgumentMapWithReserved arguments) {
+        public virtual ActionResult PostInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
@@ -719,19 +717,21 @@ namespace NakedObjects.Rest {
                 AllowMutatingActionOnImmutableObject);
         }
 
-        private RestControlFlags GetFlags(ArgumentMapWithReserved arguments) {
-            if (arguments.IsMalformed) {
+        private RestControlFlags GetFlags(ArgumentMap arguments) {
+            if (arguments.IsMalformed || arguments.ReservedArguments == null) {
                 throw new BadRequestNOSException("Malformed arguments"); // todo i18n
             }
 
-            return RestControlFlags.FlagsFromArguments(arguments.ValidateOnly,
-                arguments.Page,
-                arguments.PageSize,
-                arguments.DomainModel,
+            
+
+            return RestControlFlags.FlagsFromArguments(arguments.ReservedArguments.ValidateOnly,
+                arguments.ReservedArguments.Page,
+                arguments.ReservedArguments.PageSize,
+                arguments.ReservedArguments.DomainModel,
                 InlineDetailsInActionMemberRepresentations,
                 InlineDetailsInCollectionMemberRepresentations,
-                arguments.InlinePropertyDetails.HasValue ? arguments.InlinePropertyDetails.Value : InlineDetailsInPropertyMemberRepresentations,
-                arguments.InlineCollectionItems.HasValue && arguments.InlineCollectionItems.Value,
+                arguments.ReservedArguments.InlinePropertyDetails.HasValue ? arguments.ReservedArguments.InlinePropertyDetails.Value : InlineDetailsInPropertyMemberRepresentations,
+                arguments.ReservedArguments.InlineCollectionItems.HasValue && arguments.ReservedArguments.InlineCollectionItems.Value,
                 AllowMutatingActionOnImmutableObject);
         }
 
@@ -1063,7 +1063,7 @@ namespace NakedObjects.Rest {
             });
         }
 
-        private (IDictionary<string, object>, RestControlFlags) ExtractValuesAndFlags(ArgumentMapWithReserved arguments, bool errorIfNone)
+        private (IDictionary<string, object>, RestControlFlags) ExtractValuesAndFlags(ArgumentMap arguments, bool errorIfNone)
         {
             return HandleMalformed(() => {
                 ValidateArguments(arguments, errorIfNone);
@@ -1096,7 +1096,7 @@ namespace NakedObjects.Rest {
             return context;
         }
 
-        private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessPersistArguments(ArgumentMapWithReserved persistArgumentMap) {
+        private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessPersistArguments(ArgumentMap persistArgumentMap) {
             var (map, flags) = ExtractValuesAndFlags(persistArgumentMap, true);
 
             return new Tuple<ArgumentsContextFacade, RestControlFlags>(new ArgumentsContextFacade {
@@ -1116,17 +1116,21 @@ namespace NakedObjects.Rest {
             };
         }
 
-        private ArgumentsContextFacade ProcessArgumentMap(ArgumentMap arguments, bool errorIfNone, bool ignoreConcurrency) =>
-            new ArgumentsContextFacade {
-                Digest = ignoreConcurrency ? null : GetIfMatchTag(),
-                Values = ExtractValues(arguments, errorIfNone),
-                ValidateOnly = ValidateOnly,
-                ExpectedActionType = GetExpectedMethodType(new HttpMethod(Request.Method))
-            };
+        //private ArgumentsContextFacade ProcessArgumentMap(ArgumentMap arguments, bool errorIfNone, bool ignoreConcurrency) =>
+        //    new ArgumentsContextFacade {
+        //        Digest = ignoreConcurrency ? null : GetIfMatchTag(),
+        //        Values = ExtractValues(arguments, errorIfNone),
+        //        ValidateOnly = ValidateOnly,
+        //        ExpectedActionType = GetExpectedMethodType(new HttpMethod(Request.Method))
+        //    };
 
-        private (ArgumentsContextFacade, RestControlFlags) ProcessArgumentMap(ArgumentMapWithReserved arguments, bool errorIfNone, bool ignoreConcurrency)
+        private (ArgumentsContextFacade, RestControlFlags) ProcessArgumentMap(ArgumentMap arguments, bool errorIfNone, bool ignoreConcurrency)
         {
-            var (map, flags) = ExtractValuesAndFlags(arguments, errorIfNone);
+          
+            var (map, flags) = arguments.ReservedArguments == null 
+                ? (ExtractValues(arguments, errorIfNone), GetFlags()) 
+                : ExtractValuesAndFlags(arguments, errorIfNone);
+
             var facade = new ArgumentsContextFacade
             {
                 Digest = ignoreConcurrency ? null : GetIfMatchTag(),

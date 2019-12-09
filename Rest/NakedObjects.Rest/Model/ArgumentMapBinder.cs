@@ -25,14 +25,14 @@ namespace NakedObjects.Rest.Model {
 
         private static Task BindFromBody(ModelBindingContext bindingContext) {
             return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
-                async () => ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext)),
+                async () => ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext), true),
                 () => new Task<ArgumentMap>(ModelBinderUtils.CreateArgumentMapForMalformedArgs));
         }
 
         private static Task BindFromQuery(ModelBindingContext bindingContext) {
             return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
                 async () => ModelBinderUtils.CreateSimpleArgumentMap(bindingContext.HttpContext.Request.QueryString.ToString()) ??
-                            ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeQueryString(bindingContext)),
+                            ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeQueryString(bindingContext), false),
                 () => new Task<ArgumentMap>(ModelBinderUtils.CreateArgumentMapForMalformedArgs));
         }
     }

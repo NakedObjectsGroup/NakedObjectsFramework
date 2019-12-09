@@ -179,32 +179,26 @@ namespace NakedObjects.Rest.Model {
             return new SingleValueArgument {IsMalformed = true};
         }
 
-        private static ArgumentMap CreatePromptArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate) {
+        private static ArgumentMap CreatePromptArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate, bool includeReservedArgs) {
             var arg = new PromptArgumentMap {MemberMap = new Dictionary<string, IValue>()};
 
-            InitArgumentMapWithReserved(jObject, populate, arg);
+            InitArgumentMap(jObject, populate, arg, includeReservedArgs);
 
             return arg;
         }
 
-        private static ArgumentMap CreateArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate) {
+      
+
+        private static ArgumentMap CreateArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate, bool includeReservedArgs)
+        {
             var arg = new ArgumentMap();
 
-            InitArgumentMap(jObject, populate, arg);
+            InitArgumentMap(jObject, populate, arg, includeReservedArgs);
 
             return arg;
         }
 
-        private static ArgumentMapWithReserved CreateArgumentMapWithReserved(JObject jObject, Action<JObject, ArgumentMap> populate)
-        {
-            var arg = new ArgumentMapWithReserved();
-
-            InitArgumentMapWithReserved(jObject, populate, arg);
-
-            return arg;
-        }
-
-        private static void InitArgumentMapWithReserved(JObject jObject, Action<JObject, ArgumentMap> populate, ArgumentMapWithReserved arg)
+        private static void InitArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate, ArgumentMap arg, bool includeReservedArgs)
         {
             if (jObject != null)
             {
@@ -212,13 +206,17 @@ namespace NakedObjects.Rest.Model {
                 {
                     populate(jObject, arg);
 
-                    arg.ValidateOnly = GetValidateOnlyFlag(jObject);
-                    arg.DomainModel = GetDomainModelValue(jObject);
-                    arg.SearchTerm = GetSearchTerm(jObject);
-                    arg.Page = GetPageValue(jObject);
-                    arg.PageSize = GetPageSizeValue(jObject);
-                    arg.InlinePropertyDetails = GetInlinePropertyDetailsFlag(jObject);
-                    arg.InlineCollectionItems = GetInlineCollectionItemsFlag(jObject);
+                    if (includeReservedArgs) {
+                        arg.ReservedArguments = new ReservedArguments() {
+                            ValidateOnly = GetValidateOnlyFlag(jObject),
+                            DomainModel = GetDomainModelValue(jObject),
+                            SearchTerm = GetSearchTerm(jObject),
+                            Page = GetPageValue(jObject),
+                            PageSize = GetPageSizeValue(jObject),
+                            InlinePropertyDetails = GetInlinePropertyDetailsFlag(jObject),
+                            InlineCollectionItems = GetInlineCollectionItemsFlag(jObject)
+                        };
+                    };
                 }
                 catch (Exception e)
                 {
@@ -232,21 +230,6 @@ namespace NakedObjects.Rest.Model {
             }
         }
 
-
-        private static void InitArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate, ArgumentMap arg) {
-            if (jObject != null) {
-                try {
-                    populate(jObject, arg);
-                }
-                catch (Exception e) {
-                    Logger.ErrorFormat("Malformed argument map: {0}", e.Message);
-                    arg.IsMalformed = true;
-                }
-            }
-            else {
-                arg.Map = new Dictionary<string, IValue>();
-            }
-        }
 
         private static void PopulateArgumentMap(JToken jObject, ArgumentMap arg) {
             arg.Map = GetNonReservedProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
@@ -278,21 +261,18 @@ namespace NakedObjects.Rest.Model {
             arg.Map = GetNonReservedProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
         }
 
-        public static ArgumentMap CreateArgumentMap(JObject jObject) {
-            return CreateArgumentMap(jObject, PopulateArgumentMap);
+        public static ArgumentMap CreateArgumentMap(JObject jObject, bool includeReservedArgs) {
+            return CreateArgumentMap(jObject, PopulateArgumentMap, includeReservedArgs);
         }
 
-        public static ArgumentMapWithReserved CreateArgumentMapWithReserved(JObject jObject)
-        {
-            return CreateArgumentMapWithReserved(jObject, PopulateArgumentMap);
+       
+
+        public static ArgumentMap CreatePersistArgMap(JObject jObject, bool includeReservedArgs) {
+            return CreateArgumentMap(jObject, PopulatePersistArgumentMap, includeReservedArgs);
         }
 
-        public static ArgumentMap CreatePersistArgMap(JObject jObject) {
-            return CreateArgumentMap(jObject, PopulatePersistArgumentMap);
-        }
-
-        public static ArgumentMap CreatePromptArgMap(JObject jObject) {
-            return CreatePromptArgumentMap(jObject, PopulatePromptArgumentMap);
+        public static ArgumentMap CreatePromptArgMap(JObject jObject, bool includeReservedArgs) {
+            return CreatePromptArgumentMap(jObject, PopulatePromptArgumentMap, includeReservedArgs);
         }
 
         public static ArgumentMap CreateArgumentMapForMalformedArgs() {
@@ -372,7 +352,7 @@ namespace NakedObjects.Rest.Model {
                     bindingContext.Result = ModelBindingResult.Success(await failFunc());
                 }
             }
-            catch (Exception e) {
+            catch (Exception) {
                 bindingContext.Result = ModelBindingResult.Failed();
             }
         }
