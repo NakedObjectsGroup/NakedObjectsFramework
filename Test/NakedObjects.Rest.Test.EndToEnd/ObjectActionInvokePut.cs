@@ -16,17 +16,17 @@ namespace RestfulObjects.Test.EndToEnd {
         }
 
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionAnnotatedIdempotent() {
             DoAnActionAnnotatedIdempotent();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionAnnotatedIdempotentReturnsNull() {
             DoAnActionAnnotatedIdempotentReturnsNull();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionReturnsObjectWithParametersAnnotatedIdempotent() {
             DoAnActionReturnsObjectWithParametersAnnotatedIdempotent();
         }

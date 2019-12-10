@@ -66,7 +66,7 @@ namespace RestfulObjects.Test.EndToEnd {
             Object(Urls.WithReference1, "WithReference");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void WithCollection() {
             Object(Urls.WithCollection1, "WithCollection");
         }

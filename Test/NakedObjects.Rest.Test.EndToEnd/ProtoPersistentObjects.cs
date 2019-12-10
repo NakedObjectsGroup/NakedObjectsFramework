@@ -62,13 +62,13 @@ namespace RestfulObjects.Test.EndToEnd {
             Helpers.TestResponse(url, "CreateTransientWithCollection", null, Methods.Post, Codes.Succeeded, null, "1234");
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void PersistMostSimple() {
             string body = ProtoPersistentMostSimple(10001).ToString();
             Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimplePersist", "PersistMostSimple", body, Methods.Post, Codes.SucceededNewRepresentation, null, "1234");
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void PersistVerySimple() {
             string body = ProtoPersistentVerySimple(10002).ToString();
             Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "VerySimplePersist", "PersistVerySimple", body, Methods.Post, Codes.SucceededNewRepresentation, null, "1234");
