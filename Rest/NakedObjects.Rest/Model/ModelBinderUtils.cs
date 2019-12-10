@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Common.Logging;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -53,11 +54,11 @@ namespace NakedObjects.Rest.Model {
             return new JObject();
         }
 
+
         public static byte[] DeserializeBinaryStream(Stream stream) {
-            if (stream.Length > 0) {
-                using (var br = new BinaryReader(stream)) {
-                    return br.ReadBytes((int) stream.Length);
-                }
+            if (stream.CanRead) {
+                using var br = new BinaryReader(stream);
+                return br.ReadBytes((int) stream.Length);
             }
             return new byte[] {};
         }
@@ -148,7 +149,7 @@ namespace NakedObjects.Rest.Model {
             return FilterProperties(jToken, c => !IsReservedName(c.Name));
         }
 
-        public static SingleValueArgument CreateSingleValueArgument(object obj) {
+        public static SingleValueArgument CreateSingleValueArgument(object obj, bool includeReservedArgs) {
             var arg = new SingleValueArgument();
 
             var jObject = obj as JObject;
@@ -157,9 +158,14 @@ namespace NakedObjects.Rest.Model {
             if (jObject != null) {
                 try {
                     arg.Value = GetValue(jObject, "Single");
-                    arg.ValidateOnly = GetValidateOnlyFlag(jObject);
                     arg.IsMalformed = (!arg.HasValue && GetNonReservedProperties(jObject).Any()) ||
                                       (arg.HasValue && GetNonReservedProperties(jObject).Count() > 1);
+
+                    if (includeReservedArgs) {
+                        arg.ReservedArguments = new ReservedArguments() {
+                            ValidateOnly = GetValidateOnlyFlag(jObject)
+                        };
+                    }
                 }
                 catch (Exception e) {
                     Logger.ErrorFormat("Malformed single value argument: {0}", e.Message);
@@ -169,7 +175,9 @@ namespace NakedObjects.Rest.Model {
 
             if (bObject != null) {
                 arg.Value = new AttachmentValue(bObject);
-                arg.ValidateOnly = false; // not supported on blob/clob
+                arg.ReservedArguments = new ReservedArguments() {
+                    ValidateOnly = false
+                }; // not supported on blob/clob
             }
 
             return arg;
@@ -337,12 +345,18 @@ namespace NakedObjects.Rest.Model {
             return new JObject();
         }
 
+        public static byte[] DeserializeBinaryContent(ModelBindingContext bindingContext)
+        {
+            //Stream stream = actionContext.Request.Content.ReadAsStreamAsync().Result;
+            return DeserializeBinaryStream(bindingContext.HttpContext.Request.Body);
+        }
+
         public static async Task<JObject> DeserializeQueryString(ModelBindingContext bindingContext) {
             using Stream stream = QueryStringToStream(bindingContext.HttpContext.Request.QueryString.ToString());
             return await DeserializeJsonStreamAsync(stream);
         }
 
-        public static async Task BindModelOnSuccessOrFail(ModelBindingContext bindingContext, Func<Task<ArgumentMap>> parseFunc, Func<Task<ArgumentMap>> failFunc) {
+        public static async Task BindModelOnSuccessOrFail(ModelBindingContext bindingContext, Func<Task<object>> parseFunc, Func<Task<object>> failFunc) {
             try {
                 try {
                     bindingContext.Result = ModelBindingResult.Success(await parseFunc());
@@ -355,6 +369,16 @@ namespace NakedObjects.Rest.Model {
             catch (Exception) {
                 bindingContext.Result = ModelBindingResult.Failed();
             }
+        }
+
+        public static async Task<object> DeserializeContent(ModelBindingContext bindingContext) {
+            var requestHeaders = bindingContext.HttpContext.Request.GetTypedHeaders();
+
+            if (RestUtils.IsJsonMediaType(requestHeaders.ContentType.ToString()))
+            {
+                return await DeserializeJsonContent(bindingContext);
+            }
+            return DeserializeBinaryContent(bindingContext);
         }
     }
 }

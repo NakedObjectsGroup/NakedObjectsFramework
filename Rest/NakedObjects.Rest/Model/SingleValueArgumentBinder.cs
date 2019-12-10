@@ -5,14 +5,48 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.Rest.Model {
-    public class SingleValueArgumentBinder : AbstractModelBinder {
-        public override bool BindModel(HttpActionContext actionContext, ModelBindingContext bindingContext) {
-            BindModelOnSuccessOrFail(bindingContext,
-                () => ModelBinderUtils.CreateSingleValueArgument(DeserializeContent(actionContext)),
-                ModelBinderUtils.CreateSingleValueArgumentForMalformedArgs);
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using NakedObjects.Rest.Snapshot.Utility;
 
-            return true;
+namespace NakedObjects.Rest.Model {
+    public class SingleValueArgumentBinder : IModelBinder {
+
+        public Task BindModelAsync(ModelBindingContext bindingContext)
+        {
+            if (new HttpMethod(bindingContext.HttpContext.Request.Method) == HttpMethod.Get)
+            {
+                return BindFromQuery(bindingContext);
+            }
+
+            return BindFromBody(bindingContext);
         }
+
+
+        private static Task BindFromBody(ModelBindingContext bindingContext)
+        {
+            return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
+                async () => ModelBinderUtils.CreateSingleValueArgument(await ModelBinderUtils.DeserializeContent(bindingContext), true),
+                () => new Task<object>(ModelBinderUtils.CreateSingleValueArgumentForMalformedArgs));
+        }
+
+        private static Task BindFromQuery(ModelBindingContext bindingContext)
+        {
+            return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
+                async () =>  ModelBinderUtils.CreateSingleValueArgument(await ModelBinderUtils.DeserializeQueryString(bindingContext), false),
+                () => new Task<object>(ModelBinderUtils.CreateSingleValueArgumentForMalformedArgs));
+        }
+
+
+
+        //public override bool BindModel(HttpActionContext actionContext, ModelBindingContext bindingContext) {
+        //    BindModelOnSuccessOrFail(bindingContext,
+        //        () => ModelBinderUtils.CreateSingleValueArgument(DeserializeContent(actionContext)),
+        //        ModelBinderUtils.CreateSingleValueArgumentForMalformedArgs);
+
+        //    return true;
+        //}
+
     }
 }

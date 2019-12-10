@@ -16,7 +16,7 @@ namespace RestfulObjects.Test.EndToEnd {
 
         #endregion
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void Int() {
             var body = new JObject(new JProperty("value", 100));
             WithValue("AValue", "AValue", body.ToString(), Methods.Put, Codes.Succeeded);
@@ -34,13 +34,13 @@ namespace RestfulObjects.Test.EndToEnd {
             WithValue("AValue", null, body.ToString(), Methods.Put, Codes.SyntacticallyInvalid);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptSemanticallyMalformedArgument() {
             var body = new JObject(new JProperty("value", "foo")); //string instead of integer
             WithValue("AValue", null, body.ToString(), Methods.Put, Codes.ValidationFailed);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void String() {
             var body = new JObject(new JProperty("value", ""));
             WithValue("AStringValue", "AStringValue", body.ToString(), Methods.Put, Codes.Succeeded);
@@ -53,27 +53,27 @@ namespace RestfulObjects.Test.EndToEnd {
             WithValue("AStringValue", null, body.ToString(), Methods.Put, Codes.SyntacticallyInvalid);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptToUpdateIntWithString() {
             var body = new JObject(new JProperty("value", "foo"));
             WithValue("AValue", null, body.ToString(), Methods.Put, Codes.ValidationFailed);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         //[IgnoreAttribute]
         public void DateTime() {
             var body = new JObject(new JProperty("value", "2007-07-13"));
             WithValue("ADateTimeValue", "DateTime", body.ToString(), Methods.Put, Codes.Succeeded);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AReference() {
             string simple = Urls.Objects + Urls.MostSimple1;
             var body = new JObject(new JProperty("value", new JObject(new JProperty("href", simple))));
             WithReference("AReference", "AReference", body.ToString(), Methods.Put, Codes.Succeeded);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptReferenceArgumentOfWrongType() {
             string scalar = Urls.Objects + Urls.WithScalars1;
             var body = new JObject(new JProperty("value", new JObject(new JProperty("href", scalar))));
@@ -87,19 +87,19 @@ namespace RestfulObjects.Test.EndToEnd {
             WithReference("AReference", "AttemptBadlyFormedReferenceArgument", body.ToString(), Methods.Put, Codes.SyntacticallyInvalid);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void StringValidateOnlyGood() {
             var body = new JObject(new JProperty("value", "foo"), JsonRep.ValidateOnly());
             WithValue("AStringValue", null, body.ToString(), Methods.Put, Codes.SucceededValidation);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void StringValidateOnlyFailTooLong() {
             var body = new JObject(new JProperty("value", "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"), JsonRep.ValidateOnly());
             WithValue("AStringValue", null, body.ToString(), Methods.Put, Codes.ValidationFailed);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void StringValidateOnlyFailRegex() {
             var body = new JObject(new JProperty("value", "123"), JsonRep.ValidateOnly());
             WithValue("AStringValue", null, body.ToString(), Methods.Put, Codes.ValidationFailed);

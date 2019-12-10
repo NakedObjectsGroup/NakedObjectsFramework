@@ -1631,7 +1631,7 @@ let assertNonExpiringCache (message : HttpResponseMessage) =
     let expire = message.Headers.Date.Value + oneDay
     Assert.AreEqual(expire, message.Content.Headers.Expires)
 
-let CreateSingleValueArg (m : JObject) = ModelBinderUtils.CreateSingleValueArgument(m)
+let CreateSingleValueArg (m : JObject) = ModelBinderUtils.CreateSingleValueArgument(m, false)
      
 let CreateArgMap (m : JObject) = ModelBinderUtils.CreateArgumentMap(m, false)
 

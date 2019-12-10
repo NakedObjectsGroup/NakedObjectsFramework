@@ -591,20 +591,20 @@ namespace NakedObjects.Rest {
         public virtual ActionResult PutProperty(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
-                Tuple<ArgumentContextFacade, RestControlFlags> args = ProcessArgument(argument);
-                PropertyContextFacade context = FrameworkFacade.PutProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, args.Item1);
+                var (argumentContextFacade, flags) = ProcessArgument(argument);
+                PropertyContextFacade context = FrameworkFacade.PutProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, argumentContextFacade);
                 VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2, false), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, flags, false), flags.ValidateOnly);
             });
         }
 
         public virtual ActionResult DeleteProperty(string domainType, string instanceId, string propertyName) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
-                Tuple<ArgumentContextFacade, RestControlFlags> args = ProcessDeleteArgument();
-                PropertyContextFacade context = FrameworkFacade.DeleteProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, args.Item1);
+                var (argumentContextFacade, flags) = ProcessDeleteArgument();
+                PropertyContextFacade context = FrameworkFacade.DeleteProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, argumentContextFacade);
                 VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2, false), args.Item2.ValidateOnly);
+                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, flags, false), flags.ValidateOnly);
             });
         }
 
@@ -697,14 +697,6 @@ namespace NakedObjects.Rest {
 
         #region helpers
 
-        private Tuple<ArgumentContextFacade, RestControlFlags> ToTuple(Tuple<object, RestControlFlags> arguments, string tag) {
-            return new Tuple<ArgumentContextFacade, RestControlFlags>(new ArgumentContextFacade {
-                Digest = tag,
-                Value = arguments.Item1,
-                ValidateOnly = arguments.Item2.ValidateOnly
-            }, arguments.Item2);
-        }
-
         private RestControlFlags GetFlags() {
             return RestControlFlags.FlagsFromArguments(ValidateOnly, 
                 Page,
@@ -722,19 +714,30 @@ namespace NakedObjects.Rest {
                 throw new BadRequestNOSException("Malformed arguments"); // todo i18n
             }
 
-            
-
-            return RestControlFlags.FlagsFromArguments(arguments.ReservedArguments.ValidateOnly,
-                arguments.ReservedArguments.Page,
-                arguments.ReservedArguments.PageSize,
-                arguments.ReservedArguments.DomainModel,
-                InlineDetailsInActionMemberRepresentations,
-                InlineDetailsInCollectionMemberRepresentations,
-                arguments.ReservedArguments.InlinePropertyDetails.HasValue ? arguments.ReservedArguments.InlinePropertyDetails.Value : InlineDetailsInPropertyMemberRepresentations,
-                arguments.ReservedArguments.InlineCollectionItems.HasValue && arguments.ReservedArguments.InlineCollectionItems.Value,
-                AllowMutatingActionOnImmutableObject);
+            return GetFlagsFromArguments(arguments.ReservedArguments);
         }
 
+        private RestControlFlags GetFlags(SingleValueArgument arguments)
+        {
+            if (arguments.IsMalformed || arguments.ReservedArguments == null)
+            {
+                throw new BadRequestNOSException("Malformed arguments"); // todo i18n
+            }
+
+            return GetFlagsFromArguments(arguments.ReservedArguments);
+        }
+
+        private static RestControlFlags GetFlagsFromArguments(ReservedArguments reservedArguments) {
+            return RestControlFlags.FlagsFromArguments(reservedArguments.ValidateOnly,
+                reservedArguments.Page,
+                reservedArguments.PageSize,
+                reservedArguments.DomainModel,
+                InlineDetailsInActionMemberRepresentations,
+                InlineDetailsInCollectionMemberRepresentations,
+                reservedArguments.InlinePropertyDetails.HasValue ? reservedArguments.InlinePropertyDetails.Value : InlineDetailsInPropertyMemberRepresentations,
+                reservedArguments.InlineCollectionItems.HasValue && reservedArguments.InlineCollectionItems.Value,
+                AllowMutatingActionOnImmutableObject);
+        }
 
         private string GetIfMatchTag() {
             var headers = Request.GetTypedHeaders();
@@ -1048,11 +1051,12 @@ namespace NakedObjects.Rest {
             }
         }
 
-        private Tuple<object, RestControlFlags> ExtractValueAndFlags(SingleValueArgument argument) {
+        private (object, RestControlFlags) ExtractValueAndFlags(SingleValueArgument argument) {
             return HandleMalformed(() => {
                 ValidateArguments(argument);
+                var flags = argument.ReservedArguments == null ? GetFlags() : GetFlags(argument);
                 object parm = argument.Value.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy);
-                return new Tuple<object, RestControlFlags>(parm, GetFlags());
+                return (parm, flags);
             });
         }
 
@@ -1142,12 +1146,22 @@ namespace NakedObjects.Rest {
         }
 
 
-        private Tuple<ArgumentContextFacade, RestControlFlags> ProcessArgument(SingleValueArgument argument) {
-            return ToTuple(ExtractValueAndFlags(argument), GetIfMatchTag());
+        private (ArgumentContextFacade, RestControlFlags) ProcessArgument(SingleValueArgument argument) {
+            var (value, flags) = ExtractValueAndFlags(argument);
+            return (new ArgumentContextFacade {
+                Digest = GetIfMatchTag(),
+                Value = value,
+                ValidateOnly = flags.ValidateOnly
+            }, flags);
         }
 
-        private Tuple<ArgumentContextFacade, RestControlFlags> ProcessDeleteArgument() {
-            return ToTuple(new Tuple<object, RestControlFlags>(null, GetFlags()), GetIfMatchTag());
+        private (ArgumentContextFacade, RestControlFlags) ProcessDeleteArgument() {
+            var flags = GetFlags();
+            return (new ArgumentContextFacade {
+                Digest = GetIfMatchTag(),
+                Value = null,
+                ValidateOnly = flags.ValidateOnly
+            }, flags);
         }
 
         private static IDictionary<string, string> GetOptionalCapabilities() {

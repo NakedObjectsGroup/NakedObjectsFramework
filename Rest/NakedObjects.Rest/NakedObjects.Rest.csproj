@@ -9,7 +9,6 @@
     <Compile Remove="Model\ArgumentMapUrlBinder.cs" />
     <Compile Remove="Model\PostedFileAdapter.cs" />
     <Compile Remove="Model\ReservedArgumentsBinder.cs" />
-    <Compile Remove="Model\SingleValueArgumentBinder.cs" />
     <Compile Remove="Model\SingleValueArgumentUrlBinder.cs" />
   </ItemGroup>
 
