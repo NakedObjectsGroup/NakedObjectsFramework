@@ -20,7 +20,7 @@ namespace RestfulObjects.Test.EndToEnd {
             DoADisabledQueryAction();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void InvokeGetActionWithPut() {
             DoInvokeGetActionWithPut();
         }

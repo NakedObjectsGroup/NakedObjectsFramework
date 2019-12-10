@@ -20,7 +20,7 @@ namespace RestfulObjects.Test.EndToEnd {
             base.InitializeVerySimple1();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void DeleteItemFromList() {
             Helpers.TestResponse(simpleList, FilePrefix + "DeleteItemFromList", simple1AsArgument.ToString(), Methods.Delete, Codes.Forbidden);
         }

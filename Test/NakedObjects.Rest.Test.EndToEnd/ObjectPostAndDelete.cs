@@ -13,12 +13,12 @@ namespace RestfulObjects.Test.EndToEnd {
 
         #endregion
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AttemptPost() {
             Helpers.TestResponse(objectsUrl + @"RestfulObjects.Test.Data.MostSimple/1", null, JsonRep.Empty(), Methods.Post, Codes.MethodNotValid);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AttemptDelete() {
             Helpers.TestResponse(objectsUrl + @"RestfulObjects.Test.Data.MostSimple/1", null, null, Methods.Delete, Codes.MethodNotValid);
         }

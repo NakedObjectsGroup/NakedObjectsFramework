@@ -10,7 +10,7 @@ namespace RestfulObjects.Test.EndToEnd {
      * These tests clear properties.  To avoid clashes with other tests, they create all the objects that they modify.
      */
 
-    [TestClass, Ignore]
+    [TestClass]
     public class PropertyDelete : PropertyAbstract {
         #region Helpers
 
@@ -48,17 +48,17 @@ namespace RestfulObjects.Test.EndToEnd {
             Helpers.TestResponse(refProp, FilePrefix + "Before", newRef, Methods.Put, Codes.Succeeded);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void DeleteValueProperty() {
             Helpers.TestResponse(valueProp, FilePrefix + "After-ValueProperty", null, Methods.Delete);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void DeleteReferenceProperty() {
             Helpers.TestResponse(refProp, FilePrefix + "After-ReferenceProperty", null, Methods.Delete);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AttemptDeleteNonExistentProperty() {
             Helpers.TestResponse(vs1 + Urls.Properties + "NonExistentProp", null, null, Methods.Delete, Codes.NotFound);
         }

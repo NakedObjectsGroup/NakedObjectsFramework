@@ -15,72 +15,72 @@ namespace RestfulObjects.Test.EndToEnd {
 
         #endregion
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void ACollection() {
             Collection("ACollection", "ACollection");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void ASet() {
             Collection("ASet", "ASet");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void ADisabledCollection() {
             Collection("ADisabledCollection", "ADisabledCollection");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnEmptyCollection() {
             Collection("AnEmptyCollection", "AnEmptyCollection");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnEmptySet() {
             Collection("AnEmptySet", "AnEmptySet");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptToGetHiddenCollection() {
             Collection("AHiddenCollection", null, null, Methods.Get, Codes.NotFound);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptToGetANonExistentCollection() {
             Collection("ANonExistentCollection", null, null, Methods.Get, Codes.NotFound);
         }
 
-        [TestMethod, Ignore] //Fails!  Retrieves the property!
+        [TestMethod] //Fails!  Retrieves the property!
         public void AttemptToGetAPropertyAsACollection() {
             Collection("Id", null, null, Methods.Get, Codes.NotFound);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void WithGenericAcceptHeader() {
             Collection("ACollection", "ACollection", null, Methods.Get, Codes.Succeeded, MediaTypes.Json);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void WithProfileAcceptHeader() {
             Collection("ACollection", "ACollection", null, Methods.Get, Codes.Succeeded, MediaTypes.ObjectCollection);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptWithInvalidProfileAcceptHeader() {
             Collection("ACollection", null, null, Methods.Get, Codes.WrongMediaType, MediaTypes.ObjectProfile);
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void WithFormalDomainModel() {
             Collection("ACollection" + JsonRep.FormalDomainModeAsQueryString, "WithFormalDomainModel");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void WithSimpleDomainModel() {
             Collection("ACollection" + JsonRep.SimpleDomainModeAsQueryString, "WithSimpleDomainModel");
         }
 
-        [TestMethod, Ignore] //http://restfulobjects.codeplex.com/workitem/26
+        [TestMethod] //http://restfulobjects.codeplex.com/workitem/26
         public void AttemptWithMalformedDomainModel() {
             Collection("ACollection" + JsonRep.DomainModeQueryStringMalformed, null, null, Methods.Get, Codes.SyntacticallyInvalid);
         }
