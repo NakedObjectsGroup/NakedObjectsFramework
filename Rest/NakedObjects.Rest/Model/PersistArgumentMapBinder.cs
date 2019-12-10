@@ -5,13 +5,32 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+
 namespace NakedObjects.Rest.Model {
-    public class PersistArgumentMapBinder : AbstractModelBinder {
-        public override bool BindModel(HttpActionContext actionContext, ModelBindingContext bindingContext) {
-            BindModelOnSuccessOrFail(bindingContext,
-                () => ModelBinderUtils.CreatePersistArgMap(DeserializeJsonContent(actionContext)),
-                ModelBinderUtils.CreateArgumentMapForMalformedArgs);
-            return true;
+    public class PersistArgumentMapBinder : IModelBinder {
+        //    public override bool BindModel(HttpActionContext actionContext, ModelBindingContext bindingContext) {
+        //        BindModelOnSuccessOrFail(bindingContext,
+        //            () => ModelBinderUtils.CreatePersistArgMap(DeserializeJsonContent(actionContext)),
+        //            ModelBinderUtils.CreateArgumentMapForMalformedArgs);
+        //        return true;
+        //    }
+        //
+
+        #region IModelBinder Members
+
+        public Task BindModelAsync(ModelBindingContext bindingContext)
+        {
+            return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
+                async () => ModelBinderUtils.CreatePersistArgMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext), true),
+                () => new Task<ArgumentMap>(ModelBinderUtils.CreateArgumentMapForMalformedArgs<PersistArgumentMap>));
+
         }
+
+        #endregion
+
+
     }
 }

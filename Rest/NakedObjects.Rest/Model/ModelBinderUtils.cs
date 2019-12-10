@@ -189,16 +189,16 @@ namespace NakedObjects.Rest.Model {
 
       
 
-        private static ArgumentMap CreateArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate, bool includeReservedArgs)
-        {
-            var arg = new ArgumentMap();
+        //private static ArgumentMap CreateArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate, bool includeReservedArgs)
+        //{
+        //    var arg = new ArgumentMap();
 
-            InitArgumentMap(jObject, populate, arg, includeReservedArgs);
+        //    InitArgumentMap(jObject, populate, arg, includeReservedArgs);
 
-            return arg;
-        }
+        //    return arg;
+        //}
 
-        private static void InitArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate, ArgumentMap arg, bool includeReservedArgs)
+        private static ArgumentMap InitArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate, ArgumentMap arg, bool includeReservedArgs)
         {
             if (jObject != null)
             {
@@ -228,6 +228,8 @@ namespace NakedObjects.Rest.Model {
             {
                 arg.Map = new Dictionary<string, IValue>();
             }
+
+            return arg;
         }
 
 
@@ -262,21 +264,19 @@ namespace NakedObjects.Rest.Model {
         }
 
         public static ArgumentMap CreateArgumentMap(JObject jObject, bool includeReservedArgs) {
-            return CreateArgumentMap(jObject, PopulateArgumentMap, includeReservedArgs);
+            return InitArgumentMap(jObject, PopulateArgumentMap, new ArgumentMap(), includeReservedArgs);
         }
 
-       
-
         public static ArgumentMap CreatePersistArgMap(JObject jObject, bool includeReservedArgs) {
-            return CreateArgumentMap(jObject, PopulatePersistArgumentMap, includeReservedArgs);
+            return InitArgumentMap(jObject, PopulatePersistArgumentMap, new PersistArgumentMap(),  includeReservedArgs);
         }
 
         public static ArgumentMap CreatePromptArgMap(JObject jObject, bool includeReservedArgs) {
-            return CreatePromptArgumentMap(jObject, PopulatePromptArgumentMap, includeReservedArgs);
+            return InitArgumentMap(jObject, PopulatePromptArgumentMap, new PromptArgumentMap(),  includeReservedArgs);
         }
 
-        public static ArgumentMap CreateArgumentMapForMalformedArgs() {
-            return new ArgumentMap {IsMalformed = true};
+        public static ArgumentMap CreateArgumentMapForMalformedArgs<T>() where T : ArgumentMap, new() {
+            return new T {IsMalformed = true};
         }
 
         private static void PopulateReservedArgs(NameValueCollection collection, ReservedArguments args) {

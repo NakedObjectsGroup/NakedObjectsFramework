@@ -84,9 +84,9 @@ namespace RestfulObjects.Test.Data {
             wrapped.Add(item);
         }
 
-        public void Clear() {
-            wrapped.Clear();
-        }
+        //public void Clear() {
+        //    wrapped.Clear();
+        //}
 
         public bool Contains(T item) {
             throw new NotImplementedException();

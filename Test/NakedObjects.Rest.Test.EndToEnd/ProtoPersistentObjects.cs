@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass, Ignore]
+    [TestClass]
     public class ProtoPersistentObjects {
         #region Helpers
 
@@ -38,25 +38,25 @@ namespace RestfulObjects.Test.EndToEnd {
 
         #endregion
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void CreateTransientMostSimple() {
             string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientMostSimple/" + Urls.Invoke;
             Helpers.TestResponse(url, "CreateTransientMostSimple", null, Methods.Post, Codes.Succeeded, null, "1234");
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void CreateTransientWithValue() {
             string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithValue/" + Urls.Invoke;
             Helpers.TestResponse(url, "CreateTransientWithValue", null, Methods.Post, Codes.Succeeded, null, "1234");
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void CreateTransientWithReference() {
             string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithReference/" + Urls.Invoke;
             Helpers.TestResponse(url, "CreateTransientWithReference", null, Methods.Post, Codes.Succeeded, null, "1234");
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void CreateTransientWithCollection() {
             string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithCollection/" + Urls.Invoke;
             Helpers.TestResponse(url, "CreateTransientWithCollection", null, Methods.Post, Codes.Succeeded, null, "1234");

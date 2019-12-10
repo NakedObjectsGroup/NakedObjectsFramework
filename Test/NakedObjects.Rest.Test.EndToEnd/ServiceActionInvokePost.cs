@@ -5,7 +5,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass, Ignore]
+    [TestClass]
     public class ServiceActionInvokePost : AbstractActionInvokePost {
         protected override string BaseUrl {
             get { return Urls.Services + Urls.WithActionService + Urls.Actions; }
@@ -120,58 +120,58 @@ namespace RestfulObjects.Test.EndToEnd {
             DoAnActionReturnsScalarWithParameters();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionReturnsVoid() {
             DoAnActionReturnsVoid();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionWithDateTimeParm() {
             DoAnActionWithDateTimeParm();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionWithOptionalParm() {
             DoAnActionWithOptionalParm();
         }
 
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionWithReferenceParameter() {
             DoAnActionWithReferenceParameter();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionWithValueParameter() {
             DoAnActionWithValueParameter();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnActionWithValueParameterWithChoices() {
             DoAnActionWithValueParameterWithChoices();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnError() {
             DoAnError();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AnErrorCollection() {
             DoAnErrorCollection();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void ParameterValidateOnlyGood() {
             DoParameterValidateOnlyGood();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void ParameterValidateOnlyBad() {
             DoParameterValidateOnlyBad();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptInvalidParameters() {
             DoAttemptInvalidParameters();
         }
@@ -181,7 +181,7 @@ namespace RestfulObjects.Test.EndToEnd {
             DoAttemptInvalidJson();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void ValidateOnlyParameters() {
             DoValidateOnlyParameters();
         }

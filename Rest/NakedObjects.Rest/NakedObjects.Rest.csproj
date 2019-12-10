@@ -7,7 +7,6 @@
   <ItemGroup>
     <Compile Remove="Model\AbstractModelBinder.cs" />
     <Compile Remove="Model\ArgumentMapUrlBinder.cs" />
-    <Compile Remove="Model\PersistArgumentMapBinder.cs" />
     <Compile Remove="Model\PostedFileAdapter.cs" />
     <Compile Remove="Model\ReservedArgumentsBinder.cs" />
     <Compile Remove="Model\SingleValueArgumentBinder.cs" />

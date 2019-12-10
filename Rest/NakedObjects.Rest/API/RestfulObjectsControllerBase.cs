@@ -80,8 +80,8 @@ namespace NakedObjects.Rest {
 
         public static void AddRestRoutes(IRouteBuilder routes, string routePrefix = "") {
             //if (!string.IsNullOrWhiteSpace(routePrefix)) {
-            //    UriMtHelper.GetApplicationPath = () => {
-            //        var appPath = HttpContext.Current.Request.ApplicationPath ?? "";
+            //    UriMtHelper.GetApplicationPath = (req) => {
+            //        var appPath = req.ApplicationPath ?? "";
             //        return appPath + (appPath.EndsWith("/") ? "" : "/") + routePrefix;
             //    };
             //}
@@ -527,7 +527,7 @@ namespace NakedObjects.Rest {
             });
         }
 
-        public virtual ActionResult PostPersist(string domainType, ArgumentMap arguments) {
+        public virtual ActionResult PostPersist(string domainType, PersistArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
                 Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessPersistArguments(arguments);
@@ -1096,7 +1096,7 @@ namespace NakedObjects.Rest {
             return context;
         }
 
-        private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessPersistArguments(ArgumentMap persistArgumentMap) {
+        private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessPersistArguments(PersistArgumentMap persistArgumentMap) {
             var (map, flags) = ExtractValuesAndFlags(persistArgumentMap, true);
 
             return new Tuple<ArgumentsContextFacade, RestControlFlags>(new ArgumentsContextFacade {

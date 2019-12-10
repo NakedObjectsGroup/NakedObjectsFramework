@@ -5,7 +5,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass, Ignore]
+    [TestClass]
     public class ObjectActionInvokePost : AbstractActionInvokePost {
         protected override string BaseUrl {
             get { return Urls.Objects + Urls.WithActionObject1 + Urls.Actions; }
@@ -178,7 +178,7 @@ namespace RestfulObjects.Test.EndToEnd {
         }
 
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void AttemptInvalidJson() {
             DoAttemptInvalidJson();
         }

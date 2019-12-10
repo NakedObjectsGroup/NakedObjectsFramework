@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 
 namespace RestfulObjects.Test.EndToEnd {
-    [TestClass, Ignore]
+    [TestClass]
     public class ObjectPut : ObjectAbstract {
         #region Helpers
 
@@ -103,7 +103,7 @@ namespace RestfulObjects.Test.EndToEnd {
             Object(Urls.MostSimple1 + "?Id=1", null, null, Methods.Put, Codes.SyntacticallyInvalid);
         }
 
-        [TestMethod]
+        [TestMethod, Ignore]
         public void VerySimple() {
             var ms1 = new JProperty("MostSimple", new JObject(new JProperty("value", new JObject(new JProperty(JsonRep.Href, Urls.Objects + Urls.MostSimple1)))));
             var name = new JProperty("Name", new JObject(new JProperty("value", null)));

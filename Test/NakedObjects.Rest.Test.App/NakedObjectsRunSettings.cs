@@ -60,7 +60,7 @@ namespace NakedObjects.Rest.Test.App
                     typeof (WithValuePersist),
                     typeof (WithReferencePersist),
                     typeof (WithCollectionPersist),
-                    //typeof (SetWrapper<MostSimple>),
+                    typeof (SetWrapper<MostSimple>),
                     typeof (List<MostSimple>),
                     typeof (HashSet<MostSimple>),
                     typeof (WithScalars),
@@ -99,7 +99,7 @@ namespace NakedObjects.Rest.Test.App
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig()
         {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingCodeFirstContext(() => new CodeFirstContext("RestTest"));
+            config.UsingCodeFirstContext(() => new CodeFirstContextLocal("RestTest"));
             return config;
         }
 
