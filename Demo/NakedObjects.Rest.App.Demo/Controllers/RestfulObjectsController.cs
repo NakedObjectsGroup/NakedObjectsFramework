@@ -64,7 +64,7 @@ namespace NakedObjects.Rest.App.Demo
         }
 
         [HttpPost]
-        public override ActionResult PostPersist(string domainType, ArgumentMap arguments) {
+        public override ActionResult PostPersist(string domainType, PersistArgumentMap arguments) {
             return base.PostPersist(domainType, arguments);
         }
 
