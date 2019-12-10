@@ -82,7 +82,7 @@ namespace NakedObjects.ParallelReflect.Component {
         public Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Assert.AssertNotNull(type);
 
-            var actualType = ClassStrategy.GetType(type);
+            var actualType = ClassStrategy.GetType(type) ?? type;
             var typeKey = ClassStrategy.GetKeyForType(actualType);
             if (!metamodel.ContainsKey(typeKey)) {
                 return LoadPlaceholder(actualType, metamodel);
