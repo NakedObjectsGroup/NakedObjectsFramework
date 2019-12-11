@@ -176,7 +176,7 @@ namespace RestfulObjects.Test.EndToEnd {
             DoAttemptInvalidParameters();
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void AttemptInvalidJson() {
             DoAttemptInvalidJson();
         }

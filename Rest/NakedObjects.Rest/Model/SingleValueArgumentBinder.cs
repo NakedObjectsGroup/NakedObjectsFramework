@@ -28,14 +28,14 @@ namespace NakedObjects.Rest.Model {
         {
             return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
                 async () => ModelBinderUtils.CreateSingleValueArgument(await ModelBinderUtils.DeserializeContent(bindingContext), true),
-                () => new Task<object>(ModelBinderUtils.CreateSingleValueArgumentForMalformedArgs));
+                ModelBinderUtils.CreateMalformedArguments<SingleValueArgument>);
         }
 
         private static Task BindFromQuery(ModelBindingContext bindingContext)
         {
             return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
                 async () =>  ModelBinderUtils.CreateSingleValueArgument(await ModelBinderUtils.DeserializeQueryString(bindingContext), false),
-                () => new Task<object>(ModelBinderUtils.CreateSingleValueArgumentForMalformedArgs));
+                ModelBinderUtils.CreateMalformedArguments<SingleValueArgument>);
         }
 
 

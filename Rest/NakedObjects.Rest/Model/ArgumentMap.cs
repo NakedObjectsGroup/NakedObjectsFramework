@@ -10,16 +10,10 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NakedObjects.Rest.Model {
-
     [ModelBinder(BinderType = typeof(ArgumentMapBinder))]
-    public class ArgumentMap 
-    {
+    public class ArgumentMap : Arguments {
         public IDictionary<string, IValue> Map { get; set; }
 
         public bool HasValue => Map.Any();
-
-        public bool IsMalformed { get; set; } = false;
-
-        public ReservedArguments ReservedArguments { get; set; } = null;
     }
 }

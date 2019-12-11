@@ -183,17 +183,9 @@ namespace NakedObjects.Rest.Model {
             return arg;
         }
 
-        public static SingleValueArgument CreateSingleValueArgumentForMalformedArgs() {
-            return new SingleValueArgument {IsMalformed = true};
-        }
+       
 
-        private static ArgumentMap CreatePromptArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate, bool includeReservedArgs) {
-            var arg = new PromptArgumentMap {MemberMap = new Dictionary<string, IValue>()};
-
-            InitArgumentMap(jObject, populate, arg, includeReservedArgs);
-
-            return arg;
-        }
+      
 
       
 
@@ -206,8 +198,10 @@ namespace NakedObjects.Rest.Model {
         //    return arg;
         //}
 
-        private static ArgumentMap InitArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate, ArgumentMap arg, bool includeReservedArgs)
+        private static T InitArgumentMap<T>(JObject jObject, Action<JObject, T> populate, bool includeReservedArgs) where T : ArgumentMap, new()
         {
+            var arg = new T();
+
             if (jObject != null)
             {
                 try
@@ -245,7 +239,7 @@ namespace NakedObjects.Rest.Model {
             arg.Map = GetNonReservedProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
         }
 
-        private static void PopulatePersistArgumentMap(JToken jObject, ArgumentMap arg) {
+        private static void PopulatePersistArgumentMap(JToken jObject, PersistArgumentMap arg) {
             JToken members = jObject[JsonPropertyNames.Members];
 
             if (members != null) {
@@ -256,7 +250,7 @@ namespace NakedObjects.Rest.Model {
             }
         }
 
-        private static void PopulatePromptArgumentMap(JToken jObject, ArgumentMap arg) {
+        private static void PopulatePromptArgumentMap(JToken jObject, PromptArgumentMap arg) {
             JToken members = jObject[JsonPropertyNames.PromptMembers];
             var promptArgumentMap = arg as PromptArgumentMap;
 
@@ -272,20 +266,21 @@ namespace NakedObjects.Rest.Model {
         }
 
         public static ArgumentMap CreateArgumentMap(JObject jObject, bool includeReservedArgs) {
-            return InitArgumentMap(jObject, PopulateArgumentMap, new ArgumentMap(), includeReservedArgs);
+            return InitArgumentMap<ArgumentMap>(jObject, PopulateArgumentMap, includeReservedArgs);
         }
 
-        public static ArgumentMap CreatePersistArgMap(JObject jObject, bool includeReservedArgs) {
-            return InitArgumentMap(jObject, PopulatePersistArgumentMap, new PersistArgumentMap(),  includeReservedArgs);
+        public static PersistArgumentMap CreatePersistArgMap(JObject jObject, bool includeReservedArgs) {
+            return InitArgumentMap<PersistArgumentMap>(jObject, PopulatePersistArgumentMap, includeReservedArgs);
         }
 
-        public static ArgumentMap CreatePromptArgMap(JObject jObject, bool includeReservedArgs) {
-            return InitArgumentMap(jObject, PopulatePromptArgumentMap, new PromptArgumentMap(),  includeReservedArgs);
+        public static PromptArgumentMap CreatePromptArgMap(JObject jObject, bool includeReservedArgs) {
+            return InitArgumentMap<PromptArgumentMap>(jObject, PopulatePromptArgumentMap, includeReservedArgs);
         }
 
-        public static ArgumentMap CreateArgumentMapForMalformedArgs<T>() where T : ArgumentMap, new() {
+        public static T CreateMalformedArguments<T>() where T : Arguments, new() {
             return new T {IsMalformed = true};
         }
+
 
         private static void PopulateReservedArgs(NameValueCollection collection, ReservedArguments args) {
             try {
@@ -356,14 +351,14 @@ namespace NakedObjects.Rest.Model {
             return await DeserializeJsonStreamAsync(stream);
         }
 
-        public static async Task BindModelOnSuccessOrFail(ModelBindingContext bindingContext, Func<Task<object>> parseFunc, Func<Task<object>> failFunc) {
+        public static async Task BindModelOnSuccessOrFail<T>(ModelBindingContext bindingContext, Func<Task<T>> parseFunc, Func<T> failFunc) {
             try {
                 try {
                     bindingContext.Result = ModelBindingResult.Success(await parseFunc());
                 }
                 catch (Exception e) {
                     LogManager.GetLogger<ArgumentMapBinder>().ErrorFormat("Parsing of request arguments failed: {0}", e.Message);
-                    bindingContext.Result = ModelBindingResult.Success(await failFunc());
+                    bindingContext.Result = ModelBindingResult.Success(failFunc());
                 }
             }
             catch (Exception) {

@@ -15,7 +15,7 @@ namespace NakedObjects.Rest.Model {
         public Task BindModelAsync(ModelBindingContext bindingContext) {
             return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
                 async () => ModelBinderUtils.CreatePromptArgMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext), true),
-                () => new Task<object>(ModelBinderUtils.CreateArgumentMapForMalformedArgs<PromptArgumentMap>));
+                ModelBinderUtils.CreateMalformedArguments<PromptArgumentMap>);
         }
 
         #endregion

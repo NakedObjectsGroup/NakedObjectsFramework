@@ -5,13 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using Microsoft.AspNetCore.Mvc;
-
 namespace NakedObjects.Rest.Model {
-    [ModelBinder(BinderType = typeof(SingleValueArgumentBinder))]
-    public class SingleValueArgument : Arguments {
-        public IValue Value { get; set; }
+    public abstract class Arguments {
+        public bool IsMalformed { get; set; } = false;
 
-        public bool HasValue => Value != null;
+        public ReservedArguments ReservedArguments { get; set; } = null;
     }
 }

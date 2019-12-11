@@ -25,7 +25,7 @@ namespace NakedObjects.Rest.Model {
         {
             return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
                 async () => ModelBinderUtils.CreatePersistArgMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext), true),
-                () => new Task<object>(ModelBinderUtils.CreateArgumentMapForMalformedArgs<PersistArgumentMap>));
+                ModelBinderUtils.CreateMalformedArguments<PersistArgumentMap>);
 
         }
 
