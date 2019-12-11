@@ -38,37 +38,37 @@ namespace RestfulObjects.Test.EndToEnd {
 
         #endregion
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void CreateTransientMostSimple() {
-            string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientMostSimple/" + Urls.Invoke;
+            string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientMostSimple" + Urls.Invoke;
             Helpers.TestResponse(url, "CreateTransientMostSimple", null, Methods.Post, Codes.Succeeded, null, "1234");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void CreateTransientWithValue() {
-            string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithValue/" + Urls.Invoke;
+            string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithValue" + Urls.Invoke;
             Helpers.TestResponse(url, "CreateTransientWithValue", null, Methods.Post, Codes.Succeeded, null, "1234");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void CreateTransientWithReference() {
-            string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithReference/" + Urls.Invoke;
+            string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithReference" + Urls.Invoke;
             Helpers.TestResponse(url, "CreateTransientWithReference", null, Methods.Post, Codes.Succeeded, null, "1234");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void CreateTransientWithCollection() {
-            string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithCollection/" + Urls.Invoke;
+            string url = Urls.RestDataRepository + Urls.Actions + @"CreateTransientWithCollection" + Urls.Invoke;
             Helpers.TestResponse(url, "CreateTransientWithCollection", null, Methods.Post, Codes.Succeeded, null, "1234");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void PersistMostSimple() {
             string body = ProtoPersistentMostSimple(10001).ToString();
             Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "MostSimplePersist", "PersistMostSimple", body, Methods.Post, Codes.SucceededNewRepresentation, null, "1234");
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         public void PersistVerySimple() {
             string body = ProtoPersistentVerySimple(10002).ToString();
             Helpers.TestResponse(Urls.Objects + Urls.NameSpace + "VerySimplePersist", "PersistVerySimple", body, Methods.Post, Codes.SucceededNewRepresentation, null, "1234");
