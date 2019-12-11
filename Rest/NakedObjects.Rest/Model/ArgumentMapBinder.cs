@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -14,11 +13,9 @@ namespace NakedObjects.Rest.Model {
         #region IModelBinder Members
 
         public Task BindModelAsync(ModelBindingContext bindingContext) {
-            if (new HttpMethod(bindingContext.HttpContext.Request.Method) == HttpMethod.Get) {
-                return BindFromQuery(bindingContext);
-            }
-
-            return BindFromBody(bindingContext);
+            return bindingContext.HttpContext.Request.IsGet()
+                ? BindFromQuery(bindingContext)
+                : BindFromBody(bindingContext);
         }
 
         #endregion
@@ -33,7 +30,7 @@ namespace NakedObjects.Rest.Model {
             return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
                 async () => ModelBinderUtils.CreateSimpleArgumentMap(bindingContext.HttpContext.Request.QueryString.ToString()) ??
                             ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeQueryString(bindingContext), false),
-                 ModelBinderUtils.CreateMalformedArguments<ArgumentMap>);
+                ModelBinderUtils.CreateMalformedArguments<ArgumentMap>);
         }
     }
 }

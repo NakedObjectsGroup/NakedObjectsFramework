@@ -1,52 +1,35 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest.Model {
     public class SingleValueArgumentBinder : IModelBinder {
+        #region IModelBinder Members
 
-        public Task BindModelAsync(ModelBindingContext bindingContext)
-        {
-            if (new HttpMethod(bindingContext.HttpContext.Request.Method) == HttpMethod.Get)
-            {
-                return BindFromQuery(bindingContext);
-            }
-
-            return BindFromBody(bindingContext);
+        public Task BindModelAsync(ModelBindingContext bindingContext) {
+            return bindingContext.HttpContext.Request.IsGet()
+                ? BindFromQuery(bindingContext)
+                : BindFromBody(bindingContext);
         }
 
+        #endregion
 
-        private static Task BindFromBody(ModelBindingContext bindingContext)
-        {
+        private static Task BindFromBody(ModelBindingContext bindingContext) {
             return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
                 async () => ModelBinderUtils.CreateSingleValueArgument(await ModelBinderUtils.DeserializeContent(bindingContext), true),
                 ModelBinderUtils.CreateMalformedArguments<SingleValueArgument>);
         }
 
-        private static Task BindFromQuery(ModelBindingContext bindingContext)
-        {
+        private static Task BindFromQuery(ModelBindingContext bindingContext) {
             return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
-                async () =>  ModelBinderUtils.CreateSingleValueArgument(await ModelBinderUtils.DeserializeQueryString(bindingContext), false),
+                async () => ModelBinderUtils.CreateSingleValueArgument(await ModelBinderUtils.DeserializeQueryString(bindingContext), false),
                 ModelBinderUtils.CreateMalformedArguments<SingleValueArgument>);
         }
-
-
-
-        //public override bool BindModel(HttpActionContext actionContext, ModelBindingContext bindingContext) {
-        //    BindModelOnSuccessOrFail(bindingContext,
-        //        () => ModelBinderUtils.CreateSingleValueArgument(DeserializeContent(actionContext)),
-        //        ModelBinderUtils.CreateSingleValueArgumentForMalformedArgs);
-
-        //    return true;
-        //}
-
     }
 }

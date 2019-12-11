@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -10,57 +10,43 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Common.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace NakedObjects.Rest.Model {
     public static class ModelBinderUtils {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof (ModelBinderUtils));
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(ModelBinderUtils));
 
         private static bool IsReservedName(string name) {
             return name.StartsWith(RestControlFlags.ReservedPrefix);
         }
 
-
-        public static Task<JObject> DeserializeJsonStreamAsync(Stream stream)
-        {
+        public static Task<JObject> DeserializeJsonStreamAsync(Stream stream) {
             if (!stream.CanRead) {
                 return new Task<JObject>(() => new JObject());
             }
-            
+
             using var streamReader = new StreamReader(stream, new UTF8Encoding(false, true));
             using var jsonTextReader = new JsonTextReader(streamReader);
             return JObject.LoadAsync(jsonTextReader);
         }
-
-
-        public static JObject DeserializeJsonStream(Stream stream) {
-            if (stream.Length > 0) {
-                JsonSerializer serializer = JsonSerializer.Create(new JsonSerializerSettings());
-                using (var streamReader = new StreamReader(stream, new UTF8Encoding(false, true))) {
-                    using (var jsonTextReader = new JsonTextReader(streamReader)) {
-                        return (JObject) serializer.Deserialize(jsonTextReader);
-                    }
-                }
-            }
-            return new JObject();
-        }
-
 
         public static byte[] DeserializeBinaryStream(Stream stream) {
             if (stream.CanRead) {
                 using var br = new BinaryReader(stream);
                 return br.ReadBytes((int) stream.Length);
             }
-            return new byte[] {};
+
+            return new byte[] { };
         }
 
         public static Stream QueryStringToStream(string qs) {
@@ -88,6 +74,7 @@ namespace NakedObjects.Rest.Model {
                 IValue[] arr = valueAsArray.Children().Select(v => ToIValue("", v)).ToArray();
                 return new ListValue(arr);
             }
+
             return value != null ? ToIValue(name, value) : null;
         }
 
@@ -97,9 +84,11 @@ namespace NakedObjects.Rest.Model {
             if (href == null) {
                 return new ScalarValue(((JValue) value).Value);
             }
+
             if (type == null) {
-                 return new ReferenceValue(href.Value, name);
+                return new ReferenceValue(href.Value, name);
             }
+
             string fileName = value.HasValues ? (value[JsonPropertyNames.Title] as JValue)?.Value as string : "";
             return new FileValue((string) href.Value, (string) type.Value, fileName);
         }
@@ -123,7 +112,7 @@ namespace NakedObjects.Rest.Model {
 
         private static bool? GetInlineCollectionItemsFlag(JObject jObject) {
             var flag = jObject[RestControlFlags.InlineCollectionItemsReserved] as JValue;
-            return flag == null ? (bool?)null : (bool)flag.Value;
+            return flag == null ? (bool?) null : (bool) flag.Value;
         }
 
         private static int GetPageValue(JObject jObject) {
@@ -183,29 +172,11 @@ namespace NakedObjects.Rest.Model {
             return arg;
         }
 
-       
-
-      
-
-      
-
-        //private static ArgumentMap CreateArgumentMap(JObject jObject, Action<JObject, ArgumentMap> populate, bool includeReservedArgs)
-        //{
-        //    var arg = new ArgumentMap();
-
-        //    InitArgumentMap(jObject, populate, arg, includeReservedArgs);
-
-        //    return arg;
-        //}
-
-        private static T InitArgumentMap<T>(JObject jObject, Action<JObject, T> populate, bool includeReservedArgs) where T : ArgumentMap, new()
-        {
+        private static T InitArgumentMap<T>(JObject jObject, Action<JObject, T> populate, bool includeReservedArgs) where T : ArgumentMap, new() {
             var arg = new T();
 
-            if (jObject != null)
-            {
-                try
-                {
+            if (jObject != null) {
+                try {
                     populate(jObject, arg);
 
                     if (includeReservedArgs) {
@@ -218,22 +189,21 @@ namespace NakedObjects.Rest.Model {
                             InlinePropertyDetails = GetInlinePropertyDetailsFlag(jObject),
                             InlineCollectionItems = GetInlineCollectionItemsFlag(jObject)
                         };
-                    };
+                    }
+
+                    ;
                 }
-                catch (Exception e)
-                {
+                catch (Exception e) {
                     Logger.ErrorFormat("Malformed argument map: {0}", e.Message);
                     arg.IsMalformed = true;
                 }
             }
-            else
-            {
+            else {
                 arg.Map = new Dictionary<string, IValue>();
             }
 
             return arg;
         }
-
 
         private static void PopulateArgumentMap(JToken jObject, ArgumentMap arg) {
             arg.Map = GetNonReservedProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
@@ -262,6 +232,7 @@ namespace NakedObjects.Rest.Model {
                     promptArgumentMap.MemberMap = new Dictionary<string, IValue>();
                 }
             }
+
             arg.Map = GetNonReservedProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
         }
 
@@ -281,40 +252,6 @@ namespace NakedObjects.Rest.Model {
             return new T {IsMalformed = true};
         }
 
-
-        private static void PopulateReservedArgs(NameValueCollection collection, ReservedArguments args) {
-            try {
-                string voFlag = collection[RestControlFlags.ValidateOnlyReserved];
-                string domainModel = collection[RestControlFlags.DomainModelReserved];
-                string page = collection[RestControlFlags.PageReserved];
-                string pageSize = collection[RestControlFlags.PageSizeReserved];
-                string inlineFlag = collection[RestControlFlags.InlinePropertyDetailsReserved];
-                string inlineItemsFlag = collection[RestControlFlags.InlineCollectionItemsReserved];
-
-                args.ValidateOnly = voFlag != null && bool.Parse(voFlag);
-                args.DomainModel = domainModel;
-                args.Page = page != null ? int.Parse(page) : 0;
-                args.PageSize = pageSize != null ? int.Parse(pageSize) : 0;
-                args.InlinePropertyDetails = inlineFlag != null ? bool.Parse(inlineFlag) : (bool?)null;
-                args.InlineCollectionItems = inlineItemsFlag != null ? bool.Parse(inlineItemsFlag) : (bool?)null;
-            }
-            catch (Exception e) {
-                Logger.ErrorFormat("Malformed reserved arguments: {0}", e.Message);
-                args.IsMalformed = true;
-            }
-        }
-
-        public static ReservedArguments CreateReservedArguments(string query) {
-            NameValueCollection collection = HttpUtility.ParseQueryString(query);
-            var args = new ReservedArguments();
-            PopulateReservedArgs(collection, args);
-            return args;
-        }
-
-        public static ReservedArguments CreateReservedArgumentsForMalformedArgs() {
-            return new ReservedArguments {IsMalformed = true};
-        }
-
         private static void PopulateSimpleArgumentMap(NameValueCollection collection, ArgumentMap args) {
             args.Map = collection.AllKeys.Where(k => !IsReservedName(k)).ToDictionary(s => s, s => (IValue) new ScalarValue(collection[s]));
         }
@@ -327,7 +264,6 @@ namespace NakedObjects.Rest.Model {
             }
 
             var args = new ArgumentMap();
-            //PopulateReservedArgs(collection, args);
             PopulateSimpleArgumentMap(collection, args);
             return args;
         }
@@ -340,9 +276,7 @@ namespace NakedObjects.Rest.Model {
             return new JObject();
         }
 
-        public static byte[] DeserializeBinaryContent(ModelBindingContext bindingContext)
-        {
-            //Stream stream = actionContext.Request.Content.ReadAsStreamAsync().Result;
+        public static byte[] DeserializeBinaryContent(ModelBindingContext bindingContext) {
             return DeserializeBinaryStream(bindingContext.HttpContext.Request.Body);
         }
 
@@ -369,11 +303,47 @@ namespace NakedObjects.Rest.Model {
         public static async Task<object> DeserializeContent(ModelBindingContext bindingContext) {
             var requestHeaders = bindingContext.HttpContext.Request.GetTypedHeaders();
 
-            if (RestUtils.IsJsonMediaType(requestHeaders.ContentType.ToString()))
-            {
+            if (RestUtils.IsJsonMediaType(requestHeaders.ContentType.ToString())) {
                 return await DeserializeJsonContent(bindingContext);
             }
+
             return DeserializeBinaryContent(bindingContext);
         }
+
+        private static void PopulateReservedArgs(NameValueCollection collection, ReservedArguments args) {
+            try {
+                string voFlag = collection[RestControlFlags.ValidateOnlyReserved];
+                string domainModel = collection[RestControlFlags.DomainModelReserved];
+                string page = collection[RestControlFlags.PageReserved];
+                string pageSize = collection[RestControlFlags.PageSizeReserved];
+                string inlineFlag = collection[RestControlFlags.InlinePropertyDetailsReserved];
+                string inlineItemsFlag = collection[RestControlFlags.InlineCollectionItemsReserved];
+
+                args.ValidateOnly = voFlag != null && bool.Parse(voFlag);
+                args.DomainModel = domainModel;
+                args.Page = page != null ? int.Parse(page) : 0;
+                args.PageSize = pageSize != null ? int.Parse(pageSize) : 0;
+                args.InlinePropertyDetails = inlineFlag != null ? bool.Parse(inlineFlag) : (bool?) null;
+                args.InlineCollectionItems = inlineItemsFlag != null ? bool.Parse(inlineItemsFlag) : (bool?) null;
+            }
+            catch (Exception e) {
+                Logger.ErrorFormat("Malformed reserved arguments: {0}", e.Message);
+                args.IsMalformed = true;
+            }
+        }
+
+        public static ReservedArguments CreateReservedArguments(string query) {
+            NameValueCollection collection = HttpUtility.ParseQueryString(query);
+            var args = new ReservedArguments();
+            PopulateReservedArgs(collection, args);
+            return args;
+        }
+
+        public static ReservedArguments CreateReservedArgumentsForMalformedArgs() {
+            return new ReservedArguments {IsMalformed = true};
+        }
+
+        public static bool IsGet(this HttpRequest request)
+            => new HttpMethod(request.Method) == HttpMethod.Get;
     }
 }
