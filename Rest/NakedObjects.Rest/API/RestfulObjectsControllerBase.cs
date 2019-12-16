@@ -74,17 +74,19 @@ namespace NakedObjects.Rest {
         public IOidStrategy OidStrategy { get; set; }
         public static bool AllowMutatingActionOnImmutableObject { get; set; }
 
-        private static string PrefixRoute(string segment, string prefix) {
-            return string.IsNullOrWhiteSpace(prefix) ? segment : prefix + "/" + segment;
-        }
+        private static string PrefixRoute(string segment, string prefix) 
+            => string.IsNullOrWhiteSpace(prefix) ? segment : EnsureTrailingSlash(prefix) + segment;
+
+        private static string EnsureTrailingSlash(string path) 
+            => path.EndsWith("/") ? path : path + "/";
 
         public static void AddRestRoutes(IRouteBuilder routes, string routePrefix = "") {
-            //if (!string.IsNullOrWhiteSpace(routePrefix)) {
-            //    UriMtHelper.GetApplicationPath = (req) => {
-            //        var appPath = req.ApplicationPath ?? "";
-            //        return appPath + (appPath.EndsWith("/") ? "" : "/") + routePrefix;
-            //    };
-            //}
+            if (!string.IsNullOrWhiteSpace(routePrefix)) {
+                UriMtHelper.GetApplicationPath = (req) => {
+                    var appPath = req.PathBase.ToString() ?? "";
+                    return EnsureTrailingSlash(appPath) + EnsureTrailingSlash(routePrefix);
+                };
+            }
 
             var domainTypes = PrefixRoute(SegmentValues.DomainTypes, routePrefix);
             var services = PrefixRoute(SegmentValues.Services, routePrefix);
