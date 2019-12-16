@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,11 +22,12 @@ using Microsoft.Net.Http.Headers;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.API;
-using NakedObjects.Rest.Media;
 using NakedObjects.Rest.Model;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Representations;
 using NakedObjects.Rest.Snapshot.Utility;
+using CacheControlHeaderValue = Microsoft.Net.Http.Headers.CacheControlHeaderValue;
+using MediaTypeHeaderValue = Microsoft.Net.Http.Headers.MediaTypeHeaderValue;
 
 namespace NakedObjects.Rest {
     public class RestfulObjectsControllerBase : ControllerBase {
@@ -36,7 +37,7 @@ namespace NakedObjects.Rest {
 
         static RestfulObjectsControllerBase() {
             // defaults 
-            CacheSettings = new Tuple<int, int, int>(0, 0, 0);
+            CacheSettings = (0, 0, 0);
             DefaultPageSize = 20;
             InlineDetailsInActionMemberRepresentations = true;
             InlineDetailsInCollectionMemberRepresentations = true;
@@ -58,7 +59,7 @@ namespace NakedObjects.Rest {
         public static bool InlineDetailsInPropertyMemberRepresentations { get; set; }
 
         // cache settings in seconds, 0 = no cache, "no, short, long")   
-        public static Tuple<int, int, int> CacheSettings { get; set; }
+        public static (int, int, int) CacheSettings { get; set; }
 
         public static int DefaultPageSize {
             get => RestControlFlags.ConfiguredPageSize;
@@ -74,10 +75,10 @@ namespace NakedObjects.Rest {
         public IOidStrategy OidStrategy { get; set; }
         public static bool AllowMutatingActionOnImmutableObject { get; set; }
 
-        private static string PrefixRoute(string segment, string prefix) 
+        private static string PrefixRoute(string segment, string prefix)
             => string.IsNullOrWhiteSpace(prefix) ? segment : EnsureTrailingSlash(prefix) + segment;
 
-        private static string EnsureTrailingSlash(string path) 
+        private static string EnsureTrailingSlash(string path)
             => path.EndsWith("/") ? path : path + "/";
 
         public static void AddRestRoutes(IRouteBuilder routes, string routePrefix = "") {
@@ -104,7 +105,7 @@ namespace NakedObjects.Rest {
                 template: domainTypes + "/{typeName}/" + SegmentValues.TypeActions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "GetInvokeTypeActions"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidInvokeIsTypeOf",
                 template: domainTypes + "/{typeName}/" + SegmentValues.TypeActions + "/{actionName}/" + SegmentValues.Invoke,
@@ -114,19 +115,19 @@ namespace NakedObjects.Rest {
                 template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "GetInvokeOnService"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("PutInvokeOnService",
                 template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "PutInvokeOnService"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("PUT")}
-                );
+            );
 
             routes.MapRoute("PostInvokeOnService",
                 template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "PostInvokeOnService"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("POST")}
-                );
+            );
 
             routes.MapRoute("InvalidInvokeOnService",
                 template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
@@ -136,19 +137,19 @@ namespace NakedObjects.Rest {
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "GetInvoke"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("PutInvoke",
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "PutInvoke"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("PUT")}
-                );
+            );
 
             routes.MapRoute("PostInvoke",
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "PostInvoke"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("POST")}
-                );
+            );
 
             routes.MapRoute("InvalidInvoke",
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
@@ -166,7 +167,7 @@ namespace NakedObjects.Rest {
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}",
                 defaults: new {controller = "RestfulObjects", action = "GetAction"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidAction",
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}",
@@ -180,19 +181,19 @@ namespace NakedObjects.Rest {
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "DeleteCollection"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("DELETE")}
-                );
+            );
 
             routes.MapRoute("PostCollection",
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "PostCollection"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("POST")}
-                );
+            );
 
             routes.MapRoute("GetCollection",
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "GetCollection"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidCollection",
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}",
@@ -206,19 +207,19 @@ namespace NakedObjects.Rest {
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "DeleteProperty"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("DELETE")}
-                );
+            );
 
             routes.MapRoute("PutProperty",
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "PutProperty"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("PUT")}
-                );
+            );
 
             routes.MapRoute("GetProperty",
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}",
                 defaults: new {controller = "RestfulObjects", action = "GetProperty"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidProperty",
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}",
@@ -228,13 +229,13 @@ namespace NakedObjects.Rest {
                 template: objects + "/{domainType}/{instanceId}",
                 defaults: new {controller = "RestfulObjects", action = "PutObject"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("PUT")}
-                );
+            );
 
             routes.MapRoute("GetObject",
                 template: objects + "/{domainType}/{instanceId}",
                 defaults: new {controller = "RestfulObjects", action = "GetObject"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidObject",
                 template: objects + "/{domainType}/{instanceId}",
@@ -244,7 +245,7 @@ namespace NakedObjects.Rest {
                 template: objects + "/{domainType}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
                 defaults: new {controller = "RestfulObjects", action = "PutPersistPropertyPrompt"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("PUT")}
-                );
+            );
 
             routes.MapRoute("InvalidPersistPropertyPrompt",
                 template: objects + "/{domainType}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
@@ -254,7 +255,7 @@ namespace NakedObjects.Rest {
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
                 defaults: new {controller = "RestfulObjects", action = "GetPropertyPrompt"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidPropertyPrompt",
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.Prompt,
@@ -264,7 +265,7 @@ namespace NakedObjects.Rest {
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}/" + SegmentValues.Prompt,
                 defaults: new {controller = "RestfulObjects", action = "GetParameterPrompt"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidParameterPrompt",
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}/" + SegmentValues.Prompt,
@@ -274,7 +275,7 @@ namespace NakedObjects.Rest {
                 template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}/" + SegmentValues.Prompt,
                 defaults: new {controller = "RestfulObjects", action = "GetParameterPromptOnService"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidParameterPromptOnService",
                 template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Params + "/{parmName}/" + SegmentValues.Prompt,
@@ -284,7 +285,7 @@ namespace NakedObjects.Rest {
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Collections + "/{propertyName}/" + SegmentValues.CollectionValue,
                 defaults: new {controller = "RestfulObjects", action = "GetCollectionValue"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidCollectionValue",
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Properties + "/{propertyName}/" + SegmentValues.CollectionValue,
@@ -294,7 +295,7 @@ namespace NakedObjects.Rest {
                 template: objects + "/{domainType}",
                 defaults: new {controller = "RestfulObjects", action = "PostPersist"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("POST")}
-                );
+            );
 
             routes.MapRoute("InvalidPersist",
                 template: objects + "/{domainType}",
@@ -304,7 +305,7 @@ namespace NakedObjects.Rest {
                 template: images + "/{imageId}",
                 defaults: new {controller = "RestfulObjects", action = "GetImage"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidImage",
                 template: images + "/{imageId}",
@@ -314,7 +315,7 @@ namespace NakedObjects.Rest {
                 template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}",
                 defaults: new {controller = "RestfulObjects", action = "GetServiceAction"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidServiceAction",
                 template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}",
@@ -324,7 +325,7 @@ namespace NakedObjects.Rest {
                 template: services + "/{serviceName}",
                 defaults: new {controller = "RestfulObjects", action = "GetService"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidService",
                 template: services + "/{serviceName}",
@@ -334,7 +335,7 @@ namespace NakedObjects.Rest {
                 template: menus + "/{menuName}",
                 defaults: new {controller = "RestfulObjects", action = "GetMenu"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidMenu",
                 template: menus + "/{menuName}",
@@ -348,7 +349,7 @@ namespace NakedObjects.Rest {
                 template: domainTypes,
                 defaults: new {controller = "RestfulObjects", action = "GetDomainTypes"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidDomainTypes",
                 template: domainTypes,
@@ -358,7 +359,7 @@ namespace NakedObjects.Rest {
                 template: version,
                 defaults: new {controller = "RestfulObjects", action = "GetVersion"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidVersion",
                 template: version,
@@ -368,7 +369,7 @@ namespace NakedObjects.Rest {
                 template: services,
                 defaults: new {controller = "RestfulObjects", action = "GetServices"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidServices",
                 template: services,
@@ -378,7 +379,7 @@ namespace NakedObjects.Rest {
                 template: menus,
                 defaults: new {controller = "RestfulObjects", action = "GetMenus"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidMenus",
                 template: menus,
@@ -388,7 +389,7 @@ namespace NakedObjects.Rest {
                 template: user,
                 defaults: new {controller = "RestfulObjects", action = "GetUser"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidUser",
                 template: user,
@@ -398,7 +399,7 @@ namespace NakedObjects.Rest {
                 template: home,
                 defaults: new {controller = "RestfulObjects", action = "GetHome"},
                 constraints: new {httpMethod = new HttpMethodRouteConstraint("GET")}
-                );
+            );
 
             routes.MapRoute("InvalidHome",
                 template: home,
@@ -409,6 +410,7 @@ namespace NakedObjects.Rest {
         #endregion
 
         #region api
+
         [FromQuery(Name = RestControlFlags.ValidateOnlyReserved)]
         public bool ValidateOnly { get; set; }
 
@@ -446,36 +448,31 @@ namespace NakedObjects.Rest {
             InitAndHandleErrors(SnapshotFactory.HomeSnapshot(OidStrategy, Request, GetFlags()));
 
         public virtual ActionResult GetUser() =>
-            InitAndHandleErrors(SnapshotFactory.UserSnapshot(OidStrategy, FrameworkFacade.GetUser(), Request, GetFlags()));
+            InitAndHandleErrors(SnapshotFactory.UserSnapshot(OidStrategy, FrameworkFacade.GetUser, Request, GetFlags()));
 
         public virtual ActionResult GetServices() =>
-            InitAndHandleErrors(SnapshotFactory.ServicesSnapshot(OidStrategy, FrameworkFacade.GetServices(), Request, GetFlags()));
+            InitAndHandleErrors(SnapshotFactory.ServicesSnapshot(OidStrategy, FrameworkFacade.GetServices, Request, GetFlags()));
 
         public virtual ActionResult GetMenus() =>
-            InitAndHandleErrors(SnapshotFactory.MenusSnapshot(OidStrategy, FrameworkFacade.GetMainMenus(), Request, GetFlags()));
+            InitAndHandleErrors(SnapshotFactory.MenusSnapshot(OidStrategy, FrameworkFacade.GetMainMenus, Request, GetFlags()));
 
         public virtual ActionResult GetVersion() =>
-            InitAndHandleErrors(SnapshotFactory.VersionSnapshot(OidStrategy, GetOptionalCapabilities(), Request, GetFlags()));
+            InitAndHandleErrors(SnapshotFactory.VersionSnapshot(OidStrategy, GetOptionalCapabilities, Request, GetFlags()));
 
         public virtual ActionResult GetService(string serviceName) =>
-            InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, FrameworkFacade.GetServiceByName(serviceName), Request, GetFlags()));
+            InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetServiceByName(serviceName), Request, GetFlags()));
 
         public virtual ActionResult GetMenu(string menuName) =>
-            InitAndHandleErrors(SnapshotFactory.MenuSnapshot(OidStrategy, FrameworkFacade.GetMenuByName(menuName), Request, GetFlags()));
+            InitAndHandleErrors(SnapshotFactory.MenuSnapshot(OidStrategy, () => FrameworkFacade.GetMenuByName(menuName), Request, GetFlags()));
 
         public virtual ActionResult GetServiceAction(string serviceName, string actionName) =>
-            InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetServiceActionByName(serviceName, actionName), Request, GetFlags()));
+            InitAndHandleErrors(SnapshotFactory.ActionSnapshot(OidStrategy, () => FrameworkFacade.GetServiceActionByName(serviceName, actionName), Request, GetFlags()));
 
-        public virtual ActionResult GetImage(string imageId) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetImage(imageId), Request, GetFlags()));
-        }
+        public virtual ActionResult GetImage(string imageId) =>
+            InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetImage(imageId), Request, GetFlags()));
 
-        public virtual ActionResult GetObject(string domainType, string instanceId) {
-            return InitAndHandleErrors(() => {
-                var loid = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
-                return new RestSnapshot(OidStrategy, FrameworkFacade.GetObject(loid), Request, GetFlags());
-            });
-        }
+        public virtual ActionResult GetObject(string domainType, string instanceId) =>
+            InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetObjectByName(domainType, instanceId), Request, GetFlags()));
 
         public virtual ActionResult GetPropertyPrompt(string domainType, string instanceId, string propertyName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
@@ -483,7 +480,7 @@ namespace NakedObjects.Rest {
                 var link = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
                 var obj = FrameworkFacade.GetObject(link);
                 var propertyContext = FrameworkFacade.GetPropertyWithCompletions(obj.Target, propertyName, argsContext);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, Request, flags), false);
+                return SnapshotFactory.PromptSnaphot(OidStrategy, () => propertyContext, Request, flags)();
             });
         }
 
@@ -493,7 +490,7 @@ namespace NakedObjects.Rest {
                 var (promptArgs, flags) = ProcessArgumentMap(promptArguments, false, false);
                 var obj = FrameworkFacade.GetTransient(domainType, persistArgs);
                 PropertyContextFacade propertyContext = FrameworkFacade.GetPropertyWithCompletions(obj.Target, propertyName, promptArgs);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, propertyContext, Request, flags), false);
+                return SnapshotFactory.PromptSnaphot(OidStrategy, () => propertyContext, Request, flags)();
             });
         }
 
@@ -504,7 +501,7 @@ namespace NakedObjects.Rest {
                 ActionContextFacade action = FrameworkFacade.GetObjectActionWithCompletions(link, actionName, parmName, argsContext);
                 ParameterContextFacade parm = action.VisibleParameters.Single(p => p.Id == parmName);
                 parm.Target = action.Target;
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, parm, Request, flags), false);
+                return SnapshotFactory.PromptSnaphot(OidStrategy, () => parm, Request, flags)();
             });
         }
 
@@ -515,7 +512,7 @@ namespace NakedObjects.Rest {
                 ActionContextFacade action = FrameworkFacade.GetServiceActionWithCompletions(link, actionName, parmName, argsContext);
                 ParameterContextFacade parm = action.VisibleParameters.Single(p => p.Id == parmName);
                 parm.Target = action.Target;
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, parm, Request, flags), false);
+                return SnapshotFactory.PromptSnaphot(OidStrategy, () => parm, Request, flags)();
             });
         }
 
@@ -525,17 +522,17 @@ namespace NakedObjects.Rest {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, true, false);
                 ObjectContextFacade context = FrameworkFacade.PutObject(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), argsContext);
                 VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, flags), flags.ValidateOnly);
+                return SnapshotOrNoContent(SnapshotFactory.ObjectSnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
             });
         }
 
         public virtual ActionResult PostPersist(string domainType, PersistArgumentMap arguments) {
             return InitAndHandleErrors(() => {
                 HandleReadOnlyRequest();
-                Tuple<ArgumentsContextFacade, RestControlFlags> args = ProcessPersistArguments(arguments);
-                ObjectContextFacade context = FrameworkFacade.Persist(domainType, args.Item1);
-                VerifyNoPersistError(context, args.Item2);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, args.Item2, HttpStatusCode.Created), args.Item2.ValidateOnly);
+                var (argsContext, flags) = ProcessPersistArguments(arguments);
+                ObjectContextFacade context = FrameworkFacade.Persist(domainType, argsContext);
+                VerifyNoPersistError(context, flags);
+                return SnapshotOrNoContent(SnapshotFactory.ObjectSnapshot(OidStrategy, () => context, Request, flags, HttpStatusCode.Created), flags.ValidateOnly);
             });
         }
 
@@ -548,7 +545,7 @@ namespace NakedObjects.Rest {
                     throw new PropertyResourceNotFoundNOSException(propertyName);
                 }
 
-                return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(), false);
+                return SnapshotFactory.PropertySnapshot(OidStrategy, () => propertyContext, Request, GetFlags())();
             });
         }
 
@@ -558,8 +555,9 @@ namespace NakedObjects.Rest {
                     PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
 
                     if (propertyContext.Property.IsCollection) {
-                        return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(), false);
+                        return SnapshotFactory.PropertySnapshot(OidStrategy, () => propertyContext, Request, GetFlags())();
                     }
+
                     // found but not a collection 
                     throw new CollectionResourceNotFoundNOSException(propertyName);
                 }
@@ -575,8 +573,9 @@ namespace NakedObjects.Rest {
                     PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
 
                     if (propertyContext.Property.IsCollection) {
-                        return new RestSnapshot(OidStrategy, propertyContext, Request, GetFlags(), true);
+                        return SnapshotFactory.CollectionValueSnapshot(OidStrategy, () => propertyContext, Request, GetFlags())();
                     }
+
                     // found but not a collection 
                     throw new CollectionResourceNotFoundNOSException(propertyName);
                 }
@@ -587,7 +586,7 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult GetAction(string domainType, string instanceId, string actionName) {
-            return InitAndHandleErrors(() => new RestSnapshot(OidStrategy, FrameworkFacade.GetObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName), Request, GetFlags()));
+            return InitAndHandleErrors(SnapshotFactory.ActionSnapshot(OidStrategy, () => FrameworkFacade.GetObjectActionByName(domainType, instanceId, actionName), Request, GetFlags()));
         }
 
         public virtual ActionResult PutProperty(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
@@ -596,7 +595,7 @@ namespace NakedObjects.Rest {
                 var (argumentContextFacade, flags) = ProcessArgument(argument);
                 PropertyContextFacade context = FrameworkFacade.PutProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, argumentContextFacade);
                 VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, flags, false), flags.ValidateOnly);
+                return SnapshotOrNoContent(SnapshotFactory.PropertySnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
             });
         }
 
@@ -606,24 +605,22 @@ namespace NakedObjects.Rest {
                 var (argumentContextFacade, flags) = ProcessDeleteArgument();
                 PropertyContextFacade context = FrameworkFacade.DeleteProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, argumentContextFacade);
                 VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, flags, false), flags.ValidateOnly);
+                return SnapshotOrNoContent(SnapshotFactory.PropertySnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
             });
         }
 
-        public virtual ActionResult PostCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
-            return StatusCode((int)HttpStatusCode.Forbidden);
-        }
+        public virtual ActionResult PostCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument)
+            => StatusCode((int) HttpStatusCode.Forbidden);
 
-        public virtual ActionResult DeleteCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
-            return StatusCode((int)HttpStatusCode.Forbidden);
-        }
+        public virtual ActionResult DeleteCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument)
+            => StatusCode((int) HttpStatusCode.Forbidden);
 
         public virtual ActionResult GetInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                var (argsContext, flags) = ProcessArgumentMap(arguments, false,  true);
+                var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade context = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, argsContext);
                 VerifyNoError(context);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, context, Request, flags), flags.ValidateOnly);
+                return SnapshotOrNoContent(SnapshotFactory.ActionResultSnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
             });
         }
 
@@ -633,7 +630,7 @@ namespace NakedObjects.Rest {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, false);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, argsContext);
                 VerifyNoError(result);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, flags), flags.ValidateOnly);
+                return SnapshotOrNoContent(SnapshotFactory.ActionResultSnapshot(OidStrategy, () => result, Request, flags), flags.ValidateOnly);
             });
         }
 
@@ -643,7 +640,7 @@ namespace NakedObjects.Rest {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, false);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, argsContext);
                 VerifyNoError(result);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, flags), flags.ValidateOnly);
+                return SnapshotOrNoContent(SnapshotFactory.ActionResultSnapshot(OidStrategy, () => result, Request, flags), flags.ValidateOnly);
             });
         }
 
@@ -652,7 +649,7 @@ namespace NakedObjects.Rest {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 var result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, argsContext);
                 VerifyNoError(result);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, flags), flags.ValidateOnly);
+                return SnapshotOrNoContent(SnapshotFactory.ActionResultSnapshot(OidStrategy, () => result, Request, flags), flags.ValidateOnly);
             });
         }
 
@@ -662,7 +659,7 @@ namespace NakedObjects.Rest {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, argsContext);
                 VerifyNoError(result);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, flags), flags.ValidateOnly);
+                return SnapshotOrNoContent(SnapshotFactory.ActionResultSnapshot(OidStrategy, () => result, Request, flags), flags.ValidateOnly);
             });
         }
 
@@ -672,7 +669,7 @@ namespace NakedObjects.Rest {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, argsContext);
                 VerifyNoError(result);
-                return SnapshotOrNoContent(new RestSnapshot(OidStrategy, result, Request, flags), flags.ValidateOnly);
+                return SnapshotOrNoContent(SnapshotFactory.ActionResultSnapshot(OidStrategy, () => result, Request, flags), flags.ValidateOnly);
             });
         }
 
@@ -681,28 +678,23 @@ namespace NakedObjects.Rest {
                 switch (actionName) {
                     case WellKnownIds.IsSubtypeOf:
                     case WellKnownIds.IsSupertypeOf:
-                        return GetInvokeIsTypeOf(typeName, actionName, arguments);
+                        return SnapshotFactory.TypeActionSnapshot(OidStrategy, () => GetIsTypeOf(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags())();
                 }
+
                 throw new TypeActionResourceNotFoundException(actionName, typeName);
             });
         }
 
-        public virtual ActionResult InvalidMethod() {
-            return StatusCode((int) HttpStatusCode.MethodNotAllowed);
-        }
-
-        private RestSnapshot GetInvokeIsTypeOf(string typeName, string actionName, ArgumentMap arguments) {
-            return new RestSnapshot(OidStrategy, GetIsTypeOf(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags());
-        }
+        public virtual ActionResult InvalidMethod() => StatusCode((int) HttpStatusCode.MethodNotAllowed);
 
         #endregion
 
         #region helpers
 
         private RestControlFlags GetFlags() {
-            return RestControlFlags.FlagsFromArguments(ValidateOnly, 
+            return RestControlFlags.FlagsFromArguments(ValidateOnly,
                 Page,
-                PageSize, 
+                PageSize,
                 DomainModel,
                 InlineDetailsInActionMemberRepresentations,
                 InlineDetailsInCollectionMemberRepresentations,
@@ -719,10 +711,8 @@ namespace NakedObjects.Rest {
             return GetFlagsFromArguments(arguments.ReservedArguments);
         }
 
-        private RestControlFlags GetFlags(SingleValueArgument arguments)
-        {
-            if (arguments.IsMalformed || arguments.ReservedArguments == null)
-            {
+        private RestControlFlags GetFlags(SingleValueArgument arguments) {
+            if (arguments.IsMalformed || arguments.ReservedArguments == null) {
                 throw new BadRequestNOSException("Malformed arguments"); // todo i18n
             }
 
@@ -753,7 +743,6 @@ namespace NakedObjects.Rest {
         }
 
         private void VerifyNoError(ActionResultContextFacade result) {
-
             if (result.ActionContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason))) {
                 if (result.ActionContext.VisibleProperties.Any(p => p.ErrorCause == Cause.WrongType)) {
                     throw new BadRequestNOSException("Bad Request", result.ActionContext.VisibleProperties.Cast<ContextFacade>().ToList());
@@ -779,12 +768,8 @@ namespace NakedObjects.Rest {
             }
         }
 
-        private RestSnapshot SnapshotOrNoContent(RestSnapshot ss, bool validateOnly) {
-            if (!validateOnly) {
-                return ss;
-            }
-            throw new NoContentNOSException();
-        }
+        private RestSnapshot SnapshotOrNoContent(Func<RestSnapshot> ss, bool validateOnly)
+            => validateOnly ? throw new NoContentNOSException() : ss();
 
         private void VerifyNoError(PropertyContextFacade propertyContext) {
             if (!string.IsNullOrEmpty(propertyContext.Reason)) {
@@ -800,6 +785,7 @@ namespace NakedObjects.Rest {
 
                 throw new BadArgumentsNOSException("Arguments invalid", objectContext.VisibleProperties.Cast<ContextFacade>().ToList());
             }
+
             if (!string.IsNullOrEmpty(objectContext.Reason)) {
                 if (objectContext.ErrorCause == Cause.WrongType) {
                     throw new BadRequestNOSException("Bad Request", objectContext);
@@ -819,19 +805,18 @@ namespace NakedObjects.Rest {
             if (method == HttpMethod.Get) {
                 return MethodType.QueryOnly;
             }
+
             if (method == HttpMethod.Put) {
                 return MethodType.Idempotent;
             }
+
             return MethodType.NonIdempotent;
         }
 
-
-        private void SetCaching(ResponseHeaders m, RestSnapshot ss,  Tuple<int, int, int> cacheSettings)
-        {
+        private void SetCaching(ResponseHeaders m, RestSnapshot ss, (int, int, int) cacheSettings) {
             int cacheTime = 0;
 
-            switch (ss.Representation.GetCaching())
-            {
+            switch (ss.Representation.GetCaching()) {
                 case CacheType.Transactional:
                     cacheTime = cacheSettings.Item1;
                     break;
@@ -843,15 +828,12 @@ namespace NakedObjects.Rest {
                     break;
             }
 
-            if (cacheTime == 0)
-            {
-                m.CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue { NoCache = true };
-                //m.Pragma.Add(new NameValueHeaderValue("no-cache"));
+            if (cacheTime == 0) {
+                m.CacheControl = new CacheControlHeaderValue {NoCache = true};
                 m.Append(HeaderNames.Pragma, "no-cache");
             }
-            else
-            {
-                m.CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue { MaxAge = new TimeSpan(0, 0, 0, cacheTime) };
+            else {
+                m.CacheControl = new CacheControlHeaderValue {MaxAge = new TimeSpan(0, 0, 0, cacheTime)};
             }
 
             DateTime now = DateTime.UtcNow;
@@ -861,53 +843,37 @@ namespace NakedObjects.Rest {
         }
 
         private void SetHeaders(RestSnapshot ss) {
-            //HttpResponseMessage msg = Representation.GetAsMessage(formatter, cacheSettings);
             var msg = ControllerContext.HttpContext.Response;
             var responseHeaders = msg.GetTypedHeaders();
 
-            foreach (WarningHeaderValue w in ss.WarningHeaders)
-            {
-                //responseHeaders.Warning.Add(w);
+            foreach (WarningHeaderValue w in ss.WarningHeaders) {
                 responseHeaders.Append(HeaderNames.Warning, w.ToString());
             }
 
-            foreach (string allowHeader in ss.AllowHeaders)
-            {
-                //responseHeaders.Allow.Add(a);
+            foreach (string allowHeader in ss.AllowHeaders) {
                 responseHeaders.Append(HeaderNames.Allow, allowHeader);
             }
 
-            if (ss.Location != null)
-            {
+            if (ss.Location != null) {
                 responseHeaders.Location = ss.Location;
             }
 
-            if (ss.Etag != null)
-            {
+            if (ss.Etag != null) {
                 responseHeaders.ETag = ss.Etag;
             }
 
-            Microsoft.Net.Http.Headers.MediaTypeHeaderValue ct = ss.Representation.GetContentType();
+            MediaTypeHeaderValue ct = ss.Representation.GetContentType();
 
-            if (ct != null)
-            {
+            if (ct != null) {
                 //formatter.SupportedMediaTypes.Add(ct);
             }
 
-            //var content = new ObjectContent<Representation>(this, formatter);
-            //var msg = new HttpResponseMessage { Content = content };
             responseHeaders.ContentType = ct;
 
             SetCaching(responseHeaders, ss, CacheSettings);
 
-            //return msg;
-
-
-
             ss.ValidateOutgoingMediaType(ss.Representation is AttachmentRepresentation);
             msg.StatusCode = (int) ss.HttpStatusCode;
-
-            //return msg;
         }
 
         private void ValidateDomainModel() {
@@ -951,7 +917,6 @@ namespace NakedObjects.Rest {
             catch (Exception e) {
                 Logger.ErrorFormat("Unhandled exception from frameworkFacade {0} {1}", e.GetType(), e.Message);
                 return ErrorResult(e);
-            
             }
             finally {
                 try {
@@ -963,35 +928,24 @@ namespace NakedObjects.Rest {
                 }
             }
 
-            if (endTransactionError != null)
-            {
+            if (endTransactionError != null) {
                 return ErrorResult(endTransactionError);
             }
 
-            try
-            {
-                //return ConfigureMsg(ss.Populate());
+            try {
                 return RepresentationResult(ss);
             }
-            catch (ValidationException validationException)
-            {
+            catch (ValidationException validationException) {
                 return StatusCode(validationException.StatusCode);
             }
-            catch (NakedObjectsFacadeException e)
-            {
+            catch (NakedObjectsFacadeException e) {
                 return ErrorResult(e);
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Logger.ErrorFormat("Unhandled exception while configuring message {0} {1}", e.GetType(), e.Message);
                 return ErrorResult(e);
             }
         }
-
-
-        //private HttpResponseMessage ErrorMsg(Exception e) {
-        //    return ConfigureMsg(new RestSnapshot(OidStrategy, e, Request).Populate());
-        //}
 
         private ActionResult ErrorResult(Exception e) {
             var ss = new RestSnapshot(OidStrategy, e, Request);
@@ -1002,10 +956,6 @@ namespace NakedObjects.Rest {
             ss.Populate();
             SetHeaders(ss);
             return new JsonResult(ss.Representation);
-        }
-
-        private HttpResponseMessage ConfigureMsg(RestSnapshot snapshot) {
-            return snapshot.ConfigureMsg(new JsonNetFormatter(null), CacheSettings);
         }
 
         private static void HandleReadOnlyRequest() {
@@ -1024,19 +974,15 @@ namespace NakedObjects.Rest {
             }
         }
 
-        private static void ValidateArguments(SingleValueArgument arguments, bool errorIfNone = true)
-        {
-            if (arguments.IsMalformed)
-            {
+        private static void ValidateArguments(SingleValueArgument arguments, bool errorIfNone = true) {
+            if (arguments.IsMalformed) {
                 throw new BadRequestNOSException("Malformed arguments"); // todo i18n
             }
 
-            if (!arguments.HasValue && errorIfNone)
-            {
+            if (!arguments.HasValue && errorIfNone) {
                 throw new BadRequestNOSException("Missing arguments"); // todo i18n
             }
         }
-
 
         private static T HandleMalformed<T>(Func<T> f) {
             try {
@@ -1069,8 +1015,7 @@ namespace NakedObjects.Rest {
             });
         }
 
-        private (IDictionary<string, object>, RestControlFlags) ExtractValuesAndFlags(ArgumentMap arguments, bool errorIfNone)
-        {
+        private (IDictionary<string, object>, RestControlFlags) ExtractValuesAndFlags(ArgumentMap arguments, bool errorIfNone) {
             return HandleMalformed(() => {
                 ValidateArguments(arguments, errorIfNone);
                 var dictionary = arguments.Map.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy));
@@ -1102,10 +1047,10 @@ namespace NakedObjects.Rest {
             return context;
         }
 
-        private Tuple<ArgumentsContextFacade, RestControlFlags> ProcessPersistArguments(PersistArgumentMap persistArgumentMap) {
+        private (ArgumentsContextFacade, RestControlFlags) ProcessPersistArguments(PersistArgumentMap persistArgumentMap) {
             var (map, flags) = ExtractValuesAndFlags(persistArgumentMap, true);
 
-            return new Tuple<ArgumentsContextFacade, RestControlFlags>(new ArgumentsContextFacade {
+            return (new ArgumentsContextFacade {
                 Digest = GetIfMatchTag(),
                 Values = map,
                 ValidateOnly = flags.ValidateOnly
@@ -1122,23 +1067,12 @@ namespace NakedObjects.Rest {
             };
         }
 
-        //private ArgumentsContextFacade ProcessArgumentMap(ArgumentMap arguments, bool errorIfNone, bool ignoreConcurrency) =>
-        //    new ArgumentsContextFacade {
-        //        Digest = ignoreConcurrency ? null : GetIfMatchTag(),
-        //        Values = ExtractValues(arguments, errorIfNone),
-        //        ValidateOnly = ValidateOnly,
-        //        ExpectedActionType = GetExpectedMethodType(new HttpMethod(Request.Method))
-        //    };
-
-        private (ArgumentsContextFacade, RestControlFlags) ProcessArgumentMap(ArgumentMap arguments, bool errorIfNone, bool ignoreConcurrency)
-        {
-          
-            var (map, flags) = arguments.ReservedArguments == null 
-                ? (ExtractValues(arguments, errorIfNone), GetFlags()) 
+        private (ArgumentsContextFacade, RestControlFlags) ProcessArgumentMap(ArgumentMap arguments, bool errorIfNone, bool ignoreConcurrency) {
+            var (map, flags) = arguments.ReservedArguments == null
+                ? (ExtractValues(arguments, errorIfNone), GetFlags())
                 : ExtractValuesAndFlags(arguments, errorIfNone);
 
-            var facade = new ArgumentsContextFacade
-            {
+            var facade = new ArgumentsContextFacade {
                 Digest = ignoreConcurrency ? null : GetIfMatchTag(),
                 Values = map,
                 ValidateOnly = flags.ValidateOnly,
@@ -1146,7 +1080,6 @@ namespace NakedObjects.Rest {
             };
             return (facade, flags);
         }
-
 
         private (ArgumentContextFacade, RestControlFlags) ProcessArgument(SingleValueArgument argument) {
             var (value, flags) = ExtractValueAndFlags(argument);

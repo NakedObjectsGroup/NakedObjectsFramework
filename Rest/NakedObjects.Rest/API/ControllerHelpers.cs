@@ -29,5 +29,15 @@ namespace NakedObjects.Rest.API {
             var oid = frameworkFacade.OidTranslator.GetOidTranslation(serviceName);
             return frameworkFacade.GetServiceAction(oid, actionName);
         }
+
+        public static ObjectContextFacade GetObjectByName(this IFrameworkFacade frameworkFacade, string domainType, string instanceId) {
+            var oidTranslation = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
+            return frameworkFacade.GetObject(oidTranslation);
+        }
+
+        public static ActionContextFacade GetObjectActionByName(this IFrameworkFacade frameworkFacade, string domainType, string instanceId, string actionName) {
+            var oidTranslation = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
+            return frameworkFacade.GetObjectAction(oidTranslation, actionName);
+        }
     }
 }

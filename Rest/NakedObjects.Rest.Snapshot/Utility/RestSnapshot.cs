@@ -110,16 +110,17 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags, bool value)
+        public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags, bool collectionValue)
             : this(oidStrategy, propertyContext, req, false) {
             FilterBlobsAndClobs(propertyContext, flags);
             populator = () => {
-                if (value) {
+                if (collectionValue) {
                     Representation = CollectionValueRepresentation.Create(oidStrategy, propertyContext, req, flags);
                 }
                 else {
-                    Representation = RequestingAttachment() ? AttachmentRepresentation.Create(oidStrategy, req, propertyContext, flags) :
-                        MemberAbstractRepresentation.Create(oidStrategy, req, propertyContext, flags);
+                    Representation = RequestingAttachment() 
+                        ? AttachmentRepresentation.Create(oidStrategy, req, propertyContext, flags) 
+                        : MemberAbstractRepresentation.Create(oidStrategy, req, propertyContext, flags);
                 }
                 SetHeaders();
             };
