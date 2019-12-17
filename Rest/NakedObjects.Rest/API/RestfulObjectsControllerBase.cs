@@ -475,45 +475,44 @@ namespace NakedObjects.Rest {
             InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetObjectByName(domainType, instanceId), Request, GetFlags()));
 
         public virtual ActionResult GetPropertyPrompt(string domainType, string instanceId, string propertyName, ArgumentMap arguments) {
-            return InitAndHandleErrors(() => {
+            Func<RestSnapshot> PromptSnapshot() {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
-                var link = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
-                var obj = FrameworkFacade.GetObject(link);
-                var propertyContext = FrameworkFacade.GetPropertyWithCompletions(obj.Target, propertyName, argsContext);
-                return SnapshotFactory.PromptSnaphot(OidStrategy, () => propertyContext, Request, flags)();
-            });
+                PropertyContextFacade PropertyContext() => FrameworkFacade.GetPropertyByName(domainType, instanceId, propertyName, argsContext);
+                return SnapshotFactory.PromptSnaphot(OidStrategy, PropertyContext, Request, flags);
+            }
+
+            return InitAndHandleErrors(PromptSnapshot());
         }
 
         public virtual ActionResult PutPersistPropertyPrompt(string domainType, string propertyName, PromptArgumentMap promptArguments) {
-            return InitAndHandleErrors(() => {
+            Func<RestSnapshot> PromptSnapshot() {
                 var persistArgs = ProcessPromptArguments(promptArguments);
                 var (promptArgs, flags) = ProcessArgumentMap(promptArguments, false, false);
-                var obj = FrameworkFacade.GetTransient(domainType, persistArgs);
-                PropertyContextFacade propertyContext = FrameworkFacade.GetPropertyWithCompletions(obj.Target, propertyName, promptArgs);
-                return SnapshotFactory.PromptSnaphot(OidStrategy, () => propertyContext, Request, flags)();
-            });
+                PropertyContextFacade PropertyContext() => FrameworkFacade.GetTransientPropertyByName(domainType, propertyName, persistArgs, promptArgs);
+                return SnapshotFactory.PromptSnaphot(OidStrategy, PropertyContext, Request, flags);
+            }
+
+            return InitAndHandleErrors(PromptSnapshot());
         }
 
         public virtual ActionResult GetParameterPrompt(string domainType, string instanceId, string actionName, string parmName, ArgumentMap arguments) {
-            return InitAndHandleErrors(() => {
+            Func<RestSnapshot> PromptSnapshot() {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
-                var link = FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
-                ActionContextFacade action = FrameworkFacade.GetObjectActionWithCompletions(link, actionName, parmName, argsContext);
-                ParameterContextFacade parm = action.VisibleParameters.Single(p => p.Id == parmName);
-                parm.Target = action.Target;
-                return SnapshotFactory.PromptSnaphot(OidStrategy, () => parm, Request, flags)();
-            });
+                ParameterContextFacade ParameterContext() => FrameworkFacade.GetObjectParameterByName(domainType, instanceId, actionName, parmName, argsContext);
+                return SnapshotFactory.PromptSnaphot(OidStrategy, ParameterContext, Request, flags);
+            }
+
+            return InitAndHandleErrors(PromptSnapshot());
         }
 
         public virtual ActionResult GetParameterPromptOnService(string serviceName, string actionName, string parmName, ArgumentMap arguments) {
-            return InitAndHandleErrors(() => {
+            Func<RestSnapshot> PromptSnapshot() {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
-                var link = FrameworkFacade.OidTranslator.GetOidTranslation(serviceName);
-                ActionContextFacade action = FrameworkFacade.GetServiceActionWithCompletions(link, actionName, parmName, argsContext);
-                ParameterContextFacade parm = action.VisibleParameters.Single(p => p.Id == parmName);
-                parm.Target = action.Target;
-                return SnapshotFactory.PromptSnaphot(OidStrategy, () => parm, Request, flags)();
-            });
+                ParameterContextFacade ParameterContext() => FrameworkFacade.GetServiceParameterByName(serviceName, actionName, parmName, argsContext);
+                return SnapshotFactory.PromptSnaphot(OidStrategy, ParameterContext, Request, flags);
+            }
+
+            return InitAndHandleErrors(PromptSnapshot());
         }
 
         public virtual ActionResult PutObject(string domainType, string instanceId, ArgumentMap arguments) {

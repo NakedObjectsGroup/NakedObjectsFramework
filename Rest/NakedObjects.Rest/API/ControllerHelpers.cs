@@ -39,5 +39,34 @@ namespace NakedObjects.Rest.API {
             var oidTranslation = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
             return frameworkFacade.GetObjectAction(oidTranslation, actionName);
         }
+
+        public static PropertyContextFacade GetPropertyByName(this IFrameworkFacade frameworkFacade, string domainType, string instanceId, string propertyName, ArgumentsContextFacade argsContext) {
+            var link = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
+            var obj = frameworkFacade.GetObject(link);
+            return frameworkFacade.GetPropertyWithCompletions(obj.Target, propertyName, argsContext);
+        }
+
+        public static PropertyContextFacade GetTransientPropertyByName(this IFrameworkFacade frameworkFacade, string domainType, string propertyName, ArgumentsContextFacade persistArgs, ArgumentsContextFacade promptArgs) {
+            var obj = frameworkFacade.GetTransient(domainType, persistArgs);
+            return frameworkFacade.GetPropertyWithCompletions(obj.Target, propertyName, promptArgs);
+        }
+
+        private static ParameterContextFacade GetParameterByName(this IFrameworkFacade frameworkFacade, ActionContextFacade action, string parmName) {
+            var parm = action.VisibleParameters.Single(p => p.Id == parmName);
+            parm.Target = action.Target;
+            return parm;
+        }
+
+        public static ParameterContextFacade GetObjectParameterByName(this IFrameworkFacade frameworkFacade, string domainType, string instanceId, string actionName, string parmName, ArgumentsContextFacade argsContext) {
+            var link = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
+            var action = frameworkFacade.GetObjectActionWithCompletions(link, actionName, parmName, argsContext);
+            return frameworkFacade.GetParameterByName(action, parmName);
+        }
+
+        public static ParameterContextFacade GetServiceParameterByName(this IFrameworkFacade frameworkFacade, string serviceName, string actionName, string parmName, ArgumentsContextFacade argsContext) {
+            var link = frameworkFacade.OidTranslator.GetOidTranslation(serviceName);
+            var action = frameworkFacade.GetServiceActionWithCompletions(link, actionName, parmName, argsContext);
+            return frameworkFacade.GetParameterByName(action, parmName);
+        }
     }
 }
