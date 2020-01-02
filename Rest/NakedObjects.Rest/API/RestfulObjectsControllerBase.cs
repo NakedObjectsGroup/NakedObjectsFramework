@@ -516,81 +516,50 @@ namespace NakedObjects.Rest {
         }
 
         public virtual ActionResult PutObject(string domainType, string instanceId, ArgumentMap arguments) {
-            return InitAndHandleErrors(() => {
-                HandleReadOnlyRequest();
+            (Func<RestSnapshot>, bool) PutObject() {
+                RejectRequestIfReadOnly();
                 var (argsContext, flags) = ProcessArgumentMap(arguments, true, false);
-                ObjectContextFacade context = FrameworkFacade.PutObject(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), argsContext);
-                VerifyNoError(context);
-                return SnapshotOrNoContent(SnapshotFactory.ObjectSnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
+                // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
+                ObjectContextFacade context = FrameworkFacade.PutObjectAndValidate(domainType, instanceId, argsContext);
+                return (SnapshotFactory.ObjectSnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
+            }
+
+            return InitAndHandleErrors(() => {
+                var (snapshotFunc, validateOnly) = PutObject();
+                return SnapshotOrNoContent(snapshotFunc, validateOnly);
             });
         }
 
         public virtual ActionResult PostPersist(string domainType, PersistArgumentMap arguments) {
-            return InitAndHandleErrors(() => {
-                HandleReadOnlyRequest();
+            (Func<RestSnapshot>, bool) PersistObject() {
+                RejectRequestIfReadOnly();
                 var (argsContext, flags) = ProcessPersistArguments(arguments);
-                ObjectContextFacade context = FrameworkFacade.Persist(domainType, argsContext);
-                VerifyNoPersistError(context, flags);
-                return SnapshotOrNoContent(SnapshotFactory.ObjectSnapshot(OidStrategy, () => context, Request, flags, HttpStatusCode.Created), flags.ValidateOnly);
-            });
-        }
+                // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
+                ObjectContextFacade context = FrameworkFacade.PersistObjectAndValidate(domainType, argsContext, flags);
+                return (SnapshotFactory.ObjectSnapshot(OidStrategy, () => context, Request, flags, HttpStatusCode.Created), flags.ValidateOnly);
+            }
 
-        public virtual ActionResult GetProperty(string domainType, string instanceId, string propertyName) {
             return InitAndHandleErrors(() => {
-                PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
-
-                // found but a collection 
-                if (propertyContext.Property.IsCollection) {
-                    throw new PropertyResourceNotFoundNOSException(propertyName);
-                }
-
-                return SnapshotFactory.PropertySnapshot(OidStrategy, () => propertyContext, Request, GetFlags())();
+                var (snapshotFunc, validateOnly) = PersistObject();
+                return SnapshotOrNoContent(snapshotFunc, validateOnly);
             });
         }
 
-        public virtual ActionResult GetCollection(string domainType, string instanceId, string propertyName) {
-            return InitAndHandleErrors(() => {
-                try {
-                    PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
+        public virtual ActionResult GetProperty(string domainType, string instanceId, string propertyName) =>
+            InitAndHandleErrors(SnapshotFactory.PropertySnapshot(OidStrategy, () => FrameworkFacade.GetPropertyByName(domainType, instanceId, propertyName), Request, GetFlags()));
 
-                    if (propertyContext.Property.IsCollection) {
-                        return SnapshotFactory.PropertySnapshot(OidStrategy, () => propertyContext, Request, GetFlags())();
-                    }
+        public virtual ActionResult GetCollection(string domainType, string instanceId, string propertyName) =>
+            InitAndHandleErrors(SnapshotFactory.PropertySnapshot(OidStrategy, () => FrameworkFacade.GetCollectionPropertyByName(domainType, instanceId, propertyName), Request, GetFlags()));
 
-                    // found but not a collection 
-                    throw new CollectionResourceNotFoundNOSException(propertyName);
-                }
-                catch (PropertyResourceNotFoundNOSException e) {
-                    throw new CollectionResourceNotFoundNOSException(e.ResourceId);
-                }
-            });
-        }
+        public virtual ActionResult GetCollectionValue(string domainType, string instanceId, string propertyName) =>
+            InitAndHandleErrors(SnapshotFactory.CollectionValueSnapshot(OidStrategy, () => FrameworkFacade.GetCollectionPropertyByName(domainType, instanceId, propertyName), Request, GetFlags()));
 
-        public virtual ActionResult GetCollectionValue(string domainType, string instanceId, string propertyName) {
-            return InitAndHandleErrors(() => {
-                try {
-                    PropertyContextFacade propertyContext = FrameworkFacade.GetProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName);
-
-                    if (propertyContext.Property.IsCollection) {
-                        return SnapshotFactory.CollectionValueSnapshot(OidStrategy, () => propertyContext, Request, GetFlags())();
-                    }
-
-                    // found but not a collection 
-                    throw new CollectionResourceNotFoundNOSException(propertyName);
-                }
-                catch (PropertyResourceNotFoundNOSException e) {
-                    throw new CollectionResourceNotFoundNOSException(e.ResourceId);
-                }
-            });
-        }
-
-        public virtual ActionResult GetAction(string domainType, string instanceId, string actionName) {
-            return InitAndHandleErrors(SnapshotFactory.ActionSnapshot(OidStrategy, () => FrameworkFacade.GetObjectActionByName(domainType, instanceId, actionName), Request, GetFlags()));
-        }
+        public virtual ActionResult GetAction(string domainType, string instanceId, string actionName) =>
+            InitAndHandleErrors(SnapshotFactory.ActionSnapshot(OidStrategy, () => FrameworkFacade.GetObjectActionByName(domainType, instanceId, actionName), Request, GetFlags()));
 
         public virtual ActionResult PutProperty(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
             return InitAndHandleErrors(() => {
-                HandleReadOnlyRequest();
+                RejectRequestIfReadOnly();
                 var (argumentContextFacade, flags) = ProcessArgument(argument);
                 PropertyContextFacade context = FrameworkFacade.PutProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, argumentContextFacade);
                 VerifyNoError(context);
@@ -600,7 +569,7 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult DeleteProperty(string domainType, string instanceId, string propertyName) {
             return InitAndHandleErrors(() => {
-                HandleReadOnlyRequest();
+                RejectRequestIfReadOnly();
                 var (argumentContextFacade, flags) = ProcessDeleteArgument();
                 PropertyContextFacade context = FrameworkFacade.DeleteProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, argumentContextFacade);
                 VerifyNoError(context);
@@ -625,7 +594,7 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult PostInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                HandleReadOnlyRequest();
+                RejectRequestIfReadOnly();
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, false);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, argsContext);
                 VerifyNoError(result);
@@ -635,7 +604,7 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult PutInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                HandleReadOnlyRequest();
+                RejectRequestIfReadOnly();
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, false);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, argsContext);
                 VerifyNoError(result);
@@ -654,7 +623,7 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult PutInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                HandleReadOnlyRequest();
+                RejectRequestIfReadOnly();
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, argsContext);
                 VerifyNoError(result);
@@ -664,7 +633,7 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult PostInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
             return InitAndHandleErrors(() => {
-                HandleReadOnlyRequest();
+                RejectRequestIfReadOnly();
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
                 ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, argsContext);
                 VerifyNoError(result);
@@ -776,23 +745,6 @@ namespace NakedObjects.Rest {
             }
         }
 
-        private void VerifyNoError(ObjectContextFacade objectContext) {
-            if (objectContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason))) {
-                if (objectContext.VisibleProperties.Any(p => p.ErrorCause == Cause.WrongType)) {
-                    throw new BadRequestNOSException("Bad Request", objectContext.VisibleProperties.Cast<ContextFacade>().ToList());
-                }
-
-                throw new BadArgumentsNOSException("Arguments invalid", objectContext.VisibleProperties.Cast<ContextFacade>().ToList());
-            }
-
-            if (!string.IsNullOrEmpty(objectContext.Reason)) {
-                if (objectContext.ErrorCause == Cause.WrongType) {
-                    throw new BadRequestNOSException("Bad Request", objectContext);
-                }
-
-                throw new BadArgumentsNOSException("Arguments invalid", objectContext);
-            }
-        }
 
         private void VerifyNoPersistError(ObjectContextFacade objectContext, RestControlFlags flags) {
             if (objectContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason)) || !string.IsNullOrEmpty(objectContext.Reason)) {
@@ -957,7 +909,7 @@ namespace NakedObjects.Rest {
             return new JsonResult(ss.Representation);
         }
 
-        private static void HandleReadOnlyRequest() {
+        private static void RejectRequestIfReadOnly() {
             if (IsReadOnly) {
                 throw new ValidationException((int) HttpStatusCode.Forbidden);
             }

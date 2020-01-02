@@ -6,8 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
+using Microsoft.AspNetCore.SignalR;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
+using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest.API {
     public static class ControllerHelpers {
@@ -67,6 +69,75 @@ namespace NakedObjects.Rest.API {
             var link = frameworkFacade.OidTranslator.GetOidTranslation(serviceName);
             var action = frameworkFacade.GetServiceActionWithCompletions(link, actionName, parmName, argsContext);
             return frameworkFacade.GetParameterByName(action, parmName);
+        }
+
+        private static ObjectContextFacade ValidateObjectContext(ObjectContextFacade objectContext) {
+            if (objectContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason))) {
+                if (objectContext.VisibleProperties.Any(p => p.ErrorCause == Cause.WrongType)) {
+                    throw new BadRequestNOSException("Bad Request", objectContext.VisibleProperties.Cast<ContextFacade>().ToList());
+                }
+
+                throw new BadArgumentsNOSException("Arguments invalid", objectContext.VisibleProperties.Cast<ContextFacade>().ToList());
+            }
+
+            if (!string.IsNullOrEmpty(objectContext.Reason)) {
+                if (objectContext.ErrorCause == Cause.WrongType) {
+                    throw new BadRequestNOSException("Bad Request", objectContext);
+                }
+
+                throw new BadArgumentsNOSException("Arguments invalid", objectContext);
+            }
+
+            return objectContext;
+        }
+
+
+        public static ObjectContextFacade PutObjectAndValidate(this IFrameworkFacade frameworkFacade, string domainType, string instanceId, ArgumentsContextFacade argsContext) {
+            var link = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
+            var context = frameworkFacade.PutObject(link, argsContext);
+            return ValidateObjectContext(context);
+        }
+
+        private static ObjectContextFacade ValidatePersistObjectContext(ObjectContextFacade objectContext, RestControlFlags flags) {
+            if (objectContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason)) || !string.IsNullOrEmpty(objectContext.Reason)) {
+                throw new BadPersistArgumentsException("Arguments invalid", objectContext, objectContext.VisibleProperties.Cast<ContextFacade>().ToList(), flags);
+            }
+
+            return objectContext;
+        }
+
+        public static ObjectContextFacade PersistObjectAndValidate(this IFrameworkFacade frameworkFacade, string domainType, ArgumentsContextFacade argsContext, RestControlFlags flags) {
+            var context = frameworkFacade.Persist(domainType, argsContext);
+            return ValidatePersistObjectContext(context, flags);
+        }
+
+        public static PropertyContextFacade GetPropertyByName(this IFrameworkFacade frameworkFacade, string domainType, string instanceId, string propertyName) {
+            var link = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
+            var propertyContext = frameworkFacade.GetProperty(link, propertyName);
+
+            // found but a collection 
+            if (propertyContext.Property.IsCollection) {
+                throw new PropertyResourceNotFoundNOSException(propertyName);
+            }
+
+            return propertyContext;
+        }
+
+        public static PropertyContextFacade GetCollectionPropertyByName(this IFrameworkFacade frameworkFacade, string domainType, string instanceId, string propertyName) {
+            try {
+                var link = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
+                var propertyContext = frameworkFacade.GetProperty(link, propertyName);
+
+                // found but not a collection 
+                if (!propertyContext.Property.IsCollection) {
+                    throw new CollectionResourceNotFoundNOSException(propertyName);
+                }
+
+                return propertyContext;
+            }
+            catch (PropertyResourceNotFoundNOSException e) {
+                throw new CollectionResourceNotFoundNOSException(e.ResourceId);
+            }
         }
     }
 }
