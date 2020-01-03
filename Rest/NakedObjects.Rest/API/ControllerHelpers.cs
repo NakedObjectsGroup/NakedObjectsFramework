@@ -139,5 +139,67 @@ namespace NakedObjects.Rest.API {
                 throw new CollectionResourceNotFoundNOSException(e.ResourceId);
             }
         }
+
+        private static PropertyContextFacade ValidatePropertyContext(PropertyContextFacade propertyContext) {
+            if (!string.IsNullOrEmpty(propertyContext.Reason)) {
+                throw new BadArgumentsNOSException("Arguments invalid", propertyContext);
+            }
+
+            return propertyContext;
+        }
+
+        public static PropertyContextFacade PutPropertyAndValidate(this IFrameworkFacade frameworkFacade, string domainType, string instanceId, string propertyName, ArgumentContextFacade argContext) {
+            var link = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
+            PropertyContextFacade context = frameworkFacade.PutProperty(link, propertyName, argContext);
+            return ValidatePropertyContext(context);
+        }
+
+        public static PropertyContextFacade DeletePropertyAndValidate(this IFrameworkFacade frameworkFacade, string domainType, string instanceId, string propertyName, ArgumentContextFacade argContext)
+        {
+            var link = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
+            PropertyContextFacade context = frameworkFacade.DeleteProperty(link, propertyName, argContext);
+            return ValidatePropertyContext(context);
+        }
+
+        private static ActionResultContextFacade ValidateActionResult(ActionResultContextFacade result) {
+            if (result.ActionContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason))) {
+                if (result.ActionContext.VisibleProperties.Any(p => p.ErrorCause == Cause.WrongType)) {
+                    throw new BadRequestNOSException("Bad Request", result.ActionContext.VisibleProperties.Cast<ContextFacade>().ToList());
+                }
+
+                throw new BadArgumentsNOSException("Arguments invalid", result.ActionContext.VisibleProperties.Cast<ContextFacade>().ToList());
+            }
+
+            if (result.ActionContext.VisibleParameters.Any(p => !string.IsNullOrEmpty(p.Reason))) {
+                if (result.ActionContext.VisibleParameters.Any(p => p.ErrorCause == Cause.WrongType)) {
+                    throw new BadRequestNOSException("Bad Request", result.ActionContext.VisibleParameters.Cast<ContextFacade>().ToList());
+                }
+
+                throw new BadArgumentsNOSException("Arguments invalid", result.ActionContext.VisibleParameters.Cast<ContextFacade>().ToList());
+            }
+
+            if (!string.IsNullOrEmpty(result.Reason)) {
+                if (result.ErrorCause == Cause.WrongType) {
+                    throw new BadRequestNOSException("Bad Request", result.ActionContext);
+                }
+
+                throw new BadArgumentsNOSException("Arguments invalid", result);
+            }
+
+            return result;
+        }
+
+        public static ActionResultContextFacade ExecuteActionAndValidate(this IFrameworkFacade frameworkFacade, string domainType, string instanceId, string actionName, ArgumentsContextFacade argsContext) {
+            var link = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
+            ActionResultContextFacade context = frameworkFacade.ExecuteObjectAction(link, actionName, argsContext);
+            return ValidateActionResult(context);
+        }
+
+        public static ActionResultContextFacade ExecuteServiceActionAndValidate(this IFrameworkFacade frameworkFacade, string serviceName, string actionName, ArgumentsContextFacade argsContext) {
+            var link = frameworkFacade.OidTranslator.GetOidTranslation(serviceName);
+            ActionResultContextFacade context = frameworkFacade.ExecuteServiceAction(link, actionName, argsContext);
+            return ValidateActionResult(context);
+        }
+
     }
 }

@@ -558,22 +558,32 @@ namespace NakedObjects.Rest {
             InitAndHandleErrors(SnapshotFactory.ActionSnapshot(OidStrategy, () => FrameworkFacade.GetObjectActionByName(domainType, instanceId, actionName), Request, GetFlags()));
 
         public virtual ActionResult PutProperty(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
-            return InitAndHandleErrors(() => {
+            (Func<RestSnapshot>, bool) PutProperty() {
                 RejectRequestIfReadOnly();
-                var (argumentContextFacade, flags) = ProcessArgument(argument);
-                PropertyContextFacade context = FrameworkFacade.PutProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, argumentContextFacade);
-                VerifyNoError(context);
-                return SnapshotOrNoContent(SnapshotFactory.PropertySnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
+                var (argContext, flags) = ProcessArgument(argument);
+                // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
+                var context = FrameworkFacade.PutPropertyAndValidate(domainType, instanceId, propertyName, argContext);
+                return (SnapshotFactory.PropertySnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
+            }
+
+            return InitAndHandleErrors(() => {
+                var (snapshotFunc, validateOnly) = PutProperty();
+                return SnapshotOrNoContent(snapshotFunc, validateOnly);
             });
         }
 
         public virtual ActionResult DeleteProperty(string domainType, string instanceId, string propertyName) {
-            return InitAndHandleErrors(() => {
+            (Func<RestSnapshot>, bool) DeleteProperty() {
                 RejectRequestIfReadOnly();
-                var (argumentContextFacade, flags) = ProcessDeleteArgument();
-                PropertyContextFacade context = FrameworkFacade.DeleteProperty(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), propertyName, argumentContextFacade);
-                VerifyNoError(context);
-                return SnapshotOrNoContent(SnapshotFactory.PropertySnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
+                var (argContext, flags) = ProcessDeleteArgument();
+                // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
+                var context = FrameworkFacade.DeletePropertyAndValidate(domainType, instanceId, propertyName, argContext);
+                return (SnapshotFactory.PropertySnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
+            }
+
+            return InitAndHandleErrors(() => {
+                var (snapshotFunc, validateOnly) = DeleteProperty();
+                return SnapshotOrNoContent(snapshotFunc, validateOnly);
             });
         }
 
@@ -583,74 +593,73 @@ namespace NakedObjects.Rest {
         public virtual ActionResult DeleteCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument)
             => StatusCode((int) HttpStatusCode.Forbidden);
 
-        public virtual ActionResult GetInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors(() => {
-                var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
-                ActionResultContextFacade context = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, argsContext);
-                VerifyNoError(context);
-                return SnapshotOrNoContent(SnapshotFactory.ActionResultSnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
-            });
-        }
-
-        public virtual ActionResult PostInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors(() => {
-                RejectRequestIfReadOnly();
-                var (argsContext, flags) = ProcessArgumentMap(arguments, false, false);
-                ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, argsContext);
-                VerifyNoError(result);
-                return SnapshotOrNoContent(SnapshotFactory.ActionResultSnapshot(OidStrategy, () => result, Request, flags), flags.ValidateOnly);
-            });
-        }
-
-        public virtual ActionResult PutInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors(() => {
-                RejectRequestIfReadOnly();
-                var (argsContext, flags) = ProcessArgumentMap(arguments, false, false);
-                ActionResultContextFacade result = FrameworkFacade.ExecuteObjectAction(FrameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId), actionName, argsContext);
-                VerifyNoError(result);
-                return SnapshotOrNoContent(SnapshotFactory.ActionResultSnapshot(OidStrategy, () => result, Request, flags), flags.ValidateOnly);
-            });
-        }
-
-        public virtual ActionResult GetInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors(() => {
-                var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
-                var result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, argsContext);
-                VerifyNoError(result);
-                return SnapshotOrNoContent(SnapshotFactory.ActionResultSnapshot(OidStrategy, () => result, Request, flags), flags.ValidateOnly);
-            });
-        }
-
-        public virtual ActionResult PutInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors(() => {
-                RejectRequestIfReadOnly();
-                var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
-                ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, argsContext);
-                VerifyNoError(result);
-                return SnapshotOrNoContent(SnapshotFactory.ActionResultSnapshot(OidStrategy, () => result, Request, flags), flags.ValidateOnly);
-            });
-        }
-
-        public virtual ActionResult PostInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors(() => {
-                RejectRequestIfReadOnly();
-                var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
-                ActionResultContextFacade result = FrameworkFacade.ExecuteServiceAction(FrameworkFacade.OidTranslator.GetOidTranslation(serviceName), actionName, argsContext);
-                VerifyNoError(result);
-                return SnapshotOrNoContent(SnapshotFactory.ActionResultSnapshot(OidStrategy, () => result, Request, flags), flags.ValidateOnly);
-            });
-        }
-
-        public virtual ActionResult GetInvokeTypeActions(string typeName, string actionName, ArgumentMap arguments) {
-            return InitAndHandleErrors(() => {
-                switch (actionName) {
-                    case WellKnownIds.IsSubtypeOf:
-                    case WellKnownIds.IsSupertypeOf:
-                        return SnapshotFactory.TypeActionSnapshot(OidStrategy, () => GetIsTypeOf(new TypeActionInvokeContext(actionName, typeName), arguments), Request, GetFlags())();
+        private ActionResult Invoke(string domainType, string instanceId, string actionName, ArgumentMap arguments, bool queryOnly) {
+            (Func<RestSnapshot>, bool) Execute() {
+                if (!queryOnly) {
+                    RejectRequestIfReadOnly();
                 }
 
-                throw new TypeActionResourceNotFoundException(actionName, typeName);
+                var (argsContext, flags) = ProcessArgumentMap(arguments, false, queryOnly);
+                // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
+                var context = FrameworkFacade.ExecuteActionAndValidate(domainType, instanceId, actionName, argsContext);
+                return (SnapshotFactory.ActionResultSnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
+            }
+
+            return InitAndHandleErrors(() => {
+                var (snapshotFunc, validateOnly) = Execute();
+                return SnapshotOrNoContent(snapshotFunc, validateOnly);
             });
+        }
+
+        public virtual ActionResult GetInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) =>
+            Invoke(domainType, instanceId, actionName, arguments, true);
+
+        public virtual ActionResult PutInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) =>
+            Invoke(domainType, instanceId, actionName, arguments, false);
+
+        public virtual ActionResult PostInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) =>
+            Invoke(domainType, instanceId, actionName, arguments, false);
+
+        private ActionResult InvokeOnService(string serviceName, string actionName, ArgumentMap arguments, bool queryOnly) {
+            (Func<RestSnapshot>, bool) Execute() {
+                if (!queryOnly) {
+                    RejectRequestIfReadOnly();
+                }
+
+                // ignore concurrency always true here
+                var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
+                // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
+                var context = FrameworkFacade.ExecuteServiceActionAndValidate(serviceName, actionName, argsContext);
+                return (SnapshotFactory.ActionResultSnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
+            }
+
+            return InitAndHandleErrors(() => {
+                var (snapshotFunc, validateOnly) = Execute();
+                return SnapshotOrNoContent(snapshotFunc, validateOnly);
+            });
+        }
+
+        public virtual ActionResult GetInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) =>
+            InvokeOnService(serviceName, actionName, arguments, true);
+
+        public virtual ActionResult PutInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) =>
+            InvokeOnService(serviceName, actionName, arguments, false);
+
+        public virtual ActionResult PostInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) =>
+            InvokeOnService(serviceName, actionName, arguments, true);
+
+        public virtual ActionResult GetInvokeTypeActions(string typeName, string actionName, ArgumentMap arguments) {
+
+            Func<RestSnapshot> GetTypeAction() => SnapshotFactory.TypeActionSnapshot(OidStrategy, () => GetIsTypeOf(actionName, typeName, arguments), Request, GetFlags());
+
+            Func<RestSnapshot> TypeAction() =>
+                actionName switch {
+                    WellKnownIds.IsSubtypeOf => GetTypeAction(),
+                    WellKnownIds.IsSupertypeOf => GetTypeAction(),
+                    _ => throw new TypeActionResourceNotFoundException(actionName, typeName)
+                };
+
+            return InitAndHandleErrors(TypeAction());
         }
 
         public virtual ActionResult InvalidMethod() => StatusCode((int) HttpStatusCode.MethodNotAllowed);
@@ -710,47 +719,8 @@ namespace NakedObjects.Rest {
             return null;
         }
 
-        private void VerifyNoError(ActionResultContextFacade result) {
-            if (result.ActionContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason))) {
-                if (result.ActionContext.VisibleProperties.Any(p => p.ErrorCause == Cause.WrongType)) {
-                    throw new BadRequestNOSException("Bad Request", result.ActionContext.VisibleProperties.Cast<ContextFacade>().ToList());
-                }
-
-                throw new BadArgumentsNOSException("Arguments invalid", result.ActionContext.VisibleProperties.Cast<ContextFacade>().ToList());
-            }
-
-            if (result.ActionContext.VisibleParameters.Any(p => !string.IsNullOrEmpty(p.Reason))) {
-                if (result.ActionContext.VisibleParameters.Any(p => p.ErrorCause == Cause.WrongType)) {
-                    throw new BadRequestNOSException("Bad Request", result.ActionContext.VisibleParameters.Cast<ContextFacade>().ToList());
-                }
-
-                throw new BadArgumentsNOSException("Arguments invalid", result.ActionContext.VisibleParameters.Cast<ContextFacade>().ToList());
-            }
-
-            if (!string.IsNullOrEmpty(result.Reason)) {
-                if (result.ErrorCause == Cause.WrongType) {
-                    throw new BadRequestNOSException("Bad Request", result.ActionContext);
-                }
-
-                throw new BadArgumentsNOSException("Arguments invalid", result);
-            }
-        }
-
         private RestSnapshot SnapshotOrNoContent(Func<RestSnapshot> ss, bool validateOnly)
             => validateOnly ? throw new NoContentNOSException() : ss();
-
-        private void VerifyNoError(PropertyContextFacade propertyContext) {
-            if (!string.IsNullOrEmpty(propertyContext.Reason)) {
-                throw new BadArgumentsNOSException("Arguments invalid", propertyContext);
-            }
-        }
-
-
-        private void VerifyNoPersistError(ObjectContextFacade objectContext, RestControlFlags flags) {
-            if (objectContext.VisibleProperties.Any(p => !string.IsNullOrEmpty(p.Reason)) || !string.IsNullOrEmpty(objectContext.Reason)) {
-                throw new BadPersistArgumentsException("Arguments invalid", objectContext, objectContext.VisibleProperties.Cast<ContextFacade>().ToList(), flags);
-            }
-        }
 
         private MethodType GetExpectedMethodType(HttpMethod method) {
             if (method == HttpMethod.Get) {
@@ -898,10 +868,8 @@ namespace NakedObjects.Rest {
             }
         }
 
-        private ActionResult ErrorResult(Exception e) {
-            var ss = new RestSnapshot(OidStrategy, e, Request);
-            return RepresentationResult(ss);
-        }
+        private ActionResult ErrorResult(Exception e) => 
+            RepresentationResult(new RestSnapshot(OidStrategy, e, Request));
 
         private ActionResult RepresentationResult(RestSnapshot ss) {
             ss.Populate();
@@ -982,14 +950,14 @@ namespace NakedObjects.Rest {
             });
         }
 
-        private TypeActionInvokeContext GetIsTypeOf(TypeActionInvokeContext context, ArgumentMap arguments) {
+        private TypeActionInvokeContext GetIsTypeOf(string actionName, string typeName, ArgumentMap arguments) {
             ValidateArguments(arguments);
-
+            var context = new TypeActionInvokeContext(actionName, typeName);
             if (!arguments.Map.ContainsKey(context.ParameterId)) {
                 throw new BadRequestNOSException("Malformed arguments");
             }
 
-            ITypeFacade thisSpecification = FrameworkFacade.GetDomainType(context.TypeName);
+            ITypeFacade thisSpecification = FrameworkFacade.GetDomainType(typeName);
             IValue parameter = arguments.Map[context.ParameterId];
             object value = parameter.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy);
             var otherSpecification = (ITypeFacade) (value is ITypeFacade ? value : FrameworkFacade.GetDomainType((string) value));
