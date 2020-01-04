@@ -32,8 +32,7 @@ namespace NakedObjects.Rest.Test.App
                     builder
                         .AllowAnyOrigin()
                         .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
+                        .AllowAnyMethod();
                 });
             });
         }

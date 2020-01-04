@@ -40,8 +40,7 @@ namespace NakedObjects.Rest.App.Demo
                     builder
                         .AllowAnyOrigin()
                         .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
+                        .AllowAnyMethod();
                 });
             });
         }
