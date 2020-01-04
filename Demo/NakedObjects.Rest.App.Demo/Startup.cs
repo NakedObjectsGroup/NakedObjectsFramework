@@ -38,14 +38,9 @@ namespace NakedObjects.Rest.App.Demo
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
                     builder
-                        .WithOrigins("http://localhost:49998",
-                            "http://localhost:8080",
-                            "http://nakedobjectstest.azurewebsites.net",
-                            "http://nakedobjectstest2.azurewebsites.net",
-                            "https://nakedobjectstest.azurewebsites.net",
-                            "https://nakedobjectstest2.azurewebsites.net",
-                            "http://localhost")
-                        .WithHeaders("Warning", "Set-Cookie", "ETag")
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
                         .AllowCredentials();
                 });
             });
