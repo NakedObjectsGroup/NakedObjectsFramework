@@ -22,6 +22,8 @@ namespace NakedObjects.Rest.App.Demo
             Configuration = configuration;
         }
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -32,6 +34,18 @@ namespace NakedObjects.Rest.App.Demo
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedObjects();
+
+            services.AddCors(options => {
+                options.AddPolicy(MyAllowSpecificOrigins, builder => {
+                    builder.WithOrigins("http://localhost:49998",
+                        "http://localhost:8080",
+                        "http://nakedobjectstest.azurewebsites.net",
+                        "http://nakedobjectstest2.azurewebsites.net",
+                        "https://nakedobjectstest.azurewebsites.net",
+                        "https://nakedobjectstest2.azurewebsites.net",
+                        "http://localhost").WithHeaders("Warning", "Set-Cookie", "ETag");
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +59,8 @@ namespace NakedObjects.Rest.App.Demo
             }
 
             //app.UseHttpsRedirection();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseRouting();
 
