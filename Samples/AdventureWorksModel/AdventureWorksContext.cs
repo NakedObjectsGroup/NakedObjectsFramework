@@ -13,6 +13,11 @@ namespace AdventureWorksModel
             : base("Name=AdventureWorksContext")
         {
         }
+
+        public AdventureWorksContext(string name)
+            : base($"Name={name}")
+        {
+        }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeAddress> EmployeeAddresses { get; set; }
