@@ -19,13 +19,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         public ErrorRepresentation(IOidStrategy oidStrategy, Exception e)
             : base(oidStrategy, RestControlFlags.DefaultFlags()) {
             Exception exception = GetInnermostException(e);
-
-            // temp debugging
-
-            var cs =  System.Configuration.ConfigurationManager.
-                ConnectionStrings["AdventureWorksContext"]?.ConnectionString ?? "";
-
-            Message = exception.Message + " " + cs;
+            Message = exception.Message;
             StackTrace = exception.StackTrace.Split('\n').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
 
             Links = new LinkRepresentation[] {};
