@@ -117,19 +117,20 @@ namespace NakedObjects.Selenium {
         }
 
         public virtual void ApplicationProperties() {
+            var lastPropertyText = "Client version:";
             Debug.WriteLine(nameof(ApplicationProperties));
             GeminiUrl("home");
             WaitForView(Pane.Single, PaneType.Home);
             ClickPropertiesButton();
             WaitForView(Pane.Single, PaneType.ApplicationProperties, "Application Properties");
             wait.Until(d => br.FindElements(By.CssSelector(".property")).Count >= 5);
-            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[3].Text.StartsWith("Server API version: 8.1.3"));
+            wait.Until(dr => dr.FindElements(By.CssSelector(".property"))[4].Text.StartsWith(lastPropertyText));
             var properties = br.FindElements(By.CssSelector(".property"));
             Assert.IsTrue(properties[0].Text.StartsWith("Application Name:"), properties[0].Text);
             Assert.IsTrue(properties[1].Text.StartsWith("User Name:"), properties[1].Text);
             Assert.IsTrue(properties[2].Text.StartsWith("Server Url: http"), properties[2].Text); // maybe https
-            Assert.IsTrue(properties[3].Text.StartsWith("Server API version: 8.1.3"), properties[3].Text);
-            Assert.IsTrue(properties[4].Text.StartsWith("Client version:"), properties[4].Text);
+            Assert.IsTrue(properties[3].Text.StartsWith("Server API version:"), properties[3].Text);
+            Assert.IsTrue(properties[4].Text.StartsWith(lastPropertyText), properties[4].Text);
         }
 
         public virtual void LogOff() {
