@@ -10,7 +10,7 @@ using System.Data.Entity;
 
 namespace RestfulObjects.Test.Data {
     public class CodeFirstContextLocal : DbContext {
-        public CodeFirstContextLocal(string dbName) : base("name=" + dbName) { }
+        public CodeFirstContextLocal(string cs) : base(cs) { }
         public DbSet<Immutable> Immutables { get; set; }
         public DbSet<MostSimple> MostSimples { get; set; }
         public DbSet<RedirectedObject> RedirectedObjects { get; set; }

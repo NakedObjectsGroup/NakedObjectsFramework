@@ -7,6 +7,7 @@
 
 using System.Security.Principal;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Facade;
@@ -53,7 +54,7 @@ namespace NakedObjects.Rest.Test.App
         /// <param name="container">The unity container to configure.</param>
         /// <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
-        public static void AddNakedObjects(this IServiceCollection services) {
+        public static void AddNakedObjects(this IServiceCollection services, IConfiguration configuration) {
             // NOTE: To load from web.config uncomment the line below. Make sure to add a Microsoft.Practices.Unity.Configuration to the using statements.
             // container.LoadConfiguration();
             //Standard configuration
@@ -64,7 +65,7 @@ namespace NakedObjects.Rest.Test.App
 
             // config 
             services.AddSingleton<IReflectorConfiguration>(p => NakedObjectsRunSettings.ReflectorConfig());
-            services.AddSingleton<IEntityObjectStoreConfiguration>(p => NakedObjectsRunSettings.EntityObjectStoreConfig());
+            services.AddSingleton<IEntityObjectStoreConfiguration>(p => NakedObjectsRunSettings.EntityObjectStoreConfig(configuration));
 
             // frameworkFacade
             services.AddTransient<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>();

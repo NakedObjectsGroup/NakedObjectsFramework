@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
@@ -96,10 +97,11 @@ namespace NakedObjects.Rest.Test.App
             return new ReflectorConfiguration(Types, Services, Types.Select(t => t.Namespace).Distinct().ToArray(), null, false);
         }
 
-        public static EntityObjectStoreConfiguration EntityObjectStoreConfig()
+        public static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration)
         {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingCodeFirstContext(() => new CodeFirstContextLocal("RestTest"));
+            var cs = configuration.GetConnectionString("RestTest");
+            config.UsingCodeFirstContext(() => new CodeFirstContextLocal(cs));
             return config;
         }
 
