@@ -15,7 +15,7 @@ namespace AdventureWorksModel
         }
 
         public AdventureWorksContext(string name)
-            : base($"Name={name}")
+            : base(name)
         {
         }
         public DbSet<Department> Departments { get; set; }
