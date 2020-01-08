@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Selenium {
@@ -152,10 +153,20 @@ namespace NakedObjects.Selenium {
             br.FindElement(By.CssSelector(".value  select option[label='Mountain Bikes']")).Click();
             wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 1);
 
-            IKeyboard kb = ((IHasInputDevices) br).Keyboard;
-            kb.PressKey(Keys.Control);
+            //IKeyboard kb = ((IHasInputDevices) br).Keyboard;
+            //kb.PressKey(Keys.Control);
+
+            Actions actions = new Actions(br);
+            actions.KeyDown(Keys.Control);
+            actions.Perform();
+
             br.FindElement(By.CssSelector(".value  select option[label='Road Bikes']")).Click();
-            kb.ReleaseKey(Keys.Control);
+
+            actions = new Actions(br);
+            actions.KeyUp(Keys.Control);
+            actions.Perform();
+
+            //kb.ReleaseKey(Keys.Control);
             wait.Until(dr => new SelectElement(WaitForCss("select#subcategories1")).AllSelectedOptions.Count == 2);
             Click(OKButton());
             WaitForView(Pane.Single, PaneType.List, "List Products By Sub Categories");

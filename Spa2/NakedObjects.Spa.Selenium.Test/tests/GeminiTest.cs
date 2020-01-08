@@ -167,9 +167,13 @@ namespace NakedObjects.Selenium {
         protected virtual void RightClick(IWebElement element) {
             var webDriver = wait.Driver;
             ScrollTo(element);
-            var loc = (ILocatable) element;
-            var mouse = ((IHasInputDevices) webDriver).Mouse;
-            mouse.ContextClick(loc.Coordinates);
+            //var loc = (ILocatable) element;
+            //var mouse = ((IHasInputDevices) webDriver).Mouse;
+            //mouse.ContextClick(loc.Coordinates);
+
+            Actions actions = new Actions(webDriver);
+            actions.ContextClick(element);
+            actions.Perform();
         }
 
         protected virtual IWebElement WaitForCss(string cssSelector) {
