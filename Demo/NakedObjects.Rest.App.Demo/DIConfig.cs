@@ -5,9 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Security.Principal;
-using System.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +18,7 @@ using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.DependencyInjection;
-using NakedObjects.Rest.App.Demo;
+using NakedObjects.Rest.App.Demo.AWCustom;
 
 namespace NakedObjects.Rest.App.Demo
 {
@@ -68,6 +66,11 @@ namespace NakedObjects.Rest.App.Demo
             ParallelConfig.RegisterStandardFacetFactories(services);
             ParallelConfig.RegisterCoreSingletonTypes(services);
             ParallelConfig.RegisterCoreScopedTypes(services);
+
+            // add custom factories
+
+            ConfigHelpers.RegisterFacetFactory(typeof(AWNotNavigableFacetFactory), services, 1000);
+            ConfigHelpers.RegisterFacetFactory(typeof(AWNotCountedAnnotationFacetFactory), services, 1001);
 
             // config 
             services.AddSingleton<IReflectorConfiguration>(p => NakedObjectsRunSettings.ReflectorConfig());
