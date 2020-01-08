@@ -69,8 +69,8 @@ namespace NakedObjects.Rest.App.Demo
 
             // add custom factories
 
-            ConfigHelpers.RegisterFacetFactory(typeof(AWNotNavigableFacetFactory), services, 1000);
-            ConfigHelpers.RegisterFacetFactory(typeof(AWNotCountedAnnotationFacetFactory), services, 1001);
+            ConfigHelpers.RegisterFacetFactory(typeof(AWNotNavigableFacetFactoryParallel), services, 1000);
+            ConfigHelpers.RegisterFacetFactory(typeof(AWNotCountedAnnotationFacetFactoryParallel), services, 1001);
 
             // config 
             services.AddSingleton<IReflectorConfiguration>(p => NakedObjectsRunSettings.ReflectorConfig());
