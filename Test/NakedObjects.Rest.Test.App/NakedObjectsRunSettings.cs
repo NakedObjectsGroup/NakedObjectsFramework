@@ -23,13 +23,6 @@ namespace NakedObjects.Rest.Test.App
     public class NakedObjectsRunSettings
     {
 
-        //Returning e.g. "restapi" creates the Restful Objects API on that root.
-        //Returning "" creates the Restful Objects API at the top level
-        //Returning null means the Restful Objects API will not be generated
-        public static string RestRoot
-        {
-            get { return ""; }
-        }
 
         private static string[] ModelNamespaces
         {
