@@ -29,7 +29,7 @@ namespace NakedObjects.Rest.Model {
         private static Task BindFromQuery(ModelBindingContext bindingContext) {
             return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
                 async () => ModelBinderUtils.CreateSimpleArgumentMap(bindingContext.HttpContext.Request.QueryString.ToString()) ??
-                            ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeQueryString(bindingContext), false),
+                            ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeQueryString(bindingContext), true),
                 ModelBinderUtils.CreateMalformedArguments<ArgumentMap>);
         }
     }
