@@ -251,7 +251,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate(SegmentValues.Services + "/{oid}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Params + "/{paramId}");
             //return template.BindByPosition(prefix, CachedType, action.Id, param.Id);
 
-            return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
+            return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
         }
 
         public Uri GetParamUri() {
