@@ -264,7 +264,9 @@ namespace NakedObjects.Rest.Model {
             }
 
             var args = new ArgumentMap();
+            args.ReservedArguments = new ReservedArguments();
             PopulateSimpleArgumentMap(collection, args);
+            PopulateReservedArgs(collection, args.ReservedArguments);
             return args;
         }
 
