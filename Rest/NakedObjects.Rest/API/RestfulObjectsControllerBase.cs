@@ -972,8 +972,6 @@ namespace NakedObjects.Rest {
             return (new ArgumentsContextFacade {
                 Digest = GetIfMatchTag(),
                 Values = map,
-                Page = flags.Page,
-                PageSize = flags.PageSize,
                 ValidateOnly = flags.ValidateOnly
             }, flags);
         }
@@ -984,8 +982,6 @@ namespace NakedObjects.Rest {
             return new ArgumentsContextFacade {
                 Digest = GetIfMatchTag(),
                 Values = dictionary,
-                Page = flags.Page,
-                PageSize = flags.PageSize,
                 ValidateOnly = flags.ValidateOnly
             };
         }
@@ -999,8 +995,6 @@ namespace NakedObjects.Rest {
                 Digest = ignoreConcurrency ? null : GetIfMatchTag(),
                 Values = map,
                 ValidateOnly = flags.ValidateOnly,
-                Page = flags.Page,
-                PageSize = flags.PageSize,
                 ExpectedActionType = GetExpectedMethodType(new HttpMethod(Request.Method))
             };
             return (facade, flags);
@@ -1011,7 +1005,7 @@ namespace NakedObjects.Rest {
             return (new ArgumentContextFacade {
                 Digest = GetIfMatchTag(),
                 Value = value,
-                ValidateOnly = flags.ValidateOnly,
+                ValidateOnly = flags.ValidateOnly
             }, flags);
         }
 
