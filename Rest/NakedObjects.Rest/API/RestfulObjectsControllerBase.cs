@@ -1001,6 +1001,7 @@ namespace NakedObjects.Rest {
                 ValidateOnly = flags.ValidateOnly,
                 Page = flags.Page,
                 PageSize = flags.PageSize,
+                SearchTerm = arguments.ReservedArguments?.SearchTerm,
                 ExpectedActionType = GetExpectedMethodType(new HttpMethod(Request.Method))
             };
             return (facade, flags);
