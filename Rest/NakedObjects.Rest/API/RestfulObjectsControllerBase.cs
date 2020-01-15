@@ -874,6 +874,19 @@ namespace NakedObjects.Rest {
         private ActionResult RepresentationResult(RestSnapshot ss) {
             ss.Populate();
             SetHeaders(ss);
+            
+            // there maybe better way of doing 
+            var attachmentRepresentation = ss.Representation as AttachmentRepresentation;
+
+            if (attachmentRepresentation != null) {
+                var msg = ControllerContext.HttpContext.Response;
+                var responseHeaders = msg.GetTypedHeaders();
+
+                responseHeaders.Append(HeaderNames.ContentDisposition, attachmentRepresentation.ContentDisposition.ToString());
+
+                return File(attachmentRepresentation.AsStream, attachmentRepresentation.GetContentType().ToString());
+            }
+
             return new JsonResult(ss.Representation);
         }
 
