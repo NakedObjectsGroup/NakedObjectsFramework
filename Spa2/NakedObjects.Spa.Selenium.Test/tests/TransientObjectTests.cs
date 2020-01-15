@@ -350,7 +350,10 @@ namespace NakedObjects.Selenium {
             SaveButton(Pane.Left).AssertIsEnabled().AssertHasTooltip("");
 
             Click(SaveButton(Pane.Left));
+            
+            // US/UK locale
             var date = today.ToString("M/d/yyyy") + " 12:00:00 AM";
+            //var date = today.ToString("dd/MM/yyyy") + " 00:00:00";
             WaitForView(Pane.Left, PaneType.Object, date);
         }
     }

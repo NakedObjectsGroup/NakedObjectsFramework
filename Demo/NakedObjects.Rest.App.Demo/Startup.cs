@@ -43,7 +43,7 @@ namespace NakedObjects.Rest.App.Demo {
                             "https://nakedobjectstest2.azurewebsites.net",
                             "http://localhost")
                         .AllowAnyHeader()
-                        .WithExposedHeaders("Warning","ETag")
+                        .WithExposedHeaders("Warning","ETag", "Set-Cookie")
                         .AllowAnyMethod()
                         .AllowCredentials();
                 });

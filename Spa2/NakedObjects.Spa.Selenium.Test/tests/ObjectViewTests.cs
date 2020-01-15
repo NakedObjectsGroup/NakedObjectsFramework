@@ -285,7 +285,10 @@ namespace NakedObjects.Selenium {
 
             var title = row.FindElements(By.CssSelector(".cell"))[0];
             Click(title);
+
+            // US/UK locales 
             WaitForView(Pane.Single, PaneType.Object, "$11.00 from 3/9/2003");
+            //WaitForView(Pane.Single, PaneType.Object, "£11.00 from 09/03/2003");
         }
 
         public virtual void QueryOnlyActionDoesNotReloadAutomatically() {
