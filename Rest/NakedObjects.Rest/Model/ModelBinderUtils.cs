@@ -26,6 +26,18 @@ namespace NakedObjects.Rest.Model {
     public static class ModelBinderUtils {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(ModelBinderUtils));
 
+        private static string ExceptionWarning(Exception e) {
+            if (RestSnapshot.DebugWarnings) {
+                var msg = e.Message;
+                var st = e.StackTrace.Replace("\r", " ").Replace("\n", " ");
+
+                return $"{msg} {st}";
+            }
+
+            return "";
+        }
+
+
         private static bool IsReservedName(string name) {
             return name.StartsWith(RestControlFlags.ReservedPrefix);
         }
@@ -159,7 +171,7 @@ namespace NakedObjects.Rest.Model {
                 catch (Exception e) {
                     Logger.ErrorFormat("Malformed single value argument: {0}", e.Message);
                     arg.IsMalformed = true;
-                    arg.MalformedReason = RestSnapshot.DebugWarnings ? e.Message + (e.StackTrace ?? "") : "";
+                    arg.MalformedReason = ExceptionWarning(e);
                 }
             }
 
@@ -197,7 +209,7 @@ namespace NakedObjects.Rest.Model {
                 catch (Exception e) {
                     Logger.ErrorFormat("Malformed argument map: {0}", e.Message);
                     arg.IsMalformed = true;
-                    arg.MalformedReason = RestSnapshot.DebugWarnings ? e.Message + (e.StackTrace ?? "") : "";
+                    arg.MalformedReason = ExceptionWarning(e);
                 }
             }
             else {
@@ -295,7 +307,7 @@ namespace NakedObjects.Rest.Model {
                 }
                 catch (Exception e) {
                     LogManager.GetLogger<ArgumentMapBinder>().ErrorFormat("Parsing of request arguments failed: {0}", e.Message);
-                    bindingContext.Result = ModelBindingResult.Success(failFunc(e.Message + (e.StackTrace ?? "")));
+                    bindingContext.Result = ModelBindingResult.Success(failFunc(ExceptionWarning(e)));
                 }
             }
             catch (Exception) {
@@ -334,7 +346,7 @@ namespace NakedObjects.Rest.Model {
             catch (Exception e) {
                 Logger.ErrorFormat("Malformed reserved arguments: {0}", e.Message);
                 args.IsMalformed = true;
-                args.MalformedReason = RestSnapshot.DebugWarnings ? e.Message + (e.StackTrace ?? "") : "";
+                args.MalformedReason = ExceptionWarning(e);
             }
         }
 
