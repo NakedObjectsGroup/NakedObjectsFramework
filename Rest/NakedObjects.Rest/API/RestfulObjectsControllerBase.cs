@@ -19,7 +19,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.Net.Http.Headers;
-using Microsoft.VisualBasic;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.API;
@@ -683,7 +682,10 @@ namespace NakedObjects.Rest {
 
         private RestControlFlags GetFlags(ArgumentMap arguments) {
             if (arguments.IsMalformed || arguments.ReservedArguments == null) {
-                throw new BadRequestNOSException("Malformed arguments"); // todo i18n
+                var errorMsg = arguments.IsMalformed ? arguments.MalformedReason : "Reserved args = null";
+                var msg = $"Malformed arguments{(RestSnapshot.DebugWarnings ? " : " + errorMsg : "")}";
+
+                throw new BadRequestNOSException(msg); // todo i18n
             }
 
             return GetFlagsFromArguments(arguments.ReservedArguments);
@@ -691,7 +693,10 @@ namespace NakedObjects.Rest {
 
         private RestControlFlags GetFlags(SingleValueArgument arguments) {
             if (arguments.IsMalformed || arguments.ReservedArguments == null) {
-                throw new BadRequestNOSException("Malformed arguments"); // todo i18n
+                var errorMsg = arguments.IsMalformed ? arguments.MalformedReason : "Reserved args = null";
+                var msg = $"Malformed arguments{(RestSnapshot.DebugWarnings ? " : " + errorMsg : "")}";
+
+                throw new BadRequestNOSException(msg); // todo i18n
             }
 
             return GetFlagsFromArguments(arguments.ReservedArguments);
@@ -913,7 +918,9 @@ namespace NakedObjects.Rest {
 
         private static void ValidateArguments(ArgumentMap arguments, bool errorIfNone = true) {
             if (arguments.IsMalformed) {
-                throw new BadRequestNOSException("Malformed arguments"); // todo i18n
+                var msg = $"Malformed arguments{(RestSnapshot.DebugWarnings ? " : " + arguments.MalformedReason : "")}";
+
+                throw new BadRequestNOSException(msg); // todo i18n
             }
 
             if (!arguments.HasValue && errorIfNone) {
@@ -923,7 +930,9 @@ namespace NakedObjects.Rest {
 
         private static void ValidateArguments(SingleValueArgument arguments, bool errorIfNone = true) {
             if (arguments.IsMalformed) {
-                throw new BadRequestNOSException("Malformed arguments"); // todo i18n
+                var msg = $"Malformed arguments{(RestSnapshot.DebugWarnings ? " : " + arguments.MalformedReason : "")}"; 
+
+                throw new BadRequestNOSException(msg); // todo i18n
             }
 
             if (!arguments.HasValue && errorIfNone) {

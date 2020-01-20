@@ -8,6 +8,7 @@
 namespace NakedObjects.Rest.Model {
     public abstract class Arguments {
         public bool IsMalformed { get; set; } = false;
+        public string MalformedReason = "";
 
         public ReservedArguments ReservedArguments { get; set; } = null;
     }

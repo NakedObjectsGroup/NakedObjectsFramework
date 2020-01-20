@@ -10,12 +10,12 @@ namespace NakedObjects.Rest.Model {
         public virtual bool? InlinePropertyDetails { get; set; }
         public virtual bool ValidateOnly { get; set; }
         public virtual string DomainModel { get; set; }
-        public virtual int ReservedArgumentsCount { get; set; }
-        public virtual bool IsMalformed { get; set; }
+        //public virtual int ReservedArgumentsCount { get; set; }
+        //public virtual bool IsMalformed { get; set; }
         public string SearchTerm { get; set; }
         public int Page { get; set; }
         public int PageSize { get; set; }
-        public virtual bool HasValue => false;
+        //public virtual bool HasValue => false;
         public virtual bool? InlineCollectionItems { get; set; }
     }
 }

@@ -159,6 +159,7 @@ namespace NakedObjects.Rest.Model {
                 catch (Exception e) {
                     Logger.ErrorFormat("Malformed single value argument: {0}", e.Message);
                     arg.IsMalformed = true;
+                    arg.MalformedReason = RestSnapshot.DebugWarnings ? e.Message : "";
                 }
             }
 
@@ -196,6 +197,7 @@ namespace NakedObjects.Rest.Model {
                 catch (Exception e) {
                     Logger.ErrorFormat("Malformed argument map: {0}", e.Message);
                     arg.IsMalformed = true;
+                    arg.MalformedReason = RestSnapshot.DebugWarnings ? e.Message : "";
                 }
             }
             else {
@@ -248,8 +250,8 @@ namespace NakedObjects.Rest.Model {
             return InitArgumentMap<PromptArgumentMap>(jObject, PopulatePromptArgumentMap, includeReservedArgs);
         }
 
-        public static T CreateMalformedArguments<T>() where T : Arguments, new() {
-            return new T {IsMalformed = true};
+        public static T CreateMalformedArguments<T>(string msg) where T : Arguments, new() {
+            return new T {IsMalformed = true, MalformedReason = RestSnapshot.DebugWarnings ? msg : ""};
         }
 
         private static void PopulateSimpleArgumentMap(NameValueCollection collection, ArgumentMap args) {
@@ -263,10 +265,9 @@ namespace NakedObjects.Rest.Model {
                 return null;
             }
 
-            var args = new ArgumentMap();
-            args.ReservedArguments = new ReservedArguments();
+            var args = new ArgumentMap {ReservedArguments = new ReservedArguments()};
             PopulateSimpleArgumentMap(collection, args);
-            PopulateReservedArgs(collection, args.ReservedArguments);
+            PopulateReservedArgs(collection, args);
             return args;
         }
 
@@ -287,14 +288,14 @@ namespace NakedObjects.Rest.Model {
             return await DeserializeJsonStreamAsync(stream);
         }
 
-        public static async Task BindModelOnSuccessOrFail<T>(ModelBindingContext bindingContext, Func<Task<T>> parseFunc, Func<T> failFunc) {
+        public static async Task BindModelOnSuccessOrFail<T>(ModelBindingContext bindingContext, Func<Task<T>> parseFunc, Func<string, T> failFunc) {
             try {
                 try {
                     bindingContext.Result = ModelBindingResult.Success(await parseFunc());
                 }
                 catch (Exception e) {
                     LogManager.GetLogger<ArgumentMapBinder>().ErrorFormat("Parsing of request arguments failed: {0}", e.Message);
-                    bindingContext.Result = ModelBindingResult.Success(failFunc());
+                    bindingContext.Result = ModelBindingResult.Success(failFunc(e.Message));
                 }
             }
             catch (Exception) {
@@ -312,8 +313,10 @@ namespace NakedObjects.Rest.Model {
             return DeserializeBinaryContent(bindingContext);
         }
 
-        private static void PopulateReservedArgs(NameValueCollection collection, ReservedArguments args) {
+        private static void PopulateReservedArgs(NameValueCollection collection, Arguments args) {
             try {
+                var reservedArgs = args.ReservedArguments;
+
                 string voFlag = collection[RestControlFlags.ValidateOnlyReserved];
                 string domainModel = collection[RestControlFlags.DomainModelReserved];
                 string page = collection[RestControlFlags.PageReserved];
@@ -321,29 +324,30 @@ namespace NakedObjects.Rest.Model {
                 string inlineFlag = collection[RestControlFlags.InlinePropertyDetailsReserved];
                 string inlineItemsFlag = collection[RestControlFlags.InlineCollectionItemsReserved];
 
-                args.ValidateOnly = voFlag != null && bool.Parse(voFlag);
-                args.DomainModel = domainModel;
-                args.Page = page != null ? int.Parse(page) : 0;
-                args.PageSize = pageSize != null ? int.Parse(pageSize) : 0;
-                args.InlinePropertyDetails = inlineFlag != null ? bool.Parse(inlineFlag) : (bool?) null;
-                args.InlineCollectionItems = inlineItemsFlag != null ? bool.Parse(inlineItemsFlag) : (bool?) null;
+                reservedArgs.ValidateOnly = voFlag != null && bool.Parse(voFlag);
+                reservedArgs.DomainModel = domainModel;
+                reservedArgs.Page = page != null ? int.Parse(page) : 0;
+                reservedArgs.PageSize = pageSize != null ? int.Parse(pageSize) : 0;
+                reservedArgs.InlinePropertyDetails = inlineFlag != null ? bool.Parse(inlineFlag) : (bool?) null;
+                reservedArgs.InlineCollectionItems = inlineItemsFlag != null ? bool.Parse(inlineItemsFlag) : (bool?) null;
             }
             catch (Exception e) {
                 Logger.ErrorFormat("Malformed reserved arguments: {0}", e.Message);
                 args.IsMalformed = true;
+                args.MalformedReason = RestSnapshot.DebugWarnings ? e.Message : "";
             }
         }
 
-        public static ReservedArguments CreateReservedArguments(string query) {
-            NameValueCollection collection = HttpUtility.ParseQueryString(query);
-            var args = new ReservedArguments();
-            PopulateReservedArgs(collection, args);
-            return args;
-        }
+        //public static ReservedArguments CreateReservedArguments(string query) {
+        //    NameValueCollection collection = HttpUtility.ParseQueryString(query);
+        //    var args = new ReservedArguments();
+        //    PopulateReservedArgs(collection, args);
+        //    return args;
+        //}
 
-        public static ReservedArguments CreateReservedArgumentsForMalformedArgs() {
-            return new ReservedArguments {IsMalformed = true};
-        }
+        //public static ReservedArguments CreateReservedArgumentsForMalformedArgs() {
+        //    return new ReservedArguments {IsMalformed = true};
+        //}
 
         public static bool IsGet(this HttpRequest request)
             => new HttpMethod(request.Method) == HttpMethod.Get;
