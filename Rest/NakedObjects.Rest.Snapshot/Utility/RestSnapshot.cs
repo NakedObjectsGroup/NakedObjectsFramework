@@ -13,7 +13,6 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Security.Principal;
-using System.Web.Http;
 using Common.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
@@ -35,6 +34,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         static RestSnapshot() {
             AcceptHeaderStrict = true;
+            DebugWarnings = true;
         }
 
         private RestSnapshot(IOidStrategy oidStrategy, HttpRequest req, bool validateAsJson) {
@@ -186,6 +186,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public static bool AcceptHeaderStrict { get; set; }
 
+        public static bool DebugWarnings { get; set; }
+
         public Representation Representation { get; private set; }
 
         public Uri Location { get; set; }
@@ -273,7 +275,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                     return;
                 }
 
-                throw new ValidationException((int)HttpStatusCode.NotAcceptable);
+                var msg = DebugWarnings ? $"Failed incoming MT validation: {string.Join(',', incomingMediaTypes.Select(mt => mt.MediaType.ToString()).ToArray())}" : "";
+
+                throw new ValidationException((int)HttpStatusCode.NotAcceptable, msg);
             }
         }
 
@@ -296,7 +300,10 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             var outgoingMediaType = contentType == null ? "" : contentType.MediaType;
 
             if (!incomingMediaTypes.Contains(outgoingMediaType)) {
-                throw new ValidationException((int)HttpStatusCode.NotAcceptable);
+
+                var msg = DebugWarnings ? $"Failed outgoing attachment MT validation ic: {string.Join(',', incomingMediaTypes.ToArray())} og: {outgoingMediaType}" : "";
+
+                throw new ValidationException((int)HttpStatusCode.NotAcceptable, msg);
             }
         }
 
@@ -314,8 +321,10 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                     HttpStatusCode = HttpStatusCode.NotAcceptable;
                 }
                 else {
+                    var msg = DebugWarnings ? $"Failed outgoing json MT validation ic: {string.Join(',', incomingProfiles.ToArray())} og: {string.Join(',', outgoingProfiles.ToArray())}" : "";
+
                     // outgoing profile not included in incoming profiles and not already an error so throw a 406
-                    throw new ValidationException((int)HttpStatusCode.NotAcceptable);
+                    throw new ValidationException((int)HttpStatusCode.NotAcceptable, msg);
                 }
             }
         }

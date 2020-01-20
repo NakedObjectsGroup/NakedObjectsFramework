@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.Net.Http.Headers;
+using Microsoft.VisualBasic;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.API;
@@ -763,12 +764,18 @@ namespace NakedObjects.Rest {
             m.Expires = new DateTimeOffset(now).Add(new TimeSpan(0, 0, 0, cacheTime));
         }
 
+        private void AppendWarningHeader(ResponseHeaders responseHeaders, string warning) {
+            if (!string.IsNullOrWhiteSpace(warning)) {
+                responseHeaders.Append(HeaderNames.Warning, warning);
+            }
+        }
+
         private void SetHeaders(RestSnapshot ss) {
             var msg = ControllerContext.HttpContext.Response;
-            var responseHeaders = msg.GetTypedHeaders();
+            var responseHeaders = GetResponseHeaders();
 
             foreach (WarningHeaderValue w in ss.WarningHeaders) {
-                responseHeaders.Append(HeaderNames.Warning, w.ToString());
+                AppendWarningHeader(responseHeaders, w.ToString());
             }
 
             foreach (string allowHeader in ss.AllowHeaders) {
@@ -799,7 +806,10 @@ namespace NakedObjects.Rest {
 
         private void ValidateDomainModel() {
             if (DomainModel != null && DomainModel != RestControlFlags.DomainModelType.Simple.ToString().ToLower() && DomainModel != RestControlFlags.DomainModelType.Formal.ToString().ToLower()) {
-                throw new ValidationException((int) HttpStatusCode.BadRequest);
+
+                var msg = RestSnapshot.DebugWarnings ? $"Domain model invalid: {DomainModel}" : "";
+
+                throw new ValidationException((int) HttpStatusCode.BadRequest, msg);
             }
         }
 
@@ -825,6 +835,7 @@ namespace NakedObjects.Rest {
                 success = true;
             }
             catch (ValidationException validationException) {
+                AppendWarningHeader(GetResponseHeaders(), validationException.Message);
                 return StatusCode(validationException.StatusCode);
             }
             catch (RedirectionException redirectionException) {
@@ -857,6 +868,7 @@ namespace NakedObjects.Rest {
                 return RepresentationResult(ss);
             }
             catch (ValidationException validationException) {
+                AppendWarningHeader(GetResponseHeaders(), validationException.Message);
                 return StatusCode(validationException.StatusCode);
             }
             catch (NakedObjectsFacadeException e) {
@@ -871,6 +883,9 @@ namespace NakedObjects.Rest {
         private ActionResult ErrorResult(Exception e) => 
             RepresentationResult(new RestSnapshot(OidStrategy, e, Request));
 
+        private ResponseHeaders GetResponseHeaders() =>
+            ControllerContext.HttpContext.Response.GetTypedHeaders();
+
         private ActionResult RepresentationResult(RestSnapshot ss) {
             ss.Populate();
             SetHeaders(ss);
@@ -879,8 +894,7 @@ namespace NakedObjects.Rest {
             var attachmentRepresentation = ss.Representation as AttachmentRepresentation;
 
             if (attachmentRepresentation != null) {
-                var msg = ControllerContext.HttpContext.Response;
-                var responseHeaders = msg.GetTypedHeaders();
+                var responseHeaders = GetResponseHeaders();
 
                 responseHeaders.Append(HeaderNames.ContentDisposition, attachmentRepresentation.ContentDisposition.ToString());
 
@@ -892,7 +906,8 @@ namespace NakedObjects.Rest {
 
         private static void RejectRequestIfReadOnly() {
             if (IsReadOnly) {
-                throw new ValidationException((int) HttpStatusCode.Forbidden);
+                var msg = RestSnapshot.DebugWarnings ?  "In readonly mode" : "";
+                throw new ValidationException((int) HttpStatusCode.Forbidden, msg);
             }
         }
 

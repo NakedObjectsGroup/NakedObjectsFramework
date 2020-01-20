@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class ValidationException : Exception {
-        public ValidationException(int statusCode) {
+        public ValidationException(int statusCode, string message) : base(message) {
             StatusCode = statusCode;
         }
 
