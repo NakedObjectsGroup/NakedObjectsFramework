@@ -42,14 +42,11 @@ namespace NakedObjects.Rest.Model {
             return name.StartsWith(RestControlFlags.ReservedPrefix);
         }
 
-        public static Task<JObject> DeserializeJsonStreamAsync(Stream stream) {
-            if (!stream.CanRead) {
-                return new Task<JObject>(() => new JObject());
-            }
+        public static async Task<JObject> DeserializeJsonStreamAsync(Stream stream) {
 
             using var streamReader = new StreamReader(stream, new UTF8Encoding(false, true));
             using var jsonTextReader = new JsonTextReader(streamReader);
-            return JObject.LoadAsync(jsonTextReader);
+            return await JObject.LoadAsync(jsonTextReader);
         }
 
         public static byte[] DeserializeBinaryStream(Stream stream) {
