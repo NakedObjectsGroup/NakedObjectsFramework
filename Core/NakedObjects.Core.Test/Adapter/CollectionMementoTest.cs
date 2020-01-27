@@ -145,7 +145,7 @@ namespace NakedObjects.Core.Test.Adapter {
 
         protected override IDictionary<string, string> Configuration() {
             var config = base.Configuration();
-            config["ConnectionStrings:TestContext"] = @"Data Source=.\SQLEXPRESS;Initial Catalog=CodeSystemTest;Integrated Security=True;";
+            config["ConnectionStrings:TestContext"] = @"Server=(localdb);Initial Catalog=CodeSystemTest;Integrated Security=True;";
             return config;
         }
 
