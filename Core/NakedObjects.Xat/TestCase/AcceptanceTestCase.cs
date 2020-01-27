@@ -8,10 +8,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using Common.Logging;
+using Microsoft.Extensions.Configuration.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -20,14 +24,18 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Fixture;
 using NakedObjects.Core.Util;
+using NakedObjects.DependencyInjection;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using Microsoft.Extensions.Hosting;
+
 
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
         private static readonly ILog Log;
-        private readonly Lazy<IUnityContainer> unityContainer;
+
+        private readonly Lazy<IServiceProvider> serviceProvider;
         private FixtureServices fixtureServices;
         private IDictionary<string, ITestService> servicesCache = new Dictionary<string, ITestService>();
         private ITestObjectFactory testObjectFactory;
@@ -37,14 +45,28 @@ namespace NakedObjects.Xat {
             Log = LogManager.GetLogger(typeof (AcceptanceTestCase));
         }
 
-        protected AcceptanceTestCase(string name) {
-            Name = name;
+        private IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((hostContext, configBuilder) => {
+                    var config = new MemoryConfigurationSource
+                    {
+                        InitialData = Configuration()
+                    };
+                    configBuilder.Add(config);
+                })
+                .ConfigureServices((hostContext, services) => {
+                    RegisterTypes(services);
+                });
+        
 
-            unityContainer = new Lazy<IUnityContainer>(() => {
-                var c = new UnityContainer();
-                RegisterTypes(c);
-                return c;
-            });
+        protected AcceptanceTestCase(string name)
+        {
+            Name = name;
+            DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
+
+            var host = CreateHostBuilder(new string[]{}).Build();
+            
+            serviceProvider = new Lazy<IServiceProvider>(() => host.Services);
         }
 
         protected AcceptanceTestCase() : this("Unnamed") {}
@@ -129,7 +151,7 @@ namespace NakedObjects.Xat {
 
         protected virtual void StartTest() {
 #pragma warning disable 618
-            NakedObjectsContext = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
+            NakedObjectsContext = GetConfiguredContainer().GetService<INakedObjectsFramework>();
 #pragma warning restore 618
         }
 
@@ -205,7 +227,7 @@ namespace NakedObjects.Xat {
         protected virtual void RunFixtures() {
 #pragma warning disable 618
             if (NakedObjectsContext == null) {
-                NakedObjectsContext = GetConfiguredContainer().Resolve<INakedObjectsFramework>();
+                NakedObjectsContext = GetConfiguredContainer().GetService<INakedObjectsFramework>();
             }
 #pragma warning restore 618
             InstallFixtures(NakedObjectsFramework.TransactionManager, NakedObjectsFramework.DomainObjectInjector, Fixtures);
@@ -311,7 +333,7 @@ namespace NakedObjects.Xat {
 
         protected static void InitializeNakedObjectsFramework(AcceptanceTestCase tc) {
             tc.servicesCache = new Dictionary<string, ITestService>();
-            tc.GetConfiguredContainer().Resolve<IReflector>().Reflect();
+            tc.GetConfiguredContainer().GetService<IReflector>().Reflect();
         }
 
         protected static void CleanupNakedObjectsFramework(AcceptanceTestCase tc) {           
@@ -320,32 +342,44 @@ namespace NakedObjects.Xat {
             tc.testObjectFactory = null;
         }
 
-        protected virtual void RegisterTypes(IUnityContainer container) {
+        protected virtual void RegisterTypes(IServiceCollection services) {
             //Standard configuration
-            StandardUnityConfig.RegisterStandardFacetFactories(container);
-            StandardUnityConfig.RegisterCoreContainerControlledTypes(container);
-            StandardUnityConfig.RegisterCorePerTransactionTypes<PerResolveLifetimeManager>(container);
+            ParallelConfig.RegisterStandardFacetFactories(services);
+            ParallelConfig.RegisterCoreSingletonTypes(services);
+            ParallelConfig.RegisterCoreScopedTypes(services);
 
-            container.RegisterType<IPrincipal>(new InjectionFactory(c => TestPrincipal));
-            container.RegisterInstance<IEntityObjectStoreConfiguration>(Persistor, new ContainerControlledLifetimeManager());
+            // config 
+            services.AddSingleton<IReflectorConfiguration>(Reflector);
+            services.AddSingleton<IEntityObjectStoreConfiguration>(Persistor);
 
-            ReflectorConfiguration.NoValidate = true;
+            //Externals
+            services.AddScoped<IPrincipal>(p => TestPrincipal);
+            services.AddScoped<ISession, TestSession>();
+        }
 
-            var reflectorConfig = new ReflectorConfiguration(
-                Types ?? new Type[] {},
-                Services,
-                Namespaces ?? new string[] {},
-                MainMenus);
+        protected virtual IDictionary<string, string> Configuration() {
+            return new Dictionary<string, string> {
+                {"NakedObjects:HashMapCapacity", "10"}
+            };
+        }
 
-            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
-            container.RegisterType<ISession, TestSession>(new PerResolveLifetimeManager());
+        private ReflectorConfiguration Reflector {
+            get {
+                var reflectorConfig = new ReflectorConfiguration(
+                    Types ?? new Type[] { },
+                    this.Services,
+                    Namespaces ?? new string[] { },
+                    MainMenus);
+                ReflectorConfiguration.NoValidate = true;
+                return reflectorConfig;
+            }
         }
 
         /// <summary>
         ///     Gets the configured Unity unityContainer.
         /// </summary>
-        protected virtual IUnityContainer GetConfiguredContainer() {
-            return unityContainer.Value;
+        protected virtual IServiceProvider GetConfiguredContainer() {
+            return serviceProvider.Value;
         }
     }
 
