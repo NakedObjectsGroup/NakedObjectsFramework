@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
@@ -16,6 +17,8 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
+
+[assembly:InternalsVisibleTo("NakedObjects.Metamodel.Test")]
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]

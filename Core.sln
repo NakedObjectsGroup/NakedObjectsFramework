@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Xat", "Core\Na
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Xat.Package", "Core\NakedObjects.Xat.Package\NakedObjects.Xat.Package.csproj", "{E17914F0-02FD-4C5C-A92C-5520436F2BDD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Metamodel.Test", "Core\NakedObjects.Metamodel.Test\NakedObjects.Metamodel.Test.csproj", "{5C607273-C219-496A-9698-CCF65EFA3BCB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{FC7E0077-E7DE-46C2-A913-0B8FA10EDF36}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E17914F0-02FD-4C5C-A92C-5520436F2BDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E17914F0-02FD-4C5C-A92C-5520436F2BDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C607273-C219-496A-9698-CCF65EFA3BCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C607273-C219-496A-9698-CCF65EFA3BCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C607273-C219-496A-9698-CCF65EFA3BCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C607273-C219-496A-9698-CCF65EFA3BCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

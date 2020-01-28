@@ -102,7 +102,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
         }
 
         protected override string DoEncode(T[] obj) {
-            var serializer = new DataContractSerializer(obj.GetType());
+            var serializer = new DataContractSerializer(typeof(T[]));
             var stream = new MemoryStream();
             serializer.WriteObject(stream, obj);
             stream.Position = 0;
