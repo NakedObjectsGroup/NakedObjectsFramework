@@ -14,6 +14,11 @@
     <dependencies>
       <group targetFramework="netcoreapp3.0">
         <dependency id="NakedObjects.Core" version="[11.0.0-beta01, 12)" />
+        <dependency id="Microsoft.Extensions.Hosting" Version="3.1.1" />
+        <dependency id="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
+        <dependency id="Microsoft.NET.Test.Sdk" Version="15.3.0" />
+        <dependency id="MSTest.TestAdapter" Version="1.1.18" />
+        <dependency id="MSTest.TestFramework" Version="1.1.18" />
       </group>
     </dependencies>
   </metadata>

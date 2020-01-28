@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Core.Test", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Xat", "Core\NakedObjects.Xat\NakedObjects.Xat.csproj", "{FC7E0077-E7DE-46C2-A913-0B8FA10EDF36}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Xat.Package", "Core\NakedObjects.Xat.Package\NakedObjects.Xat.Package.csproj", "{E17914F0-02FD-4C5C-A92C-5520436F2BDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,8 @@ Global
 		{FC7E0077-E7DE-46C2-A913-0B8FA10EDF36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC7E0077-E7DE-46C2-A913-0B8FA10EDF36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC7E0077-E7DE-46C2-A913-0B8FA10EDF36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E17914F0-02FD-4C5C-A92C-5520436F2BDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E17914F0-02FD-4C5C-A92C-5520436F2BDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
