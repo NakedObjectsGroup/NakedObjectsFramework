@@ -24,6 +24,7 @@
   </metadata>
   <files>
     <file src="icon.png" target="images\"/>
-    <file src="..\NakedObjects.Xat\bin\Debug\**\*.dll" target="lib"/>
+    <file src="..\NakedObjects.Xat\bin\Debug\**\NakedObjects.Xat.dll" target="lib"/>
+    <file src="..\NakedObjects.Xat\bin\Debug\**\NakedObjects.Xat.pdb" target="lib"/>
   </files>
 </package>
