@@ -12,7 +12,9 @@
 //using System.ComponentModel.DataAnnotations;
 //using System.IO;
 //using System.Linq;
-//using Microsoft.Practices.Unity;
+//using Microsoft.Extensions.Configuration.Memory;
+//using Microsoft.Extensions.DependencyInjection;
+//using Microsoft.Extensions.Hosting;
 //using Microsoft.VisualStudio.TestTools.UnitTesting;
 //using NakedObjects.Architecture.Component;
 //using NakedObjects.Architecture.Configuration;
@@ -22,38 +24,46 @@
 //using NakedObjects.Core.Util;
 //using NakedObjects.Menu;
 //using NakedObjects.Meta.Component;
+//using NakedObjects.ParallelReflect.Component;
 //using NakedObjects.Reflect.Component;
 //using NakedObjects.Reflect.FacetFactory;
 //using NakedObjects.Value;
 
 //using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+//using DefaultClassStrategy = NakedObjects.ParallelReflect.Component.DefaultClassStrategy;
 
-//namespace NakedObjects.Meta.Test {
-//    public class AbstractTestWithByteArray {
+//namespace NakedObjects.Meta.Test
+//{
+//    public class AbstractTestWithByteArray
+//    {
 //        public virtual object Ba { get; set; }
 //    }
 
-//    public class TestWithByteArray : AbstractTestWithByteArray {}
+//    public class TestWithByteArray : AbstractTestWithByteArray { }
 
-//    public class TestService {}
+//    public class TestService { }
 
-//    public class TestSimpleDomainObject {
+//    public class TestSimpleDomainObject
+//    {
 //        private IList<TestSimpleDomainObject> testCollection = new List<TestSimpleDomainObject>();
 //        public virtual TestSimpleDomainObject TestProperty { get; set; }
 
-//        public virtual IList<TestSimpleDomainObject> TestCollection {
+//        public virtual IList<TestSimpleDomainObject> TestCollection
+//        {
 //            get { return testCollection; }
 //            set { testCollection = value; }
 //        }
 
-//        public virtual TestSimpleDomainObject TestAction(TestSimpleDomainObject testParm) {
+//        public virtual TestSimpleDomainObject TestAction(TestSimpleDomainObject testParm)
+//        {
 //            return this;
 //        }
 //    }
 
 //    [Named("Test")]
 //    [IconName("aname")]
-//    public class TestAnnotatedDomainObject {
+//    public class TestAnnotatedDomainObject
+//    {
 //        private IList<TestAnnotatedDomainObject> testCollection = new List<TestAnnotatedDomainObject>();
 
 //        [Title]
@@ -61,7 +71,8 @@
 
 //        public virtual Image TestImage { get; set; }
 
-//        public virtual IList<TestAnnotatedDomainObject> TestCollection {
+//        public virtual IList<TestAnnotatedDomainObject> TestCollection
+//        {
 //            get { return testCollection; }
 //            set { testCollection = value; }
 //        }
@@ -90,48 +101,66 @@
 //        [ConcurrencyCheck]
 //        public virtual string TestConcurrency { get; set; }
 
-//        public virtual string[] ChoicesTestString() {
-//            return new string[] {};
+//        public virtual string[] ChoicesTestString()
+//        {
+//            return new string[] { };
 //        }
 
-//        public virtual string DefaultTestString() {
+//        public virtual string DefaultTestString()
+//        {
 //            return "";
 //        }
 
-//        public virtual string ValidateTestString(string tovalidate) {
+//        public virtual string ValidateTestString(string tovalidate)
+//        {
 //            return "";
 //        }
 
-//        public void Persisted() {}
+//        public void Persisted() { }
 
 //        [PageSize(20)]
-//        public IQueryable<TestAnnotatedDomainObject> AutoCompleteTestProperty([MinLength(2)] string name) {
+//        public IQueryable<TestAnnotatedDomainObject> AutoCompleteTestProperty([MinLength(2)] string name)
+//        {
 //            return null;
 //        }
 
 //        public virtual TestAnnotatedDomainObject TestAction(
-//            [Named("test"), DefaultValue(null)] TestAnnotatedDomainObject testParm) {
+//            [Named("test"), DefaultValue(null)] TestAnnotatedDomainObject testParm)
+//        {
 //            return this;
 //        }
 
 //        [PageSize(20)]
-//        public IQueryable<TestAnnotatedDomainObject> AutoComplete0TestAction([MinLength(2)] string name) {
+//        public IQueryable<TestAnnotatedDomainObject> AutoComplete0TestAction([MinLength(2)] string name)
+//        {
 //            return null;
 //        }
 
-//        public string DisableTestString(string value) {
+//        public string DisableTestString(string value)
+//        {
 //            return null;
 //        }
 //    }
 
-//    public enum TestEnum {
+//    public enum TestEnum
+//    {
 //        Value1,
 //        Value2
 //    };
 
 //    [TestClass]
-//    public class CacheTest {
+//    public class CacheTest
+//    {
 //        private string testDir;
+//        private Lazy<IServiceProvider> serviceProvider;
+//        private IHostBuilder hostBuilder;
+
+//        private IHostBuilder CreateHostBuilder(string[] args, IReflectorConfiguration rc, string file) =>
+//            Host.CreateDefaultBuilder(args)
+//                .ConfigureServices((hostContext, services) => {
+//                    RegisterTypes(services, rc, file);
+//                });
+
 
 //        [TestInitialize]
 //        public void Setup() {
@@ -141,30 +170,32 @@
 //            Directory.GetFiles(testDir).ForEach(File.Delete);
 //        }
 
-//        protected IUnityContainer GetContainer() {
-//            var c = new UnityContainer();
-//            RegisterTypes(c);
-//            return c;
+//        protected IServiceProvider GetContainer()
+//        {
+//            return serviceProvider.Value;
 //        }
 
-//        protected virtual void RegisterTypes(IUnityContainer container) {
-//            container.RegisterType<IFacetFactory, SystemClassMethodFilteringFactory>("UnsupportedParameterTypesMethodFilteringFactory", new ContainerControlledLifetimeManager(), new InjectionConstructor(0));
-//            container.RegisterType<IMenuFactory, NullMenuFactory>();
-//            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new ContainerControlledLifetimeManager(), new InjectionConstructor());
-//            container.RegisterType<IClassStrategy, DefaultClassStrategy>();
-//            container.RegisterType<IReflector, Reflector>();
-//            container.RegisterType<IMetamodel, Metamodel>();
-//            container.RegisterType<IMetamodelBuilder, Metamodel>();
+//        protected virtual void RegisterTypes(IServiceCollection services, IReflectorConfiguration rc, string file)
+//        {
+            
+//            services.AddSingleton<IFacetFactory, SystemClassMethodFilteringFactory>(p => new SystemClassMethodFilteringFactory(0));
+//            services.AddSingleton<IMenuFactory, NullMenuFactory>();
+//            services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
+//            services.AddSingleton<ParallelReflect.Component.DefaultClassStrategy, ParallelReflect.Component.DefaultClassStrategy>();
+//            services.AddSingleton<IClassStrategy>(p => new CachingClassStrategy(p.GetService<DefaultClassStrategy>()));
+//            services.AddSingleton<IReflector, Reflector>();
+//            services.AddSingleton<IMetamodel, Metamodel>();
+//            services.AddSingleton<IMetamodelBuilder, Metamodel>();
+//            services.AddSingleton<IReflectorConfiguration>(rc);
 //        }
 
-//        public void BinarySerialize(ReflectorConfiguration rc, string file) {
-//            IUnityContainer container = GetContainer();
+//        public void BinarySerialize(string file) {
+         
+//            var container = GetContainer();
 
-//            container.RegisterInstance<IReflectorConfiguration>(rc);
-
-//            var reflector = container.Resolve<IReflector>();
+//            var reflector = container.GetService<IReflector>();
 //            reflector.Reflect();
-//            var cache = container.Resolve<ISpecificationCache>();
+//            var cache = container.GetService<ISpecificationCache>();
 
 //            IEnumerable<string> f1 =
 //                cache.AllSpecifications().SelectMany(s => s.Fields)
@@ -176,84 +207,116 @@
 
 //            // ReSharper disable once UnusedVariable
 //            string ss = f1.Aggregate("", (s, t) => s + "field facet" + t + "\r\n");
-//            //Console.WriteLine(ss);
+//            // Console.WriteLine(ss);
 
 //            cache.Serialize(file);
 
 //            // and roundtrip 
+//            hostBuilder.ConfigureServices((hostContext, services) => {
+//                services.AddScoped<ISpecificationCache, ImmutableInMemorySpecCache>(p => new ImmutableInMemorySpecCache(file));
+//            });
 
-//            container.RegisterType<ISpecificationCache, ImmutableInMemorySpecCache>(new PerResolveLifetimeManager(),
-//                new InjectionConstructor(file));
-//            var newCache = container.Resolve<ISpecificationCache>();
+//            var newCache = container.GetService<ISpecificationCache>();
 //            CompareCaches(cache, newCache);
 //        }
 
 //        [TestMethod]
-//        public void BinarySerializeIntTypes() {
-//            var ss = new[] {typeof (int)};
-//            var ns = new[] {typeof (int).Namespace};
+//        public void BinarySerializeIntTypes()
+//        {
+//            var ss = new[] { typeof(int) };
+//            var ns = new[] { typeof(int).Namespace };
 //            ReflectorConfiguration.NoValidate = true;
 //            var rc = new ReflectorConfiguration(ss, ss, ns);
 //            string file = Path.Combine(testDir, "metadataint.bin");
-//            BinarySerialize(rc, file);
+
+//            InitTest(rc, file);
+
+//            BinarySerialize(file);
+//        }
+
+//        private void InitTest(ReflectorConfiguration rc, string file) {
+//            var host = (hostBuilder = CreateHostBuilder(new string[] { }, rc, file)).Build();
+//            serviceProvider = new Lazy<IServiceProvider>(() => host.Services);
 //        }
 
 //        [TestMethod]
-//        public void BinarySerializeImageTypes() {
-//            var ss = new[] {typeof (Image)};
-//            var ns = new[] {typeof (TestService).Namespace};
+//        public void BinarySerializeImageTypes()
+//        {
+//            var ss = new[] { typeof(Image) };
+//            var ns = new[] { typeof(TestService).Namespace };
 //            ReflectorConfiguration.NoValidate = true;
 
 //            var rc = new ReflectorConfiguration(ss, ss, ns);
 //            string file = Path.Combine(testDir, "metadataimg.bin");
-//            BinarySerialize(rc, file);
+
+//            InitTest(rc, file);
+
+
+//            BinarySerialize(file);
 //        }
 
 //        [TestMethod]
-//        public void BinarySerializeBaTypes() {
-//            var ss = new[] {typeof (AbstractTestWithByteArray)};
+//        public void BinarySerializeBaTypes()
+//        {
+//            var ss = new[] { typeof(AbstractTestWithByteArray) };
 
-//            var ns = new[] {typeof (AbstractTestWithByteArray).Namespace};
+//            var ns = new[] { typeof(AbstractTestWithByteArray).Namespace };
 //            ReflectorConfiguration.NoValidate = true;
 
-//            var rc = new ReflectorConfiguration(new[] {typeof (AbstractTestWithByteArray)}, ss, ns);
+//            var rc = new ReflectorConfiguration(new[] { typeof(AbstractTestWithByteArray) }, ss, ns);
 //            string file = Path.Combine(testDir, "metadataba.bin");
-//            BinarySerialize(rc, file);
+
+//            InitTest(rc, file);
+
+
+//            BinarySerialize(file);
 //        }
 
 //        [TestMethod]
-//        public void BinarySerializeEnumTypes() {
-//            var ss = new[] {typeof (TestEnum)};
-//            var ns = new[] {typeof (TestEnum).Namespace};
+//        public void BinarySerializeEnumTypes()
+//        {
+//            var ss = new[] { typeof(TestEnum) };
+//            var ns = new[] { typeof(TestEnum).Namespace };
 //            ReflectorConfiguration.NoValidate = true;
 
 //            var rc = new ReflectorConfiguration(ss, ss, ns);
 //            string file = Path.Combine(testDir, "metadataenum.bin");
-//            BinarySerialize(rc, file);
+
+//            InitTest(rc, file);
+
+//            BinarySerialize(file);
 //        }
 
 //        [TestMethod]
-//        public void BinarySerializeSimpleDomainObjectTypes() {
-//            var ns = new[] {typeof (TestSimpleDomainObject).Namespace};
+//        public void BinarySerializeSimpleDomainObjectTypes()
+//        {
+//            var ns = new[] { typeof(TestSimpleDomainObject).Namespace };
 //            ReflectorConfiguration.NoValidate = true;
 
-//            var rc = new ReflectorConfiguration(new[] {typeof (TestSimpleDomainObject)}, new[] {typeof (TestService)}, ns);
+//            var rc = new ReflectorConfiguration(new[] { typeof(TestSimpleDomainObject) }, new[] { typeof(TestService) }, ns);
 //            string file = Path.Combine(testDir, "metadatatsdo.bin");
-//            BinarySerialize(rc, file);
+
+//            InitTest(rc, file);
+
+//            BinarySerialize(file);
 //        }
 
 //        [TestMethod]
-//        public void BinarySerializeAnnotatedDomainObjectTypes() {
+//        public void BinarySerializeAnnotatedDomainObjectTypes()
+//        {
 //            ReflectorConfiguration.NoValidate = true;
 
-//            var rc = new ReflectorConfiguration(new[] {typeof (TestAnnotatedDomainObject)}, new[] {typeof (TestService)},
-//                new[] {typeof (TestService).Namespace});
-
+//            var rc = new ReflectorConfiguration(new[] { typeof(TestAnnotatedDomainObject) }, new[] { typeof(TestService) },
+//                new[] { typeof(TestService).Namespace });
 //            string file = Path.Combine(testDir, "metadatatado.bin");
-//            BinarySerialize(rc, file);
+
+//            InitTest(rc, file);
+
+//            BinarySerialize(file);
 //        }
 
-//        private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache) {
+//        private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache)
+//        {
 //            Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
 
 //            // checks for fields and Objects actions 
@@ -266,16 +329,18 @@
 
 //            Assert.IsTrue(newCache.AllSpecifications().Select(s => s.ObjectActions).All(fs => !fs.Any() || fs.All(f => f != null)), error);
 
-//            var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new {a, b});
+//            var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new { a, b });
 
-//            foreach (var item in zipped) {
+//            foreach (var item in zipped)
+//            {
 //                Assert.AreEqual(item.a.FullName, item.b.FullName);
 
 //                Assert.AreEqual(item.a.GetFacets().Count(), item.b.GetFacets().Count());
 
-//                var zipfacets = item.a.GetFacets().Zip(item.b.GetFacets(), (x, y) => new {x, y});
+//                var zipfacets = item.a.GetFacets().Zip(item.b.GetFacets(), (x, y) => new { x, y });
 
-//                foreach (var zipfacet in zipfacets) {
+//                foreach (var zipfacet in zipfacets)
+//                {
 //                    Assert.AreEqual(zipfacet.x.FacetType, zipfacet.y.FacetType);
 //                }
 //            }
@@ -283,20 +348,24 @@
 
 //        #region Nested type: NullMenuFactory
 
-//        public class NullMenuFactory : IMenuFactory {
+//        public class NullMenuFactory : IMenuFactory
+//        {
 //            #region IMenuFactory Members
 
-//            public IMenu NewMenu(string name) {
+//            public IMenu NewMenu(string name)
+//            {
 //                return null;
 //            }
 
-//            public IMenu NewMenu<T>(bool addAllActions, string name = null) {
+//            public IMenu NewMenu<T>(bool addAllActions, string name = null)
+//            {
 //                return null;
 //            }
 //            #endregion
 
 
-//            public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) {
+//            public IMenu NewMenu(Type type, bool addAllActions = false, string name = null)
+//            {
 //                return null;
 //            }
 //        }
@@ -305,80 +374,97 @@
 
 //        #region Nested type: SetWrapper
 
-//        public class SetWrapper<T> : ISet<T> {
+//        public class SetWrapper<T> : ISet<T>
+//        {
 //            private readonly ICollection<T> wrapped;
 
-//            public SetWrapper(ICollection<T> wrapped) {
+//            public SetWrapper(ICollection<T> wrapped)
+//            {
 //                this.wrapped = wrapped;
 //            }
 
 //            #region ISet<T> Members
 
-//            public IEnumerator<T> GetEnumerator() {
+//            public IEnumerator<T> GetEnumerator()
+//            {
 //                return wrapped.GetEnumerator();
 //            }
 
-//            IEnumerator IEnumerable.GetEnumerator() {
+//            IEnumerator IEnumerable.GetEnumerator()
+//            {
 //                return GetEnumerator();
 //            }
 
-//            public void UnionWith(IEnumerable<T> other) {}
-//            public void IntersectWith(IEnumerable<T> other) {}
-//            public void ExceptWith(IEnumerable<T> other) {}
-//            public void SymmetricExceptWith(IEnumerable<T> other) {}
+//            public void UnionWith(IEnumerable<T> other) { }
+//            public void IntersectWith(IEnumerable<T> other) { }
+//            public void ExceptWith(IEnumerable<T> other) { }
+//            public void SymmetricExceptWith(IEnumerable<T> other) { }
 
-//            public bool IsSubsetOf(IEnumerable<T> other) {
+//            public bool IsSubsetOf(IEnumerable<T> other)
+//            {
 //                return false;
 //            }
 
-//            public bool IsSupersetOf(IEnumerable<T> other) {
+//            public bool IsSupersetOf(IEnumerable<T> other)
+//            {
 //                return false;
 //            }
 
-//            public bool IsProperSupersetOf(IEnumerable<T> other) {
+//            public bool IsProperSupersetOf(IEnumerable<T> other)
+//            {
 //                return false;
 //            }
 
-//            public bool IsProperSubsetOf(IEnumerable<T> other) {
+//            public bool IsProperSubsetOf(IEnumerable<T> other)
+//            {
 //                return false;
 //            }
 
-//            public bool Overlaps(IEnumerable<T> other) {
+//            public bool Overlaps(IEnumerable<T> other)
+//            {
 //                return false;
 //            }
 
-//            public bool SetEquals(IEnumerable<T> other) {
+//            public bool SetEquals(IEnumerable<T> other)
+//            {
 //                return false;
 //            }
 
-//            public bool Add(T item) {
+//            public bool Add(T item)
+//            {
 //                wrapped.Add(item);
 //                return true;
 //            }
 
-//            void ICollection<T>.Add(T item) {
+//            void ICollection<T>.Add(T item)
+//            {
 //                wrapped.Add(item);
 //            }
 
-//            public void Clear() {
+//            public void Clear()
+//            {
 //                wrapped.Clear();
 //            }
 
-//            public bool Contains(T item) {
+//            public bool Contains(T item)
+//            {
 //                return false;
 //            }
 
-//            public void CopyTo(T[] array, int arrayIndex) {}
+//            public void CopyTo(T[] array, int arrayIndex) { }
 
-//            public bool Remove(T item) {
+//            public bool Remove(T item)
+//            {
 //                return false;
 //            }
 
-//            public int Count {
+//            public int Count
+//            {
 //                get { return wrapped.Count; }
 //            }
 
-//            public bool IsReadOnly {
+//            public bool IsReadOnly
+//            {
 //                get { return wrapped.IsReadOnly; }
 //            }
 
@@ -389,7 +475,8 @@
 
 //        #region Nested type: TestObjectWithByteArray
 
-//        public class TestObjectWithByteArray {
+//        public class TestObjectWithByteArray
+//        {
 //            public byte[] ByteArray { get; set; }
 //        }
 

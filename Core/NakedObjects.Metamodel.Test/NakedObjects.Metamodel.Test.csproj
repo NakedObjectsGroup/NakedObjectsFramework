@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.0.0" />
@@ -17,6 +20,8 @@
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj" />
     <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj" />
+    <ProjectReference Include="..\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj" />
+    <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
   </ItemGroup>
 
 </Project>
