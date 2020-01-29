@@ -7,11 +7,14 @@
 
 using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
+
+[assembly:InternalsVisibleTo("NakedObjects.ParallelReflector.Test")]
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]

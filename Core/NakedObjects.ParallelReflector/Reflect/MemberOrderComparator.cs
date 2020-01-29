@@ -7,9 +7,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+
+[assembly:InternalsVisibleTo("NakedObjects.ParallelReflector.Test")]
 
 namespace NakedObjects.ParallelReflect {
     /// <summary>
