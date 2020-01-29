@@ -12,7 +12,6 @@
 //using System.ComponentModel.DataAnnotations;
 //using System.IO;
 //using System.Linq;
-//using Microsoft.Extensions.Configuration.Memory;
 //using Microsoft.Extensions.DependencyInjection;
 //using Microsoft.Extensions.Hosting;
 //using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,8 +24,7 @@
 //using NakedObjects.Menu;
 //using NakedObjects.Meta.Component;
 //using NakedObjects.ParallelReflect.Component;
-//using NakedObjects.Reflect.Component;
-//using NakedObjects.Reflect.FacetFactory;
+//using NakedObjects.ParallelReflect.FacetFactory;
 //using NakedObjects.Value;
 
 //using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
@@ -157,13 +155,15 @@
 
 //        private IHostBuilder CreateHostBuilder(string[] args, IReflectorConfiguration rc, string file) =>
 //            Host.CreateDefaultBuilder(args)
-//                .ConfigureServices((hostContext, services) => {
+//                .ConfigureServices((hostContext, services) =>
+//                {
 //                    RegisterTypes(services, rc, file);
 //                });
 
 
 //        [TestInitialize]
-//        public void Setup() {
+//        public void Setup()
+//        {
 //            string curDir = Directory.GetCurrentDirectory();
 //            testDir = Path.Combine(curDir, "testmetadata");
 //            Directory.CreateDirectory(testDir);
@@ -177,20 +177,21 @@
 
 //        protected virtual void RegisterTypes(IServiceCollection services, IReflectorConfiguration rc, string file)
 //        {
-            
-//            services.AddSingleton<IFacetFactory, SystemClassMethodFilteringFactory>(p => new SystemClassMethodFilteringFactory(0));
-//            services.AddSingleton<IMenuFactory, NullMenuFactory>();
-//            services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
-//            services.AddSingleton<ParallelReflect.Component.DefaultClassStrategy, ParallelReflect.Component.DefaultClassStrategy>();
-//            services.AddSingleton<IClassStrategy>(p => new CachingClassStrategy(p.GetService<DefaultClassStrategy>()));
-//            services.AddSingleton<IReflector, Reflector>();
-//            services.AddSingleton<IMetamodel, Metamodel>();
-//            services.AddSingleton<IMetamodelBuilder, Metamodel>();
-//            services.AddSingleton<IReflectorConfiguration>(rc);
+
+//            services.AddScoped<IFacetFactory, SystemClassMethodFilteringFactory>(p => new SystemClassMethodFilteringFactory(0));
+//            services.AddScoped<IMenuFactory, NullMenuFactory>();
+//            services.AddScoped<ISpecificationCache, ImmutableInMemorySpecCache>();
+//            services.AddScoped<DefaultClassStrategy, DefaultClassStrategy>();
+//            services.AddScoped<IClassStrategy>(p => new CachingClassStrategy(p.GetService<DefaultClassStrategy>()));
+//            services.AddScoped<IReflector, ParallelReflector>();
+//            services.AddScoped<IMetamodel, Metamodel>();
+//            services.AddScoped<IMetamodelBuilder, Metamodel>();
+//            services.AddScoped<IReflectorConfiguration>(p => rc);
 //        }
 
-//        public void BinarySerialize(string file) {
-         
+//        public void BinarySerialize(string file)
+//        {
+
 //            var container = GetContainer();
 
 //            var reflector = container.GetService<IReflector>();
@@ -212,7 +213,8 @@
 //            cache.Serialize(file);
 
 //            // and roundtrip 
-//            hostBuilder.ConfigureServices((hostContext, services) => {
+//            hostBuilder.ConfigureServices((hostContext, services) =>
+//            {
 //                services.AddScoped<ISpecificationCache, ImmutableInMemorySpecCache>(p => new ImmutableInMemorySpecCache(file));
 //            });
 
@@ -234,7 +236,8 @@
 //            BinarySerialize(file);
 //        }
 
-//        private void InitTest(ReflectorConfiguration rc, string file) {
+//        private void InitTest(ReflectorConfiguration rc, string file)
+//        {
 //            var host = (hostBuilder = CreateHostBuilder(new string[] { }, rc, file)).Build();
 //            serviceProvider = new Lazy<IServiceProvider>(() => host.Services);
 //        }
