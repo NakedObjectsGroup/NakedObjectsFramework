@@ -31,7 +31,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Xat.Package", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Metamodel.Test", "Core\NakedObjects.Metamodel.Test\NakedObjects.Metamodel.Test.csproj", "{5C607273-C219-496A-9698-CCF65EFA3BCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.ParallelReflector.Test", "Core\NakedObjects.ParallelReflector.Test\NakedObjects.ParallelReflector.Test.csproj", "{B2114D36-4A5B-40FC-B85F-194641435265}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.ParallelReflector.Test", "Core\NakedObjects.ParallelReflector.Test\NakedObjects.ParallelReflector.Test.csproj", "{B2114D36-4A5B-40FC-B85F-194641435265}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly", "Core\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly.csproj", "{D0FBC51F-070B-4184-B1EE-D13B82159311}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Persistor.Entity.Test.CodeOnly", "Core\NakedObjects.Persistor.Entity.Test.CodeOnly\NakedObjects.Persistor.Entity.Test.CodeOnly.csproj", "{56302EDA-349C-46DA-9C84-339181308525}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Persistor.Entity.Test.SimpleDatabase", "Core\NakedObjects.Persistor.Entity.Test.SimpleDatabase\NakedObjects.Persistor.Entity.Test.SimpleDatabase.csproj", "{E1433A0A-8E1B-4E78-9CCB-5E8A4B5904B2}"
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedObjects.Persistor.Entity.Test", "Core\NakedObjects.Persistor.Entity.Test\NakedObjects.Persistor.Entity.Test.fsproj", "{AF5FC4A8-B97F-4AFA-8713-AC1F76CBF610}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Persistor.Test.Data", "Core\NakedObjects.Persistor.Test.Data\NakedObjects.Persistor.Test.Data.csproj", "{A29908D4-68F0-446D-A36D-A75CCDA73914}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Persistor.Test", "Core\NakedObjects.Persistor.Test\NakedObjects.Persistor.Test.csproj", "{5648E09A-3399-48A1-9757-61C6A5FB9555}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +107,30 @@ Global
 		{B2114D36-4A5B-40FC-B85F-194641435265}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2114D36-4A5B-40FC-B85F-194641435265}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2114D36-4A5B-40FC-B85F-194641435265}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0FBC51F-070B-4184-B1EE-D13B82159311}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0FBC51F-070B-4184-B1EE-D13B82159311}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0FBC51F-070B-4184-B1EE-D13B82159311}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0FBC51F-070B-4184-B1EE-D13B82159311}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56302EDA-349C-46DA-9C84-339181308525}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56302EDA-349C-46DA-9C84-339181308525}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56302EDA-349C-46DA-9C84-339181308525}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56302EDA-349C-46DA-9C84-339181308525}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1433A0A-8E1B-4E78-9CCB-5E8A4B5904B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1433A0A-8E1B-4E78-9CCB-5E8A4B5904B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1433A0A-8E1B-4E78-9CCB-5E8A4B5904B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1433A0A-8E1B-4E78-9CCB-5E8A4B5904B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF5FC4A8-B97F-4AFA-8713-AC1F76CBF610}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF5FC4A8-B97F-4AFA-8713-AC1F76CBF610}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF5FC4A8-B97F-4AFA-8713-AC1F76CBF610}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF5FC4A8-B97F-4AFA-8713-AC1F76CBF610}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A29908D4-68F0-446D-A36D-A75CCDA73914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A29908D4-68F0-446D-A36D-A75CCDA73914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A29908D4-68F0-446D-A36D-A75CCDA73914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A29908D4-68F0-446D-A36D-A75CCDA73914}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5648E09A-3399-48A1-9757-61C6A5FB9555}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5648E09A-3399-48A1-9757-61C6A5FB9555}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5648E09A-3399-48A1-9757-61C6A5FB9555}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5648E09A-3399-48A1-9757-61C6A5FB9555}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

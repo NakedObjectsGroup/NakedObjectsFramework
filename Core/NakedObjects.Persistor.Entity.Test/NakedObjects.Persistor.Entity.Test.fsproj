@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+    <GenerateProgramFile>false</GenerateProgramFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="TestTypes.fs" />
+    <Compile Include="TestCode.fs" />
+    <Compile Include="CodeOnlyTestCode.fs" />
+    <Compile Include="SystemTestCode.fs" />
+    <Compile Include="CodeOnlyCeTest.fs" />
+    <Compile Include="CodeOnlyTest.fs" />
+    <Compile Include="CodeSystemTest.fs" />
+    <Compile Include="DomainTestCode.fs" />
+    <Compile Include="DomainNoProxiesTest.fs" />
+    <Compile Include="DomainSystemTest.fs" />
+    <Compile Include="DomainTest.fs" />
+    <Compile Include="EntityTestSuite.fs" />
+    <Compile Include="ModelSystemTest.fs" />
+    <Compile Include="ModelTestCode.fs" />
+    <Compile Include="ModelTest.fs" />
+    <Compile Include="MultiDatabaseTestCode.fs" />
+    <Compile Include="AMultiDomainDatabaseTest.fs" />
+    <Compile Include="AMultiDatabaseTest.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="4.13.1" />
+    <PackageReference Include="nunit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj" />
+    <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj" />
+    <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj" />
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly.csproj" />
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.CodeOnly\NakedObjects.Persistor.Entity.Test.CodeOnly.csproj" />
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.SimpleDatabase\NakedObjects.Persistor.Entity.Test.SimpleDatabase.csproj" />
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj" />
+    <ProjectReference Include="..\NakedObjects.Persistor.Test.Data\NakedObjects.Persistor.Test.Data.csproj" />
+    <ProjectReference Include="..\NakedObjects.Persistor.Test\NakedObjects.Persistor.Test.csproj" />
+    <ProjectReference Include="..\NakedObjects.Xat\NakedObjects.Xat.csproj" />
+  </ItemGroup>
+
+</Project>

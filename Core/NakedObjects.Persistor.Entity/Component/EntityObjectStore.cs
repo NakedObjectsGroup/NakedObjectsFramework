@@ -17,6 +17,7 @@ using System.Data.Entity.Core.Objects.DataClasses;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Transactions;
 using Common.Logging;
@@ -32,6 +33,8 @@ using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Persistor.Entity.Util;
 using NakedObjects.Util;
+
+[assembly:InternalsVisibleTo("NakedObjects.Persistor.Entity.Test")]
 
 namespace NakedObjects.Persistor.Entity.Component {
     public sealed class EntityObjectStore : IObjectStore, IDisposable {
