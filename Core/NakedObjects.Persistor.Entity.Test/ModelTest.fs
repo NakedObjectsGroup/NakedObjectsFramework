@@ -15,7 +15,9 @@ open SimpleDatabase
 
 let persistor = 
     let c = new EntityObjectStoreConfiguration()
-    let f = (fun () -> new SimpleDatabaseDbContext("Model1Container") :> Data.Entity.DbContext)
+    // let cs = "Server=(localdb)\MSSQLLocalDB;Initial Catalog=ModelFirst;Integrated Security=True;"
+    let cs = "Data Source=.\SQLEXPRESS;Initial Catalog=ModelFirst;Integrated Security=True;"
+    let f = (fun () -> new SimpleDatabaseDbContext(cs) :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c
     setupPersistorForInjectorTesting p

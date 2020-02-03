@@ -28,26 +28,23 @@ open Microsoft.Extensions.DependencyInjection;
 type ModelSystemTests() = 
     inherit NakedObjects.Xat.AcceptanceTestCase()
     
-    override x.RegisterTypes(container) = 
-        base.RegisterTypes(container)
-        EntityObjectStoreConfiguration.NoValidate <- true
-
+    override x.Persistor = 
         let config = new EntityObjectStoreConfiguration()
         config.EnforceProxies <- false
+                       
+        // let cs = "Server=(localdb)\MSSQLLocalDB;Initial Catalog=ModelFirst;Integrated Security=True;"
+        let cs = "Data Source=.\SQLEXPRESS;Initial Catalog=ModelFirst;Integrated Security=True;"
 
-        let f = (fun () -> new SimpleDatabaseDbContext("Model1Container") :> Data.Entity.DbContext)
+        let f = (fun () -> new SimpleDatabaseDbContext(cs) :> Data.Entity.DbContext)
         config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
+        config
 
-        container.AddSingleton(config) |> ignore
-        let types = [| typeof<SimpleDatabase.Fruit>;typeof<List<SimpleDatabase.Food>> |]
-        ReflectorConfiguration.NoValidate <- true
+    override x.Services = [| typeof<SimpleRepository<Person>> |]
 
-        let services = [| typeof<SimpleRepository<Person>> |]
-        let namespaces = [| "SimpleDatabase"   |]
-        let reflectorConfig = new ReflectorConfiguration(types,  services, namespaces)
+    override x.Types = [| typeof<SimpleDatabase.Fruit>; typeof<List<SimpleDatabase.Food>> |]
 
-        container.AddSingleton( reflectorConfig) |> ignore
-        ()
+    override x.Namespaces = [| "SimpleDatabase" |]
+
     
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)

@@ -7,9 +7,15 @@
 
 using System.Data.Entity;
 
+
+
 namespace TestData {
+
     public class TestDataContext : DbContext {
-        public TestDataContext() : base("name=TestDataCodeOnly") {}
+        // private const string cs = "Server=(localdb)\MSSQLLocalDB;Initial Catalog=TestDataCodeOnly;Integrated Security=True;";
+        private const string Cs = @"Data Source=.\SQLEXPRESS;Initial Catalog=TestDataCodeOnly;Integrated Security=True;";
+
+        public TestDataContext() : base(Cs) {}
         //public DbSet<Address> Addresses { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Pet> Pets { get; set; }

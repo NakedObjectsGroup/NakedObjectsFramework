@@ -35,7 +35,8 @@ namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
         private static readonly ILog Log;
 
-        private readonly Lazy<IServiceProvider> serviceProvider;
+        private readonly IServiceProvider rootServiceProvider;
+        private IServiceProvider scopeServiceProvider;
         private FixtureServices fixtureServices;
         private IDictionary<string, ITestService> servicesCache = new Dictionary<string, ITestService>();
         private ITestObjectFactory testObjectFactory;
@@ -66,8 +67,18 @@ namespace NakedObjects.Xat {
 
             var host = CreateHostBuilder(new string[]{}).Build();
             
-            serviceProvider = new Lazy<IServiceProvider>(() => host.Services);
+            rootServiceProvider = host.Services;
         }
+
+        /// <summary>
+        ///     Gets the configured servive provider
+        /// </summary>
+        protected virtual IServiceProvider GetConfiguredContainer()
+        {
+            return scopeServiceProvider;
+        }
+
+        protected virtual IServiceScope ServiceScope { set; get; }
 
         protected AcceptanceTestCase() : this("Unnamed") {}
         protected string Name { set; get; }
@@ -145,14 +156,34 @@ namespace NakedObjects.Xat {
             get { return new EntityObjectStoreConfiguration(); }
         }
 
+        protected virtual ReflectorConfiguration Reflector {
+            get {
+                var reflectorConfig = new ReflectorConfiguration(
+                    Types ?? new Type[] { },
+                    this.Services,
+                    Namespaces ?? new string[] { },
+                    MainMenus);
+                ReflectorConfiguration.NoValidate = true;
+                return reflectorConfig;
+            }
+        }
+
         protected virtual IMenu[] MainMenus(IMenuFactory factory) {
             return null; //Allows tests not to define menus if not needed.
         }
 
         protected virtual void StartTest() {
 #pragma warning disable 618
-            NakedObjectsContext = GetConfiguredContainer().GetService<INakedObjectsFramework>();
+            ServiceScope = rootServiceProvider.CreateScope();
+            scopeServiceProvider =  ServiceScope.ServiceProvider;
+            NakedObjectsContext = scopeServiceProvider.GetService<INakedObjectsFramework>();
 #pragma warning restore 618
+        }
+
+        protected virtual void EndTest() {
+            ServiceScope.Dispose();
+            ServiceScope = null;
+            scopeServiceProvider = null;
         }
 
         private void InstallFixtures(ITransactionManager transactionManager, IDomainObjectInjector injector, object[] newFixtures) {
@@ -333,7 +364,7 @@ namespace NakedObjects.Xat {
 
         protected static void InitializeNakedObjectsFramework(AcceptanceTestCase tc) {
             tc.servicesCache = new Dictionary<string, ITestService>();
-            tc.GetConfiguredContainer().GetService<IReflector>().Reflect();
+            tc.rootServiceProvider.GetService<IReflector>().Reflect();
         }
 
         protected static void CleanupNakedObjectsFramework(AcceptanceTestCase tc) {           
@@ -363,24 +394,6 @@ namespace NakedObjects.Xat {
             };
         }
 
-        private ReflectorConfiguration Reflector {
-            get {
-                var reflectorConfig = new ReflectorConfiguration(
-                    Types ?? new Type[] { },
-                    this.Services,
-                    Namespaces ?? new string[] { },
-                    MainMenus);
-                ReflectorConfiguration.NoValidate = true;
-                return reflectorConfig;
-            }
-        }
-
-        /// <summary>
-        ///     Gets the configured Unity unityContainer.
-        /// </summary>
-        protected virtual IServiceProvider GetConfiguredContainer() {
-            return serviceProvider.Value;
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

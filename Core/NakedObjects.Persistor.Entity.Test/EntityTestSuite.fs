@@ -136,25 +136,26 @@ type TestDataInitializer() =
 type EntityTestSuite() = 
     inherit NakedObjects.Xat.AcceptanceTestCase()
     
-    override x.RegisterTypes(container) = 
-        base.RegisterTypes(container)
-        EntityObjectStoreConfiguration.NoValidate <- true
-
+    override x.Persistor =
         let config = new EntityObjectStoreConfiguration()
+        config.EnforceProxies <- false
+      
         let f = (fun () -> new TestDataContext() :> Data.Entity.DbContext)
         config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
-        container.AddSingleton(config) |> ignore
-        let types = [| typeof<TestData.Person>;typeof<TestData.Order>;typeof<TestData.OrderFail>;typeof<TestData.Person[]>;typeof<EntityCollection<TestData.Person>>;typeof<System.Collections.Generic.List<TestData.Person>>  |]
-        let services = [| typeof<SimpleRepository<Person>>; 
-                        typeof<SimpleRepository<Product>>;
-                         typeof<SimpleRepository<Address>> |]
-        let namespaces = [| "TestData"   |]
-        ReflectorConfiguration.NoValidate <- true
+        config
 
-        let reflectorConfig = new ReflectorConfiguration(types, services, namespaces)
+    override x.Services = [| typeof<SimpleRepository<Person>>; 
+                             typeof<SimpleRepository<Product>>;
+                             typeof<SimpleRepository<Address>> |]
 
-        container.AddSingleton(reflectorConfig) |> ignore
-        ()
+    override x.Types = [| typeof<TestData.Person>;
+                          typeof<TestData.Order>;
+                          typeof<TestData.OrderFail>;
+                          typeof<TestData.Person[]>;
+                          typeof<EntityCollection<TestData.Person>>;
+                          typeof<System.Collections.Generic.List<TestData.Person>> |]
+
+    override x.Namespaces = [| "TestData" |]
     
     member x.ClearOldTestData() = ()
     
@@ -167,7 +168,7 @@ type EntityTestSuite() =
     member x.SetupTest() = x.StartTest()
     
     [<TearDown>]
-    member x.TearDownTest() = ()
+    member x.TearDownTest() = x.EndTest()
     
     [<OneTimeTearDown>]
     member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
