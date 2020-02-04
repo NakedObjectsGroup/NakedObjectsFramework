@@ -19,10 +19,14 @@ open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 let multiDatabasePersistor = 
     EntityObjectStoreConfiguration.NoValidate <- true
 
+    let csOne = "Data Source=.\SQLEXPRESS;Initial Catalog=AMultiDatabaseTests;Integrated Security=True;"
+    let csTwo = "data source=.\SQLEXPRESS;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"
+
+
     let c = new EntityObjectStoreConfiguration()
-    c.UsingCodeFirstContext((CodeFirstConfig "AMultiDatabaseTests").DbContext) |> ignore
+    c.UsingCodeFirstContext((CodeFirstConfig csOne).DbContext) |> ignore
     //c.UsingEdmxContext "AdventureWorksEntities" |> ignore
-    let f = (fun () -> new AdventureWorksEntities("AdventureWorksEntities") :> Data.Entity.DbContext)
+    let f = (fun () -> new AdventureWorksEntities(csTwo) :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c
     setupPersistorForTesting p
@@ -54,9 +58,11 @@ type AMultiDatabaseTests() =
         member x.TestCanCreateEachConnectionMultiTimes() = CanCreateEachConnectionMultiTimes multiDatabasePersistor
         
         [<Test>]
+        [<Ignore("https://github.com/dotnet/runtime/issues/715")>]
         member x.CrossContextTransactionOK() = CrossContextTransactionOK multiDatabasePersistor
         
         [<Test>]
+        [<Ignore("https://github.com/dotnet/runtime/issues/715")>]
         member x.CrossContextTransactionRollback() = CrossContextTransactionRollback multiDatabasePersistor
         
         // tests from Domainfirst 
