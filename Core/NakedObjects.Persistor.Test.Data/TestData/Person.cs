@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,11 +13,9 @@ using NakedObjects;
 namespace TestData {
     [ValidateProgrammaticUpdates]
     public class Person : TestHelper {
-        private Address address = new Address();
         private string name;
-        private ICollection<Person> relatives = new List<Person>();
-        private bool updateInPersisting;
         private bool persistInUpdated;
+        private bool updateInPersisting;
 
         [Key]
         public virtual int PersonId { get; set; }
@@ -35,15 +33,9 @@ namespace TestData {
         [Optionally]
         public virtual Pet Pet { get; set; }
 
-        public virtual Address Address {
-            get { return address; }
-            set { address = value; }
-        }
+        public virtual Address Address { get; set; } = new Address();
 
-        public virtual ICollection<Person> Relatives {
-            get { return relatives; }
-            set { relatives = value; }
-        }
+        public virtual ICollection<Person> Relatives { get; set; } = new List<Person>();
 
         public virtual void AddToRelatives(Person person) {
             Relatives.Add(person);
@@ -66,6 +58,7 @@ namespace TestData {
             if (name == "fail") {
                 return name;
             }
+
             return null;
         }
 

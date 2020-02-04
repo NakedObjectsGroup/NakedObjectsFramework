@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -130,7 +130,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private Person CreateNewTransientPerson() {
             var nextIndex = Persistor.Instances<Person>().Select(p => p.PersonId).Max() + 1;
-            var spec = (IObjectSpec) Metamodel.GetSpecification(typeof (Person));
+            var spec = (IObjectSpec) Metamodel.GetSpecification(typeof(Person));
             var newPersonAdapter = LifecycleManager.CreateInstance(spec);
             var person = (Person) newPersonAdapter.Object;
             person.PersonId = nextIndex;
@@ -138,7 +138,7 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         private Order CreateNewTransientOrder() {
-            var spec = (IObjectSpec) Metamodel.GetSpecification(typeof (Order));
+            var spec = (IObjectSpec) Metamodel.GetSpecification(typeof(Order));
             var newOrderAdapter = LifecycleManager.CreateInstance(spec);
             var order = (Order) newOrderAdapter.Object;
             order.OrderId = 0;
@@ -146,7 +146,7 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         private OrderFail CreateNewTransientOrderFail() {
-            var spec = (IObjectSpec) Metamodel.GetSpecification(typeof (OrderFail));
+            var spec = (IObjectSpec) Metamodel.GetSpecification(typeof(OrderFail));
             var newOrderAdapter = LifecycleManager.CreateInstance(spec);
             var order = (OrderFail) newOrderAdapter.Object;
             order.OrderFailId = 0;
@@ -155,7 +155,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private Product CreateNewTransientProduct() {
             var nextIndex = Persistor.Instances<Product>().Select(p => p.Id).Max() + 1;
-            var spec = (IObjectSpec) Metamodel.GetSpecification(typeof (Product));
+            var spec = (IObjectSpec) Metamodel.GetSpecification(typeof(Product));
             var newProductAdapter = LifecycleManager.CreateInstance(spec);
             var product = (Product) newProductAdapter.Object;
             product.Id = nextIndex;
@@ -164,7 +164,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         private Pet CreateNewTransientPet() {
             var nextIndex = Persistor.Instances<Pet>().Select(p => p.PetId).Max() + 1;
-            var spec = (IObjectSpec) Metamodel.GetSpecification(typeof (Pet));
+            var spec = (IObjectSpec) Metamodel.GetSpecification(typeof(Pet));
             var newPetAdapter = LifecycleManager.CreateInstance(spec);
             var pet = (Pet) newPetAdapter.Object;
             pet.PetId = nextIndex;
@@ -222,20 +222,20 @@ namespace NakedObjects.Persistor.TestSuite {
         }
 
         public void GetInstanceFromInstancesOfType() {
-            var person = Persistor.Instances(typeof (Person)).Cast<Person>().Single(p => p.PersonId == 1);
+            var person = Persistor.Instances(typeof(Person)).Cast<Person>().Single(p => p.PersonId == 1);
             AssertIsPerson(person, 1);
         }
 
         public void GetInstanceFromInstancesOfSpecification() {
-            var spec = (IObjectSpec) Metamodel.GetSpecification(typeof (Person));
+            var spec = (IObjectSpec) Metamodel.GetSpecification(typeof(Person));
             var person = Persistor.Instances(spec).Cast<Person>().Single(p => p.PersonId == 1);
             AssertIsPerson(person, 1);
         }
 
         public void GetInstanceIsAlwaysSameObject() {
-            var spec = (IObjectSpec) Metamodel.GetSpecification(typeof (Person));
+            var spec = (IObjectSpec) Metamodel.GetSpecification(typeof(Person));
             var person1 = GetPerson(1);
-            var person2 = Persistor.Instances(typeof (Person)).Cast<Person>().Single(p => p.PersonId == 1);
+            var person2 = Persistor.Instances(typeof(Person)).Cast<Person>().Single(p => p.PersonId == 1);
             var person3 = Persistor.Instances(spec).Cast<Person>().Single(p => p.PersonId == 1);
             Assert.AreSame(person1, person2);
             Assert.AreSame(person2, person3);
@@ -356,7 +356,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsTrue(relativesAdapter.ResolveState.IsPersistent(), "should be persistent");
             //  Assert.IsFalse(relativesAdapter.ResolveState.IsResolved(), "should not be resolved");
             Assert.IsNotNull(relativesAdapter.Oid, "is  null");
-            Assert.IsInstanceOf(typeof (IAggregateOid), relativesAdapter.Oid, "is not aggregate");
+            Assert.IsInstanceOf(typeof(IAggregateOid), relativesAdapter.Oid, "is not aggregate");
         }
 
         public void EmptyCollectionPropertyCollectionResolveStateIsPersistent() {
@@ -364,7 +364,7 @@ namespace NakedObjects.Persistor.TestSuite {
             Assert.IsTrue(relativesAdapter.ResolveState.IsPersistent(), "should be persistent");
             //  Assert.IsFalse(relativesAdapter.ResolveState.IsResolved(), "should not be resolved");
             Assert.IsNotNull(relativesAdapter.Oid, "is  null");
-            Assert.IsInstanceOf(typeof (IAggregateOid), relativesAdapter.Oid, "is not aggregate");
+            Assert.IsInstanceOf(typeof(IAggregateOid), relativesAdapter.Oid, "is not aggregate");
         }
 
         public void ReferencePropertyHasLoadingLoadedCalled() {
@@ -480,7 +480,7 @@ namespace NakedObjects.Persistor.TestSuite {
                 Assert.Fail();
             }
 // ReSharper disable once EmptyGeneralCatchClause
-            catch (Exception /*expected*/) {}
+            catch (Exception /*expected*/) { }
         }
 
         public void ChangeObjectWithValidate() {
@@ -494,7 +494,7 @@ namespace NakedObjects.Persistor.TestSuite {
                 TransactionManager.EndTransaction();
                 Assert.Fail();
             }
-            catch (PersistFailedException /*expected*/) {}
+            catch (PersistFailedException /*expected*/) { }
         }
 
         public void SaveNewObjectWithTransientReference() {
@@ -532,7 +532,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
                 Assert.Fail();
             }
-            catch (PersistFailedException /*expected*/) {}
+            catch (PersistFailedException /*expected*/) { }
         }
 
         public void SaveNewObjectWithTransientReferenceObjectInvalid() {
@@ -555,7 +555,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
                 Assert.Fail();
             }
-            catch (PersistFailedException /*expected*/) {}
+            catch (PersistFailedException /*expected*/) { }
         }
 
         public void SaveNewObjectWithTransientReferenceValidateAssocInvalid() {
@@ -578,7 +578,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
                 Assert.Fail();
             }
-            catch (PersistFailedException /*expected*/) {}
+            catch (PersistFailedException /*expected*/) { }
         }
 
         public void SaveNewObjectWithPersistentReference() {
@@ -783,7 +783,7 @@ namespace NakedObjects.Persistor.TestSuite {
         public void InlineObjectHasParentInjected() {
             var address = GetPerson(1).Address;
             Assert.IsTrue(address.HasParent, "no parent injected");
-            Assert.IsTrue(address.ParentIsType(typeof (Person)), "parent wrong type");
+            Assert.IsTrue(address.ParentIsType(typeof(Person)), "parent wrong type");
         }
 
         public void InlineObjectHasVersion() {
@@ -819,7 +819,7 @@ namespace NakedObjects.Persistor.TestSuite {
         public void TransientInlineObjectHasParentInjected() {
             var address = CreateNewTransientPerson().Address;
             Assert.IsTrue(address.HasParent, "no parent injected");
-            Assert.IsTrue(address.ParentIsType(typeof (Person)), "parent wrong type");
+            Assert.IsTrue(address.ParentIsType(typeof(Person)), "parent wrong type");
         }
 
         public void TrainsientInlineObjectHasVersion() {
@@ -871,7 +871,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         public void FindByKey() {
             var person1 = GetPerson(1);
-            var person = Persistor.FindByKeys(typeof (Person), new object[] {1}).Object;
+            var person = Persistor.FindByKeys(typeof(Person), new object[] {1}).Object;
 
             Assert.AreEqual(person1, person);
         }

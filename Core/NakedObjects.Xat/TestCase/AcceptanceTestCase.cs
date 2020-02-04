@@ -35,7 +35,7 @@ namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
         private static readonly ILog Log;
 
-        private readonly IServiceProvider rootServiceProvider;
+        protected readonly IServiceProvider RootServiceProvider;
         private IServiceProvider scopeServiceProvider;
         private FixtureServices fixtureServices;
         private IDictionary<string, ITestService> servicesCache = new Dictionary<string, ITestService>();
@@ -67,7 +67,7 @@ namespace NakedObjects.Xat {
 
             var host = CreateHostBuilder(new string[]{}).Build();
             
-            rootServiceProvider = host.Services;
+            RootServiceProvider = host.Services;
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace NakedObjects.Xat {
 
         protected virtual void StartTest() {
 #pragma warning disable 618
-            ServiceScope = rootServiceProvider.CreateScope();
+            ServiceScope = RootServiceProvider.CreateScope();
             scopeServiceProvider =  ServiceScope.ServiceProvider;
             NakedObjectsContext = scopeServiceProvider.GetService<INakedObjectsFramework>();
 #pragma warning restore 618
@@ -257,11 +257,11 @@ namespace NakedObjects.Xat {
 
         protected virtual void RunFixtures() {
 #pragma warning disable 618
-            if (NakedObjectsContext == null) {
-                NakedObjectsContext = GetConfiguredContainer().GetService<INakedObjectsFramework>();
-            }
-#pragma warning restore 618
+            using var fixtureServiceScope = RootServiceProvider.CreateScope();
+            NakedObjectsContext = fixtureServiceScope.ServiceProvider.GetService<INakedObjectsFramework>();
             InstallFixtures(NakedObjectsFramework.TransactionManager, NakedObjectsFramework.DomainObjectInjector, Fixtures);
+            NakedObjectsContext = null;
+#pragma warning restore 618
         }
 
         protected ITestService GetTestService<T>() {
@@ -364,7 +364,7 @@ namespace NakedObjects.Xat {
 
         protected static void InitializeNakedObjectsFramework(AcceptanceTestCase tc) {
             tc.servicesCache = new Dictionary<string, ITestService>();
-            tc.rootServiceProvider.GetService<IReflector>().Reflect();
+            tc.RootServiceProvider.GetService<IReflector>().Reflect();
         }
 
         protected static void CleanupNakedObjectsFramework(AcceptanceTestCase tc) {           
