@@ -9,7 +9,7 @@ using System.Data.Entity;
 
 namespace TestCodeOnly {
     public class CodeFirstContext : DbContext {
-        public CodeFirstContext(string dbName) : base("name=" + dbName) {}
+        public CodeFirstContext(string cs) : base(cs) {}
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CountryCode> CountryCodes { get; set; }

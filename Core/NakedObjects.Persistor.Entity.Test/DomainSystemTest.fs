@@ -25,25 +25,24 @@ open Microsoft.Extensions.DependencyInjection;
 type DomainSystemTests() = 
     inherit NakedObjects.Xat.AcceptanceTestCase()
 
-     override x.RegisterTypes(container) = 
-        base.RegisterTypes(container)
-
+    override x.Persistor =
         let config = new EntityObjectStoreConfiguration()
-        let f = (fun () -> new AdventureWorksEntities("AdventureWorksEntities") :> Data.Entity.DbContext)
+        let cs = "data source=.\SQLEXPRESS;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"  
+        let f = (fun () -> new AdventureWorksEntities(cs) :> Data.Entity.DbContext)
         config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
-        container.AddSingleton(config) |> ignore
+        config
 
-        let types = [| typeof<Product>; typeof<ScrapReason>;typeof<WorkOrder>; typeof<ProductSubcategory>; typeof<ProductCategory>; typeof<EntityCollection<Product>>;typeof<EntityCollection<ProductSubcategory>>  |]
-        
-        let services = [| typeof<SimpleRepository<ScrapReason>> |]
-        let namespaces = [| "AdventureWorksModel" |]
-        ReflectorConfiguration.NoValidate <- true
+    override x.Services =  [| typeof<SimpleRepository<ScrapReason>> |]
 
-        let reflectorConfig = new ReflectorConfiguration(types,  services, namespaces)
+    override x.Types = [| typeof<Product>;
+                          typeof<ScrapReason>;
+                          typeof<WorkOrder>;
+                          typeof<ProductSubcategory>;
+                          typeof<ProductCategory>;
+                          typeof<EntityCollection<Product>>;
+                          typeof<EntityCollection<ProductSubcategory>> |]
 
-        container.AddSingleton(reflectorConfig) |> ignore
-        ()
-
+    override x.Namespaces = [| "AdventureWorksModel" |]
     
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)

@@ -28,6 +28,9 @@ open NakedObjects.Persistor.Entity.Adapter
 open NakedObjects.Persistor.Entity.Component
 
 
+let csOne = "data source=.\SQLEXPRESS;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"
+let csTwo = "data source=.\SQLEXPRESS;initial catalog=AdventureWorks;integrated security=True;"
+
 let First<'t when 't : not struct> persistor = First<'t> persistor
 let Second<'t when 't : not struct> persistor = Second<'t> persistor
 
@@ -554,7 +557,7 @@ let CanDetectConcurrency(persistor : EntityObjectStore) =
     let otherPersistor =
         EntityObjectStoreConfiguration.NoValidate <- true
         let c = new EntityObjectStoreConfiguration()
-        let f = fun () -> new AdventureWorksEntities("AdventureWorksEntities2") :> Data.Entity.DbContext   
+        let f = fun () -> new AdventureWorksEntities(csTwo) :> Data.Entity.DbContext   
         c.UsingCodeFirstContext(Func<Data.Entity.DbContext>f) |> ignore
         c.DefaultMergeOption <- MergeOption.AppendOnly
         let p = getEntityObjectStore c
@@ -614,9 +617,8 @@ let ConcurrencyNoCustomOnUpdatingError(persistor : EntityObjectStore) =
     
     let otherPersistor = 
         EntityObjectStoreConfiguration.NoValidate <- true
-
         let c = new EntityObjectStoreConfiguration()
-        let f = fun () -> new AdventureWorksEntities("AdventureWorksEntities2") :> Data.Entity.DbContext   
+        let f = fun () -> new AdventureWorksEntities(csTwo) :> Data.Entity.DbContext   
         c.UsingCodeFirstContext(Func<Data.Entity.DbContext>f) |> ignore
         c.DefaultMergeOption <- MergeOption.AppendOnly
         let p = getEntityObjectStore c

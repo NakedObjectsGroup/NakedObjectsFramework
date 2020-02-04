@@ -29,25 +29,20 @@ open Microsoft.Extensions.DependencyInjection;
 [<TestFixture>]
 type CodeSystemTests() = 
     inherit NakedObjects.Xat.AcceptanceTestCase()
-    
-    override x.RegisterTypes(container) = 
-        base.RegisterTypes(container)
-        EntityObjectStoreConfiguration.NoValidate <- true
+     
+    override x.Persistor =
+         let config = new EntityObjectStoreConfiguration()
+         let cs = "Data Source=.\SQLEXPRESS;Initial Catalog=CodeSystemTest;Integrated Security=True;"  
+         let f = (fun () -> new CodeFirstContext(cs) :> Data.Entity.DbContext)
+         config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
+         config
 
-        let config = new EntityObjectStoreConfiguration()
-        let f = (fun () -> new CodeFirstContext("CodeSystemTest") :> Data.Entity.DbContext)
-        config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
-        container.AddSingleton(config) |> ignore
-        let types = [| typeof<TestCodeOnly.CountryCode>  |]
-        let services = [| typeof<SimpleRepository<Person>> |]
-        let namespaces = [| "TestCodeOnly"   |]
-        ReflectorConfiguration.NoValidate <- true
+    override x.Services =  [| typeof<SimpleRepository<Person>> |]
 
-        let reflectorConfig = new ReflectorConfiguration(types, services, namespaces)
+    override x.Types = [| typeof<TestCodeOnly.CountryCode>  |]
 
-        container.AddSingleton(reflectorConfig) |> ignore
-        ()
-    
+    override x.Namespaces = [| "TestCodeOnly"   |]
+
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = 
         CodeFirstSetup()
@@ -57,7 +52,7 @@ type CodeSystemTests() =
     member x.SetupTest() = x.StartTest()
     
     [<TearDown>]
-    member x.TearDownTest() = ()
+    member x.TearDownTest() = x.EndTest()
     
     [<OneTimeTearDown>]
     member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)

@@ -22,7 +22,7 @@ let persistor =
     setProxyingAndDeferredLoading <- false
     let c = new EntityObjectStoreConfiguration()
     //c.UsingEdmxContext "AdventureWorksEntities" |> ignore
-    let f = (fun () -> new AdventureWorksEntities("AdventureWorksEntities") :> Data.Entity.DbContext)
+    let f = (fun () -> new AdventureWorksEntities(csOne) :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c
     let p = setupPersistorForTesting p
@@ -34,7 +34,7 @@ let overwritePersistor =
     setProxyingAndDeferredLoading <- false
     let c = new EntityObjectStoreConfiguration()
     //c.UsingEdmxContext "AdventureWorksEntities" |> ignore
-    let f = (fun () -> new AdventureWorksEntities("AdventureWorksEntities") :> Data.Entity.DbContext)
+    let f = (fun () -> new AdventureWorksEntities(csOne) :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     c.DefaultMergeOption <- MergeOption.OverwriteChanges
     let p = getEntityObjectStore c
@@ -42,8 +42,6 @@ let overwritePersistor =
     p
 
 [<TestFixture>]
-
-
 type DomainNoProxiesTests() = 
     class
         
@@ -194,12 +192,10 @@ type DomainNoProxiesTests() =
         [<Test>]
         member x.DataUpdateNoCustomOnUpdatingError() = DataUpdateNoCustomOnUpdatingError persistor
         
-        [<Test>]
-        
+        [<Test>]       
         member x.ConcurrencyNoCustomOnUpdatingError() = ConcurrencyNoCustomOnUpdatingError persistor
         
-        [<Test>]
-        
+        [<Test>]     
         member x.OverWriteChangesOptionRefreshesObject() = OverWriteChangesOptionRefreshesObject overwritePersistor
         
         [<Test>]
