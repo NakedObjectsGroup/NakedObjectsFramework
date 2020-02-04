@@ -6,20 +6,20 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.DomainTestCode
 
-open NUnit.Framework
-open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
-open NakedObjects.Core.Resolve
-open System
-open TestTypes
-open TestCode
-open System.Data.Entity.Core.Objects
 open NakedObjects.Core
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity.Util
 open NakedObjects.Persistor.Entity.Adapter
 open NakedObjects.Persistor.Entity.Component
+open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
+open NakedObjects.Core.Resolve
+open NUnit.Framework
 open System.Data.Common
 open System.Data.SqlClient
+open System
+open System.Data.Entity.Core.Objects
+open TestCode
+open TestTypes
 
 let First<'t when 't : not struct> persistor = First<'t> persistor
 let Second<'t when 't : not struct> persistor = Second<'t> persistor

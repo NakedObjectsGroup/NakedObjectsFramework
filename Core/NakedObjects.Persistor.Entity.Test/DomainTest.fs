@@ -6,15 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.DomainTest
 
-open NUnit.Framework
 open DomainTestCode
-open TestTypes
-open TestCode
-open System.Data.Entity.Core.Objects
-open NakedObjects.Persistor.Entity.Configuration
-open System
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
-
+open NakedObjects.Persistor.Entity.Configuration
+open NUnit.Framework
+open System
+open System.Data.Entity.Core.Objects
+open TestCode
+open TestTypes
 
 let persistor = 
     EntityObjectStoreConfiguration.NoValidate <- true

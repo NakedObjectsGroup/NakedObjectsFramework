@@ -6,20 +6,19 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.ModelTestCode
 
-open NUnit.Framework
-open SimpleDatabase
-open TestCode
-open TestTypes
-open System
+open Moq
 open NakedObjects
 open NakedObjects.Architecture.Adapter
 open NakedObjects.Core.Component
 open NakedObjects.Core.Configuration
-open System.Data.Entity.Core.Objects
-open Moq
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity.Component
-
+open NUnit.Framework
+open SimpleDatabase
+open System
+open System.Data.Entity.Core.Objects
+open TestCode
+open TestTypes
 
 let ModelConfig = 
     let pc = new CodeFirstEntityContextConfiguration()

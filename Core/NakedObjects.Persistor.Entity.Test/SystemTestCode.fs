@@ -6,11 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.SystemTestCode
 
-open NUnit.Framework
+
 open NakedObjects.Architecture.Adapter
 open NakedObjects.Core.Resolve
 open NakedObjects.Persistor.Entity.Adapter
-
+open NUnit.Framework
 
 let getNo (obj : obj) (ctx : INakedObjectsFramework) = 
     match obj with

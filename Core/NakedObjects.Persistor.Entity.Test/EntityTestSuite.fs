@@ -6,18 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.EntityTestSuite
 
-open NUnit.Framework
-open NakedObjects.Services
-open System
+open NakedObjects.Core.Authentication
 open NakedObjects.Persistor.TestData
 open NakedObjects.Persistor.TestSuite
-open TestData
-open TestCode
-open System.Security.Principal
-open NakedObjects.Core.Authentication
-open System.Data.Entity.Core.Objects.DataClasses
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity.Component
+open NakedObjects.Services
+open NUnit.Framework
+open System
+open System.Data.Entity.Core.Objects.DataClasses
+open System.Security.Principal
+open TestCode
+open TestData
 
 let assemblyName = "NakedObjects.Persistor.Test.Data"
 
@@ -32,7 +32,6 @@ let Config =
 
 let db =
     EntityObjectStoreConfiguration.NoValidate <- true
- 
     let c = new EntityObjectStoreConfiguration()
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     c.ContextConfiguration <- [| Config  |]
@@ -174,9 +173,7 @@ type EntityTestSuite() =
     override x.SystemServices = 
         let service = new SimpleRepository<Address>()
         [| (box service) |]
-    
-    
-    
+     
     member x.Tests = new PersistorTestSuite(x.NakedObjectsFramework)
     
     [<Test>]
@@ -270,22 +267,18 @@ type EntityTestSuite() =
     [<Test>]
     member x.AddToCollectionOnPersistentCallsUpdatingUpdated() = x.Tests.AddToCollectionOnPersistentCallsUpdatingUpdated()
     
-
     [<Test>]
     member x.RemoveFromCollectionOnPersistent() = x.Tests.RemoveFromCollectionOnPersistent()
     
     [<Test>]
     member x.RemoveFromCollectionOnPersistentCallsUpdatingUpdated() = x.Tests.RemoveFromCollectionOnPersistentCallsUpdatingUpdated()
-    
-  
-    
+      
     [<Test>]
     member x.ClearCollectionOnPersistent() = x.Tests.ClearCollectionOnPersistent()
     
     [<Test>]
     member x.ClearCollectionOnPersistentCallsUpdatingUpdated() = x.Tests.ClearCollectionOnPersistentCallsUpdatingUpdated()
-    
-    
+      
     [<Test>]
     member x.NewObjectHasContainerInjected() = x.Tests.NewObjectHasContainerInjected()
     
@@ -397,9 +390,7 @@ type EntityTestSuite() =
     
     [<Test>]
     member x.ChangeScalarOnInlineObjectCallsUpdatingUpdated() = x.Tests.ChangeScalarOnInlineObjectCallsUpdatingUpdated()
-    
-  
-    
+     
     [<Test>]
     member x.RefreshResetsObject() = x.Tests.RefreshResetsObject()
     

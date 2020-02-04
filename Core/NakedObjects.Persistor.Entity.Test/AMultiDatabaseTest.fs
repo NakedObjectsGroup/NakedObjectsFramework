@@ -6,15 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.AMultiDatabaseTest
 
-open NUnit.Framework
-open TestTypes
-open TestCode
-open MultiDatabaseTestCode
-open DomainTestCode
 open CodeOnlyTestCode
+open DomainTestCode
+open MultiDatabaseTestCode
 open NakedObjects.Persistor.Entity.Configuration
-open System
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
+open NUnit.Framework
+open TestCode
+open TestTypes
+open System
 
 let multiDatabasePersistor = 
     EntityObjectStoreConfiguration.NoValidate <- true
@@ -88,21 +88,17 @@ type AMultiDatabaseTests() =
         member x.TestCreateTransientObject() = DomainTestCode.CanCreateTransientObject multiDatabasePersistor
         
         [<Test>]
-                
-
         member x.TestSaveTransientObjectWithScalarProperties() = DomainTestCode.CanSaveTransientObjectWithScalarProperties multiDatabasePersistor
         
         [<Test>]
         member x.TestSaveTransientObjectWithPersistentReferenceProperty() = 
             DomainTestCode.CanSaveTransientObjectWithPersistentReferenceProperty multiDatabasePersistor
         
-        [<Test>]
-        
+        [<Test>]       
         member x.TestSaveTransientObjectWithTransientReferenceProperty() = 
             DomainTestCode.CanSaveTransientObjectWithTransientReferenceProperty multiDatabasePersistor
         
-        [<Test>]
-        
+        [<Test>]    
         member x.TestSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies() = 
             DomainTestCode.CanSaveTransientObjectWithTransientReferencePropertyAndConfirmProxies multiDatabasePersistor
         
@@ -134,22 +130,18 @@ type AMultiDatabaseTests() =
         member x.TestUpdatePersistentObjectWithScalarPropertiesIgnore() = 
             DomainTestCode.CanUpdatePersistentObjectWithScalarPropertiesIgnore multiDatabasePersistor
         
-        [<Test>]
-        
+        [<Test>]        
         member x.TestSaveTransientObjectWithScalarPropertiesErrorAndReattempt() = 
             DomainTestCode.CanSaveTransientObjectWithScalarPropertiesErrorAndReattempt multiDatabasePersistor
         
-        [<Test>]
-        
+        [<Test>]        
         member x.TestSaveTransientObjectWithScalarPropertiesErrorAndIgnore() = 
             DomainTestCode.CanSaveTransientObjectWithScalarPropertiesErrorAndIgnore multiDatabasePersistor
         
-        [<Test>]
-        
+        [<Test>]        
         member x.TestPersistingPersistedCalledForCreateInstance() = DomainTestCode.CanPersistingPersistedCalledForCreateInstance multiDatabasePersistor
         
-        [<Test>]
-        
+        [<Test>]        
         member x.TestPersistingPersistedCalledForCreateInstanceWithReference() = 
             DomainTestCode.CanPersistingPersistedCalledForCreateInstanceWithReference multiDatabasePersistor
         
@@ -168,9 +160,7 @@ type AMultiDatabaseTests() =
         [<Test>]
         member x.TestContainerInjectionCalledForGetInstance() = DomainTestCode.CanContainerInjectionCalledForGetInstance(resetPersistor multiDatabasePersistor)
         
-        [<Test>]
-                
-
+        [<Test>]                
         member x.TestCreateManyToMany() = DomainTestCode.CanCreateManyToMany multiDatabasePersistor
         
         [<Test>]

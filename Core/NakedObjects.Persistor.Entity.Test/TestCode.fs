@@ -7,11 +7,7 @@
 module NakedObjects.TestCode
 
 open NUnit.Framework
-open System
-open System.Collections.Generic
-open TestTypes
-open System.Collections
-open System.Security.Principal
+
 open Moq
 open NakedObjects.Architecture.Component
 open NakedObjects.Core.Component
@@ -20,8 +16,11 @@ open NakedObjects.Core.Authentication
 open NakedObjects.Persistor.Entity.Util
 open NakedObjects.Persistor.Entity.Adapter
 open NakedObjects.Persistor.Entity.Component
-
-
+open System
+open System.Collections.Generic
+open System.Collections
+open System.Security.Principal
+open TestTypes
 
 let resetPersistor (p : EntityObjectStore) = 
     p.SetupContexts()

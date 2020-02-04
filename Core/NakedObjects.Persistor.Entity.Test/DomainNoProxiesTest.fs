@@ -6,22 +6,19 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.DomainNoProxiesTest
 
-open NUnit.Framework
 open DomainTestCode
-open TestTypes
-open TestCode
-open System.Data.Entity.Core.Objects
 open NakedObjects.Persistor.Entity.Configuration
-open System
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
-
+open NUnit.Framework
+open System
+open System.Data.Entity.Core.Objects
+open TestCode
+open TestTypes
 
 let persistor =
     EntityObjectStoreConfiguration.NoValidate <- true
- 
     setProxyingAndDeferredLoading <- false
     let c = new EntityObjectStoreConfiguration()
-    //c.UsingEdmxContext "AdventureWorksEntities" |> ignore
     let f = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c
@@ -30,10 +27,8 @@ let persistor =
 
 let overwritePersistor = 
     EntityObjectStoreConfiguration.NoValidate <- true
-
     setProxyingAndDeferredLoading <- false
     let c = new EntityObjectStoreConfiguration()
-    //c.UsingEdmxContext "AdventureWorksEntities" |> ignore
     let f = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     c.DefaultMergeOption <- MergeOption.OverwriteChanges

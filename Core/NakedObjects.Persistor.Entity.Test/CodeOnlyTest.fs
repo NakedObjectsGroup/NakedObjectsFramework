@@ -6,11 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.CodeOnlyTest
 
-open NUnit.Framework
 open CodeOnlyTestCode
-open TestTypes
-open TestCode
 open NakedObjects.Persistor.Entity.Configuration
+open NUnit.Framework
+open TestCode
+open TestTypes
 
 let codeOnlyPersistor = 
     EntityObjectStoreConfiguration.NoValidate <- true

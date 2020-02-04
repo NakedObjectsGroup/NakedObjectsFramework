@@ -6,19 +6,19 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.CodeSystemTest
 
-open NUnit.Framework
-open TestCodeOnly
-open NakedObjects.Services
-open System
-open SystemTestCode
-open System.Collections.Generic
 open CodeOnlyTestCode
 open NakedObjects
-open TestCode
 open NakedObjects.Core
 open NakedObjects.Core.Util
 open NakedObjects.Persistor.Entity.Configuration
+open NakedObjects.Services
 open NakedObjects.TestTypes
+open NUnit.Framework
+open System
+open System.Collections.Generic
+open SystemTestCode
+open TestCode
+open TestCodeOnly
 
 [<TestFixture>]
 type CodeSystemTests() = 
@@ -32,9 +32,9 @@ type CodeSystemTests() =
 
     override x.Services =  [| typeof<SimpleRepository<Person>> |]
 
-    override x.Types = [| typeof<TestCodeOnly.CountryCode>  |]
+    override x.Types = [| typeof<TestCodeOnly.CountryCode> |]
 
-    override x.Namespaces = [| "TestCodeOnly"   |]
+    override x.Namespaces = [| "TestCodeOnly" |]
 
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = 
@@ -221,8 +221,6 @@ type CodeSystemTests() =
         Assert.AreEqual(1, findValue "Updating", "updating")
         Assert.AreEqual(1, findValue "Updated", "updated")
     
-  
-    
     [<Test>]
     member x.UpdateReferenceOnPersistentObject() = 
         let p1 = x.GetPersonDomainObject()
@@ -237,9 +235,7 @@ type CodeSystemTests() =
         makeAndSaveChanges changeFav x.NakedObjectsFramework
         let p2 = x.GetPersonDomainObject()
         Assert.AreEqual(p1.Favourite, p2.Favourite)
-    
- 
-    
+  
     [<Test>]
     member x.UpdateReferenceOnPersistentObjectCallsUpdatingUpdated() = 
         let p1 = x.GetPersonDomainObject()

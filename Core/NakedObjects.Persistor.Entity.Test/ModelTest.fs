@@ -6,14 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.ModelTest
 
-open NUnit.Framework
-open TestCode
 open ModelTestCode
 open NakedObjects.Persistor.Entity.Configuration
-open System
-open SimpleDatabase
 open NakedObjects.TestTypes
-
+open NUnit.Framework
+open SimpleDatabase
+open System
+open TestCode
 
 let persistor = 
     let c = new EntityObjectStoreConfiguration()
@@ -27,7 +26,7 @@ type ModelTests() =
     class
         
         [<OneTimeSetUp>]
-        member x.Setup() = ()//ModelSetup()
+        member x.Setup() = ()
         
         [<Test>]
         member x.TestCreateEntityPersistor() = CanCreateEntityPersistor persistor

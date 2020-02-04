@@ -6,18 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.CodeOnlyTestCode
 
-open NUnit.Framework
-open System
-open TestCodeOnly
-open TestTypes
-open TestCode
-open System.Data.Entity.ModelConfiguration
+
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity.Util
 open NakedObjects.Core
 open NakedObjects.Persistor.Entity.Component
-
-
+open NUnit.Framework
+open System
+open System.Data.Entity.ModelConfiguration
+open TestCode
+open TestCodeOnly
+open TestTypes
 
 let categorySetter codeOnlyPersistor (c : Category) = 
     c.ID <- GetNextID<Category> codeOnlyPersistor (fun i -> i.ID)

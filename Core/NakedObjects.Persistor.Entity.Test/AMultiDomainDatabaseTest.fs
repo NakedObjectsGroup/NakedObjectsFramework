@@ -6,22 +6,21 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.AMultiDomainDatabaseTest
 
-open NUnit.Framework
-open TestTypes
-open TestCode
-open MultiDatabaseTestCode
 open CodeOnlyTestCode
-open SimpleDatabase
+open MultiDatabaseTestCode
 open NakedObjects.Persistor.Entity.Configuration
-open System
-open TestCodeOnly
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly;
+open NUnit.Framework
+open SimpleDatabase
+open System
+open TestCode
+open TestCodeOnly
+open TestTypes
 
 let multiDomainDatabasePersistor = 
     EntityObjectStoreConfiguration.NoValidate <- true
 
     let c = new EntityObjectStoreConfiguration()
-
     let f = (fun () -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     c.UsingCodeFirstContext((CodeFirstConfig csMD).DbContext) |> ignore

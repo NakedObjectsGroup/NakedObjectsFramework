@@ -6,16 +6,16 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.TestTypes
 
+open Moq
+open NakedObjects.Architecture.Adapter
 open NakedObjects.Architecture.Component
 open NakedObjects.Architecture.Spec
-open System
-open NakedObjects.Architecture.Adapter
-open System.Collections.Generic
-open System.Reflection
-open Moq
 open NakedObjects.Core.Resolve
 open NakedObjects.Persistor.Entity.Adapter
 open NakedObjects.Persistor.Entity.Component
+open System
+open System.Collections.Generic
+open System.Reflection
 
 // connection strings 
 
@@ -39,8 +39,6 @@ let testNakedObjectSpecification = mockNakedObjectSpecification.Object
 
 mockNakedObjectSpecification.Setup(fun x -> x.ContainsFacet()).Returns(false) |> ignore
 mockNakedObjectSpecification.Setup(fun x -> x.ContainsFacet(null)).Returns(false) |> ignore
-//mockNakedObjectSpecification.Setup(fun x -> x.AddFacet(It.IsAny<IFacet>())).Callback<IFacet> 
-//    (fun f -> Assert.IsInstanceOf<IComplexTypeFacet>(f)) |> ignore
 
 let mockMetamodelManager = new Mock<IMetamodelManager>()
 let objects = new Dictionary<Object, INakedObjectAdapter>()

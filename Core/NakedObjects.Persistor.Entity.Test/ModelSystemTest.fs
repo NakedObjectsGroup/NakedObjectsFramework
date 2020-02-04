@@ -6,19 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.ModelSystemTest
 
+open NakedObjects
+open NakedObjects.Persistor.Entity.Configuration
+open NakedObjects.Services
+open NakedObjects.TestTypes
 open NUnit.Framework
 open SimpleDatabase
-open NakedObjects.Services
-open SystemTestCode
-open NakedObjects
-open TestCode
+open System
 open System.Collections.Generic
 open System.Linq
-open NakedObjects.Persistor.Entity.Configuration
-open System
-open NakedObjects.TestTypes
-
-
+open SystemTestCode
+open TestCode
 
 [<TestFixture>]
 type ModelSystemTests() = 
