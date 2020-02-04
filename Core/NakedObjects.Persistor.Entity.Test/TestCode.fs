@@ -16,11 +16,7 @@ open Moq
 open NakedObjects.Architecture.Component
 open NakedObjects.Core.Component
 open NakedObjects.Core.Configuration
-open NakedObjects.Core.Container
-open NakedObjects.Core.Adapter
 open NakedObjects.Core.Authentication
-open NakedObjects.Persistor.Entity
-open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity.Util
 open NakedObjects.Persistor.Entity.Adapter
 open NakedObjects.Persistor.Entity.Component

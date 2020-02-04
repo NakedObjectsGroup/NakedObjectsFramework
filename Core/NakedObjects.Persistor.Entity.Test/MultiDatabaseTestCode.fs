@@ -12,11 +12,7 @@ open TestCodeOnly
 open TestCode
 open TestTypes
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
-open NakedObjects.Architecture
-open NakedObjects.Architecture.Persist
 open System.Data.Entity.Core.Objects
-open NakedObjects.Persistor.Entity.Configuration
-open NakedObjects.Persistor.Entity
 open NakedObjects.Core
 open NakedObjects.Persistor.Entity.Component
 

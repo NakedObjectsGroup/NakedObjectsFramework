@@ -14,24 +14,12 @@ open NakedObjects.Persistor.TestSuite
 open TestData
 open TestCode
 open System.Security.Principal
-open NakedObjects.Architecture.Configuration
-open NakedObjects.Core.Configuration
 open NakedObjects.Core.Authentication
 open System.Data.Entity.Core.Objects.DataClasses
 open NakedObjects.Persistor.Entity.Configuration
-open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Component
 
-open Microsoft.Extensions.DependencyInjection;
-
-
 let assemblyName = "NakedObjects.Persistor.Test.Data"
-#if AV
-let datasourceName = "(local)\SQL2012SP1"
-#else
-let datasourceName = ".\SQLEXPRESS"
-#endif
-
 
 let LoadTestAssembly() = 
     let obj = new Person()

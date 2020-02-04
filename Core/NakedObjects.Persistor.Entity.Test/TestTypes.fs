@@ -6,22 +6,26 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.TestTypes
 
-open NUnit.Framework
 open NakedObjects.Architecture.Component
 open NakedObjects.Architecture.Spec
-open NakedObjects.Architecture.Resolve
 open System
 open NakedObjects.Architecture.Adapter
 open System.Collections.Generic
 open System.Reflection
 open Moq
-open NakedObjects.Architecture.Facet
 open NakedObjects.Core.Resolve
-open NakedObjects.Core.Adapter
-open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Adapter
 open NakedObjects.Persistor.Entity.Component
 
+// connection strings 
+
+let csAW = "Data Source=.\SQLEXPRESS;Initial Catalog=AdventureWorks;Integrated Security=True;"
+let csAWMARS = "Data source=.\SQLEXPRESS;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"
+let csMD = "Data Source=.\SQLEXPRESS;Initial Catalog=AMultiDatabaseTests;Integrated Security=True;"
+let csMF = "Data Source=.\SQLEXPRESS;Initial Catalog=ModelFirst;Integrated Security=True;"
+let csCO = "Data Source=.\SQLEXPRESS;Initial Catalog=CodeOnlyTests;Integrated Security=True;"
+let csCOCE = "Data Source=.\SQLEXPRESS;Initial Catalog=CodeOnlyCeTests;Integrated Security=True;"
+let csCS = "Data Source=.\SQLEXPRESS;Initial Catalog=CodeSystemTest;Integrated Security=True;"
 
 
 let injectedObjects = new List<Object>()

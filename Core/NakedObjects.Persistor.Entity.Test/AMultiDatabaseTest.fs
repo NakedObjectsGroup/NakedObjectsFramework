@@ -18,15 +18,9 @@ open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 
 let multiDatabasePersistor = 
     EntityObjectStoreConfiguration.NoValidate <- true
-
-    let csOne = "Data Source=.\SQLEXPRESS;Initial Catalog=AMultiDatabaseTests;Integrated Security=True;"
-    let csTwo = "data source=.\SQLEXPRESS;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"
-
-
     let c = new EntityObjectStoreConfiguration()
-    c.UsingCodeFirstContext((CodeFirstConfig csOne).DbContext) |> ignore
-    //c.UsingEdmxContext "AdventureWorksEntities" |> ignore
-    let f = (fun () -> new AdventureWorksEntities(csTwo) :> Data.Entity.DbContext)
+    c.UsingCodeFirstContext((CodeFirstConfig csMD).DbContext) |> ignore
+    let f = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c
     setupPersistorForTesting p

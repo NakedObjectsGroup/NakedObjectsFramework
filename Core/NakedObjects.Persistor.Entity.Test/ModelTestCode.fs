@@ -13,14 +13,11 @@ open TestTypes
 open System
 open NakedObjects
 open NakedObjects.Architecture.Adapter
-open NakedObjects.Architecture.Component
 open NakedObjects.Core.Component
 open NakedObjects.Core.Configuration
 open System.Data.Entity.Core.Objects
 open Moq
-open NakedObjects.Core.Container
 open NakedObjects.Persistor.Entity.Configuration
-open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Component
 
 

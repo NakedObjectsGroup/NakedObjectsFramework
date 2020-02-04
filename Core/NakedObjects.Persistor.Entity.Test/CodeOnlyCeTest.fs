@@ -14,10 +14,8 @@ open NakedObjects.Persistor.Entity.Configuration
 
 let codeOnlyCePersistor =
     EntityObjectStoreConfiguration.NoValidate <- true
- 
     let c = new EntityObjectStoreConfiguration()
-    let cs = "Data Source=.\SQLEXPRESS;Initial Catalog=CodeOnlyCeTests;Integrated Security=True;"
-    c.UsingCodeFirstContext((CodeFirstConfig cs).DbContext) |> ignore
+    c.UsingCodeFirstContext((CodeFirstConfig csCOCE).DbContext) |> ignore
     let p = getEntityObjectStore c
     setupPersistorForTesting p
 

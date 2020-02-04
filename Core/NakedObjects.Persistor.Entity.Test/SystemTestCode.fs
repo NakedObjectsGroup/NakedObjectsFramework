@@ -7,11 +7,8 @@
 module NakedObjects.SystemTestCode
 
 open NUnit.Framework
-open NakedObjects.Architecture.Resolve
 open NakedObjects.Architecture.Adapter
 open NakedObjects.Core.Resolve
-open NakedObjects.Core.Adapter
-open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity.Adapter
 
 

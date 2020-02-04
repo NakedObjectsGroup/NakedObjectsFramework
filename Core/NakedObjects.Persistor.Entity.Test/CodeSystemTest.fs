@@ -10,8 +10,6 @@ open NUnit.Framework
 open TestCodeOnly
 open NakedObjects.Services
 open System
-open NakedObjects.Architecture
-open NakedObjects.Architecture.Adapter
 open SystemTestCode
 open System.Collections.Generic
 open CodeOnlyTestCode
@@ -19,12 +17,8 @@ open NakedObjects
 open TestCode
 open NakedObjects.Core
 open NakedObjects.Core.Util
-open NakedObjects.Architecture.Persist
-open NakedObjects.Core.Configuration
-open NakedObjects.Architecture.Configuration
 open NakedObjects.Persistor.Entity.Configuration
-open Microsoft.Extensions.Configuration;
-open Microsoft.Extensions.DependencyInjection;
+open NakedObjects.TestTypes
 
 [<TestFixture>]
 type CodeSystemTests() = 
@@ -32,8 +26,7 @@ type CodeSystemTests() =
      
     override x.Persistor =
          let config = new EntityObjectStoreConfiguration()
-         let cs = "Data Source=.\SQLEXPRESS;Initial Catalog=CodeSystemTest;Integrated Security=True;"  
-         let f = (fun () -> new CodeFirstContext(cs) :> Data.Entity.DbContext)
+         let f = (fun () -> new CodeFirstContext(csCS) :> Data.Entity.DbContext)
          config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
          config
 

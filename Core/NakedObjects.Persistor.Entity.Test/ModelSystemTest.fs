@@ -9,19 +9,15 @@ module NakedObjects.ModelSystemTest
 open NUnit.Framework
 open SimpleDatabase
 open NakedObjects.Services
-open NakedObjects.Core.Util
 open SystemTestCode
 open NakedObjects
 open TestCode
 open System.Collections.Generic
-open NakedObjects.Architecture.Configuration
-open NakedObjects.Core.Configuration
-open System.Data.Entity.Core.Objects.DataClasses
 open System.Linq
-open NakedObjects.Architecture.Adapter
 open NakedObjects.Persistor.Entity.Configuration
 open System
-open Microsoft.Extensions.DependencyInjection;
+open NakedObjects.TestTypes
+
 
 
 [<TestFixture>]
@@ -30,12 +26,8 @@ type ModelSystemTests() =
     
     override x.Persistor = 
         let config = new EntityObjectStoreConfiguration()
-        config.EnforceProxies <- false
-                       
-        // let cs = "Server=(localdb)\MSSQLLocalDB;Initial Catalog=ModelFirst;Integrated Security=True;"
-        let cs = "Data Source=.\SQLEXPRESS;Initial Catalog=ModelFirst;Integrated Security=True;"
-
-        let f = (fun () -> new SimpleDatabaseDbContext(cs) :> Data.Entity.DbContext)
+        config.EnforceProxies <- false                      
+        let f = (fun () -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext)
         config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
         config
 

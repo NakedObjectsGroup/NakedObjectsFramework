@@ -7,15 +7,12 @@
 module NakedObjects.CodeOnlyTestCode
 
 open NUnit.Framework
-open NakedObjects.Architecture
 open System
-open NakedObjects.Architecture.Persist
 open TestCodeOnly
 open TestTypes
 open TestCode
 open System.Data.Entity.ModelConfiguration
 open NakedObjects.Persistor.Entity.Configuration
-open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Util
 open NakedObjects.Core
 open NakedObjects.Persistor.Entity.Component
@@ -40,12 +37,6 @@ let CodeFirstLoadTestAssembly() =
     ()
 
 let assemblyName = "NakedObjects.Persistor.Entity.Test.CodeOnly"
-#if AV
-let datasourceName = "(local)\SQL2012SP1"
-#else
-let datasourceName = ".\SQLEXPRESS"
-#endif
-
 
 type TestConfigClass() as x = 
     inherit EntityTypeConfiguration<CountryCode>()

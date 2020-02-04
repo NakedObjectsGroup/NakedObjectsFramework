@@ -22,7 +22,7 @@ let persistor =
     setProxyingAndDeferredLoading <- false
     let c = new EntityObjectStoreConfiguration()
     //c.UsingEdmxContext "AdventureWorksEntities" |> ignore
-    let f = (fun () -> new AdventureWorksEntities(csOne) :> Data.Entity.DbContext)
+    let f = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c
     let p = setupPersistorForTesting p
@@ -34,7 +34,7 @@ let overwritePersistor =
     setProxyingAndDeferredLoading <- false
     let c = new EntityObjectStoreConfiguration()
     //c.UsingEdmxContext "AdventureWorksEntities" |> ignore
-    let f = (fun () -> new AdventureWorksEntities(csOne) :> Data.Entity.DbContext)
+    let f = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
     c.DefaultMergeOption <- MergeOption.OverwriteChanges
     let p = getEntityObjectStore c

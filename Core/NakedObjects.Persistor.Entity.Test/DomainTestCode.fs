@@ -8,28 +8,18 @@ module NakedObjects.DomainTestCode
 
 open NUnit.Framework
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
-open NakedObjects.Architecture.Resolve
 open NakedObjects.Core.Resolve
 open System
-open NakedObjects.Architecture
-open NakedObjects.Architecture.Persist
-open NakedObjects.Architecture.Facet
-open NakedObjects.Architecture.Adapter
-open NakedObjects.Architecture.Component
 open TestTypes
 open TestCode
 open System.Data.Entity.Core.Objects
 open NakedObjects.Core
-open NakedObjects.Core.Adapter
-open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity.Util
 open NakedObjects.Persistor.Entity.Adapter
 open NakedObjects.Persistor.Entity.Component
-
-
-let csOne = "data source=.\SQLEXPRESS;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"
-let csTwo = "data source=.\SQLEXPRESS;initial catalog=AdventureWorks;integrated security=True;"
+open System.Data.Common
+open System.Data.SqlClient
 
 let First<'t when 't : not struct> persistor = First<'t> persistor
 let Second<'t when 't : not struct> persistor = Second<'t> persistor
@@ -38,7 +28,10 @@ let DomainLoadTestAssembly() =
     let obj = new Address()
     ()
 
-let DomainSetup() = DomainLoadTestAssembly()
+let DomainSetup() = 
+    DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
+    DomainLoadTestAssembly()
+
 let CanCreateEntityPersistor persistor = Assert.IsNotNull(persistor)
 let CanGetInstancesGeneric persistor = GetInstancesGenericNotEmpty<ScrapReason> persistor
 let CanGetInstancesByType persistor = GetInstancesByTypeNotEmpty<ScrapReason> persistor
@@ -557,7 +550,7 @@ let CanDetectConcurrency(persistor : EntityObjectStore) =
     let otherPersistor =
         EntityObjectStoreConfiguration.NoValidate <- true
         let c = new EntityObjectStoreConfiguration()
-        let f = fun () -> new AdventureWorksEntities(csTwo) :> Data.Entity.DbContext   
+        let f = fun () -> new AdventureWorksEntities(csAW) :> Data.Entity.DbContext   
         c.UsingCodeFirstContext(Func<Data.Entity.DbContext>f) |> ignore
         c.DefaultMergeOption <- MergeOption.AppendOnly
         let p = getEntityObjectStore c
@@ -618,7 +611,7 @@ let ConcurrencyNoCustomOnUpdatingError(persistor : EntityObjectStore) =
     let otherPersistor = 
         EntityObjectStoreConfiguration.NoValidate <- true
         let c = new EntityObjectStoreConfiguration()
-        let f = fun () -> new AdventureWorksEntities(csTwo) :> Data.Entity.DbContext   
+        let f = fun () -> new AdventureWorksEntities(csAW) :> Data.Entity.DbContext   
         c.UsingCodeFirstContext(Func<Data.Entity.DbContext>f) |> ignore
         c.DefaultMergeOption <- MergeOption.AppendOnly
         let p = getEntityObjectStore c

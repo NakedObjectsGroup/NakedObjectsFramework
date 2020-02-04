@@ -10,15 +10,11 @@ open NUnit.Framework
 open NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly
 open NakedObjects.Services
 open System
-open NakedObjects.Architecture.Adapter
 open SystemTestCode
 open TestCode
-open NakedObjects.Core.Util
-open NakedObjects.Core.Configuration
-open NakedObjects.Architecture.Configuration
 open System.Data.Entity.Core.Objects.DataClasses
 open NakedObjects.Persistor.Entity.Configuration
-open Microsoft.Extensions.DependencyInjection;
+open NakedObjects.TestTypes
 
 
 [<TestFixture>]
@@ -27,8 +23,7 @@ type DomainSystemTests() =
 
     override x.Persistor =
         let config = new EntityObjectStoreConfiguration()
-        let cs = "data source=.\SQLEXPRESS;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"  
-        let f = (fun () -> new AdventureWorksEntities(cs) :> Data.Entity.DbContext)
+        let f = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
         config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
         config
 

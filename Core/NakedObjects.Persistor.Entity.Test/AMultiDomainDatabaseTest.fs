@@ -22,17 +22,11 @@ let multiDomainDatabasePersistor =
 
     let c = new EntityObjectStoreConfiguration()
 
-    let csOne = "Data Source=.\SQLEXPRESS;Initial Catalog=ModelFirst;Integrated Security=True;"
-
-    let csTwo = "Data Source=.\SQLEXPRESS;Initial Catalog=AMultiDatabaseTests;Integrated Security=True;"
-
-    let f = (fun () -> new SimpleDatabaseDbContext(csOne) :> Data.Entity.DbContext)
+    let f = (fun () -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
-    c.UsingCodeFirstContext((CodeFirstConfig csTwo).DbContext) |> ignore
+    c.UsingCodeFirstContext((CodeFirstConfig csMD).DbContext) |> ignore
 
-    let csThree = "data source=.\SQLEXPRESS;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"
-
-    let f1 = (fun () -> new AdventureWorksEntities(csThree) :> Data.Entity.DbContext)
+    let f1 = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
     c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f1)) |> ignore
 
     let p = getEntityObjectStore c
