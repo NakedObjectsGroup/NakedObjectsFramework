@@ -323,14 +323,12 @@ type EntityTestSuite() =
     member x.SaveNewObjectWithPersistentItemCollectionItem() = x.Tests.SaveNewObjectWithPersistentItemCollectionItem()
     
     [<Test>]
-    [<Ignore("temp while debugging replace!")>]
     member x.SaveNewObjectWithPersistentReference() = x.Tests.SaveNewObjectWithPersistentReference()
     
     [<Test>]
     member x.SaveNewObjectWithPersistentItemCollectionItemInSeperateTransaction() = x.Tests.SaveNewObjectWithPersistentItemCollectionItemInSeperateTransaction()
     
     [<Test>]
-    [<Ignore("temp while debugging replace!")>]
     member x.SaveNewObjectWithPersistentReferenceInSeperateTransaction() = x.Tests.SaveNewObjectWithPersistentReferenceInSeperateTransaction()
     
     [<Test>]
