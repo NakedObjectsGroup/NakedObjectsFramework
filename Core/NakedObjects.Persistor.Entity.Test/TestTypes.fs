@@ -21,25 +21,25 @@ open System.Reflection
 
 #if APPVEYOR 
 
-let csAW = "Data Source=.\SQL2017;Initial Catalog=AdventureWorks;Integrated Security=True;"
-let csAWMARS = "Data source=.\SQL2017;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"
-let csMD = "Data Source=.\SQL2017;Initial Catalog=AMultiDatabaseTests;Integrated Security=True;"
-let csMF = "Data Source=.\SQL2017;Initial Catalog=ModelFirst;Integrated Security=True;"
-let csCO = "Data Source=.\SQL2017;Initial Catalog=CodeOnlyTests;Integrated Security=True;"
-let csCOCE = "Data Source=.\SQL2017;Initial Catalog=CodeOnlyCeTests;Integrated Security=True;"
-let csCS = "Data Source=.\SQL2017;Initial Catalog=CodeSystemTest;Integrated Security=True;"
-let csTDCO = "Data Source=.\SQL2017;Initial Catalog=TestDataCodeOnly;Integrated Security=True;"
+let csAW = @"Data Source=.\SQL2017;Initial Catalog=AdventureWorks;Integrated Security=True;"
+let csAWMARS = @"Data source=.\SQL2017;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"
+let csMD = @"Data Source=.\SQL2017;Initial Catalog=AMultiDatabaseTests;Integrated Security=True;"
+let csMF = @"Data Source=.\SQL2017;Initial Catalog=ModelFirst;Integrated Security=True;"
+let csCO = @"Data Source=.\SQL2017;Initial Catalog=CodeOnlyTests;Integrated Security=True;"
+let csCOCE = @"Data Source=.\SQL2017;Initial Catalog=CodeOnlyCeTests;Integrated Security=True;"
+let csCS = @"Data Source=.\SQL2017;Initial Catalog=CodeSystemTest;Integrated Security=True;"
+let csTDCO = @"Data Source=.\SQL2017;Initial Catalog=TestDataCodeOnly;Integrated Security=True;"
 
 #else
 
-let csAW = "Data Source=.\SQLEXPRESS;Initial Catalog=AdventureWorks;Integrated Security=True;"
-let csAWMARS = "Data source=.\SQLEXPRESS;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"
-let csMD = "Data Source=.\SQLEXPRESS;Initial Catalog=AMultiDatabaseTests;Integrated Security=True;"
-let csMF = "Data Source=.\SQLEXPRESS;Initial Catalog=ModelFirst;Integrated Security=True;"
-let csCO = "Data Source=.\SQLEXPRESS;Initial Catalog=CodeOnlyTests;Integrated Security=True;"
-let csCOCE = "Data Source=.\SQLEXPRESS;Initial Catalog=CodeOnlyCeTests;Integrated Security=True;"
-let csCS = "Data Source=.\SQLEXPRESS;Initial Catalog=CodeSystemTest;Integrated Security=True;"
-let csTDCO = "Data Source=.\SQLEXPRESS;Initial Catalog=TestDataCodeOnly;Integrated Security=True;"
+let csAW = @"Data Source=.\SQLEXPRESS;Initial Catalog=AdventureWorks;Integrated Security=True;"
+let csAWMARS = @"Data source=.\SQLEXPRESS;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"
+let csMD = @"Data Source=.\SQLEXPRESS;Initial Catalog=AMultiDatabaseTests;Integrated Security=True;"
+let csMF = @"Data Source=.\SQLEXPRESS;Initial Catalog=ModelFirst;Integrated Security=True;"
+let csCO = @"Data Source=.\SQLEXPRESS;Initial Catalog=CodeOnlyTests;Integrated Security=True;"
+let csCOCE = @"Data Source=.\SQLEXPRESS;Initial Catalog=CodeOnlyCeTests;Integrated Security=True;"
+let csCS = @"Data Source=.\SQLEXPRESS;Initial Catalog=CodeSystemTest;Integrated Security=True;"
+let csTDCO = @"Data Source=.\SQLEXPRESS;Initial Catalog=TestDataCodeOnly;Integrated Security=True;"
 
 #endif
 
