@@ -12,6 +12,7 @@ open NakedObjects.Persistor.TestSuite
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Persistor.Entity.Component
 open NakedObjects.Services
+open NakedObjects.TestTypes
 open NUnit.Framework
 open System
 open System.Data.Entity.Core.Objects.DataClasses
@@ -27,7 +28,7 @@ let LoadTestAssembly() =
 
 let Config = 
     let c = new CodeFirstEntityContextConfiguration()
-    c.DbContext <- fun () -> upcast new TestDataContext()
+    c.DbContext <- fun () -> upcast new TestDataContext(csTDCO)
     c
 
 let db =
@@ -127,7 +128,7 @@ type EntityTestSuite() =
         let config = new EntityObjectStoreConfiguration()
         config.EnforceProxies <- false
       
-        let f = (fun () -> new TestDataContext() :> Data.Entity.DbContext)
+        let f = (fun () -> new TestDataContext(csTDCO) :> Data.Entity.DbContext)
         config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
         config
 

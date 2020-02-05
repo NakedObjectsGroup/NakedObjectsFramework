@@ -28,6 +28,7 @@ let csMF = "Data Source=.\SQL2017;Initial Catalog=ModelFirst;Integrated Security
 let csCO = "Data Source=.\SQL2017;Initial Catalog=CodeOnlyTests;Integrated Security=True;"
 let csCOCE = "Data Source=.\SQL2017;Initial Catalog=CodeOnlyCeTests;Integrated Security=True;"
 let csCS = "Data Source=.\SQL2017;Initial Catalog=CodeSystemTest;Integrated Security=True;"
+let csTDCO = "Data Source=.\SQL2017;Initial Catalog=TestDataCodeOnly;Integrated Security=True;"
 
 #else
 
@@ -38,6 +39,7 @@ let csMF = "Data Source=.\SQLEXPRESS;Initial Catalog=ModelFirst;Integrated Secur
 let csCO = "Data Source=.\SQLEXPRESS;Initial Catalog=CodeOnlyTests;Integrated Security=True;"
 let csCOCE = "Data Source=.\SQLEXPRESS;Initial Catalog=CodeOnlyCeTests;Integrated Security=True;"
 let csCS = "Data Source=.\SQLEXPRESS;Initial Catalog=CodeSystemTest;Integrated Security=True;"
+let csTDCO = "Data Source=.\SQLEXPRESS;Initial Catalog=TestDataCodeOnly;Integrated Security=True;"
 
 #endif
 

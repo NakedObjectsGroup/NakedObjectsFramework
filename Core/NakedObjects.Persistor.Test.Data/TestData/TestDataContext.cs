@@ -9,10 +9,7 @@ using System.Data.Entity;
 
 namespace TestData {
     public class TestDataContext : DbContext {
-        // private const string cs = "Server=(localdb)\MSSQLLocalDB;Initial Catalog=TestDataCodeOnly;Integrated Security=True;";
-        private const string Cs = @"Data Source=.\SQLEXPRESS;Initial Catalog=TestDataCodeOnly;Integrated Security=True;";
-
-        public TestDataContext() : base(Cs) { }
+        public TestDataContext(string cs) : base(cs) { }
 
         //public DbSet<Address> Addresses { get; set; }
         public DbSet<Person> People { get; set; }
