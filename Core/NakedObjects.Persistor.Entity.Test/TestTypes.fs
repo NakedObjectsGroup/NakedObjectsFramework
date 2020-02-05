@@ -21,13 +21,13 @@ open System.Reflection
 
 #if APPVEYOR 
 
-let csAW = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks;Integrated Security=True;"
-let csAWMARS = "Data source=(LocalDB)\MSSQLLocalDB;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"
-let csMD = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AMultiDatabaseTests;Integrated Security=True;"
-let csMF = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=ModelFirst;Integrated Security=True;"
-let csCO = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=CodeOnlyTests;Integrated Security=True;"
-let csCOCE = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=CodeOnlyCeTests;Integrated Security=True;"
-let csCS = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=CodeSystemTest;Integrated Security=True;"
+let csAW = "Data Source=.\SQL2017;Initial Catalog=AdventureWorks;Integrated Security=True;"
+let csAWMARS = "Data source=.\SQL2017;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"
+let csMD = "Data Source=.\SQL2017;Initial Catalog=AMultiDatabaseTests;Integrated Security=True;"
+let csMF = "Data Source=.\SQL2017;Initial Catalog=ModelFirst;Integrated Security=True;"
+let csCO = "Data Source=.\SQL2017;Initial Catalog=CodeOnlyTests;Integrated Security=True;"
+let csCOCE = "Data Source=.\SQL2017;Initial Catalog=CodeOnlyCeTests;Integrated Security=True;"
+let csCS = "Data Source=.\SQL2017;Initial Catalog=CodeSystemTest;Integrated Security=True;"
 
 #else
 
