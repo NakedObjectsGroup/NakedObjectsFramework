@@ -54,7 +54,7 @@ type TestDataInitializer() =
             let product = new Product()
             product.Id <- id
             product.Name <- name
-            product.ModifiedDate <- DateTime.Now
+            product.ModifiedDate <- DateTime.Now.ToBinary().ToString()
             let product = context.Products.Add(product)
             product
         

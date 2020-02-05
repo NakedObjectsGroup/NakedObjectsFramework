@@ -18,10 +18,10 @@ namespace TestData {
         public virtual string Name { get; set; }
 
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual string ModifiedDate { get; set; }
 
         public override void Persisting() {
-            ModifiedDate = DateTime.Now;
+            ModifiedDate = DateTime.Now.ToBinary().ToString();
             base.Persisting();
         }
 
@@ -33,7 +33,7 @@ namespace TestData {
         }
 
         public override void Updating() {
-            ModifiedDate = DateTime.Now;
+            ModifiedDate = DateTime.Now.ToBinary().ToString();
             base.Updating();
         }
     }
