@@ -29,10 +29,6 @@ let csCO = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=CodeOnlyTests;Int
 let csCOCE = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=CodeOnlyCeTests;Integrated Security=True;"
 let csCS = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=CodeSystemTest;Integrated Security=True;"
 
-// just a test something that wont compile
-
-a compile error
-
 #else
 
 let csAW = "Data Source=.\SQLEXPRESS;Initial Catalog=AdventureWorks;Integrated Security=True;"
