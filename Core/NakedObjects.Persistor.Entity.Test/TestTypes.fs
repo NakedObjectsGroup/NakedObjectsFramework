@@ -19,6 +19,18 @@ open System.Reflection
 
 // connection strings 
 
+#if APPVEYOR 
+
+let csAW = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AdventureWorks;Integrated Security=True;"
+let csAWMARS = "Data source=(LocalDB)\MSSQLLocalDB;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"
+let csMD = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=AMultiDatabaseTests;Integrated Security=True;"
+let csMF = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=ModelFirst;Integrated Security=True;"
+let csCO = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=CodeOnlyTests;Integrated Security=True;"
+let csCOCE = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=CodeOnlyCeTests;Integrated Security=True;"
+let csCS = "Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=CodeSystemTest;Integrated Security=True;"
+
+#else
+
 let csAW = "Data Source=.\SQLEXPRESS;Initial Catalog=AdventureWorks;Integrated Security=True;"
 let csAWMARS = "Data source=.\SQLEXPRESS;initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"
 let csMD = "Data Source=.\SQLEXPRESS;Initial Catalog=AMultiDatabaseTests;Integrated Security=True;"
@@ -26,6 +38,8 @@ let csMF = "Data Source=.\SQLEXPRESS;Initial Catalog=ModelFirst;Integrated Secur
 let csCO = "Data Source=.\SQLEXPRESS;Initial Catalog=CodeOnlyTests;Integrated Security=True;"
 let csCOCE = "Data Source=.\SQLEXPRESS;Initial Catalog=CodeOnlyCeTests;Integrated Security=True;"
 let csCS = "Data Source=.\SQLEXPRESS;Initial Catalog=CodeSystemTest;Integrated Security=True;"
+
+#endif
 
 
 let injectedObjects = new List<Object>()
