@@ -203,7 +203,6 @@ type EntityTestSuite() =
     member x.ChangeScalarOnPersistentCallsUpdatingUpdated() = x.Tests.ChangeScalarOnPersistentCallsUpdatingUpdated()
      
     [<Test>]
-    [<Ignore("temp while debugging replace!")>]
     member x.ChangeReferenceOnPersistentCallsUpdatingUpdated() = x.Tests.ChangeReferenceOnPersistentCallsUpdatingUpdated()
     
     [<Test>]
