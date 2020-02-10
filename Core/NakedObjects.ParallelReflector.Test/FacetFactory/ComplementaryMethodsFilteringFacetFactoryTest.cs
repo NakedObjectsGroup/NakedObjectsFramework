@@ -380,8 +380,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         #region Nested type: BaseCollectionClass1
 
-        //
-
         private class BaseCollectionClass1 {
             public virtual ICollection<string> ACollection { get; set; }
 

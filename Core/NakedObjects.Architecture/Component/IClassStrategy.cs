@@ -24,12 +24,11 @@ namespace NakedObjects.Architecture.Component {
         ///     Return true if the class is used by the system, and should therefore not be exposed to the user as a
         ///     field
         /// </summary>
-        //bool IsSystemClass(Type type);
+        bool IsSystemClass(Type introspectedType);
         string GetKeyForType(Type type);
 
         bool IsTypeToBeIntrospected(Type type);
         Type FilterNullableAndProxies(Type type);
-        bool IsSystemClass(Type introspectedType);
     }
 
     // Copyright (c) Naked Objects Group Ltd.
