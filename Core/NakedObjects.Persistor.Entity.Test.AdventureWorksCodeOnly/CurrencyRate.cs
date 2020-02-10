@@ -13,9 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.CurrencyRate")]
     public partial class CurrencyRate {
-        public CurrencyRate() {
-            SalesOrderHeaders = new HashSet<SalesOrderHeader>();
-        }
+        public CurrencyRate() { }
 
         public int CurrencyRateID { get; set; }
 
@@ -41,6 +39,6 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public virtual Currency Currency1 { get; set; }
 
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; }
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
     }
 }

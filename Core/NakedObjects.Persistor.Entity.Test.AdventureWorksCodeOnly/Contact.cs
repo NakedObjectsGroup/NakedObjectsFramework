@@ -13,14 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Person.Contact")]
     public partial class Contact {
-        public Contact() {
-            Employees = new HashSet<Employee>();
-            ContactCreditCards = new HashSet<ContactCreditCard>();
-            Individuals = new HashSet<Individual>();
-            SalesOrderHeaders = new HashSet<SalesOrderHeader>();
-            StoreContacts = new HashSet<StoreContact>();
-            VendorContacts = new HashSet<VendorContact>();
-        }
+        public Contact() { }
 
         public int ContactID { get; set; }
 
@@ -66,16 +59,16 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<Employee> Employees { get; set; }
+        public virtual ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
 
-        public virtual ICollection<ContactCreditCard> ContactCreditCards { get; set; }
+        public virtual ICollection<ContactCreditCard> ContactCreditCards { get; set; } = new HashSet<ContactCreditCard>();
 
-        public virtual ICollection<Individual> Individuals { get; set; }
+        public virtual ICollection<Individual> Individuals { get; set; } = new HashSet<Individual>();
 
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; }
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
 
-        public virtual ICollection<StoreContact> StoreContacts { get; set; }
+        public virtual ICollection<StoreContact> StoreContacts { get; set; } = new HashSet<StoreContact>();
 
-        public virtual ICollection<VendorContact> VendorContacts { get; set; }
+        public virtual ICollection<VendorContact> VendorContacts { get; set; } = new HashSet<VendorContact>();
     }
 }

@@ -13,12 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Production.UnitMeasure")]
     public partial class UnitMeasure {
-        public UnitMeasure() {
-            BillOfMaterials = new HashSet<BillOfMaterial>();
-            Products = new HashSet<Product>();
-            Products1 = new HashSet<Product>();
-            ProductVendors = new HashSet<ProductVendor>();
-        }
+        public UnitMeasure() { }
 
         [Key]
         [StringLength(3)]
@@ -30,12 +25,12 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<BillOfMaterial> BillOfMaterials { get; set; }
+        public virtual ICollection<BillOfMaterial> BillOfMaterials { get; set; } = new HashSet<BillOfMaterial>();
 
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
 
-        public virtual ICollection<Product> Products1 { get; set; }
+        public virtual ICollection<Product> Products1 { get; set; } = new HashSet<Product>();
 
-        public virtual ICollection<ProductVendor> ProductVendors { get; set; }
+        public virtual ICollection<ProductVendor> ProductVendors { get; set; } = new HashSet<ProductVendor>();
     }
 }

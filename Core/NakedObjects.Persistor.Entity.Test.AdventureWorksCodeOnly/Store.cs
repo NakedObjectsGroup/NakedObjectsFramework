@@ -13,9 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.Store")]
     public partial class Store {
-        public Store() {
-            StoreContacts = new HashSet<StoreContact>();
-        }
+        public Store() { }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -38,6 +36,6 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public virtual SalesPerson SalesPerson { get; set; }
 
-        public virtual ICollection<StoreContact> StoreContacts { get; set; }
+        public virtual ICollection<StoreContact> StoreContacts { get; set; } = new HashSet<StoreContact>();
     }
 }

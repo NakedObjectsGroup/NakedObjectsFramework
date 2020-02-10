@@ -13,9 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("HumanResources.Department")]
     public partial class Department {
-        public Department() {
-            EmployeeDepartmentHistories = new HashSet<EmployeeDepartmentHistory>();
-        }
+        public Department() { }
 
         public short DepartmentID { get; set; }
 
@@ -29,6 +27,6 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<EmployeeDepartmentHistory> EmployeeDepartmentHistories { get; set; }
+        public virtual ICollection<EmployeeDepartmentHistory> EmployeeDepartmentHistories { get; set; } = new HashSet<EmployeeDepartmentHistory>();
     }
 }

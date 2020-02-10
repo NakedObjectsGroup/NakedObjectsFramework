@@ -13,10 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.CreditCard")]
     public partial class CreditCard {
-        public CreditCard() {
-            ContactCreditCards = new HashSet<ContactCreditCard>();
-            SalesOrderHeaders = new HashSet<SalesOrderHeader>();
-        }
+        public CreditCard() { }
 
         public int CreditCardID { get; set; }
 
@@ -34,8 +31,8 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<ContactCreditCard> ContactCreditCards { get; set; }
+        public virtual ICollection<ContactCreditCard> ContactCreditCards { get; set; } = new HashSet<ContactCreditCard>();
 
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; }
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
     }
 }

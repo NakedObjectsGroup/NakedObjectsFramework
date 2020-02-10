@@ -13,14 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("HumanResources.Employee")]
     public partial class Employee {
-        public Employee() {
-            Employee1 = new HashSet<Employee>();
-            EmployeeAddresses = new HashSet<EmployeeAddress>();
-            EmployeeDepartmentHistories = new HashSet<EmployeeDepartmentHistory>();
-            EmployeePayHistories = new HashSet<EmployeePayHistory>();
-            JobCandidates = new HashSet<JobCandidate>();
-            PurchaseOrderHeaders = new HashSet<PurchaseOrderHeader>();
-        }
+        public Employee() { }
 
         public int EmployeeID { get; set; }
 
@@ -66,19 +59,19 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public virtual Contact Contact { get; set; }
 
-        public virtual ICollection<Employee> Employee1 { get; set; }
+        public virtual ICollection<Employee> Employee1 { get; set; } = new HashSet<Employee>();
 
         public virtual Employee Employee2 { get; set; }
 
-        public virtual ICollection<EmployeeAddress> EmployeeAddresses { get; set; }
+        public virtual ICollection<EmployeeAddress> EmployeeAddresses { get; set; } = new HashSet<EmployeeAddress>();
 
-        public virtual ICollection<EmployeeDepartmentHistory> EmployeeDepartmentHistories { get; set; }
+        public virtual ICollection<EmployeeDepartmentHistory> EmployeeDepartmentHistories { get; set; } = new HashSet<EmployeeDepartmentHistory>();
 
-        public virtual ICollection<EmployeePayHistory> EmployeePayHistories { get; set; }
+        public virtual ICollection<EmployeePayHistory> EmployeePayHistories { get; set; } = new HashSet<EmployeePayHistory>();
 
-        public virtual ICollection<JobCandidate> JobCandidates { get; set; }
+        public virtual ICollection<JobCandidate> JobCandidates { get; set; } = new HashSet<JobCandidate>();
 
-        public virtual ICollection<PurchaseOrderHeader> PurchaseOrderHeaders { get; set; }
+        public virtual ICollection<PurchaseOrderHeader> PurchaseOrderHeaders { get; set; } = new HashSet<PurchaseOrderHeader>();
 
         public virtual SalesPerson SalesPerson { get; set; }
     }

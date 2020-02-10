@@ -13,9 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Purchasing.PurchaseOrderHeader")]
     public partial class PurchaseOrderHeader {
-        public PurchaseOrderHeader() {
-            PurchaseOrderDetails = new HashSet<PurchaseOrderDetail>();
-        }
+        public PurchaseOrderHeader() { }
 
         [Key]
         public int PurchaseOrderID { get; set; }
@@ -51,7 +49,7 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public virtual Employee Employee { get; set; }
 
-        public virtual ICollection<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
+        public virtual ICollection<PurchaseOrderDetail> PurchaseOrderDetails { get; set; } = new HashSet<PurchaseOrderDetail>();
 
         public virtual ShipMethod ShipMethod { get; set; }
 

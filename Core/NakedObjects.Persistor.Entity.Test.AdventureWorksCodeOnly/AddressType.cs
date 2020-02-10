@@ -13,10 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Person.AddressType")]
     public partial class AddressType {
-        public AddressType() {
-            CustomerAddresses = new HashSet<CustomerAddress>();
-            VendorAddresses = new HashSet<VendorAddress>();
-        }
+        public AddressType() { }
 
         public int AddressTypeID { get; set; }
 
@@ -28,8 +25,8 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; }
+        public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; } = new HashSet<CustomerAddress>();
 
-        public virtual ICollection<VendorAddress> VendorAddresses { get; set; }
+        public virtual ICollection<VendorAddress> VendorAddresses { get; set; } = new HashSet<VendorAddress>();
     }
 }

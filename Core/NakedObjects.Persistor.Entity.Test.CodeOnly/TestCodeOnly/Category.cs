@@ -14,8 +14,8 @@ namespace TestCodeOnly {
         public virtual string Name { get; set; }
 
         public virtual ICollection<Product> Products {
-            get { return products ?? (products = new List<Product>()); }
-            set { products = value; }
+            get => products ??= new List<Product>();
+            set => products = value;
         }
     }
 }

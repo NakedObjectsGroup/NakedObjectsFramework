@@ -13,10 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Person.CountryRegion")]
     public partial class CountryRegion {
-        public CountryRegion() {
-            CountryRegionCurrencies = new HashSet<CountryRegionCurrency>();
-            StateProvinces = new HashSet<StateProvince>();
-        }
+        public CountryRegion() { }
 
         [Key]
         [StringLength(3)]
@@ -28,8 +25,8 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<CountryRegionCurrency> CountryRegionCurrencies { get; set; }
+        public virtual ICollection<CountryRegionCurrency> CountryRegionCurrencies { get; set; } = new HashSet<CountryRegionCurrency>();
 
-        public virtual ICollection<StateProvince> StateProvinces { get; set; }
+        public virtual ICollection<StateProvince> StateProvinces { get; set; } = new HashSet<StateProvince>();
     }
 }

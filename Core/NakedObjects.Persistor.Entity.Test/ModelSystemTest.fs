@@ -34,8 +34,7 @@ type ModelSystemTests() =
     override x.Types = [| typeof<SimpleDatabase.Fruit>; typeof<List<SimpleDatabase.Food>> |]
 
     override x.Namespaces = [| "SimpleDatabase" |]
-
-    
+  
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
     

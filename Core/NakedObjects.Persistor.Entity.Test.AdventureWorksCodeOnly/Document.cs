@@ -13,9 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Production.Document")]
     public partial class Document {
-        public Document() {
-            ProductDocuments = new HashSet<ProductDocument>();
-        }
+        public Document() { }
 
         public int DocumentID { get; set; }
 
@@ -46,6 +44,6 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<ProductDocument> ProductDocuments { get; set; }
+        public virtual ICollection<ProductDocument> ProductDocuments { get; set; } = new HashSet<ProductDocument>();
     }
 }

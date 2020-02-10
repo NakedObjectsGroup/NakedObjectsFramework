@@ -13,13 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Person.Address")]
     public partial class Address {
-        public Address() {
-            EmployeeAddresses = new HashSet<EmployeeAddress>();
-            CustomerAddresses = new HashSet<CustomerAddress>();
-            SalesOrderHeaders = new HashSet<SalesOrderHeader>();
-            SalesOrderHeaders1 = new HashSet<SalesOrderHeader>();
-            VendorAddresses = new HashSet<VendorAddress>();
-        }
+        public Address() { }
 
         public int AddressID { get; set; }
 
@@ -44,16 +38,16 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<EmployeeAddress> EmployeeAddresses { get; set; }
+        public virtual ICollection<EmployeeAddress> EmployeeAddresses { get; set; } = new HashSet<EmployeeAddress>();
 
         public virtual StateProvince StateProvince { get; set; }
 
-        public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; }
+        public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; } = new HashSet<CustomerAddress>();
 
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; }
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
 
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders1 { get; set; }
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders1 { get; set; } = new HashSet<SalesOrderHeader>();
 
-        public virtual ICollection<VendorAddress> VendorAddresses { get; set; }
+        public virtual ICollection<VendorAddress> VendorAddresses { get; set; } = new HashSet<VendorAddress>();
     }
 }

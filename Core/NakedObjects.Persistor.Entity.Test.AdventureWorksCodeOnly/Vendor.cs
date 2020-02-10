@@ -13,12 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Purchasing.Vendor")]
     public partial class Vendor {
-        public Vendor() {
-            ProductVendors = new HashSet<ProductVendor>();
-            PurchaseOrderHeaders = new HashSet<PurchaseOrderHeader>();
-            VendorAddresses = new HashSet<VendorAddress>();
-            VendorContacts = new HashSet<VendorContact>();
-        }
+        public Vendor() { }
 
         public int VendorID { get; set; }
 
@@ -41,12 +36,12 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<ProductVendor> ProductVendors { get; set; }
+        public virtual ICollection<ProductVendor> ProductVendors { get; set; } = new HashSet<ProductVendor>();
 
-        public virtual ICollection<PurchaseOrderHeader> PurchaseOrderHeaders { get; set; }
+        public virtual ICollection<PurchaseOrderHeader> PurchaseOrderHeaders { get; set; } = new HashSet<PurchaseOrderHeader>();
 
-        public virtual ICollection<VendorAddress> VendorAddresses { get; set; }
+        public virtual ICollection<VendorAddress> VendorAddresses { get; set; } = new HashSet<VendorAddress>();
 
-        public virtual ICollection<VendorContact> VendorContacts { get; set; }
+        public virtual ICollection<VendorContact> VendorContacts { get; set; } = new HashSet<VendorContact>();
     }
 }

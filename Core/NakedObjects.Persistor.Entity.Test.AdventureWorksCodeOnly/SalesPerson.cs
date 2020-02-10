@@ -12,12 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.SalesPerson")]
     public partial class SalesPerson {
-        public SalesPerson() {
-            SalesOrderHeaders = new HashSet<SalesOrderHeader>();
-            SalesPersonQuotaHistories = new HashSet<SalesPersonQuotaHistory>();
-            SalesTerritoryHistories = new HashSet<SalesTerritoryHistory>();
-            Stores = new HashSet<Store>();
-        }
+        public SalesPerson() { }
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int SalesPersonID { get; set; }
@@ -45,14 +40,14 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public virtual Employee Employee { get; set; }
 
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; }
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
 
         public virtual SalesTerritory SalesTerritory { get; set; }
 
-        public virtual ICollection<SalesPersonQuotaHistory> SalesPersonQuotaHistories { get; set; }
+        public virtual ICollection<SalesPersonQuotaHistory> SalesPersonQuotaHistories { get; set; } = new HashSet<SalesPersonQuotaHistory>();
 
-        public virtual ICollection<SalesTerritoryHistory> SalesTerritoryHistories { get; set; }
+        public virtual ICollection<SalesTerritoryHistory> SalesTerritoryHistories { get; set; } = new HashSet<SalesTerritoryHistory>();
 
-        public virtual ICollection<Store> Stores { get; set; }
+        public virtual ICollection<Store> Stores { get; set; } = new HashSet<Store>();
     }
 }

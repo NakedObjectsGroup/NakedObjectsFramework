@@ -13,13 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.SalesTerritory")]
     public partial class SalesTerritory {
-        public SalesTerritory() {
-            StateProvinces = new HashSet<StateProvince>();
-            Customers = new HashSet<Customer>();
-            SalesOrderHeaders = new HashSet<SalesOrderHeader>();
-            SalesPersons = new HashSet<SalesPerson>();
-            SalesTerritoryHistories = new HashSet<SalesTerritoryHistory>();
-        }
+        public SalesTerritory() { }
 
         [Key]
         public int TerritoryID { get; set; }
@@ -52,14 +46,14 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<StateProvince> StateProvinces { get; set; }
+        public virtual ICollection<StateProvince> StateProvinces { get; set; } = new HashSet<StateProvince>();
 
-        public virtual ICollection<Customer> Customers { get; set; }
+        public virtual ICollection<Customer> Customers { get; set; } = new HashSet<Customer>();
 
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; }
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; } = new HashSet<SalesOrderHeader>();
 
-        public virtual ICollection<SalesPerson> SalesPersons { get; set; }
+        public virtual ICollection<SalesPerson> SalesPersons { get; set; } = new HashSet<SalesPerson>();
 
-        public virtual ICollection<SalesTerritoryHistory> SalesTerritoryHistories { get; set; }
+        public virtual ICollection<SalesTerritoryHistory> SalesTerritoryHistories { get; set; } = new HashSet<SalesTerritoryHistory>();
     }
 }

@@ -13,10 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Production.Location")]
     public partial class Location {
-        public Location() {
-            ProductInventories = new HashSet<ProductInventory>();
-            WorkOrderRoutings = new HashSet<WorkOrderRouting>();
-        }
+        public Location() { }
 
         public short LocationID { get; set; }
 
@@ -32,8 +29,8 @@ namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
 
         public DateTime ModifiedDate { get; set; }
 
-        public virtual ICollection<ProductInventory> ProductInventories { get; set; }
+        public virtual ICollection<ProductInventory> ProductInventories { get; set; } = new HashSet<ProductInventory>();
 
-        public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; set; }
+        public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; set; } = new HashSet<WorkOrderRouting>();
     }
 }
