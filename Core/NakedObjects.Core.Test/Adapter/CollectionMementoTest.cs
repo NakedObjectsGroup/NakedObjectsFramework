@@ -15,10 +15,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
@@ -136,23 +134,6 @@ namespace NakedObjects.Core.Test.Adapter {
         }
 
         #endregion
-
-        //protected override void RegisterTypes(IServiceCollection container) {
-        //    base.RegisterTypes(container);
-        //    // replace INakedObjectStore types
-        //    var c = new EntityObjectStoreConfiguration();
-        //    c.UsingCodeFirstContext(() => {
-        //        var cs = GetConfiguredContainer().GetService<IConfiguration>().GetConnectionString("TestContext");
-        //        return new TestContext(cs);
-        //    });
-        //    container.AddSingleton<IEntityObjectStoreConfiguration>(c);
-
-        //    var types = new[] {typeof(TestDomainObject[]), typeof(List<TestDomainObject>), typeof(ObjectQuery<TestDomainObject>), typeof(List<Int32>)};
-        //    var ms = new[] {typeof(SimpleRepository<TestDomainObject>)};
-        //    var ns = new[] {typeof(TestDomainObject).Namespace};
-        //    var rc = new ReflectorConfiguration(types, ms, ns);
-        //    container.AddSingleton<IReflectorConfiguration>(rc);
-        //}
 
         protected override IDictionary<string, string> Configuration() {
             var config = base.Configuration();
