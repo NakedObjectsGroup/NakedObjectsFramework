@@ -375,8 +375,8 @@ namespace NakedObjects.Reflect.Test {
             var specs = reflector.AllObjectSpecImmutables;
             Assert.AreEqual(2, specs.Length);
 
-            AbstractReflectorTest.AssertSpec(typeof(TestObjectWithStringArray), specs[0]);
-            AbstractReflectorTest.AssertSpec(typeof(string), specs[1]);
+            AbstractReflectorTest.AssertSpec(typeof(TestObjectWithStringArray), specs);
+            AbstractReflectorTest.AssertSpec(typeof(string), specs);
         }
 
         [TestMethod]
