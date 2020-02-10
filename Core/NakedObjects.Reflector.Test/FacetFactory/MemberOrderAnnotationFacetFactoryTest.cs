@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,12 +21,24 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private MemberOrderAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMemberOrderFacet)}; }
+            get { return new[] {typeof(IMemberOrderFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
+
+        #region Nested type: Customer
+
+        private class Customer {
+            [MemberOrder(Sequence = "1")]
+// ReSharper disable UnusedMember.Local
+            public string FirstName {
+                get { return null; }
+            }
+        }
+
+        #endregion
 
         #region Setup/Teardown
 
@@ -44,14 +56,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
-        private class Customer {
-            [MemberOrder(Sequence = "1")]
-// ReSharper disable UnusedMember.Local
-            public string FirstName {
-                get { return null; }
-            }
-        }
-
         private class Customer1 {
             [MemberOrder(Sequence = "2")]
             public IList Orders {
@@ -59,16 +63,16 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
 
 // ReSharper disable once UnusedParameter.Local
-            public void AddToOrders(Order o) {}
+            public void AddToOrders(Order o) { }
         }
 
         private class Customer2 {
             [MemberOrder(Sequence = "3")]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
 // ReSharper disable once ClassNeverInstantiated.Local
-        private class Order {}
+        private class Order { }
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -82,9 +86,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMemberOrderAnnotationPickedUpOnAction() {
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction");
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction");
             facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
@@ -94,9 +98,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMemberOrderAnnotationPickedUpOnCollection() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
+            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
@@ -106,9 +110,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMemberOrderAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMemberOrderFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;

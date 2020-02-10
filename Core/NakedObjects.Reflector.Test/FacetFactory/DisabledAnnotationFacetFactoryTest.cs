@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,12 +21,24 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private DisabledAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IDisabledFacet)}; }
+            get { return new[] {typeof(IDisabledFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
+
+        #region Nested type: Customer
+
+        private class Customer {
+            [Disabled]
+// ReSharper disable UnusedMember.Local
+            public int NumberOfOrders {
+                get { return 0; }
+            }
+        }
+
+        #endregion
 
         #region Setup/Teardown
 
@@ -44,14 +56,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
-        private class Customer {
-            [Disabled]
-// ReSharper disable UnusedMember.Local
-            public int NumberOfOrders {
-                get { return 0; }
-            }
-        }
-
         private class Customer1 {
             [Disabled]
             public IList Orders {
@@ -61,34 +65,34 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer2 {
             [Disabled]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer3 {
             [Disabled(WhenTo.Always)]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer4 {
             [Disabled(WhenTo.Never)]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer5 {
             [Disabled(WhenTo.OncePersisted)]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         private class Customer6 {
             [Disabled(WhenTo.UntilPersisted)]
-            public void SomeAction() {}
+            public void SomeAction() { }
         }
 
         [TestMethod]
         public void TestDisabledAnnotationPickedUpOnAction() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer2), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer2), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IDisabledFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisabledFacetAbstract);
             AssertNoMethodsRemoved();
@@ -96,9 +100,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDisabledAnnotationPickedUpOnCollection() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
+            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IDisabledFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisabledFacetAbstract);
             AssertNoMethodsRemoved();
@@ -106,9 +110,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDisabledAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IDisabledFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisabledFacetAbstract);
             AssertNoMethodsRemoved();
@@ -116,36 +120,36 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDisabledWhenAlwaysAnnotationPickedUpOn() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer3), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer3), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IDisabledFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
             Assert.AreEqual(WhenTo.Always, disabledFacetAbstract.Value);
         }
 
         [TestMethod]
         public void TestDisabledWhenNeverAnnotationPickedUpOn() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer4), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer4), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IDisabledFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
             Assert.AreEqual(WhenTo.Never, disabledFacetAbstract.Value);
         }
 
         [TestMethod]
         public void TestDisabledWhenOncePersistedAnnotationPickedUpOn() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer5), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer5), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IDisabledFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
             Assert.AreEqual(WhenTo.OncePersisted, disabledFacetAbstract.Value);
         }
 
         [TestMethod]
         public void TestDisabledWhenUntilPersistedAnnotationPickedUpOn() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer6), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer6), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IDisabledFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
             Assert.AreEqual(WhenTo.UntilPersisted, disabledFacetAbstract.Value);
         }

@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,12 +21,43 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private PropertyDefaultAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IPropertyDefaultFacet)}; }
+            get { return new[] {typeof(IPropertyDefaultFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
+
+        [TestMethod]
+        public override void TestFeatureTypes() {
+            FeatureType featureTypes = facetFactory.FeatureTypes;
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
+            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
+            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
+        }
+
+        [TestMethod]
+        public void TestPropertyDefaultAnnotationPickedUpOnProperty() {
+            PropertyInfo property = FindProperty(typeof(Customer1), "Prop");
+            facetFactory.Process(Reflector, property, MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IPropertyDefaultFacet));
+            Assert.IsNotNull(facet);
+            Assert.IsTrue(facet is PropertyDefaultFacetAnnotation);
+            var propertyDefaultFacetAnnotation = (PropertyDefaultFacetAnnotation) facet;
+            Assert.AreEqual(1, propertyDefaultFacetAnnotation.GetDefault(null));
+        }
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [DefaultValue(1)]
+// ReSharper disable once UnusedMember.Local
+            public int Prop { get; set; }
+        }
+
+        #endregion
 
         #region Setup/Teardown
 
@@ -43,33 +74,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private class Customer1 {
-            [DefaultValue(1)]
-// ReSharper disable once UnusedMember.Local
-            public int Prop { get; set; }
-        }
-
-        [TestMethod]
-        public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
-            Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.Actions));
-            Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
-        }
-
-        [TestMethod]
-        public void TestPropertyDefaultAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "Prop");
-            facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPropertyDefaultFacet));
-            Assert.IsNotNull(facet);
-            Assert.IsTrue(facet is PropertyDefaultFacetAnnotation);
-            var propertyDefaultFacetAnnotation = (PropertyDefaultFacetAnnotation) facet;
-            Assert.AreEqual(1, propertyDefaultFacetAnnotation.GetDefault(null));
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

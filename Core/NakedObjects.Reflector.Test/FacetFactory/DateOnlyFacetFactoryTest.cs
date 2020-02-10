@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private DateOnlyFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IDateOnlyFacet)}; }
+            get { return new[] {typeof(IDateOnlyFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -40,9 +40,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDefaultDateOnlyOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Test), "ADate1");
+            PropertyInfo property = FindProperty(typeof(Test), "ADate1");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
         }
@@ -58,17 +58,17 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNoFacetOnNonDateProperty() {
-            PropertyInfo property = FindProperty(typeof (Test), "NotADate");
+            PropertyInfo property = FindProperty(typeof(Test), "NotADate");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestAnnotatedDateOnlyOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Test), "ADate2");
+            PropertyInfo property = FindProperty(typeof(Test), "ADate2");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
         }
@@ -84,9 +84,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNoFacetOnDateTimeProperty() {
-            PropertyInfo property = FindProperty(typeof (Test), "ADate3");
+            PropertyInfo property = FindProperty(typeof(Test), "ADate3");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
         }
 
@@ -100,24 +100,24 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNoFacetOnConcurrencyProperty() {
-            PropertyInfo property = FindProperty(typeof (Test), "ADate4");
+            PropertyInfo property = FindProperty(typeof(Test), "ADate4");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestAnnotatedDateOnlyOnConcurrencyProperty() {
-            PropertyInfo property = FindProperty(typeof (Test), "ADate5");
+            PropertyInfo property = FindProperty(typeof(Test), "ADate5");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
         }
 
         [TestMethod]
         public void TestDefaultDateOnlyOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Test), "ADateMethod1", new[] { typeof(DateTime) });
+            MethodInfo method = FindMethod(typeof(Test), "ADateMethod1", new[] {typeof(DateTime)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
@@ -126,7 +126,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestAnnotatedDateOnlyOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Test), "ADateMethod2", new[] { typeof(DateTime) });
+            MethodInfo method = FindMethod(typeof(Test), "ADateMethod2", new[] {typeof(DateTime)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
@@ -135,7 +135,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNoFacetOnDateTimeActionParameter() {
-            MethodInfo method = FindMethod(typeof(Test), "ADateMethod3", new[] { typeof(DateTime) });
+            MethodInfo method = FindMethod(typeof(Test), "ADateMethod3", new[] {typeof(DateTime)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
@@ -143,12 +143,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNoFacetOnNotDateActionParameter() {
-            MethodInfo method = FindMethod(typeof(Test), "NotADateMethod", new[] { typeof(TimeSpan) });
+            MethodInfo method = FindMethod(typeof(Test), "NotADateMethod", new[] {typeof(TimeSpan)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
         }
-
 
         #region Nested type: Test
 
@@ -179,13 +178,13 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             [DataType(DataType.Date)]
             public TimeSpan NotADate => new TimeSpan();
 
-            public void ADateMethod1(DateTime aDate1) {}
+            public void ADateMethod1(DateTime aDate1) { }
 
-            public void ADateMethod2([DataType(DataType.Date)] DateTime aDate2) {}
+            public void ADateMethod2([DataType(DataType.Date)] DateTime aDate2) { }
 
-            public void ADateMethod3([DataType(DataType.DateTime)] DateTime aDate3) {}
+            public void ADateMethod3([DataType(DataType.DateTime)] DateTime aDate3) { }
 
-            public void NotADateMethod(TimeSpan notADate) {}
+            public void NotADateMethod(TimeSpan notADate) { }
         }
 
         #endregion

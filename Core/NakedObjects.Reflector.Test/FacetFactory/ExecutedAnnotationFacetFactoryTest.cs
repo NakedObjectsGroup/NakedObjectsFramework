@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,46 +20,18 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private ExecutedAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IExecutedFacet)}; }
+            get { return new[] {typeof(IExecutedFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
 
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new ExecutedAnnotationFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer {
-            [Executed(Where.Locally)]
-// ReSharper disable once UnusedMember.Local
-            public void SomeAction() {}
-        }
-
-        private class Customer1 {
-            [Executed(Where.Remotely)]
-// ReSharper disable once UnusedMember.Local
-            public void SomeAction() {}
-        }
-
         [TestMethod]
         public void TestExecutedLocallyAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IExecutedFacet));
+            IFacet facet = Specification.GetFacet(typeof(IExecutedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ExecutedFacetAbstract);
             var executedFacetAbstract = (ExecutedFacetAbstract) facet;
@@ -69,9 +41,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestExecutedRemotelyAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethod(typeof (Customer1), "SomeAction");
+            MethodInfo actionMethod = FindMethod(typeof(Customer1), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IExecutedFacet));
+            IFacet facet = Specification.GetFacet(typeof(IExecutedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ExecutedFacetAbstract);
             var executedFacetAbstract = (ExecutedFacetAbstract) facet;
@@ -88,6 +60,42 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
         }
+
+        #region Nested type: Customer
+
+        private class Customer {
+            [Executed(Where.Locally)]
+// ReSharper disable once UnusedMember.Local
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [Executed(Where.Remotely)]
+// ReSharper disable once UnusedMember.Local
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new ExecutedAnnotationFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

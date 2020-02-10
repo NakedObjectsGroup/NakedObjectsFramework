@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,7 +20,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private MenuFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMenuFacet)}; }
+            get { return new[] {typeof(IMenuFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -39,17 +39,17 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDefaultMenuPickedUp() {
-            facetFactory.Process(Reflector, typeof (Class1), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMenuFacet));
+            facetFactory.Process(Reflector, typeof(Class1), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IMenuFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MenuFacetDefault);
         }
 
         [TestMethod]
         public void TestMethodMenuPickedUp() {
-            var class2Type = typeof (Class2);
+            var class2Type = typeof(Class2);
             facetFactory.Process(Reflector, class2Type, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMenuFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMenuFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MenuFacetViaMethod);
             MethodInfo m1 = class2Type.GetMethod("Menu");
@@ -58,7 +58,16 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #region Nested type: Class1
 
-        private class Class1 {}
+        private class Class1 { }
+
+        #endregion
+
+        #region Nested type: Class2
+
+        private class Class2 {
+// ReSharper disable once UnusedMember.Local
+            public static void Menu() { }
+        }
 
         #endregion
 
@@ -75,15 +84,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public new void TearDown() {
             facetFactory = null;
             base.TearDown();
-        }
-
-        #endregion
-
-        #region Nested type: Class2
-
-        private class Class2 {
-// ReSharper disable once UnusedMember.Local
-            public static void Menu() {}
         }
 
         #endregion

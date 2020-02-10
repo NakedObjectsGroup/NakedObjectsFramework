@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,14 +26,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected override Type[] SupportedTypes {
             get {
                 return new[] {
-                    typeof (INamedFacet),
-                    typeof (IExecutedFacet),
-                    typeof (IActionValidationFacet),
-                    typeof (IActionInvocationFacet),
-                    typeof (IActionDefaultsFacet),
-                    typeof (IActionChoicesFacet),
-                    typeof (IDescribedAsFacet),
-                    typeof (IMandatoryFacet)
+                    typeof(INamedFacet),
+                    typeof(IExecutedFacet),
+                    typeof(IActionValidationFacet),
+                    typeof(IActionInvocationFacet),
+                    typeof(IActionDefaultsFacet),
+                    typeof(IActionChoicesFacet),
+                    typeof(IDescribedAsFacet),
+                    typeof(IMandatoryFacet)
                 };
             }
         }
@@ -46,14 +46,13 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public void TestFilterActions() {
             ReflectorConfiguration.NoValidate = true;
 
-            var config = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new[] { typeof(Customer).Namespace });
+            var config = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {typeof(Customer).Namespace});
 
             var classStrategy = new DefaultClassStrategy(config);
 
             var methods = typeof(Customer).GetMethods().ToList();
             var filteredActions = methods.Where(m => facetFactory.Filters(m, classStrategy)).ToArray();
             var notFilteredActions = methods.Where(m => !facetFactory.Filters(m, classStrategy)).ToArray();
-
 
             var filteredNames = new List<string> {
                 "ToString",
@@ -80,11 +79,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             filteredNames.ForEach(n => Assert.IsTrue(filteredActions.Select(a => a.Name).Contains(n)));
         }
 
-       
-
-     
-
-
         [TestMethod]
         public override void TestFeatureTypes() {
             FeatureType featureTypes = facetFactory.FeatureTypes;
@@ -99,18 +93,18 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         // ReSharper disable UnusedParameter.Local
         private class Customer {
-            public void ActionWithNoParameters() {}
-            public void ActionWithOneGoodParameter(int i) {}
-            public void ActionWithTwoGoodParameter(int i, Customer c) {}
+            public void ActionWithNoParameters() { }
+            public void ActionWithOneGoodParameter(int i) { }
+            public void ActionWithTwoGoodParameter(int i, Customer c) { }
 
             public void ActionWithOneBadParameter(out int c) {
                 c = 0;
             }
 
-            public void ActionWithOneGoodOneBadParameter(int i, ref int j) {}
-            public void ActionWithGenericParameter(Predicate<int> p) {}
-            public void ActionWithNullableParameter(int? i) {}
-            public void ActionWithDictionaryParameter(string path, Dictionary<string, object> answers) {}
+            public void ActionWithOneGoodOneBadParameter(int i, ref int j) { }
+            public void ActionWithGenericParameter(Predicate<int> p) { }
+            public void ActionWithNullableParameter(int? i) { }
+            public void ActionWithDictionaryParameter(string path, Dictionary<string, object> answers) { }
         }
 
         // ReSharper restore UnusedParameter.Local
@@ -126,14 +120,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var cache = new ImmutableInMemorySpecCache();
             ReflectorConfiguration.NoValidate = true;
 
-            var config = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new[] {typeof (Customer).Namespace});
+            var config = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {typeof(Customer).Namespace});
             var menuFactory = new NullMenuFactory();
 
             facetFactory = new SystemClassMethodFilteringFactory(0);
             var classStrategy = new DefaultClassStrategy(config);
             var metamodel = new Metamodel(classStrategy, cache);
 
-            Reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] {}, new IFacetFactory[] {facetFactory});
+            Reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory});
         }
 
         [TestCleanup]

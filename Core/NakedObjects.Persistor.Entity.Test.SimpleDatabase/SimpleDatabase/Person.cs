@@ -107,9 +107,7 @@ namespace SimpleDatabase {
 
         #endregion
 
-        public object ExposeContainerForTest() {
-            return Container;
-        }
+        public object ExposeContainerForTest() => Container;
     }
 }
 

@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,12 +21,24 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private PasswordAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IPasswordFacet)}; }
+            get { return new[] {typeof(IPasswordFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
             get { return facetFactory; }
         }
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [DataType(DataType.Password)]
+// ReSharper disable UnusedMember.Local
+            public string FirstName {
+                get { return null; }
+            }
+        }
+
+        #endregion
 
         #region Setup/Teardown
 
@@ -44,17 +56,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
-        private class Customer1 {
-            [DataType(DataType.Password)]
-// ReSharper disable UnusedMember.Local
-            public string FirstName {
-                get { return null; }
-            }
-        }
-
         private class Customer2 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([DataType(DataType.Password)] string foo) {}
+            public void SomeAction([DataType(DataType.Password)] string foo) { }
         }
 
         private class Customer3 {
@@ -66,7 +70,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer4 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([DataType(DataType.PhoneNumber)] string foo) {}
+            public void SomeAction([DataType(DataType.PhoneNumber)] string foo) { }
         }
 
         [TestMethod]
@@ -81,34 +85,34 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPasswordAnnotationNotPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestPasswordAnnotationNotPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer3), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer3), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestPasswordAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PasswordFacet);
         }
 
         [TestMethod]
         public void TestPasswordAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPasswordFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PasswordFacet);
         }

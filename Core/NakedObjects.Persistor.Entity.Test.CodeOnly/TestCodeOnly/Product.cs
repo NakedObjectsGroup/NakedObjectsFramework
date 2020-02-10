@@ -86,9 +86,7 @@ namespace TestCodeOnly {
         public virtual string Name { get; set; }
         public virtual Category Owningcategory { get; set; }
 
-        public object ExposeContainerForTest() {
-            return Container;
-        }
+        public object ExposeContainerForTest() => Container;
 
         public override void Loading() {
             base.Loading();

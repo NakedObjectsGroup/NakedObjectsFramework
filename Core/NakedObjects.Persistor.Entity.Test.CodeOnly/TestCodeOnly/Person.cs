@@ -17,8 +17,6 @@ namespace TestCodeOnly {
         public virtual Product Favourite { get; set; }
         public virtual Address Address { get; set; }
 
-        public object ExposeContainerForTest() {
-            return Container;
-        }
+        public object ExposeContainerForTest() => Container;
     }
 }

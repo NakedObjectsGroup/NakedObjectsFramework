@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private FindMenuFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IFindMenuFacet)}; }
+            get { return new[] {typeof(IFindMenuFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -28,45 +28,45 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestFindMenuFacetNotAddedToParameterByDefault() {
-            MethodInfo method = FindMethod(typeof (Customer), "Action1", new[] {typeof (Foo), typeof (Foo)});
+            MethodInfo method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IFindMenuFacet));
+            IFacet facet = Specification.GetFacet(typeof(IFindMenuFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestFindMenuAnnotationOnParameterPickedUp() {
-            MethodInfo method = FindMethod(typeof (Customer), "Action1", new[] {typeof (Foo), typeof (Foo)});
+            MethodInfo method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
             facetFactory.ProcessParams(Reflector, method, 1, Specification);
-            Assert.IsNotNull(Specification.GetFacet(typeof (IFindMenuFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof(IFindMenuFacet)));
         }
 
         [TestMethod]
         public void TestFindMenuAnnotationIgnoredForPrimitiveParameter() {
-            MethodInfo method = FindMethod(typeof (Customer), "Action2", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer), "Action2", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            Assert.IsNull(Specification.GetFacet(typeof (IFindMenuFacet)));
+            Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
         }
 
         [TestMethod]
         public void TestFindMenuFacetNotAddedToPropertyByDefault() {
-            PropertyInfo property = FindProperty(typeof (Customer), "Property1");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property1");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            Assert.IsNull(Specification.GetFacet(typeof (IFindMenuFacet)));
+            Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
         }
 
         [TestMethod]
         public void TestFindMenuAnnotationOnPropertyPickedUp() {
-            PropertyInfo property = FindProperty(typeof (Customer), "Property2");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property2");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            Assert.IsNotNull(Specification.GetFacet(typeof (IFindMenuFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof(IFindMenuFacet)));
         }
 
         [TestMethod]
         public void TestFindMenuAnnotationIgnoredForPrimitiveProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer), "Property3");
+            PropertyInfo property = FindProperty(typeof(Customer), "Property3");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            Assert.IsNull(Specification.GetFacet(typeof (IFindMenuFacet)));
+            Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
         }
 
         [TestMethod]
@@ -84,9 +84,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private class Customer {
             // ReSharper disable UnusedParameter.Local
             // ReSharper disable UnusedMember.Local
-            public void Action1(Foo param1, [FindMenu] Foo param2) {}
+            public void Action1(Foo param1, [FindMenu] Foo param2) { }
 
-            public void Action2([FindMenu] string param1) {}
+            public void Action2([FindMenu] string param1) { }
 
             public Foo Property1 { get; set; }
 
@@ -104,7 +104,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #region Nested type: Foo
 
-        private class Foo {}
+        private class Foo { }
 
         #endregion
 

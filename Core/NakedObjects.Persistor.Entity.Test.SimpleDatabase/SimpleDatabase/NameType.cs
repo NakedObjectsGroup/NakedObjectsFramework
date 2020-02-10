@@ -23,14 +23,10 @@ namespace SimpleDatabase {
         public SimpleRepository<Person> Service { protected get; set; }
 
         [NakedObjectsIgnore]
-        public object ExposeContainerForTest() {
-            return Container;
-        }
+        public object ExposeContainerForTest() => Container;
 
         [NakedObjectsIgnore]
-        public object ExposeServiceForTest() {
-            return Service;
-        }
+        public object ExposeServiceForTest() => Service;
 
         #region Primitive Properties
 

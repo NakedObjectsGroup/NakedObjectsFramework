@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -109,18 +109,18 @@ namespace NakedObjects.Reflect.Test {
         protected IObjectSpecImmutable Specification;
 
         protected void AssertIsInstanceOfType<T>(object o) {
-            Assert.IsInstanceOfType(o, typeof (T));
+            Assert.IsInstanceOfType(o, typeof(T));
         }
 
         [TestInitialize]
         public virtual void SetUp() {
             var cache = new ImmutableInMemorySpecCache();
             ReflectorConfiguration.NoValidate = true;
-            var config = new ReflectorConfiguration(new[] {typeof (List<TestPoco>), typeof (ArrayList)}, new Type[] {}, new[] {typeof (TestPoco).Namespace});
+            var config = new ReflectorConfiguration(new[] {typeof(List<TestPoco>), typeof(ArrayList)}, new Type[] { }, new[] {typeof(TestPoco).Namespace});
             var menuFactory = new NullMenuFactory();
             var classStrategy = new DefaultClassStrategy(config);
             var metamodel = new Metamodel(classStrategy, cache);
-            var reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] {}, facetFactories);
+            var reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, facetFactories);
 
             Specification = LoadSpecification(reflector);
             Metamodel = metamodel;
@@ -135,13 +135,9 @@ namespace NakedObjects.Reflect.Test {
             Assert.AreEqual(type, spec.Type);
         }
 
-        public static void AssertSpecsContain(Type type, ITypeSpecBuilder[] specs)
-        {
-
-            foreach (var spec in specs)
-            {
-                if (type.FullName == spec.FullName)
-                {
+        public static void AssertSpecsContain(Type type, ITypeSpecBuilder[] specs) {
+            foreach (var spec in specs) {
+                if (type.FullName == spec.FullName) {
                     AssertSpec(type, spec);
                     return;
                 }
@@ -150,13 +146,11 @@ namespace NakedObjects.Reflect.Test {
             Assert.Fail("Spec missing: " + type.FullName);
         }
 
-        private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs)
-        {
+        private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs) {
             return specs.SingleOrDefault(s => s.FullName == type.FullName);
         }
 
-        public static void AssertSpec(Type type, ITypeSpecBuilder[] specs)
-        {
+        public static void AssertSpec(Type type, ITypeSpecBuilder[] specs) {
             AssertSpec(type, GetSpec(type, specs));
         }
     }

@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +21,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private PresentationHintAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IPresentationHintFacet)}; }
+            get { return new[] {typeof(IPresentationHintFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -31,7 +31,22 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [PresentationHint("ahint")]
-        private class Customer {}
+        private class Customer { }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [PresentationHint("ahint")]
+// ReSharper disable UnusedMember.Local
+            public string FirstName {
+                get { return null; }
+            }
+
+            [PresentationHint("ahint")]
+            public List<Customer3> Customers { get; set; }
+        }
 
         #endregion
 
@@ -51,21 +66,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
-        private class Customer1 {
-            [PresentationHint("ahint")]
-// ReSharper disable UnusedMember.Local
-            public string FirstName {
-                get { return null; }
-            }
-
-            [PresentationHint("ahint")]
-            public List<Customer3> Customers { get; set; }
-        }
-
         private class Customer2 {
             [PresentationHint("ahint")]
 // ReSharper disable UnusedParameter.Local
-            public void SomeAction([PresentationHint("ahint")] string foo) {}
+            public void SomeAction([PresentationHint("ahint")] string foo) { }
         }
 
         private class Customer3 {
@@ -76,7 +80,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer4 {
-            public void SomeAction([PresentationHint("ahint")] int foo) {}
+            public void SomeAction([PresentationHint("ahint")] int foo) { }
         }
 
         [TestMethod]
@@ -91,23 +95,23 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPresentationHintAnnotationNotIgnoredForNonStringsProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer3), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            Assert.IsNotNull(Specification.GetFacet(typeof (IPresentationHintFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof(IPresentationHintFacet)));
         }
 
         [TestMethod]
         public void TestPresentationHintAnnotationNotIgnoredForPrimitiveOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            Assert.IsNotNull(Specification.GetFacet(typeof (IPresentationHintFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof(IPresentationHintFacet)));
         }
 
         [TestMethod]
         public void TestPresentationHintAnnotationPickedUpOnAction() {
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacet);
             var maskFacet = (PresentationHintFacet) facet;
@@ -116,9 +120,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPresentationHintAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacet);
             var maskFacet = (PresentationHintFacet) facet;
@@ -127,8 +131,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPresentationHintAnnotationPickedUpOnClass() {
-            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
+            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacet);
             var maskFacet = (PresentationHintFacet) facet;
@@ -137,9 +141,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPresentationHintAnnotationPickedUpOnCollectionProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "Customers");
+            PropertyInfo property = FindProperty(typeof(Customer1), "Customers");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacet);
             var maskFacet = (PresentationHintFacet) facet;
@@ -148,9 +152,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPresentationHintAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPresentationHintFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPresentationHintFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PresentationHintFacet);
             var maskFacet = (PresentationHintFacet) facet;

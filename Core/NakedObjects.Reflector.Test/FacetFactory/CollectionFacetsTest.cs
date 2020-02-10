@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -59,6 +59,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         // ReSharper restore PossibleMultipleEnumeration
+
         private void FirstElement(ICollectionFacet collectionFacet, INakedObjectAdapter collection, object first) {
             Assert.AreSame(first, collectionFacet.AsEnumerable(collection, manager).First().Object);
         }
@@ -78,6 +79,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         // ReSharper restore PossibleMultipleEnumeration
+
         private void Page(ICollectionFacet testArrayFacet, INakedObjectAdapter collection, object first) {
             INakedObjectAdapter pagedCollection = testArrayFacet.Page(1, 1, collection, manager, false);
 
@@ -120,8 +122,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void ArrayInitAllEmpty() {
-            var testArray = new string[] {};
-            var testArray1 = new string[] {};
+            var testArray = new string[] { };
+            var testArray1 = new string[] { };
             var testArrayFacet = new ArrayFacet(specification);
             INakedObjectAdapter testAdaptedArray = AdapterFor(testArray);
             Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
@@ -129,7 +131,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void ArrayInitEmpty() {
-            var testArray = new string[] {};
+            var testArray = new string[] { };
             var testArray1 = new[] {"element2", "element3"};
             var testArrayFacet = new ArrayFacet(specification);
             INakedObjectAdapter testAdaptedArray = AdapterFor(testArray);
@@ -139,7 +141,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void ArrayInitToEmpty() {
             var testArray = new[] {"element1", "element2"};
-            var testArray1 = new string[] {};
+            var testArray1 = new string[] { };
             var testArrayFacet = new ArrayFacet(specification);
             INakedObjectAdapter testAdaptedArray = AdapterFor(testArray);
             Init(testArrayFacet, testAdaptedArray, testArray, testArray1);
@@ -197,7 +199,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void CollectionInitAllEmpty() {
             var testCollection = new ArrayList();
-            var testCollection1 = new string[] {};
+            var testCollection1 = new string[] { };
             var testCollectionFacet = new CollectionFacet(specification);
             INakedObjectAdapter testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
@@ -215,7 +217,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void CollectionInitToEmpty() {
             var testCollection = new ArrayList {"element1", "element2"};
-            var testCollection1 = new string[] {};
+            var testCollection1 = new string[] { };
             var testCollectionFacet = new CollectionFacet(specification);
             INakedObjectAdapter testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection.Cast<object>(), testCollection1);
@@ -283,7 +285,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void GenericCollectionInitAllEmpty() {
             var testCollection = new List<string>();
-            var testCollection1 = new string[] {};
+            var testCollection1 = new string[] { };
             var testCollectionFacet = new GenericCollectionFacet(specification);
             INakedObjectAdapter testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);
@@ -301,7 +303,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void GenericCollectionInitToEmpty() {
             var testCollection = new List<string> {"element1", "element2"};
-            var testCollection1 = new string[] {};
+            var testCollection1 = new string[] { };
             var testCollectionFacet = new GenericCollectionFacet(specification);
             INakedObjectAdapter testAdaptedCollection = AdapterFor(testCollection);
             Init(testCollectionFacet, testAdaptedCollection, testCollection, testCollection1);

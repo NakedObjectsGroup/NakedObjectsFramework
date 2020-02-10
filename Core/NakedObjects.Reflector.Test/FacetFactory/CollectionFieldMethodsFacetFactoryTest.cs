@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,8 +28,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         protected override Type[] SupportedTypes {
             get {
                 return new[] {
-                    typeof (IPropertyAccessorFacet),
-                    typeof (ITypeOfFacet)
+                    typeof(IPropertyAccessorFacet),
+                    typeof(ITypeOfFacet)
                 };
             }
         }
@@ -40,9 +40,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestCannotInferTypeOfFacetIfNoExplicitAddToOrRemoveFromMethods() {
-            PropertyInfo property = FindProperty(typeof (Customer6), "Orders");
+            PropertyInfo property = FindProperty(typeof(Customer6), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            Assert.IsNull(Specification.GetFacet(typeof (ITypeOfFacet)));
+            Assert.IsNull(Specification.GetFacet(typeof(ITypeOfFacet)));
         }
 
         [TestMethod]
@@ -57,83 +57,83 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestInstallsDisabledAlways() {
-            PropertyInfo property = FindProperty(typeof (CustomerStatic), "Orders");
+            PropertyInfo property = FindProperty(typeof(CustomerStatic), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IDisabledFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisabledFacetAlways);
         }
 
         [TestMethod]
         public void TestInstallsHiddenForSessionFacetAndRemovesMethod() {
-            PropertyInfo property = FindProperty(typeof (CustomerStatic), "Orders");
+            PropertyInfo property = FindProperty(typeof(CustomerStatic), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IHideForSessionFacet));
+            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForSessionFacetNone);
         }
 
         [TestMethod]
         public void TestPropertyAccessorFacetIsInstalledForArrayListAndMethodRemoved() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "Orders");
+            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPropertyAccessorFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
         }
 
         [TestMethod]
         public void TestPropertyAccessorFacetIsInstalledForIListAndMethodRemoved() {
-            PropertyInfo property = FindProperty(typeof (Customer), "Orders");
+            PropertyInfo property = FindProperty(typeof(Customer), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPropertyAccessorFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
         }
 
         [TestMethod]
         public void TestPropertyAccessorFacetIsInstalledForObjectArrayAndMethodRemoved() {
-            PropertyInfo property = FindProperty(typeof (Customer3), "Orders");
+            PropertyInfo property = FindProperty(typeof(Customer3), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPropertyAccessorFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
         }
 
         [TestMethod]
         public void TestPropertyAccessorFacetIsInstalledForOrderArrayAndMethodRemoved() {
-            PropertyInfo property = FindProperty(typeof (Customer4), "Orders");
+            PropertyInfo property = FindProperty(typeof(Customer4), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPropertyAccessorFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
         }
 
         [TestMethod]
         public void TestPropertyAccessorFacetIsInstalledForSetAndMethodRemoved() {
-            PropertyInfo property = FindProperty(typeof (Customer2), "Orders");
+            PropertyInfo property = FindProperty(typeof(Customer2), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IPropertyAccessorFacet));
+            IFacet facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
         }
 
         [TestMethod]
         public void TestSetFacetAddedToSet() {
-            Type type = typeof (Customer18);
+            Type type = typeof(Customer18);
             PropertyInfo property = FindProperty(type, "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IIsASetFacet));
+            IFacet facet = Specification.GetFacet(typeof(IIsASetFacet));
             Assert.IsNotNull(facet);
-            Assert.IsInstanceOfType(facet, typeof (IsASetFacet));
+            Assert.IsInstanceOfType(facet, typeof(IsASetFacet));
         }
 
         [TestMethod]
         public void TestSetFacetNoAddedToList() {
-            Type type = typeof (Customer17);
+            Type type = typeof(Customer17);
             PropertyInfo property = FindProperty(type, "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IIsASetFacet));
+            IFacet facet = Specification.GetFacet(typeof(IIsASetFacet));
             Assert.IsNull(facet);
         }
 
@@ -164,7 +164,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 get { return null; }
             }
 
-            public void RemoveFromOrders(Order o) {}
+            public void RemoveFromOrders(Order o) { }
         }
 
         #endregion
@@ -176,7 +176,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 get { return null; }
             }
 
-            public void RemoveFromOrders(Order o) {}
+            public void RemoveFromOrders(Order o) { }
         }
 
         #endregion
@@ -188,7 +188,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 get { return null; }
             }
 
-            public void ClearOrders() {}
+            public void ClearOrders() { }
         }
 
         #endregion
@@ -210,7 +210,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 get { return null; }
             }
 
-            public void AddToOrders(Order o) {}
+            public void AddToOrders(Order o) { }
 
             public string ValidateAddToOrders(Order o) {
                 return null;
@@ -226,7 +226,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 get { return null; }
             }
 
-            public void RemoveFromOrders(Order o) {}
+            public void RemoveFromOrders(Order o) { }
 
             public string ValidateRemoveFromOrders(Order o) {
                 return null;
@@ -242,7 +242,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 get { return null; }
             }
 
-            public void AddToOrders(Order o) {}
+            public void AddToOrders(Order o) { }
         }
 
         #endregion
@@ -254,8 +254,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 get { return null; }
             }
 
-            public void AddToOrders(Customer c) {}
-            public void RemoveFromOrders(Customer c) {}
+            public void AddToOrders(Customer c) { }
+            public void RemoveFromOrders(Customer c) { }
         }
 
         #endregion
@@ -267,8 +267,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 get { return null; }
             }
 
-            public void AddToOrders(Customer c) {}
-            public void RemoveFromOrders(Customer c) {}
+            public void AddToOrders(Customer c) { }
+            public void RemoveFromOrders(Customer c) { }
         }
 
         #endregion
@@ -340,7 +340,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 get { return null; }
             }
 
-            public void AddToOrders(Order o) {}
+            public void AddToOrders(Order o) { }
         }
 
         #endregion
@@ -352,7 +352,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 get { return null; }
             }
 
-            public void AddToOrders(Order o) {}
+            public void AddToOrders(Order o) { }
         }
 
         #endregion
@@ -388,7 +388,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 return "disabled for this user";
             }
 
-            public static void OtherOrders() {}
+            public static void OtherOrders() { }
 
             public static bool AlwaysHideOtherOrders() {
                 return false;
@@ -403,7 +403,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #region Nested type: Order
 
-        private class Order {}
+        private class Order { }
 
         #endregion
 

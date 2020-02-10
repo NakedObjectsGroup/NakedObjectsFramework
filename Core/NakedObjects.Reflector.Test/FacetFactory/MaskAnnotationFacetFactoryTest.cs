@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,7 +20,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private MaskAnnotationFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IMaskFacet)}; }
+            get { return new[] {typeof(IMaskFacet)}; }
         }
 
         protected override IFacetFactory FacetFactory {
@@ -30,7 +30,19 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         #region Nested type: Customer
 
         [Mask("###")]
-        private class Customer {}
+        private class Customer { }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [Mask("###")]
+// ReSharper disable UnusedMember.Local
+            public string FirstName {
+                get { return null; }
+            }
+        }
 
         #endregion
 
@@ -50,17 +62,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
-        private class Customer1 {
-            [Mask("###")]
-// ReSharper disable UnusedMember.Local
-            public string FirstName {
-                get { return null; }
-            }
-        }
-
         private class Customer2 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Mask("###")] string foo) {}
+            public void SomeAction([Mask("###")] string foo) { }
         }
 
         private class Customer3 {
@@ -72,7 +76,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer4 {
 // ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Mask("###")] int foo) {}
+            public void SomeAction([Mask("###")] int foo) { }
         }
 
         [TestMethod]
@@ -87,23 +91,23 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMaskAnnotationNotIgnoredForNonStringsProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer3), "NumberOfOrders");
+            PropertyInfo property = FindProperty(typeof(Customer3), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            Assert.IsNotNull(Specification.GetFacet(typeof (IMaskFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof(IMaskFacet)));
         }
 
         [TestMethod]
         public void TestMaskAnnotationNotIgnoredForPrimitiveOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer4), "SomeAction", new[] {typeof (int)});
+            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            Assert.IsNotNull(Specification.GetFacet(typeof (IMaskFacet)));
+            Assert.IsNotNull(Specification.GetFacet(typeof(IMaskFacet)));
         }
 
         [TestMethod]
         public void TestMaskAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof (Customer2), "SomeAction", new[] {typeof (string)});
+            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaskFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaskFacet);
             var maskFacet = (MaskFacet) facet;
@@ -112,8 +116,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMaskAnnotationPickedUpOnClass() {
-            facetFactory.Process(Reflector, typeof (Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
+            facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
+            IFacet facet = Specification.GetFacet(typeof(IMaskFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaskFacet);
             var maskFacet = (MaskFacet) facet;
@@ -122,9 +126,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMaskAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof (Customer1), "FirstName");
+            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof (IMaskFacet));
+            IFacet facet = Specification.GetFacet(typeof(IMaskFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MaskFacet);
             var maskFacet = (MaskFacet) facet;
