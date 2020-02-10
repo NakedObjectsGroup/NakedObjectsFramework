@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,9 +27,17 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             get { return new[] {typeof(IMaxLengthFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
+        protected override IFacetFactory FacetFactory => facetFactory;
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [MaxLength(30)]
+// ReSharper disable UnusedMember.Local
+            public string FirstName => null;
         }
+
+        #endregion
 
         #region Setup/Teardown
 
@@ -47,14 +55,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         #endregion
 
-        private class Customer1 {
-            [MaxLength(30)]
-// ReSharper disable UnusedMember.Local
-            public string FirstName {
-                get { return null; }
-            }
-        }
-
         private class Customer2 {
 // ReSharper disable UnusedParameter.Local
             public void SomeAction([MaxLength(20)] string foo) { }
@@ -62,9 +62,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer4 {
             [StringLength(30)]
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
         }
 
         private class Customer5 {
@@ -73,9 +71,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer7 {
             [MaxLength(30)]
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
         }
 
         private class Customer8 {

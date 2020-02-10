@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,9 +40,16 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
+        protected override IFacetFactory FacetFactory => facetFactory;
+
+        #region Nested type: Customer
+
+        private class Customer {
+            // ReSharper disable UnusedMember.Local
+            public string FirstName => null;
         }
+
+        #endregion
 
         #region Setup/Teardown
 
@@ -60,25 +67,16 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         #endregion
 
-        private class Customer {
-            // ReSharper disable UnusedMember.Local
-            public string FirstName {
-                get { return null; }
-            }
-        }
-
         private class Customer1 {
             public string FirstName {
-                get { return null; }
+                get => null;
                 // ReSharper disable ValueParameterNotUsed
                 set { }
             }
         }
 
         private class Customer10 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             public string[] ChoicesFirstName() {
                 return null;
@@ -87,9 +85,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         // ReSharper disable InconsistentNaming
         private class Customer10r {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             [Executed(Where.Remotely)]
             public string[] ChoicesFirstName() {
@@ -98,9 +94,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer10l {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             [Executed(Where.Locally)]
             public string[] ChoicesFirstName() {
@@ -109,9 +103,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer11 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             public string DefaultFirstName() {
                 return null;
@@ -119,9 +111,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer11r {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             [Executed(Where.Remotely)]
             public string DefaultFirstName() {
@@ -130,9 +120,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer11l {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             [Executed(Where.Locally)]
             public string DefaultFirstName() {
@@ -141,9 +129,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer12 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             // ReSharper disable UnusedParameter.Local
             public string ValidateFirstName(string firstName) {
@@ -152,13 +138,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer13 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
-            public string SecondName {
-                get { return null; }
-            }
+            public string SecondName => null;
 
             public bool HideFirstName() {
                 return false;
@@ -170,13 +152,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer14 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
-            public string SecondName {
-                get { return null; }
-            }
+            public string SecondName => null;
 
             public bool HidePropertyDefault() {
                 return false;
@@ -188,13 +166,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer15 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
-            public string SecondName {
-                get { return null; }
-            }
+            public string SecondName => null;
 
             public string DisableFirstName(string firstName) {
                 return null;
@@ -206,13 +180,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer16 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
-            public string SecondName {
-                get { return null; }
-            }
+            public string SecondName => null;
 
             public string DisablePropertyDefault() {
                 return null;
@@ -224,13 +194,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer17 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
-            public string LastName {
-                get { return null; }
-            }
+            public string LastName => null;
 
             public string[] ChoicesFirstName(string lastName) {
                 return null;
@@ -238,13 +204,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer18 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
-            public string LastName {
-                get { return null; }
-            }
+            public string LastName => null;
 
             public string[] ChoicesFirstName() {
                 return null;
@@ -256,9 +218,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer19 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             [Executed(Ajax.Disabled)]
             public string ValidateFirstName(string firstName) {
@@ -267,9 +227,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer20 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             [Executed(Ajax.Enabled)]
             public string ValidateFirstName(string firstName) {
@@ -279,37 +237,33 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer2 {
             public string FirstName {
-                get { return null; }
+                get => null;
                 set { }
             }
         }
 
         private class Customer3 {
             public string FirstName {
-                get { return null; }
+                get => null;
                 set { }
             }
         }
 
         private class Customer4 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             public void ModifyFirstName(string firstName) { }
         }
 
         private class Customer6 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             public void ModifyFirstName(string firstName) { }
         }
 
         private class Customer7 {
             public string FirstName {
-                get { return null; }
+                get => null;
                 set { }
             }
 
@@ -317,28 +271,26 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer8 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             public void ClearFirstName() { }
         }
 
         private class Customer9 {
             public string FirstName {
-                get { return null; }
+                get => null;
                 set { }
             }
         }
 
         public class CustomerStatic {
             public string FirstName {
-                get { return null; }
+                get => null;
                 set { }
             }
 
             public string LastName {
-                get { return null; }
+                get => null;
                 set { }
             }
 
@@ -378,9 +330,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer21 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             public IQueryable<string> AutoCompleteFirstName(string name) {
                 return null;
@@ -388,9 +338,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer22 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             public IEnumerable<string> AutoCompleteFirstName(string name) {
                 return null;
@@ -398,9 +346,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer23 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             public IQueryable<string> AutoCompleteFirstName() {
                 return null;
@@ -408,9 +354,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer24 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             public IQueryable<string> AutoCompleteFirstName(int name) {
                 return null;
@@ -418,9 +362,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer25 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             public IQueryable<string> AutoCompletFirstName(string name) {
                 return null;
@@ -428,9 +370,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer26 {
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
 
             [PageSize(33)]
             public IQueryable<string> AutoCompleteFirstName([MinLength(3)] string name) {
@@ -443,9 +383,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer27 {
-            public NameInterface FirstName {
-                get { return null; }
-            }
+            public NameInterface FirstName => null;
 
             public IQueryable<NameInterface> AutoCompleteFirstName(string name) {
                 return null;

@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,9 +26,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             get { return new[] {typeof(ITypeOfFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -113,9 +111,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer10 {
 // ReSharper disable once UnusedMember.Local
-            public Order[] Orders {
-                get { return null; }
-            }
+            public Order[] Orders => null;
         }
 
         #endregion
@@ -135,9 +131,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer4 {
 // ReSharper disable once UnusedMember.Local
-            public IList<Order> Orders {
-                get { return null; }
-            }
+            public IList<Order> Orders => null;
         }
 
         #endregion

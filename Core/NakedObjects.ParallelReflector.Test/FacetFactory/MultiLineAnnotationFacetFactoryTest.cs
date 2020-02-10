@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,14 +26,22 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             get { return new[] {typeof(IMultiLineFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         #region Nested type: Customer
 
         [MultiLine(NumberOfLines = 3, Width = 9)]
         private class Customer { }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [MultiLine(NumberOfLines = 12, Width = 36)]
+// ReSharper disable UnusedMember.Local
+            public string FirstName => null;
+        }
 
         #endregion
 
@@ -53,14 +61,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         #endregion
 
-        private class Customer1 {
-            [MultiLine(NumberOfLines = 12, Width = 36)]
-// ReSharper disable UnusedMember.Local
-            public string FirstName {
-                get { return null; }
-            }
-        }
-
         private class Customer2 {
 // ReSharper disable once UnusedParameter.Local
             public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)]
@@ -72,9 +72,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer5 {
             [MultiLine(NumberOfLines = 8, Width = 24)]
-            public int NumberOfOrders {
-                get { return 0; }
-            }
+            public int NumberOfOrders => 0;
         }
 
         private class Customer6 {
@@ -184,10 +182,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IFacet facet = Specification.GetFacet(typeof(IMultiLineFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MultiLineFacetAnnotation);
-            var multiLineFacetAnnotation = (MultiLineFacetAnnotation)facet;
+            var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
             Assert.AreEqual(1, multiLineFacetAnnotation.NumberOfLines);
             Assert.IsNotNull(metamodel);
-
         }
     }
 

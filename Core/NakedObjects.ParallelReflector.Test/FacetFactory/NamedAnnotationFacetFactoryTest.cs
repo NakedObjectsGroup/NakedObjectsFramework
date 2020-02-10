@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,14 +32,22 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             get { return new[] {typeof(INamedFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         #region Nested type: Customer
 
         [Named("some name")]
         private class Customer { }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [Named("some name")]
+// ReSharper disable UnusedMember.Local
+            public int NumberOfOrders => 0;
+        }
 
         #endregion
 
@@ -60,31 +68,17 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         #endregion
 
-        private class Customer1 {
-            [Named("some name")]
-// ReSharper disable UnusedMember.Local
-            public int NumberOfOrders {
-                get { return 0; }
-            }
-        }
-
         private class Customer11 {
             [Named("some name")]
-            public int NumberOfOrders {
-                get { return 0; }
-            }
+            public int NumberOfOrders => 0;
 
             [Named("some name")]
-            public int NumberOfOrders1 {
-                get { return 0; }
-            }
+            public int NumberOfOrders1 => 0;
         }
 
         private class Customer2 {
             [Named("some name")]
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
         }
 
         private class Customer3 {
@@ -110,28 +104,20 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer6 {
             [DisplayName("some name")]
-            public int NumberOfOrders {
-                get { return 0; }
-            }
+            public int NumberOfOrders => 0;
         }
 
         private class Customer16 {
             [DisplayName("some name")]
-            public int NumberOfOrders {
-                get { return 0; }
-            }
+            public int NumberOfOrders => 0;
 
             [DisplayName("some name")]
-            public int NumberOfOrders1 {
-                get { return 0; }
-            }
+            public int NumberOfOrders1 => 0;
         }
 
         private class Customer7 {
             [DisplayName("some name")]
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
         }
 
         private class Customer8 {

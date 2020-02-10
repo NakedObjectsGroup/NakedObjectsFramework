@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,12 +24,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private DateOnlyFacetFactory facetFactory;
 
         protected override Type[] SupportedTypes {
-            get { return new[] {typeof (IDateOnlyFacet)}; }
+            get { return new[] {typeof(IDateOnlyFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -45,9 +43,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestDefaultDateOnlyOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Test), "ADate1");
+            PropertyInfo property = FindProperty(typeof(Test), "ADate1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
             Assert.IsNotNull(metamodel);
@@ -69,9 +67,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestNoFacetOnNonDateProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Test), "NotADate");
+            PropertyInfo property = FindProperty(typeof(Test), "NotADate");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
         }
@@ -80,9 +78,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAnnotatedDateOnlyOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Test), "ADate2");
+            PropertyInfo property = FindProperty(typeof(Test), "ADate2");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
             Assert.IsNotNull(metamodel);
@@ -104,9 +102,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestNoFacetOnDateTimeProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Test), "ADate3");
+            PropertyInfo property = FindProperty(typeof(Test), "ADate3");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
         }
@@ -126,9 +124,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestNoFacetOnConcurrencyProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Test), "ADate4");
+            PropertyInfo property = FindProperty(typeof(Test), "ADate4");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
         }
@@ -137,9 +135,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAnnotatedDateOnlyOnConcurrencyProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof (Test), "ADate5");
+            PropertyInfo property = FindProperty(typeof(Test), "ADate5");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof (IDateOnlyFacet));
+            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
             Assert.IsNotNull(metamodel);
@@ -149,7 +147,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestDefaultDateOnlyOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Test), "ADateMethod1", new[] { typeof(DateTime) });
+            MethodInfo method = FindMethod(typeof(Test), "ADateMethod1", new[] {typeof(DateTime)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
@@ -161,7 +159,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestAnnotatedDateOnlyOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Test), "ADateMethod2", new[] { typeof(DateTime) });
+            MethodInfo method = FindMethod(typeof(Test), "ADateMethod2", new[] {typeof(DateTime)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
@@ -173,7 +171,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestNoFacetOnDateTimeActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Test), "ADateMethod3", new[] { typeof(DateTime) });
+            MethodInfo method = FindMethod(typeof(Test), "ADateMethod3", new[] {typeof(DateTime)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
@@ -184,13 +182,12 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestNoFacetOnNotDateActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Test), "NotADateMethod", new[] { typeof(TimeSpan) });
+            MethodInfo method = FindMethod(typeof(Test), "NotADateMethod", new[] {typeof(TimeSpan)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
         }
-
 
         #region Nested type: Test
 
@@ -221,13 +218,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             [DataType(DataType.Date)]
             public TimeSpan NotADate => new TimeSpan();
 
-            public void ADateMethod1(DateTime aDate1) {}
+            public void ADateMethod1(DateTime aDate1) { }
 
-            public void ADateMethod2([DataType(DataType.Date)] DateTime aDate2) {}
+            public void ADateMethod2([DataType(DataType.Date)] DateTime aDate2) { }
 
-            public void ADateMethod3([DataType(DataType.DateTime)] DateTime aDate3) {}
+            public void ADateMethod3([DataType(DataType.DateTime)] DateTime aDate3) { }
 
-            public void NotADateMethod(TimeSpan notADate) {}
+            public void NotADateMethod(TimeSpan notADate) { }
         }
 
         #endregion

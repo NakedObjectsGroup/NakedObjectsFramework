@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,9 +36,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public void TestCannotInferTypeOfFacetIfNoExplicitAddToOrRemoveFromMethods() {
@@ -172,9 +170,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         private class Customer {
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
         }
 
         #endregion
@@ -182,9 +178,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer1
 
         private class Customer1 {
-            public ArrayList Orders {
-                get { return null; }
-            }
+            public ArrayList Orders => null;
         }
 
         #endregion
@@ -192,9 +186,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer10
 
         private class Customer10 {
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
 
             public void RemoveFromOrders(Order o) { }
         }
@@ -204,9 +196,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer11
 
         private class Customer11 {
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
 
             public void RemoveFromOrders(Order o) { }
         }
@@ -216,9 +206,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer12
 
         private class Customer12 {
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
 
             public void ClearOrders() { }
         }
@@ -228,9 +216,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer13
 
         private class Customer13 {
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
         }
 
         #endregion
@@ -238,9 +224,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer14
 
         private class Customer14 {
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
 
             public void AddToOrders(Order o) { }
 
@@ -254,9 +238,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer15
 
         private class Customer15 {
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
 
             public void RemoveFromOrders(Order o) { }
 
@@ -270,9 +252,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer16
 
         private class Customer16 {
-            public IList<Order> Orders {
-                get { return null; }
-            }
+            public IList<Order> Orders => null;
 
             public void AddToOrders(Order o) { }
         }
@@ -282,9 +262,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer17
 
         private class Customer17 {
-            public IList<Order> Orders {
-                get { return null; }
-            }
+            public IList<Order> Orders => null;
 
             public void AddToOrders(Customer c) { }
             public void RemoveFromOrders(Customer c) { }
@@ -295,9 +273,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer18
 
         private class Customer18 {
-            public ISet<Order> Orders {
-                get { return null; }
-            }
+            public ISet<Order> Orders => null;
 
             public void AddToOrders(Customer c) { }
             public void RemoveFromOrders(Customer c) { }
@@ -308,9 +284,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer2
 
         private class Customer2 {
-            public ArrayList Orders {
-                get { return null; }
-            }
+            public ArrayList Orders => null;
         }
 
         #endregion
@@ -318,9 +292,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer3
 
         private class Customer3 {
-            public object[] Orders {
-                get { return null; }
-            }
+            public object[] Orders => null;
         }
 
         #endregion
@@ -328,9 +300,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer4
 
         private class Customer4 {
-            public Order[] Orders {
-                get { return null; }
-            }
+            public Order[] Orders => null;
         }
 
         #endregion
@@ -338,9 +308,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer5
 
         private class Customer5 {
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
         }
 
         #endregion
@@ -348,9 +316,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer6
 
         private class Customer6 {
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
         }
 
         #endregion
@@ -358,9 +324,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer7
 
         private class Customer7 {
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
         }
 
         #endregion
@@ -368,9 +332,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer8
 
         private class Customer8 {
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
 
             public void AddToOrders(Order o) { }
         }
@@ -380,9 +342,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer9
 
         private class Customer9 {
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
 
             public void AddToOrders(Order o) { }
         }
@@ -392,9 +352,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: CustomerStatic
 
         public class CustomerStatic {
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
 
             public static string NameOrders() {
                 return "Most Recent Orders";

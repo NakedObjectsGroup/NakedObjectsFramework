@@ -1,5 +1,5 @@
 // Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,9 +30,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             get { return new[] {typeof(IHiddenFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public void TestAuthorizeAnnotationActionRoleAuthorized() {
@@ -960,17 +958,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             #region ISession Members
 
-            public string UserName {
-                get { return Principal.Identity.Name; }
-            }
+            public string UserName => Principal.Identity.Name;
 
-            public bool IsAuthenticated {
-                get { return Principal.Identity.IsAuthenticated; }
-            }
+            public bool IsAuthenticated => Principal.Identity.IsAuthenticated;
 
-            public IPrincipal Principal {
-                get { return new TestPrincipal(testRole, testUser); }
-            }
+            public IPrincipal Principal => new TestPrincipal(testRole, testUser);
 
             #endregion
         }
@@ -998,49 +990,31 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         // ReSharper disable UnusedMember.Local
         private class Customer {
-            public int Property1 {
-                get { return 0; }
-            }
+            public int Property1 => 0;
 
             [AuthorizeProperty]
-            public int Property2 {
-                get { return 0; }
-            }
+            public int Property2 => 0;
 
             [AuthorizeProperty(ViewRoles = "")]
-            public int Property3 {
-                get { return 0; }
-            }
+            public int Property3 => 0;
 
             [AuthorizeProperty(ViewUsers = "")]
-            public int Property4 {
-                get { return 0; }
-            }
+            public int Property4 => 0;
 
             [AuthorizeProperty(EditRoles = "")]
-            public int Property5 {
-                get { return 0; }
-            }
+            public int Property5 => 0;
 
             [AuthorizeProperty(EditUsers = "")]
-            public int Property6 {
-                get { return 0; }
-            }
+            public int Property6 => 0;
 
             [AuthorizeProperty(ViewRoles = "aRole", ViewUsers = "aUser")]
-            public int Property7 {
-                get { return 0; }
-            }
+            public int Property7 => 0;
 
             [AuthorizeProperty(EditRoles = "aRole", EditUsers = "aUser")]
-            public int Property8 {
-                get { return 0; }
-            }
+            public int Property8 => 0;
 
             [AuthorizeProperty(ViewRoles = "", ViewUsers = "", EditRoles = "", EditUsers = "")]
-            public int Property9 {
-                get { return 0; }
-            }
+            public int Property9 => 0;
 
             public int Action1() {
                 return 0;
@@ -1068,9 +1042,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         private class Customer1 {
-            public int Property1 {
-                get { return 0; }
-            }
+            public int Property1 => 0;
 
             public int Action1() {
                 return 0;
@@ -1079,9 +1051,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [AuthorizeProperty]
         private class Customer2 {
-            public int Property1 {
-                get { return 0; }
-            }
+            public int Property1 => 0;
 
             public int Action1() {
                 return 0;
@@ -1090,9 +1060,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [AuthorizeProperty(ViewRoles = "")]
         private class Customer3 {
-            public int Property1 {
-                get { return 0; }
-            }
+            public int Property1 => 0;
 
             public int Action1() {
                 return 0;
@@ -1101,9 +1069,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [AuthorizeProperty(ViewUsers = "")]
         private class Customer4 {
-            public int Property1 {
-                get { return 0; }
-            }
+            public int Property1 => 0;
 
             public int Action1() {
                 return 0;
@@ -1112,9 +1078,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [AuthorizeProperty(EditRoles = "")]
         private class Customer5 {
-            public int Property1 {
-                get { return 0; }
-            }
+            public int Property1 => 0;
 
             public int Action1() {
                 return 0;
@@ -1123,9 +1087,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [AuthorizeProperty(EditUsers = "")]
         private class Customer6 {
-            public int Property1 {
-                get { return 0; }
-            }
+            public int Property1 => 0;
 
             public int Action1() {
                 return 0;
@@ -1134,9 +1096,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [AuthorizeProperty(ViewRoles = "aRole", ViewUsers = "aUser")]
         private class Customer7 {
-            public int Property1 {
-                get { return 0; }
-            }
+            public int Property1 => 0;
 
             public int Action1() {
                 return 0;
@@ -1145,9 +1105,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [AuthorizeProperty(EditRoles = "aRole", EditUsers = "aUser")]
         private class Customer8 {
-            public int Property1 {
-                get { return 0; }
-            }
+            public int Property1 => 0;
 
             public int Action1() {
                 return 0;
@@ -1156,9 +1114,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [AuthorizeProperty(ViewRoles = "", ViewUsers = "", EditRoles = "", EditUsers = "")]
         private class Customer9 {
-            public int Property1 {
-                get { return 0; }
-            }
+            public int Property1 => 0;
 
             public int Action1() {
                 return 0;
@@ -1167,9 +1123,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [AuthorizeAction]
         private class Customer10 {
-            public int Property1 {
-                get { return 0; }
-            }
+            public int Property1 => 0;
 
             public int Action1() {
                 return 0;
@@ -1178,9 +1132,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [AuthorizeAction(Roles = "aRole")]
         private class Customer11 {
-            public int Property1 {
-                get { return 0; }
-            }
+            public int Property1 => 0;
 
             public int Action1() {
                 return 0;
@@ -1189,9 +1141,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [AuthorizeAction(Users = "aUser")]
         private class Customer12 {
-            public int Property1 {
-                get { return 0; }
-            }
+            public int Property1 => 0;
 
             public int Action1() {
                 return 0;
@@ -1200,9 +1150,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [AuthorizeAction(Roles = "aRole", Users = "aUser")]
         private class Customer13 {
-            public int Property1 {
-                get { return 0; }
-            }
+            public int Property1 => 0;
 
             public int Action1() {
                 return 0;
@@ -1213,9 +1161,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [AuthorizeProperty(ViewRoles = "aRole", ViewUsers = "aUser")]
         private class Customer14 {
             [AuthorizeProperty(ViewRoles = "anotherRole", ViewUsers = "anotherUser")]
-            public int Property1 {
-                get { return 0; }
-            }
+            public int Property1 => 0;
 
             [AuthorizeAction(Roles = "anotherRole", Users = "anotherUser")]
             public int Action1() {
@@ -1241,9 +1187,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             return role == testRole;
         }
 
-        public IIdentity Identity {
-            get { return new TestIdentity(testUser); }
-        }
+        public IIdentity Identity => new TestIdentity(testUser);
 
         #endregion
     }
@@ -1257,13 +1201,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         public string Name { get; }
 
-        public string AuthenticationType {
-            get { return ""; }
-        }
+        public string AuthenticationType => "";
 
-        public bool IsAuthenticated {
-            get { return true; }
-        }
+        public bool IsAuthenticated => true;
 
         #endregion
     }
