@@ -1,26 +1,25 @@
 ﻿module NakedObjects.XmlSnapshotService
 
-open NakedObjects.Xat
-open NakedObjects.Services
-open Snapshot.Xml.Test
-open NakedObjects.Snapshot
-open NakedObjects.Architecture.Adapter
-open System.Xml.Linq
-open System.Data.Entity
-open System
-open System.IO
-open NakedObjects.Core.Configuration
-open NakedObjects.Snapshot.Xml.Utility
-open NakedObjects.Architecture.Configuration
 open NakedObjects.Core.Util
-open NakedObjects.Persistor.Entity
 open NakedObjects.Persistor.Entity.Configuration
+open NakedObjects.Services
+open NakedObjects.Snapshot
 open NakedObjects.Snapshot.Xml.Service
-open System.Text.RegularExpressions
+open NakedObjects.Snapshot.Xml.Utility
+open NakedObjects.Xat
 open NUnit.Framework
-open Microsoft.Practices.Unity;
+open Snapshot.Xml.Test
+open System
+open System.Data.Entity
+open System.IO
+open System.Text.RegularExpressions
+open System.Xml.Linq
 
-
+#if APPVEYOR 
+let cs = @"Data Source=.\SQL2017;Initial Catalog=TestObject;Integrated Security=True;"
+#else
+let cs = @"Data Source=.\SQLEXPRESS;Initial Catalog=TestObject;Integrated Security=True;"
+#endif
 
 let normalizeData d1 d2 =
     // ignore keys 
@@ -32,8 +31,8 @@ let normalizeData d1 d2 =
     (nd1, nd2)
 
 let writetests = false
-let dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "testfiles");
-let getFile name = Path.Combine(dir, name) + ".htm"
+let dir() = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "testfiles");
+let getFile name = Path.Combine(dir(), name) + ".htm"
 let getTestData name = File.ReadAllText(getFile name)
 let writeTestData name data = File.WriteAllText(getFile name, data)
 let checkResults resultsFile s = 
@@ -48,31 +47,39 @@ type DomainTests() =
     class
         inherit AcceptanceTestCase()
         
-        override x.RegisterTypes(container) = 
-            base.RegisterTypes(container)
-            EntityObjectStoreConfiguration.NoValidate <- true
-
+        override x.Persistor =
             let config = new EntityObjectStoreConfiguration()
-            let f = (fun () -> new TestObjectContext("XmlSnapshotTest") :> DbContext)
+            config.EnforceProxies <- false
+          
+            let config = new EntityObjectStoreConfiguration()
+            let f = (fun () -> new TestObjectContext(cs) :> DbContext)
             config.UsingCodeFirstContext(Func<DbContext>(f)) |> ignore
-            container.RegisterInstance(typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) |> ignore
-            
-            ()
+            config
         
         [<OneTimeSetUp>]
-        member x.FixtureSetup() =
+        member x.FixtureSetup() = 
             AcceptanceTestCase.InitializeNakedObjectsFramework(x)
+            System.Data.Entity.Database.SetInitializer(new DropCreateDatabaseAlways<TestObjectContext>())
                 
         [<SetUp>]
-        member x.Setup() = 
-            
-            x.StartTest()
-            
+        member x.Setup() = x.StartTest()
+                     
         override x.Types = 
-            [| typeof<XmlSnapshot>; typeof<TestObject>; typeof<TestObject[]>;typeof<System.Collections.Generic.List<TestObject>>;typeof<One.TransformFull>;typeof<Two.TransformFull>;typeof<IXmlSnapshotService>  |]
+            [| typeof<IXmlSnapshot>;
+               typeof<XmlSnapshot>;
+               typeof<TestObject>; 
+               typeof<TestObject[]>;
+               typeof<System.Collections.Generic.List<TestObject>>;
+               typeof<One.TransformFull>;
+               typeof<Two.TransformFull>;
+               typeof<IXmlSnapshotService>  |]
         
         override x.Namespaces = 
-            [| "Snapshot.Xml.Test"; "Snapshot.Xml.Test.Two" ; "Snapshot.Xml.Test.One" ; "NakedObjects.XmlSnapshotService.DomainTests" ; "NakedObjects.Snapshot" |]
+            [| "Snapshot.Xml.Test";
+               "Snapshot.Xml.Test.Two";
+               "Snapshot.Xml.Test.One";
+               "NakedObjects.XmlSnapshotService.DomainTests";
+               "NakedObjects.Snapshot" |]
 
         override x.MenuServices = 
             let testService = new SimpleRepository<TestObject>()
