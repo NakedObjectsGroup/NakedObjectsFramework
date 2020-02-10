@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
 [assembly:InternalsVisibleTo("NakedObjects.ParallelReflector.Test")]
+[assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
