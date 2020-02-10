@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,7 +16,7 @@ namespace NakedObjects.Meta.Test.Facet {
         #region Setup/Teardown
 
         [TestInitialize]
-        public void SetUp() {}
+        public void SetUp() { }
 
         #endregion
 
@@ -56,27 +56,27 @@ namespace NakedObjects.Meta.Test.Facet {
 
         [TestMethod]
         public void TestDelegateCreation() {
-            DelegateActionTest(typeof (TestDelegateClass).GetMethod("Action0"));
-            DelegateActionTest(typeof (TestDelegateClass).GetMethod("Action1"));
-            DelegateActionTest(typeof (TestDelegateClass).GetMethod("Action2"));
-            DelegateActionTest(typeof (TestDelegateClass).GetMethod("Action3"));
-            DelegateActionTest(typeof (TestDelegateClass).GetMethod("Action4"));
-            DelegateActionTest(typeof (TestDelegateClass).GetMethod("Action5"));
-            DelegateActionTest(typeof (TestDelegateClass).GetMethod("Action6"));
+            DelegateActionTest(typeof(TestDelegateClass).GetMethod("Action0"));
+            DelegateActionTest(typeof(TestDelegateClass).GetMethod("Action1"));
+            DelegateActionTest(typeof(TestDelegateClass).GetMethod("Action2"));
+            DelegateActionTest(typeof(TestDelegateClass).GetMethod("Action3"));
+            DelegateActionTest(typeof(TestDelegateClass).GetMethod("Action4"));
+            DelegateActionTest(typeof(TestDelegateClass).GetMethod("Action5"));
+            DelegateActionTest(typeof(TestDelegateClass).GetMethod("Action6"));
 
-            DelegateFuncTest(typeof (TestDelegateClass).GetMethod("Func0"));
-            DelegateFuncTest(typeof (TestDelegateClass).GetMethod("Func1"));
-            DelegateFuncTest(typeof (TestDelegateClass).GetMethod("Func2"));
-            DelegateFuncTest(typeof (TestDelegateClass).GetMethod("Func3"));
-            DelegateFuncTest(typeof (TestDelegateClass).GetMethod("Func4"));
-            DelegateFuncTest(typeof (TestDelegateClass).GetMethod("Func5"));
-            DelegateFuncTest(typeof (TestDelegateClass).GetMethod("Func6"));
+            DelegateFuncTest(typeof(TestDelegateClass).GetMethod("Func0"));
+            DelegateFuncTest(typeof(TestDelegateClass).GetMethod("Func1"));
+            DelegateFuncTest(typeof(TestDelegateClass).GetMethod("Func2"));
+            DelegateFuncTest(typeof(TestDelegateClass).GetMethod("Func3"));
+            DelegateFuncTest(typeof(TestDelegateClass).GetMethod("Func4"));
+            DelegateFuncTest(typeof(TestDelegateClass).GetMethod("Func5"));
+            DelegateFuncTest(typeof(TestDelegateClass).GetMethod("Func6"));
         }
 
         [TestMethod]
         public void TestDelegateNonCreation() {
-            InvokeActionTest(typeof (TestDelegateClass).GetMethod("Action7"));
-            InvokeFuncTest(typeof (TestDelegateClass).GetMethod("Func7"));
+            InvokeActionTest(typeof(TestDelegateClass).GetMethod("Action7"));
+            InvokeFuncTest(typeof(TestDelegateClass).GetMethod("Func7"));
         }
 
         #region Nested type: TestDelegateClass

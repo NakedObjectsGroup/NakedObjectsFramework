@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +21,7 @@ namespace NakedObjects.Meta.Test.Audit {
         #region Setup/Teardown
 
         [TestInitialize]
-        public void SetUp() {}
+        public void SetUp() { }
 
         #endregion
 
@@ -39,7 +39,7 @@ namespace NakedObjects.Meta.Test.Audit {
         public void TestCreateWrongDefaultAuditorType() {
             var config = new Mock<IAuditConfiguration>();
 
-            config.Setup(c => c.DefaultAuditor).Returns(typeof (object));
+            config.Setup(c => c.DefaultAuditor).Returns(typeof(object));
             config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type>());
 
             try {
@@ -59,7 +59,7 @@ namespace NakedObjects.Meta.Test.Audit {
             var auditor = new Mock<IAuditor>();
 
             config.Setup(c => c.DefaultAuditor).Returns(auditor.Object.GetType());
-            config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> {{"", typeof (object)}});
+            config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> {{"", typeof(object)}});
 
             try {
                 // ReSharper disable once UnusedVariable
@@ -91,13 +91,13 @@ namespace NakedObjects.Meta.Test.Audit {
 
             testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
 
-            testFacet.Setup(n => n.FacetType).Returns(typeof (IActionInvocationFacet));
+            testFacet.Setup(n => n.FacetType).Returns(typeof(IActionInvocationFacet));
 
             testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
 
             var facet = manager.Decorate(testFacet.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (AuditActionInvocationFacet));
+            Assert.IsInstanceOfType(facet, typeof(AuditActionInvocationFacet));
         }
 
         [TestMethod]
@@ -119,13 +119,13 @@ namespace NakedObjects.Meta.Test.Audit {
 
             testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
 
-            testFacet.Setup(n => n.FacetType).Returns(typeof (IUpdatedCallbackFacet));
+            testFacet.Setup(n => n.FacetType).Returns(typeof(IUpdatedCallbackFacet));
 
             testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
 
             var facet = manager.Decorate(testFacet.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (AuditUpdatedFacet));
+            Assert.IsInstanceOfType(facet, typeof(AuditUpdatedFacet));
         }
 
         [TestMethod]
@@ -147,13 +147,13 @@ namespace NakedObjects.Meta.Test.Audit {
 
             testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
 
-            testFacet.Setup(n => n.FacetType).Returns(typeof (IPersistedCallbackFacet));
+            testFacet.Setup(n => n.FacetType).Returns(typeof(IPersistedCallbackFacet));
 
             testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
 
             var facet = manager.Decorate(testFacet.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (AuditPersistedFacet));
+            Assert.IsInstanceOfType(facet, typeof(AuditPersistedFacet));
         }
     }
 }

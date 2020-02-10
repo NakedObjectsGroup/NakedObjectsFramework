@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,7 @@ namespace NakedObjects.Meta.Test.Adapter {
         #region Setup/Teardown
 
         [TestInitialize]
-        public void SetUp() {}
+        public void SetUp() { }
 
         #endregion
 
@@ -30,14 +30,14 @@ namespace NakedObjects.Meta.Test.Adapter {
         }
 
         [TestMethod]
-        public void TestToClassString() {           
+        public void TestToClassString() {
             var identifier = new IdentifierImpl("testclass");
             var s = identifier.ToIdentityString(IdentifierDepth.Class);
             Assert.AreEqual("testclass", s);
         }
 
         [TestMethod]
-        public void TestToClassNameString() {      
+        public void TestToClassNameString() {
             var identifier = new IdentifierImpl("testclass", "testfield");
             var s = identifier.ToIdentityString(IdentifierDepth.ClassName);
             Assert.AreEqual("testclass#testfield", s);

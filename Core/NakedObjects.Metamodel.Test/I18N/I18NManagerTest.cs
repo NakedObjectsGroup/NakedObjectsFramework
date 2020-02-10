@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,7 +20,7 @@ namespace NakedObjects.Meta.Test.I18N {
         #region Setup/Teardown
 
         [TestInitialize]
-        public void SetUp() {}
+        public void SetUp() { }
 
         #endregion
 
@@ -29,7 +29,7 @@ namespace NakedObjects.Meta.Test.I18N {
             var manager = new I18NManager();
 
             var testName = new Mock<INamedFacet>();
-            testName.Setup(n => n.FacetType).Returns(typeof (INamedFacet));
+            testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
 
             var testHolder = new Mock<ISpecification>();
             var identifier = new Mock<IIdentifier>();
@@ -46,7 +46,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
             var facet = manager.Decorate(testName.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (NamedFacetI18N));
+            Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
             Assert.AreEqual("I18N property name", ((NamedFacetI18N) facet).Value);
         }
 
@@ -55,7 +55,7 @@ namespace NakedObjects.Meta.Test.I18N {
             var manager = new I18NManager();
 
             var testName = new Mock<INamedFacet>();
-            testName.Setup(n => n.FacetType).Returns(typeof (INamedFacet));
+            testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
 
             var testHolder = new Mock<ISpecification>();
             var identifier = new Mock<IIdentifier>();
@@ -72,7 +72,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
             var facet = manager.Decorate(testName.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (NamedFacetI18N));
+            Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
             Assert.AreEqual("I18N action name", ((NamedFacetI18N) facet).Value);
         }
 
@@ -81,7 +81,7 @@ namespace NakedObjects.Meta.Test.I18N {
             var manager = new I18NManager();
 
             var testName = new Mock<INamedFacet>();
-            testName.Setup(n => n.FacetType).Returns(typeof (INamedFacet));
+            testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
 
             var testHolder = new Mock<IActionParameterSpec>();
             var identifier = new Mock<IIdentifier>();
@@ -95,7 +95,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
             var facet = manager.Decorate(testName.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (NamedFacetI18N));
+            Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
             Assert.AreEqual("I18N parameter name", ((NamedFacetI18N) facet).Value);
         }
 
@@ -104,7 +104,7 @@ namespace NakedObjects.Meta.Test.I18N {
             var manager = new I18NManager();
 
             var testDescribed = new Mock<IDescribedAsFacet>();
-            testDescribed.Setup(n => n.FacetType).Returns(typeof (IDescribedAsFacet));
+            testDescribed.Setup(n => n.FacetType).Returns(typeof(IDescribedAsFacet));
 
             var testHolder = new Mock<ISpecification>();
             var identifier = new Mock<IIdentifier>();
@@ -121,7 +121,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
             var facet = manager.Decorate(testDescribed.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (DescribedAsFacetI18N));
+            Assert.IsInstanceOfType(facet, typeof(DescribedAsFacetI18N));
             Assert.AreEqual("I18N property description", ((DescribedAsFacetI18N) facet).Value);
         }
 
@@ -130,7 +130,7 @@ namespace NakedObjects.Meta.Test.I18N {
             var manager = new I18NManager();
 
             var testDescribed = new Mock<IDescribedAsFacet>();
-            testDescribed.Setup(n => n.FacetType).Returns(typeof (IDescribedAsFacet));
+            testDescribed.Setup(n => n.FacetType).Returns(typeof(IDescribedAsFacet));
 
             var testHolder = new Mock<ISpecification>();
             var identifier = new Mock<IIdentifier>();
@@ -147,7 +147,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
             var facet = manager.Decorate(testDescribed.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (DescribedAsFacetI18N));
+            Assert.IsInstanceOfType(facet, typeof(DescribedAsFacetI18N));
             Assert.AreEqual("I18N action description", ((DescribedAsFacetI18N) facet).Value);
         }
 
@@ -156,7 +156,7 @@ namespace NakedObjects.Meta.Test.I18N {
             var manager = new I18NManager();
 
             var testDescribed = new Mock<IDescribedAsFacet>();
-            testDescribed.Setup(n => n.FacetType).Returns(typeof (IDescribedAsFacet));
+            testDescribed.Setup(n => n.FacetType).Returns(typeof(IDescribedAsFacet));
 
             var testHolder = new Mock<IActionParameterSpec>();
             var identifier = new Mock<IIdentifier>();
@@ -170,7 +170,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
             var facet = manager.Decorate(testDescribed.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (DescribedAsFacetI18N));
+            Assert.IsInstanceOfType(facet, typeof(DescribedAsFacetI18N));
             Assert.AreEqual("I18N parameter description", ((DescribedAsFacetI18N) facet).Value);
         }
 
@@ -179,7 +179,7 @@ namespace NakedObjects.Meta.Test.I18N {
             var manager = new I18NManager();
 
             var testName = new Mock<INamedFacet>();
-            testName.Setup(n => n.FacetType).Returns(typeof (INamedFacet));
+            testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
 
             var testHolder = new Mock<ISpecification>();
             var identifier = new Mock<IIdentifier>();
@@ -202,7 +202,7 @@ namespace NakedObjects.Meta.Test.I18N {
             var manager = new I18NManager();
 
             var testName = new Mock<INamedFacet>();
-            testName.Setup(n => n.FacetType).Returns(typeof (INamedFacet));
+            testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
 
             var testHolder = new Mock<ISpecification>();
             var identifier = new Mock<IIdentifier>();
@@ -232,7 +232,7 @@ namespace NakedObjects.Meta.Test.I18N {
             var manager = new I18NManager();
 
             var testName = new Mock<INamedFacet>();
-            testName.Setup(n => n.FacetType).Returns(typeof (INamedFacet));
+            testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
 
             var testHolder = new Mock<ISpecification>();
             var identifier = new Mock<IIdentifier>();
@@ -258,7 +258,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
             var facets = manager.ForFacetTypes;
 
-            Assert.IsTrue(facets.SequenceEqual(new[] {typeof (INamedFacet), typeof (IDescribedAsFacet)}));
+            Assert.IsTrue(facets.SequenceEqual(new[] {typeof(INamedFacet), typeof(IDescribedAsFacet)}));
         }
 
         [TestMethod]
@@ -266,13 +266,13 @@ namespace NakedObjects.Meta.Test.I18N {
             var manager = new I18NManager();
 
             var testTitle = new Mock<ITitleFacet>();
-            testTitle.Setup(n => n.FacetType).Returns(typeof (ITitleFacet));
+            testTitle.Setup(n => n.FacetType).Returns(typeof(ITitleFacet));
 
             var testHolder = new Mock<ISpecification>();
 
             var facet = manager.Decorate(testTitle.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (ITitleFacet));
+            Assert.IsInstanceOfType(facet, typeof(ITitleFacet));
             Assert.AreEqual(testTitle.Object, facet);
         }
 
@@ -281,7 +281,7 @@ namespace NakedObjects.Meta.Test.I18N {
             var manager = new I18NManager();
 
             var testName = new Mock<INamedFacet>();
-            testName.Setup(n => n.FacetType).Returns(typeof (INamedFacet));
+            testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
 
             var testHolder = new Mock<ISpecification>();
             var identifier = new Mock<IIdentifier>();
@@ -298,12 +298,12 @@ namespace NakedObjects.Meta.Test.I18N {
 
             var facet = manager.Decorate(testName.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (NamedFacetI18N));
+            Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
             Assert.AreEqual("I18N property name", ((NamedFacetI18N) facet).Value);
 
             facet = manager.Decorate(testName.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (NamedFacetI18N));
+            Assert.IsInstanceOfType(facet, typeof(NamedFacetI18N));
             Assert.AreEqual("I18N property name", ((NamedFacetI18N) facet).Value);
         }
     }

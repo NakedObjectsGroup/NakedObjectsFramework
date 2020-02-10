@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +21,7 @@ namespace NakedObjects.Meta.Test.Profile {
         #region Setup/Teardown
 
         [TestInitialize]
-        public void SetUp() {}
+        public void SetUp() { }
 
         #endregion
 
@@ -40,12 +40,12 @@ namespace NakedObjects.Meta.Test.Profile {
             var testSpec = SetupMocks(out testHolder);
             var testFacet = new Mock<TFacet>();
 
-            testFacet.Setup(n => n.FacetType).Returns(typeof (TFacet));
+            testFacet.Setup(n => n.FacetType).Returns(typeof(TFacet));
             testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
 
             var facet = manager.Decorate(testFacet.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (TResult));
+            Assert.IsInstanceOfType(facet, typeof(TResult));
         }
 
         private static void TestNotDecorated<TFacet, TResult>(ProfileManager manager) where TFacet : class, IFacet {
@@ -60,7 +60,6 @@ namespace NakedObjects.Meta.Test.Profile {
 
             Assert.IsNotInstanceOfType(facet, typeof(TResult));
             Assert.IsInstanceOfType(facet, typeof(TFacet));
-
         }
 
         private static void TestDecorateFacet<TFacet, TResult>(ProfileEvent eventToTest) where TFacet : class, IFacet {
@@ -91,7 +90,7 @@ namespace NakedObjects.Meta.Test.Profile {
         public void TestCreateWrongDefaultProfilerType() {
             var config = new Mock<IProfileConfiguration>();
 
-            config.Setup(c => c.Profiler).Returns(typeof (object));
+            config.Setup(c => c.Profiler).Returns(typeof(object));
 
             try {
                 // ReSharper disable once UnusedVariable
@@ -200,7 +199,7 @@ namespace NakedObjects.Meta.Test.Profile {
             var auditor = new Mock<IProfiler>();
 
             config.Setup(c => c.Profiler).Returns(auditor.Object.GetType());
-            config.Setup(c => c.EventsToProfile).Returns(new HashSet<ProfileEvent> {});
+            config.Setup(c => c.EventsToProfile).Returns(new HashSet<ProfileEvent> { });
 
             var manager = new ProfileManager(config.Object);
 

@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,14 +19,10 @@ using NakedObjects.Security;
 namespace NakedObjects.Meta.Test.Authorization {
     [TestClass]
     public class AuthorizationManagerTest {
-
-        public class TestClass {}
-
-
         #region Setup/Teardown
 
         [TestInitialize]
-        public void SetUp() {}
+        public void SetUp() { }
 
         #endregion
 
@@ -63,8 +59,8 @@ namespace NakedObjects.Meta.Test.Authorization {
         public void TestDecorateHideForSessionFacet() {
             var config = new Mock<IAuthorizationConfiguration>();
 
-            config.Setup(c => c.DefaultAuthorizer).Returns(typeof (TestDefaultAuthorizer));
-            config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof (TestNamespaceAuthorizer)}});
+            config.Setup(c => c.DefaultAuthorizer).Returns(typeof(TestDefaultAuthorizer));
+            config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof(TestNamespaceAuthorizer)}});
             config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
 
             var manager = new AuthorizationManager(config.Object);
@@ -78,43 +74,21 @@ namespace NakedObjects.Meta.Test.Authorization {
 
             testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
 
-            testFacet.Setup(n => n.FacetType).Returns(typeof (IHideForSessionFacet));
+            testFacet.Setup(n => n.FacetType).Returns(typeof(IHideForSessionFacet));
 
             testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
 
             var facet = manager.Decorate(testFacet.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (AuthorizationHideForSessionFacet));
+            Assert.IsInstanceOfType(facet, typeof(AuthorizationHideForSessionFacet));
         }
-
-        public class TestDefaultAuthorizer : ITypeAuthorizer<object> {
-           
-            public bool IsEditable(IPrincipal principal, object target, string memberName) {
-                return true;
-            }
-
-            public bool IsVisible(IPrincipal principal, object target, string memberName) {
-                return true;
-            }
-        }
-
-        public class TestNamespaceAuthorizer : INamespaceAuthorizer {
-            public bool IsEditable(IPrincipal principal, object target, string memberName) {
-                return true;
-            }
-
-            public bool IsVisible(IPrincipal principal, object target, string memberName) {
-                return true;
-            }
-        }
-    
 
         [TestMethod]
         public void TestDecorateDisableForSessionFacet() {
             var config = new Mock<IAuthorizationConfiguration>();
 
-            config.Setup(c => c.DefaultAuthorizer).Returns(typeof (TestDefaultAuthorizer));
-            config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof (TestNamespaceAuthorizer)}});
+            config.Setup(c => c.DefaultAuthorizer).Returns(typeof(TestDefaultAuthorizer));
+            config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof(TestNamespaceAuthorizer)}});
             config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
 
             var manager = new AuthorizationManager(config.Object);
@@ -128,13 +102,55 @@ namespace NakedObjects.Meta.Test.Authorization {
 
             testSpec.Setup(s => s.Identifier).Returns(identifier.Object);
 
-            testFacet.Setup(n => n.FacetType).Returns(typeof (IDisableForSessionFacet));
+            testFacet.Setup(n => n.FacetType).Returns(typeof(IDisableForSessionFacet));
 
             testFacet.Setup(n => n.Specification).Returns(testSpec.Object);
 
             var facet = manager.Decorate(testFacet.Object, testHolder.Object);
 
-            Assert.IsInstanceOfType(facet, typeof (AuthorizationDisableForSessionFacet));
+            Assert.IsInstanceOfType(facet, typeof(AuthorizationDisableForSessionFacet));
         }
+
+        #region Nested type: TestClass
+
+        public class TestClass { }
+
+        #endregion
+
+        #region Nested type: TestDefaultAuthorizer
+
+        public class TestDefaultAuthorizer : ITypeAuthorizer<object> {
+            #region ITypeAuthorizer<object> Members
+
+            public bool IsEditable(IPrincipal principal, object target, string memberName) {
+                return true;
+            }
+
+            public bool IsVisible(IPrincipal principal, object target, string memberName) {
+                return true;
+            }
+
+            #endregion
+        }
+
+        #endregion
+
+        #region Nested type: TestNamespaceAuthorizer
+
+        public class TestNamespaceAuthorizer : INamespaceAuthorizer {
+            #region INamespaceAuthorizer Members
+
+            public bool IsEditable(IPrincipal principal, object target, string memberName) {
+                return true;
+            }
+
+            public bool IsVisible(IPrincipal principal, object target, string memberName) {
+                return true;
+            }
+
+            #endregion
+        }
+
+        #endregion
     }
 }
