@@ -8,38 +8,27 @@
 using System;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
-using System.Linq;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
-using NakedObjects.Core.Async;
+using Microsoft.Extensions.Configuration;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
+using NakedObjects.Architecture.Menu;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
 
-namespace NakedObjects.Batch {
-    /// <summary>
-    /// Use this class to configure the application running under Naked Objects
-    /// </summary>
+namespace NakedObjects.Rest.App.Demo {
     public static class NakedObjectsRunSettings {
-        //TODO: Add similar Configuration mechanisms for Authentication, Auditing
-        //Any other simple configuration options (e.g. bool or string) on the old Run classes should be
-        //moved onto a single SystemConfiguration, which can delegate e.g. to Web.config 
 
-        private static string[] ModelNamespaces
-        {
-            get
-            {
+        private static string[] ModelNamespaces {
+            get {
                 return new string[] { "AdventureWorksModel" };
             }
         }
 
-        private static Type[] Types
-        {
-            get
-            {
+        private static Type[] Types {
+            get {
                 return new[] {
                     typeof (EntityCollection<object>),
                     typeof (ObjectQuery<object>),
@@ -53,10 +42,8 @@ namespace NakedObjects.Batch {
             }
         }
 
-        private static Type[] Services
-        {
-            get
-            {
+        private static Type[] Services {
+            get {
                 return new[] {
                     typeof (CustomerRepository),
                     typeof (OrderRepository),
@@ -80,9 +67,10 @@ namespace NakedObjects.Batch {
             return new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
         }
 
-        public static EntityObjectStoreConfiguration EntityObjectStoreConfig() {
+        public static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration) {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingCodeFirstContext(() => new AdventureWorksContext());
+            var cs = configuration.GetConnectionString("AdventureWorksContext");
+            config.UsingCodeFirstContext(() => new AdventureWorksContext(cs));
             return config;
         }
 
@@ -97,10 +85,26 @@ namespace NakedObjects.Batch {
         /// <summary>
         /// Return an array of IMenus (obtained via the factory, then configured) to
         /// specify the Main Menus for the application. If none are returned then
-        /// the Main Menus will be derived automatically from the MenuServices.
+        /// the Main Menus will be derived automatically from the Services.
         /// </summary>
         public static IMenu[] MainMenus(IMenuFactory factory) {
-            return new IMenu[] {};
+            var customerMenu = factory.NewMenu<CustomerRepository>(false);
+            CustomerRepository.Menu(customerMenu);
+            var salesMenu = factory.NewMenu<SalesRepository>(false);
+            SalesRepository.Menu(salesMenu);
+            return new[] {
+                    customerMenu,
+                    factory.NewMenu<OrderRepository>(true),
+                    factory.NewMenu<ProductRepository>(true),
+                    factory.NewMenu<EmployeeRepository>(true),
+                    salesMenu,
+                    factory.NewMenu<SpecialOfferRepository>(true),
+                    factory.NewMenu<PersonRepository>(true),
+                    factory.NewMenu<VendorRepository>(true),
+                    factory.NewMenu<PurchaseOrderRepository>(true),
+                    factory.NewMenu<WorkOrderRepository>(true),
+                    factory.NewMenu<ServiceWithNoVisibleActions>(true, "Empty")
+            };
         }
     }
 }
