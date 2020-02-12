@@ -37,7 +37,8 @@ namespace NakedObjects.Core.Async {
         #endregion
 
         protected Action WorkWrapper(Action<IDomainObjectContainer> action) {
-            INakedObjectsFramework fw = Framework.FrameworkResolver.GetFramework();
+            var resolver = Framework.FrameworkResolver;
+            var fw = Framework.FrameworkResolver.GetFramework();
             return () => {
                 try {
                     fw.TransactionManager.StartTransaction();
@@ -48,6 +49,9 @@ namespace NakedObjects.Core.Async {
                     Log.ErrorFormat("Action threw exception {0}", e.Message);
                     fw.TransactionManager.AbortTransaction();
                     throw;
+                }
+                finally {
+                    resolver.Dispose();
                 }
             };
         }

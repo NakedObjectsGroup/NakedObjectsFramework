@@ -6,22 +6,25 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Component;
 using Microsoft.Extensions.DependencyInjection;
+using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.DependencyInjection
-{
+namespace NakedObjects.DependencyInjection {
     public class FrameworkResolver : IFrameworkResolver {
-        private readonly IServiceProvider serviceProvider;
+        private readonly IServiceScope scopeServiceProvider;
 
         public FrameworkResolver(IServiceProvider serviceProvider) {
-            this.serviceProvider = serviceProvider;
+            scopeServiceProvider = serviceProvider.CreateScope();
+        }
+
+        public void Dispose() {
+            scopeServiceProvider.Dispose();
         }
 
         #region IFrameworkResolver Members
 
         public INakedObjectsFramework GetFramework() {
-            return serviceProvider.GetService<INakedObjectsFramework>();
+            return scopeServiceProvider.ServiceProvider.GetService<INakedObjectsFramework>();
         }
 
         #endregion

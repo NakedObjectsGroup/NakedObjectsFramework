@@ -5,8 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+
 namespace NakedObjects.Architecture.Component {
-    public interface IFrameworkResolver {
+    public interface IFrameworkResolver : IDisposable {
         INakedObjectsFramework GetFramework();
     }
 }
