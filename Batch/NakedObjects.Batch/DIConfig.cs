@@ -5,36 +5,34 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Security.Principal;
+using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Core.Component;
 using NakedObjects.DependencyInjection;
+using NakedObjects.Persistor.Entity.Configuration;
 
-namespace NakedObjects.Rest.App.Demo
-{
-
-
+namespace NakedObjects.Batch {
     //public class InvariantStringHasher : IStringHasher {
     //    public string GetHash(string toHash) {
     //        return "1234";
     //    }
     //}
 
-
     /// <summary>
-    /// Specifies the Unity configuration for the main container.
+    ///     Specifies the Unity configuration for the main container.
     /// </summary>
     public static class DIConfig {
-     
-
         /// <summary>Registers the type mappings with the Unity container.</summary>
         /// <param name="services"></param>
         /// <param name="configuration"></param>
         /// <param name="container">The unity container to configure.</param>
-        /// <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
-        /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
+        /// <remarks>
+        ///     There is no need to register concrete types such as controllers or API controllers (unless you want to
+        ///     change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.
+        /// </remarks>
         public static void AddNakedObjects(this IServiceCollection services, IConfiguration configuration) {
             // NOTE: To load from web.config uncomment the line below. Make sure to add a Microsoft.Practices.Unity.Configuration to the using statements.
             // container.LoadConfiguration();
@@ -44,21 +42,14 @@ namespace NakedObjects.Rest.App.Demo
             ParallelConfig.RegisterCoreSingletonTypes(services);
             ParallelConfig.RegisterCoreScopedTypes(services);
 
-          
             // config 
             services.AddSingleton<IReflectorConfiguration>(p => NakedObjectsRunSettings.ReflectorConfig());
             services.AddSingleton<IEntityObjectStoreConfiguration>(p => NakedObjectsRunSettings.EntityObjectStoreConfig(configuration));
 
-            // frameworkFacade
-            //services.AddTransient<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>();
+            services.AddScoped<IBatchRunner, BatchRunner>();
 
-            //services.AddTransient<IOidStrategy, EntityOidStrategy>();
-            //services.AddTransient<IStringHasher, InvariantStringHasher>();
-            //services.AddTransient<IFrameworkFacade, FrameworkFacade>();
-
-            
-            ////Externals
-            //services.AddScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);
+            //Externals
+            services.AddScoped(p => Thread.CurrentPrincipal);
         }
     }
 }

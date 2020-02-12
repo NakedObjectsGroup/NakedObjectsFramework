@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Batch {
     public class Worker : BackgroundService {
@@ -20,10 +21,16 @@ namespace NakedObjects.Batch {
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
-            while (!stoppingToken.IsCancellationRequested) {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(1000, stoppingToken);
-            }
+            var runner = (IBatchRunner) Program.WorkerHost.Services.GetService(typeof(IBatchRunner));
+            
+            runner.Run(new BatchStartPoint());
+
+            await Task.CompletedTask;
+
+            //while (!stoppingToken.IsCancellationRequested) {
+            //    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+            //    await Task.Delay(1000, stoppingToken);
+            //}
         }
     }
 }

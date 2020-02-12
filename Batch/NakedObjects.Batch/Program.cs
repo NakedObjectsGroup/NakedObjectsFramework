@@ -10,14 +10,19 @@ using Microsoft.Extensions.Hosting;
 
 namespace NakedObjects.Batch {
     public class Program {
+
+        public static IHost WorkerHost { get; private set; }
+
         public static void Main(string[] args) {
-            CreateHostBuilder(args).Build().Run();
+            WorkerHost = CreateHostBuilder(args).Build();
+            WorkerHost.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) => {
                     services.AddHostedService<Worker>();
+                    services.AddNakedObjects(null);
                 });
     }
 }

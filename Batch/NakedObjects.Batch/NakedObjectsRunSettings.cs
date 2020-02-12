@@ -11,54 +11,56 @@ using System.Data.Entity.Core.Objects.DataClasses;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
 using Microsoft.Extensions.Configuration;
-using NakedObjects.Core.Configuration;
-using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Menu;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Core.Configuration;
+using NakedObjects.Menu;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
+using NakedObjects.Persistor.Entity.Configuration;
 
-namespace NakedObjects.Rest.App.Demo {
+namespace NakedObjects.Batch {
     public static class NakedObjectsRunSettings {
-
-        private static string[] ModelNamespaces {
-            get {
-                return new string[] { "AdventureWorksModel" };
-            }
+        private static string[] ModelNamespaces
+        {
+            get { return new[] {"AdventureWorksModel"}; }
         }
 
-        private static Type[] Types {
-            get {
+        private static Type[] Types
+        {
+            get
+            {
                 return new[] {
-                    typeof (EntityCollection<object>),
-                    typeof (ObjectQuery<object>),
-                    typeof (CustomerCollectionViewModel),
-                    typeof (OrderLine),
-                    typeof (OrderStatus),
-                    typeof (QuickOrderForm),
-                    typeof (ProductProductPhoto),
-                    typeof (ProductModelProductDescriptionCulture)
+                    typeof(EntityCollection<object>),
+                    typeof(ObjectQuery<object>),
+                    typeof(CustomerCollectionViewModel),
+                    typeof(OrderLine),
+                    typeof(OrderStatus),
+                    typeof(QuickOrderForm),
+                    typeof(ProductProductPhoto),
+                    typeof(ProductModelProductDescriptionCulture)
                 };
             }
         }
 
-        private static Type[] Services {
-            get {
+        private static Type[] Services
+        {
+            get
+            {
                 return new[] {
-                    typeof (CustomerRepository),
-                    typeof (OrderRepository),
-                    typeof (ProductRepository),
-                    typeof (EmployeeRepository),
-                    typeof (SalesRepository),
-                    typeof (SpecialOfferRepository),
-                    typeof (PersonRepository),
-                    typeof (VendorRepository),
-                    typeof (PurchaseOrderRepository),
-                    typeof (WorkOrderRepository),
-                    typeof (OrderContributedActions),
-                    typeof (CustomerContributedActions),
-                    typeof (SpecialOfferContributedActions),
-                    typeof (ServiceWithNoVisibleActions)
+                    typeof(CustomerRepository),
+                    typeof(OrderRepository),
+                    typeof(ProductRepository),
+                    typeof(EmployeeRepository),
+                    typeof(SalesRepository),
+                    typeof(SpecialOfferRepository),
+                    typeof(PersonRepository),
+                    typeof(VendorRepository),
+                    typeof(PurchaseOrderRepository),
+                    typeof(WorkOrderRepository),
+                    typeof(OrderContributedActions),
+                    typeof(CustomerContributedActions),
+                    typeof(SpecialOfferContributedActions),
+                    typeof(ServiceWithNoVisibleActions)
                 };
             }
         }
@@ -69,8 +71,7 @@ namespace NakedObjects.Rest.App.Demo {
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration) {
             var config = new EntityObjectStoreConfiguration();
-            var cs = configuration.GetConnectionString("AdventureWorksContext");
-            config.UsingCodeFirstContext(() => new AdventureWorksContext(cs));
+            config.UsingCodeFirstContext(() => new AdventureWorksContext());
             return config;
         }
 
@@ -83,28 +84,12 @@ namespace NakedObjects.Rest.App.Demo {
         }
 
         /// <summary>
-        /// Return an array of IMenus (obtained via the factory, then configured) to
-        /// specify the Main Menus for the application. If none are returned then
-        /// the Main Menus will be derived automatically from the Services.
+        ///     Return an array of IMenus (obtained via the factory, then configured) to
+        ///     specify the Main Menus for the application. If none are returned then
+        ///     the Main Menus will be derived automatically from the MenuServices.
         /// </summary>
         public static IMenu[] MainMenus(IMenuFactory factory) {
-            var customerMenu = factory.NewMenu<CustomerRepository>(false);
-            CustomerRepository.Menu(customerMenu);
-            var salesMenu = factory.NewMenu<SalesRepository>(false);
-            SalesRepository.Menu(salesMenu);
-            return new[] {
-                    customerMenu,
-                    factory.NewMenu<OrderRepository>(true),
-                    factory.NewMenu<ProductRepository>(true),
-                    factory.NewMenu<EmployeeRepository>(true),
-                    salesMenu,
-                    factory.NewMenu<SpecialOfferRepository>(true),
-                    factory.NewMenu<PersonRepository>(true),
-                    factory.NewMenu<VendorRepository>(true),
-                    factory.NewMenu<PurchaseOrderRepository>(true),
-                    factory.NewMenu<WorkOrderRepository>(true),
-                    factory.NewMenu<ServiceWithNoVisibleActions>(true, "Empty")
-            };
+            return new IMenu[] { };
         }
     }
 }
