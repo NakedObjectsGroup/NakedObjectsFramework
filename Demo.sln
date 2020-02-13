@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2042
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorksModel", "Samples\AdventureWorksModel\AdventureWorksModel.csproj", "{FDDBA108-8B58-40C6-A375-FFB92B1933DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksModel", "Samples\AdventureWorksModel\AdventureWorksModel.csproj", "{FDDBA108-8B58-40C6-A375-FFB92B1933DD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5BBA91B2-8F10-4606-92A6-5D626658365B}"
 	ProjectSection(SolutionItems) = preProject
@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{736F43
 		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Rest.App.DemoOwin", "Demo\NakedObjects.Rest.App.DemoOwin\NakedObjects.Rest.App.DemoOwin.csproj", "{97B6951E-33AD-4F8A-A4D7-2E73963E03C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Rest.App.Demo", "Demo\NakedObjects.Rest.App.Demo\NakedObjects.Rest.App.Demo.csproj", "{C9323589-82ED-445C-9CCC-553C8DC9DB73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{FDDBA108-8B58-40C6-A375-FFB92B1933DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDDBA108-8B58-40C6-A375-FFB92B1933DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDDBA108-8B58-40C6-A375-FFB92B1933DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{97B6951E-33AD-4F8A-A4D7-2E73963E03C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97B6951E-33AD-4F8A-A4D7-2E73963E03C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97B6951E-33AD-4F8A-A4D7-2E73963E03C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97B6951E-33AD-4F8A-A4D7-2E73963E03C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9323589-82ED-445C-9CCC-553C8DC9DB73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9323589-82ED-445C-9CCC-553C8DC9DB73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9323589-82ED-445C-9CCC-553C8DC9DB73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9323589-82ED-445C-9CCC-553C8DC9DB73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

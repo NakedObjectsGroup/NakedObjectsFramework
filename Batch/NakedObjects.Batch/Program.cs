@@ -5,12 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace NakedObjects.Batch {
     public class Program {
-
         public static IHost WorkerHost { get; private set; }
 
         public static void Main(string[] args) {
@@ -21,8 +21,9 @@ namespace NakedObjects.Batch {
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) => {
+                    IConfiguration configuration = hostContext.Configuration;
                     services.AddHostedService<Worker>();
-                    services.AddNakedObjects(null);
+                    services.AddNakedObjects(configuration);
                 });
     }
 }

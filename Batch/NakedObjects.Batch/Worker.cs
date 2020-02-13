@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Batch {
@@ -21,7 +22,7 @@ namespace NakedObjects.Batch {
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
-            var runner = (IBatchRunner) Program.WorkerHost.Services.GetService(typeof(IBatchRunner));
+            var runner = Program.WorkerHost.Services.GetService<IBatchRunner>();
             
             runner.Run(new BatchStartPoint());
 
