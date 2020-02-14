@@ -16,7 +16,7 @@ namespace NakedObjects.Core.Component {
     public sealed class IdentityAdapterHashMap : IIdentityAdapterMap {
         private static readonly ILog Log;
         private readonly IDictionary<IOid, INakedObjectAdapter> adapters;
-        private readonly int capacity = 10; 
+        private readonly int capacity = 10;
 
         static IdentityAdapterHashMap() {
             Log = LogManager.GetLogger(typeof(IdentityAdapterHashMap));
@@ -26,8 +26,15 @@ namespace NakedObjects.Core.Component {
             adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
         }
 
-        public IdentityAdapterHashMap(IConfiguration config) : this() { 
-            capacity = int.Parse(config.GetSection("NakedObjects")["HashMapCapacity"]);
+        public IdentityAdapterHashMap(IConfiguration config) : this() {
+            var capacityFromConfig = config.GetSection("NakedObjects")["HashMapCapacity"];
+            if (capacityFromConfig == null) {
+                Log.Warn($"NakedObjects:HashMapCapacity not set defaulting to {capacity}");
+            }
+            else {
+                capacity = int.Parse(capacityFromConfig);
+            }
+
             adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
         }
 

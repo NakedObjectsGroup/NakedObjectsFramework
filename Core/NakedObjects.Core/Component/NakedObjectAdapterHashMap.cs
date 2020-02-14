@@ -15,15 +15,22 @@ using NakedObjects.Architecture.Component;
 namespace NakedObjects.Core.Component {
     public sealed class NakedObjectAdapterHashMap : INakedObjectAdapterMap {
         private static readonly ILog Log = LogManager.GetLogger(typeof(NakedObjectAdapterHashMap));
-        private readonly IDictionary<object, INakedObjectAdapter> domainObjects;
         private readonly int capacity = 10;
+        private readonly IDictionary<object, INakedObjectAdapter> domainObjects;
 
         public NakedObjectAdapterHashMap() {
             domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
         }
 
         public NakedObjectAdapterHashMap(IConfiguration config) : this() {
-            capacity = int.Parse(config.GetSection("NakedObjects")["HashMapCapacity"]);
+            var capacityFromConfig = config.GetSection("NakedObjects")["HashMapCapacity"];
+            if (capacityFromConfig == null) {
+                Log.Warn($"NakedObjects:HashMapCapacity not set defaulting to {capacity}");
+            }
+            else {
+                capacity = int.Parse(capacityFromConfig);
+            }
+
             domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
         }
 
