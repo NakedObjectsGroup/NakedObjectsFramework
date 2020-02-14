@@ -12,6 +12,7 @@ using AdventureWorksModel;
 using AdventureWorksModel.Sales;
 using Microsoft.Extensions.Configuration;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Core.Async;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Audit;
@@ -47,6 +48,7 @@ namespace NakedObjects.Batch {
             get
             {
                 return new[] {
+                    typeof(AsyncService),
                     typeof(CustomerRepository),
                     typeof(OrderRepository),
                     typeof(ProductRepository),
@@ -71,7 +73,8 @@ namespace NakedObjects.Batch {
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration) {
             var config = new EntityObjectStoreConfiguration();
-            config.UsingCodeFirstContext(() => new AdventureWorksContext());
+            var cs = configuration.GetConnectionString("AdventureWorksContext");
+            config.UsingCodeFirstContext(() => new AdventureWorksContext(cs));
             return config;
         }
 

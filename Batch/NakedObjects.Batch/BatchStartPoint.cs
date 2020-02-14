@@ -14,8 +14,8 @@ namespace NakedObjects.Batch {
 
         #region IBatchStartPoint Members
 
-        public void Execute() {
-            AsyncService.RunAsync
+        public async void Execute() {
+            await AsyncService.RunAsync
                 (domainObjectContainer => { });
         }
 
