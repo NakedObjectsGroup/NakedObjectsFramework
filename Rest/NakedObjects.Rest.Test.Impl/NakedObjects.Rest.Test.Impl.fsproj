@@ -1,20 +1,30 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NakedObjects.Xat" Version="11.0.0-beta01" />
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Program.fs" />
+    <Compile Include="RestTestsHelpers.fs" />
+    <Compile Include="RestTests.fs" />
+    <Compile Include="RestTestsConcurrency.fs" />
+    <Compile Include="RestTestsDomainType.fs" />
+    <Compile Include="RestTestsDomainTypeConcurrency.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj" />
+    <ProjectReference Include="..\NakedObjects.Rest.Test\NakedObjects.Rest.Test.fsproj" />
   </ItemGroup>
 
 </Project>
