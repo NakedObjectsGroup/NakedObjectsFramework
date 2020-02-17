@@ -6,144 +6,136 @@
 //// See the License for the specific language governing permissions and limitations under the License.
 module NakedObjects.Rest.Test.A
 
-//open NUnit.Framework
-//open NakedObjects.Rest
-//open NakedObjects.Rest.Media
-//open System
-//open NakedObjects.Rest.Snapshot.Utility
-//open System.Web.Http
-//open RestfulObjects.Test.Data
-//open NakedObjects.Facade.Impl.Implementation
-//open NakedObjects.Facade.Impl.Utility
+open NUnit.Framework
+open NakedObjects.Rest
+open NakedObjects.Rest.Media
+open System
+open NakedObjects.Rest.Snapshot.Utility
+open System.Web.Http
+open RestfulObjects.Test.Data
+open NakedObjects.Facade.Impl.Implementation
+open NakedObjects.Facade.Impl.Utility
 //open MvcTestApp.Controllers
-//open NakedObjects.Rest.Test.RestTestsHelpers
-//open NakedObjects.Architecture.Configuration
-//open NakedObjects.Core.Configuration
-//open System.Data.Entity.Core.Objects.DataClasses
-//open System.Collections.Generic
-//open System.Data.Entity.Core.Objects
-//open NakedObjects.Persistor.Entity.Configuration
-//open NakedObjects.Persistor.Entity
-//open NakedObjects.Facade
-//open NakedObjects.Facade.Translation
-//open NakedObjects.Facade.Impl
-//open NakedObjects.Facade.Interface
-//open NakedObjects.Architecture.Menu
-//open NakedObjects.Menu
-//open Microsoft.Practices.Unity
+open NakedObjects.Rest.Test.RestTestsHelpers
+open NakedObjects.Architecture.Configuration
+open NakedObjects.Core.Configuration
+open System.Data.Entity.Core.Objects.DataClasses
+open System.Collections.Generic
+open System.Data.Entity.Core.Objects
+open NakedObjects.Persistor.Entity.Configuration
+open NakedObjects.Persistor.Entity
+open NakedObjects.Facade
+open NakedObjects.Facade.Translation
+open NakedObjects.Facade.Impl
+open NakedObjects.Facade.Interface
+open NakedObjects.Architecture.Menu
+open NakedObjects.Menu
+open Microsoft.Extensions.Hosting
+open Microsoft.Extensions.DependencyInjection
+open NakedObjects.Rest.Test.RestTestsHelpers
+open Newtonsoft.Json
+open RestTestFunctions
 
-//[<TestFixture>]
-//type ANof4Tests() = 
-//    class
-//        inherit NakedObjects.Xat.AcceptanceTestCase()
+[<TestFixture>]
+type ANof4Tests() = 
+    class
+        inherit NakedObjects.Xat.AcceptanceTestCase()
         
-//        override x.RegisterTypes(container) = 
-//            base.RegisterTypes(container)
-//            let config = new EntityObjectStoreConfiguration()
-//            let f = (fun () -> new CodeFirstContextLocal("RestTestA") :> Data.Entity.DbContext)
-//            config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
-//            container.RegisterInstance
-//                (typeof<IEntityObjectStoreConfiguration>, null, config, (new ContainerControlledLifetimeManager())) 
-//            |> ignore
-//            container.RegisterType
-//                (typeof<IOidStrategy>, typeof<EntityOidStrategy>, null, (new PerResolveLifetimeManager())) |> ignore
-//            container.RegisterType
-//                (typeof<IStringHasher>, typeof<NullStringHasher>, null, (new PerResolveLifetimeManager())) |> ignore
-//            container.RegisterType
-//                (typeof<IFrameworkFacade>, typeof<FrameworkFacade>, null, (new PerResolveLifetimeManager())) |> ignore
-//            container.RegisterType
-//                (typeof<IOidTranslator>, typeof<OidTranslatorSlashSeparatedTypeAndIds>, null, 
-//                 (new PerResolveLifetimeManager())) |> ignore
-//            let types = 
-//                [| typeof<Immutable>
-//                   typeof<WithActionViewModel>
-//                   typeof<WithCollectionViewModel>
-//                   typeof<WithValueViewModel>
-//                   typeof<WithNestedViewModel>
-//                   typeof<WithValueViewModelEdit>
-//                   typeof<WithNestedViewModelEdit>
-//                   typeof<RedirectedObject>
-//                   typeof<WithScalars>
-//                   typeof<VerySimple>
-//                   typeof<VerySimpleEager>
-//                   typeof<WithAction>
-//                   typeof<WithActionObject>
-//                   typeof<WithAttachments>
-//                   typeof<WithCollection>
-//                   typeof<WithDateTimeKey>
-//                   typeof<WithGuidKey>
-//                   typeof<WithError>
-//                   typeof<WithGetError>
-//                   typeof<WithNestedViewModel>
-//                   typeof<WithReference>
-//                   typeof<WithReferencePersist>
-//                   typeof<MostSimplePersist>
-//                   typeof<WithValuePersist>
-//                   typeof<WithCollectionPersist>
-//                   typeof<WithReferenceViewModel>
-//                   typeof<WithReferenceViewModelEdit>
-//                   typeof<MostSimple>
-//                   typeof<MostSimpleViewModel>
-//                   typeof<WithValue>
-//                   typeof<TestEnum>
-//                   typeof<MostSimple []>
-//                   typeof<FormViewModel>
-//                   typeof<SetWrapper<MostSimple>> |]
+        override x.Types = 
+             [| typeof<Immutable>
+                typeof<WithActionViewModel>
+                typeof<WithCollectionViewModel>
+                typeof<WithValueViewModel>
+                typeof<WithNestedViewModel>
+                typeof<WithValueViewModelEdit>
+                typeof<WithNestedViewModelEdit>
+                typeof<RedirectedObject>
+                typeof<WithScalars>
+                typeof<VerySimple>
+                typeof<VerySimpleEager>
+                typeof<WithAction>
+                typeof<WithActionObject>
+                typeof<WithAttachments>
+                typeof<WithCollection>
+                typeof<WithDateTimeKey>
+                typeof<WithGuidKey>
+                typeof<WithError>
+                typeof<WithGetError>
+                typeof<WithNestedViewModel>
+                typeof<WithReference>
+                typeof<WithReferencePersist>
+                typeof<MostSimplePersist>
+                typeof<WithValuePersist>
+                typeof<WithCollectionPersist>
+                typeof<WithReferenceViewModel>
+                typeof<WithReferenceViewModelEdit>
+                typeof<MostSimple>
+                typeof<MostSimpleViewModel>
+                typeof<WithValue>
+                typeof<TestEnum>
+                typeof<MostSimple []>
+                typeof<FormViewModel>
+                typeof<SetWrapper<MostSimple>> |]
+
+        override x.Services = 
+             [| typeof<RestDataRepository>
+                typeof<WithActionService>
+                typeof<ContributorService> |]
+
+        override x.Namespaces = [| "RestfulObjects.Test.Data" |]
+
+        override x.MainMenus (factory : IMenuFactory)  = 
+            let menu1 = factory.NewMenu<RestDataRepository>(true)
+            let menu2 = factory.NewMenu<WithActionService>(true)
+            let menu3 = factory.NewMenu<ContributorService>(true)
+            [| menu1; menu2; menu3 |]
+
+        override x.Persistor =
+            let config = new EntityObjectStoreConfiguration()
+            config.EnforceProxies <- false       
+            let f = (fun () -> new CodeFirstContextLocal(csRTA) :> Data.Entity.DbContext)
+            config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
+            config
             
-//            let mm (factory : IMenuFactory) = 
-//                let menu1 = factory.NewMenu<RestDataRepository>(true)
-//                let menu2 = factory.NewMenu<WithActionService>(true)
-//                let menu3 = factory.NewMenu<ContributorService>(true)
-//                [| menu1; menu2; menu3 |]
-            
-//            let services = 
-//                [| typeof<RestDataRepository>
-//                   typeof<WithActionService>
-//                   typeof<ContributorService> |]
-            
-//            let reflectorConfig = 
-//                new ReflectorConfiguration(types, services, [| "RestfulObjects.Test.Data" |], 
-//                                           Func<IMenuFactory, IMenu []> mm, false)
-//            container.RegisterInstance
-//                (typeof<IReflectorConfiguration>, null, reflectorConfig, (new ContainerControlledLifetimeManager())) 
-//            |> ignore
-//            ()
+
+        override x.RegisterTypes(services) =
+            base.RegisterTypes(services)
+            services.AddScoped<IOidStrategy, EntityOidStrategy>() |> ignore
+            services.AddScoped<IStringHasher, NullStringHasher>() |> ignore
+            services.AddScoped<IFrameworkFacade, FrameworkFacade>() |> ignore
+            services.AddScoped<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>() |> ignore
+            services.AddScoped<RestfulObjectsController, RestfulObjectsController>() |> ignore
+            services.AddMvc(fun (options) -> options.EnableEndpointRouting <- false)
+                    .AddNewtonsoftJson(fun (options) -> options.SerializerSettings.DateTimeZoneHandling <- DateTimeZoneHandling.Utc)
+                    |> ignore
+            ()
         
-//        [<OneTimeSetUp>]
-//        member x.FixtureSetup() = 
-//            CodeFirstSetup()
-//            NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
+        [<OneTimeSetUp>]
+        member x.FixtureSetup() = 
+            CodeFirstSetup()
+            NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
         
-//        [<SetUp>]
-//        member x.Setup() = 
-//            x.StartTest()
-//            UriMtHelper.GetApplicationPath <- Func<string>(fun () -> "")
-//            RestfulObjectsControllerBase.IsReadOnly <- false
-//            GlobalConfiguration.Configuration.Formatters.[0] <- new JsonNetFormatter(null)
+        [<SetUp>]
+        member x.Setup() = 
+            x.StartTest()
+            //UriMtHelper.GetApplicationPath <- Func<string>(fun () -> "")
+            //RestfulObjectsControllerBase.IsReadOnly <- false
+            //GlobalConfiguration.Configuration.Formatters.[0] <- new JsonNetFormatter(null)
         
-//        [<TearDown>]
-//        member x.TearDown() = 
-            
-//            RestfulObjectsControllerBase.CacheSettings <- (0, 3600, 86400)
+        [<TearDown>]
+        member x.TearDown() =        
+            RestfulObjectsControllerBase.CacheSettings <- (0, 3600, 86400)
         
-//        [<OneTimeTearDown>]
-//        member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
+        [<OneTimeTearDown>]
+        member x.FixtureTearDown() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
         
-//        override x.Services = 
-//            [| typeof<RestDataRepository>
-//               typeof<WithActionService>
-//               typeof<ContributorService> |]
+        member x.api =
+            let sp = x.GetConfiguredContainer()
+            let api = sp.GetService<RestfulObjectsController>()
+            setMockContext api sp
         
-//        override x.MainMenus(factory) = 
-//            let menu1 = factory.NewMenu<RestDataRepository>(true)
-//            let menu2 = factory.NewMenu<WithActionService>(true)
-//            let menu3 = factory.NewMenu<ContributorService>(true)
-//            [| menu1; menu2; menu3 |]
-        
-//        member x.api = x.GetConfiguredContainer().Resolve<RestfulObjectsController>()
-        
-//        [<Test>]
-//        member x.GetHomePage() = HomePage5.GetHomePage x.api
+        [<Test>]
+        member x.GetHomePage() = HomePage5.GetHomePage x.api
         
 //        [<Test>]
 //        member x.GetHomePageWithMediaType() = HomePage5.GetHomePageWithMediaType x.api
@@ -2958,5 +2950,5 @@ module NakedObjects.Rest.Test.A
         
 //        [<Test>]
 //        member x.NotAcceptableIsSubTypeOf() = DomainTypeActionInvoke26.NotAcceptableIsSubTypeOf x.api
-//    end
+    end
 

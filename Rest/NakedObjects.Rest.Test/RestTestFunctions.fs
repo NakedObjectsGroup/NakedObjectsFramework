@@ -132,10 +132,18 @@ let ComputeMD5HashFromString(s : string) =
 //    let abs = Math.Abs(i)
 //    abs.ToString(System.Globalization.CultureInfo.InvariantCulture)
 
-let setMockContext (api : RestfulObjectsControllerBase) = 
+let createTestHttpContext sp =
+    let httpContext = new DefaultHttpContext() 
+    httpContext.RequestServices <- sp
+    httpContext.Response.Body <- new MemoryStream()
+    httpContext
+
+let setMockContext (api : RestfulObjectsControllerBase) sp = 
     let mockContext = new ControllerContext()
-    mockContext.HttpContext <- new DefaultHttpContext()
+    let httpContext = createTestHttpContext sp
+    mockContext.HttpContext <- httpContext
     api.ControllerContext <- mockContext
+    api
 
 let jsonSetMsgAndMediaType (msg : HttpRequest) url mt repType = 
     msg.Method <- HttpMethod.Get.ToString()
@@ -261,7 +269,19 @@ let readSnapshotToJson (ss : HttpResponseMessage) =
     s.Position <- 0L
     use sr = new StreamReader(s)
     sr.ReadToEnd()
-  
+
+let readActionResult (ar : ActionResult) (hc : HttpContext) = 
+    let testContext = new ActionContext()
+    testContext.HttpContext <- hc
+    ar.ExecuteResultAsync testContext |> Async.AwaitTask |> ignore
+    use s = testContext.HttpContext.Response.Body
+    s.Position <- 0L
+    use sr = new StreamReader(s)
+    let json = sr.ReadToEnd()
+    let statusCode = testContext.HttpContext.Response.StatusCode
+    let contentType = testContext.HttpContext.Response.ContentType
+    (json, statusCode, contentType)
+
 let comp (a : obj) (b : obj) e = 
     Assert.AreEqual(a, b, e)   
 

@@ -24,18 +24,16 @@ let expectedSimple =
     [ TProperty(JsonPropertyNames.Links, TArray(simpleLinks))
       TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
-//let GetHomePage(api : RestfulObjectsControllerBase) = 
-//    setMockContext api
-//    let url = testRoot
-//    jsonSetMsg api.Request url
-//    let args = CreateReservedArgs ""
-//    let result = api.GetHome(args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.HomePage), result.Content.Headers.ContentType)
-//    // assertNonExpiringCache result
-//    compareObject expectedSimple parsedResult
+let GetHomePage(api : RestfulObjectsControllerBase) = 
+    let url = testRoot
+    jsonSetMsg api.Request url
+    let result = api.GetHome()
+    let (jsonResult, statusCode, contentType) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
+    Assert.AreEqual((int)HttpStatusCode.OK, statusCode, jsonResult)
+    Assert.AreEqual(new typeType(RepresentationTypes.HomePage), contentType)
+    // assertNonExpiringCache result
+    compareObject expectedSimple parsedResult
 
 //let GetHomePageWithMediaType(api : RestfulObjectsControllerBase) =
 //    setMockContext api
