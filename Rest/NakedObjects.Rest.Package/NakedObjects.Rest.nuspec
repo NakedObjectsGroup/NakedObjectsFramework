@@ -13,10 +13,10 @@
     <summary>Installs the assemblies used to create the NakedObjects.Rest server.</summary>
     <description>This package will initially be added automatically when you install NakedObjects.Run</description>
     <dependencies>
-      <group targetFramework="netcoreapp3.0">
-        <dependency id="NakedObjects.Facade" version="[11.0.0-beta01, 11)" />
-        <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.7" />
-        <dependency id="System.Reflection.Emit" version="4.6.0" />
+      <group targetFramework="netcoreapp3.1">
+        <dependency id="NakedObjects.Facade" version="[11.0.0-beta02, 11)" />
+        <dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.7, 6)" />
+        <dependency id="System.Reflection.Emit" version="[4.6.0, 5)" />
       </group>
     </dependencies>
   </metadata>
