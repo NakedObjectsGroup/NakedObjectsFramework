@@ -7,7 +7,7 @@
   <ItemGroup>
     <Compile Include="RestTestFunctions.fs" />
     <Compile Include="HomePage5.fs" />
-     <Compile Include="User6.fs" />
+    <Compile Include="User6.fs" />
     <Compile Include="DomainServices7.fs" />
     <Compile Include="Menus7.fs" />
     <Compile Include="Version8.fs" />
