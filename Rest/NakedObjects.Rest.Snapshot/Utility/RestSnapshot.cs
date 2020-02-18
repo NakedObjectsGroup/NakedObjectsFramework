@@ -371,7 +371,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 //Caching = representation.GetCaching();
 
                 foreach (string w in Representation.GetWarnings()) {
-                    warningHeaders.Add(new WarningHeaderValue(299, "RestfulObjects", "\"" + w + "\""));
+                    warningHeaders.Add(RestUtils.ToWarningHeaderValue(299, w));
                 }
 
                 if (HttpStatusCode == HttpStatusCode.Created) {
@@ -450,14 +450,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             }
 
             foreach (string w in warnings) {
-                try {
-                    // remove all \" within warning message as they cause format exception 
-                    warningHeaders.Add(new WarningHeaderValue(199, "RestfulObjects", "\"" + w.Replace('"', ' ') + "\""));
-                }
-                catch (FormatException fe) {
-                    logger.WarnFormat("Failed to parse warning message: {0} : {1}", w, fe.Message);
-                    warningHeaders.Add(new WarningHeaderValue(199, "RestfulObjects", "\"" + "Failed to parse warning message" + "\""));
-                }
+                warningHeaders.Add(RestUtils.ToWarningHeaderValue(199, w));
             }
         }
     }

@@ -812,7 +812,7 @@ namespace NakedObjects.Rest {
         private void ValidateDomainModel() {
             if (DomainModel != null && DomainModel != RestControlFlags.DomainModelType.Simple.ToString().ToLower() && DomainModel != RestControlFlags.DomainModelType.Formal.ToString().ToLower()) {
 
-                var msg = RestSnapshot.DebugWarnings ? $"Domain model invalid: {DomainModel}" : "";
+                var msg = $"Invalid domainModel: {DomainModel}";
 
                 throw new ValidationException((int) HttpStatusCode.BadRequest, msg);
             }
@@ -840,7 +840,8 @@ namespace NakedObjects.Rest {
                 success = true;
             }
             catch (ValidationException validationException) {
-                AppendWarningHeader(GetResponseHeaders(), validationException.Message);
+                var warning = RestUtils.ToWarningHeaderValue(199, validationException.Message);
+                AppendWarningHeader(GetResponseHeaders(), warning.ToString());
                 return StatusCode(validationException.StatusCode);
             }
             catch (RedirectionException redirectionException) {
@@ -873,7 +874,8 @@ namespace NakedObjects.Rest {
                 return RepresentationResult(ss);
             }
             catch (ValidationException validationException) {
-                AppendWarningHeader(GetResponseHeaders(), validationException.Message);
+                var warning = RestUtils.ToWarningHeaderValue(199, validationException.Message);
+                AppendWarningHeader(GetResponseHeaders(), warning.ToString());
                 return StatusCode(validationException.StatusCode);
             }
             catch (NakedObjectsFacadeException e) {

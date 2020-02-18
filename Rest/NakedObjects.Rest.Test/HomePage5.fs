@@ -47,21 +47,13 @@ let GetHomePageWithMediaType(api : RestfulObjectsControllerBase) =
     compareObject expectedSimple parsedResult
 
 // 406   
-//let NotAcceptableGetHomePage(api : RestfulObjectsControllerBase) = 
-//    let url = testRoot
-//    jsonSetMsgWithProfile api.Request url RepresentationTypes.User
-//    try 
-//        api.GetHome() |> ignore
-//        Assert.Fail("expect exception")
-//    with :? System.Web.Http.HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)
-
 let NotAcceptableGetHomePage(api : RestfulObjectsControllerBase) = 
     let url = testRoot
     jsonSetMsgWithProfile api.Request url RepresentationTypes.User
     let result = api.GetHome()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     Assert.AreEqual((int)HttpStatusCode.NotAcceptable, statusCode, jsonResult)
-    //Assert.AreEqual("199 RestfulObjects \"Invalid domainModel: invalid\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("199 RestfulObjects \"Failed outgoing json MT validation ic:  urn:org.restfulobjects:repr-types/user  og:  urn:org.restfulobjects:repr-types/homepage \"", headers.Headers.["Warning"].ToString())
     Assert.AreEqual("", jsonResult)
 
 let InvalidDomainModelGetHomePage(api : RestfulObjectsControllerBase) = 
@@ -71,6 +63,6 @@ let InvalidDomainModelGetHomePage(api : RestfulObjectsControllerBase) =
     api.DomainModel <- "invalid"
     let result = api.GetHome()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
-    //AreEqual((int)HttpStatusCode.BadRequest, statusCode, jsonResult)
-    //Assert.AreEqual("199 RestfulObjects \"Invalid domainModel: invalid\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual((int)HttpStatusCode.BadRequest, statusCode, jsonResult)
+    Assert.AreEqual("199 RestfulObjects \"Invalid domainModel: invalid\"", headers.Headers.["Warning"].ToString())
     Assert.AreEqual("", jsonResult)

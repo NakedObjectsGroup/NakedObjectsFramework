@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
@@ -447,6 +448,16 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return CreateTableRowValueLink(no, columns, rt, oidStrategy, req, flags);
         }
 
-
+        public static WarningHeaderValue ToWarningHeaderValue(int code, string warning) {
+            const string agent = "RestfulObjects";
+            try {
+                // remove all \" within warning message as they cause format exception 
+                return new WarningHeaderValue(code, agent, "\"" + warning.Replace('"', ' ') + "\"");
+            }
+            catch (FormatException fe) {
+                //logger.WarnFormat("Failed to parse warning message: {0} : {1}", w, fe.Message);
+                return new WarningHeaderValue(code, agent, "\"" + "Failed to parse warning message" + "\"");
+            }
+        }
     }
 }
