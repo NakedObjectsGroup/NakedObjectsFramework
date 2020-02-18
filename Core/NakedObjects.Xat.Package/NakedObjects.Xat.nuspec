@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Xat</id>
-    <version>11.0.0-beta01</version>
+    <version>11.0.0-beta02</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <license type="expression">Apache-2.0</license>
@@ -12,13 +12,13 @@
     <description>Add to an MS Test project to create eXecutable Application Tests against a domain model.</description>
     <tags>naked objects nakedobjects</tags>
     <dependencies>
-      <group targetFramework="netcoreapp3.0">
-        <dependency id="NakedObjects.Core" version="[11.0.0-beta01, 12)" />
-        <dependency id="Microsoft.Extensions.Hosting" Version="3.1.1" />
-        <dependency id="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
-        <dependency id="Microsoft.NET.Test.Sdk" Version="15.3.0" />
-        <dependency id="MSTest.TestAdapter" Version="1.1.18" />
-        <dependency id="MSTest.TestFramework" Version="1.1.18" />
+      <group targetFramework="netcoreapp3.1">
+        <dependency id="NakedObjects.Core" version="[11.0.0-beta02, 12)" />
+        <dependency id="Microsoft.Extensions.Hosting" Version="[3.1.1, 4" />
+        <dependency id="Microsoft.Extensions.DependencyInjection" Version="[3.1.1, 4" />
+        <dependency id="Microsoft.NET.Test.Sdk" Version="[16.5.0, 17" />
+        <dependency id="MSTest.TestAdapter" Version="[2.1.0, 3" />
+        <dependency id="MSTest.TestFramework" Version="[2.1.0, 3" />
       </group>
     </dependencies>
   </metadata>

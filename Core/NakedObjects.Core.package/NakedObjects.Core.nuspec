@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Core</id>
-    <version>11.0.0-beta01</version>
+    <version>11.0.0-beta02</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <license type="expression">Apache-2.0</license>
@@ -14,12 +14,13 @@
   This package is typically used indirectly e.g. by the NakedObjects.Run</description>
     <tags>naked objects nakedobjects ddd domain driven design</tags>
     <dependencies>
-      <group targetFramework="netcoreapp3.0">
-        <dependency id="NakedObjects.ProgrammingModel" version="[11.0.0-beta01, 12)" />
+      <group targetFramework="netcoreapp3.1">
+        <dependency id="NakedObjects.ProgrammingModel" version="[11.0.0-beta02, 12)" />
         <dependency id="Common.Logging" version="[3.4.1, 4)" />
         <dependency id="Common.Logging.Core" version="[3.4.1, 4)" />
-        <dependency id="EntityFramework" version="[6.3.0, 7)" />
-        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.0.0" />
+        <dependency id="EntityFramework" version="[6.4.0, 7)" />
+        <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[3.1.1, 4" />
+        <dependency id="Microsoft.Extensions.Configuration" Version="[3.1.1, 4" />
       </group>
     </dependencies>
   </metadata>
