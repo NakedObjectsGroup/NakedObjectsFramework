@@ -27,7 +27,7 @@ let GetUser(api : RestfulObjectsControllerBase) =
     let result = api.GetUser()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual((int)HttpStatusCode.OK, statusCode, jsonResult)
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
     Assert.AreEqual(new typeType(RepresentationTypes.User), headers.ContentType)
     assertUserInfoCache headers
     compareObject expected parsedResult
@@ -38,7 +38,7 @@ let GetUserWithMediaType(api : RestfulObjectsControllerBase) =
     let result = api.GetUser()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual((int)HttpStatusCode.OK, statusCode, jsonResult)
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
     Assert.AreEqual(new typeType(RepresentationTypes.User), headers.ContentType)
     assertUserInfoCache headers
     compareObject expected parsedResult
@@ -49,6 +49,6 @@ let NotAcceptableGetUser(api : RestfulObjectsControllerBase) =
    jsonSetMsgWithProfile api.Request url RepresentationTypes.HomePage
    let result = api.GetUser()
    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
-   Assert.AreEqual((int)HttpStatusCode.NotAcceptable, statusCode, jsonResult)
+   assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
    Assert.AreEqual("199 RestfulObjects \"Failed outgoing json MT validation ic:  urn:org.restfulobjects:repr-types/homepage  og:  urn:org.restfulobjects:repr-types/user \"", headers.Headers.["Warning"].ToString())
    Assert.AreEqual("", jsonResult)

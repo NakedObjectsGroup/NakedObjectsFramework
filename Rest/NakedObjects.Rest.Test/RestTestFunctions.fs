@@ -8,6 +8,7 @@
 module RestTestFunctions
 
 open System
+open System.Net
 open System.Net.Http
 open System.IO
 open Newtonsoft.Json.Linq
@@ -1651,6 +1652,10 @@ let assertNonExpiringCache (headers : Headers.ResponseHeaders) =
     Assert.IsTrue(headers.Date.HasValue)
     let expire = headers.Date.Value + oneDay
     Assert.AreEqual(expire, headers.Expires)
+
+let assertStatusCode (sc : HttpStatusCode) iSc msg= 
+    Assert.AreEqual((int)sc, iSc, msg)
+
 
 let CreateSingleValueArg (m : JObject) = ModelBinderUtils.CreateSingleValueArgument(m, false)
      

@@ -30,7 +30,7 @@ let GetHomePage(api : RestfulObjectsControllerBase) =
     let result = api.GetHome()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual((int)HttpStatusCode.OK, statusCode, jsonResult)
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
     Assert.AreEqual(new typeType(RepresentationTypes.HomePage), headers.ContentType)
     //assertNonExpiringCache headers
     compareObject expectedSimple parsedResult
@@ -41,7 +41,7 @@ let GetHomePageWithMediaType(api : RestfulObjectsControllerBase) =
     let result = api.GetHome()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual((int)HttpStatusCode.OK, statusCode, jsonResult)
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
     Assert.AreEqual(new typeType(RepresentationTypes.HomePage), headers.ContentType)
     //assertNonExpiringCache headers
     compareObject expectedSimple parsedResult
@@ -52,7 +52,7 @@ let NotAcceptableGetHomePage(api : RestfulObjectsControllerBase) =
     jsonSetMsgWithProfile api.Request url RepresentationTypes.User
     let result = api.GetHome()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
-    Assert.AreEqual((int)HttpStatusCode.NotAcceptable, statusCode, jsonResult)
+    assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
     Assert.AreEqual("199 RestfulObjects \"Failed outgoing json MT validation ic:  urn:org.restfulobjects:repr-types/user  og:  urn:org.restfulobjects:repr-types/homepage \"", headers.Headers.["Warning"].ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -63,6 +63,6 @@ let InvalidDomainModelGetHomePage(api : RestfulObjectsControllerBase) =
     api.DomainModel <- "invalid"
     let result = api.GetHome()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
-    Assert.AreEqual((int)HttpStatusCode.BadRequest, statusCode, jsonResult)
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
     Assert.AreEqual("199 RestfulObjects \"Invalid domainModel: invalid\"", headers.Headers.["Warning"].ToString())
     Assert.AreEqual("", jsonResult)

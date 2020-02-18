@@ -142,14 +142,14 @@ type RestTests() =
         [<Test>]
         member x.NotAcceptableGetUser() = User6.NotAcceptableGetUser x.api
         
-//        [<Test>]
-//        member x.GetDomainServices() = DomainServices7.GetDomainServices x.api
+        [<Test>]
+        member x.GetDomainServices() = DomainServices7.GetDomainServices x.api
         
-//        [<Test>]
-//        member x.GetDomainServicesWithMediaType() = DomainServices7.GetDomainServicesWithMediaType x.api
+        [<Test>]
+        member x.GetDomainServicesWithMediaType() = DomainServices7.GetDomainServicesWithMediaType x.api
         
-//        [<Test>]
-//        member x.NotAcceptableGetDomainServices() = DomainServices7.NotAcceptableGetDomainServices x.api
+        [<Test>]
+        member x.NotAcceptableGetDomainServices() = DomainServices7.NotAcceptableGetDomainServices x.api
         
 //        [<Test>]
 //        member x.GetMenus() = Menus7.GetMenus x.api
