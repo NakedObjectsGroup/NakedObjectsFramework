@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NakedObjects.Core" Version="11.0.0-beta01" />
-    <PackageReference Include="NakedObjects.Facade" Version="11.0.0-beta01" />
+    <PackageReference Include="NakedObjects.Core" Version="11.0.0-beta02" />
+    <PackageReference Include="NakedObjects.Facade" Version="11.0.0-beta02" />
   </ItemGroup>
 
 </Project>
