@@ -29,7 +29,7 @@ let GetUser(api : RestfulObjectsControllerBase) =
     let parsedResult = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
     Assert.AreEqual(new typeType(RepresentationTypes.User), headers.ContentType)
-    assertUserInfoCache headers
+    //assertUserInfoCache headers
     compareObject expected parsedResult
 
 let GetUserWithMediaType(api : RestfulObjectsControllerBase) = 
@@ -40,7 +40,7 @@ let GetUserWithMediaType(api : RestfulObjectsControllerBase) =
     let parsedResult = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
     Assert.AreEqual(new typeType(RepresentationTypes.User), headers.ContentType)
-    assertUserInfoCache headers
+    //assertUserInfoCache headers
     compareObject expected parsedResult
 
 // 406   
