@@ -12,8 +12,8 @@
     <description>Implementation of the Facade API for current version of the Naked Objects Framework</description>
     <dependencies>
       <group targetFramework="netcoreapp3.1">
-        <dependency id="NakedObjects.Core" version="[11.0.0-beta02, 11)" />
-        <dependency id="NakedObjects.Facade" version="[11.0.0-beta02, 11)" />
+        <dependency id="NakedObjects.Core" version="[11.0.0-beta02, 12)" />
+        <dependency id="NakedObjects.Facade" version="[11.0.0-beta02, 12)" />
       </group>
     </dependencies>
   </metadata>
