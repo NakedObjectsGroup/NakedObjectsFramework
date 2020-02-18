@@ -133,14 +133,14 @@ type RestTests() =
         [<Test>]
         member x.InvalidDomainModelGetHomePage() = HomePage5.InvalidDomainModelGetHomePage x.api
         
-//        [<Test>]
-//        member x.GetUser() = User6.GetUser x.api
+        [<Test>]
+        member x.GetUser() = User6.GetUser x.api
         
-//        [<Test>]
-//        member x.GetUserWithMediaType() = User6.GetUserWithMediaType x.api
+        [<Test>]
+        member x.GetUserWithMediaType() = User6.GetUserWithMediaType x.api
         
-//        [<Test>]
-//        member x.NotAcceptableGetUser() = User6.NotAcceptableGetUser x.api
+        [<Test>]
+        member x.NotAcceptableGetUser() = User6.NotAcceptableGetUser x.api
         
 //        [<Test>]
 //        member x.GetDomainServices() = DomainServices7.GetDomainServices x.api

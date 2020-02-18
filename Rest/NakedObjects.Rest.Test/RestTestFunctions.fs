@@ -1640,11 +1640,11 @@ let assertConfigCache secs  (message : HttpResponseMessage) =
     let expire = message.Headers.Date.Value + ts
     Assert.AreEqual(expire, message.Content.Headers.Expires)
 
-let assertUserInfoCache (message : HttpResponseMessage) = 
-    Assert.AreEqual(oneHour, message.Headers.CacheControl.MaxAge)
-    Assert.IsTrue(message.Headers.Date.HasValue)
-    let expire = message.Headers.Date.Value + oneHour
-    Assert.AreEqual(expire, message.Content.Headers.Expires)
+let assertUserInfoCache (headers : Headers.ResponseHeaders) = 
+    Assert.AreEqual(oneHour, headers.CacheControl.MaxAge)
+    Assert.IsTrue(headers.Date.HasValue)
+    let expire = headers.Date.Value + oneHour
+    Assert.AreEqual(expire, headers.Expires)
 
 let assertNonExpiringCache (headers : Headers.ResponseHeaders) = 
     Assert.AreEqual(oneDay, headers.CacheControl.MaxAge)
