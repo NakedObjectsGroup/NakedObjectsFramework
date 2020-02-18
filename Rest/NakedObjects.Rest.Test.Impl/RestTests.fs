@@ -8,36 +8,23 @@ module NakedObjects.Rest.Test.A
 
 open NUnit.Framework
 open NakedObjects.Rest
-open NakedObjects.Rest.Media
 open System
-open NakedObjects.Rest.Snapshot.Utility
-open System.Web.Http
 open RestfulObjects.Test.Data
 open NakedObjects.Facade.Impl.Implementation
 open NakedObjects.Facade.Impl.Utility
-//open MvcTestApp.Controllers
 open NakedObjects.Rest.Test.RestTestsHelpers
-open NakedObjects.Architecture.Configuration
-open NakedObjects.Core.Configuration
-open System.Data.Entity.Core.Objects.DataClasses
-open System.Collections.Generic
-open System.Data.Entity.Core.Objects
 open NakedObjects.Persistor.Entity.Configuration
-open NakedObjects.Persistor.Entity
 open NakedObjects.Facade
 open NakedObjects.Facade.Translation
 open NakedObjects.Facade.Impl
 open NakedObjects.Facade.Interface
 open NakedObjects.Architecture.Menu
-open NakedObjects.Menu
-open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
-open NakedObjects.Rest.Test.RestTestsHelpers
 open Newtonsoft.Json
 open RestTestFunctions
 
 [<TestFixture>]
-type ANof4Tests() = 
+type RestTests() = 
     class
         inherit NakedObjects.Xat.AcceptanceTestCase()
         
@@ -137,14 +124,14 @@ type ANof4Tests() =
         [<Test>]
         member x.GetHomePage() = HomePage5.GetHomePage x.api
         
-//        [<Test>]
-//        member x.GetHomePageWithMediaType() = HomePage5.GetHomePageWithMediaType x.api
+        [<Test>]
+        member x.GetHomePageWithMediaType() = HomePage5.GetHomePageWithMediaType x.api
         
-//        [<Test>]
-//        member x.NotAcceptableGetHomePage() = HomePage5.NotAcceptableGetHomePage x.api
+        [<Test>]
+        member x.NotAcceptableGetHomePage() = HomePage5.NotAcceptableGetHomePage x.api
         
-//        [<Test>]
-//        member x.InvalidDomainModelGetHomePage() = HomePage5.InvalidDomainModelGetHomePage x.api
+        [<Test>]
+        member x.InvalidDomainModelGetHomePage() = HomePage5.InvalidDomainModelGetHomePage x.api
         
 //        [<Test>]
 //        member x.GetUser() = User6.GetUser x.api

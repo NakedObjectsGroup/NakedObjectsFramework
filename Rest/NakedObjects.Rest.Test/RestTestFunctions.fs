@@ -280,7 +280,8 @@ let readActionResult (ar : ActionResult) (hc : HttpContext) =
     let json = sr.ReadToEnd()
     let statusCode = testContext.HttpContext.Response.StatusCode
     let contentType = testContext.HttpContext.Response.ContentType
-    (json, statusCode, contentType)
+    let headers = testContext.HttpContext.Response.GetTypedHeaders()
+    (json, statusCode, headers)
 
 let comp (a : obj) (b : obj) e = 
     Assert.AreEqual(a, b, e)   
@@ -1645,11 +1646,11 @@ let assertUserInfoCache (message : HttpResponseMessage) =
     let expire = message.Headers.Date.Value + oneHour
     Assert.AreEqual(expire, message.Content.Headers.Expires)
 
-let assertNonExpiringCache (message : HttpResponseMessage) = 
-    Assert.AreEqual(oneDay, message.Headers.CacheControl.MaxAge)
-    Assert.IsTrue(message.Headers.Date.HasValue)
-    let expire = message.Headers.Date.Value + oneDay
-    Assert.AreEqual(expire, message.Content.Headers.Expires)
+let assertNonExpiringCache (headers : Headers.ResponseHeaders) = 
+    Assert.AreEqual(oneDay, headers.CacheControl.MaxAge)
+    Assert.IsTrue(headers.Date.HasValue)
+    let expire = headers.Date.Value + oneDay
+    Assert.AreEqual(expire, headers.Expires)
 
 let CreateSingleValueArg (m : JObject) = ModelBinderUtils.CreateSingleValueArgument(m, false)
      
