@@ -169,8 +169,8 @@ type RestTests() =
         [<Test>]
         member x.NotAcceptableGetVersion() = Version8.NotAcceptableGetVersion x.api
         
-//        [<Test>]
-//        member x.GetMostSimpleTransientObject() = Objects9.GetMostSimpleTransientObject x.api
+        [<Test>]
+        member x.GetMostSimpleTransientObject() = Objects9.GetMostSimpleTransientObject x.api
         
 //        [<Test>]
 //        member x.GetMostSimpleTransientObjectSimpleOnly() = Objects9.GetMostSimpleTransientObjectSimpleOnly x.api

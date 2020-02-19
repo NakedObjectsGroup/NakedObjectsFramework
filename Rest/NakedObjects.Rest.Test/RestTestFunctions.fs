@@ -146,16 +146,36 @@ let setMockContext (api : RestfulObjectsControllerBase) sp =
     api.ControllerContext <- mockContext
     api
 
-let jsonSetMsgAndMediaType (msg : HttpRequest) url mt repType = 
-    msg.Method <- HttpMethod.Get.ToString()
+let setContent (msg : HttpRequest) (content : string) = 
+    msg.Body <- new MemoryStream()
+    use writer = new StreamWriter(msg.Body)
+    writer.Write(content)
+
+let setMethod (msg : HttpRequest) (method : HttpMethod) = 
+    msg.Method <- method.ToString()
+
+let setMediaType (msg : HttpRequest) mt repType = 
     let accept = new MediaTypeHeaderValue(new StringSegment(mt))
     if not (repType = "") then 
         accept.Parameters.Add(new NameValueHeaderValue(new StringSegment("profile"), (makeProfile repType)))
     msg.Headers.Add("Accept", new StringValues(accept.ToString()))
+ 
+let setUrl (msg : HttpRequest) url =
     let uri = new Uri(url)
     msg.Scheme <- "http"
     msg.Host <- new HostString(uri.Host)
     msg.Path <- new PathString(uri.PathAndQuery)
+
+let jsonSetGetMsgAndMediaType (msg : HttpRequest) url mt repType = 
+    setMethod msg HttpMethod.Get
+    setMediaType msg mt repType 
+    setUrl msg url
+
+let jsonSetPostMsgAndMediaType (msg : HttpRequest) url mt repType content = 
+    setMethod msg HttpMethod.Post
+    setMediaType msg mt repType 
+    setContent msg content
+    setUrl msg url
 
     //msg.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(mt))
     //msg
@@ -167,9 +187,11 @@ let jsonSetMsgAndMediaType (msg : HttpRequest) url mt repType =
 
 //let jsonGetMsg url = jsonGetMsgAndMediaType "application/json" url
 
-let jsonSetMsg msg url = jsonSetMsgAndMediaType msg url "application/json" ""
+let jsonSetGetMsg msg url = jsonSetGetMsgAndMediaType msg url "application/json" ""
 
-let jsonSetMsgWithProfile msg url repType = jsonSetMsgAndMediaType msg url "application/json" repType
+let jsonSetGetMsgWithProfile msg url repType = jsonSetGetMsgAndMediaType msg url "application/json" repType
+
+let jsonSetEmptyPostMsg msg url = jsonSetPostMsgAndMediaType msg url "application/json" "" ""
 
 //let jsonGetMsgAndTag (url : string) tag = 
 //    let message = jsonGetMsgAndMediaType "application/json" url
@@ -1628,10 +1650,10 @@ let makeServiceActionCollectionMemberNoParms mName oName eType  = makeActionMemb
 
 let makeServiceActionVoidMember mName oName  = makeVoidActionMember "services" mName oName (makeFriendly(mName)) ""  []
 
-let assertTransactionalCache  (message : HttpResponseMessage) = 
-    Assert.AreEqual(true, message.Headers.CacheControl.NoCache)
-    Assert.AreEqual("no-cache", message.Headers.Pragma.ToString())
-    Assert.AreEqual(message.Headers.Date, message.Content.Headers.Expires)
+let assertTransactionalCache  (headers : Headers.ResponseHeaders) = 
+    Assert.AreEqual(true, headers.CacheControl.NoCache)
+    Assert.AreEqual("no-cache", headers.Headers.["Pragma"].ToString())
+    Assert.AreEqual(headers.Date, headers.Expires)
 
 let assertConfigCache secs  (message : HttpResponseMessage) = 
     let ts = new TimeSpan(0, 0, secs)
@@ -1692,6 +1714,7 @@ let GetDomainType (m : JObject) =
 let invokeRelTypeSb = RelValues.Invoke + makeParm RelParamValues.TypeAction "isSubtypeOf"
 let invokeRelTypeSp = RelValues.Invoke + makeParm RelParamValues.TypeAction "isSupertypeOf"
 
+// create isSubtypeOf rep
 let sb (oType : string) = 
     TProperty(JsonPropertyNames.Id, TObjectVal("isSubtypeOf")) 
     :: (TProperty
@@ -1703,6 +1726,8 @@ let sb (oType : string) =
        :: makeGetLinkProp invokeRelTypeSb (sprintf "domain-types/%s/type-actions/isSubtypeOf/invoke" oType) 
               RepresentationTypes.TypeActionResult "")
 
+
+// create isSupertypeOf rep
 let sp (oType : string) = 
     TProperty(JsonPropertyNames.Id, TObjectVal("isSupertypeOf")) 
     :: (TProperty

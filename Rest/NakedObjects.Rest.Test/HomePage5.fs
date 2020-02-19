@@ -26,7 +26,7 @@ let expectedSimple =
 
 let GetHomePage(api : RestfulObjectsControllerBase) = 
     let url = testRoot
-    jsonSetMsg api.Request url
+    jsonSetGetMsg api.Request url
     let result = api.GetHome()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
@@ -37,7 +37,7 @@ let GetHomePage(api : RestfulObjectsControllerBase) =
 
 let GetHomePageWithMediaType(api : RestfulObjectsControllerBase) =
     let url = testRoot
-    jsonSetMsgWithProfile api.Request url RepresentationTypes.HomePage
+    jsonSetGetMsgWithProfile api.Request url RepresentationTypes.HomePage
     let result = api.GetHome()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
@@ -49,7 +49,7 @@ let GetHomePageWithMediaType(api : RestfulObjectsControllerBase) =
 // 406   
 let NotAcceptableGetHomePage(api : RestfulObjectsControllerBase) = 
     let url = testRoot
-    jsonSetMsgWithProfile api.Request url RepresentationTypes.User
+    jsonSetGetMsgWithProfile api.Request url RepresentationTypes.User
     let result = api.GetHome()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
@@ -59,7 +59,7 @@ let NotAcceptableGetHomePage(api : RestfulObjectsControllerBase) =
 let InvalidDomainModelGetHomePage(api : RestfulObjectsControllerBase) = 
     let argS = "x-ro-domain-model=invalid"    
     let url = sprintf "%s?%s" testRoot argS
-    jsonSetMsg api.Request url  
+    jsonSetGetMsg api.Request url  
     api.DomainModel <- "invalid"
     let result = api.GetHome()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext

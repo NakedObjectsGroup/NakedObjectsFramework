@@ -38,7 +38,7 @@ let expected =
 
 let GetVersion(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Version
-    jsonSetMsg api.Request url    
+    jsonSetGetMsg api.Request url    
     let result = api.GetVersion()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
@@ -50,7 +50,7 @@ let GetVersion(api : RestfulObjectsControllerBase) =
 
 let GetVersionWithMediaType(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Version
-    jsonSetMsgWithProfile api.Request url RepresentationTypes.Version
+    jsonSetGetMsgWithProfile api.Request url RepresentationTypes.Version
     let result = api.GetVersion()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
@@ -62,7 +62,7 @@ let GetVersionWithMediaType(api : RestfulObjectsControllerBase) =
 // 406   
 let NotAcceptableGetVersion(api : RestfulObjectsControllerBase) = 
    let url = testRoot + SegmentValues.Menus
-   jsonSetMsgWithProfile api.Request url RepresentationTypes.User
+   jsonSetGetMsgWithProfile api.Request url RepresentationTypes.User
    let result = api.GetVersion()
    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
    assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult

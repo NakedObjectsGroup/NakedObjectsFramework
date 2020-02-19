@@ -122,7 +122,7 @@ let getExpected() =
 
 let GetDomainServices(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Services
-    jsonSetMsg api.Request url
+    jsonSetGetMsg api.Request url
     let result = api.GetServices()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
@@ -134,7 +134,7 @@ let GetDomainServices(api : RestfulObjectsControllerBase) =
 
 let GetDomainServicesWithTTC(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Services
-    jsonSetMsg api.Request url
+    jsonSetGetMsg api.Request url
     let result = api.GetServices()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
@@ -146,7 +146,7 @@ let GetDomainServicesWithTTC(api : RestfulObjectsControllerBase) =
 
 let GetDomainServicesWithMediaType(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Services
-    jsonSetMsgWithProfile api.Request url RepresentationTypes.List
+    jsonSetGetMsgWithProfile api.Request url RepresentationTypes.List
     let result = api.GetServices()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
@@ -158,7 +158,7 @@ let GetDomainServicesWithMediaType(api : RestfulObjectsControllerBase) =
 
 let GetDomainServicesWithMediaTypeWithTTC(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Services
-    jsonSetMsgWithProfile api.Request url RepresentationTypes.List
+    jsonSetGetMsgWithProfile api.Request url RepresentationTypes.List
     let result = api.GetServices()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
@@ -171,7 +171,7 @@ let GetDomainServicesWithMediaTypeWithTTC(api : RestfulObjectsControllerBase) =
 // 406   
 let NotAcceptableGetDomainServices(api : RestfulObjectsControllerBase) = 
    let url = testRoot + SegmentValues.User
-   jsonSetMsgWithProfile api.Request url RepresentationTypes.User
+   jsonSetGetMsgWithProfile api.Request url RepresentationTypes.User
    let result = api.GetServices()
    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
    assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult

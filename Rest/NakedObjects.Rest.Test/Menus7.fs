@@ -80,7 +80,7 @@ let getExpected() =
 
 let GetMenus(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Menus
-    jsonSetMsg api.Request url
+    jsonSetGetMsg api.Request url
     let result = api.GetMenus()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
@@ -92,7 +92,7 @@ let GetMenus(api : RestfulObjectsControllerBase) =
 
 let GetMenusWithTTC(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Menus
-    jsonSetMsg api.Request url
+    jsonSetGetMsg api.Request url
     let result = api.GetMenus()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
@@ -104,7 +104,7 @@ let GetMenusWithTTC(api : RestfulObjectsControllerBase) =
 
 let GetMenusWithMediaType(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Menus
-    jsonSetMsgWithProfile api.Request url RepresentationTypes.List
+    jsonSetGetMsgWithProfile api.Request url RepresentationTypes.List
     let result = api.GetMenus()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
@@ -116,7 +116,7 @@ let GetMenusWithMediaType(api : RestfulObjectsControllerBase) =
 
 let GetMenusWithMediaTypeWithTTC(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.Menus
-    jsonSetMsgWithProfile api.Request url RepresentationTypes.List
+    jsonSetGetMsgWithProfile api.Request url RepresentationTypes.List
     let result = api.GetMenus()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
@@ -129,7 +129,7 @@ let GetMenusWithMediaTypeWithTTC(api : RestfulObjectsControllerBase) =
 // 406   
 let NotAcceptableGetMenus(api : RestfulObjectsControllerBase) = 
    let url = testRoot + SegmentValues.Menus
-   jsonSetMsgWithProfile api.Request url RepresentationTypes.User
+   jsonSetGetMsgWithProfile api.Request url RepresentationTypes.User
    let result = api.GetMenus()
    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
    assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult

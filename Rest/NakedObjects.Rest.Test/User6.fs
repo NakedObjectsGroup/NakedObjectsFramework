@@ -23,7 +23,7 @@ let expected =
 
 let GetUser(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.User
-    jsonSetMsg api.Request url
+    jsonSetGetMsg api.Request url
     let result = api.GetUser()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
@@ -34,7 +34,7 @@ let GetUser(api : RestfulObjectsControllerBase) =
 
 let GetUserWithMediaType(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.User
-    jsonSetMsgWithProfile api.Request url RepresentationTypes.User
+    jsonSetGetMsgWithProfile api.Request url RepresentationTypes.User
     let result = api.GetUser()
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
@@ -46,7 +46,7 @@ let GetUserWithMediaType(api : RestfulObjectsControllerBase) =
 // 406   
 let NotAcceptableGetUser(api : RestfulObjectsControllerBase) = 
    let url = testRoot + SegmentValues.User
-   jsonSetMsgWithProfile api.Request url RepresentationTypes.HomePage
+   jsonSetGetMsgWithProfile api.Request url RepresentationTypes.HomePage
    let result = api.GetUser()
    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
    assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
