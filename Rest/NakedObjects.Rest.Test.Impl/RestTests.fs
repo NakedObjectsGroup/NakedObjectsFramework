@@ -91,7 +91,7 @@ type RestTests() =
             services.AddScoped<IStringHasher, NullStringHasher>() |> ignore
             services.AddScoped<IFrameworkFacade, FrameworkFacade>() |> ignore
             services.AddScoped<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>() |> ignore
-            services.AddScoped<RestfulObjectsController, RestfulObjectsController>() |> ignore
+            services.AddTransient<RestfulObjectsController, RestfulObjectsController>() |> ignore
             services.AddMvc(fun (options) -> options.EnableEndpointRouting <- false)
                     .AddNewtonsoftJson(fun (options) -> options.SerializerSettings.DateTimeZoneHandling <- DateTimeZoneHandling.Utc)
                     |> ignore
@@ -172,11 +172,14 @@ type RestTests() =
         [<Test>]
         member x.GetMostSimpleTransientObject() = Objects9.GetMostSimpleTransientObject x.api
         
-//        [<Test>]
-//        member x.GetMostSimpleTransientObjectSimpleOnly() = Objects9.GetMostSimpleTransientObjectSimpleOnly x.api
+        [<Test>]
+        member x.GetMostSimpleTransientObjectSimpleOnly() = Objects9.GetMostSimpleTransientObjectSimpleOnly x.api
         
-//        [<Test>]
-//        member x.PersistMostSimpleTransientObject() = Objects9.PersistMostSimpleTransientObject x.api
+        [<Test>]
+        member x.PersistMostSimpleTransientObject() = 
+            let api1 =  x.api
+            let api2 = x.api
+            Objects9.PersistMostSimpleTransientObject api1 api2
         
 //        [<Test>]
 //        member x.PersistMostSimpleTransientObjectSimpleOnly() = 

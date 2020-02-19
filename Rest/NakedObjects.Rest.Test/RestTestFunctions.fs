@@ -150,6 +150,8 @@ let setContent (msg : HttpRequest) (content : string) =
     msg.Body <- new MemoryStream()
     use writer = new StreamWriter(msg.Body)
     writer.Write(content)
+    msg.Body.Position <- 0L
+
 
 let setMethod (msg : HttpRequest) (method : HttpMethod) = 
     msg.Method <- method.ToString()
@@ -158,7 +160,11 @@ let setMediaType (msg : HttpRequest) mt repType =
     let accept = new MediaTypeHeaderValue(new StringSegment(mt))
     if not (repType = "") then 
         accept.Parameters.Add(new NameValueHeaderValue(new StringSegment("profile"), (makeProfile repType)))
-    msg.Headers.Add("Accept", new StringValues(accept.ToString()))
+    let acceptValue = new StringValues(accept.ToString())
+    if (msg.Headers.ContainsKey("Accept")) then 
+        msg.Headers.["Accept"] <- acceptValue
+    else 
+        msg.Headers.Add("Accept", acceptValue)
  
 let setUrl (msg : HttpRequest) url =
     let uri = new Uri(url)
@@ -192,6 +198,8 @@ let jsonSetGetMsg msg url = jsonSetGetMsgAndMediaType msg url "application/json"
 let jsonSetGetMsgWithProfile msg url repType = jsonSetGetMsgAndMediaType msg url "application/json" repType
 
 let jsonSetEmptyPostMsg msg url = jsonSetPostMsgAndMediaType msg url "application/json" "" ""
+
+let jsonSetPostMsg msg url content = jsonSetPostMsgAndMediaType msg url "application/json" "" content
 
 //let jsonGetMsgAndTag (url : string) tag = 
 //    let message = jsonGetMsgAndMediaType "application/json" url
@@ -1682,11 +1690,15 @@ let CreateSingleValueArg (m : JObject) = ModelBinderUtils.CreateSingleValueArgum
      
 let CreateArgMap (m : JObject) = ModelBinderUtils.CreateArgumentMap(m, false)
 
+let CreateArgMapWithReserved (m : JObject) = ModelBinderUtils.CreateArgumentMap(m, true)
+
 //let CreateReservedArgs (s : string) = ModelBinderUtils.CreateReservedArguments(s)
    
 let CreateArgMapFromUrl (s : string) = ModelBinderUtils.CreateSimpleArgumentMap(s)
 
 let CreatePersistArgMap (m : JObject) = ModelBinderUtils.CreatePersistArgMap(m, false)
+
+let CreatePersistArgMapWithReserved (m : JObject) = ModelBinderUtils.CreatePersistArgMap(m, true)
 
 let GetDomainType (m : JObject) = 
   
