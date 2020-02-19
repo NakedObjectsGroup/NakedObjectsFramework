@@ -151,23 +151,23 @@ type RestTests() =
         [<Test>]
         member x.NotAcceptableGetDomainServices() = DomainServices7.NotAcceptableGetDomainServices x.api
         
-//        [<Test>]
-//        member x.GetMenus() = Menus7.GetMenus x.api
+        [<Test>]
+        member x.GetMenus() = Menus7.GetMenus x.api
         
-//        [<Test>]
-//        member x.GetMenusWithMediaType() = Menus7.GetMenusWithMediaType x.api
+        [<Test>]
+        member x.GetMenusWithMediaType() = Menus7.GetMenusWithMediaType x.api
         
-//        [<Test>]
-//        member x.NotAcceptableGetMenus() = Menus7.NotAcceptableGetMenus x.api
+        [<Test>]
+        member x.NotAcceptableGetMenus() = Menus7.NotAcceptableGetMenus x.api
         
-//        [<Test>]
-//        member x.GetVersion() = Version8.GetVersion x.api
+        [<Test>]
+        member x.GetVersion() = Version8.GetVersion x.api
         
-//        [<Test>]
-//        member x.GetVersionWithMediaType() = Version8.GetVersionWithMediaType x.api
+        [<Test>]
+        member x.GetVersionWithMediaType() = Version8.GetVersionWithMediaType x.api
         
-//        [<Test>]
-//        member x.NotAcceptableGetVersion() = Version8.NotAcceptableGetVersion x.api
+        [<Test>]
+        member x.NotAcceptableGetVersion() = Version8.NotAcceptableGetVersion x.api
         
 //        [<Test>]
 //        member x.GetMostSimpleTransientObject() = Objects9.GetMostSimpleTransientObject x.api

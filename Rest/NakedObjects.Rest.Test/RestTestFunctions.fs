@@ -280,7 +280,6 @@ let readActionResult (ar : ActionResult) (hc : HttpContext) =
     use sr = new StreamReader(s)
     let json = sr.ReadToEnd()
     let statusCode = testContext.HttpContext.Response.StatusCode
-    let contentType = testContext.HttpContext.Response.ContentType
     let headers = testContext.HttpContext.Response.GetTypedHeaders()
     (json, statusCode, headers)
 
