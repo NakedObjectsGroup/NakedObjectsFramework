@@ -202,14 +202,23 @@ type RestTests() =
         [<Test>]
         member x.GetWithCollectionTransientObject() = Objects9.GetWithCollectionTransientObject x.api
         
-//        [<Test>]
-//        member x.PersistWithValueTransientObject() = Objects9.PersistWithValueTransientObject x.api
+        [<Test>]
+        member x.PersistWithValueTransientObject() = 
+            let api1 =  x.api
+            let api2 = x.api
+            Objects9.PersistWithValueTransientObject api1 api2
 
-//        [<Test>]
-//        member x.PersistWithReferenceTransientObject() = Objects9.PersistWithReferenceTransientObject x.api
+        [<Test>]
+        member x.PersistWithReferenceTransientObject() = 
+            let api1 =  x.api
+            let api2 = x.api
+            Objects9.PersistWithReferenceTransientObject api1 api2
         
-//        [<Test>]
-//        member x.PersistWithCollectionTransientObject() = Objects9.PersistWithCollectionTransientObject x.api
+        [<Test>]
+        member x.PersistWithCollectionTransientObject() =
+            let api1 =  x.api
+            let api2 = x.api
+            Objects9.PersistWithCollectionTransientObject api1 api2
         
 //        [<Test>]
 //        member x.PersistWithValueTransientObjectValidateOnly() = 
