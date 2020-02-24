@@ -6,16 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module Version8
 
-open NUnit.Framework
 open NakedObjects.Rest
-open System.Net
-open Newtonsoft.Json.Linq
 open NakedObjects.Rest.Snapshot.Constants
-open System.Web.Http
-open System.Linq
-open RestTestFunctions
-open Microsoft.AspNetCore.Http.Headers
 open NakedObjects.Rest.Snapshot.Utility
+open Newtonsoft.Json.Linq
+open NUnit.Framework
+open RestTestFunctions
+open System.Net
 
 let capabilities = 
     TObjectJson([ TProperty("protoPersistentObjects", TObjectVal("yes"))

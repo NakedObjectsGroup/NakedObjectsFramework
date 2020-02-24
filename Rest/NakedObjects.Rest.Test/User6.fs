@@ -6,13 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 module User6
 
-open NUnit.Framework
 open NakedObjects.Rest
-open System.Net
-open Newtonsoft.Json.Linq
 open NakedObjects.Rest.Snapshot.Constants
-open RestTestFunctions
 open NakedObjects.Rest.Snapshot.Utility
+open Newtonsoft.Json.Linq
+open NUnit.Framework
+open RestTestFunctions
+open System.Net
 
 let expected = 
     [ TProperty(JsonPropertyNames.Links, 

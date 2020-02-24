@@ -6,15 +6,15 @@
 //// See the License for the specific language governing permissions and limitations under the License.
 module Objects9
 
-open NUnit.Framework
 open NakedObjects.Rest
-open System.Net
-open Newtonsoft.Json.Linq
-open System
 open NakedObjects.Rest.Snapshot.Utility
 open NakedObjects.Rest.Snapshot.Constants
-open System.Linq
+open Newtonsoft.Json.Linq
+open NUnit.Framework
 open RestTestFunctions
+open System
+open System.Linq
+open System.Net
 
 let GetMostSimpleTransientObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
@@ -212,8 +212,6 @@ let PersistMostSimpleTransientObjectValidateOnly(api1 : RestfulObjectsController
     let persistResult = api2.PostPersist(dt, pArgs)
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
 
-    let oid = roType + "/" + ktc "1"
-
     assertStatusCode HttpStatusCode.NoContent statusCode jsonPersist
     Assert.IsNull(headers.ContentType)
     Assert.IsTrue(headers.CacheControl.NoCache)
@@ -334,14 +332,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ argsMembers ]))
     
     let autoRel = RelValues.Prompt + makeParm RelParamValues.Property "AConditionalChoicesValue"
-    
-    let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [argsMembers
-                                                                    TProperty("avalue", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
-                                                                                                         TProperty(JsonPropertyNames.Links, TArray([]))]));
-                                                                    TProperty("astringvalue", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
-                                                                                                         TProperty(JsonPropertyNames.Links, TArray([]))]))
-                                                                                                         ]))
-    
+      
     let promptArgP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [promptArgsMembers
                                                                           TProperty("avalue", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
                                                                                                            TProperty(JsonPropertyNames.Links, TArray([]))]));
@@ -652,7 +643,6 @@ let GetWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
     let promptArgsMembers =   TProperty(JsonPropertyNames.PromptMembers, argsObj)
     
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ argsMembers ]))
-    let promptArgs = TProperty(JsonPropertyNames.Arguments, TObjectJson([ promptArgsMembers ]))
 
     let valueRel1 = RelValues.Value + makeParm RelParamValues.Property "AChoicesReference"
     let valueRel2 = RelValues.Value + makeParm RelParamValues.Property "ADisabledReference"
@@ -797,7 +787,6 @@ let GetWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
     let argsMembers = TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]))
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ argsMembers ]))
 
-
     let moid1 = mst + "/" + ktc "1"
     let moid2 = mst + "/" + ktc "2"
     let moid3 = mstv + "/" + ktc "1"
@@ -928,7 +917,7 @@ let PersistWithValueTransientObject(api1 : RestfulObjectsControllerBase) (api2 :
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
     let transientResult = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -1033,7 +1022,7 @@ let PersistWithReferenceTransientObject(api1 : RestfulObjectsControllerBase) (ap
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
     let transientResult = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -1052,8 +1041,8 @@ let PersistWithReferenceTransientObject(api1 : RestfulObjectsControllerBase) (ap
     let parsedPersist = JObject.Parse(jsonPersist)
     
     let roType = ttc "RestfulObjects.Test.Data.WithReferencePersist"
-    let rroType = ttc "RestfulObjects.Test.Data.MostSimple"
-    let roid = rroType + "/" + ktc "1"
+    let roType1 = ttc "RestfulObjects.Test.Data.MostSimple"
+    let roid = roType1 + "/" + ktc "1"
     let oid = roType + "/" + ktc "1"
     let pid = "AnEagerReference"
     let ourl = sprintf "objects/%s" oid
@@ -1061,16 +1050,16 @@ let PersistWithReferenceTransientObject(api1 : RestfulObjectsControllerBase) (ap
     let args1 = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
     
     let msObj = 
-        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(rroType))
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType1))
           TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
           TProperty(JsonPropertyNames.Title, TObjectVal("1"))
           TProperty(JsonPropertyNames.Links, 
-                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object rroType)
-                             TObjectJson(sb(rroType)); TObjectJson(sp(rroType))
-                             TObjectJson(args1 :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid) RepresentationTypes.Object rroType) ]))
+                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object roType1)
+                             TObjectJson(sb(roType1)); TObjectJson(sp(roType1))
+                             TObjectJson(args1 :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid) RepresentationTypes.Object roType1) ]))
           TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
-                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(rroType))
+                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType1))
                                   TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
                                   TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
@@ -1086,27 +1075,27 @@ let PersistWithReferenceTransientObject(api1 : RestfulObjectsControllerBase) (ap
     let val1 = 
         TObjectJson
             (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
-             :: makeGetLinkProp valueRel1 (sprintf "objects/%s/%s" rroType (ktc "1")) RepresentationTypes.Object rroType)
+             :: makeGetLinkProp valueRel1 (sprintf "objects/%s/%s" roType1 (ktc "1")) RepresentationTypes.Object roType1)
     let val2 = 
         TObjectJson
             (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
-             :: makeGetLinkProp valueRel2 (sprintf "objects/%s/%s" rroType (ktc "1")) RepresentationTypes.Object rroType)
+             :: makeGetLinkProp valueRel2 (sprintf "objects/%s/%s" roType1 (ktc "1")) RepresentationTypes.Object roType1)
     let val3 = 
         TObjectJson
             (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
-             :: makeGetLinkProp valueRel3 (sprintf "objects/%s/%s" rroType (ktc "1")) RepresentationTypes.Object rroType)
+             :: makeGetLinkProp valueRel3 (sprintf "objects/%s/%s" roType1 (ktc "1")) RepresentationTypes.Object roType1)
     let val4 = 
         TObjectJson
             (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
-             :: makeLinkPropWithMethodValue "GET" valueRel4 (sprintf "objects/%s/%s" rroType (ktc "1")) RepresentationTypes.Object rroType (TObjectJson(msObj)))
+             :: makeLinkPropWithMethodValue "GET" valueRel4 (sprintf "objects/%s/%s" roType1 (ktc "1")) RepresentationTypes.Object roType1 (TObjectJson(msObj)))
     let val5 = 
         TObjectJson
             (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
-             :: makeGetLinkProp valueRel5 (sprintf "objects/%s/%s" rroType (ktc "1")) RepresentationTypes.Object rroType)
+             :: makeGetLinkProp valueRel5 (sprintf "objects/%s/%s" roType1 (ktc "1")) RepresentationTypes.Object roType1)
     let val6 = 
         TObjectJson
             (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
-             :: makeGetLinkProp valueRel6 (sprintf "objects/%s/%s" rroType (ktc "1")) RepresentationTypes.Object rroType)
+             :: makeGetLinkProp valueRel6 (sprintf "objects/%s/%s" roType1 (ktc "1")) RepresentationTypes.Object roType1)
     let modifyRel = RelValues.Modify + makeParm RelParamValues.Property "AnEagerReference"
     
     let details = 
@@ -1129,7 +1118,7 @@ let PersistWithReferenceTransientObject(api1 : RestfulObjectsControllerBase) (ap
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Eager Reference"))
                                   TProperty(JsonPropertyNames.Description, TObjectVal(""))
-                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rroType))
+                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(roType1))
                                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
     
@@ -1154,13 +1143,13 @@ let PersistWithReferenceTransientObject(api1 : RestfulObjectsControllerBase) (ap
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty
                                       ("AChoicesReference", 
-                                       TObjectJson(makePropertyMemberShort "objects" "AChoicesReference" oid "A Choices Reference" "" rroType false val1 []))
+                                       TObjectJson(makePropertyMemberShort "objects" "AChoicesReference" oid "A Choices Reference" "" roType1 false val1 []))
                                   
                                   TProperty
                                       ("AConditionalChoicesReference", 
                                        
                                        TObjectJson
-                                           (makePropertyMemberShort "objects" "AConditionalChoicesReference" oid "A Conditional Choices Reference" "" rroType 
+                                           (makePropertyMemberShort "objects" "AConditionalChoicesReference" oid "A Conditional Choices Reference" "" roType1 
                                                 false val6 []))
                                   
                                   TProperty
@@ -1168,24 +1157,24 @@ let PersistWithReferenceTransientObject(api1 : RestfulObjectsControllerBase) (ap
                                        
                                        TObjectJson
                                            (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
-                                            :: (makePropertyMemberShort "objects" "ADisabledReference" oid "A Disabled Reference" "" rroType false val2 [])))
+                                            :: (makePropertyMemberShort "objects" "ADisabledReference" oid "A Disabled Reference" "" roType1 false val2 [])))
                                   
                                   TProperty
                                       ("ANullReference", 
                                        
                                        TObjectJson
-                                           (makePropertyMemberShort "objects" "ANullReference" oid "A Null Reference" "" rroType true (TObjectVal(null)) []))
-                                  TProperty("AReference", TObjectJson(makePropertyMemberShort "objects" "AReference" oid "A Reference" "" rroType false val3 []))
+                                           (makePropertyMemberShort "objects" "ANullReference" oid "A Null Reference" "" roType1 true (TObjectVal(null)) []))
+                                  TProperty("AReference", TObjectJson(makePropertyMemberShort "objects" "AReference" oid "A Reference" "" roType1 false val3 []))
                                   
                                   TProperty
                                       ("AnAutoCompleteReference", 
                                        
                                        TObjectJson
-                                           (makePropertyMemberShort "objects" "AnAutoCompleteReference" oid "An Auto Complete Reference" "" rroType false val5 []))
+                                           (makePropertyMemberShort "objects" "AnAutoCompleteReference" oid "An Auto Complete Reference" "" roType1 false val5 []))
                                   
                                   TProperty
                                       ("AnEagerReference", 
-                                       TObjectJson(makePropertyMemberShort "objects" "AnEagerReference" oid "An Eager Reference" "" rroType false val4 details))
+                                       TObjectJson(makePropertyMemberShort "objects" "AnEagerReference" oid "An Eager Reference" "" roType1 false val4 details))
                                   TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
           TProperty(JsonPropertyNames.Extensions, 
                     TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
@@ -1210,7 +1199,7 @@ let PersistWithCollectionTransientObject(api1 : RestfulObjectsControllerBase) (a
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
     let transientResult = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -1257,7 +1246,6 @@ let PersistWithCollectionTransientObject(api1 : RestfulObjectsControllerBase) (a
         TObjectJson
             (TProperty(JsonPropertyNames.Title, TObjectVal("2")) :: makeGetLinkProp valueRel1 (sprintf "objects/%s" moid4) RepresentationTypes.Object roType2)
 
-    let value = TArray([val3;val4])
     let valuevm = TArray([val5;val6])
     let emptyValue = TArray([])
 
@@ -1349,7 +1337,7 @@ let PersistWithValueTransientObjectValidateOnly(api1 : RestfulObjectsControllerB
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
     let transientResult = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -1381,7 +1369,7 @@ let PersistWithReferenceTransientObjectValidateOnly(api1 : RestfulObjectsControl
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
     let transientResult = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -1413,7 +1401,7 @@ let PersistWithCollectionTransientObjectValidateOnly(api1 : RestfulObjectsContro
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
     let transientResult = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -1445,7 +1433,7 @@ let PersistWithValueTransientObjectValidateOnlyFail(api1 : RestfulObjectsControl
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
     let transientResult = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -1508,7 +1496,7 @@ let PersistWithValueTransientObjectValidateOnlySimpleOnlyFail(api1 : RestfulObje
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetPostMsg api1.Request url (parms.ToString())
     let result = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, _ ) = readActionResult result api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -1571,7 +1559,7 @@ let PersistWithReferenceTransientObjectValidateOnlyFail(api1 : RestfulObjectsCon
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
     let transientResult = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -1598,7 +1586,7 @@ let PersistWithReferenceTransientObjectValidateOnlyFail(api1 : RestfulObjectsCon
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
     let parsedPersist = JObject.Parse(jsonPersist)
 
-    let oType = ttc "RestfulObjects.Test.Data.WithReferencePersist"
+    let roType = ttc "RestfulObjects.Test.Data.WithReferencePersist"
     let oid = sprintf "objects/%s/%s" (ttc "RestfulObjects.Test.Data.MostSimple") (ktc "1")
     let error = "Mandatory"
     
@@ -1617,7 +1605,7 @@ let PersistWithReferenceTransientObjectValidateOnlyFail(api1 : RestfulObjectsCon
     
     let expected = 
         [ 
-          TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
@@ -1633,7 +1621,7 @@ let PersistWithCollectionTransientObjectValidateOnlyFail(api1 : RestfulObjectsCo
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
     let transientResult = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -1659,7 +1647,7 @@ let PersistWithCollectionTransientObjectValidateOnlyFail(api1 : RestfulObjectsCo
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
     let parsedPersist = JObject.Parse(jsonPersist)
 
-    let oType = ttc "RestfulObjects.Test.Data.WithCollectionPersist"
+    let roType = ttc "RestfulObjects.Test.Data.WithCollectionPersist"
     let error = "Mandatory"
     
     let members = 
@@ -1668,7 +1656,7 @@ let PersistWithCollectionTransientObjectValidateOnlyFail(api1 : RestfulObjectsCo
                                   TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ])) ]
     
     let expected = 
-        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
@@ -1684,7 +1672,7 @@ let PersistWithValueTransientObjectFail(api1 : RestfulObjectsControllerBase) (ap
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
     let transientResult = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -1708,7 +1696,7 @@ let PersistWithValueTransientObjectFail(api1 : RestfulObjectsControllerBase) (ap
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
     let parsedPersist = JObject.Parse(jsonPersist)
 
-    let oType = ttc "RestfulObjects.Test.Data.WithValuePersist"
+    let roType = ttc "RestfulObjects.Test.Data.WithValuePersist"
     let error = "Mandatory"
     
     let members = 
@@ -1727,7 +1715,7 @@ let PersistWithValueTransientObjectFail(api1 : RestfulObjectsControllerBase) (ap
           TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]
     
     let expected = 
-        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
@@ -1743,7 +1731,7 @@ let PersistWithValueTransientObjectFailInvalid(api1 : RestfulObjectsControllerBa
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
     let transientResult = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -1767,7 +1755,7 @@ let PersistWithValueTransientObjectFailInvalid(api1 : RestfulObjectsControllerBa
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
     let parsedPersist = JObject.Parse(jsonPersist)
 
-    let oType = ttc "RestfulObjects.Test.Data.WithValuePersist"
+    let roType = ttc "RestfulObjects.Test.Data.WithValuePersist"
     let error = "cannot format value invalid as Int32"
     
     let members = 
@@ -1787,7 +1775,7 @@ let PersistWithValueTransientObjectFailInvalid(api1 : RestfulObjectsControllerBa
     
     let expected = 
         [ 
-          TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
@@ -1803,7 +1791,7 @@ let PersistWithReferenceTransientObjectFail(api1 : RestfulObjectsControllerBase)
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
     let transientResult = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -1828,7 +1816,7 @@ let PersistWithReferenceTransientObjectFail(api1 : RestfulObjectsControllerBase)
     let parsedPersist = JObject.Parse(jsonPersist)
 
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-    let oType = ttc "RestfulObjects.Test.Data.WithReferencePersist"
+    let roType1 = ttc "RestfulObjects.Test.Data.WithReferencePersist"
     let error = "Mandatory"
     
     let members = 
@@ -1851,7 +1839,7 @@ let PersistWithReferenceTransientObjectFail(api1 : RestfulObjectsControllerBase)
     
     let expected = 
         [ 
-          TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.DomainType, TObjectVal(roType1))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
@@ -1867,7 +1855,7 @@ let PersistWithReferenceTransientObjectFailInvalid(api1 : RestfulObjectsControll
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
     let transientResult = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -1893,7 +1881,7 @@ let PersistWithReferenceTransientObjectFailInvalid(api1 : RestfulObjectsControll
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
     let parsedPersist = JObject.Parse(jsonPersist)
 
-    let oType = ttc "RestfulObjects.Test.Data.WithReferencePersist"
+    let roType = ttc "RestfulObjects.Test.Data.WithReferencePersist"
     let oid = sprintf "objects/%s/%s" (ttc "RestfulObjects.Test.Data.MostSimple") (ktc "1")
     let error = "Not a suitable type; must be a Most Simple"
     
@@ -1912,7 +1900,7 @@ let PersistWithReferenceTransientObjectFailInvalid(api1 : RestfulObjectsControll
     
     let expected = 
         [ 
-          TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
@@ -1928,7 +1916,7 @@ let PersistWithCollectionTransientObjectFail(api1 : RestfulObjectsControllerBase
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
     let transientResult = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -1951,7 +1939,7 @@ let PersistWithCollectionTransientObjectFail(api1 : RestfulObjectsControllerBase
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
     let parsedPersist = JObject.Parse(jsonPersist)
 
-    let oType = ttc "RestfulObjects.Test.Data.WithCollectionPersist"
+    let roType = ttc "RestfulObjects.Test.Data.WithCollectionPersist"
     let error = "Mandatory"
     
     let members = 
@@ -1961,7 +1949,7 @@ let PersistWithCollectionTransientObjectFail(api1 : RestfulObjectsControllerBase
     
     let expected = 
         [ 
-          TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
           TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
@@ -1991,10 +1979,8 @@ let PersistMostSimpleTransientObjectMissingArgsValidateOnly(api : RestfulObjects
                       new JProperty("x-ro-validate-only", true) ])
     
     let pArgs = CreatePersistArgMapWithReserved props
-    pArgs.ReservedArguments.ValidateOnly <- true
-    
+    pArgs.ReservedArguments.ValidateOnly <- true   
     jsonSetPostMsg api.Request "http://localhost/objects"  (props.ToString())
-
 
     let persistResult = api.PostPersist(dt, pArgs)
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api.ControllerContext.HttpContext
@@ -2015,8 +2001,6 @@ let PersistMostSimpleTransientObjectMissingMemberArgs(api : RestfulObjectsContro
     
     let pArgs = CreatePersistArgMapWithReserved props
     jsonSetPostMsg api.Request "http://localhost/objects"  (props.ToString())
-
-    
     let persistResult = api.PostPersist(dt, pArgs)
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api.ControllerContext.HttpContext
 
@@ -2036,8 +2020,6 @@ let PersistMostSimpleTransientObjectNullDomainType(api : RestfulObjectsControlle
     
     let pArgs = CreatePersistArgMapWithReserved props
     jsonSetPostMsg api.Request "http://localhost/objects"  (props.ToString())
-
-    
     let persistResult = api.PostPersist(null, pArgs)
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api.ControllerContext.HttpContext
 
@@ -2054,7 +2036,6 @@ let PersistMostSimpleTransientObjectEmptyDomainType(api : RestfulObjectsControll
     
     let pArgs = CreatePersistArgMapWithReserved props
     jsonSetPostMsg api.Request "http://localhost/objects"  (props.ToString())
-
     let persistResult = api.PostPersist("", pArgs)
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api.ControllerContext.HttpContext
 
@@ -2141,7 +2122,7 @@ let PersistWithValueTransientObjectFailCrossValidation(api1 : RestfulObjectsCont
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
     let transientResult = api1.PostInvokeOnService(oType, pid, args)
-    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult transientResult api1.ControllerContext.HttpContext
     let parsedTransient = JObject.Parse(jsonResult)
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
@@ -2165,7 +2146,7 @@ let PersistWithValueTransientObjectFailCrossValidation(api1 : RestfulObjectsCont
     let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
     let parsedPersist = JObject.Parse(jsonPersist)
 
-    let oType = ttc "RestfulObjects.Test.Data.WithValuePersist"
+    let roType = ttc "RestfulObjects.Test.Data.WithValuePersist"
     
     let members = 
         [ TProperty("AChoicesValue",  TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
@@ -2183,7 +2164,7 @@ let PersistWithValueTransientObjectFailCrossValidation(api1 : RestfulObjectsCont
     let expected =  [ 
         TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed"))
         
-        TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+        TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
         TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
     assertStatusCode unprocessableEntity statusCode jsonPersist
