@@ -1436,275 +1436,303 @@ let PersistWithCollectionTransientObjectValidateOnly(api1 : RestfulObjectsContro
     assertStatusCode HttpStatusCode.NoContent statusCode jsonPersist
     Assert.AreEqual("", jsonPersist)
 
-//let PersistWithValueTransientObjectValidateOnlyFail(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
-//    let pid = "CreateTransientWithValue"
-//    let ourl = sprintf "%s/%s" "services" oType
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    let transientResult = api.PostInvokeOnService(oType, pid, args)
-//    let jsonTransient = readSnapshotToJson transientResult
-//    let parsedTransient = JObject.Parse(jsonTransient)
-//    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
-//    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-//    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
-//    let choiceValue = 
-//        (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
-//        |> Seq.find (fun i -> (i :?> JProperty).Name = "AChoicesValue")
-//    let m = choiceValue.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Value)
-//    m.Remove()
-//    (choiceValue.First :?> JObject).Add(JsonPropertyNames.Value, null)
-//    let voProp = new JProperty("x-ro-validate-only", true)
-//    args.First.Last.AddAfterSelf(voProp)
-//    let pArgs = CreatePersistArgMap(args.First :?> JObject)
-//    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
-//    let link = (href :?> JProperty).Value.ToString()
-//    let dt = link.Split('/').Last()
-//    api.Request <- jsonPostMsg link (args.First.ToString())
-//    let persistResult = api.PostPersist(dt, pArgs)
-//    let jsonPersist = readSnapshotToJson persistResult
-//    let parsedPersist = JObject.Parse(jsonPersist)
-//    let oType = ttc "RestfulObjects.Test.Data.WithValuePersist"
-//    let error = "Mandatory"
-    
-//    let members = 
-//        [ TProperty("AChoicesValue", 
-//                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
-//          TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
-//          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("2012-02-10")) ]))
-//          TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("02:03:04")) ]))
-//          TProperty("ADisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(103)) ]))
-//          TProperty("AHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(105)) ]))
-//          TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("one hundred four")) ]))
-//          TProperty("AUserDisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
-//          TProperty("AUserHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
-//          TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(102)) ]))
-//          TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]
-    
-//    let expected = 
-//        [ 
-//          TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//          TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
-    
-//    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
-//    compareObject expected parsedPersist
+let PersistWithValueTransientObjectValidateOnlyFail(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)  = 
+    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
+    let pid = "CreateTransientWithValue"
 
-//let PersistWithValueTransientObjectValidateOnlySimpleOnlyFail(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
-//    let pid = "CreateTransientWithValue"
-//    let ourl = sprintf "%s/%s" "services" oType
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let simpleProp = new JProperty("x-ro-domain-model", "simple")
-//    let parms = new JObject(simpleProp)
-//    let args = CreateArgMap parms
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//    let transientResult = api.PostInvokeOnService(oType, pid, args)
-//    let jsonTransient = readSnapshotToJson transientResult
-//    let parsedTransient = JObject.Parse(jsonTransient)
-//    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
-//    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-//    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
-//    let choiceValue = 
-//        (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
-//        |> Seq.find (fun i -> (i :?> JProperty).Name = "AChoicesValue")
-//    let m = choiceValue.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Value)
-//    m.Remove()
-//    (choiceValue.First :?> JObject).Add(JsonPropertyNames.Value, null)
-//    let voProp = new JProperty("x-ro-validate-only", true)
-//    args.First.Last.AddAfterSelf(voProp)
-//    args.First.Last.AddAfterSelf(simpleProp)
-//    let pArgs = CreatePersistArgMap(args.First :?> JObject)
-//    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
-//    let link = (href :?> JProperty).Value.ToString()
-//    let dt = link.Split('/').Last()
-//    api.Request <- jsonPostMsg link (args.First.ToString())
-//    let persistResult = api.PostPersist(dt, pArgs)
-//    let jsonPersist = readSnapshotToJson persistResult
-//    let parsedPersist = JObject.Parse(jsonPersist)
-//    let oType = ttc "RestfulObjects.Test.Data.WithValuePersist"
-//    let error = "Mandatory"
-    
-//    let members = 
-//        [ TProperty("AChoicesValue", 
-//                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
-//          TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
-//          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("2012-02-10")) ]))
-//          TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("02:03:04")) ]))
-//          TProperty("ADisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(103)) ]))
-//          TProperty("AHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(105)) ]))
-//          TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("one hundred four")) ]))
-//          TProperty("AUserDisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
-//          TProperty("AUserHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
-//          TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(102)) ]))
-//          TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]
-    
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//          TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
-    
-//    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
-//    compareObject expected parsedPersist
+    let args = CreateArgMap(new JObject())
+    let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
+    jsonSetEmptyPostMsg api1.Request url
+    // create transient 
+    let transientResult = api1.PostInvokeOnService(oType, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let parsedTransient = JObject.Parse(jsonResult)
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
+    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
+    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let choiceValue = 
+        (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
+        |> Seq.find (fun i -> (i :?> JProperty).Name = "AChoicesValue")
+    let m = choiceValue.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Value)
+    m.Remove()
+    (choiceValue.First :?> JObject).Add(JsonPropertyNames.Value, null)
+    let voProp = new JProperty("x-ro-validate-only", true)
+    args.First.Last.AddAfterSelf(voProp)
+    let pArgs = CreatePersistArgMapWithReserved(args.First :?> JObject)
+    pArgs.ReservedArguments.ValidateOnly <- true
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let link = (href :?> JProperty).Value.ToString()
+    let dt = link.Split('/').Last()
 
+    jsonSetPostMsg api2.Request link (args.First.ToString())
+    //  persist transient
+    let persistResult = api2.PostPersist(dt, pArgs)
+    let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
+    let parsedPersist = JObject.Parse(jsonPersist)
 
-//let PersistWithReferenceTransientObjectValidateOnlyFail(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
-//    let pid = "CreateTransientWithReference"
-//    let ourl = sprintf "%s/%s" "services" oType
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    let transientResult = api.PostInvokeOnService(oType, pid, args)
-//    let jsonTransient = readSnapshotToJson transientResult
-//    let parsedTransient = JObject.Parse(jsonTransient)
-//    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
-//    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-//    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
-//    let choiceValue = 
-//        (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
-//        |> Seq.find (fun i -> (i :?> JProperty).Name = "AChoicesReference")
-//    let m = choiceValue.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Value)
-//    m.Remove()
-//    (choiceValue.First :?> JObject).Add(JsonPropertyNames.Value, null)
-//    let voProp = new JProperty("x-ro-validate-only", true)
-//    args.First.Last.AddAfterSelf(voProp)
-//    let pArgs = CreatePersistArgMap(args.First :?> JObject)
-//    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
-//    let link = (href :?> JProperty).Value.ToString()
-//    let dt = link.Split('/').Last()
-//    api.Request <- jsonPostMsg link (args.First.ToString())
-//    let persistResult = api.PostPersist(dt, pArgs)
-//    let jsonPersist = readSnapshotToJson persistResult
-//    let parsedPersist = JObject.Parse(jsonPersist)
-//    let oType = ttc "RestfulObjects.Test.Data.WithReferencePersist"
-//    let oid = sprintf "objects/%s/%s" (ttc "RestfulObjects.Test.Data.MostSimple") (ktc "1")
-//    let error = "Mandatory"
+    let roType = ttc "RestfulObjects.Test.Data.WithValuePersist"
+    let error = "Mandatory"
     
-//    let members = 
-//        [ TProperty("AChoicesReference", 
-//                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
-//          TProperty("AConditionalChoicesReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectJson(makeHref oid)) ]))
-//          TProperty("ADisabledReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectJson(makeHref oid)) ]))
-//          TProperty("AHiddenReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//          TProperty("ANullReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//          TProperty("AReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectJson(makeHref oid)) ]))
-//          TProperty("AnAutoCompleteReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectJson(makeHref oid)) ]))
-//          TProperty("AnEagerReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectJson(makeHref oid)) ]))
-//          TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]
+    let members = 
+        [ TProperty("AChoicesValue", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
+          TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
+          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("2012-02-10")) ]))
+          TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("02:03:04")) ]))
+          TProperty("ADisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(103)) ]))
+          TProperty("AHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(105)) ]))
+          TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("one hundred four")) ]))
+          TProperty("AUserDisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
+          TProperty("AUserHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
+          TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(102)) ]))
+          TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]
     
-//    let expected = 
-//        [ 
-//          TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//          TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
+    let expected = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
+          TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
-//    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
-//    compareObject expected parsedPersist
+    assertStatusCode unprocessableEntity statusCode jsonPersist
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    compareObject expected parsedPersist
 
-//let PersistWithCollectionTransientObjectValidateOnlyFail(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
-//    let pid = "CreateTransientWithCollection"
-//    let ourl = sprintf "%s/%s" "services" oType
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    let transientResult = api.PostInvokeOnService(oType, pid, args)
-//    let jsonTransient = readSnapshotToJson transientResult
-//    let parsedTransient = JObject.Parse(jsonTransient)
-//    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
-//    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-//    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
-//    let idValue = 
-//        (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First |> Seq.find (fun i -> (i :?> JProperty).Name = "Id")
-//    let m = idValue.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Value)
-//    m.Remove()
-//    (idValue.First :?> JObject).Add(JsonPropertyNames.Value, null)
-//    let voProp = new JProperty("x-ro-validate-only", true)
-//    args.First.Last.AddAfterSelf(voProp)
-//    let pArgs = CreatePersistArgMap(args.First :?> JObject)
-//    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
-//    let link = (href :?> JProperty).Value.ToString()
-//    let dt = link.Split('/').Last()
-//    api.Request <- jsonPostMsg link (args.First.ToString())
-//    let persistResult = api.PostPersist(dt, pArgs)
-//    let jsonPersist = readSnapshotToJson persistResult
-//    let parsedPersist = JObject.Parse(jsonPersist)
-//    let oType = ttc "RestfulObjects.Test.Data.WithCollectionPersist"
-//    let error = "Mandatory"
-    
-//    let members = 
-//        [ TProperty("Id", 
-//                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ])) ]
-    
-//    let expected = 
-//        [ 
-//          TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//          TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
-    
-//    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
-//    compareObject expected parsedPersist
+let PersistWithValueTransientObjectValidateOnlySimpleOnlyFail(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)  = 
+    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
+    let pid = "CreateTransientWithValue"
 
-//let PersistWithValueTransientObjectFail(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
-//    let pid = "CreateTransientWithValue"
-//    let ourl = sprintf "%s/%s" "services" oType
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    let transientResult = api.PostInvokeOnService(oType, pid, args)
-//    let jsonTransient = readSnapshotToJson transientResult
-//    let parsedTransient = JObject.Parse(jsonTransient)
-//    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
-//    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-//    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
-//    let choiceValue = 
-//        (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
-//        |> Seq.find (fun i -> (i :?> JProperty).Name = "AChoicesValue")
-//    let m = choiceValue.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Value)
-//    m.Remove()
-//    (choiceValue.First :?> JObject).Add(JsonPropertyNames.Value, null)
-//    let pArgs = CreatePersistArgMap(args.First :?> JObject)
-//    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
-//    let link = (href :?> JProperty).Value.ToString()
-//    let dt = link.Split('/').Last()
-//    api.Request <- jsonPostMsg link (args.First.ToString())
-//    let persistResult = api.PostPersist(dt, pArgs)
-//    let jsonPersist = readSnapshotToJson persistResult
-//    let parsedPersist = JObject.Parse(jsonPersist)
-//    let oType = ttc "RestfulObjects.Test.Data.WithValuePersist"
-//    let error = "Mandatory"
+    let simpleProp = new JProperty("x-ro-domain-model", "simple")
+    let parms = new JObject(simpleProp)
+    let args = CreateArgMapWithReserved parms
+    let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
+    jsonSetPostMsg api1.Request url (parms.ToString())
+    let result = api1.PostInvokeOnService(oType, pid, args)
+    let (jsonResult, statusCode, _ ) = readActionResult result api1.ControllerContext.HttpContext
+    let parsedTransient = JObject.Parse(jsonResult)
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+
+    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
+    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let choiceValue = 
+        (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
+        |> Seq.find (fun i -> (i :?> JProperty).Name = "AChoicesValue")
+    let m = choiceValue.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Value)
+    m.Remove()
+    (choiceValue.First :?> JObject).Add(JsonPropertyNames.Value, null)
+    let voProp = new JProperty("x-ro-validate-only", true)
+    args.First.Last.AddAfterSelf(voProp)
+    args.First.Last.AddAfterSelf(simpleProp)
+    let pArgs = CreatePersistArgMapWithReserved(args.First :?> JObject)
+    pArgs.ReservedArguments.ValidateOnly <- true
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let link = (href :?> JProperty).Value.ToString()
+    let dt = link.Split('/').Last()
+
+    jsonSetPostMsg api2.Request link (args.First.ToString())
+    //  persist transient
+    let persistResult = api2.PostPersist(dt, pArgs)
+    let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
+    let parsedPersist = JObject.Parse(jsonPersist)
+
+    let roType = ttc "RestfulObjects.Test.Data.WithValuePersist"
+    let error = "Mandatory"
     
-//    let members = 
-//        [ TProperty("AChoicesValue", 
-//                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
-//          TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
-//          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("2012-02-10")) ]))
-//          TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("02:03:04")) ]))
-//          TProperty("ADisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(103)) ]))
-//          TProperty("AHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(105)) ]))
-//          TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("one hundred four")) ]))
-//          TProperty("AUserDisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
-//          TProperty("AUserHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
-//          TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(102)) ]))
-//          TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]
+    let members = 
+        [ TProperty("AChoicesValue", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
+          TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
+          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("2012-02-10")) ]))
+          TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("02:03:04")) ]))
+          TProperty("ADisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(103)) ]))
+          TProperty("AHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(105)) ]))
+          TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("one hundred four")) ]))
+          TProperty("AUserDisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
+          TProperty("AUserHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
+          TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(102)) ]))
+          TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]
     
-//    let expected = 
-//        [ 
-//          TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//          TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
+    let expected = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
+          TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
     
-//    Assert.AreEqual(unprocessableEntity, persistResult.StatusCode, jsonPersist)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), persistResult.Content.Headers.ContentType)
-//    compareObject expected parsedPersist
+    assertStatusCode unprocessableEntity statusCode jsonPersist
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    compareObject expected parsedPersist
+
+let PersistWithReferenceTransientObjectValidateOnlyFail(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)  = 
+    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
+    let pid = "CreateTransientWithReference"
+
+    let args = CreateArgMap(new JObject())
+    let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
+    jsonSetEmptyPostMsg api1.Request url
+    // create transient 
+    let transientResult = api1.PostInvokeOnService(oType, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let parsedTransient = JObject.Parse(jsonResult)
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+
+    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
+    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let choiceValue = 
+        (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
+        |> Seq.find (fun i -> (i :?> JProperty).Name = "AChoicesReference")
+    let m = choiceValue.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Value)
+    m.Remove()
+    (choiceValue.First :?> JObject).Add(JsonPropertyNames.Value, null)
+    let voProp = new JProperty("x-ro-validate-only", true)
+    args.First.Last.AddAfterSelf(voProp)
+    let pArgs = CreatePersistArgMapWithReserved(args.First :?> JObject)
+    pArgs.ReservedArguments.ValidateOnly <- true
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let link = (href :?> JProperty).Value.ToString()
+    let dt = link.Split('/').Last()
+
+    jsonSetPostMsg api2.Request link (args.First.ToString())
+    //  persist transient
+    let persistResult = api2.PostPersist(dt, pArgs)
+    let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
+    let parsedPersist = JObject.Parse(jsonPersist)
+
+    let oType = ttc "RestfulObjects.Test.Data.WithReferencePersist"
+    let oid = sprintf "objects/%s/%s" (ttc "RestfulObjects.Test.Data.MostSimple") (ktc "1")
+    let error = "Mandatory"
+    
+    let members = 
+        [ TProperty("AChoicesReference", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
+          TProperty("AConditionalChoicesReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectJson(makeHref oid)) ]))
+          TProperty("ADisabledReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectJson(makeHref oid)) ]))
+          TProperty("AHiddenReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+          TProperty("ANullReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+          TProperty("AReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectJson(makeHref oid)) ]))
+          TProperty("AnAutoCompleteReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectJson(makeHref oid)) ]))
+          TProperty("AnEagerReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectJson(makeHref oid)) ]))
+          TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]
+    
+    let expected = 
+        [ 
+          TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
+    
+    assertStatusCode unprocessableEntity statusCode jsonPersist
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    compareObject expected parsedPersist
+
+let PersistWithCollectionTransientObjectValidateOnlyFail(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)  =  
+    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
+    let pid = "CreateTransientWithCollection"
+
+    let args = CreateArgMap(new JObject())
+    let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
+    jsonSetEmptyPostMsg api1.Request url
+    // create transient 
+    let transientResult = api1.PostInvokeOnService(oType, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let parsedTransient = JObject.Parse(jsonResult)
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+
+    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
+    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let idValue = 
+        (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First |> Seq.find (fun i -> (i :?> JProperty).Name = "Id")
+    let m = idValue.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Value)
+    m.Remove()
+    (idValue.First :?> JObject).Add(JsonPropertyNames.Value, null)
+    let voProp = new JProperty("x-ro-validate-only", true)
+    args.First.Last.AddAfterSelf(voProp)
+    let pArgs = CreatePersistArgMapWithReserved(args.First :?> JObject)
+    pArgs.ReservedArguments.ValidateOnly <- true
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let link = (href :?> JProperty).Value.ToString()
+    let dt = link.Split('/').Last()
+
+    jsonSetPostMsg api2.Request link (args.First.ToString())
+    //  persist transient
+    let persistResult = api2.PostPersist(dt, pArgs)
+    let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
+    let parsedPersist = JObject.Parse(jsonPersist)
+
+    let oType = ttc "RestfulObjects.Test.Data.WithCollectionPersist"
+    let error = "Mandatory"
+    
+    let members = 
+        [ TProperty("Id", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ])) ]
+    
+    let expected = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
+    
+    assertStatusCode unprocessableEntity statusCode jsonPersist
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    compareObject expected parsedPersist
+
+let PersistWithValueTransientObjectFail(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)  = 
+    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
+    let pid = "CreateTransientWithValue"
+
+    let args = CreateArgMap(new JObject())
+    let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
+    jsonSetEmptyPostMsg api1.Request url
+    // create transient 
+    let transientResult = api1.PostInvokeOnService(oType, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let parsedTransient = JObject.Parse(jsonResult)
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+
+    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
+    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let choiceValue = 
+        (args.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Members)).First 
+        |> Seq.find (fun i -> (i :?> JProperty).Name = "AChoicesValue")
+    let m = choiceValue.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Value)
+    m.Remove()
+    (choiceValue.First :?> JObject).Add(JsonPropertyNames.Value, null)
+    let pArgs = CreatePersistArgMapWithReserved(args.First :?> JObject)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let link = (href :?> JProperty).Value.ToString()
+    let dt = link.Split('/').Last()
+
+    jsonSetPostMsg api2.Request link (args.First.ToString())
+    //  persist transient
+    let persistResult = api2.PostPersist(dt, pArgs)
+    let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
+    let parsedPersist = JObject.Parse(jsonPersist)
+
+    let oType = ttc "RestfulObjects.Test.Data.WithValuePersist"
+    let error = "Mandatory"
+    
+    let members = 
+        [ TProperty("AChoicesValue", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
+          TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
+          TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("2012-02-10")) ]))
+          TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("02:03:04")) ]))
+          TProperty("ADisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(103)) ]))
+          TProperty("AHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(105)) ]))
+          TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("one hundred four")) ]))
+          TProperty("AUserDisabledValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
+          TProperty("AUserHiddenValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ]))
+          TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(102)) ]))
+          TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]
+    
+    let expected = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.Members, TObjectJson(members)) ]
+    
+    assertStatusCode unprocessableEntity statusCode jsonPersist
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    compareObject expected parsedPersist
 
 //let PersistWithValueTransientObjectFailInvalid(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"

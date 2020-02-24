@@ -238,24 +238,35 @@ type RestTests() =
             let api2 = x.api
             Objects9.PersistWithCollectionTransientObjectValidateOnly api1 api2
         
-//        [<Test>]
-//        member x.PersistWithValueTransientObjectValidateOnlyFail() = 
-//            Objects9.PersistWithValueTransientObjectValidateOnlyFail x.api
+        [<Test>]
+        member x.PersistWithValueTransientObjectValidateOnlyFail() = 
+            let api1 = x.api
+            let api2 = x.api
+            Objects9.PersistWithValueTransientObjectValidateOnlyFail api1 api2
         
-//        [<Test>]
-//        member x.PersistWithReferenceTransientObjectValidateOnlyFail() = 
-//            Objects9.PersistWithReferenceTransientObjectValidateOnlyFail x.api
+        [<Test>]
+        member x.PersistWithReferenceTransientObjectValidateOnlyFail() = 
+            let api1 = x.api
+            let api2 = x.api
+            Objects9.PersistWithReferenceTransientObjectValidateOnlyFail api1 api2
         
-//        [<Test>]
-//        member x.PersistWithCollectionTransientObjectValidateOnlyFail() = 
-//            Objects9.PersistWithCollectionTransientObjectValidateOnlyFail x.api
+        [<Test>]
+        member x.PersistWithCollectionTransientObjectValidateOnlyFail() = 
+            let api1 = x.api
+            let api2 = x.api
+            Objects9.PersistWithCollectionTransientObjectValidateOnlyFail api1 api2
         
-//        [<Test>]
-//        member x.PersistWithValueTransientObjectValidateOnlySimpleOnlyFail() = 
-//            Objects9.PersistWithValueTransientObjectValidateOnlySimpleOnlyFail x.api
+        [<Test>]
+        member x.PersistWithValueTransientObjectValidateOnlySimpleOnlyFail() =
+            let api1 = x.api
+            let api2 = x.api
+            Objects9.PersistWithValueTransientObjectValidateOnlySimpleOnlyFail api1 api2
         
-//        [<Test>]
-//        member x.PersistWithValueTransientObjectFail() = Objects9.PersistWithValueTransientObjectFail x.api
+        [<Test>]
+        member x.PersistWithValueTransientObjectFail() =
+            let api1 = x.api
+            let api2 = x.api
+            Objects9.PersistWithValueTransientObjectFail api1 api2
         
 //        [<Test>]
 //        member x.PersistWithValueTransientObjectFailInvalid() = 
