@@ -1340,80 +1340,101 @@ let PersistWithCollectionTransientObject(api1 : RestfulObjectsControllerBase) (a
     Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), headers.Location.ToString())
     compareObject expected parsedPersist
 
-//let PersistWithValueTransientObjectValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
-//    let pid = "CreateTransientWithValue"
-//    let ourl = sprintf "%s/%s" "services" oType
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    let transientResult = api.PostInvokeOnService(oType, pid, args)
-//    let jsonTransient = readSnapshotToJson transientResult
-//    let parsedTransient = JObject.Parse(jsonTransient)
-//    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
-//    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-//    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
-//    let voProp = new JProperty("x-ro-validate-only", true)
-//    args.First.Last.AddAfterSelf(voProp)
-//    let pArgs = CreatePersistArgMap(args.First :?> JObject)
-//    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
-//    let link = (href :?> JProperty).Value.ToString()
-//    let dt = link.Split('/').Last()
-//    api.Request <- jsonPostMsg link (args.First.ToString())
-//    let persistResult = api.PostPersist(dt, pArgs)
-//    let jsonResult = readSnapshotToJson persistResult
-//    Assert.AreEqual(HttpStatusCode.NoContent, persistResult.StatusCode, jsonResult)
-//    Assert.AreEqual("", jsonResult)
+let PersistWithValueTransientObjectValidateOnly(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
+    let pid = "CreateTransientWithValue"
+    
+    let args = CreateArgMap(new JObject())
+    let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
+    jsonSetEmptyPostMsg api1.Request url
+    // create transient 
+    let transientResult = api1.PostInvokeOnService(oType, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let parsedTransient = JObject.Parse(jsonResult)
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
-//let PersistWithReferenceTransientObjectValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
-//    let pid = "CreateTransientWithReference"
-//    let ourl = sprintf "%s/%s" "services" oType
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    let transientResult = api.PostInvokeOnService(oType, pid, args)
-//    let jsonTransient = readSnapshotToJson transientResult
-//    let parsedTransient = JObject.Parse(jsonTransient)
-//    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
-//    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-//    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
-//    let voProp = new JProperty("x-ro-validate-only", true)
-//    args.First.Last.AddAfterSelf(voProp)
-//    let pArgs = CreatePersistArgMap(args.First :?> JObject)
-//    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
-//    let link = (href :?> JProperty).Value.ToString()
-//    let dt = link.Split('/').Last()
-//    api.Request <- jsonPostMsg link (args.First.ToString())
-//    let persistResult = api.PostPersist(dt, pArgs)
-//    let jsonResult = readSnapshotToJson persistResult
-//    Assert.AreEqual(HttpStatusCode.NoContent, persistResult.StatusCode, jsonResult)
-//    Assert.AreEqual("", jsonResult)
+    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
+    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let voProp = new JProperty("x-ro-validate-only", true)
+    args.First.Last.AddAfterSelf(voProp)
+    let pArgs = CreatePersistArgMapWithReserved (args.First :?> JObject)
+    pArgs.ReservedArguments.ValidateOnly <- true
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let link = (href :?> JProperty).Value.ToString()
+    let dt = link.Split('/').Last()
 
-//let PersistWithCollectionTransientObjectValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
-//    let pid = "CreateTransientWithCollection"
-//    let ourl = sprintf "%s/%s" "services" oType
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    let transientResult = api.PostInvokeOnService(oType, pid, args)
-//    let jsonTransient = readSnapshotToJson transientResult
-//    let parsedTransient = JObject.Parse(jsonTransient)
-//    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
-//    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-//    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
-//    let voProp = new JProperty("x-ro-validate-only", true)
-//    args.First.Last.AddAfterSelf(voProp)
-//    let pArgs = CreatePersistArgMap(args.First :?> JObject)
-//    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
-//    let link = (href :?> JProperty).Value.ToString()
-//    let dt = link.Split('/').Last()
-//    api.Request <- jsonPostMsg link (args.First.ToString())
-//    let persistResult = api.PostPersist(dt, pArgs)
-//    let jsonResult = readSnapshotToJson persistResult
-//    Assert.AreEqual(HttpStatusCode.NoContent, persistResult.StatusCode, jsonResult)
-//    Assert.AreEqual("", jsonResult)
+    jsonSetPostMsg api2.Request link (args.First.ToString())
+    //  persist transient
+    let persistResult = api2.PostPersist(dt, pArgs)
+    let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
+
+    assertStatusCode HttpStatusCode.NoContent statusCode jsonPersist
+    Assert.AreEqual("", jsonPersist)
+
+let PersistWithReferenceTransientObjectValidateOnly(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)  = 
+    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
+    let pid = "CreateTransientWithReference"
+
+    let args = CreateArgMap(new JObject())
+    let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
+    jsonSetEmptyPostMsg api1.Request url
+    // create transient 
+    let transientResult = api1.PostInvokeOnService(oType, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let parsedTransient = JObject.Parse(jsonResult)
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+
+    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
+    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let voProp = new JProperty("x-ro-validate-only", true)
+    args.First.Last.AddAfterSelf(voProp)
+    let pArgs = CreatePersistArgMapWithReserved (args.First :?> JObject)
+    pArgs.ReservedArguments.ValidateOnly <- true
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let link = (href :?> JProperty).Value.ToString()
+    let dt = link.Split('/').Last()
+
+    jsonSetPostMsg api2.Request link (args.First.ToString())
+    //  persist transient
+    let persistResult = api2.PostPersist(dt, pArgs)
+    let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
+
+    assertStatusCode HttpStatusCode.NoContent statusCode jsonPersist
+    Assert.AreEqual("", jsonPersist)
+
+let PersistWithCollectionTransientObjectValidateOnly(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)  = 
+    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
+    let pid = "CreateTransientWithCollection"
+
+    let args = CreateArgMap(new JObject())
+    let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
+    jsonSetEmptyPostMsg api1.Request url
+    // create transient 
+    let transientResult = api1.PostInvokeOnService(oType, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let parsedTransient = JObject.Parse(jsonResult)
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+
+    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
+    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    let voProp = new JProperty("x-ro-validate-only", true)
+    args.First.Last.AddAfterSelf(voProp)
+    let pArgs = CreatePersistArgMapWithReserved (args.First :?> JObject)
+    pArgs.ReservedArguments.ValidateOnly <- true
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let link = (href :?> JProperty).Value.ToString()
+    let dt = link.Split('/').Last()
+
+    jsonSetPostMsg api2.Request link (args.First.ToString())
+    //  persist transient
+    let persistResult = api2.PostPersist(dt, pArgs)
+    let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
+
+    assertStatusCode HttpStatusCode.NoContent statusCode jsonPersist
+    Assert.AreEqual("", jsonPersist)
 
 //let PersistWithValueTransientObjectValidateOnlyFail(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"

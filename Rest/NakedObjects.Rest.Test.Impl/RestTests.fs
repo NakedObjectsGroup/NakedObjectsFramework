@@ -177,19 +177,19 @@ type RestTests() =
         
         [<Test>]
         member x.PersistMostSimpleTransientObject() = 
-            let api1 =  x.api
+            let api1 = x.api
             let api2 = x.api
             Objects9.PersistMostSimpleTransientObject api1 api2
         
         [<Test>]
         member x.PersistMostSimpleTransientObjectSimpleOnly() =
-            let api1 =  x.api
+            let api1 = x.api
             let api2 = x.api
             Objects9.PersistMostSimpleTransientObjectSimpleOnly api1 api2
         
         [<Test>]
         member x.PersistMostSimpleTransientObjectValidateOnly() = 
-            let api1 =  x.api
+            let api1 = x.api
             let api2 = x.api
             Objects9.PersistMostSimpleTransientObjectValidateOnly api1 api2
         
@@ -204,33 +204,39 @@ type RestTests() =
         
         [<Test>]
         member x.PersistWithValueTransientObject() = 
-            let api1 =  x.api
+            let api1 = x.api
             let api2 = x.api
             Objects9.PersistWithValueTransientObject api1 api2
 
         [<Test>]
         member x.PersistWithReferenceTransientObject() = 
-            let api1 =  x.api
+            let api1 = x.api
             let api2 = x.api
             Objects9.PersistWithReferenceTransientObject api1 api2
         
         [<Test>]
         member x.PersistWithCollectionTransientObject() =
-            let api1 =  x.api
+            let api1 = x.api
             let api2 = x.api
             Objects9.PersistWithCollectionTransientObject api1 api2
         
-//        [<Test>]
-//        member x.PersistWithValueTransientObjectValidateOnly() = 
-//            Objects9.PersistWithValueTransientObjectValidateOnly x.api
+        [<Test>]
+        member x.PersistWithValueTransientObjectValidateOnly() = 
+            let api1 = x.api
+            let api2 = x.api
+            Objects9.PersistWithValueTransientObjectValidateOnly api1 api2
         
-//        [<Test>]
-//        member x.PersistWithReferenceTransientObjectValidateOnly() = 
-//            Objects9.PersistWithReferenceTransientObjectValidateOnly x.api
+        [<Test>]
+        member x.PersistWithReferenceTransientObjectValidateOnly() = 
+            let api1 = x.api
+            let api2 = x.api
+            Objects9.PersistWithReferenceTransientObjectValidateOnly api1 api2
         
-//        [<Test>]
-//        member x.PersistWithCollectionTransientObjectValidateOnly() = 
-//            Objects9.PersistWithCollectionTransientObjectValidateOnly x.api
+        [<Test>]
+        member x.PersistWithCollectionTransientObjectValidateOnly() = 
+            let api1 = x.api
+            let api2 = x.api
+            Objects9.PersistWithCollectionTransientObjectValidateOnly api1 api2
         
 //        [<Test>]
 //        member x.PersistWithValueTransientObjectValidateOnlyFail() = 
