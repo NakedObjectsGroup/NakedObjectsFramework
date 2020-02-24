@@ -79,21 +79,21 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return allWarnings.ToArray();
         }
 
-        public virtual HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
-            Microsoft.Net.Http.Headers.MediaTypeHeaderValue ct = GetContentType();
+        //public virtual HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
+        //    Microsoft.Net.Http.Headers.MediaTypeHeaderValue ct = GetContentType();
 
-            if (ct != null) {
-                //formatter.SupportedMediaTypes.Add(ct);
-            }
+        //    if (ct != null) {
+        //        //formatter.SupportedMediaTypes.Add(ct);
+        //    }
 
-            var content = new ObjectContent<Representation>(this, formatter);
-            var msg = new HttpResponseMessage {Content = content};
-            //msg.Content.Headers.ContentType = ct;
+        //    var content = new ObjectContent<Representation>(this, formatter);
+        //    var msg = new HttpResponseMessage {Content = content};
+        //    //msg.Content.Headers.ContentType = ct;
 
-            SetCaching(msg, cacheSettings);
+        //    SetCaching(msg, cacheSettings);
 
-            return msg;
-        }
+        //    return msg;
+        //}
 
         public Uri GetLocation() {
             return SelfRelType != null ? SelfRelType.GetUri() : null;

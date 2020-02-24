@@ -181,13 +181,17 @@ type RestTests() =
             let api2 = x.api
             Objects9.PersistMostSimpleTransientObject api1 api2
         
-//        [<Test>]
-//        member x.PersistMostSimpleTransientObjectSimpleOnly() = 
-//            Objects9.PersistMostSimpleTransientObjectSimpleOnly x.api
+        [<Test>]
+        member x.PersistMostSimpleTransientObjectSimpleOnly() =
+            let api1 =  x.api
+            let api2 = x.api
+            Objects9.PersistMostSimpleTransientObjectSimpleOnly api1 api2
         
-//        [<Test>]
-//        member x.PersistMostSimpleTransientObjectValidateOnly() = 
-//            Objects9.PersistMostSimpleTransientObjectValidateOnly x.api
+        [<Test>]
+        member x.PersistMostSimpleTransientObjectValidateOnly() = 
+            let api1 =  x.api
+            let api2 = x.api
+            Objects9.PersistMostSimpleTransientObjectValidateOnly api1 api2
         
 //        [<Test>]
 //        member x.GetWithValueTransientObject() = Objects9.GetWithValueTransientObject x.api

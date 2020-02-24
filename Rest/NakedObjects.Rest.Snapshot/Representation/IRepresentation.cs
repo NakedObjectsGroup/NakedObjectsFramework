@@ -22,7 +22,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         Microsoft.Net.Http.Headers.EntityTagHeaderValue GetEtag();
         CacheType GetCaching();
         string[] GetWarnings();
-        HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings);
+        //HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings);
         Uri GetLocation();
     }
 }

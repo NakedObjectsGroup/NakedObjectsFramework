@@ -200,30 +200,30 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public Microsoft.Net.Http.Headers.EntityTagHeaderValue Etag { get; set; }
 
-        public HttpResponseMessage ConfigureMsg(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
-            HttpResponseMessage msg = Representation.GetAsMessage(formatter, cacheSettings);
+        //public HttpResponseMessage ConfigureMsg(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
+        //    HttpResponseMessage msg = Representation.GetAsMessage(formatter, cacheSettings);
 
-            foreach (WarningHeaderValue w in WarningHeaders) {
-                msg.Headers.Warning.Add(w);
-            }
+        //    foreach (WarningHeaderValue w in WarningHeaders) {
+        //        msg.Headers.Warning.Add(w);
+        //    }
 
-            foreach (string a in AllowHeaders) {
-                msg.Content.Headers.Allow.Add(a);
-            }
+        //    foreach (string a in AllowHeaders) {
+        //        msg.Content.Headers.Allow.Add(a);
+        //    }
 
-            if (Location != null) {
-                msg.Headers.Location = Location;
-            }
+        //    if (Location != null) {
+        //        msg.Headers.Location = Location;
+        //    }
 
-            if (Etag != null) {
-               // msg.Headers.ETag = Etag;
-            }
+        //    if (Etag != null) {
+        //       // msg.Headers.ETag = Etag;
+        //    }
 
-            ValidateOutgoingMediaType(Representation is AttachmentRepresentation);
-            msg.StatusCode = HttpStatusCode;
+        //    ValidateOutgoingMediaType(Representation is AttachmentRepresentation);
+        //    msg.StatusCode = HttpStatusCode;
 
-            return msg;
-        }
+        //    return msg;
+        //}
 
         private static void CheckForRedirection(IOidStrategy oidStrategy, ContextFacade context, HttpRequest req) {
             var ocs = context as ObjectContextFacade;

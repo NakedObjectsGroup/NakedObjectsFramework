@@ -16,12 +16,12 @@ namespace NakedObjects.Rest.Snapshot.Representations {
     public class NullRepresentation : Representation {
         public NullRepresentation() : base(null, RestControlFlags.DefaultFlags()) {}
 
-        public override HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
-            var msg = new HttpResponseMessage {Content = new StringContent("")};
-            //msg.Content.Headers.ContentType = GetContentType();
-            SetCaching(msg, cacheSettings);
-            return msg;
-        }
+        //public override HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
+        //    var msg = new HttpResponseMessage {Content = new StringContent("")};
+        //    //msg.Content.Headers.ContentType = GetContentType();
+        //    SetCaching(msg, cacheSettings);
+        //    return msg;
+        //}
 
         public static Representation Create() {
             return new NullRepresentation();

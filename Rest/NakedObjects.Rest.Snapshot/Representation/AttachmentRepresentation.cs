@@ -32,16 +32,16 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         public Stream AsStream { get; set; }
 
-        public override HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
-            var content = new StreamContent(AsStream);
-            var msg = new HttpResponseMessage { Content = content };
-            //msg.Content.Headers.ContentDisposition = ContentDisposition;
+        //public override HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
+        //    var content = new StreamContent(AsStream);
+        //    var msg = new HttpResponseMessage { Content = content };
+        //    //msg.Content.Headers.ContentDisposition = ContentDisposition;
 
-            //msg.Content.Headers.ContentType = GetContentType();
+        //    //msg.Content.Headers.ContentType = GetContentType();
 
-            SetCaching(msg, cacheSettings);
-            return msg;
-        }
+        //    SetCaching(msg, cacheSettings);
+        //    return msg;
+        //}
 
         public override MediaTypeHeaderValue GetContentType() {
             return contentType;

@@ -184,83 +184,96 @@ let PersistMostSimpleTransientObject(api1 : RestfulObjectsControllerBase) (api2 
     Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), headers.Location.ToString())
     compareObject expected parsedPersist
 
-//let PersistMostSimpleTransientObjectValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
-//    let pid = "CreateTransientMostSimple"
-//    let ourl = sprintf "%s/%s" "services" oType
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    let transientResult = api.PostInvokeOnService(oType, pid, args)
-//    let jsonTransient = readSnapshotToJson transientResult
-//    let parsedTransient = JObject.Parse(jsonTransient)
-//    let voProp = new JProperty("x-ro-validate-only", true)
-//    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
-//    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-//    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
-//    args.First.Last.AddAfterSelf(voProp)
-//    let pArgs = CreatePersistArgMap(args.First :?> JObject)
-//    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
-//    let link = (href :?> JProperty).Value.ToString()
-//    let dt = link.Split('/').Last()
-//    api.Request <- jsonPostMsg link (args.First.ToString())
-//    let persistResult = api.PostPersist(dt, pArgs)
-//    let jsonResult = readSnapshotToJson persistResult
-//    Assert.AreEqual(HttpStatusCode.NoContent, persistResult.StatusCode, jsonResult)
-//    Assert.AreEqual("", jsonResult)
+let PersistMostSimpleTransientObjectValidateOnly(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
+    let roType = ttc "RestfulObjects.Test.Data.MostSimplePersist"
+    let pid = "CreateTransientMostSimple"
+    let args = CreateArgMap(new JObject())
+    let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
+    jsonSetEmptyPostMsg api1.Request url
+    // create transient 
+    let transientResult = api1.PostInvokeOnService(oType, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let parsedTransient = JObject.Parse(jsonResult)
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 
-//let PersistMostSimpleTransientObjectSimpleOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
-//    let pid = "CreateTransientMostSimple"
-//    let ourl = sprintf "%s/%s" "services" oType
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let simpleProp = new JProperty("x-ro-domain-model", "simple")
-//    let parms = new JObject(simpleProp)
-//    let args = CreateArgMap parms
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//    let transientResult = api.PostInvokeOnService(oType, pid, args)
-//    let jsonTransient = readSnapshotToJson transientResult
-//    let parsedTransient = JObject.Parse(jsonTransient)
-//    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
-//    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
-//    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
-//    args.First.Last.AddAfterSelf(simpleProp)
-//    let pArgs = CreatePersistArgMap(args.First :?> JObject)
-//    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
-//    let link = (href :?> JProperty).Value.ToString()
-//    let dt = link.Split('/').Last()
-//    api.Request <- jsonPostMsg link (args.First.ToString())
-//    let persistResult = api.PostPersist(dt, pArgs)
-//    let jsonPersist = readSnapshotToJson persistResult
-//    let parsedPersist = JObject.Parse(jsonPersist)
-//    let oType = ttc "RestfulObjects.Test.Data.MostSimplePersist"
-//    let oid = oType + "/" + ktc "2"
-//    let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+    let voProp = new JProperty("x-ro-validate-only", true)
+    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
+    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    args.First.Last.AddAfterSelf(voProp)
+    let pArgs = CreatePersistArgMapWithReserved(args.First :?> JObject)
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let link = (href :?> JProperty).Value.ToString()
+    let dt = link.Split('/').Last()
+    jsonSetPostMsg api2.Request link (args.First.ToString())
+    //  persist transient
+    let persistResult = api2.PostPersist(dt, pArgs)
+    let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
+
+    assertStatusCode HttpStatusCode.NoContent statusCode jsonPersist
+    Assert.AreEqual("", jsonPersist)
+
+let PersistMostSimpleTransientObjectSimpleOnly(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
+    let roType = ttc "RestfulObjects.Test.Data.MostSimplePersist"
+    let pid = "CreateTransientMostSimple"
+    let simpleProp = new JProperty("x-ro-domain-model", "simple")
+    let parms = new JObject(simpleProp)
+    let args = CreateArgMap parms
+    let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
+    jsonSetEmptyPostMsg api1.Request url
+    // create transient 
+    let transientResult = api1.PostInvokeOnService(oType, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult transientResult api1.ControllerContext.HttpContext
+    let parsedTransient = JObject.Parse(jsonResult)
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
+
+    let result = parsedTransient |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Result)
+    let links = result.First |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Links)
+    let args = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Arguments)
+    args.First.Last.AddAfterSelf(simpleProp)
+    let pArgs = CreatePersistArgMapWithReserved(args.First :?> JObject)
+    pArgs.ReservedArguments.DomainModel <- "simple"
+    let href = links.First.[2] |> Seq.find (fun i -> (i :?> JProperty).Name = JsonPropertyNames.Href)
+    let link = (href :?> JProperty).Value.ToString()
+    let dt = link.Split('/').Last()
+
+    jsonSetPostMsg api2.Request link (args.First.ToString())
+    //  persist transient
+    let persistResult = api2.PostPersist(dt, pArgs)
+    let (jsonPersist, statusCode, headers) = readActionResult persistResult api2.ControllerContext.HttpContext
+    let parsedPersist = JObject.Parse(jsonPersist)
+
+    let oid = roType + "/" + ktc "2"
+    let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2"))
-//          TProperty(JsonPropertyNames.Title, TObjectVal("2"))
-//          TProperty(JsonPropertyNames.Links, 
-//                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object oType)
-//                             TObjectJson(sb(oType)); TObjectJson(sp(oType))
-//                             TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
+    let expected = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2"))
+          TProperty(JsonPropertyNames.Title, TObjectVal("2"))
+          TProperty(JsonPropertyNames.Links, 
+                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" oid) RepresentationTypes.Object roType)
+                             TObjectJson(sb(roType)); TObjectJson(sp(roType))
+                             TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object roType) ]))
           
-//          TProperty
-//              (JsonPropertyNames.Members, 
-//               TObjectJson([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "int" false (TObjectVal(2)))) ]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple Persist"))
-//                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simple Persists"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
-//                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
-//    Assert.AreEqual(HttpStatusCode.Created, persistResult.StatusCode, jsonPersist)
-//    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), persistResult.Content.Headers.ContentType)
-//    Assert.AreEqual(true, persistResult.Headers.CacheControl.NoCache)
-//    Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), persistResult.Headers.Location.ToString())
-//    compareObject expected parsedPersist
+          TProperty
+              (JsonPropertyNames.Members, 
+               TObjectJson([ TProperty("Id", TObjectJson(makePropertyMemberSimpleNumber "objects" "Id" oid "Id" "" "int" false (TObjectVal(2)))) ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple Persist"))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simple Persists"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
+                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
+    assertStatusCode HttpStatusCode.Created statusCode jsonPersist
+    Assert.AreEqual(new typeType(RepresentationTypes.Object, roType), headers.ContentType)
+    Assert.AreEqual(true, headers.CacheControl.NoCache)
+    Assert.AreEqual((sprintf "http://localhost/objects/%s" oid), headers.Location.ToString())
+    compareObject expected parsedPersist
 
 
 

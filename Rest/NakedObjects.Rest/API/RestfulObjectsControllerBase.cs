@@ -896,7 +896,11 @@ namespace NakedObjects.Rest {
         private ActionResult RepresentationResult(RestSnapshot ss) {
             ss.Populate();
             SetHeaders(ss);
-            
+
+            if (ss.Representation is NullRepresentation) {
+                return new NoContentResult();
+            }
+
             // there maybe better way of doing 
             var attachmentRepresentation = ss.Representation as AttachmentRepresentation;
 
@@ -907,6 +911,7 @@ namespace NakedObjects.Rest {
 
                 return File(attachmentRepresentation.AsStream, attachmentRepresentation.GetContentType().ToString());
             }
+
 
             return new JsonResult(ss.Representation);
         }
