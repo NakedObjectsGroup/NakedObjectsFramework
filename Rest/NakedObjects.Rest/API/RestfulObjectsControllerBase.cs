@@ -888,7 +888,7 @@ namespace NakedObjects.Rest {
         }
 
         private ActionResult ErrorResult(Exception e) => 
-            RepresentationResult(new RestSnapshot(OidStrategy, e, Request));
+            RepresentationResult(SnapshotFactory.ErrorSnapshot(OidStrategy, e, Request)());
 
         private ResponseHeaders GetResponseHeaders() =>
             ControllerContext.HttpContext.Response.GetTypedHeaders();
@@ -898,7 +898,7 @@ namespace NakedObjects.Rest {
             SetHeaders(ss);
 
             if (ss.Representation is NullRepresentation) {
-                return new NoContentResult();
+                return new StatusCodeResult((int)ss.HttpStatusCode);
             }
 
             // there maybe better way of doing 

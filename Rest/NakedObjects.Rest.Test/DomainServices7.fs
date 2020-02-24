@@ -12,6 +12,7 @@ open System.Net
 open Newtonsoft.Json.Linq
 open NakedObjects.Rest.Snapshot.Constants
 open RestTestFunctions
+open NakedObjects.Rest.Snapshot.Utility
 
 let getExpected() = 
     let sName1 = ttc "RestfulObjects.Test.Data.RestDataRepository"
@@ -175,5 +176,11 @@ let NotAcceptableGetDomainServices(api : RestfulObjectsControllerBase) =
    let result = api.GetServices()
    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
    assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
-   Assert.AreEqual("199 RestfulObjects \"Failed outgoing json MT validation ic:  urn:org.restfulobjects:repr-types/user  og:  urn:org.restfulobjects:repr-types/list \"", headers.Headers.["Warning"].ToString())
+   
+   let msg = 
+       if (RestSnapshot.DebugWarnings) 
+       then "199 RestfulObjects \"Failed outgoing json MT validation ic:  urn:org.restfulobjects:repr-types/user  og:  urn:org.restfulobjects:repr-types/list \""
+       else "199 RestfulObjects \"\""
+   
+   Assert.AreEqual(msg, headers.Headers.["Warning"].ToString())
    Assert.AreEqual("", jsonResult)

@@ -34,7 +34,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         static RestSnapshot() {
             AcceptHeaderStrict = true;
-            DebugWarnings = true;
+            DebugWarnings = false;
         }
 
         private RestSnapshot(IOidStrategy oidStrategy, HttpRequest req, bool validateAsJson) {

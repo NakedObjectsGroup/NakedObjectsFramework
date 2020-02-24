@@ -22,6 +22,7 @@ open NakedObjects.Architecture.Menu
 open Microsoft.Extensions.DependencyInjection
 open Newtonsoft.Json
 open RestTestFunctions
+open NakedObjects.Rest.Snapshot.Utility
 
 [<TestFixture>]
 type RestTests() = 
@@ -98,7 +99,8 @@ type RestTests() =
             ()
         
         [<OneTimeSetUp>]
-        member x.FixtureSetup() = 
+        member x.FixtureSetup() =
+            RestSnapshot.DebugWarnings <- false
             CodeFirstSetup()
             NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)
         
@@ -268,53 +270,67 @@ type RestTests() =
             let api2 = x.api
             Objects9.PersistWithValueTransientObjectFail api1 api2
         
-//        [<Test>]
-//        member x.PersistWithValueTransientObjectFailInvalid() = 
-//            Objects9.PersistWithValueTransientObjectFailInvalid x.api
+        [<Test>]
+        member x.PersistWithValueTransientObjectFailInvalid() =
+            let api1 = x.api
+            let api2 = x.api
+            Objects9.PersistWithValueTransientObjectFailInvalid api1 api2
         
-//        [<Test>]
-//        member x.PersistWithReferenceTransientObjectFail() = Objects9.PersistWithReferenceTransientObjectFail x.api
+        [<Test>]
+        member x.PersistWithReferenceTransientObjectFail() =
+            let api1 = x.api
+            let api2 = x.api
+            Objects9.PersistWithReferenceTransientObjectFail api1 api2
         
-//        [<Test>]
-//        member x.PersistWithReferenceTransientObjectFailInvalid() = 
-//            Objects9.PersistWithReferenceTransientObjectFailInvalid x.api
+        [<Test>]
+        member x.PersistWithReferenceTransientObjectFailInvalid() = 
+            let api1 = x.api
+            let api2 = x.api
+            Objects9.PersistWithReferenceTransientObjectFailInvalid api1 api2
         
-//        [<Test>]
-//        member x.PersistWithCollectionTransientObjectFail() = Objects9.PersistWithCollectionTransientObjectFail x.api
+        [<Test>]
+        member x.PersistWithCollectionTransientObjectFail() = 
+            let api1 = x.api
+            let api2 = x.api
+            Objects9.PersistWithCollectionTransientObjectFail api1 api2
         
-//        [<Test>]
-//        member x.PersistMostSimpleTransientObjectMissingArgs() = 
-//            Objects9.PersistMostSimpleTransientObjectMissingArgs x.api
+        [<Test>]
+        member x.PersistMostSimpleTransientObjectMissingArgs() = 
+            Objects9.PersistMostSimpleTransientObjectMissingArgs x.api
         
-//        [<Test>]
-//        member x.PersistMostSimpleTransientObjectMissingArgsValidateOnly() = 
-//            Objects9.PersistMostSimpleTransientObjectMissingArgsValidateOnly x.api
+        [<Test>]
+        member x.PersistMostSimpleTransientObjectMissingArgsValidateOnly() = 
+            Objects9.PersistMostSimpleTransientObjectMissingArgsValidateOnly x.api
         
-//        [<Test>]
-//        member x.PersistMostSimpleTransientObjectMissingMemberArgs() = 
-//            Objects9.PersistMostSimpleTransientObjectMissingMemberArgs x.api
+        [<Test>]
+        member x.PersistMostSimpleTransientObjectMissingMemberArgs() = 
+            Objects9.PersistMostSimpleTransientObjectMissingMemberArgs x.api
         
-//        [<Test>]
-//        member x.PersistMostSimpleTransientObjectNullDomainType() = 
-//            Objects9.PersistMostSimpleTransientObjectNullDomainType x.api
+        [<Test>]
+        member x.PersistMostSimpleTransientObjectNullDomainType() = 
+            Objects9.PersistMostSimpleTransientObjectNullDomainType x.api
         
-//        [<Test>]
-//        member x.PersistMostSimpleTransientObjectEmptyDomainType() = 
-//            Objects9.PersistMostSimpleTransientObjectEmptyDomainType x.api
+        [<Test>]
+        member x.PersistMostSimpleTransientObjectEmptyDomainType() = 
+            Objects9.PersistMostSimpleTransientObjectEmptyDomainType x.api
         
-//        [<Test>]
-//        member x.PersistMostSimpleTransientObjectMalformedMemberArgs() = 
-//            Objects9.PersistMostSimpleTransientObjectMalformedMemberArgs x.api
+        [<Test>]
+        member x.PersistMostSimpleTransientObjectMalformedMemberArgs() = 
+            Objects9.PersistMostSimpleTransientObjectMalformedMemberArgs x.api
         
-//        [<Test>]
-//        member x.PersistUnknownTypeTransientObject() = Objects9.PersistUnknownTypeTransientObject x.api
+        [<Test>]
+        member x.PersistUnknownTypeTransientObject() = 
+            Objects9.PersistUnknownTypeTransientObject x.api
         
-//        [<Test>]
-//        member x.PersistNoKeyTransientObject() = Objects9.PersistNoKeyTransientObject x.api
+        [<Test>]
+        member x.PersistNoKeyTransientObject() = 
+            Objects9.PersistNoKeyTransientObject x.api
         
-//        [<Test>]
-//        member x.PersistWithValueTransientObjectFailCrossValidation() = 
-//            Objects9.PersistWithValueTransientObjectFailCrossValidation x.api
+        [<Test>]
+        member x.PersistWithValueTransientObjectFailCrossValidation() = 
+            let api1 = x.api
+            let api2 = x.api
+            Objects9.PersistWithValueTransientObjectFailCrossValidation api1 api2
         
 //        [<Test>]
 //        member x.Error() = Error10.Error x.api

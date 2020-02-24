@@ -15,6 +15,7 @@ open System.Web.Http
 open System.Linq
 open RestTestFunctions
 open Microsoft.AspNetCore.Http.Headers
+open NakedObjects.Rest.Snapshot.Utility
 
 let capabilities = 
     TObjectJson([ TProperty("protoPersistentObjects", TObjectVal("yes"))
@@ -66,5 +67,11 @@ let NotAcceptableGetVersion(api : RestfulObjectsControllerBase) =
    let result = api.GetVersion()
    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
    assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
-   Assert.AreEqual("199 RestfulObjects \"Failed outgoing json MT validation ic:  urn:org.restfulobjects:repr-types/user  og:  urn:org.restfulobjects:repr-types/version \"", headers.Headers.["Warning"].ToString())
+
+   let msg = 
+       if (RestSnapshot.DebugWarnings) 
+       then "199 RestfulObjects \"Failed outgoing json MT validation ic:  urn:org.restfulobjects:repr-types/user  og:  urn:org.restfulobjects:repr-types/version \""
+       else "199 RestfulObjects \"\""
+
+   Assert.AreEqual(msg, headers.Headers.["Warning"].ToString())
    Assert.AreEqual("", jsonResult)
