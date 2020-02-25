@@ -201,6 +201,10 @@ let jsonSetEmptyPostMsg msg url = jsonSetPostMsgAndMediaType msg url "applicatio
 
 let jsonSetPostMsg msg url content = jsonSetPostMsgAndMediaType msg url "application/json" "" content
 
+let jsonSetEmptyPostMsgWithProfile msg url repType = jsonSetPostMsgAndMediaType msg url "application/json" repType ""
+
+
+
 //let jsonGetMsgAndTag (url : string) tag = 
 //    let message = jsonGetMsgAndMediaType "application/json" url
 //    message.Headers.IfMatch.Add(new EntityTagHeaderValue(tag))

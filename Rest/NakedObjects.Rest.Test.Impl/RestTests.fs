@@ -332,11 +332,11 @@ type RestTests() =
             let api2 = x.api
             Objects9.PersistWithValueTransientObjectFailCrossValidation api1 api2
         
-//        [<Test>]
-//        member x.Error() = Error10.Error x.api
+        [<Test>]
+        member x.Error() = Error10.Error x.api
         
-//        [<Test>]
-//        member x.NotAcceptableError() = Error10.NotAcceptableError x.api
+        [<Test>]
+        member x.NotAcceptableError() = Error10.NotAcceptableError x.api
         
 //        [<Test>]
 //        member x.GetMostSimpleObject() = DomainObject14.GetMostSimpleObject x.api
