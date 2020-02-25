@@ -376,25 +376,25 @@ type RestTests() =
         [<Test>]
         member x.GetWithScalarsObject() = DomainObject14.GetWithScalarsObject x.api
         
-//        [<Test>]
-//        member x.GetWithValueObjectUserAuth() = 
-//            x.SetUser("viewUser")
-//            DomainObject14.GetWithValueObjectUserAuth x.api
-//            x.SetUser("Test")
+        [<Test>]
+        member x.GetWithValueObjectUserAuth() = 
+            x.SetUser("viewUser")
+            DomainObject14.GetWithValueObjectUserAuth x.api
+            x.SetUser("Test")
         
-//        [<Test>]
-//        member x.GetWithValueObjectWithMediaType() = DomainObject14.GetWithValueObjectWithMediaType x.api
+        [<Test>]
+        member x.GetWithValueObjectWithMediaType() = DomainObject14.GetWithValueObjectWithMediaType x.api
         
-//        [<Test>]
-//        member x.GetMostSimpleObjectWithDomainTypeSimple() = 
-//            DomainObject14.GetMostSimpleObjectWithDomainTypeSimple x.api
+        [<Test>]
+        member x.GetMostSimpleObjectWithDomainTypeSimple() = 
+            DomainObject14.GetMostSimpleObjectWithDomainTypeSimple x.api
         
-//        [<Test>]
-//        member x.GetWithValueObjectWithDomainTypeNoProfileSimple() = 
-//            DomainObject14.GetWithValueObjectWithDomainTypeNoProfileSimple x.api
+        [<Test>]
+        member x.GetWithValueObjectWithDomainTypeNoProfileSimple() = 
+            DomainObject14.GetWithValueObjectWithDomainTypeNoProfileSimple x.api
         
-//        [<Test>]
-//        member x.GetRedirectedObject() = DomainObject14.GetRedirectedObject x.api
+        [<Test>]
+        member x.GetRedirectedObject() = DomainObject14.GetRedirectedObject x.api
         
 //        [<Test>]
 //        member x.PutWithValueObject() = DomainObject14.PutWithValueObject x.api

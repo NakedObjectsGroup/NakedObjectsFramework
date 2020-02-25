@@ -372,7 +372,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             //var template = new UriTemplate("objects/{oid}");
             //return template.BindByPosition(redirectPrefix, oid);
 
-            return new Uri($"{redirectPrefix}/{SegmentValues.Objects}/{oid}");
+            return new Uri($"{redirectPrefix}{SegmentValues.Objects}/{oid}");
         }
 
         private Uri GetServiceMemberUri(IMemberFacade member, string memberType) {

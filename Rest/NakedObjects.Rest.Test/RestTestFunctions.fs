@@ -156,7 +156,21 @@ let setContent (msg : HttpRequest) (content : string) =
 let setMethod (msg : HttpRequest) (method : HttpMethod) = 
     msg.Method <- method.ToString()
 
-let setMediaType (msg : HttpRequest) mt repType = 
+let setMediaType (msg : HttpRequest) mt parms = 
+    let accept = new MediaTypeHeaderValue(new StringSegment(mt))
+    for p in parms do
+        let (name, value) = p
+        let ssName = new StringSegment(name)
+        let ssValue = if (name = "profile") then (makeProfile value) else new StringSegment(value)
+        accept.Parameters.Add(new NameValueHeaderValue(ssName, ssValue))
+    let acceptValue = new StringValues(accept.ToString())
+    if (msg.Headers.ContainsKey("Accept")) then 
+        msg.Headers.["Accept"] <- acceptValue
+    else 
+        msg.Headers.Add("Accept", acceptValue)
+
+
+let setMediaType1 (msg : HttpRequest) mt repType = 
     let accept = new MediaTypeHeaderValue(new StringSegment(mt))
     if not (repType = "") then 
         accept.Parameters.Add(new NameValueHeaderValue(new StringSegment("profile"), (makeProfile repType)))
@@ -172,14 +186,14 @@ let setUrl (msg : HttpRequest) url =
     msg.Host <- new HostString(uri.Host)
     msg.Path <- new PathString(uri.PathAndQuery)
 
-let jsonSetGetMsgAndMediaType (msg : HttpRequest) url mt repType = 
+let jsonSetGetMsgAndMediaType (msg : HttpRequest) url mt parms = 
     setMethod msg HttpMethod.Get
-    setMediaType msg mt repType 
+    setMediaType msg mt parms 
     setUrl msg url
 
-let jsonSetPostMsgAndMediaType (msg : HttpRequest) url mt repType content = 
+let jsonSetPostMsgAndMediaType (msg : HttpRequest) url mt parms content = 
     setMethod msg HttpMethod.Post
-    setMediaType msg mt repType 
+    setMediaType msg mt parms 
     setContent msg content
     setUrl msg url
 
@@ -193,15 +207,15 @@ let jsonSetPostMsgAndMediaType (msg : HttpRequest) url mt repType content =
 
 //let jsonGetMsg url = jsonGetMsgAndMediaType "application/json" url
 
-let jsonSetGetMsg msg url = jsonSetGetMsgAndMediaType msg url "application/json" ""
+let jsonSetGetMsg msg url = jsonSetGetMsgAndMediaType msg url "application/json" []
 
-let jsonSetGetMsgWithProfile msg url repType = jsonSetGetMsgAndMediaType msg url "application/json" repType
+let jsonSetGetMsgWithProfile msg url profVal = jsonSetGetMsgAndMediaType msg url "application/json" [("profile", profVal)]
 
-let jsonSetEmptyPostMsg msg url = jsonSetPostMsgAndMediaType msg url "application/json" "" ""
+let jsonSetEmptyPostMsg msg url = jsonSetPostMsgAndMediaType msg url "application/json" [] ""
 
-let jsonSetPostMsg msg url content = jsonSetPostMsgAndMediaType msg url "application/json" "" content
+let jsonSetPostMsg msg url content = jsonSetPostMsgAndMediaType msg url "application/json" [] content
 
-let jsonSetEmptyPostMsgWithProfile msg url repType = jsonSetPostMsgAndMediaType msg url "application/json" repType ""
+let jsonSetEmptyPostMsgWithProfile msg url profVal = jsonSetPostMsgAndMediaType msg url "application/json" [("profile", profVal)] ""
 
 
 
