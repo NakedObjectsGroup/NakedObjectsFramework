@@ -21,6 +21,7 @@ open Microsoft.Extensions.Primitives
 open NakedObjects.Rest
 open Microsoft.AspNetCore.Mvc
 open Microsoft.Net.Http.Headers
+open System.Collections.Generic
 
 let mapCodeToType (code : string) : string = code
 let mapTypeToCode (typ : string) : string = typ
@@ -191,8 +192,8 @@ let jsonSetGetMsgAndMediaType (msg : HttpRequest) url mt parms =
     setMediaType msg mt parms 
     setUrl msg url
 
-let jsonSetPostMsgAndMediaType (msg : HttpRequest) url mt parms content = 
-    setMethod msg HttpMethod.Post
+let jsonSetPotentMsgAndMediaType (msg : HttpRequest) method url mt parms content = 
+    setMethod msg method
     setMediaType msg mt parms 
     setContent msg content
     setUrl msg url
@@ -211,13 +212,13 @@ let jsonSetGetMsg msg url = jsonSetGetMsgAndMediaType msg url "application/json"
 
 let jsonSetGetMsgWithProfile msg url profVal = jsonSetGetMsgAndMediaType msg url "application/json" [("profile", profVal)]
 
-let jsonSetEmptyPostMsg msg url = jsonSetPostMsgAndMediaType msg url "application/json" [] ""
+let jsonSetEmptyPostMsg msg url = jsonSetPotentMsgAndMediaType msg HttpMethod.Post url "application/json" [] ""
 
-let jsonSetPostMsg msg url content = jsonSetPostMsgAndMediaType msg url "application/json" [] content
+let jsonSetPostMsg msg url content = jsonSetPotentMsgAndMediaType msg HttpMethod.Post url "application/json" [] content
 
-let jsonSetEmptyPostMsgWithProfile msg url profVal = jsonSetPostMsgAndMediaType msg url "application/json" [("profile", profVal)] ""
+let jsonSetEmptyPostMsgWithProfile msg url profVal = jsonSetPotentMsgAndMediaType msg HttpMethod.Post url "application/json" [("profile", profVal)] ""
 
-
+let jsonSetPutMsg msg url content = jsonSetPotentMsgAndMediaType msg HttpMethod.Put url "application/json" [] content
 
 //let jsonGetMsgAndTag (url : string) tag = 
 //    let message = jsonGetMsgAndMediaType "application/json" url
@@ -232,6 +233,10 @@ let msgWithContent url content =
     message.RequestUri <- new Uri(url)
     message.Content.Headers.ContentLength <- Nullable(int64(content.Length))
     message
+
+let setIfMatch (msg : HttpRequest) etag = 
+    msg.GetTypedHeaders().IfMatch <- [| new EntityTagHeaderValue(new StringSegment(etag))|] :> IList<EntityTagHeaderValue>
+
 
 //let msgWithoutContent url  = 
 //    let message = new HttpRequestMessage()

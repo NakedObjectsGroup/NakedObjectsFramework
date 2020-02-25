@@ -396,11 +396,11 @@ type RestTests() =
         [<Test>]
         member x.GetRedirectedObject() = DomainObject14.GetRedirectedObject x.api
         
-//        [<Test>]
-//        member x.PutWithValueObject() = DomainObject14.PutWithValueObject x.api
+        [<Test>]
+        member x.PutWithValueObject() = DomainObject14.PutWithValueObject x.api
         
-//        [<Test>]
-//        member x.PutWithValueObjectValidateOnly() = DomainObject14.PutWithValueObjectValidateOnly x.api
+        [<Test>]
+        member x.PutWithValueObjectValidateOnly() = DomainObject14.PutWithValueObjectValidateOnly x.api
         
 //        [<Test>]
 //        member x.PutWithScalarsObject() = DomainObject14.PutWithScalarsObject x.api
