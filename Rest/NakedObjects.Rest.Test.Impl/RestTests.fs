@@ -361,11 +361,11 @@ type RestTests() =
         [<Test>]
         member x.GetMostSimpleObjectSimpleOnly() = DomainObject14.GetMostSimpleObjectSimpleOnly x.api
         
-//        [<Test>]
-//        member x.GetWithDateTimeKeyObject() = DomainObject14.GetWithDateTimeKeyObject x.api
+        [<Test>]
+        member x.GetWithDateTimeKeyObject() = DomainObject14.GetWithDateTimeKeyObject x.api
         
-//        [<Test>]
-//        member x.GetWithGuidKeyObject() = DomainObject14.GetWithGuidKeyObject x.api
+        [<Test>]
+        member x.GetWithGuidKeyObject() = DomainObject14.GetWithGuidKeyObject x.api
 
 //        [<Test>]
 //        member x.GetVerySimpleEagerObject() = DomainObject14.GetVerySimpleEagerObject x.api

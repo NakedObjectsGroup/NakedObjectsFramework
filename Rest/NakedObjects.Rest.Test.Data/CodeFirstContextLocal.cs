@@ -147,6 +147,9 @@ namespace RestfulObjects.Test.Data {
             var wat1 = new WithAttachments {Id = 1};
             context.WithAttachments.Add(wat1);
 
+            var g1 = new WithGuidKey {Id = new Guid("CA761232-ED42-11CE-BACD-00AA0057B223")};
+            context.WithGuidKeys.Add(g1);
+
             context.SaveChanges();
 
             wc1.ACollection.Remove(ms3);
