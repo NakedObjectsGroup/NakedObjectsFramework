@@ -1667,12 +1667,12 @@ let assertTransactionalCache  (headers : Headers.ResponseHeaders) =
     Assert.AreEqual("no-cache", headers.Headers.["Pragma"].ToString())
     Assert.AreEqual(headers.Date, headers.Expires)
 
-let assertConfigCache secs  (message : HttpResponseMessage) = 
+let assertConfigCache secs  (headers : Headers.ResponseHeaders) = 
     let ts = new TimeSpan(0, 0, secs)
-    Assert.AreEqual(ts, message.Headers.CacheControl.MaxAge)
-    Assert.IsTrue(message.Headers.Date.HasValue)
-    let expire = message.Headers.Date.Value + ts
-    Assert.AreEqual(expire, message.Content.Headers.Expires)
+    Assert.AreEqual(ts, headers.CacheControl.MaxAge)
+    Assert.IsTrue(headers.Date.HasValue)
+    let expire = headers.Date.Value + ts
+    Assert.AreEqual(expire, headers.Expires)
 
 let assertUserInfoCache (headers : Headers.ResponseHeaders) = 
     Assert.AreEqual(oneHour, headers.CacheControl.MaxAge)

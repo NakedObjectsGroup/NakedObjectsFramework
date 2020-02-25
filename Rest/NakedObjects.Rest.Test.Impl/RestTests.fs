@@ -338,28 +338,28 @@ type RestTests() =
         [<Test>]
         member x.NotAcceptableError() = Error10.NotAcceptableError x.api
         
-//        [<Test>]
-//        member x.GetMostSimpleObject() = DomainObject14.GetMostSimpleObject x.api
+        [<Test>]
+        member x.GetMostSimpleObject() = DomainObject14.GetMostSimpleObject x.api
         
-//        [<Test>]
-//        member x.GetMostSimpleObjectWithDetailsFlag() = DomainObject14.GetMostSimpleObjectWithDetailsFlag x.api
+        [<Test>]
+        member x.GetMostSimpleObjectWithDetailsFlag() = DomainObject14.GetMostSimpleObjectWithDetailsFlag x.api
 
-//        [<Test>]
-//        member x.GetWithAttachmentsObject() = DomainObject14.GetWithAttachmentsObject x.api
+        [<Test>]
+        member x.GetWithAttachmentsObject() = DomainObject14.GetWithAttachmentsObject x.api
         
-//        [<Test>]
-//        member x.GetMostSimpleObjectConfiguredSelectable() = 
-//            DomainObject14.GetMostSimpleObjectConfiguredSelectable x.api
+        [<Test>]
+        member x.GetMostSimpleObjectConfiguredSelectable() = 
+            DomainObject14.GetMostSimpleObjectConfiguredSelectable x.api
         
-//        [<Test>]
-//        member x.GetMostSimpleObjectConfiguredSimpleOnly() = 
-//            DomainObject14.GetMostSimpleObjectConfiguredSimpleOnly x.api
+        [<Test>]
+        member x.GetMostSimpleObjectConfiguredSimpleOnly() = 
+            DomainObject14.GetMostSimpleObjectConfiguredSimpleOnly x.api
         
-//        [<Test>]
-//        member x.GetMostSimpleObjectConfiguredCaching() = DomainObject14.GetMostSimpleObjectConfiguredCaching x.api
+        [<Test>]
+        member x.GetMostSimpleObjectConfiguredCaching() = DomainObject14.GetMostSimpleObjectConfiguredCaching x.api
         
-//        [<Test>]
-//        member x.GetMostSimpleObjectSimpleOnly() = DomainObject14.GetMostSimpleObjectSimpleOnly x.api
+        [<Test>]
+        member x.GetMostSimpleObjectSimpleOnly() = DomainObject14.GetMostSimpleObjectSimpleOnly x.api
         
 //        [<Test>]
 //        member x.GetWithDateTimeKeyObject() = DomainObject14.GetWithDateTimeKeyObject x.api
