@@ -367,14 +367,14 @@ type RestTests() =
         [<Test>]
         member x.GetWithGuidKeyObject() = DomainObject14.GetWithGuidKeyObject x.api
 
-//        [<Test>]
-//        member x.GetVerySimpleEagerObject() = DomainObject14.GetVerySimpleEagerObject x.api
+        [<Test>]
+        member x.GetVerySimpleEagerObject() = DomainObject14.GetVerySimpleEagerObject x.api
         
-//        [<Test>]
-//        member x.GetWithValueObject() = DomainObject14.GetWithValueObject x.api
+        [<Test>]
+        member x.GetWithValueObject() = DomainObject14.GetWithValueObject x.api
         
-//        [<Test>]
-//        member x.GetWithScalarsObject() = DomainObject14.GetWithScalarsObject x.api
+        [<Test>]
+        member x.GetWithScalarsObject() = DomainObject14.GetWithScalarsObject x.api
         
 //        [<Test>]
 //        member x.GetWithValueObjectUserAuth() = 
