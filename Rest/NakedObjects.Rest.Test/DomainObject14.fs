@@ -1051,369 +1051,359 @@ let PutWithValueObjectValidateOnly(api : RestfulObjectsControllerBase) =
     Assert.IsNull(headers.ContentType)
     Assert.AreEqual("", jsonResult)
 
-//let PutWithValueObjectConcurrencySuccess(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithValue"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let props = 
-//        new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, 444))), 
-//                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 555))))
-//    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
-//    let args = CreateReservedArgs ""
-//    api.Request <- jsonGetMsg (url)
-//    let result = api.GetObject(oType, ktc "1", args)
-//    let tag = result.Headers.ETag.Tag
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsgAndTag url (props.ToString()) tag
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    let disabledValue = 
-//        TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
-//        :: (makeObjectPropertyMember "ADisabledValue" oid "A Disabled Value" (TObjectVal(200)))
-    
-//    let args = 
-//        TProperty(JsonPropertyNames.Arguments, 
-//                  TObjectJson([ TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
-    
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
-//          TProperty(JsonPropertyNames.Title, TObjectVal("1"))
-//          TProperty(JsonPropertyNames.Links, 
-//                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
-//                             TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
-//          TProperty(JsonPropertyNames.Members, 
-//                    TObjectJson([ TProperty("AChoicesValue", TObjectJson(makeObjectPropertyMember "AChoicesValue" oid "A Choices Value" (TObjectVal(555))))
-                                  
-//                                  TProperty
-//                                      ("AConditionalChoicesValue", 
-//                                       TObjectJson(makeObjectPropertyMember "AConditionalChoicesValue" oid "A Conditional Choices Value" (TObjectVal(0))))
-                                  
-//                                  TProperty
-//                                      ("ADateTimeValue", 
-                                       
-//                                       TObjectJson
-//                                           (makePropertyMemberDateTime "objects" "ADateTimeValue" oid "A Date Time Value" "A datetime value for testing" true 
-//                                                (TObjectVal("2012-02-10")) "date"))
+let PutWithValueObjectConcurrencySuccess(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithValue"
+    let oid = ktc "1"
+    let oName = sprintf "%s/%s" oType oid
 
-//                                  TProperty
-//                                      ("ATimeSpanValue", 
-                                       
-//                                       TObjectJson
-//                                           (makePropertyMemberTimeSpan "objects" "ATimeSpanValue" oid "A Time Span Value" "A timespan value for testing" true 
-//                                                (TObjectVal("02:03:04")) "time"))
+    let url = sprintf "http://localhost/objects/%s" oName
+    let props = 
+        new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, 444))), 
+                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 555))))
+    
+    let url = sprintf "http://localhost/objects/%s/%s" oType oid
+    jsonSetGetMsg api.Request url
+    let result = api.GetObject(oType, oid)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
-//                                  TProperty("ADisabledValue", TObjectJson(disabledValue))
-                                  
-//                                  TProperty
-//                                      ("AStringValue", 
-                                       
-//                                       TObjectJson
-//                                           (makePropertyMemberString "objects" "AStringValue" oid "A String Value" "A string value for testing" true 
-//                                                (TObjectVal("")) []))
-                                  
-//                                  TProperty
-//                                      ("AUserDisabledValue", 
-                                       
-//                                       TObjectJson
-//                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Not authorized to edit")) 
-//                                            :: makeObjectPropertyMember "AUserDisabledValue" oid "A User Disabled Value" (TObjectVal(0))))
-//                                  TProperty("AValue", TObjectJson(makeObjectPropertyMember "AValue" oid "A Value" (TObjectVal(444))))
-//                                  TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Value"))
-//                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Values"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class1 class2"))
-//                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
-//                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
-    
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
-//    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
-//    compareObject expected parsedResult
+    let tag = headers.ETag.Tag
+    let args = CreateArgMapWithReserved props
 
-//let PutWithScalarsObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithScalars"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let props = 
-//        new JObject(new JProperty("Bool", new JObject(new JProperty(JsonPropertyNames.Value, false))), 
-//                    new JProperty("Byte", new JObject(new JProperty(JsonPropertyNames.Value, 2))), 
-//                    new JProperty("Char", new JObject(new JProperty(JsonPropertyNames.Value, "A"))), 
-//                    new JProperty("Decimal", new JObject(new JProperty(JsonPropertyNames.Value, 100.9))), 
-//                    new JProperty("DateTime", new JObject(new JProperty(JsonPropertyNames.Value, "2011-12-25T12:13:14Z"))), 
-//                    new JProperty("Double", new JObject(new JProperty(JsonPropertyNames.Value, 200.8))), 
-//                    new JProperty("EnumByAttributeChoices", new JObject(new JProperty(JsonPropertyNames.Value, 1))), 
-//                    new JProperty("Float", new JObject(new JProperty(JsonPropertyNames.Value, 300.7))), 
-//                    new JProperty("Int", new JObject(new JProperty(JsonPropertyNames.Value, 400))),
-//                    new JProperty("IntWithRange", new JObject(new JProperty(JsonPropertyNames.Value, 400))), 
-//                    new JProperty("Long", new JObject(new JProperty(JsonPropertyNames.Value, 500))), 
-//                    new JProperty("SByte", new JObject(new JProperty(JsonPropertyNames.Value, 3))), 
-//                    new JProperty("Short", new JObject(new JProperty(JsonPropertyNames.Value, 4))), 
-//                    new JProperty("String", new JObject(new JProperty(JsonPropertyNames.Value, "44"))), 
-//                    new JProperty("UInt", new JObject(new JProperty(JsonPropertyNames.Value, 5))), 
-//                    new JProperty("ULong", new JObject(new JProperty(JsonPropertyNames.Value, 6))), 
-//                    new JProperty("UShort", new JObject(new JProperty(JsonPropertyNames.Value, 7))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-    
-//    let emptyValue = TArray([])
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request (tag.ToString())
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
 
-//    let arguments = 
-//        TProperty(JsonPropertyNames.Arguments, 
-//                  TObjectJson([ TProperty("Bool", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("Byte", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("Char", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                //TProperty("CharArray", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))]));
-//                                TProperty("Decimal", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("DateTime", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("Double", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("EnumByAttributeChoices", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("Float", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("Int", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("IntWithRange", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("Long", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("Password", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("SByte", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                //TProperty("SByteArray", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))]));
-//                                TProperty("Short", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("String", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("UInt", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("ULong", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("UShort", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+    let disabledValue = 
+        TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
+        :: (makeObjectPropertyMember "ADisabledValue" oName "A Disabled Value" (TObjectVal(200)))
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
-//          TProperty(JsonPropertyNames.Title, TObjectVal("1"))
-//          TProperty(JsonPropertyNames.Links, 
-//                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
-//                             TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
-          
-//          TProperty
-//              (JsonPropertyNames.Members, 
-               
-//               TObjectJson
-//                   ([ TProperty("Bool", TObjectJson(makePropertyMemberWithType "objects" "Bool" oid "Bool" "" "boolean" false (TObjectVal(false))))
-//                      TProperty("Byte", TObjectJson(makePropertyMemberWithNumber "objects" "Byte" oid "Byte" "" "int" false (TObjectVal(2))))
-//                      //TProperty("ByteArray", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) :: makePropertyMemberWithTypeNoValue "objects"  "ByteArray" oid "Byte Array" "" "blob"  false)) ;
-//                      TProperty("Char", TObjectJson(makePropertyMemberWithFormat "objects" "Char" oid "Char" "" "string" false (TObjectVal("3"))))
-//                      //TProperty("CharArray", TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "CharArray" oid "Char Array" "" "clob"  false)) ;
-//                      TProperty("Decimal", TObjectJson(makePropertyMemberWithNumber "objects" "Decimal" oid "Decimal" "" "decimal" false (TObjectVal(100.9))))
-                      
-//                      TProperty
-//                          ("DateTime", 
-                           
-//                           TObjectJson
-//                               (makePropertyMemberWithFormat "objects" "DateTime" oid "Date Time" "" "date" false 
-//                                    (TObjectVal("2011-12-25"))))
-//                      TProperty("Double", TObjectJson(makePropertyMemberWithNumber "objects" "Double" oid "Double" "" "decimal" false (TObjectVal(200.8))))
-                      
-//                      TProperty
-//                          ("EnumByAttributeChoices", 
-                           
-//                           TObjectJson
-//                               (makePropertyMemberWithNumber "objects" "EnumByAttributeChoices" oid "Enum By Attribute Choices" "" "int" false 
-//                                    (TObjectVal(1))))
-//                      TProperty("Float", TObjectJson(makePropertyMemberWithNumber "objects" "Float" oid "Float" "" "decimal" false (TObjectVal(300.7))))
-//                      TProperty("Id", TObjectJson(makePropertyMemberWithNumber "objects" "Id" oid "Id" "" "int" false (TObjectVal(1))))
-//                      TProperty("Int", TObjectJson(makePropertyMemberWithNumber "objects" "Int" oid "Int" "" "int" false (TObjectVal(400))))
-//                      TProperty("IntWithRange", TObjectJson(makePropertyMemberWithNumber "objects" "IntWithRange" oid "Int With Range" "" "int" false (TObjectVal(400))))
-//                      TProperty("List", TObjectJson(makeCollectionMember "List" oid "List" "" "list" 0 emptyValue))
-//                      TProperty("Long", TObjectJson(makePropertyMemberWithNumber "objects" "Long" oid "Long" "" "int" false (TObjectVal(500))))
-//                      TProperty("Password", TObjectJson(makePropertyMemberWithFormat "objects" "Password" oid "Password" "" "string" false (TObjectVal(null))))
-//                      TProperty("SByte", TObjectJson(makePropertyMemberWithNumber "objects" "SByte" oid "S Byte" "" "int" false (TObjectVal(3))))
-//                      //TProperty("SByteArray",TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "SByteArray" oid "S Byte Array" "" "blob"  false)) ;
-//                      TProperty("Set", TObjectJson(makeCollectionMember "Set" oid "Set" "" "set" 0 emptyValue))
-//                      TProperty("Short", TObjectJson(makePropertyMemberWithNumber "objects" "Short" oid "Short" "" "int" false (TObjectVal(4))))
-//                      TProperty("String", TObjectJson(makePropertyMemberWithFormat "objects" "String" oid "String" "" "string" false (TObjectVal("44"))))
-//                      TProperty("UInt", TObjectJson(makePropertyMemberWithNumber "objects" "UInt" oid "U Int" "" "int" false (TObjectVal(5))))
-//                      TProperty("ULong", TObjectJson(makePropertyMemberWithNumber "objects" "ULong" oid "U Long" "" "int" false (TObjectVal(6))))
-//                      TProperty("UShort", TObjectJson(makePropertyMemberWithNumber "objects" "UShort" oid "U Short" "" "int" false (TObjectVal(7)))) ]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Scalars"))
-//                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Scalarses"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
-//                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
+    let args = 
+        TProperty(JsonPropertyNames.Arguments, 
+                  TObjectJson([ TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("AConditionalChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
     
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
-//    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
-//    compareObject expected parsedResult
+    let expected = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
+          TProperty(JsonPropertyNames.Title, TObjectVal("1"))
+          TProperty(JsonPropertyNames.Links, 
+                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
+                             TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oName) RepresentationTypes.Object oType) ]))
+          TProperty(JsonPropertyNames.Members, 
+                    TObjectJson([ TProperty("AChoicesValue", TObjectJson(makeObjectPropertyMember "AChoicesValue" oName "A Choices Value" (TObjectVal(555))))                                  
+                                  TProperty
+                                      ("AConditionalChoicesValue", 
+                                       TObjectJson(makeObjectPropertyMember "AConditionalChoicesValue" oName "A Conditional Choices Value" (TObjectVal(0))))                                  
+                                  TProperty
+                                      ("ADateTimeValue",                                        
+                                       TObjectJson
+                                           (makePropertyMemberDateTime "objects" "ADateTimeValue" oName "A Date Time Value" "A datetime value for testing" true 
+                                                (TObjectVal("2012-02-10")) "date"))
+                                  TProperty
+                                      ("ATimeSpanValue",                                        
+                                       TObjectJson
+                                           (makePropertyMemberTimeSpan "objects" "ATimeSpanValue" oName "A Time Span Value" "A timespan value for testing" true 
+                                                (TObjectVal("02:03:04")) "time"))
+                                  TProperty("ADisabledValue", TObjectJson(disabledValue))                                  
+                                  TProperty
+                                      ("AStringValue",                                        
+                                       TObjectJson
+                                           (makePropertyMemberString "objects" "AStringValue" oName "A String Value" "A string value for testing" true 
+                                                (TObjectVal("")) []))                                  
+                                  TProperty
+                                      ("AUserDisabledValue",                                        
+                                       TObjectJson
+                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Not authorized to edit")) 
+                                            :: makeObjectPropertyMember "AUserDisabledValue" oName "A User Disabled Value" (TObjectVal(0))))
+                                  TProperty("AValue", TObjectJson(makeObjectPropertyMember "AValue" oName "A Value" (TObjectVal(444))))
+                                  TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oName "Id" (TObjectVal(1)))) ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Value"))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Values"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class1 class2"))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
+                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
+    
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    assertTransactionalCache headers
+    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
 
-//let PutWithReferenceObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithReference"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//    let roid = roType + "/" + ktc "2"
-//    let pid = "AnEagerReference"
-//    let ourl = sprintf "objects/%s" oid
-//    let purl = sprintf "%s/properties/%s" ourl pid
-//    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "2")))).ToString()))
-//    let props = 
-//        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
-//                    new JProperty("AnEagerReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
-//                    new JProperty("AnAutoCompleteReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
-//                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    let args1 = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+let PutWithScalarsObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithScalars"
+    let oid = ktc "1"
+    let oName = sprintf "%s/%s" oType oid
+
+    let props = 
+        new JObject(new JProperty("Bool", new JObject(new JProperty(JsonPropertyNames.Value, false))), 
+                    new JProperty("Byte", new JObject(new JProperty(JsonPropertyNames.Value, 2))), 
+                    new JProperty("Char", new JObject(new JProperty(JsonPropertyNames.Value, "A"))), 
+                    new JProperty("Decimal", new JObject(new JProperty(JsonPropertyNames.Value, 100.9))), 
+                    new JProperty("DateTime", new JObject(new JProperty(JsonPropertyNames.Value, "2011-12-25T12:13:14Z"))), 
+                    new JProperty("Double", new JObject(new JProperty(JsonPropertyNames.Value, 200.8))), 
+                    new JProperty("EnumByAttributeChoices", new JObject(new JProperty(JsonPropertyNames.Value, 1))), 
+                    new JProperty("Float", new JObject(new JProperty(JsonPropertyNames.Value, 300.7))), 
+                    new JProperty("Int", new JObject(new JProperty(JsonPropertyNames.Value, 400))),
+                    new JProperty("IntWithRange", new JObject(new JProperty(JsonPropertyNames.Value, 400))), 
+                    new JProperty("Long", new JObject(new JProperty(JsonPropertyNames.Value, 500))), 
+                    new JProperty("SByte", new JObject(new JProperty(JsonPropertyNames.Value, 3))), 
+                    new JProperty("Short", new JObject(new JProperty(JsonPropertyNames.Value, 4))), 
+                    new JProperty("String", new JObject(new JProperty(JsonPropertyNames.Value, "44"))), 
+                    new JProperty("UInt", new JObject(new JProperty(JsonPropertyNames.Value, 5))), 
+                    new JProperty("ULong", new JObject(new JProperty(JsonPropertyNames.Value, 6))), 
+                    new JProperty("UShort", new JObject(new JProperty(JsonPropertyNames.Value, 7))))
     
-//    let msObj = 
-//        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
-//          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2"))
-//          TProperty(JsonPropertyNames.Title, TObjectVal("2"))
-//          TProperty(JsonPropertyNames.Links, 
-//                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object roType)
-//                             TObjectJson(sb(roType)); TObjectJson(sp(roType))
-//                             TObjectJson(args1 :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid) RepresentationTypes.Object roType) ]))
-//          TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(2)))) ]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
-//                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
-//                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
-//                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
+    let args = CreateArgMapWithReserved props    
+    let url = sprintf "http://localhost/objects/%s/%s" oType oid
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
     
-//    let valueRel1 = RelValues.Value + makeParm RelParamValues.Property "ADisabledReference"
-//    let valueRel2 = RelValues.Value + makeParm RelParamValues.Property "AChoicesReference"
-//    let valueRel3 = RelValues.Value + makeParm RelParamValues.Property "AReference"
-//    let valueRel4 = RelValues.Value + makeParm RelParamValues.Property "AnEagerReference"
-//    let valueRel5 = RelValues.Value + makeParm RelParamValues.Property "AnAutoCompleteReference"
-//    let val1 = 
-//        TObjectJson
-//            (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
-//             :: makeGetLinkProp valueRel1 (sprintf "objects/%s/%s" roType (ktc "1")) RepresentationTypes.Object roType)
-//    let val2 = 
-//        TObjectJson
-//            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
-//             :: makeGetLinkProp valueRel2 (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType)
-//    let val3 = 
-//        TObjectJson
-//            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
-//             :: makeGetLinkProp valueRel3 (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType)
-//    let val4 = 
-//        TObjectJson
-//            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
-//             :: makeLinkPropWithMethodValue "GET" valueRel4 (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType (TObjectJson(msObj)))
-//    let val5 = 
-//        TObjectJson
-//            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
-//             :: makeGetLinkProp valueRel5 (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType)
-//    let modifyRel = RelValues.Modify + makeParm RelParamValues.Property "AnEagerReference"
+    let emptyValue = TArray([])
+
+    let arguments = 
+        TProperty(JsonPropertyNames.Arguments, 
+                  TObjectJson([ TProperty("Bool", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("Byte", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("Char", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                //TProperty("CharArray", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))]));
+                                TProperty("Decimal", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("DateTime", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("Double", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("EnumByAttributeChoices", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("Float", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("Int", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("IntWithRange", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("Long", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("Password", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("SByte", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                //TProperty("SByteArray", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))]));
+                                TProperty("Short", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("String", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("UInt", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("ULong", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("UShort", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
     
-//    let details = 
-//        [ TProperty(JsonPropertyNames.Id, TObjectVal("AnEagerReference"))
-//          TProperty(JsonPropertyNames.Value, val4)
-//          TProperty(JsonPropertyNames.HasChoices, TObjectVal(false))
-          
-//          TProperty
-//              (JsonPropertyNames.Links, 
-               
-//               TArray
-//                   ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
-//                      TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
-                      
-                      
-                      
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
-//                           :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Eager Reference"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(roType))
-//                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
-//                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
+    let expected = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
+          TProperty(JsonPropertyNames.Title, TObjectVal("1"))
+          TProperty(JsonPropertyNames.Links, 
+                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
+                             TObjectJson(arguments :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oName) RepresentationTypes.Object oType) ]))          
+          TProperty
+              (JsonPropertyNames.Members,                
+               TObjectJson
+                   ([ TProperty("Bool", TObjectJson(makePropertyMemberWithType "objects" "Bool" oName "Bool" "" "boolean" false (TObjectVal(false))))
+                      TProperty("Byte", TObjectJson(makePropertyMemberWithNumber "objects" "Byte" oName "Byte" "" "int" false (TObjectVal(2))))
+                      //TProperty("ByteArray", TObjectJson(TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) :: makePropertyMemberWithTypeNoValue "objects"  "ByteArray" oid "Byte Array" "" "blob"  false)) ;
+                      TProperty("Char", TObjectJson(makePropertyMemberWithFormat "objects" "Char" oName "Char" "" "string" false (TObjectVal("3"))))
+                      //TProperty("CharArray", TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "CharArray" oid "Char Array" "" "clob"  false)) ;
+                      TProperty("Decimal", TObjectJson(makePropertyMemberWithNumber "objects" "Decimal" oName "Decimal" "" "decimal" false (TObjectVal(100.9))))                      
+                      TProperty
+                          ("DateTime",                            
+                           TObjectJson
+                               (makePropertyMemberWithFormat "objects" "DateTime" oName "Date Time" "" "date" false 
+                                    (TObjectVal("2011-12-25"))))
+                      TProperty("Double", TObjectJson(makePropertyMemberWithNumber "objects" "Double" oName "Double" "" "decimal" false (TObjectVal(200.8))))                      
+                      TProperty
+                          ("EnumByAttributeChoices",                            
+                           TObjectJson
+                               (makePropertyMemberWithNumber "objects" "EnumByAttributeChoices" oName "Enum By Attribute Choices" "" "int" false 
+                                    (TObjectVal(1))))
+                      TProperty("Float", TObjectJson(makePropertyMemberWithNumber "objects" "Float" oName "Float" "" "decimal" false (TObjectVal(300.7))))
+                      TProperty("Id", TObjectJson(makePropertyMemberWithNumber "objects" "Id" oName "Id" "" "int" false (TObjectVal(1))))
+                      TProperty("Int", TObjectJson(makePropertyMemberWithNumber "objects" "Int" oName "Int" "" "int" false (TObjectVal(400))))
+                      TProperty("IntWithRange", TObjectJson(makePropertyMemberWithNumber "objects" "IntWithRange" oName "Int With Range" "" "int" false (TObjectVal(400))))
+                      TProperty("List", TObjectJson(makeCollectionMember "List" oName "List" "" "list" 0 emptyValue))
+                      TProperty("Long", TObjectJson(makePropertyMemberWithNumber "objects" "Long" oName "Long" "" "int" false (TObjectVal(500))))
+                      TProperty("Password", TObjectJson(makePropertyMemberWithFormat "objects" "Password" oName "Password" "" "string" false (TObjectVal(null))))
+                      TProperty("SByte", TObjectJson(makePropertyMemberWithNumber "objects" "SByte" oName "S Byte" "" "int" false (TObjectVal(3))))
+                      //TProperty("SByteArray",TObjectJson(makePropertyMemberWithTypeNoValue "objects"  "SByteArray" oid "S Byte Array" "" "blob"  false)) ;
+                      TProperty("Set", TObjectJson(makeCollectionMember "Set" oName "Set" "" "set" 0 emptyValue))
+                      TProperty("Short", TObjectJson(makePropertyMemberWithNumber "objects" "Short" oName "Short" "" "int" false (TObjectVal(4))))
+                      TProperty("String", TObjectJson(makePropertyMemberWithFormat "objects" "String" oName "String" "" "string" false (TObjectVal("44"))))
+                      TProperty("UInt", TObjectJson(makePropertyMemberWithNumber "objects" "UInt" oName "U Int" "" "int" false (TObjectVal(5))))
+                      TProperty("ULong", TObjectJson(makePropertyMemberWithNumber "objects" "ULong" oName "U Long" "" "int" false (TObjectVal(6))))
+                      TProperty("UShort", TObjectJson(makePropertyMemberWithNumber "objects" "UShort" oName "U Short" "" "int" false (TObjectVal(7)))) ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Scalars"))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Scalarses"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
+                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
-//    let args = 
-//        TProperty(JsonPropertyNames.Arguments, 
-//                  TObjectJson([ TProperty("AChoicesReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("AConditionalChoicesReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("ANullReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("AReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("AnAutoCompleteReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("AnEagerReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    assertTransactionalCache headers
+    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
+
+let PutWithReferenceObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithReference"
+    let oid = ktc "1"
+    let oName = sprintf "%s/%s" oType oid
+
+    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let roid = ktc "2"
+    let roName = sprintf "%s/%s" roType roid
+    let pid = "AnEagerReference"
+    let ourl = sprintf "objects/%s" oName
+    let purl = sprintf "%s/properties/%s" ourl pid
+    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "2")))).ToString()))
+    let props = 
+        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
+                    new JProperty("AnEagerReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
+                    new JProperty("AnAutoCompleteReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
+                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
-//          TProperty(JsonPropertyNames.Title, TObjectVal("1"))
-//          TProperty(JsonPropertyNames.Links, 
-//                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))  
-//                             TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oid) RepresentationTypes.Object oType) ]))
-//          TProperty(JsonPropertyNames.Members, 
-//                    TObjectJson([ TProperty
-//                                      ("AChoicesReference", 
-//                                       TObjectJson(makePropertyMemberShort "objects" "AChoicesReference" oid "A Choices Reference" "" roType false val2 []))
-                                  
-//                                  TProperty
-//                                      ("AConditionalChoicesReference", 
-                                       
-//                                       TObjectJson
-//                                           (makePropertyMemberShort "objects" "AConditionalChoicesReference" oid "A Conditional Choices Reference" "" roType 
-//                                                false (TObjectVal(null)) []))
-                                  
-//                                  TProperty
-//                                      ("ADisabledReference", 
-                                       
-//                                       TObjectJson
-//                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
-//                                            :: (makePropertyMemberShort "objects" "ADisabledReference" oid "A Disabled Reference" "" roType false val1 [])))
-                                  
-//                                  TProperty
-//                                      ("ANullReference", 
-                                       
-//                                       TObjectJson
-//                                           (makePropertyMemberShort "objects" "ANullReference" oid "A Null Reference" "" roType true (TObjectVal(null)) []))
-//                                  TProperty("AReference", TObjectJson(makePropertyMemberShort "objects" "AReference" oid "A Reference" "" roType false val3 []))
-                                  
-//                                  TProperty
-//                                      ("AnAutoCompleteReference", 
-                                       
-//                                       TObjectJson
-//                                           (makePropertyMemberShort "objects" "AnAutoCompleteReference" oid "An Auto Complete Reference" "" roType false val5 []))
-                                  
-//                                  TProperty
-//                                      ("AnEagerReference", 
-//                                       TObjectJson(makePropertyMemberShort "objects" "AnEagerReference" oid "An Eager Reference" "" roType false val4 details))
-//                                  TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oid "Id" (TObjectVal(1)))) ]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Reference"))
-//                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With References"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
-//                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
+    let args = CreateArgMapWithReserved props    
+    let url = sprintf "http://localhost/objects/%s/%s" oType oid
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
+
+    let args1 = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
     
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
-//    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
-//    compareObject expected parsedResult
+    let msObj = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(roid))
+          TProperty(JsonPropertyNames.Title, TObjectVal("2"))
+          TProperty(JsonPropertyNames.Links, 
+                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roName) RepresentationTypes.Object roType)
+                             TObjectJson(sb(roType)); TObjectJson(sp(roType))
+                             TObjectJson(args1 :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roName) RepresentationTypes.Object roType) ]))
+          TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roName "Id" (TObjectVal(2)))) ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
+                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
+    
+    let valueRel1 = RelValues.Value + makeParm RelParamValues.Property "ADisabledReference"
+    let valueRel2 = RelValues.Value + makeParm RelParamValues.Property "AChoicesReference"
+    let valueRel3 = RelValues.Value + makeParm RelParamValues.Property "AReference"
+    let valueRel4 = RelValues.Value + makeParm RelParamValues.Property "AnEagerReference"
+    let valueRel5 = RelValues.Value + makeParm RelParamValues.Property "AnAutoCompleteReference"
+    
+    let val1 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
+             :: makeGetLinkProp valueRel1 (sprintf "objects/%s/%s" roType (oid)) RepresentationTypes.Object roType)
+    let val2 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
+             :: makeGetLinkProp valueRel2 (sprintf "objects/%s/%s" roType (roid)) RepresentationTypes.Object roType)
+    let val3 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
+             :: makeGetLinkProp valueRel3 (sprintf "objects/%s/%s" roType (roid)) RepresentationTypes.Object roType)
+    let val4 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
+             :: makeLinkPropWithMethodValue "GET" valueRel4 (sprintf "objects/%s/%s" roType (roid)) RepresentationTypes.Object roType (TObjectJson(msObj)))
+    let val5 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
+             :: makeGetLinkProp valueRel5 (sprintf "objects/%s/%s" roType (roid)) RepresentationTypes.Object roType)
+    
+    let modifyRel = RelValues.Modify + makeParm RelParamValues.Property "AnEagerReference"
+    
+    let details = 
+        [ TProperty(JsonPropertyNames.Id, TObjectVal("AnEagerReference"))
+          TProperty(JsonPropertyNames.Value, val4)
+          TProperty(JsonPropertyNames.HasChoices, TObjectVal(false))          
+          TProperty
+              (JsonPropertyNames.Links,                
+               TArray
+                   ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
+                      TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")                                                                  
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
+                           :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Eager Reference"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(roType))
+                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
+                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
+    
+    let args = 
+        TProperty(JsonPropertyNames.Arguments, 
+                  TObjectJson([ TProperty("AChoicesReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("AConditionalChoicesReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("ANullReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("AReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("AnAutoCompleteReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("AnEagerReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+    
+    let expected = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(oid))
+          TProperty(JsonPropertyNames.Title, TObjectVal("1"))
+          TProperty(JsonPropertyNames.Links, 
+                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))  
+                             TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" oName) RepresentationTypes.Object oType) ]))
+          TProperty(JsonPropertyNames.Members, 
+                    TObjectJson([ TProperty
+                                      ("AChoicesReference", 
+                                       TObjectJson(makePropertyMemberShort "objects" "AChoicesReference" oName "A Choices Reference" "" roType false val2 []))                                  
+                                  TProperty
+                                      ("AConditionalChoicesReference",                                        
+                                       TObjectJson
+                                           (makePropertyMemberShort "objects" "AConditionalChoicesReference" oName "A Conditional Choices Reference" "" roType 
+                                                false (TObjectVal(null)) []))                                  
+                                  TProperty
+                                      ("ADisabledReference",                                        
+                                       TObjectJson
+                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
+                                            :: (makePropertyMemberShort "objects" "ADisabledReference" oName "A Disabled Reference" "" roType false val1 [])))                                  
+                                  TProperty
+                                      ("ANullReference",                                        
+                                       TObjectJson
+                                           (makePropertyMemberShort "objects" "ANullReference" oName "A Null Reference" "" roType true (TObjectVal(null)) []))
+                                  TProperty("AReference", TObjectJson(makePropertyMemberShort "objects" "AReference" oName "A Reference" "" roType false val3 []))                                  
+                                  TProperty
+                                      ("AnAutoCompleteReference",                                        
+                                       TObjectJson
+                                           (makePropertyMemberShort "objects" "AnAutoCompleteReference" oName "An Auto Complete Reference" "" roType false val5 []))                                  
+                                  TProperty
+                                      ("AnEagerReference", 
+                                       TObjectJson(makePropertyMemberShort "objects" "AnEagerReference" oName "An Eager Reference" "" roType false val4 details))
+                                  TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oName "Id" (TObjectVal(1)))) ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Reference"))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With References"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
+                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
+    
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    assertTransactionalCache headers
+    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
 
 //let PutWithReferenceObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithReference"

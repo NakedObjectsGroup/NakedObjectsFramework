@@ -402,8 +402,8 @@ type RestTests() =
         [<Test>]
         member x.PutWithValueObjectValidateOnly() = DomainObject14.PutWithValueObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithScalarsObject() = DomainObject14.PutWithScalarsObject x.api
+        [<Test>]
+        member x.PutWithScalarsObject() = DomainObject14.PutWithScalarsObject x.api
         
 //        [<Test>]
 //        member x.PutWithReferenceObject() = DomainObject14.PutWithReferenceObject x.api
