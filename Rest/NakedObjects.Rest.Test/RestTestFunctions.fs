@@ -327,7 +327,7 @@ let readSnapshotToJson (ss : HttpResponseMessage) =
 let readActionResult (ar : ActionResult) (hc : HttpContext) = 
     let testContext = new ActionContext()
     testContext.HttpContext <- hc
-    ar.ExecuteResultAsync testContext |> Async.AwaitTask |> ignore
+    ar.ExecuteResultAsync testContext |> Async.AwaitTask |> Async.RunSynchronously
     use s = testContext.HttpContext.Response.Body
     s.Position <- 0L
     use sr = new StreamReader(s)
@@ -335,6 +335,7 @@ let readActionResult (ar : ActionResult) (hc : HttpContext) =
     let statusCode = testContext.HttpContext.Response.StatusCode
     let headers = testContext.HttpContext.Response.GetTypedHeaders()
     (json, statusCode, headers)
+     
 
 let comp (a : obj) (b : obj) e = 
     Assert.AreEqual(a, b, e)   

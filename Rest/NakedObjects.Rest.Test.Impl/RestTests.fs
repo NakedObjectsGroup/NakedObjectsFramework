@@ -405,14 +405,14 @@ type RestTests() =
         [<Test>]
         member x.PutWithScalarsObject() = DomainObject14.PutWithScalarsObject x.api
         
-//        [<Test>]
-//        member x.PutWithReferenceObject() = DomainObject14.PutWithReferenceObject x.api
+        [<Test>]
+        member x.PutWithReferenceObject() = DomainObject14.PutWithReferenceObject x.api
         
-//        [<Test>]
-//        member x.PutWithReferenceObjectValidateOnly() = DomainObject14.PutWithReferenceObjectValidateOnly x.api
+        [<Test>]
+        member x.PutWithReferenceObjectValidateOnly() = DomainObject14.PutWithReferenceObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.GetWithActionObject() = DomainObject14.GetWithActionObject x.api
+        [<Test>]
+        member x.GetWithActionObject() = DomainObject14.GetWithActionObject x.api
         
 //        [<Test>]
 //        member x.GetWithActionObjectSimpleOnly() = DomainObject14.GetWithActionObjectSimpleOnly x.api
