@@ -471,7 +471,45 @@ type RestTests() =
               
         [<Test>]
         member x.PutWithValueObjectMalformedArgs() = DomainObject14.PutWithValueObjectMalformedArgs x.api
-           
+               
+        [<Test>]
+        member x.PutWithValueObjectMalformedDateTimeArgs() = 
+            DomainObject14.PutWithValueObjectMalformedDateTimeArgs x.api
+
+        [<Test>]
+        member x.PutWithValueObjectMalformedTimeArgs() = 
+            DomainObject14.PutWithValueObjectMalformedTimeArgs x.api
+
+        [<Test>]
+        member x.PutWithValueObjectMalformedArgsValidateOnly() = 
+            DomainObject14.PutWithValueObjectMalformedArgsValidateOnly x.api
+                  
+        [<Test>]
+        member x.PutWithValueObjectInvalidArgsValue() = DomainObject14.PutWithValueObjectInvalidArgsValue x.api
+                  
+        [<Test>]
+        member x.PutWithValueObjectInvalidArgsValueValidateOnly() = 
+            DomainObject14.PutWithValueObjectInvalidArgsValueValidateOnly x.api
+                  
+        [<Test>]
+        member x.PutWithReferenceObjectInvalidArgsValue() = DomainObject14.PutWithReferenceObjectInvalidArgsValue x.api
+        
+        [<Test>]
+        member x.PutWithReferenceObjectNotFoundArgsValue() = 
+            DomainObject14.PutWithReferenceObjectNotFoundArgsValue x.api
+        
+        [<Test>]
+        member x.PutWithReferenceObjectInvalidArgsValueValidateOnly() = 
+            DomainObject14.PutWithReferenceObjectInvalidArgsValueValidateOnly x.api
+        
+        [<Test>]
+        member x.PutWithReferenceObjectMalformedArgs() = DomainObject14.PutWithReferenceObjectMalformedArgs x.api
+        
+        [<Test>]
+        member x.PutWithReferenceObjectMalformedArgsValidateOnly() = 
+            DomainObject14.PutWithReferenceObjectMalformedArgsValidateOnly x.api
+        
+
 
 //        [<Test>]
 //        member x.NotFoundGetObject() = DomainObject14.NotFoundGetObject x.api
@@ -481,46 +519,6 @@ type RestTests() =
         
 //        [<Test>]
 //        member x.GetObjectIgnoreWrongDomainType() = DomainObject14.GetObjectIgnoreWrongDomainType x.api
-        
-//      
-        
-//         
-//        [<Test>]
-//        member x.PutWithValueObjectMalformedDateTimeArgs() = 
-//            DomainObject14.PutWithValueObjectMalformedDateTimeArgs x.api
-        
-//        [<Test>]
-//        member x.PutWithValueObjectMalformedTimeArgs() = 
-//            DomainObject14.PutWithValueObjectMalformedTimeArgs x.api
-
-//        [<Test>]
-//        member x.PutWithValueObjectMalformedArgsValidateOnly() = 
-//            DomainObject14.PutWithValueObjectMalformedArgsValidateOnly x.api
-        
-//        [<Test>]
-//        member x.PutWithValueObjectInvalidArgsValue() = DomainObject14.PutWithValueObjectInvalidArgsValue x.api
-        
-//        [<Test>]
-//        member x.PutWithValueObjectInvalidArgsValueValidateOnly() = 
-//            DomainObject14.PutWithValueObjectInvalidArgsValueValidateOnly x.api
-        
-//        [<Test>]
-//        member x.PutWithReferenceObjectInvalidArgsValue() = DomainObject14.PutWithReferenceObjectInvalidArgsValue x.api
-        
-//        [<Test>]
-//        member x.PutWithReferenceObjectNotFoundArgsValue() = 
-//            DomainObject14.PutWithReferenceObjectNotFoundArgsValue x.api
-        
-//        [<Test>]
-//        member x.PutWithReferenceObjectInvalidArgsValueValidateOnly() = 
-//            DomainObject14.PutWithReferenceObjectInvalidArgsValueValidateOnly x.api
-        
-//        [<Test>]
-//        member x.PutWithReferenceObjectMalformedArgs() = DomainObject14.PutWithReferenceObjectMalformedArgs x.api
-        
-//        [<Test>]
-//        member x.PutWithReferenceObjectMalformedArgsValidateOnly() = 
-//            DomainObject14.PutWithReferenceObjectMalformedArgsValidateOnly x.api
         
 //        [<Test>]
 //        member x.PutWithValueObjectDisabledValue() = DomainObject14.PutWithValueObjectDisabledValue x.api

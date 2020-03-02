@@ -13,6 +13,7 @@ open System
 open NakedObjects.Rest.Snapshot.Constants
 open RestTestFunctions
 open Newtonsoft.Json.Linq
+open System.Linq
 
 let GetMostSimpleObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -3536,7 +3537,6 @@ let PutWithNestedViewModelEdit(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
 
-
     let valueRel1 = RelValues.Value + makeParm RelParamValues.Property "AReference"
     let valueRel2 = RelValues.Value + makeParm RelParamValues.Property "AViewModelReference"
     let val1 = 
@@ -3547,13 +3547,7 @@ let PutWithNestedViewModelEdit(api : RestfulObjectsControllerBase) =
         TObjectJson
             (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
              :: makeGetLinkProp valueRel2 (sprintf "objects/%s/%s" roType1 (ktc "2--1--1--2")) RepresentationTypes.Object roType1)
-    
-    let arguments = 
-        TProperty(JsonPropertyNames.Arguments, 
-                  TObjectJson([ TProperty("AReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-                                TProperty("AViewModelReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
-    
+       
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
           TProperty(JsonPropertyNames.InstanceId, TObjectVal(vmid2))
@@ -3743,7 +3737,7 @@ let PutWithValueObjectMissingArgs(api : RestfulObjectsControllerBase) =
     let oid = ktc "1"
     let oName = oType + "/" + oid
     
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/objects/%s/%s" oType oid
     jsonSetPutMsg api.Request url ""
     setIfMatch api.Request "*"
@@ -3761,7 +3755,7 @@ let PutWithValueObjectMissingArgsValidateOnly(api : RestfulObjectsControllerBase
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
     let props = new JObject(new JProperty("x-ro-validate-only", true))
-    let args = CreateArgMap props
+    let args = CreateArgMapWithReserved props
 
     jsonSetPutMsg api.Request url (props.ToString())
     setIfMatch api.Request "*"
@@ -3782,7 +3776,7 @@ let PutWithValueObjectMalformedArgs(api : RestfulObjectsControllerBase) =
     let props = 
         new JObject(new JProperty("AValue", new JObject(new JProperty("malformed", 222))), 
                     new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
-    let args = CreateArgMap props
+    let args = CreateArgMapWithReserved props
     jsonSetPutMsg api.Request url (props.ToString())
     setIfMatch api.Request "*"
     let result = api.PutObject(oType, oid, args)
@@ -3792,231 +3786,278 @@ let PutWithValueObjectMalformedArgs(api : RestfulObjectsControllerBase) =
     Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
     Assert.AreEqual("", jsonResult)
 
-//let PutWithValueObjectMalformedDateTimeArgs(api : RestfulObjectsControllerBase) = 
-//    let error = "cannot format value cannot parse as date as DateTime"
-//    let oType = ttc "RestfulObjects.Test.Data.WithValue"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let props = 
-//        new JObject(new JProperty("ADateTimeValue", new JObject(new JProperty(JsonPropertyNames.Value, "cannot parse as date"))), 
-//                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
+let PutWithValueObjectMalformedDateTimeArgs(api : RestfulObjectsControllerBase) = 
+    let error = "cannot format value cannot parse as date as DateTime"
+    let oType = ttc "RestfulObjects.Test.Data.WithValue"
+    let oid = ktc "1"
+
+    let oName = oType + "/" + oid
+    let url = sprintf "http://localhost/objects/%s" oName
+    let props = 
+        new JObject(new JProperty("ADateTimeValue", new JObject(new JProperty(JsonPropertyNames.Value, "cannot parse as date"))), 
+                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
     
-//    let expected = 
-//        [ TProperty("ADateTimeValue", 
-//                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("cannot parse as date"))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
-//          TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
-//    compareObject expected parsedResult
-
-//let PutWithValueObjectMalformedTimeArgs(api : RestfulObjectsControllerBase) = 
-//    let error = "cannot format value cannot parse as time as TimeSpan"
-//    let oType = ttc "RestfulObjects.Test.Data.WithValue"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let props = 
-//        new JObject(new JProperty("ATimeSpanValue", new JObject(new JProperty(JsonPropertyNames.Value, "cannot parse as time"))), 
-//                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
+    let args = CreateArgMapWithReserved props
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
     
-//    let expected = 
-//        [ TProperty("ATimeSpanValue", 
-//                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("cannot parse as time"))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
-//          TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
-//    compareObject expected parsedResult
-
-//let PutWithValueObjectMalformedArgsValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithValue"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let props = 
-//        new JObject(new JProperty("AValue", new JObject(new JProperty("malformed", 222))), 
-//                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))), new JProperty("x-ro-validate-only", true))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
-
-//// 400    
-//let PutWithValueObjectInvalidArgsValue(api : RestfulObjectsControllerBase) = 
-//    let error = "cannot format value invalid value as Int32"
-//    let oType = ttc "RestfulObjects.Test.Data.WithValue"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let props = 
-//        new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, "invalid value"))), 
-//                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
+    let expected = 
+        [ TProperty("ADateTimeValue", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("cannot parse as date"))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
+          TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
     
-//    let expected = 
-//        [ TProperty("AValue", 
-//                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalid value"))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
-//          TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
-//    compareObject expected parsedResult
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
+    compareObject expected parsedResult
 
-//let PutWithValueObjectInvalidArgsValueValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let error = "cannot format value invalid value as Int32"
-//    let oType = ttc "RestfulObjects.Test.Data.WithValue"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let props = 
-//        new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, "invalid value"))), 
-//                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))), new JProperty("x-ro-validate-only", true))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
+let PutWithValueObjectMalformedTimeArgs(api : RestfulObjectsControllerBase) = 
+    let error = "cannot format value cannot parse as time as TimeSpan"
+    let oType = ttc "RestfulObjects.Test.Data.WithValue"
+    let oid = ktc "1"
+    let oName = oType + "/" + oid
+    let url = sprintf "http://localhost/objects/%s" oName
+    let props = 
+        new JObject(new JProperty("ATimeSpanValue", new JObject(new JProperty(JsonPropertyNames.Value, "cannot parse as time"))), 
+                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
     
-//    let expected = 
-//        [ TProperty("AValue", 
-//                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalid value"))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
-//          TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
-//    compareObject expected parsedResult
-
-//// 400    
-//let PutWithReferenceObjectInvalidArgsValue(api : RestfulObjectsControllerBase) = 
-//    let error = "Not a suitable type; must be a Most Simple"
-//    let oType = ttc "RestfulObjects.Test.Data.WithReference"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let wvt = (ttc "RestfulObjects.Test.Data.WithValue")
-//    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" wvt (ktc "1"))).ToString()))
-//    let props = 
-//        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
-//                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
+    let args = CreateArgMapWithReserved props
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
     
-//    let expected = 
-//        [ TProperty("AReference", 
-//                    TObjectJson([ TProperty
-//                                      (JsonPropertyNames.Value, 
-//                                       TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s" wvt (ktc "1")))) ]))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
-//          TProperty("AChoicesReference", 
-//                    TObjectJson([ TProperty
-//                                      (JsonPropertyNames.Value, 
-//                                       TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s" wvt (ktc "1")))) ]))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ])) ]
-//    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.First().ToString())
-//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.Skip(1).First().ToString())
-//    compareObject expected parsedResult
-
-//let PutWithReferenceObjectNotFoundArgsValue(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithReference"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" oType (ktc "100"))).ToString()))
-//    let props = 
-//        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
-//                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
-//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s: null adapter\"" oType (ktc "100"), headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
-
-//let PutWithReferenceObjectInvalidArgsValueValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let error = "Not a suitable type; must be a Most Simple"
-//    let oType = ttc "RestfulObjects.Test.Data.WithReference"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let wvt = (ttc "RestfulObjects.Test.Data.WithValue")
-//    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" wvt (ktc "1"))).ToString()))
-//    let props = 
-//        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), new JProperty("x-ro-validate-only", true), 
-//                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
+    let expected = 
+        [ TProperty("ATimeSpanValue", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("cannot parse as time"))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
+          TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
     
-//    let expected = 
-//        [ TProperty("AReference", 
-//                    TObjectJson([ TProperty
-//                                      (JsonPropertyNames.Value, 
-//                                       TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s" wvt (ktc "1")))) ]))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
-//          TProperty("AChoicesReference", 
-//                    TObjectJson([ TProperty
-//                                      (JsonPropertyNames.Value, 
-//                                       TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s" wvt (ktc "1")))) ]))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ])) ]
-//    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.First().ToString())
-//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.Skip(1).First().ToString())
-//    compareObject expected parsedResult
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
+    compareObject expected parsedResult
 
-//let PutWithReferenceObjectMalformedArgs(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithReference"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, "malformed"))
-//    let props = 
-//        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
-//                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+let PutWithValueObjectMalformedArgsValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithValue"
+    let oid = ktc "1"
+    let oName = oType + "/" + oid
+    let url = sprintf "http://localhost/objects/%s" oName
+    let props = 
+        new JObject(new JProperty("AValue", new JObject(new JProperty("malformed", 222))), 
+                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))),
+                    new JProperty("x-ro-validate-only", true))
+    
+    let args = CreateArgMapWithReserved props
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+    Assert.IsNull(headers.ContentType)
+    Assert.AreEqual("", jsonResult)
 
-//let PutWithReferenceObjectMalformedArgsValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithReference"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, "malformed"))
-//    let props = 
-//        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
-//                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), new JProperty("x-ro-validate-only", true))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+// 400    
+let PutWithValueObjectInvalidArgsValue(api : RestfulObjectsControllerBase) = 
+    let error = "cannot format value invalid value as Int32"
+    let oType = ttc "RestfulObjects.Test.Data.WithValue"
+    let oid = ktc "1"
+    let oName = oType + "/" + oid
+    let url = sprintf "http://localhost/objects/%s" oName
+    let props = 
+        new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, "invalid value"))), 
+                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
+    
+    let args = CreateArgMapWithReserved props
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
+    
+    let expected = 
+        [ TProperty("AValue", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalid value"))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
+          TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
+   
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    compareObject expected parsedResult
+
+let PutWithValueObjectInvalidArgsValueValidateOnly(api : RestfulObjectsControllerBase) = 
+    let error = "cannot format value invalid value as Int32"
+    let oType = ttc "RestfulObjects.Test.Data.WithValue"
+    let oid = ktc "1"
+    let oName = oType + "/" + oid
+    let url = sprintf "http://localhost/objects/%s" oName
+    let props = 
+        new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, "invalid value"))), 
+                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))),
+                    new JProperty("x-ro-validate-only", true))
+
+    let args = CreateArgMapWithReserved props
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
+    
+    let expected = 
+        [ TProperty("AValue", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalid value"))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
+          TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
+    
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
+    compareObject expected parsedResult
+
+// 400    
+let PutWithReferenceObjectInvalidArgsValue(api : RestfulObjectsControllerBase) = 
+    let error = "Not a suitable type; must be a Most Simple"
+    let oType = ttc "RestfulObjects.Test.Data.WithReference"
+    let oid = ktc "1"
+    let oName = oType + "/" + oid
+    let url = sprintf "http://localhost/objects/%s" oName
+    let wvt = (ttc "RestfulObjects.Test.Data.WithValue")
+    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" wvt oid)).ToString()))
+    let props = 
+        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
+                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
+    
+    let args = CreateArgMapWithReserved props
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
+    
+    let expected = 
+        [ TProperty("AReference", 
+                    TObjectJson([ TProperty
+                                      (JsonPropertyNames.Value, 
+                                       TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s" wvt oid))) ]))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
+          TProperty("AChoicesReference", 
+                    TObjectJson([ TProperty
+                                      (JsonPropertyNames.Value, 
+                                       TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s" wvt oid))) ]))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ])) ]
+    
+    assertStatusCode unprocessableEntity statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].First().ToString())
+    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].Skip(1).First().ToString())
+    compareObject expected parsedResult
+
+let PutWithReferenceObjectNotFoundArgsValue(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithReference"
+    let oid = ktc "1"
+    let oName = oType + "/" + oid
+    let url = sprintf "http://localhost/objects/%s" oName
+    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" oType (ktc "100"))).ToString()))
+    let props = 
+        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
+                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
+    
+    let args = CreateArgMapWithReserved props
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    
+    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
+
+    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s: null adapter\"" oType (ktc "100"), headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
+
+let PutWithReferenceObjectInvalidArgsValueValidateOnly(api : RestfulObjectsControllerBase) = 
+    let error = "Not a suitable type; must be a Most Simple"
+    let oType = ttc "RestfulObjects.Test.Data.WithReference"
+    let oid = ktc "1"
+    let oName = oType + "/" + oid
+    let url = sprintf "http://localhost/objects/%s" oName
+    let wvt = (ttc "RestfulObjects.Test.Data.WithValue")
+    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" wvt oid)).ToString()))
+    let props = 
+        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))),
+                    new JProperty("x-ro-validate-only", true), 
+                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
+    
+    let args = CreateArgMapWithReserved props
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
+    
+    let expected = 
+        [ TProperty("AReference", 
+                    TObjectJson([ TProperty
+                                      (JsonPropertyNames.Value, 
+                                       TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s" wvt oid))) ]))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
+          TProperty("AChoicesReference", 
+                    TObjectJson([ TProperty
+                                      (JsonPropertyNames.Value, 
+                                       TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(sprintf "objects/%s/%s" wvt oid))) ]))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ])) ]
+    
+    assertStatusCode unprocessableEntity statusCode jsonResult
+
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].First().ToString())
+    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].Skip(1).First().ToString())
+    compareObject expected parsedResult
+
+let PutWithReferenceObjectMalformedArgs(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithReference"
+    let oid = ktc "1"
+    let oName = oType + "/" + oid
+    let url = sprintf "http://localhost/objects/%s" oName
+    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, "malformed"))
+    let props = 
+        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
+                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
+    
+    let args = CreateArgMapWithReserved props
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
+
+let PutWithReferenceObjectMalformedArgsValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithReference"
+    let oid = ktc "1"
+    let oName = oType + "/" + oid
+    let url = sprintf "http://localhost/objects/%s" oName
+    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, "malformed"))
+    let props = 
+        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
+                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))),
+                    new JProperty("x-ro-validate-only", true))
+    
+    let args = CreateArgMapWithReserved props
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
 //// 400    
 //let PutWithValueObjectFailCrossValidation(api : RestfulObjectsControllerBase) = 
@@ -4037,7 +4078,7 @@ let PutWithValueObjectMalformedArgs(api : RestfulObjectsControllerBase) =
 //          TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
 //          TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed")) ]
 //    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
 //    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
 //    compareObject expected parsedResult
 
@@ -4059,7 +4100,7 @@ let PutWithValueObjectMalformedArgs(api : RestfulObjectsControllerBase) =
 //          TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(3)) ]))
 //          TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed")) ]
 //    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
 //    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
 //    compareObject expected parsedResult
 
@@ -4098,7 +4139,7 @@ let PutWithValueObjectMalformedArgs(api : RestfulObjectsControllerBase) =
 //                           TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType((sprintf "objects/%s/%s" roType (ktc "2"))))) ])) ]))
 //          TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed")) ]
 //    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
 //    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
 //    compareObject expected parsedResult
 
@@ -4136,7 +4177,7 @@ let PutWithValueObjectMalformedArgs(api : RestfulObjectsControllerBase) =
 //                           TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType((sprintf "objects/%s/%s" roType (ktc "2"))))) ])) ]))
 //          TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed")) ]
 //    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
 //    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
 //    compareObject expected parsedResult
 
@@ -4350,7 +4391,7 @@ let PutWithValueObjectMalformedArgs(api : RestfulObjectsControllerBase) =
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
 //    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("GET", result.Content.Headers.Allow.First())
+//    Assert.AreEqual("GET", headers.Allow.First())
 //    Assert.AreEqual("", jsonResult)
 
 //// 405    
@@ -4367,7 +4408,7 @@ let PutWithValueObjectMalformedArgs(api : RestfulObjectsControllerBase) =
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
 //    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("GET", result.Content.Headers.Allow.First())
+//    Assert.AreEqual("GET", headers.Allow.First())
 //    Assert.AreEqual("", jsonResult)
 
 //let PutWithValueImmutableObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4381,7 +4422,7 @@ let PutWithValueObjectMalformedArgs(api : RestfulObjectsControllerBase) =
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
 //    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("GET", result.Content.Headers.Allow.First())
+//    Assert.AreEqual("GET", headers.Allow.First())
 //    Assert.AreEqual("", jsonResult)
 
 //// 405    
@@ -4398,7 +4439,7 @@ let PutWithValueObjectMalformedArgs(api : RestfulObjectsControllerBase) =
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
 //    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("GET", result.Content.Headers.Allow.First())
+//    Assert.AreEqual("GET", headers.Allow.First())
 //    Assert.AreEqual("", jsonResult)
 
 //// 406     
