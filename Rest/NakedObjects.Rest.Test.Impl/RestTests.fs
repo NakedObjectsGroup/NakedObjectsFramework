@@ -459,10 +459,20 @@ type RestTests() =
         [<Test>]
         member x.PutWithValueViewModel() = DomainObject14.PutWithValueViewModel x.api
 
+        [<Test>]
+        member x.InvalidGetObject() = DomainObject14.InvalidGetObject x.api
 
-//        [<Test>]
-//        member x.InvalidGetObject() = DomainObject14.InvalidGetObject x.api
+        [<Test>]
+        member x.PutWithValueObjectMissingArgs() = DomainObject14.PutWithValueObjectMissingArgs x.api
         
+        [<Test>]
+        member x.PutWithValueObjectMissingArgsValidateOnly() = 
+            DomainObject14.PutWithValueObjectMissingArgsValidateOnly x.api
+              
+        [<Test>]
+        member x.PutWithValueObjectMalformedArgs() = DomainObject14.PutWithValueObjectMalformedArgs x.api
+           
+
 //        [<Test>]
 //        member x.NotFoundGetObject() = DomainObject14.NotFoundGetObject x.api
         
@@ -472,16 +482,9 @@ type RestTests() =
 //        [<Test>]
 //        member x.GetObjectIgnoreWrongDomainType() = DomainObject14.GetObjectIgnoreWrongDomainType x.api
         
-//        [<Test>]
-//        member x.PutWithValueObjectMissingArgs() = DomainObject14.PutWithValueObjectMissingArgs x.api
+//      
         
-//        [<Test>]
-//        member x.PutWithValueObjectMissingArgsValidateOnly() = 
-//            DomainObject14.PutWithValueObjectMissingArgsValidateOnly x.api
-        
-//        [<Test>]
-//        member x.PutWithValueObjectMalformedArgs() = DomainObject14.PutWithValueObjectMalformedArgs x.api
-        
+//         
 //        [<Test>]
 //        member x.PutWithValueObjectMalformedDateTimeArgs() = 
 //            DomainObject14.PutWithValueObjectMalformedDateTimeArgs x.api

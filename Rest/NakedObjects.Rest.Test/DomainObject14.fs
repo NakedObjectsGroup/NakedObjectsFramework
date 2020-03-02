@@ -3658,8 +3658,9 @@ let PutWithValueViewModelEdit(api : RestfulObjectsControllerBase) =
 let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"
     let vmid1 = ktc "1--1--1--1"
+    let oid = ktc "2"
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "2")))).ToString()))
+    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType oid))).ToString()))
     let props = 
         new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
                     new JProperty("AnEagerReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
@@ -3680,10 +3681,12 @@ let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) =
 let PutWithNestedViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithNestedViewModel"
     let vmid1 = ktc "1--1--1--1--1"
+    let vmid2 = ktc "2--1--1--2"
+    let oid = ktc "2"
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
     let roType1 = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"
-    let ref1 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "2")))).ToString()))
-    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType1 (ktc "2--1--1--2")))).ToString()))
+    let ref1 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType oid))).ToString()))
+    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType1 vmid2))).ToString()))
     let props = 
         new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref1))), 
                     new JProperty("AViewModelReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
@@ -3716,64 +3719,78 @@ let PutWithValueViewModel(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
-
     Assert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\",199 RestfulObjects \"Field disabled as object cannot be changed\"", headers.Headers.["Warning"].ToString())
     Assert.AreEqual("", jsonResult)
 
-//// 400    
-//let InvalidGetObject(api : RestfulObjectsControllerBase) = 
-//    let oid = " " // invalid 
-//    let oType = ttc " " // invalid
-//    let url = sprintf "http://localhost/objects/%s/%s" oType oid
-//    let args = CreateReservedArgs ""
-//    api.Request <- jsonGetMsg (url)
-//    let result = api.GetObject(oid, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+// 400    
+let InvalidGetObject(api : RestfulObjectsControllerBase) = 
+    let oid = " " // invalid 
+    let oid1 = ktc "1"
+    let oType = ttc " " // invalid
 
-//// 400
-//let PutWithValueObjectMissingArgs(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithValue"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPutMsg url ""
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+    let url = sprintf "http://localhost/objects/%s/%s" oType oid
+    jsonSetGetMsg api.Request url
+    let result = api.GetObject(oType, oid1)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
 
-//let PutWithValueObjectMissingArgsValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithValue"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let props = new JObject(new JProperty("x-ro-validate-only", true))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
-//// 400    
-//let PutWithValueObjectMalformedArgs(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithValue"
-//    let oid = oType + "/" + ktc "1"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let props = 
-//        new JObject(new JProperty("AValue", new JObject(new JProperty("malformed", 222))), 
-//                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1", args)
-//    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+// 400
+let PutWithValueObjectMissingArgs(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithValue"
+    let oid = ktc "1"
+    let oName = oType + "/" + oid
+    
+    let args = CreateArgMap(new JObject())
+    let url = sprintf "http://localhost/objects/%s/%s" oType oid
+    jsonSetPutMsg api.Request url ""
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
+
+let PutWithValueObjectMissingArgsValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithValue"
+    let oid = ktc "1"
+
+    let oName = oType + "/" + oid
+    let url = sprintf "http://localhost/objects/%s" oName
+    let props = new JObject(new JProperty("x-ro-validate-only", true))
+    let args = CreateArgMap props
+
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+      
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
+
+// 400    
+let PutWithValueObjectMalformedArgs(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithValue"
+    let oid = ktc "1"
+    let oName = oType + "/" + oid
+    let url = sprintf "http://localhost/objects/%s" oName
+    
+    let props = 
+        new JObject(new JProperty("AValue", new JObject(new JProperty("malformed", 222))), 
+                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
+    let args = CreateArgMap props
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
 //let PutWithValueObjectMalformedDateTimeArgs(api : RestfulObjectsControllerBase) = 
 //    let error = "cannot format value cannot parse as date as DateTime"
