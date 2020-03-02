@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj" />
     <ProjectReference Include="..\NakedObjects.Rest\NakedObjects.Rest.csproj" />
   </ItemGroup>
 

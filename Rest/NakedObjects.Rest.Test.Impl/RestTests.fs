@@ -509,98 +509,96 @@ type RestTests() =
         member x.PutWithReferenceObjectMalformedArgsValidateOnly() = 
             DomainObject14.PutWithReferenceObjectMalformedArgsValidateOnly x.api
         
+        [<Test>]
+        member x.PutWithValueObjectFailCrossValidation() = DomainObject14.PutWithValueObjectFailCrossValidation x.api
+               
+        [<Test>]
+        member x.PutWithValueObjectFailCrossValidationValidateOnly() = 
+            DomainObject14.PutWithValueObjectFailCrossValidationValidateOnly x.api
 
+        [<Test>]
+        member x.PutWithReferenceObjectFailsCrossValidation() = 
+            DomainObject14.PutWithReferenceObjectFailsCrossValidation x.api
+        
+        [<Test>]
+        member x.PutWithReferenceObjectFailsCrossValidationValidateOnly() = 
+            DomainObject14.PutWithReferenceObjectFailsCrossValidationValidateOnly x.api
 
-//        [<Test>]
-//        member x.NotFoundGetObject() = DomainObject14.NotFoundGetObject x.api
+        [<Test>]
+        member x.NotFoundGetObject() = DomainObject14.NotFoundGetObject x.api
         
-//        [<Test>]
-//        member x.NotAcceptableGetObjectWrongMediaType() = DomainObject14.NotAcceptableGetObjectWrongMediaType x.api
+        [<Test>]
+        member x.NotAcceptableGetObjectWrongMediaType() = DomainObject14.NotAcceptableGetObjectWrongMediaType x.api
         
-//        [<Test>]
-//        member x.GetObjectIgnoreWrongDomainType() = DomainObject14.GetObjectIgnoreWrongDomainType x.api
+        [<Test>]
+        member x.GetObjectIgnoreWrongDomainType() = DomainObject14.GetObjectIgnoreWrongDomainType x.api
         
-//        [<Test>]
-//        member x.PutWithValueObjectDisabledValue() = DomainObject14.PutWithValueObjectDisabledValue x.api
+        [<Test>]
+        member x.PutWithValueObjectDisabledValue() = DomainObject14.PutWithValueObjectDisabledValue x.api
         
-//        [<Test>]
-//        member x.PutWithValueObjectDisabledValueValidateOnly() = 
-//            DomainObject14.PutWithValueObjectDisabledValueValidateOnly x.api
+        [<Test>]
+        member x.PutWithValueObjectDisabledValueValidateOnly() = 
+            DomainObject14.PutWithValueObjectDisabledValueValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithReferenceObjectDisabledValue() = DomainObject14.PutWithReferenceObjectDisabledValue x.api
+        [<Test>]
+        member x.PutWithReferenceObjectDisabledValue() = DomainObject14.PutWithReferenceObjectDisabledValue x.api
         
-//        [<Test>]
-//        member x.PutWithReferenceObjectDisabledValueValidateOnly() = 
-//            DomainObject14.PutWithReferenceObjectDisabledValueValidateOnly x.api
+        [<Test>]
+        member x.PutWithReferenceObjectDisabledValueValidateOnly() = 
+            DomainObject14.PutWithReferenceObjectDisabledValueValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithValueObjectInvisibleValue() = DomainObject14.PutWithValueObjectInvisibleValue x.api
+        [<Test>]
+        member x.PutWithValueObjectInvisibleValue() = DomainObject14.PutWithValueObjectInvisibleValue x.api
         
-//        [<Test>]
-//        member x.PutWithReferenceObjectInvisibleValue() = DomainObject14.PutWithReferenceObjectInvisibleValue x.api
+        [<Test>]
+        member x.PutWithReferenceObjectInvisibleValue() = DomainObject14.PutWithReferenceObjectInvisibleValue x.api
         
-//        [<Test>]
-//        member x.PutWithValueObjectInvisibleValueValidateOnly() = 
-//            DomainObject14.PutWithValueObjectInvisibleValueValidateOnly x.api
+        [<Test>]
+        member x.PutWithValueObjectInvisibleValueValidateOnly() = 
+            DomainObject14.PutWithValueObjectInvisibleValueValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithReferenceObjectInvisibleValueValidateOnly() = 
-//            DomainObject14.PutWithReferenceObjectInvisibleValueValidateOnly x.api
+        [<Test>]
+        member x.PutWithReferenceObjectInvisibleValueValidateOnly() = 
+            DomainObject14.PutWithReferenceObjectInvisibleValueValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithValueImmutableObject() = DomainObject14.PutWithValueImmutableObject x.api
+        [<Test>]
+        member x.PutWithValueImmutableObject() = DomainObject14.PutWithValueImmutableObject x.api
         
-//        [<Test>]
-//        member x.PutWithReferenceImmutableObject() = DomainObject14.PutWithReferenceImmutableObject x.api
+        [<Test>]
+        member x.PutWithReferenceImmutableObject() = DomainObject14.PutWithReferenceImmutableObject x.api
         
-//        [<Test>]
-//        member x.PutWithValueImmutableObjectValidateOnly() = 
-//            DomainObject14.PutWithValueImmutableObjectValidateOnly x.api
+        [<Test>]
+        member x.PutWithValueImmutableObjectValidateOnly() = 
+            DomainObject14.PutWithValueImmutableObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithReferenceImmutableObjectValidateOnly() = 
-//            DomainObject14.PutWithReferenceImmutableObjectValidateOnly x.api
+        [<Test>]
+        member x.PutWithReferenceImmutableObjectValidateOnly() = 
+            DomainObject14.PutWithReferenceImmutableObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithValueObjectInvalidArgsName() = DomainObject14.PutWithValueObjectInvalidArgsName x.api
+        [<Test>]
+        member x.PutWithValueObjectInvalidArgsName() = DomainObject14.PutWithValueObjectInvalidArgsName x.api
         
-//        [<Test>]
-//        member x.PutWithValueObjectInvalidArgsNameValidateOnly() = 
-//            DomainObject14.PutWithValueObjectInvalidArgsNameValidateOnly x.api
+        [<Test>]
+        member x.PutWithValueObjectInvalidArgsNameValidateOnly() = 
+            DomainObject14.PutWithValueObjectInvalidArgsNameValidateOnly x.api
         
-//        [<Test>]
-//        member x.NotAcceptablePutObjectWrongMediaType() = DomainObject14.NotAcceptablePutObjectWrongMediaType x.api
+        [<Test>]
+        member x.NotAcceptablePutObjectWrongMediaType() = DomainObject14.NotAcceptablePutObjectWrongMediaType x.api
         
-//        [<Test>]
-//        member x.PutWithValueInternalError() = DomainObject14.PutWithValueInternalError x.api
+        [<Test>]
+        member x.PutWithValueInternalError() = DomainObject14.PutWithValueInternalError x.api
         
-//        [<Test>]
-//        member x.PutWithReferenceInternalError() = DomainObject14.PutWithReferenceInternalError x.api
+        [<Test>]
+        member x.PutWithReferenceInternalError() = DomainObject14.PutWithReferenceInternalError x.api
+         
+        [<Test>]
+        member x.ObjectNotFoundWrongKey() = DomainObject14.ObjectNotFoundWrongKey x.api
         
-//        [<Test>]
-//        member x.PutWithValueObjectFailCrossValidation() = DomainObject14.PutWithValueObjectFailCrossValidation x.api
+        [<Test>]
+        member x.ObjectNotFoundWrongType() = DomainObject14.ObjectNotFoundWrongType x.api
         
-//        [<Test>]
-//        member x.PutWithValueObjectFailCrossValidationValidateOnly() = 
-//            DomainObject14.PutWithValueObjectFailCrossValidationValidateOnly x.api
-        
-//        [<Test>]
-//        member x.PutWithReferenceObjectFailsCrossValidation() = 
-//            DomainObject14.PutWithReferenceObjectFailsCrossValidation x.api
-        
-//        [<Test>]
-//        member x.PutWithReferenceObjectFailsCrossValidationValidateOnly() = 
-//            DomainObject14.PutWithReferenceObjectFailsCrossValidationValidateOnly x.api
-        
-//        [<Test>]
-//        member x.ObjectNotFoundWrongKey() = DomainObject14.ObjectNotFoundWrongKey x.api
-        
-//        [<Test>]
-//        member x.ObjectNotFoundWrongType() = DomainObject14.ObjectNotFoundWrongType x.api
-        
-//        [<Test>]
-//        member x.ObjectNotFoundAbstractType() = DomainObject14.ObjectNotFoundAbstractType x.api
+        [<Test>]
+        member x.ObjectNotFoundAbstractType() = DomainObject14.ObjectNotFoundAbstractType x.api
         
        
 

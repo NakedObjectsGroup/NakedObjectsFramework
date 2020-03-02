@@ -220,6 +220,8 @@ let jsonSetEmptyPostMsgWithProfile msg url profVal = jsonSetPotentMsgAndMediaTyp
 
 let jsonSetPutMsg msg url content = jsonSetPotentMsgAndMediaType msg HttpMethod.Put url "application/json" [] content
 
+let jsonSetPutMsgWithProfile msg url content profVal = jsonSetPotentMsgAndMediaType msg HttpMethod.Put url "application/json" [("profile", profVal)] content
+
 //let jsonGetMsgAndTag (url : string) tag = 
 //    let message = jsonGetMsgAndMediaType "application/json" url
 //    message.Headers.IfMatch.Add(new EntityTagHeaderValue(tag))
