@@ -4238,7 +4238,6 @@ let PutWithValueObjectDisabledValueValidateOnly(api : RestfulObjectsControllerBa
 let PutWithReferenceObjectDisabledValue(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithReference"
     let oid = ktc "1"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -4259,7 +4258,7 @@ let PutWithReferenceObjectDisabledValueValidateOnly(api : RestfulObjectsControll
     let oType = ttc "RestfulObjects.Test.Data.WithReference"
     let oid = ktc "1"
     let oName = oType + "/" + oid
-    let url = sprintf "http://localhost/objects/%s" oid
+    let url = sprintf "http://localhost/objects/%s" oName
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
     let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (oid)))).ToString()))
     let props = 
@@ -4281,7 +4280,6 @@ let PutWithReferenceObjectDisabledValueValidateOnly(api : RestfulObjectsControll
 let PutWithValueObjectInvisibleValue(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
     let oid = ktc "1"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
     let props = new JObject(new JProperty("AHiddenValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
@@ -4299,7 +4297,6 @@ let PutWithValueObjectInvisibleValue(api : RestfulObjectsControllerBase) =
 let PutWithValueObjectInvisibleValueValidateOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
     let oid = ktc "1"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
     let props = new JObject(new JProperty("AHiddenValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))), new JProperty("x-ro-validate-only", true))
@@ -4318,7 +4315,6 @@ let PutWithValueObjectInvisibleValueValidateOnly(api : RestfulObjectsControllerB
 let PutWithReferenceObjectInvisibleValue(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithReference"
     let oid = ktc "1"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -4338,7 +4334,6 @@ let PutWithReferenceObjectInvisibleValue(api : RestfulObjectsControllerBase) =
 let PutWithReferenceObjectInvisibleValueValidateOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithReference"
     let oid = ktc "1"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -4379,12 +4374,12 @@ let PutWithValueObjectInvalidArgsName(api : RestfulObjectsControllerBase) =
 let PutWithValueObjectInvalidArgsNameValidateOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
     let oid = ktc "1"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
     let props = 
         new JObject(new JProperty("ANonExistentValue", new JObject(new JProperty(JsonPropertyNames.Value, 222))), 
-                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))), new JProperty("x-ro-validate-only", true))
+                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))),
+                    new JProperty("x-ro-validate-only", true))
     
     let args = CreateArgMapWithReserved props
     jsonSetPutMsg api.Request url (props.ToString())
@@ -4411,7 +4406,7 @@ let ObjectNotFoundWrongKey(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/objects/%s" oName
     jsonSetPutMsg api.Request url (props.ToString())
     let result = api.PutObject(oType, oid, args)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
     Assert.AreEqual("", jsonResult)
@@ -4420,13 +4415,12 @@ let ObjectNotFoundWrongKey(api : RestfulObjectsControllerBase) =
 let ObjectNotFoundWrongType(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.DoesNotExist"
     let oid = ktc "1"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
     
     jsonSetGetMsg api.Request url
     let result = api.GetObject(oType, oid)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
     Assert.AreEqual("", jsonResult)
@@ -4434,22 +4428,19 @@ let ObjectNotFoundWrongType(api : RestfulObjectsControllerBase) =
 let ObjectNotFoundAbstractType(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithAction"
     let oid = ktc "1"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
     jsonSetGetMsg api.Request url
     let result = api.GetObject(oType, oid)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
   
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-
     Assert.AreEqual("", jsonResult)
 
 // 404     
 let NotFoundGetObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
     let oid = ktc "44"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
     jsonSetGetMsg api.Request url
@@ -4464,19 +4455,16 @@ let NotFoundGetObject(api : RestfulObjectsControllerBase) =
 let PutWithValueImmutableObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.Immutable"
     let oid = ktc "1"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
     let props = new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
     
     let args = CreateArgMapWithReserved props
     jsonSetPutMsg api.Request url (props.ToString())
-    //setIfMatch api.Request "*"
     let result = api.PutObject(oType, oid, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
-
     Assert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
     Assert.AreEqual("GET", headers.Headers.["Allow"].ToString())
     Assert.AreEqual("", jsonResult)
@@ -4485,7 +4473,6 @@ let PutWithValueImmutableObject(api : RestfulObjectsControllerBase) =
 let PutWithReferenceImmutableObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.Immutable"
     let oid = ktc "1"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -4494,7 +4481,6 @@ let PutWithReferenceImmutableObject(api : RestfulObjectsControllerBase) =
     
     let args = CreateArgMapWithReserved props
     jsonSetPutMsg api.Request url (props.ToString())
-    //setIfMatch api.Request "*"
     let result = api.PutObject(oType, oid, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
@@ -4506,14 +4492,12 @@ let PutWithReferenceImmutableObject(api : RestfulObjectsControllerBase) =
 let PutWithValueImmutableObjectValidateOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.Immutable"
     let oid = ktc "1"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
     let props = new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))), new JProperty("x-ro-validate-only", true))
     
     let args = CreateArgMapWithReserved props
     jsonSetPutMsg api.Request url (props.ToString())
-    //setIfMatch api.Request "*"
     let result = api.PutObject(oType, oid, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
@@ -4526,7 +4510,6 @@ let PutWithValueImmutableObjectValidateOnly(api : RestfulObjectsControllerBase) 
 let PutWithReferenceImmutableObjectValidateOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.Immutable"
     let oid = ktc "1"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -4535,7 +4518,6 @@ let PutWithReferenceImmutableObjectValidateOnly(api : RestfulObjectsControllerBa
     
     let args = CreateArgMapWithReserved props
     jsonSetPutMsg api.Request url (props.ToString())
-    //setIfMatch api.Request "*"
     let result = api.PutObject(oType, oid, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext    
     
@@ -4548,7 +4530,6 @@ let PutWithReferenceImmutableObjectValidateOnly(api : RestfulObjectsControllerBa
 let NotAcceptablePutObjectWrongMediaType(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
     let oid = ktc "1"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
      
@@ -4560,7 +4541,7 @@ let NotAcceptablePutObjectWrongMediaType(api : RestfulObjectsControllerBase) =
     jsonSetPutMsgWithProfile api.Request url (props.ToString()) RepresentationTypes.ObjectCollection
     setIfMatch api.Request "*"
     let result = api.PutObject(oType, oid, args)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
     Assert.AreEqual("", jsonResult)
@@ -4569,7 +4550,6 @@ let NotAcceptablePutObjectWrongMediaType(api : RestfulObjectsControllerBase) =
 let NotAcceptableGetObjectWrongMediaType(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
     let oid = ktc "1"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
    
@@ -4580,7 +4560,6 @@ let NotAcceptableGetObjectWrongMediaType(api : RestfulObjectsControllerBase) =
     assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
     Assert.AreEqual("", jsonResult)
       
-
 // was notacceptable is now ignored v69 of spec 
 let GetObjectIgnoreWrongDomainType(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -4593,9 +4572,8 @@ let GetObjectIgnoreWrongDomainType(api : RestfulObjectsControllerBase) =
     let mtParms = [|("profile",  RepresentationTypes.Object);("x-ro-domain-type", dType)|]
     jsonSetGetMsgAndMediaType api.Request url "application/json" mtParms
     let result = api.GetObject(oType, oid)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
-
-  
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
+    
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
 // 500    
@@ -4610,7 +4588,6 @@ let PutWithValueInternalError(api : RestfulObjectsControllerBase) =
 
     let args = CreateArgMapWithReserved props
     jsonSetPutMsg api.Request url (props.ToString())
-    //setIfMatch api.Request "*"
     let result = api.PutObject(oType, oid, args)   
     
     WithError.ThrowErrors <- false
@@ -4646,7 +4623,6 @@ let PutWithReferenceInternalError(api : RestfulObjectsControllerBase) =
     
     let args = CreateArgMapWithReserved props
     jsonSetPutMsg api.Request url (props.ToString())
-    //setIfMatch api.Request "*"
     let result = api.PutObject(oType, oid, args)   
         
     WithError.ThrowErrors <- false
@@ -4689,13 +4665,11 @@ let PutWithReferenceInternalError(api : RestfulObjectsControllerBase) =
 let PutWithValueObjectConcurrencyFail(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
     let oid = ktc "1"
-
     let oName = oType + "/" + oid
     let url = sprintf "http://localhost/objects/%s" oName
     let props = 
         new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, 222))), 
                     new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
-    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
     let tag = "\"fail\""
     
     let args = CreateArgMapWithReserved props
@@ -4703,10 +4677,8 @@ let PutWithValueObjectConcurrencyFail(api : RestfulObjectsControllerBase) =
     setIfMatch api.Request tag
     let result = api.PutObject(oType, oid, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
-    let parsedResult = JObject.Parse(jsonResult)
     
     assertStatusCode HttpStatusCode.PreconditionFailed statusCode jsonResult
-
     Assert.AreEqual("199 RestfulObjects \"Object changed by another user\"", headers.Headers.["Warning"].ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -4723,10 +4695,8 @@ let PutWithValueObjectMissingIfMatch(api : RestfulObjectsControllerBase) =
     jsonSetPutMsg api.Request url (props.ToString())
     let result = api.PutObject(oType, oid, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
-    let parsedResult = JObject.Parse(jsonResult)
     
     assertStatusCode preconditionHeaderMissing statusCode jsonResult
-
     Assert.AreEqual
         ("199 RestfulObjects \"If-Match header required with last-known value of ETag for the resource in order to modify its state\"", 
          headers.Headers.["Warning"].ToString())
