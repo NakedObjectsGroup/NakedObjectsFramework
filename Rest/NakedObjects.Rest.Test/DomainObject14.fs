@@ -3334,7 +3334,6 @@ let GetWithReferenceViewModel(api : RestfulObjectsControllerBase) =
 let GetWithNestedViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithNestedViewModel"
     let vmid = ktc "1--1--1--1--1"
-    
     let oid = ktc "1"
     let oName = sprintf "%s/%s" oType vmid
     
@@ -3387,357 +3386,339 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
     //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
-//let PutWithReferenceViewModelEdit(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithReferenceViewModelEdit"
-//    let oid = oType + "/" + ktc "1--1--1--1"
-//    let rOid = oType + "/" + ktc "2--1--1--2"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//    let rooid = roType + "/" + ktc "2"
-//    let pid = "AnEagerReference"
-//    let ourl = sprintf "objects/%s" rOid
-//    let purl = sprintf "%s/properties/%s" ourl pid
-//    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "2")))).ToString()))
-//    let props = 
-//        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
-//                    new JProperty("AnEagerReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
-//                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1--1--1--1", args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    let args1 = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
-    
-//    let msObj = 
-//        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
-//          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2"))
-//          TProperty(JsonPropertyNames.Title, TObjectVal("2"))
-//          TProperty(JsonPropertyNames.Links, 
-//                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" rooid) RepresentationTypes.Object roType)
-//                             TObjectJson(sb(roType)); TObjectJson(sp(roType))
-//                             TObjectJson(args1 :: makePutLinkProp RelValues.Update (sprintf "objects/%s" rooid) RepresentationTypes.Object roType) ]))
-//          TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" rooid "Id" (TObjectVal(2)))) ]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
-//                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
-//                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
-//                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
-    
-//    let valueRel1 = RelValues.Value + makeParm RelParamValues.Property "ADisabledReference"
-//    let valueRel2 = RelValues.Value + makeParm RelParamValues.Property "AChoicesReference"
-//    let valueRel3 = RelValues.Value + makeParm RelParamValues.Property "AReference"
-//    let valueRel4 = RelValues.Value + makeParm RelParamValues.Property "AnEagerReference"
-//    let val1 = 
-//        TObjectJson
-//            (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
-//             :: makeGetLinkProp valueRel1 (sprintf "objects/%s/%s" roType (ktc "1")) RepresentationTypes.Object roType)
-//    let val2 = 
-//        TObjectJson
-//            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
-//             :: makeGetLinkProp valueRel2 (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType)
-//    let val3 = 
-//        TObjectJson
-//            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
-//             :: makeGetLinkProp valueRel3 (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType)
-//    let val4 = 
-//        TObjectJson
-//            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
-//             :: makeLinkPropWithMethodValue "GET" valueRel4 (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType (TObjectJson(msObj)))
-//    let modifyRel = RelValues.Modify + makeParm RelParamValues.Property "AnEagerReference"
-    
-//    let details = 
-//        [ TProperty(JsonPropertyNames.Id, TObjectVal("AnEagerReference"))
-//          TProperty(JsonPropertyNames.Value, val4)
-//          TProperty(JsonPropertyNames.HasChoices, TObjectVal(false))
-          
-//          TProperty
-//              (JsonPropertyNames.Links, 
-               
-//               TArray
-//                   ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
-//                      TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
-                      
-                      
-                      
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
-//                           :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Eager Reference"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(roType))
-//                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
-//                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-    
-//    let args = 
-//        TProperty(JsonPropertyNames.Arguments, 
-//                  TObjectJson([ TProperty("AChoicesReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("ANullReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("AReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("AnEagerReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
-    
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2--1--1--2"))
-//          TProperty(JsonPropertyNames.Title, TObjectVal("1"))
-//          TProperty(JsonPropertyNames.Links, 
-//                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
-//                              ]))
-//          TProperty(JsonPropertyNames.Members, 
-//                    TObjectJson([ TProperty
-//                                      ("AChoicesReference", 
-//                                       TObjectJson(makePropertyMemberShort "objects" "AChoicesReference" rOid "A Choices Reference" "" roType false val2 []))
-                                  
-//                                  TProperty
-//                                      ("ADisabledReference", 
-                                       
-//                                       TObjectJson
-//                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
-//                                            :: (makePropertyMemberShort "objects" "ADisabledReference" rOid "A Disabled Reference" "" roType false val1 [])))
-                                  
-//                                  TProperty
-//                                      ("ANullReference", 
-                                       
-//                                       TObjectJson
-//                                           (makePropertyMemberShort "objects" "ANullReference" rOid "A Null Reference" "" roType true (TObjectVal(null)) []))
-                                  
-//                                  TProperty
-//                                      ("AReference", TObjectJson(makePropertyMemberShort "objects" "AReference" rOid "A Reference" "" roType false val3 []))
-                                  
-//                                  TProperty
-//                                      ("AnEagerReference", 
-//                                       TObjectJson(makePropertyMemberShort "objects" "AnEagerReference" rOid "An Eager Reference" "" roType false val4 details))
-//                                  TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" rOid "Id" (TObjectVal(1)))) ]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Reference View Model Edit"))
-//                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Reference View Model Edits"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("form"))
-//                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
-    
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
-//    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
-//    compareObject expected parsedResult
+let PutWithReferenceViewModelEdit(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithReferenceViewModelEdit"
+    let vmid1 = ktc "1--1--1--1"
+    let vmid2 = ktc "2--1--1--2"
+    let oName2 = oType + "/" + vmid2
 
-//let PutWithNestedViewModelEdit(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithNestedViewModelEdit"
-//    let oid = oType + "/" + ktc "1--1--1--1--1"
-//    let rOid = oType + "/" + ktc "2--2--1--1--2"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//    let roType1 = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"
-//    let ref1 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "2")))).ToString()))
-//    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType1 (ktc "2--1--1--2")))).ToString()))
-//    let props = 
-//        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref1))), 
-//                    new JProperty("AViewModelReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1--1--1--1--1", args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    let valueRel1 = RelValues.Value + makeParm RelParamValues.Property "AReference"
-//    let valueRel2 = RelValues.Value + makeParm RelParamValues.Property "AViewModelReference"
-//    let val1 = 
-//        TObjectJson
-//            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
-//             :: makeGetLinkProp valueRel1 (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType)
-//    let val2 = 
-//        TObjectJson
-//            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
-//             :: makeGetLinkProp valueRel2 (sprintf "objects/%s/%s" roType1 (ktc "2--1--1--2")) RepresentationTypes.Object roType1)
+    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let roid1 = ktc "1"
+    let roid2 = ktc "2"
+    let roName = roType + "/" + roid2
+    let pid = "AnEagerReference"
+    let ourl = sprintf "objects/%s" oName2
+    let purl = sprintf "%s/properties/%s" ourl pid
+    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "2")))).ToString()))
+    let props = 
+        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
+                    new JProperty("AnEagerReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
+                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
     
-//    let arguments = 
-//        TProperty(JsonPropertyNames.Arguments, 
-//                  TObjectJson([ TProperty("AReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("AViewModelReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+    let args = CreateArgMapWithReserved props
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//          TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "2--2--1--1--2"))
-//          TProperty(JsonPropertyNames.Title, TObjectVal("1"))
-//          TProperty(JsonPropertyNames.Links, 
-//                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
-//                           ]))
-//          TProperty(JsonPropertyNames.Members, 
-//                    TObjectJson([ TProperty
-//                                      ("AReference", TObjectJson(makePropertyMemberShort "objects" "AReference" rOid "A Reference" "" roType false val1 []))
+    let url = sprintf "http://localhost/objects/%s/%s" oType vmid1
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, vmid1, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
+    
+    let args1 = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+    
+    let msObj = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(roid2))
+          TProperty(JsonPropertyNames.Title, TObjectVal("2"))
+          TProperty(JsonPropertyNames.Links, 
+                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roName) RepresentationTypes.Object roType)
+                             TObjectJson(sb(roType)); TObjectJson(sp(roType))
+                             TObjectJson(args1 :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roName) RepresentationTypes.Object roType) ]))
+          TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roName "Id" (TObjectVal(2)))) ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
+                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
+    
+    let valueRel1 = RelValues.Value + makeParm RelParamValues.Property "ADisabledReference"
+    let valueRel2 = RelValues.Value + makeParm RelParamValues.Property "AChoicesReference"
+    let valueRel3 = RelValues.Value + makeParm RelParamValues.Property "AReference"
+    let valueRel4 = RelValues.Value + makeParm RelParamValues.Property "AnEagerReference"
+    let val1 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("1")) 
+             :: makeGetLinkProp valueRel1 (sprintf "objects/%s/%s" roType roid1) RepresentationTypes.Object roType)
+    let val2 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
+             :: makeGetLinkProp valueRel2 (sprintf "objects/%s/%s" roType roid2) RepresentationTypes.Object roType)
+    let val3 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
+             :: makeGetLinkProp valueRel3 (sprintf "objects/%s/%s" roType roid2) RepresentationTypes.Object roType)
+    let val4 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
+             :: makeLinkPropWithMethodValue "GET" valueRel4 (sprintf "objects/%s/%s" roType roid2) RepresentationTypes.Object roType (TObjectJson(msObj)))
+    let modifyRel = RelValues.Modify + makeParm RelParamValues.Property "AnEagerReference"
+    
+    let details = 
+        [ TProperty(JsonPropertyNames.Id, TObjectVal("AnEagerReference"))
+          TProperty(JsonPropertyNames.Value, val4)
+          TProperty(JsonPropertyNames.HasChoices, TObjectVal(false))          
+          TProperty
+              (JsonPropertyNames.Links,                
+               TArray
+                   ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
+                      TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")                                                                  
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
+                           :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Eager Reference"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(roType))
+                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
+                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
+    
+    let expected = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(vmid2))
+          TProperty(JsonPropertyNames.Title, TObjectVal("1"))
+          TProperty(JsonPropertyNames.Links, 
+                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
+                              ]))
+          TProperty(JsonPropertyNames.Members, 
+                    TObjectJson([ TProperty
+                                      ("AChoicesReference", 
+                                       TObjectJson(makePropertyMemberShort "objects" "AChoicesReference" oName2 "A Choices Reference" "" roType false val2 []))                                  
+                                  TProperty
+                                      ("ADisabledReference",                                        
+                                       TObjectJson
+                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
+                                            :: (makePropertyMemberShort "objects" "ADisabledReference" oName2 "A Disabled Reference" "" roType false val1 [])))                                  
+                                  TProperty
+                                      ("ANullReference",                                        
+                                       TObjectJson
+                                           (makePropertyMemberShort "objects" "ANullReference" oName2 "A Null Reference" "" roType true (TObjectVal(null)) []))                                  
+                                  TProperty
+                                      ("AReference", TObjectJson(makePropertyMemberShort "objects" "AReference" oName2 "A Reference" "" roType false val3 []))                                  
+                                  TProperty
+                                      ("AnEagerReference", 
+                                       TObjectJson(makePropertyMemberShort "objects" "AnEagerReference" oName2 "An Eager Reference" "" roType false val4 details))
+                                  TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" oName2 "Id" (TObjectVal(1)))) ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Reference View Model Edit"))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Reference View Model Edits"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("form"))
+                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
+    
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    assertTransactionalCache headers
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
+
+let PutWithNestedViewModelEdit(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithNestedViewModelEdit"
+    let vmid1 = ktc "1--1--1--1--1"
+    let vmid2 = ktc "2--2--1--1--2"
+    
+    let roName = oType + "/" + vmid2
+    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let roType1 = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"
+    let ref1 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "2")))).ToString()))
+    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType1 (ktc "2--1--1--2")))).ToString()))
+    let props = 
+        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref1))), 
+                    new JProperty("AViewModelReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
+
+    let args = CreateArgMapWithReserved props
+    let url = sprintf "http://localhost/objects/%s/%s" oType vmid1
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, vmid1, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
+
+
+    let valueRel1 = RelValues.Value + makeParm RelParamValues.Property "AReference"
+    let valueRel2 = RelValues.Value + makeParm RelParamValues.Property "AViewModelReference"
+    let val1 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
+             :: makeGetLinkProp valueRel1 (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType)
+    let val2 = 
+        TObjectJson
+            (TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
+             :: makeGetLinkProp valueRel2 (sprintf "objects/%s/%s" roType1 (ktc "2--1--1--2")) RepresentationTypes.Object roType1)
+    
+    let arguments = 
+        TProperty(JsonPropertyNames.Arguments, 
+                  TObjectJson([ TProperty("AReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("AViewModelReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+    
+    let expected = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(vmid2))
+          TProperty(JsonPropertyNames.Title, TObjectVal("1"))
+          TProperty(JsonPropertyNames.Links, 
+                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
+                           ]))
+          TProperty(JsonPropertyNames.Members, 
+                    TObjectJson([ TProperty
+                                      ("AReference", TObjectJson(makePropertyMemberShort "objects" "AReference" roName "A Reference" "" roType false val1 []))
                                   
-//                                  TProperty
-//                                      ("AViewModelReference", 
+                                  TProperty
+                                      ("AViewModelReference", 
                                        
-//                                       TObjectJson
-//                                           (makePropertyMemberShort "objects" "AViewModelReference" rOid "A View Model Reference" "" roType1 false val2 []))
-//                                  TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" rOid "Id" (TObjectVal(1)))) ]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Nested View Model Edit"))
-//                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Nested View Model Edits"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("form"))
-//                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
+                                       TObjectJson
+                                           (makePropertyMemberShort "objects" "AViewModelReference" roName "A View Model Reference" "" roType1 false val2 []))
+                                  TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roName "Id" (TObjectVal(1)))) ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Nested View Model Edit"))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Nested View Model Edits"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("form"))
+                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
     
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
-//    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
-//    compareObject expected parsedResult
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    assertTransactionalCache headers
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
 
-//let PutWithValueViewModelEdit(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithValueViewModelEdit"
-//    let ticks = (new DateTime(2012, 2, 10)).Ticks.ToString()
-//    let ticksTs = (new TimeSpan(2, 3, 4)).Ticks.ToString()
-//    let key = ktc ("1--100--200--4--0----" + ticks + "--" + ticksTs + "--0--2")
-//    let rKey = ktc ("1--222--200--4--333----" + ticks + "--" + ticksTs + "--0--2")
-//    let oid = oType + "/" + key
-//    let rOid = oType + "/" + rKey
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let props = 
-//        new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, 222))), 
-//                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, key, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    let disabledValue = 
-//        TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
-//        :: (makeObjectPropertyMember "ADisabledValue" rOid "A Disabled Value" (TObjectVal(200)))
+let PutWithValueViewModelEdit(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithValueViewModelEdit"
+    let ticks = (new DateTime(2012, 2, 10)).Ticks.ToString()
+    let ticksTs = (new TimeSpan(2, 3, 4)).Ticks.ToString()
+    let vmid1 = ktc ("1--100--200--4--0----" + ticks + "--" + ticksTs + "--0--2")
+    let vmid2 = ktc ("1--222--200--4--333----" + ticks + "--" + ticksTs + "--0--2")   
+    let roName = oType + "/" + vmid2
     
-//    let args = 
-//        TProperty(JsonPropertyNames.Arguments, 
-//                  TObjectJson([ TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("ADateTimeValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("ATimeSpanValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("AStringValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("AValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
-//                                TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+    let props = 
+        new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, 222))), 
+                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//          TProperty(JsonPropertyNames.InstanceId, TObjectVal(rKey))
-//          TProperty(JsonPropertyNames.Title, TObjectVal("1"))
-//          TProperty(JsonPropertyNames.Links, 
-//                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
-//                              ]))
-//          TProperty(JsonPropertyNames.Members, 
-//                    TObjectJson([ TProperty("AChoicesValue", TObjectJson(makeObjectPropertyMember "AChoicesValue" rOid "A Choices Value" (TObjectVal(333))))
-                                  
-//                                  TProperty
-//                                      ("ADateTimeValue", 
-                                       
-//                                       TObjectJson
-//                                           (makePropertyMemberDateTime "objects" "ADateTimeValue" rOid "A Date Time Value" "A datetime value for testing" true 
-//                                                (TObjectVal("2012-02-10")) "date"))
-
-//                                  TProperty
-//                                      ("ATimeSpanValue", 
-                                       
-//                                       TObjectJson
-//                                           (makePropertyMemberTimeSpan "objects" "ATimeSpanValue" rOid "A Time Span Value" "A timespan value for testing" true 
-//                                                (TObjectVal("02:03:04")) "time"))
-
-//                                  TProperty("ADisabledValue", TObjectJson(disabledValue))
-                                  
-//                                  TProperty
-//                                      ("AStringValue", 
-                                       
-//                                       TObjectJson
-//                                           (makePropertyMemberString "objects" "AStringValue" rOid "A String Value" "A string value for testing" true 
-//                                                (TObjectVal("")) []))
-                                  
-//                                  TProperty
-//                                      ("AUserDisabledValue", 
-                                       
-//                                       TObjectJson
-//                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Not authorized to edit")) 
-//                                            :: makeObjectPropertyMember "AUserDisabledValue" rOid "A User Disabled Value" (TObjectVal(2))))
-//                                  TProperty("AValue", TObjectJson(makeObjectPropertyMember "AValue" rOid "A Value" (TObjectVal(222))))
-//                                  TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" rOid "Id" (TObjectVal(1)))) ]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
-//                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Value View Model Edit"))
-//                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Value View Model Edits"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("form"))
-//                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
+    let args = CreateArgMapWithReserved props
+    let url = sprintf "http://localhost/objects/%s/%s" oType vmid1
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, vmid1, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
     
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
-//    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
-//    compareObject expected parsedResult
+    let disabledValue = 
+        TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable")) 
+        :: (makeObjectPropertyMember "ADisabledValue" roName "A Disabled Value" (TObjectVal(200)))
+       
+    let expected = 
+        [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+          TProperty(JsonPropertyNames.InstanceId, TObjectVal(vmid2))
+          TProperty(JsonPropertyNames.Title, TObjectVal("1"))
+          TProperty(JsonPropertyNames.Links, 
+                    TArray([ TObjectJson(sb(oType)); TObjectJson(sp(oType))
+                              ]))
+          TProperty(JsonPropertyNames.Members, 
+                    TObjectJson([ TProperty("AChoicesValue", TObjectJson(makeObjectPropertyMember "AChoicesValue" roName "A Choices Value" (TObjectVal(333))))                                  
+                                  TProperty
+                                      ("ADateTimeValue",                                        
+                                       TObjectJson
+                                           (makePropertyMemberDateTime "objects" "ADateTimeValue" roName "A Date Time Value" "A datetime value for testing" true 
+                                                (TObjectVal("2012-02-10")) "date"))
+                                  TProperty
+                                      ("ATimeSpanValue",                                        
+                                       TObjectJson
+                                           (makePropertyMemberTimeSpan "objects" "ATimeSpanValue" roName "A Time Span Value" "A timespan value for testing" true 
+                                                (TObjectVal("02:03:04")) "time"))
+                                  TProperty("ADisabledValue", TObjectJson(disabledValue))                                  
+                                  TProperty
+                                      ("AStringValue",                                        
+                                       TObjectJson
+                                           (makePropertyMemberString "objects" "AStringValue" roName "A String Value" "A string value for testing" true 
+                                                (TObjectVal("")) []))                                  
+                                  TProperty
+                                      ("AUserDisabledValue",                                        
+                                       TObjectJson
+                                           (TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Not authorized to edit")) 
+                                            :: makeObjectPropertyMember "AUserDisabledValue" roName "A User Disabled Value" (TObjectVal(2))))
+                                  TProperty("AValue", TObjectJson(makeObjectPropertyMember "AValue" roName "A Value" (TObjectVal(222))))
+                                  TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roName "Id" (TObjectVal(1)))) ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
+                                  TProperty(JsonPropertyNames.FriendlyName, TObjectVal("With Value View Model Edit"))
+                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("With Value View Model Edits"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.InteractionMode, TObjectVal("form"))
+                                  TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ]
+    
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.Object, oType), headers.ContentType)
+    assertTransactionalCache headers
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
 
-//let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"
-//    let oid = oType + "/" + ktc "1--1--1--1"
-//    let rOid = oType + "/" + ktc "2--1--1--2"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//    let rooid = roType + "/" + ktc "2"
-//    let pid = "AnEagerReference"
-//    let ourl = sprintf "objects/%s" rOid
-//    let purl = sprintf "%s/properties/%s" ourl pid
-//    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "2")))).ToString()))
-//    let props = 
-//        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
-//                    new JProperty("AnEagerReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
-//                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1--1--1--1", args)
-//    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\", 199 RestfulObjects \"Field disabled as object cannot be changed\", 199 RestfulObjects \"Field disabled as object cannot be changed\"", result.Headers.Warning.ToString())
-//    Assert.AreEqual("", jsonResult)
+let PutWithReferenceViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"
+    let vmid1 = ktc "1--1--1--1"
+    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "2")))).ToString()))
+    let props = 
+        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
+                    new JProperty("AnEagerReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))), 
+                    new JProperty("AChoicesReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
+    
+    let args = CreateArgMapWithReserved props
+    let url = sprintf "http://localhost/objects/%s/%s" oType vmid1
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, vmid1, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
 
-//let PutWithNestedViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithNestedViewModel"
-//    let oid = oType + "/" + ktc "1--1--1--1--1"
-//    let rOid = oType + "/" + ktc "2--2--1--1--2"
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//    let roType1 = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"
-//    let ref1 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "2")))).ToString()))
-//    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType1 (ktc "2--1--1--2")))).ToString()))
-//    let props = 
-//        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref1))), 
-//                    new JProperty("AViewModelReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, ktc "1--1--1--1--1", args)
-//    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\", 199 RestfulObjects \"Field disabled as object cannot be changed\"", result.Headers.Warning.ToString())
-//    Assert.AreEqual("", jsonResult)
+    assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
 
-//let PutWithValueViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithValueViewModel"
-//    let ticks = (new DateTime(2012, 2, 10)).Ticks.ToString()
-//    let ticksTs = (new TimeSpan(2, 3, 4)).Ticks.ToString()
-//    let key = ktc ("1--100--200--4--0----" + ticks + "--" + ticksTs + "--0--2")
-//    let rKey = ktc ("1--222--200--4--333----" + ticks + "--" + ticksTs + "--0--2")
-//    let oid = oType + "/" + key
-//    let rOid = oType + "/" + rKey
-//    let url = sprintf "http://localhost/objects/%s" oid
-//    let props = 
-//        new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, 222))), 
-//                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
-//    let args = CreateArgMap props
-//    api.Request <- jsonPutMsg url (props.ToString())
-//    let result = api.PutObject(oType, key, args)
-//    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\", 199 RestfulObjects \"Field disabled as object cannot be changed\"", result.Headers.Warning.ToString())
-//    Assert.AreEqual("", jsonResult)
+    Assert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\",199 RestfulObjects \"Field disabled as object cannot be changed\",199 RestfulObjects \"Field disabled as object cannot be changed\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
+
+let PutWithNestedViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithNestedViewModel"
+    let vmid1 = ktc "1--1--1--1--1"
+    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let roType1 = ttc "RestfulObjects.Test.Data.WithReferenceViewModel"
+    let ref1 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "2")))).ToString()))
+    let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType1 (ktc "2--1--1--2")))).ToString()))
+    let props = 
+        new JObject(new JProperty("AReference", new JObject(new JProperty(JsonPropertyNames.Value, ref1))), 
+                    new JProperty("AViewModelReference", new JObject(new JProperty(JsonPropertyNames.Value, ref2))))
+    
+    let args = CreateArgMapWithReserved props
+    let url = sprintf "http://localhost/objects/%s/%s" oType vmid1
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, vmid1, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+
+    assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\",199 RestfulObjects \"Field disabled as object cannot be changed\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
+
+let PutWithValueViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithValueViewModel"
+    let ticks = (new DateTime(2012, 2, 10)).Ticks.ToString()
+    let ticksTs = (new TimeSpan(2, 3, 4)).Ticks.ToString()
+    let vmid1 = ktc ("1--100--200--4--0----" + ticks + "--" + ticksTs + "--0--2")
+    let props = 
+        new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, 222))), 
+                    new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))))
+    
+    let args = CreateArgMapWithReserved props
+    let url = sprintf "http://localhost/objects/%s/%s" oType vmid1
+    jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
+    let result = api.PutObject(oType, vmid1, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+
+    assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
+
+    Assert.AreEqual("199 RestfulObjects \"Field disabled as object cannot be changed\",199 RestfulObjects \"Field disabled as object cannot be changed\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
 //// 400    
 //let InvalidGetObject(api : RestfulObjectsControllerBase) = 
@@ -3749,7 +3730,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.GetObject(oid, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //// 400
@@ -3762,7 +3743,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let PutWithValueObjectMissingArgsValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3775,7 +3756,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //// 400    
@@ -3791,7 +3772,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let PutWithValueObjectMalformedDateTimeArgs(api : RestfulObjectsControllerBase) = 
@@ -3815,7 +3796,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //          TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
 //    compareObject expected parsedResult
 
 //let PutWithValueObjectMalformedTimeArgs(api : RestfulObjectsControllerBase) = 
@@ -3839,7 +3820,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //          TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
 //    compareObject expected parsedResult
 
 //let PutWithValueObjectMalformedArgsValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3854,7 +3835,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //// 400    
@@ -3878,7 +3859,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal(error)) ]))
 //          TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
 //    compareObject expected parsedResult
 
 //let PutWithValueObjectInvalidArgsValueValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3902,7 +3883,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //          TProperty("AChoicesValue", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(333)) ])) ]
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
 //    compareObject expected parsedResult
 
 //// 400    
@@ -3952,7 +3933,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
-//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s: null adapter\"" oType (ktc "100"), result.Headers.Warning.ToString())
+//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s: null adapter\"" oType (ktc "100"), headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let PutWithReferenceObjectInvalidArgsValueValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4001,7 +3982,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let PutWithReferenceObjectMalformedArgsValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4017,7 +3998,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //// 400    
@@ -4040,7 +4021,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //          TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed")) ]
 //    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
 //    compareObject expected parsedResult
 
 //let PutWithValueObjectFailCrossValidationValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4062,7 +4043,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //          TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed")) ]
 //    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
 //    compareObject expected parsedResult
 
 //// 400    
@@ -4101,7 +4082,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //          TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed")) ]
 //    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
 //    compareObject expected parsedResult
 
 //let PutWithReferenceObjectFailsCrossValidationValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4139,7 +4120,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //          TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed")) ]
 //    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].ToString())
 //    compareObject expected parsedResult
 
 //// 401    
@@ -4153,7 +4134,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Field not editable\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Field not editable\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let PutWithValueObjectDisabledValueValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4167,7 +4148,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Field not editable\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Field not editable\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //// 401     
@@ -4183,7 +4164,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Field not editable\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Field not editable\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let PutWithReferenceObjectDisabledValueValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4199,7 +4180,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Field not editable\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Field not editable\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //// 404    
@@ -4213,7 +4194,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"No such property AHiddenValue\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"No such property AHiddenValue\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let PutWithValueObjectInvisibleValueValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4226,7 +4207,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"No such property AHiddenValue\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"No such property AHiddenValue\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //// 404     
@@ -4242,7 +4223,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"No such property AHiddenReference\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"No such property AHiddenReference\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let PutWithReferenceObjectInvisibleValueValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4258,7 +4239,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"No such property AHiddenReference\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"No such property AHiddenReference\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //// 404  
@@ -4274,7 +4255,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"No such property ANonExistentValue\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"No such property ANonExistentValue\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let PutWithValueObjectInvalidArgsNameValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4289,7 +4270,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"No such property ANonExistentValue\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"No such property ANonExistentValue\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //// 404
@@ -4337,7 +4318,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.GetObject(oType, ktc "44", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
-//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s: null adapter\"" oType (ktc "44"), result.Headers.Warning.ToString())
+//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s: null adapter\"" oType (ktc "44"), headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //// 405   
@@ -4351,7 +4332,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("GET", result.Content.Headers.Allow.First())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4368,7 +4349,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("GET", result.Content.Headers.Allow.First())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4382,7 +4363,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("GET", result.Content.Headers.Allow.First())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4399,7 +4380,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("GET", result.Content.Headers.Allow.First())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4470,7 +4451,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //          TProperty(JsonPropertyNames.Links, TArray([]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"An error exception\"", headers.Headers.["Warning"].ToString())
 //    compareObject expected parsedResult
 
 //// 500    
@@ -4514,7 +4495,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
 //    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"An error exception\"", headers.Headers.["Warning"].ToString())
     
 //    try
 //        compareObject expected2 parsedResult
@@ -4538,7 +4519,7 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    let result = api.PutObject(oType, ktc "1", args)
 //    let jsonResult = readSnapshotToJson result
 //    Assert.AreEqual(HttpStatusCode.PreconditionFailed, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Object changed by another user\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Object changed by another user\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let PutWithValueObjectMissingIfMatch(api : RestfulObjectsControllerBase) = 
@@ -4556,5 +4537,5 @@ let GetWithNestedViewModel(api : RestfulObjectsControllerBase) =
 //    Assert.AreEqual(preconditionHeaderMissing, result.StatusCode, jsonResult)
 //    Assert.AreEqual
 //        ("199 RestfulObjects \"If-Match header required with last-known value of ETag for the resource in order to modify its state\"", 
-//         result.Headers.Warning.ToString())
+//         headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)

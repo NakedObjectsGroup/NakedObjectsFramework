@@ -426,6 +426,40 @@ type RestTests() =
         [<Test>]
         member x.GetWithCollectionObjectSimpleOnly() = DomainObject14.GetWithCollectionObjectSimpleOnly x.api
         
+        [<Test>]
+        member x.GetMostSimpleViewModel() = DomainObject14.GetMostSimpleViewModel x.api
+               
+        [<Test>]
+        member x.GetFormViewModel() = DomainObject14.GetFormViewModel x.api
+
+        [<Test>]
+        member x.GetWithValueViewModel() = DomainObject14.GetWithValueViewModel x.api
+               
+        [<Test>]
+        member x.GetWithReferenceViewModel() = DomainObject14.GetWithReferenceViewModel x.api
+               
+        [<Test>]
+        member x.GetWithNestedViewModel() = DomainObject14.GetWithNestedViewModel x.api
+        
+        [<Test>]
+        member x.PutWithReferenceViewModelEdit() = DomainObject14.PutWithReferenceViewModelEdit x.api
+ 
+        [<Test>]
+        member x.PutWithNestedViewModelEdit() = DomainObject14.PutWithNestedViewModelEdit x.api
+                
+        [<Test>]
+        member x.PutWithValueViewModelEdit() = DomainObject14.PutWithValueViewModelEdit x.api
+                
+        [<Test>]
+        member x.PutWithReferenceViewModel() = DomainObject14.PutWithReferenceViewModel x.api
+        
+        [<Test>]
+        member x.PutWithNestedViewModel() = DomainObject14.PutWithNestedViewModel x.api
+        
+        [<Test>]
+        member x.PutWithValueViewModel() = DomainObject14.PutWithValueViewModel x.api
+
+
 //        [<Test>]
 //        member x.InvalidGetObject() = DomainObject14.InvalidGetObject x.api
         
@@ -567,38 +601,9 @@ type RestTests() =
 //        [<Test>]
 //        member x.ObjectNotFoundAbstractType() = DomainObject14.ObjectNotFoundAbstractType x.api
         
-        [<Test>]
-        member x.GetMostSimpleViewModel() = DomainObject14.GetMostSimpleViewModel x.api
-        
-        [<Test>]
-        member x.GetFormViewModel() = DomainObject14.GetFormViewModel x.api
+       
 
-        [<Test>]
-        member x.GetWithValueViewModel() = DomainObject14.GetWithValueViewModel x.api
         
-        [<Test>]
-        member x.GetWithReferenceViewModel() = DomainObject14.GetWithReferenceViewModel x.api
-        
-        [<Test>]
-        member x.GetWithNestedViewModel() = DomainObject14.GetWithNestedViewModel x.api
-        
-//        [<Test>]
-//        member x.PutWithReferenceViewModel() = DomainObject14.PutWithReferenceViewModel x.api
-        
-//        [<Test>]
-//        member x.PutWithNestedViewModel() = DomainObject14.PutWithNestedViewModel x.api
-        
-//        [<Test>]
-//        member x.PutWithValueViewModel() = DomainObject14.PutWithValueViewModel x.api
-
-//        [<Test>]
-//        member x.PutWithReferenceViewModelEdit() = DomainObject14.PutWithReferenceViewModelEdit x.api
-        
-//        [<Test>]
-//        member x.PutWithNestedViewModelEdit() = DomainObject14.PutWithNestedViewModelEdit x.api
-        
-//        [<Test>]
-//        member x.PutWithValueViewModelEdit() = DomainObject14.PutWithValueViewModelEdit x.api
         
 //        [<Test>]
 //        member x.GetService() = DomainService15.GetService x.api
