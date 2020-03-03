@@ -600,30 +600,26 @@ type RestTests() =
         [<Test>]
         member x.ObjectNotFoundAbstractType() = DomainObject14.ObjectNotFoundAbstractType x.api
         
-       
-
+        [<Test>]
+        member x.GetService() = DomainService15.GetService x.api
         
+        [<Test>]
+        member x.GetServiceSimpleOnly() = DomainService15.GetServiceSimpleOnly x.api
         
-//        [<Test>]
-//        member x.GetService() = DomainService15.GetService x.api
+        [<Test>]
+        member x.GetServiceWithMediaType() = DomainService15.GetServiceWithMediaType x.api
         
-//        [<Test>]
-//        member x.GetServiceSimpleOnly() = DomainService15.GetServiceSimpleOnly x.api
+        [<Test>]
+        member x.GetWithActionService() = DomainService15.GetWithActionService x.api
         
-//        [<Test>]
-//        member x.GetServiceWithMediaType() = DomainService15.GetServiceWithMediaType x.api
+        [<Test>]
+        member x.InvalidGetService() = DomainService15.InvalidGetService x.api
         
-//        [<Test>]
-//        member x.GetWithActionService() = DomainService15.GetWithActionService x.api
+        [<Test>]
+        member x.NotFoundGetService() = DomainService15.NotFoundGetService x.api
         
-//        [<Test>]
-//        member x.InvalidGetService() = DomainService15.InvalidGetService x.api
-        
-//        [<Test>]
-//        member x.NotFoundGetService() = DomainService15.NotFoundGetService x.api
-        
-//        [<Test>]
-//        member x.NotAcceptableGetServiceWrongMediaType() = DomainService15.NotAcceptableGetServiceWrongMediaType x.api
+        [<Test>]
+        member x.NotAcceptableGetServiceWrongMediaType() = DomainService15.NotAcceptableGetServiceWrongMediaType x.api
         
 //        [<Test>]
 //        member x.GetMenu() = DomainMenu15.GetMenu x.api
