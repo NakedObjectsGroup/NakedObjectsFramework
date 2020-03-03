@@ -621,26 +621,26 @@ type RestTests() =
         [<Test>]
         member x.NotAcceptableGetServiceWrongMediaType() = DomainService15.NotAcceptableGetServiceWrongMediaType x.api
         
-//        [<Test>]
-//        member x.GetMenu() = DomainMenu15.GetMenu x.api
+        [<Test>]
+        member x.GetMenu() = DomainMenu15.GetMenu x.api
         
-//        [<Test>]
-//        member x.GetMenuSimpleOnly() = DomainMenu15.GetMenuSimpleOnly x.api
+        [<Test>]
+        member x.GetMenuSimpleOnly() = DomainMenu15.GetMenuSimpleOnly x.api
         
-//        [<Test>]
-//        member x.GetMenuWithMediaType() = DomainMenu15.GetMenuWithMediaType x.api
+        [<Test>]
+        member x.GetMenuWithMediaType() = DomainMenu15.GetMenuWithMediaType x.api
         
-//        [<Test>]
-//        member x.GetWithActionMenu() = DomainMenu15.GetWithActionMenu x.api
+        [<Test>]
+        member x.GetWithActionMenu() = DomainMenu15.GetWithActionMenu x.api
         
-//        [<Test>]
-//        member x.InvalidGetMenu() = DomainMenu15.InvalidGetMenu x.api
+        [<Test>]
+        member x.InvalidGetMenu() = DomainMenu15.InvalidGetMenu x.api
         
-//        [<Test>]
-//        member x.NotFoundGetMenu() = DomainMenu15.NotFoundGetMenu x.api
+        [<Test>]
+        member x.NotFoundGetMenu() = DomainMenu15.NotFoundGetMenu x.api
         
-//        [<Test>]
-//        member x.NotAcceptableGetMenuWrongMediaType() = DomainMenu15.NotAcceptableGetMenuWrongMediaType x.api
+        [<Test>]
+        member x.NotAcceptableGetMenuWrongMediaType() = DomainMenu15.NotAcceptableGetMenuWrongMediaType x.api
         
 //        [<Test>]
 //        member x.GetValueProperty() = ObjectProperty16.GetValueProperty x.api
