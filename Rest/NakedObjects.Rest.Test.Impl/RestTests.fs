@@ -642,20 +642,23 @@ type RestTests() =
         [<Test>]
         member x.NotAcceptableGetMenuWrongMediaType() = DomainMenu15.NotAcceptableGetMenuWrongMediaType x.api
         
-//        [<Test>]
-//        member x.GetValueProperty() = ObjectProperty16.GetValueProperty x.api
+        [<Test>]
+        member x.GetValueProperty() = ObjectProperty16.GetValueProperty x.api
         
-//        [<Test>]
-//        member x.GetRepeatedValueProperty() = ObjectProperty16.GetRepeatedValueProperty x.api
+        [<Test>]
+        member x.GetRepeatedValueProperty() =
+            for _ in [1 .. 100] do ObjectProperty16.GetValueProperty x.api
+
+        [<Test>]
+        member x.GetFileAttachmentProperty() = ObjectProperty16.GetFileAttachmentProperty x.api
+
         
-//        [<Test>]
-//        member x.GetFileAttachmentProperty() = ObjectProperty16.GetFileAttachmentProperty x.api
+        [<Test>]
+        member x.GetFileAttachmentValue() = ObjectProperty16.GetFileAttachmentValue x.api
         
 //        [<Test>]
 //        member x.GetImageAttachmentProperty() = ObjectProperty16.GetImageAttachmentProperty x.api
         
-//        [<Test>]
-//        member x.GetFileAttachmentValue() = ObjectProperty16.GetFileAttachmentValue x.api
         
 //        [<Test>]
 //        member x.GetAttachmentValueWrongMediaType() = ObjectProperty16.GetAttachmentValueWrongMediaType x.api

@@ -1,141 +1,134 @@
-﻿//// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-//// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-//// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-//// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-//// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//// See the License for the specific language governing permissions and limitations under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 module ObjectProperty16
 
-//open NUnit.Framework
-//open NakedObjects.Rest
-//open System.Net
-//open System.Net.Http.Headers
-//open Newtonsoft.Json.Linq
-//open System.Web
-//open System
-//open NakedObjects.Rest.Snapshot.Constants
-//open System.Web.Http
-//open System.Linq
-//open RestTestFunctions
-//open System.Security.Principal
-//open NakedObjects.Rest.Snapshot.Utility
+open NUnit.Framework
+open NakedObjects.Rest
+open System.Net
+open System.Net.Http.Headers
+open Newtonsoft.Json.Linq
+open System.Web
+open System
+open NakedObjects.Rest.Snapshot.Constants
+open System.Web.Http
+open System.Linq
+open RestTestFunctions
+open System.Security.Principal
+open NakedObjects.Rest.Snapshot.Utility
 
-//let GetValueProperty(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithValue"
-//    let oid = ktc "1"
-//    let pid = "AValue"
-//    let ourl = sprintf "objects/%s/%s" oType oid
-//    let purl = sprintf "%s/properties/%s" ourl pid
-//    let args = CreateReservedArgs ""
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = api.GetProperty(oType, oid, pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    let modifyRel = RelValues.Modify + makeParm RelParamValues.Property "AValue"
+let GetValueProperty(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithValue"
+    let oid = ktc "1"
+    let pid = "AValue"
+    let ourl = sprintf "objects/%s/%s" oType oid
+    let purl = sprintf "%s/properties/%s" ourl pid
+    let url = sprintf "http://localhost/%s" purl
+
+    jsonSetGetMsg api.Request url
+    let result = api.GetProperty(oType, oid, pid)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
-//          TProperty(JsonPropertyNames.Value, TObjectVal(100))
-//          TProperty(JsonPropertyNames.HasChoices, TObjectVal(false))
-          
-//          TProperty
-//              (JsonPropertyNames.Links, 
+    let modifyRel = RelValues.Modify + makeParm RelParamValues.Property "AValue"
+    
+    let expected = 
+        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
+          TProperty(JsonPropertyNames.Value, TObjectVal(100))
+          TProperty(JsonPropertyNames.HasChoices, TObjectVal(false))          
+          TProperty
+              (JsonPropertyNames.Links,                
+               TArray
+                   ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
+                      TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")                                                       
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
+                           :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Value"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
+                                  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
+                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
+
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), headers.ContentType)
+    assertTransactionalCache headers
+    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
                
-//               TArray
-//                   ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
-//                      TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
-                      
-                                 
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) 
-//                           :: makePutLinkProp modifyRel purl RepresentationTypes.ObjectProperty "") ]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Value"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-//                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
-//                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
-//                                  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class3 class4"))
-//                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
-//    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
-//    compareObject expected parsedResult
+let GetFileAttachmentProperty(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithAttachments"
+    let oid = ktc "1"
+    let pid = "FileAttachment"
+    let ourl = sprintf "objects/%s/%s" oType oid
+    let purl = sprintf "%s/properties/%s" ourl pid
+    let url = sprintf "http://localhost/%s" purl
+  
+    jsonSetGetMsg api.Request url
+    let result = api.GetProperty(oType, oid, pid)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
 
-
-
-//let GetRepeatedValueProperty(api : RestfulObjectsControllerBase) = 
-//    for i in [1 .. 100] do
-//        GetValueProperty(api)
-               
-//let GetFileAttachmentProperty(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithAttachments"
-//    let oid = ktc "1"
-//    let pid = "FileAttachment"
-//    let ourl = sprintf "objects/%s/%s" oType oid
-//    let purl = sprintf "%s/properties/%s" ourl pid
-//    let args = CreateReservedArgs ""
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = api.GetProperty(oType, oid, pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    let attachRelValue = RelValues.Attachment + makeParm RelParamValues.Property pid
+    let attachRelValue = RelValues.Attachment + makeParm RelParamValues.Property pid
     
-//    let attLink = 
-//        [ TProperty(JsonPropertyNames.Title, TObjectVal("afile"))
-//          TProperty(JsonPropertyNames.Rel, TObjectVal(attachRelValue))
-//          TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(purl)))
-//          TProperty(JsonPropertyNames.Type, TObjectVal("application/pdf"))
-//          TProperty(JsonPropertyNames.Method, TObjectVal("GET")) ]
+    let attLink = 
+        [ TProperty(JsonPropertyNames.Title, TObjectVal("afile"))
+          TProperty(JsonPropertyNames.Rel, TObjectVal(attachRelValue))
+          TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(purl)))
+          TProperty(JsonPropertyNames.Type, TObjectVal("application/pdf"))
+          TProperty(JsonPropertyNames.Method, TObjectVal("GET")) ]
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
-//          TProperty(JsonPropertyNames.HasChoices, TObjectVal(false))
-//          TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"))
-          
-//          TProperty
-//              (JsonPropertyNames.Links, 
-               
-//               TArray
-//                   ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
-//                      TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
-//                      TObjectJson(attLink)
-                      
-//                       ]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("File Attachment"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("string"))
-//                                  TProperty(JsonPropertyNames.Format, TObjectVal("blob"))
-//                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
-//                                  TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
-//                                  TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
+    let expected = 
+        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
+          TProperty(JsonPropertyNames.HasChoices, TObjectVal(false))
+          TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"))          
+          TProperty
+              (JsonPropertyNames.Links,                
+               TArray
+                   ([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
+                      TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectProperty "")
+                      TObjectJson(attLink) ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("File Attachment"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("string"))
+                                  TProperty(JsonPropertyNames.Format, TObjectVal("blob"))
+                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
+                                  TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
+                                  TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ]
     
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
-//    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
-//    compareObject expected parsedResult
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectProperty), headers.ContentType)
+    assertTransactionalCache headers
+    //Assert.IsTrue(headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
 
-//let GetFileAttachmentValue(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithAttachments"
-//    let oid = ktc "1"
-//    let pid = "FileAttachment"
-//    let ourl = sprintf "objects/%s/%s" oType oid
-//    let purl = sprintf "%s/properties/%s" ourl pid
-//    let args = CreateReservedArgs ""
-//    let mt = "application/pdf"
-//    api.Request <- jsonGetMsgAndMediaType mt (sprintf "http://localhost/%s" purl)
-//    let result = api.GetProperty(oType, oid, pid, args)
-//    let content = result.Content.ReadAsStringAsync().Result
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, content)
-//    Assert.AreEqual(mt, result.Content.Headers.ContentType.ToString())
-//    Assert.AreEqual("attachment; filename=afile", result.Content.Headers.ContentDisposition.ToString())
-//    assertTransactionalCache result
-//    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
-//    Assert.AreEqual("", content)
+let GetFileAttachmentValue(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithAttachments"
+    let oid = ktc "1"
+    let pid = "FileAttachment"
+    let ourl = sprintf "objects/%s/%s" oType oid
+    let purl = sprintf "%s/properties/%s" ourl pid
+    let url = sprintf "http://localhost/%s" purl
+    let mt = "application/pdf"
+   
+    jsonSetGetMsgWithMediaType api.Request url mt
+    let result = api.GetProperty(oType, oid, pid)
+    let (content, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    
+    assertStatusCode HttpStatusCode.OK statusCode content
+    Assert.AreEqual(mt, headers.ContentType.ToString())
+    Assert.AreEqual("attachment; filename=afile", headers.ContentDisposition.ToString())
+    assertTransactionalCache headers
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    Assert.AreEqual("", content)
 
 //let GetAttachmentValueWrongMediaType(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithAttachments"

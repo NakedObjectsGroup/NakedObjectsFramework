@@ -210,6 +210,8 @@ let jsonSetPotentMsgAndMediaType (msg : HttpRequest) method url mt parms content
 
 let jsonSetGetMsg msg url = jsonSetGetMsgAndMediaType msg url "application/json" []
 
+let jsonSetGetMsgWithMediaType msg url mt = jsonSetGetMsgAndMediaType msg url mt []
+
 let jsonSetGetMsgWithProfile msg url profVal = jsonSetGetMsgAndMediaType msg url "application/json" [("profile", profVal)]
 
 let jsonSetEmptyPostMsg msg url = jsonSetPotentMsgAndMediaType msg HttpMethod.Post url "application/json" [] ""
