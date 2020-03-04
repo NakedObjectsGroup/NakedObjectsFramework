@@ -691,29 +691,29 @@ type RestTests() =
         [<Test>]
         member x.GetClobValueProperty() = ObjectProperty16.GetClobValueProperty x.api
         
-//        [<Test>]
-//        member x.GetValuePropertyWithMediaType() = ObjectProperty16.GetValuePropertyWithMediaType x.api
+        [<Test>]
+        member x.GetValuePropertyWithMediaType() = ObjectProperty16.GetValuePropertyWithMediaType x.api
         
-//        [<Test>]
-//        member x.GetChoicesValueProperty() = ObjectProperty16.GetChoicesValueProperty x.api
+        [<Test>]
+        member x.GetChoicesValueProperty() = ObjectProperty16.GetChoicesValueProperty x.api
         
-//        [<Test>]
-//        member x.GetDisabledValueProperty() = ObjectProperty16.GetDisabledValueProperty x.api
+        [<Test>]
+        member x.GetDisabledValueProperty() = ObjectProperty16.GetDisabledValueProperty x.api
         
-//        [<Test>]
-//        member x.GetUserDisabledValueProperty() = ObjectProperty16.GetUserDisabledValueProperty x.api
+        [<Test>]
+        member x.GetUserDisabledValueProperty() = ObjectProperty16.GetUserDisabledValueProperty x.api
         
-//        [<Test>]
-//        member x.GetUserDisabledValuePropertyAuthorised() = 
-//            x.SetUser("editUser")
-//            ObjectProperty16.GetUserDisabledValuePropertyAuthorised x.api
-//            x.SetUser("Test")
+        [<Test>]
+        member x.GetUserDisabledValuePropertyAuthorised() = 
+            x.SetUser("editUser")
+            ObjectProperty16.GetUserDisabledValuePropertyAuthorised x.api
+            x.SetUser("Test")
         
-//        [<Test>]
-//        member x.GetReferenceProperty() = ObjectProperty16.GetReferenceProperty x.api
+        [<Test>]
+        member x.GetReferenceProperty() = ObjectProperty16.GetReferenceProperty x.api
         
-//        [<Test>]
-//        member x.GetAutoCompleteProperty() = ObjectProperty16.GetAutoCompleteProperty x.api
+        [<Test>]
+        member x.GetAutoCompleteProperty() = ObjectProperty16.GetAutoCompleteProperty x.api
         
 //        [<Test>]
 //        member x.InvokeAutoComplete() = ObjectProperty16.InvokeAutoComplete x.api
