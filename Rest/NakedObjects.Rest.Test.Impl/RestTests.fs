@@ -651,47 +651,45 @@ type RestTests() =
 
         [<Test>]
         member x.GetFileAttachmentProperty() = ObjectProperty16.GetFileAttachmentProperty x.api
-
         
         [<Test>]
         member x.GetFileAttachmentValue() = ObjectProperty16.GetFileAttachmentValue x.api
         
-//        [<Test>]
-//        member x.GetImageAttachmentProperty() = ObjectProperty16.GetImageAttachmentProperty x.api
+        [<Test>]
+        member x.GetImageAttachmentProperty() = ObjectProperty16.GetImageAttachmentProperty x.api
         
+        [<Test>]
+        member x.GetAttachmentValueWrongMediaType() = ObjectProperty16.GetAttachmentValueWrongMediaType x.api
         
-//        [<Test>]
-//        member x.GetAttachmentValueWrongMediaType() = ObjectProperty16.GetAttachmentValueWrongMediaType x.api
+        [<Test>]
+        member x.GetImageAttachmentValue() = ObjectProperty16.GetImageAttachmentValue x.api
         
-//        [<Test>]
-//        member x.GetImageAttachmentValue() = ObjectProperty16.GetImageAttachmentValue x.api
+        [<Test>]
+        member x.GetImageAttachmentValueWithDefault() = ObjectProperty16.GetImageAttachmentValueWithDefault x.api
         
-//        [<Test>]
-//        member x.GetImageAttachmentValueWithDefault() = ObjectProperty16.GetImageAttachmentValueWithDefault x.api
+        [<Test>]
+        member x.GetValuePropertyViewModel() = ObjectProperty16.GetValuePropertyViewModel x.api
+
+        [<Test>]
+        member x.GetValuePropertyUserAuth() = 
+            x.SetUser("viewUser")
+            ObjectProperty16.GetValuePropertyUserAuth x.api
+            x.SetUser("Test")
         
-//        [<Test>]
-//        member x.GetValuePropertyViewModel() = ObjectProperty16.GetValuePropertyViewModel x.api
+        [<Test>]
+        member x.GetEnumValueProperty() = ObjectProperty16.GetEnumValueProperty x.api
+                
+        [<Test>]
+        member x.GetValuePropertySimpleOnly() = ObjectProperty16.GetValuePropertySimpleOnly x.api
         
-//        [<Test>]
-//        member x.GetEnumValueProperty() = ObjectProperty16.GetEnumValueProperty x.api
+        [<Test>]
+        member x.GetStringValueProperty() = ObjectProperty16.GetStringValueProperty x.api
         
-//        [<Test>]
-//        member x.GetValuePropertyUserAuth() = 
-//            x.SetUser("viewUser")
-//            ObjectProperty16.GetValuePropertyUserAuth x.api
-//            x.SetUser("Test")
+        [<Test>]
+        member x.GetBlobValueProperty() = ObjectProperty16.GetBlobValueProperty x.api
         
-//        [<Test>]
-//        member x.GetValuePropertySimpleOnly() = ObjectProperty16.GetValuePropertySimpleOnly x.api
-        
-//        [<Test>]
-//        member x.GetStringValueProperty() = ObjectProperty16.GetStringValueProperty x.api
-        
-//        [<Test>]
-//        member x.GetBlobValueProperty() = ObjectProperty16.GetBlobValueProperty x.api
-        
-//        [<Test>]
-//        member x.GetClobValueProperty() = ObjectProperty16.GetClobValueProperty x.api
+        [<Test>]
+        member x.GetClobValueProperty() = ObjectProperty16.GetClobValueProperty x.api
         
 //        [<Test>]
 //        member x.GetValuePropertyWithMediaType() = ObjectProperty16.GetValuePropertyWithMediaType x.api
