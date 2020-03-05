@@ -64,7 +64,7 @@ module ObjectCollection17
 //                      ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -124,8 +124,8 @@ module ObjectCollection17
                       
 //                      ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -173,8 +173,8 @@ module ObjectCollection17
                       
 //                       ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -220,8 +220,8 @@ module ObjectCollection17
 //                    TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object (oType))
 //                             TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self purl RepresentationTypes.ObjectCollection "" roType true) ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -268,8 +268,8 @@ module ObjectCollection17
                       
 //                      ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -313,8 +313,8 @@ module ObjectCollection17
 //                    TArray([ TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object (oType))
 //                             TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self purl RepresentationTypes.ObjectCollection "" roType true) ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -364,8 +364,8 @@ module ObjectCollection17
                       
 //                      ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -412,8 +412,8 @@ module ObjectCollection17
                       
 //                       ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -450,8 +450,8 @@ module ObjectCollection17
 //                             TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Self vurl RepresentationTypes.CollectionValue "" "" true)
 //                             ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.CollectionValue, "", "", true), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    Assert.AreEqual(new typeType(RepresentationTypes.CollectionValue, "", "", true), headers.ContentType)
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 

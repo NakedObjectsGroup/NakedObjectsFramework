@@ -715,112 +715,109 @@ type RestTests() =
         [<Test>]
         member x.GetAutoCompleteProperty() = ObjectProperty16.GetAutoCompleteProperty x.api
         
-//        [<Test>]
-//        member x.InvokeAutoComplete() = ObjectProperty16.InvokeAutoComplete x.api
+        [<Test>]
+        member x.InvokeAutoComplete() = ObjectProperty16.InvokeAutoComplete x.api
         
-//        [<Test>]
-//        member x.InvokeAutoCompleteErrorNoParm() = ObjectProperty16.InvokeAutoCompleteErrorNoParm x.api
+        [<Test>]
+        member x.InvokeAutoCompleteErrorNoParm() = ObjectProperty16.InvokeAutoCompleteErrorNoParm x.api
         
-//        [<Test>]
-//        member x.InvokeAutoCompleteErrorMalformedParm() = ObjectProperty16.InvokeAutoCompleteErrorMalformedParm x.api
+        [<Test>]
+        member x.InvokeAutoCompleteErrorMalformedParm() = ObjectProperty16.InvokeAutoCompleteErrorMalformedParm x.api
         
-//        [<Test>]
-//        member x.InvokeAutoCompleteErrorUnrecognisedParm() = 
-//            ObjectProperty16.InvokeAutoCompleteErrorUnrecognisedParm x.api
+        [<Test>]
+        member x.InvokeAutoCompleteErrorUnrecognisedParm() = 
+            ObjectProperty16.InvokeAutoCompleteErrorUnrecognisedParm x.api
         
-//        [<Test>]
-//        member x.InvokeConditionalChoicesReference() = ObjectProperty16.InvokeConditionalChoicesReference x.api
+        [<Test>]
+        member x.InvokeConditionalChoicesReference() = ObjectProperty16.InvokeConditionalChoicesReference x.api
         
-//        [<Test>]
-//        member x.InvokeConditionalChoicesReferenceErrorMalformedParm() = 
-//            ObjectProperty16.InvokeConditionalChoicesReferenceErrorMalformedParm x.api
+        [<Test>]
+        member x.InvokeConditionalChoicesReferenceErrorMalformedParm() = 
+            ObjectProperty16.InvokeConditionalChoicesReferenceErrorMalformedParm x.api
         
-//        [<Test>]
-//        member x.InvokeConditionalChoicesReferenceErrorNoParm() = 
-//            ObjectProperty16.InvokeConditionalChoicesReferenceErrorNoParm x.api
+        [<Test>]
+        member x.InvokeConditionalChoicesReferenceErrorNoParm() = 
+            ObjectProperty16.InvokeConditionalChoicesReferenceErrorNoParm x.api
         
-//        [<Test>]
-//        member x.InvokeConditionalChoicesReferenceErrorUnrecognisedParm() = 
-//            ObjectProperty16.InvokeConditionalChoicesReferenceErrorUnrecognisedParm x.api
+        [<Test>]
+        member x.InvokeConditionalChoicesReferenceErrorUnrecognisedParm() = 
+            ObjectProperty16.InvokeConditionalChoicesReferenceErrorUnrecognisedParm x.api
         
-//        [<Test>]
-//        member x.InvokeConditionalChoicesValue() = ObjectProperty16.InvokeConditionalChoicesValue x.api
+        [<Test>]
+        member x.InvokeConditionalChoicesValue() = ObjectProperty16.InvokeConditionalChoicesValue x.api
         
-//        [<Test>]
-//        member x.InvokeConditionalChoicesValueErrorMalformedParm() = 
-//            ObjectProperty16.InvokeConditionalChoicesValueErrorMalformedParm x.api
+        [<Test>]
+        member x.InvokeConditionalChoicesValueErrorMalformedParm() = 
+            ObjectProperty16.InvokeConditionalChoicesValueErrorMalformedParm x.api
         
-//        [<Test>]
-//        member x.InvokeConditionalChoicesValueErrorMissingParm() = 
-//            ObjectProperty16.InvokeConditionalChoicesValueErrorMissingParm x.api
+        [<Test>]
+        member x.InvokeConditionalChoicesValueErrorMissingParm() = 
+            ObjectProperty16.InvokeConditionalChoicesValueErrorMissingParm x.api
         
-//        [<Test>]
-//        member x.GetReferencePropertyViewModel() = ObjectProperty16.GetReferencePropertyViewModel x.api
+        [<Test>]
+        member x.GetReferencePropertyViewModel() = ObjectProperty16.GetReferencePropertyViewModel x.api
         
-//        [<Test>]
-//        member x.GetDisabledReferenceProperty() = ObjectProperty16.GetDisabledReferenceProperty x.api
+        [<Test>]
+        member x.GetDisabledReferenceProperty() = ObjectProperty16.GetDisabledReferenceProperty x.api
         
-//        [<Test>]
-//        member x.GetChoicesReferenceProperty() = ObjectProperty16.GetChoicesReferenceProperty x.api
+        [<Test>]
+        member x.GetChoicesReferenceProperty() = ObjectProperty16.GetChoicesReferenceProperty x.api
         
-//        [<Test>]
-//        member x.GetInvalidProperty() = ObjectProperty16.GetInvalidProperty x.api
+        [<Test>]
+        member x.GetInvalidProperty() = ObjectProperty16.GetInvalidProperty x.api
         
-//        [<Test>]
-//        member x.GetNotFoundProperty() = ObjectProperty16.GetNotFoundProperty x.api
+        [<Test>]
+        member x.GetNotFoundProperty() = ObjectProperty16.GetNotFoundProperty x.api
         
-//        [<Test>]
-//        member x.GetHiddenValueProperty() = ObjectProperty16.GetHiddenValueProperty x.api
+        [<Test>]
+        member x.GetHiddenValueProperty() = ObjectProperty16.GetHiddenValueProperty x.api
         
-//        [<Test>]
-//        member x.GetUserHiddenValueProperty() = ObjectProperty16.GetUserHiddenValueProperty x.api
+        [<Test>]
+        member x.GetUserHiddenValueProperty() = ObjectProperty16.GetUserHiddenValueProperty x.api
         
-//        [<Test>]
-//        member x.GetHiddenReferenceProperty() = ObjectProperty16.GetHiddenReferenceProperty x.api
+        [<Test>]
+        member x.GetHiddenReferenceProperty() = ObjectProperty16.GetHiddenReferenceProperty x.api
         
-//        [<Test>]
-//        member x.NotAcceptableGetPropertyWrongMediaType() = 
-//            ObjectProperty16.NotAcceptableGetPropertyWrongMediaType x.api
+       
+        [<Test>]
+        member x.GetErrorValueProperty() = ObjectProperty16.GetErrorValueProperty x.api
         
-//        [<Test>]
-//        member x.GetErrorValueProperty() = ObjectProperty16.GetErrorValueProperty x.api
+        [<Test>]
+        member x.GetErrorReferenceProperty() = ObjectProperty16.GetErrorReferenceProperty x.api
         
-//        [<Test>]
-//        member x.GetErrorReferenceProperty() = ObjectProperty16.GetErrorReferenceProperty x.api
+        [<Test>]
+        member x.GetPropertyAsCollection() = ObjectProperty16.GetPropertyAsCollection x.api
         
-//        [<Test>]
-//        member x.GetPropertyAsCollection() = ObjectProperty16.GetPropertyAsCollection x.api
+        [<Test>]
+        member x.PutValuePropertySuccess() = ObjectProperty16.PutValuePropertySuccess x.api
         
-//        [<Test>]
-//        member x.PutValuePropertySuccess() = ObjectProperty16.PutValuePropertySuccess x.api
+        [<Test>]
+        member x.PutDateTimeValuePropertySuccess() = 
+            ObjectProperty16.PutDateTimeValuePropertySuccess x.api
+            x.NakedObjectsFramework.TransactionManager.StartTransaction()
+            let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
+            o.ADateTimeValue <- new DateTime(2012, 2, 10, 0, 0, 0, 0, DateTimeKind.Utc)
+            x.NakedObjectsFramework.TransactionManager.EndTransaction()
         
-//        [<Test>]
-//        member x.PutDateTimeValuePropertySuccess() = 
-//            ObjectProperty16.PutDateTimeValuePropertySuccess x.api
-//            x.NakedObjectsFramework.TransactionManager.StartTransaction()
-//            let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
-//            o.ADateTimeValue <- new DateTime(2012, 2, 10, 0, 0, 0, 0, DateTimeKind.Utc)
-//            x.NakedObjectsFramework.TransactionManager.EndTransaction()
+        [<Test>]
+        member x.PutUserDisabledValuePropertySuccess() = 
+            x.SetUser("editUser")
+            ObjectProperty16.PutUserDisabledValuePropertySuccess x.api
+            x.NakedObjectsFramework.TransactionManager.StartTransaction()
+            let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
+            o.AUserDisabledValue <- 0
+            x.NakedObjectsFramework.TransactionManager.EndTransaction()
+            x.SetUser("Test")
         
-//        [<Test>]
-//        member x.PutUserDisabledValuePropertySuccess() = 
-//            x.SetUser("editUser")
-//            ObjectProperty16.PutUserDisabledValuePropertySuccess x.api
-//            x.NakedObjectsFramework.TransactionManager.StartTransaction()
-//            let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
-//            o.AUserDisabledValue <- 0
-//            x.NakedObjectsFramework.TransactionManager.EndTransaction()
-//            x.SetUser("Test")
+        [<Test>]
+        member x.PutClobPropertyBadRequest() = ObjectProperty16.PutClobPropertyBadRequest x.api
         
+        [<Test>]
+        member x.PutBlobPropertyBadRequest() = ObjectProperty16.PutBlobPropertyBadRequest x.api
+          
 //        [<Test>]
 //        member x.PutValuePropertySuccessValidateOnly() = ObjectProperty16.PutValuePropertySuccessValidateOnly x.api
-        
-//        [<Test>]
-//        member x.PutClobPropertyBadRequest() = ObjectProperty16.PutClobPropertyBadRequest x.api
-        
-//        [<Test>]
-//        member x.PutBlobPropertyBadRequest() = ObjectProperty16.PutBlobPropertyBadRequest x.api
-        
+                
 //        [<Test>]
 //        member x.DeleteValuePropertySuccess() = 
 //            ObjectProperty16.DeleteValuePropertySuccess x.api
@@ -1039,7 +1036,11 @@ type RestTests() =
         
 //        [<Test>]
 //        member x.PropertyNotFound() = ObjectProperty16.PropertyNotFound x.api
-        
+
+//        [<Test>]
+//        member x.NotAcceptableGetPropertyWrongMediaType() = 
+//           ObjectProperty16.NotAcceptableGetPropertyWrongMediaType x.api
+             
 //        [<Test>]
 //        member x.GetCollectionProperty() = ObjectCollection17.GetCollectionProperty x.api
         

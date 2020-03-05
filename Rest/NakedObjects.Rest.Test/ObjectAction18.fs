@@ -51,7 +51,7 @@ module ObjectAction18
 //                              ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -125,7 +125,7 @@ module ObjectAction18
 //                       ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -209,7 +209,7 @@ module ObjectAction18
 //                       ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -261,7 +261,7 @@ module ObjectAction18
 //                              ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -313,7 +313,7 @@ module ObjectAction18
 //                              ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -358,7 +358,7 @@ module ObjectAction18
 //                              ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -409,7 +409,7 @@ module ObjectAction18
 //                              ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -460,7 +460,7 @@ module ObjectAction18
 //                              ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -533,7 +533,7 @@ module ObjectAction18
 //                      ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -600,7 +600,7 @@ module ObjectAction18
 //                          (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "") ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -657,7 +657,7 @@ module ObjectAction18
 //                              ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -711,7 +711,7 @@ module ObjectAction18
 //                              ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -768,7 +768,7 @@ module ObjectAction18
 //                              ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -821,7 +821,7 @@ module ObjectAction18
 //                              ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -910,7 +910,7 @@ module ObjectAction18
 //                       ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -999,7 +999,7 @@ module ObjectAction18
 //                       ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -1080,7 +1080,7 @@ module ObjectAction18
 //                          (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "") ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -1156,7 +1156,7 @@ module ObjectAction18
 //                      ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -1236,7 +1236,7 @@ module ObjectAction18
 //                       ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -1309,7 +1309,7 @@ module ObjectAction18
 //                      ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -1375,7 +1375,7 @@ module ObjectAction18
 //                       ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -1455,7 +1455,7 @@ module ObjectAction18
 //                    ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -1554,7 +1554,7 @@ module ObjectAction18
 //                       ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -1605,7 +1605,7 @@ module ObjectAction18
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
 //    compareObject expected parsedResult
 
@@ -1742,7 +1742,7 @@ module ObjectAction18
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
 //    compareObject expected parsedResult
 
@@ -1830,7 +1830,7 @@ module ObjectAction18
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
 //    compareObject expected parsedResult
 //    // repeat for second parm
@@ -1853,7 +1853,7 @@ module ObjectAction18
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
 //    compareObject expected parsedResult
 
@@ -1897,7 +1897,7 @@ module ObjectAction18
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
 //    compareObject expected parsedResult
 
@@ -1973,7 +1973,7 @@ module ObjectAction18
 //                      ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -2111,7 +2111,7 @@ module ObjectAction18
 //                      ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -2167,7 +2167,7 @@ module ObjectAction18
 //                             ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -2207,7 +2207,7 @@ module ObjectAction18
 //                              ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -2265,7 +2265,7 @@ module ObjectAction18
 //                      ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -2326,7 +2326,7 @@ module ObjectAction18
 //                       ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
@@ -2385,7 +2385,7 @@ module ObjectAction18
 //                       ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //    compareObject expected parsedResult
 
 //let GetContributedActionOnContributerBaseClass(api : RestfulObjectsControllerBase) = 
@@ -2437,7 +2437,7 @@ module ObjectAction18
 //                    ]))]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //    compareObject expected parsedResult
 
 //let GetContributedActionOnContributerWithRef(api : RestfulObjectsControllerBase) = 
@@ -2505,7 +2505,7 @@ module ObjectAction18
 //                       ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //    Assert.IsTrue(result.Headers.ETag = null)
 //    compareObject expected parsedResult
 
@@ -2581,7 +2581,7 @@ module ObjectAction18
 //                       ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), result.Content.Headers.ContentType)
-//    assertTransactionalCache result
+//    assertTransactionalCache headers
 //    Assert.IsTrue(result.Headers.ETag = null)
 //    compareObject expected parsedResult
 
