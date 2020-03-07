@@ -815,231 +815,231 @@ type RestTests() =
         [<Test>]
         member x.PutBlobPropertyBadRequest() = ObjectProperty16.PutBlobPropertyBadRequest x.api
           
-//        [<Test>]
-//        member x.PutValuePropertySuccessValidateOnly() = ObjectProperty16.PutValuePropertySuccessValidateOnly x.api
+        //[<Test>]
+        //member x.PutValuePropertySuccessValidateOnly() = ObjectProperty16.PutValuePropertySuccessValidateOnly x.api
                 
-//        [<Test>]
-//        member x.DeleteValuePropertySuccess() = 
-//            ObjectProperty16.DeleteValuePropertySuccess x.api
-//            x.NakedObjectsFramework.TransactionManager.StartTransaction()
-//            let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
-//            o.AValue <- 100
-//            x.NakedObjectsFramework.TransactionManager.EndTransaction()
+        //[<Test>]
+        //member x.DeleteValuePropertySuccess() = 
+        //    ObjectProperty16.DeleteValuePropertySuccess x.api
+        //    x.NakedObjectsFramework.TransactionManager.StartTransaction()
+        //    let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
+        //    o.AValue <- 100
+        //    x.NakedObjectsFramework.TransactionManager.EndTransaction()
         
-//        [<Test>]
-//        member x.DeleteValuePropertySuccessValidateOnly() = 
-//            ObjectProperty16.DeleteValuePropertySuccessValidateOnly x.api
-//            x.NakedObjectsFramework.TransactionManager.StartTransaction()
-//            let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
-//            o.AValue <- 100
-//            x.NakedObjectsFramework.TransactionManager.EndTransaction()
+        //[<Test>]
+        //member x.DeleteValuePropertySuccessValidateOnly() = 
+        //    ObjectProperty16.DeleteValuePropertySuccessValidateOnly x.api
+        //    x.NakedObjectsFramework.TransactionManager.StartTransaction()
+        //    let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
+        //    o.AValue <- 100
+        //    x.NakedObjectsFramework.TransactionManager.EndTransaction()
         
-//        [<Test>]
-//        member x.PutNullValuePropertySuccess() = ObjectProperty16.PutNullValuePropertySuccess x.api
+        [<Test>]
+        member x.PutNullValuePropertySuccess() = ObjectProperty16.PutNullValuePropertySuccess x.api
         
-//        [<Test>]
-//        member x.PutNullValuePropertySuccessValidateOnly() = 
-//            ObjectProperty16.PutNullValuePropertySuccessValidateOnly x.api
+        //[<Test>]
+        //member x.PutNullValuePropertySuccessValidateOnly() = 
+        //    ObjectProperty16.PutNullValuePropertySuccessValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutReferencePropertySuccess() = ObjectProperty16.PutReferencePropertySuccess x.api
+        [<Test>]
+        member x.PutReferencePropertySuccess() = ObjectProperty16.PutReferencePropertySuccess x.api
         
-//        [<Test>]
-//        member x.PutReferencePropertySuccessValidateOnly() = 
-//            ObjectProperty16.PutReferencePropertySuccessValidateOnly x.api
+        //[<Test>]
+        //member x.PutReferencePropertySuccessValidateOnly() = 
+        //    ObjectProperty16.PutReferencePropertySuccessValidateOnly x.api
         
-//        [<Test>]
-//        member x.DeleteReferencePropertySuccess() = ObjectProperty16.DeleteReferencePropertySuccess x.api
+        //[<Test>]
+        //member x.DeleteReferencePropertySuccess() = ObjectProperty16.DeleteReferencePropertySuccess x.api
         
-//        [<Test>]
-//        member x.DeleteReferencePropertySuccessValidateOnly() = 
-//            ObjectProperty16.DeleteReferencePropertySuccessValidateOnly x.api
+        [<Test>]
+        member x.DeleteReferencePropertySuccessValidateOnly() = 
+            ObjectProperty16.DeleteReferencePropertySuccessValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutNullReferencePropertySuccess() = ObjectProperty16.PutNullReferencePropertySuccess x.api
+        [<Test>]
+        member x.PutNullReferencePropertySuccess() = ObjectProperty16.PutNullReferencePropertySuccess x.api
         
-//        [<Test>]
-//        member x.PutNullReferencePropertySuccessValidateOnly() = 
-//            ObjectProperty16.PutNullReferencePropertySuccessValidateOnly x.api
+        //[<Test>]
+        //member x.PutNullReferencePropertySuccessValidateOnly() = 
+        //    ObjectProperty16.PutNullReferencePropertySuccessValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyMissingArgs() = ObjectProperty16.PutWithValuePropertyMissingArgs x.api
+        [<Test>]
+        member x.PutWithValuePropertyMissingArgs() = ObjectProperty16.PutWithValuePropertyMissingArgs x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyMalformedArgs() = ObjectProperty16.PutWithValuePropertyMalformedArgs x.api
+        [<Test>]
+        member x.PutWithValuePropertyMalformedArgs() = ObjectProperty16.PutWithValuePropertyMalformedArgs x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyInvalidArgsValue() = ObjectProperty16.PutWithValuePropertyInvalidArgsValue x.api
+        [<Test>]
+        member x.PutWithValuePropertyInvalidArgsValue() = ObjectProperty16.PutWithValuePropertyInvalidArgsValue x.api
         
-//        [<Test>]
-//        member x.PutWithReferencePropertyFailCrossValidation() = 
-//            ObjectProperty16.PutWithReferencePropertyFailCrossValidation x.api
+        //[<Test>]
+        //member x.PutWithReferencePropertyFailCrossValidation() = 
+        //    ObjectProperty16.PutWithReferencePropertyFailCrossValidation x.api
         
-//        [<Test>]
-//        member x.PutWithReferencePropertyMalformedArgs() = ObjectProperty16.PutWithReferencePropertyMalformedArgs x.api
+        //[<Test>]
+        //member x.PutWithReferencePropertyMalformedArgs() = ObjectProperty16.PutWithReferencePropertyMalformedArgs x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyFailCrossValidation() = 
-//            ObjectProperty16.PutWithValuePropertyFailCrossValidation x.api
+        //[<Test>]
+        //member x.PutWithValuePropertyFailCrossValidation() = 
+        //    ObjectProperty16.PutWithValuePropertyFailCrossValidation x.api
         
-//        [<Test>]
-//        member x.PutWithReferencePropertyInvalidArgsValue() = 
-//            ObjectProperty16.PutWithReferencePropertyInvalidArgsValue x.api
+        [<Test>]
+        member x.PutWithReferencePropertyInvalidArgsValue() = 
+            ObjectProperty16.PutWithReferencePropertyInvalidArgsValue x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyDisabledValue() = ObjectProperty16.PutWithValuePropertyDisabledValue x.api
+        [<Test>]
+        member x.PutWithValuePropertyDisabledValue() = ObjectProperty16.PutWithValuePropertyDisabledValue x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyUserDisabledValue() = ObjectProperty16.PutWithValuePropertyUserDisabledValue x.api
+        [<Test>]
+        member x.PutWithValuePropertyUserDisabledValue() = ObjectProperty16.PutWithValuePropertyUserDisabledValue x.api
         
-//        [<Test>]
-//        member x.PutWithReferencePropertyDisabledValue() = ObjectProperty16.PutWithReferencePropertyDisabledValue x.api
+        [<Test>]
+        member x.PutWithReferencePropertyDisabledValue() = ObjectProperty16.PutWithReferencePropertyDisabledValue x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyInvisibleValue() = ObjectProperty16.PutWithValuePropertyInvisibleValue x.api
+        [<Test>]
+        member x.PutWithValuePropertyInvisibleValue() = ObjectProperty16.PutWithValuePropertyInvisibleValue x.api
         
-//        [<Test>]
-//        member x.PutWithReferencePropertyInvisibleValue() = 
-//            ObjectProperty16.PutWithReferencePropertyInvisibleValue x.api
+        [<Test>]
+        member x.PutWithReferencePropertyInvisibleValue() = 
+            ObjectProperty16.PutWithReferencePropertyInvisibleValue x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyOnImmutableObject() = ObjectProperty16.PutWithValuePropertyOnImmutableObject x.api
+        //[<Test>]
+        //member x.PutWithValuePropertyOnImmutableObject() = ObjectProperty16.PutWithValuePropertyOnImmutableObject x.api
         
-//        [<Test>]
-//        member x.PutWithReferencePropertyOnImmutableObject() = 
-//            ObjectProperty16.PutWithReferencePropertyOnImmutableObject x.api
+        //[<Test>]
+        //member x.PutWithReferencePropertyOnImmutableObject() = 
+        //    ObjectProperty16.PutWithReferencePropertyOnImmutableObject x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyInvalidArgsName() = ObjectProperty16.PutWithValuePropertyInvalidArgsName x.api
+        [<Test>]
+        member x.PutWithValuePropertyInvalidArgsName() = ObjectProperty16.PutWithValuePropertyInvalidArgsName x.api
         
-//        [<Test>]
-//        member x.NotAcceptablePutPropertyWrongMediaType() = 
-//            ObjectProperty16.NotAcceptablePutPropertyWrongMediaType x.api
+        [<Test>]
+        member x.NotAcceptablePutPropertyWrongMediaType() = 
+            ObjectProperty16.NotAcceptablePutPropertyWrongMediaType x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyMissingArgsValidateOnly() = 
-//            ObjectProperty16.PutWithValuePropertyMissingArgsValidateOnly x.api
+        [<Test>]
+        member x.PutWithValuePropertyMissingArgsValidateOnly() = 
+            ObjectProperty16.PutWithValuePropertyMissingArgsValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyMalformedArgsValidateOnly() = 
-//            ObjectProperty16.PutWithValuePropertyMalformedArgsValidateOnly x.api
+        [<Test>]
+        member x.PutWithValuePropertyMalformedArgsValidateOnly() = 
+            ObjectProperty16.PutWithValuePropertyMalformedArgsValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyInvalidArgsValueValidateOnly() = 
-//            ObjectProperty16.PutWithValuePropertyInvalidArgsValueValidateOnly x.api
+        [<Test>]
+        member x.PutWithValuePropertyInvalidArgsValueValidateOnly() = 
+            ObjectProperty16.PutWithValuePropertyInvalidArgsValueValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithReferencePropertyFailCrossValidationValidateOnly() = 
-//            ObjectProperty16.PutWithReferencePropertyFailCrossValidationValidateOnly x.api
+        //[<Test>]
+        //member x.PutWithReferencePropertyFailCrossValidationValidateOnly() = 
+        //    ObjectProperty16.PutWithReferencePropertyFailCrossValidationValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyFailCrossValidationValidateOnly() = 
-//            ObjectProperty16.PutWithValuePropertyFailCrossValidationValidateOnly x.api
+        //[<Test>]
+        //member x.PutWithValuePropertyFailCrossValidationValidateOnly() = 
+        //    ObjectProperty16.PutWithValuePropertyFailCrossValidationValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithReferencePropertyInvalidArgsValueValidateOnly() = 
-//            ObjectProperty16.PutWithReferencePropertyInvalidArgsValueValidateOnly x.api
+        [<Test>]
+        member x.PutWithReferencePropertyInvalidArgsValueValidateOnly() = 
+            ObjectProperty16.PutWithReferencePropertyInvalidArgsValueValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyDisabledValueValidateOnly() = 
-//            ObjectProperty16.PutWithValuePropertyDisabledValueValidateOnly x.api
+        [<Test>]
+        member x.PutWithValuePropertyDisabledValueValidateOnly() = 
+            ObjectProperty16.PutWithValuePropertyDisabledValueValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithReferencePropertyDisabledValueValidateOnly() = 
-//            ObjectProperty16.PutWithReferencePropertyDisabledValueValidateOnly x.api
+        //[<Test>]
+        //member x.PutWithReferencePropertyDisabledValueValidateOnly() = 
+        //    ObjectProperty16.PutWithReferencePropertyDisabledValueValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyInvisibleValueValidateOnly() = 
-//            ObjectProperty16.PutWithValuePropertyInvisibleValueValidateOnly x.api
+        [<Test>]
+        member x.PutWithValuePropertyInvisibleValueValidateOnly() = 
+            ObjectProperty16.PutWithValuePropertyInvisibleValueValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithReferencePropertyInvisibleValueValidateOnly() = 
-//            ObjectProperty16.PutWithReferencePropertyInvisibleValueValidateOnly x.api
+        //[<Test>]
+        //member x.PutWithReferencePropertyInvisibleValueValidateOnly() = 
+        //    ObjectProperty16.PutWithReferencePropertyInvisibleValueValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyOnImmutableObjectValidateOnly() = 
-//            ObjectProperty16.PutWithValuePropertyOnImmutableObjectValidateOnly x.api
+        //[<Test>]
+        //member x.PutWithValuePropertyOnImmutableObjectValidateOnly() = 
+        //    ObjectProperty16.PutWithValuePropertyOnImmutableObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithReferencePropertyOnImmutableObjectValidateOnly() = 
-//            ObjectProperty16.PutWithReferencePropertyOnImmutableObjectValidateOnly x.api
+        //[<Test>]
+        //member x.PutWithReferencePropertyOnImmutableObjectValidateOnly() = 
+        //    ObjectProperty16.PutWithReferencePropertyOnImmutableObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyInvalidArgsNameValidateOnly() = 
-//            ObjectProperty16.PutWithValuePropertyInvalidArgsNameValidateOnly x.api
+        [<Test>]
+        member x.PutWithValuePropertyInvalidArgsNameValidateOnly() = 
+            ObjectProperty16.PutWithValuePropertyInvalidArgsNameValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutWithValuePropertyInternalError() = ObjectProperty16.PutWithValuePropertyInternalError x.api
+        //[<Test>]
+        //member x.PutWithValuePropertyInternalError() = ObjectProperty16.PutWithValuePropertyInternalError x.api
         
-//        [<Test>]
-//        member x.PutWithReferencePropertyInternalError() = ObjectProperty16.PutWithReferencePropertyInternalError x.api
+        //[<Test>]
+        //member x.PutWithReferencePropertyInternalError() = ObjectProperty16.PutWithReferencePropertyInternalError x.api
         
-//        [<Test>]
-//        member x.DeleteValuePropertyDisabledValueValidateOnly() = 
-//            ObjectProperty16.DeleteValuePropertyDisabledValueValidateOnly x.api
+        [<Test>]
+        member x.DeleteValuePropertyDisabledValueValidateOnly() = 
+            ObjectProperty16.DeleteValuePropertyDisabledValueValidateOnly x.api
         
-//        [<Test>]
-//        member x.DeleteReferencePropertyDisabledValueValidateOnly() = 
-//            ObjectProperty16.DeleteReferencePropertyDisabledValueValidateOnly x.api
+        [<Test>]
+        member x.DeleteReferencePropertyDisabledValueValidateOnly() = 
+            ObjectProperty16.DeleteReferencePropertyDisabledValueValidateOnly x.api
         
-//        [<Test>]
-//        member x.DeleteValuePropertyInvisibleValueValidateOnly() = 
-//            ObjectProperty16.DeleteValuePropertyInvisibleValueValidateOnly x.api
+        [<Test>]
+        member x.DeleteValuePropertyInvisibleValueValidateOnly() = 
+            ObjectProperty16.DeleteValuePropertyInvisibleValueValidateOnly x.api
         
-//        [<Test>]
-//        member x.DeleteReferencePropertyInvisibleValueValidateOnly() = 
-//            ObjectProperty16.DeleteReferencePropertyInvisibleValueValidateOnly x.api
+        [<Test>]
+        member x.DeleteReferencePropertyInvisibleValueValidateOnly() = 
+            ObjectProperty16.DeleteReferencePropertyInvisibleValueValidateOnly x.api
         
-//        [<Test>]
-//        member x.DeleteValuePropertyOnImmutableObjectValidateOnly() = 
-//            ObjectProperty16.DeleteValuePropertyOnImmutableObjectValidateOnly x.api
+        [<Test>]
+        member x.DeleteValuePropertyOnImmutableObjectValidateOnly() = 
+            ObjectProperty16.DeleteValuePropertyOnImmutableObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.DeleteReferencePropertyOnImmutableObjectValidateOnly() = 
-//            ObjectProperty16.DeleteReferencePropertyOnImmutableObjectValidateOnly x.api
+        [<Test>]
+        member x.DeleteReferencePropertyOnImmutableObjectValidateOnly() = 
+            ObjectProperty16.DeleteReferencePropertyOnImmutableObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.DeleteValuePropertyInvalidArgsNameValidateOnly() = 
-//            ObjectProperty16.DeleteValuePropertyInvalidArgsNameValidateOnly x.api
+        [<Test>]
+        member x.DeleteValuePropertyInvalidArgsNameValidateOnly() = 
+            ObjectProperty16.DeleteValuePropertyInvalidArgsNameValidateOnly x.api
         
-//        [<Test>]
-//        member x.DeleteValuePropertyDisabledValue() = ObjectProperty16.DeleteValuePropertyDisabledValue x.api
+        [<Test>]
+        member x.DeleteValuePropertyDisabledValue() = ObjectProperty16.DeleteValuePropertyDisabledValue x.api
         
-//        [<Test>]
-//        member x.DeleteReferencePropertyDisabledValue() = ObjectProperty16.DeleteReferencePropertyDisabledValue x.api
+        [<Test>]
+        member x.DeleteReferencePropertyDisabledValue() = ObjectProperty16.DeleteReferencePropertyDisabledValue x.api
         
-//        [<Test>]
-//        member x.DeleteValuePropertyInvisibleValue() = ObjectProperty16.DeleteValuePropertyInvisibleValue x.api
+        [<Test>]
+        member x.DeleteValuePropertyInvisibleValue() = ObjectProperty16.DeleteValuePropertyInvisibleValue x.api
         
-//        [<Test>]
-//        member x.DeleteReferencePropertyInvisibleValue() = ObjectProperty16.DeleteReferencePropertyInvisibleValue x.api
+        [<Test>]
+        member x.DeleteReferencePropertyInvisibleValue() = ObjectProperty16.DeleteReferencePropertyInvisibleValue x.api
         
-//        [<Test>]
-//        member x.DeleteValuePropertyOnImmutableObject() = ObjectProperty16.DeleteValuePropertyOnImmutableObject x.api
+        [<Test>]
+        member x.DeleteValuePropertyOnImmutableObject() = ObjectProperty16.DeleteValuePropertyOnImmutableObject x.api
         
-//        [<Test>]
-//        member x.DeleteReferencePropertyOnImmutableObject() = 
-//            ObjectProperty16.DeleteReferencePropertyOnImmutableObject x.api
+        [<Test>]
+        member x.DeleteReferencePropertyOnImmutableObject() = 
+            ObjectProperty16.DeleteReferencePropertyOnImmutableObject x.api
         
-//        [<Test>]
-//        member x.DeleteValuePropertyInvalidArgsName() = ObjectProperty16.DeleteValuePropertyInvalidArgsName x.api
+        [<Test>]
+        member x.DeleteValuePropertyInvalidArgsName() = ObjectProperty16.DeleteValuePropertyInvalidArgsName x.api
         
-//        [<Test>]
-//        member x.NotAcceptableDeletePropertyWrongMediaType() = 
-//            ObjectProperty16.NotAcceptableDeletePropertyWrongMediaType x.api
+        [<Test>]
+        member x.NotAcceptableDeletePropertyWrongMediaType() = 
+            ObjectProperty16.NotAcceptableDeletePropertyWrongMediaType x.api
         
-//        [<Test>]
-//        member x.DeleteValuePropertyInternalError() = ObjectProperty16.DeleteValuePropertyInternalError x.api
+        //[<Test>]
+        //member x.DeleteValuePropertyInternalError() = ObjectProperty16.DeleteValuePropertyInternalError x.api
         
-//        [<Test>]
-//        member x.DeleteReferencePropertyInternalError() = ObjectProperty16.DeleteReferencePropertyInternalError x.api
+        //[<Test>]
+        //member x.DeleteReferencePropertyInternalError() = ObjectProperty16.DeleteReferencePropertyInternalError x.api
         
-//        [<Test>]
-//        member x.PropertyNotFound() = ObjectProperty16.PropertyNotFound x.api
+        [<Test>]
+        member x.PropertyNotFound() = ObjectProperty16.PropertyNotFound x.api
 
-//        [<Test>]
-//        member x.NotAcceptableGetPropertyWrongMediaType() = 
-//           ObjectProperty16.NotAcceptableGetPropertyWrongMediaType x.api
+        //[<Test>]
+        //member x.NotAcceptableGetPropertyWrongMediaType() = 
+        //   ObjectProperty16.NotAcceptableGetPropertyWrongMediaType x.api
              
 //        [<Test>]
 //        member x.GetCollectionProperty() = ObjectCollection17.GetCollectionProperty x.api

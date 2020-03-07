@@ -192,6 +192,11 @@ let jsonSetGetMsgAndMediaType (msg : HttpRequest) url mt parms =
     setMediaType msg mt parms 
     setUrl msg url
 
+let jsonSetDeleteMsgAndMediaType (msg : HttpRequest) url mt parms = 
+    setMethod msg HttpMethod.Delete
+    setMediaType msg mt parms 
+    setUrl msg url
+
 let jsonSetPotentMsgAndMediaType (msg : HttpRequest) method url mt parms content = 
     setMethod msg method
     setMediaType msg mt parms 
@@ -223,6 +228,13 @@ let jsonSetEmptyPostMsgWithProfile msg url profVal = jsonSetPotentMsgAndMediaTyp
 let jsonSetPutMsg msg url content = jsonSetPotentMsgAndMediaType msg HttpMethod.Put url "application/json" [] content
 
 let jsonSetPutMsgWithProfile msg url content profVal = jsonSetPotentMsgAndMediaType msg HttpMethod.Put url "application/json" [("profile", profVal)] content
+
+
+let jsonSetDeleteMsg msg url = jsonSetDeleteMsgAndMediaType msg url "application/json" []
+
+let jsonSetDeleteMsgWithProfile msg url profVal = jsonSetDeleteMsgAndMediaType msg url "application/json" [("profile", profVal)]
+
+
 
 //let jsonGetMsgAndTag (url : string) tag = 
 //    let message = jsonGetMsgAndMediaType "application/json" url

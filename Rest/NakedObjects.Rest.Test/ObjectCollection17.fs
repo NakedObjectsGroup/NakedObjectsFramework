@@ -63,7 +63,7 @@ module ObjectCollection17
                       
 //                      ])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectCollection, "", roType, true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
@@ -512,7 +512,7 @@ module ObjectCollection17
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = api.GetCollection(oType, oid, pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -526,7 +526,7 @@ module ObjectCollection17
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = api.GetCollection(oType, oid, pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"No such collection ANonExistentCollection\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -540,7 +540,7 @@ module ObjectCollection17
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = api.GetCollection(oType, oid, pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"No such collection AHiddenCollection\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -554,7 +554,7 @@ module ObjectCollection17
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = api.GetCollection(oType, oid, pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"No such collection ANakedObjectsIgnoredCollection\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -598,6 +598,6 @@ module ObjectCollection17
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = api.GetProperty(oType, oid, pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"No such property ACollection\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)

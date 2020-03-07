@@ -37,7 +37,7 @@ module DomainTypeActionInvoke26
 //                                  "") ]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.TypeActionResult), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.TypeActionResult), headers.ContentType)
 //    assertNonExpiringCache result
 //    compareObject expected parsedResult
 
@@ -188,7 +188,7 @@ module DomainTypeActionInvoke26
 //    api.Request <- jsonGetMsg (url)
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -203,7 +203,7 @@ module DomainTypeActionInvoke26
 //    api.Request <- jsonGetMsg (url)
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -221,7 +221,7 @@ module DomainTypeActionInvoke26
 //    api.Request <- jsonGetMsg (url)
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -239,7 +239,7 @@ module DomainTypeActionInvoke26
 //    api.Request <- jsonGetMsg (url)
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -254,7 +254,7 @@ module DomainTypeActionInvoke26
 //    api.Request <- jsonGetMsg (url)
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type action noSuchAction in domain type %s\"" oType, result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -272,7 +272,7 @@ module DomainTypeActionInvoke26
 //    api.Request <- jsonGetMsg (url)
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type action noSuchAction in domain type %s\"" oType, result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -287,7 +287,7 @@ module DomainTypeActionInvoke26
 //    api.Request <- jsonGetMsg (url)
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -302,7 +302,7 @@ module DomainTypeActionInvoke26
 //    api.Request <- jsonGetMsg (url)
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -320,7 +320,7 @@ module DomainTypeActionInvoke26
 //    api.Request <- jsonGetMsg (url)
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -338,7 +338,7 @@ module DomainTypeActionInvoke26
 //    api.Request <- jsonGetMsg (url)
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -351,8 +351,8 @@ module DomainTypeActionInvoke26
 //    api.Request <- jsonGetMsg (url)
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", result.Headers.Warning.First().ToString())
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+//    Assert.AreEqual("199 RestfulObjects \"Missing arguments\"", headers.Headers.["Warning"].First().ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let MalformedSimpleParmsIsSubTypeOf(api : RestfulObjectsControllerBase) = 
@@ -366,8 +366,8 @@ module DomainTypeActionInvoke26
 //    api.Request <- jsonGetMsg (url)
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.First().ToString())
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].First().ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let MalformedFormalParmsIsSubTypeOf(api : RestfulObjectsControllerBase) = 
@@ -384,8 +384,8 @@ module DomainTypeActionInvoke26
 //    api.Request <- jsonGetMsg (url)
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.First().ToString())
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].First().ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let NotAcceptableIsSubTypeOf(api : RestfulObjectsControllerBase) = 

@@ -93,7 +93,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -153,7 +153,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -213,7 +213,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -274,7 +274,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -338,9 +338,9 @@ module ObjectActionInvoke19
 //          TProperty("ms", 
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TArray([TObjectJson([ TProperty(JsonPropertyNames.Href, TObjectVal(msHref.ToString()) ) ])])) ])) ]
 
-//    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", result.Headers.Warning.First().ToString())
+//    assertStatusCode unprocessableEntity statusCode jsonResult
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+//    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", headers.Headers.["Warning"].First().ToString())
 //    compareObject expected parsedResult
 
 //let PostInvokeCollectionContributedActionContributedServiceMissingParm(api : RestfulObjectsControllerBase) = 
@@ -416,7 +416,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -477,7 +477,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -544,7 +544,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -606,7 +606,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -653,7 +653,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -702,7 +702,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -750,7 +750,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -773,7 +773,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Result, TObjectVal(null))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -810,7 +810,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Result, TObjectVal(null))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -839,7 +839,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PostInvokeActionReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -896,7 +896,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -956,7 +956,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1017,7 +1017,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1055,7 +1055,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Result, TObjectVal(null))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -1084,7 +1084,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PutInvokeActionReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -1154,7 +1154,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Result, resultObject)
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1225,7 +1225,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Result, resultObject)
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1301,7 +1301,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Result, resultObject)
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1377,7 +1377,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Result, resultObject)
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1421,7 +1421,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Result, TObjectVal(null))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -1451,7 +1451,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let GetInvokeActionReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -1510,7 +1510,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -1557,7 +1557,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "number", "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "number", "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -1605,7 +1605,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -1642,7 +1642,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Result, TObjectVal(null))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -1671,7 +1671,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PostInvokeActionReturnScalarObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -1705,7 +1705,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Void))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -1736,7 +1736,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PostInvokeActionReturnVoidObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -1820,7 +1820,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([]) )]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -1905,7 +1905,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -1936,7 +1936,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let GetInvokeActionReturnQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -2008,7 +2008,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -2074,7 +2074,7 @@ module ObjectActionInvoke19
 //                                  TProperty(JsonPropertyNames.Extensions, TObjectJson([ TProperty(JsonPropertyNames.ElementType, TObjectVal(roType)) ])) ]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -2111,7 +2111,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Result, TObjectVal(null))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -2140,7 +2140,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PostInvokeActionReturnCollectionObjectVerifyOnly(api : RestfulObjectsControllerBase) = 
@@ -2228,7 +2228,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -2295,7 +2295,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Result, resultObject)
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -2325,7 +2325,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let GetInvokeActionWithScalarParmsReturnQuerySimpleObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -2417,7 +2417,7 @@ module ObjectActionInvoke19
 //                                                     TObjectJson(obj2) ])) ]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -2446,7 +2446,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PostInvokeActionReturnQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -2533,7 +2533,7 @@ module ObjectActionInvoke19
 //                                                     TObjectJson(obj2) ])) ]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -2595,7 +2595,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -2627,7 +2627,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PostInvokeActionWithScalarParmsReturnQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -2701,7 +2701,7 @@ module ObjectActionInvoke19
 //                                                     TObjectJson(obj2) ])) ]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -2732,7 +2732,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PostInvokeActionWithScalarParmsReturnCollectionObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -2821,7 +2821,7 @@ module ObjectActionInvoke19
 //                                                     TObjectJson(obj2) ])) ]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -2854,7 +2854,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PostInvokeActionWithReferenceParmsReturnQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -2922,7 +2922,7 @@ module ObjectActionInvoke19
 //                                                     TObjectJson(obj2) ])) ]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "", roType, true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -2955,7 +2955,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PostInvokeActionWithReferenceParmsReturnCollectionObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3005,7 +3005,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "number", "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "number", "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -3038,7 +3038,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PostInvokeActionWithReferenceParmsReturnScalarObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3076,7 +3076,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Void))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsNull(result.Headers.ETag)
 //    compareObject expected parsedResult
@@ -3109,7 +3109,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PostInvokeActionWithReferenceParmsReturnVoidObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3170,7 +3170,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -3204,7 +3204,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PostInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3265,7 +3265,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -3299,7 +3299,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PutInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3381,7 +3381,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Result, resultObject)
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -3499,7 +3499,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -3539,8 +3539,8 @@ module ObjectActionInvoke19
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
 
 
-//    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
+//    assertStatusCode unprocessableEntity statusCode jsonResult
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -3607,7 +3607,7 @@ module ObjectActionInvoke19
 //          TProperty(JsonPropertyNames.Result, resultObject)
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 //    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), result.Content.Headers.ContentType)
+//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -3642,7 +3642,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let GetInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -3678,9 +3678,9 @@ module ObjectActionInvoke19
 //          TProperty("parm2", 
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
-//    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", result.Headers.Warning.First().ToString())
+//    assertStatusCode unprocessableEntity statusCode jsonResult
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+//    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", headers.Headers.["Warning"].First().ToString())
 //    compareObject expected parsedResult
 
 //let MissingParmsOnGetQueryObject(api : RestfulObjectsControllerBase) = 
@@ -3715,9 +3715,9 @@ module ObjectActionInvoke19
 //          TProperty("parm2", 
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
-//    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", result.Headers.Warning.First().ToString())
+//    assertStatusCode unprocessableEntity statusCode jsonResult
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+//    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", headers.Headers.["Warning"].First().ToString())
 //    compareObject expected parsedResult
 
 //let MissingParmsOnPostCollectionObject(api : RestfulObjectsControllerBase) = 
@@ -3745,7 +3745,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -3776,7 +3776,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -3807,7 +3807,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -3842,7 +3842,7 @@ module ObjectActionInvoke19
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
 //          TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
 //    compareObject expected parsedResult
 
@@ -3880,7 +3880,7 @@ module ObjectActionInvoke19
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
 //          TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
 //    compareObject expected parsedResult
 
@@ -3918,7 +3918,7 @@ module ObjectActionInvoke19
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
 //          TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
 //    compareObject expected parsedResult
 
@@ -3945,7 +3945,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Always disabled\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -3973,7 +3973,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4001,7 +4001,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"No such action ANonExistentAction\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4028,7 +4028,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"No such action AHiddenAction\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4055,7 +4055,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4082,7 +4082,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4109,7 +4109,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) ""
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"action is not idempotent\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4175,7 +4175,7 @@ module ObjectActionInvoke19
 //                          ]))
 //          TProperty(JsonPropertyNames.Links, TArray([]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-//    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.InternalServerError statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
 //    compareObject expected parsedResult
 
@@ -4213,7 +4213,7 @@ module ObjectActionInvoke19
 //                            ]))
 //          TProperty(JsonPropertyNames.Links, TArray([]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-//    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.InternalServerError statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
 //    compareObject expected parsedResult
 
@@ -4249,9 +4249,9 @@ module ObjectActionInvoke19
 //          TProperty("parm2", 
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
-//    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", result.Headers.Warning.First().ToString())
+//    assertStatusCode unprocessableEntity statusCode jsonResult
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+//    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", headers.Headers.["Warning"].First().ToString())
 //    compareObject expected parsedResult
 
 //let MissingParmsOnPostObject(api : RestfulObjectsControllerBase) = 
@@ -4282,7 +4282,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4319,8 +4319,8 @@ module ObjectActionInvoke19
 //          TProperty("parm2", 
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(2))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Not a suitable type; must be a Most Simple")) ])) ]
-//    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
+//    assertStatusCode unprocessableEntity statusCode jsonResult
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
 //    Assert.AreEqual("199 RestfulObjects \"Not a suitable type; must be a Most Simple\"", result.Headers.Warning.ToString())
 //    compareObject expected parsedResult
 
@@ -4359,8 +4359,8 @@ module ObjectActionInvoke19
 //          TProperty("parm2", 
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(""))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
-//    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
+//    assertStatusCode unprocessableEntity statusCode jsonResult
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
 //    Assert.AreEqual("199 RestfulObjects \"Mandatory\", 199 RestfulObjects \"Mandatory\"", result.Headers.Warning.ToString())
 //    compareObject expected parsedResult
 
@@ -4400,7 +4400,7 @@ module ObjectActionInvoke19
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
 //          TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, refParm) ])) ]
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
 //    compareObject expected parsedResult
 
@@ -4429,7 +4429,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4456,7 +4456,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"No such action AUserDisabledAction\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4483,7 +4483,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"No such action ANonExistentAction\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4510,7 +4510,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"No such action AHiddenAction\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4576,7 +4576,7 @@ module ObjectActionInvoke19
 //                             ]))
 //          TProperty(JsonPropertyNames.Links, TArray([]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([]))]
-//    Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.InternalServerError statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"An error exception\"", result.Headers.Warning.ToString())
 //    compareObject expected parsedResult
 
@@ -4614,9 +4614,9 @@ module ObjectActionInvoke19
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Fail validation parm1")) ]))
 //          TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]
-//    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"Fail validation parm1\"", result.Headers.Warning.First().ToString())
+//    assertStatusCode unprocessableEntity statusCode jsonResult
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+//    Assert.AreEqual("199 RestfulObjects \"Fail validation parm1\"", headers.Headers.["Warning"].First().ToString())
 //    compareObject expected parsedResult
 
 //let PostQueryActionWithValidateFailObject(api : RestfulObjectsControllerBase) = 
@@ -4652,9 +4652,9 @@ module ObjectActionInvoke19
 //        [ TProperty("parm1", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(2)) ]))
 //          TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(1)) ]))
 //          TProperty(JsonPropertyNames.XRoInvalidReason, TObjectVal("Cross validation failed")) ]
-//    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", result.Headers.Warning.First().ToString())
+//    assertStatusCode unprocessableEntity statusCode jsonResult
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+//    Assert.AreEqual("199 RestfulObjects \"Cross validation failed\"", headers.Headers.["Warning"].First().ToString())
 //    compareObject expected parsedResult
 
 //let PostQueryActionWithCrossValidateFailObject(api : RestfulObjectsControllerBase) = 
@@ -4680,7 +4680,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4707,7 +4707,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4738,7 +4738,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4771,7 +4771,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4810,9 +4810,9 @@ module ObjectActionInvoke19
 //          TProperty("parm2", 
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
-//    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", result.Headers.Warning.First().ToString())
+//    assertStatusCode unprocessableEntity statusCode jsonResult
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+//    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", headers.Headers.["Warning"].First().ToString())
 //    compareObject expected parsedResult
 
 //let MissingParmsOnGetQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4848,9 +4848,9 @@ module ObjectActionInvoke19
 //          TProperty("parm2", 
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
-//    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", result.Headers.Warning.First().ToString())
+//    assertStatusCode unprocessableEntity statusCode jsonResult
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+//    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", headers.Headers.["Warning"].First().ToString())
 //    compareObject expected parsedResult
 
 //let MissingParmsOnPostCollectionObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -4878,7 +4878,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4909,7 +4909,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4940,7 +4940,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -4975,7 +4975,7 @@ module ObjectActionInvoke19
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
 //          TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
 //    compareObject expected parsedResult
 
@@ -5013,7 +5013,7 @@ module ObjectActionInvoke19
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
 //          TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
 //    compareObject expected parsedResult
 
@@ -5051,7 +5051,7 @@ module ObjectActionInvoke19
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
 //          TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
 //    compareObject expected parsedResult
 
@@ -5080,7 +5080,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Always disabled\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -5109,7 +5109,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -5139,7 +5139,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"No such action ANonExistentAction\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -5168,7 +5168,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"No such action AHiddenAction\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -5197,7 +5197,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -5226,7 +5226,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -5254,7 +5254,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"action is not idempotent\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -5283,7 +5283,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let GetQueryActionWithErrorObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -5310,7 +5310,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PostCollectionActionWithErrorObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -5346,9 +5346,9 @@ module ObjectActionInvoke19
 //          TProperty("parm2", 
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
-//    Assert.AreEqual(unprocessableEntity, result.StatusCode, jsonResult)
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), result.Content.Headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", result.Headers.Warning.First().ToString())
+//    assertStatusCode unprocessableEntity statusCode jsonResult
+//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+//    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", headers.Headers.["Warning"].First().ToString())
 //    compareObject expected parsedResult
 
 //let MissingParmsOnPostObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -5379,7 +5379,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -5419,7 +5419,7 @@ module ObjectActionInvoke19
 //                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
 //                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
 //          TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, refParm) ])) ]
-//    Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", result.Headers.Warning.ToString())
 //    compareObject expected parsedResult
 
@@ -5451,7 +5451,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain object %s-%s: null adapter\"" roType (ktc "10"), result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -5481,7 +5481,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.Forbidden, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -5509,7 +5509,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"No such action ANonExistentAction\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -5537,7 +5537,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NotFound, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"No such action AHiddenAction\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -5565,7 +5565,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.NoContent, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
 //    Assert.AreEqual("", jsonResult)
 
 //let PostQueryActionWithErrorObjectValidateOnly(api : RestfulObjectsControllerBase) = 
@@ -5593,7 +5593,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -5622,7 +5622,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -5653,7 +5653,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
@@ -5686,7 +5686,7 @@ module ObjectActionInvoke19
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.MethodNotAllowed, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
 //    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", result.Headers.Warning.ToString())
 //    Assert.AreEqual("", jsonResult)
 
