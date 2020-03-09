@@ -1052,61 +1052,68 @@ type RestTests() =
         member x.NotAcceptableGetPropertyWrongMediaType() = 
            ObjectProperty16.NotAcceptableGetPropertyWrongMediaType x.api
              
-//        [<Test>]
-//        member x.GetCollectionProperty() = ObjectCollection17.GetCollectionProperty x.api
+        [<Test>]
+        member x.GetCollectionProperty() = ObjectCollection17.GetCollectionProperty x.api
         
-//        [<Test>]
-//        member x.GetCollectionPropertyWithInlineFlag() = ObjectCollection17.GetCollectionPropertyWithInlineFlag x.api
+        [<Test>]
+        member x.GetCollectionPropertyWithInlineFlag() = ObjectCollection17.GetCollectionPropertyWithInlineFlag x.api
 
-//        [<Test>]
-//        member x.GetCollectionPropertyViewModel() = ObjectCollection17.GetCollectionPropertyViewModel x.api
+        [<Test>]
+        member x.GetCollectionPropertyViewModel() = ObjectCollection17.GetCollectionPropertyViewModel x.api
         
-//        [<Test>]
-//        member x.GetCollectionPropertySimpleOnly() = ObjectCollection17.GetCollectionPropertySimpleOnly x.api
+        [<Test>]
+        member x.GetCollectionPropertySimpleOnly() = ObjectCollection17.GetCollectionPropertySimpleOnly x.api
         
-//        [<Test>]
-//        member x.GetCollectionSetProperty() = ObjectCollection17.GetCollectionSetProperty x.api
+        [<Test>]
+        member x.GetCollectionSetProperty() = ObjectCollection17.GetCollectionSetProperty x.api
         
-//        [<Test>]
-//        member x.GetCollectionSetPropertySimpleOnly() = ObjectCollection17.GetCollectionSetPropertySimpleOnly x.api
+        [<Test>]
+        member x.GetCollectionSetPropertySimpleOnly() = ObjectCollection17.GetCollectionSetPropertySimpleOnly x.api
         
-//        [<Test>]
-//        member x.GetCollectionPropertyWithMediaType() = ObjectCollection17.GetCollectionPropertyWithMediaType x.api
+        [<Test>]
+        member x.GetCollectionPropertyWithMediaType() = ObjectCollection17.GetCollectionPropertyWithMediaType x.api
         
-//        [<Test>]
-//        member x.GetDisabledCollectionProperty() = ObjectCollection17.GetDisabledCollectionProperty x.api
+        [<Test>]
+        member x.GetDisabledCollectionProperty() = ObjectCollection17.GetDisabledCollectionProperty x.api
         
-//        [<Test>]
-//        member x.GetCollectionValue() = ObjectCollection17.GetCollectionValue x.api
+        [<Test>]
+        member x.GetCollectionValue() = ObjectCollection17.GetCollectionValue x.api
         
-//        [<Test>]
-//        member x.AddToAndDeleteFromCollectionProperty() = ObjectCollection17.AddToAndDeleteFromCollectionProperty x.api
+        [<Test>]
+        member x.AddToCollectionProperty() = ObjectCollection17.AddToCollectionProperty x.api
+            
+        [<Test>]
+        member x.DeleteFromCollectionProperty() = ObjectCollection17.DeleteFromCollectionProperty x.api
+                
+        [<Test>]
+        member x.AddToCollectionPropertyViewModel() = 
+            ObjectCollection17.AddToCollectionPropertyViewModel x.api
+
+        [<Test>]
+        member x.DeleteFromCollectionPropertyViewModel() = 
+                  ObjectCollection17.DeleteFromCollectionPropertyViewModel x.api
         
-//        [<Test>]
-//        member x.AddToAndDeleteFromCollectionPropertyViewModel() = 
-//            ObjectCollection17.AddToAndDeleteFromCollectionPropertyViewModel x.api
+        [<Test>]
+        member x.GetInvalidCollection() = ObjectCollection17.GetInvalidCollection x.api
         
-//        [<Test>]
-//        member x.GetInvalidCollection() = ObjectCollection17.GetInvalidCollection x.api
+        [<Test>]
+        member x.GetNotFoundCollection() = ObjectCollection17.GetNotFoundCollection x.api
         
-//        [<Test>]
-//        member x.GetNotFoundCollection() = ObjectCollection17.GetNotFoundCollection x.api
+        [<Test>]
+        member x.GetHiddenValueCollection() = ObjectCollection17.GetHiddenValueCollection x.api
         
-//        [<Test>]
-//        member x.GetHiddenValueCollection() = ObjectCollection17.GetHiddenValueCollection x.api
+        [<Test>]
+        member x.GetNakedObjectsIgnoredCollection() = ObjectCollection17.GetNakedObjectsIgnoredCollection x.api
         
-//        [<Test>]
-//        member x.GetNakedObjectsIgnoredCollection() = ObjectCollection17.GetNakedObjectsIgnoredCollection x.api
+        [<Test>]
+        member x.NotAcceptableGetCollectionWrongMediaType() = 
+            ObjectCollection17.NotAcceptableGetCollectionWrongMediaType x.api
         
-//        [<Test>]
-//        member x.NotAcceptableGetCollectionWrongMediaType() = 
-//            ObjectCollection17.NotAcceptableGetCollectionWrongMediaType x.api
+        [<Test>]
+        member x.GetErrorValueCollection() = ObjectCollection17.GetErrorValueCollection x.api
         
-//        [<Test>]
-//        member x.GetErrorValueCollection() = ObjectCollection17.GetErrorValueCollection x.api
-        
-//        [<Test>]
-//        member x.GetCollectionAsProperty() = ObjectCollection17.GetCollectionAsProperty x.api
+        [<Test>]
+        member x.GetCollectionAsProperty() = ObjectCollection17.GetCollectionAsProperty x.api
         
 //        [<Test>]
 //        member x.GetActionPropertyObject() = ObjectAction18.GetActionPropertyObject x.api

@@ -49,7 +49,7 @@ module ObjectAction18
 //                                  :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              
 //                              ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -123,7 +123,7 @@ module ObjectAction18
                       
                       
 //                       ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -207,7 +207,7 @@ module ObjectAction18
                       
                       
 //                       ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -259,7 +259,7 @@ module ObjectAction18
 //                                  :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              
 //                              ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -311,7 +311,7 @@ module ObjectAction18
 //                                  :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                             
 //                              ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -356,7 +356,7 @@ module ObjectAction18
 //                                  :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                             
 //                              ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -407,7 +407,7 @@ module ObjectAction18
 //                                  :: makeGetLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              
 //                              ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -458,7 +458,7 @@ module ObjectAction18
 //                                  :: makePutLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              
 //                              ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -531,7 +531,7 @@ module ObjectAction18
                       
                       
 //                      ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -598,7 +598,7 @@ module ObjectAction18
                       
 //                      TObjectJson
 //                          (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "") ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -655,7 +655,7 @@ module ObjectAction18
 //                                  :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              
 //                              ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -709,7 +709,7 @@ module ObjectAction18
 //                                  :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              
 //                              ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -766,7 +766,7 @@ module ObjectAction18
 //                                  :: makeGetLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                             
 //                              ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -819,7 +819,7 @@ module ObjectAction18
 //                                  :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                             
 //                              ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -908,7 +908,7 @@ module ObjectAction18
                       
                                        
 //                       ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -997,7 +997,7 @@ module ObjectAction18
                     
                       
 //                       ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1078,7 +1078,7 @@ module ObjectAction18
                       
 //                      TObjectJson
 //                          (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "") ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1154,7 +1154,7 @@ module ObjectAction18
                      
                       
 //                      ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1234,7 +1234,7 @@ module ObjectAction18
                       
                       
 //                       ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1307,7 +1307,7 @@ module ObjectAction18
                     
                       
 //                      ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1373,7 +1373,7 @@ module ObjectAction18
 //                      TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)                 
 //                      TObjectJson(TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")                                      
 //                       ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1453,7 +1453,7 @@ module ObjectAction18
                      
                       
 //                    ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1552,7 +1552,7 @@ module ObjectAction18
                       
                       
 //                       ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -1603,7 +1603,7 @@ module ObjectAction18
 //                    TArray([ TObjectJson(obj1)
 //                             TObjectJson(obj2) ]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
@@ -1635,7 +1635,7 @@ module ObjectAction18
 //    let result = f (oType, ktc "1", pid, pmid0, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let InvokeParmWithAutoCompleteObjectErrorNoParm(api : RestfulObjectsControllerBase) = 
@@ -1664,7 +1664,7 @@ module ObjectAction18
 //    let result = f (oType, ktc "1", pid, pmid0, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let InvokeParmWithAutoCompleteObjectErrorMalformedParm(api : RestfulObjectsControllerBase) = 
@@ -1693,7 +1693,7 @@ module ObjectAction18
 //    let result = f (oType, ktc "1", pid, pmid0, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Missing or malformed search term\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let InvokeParmWithAutoCompleteObjectErrorUnrecognisedParm(api : RestfulObjectsControllerBase) = 
@@ -1740,7 +1740,7 @@ module ObjectAction18
 //                    TArray([ TObjectJson(obj1)
 //                             TObjectJson(obj2) ]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
@@ -1785,7 +1785,7 @@ module ObjectAction18
 //    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
 //    Assert.AreEqual
-//        ("199 RestfulObjects \"Argument is of wrong type is System.String expect RestfulObjects.Test.Data.MostSimple\"", result.Headers.Warning.ToString())
+//        ("199 RestfulObjects \"Argument is of wrong type is System.String expect RestfulObjects.Test.Data.MostSimple\"", headers.Headers.["Warning"].ToString())
 //    compareObject expected parsedResult
 
 //let InvokeParmWithConditionalChoicesObjectErrorMalformedParm(api : RestfulObjectsControllerBase) = 
@@ -1828,7 +1828,7 @@ module ObjectAction18
 //                    TArray([ TObjectVal(100)
 //                             TObjectVal(33) ]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
@@ -1851,7 +1851,7 @@ module ObjectAction18
 //                    TArray([ TObjectVal("100")
 //                             TObjectVal("33") ]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
@@ -1895,7 +1895,7 @@ module ObjectAction18
 //                    TArray([ TObjectVal(100)
 //                             TObjectVal(0) ]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.Prompt, "", "", true), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length = 0) 
@@ -1971,7 +1971,7 @@ module ObjectAction18
                      
                       
 //                      ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -2109,7 +2109,7 @@ module ObjectAction18
 //                          (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                                                              
 //                      ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
@@ -2165,7 +2165,7 @@ module ObjectAction18
 //                                  :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              
 //                             ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -2205,7 +2205,7 @@ module ObjectAction18
 //                                  :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
                              
 //                              ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -2263,7 +2263,7 @@ module ObjectAction18
                      
                       
 //                      ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -2324,7 +2324,7 @@ module ObjectAction18
                      
                       
 //                       ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
@@ -2383,7 +2383,7 @@ module ObjectAction18
                     
                       
 //                       ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //    compareObject expected parsedResult
@@ -2435,7 +2435,7 @@ module ObjectAction18
 //                      TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)                    
 //                      TObjectJson  (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")                   
 //                    ]))]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //    compareObject expected parsedResult
@@ -2503,7 +2503,7 @@ module ObjectAction18
 //                      TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)                  
 //                      TObjectJson  (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
 //                       ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsTrue(result.Headers.ETag = null)
@@ -2579,7 +2579,7 @@ module ObjectAction18
                       
                                          
 //                       ])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
 //    assertTransactionalCache headers
 //    Assert.IsTrue(result.Headers.ETag = null)
@@ -2596,7 +2596,7 @@ module ObjectAction18
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"Exception of type 'NakedObjects.Facade.BadRequestNOSException' was thrown.\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let GetInvalidActionPropertyObject(api : RestfulObjectsControllerBase) = 
@@ -2624,7 +2624,7 @@ module ObjectAction18
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"No such action ANonExistentAction\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"No such action ANonExistentAction\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let GetNotFoundActionPropertyObject(api : RestfulObjectsControllerBase) = 
@@ -2651,7 +2651,7 @@ module ObjectAction18
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"No such action AUserDisabledAction\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"No such action AUserDisabledAction\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let GetUserDisabledActionObject(api : RestfulObjectsControllerBase) = 
@@ -2678,7 +2678,7 @@ module ObjectAction18
 //    let result = f (oType, ktc "1", pid, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"No such action AHiddenAction\"", result.Headers.Warning.ToString())
+//    Assert.AreEqual("199 RestfulObjects \"No such action AHiddenAction\"", headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let GetHiddenActionPropertyObject(api : RestfulObjectsControllerBase) = 

@@ -36,7 +36,7 @@ module DomainTypeActionInvoke26
 //                           :: makeGetLinkProp RelValues.Self (sprintf "domain-types/%s/type-actions/%s/invoke" oType oRel) RepresentationTypes.TypeActionResult 
 //                                  "") ]))
 //          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-//    Assert.AreEqual(HttpStatusCode.OK, result.StatusCode, jsonResult)
+//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
 //    Assert.AreEqual(new typeType(RepresentationTypes.TypeActionResult), headers.ContentType)
 //    assertNonExpiringCache result
 //    compareObject expected parsedResult
@@ -189,7 +189,7 @@ module DomainTypeActionInvoke26
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
+//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let NotFoundTypeIsSuperTypeOfSimpleParms(api : RestfulObjectsControllerBase) = 
@@ -204,7 +204,7 @@ module DomainTypeActionInvoke26
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
+//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let NotFoundTypeIsSubTypeOfFormalParms(api : RestfulObjectsControllerBase) = 
@@ -222,7 +222,7 @@ module DomainTypeActionInvoke26
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
+//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let NotFoundTypeIsSuperTypeOfFormalParms(api : RestfulObjectsControllerBase) = 
@@ -240,7 +240,7 @@ module DomainTypeActionInvoke26
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, result.Headers.Warning.ToString())
+//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" oType, headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let NotFoundActionSimpleParms(api : RestfulObjectsControllerBase) = 
@@ -255,7 +255,7 @@ module DomainTypeActionInvoke26
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type action noSuchAction in domain type %s\"" oType, result.Headers.Warning.ToString())
+//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type action noSuchAction in domain type %s\"" oType, headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let NotFoundActionFormalParms(api : RestfulObjectsControllerBase) = 
@@ -273,7 +273,7 @@ module DomainTypeActionInvoke26
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type action noSuchAction in domain type %s\"" oType, result.Headers.Warning.ToString())
+//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type action noSuchAction in domain type %s\"" oType, headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let NotFoundSuperTypeIsSubTypeOfSimpleParms(api : RestfulObjectsControllerBase) = 
@@ -288,7 +288,7 @@ module DomainTypeActionInvoke26
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, result.Headers.Warning.ToString())
+//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let NotFoundSubTypeIsSuperTypeOfSimpleParms(api : RestfulObjectsControllerBase) = 
@@ -303,7 +303,7 @@ module DomainTypeActionInvoke26
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, result.Headers.Warning.ToString())
+//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let NotFoundSuperTypeIsSubTypeOfFormalParms(api : RestfulObjectsControllerBase) = 
@@ -321,7 +321,7 @@ module DomainTypeActionInvoke26
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, result.Headers.Warning.ToString())
+//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //let NotFoundSubTypeIsSuperTypeOfFormalParms(api : RestfulObjectsControllerBase) = 
@@ -339,7 +339,7 @@ module DomainTypeActionInvoke26
 //    let result = api.GetInvokeTypeActions(oType, oRel, args)
 //    let jsonResult = readSnapshotToJson result
 //    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, result.Headers.Warning.ToString())
+//    Assert.AreEqual(sprintf "199 RestfulObjects \"No such domain type %s\"" ooType, headers.Headers.["Warning"].ToString())
 //    Assert.AreEqual("", jsonResult)
 
 //// not acceptable 
