@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
@@ -19,7 +20,7 @@ namespace RestfulObjects.Test.Data {
 
         public static bool ThrowErrors { get; set; }
 
-        [Key, Title]
+        [Key, Title, ConcurrencyCheck, DefaultValue(0)]
         public virtual int Id { get; set; }
 
         public virtual int AnErrorValue {

@@ -815,41 +815,41 @@ type RestTests() =
         [<Test>]
         member x.PutBlobPropertyBadRequest() = ObjectProperty16.PutBlobPropertyBadRequest x.api
           
-        //[<Test>]
-        //member x.PutValuePropertySuccessValidateOnly() = ObjectProperty16.PutValuePropertySuccessValidateOnly x.api
+        [<Test>]
+        member x.PutValuePropertySuccessValidateOnly() = ObjectProperty16.PutValuePropertySuccessValidateOnly x.api
                 
-        //[<Test>]
-        //member x.DeleteValuePropertySuccess() = 
-        //    ObjectProperty16.DeleteValuePropertySuccess x.api
-        //    x.NakedObjectsFramework.TransactionManager.StartTransaction()
-        //    let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
-        //    o.AValue <- 100
-        //    x.NakedObjectsFramework.TransactionManager.EndTransaction()
+        [<Test>]
+        member x.DeleteValuePropertySuccess() = 
+            ObjectProperty16.DeleteValuePropertySuccess x.api
+            x.NakedObjectsFramework.TransactionManager.StartTransaction()
+            let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
+            o.AValue <- 100
+            x.NakedObjectsFramework.TransactionManager.EndTransaction()
         
-        //[<Test>]
-        //member x.DeleteValuePropertySuccessValidateOnly() = 
-        //    ObjectProperty16.DeleteValuePropertySuccessValidateOnly x.api
-        //    x.NakedObjectsFramework.TransactionManager.StartTransaction()
-        //    let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
-        //    o.AValue <- 100
-        //    x.NakedObjectsFramework.TransactionManager.EndTransaction()
+        [<Test>]
+        member x.DeleteValuePropertySuccessValidateOnly() = 
+            ObjectProperty16.DeleteValuePropertySuccessValidateOnly x.api
+            x.NakedObjectsFramework.TransactionManager.StartTransaction()
+            let o = x.NakedObjectsFramework.Persistor.Instances<WithValue>() |> Seq.head
+            o.AValue <- 100
+            x.NakedObjectsFramework.TransactionManager.EndTransaction()
         
         [<Test>]
         member x.PutNullValuePropertySuccess() = ObjectProperty16.PutNullValuePropertySuccess x.api
         
-        //[<Test>]
-        //member x.PutNullValuePropertySuccessValidateOnly() = 
-        //    ObjectProperty16.PutNullValuePropertySuccessValidateOnly x.api
+        [<Test>]
+        member x.PutNullValuePropertySuccessValidateOnly() = 
+            ObjectProperty16.PutNullValuePropertySuccessValidateOnly x.api
         
         [<Test>]
         member x.PutReferencePropertySuccess() = ObjectProperty16.PutReferencePropertySuccess x.api
         
-        //[<Test>]
-        //member x.PutReferencePropertySuccessValidateOnly() = 
-        //    ObjectProperty16.PutReferencePropertySuccessValidateOnly x.api
+        [<Test>]
+        member x.PutReferencePropertySuccessValidateOnly() = 
+            ObjectProperty16.PutReferencePropertySuccessValidateOnly x.api
         
-        //[<Test>]
-        //member x.DeleteReferencePropertySuccess() = ObjectProperty16.DeleteReferencePropertySuccess x.api
+        [<Test>]
+        member x.DeleteReferencePropertySuccess() = ObjectProperty16.DeleteReferencePropertySuccess x.api
         
         [<Test>]
         member x.DeleteReferencePropertySuccessValidateOnly() = 
@@ -858,9 +858,9 @@ type RestTests() =
         [<Test>]
         member x.PutNullReferencePropertySuccess() = ObjectProperty16.PutNullReferencePropertySuccess x.api
         
-        //[<Test>]
-        //member x.PutNullReferencePropertySuccessValidateOnly() = 
-        //    ObjectProperty16.PutNullReferencePropertySuccessValidateOnly x.api
+        [<Test>]
+        member x.PutNullReferencePropertySuccessValidateOnly() = 
+            ObjectProperty16.PutNullReferencePropertySuccessValidateOnly x.api
         
         [<Test>]
         member x.PutWithValuePropertyMissingArgs() = ObjectProperty16.PutWithValuePropertyMissingArgs x.api
@@ -871,16 +871,20 @@ type RestTests() =
         [<Test>]
         member x.PutWithValuePropertyInvalidArgsValue() = ObjectProperty16.PutWithValuePropertyInvalidArgsValue x.api
         
-        //[<Test>]
-        //member x.PutWithReferencePropertyFailCrossValidation() = 
-        //    ObjectProperty16.PutWithReferencePropertyFailCrossValidation x.api
+        [<Test>]
+        member x.PutWithReferencePropertyFailCrossValidation() =
+            let api1 = x.api
+            let api2 = x.api
+            ObjectProperty16.PutWithReferencePropertyFailCrossValidation api1 api2
         
-        //[<Test>]
-        //member x.PutWithReferencePropertyMalformedArgs() = ObjectProperty16.PutWithReferencePropertyMalformedArgs x.api
+        [<Test>]
+        member x.PutWithReferencePropertyMalformedArgs() = ObjectProperty16.PutWithReferencePropertyMalformedArgs x.api
         
-        //[<Test>]
-        //member x.PutWithValuePropertyFailCrossValidation() = 
-        //    ObjectProperty16.PutWithValuePropertyFailCrossValidation x.api
+        [<Test>]
+        member x.PutWithValuePropertyFailCrossValidation() =
+            let api1 = x.api
+            let api2 = x.api
+            ObjectProperty16.PutWithValuePropertyFailCrossValidation api1 api2
         
         [<Test>]
         member x.PutWithReferencePropertyInvalidArgsValue() = 
@@ -902,12 +906,12 @@ type RestTests() =
         member x.PutWithReferencePropertyInvisibleValue() = 
             ObjectProperty16.PutWithReferencePropertyInvisibleValue x.api
         
-        //[<Test>]
-        //member x.PutWithValuePropertyOnImmutableObject() = ObjectProperty16.PutWithValuePropertyOnImmutableObject x.api
+        [<Test>]
+        member x.PutWithValuePropertyOnImmutableObject() = ObjectProperty16.PutWithValuePropertyOnImmutableObject x.api
         
-        //[<Test>]
-        //member x.PutWithReferencePropertyOnImmutableObject() = 
-        //    ObjectProperty16.PutWithReferencePropertyOnImmutableObject x.api
+        [<Test>]
+        member x.PutWithReferencePropertyOnImmutableObject() = 
+            ObjectProperty16.PutWithReferencePropertyOnImmutableObject x.api
         
         [<Test>]
         member x.PutWithValuePropertyInvalidArgsName() = ObjectProperty16.PutWithValuePropertyInvalidArgsName x.api
@@ -928,13 +932,17 @@ type RestTests() =
         member x.PutWithValuePropertyInvalidArgsValueValidateOnly() = 
             ObjectProperty16.PutWithValuePropertyInvalidArgsValueValidateOnly x.api
         
-        //[<Test>]
-        //member x.PutWithReferencePropertyFailCrossValidationValidateOnly() = 
-        //    ObjectProperty16.PutWithReferencePropertyFailCrossValidationValidateOnly x.api
+        [<Test>]
+        member x.PutWithReferencePropertyFailCrossValidationValidateOnly() =
+            let api1 = x.api
+            let api2 = x.api
+            ObjectProperty16.PutWithReferencePropertyFailCrossValidationValidateOnly api1 api2
         
-        //[<Test>]
-        //member x.PutWithValuePropertyFailCrossValidationValidateOnly() = 
-        //    ObjectProperty16.PutWithValuePropertyFailCrossValidationValidateOnly x.api
+        [<Test>]
+        member x.PutWithValuePropertyFailCrossValidationValidateOnly() =
+            let api1 = x.api
+            let api2 = x.api
+            ObjectProperty16.PutWithValuePropertyFailCrossValidationValidateOnly api1 api2
         
         [<Test>]
         member x.PutWithReferencePropertyInvalidArgsValueValidateOnly() = 
@@ -944,35 +952,35 @@ type RestTests() =
         member x.PutWithValuePropertyDisabledValueValidateOnly() = 
             ObjectProperty16.PutWithValuePropertyDisabledValueValidateOnly x.api
         
-        //[<Test>]
-        //member x.PutWithReferencePropertyDisabledValueValidateOnly() = 
-        //    ObjectProperty16.PutWithReferencePropertyDisabledValueValidateOnly x.api
+        [<Test>]
+        member x.PutWithReferencePropertyDisabledValueValidateOnly() = 
+            ObjectProperty16.PutWithReferencePropertyDisabledValueValidateOnly x.api
         
         [<Test>]
         member x.PutWithValuePropertyInvisibleValueValidateOnly() = 
             ObjectProperty16.PutWithValuePropertyInvisibleValueValidateOnly x.api
         
-        //[<Test>]
-        //member x.PutWithReferencePropertyInvisibleValueValidateOnly() = 
-        //    ObjectProperty16.PutWithReferencePropertyInvisibleValueValidateOnly x.api
+        [<Test>]
+        member x.PutWithReferencePropertyInvisibleValueValidateOnly() = 
+            ObjectProperty16.PutWithReferencePropertyInvisibleValueValidateOnly x.api
         
-        //[<Test>]
-        //member x.PutWithValuePropertyOnImmutableObjectValidateOnly() = 
-        //    ObjectProperty16.PutWithValuePropertyOnImmutableObjectValidateOnly x.api
+        [<Test>]
+        member x.PutWithValuePropertyOnImmutableObjectValidateOnly() = 
+            ObjectProperty16.PutWithValuePropertyOnImmutableObjectValidateOnly x.api
         
-        //[<Test>]
-        //member x.PutWithReferencePropertyOnImmutableObjectValidateOnly() = 
-        //    ObjectProperty16.PutWithReferencePropertyOnImmutableObjectValidateOnly x.api
+        [<Test>]
+        member x.PutWithReferencePropertyOnImmutableObjectValidateOnly() = 
+            ObjectProperty16.PutWithReferencePropertyOnImmutableObjectValidateOnly x.api
         
         [<Test>]
         member x.PutWithValuePropertyInvalidArgsNameValidateOnly() = 
             ObjectProperty16.PutWithValuePropertyInvalidArgsNameValidateOnly x.api
         
-        //[<Test>]
-        //member x.PutWithValuePropertyInternalError() = ObjectProperty16.PutWithValuePropertyInternalError x.api
+        [<Test>]
+        member x.PutWithValuePropertyInternalError() = ObjectProperty16.PutWithValuePropertyInternalError x.api
         
-        //[<Test>]
-        //member x.PutWithReferencePropertyInternalError() = ObjectProperty16.PutWithReferencePropertyInternalError x.api
+        [<Test>]
+        member x.PutWithReferencePropertyInternalError() = ObjectProperty16.PutWithReferencePropertyInternalError x.api
         
         [<Test>]
         member x.DeleteValuePropertyDisabledValueValidateOnly() = 
@@ -1028,18 +1036,21 @@ type RestTests() =
         member x.NotAcceptableDeletePropertyWrongMediaType() = 
             ObjectProperty16.NotAcceptableDeletePropertyWrongMediaType x.api
         
-        //[<Test>]
-        //member x.DeleteValuePropertyInternalError() = ObjectProperty16.DeleteValuePropertyInternalError x.api
+        [<Test>]
+        member x.DeleteValuePropertyInternalError() = ObjectProperty16.DeleteValuePropertyInternalError x.api
         
-        //[<Test>]
-        //member x.DeleteReferencePropertyInternalError() = ObjectProperty16.DeleteReferencePropertyInternalError x.api
+        [<Test>]
+        member x.DeleteReferencePropertyInternalError() = 
+            let api1 = x.api
+            let api2 = x.api
+            ObjectProperty16.DeleteReferencePropertyInternalError api1 api2
         
         [<Test>]
         member x.PropertyNotFound() = ObjectProperty16.PropertyNotFound x.api
 
-        //[<Test>]
-        //member x.NotAcceptableGetPropertyWrongMediaType() = 
-        //   ObjectProperty16.NotAcceptableGetPropertyWrongMediaType x.api
+        [<Test>]
+        member x.NotAcceptableGetPropertyWrongMediaType() = 
+           ObjectProperty16.NotAcceptableGetPropertyWrongMediaType x.api
              
 //        [<Test>]
 //        member x.GetCollectionProperty() = ObjectCollection17.GetCollectionProperty x.api

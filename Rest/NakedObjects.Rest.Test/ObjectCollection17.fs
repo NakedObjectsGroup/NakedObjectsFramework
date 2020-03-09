@@ -465,13 +465,13 @@ module ObjectCollection17
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" mst oid)).ToString()))
 //    let parms = new JObject(new JProperty(JsonPropertyNames.Value, refParm))
 //    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//    let arg = CreateSingleValueArg parms
+//    let arg = CreateSingleValueArgWithReserved parms
 //    try 
 //        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //        api.PostCollection(oType, oid, pid, arg) |> ignore
 //        Assert.Fail("expect exception")
 //    with :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.Forbidden, ex.Response.StatusCode)
-//    let arg = CreateSingleValueArg parms
+//    let arg = CreateSingleValueArgWithReserved parms
 //    try 
 //        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
 //        api.DeleteCollection(oType, oid, pid, arg) |> ignore
@@ -489,13 +489,13 @@ module ObjectCollection17
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" mst oid1)).ToString()))
 //    let parms = new JObject(new JProperty(JsonPropertyNames.Value, refParm))
 //    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//    let arg = CreateSingleValueArg parms
+//    let arg = CreateSingleValueArgWithReserved parms
 //    try 
 //        api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
 //        api.PostCollection(oType, oid, pid, arg) |> ignore
 //        Assert.Fail("expect exception")
 //    with :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.Forbidden, ex.Response.StatusCode)
-//    let arg = CreateSingleValueArg parms
+//    let arg = CreateSingleValueArgWithReserved parms
 //    try 
 //        api.Request <- jsonDeleteMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
 //        api.DeleteCollection(oType, oid, pid, arg) |> ignore

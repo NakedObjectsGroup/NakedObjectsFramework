@@ -21,6 +21,7 @@ let Error(api : RestfulObjectsControllerBase) =
     let args = CreateArgMap(new JObject())
     let url = sprintf "http://localhost/objects/%s/%s/actions/%s/invoke" oType oid pid
     jsonSetEmptyPostMsg api.Request url
+    setIfMatch api.Request "*"
     let result = api.PostInvoke(oType, oid, pid, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
@@ -47,6 +48,7 @@ let NotAcceptableError(api : RestfulObjectsControllerBase) =
     let args = CreateArgMap(new JObject())
     let url = sprintf "http://localhost/objects/%s/%s/actions/%s/invoke" oType oid pid
     jsonSetEmptyPostMsgWithProfile api.Request url RepresentationTypes.ObjectCollection
+    setIfMatch api.Request "*"
     let result = api.PostInvoke(oType, oid, pid, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)

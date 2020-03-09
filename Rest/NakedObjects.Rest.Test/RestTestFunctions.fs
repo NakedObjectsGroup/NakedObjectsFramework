@@ -1726,7 +1726,9 @@ let assertStatusCode (sc : HttpStatusCode) iSc msg=
     Assert.AreEqual((int)sc, iSc, msg)
 
 
-let CreateSingleValueArg (m : JObject) = ModelBinderUtils.CreateSingleValueArgument(m, false)
+//let CreateSingleValueArgWithReserved (m : JObject) = ModelBinderUtils.CreateSingleValueArgument(m, false)
+
+let CreateSingleValueArgWithReserved (m : JObject) = ModelBinderUtils.CreateSingleValueArgument(m, true)
      
 let CreateArgMap (m : JObject) = ModelBinderUtils.CreateArgumentMap(m, false)
 

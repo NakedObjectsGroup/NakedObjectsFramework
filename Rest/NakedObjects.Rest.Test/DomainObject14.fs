@@ -4588,6 +4588,7 @@ let PutWithValueInternalError(api : RestfulObjectsControllerBase) =
 
     let args = CreateArgMapWithReserved props
     jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
     let result = api.PutObject(oType, oid, args)   
     
     WithError.ThrowErrors <- false
@@ -4623,6 +4624,7 @@ let PutWithReferenceInternalError(api : RestfulObjectsControllerBase) =
     
     let args = CreateArgMapWithReserved props
     jsonSetPutMsg api.Request url (props.ToString())
+    setIfMatch api.Request "*"
     let result = api.PutObject(oType, oid, args)   
         
     WithError.ThrowErrors <- false

@@ -51,9 +51,13 @@ namespace RestfulObjects.Test.Data {
 
             var wr1 = new WithReference {Id = 1, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1};
             var wr2 = new WithReference {Id = 2, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1};
+            var wr3 = new WithReference { Id = 3, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1 };
+
             context.WithReferences.Add(wr1);
 
             context.WithReferences.Add(wr2);
+
+            context.WithReferences.Add(wr3);
 
             var wv1 = new WithValue {Id = 1, AValue = 100, ADisabledValue = 200, AStringValue = ""};
             context.WithValues.Add(wv1);
