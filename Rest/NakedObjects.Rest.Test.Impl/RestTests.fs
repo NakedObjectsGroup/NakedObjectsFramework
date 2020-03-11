@@ -1397,93 +1397,93 @@ type RestTests() =
         member x.GetActionWithReferenceParmWithDefaultViewModel() = 
             ObjectAction18.GetActionWithReferenceParmWithDefaultViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionWithChoicesAndDefaultObject() = ObjectAction18.GetActionWithChoicesAndDefaultObject x.api
+        [<Test>]
+        member x.GetActionWithChoicesAndDefaultObject() = ObjectAction18.GetActionWithChoicesAndDefaultObject x.api
         
-//        [<Test>]
-//        member x.GetActionWithChoicesAndDefaultService() = ObjectAction18.GetActionWithChoicesAndDefaultService x.api
+        [<Test>]
+        member x.GetActionWithChoicesAndDefaultService() = ObjectAction18.GetActionWithChoicesAndDefaultService x.api
         
-//        [<Test>]
-//        member x.GetActionWithChoicesAndDefaultViewModel() = 
-//            ObjectAction18.GetActionWithChoicesAndDefaultViewModel x.api
+        [<Test>]
+        member x.GetActionWithChoicesAndDefaultViewModel() = 
+            ObjectAction18.GetActionWithChoicesAndDefaultViewModel x.api
         
-//        [<Test>]
-//        member x.GetContributedActionOnContributee() = ObjectAction18.GetContributedActionOnContributee x.api
+        [<Test>]
+        member x.GetContributedActionOnContributee() = ObjectAction18.GetContributedActionOnContributee x.api
         
-//        [<Test>]
-//        member x.GetContributedActionOnContributeeOnBaseClass() = 
-//            ObjectAction18.GetContributedActionOnContributeeBaseClass x.api
+        [<Test>]
+        member x.GetContributedActionOnContributeeOnBaseClass() = 
+            ObjectAction18.GetContributedActionOnContributeeBaseClass x.api
         
-//        [<Test>]
-//        member x.GetContributedActionOnContributeeWithRef() = 
-//            ObjectAction18.GetContributedActionOnContributeeWithRef x.api
+        [<Test>]
+        member x.GetContributedActionOnContributeeWithRef() = 
+            ObjectAction18.GetContributedActionOnContributeeWithRef x.api
         
-//        [<Test>]
-//        member x.GetContributedActionOnContributeeWithValue() = 
-//            ObjectAction18.GetContributedActionOnContributeeWithValue x.api
+        [<Test>]
+        member x.GetContributedActionOnContributeeWithValue() = 
+            ObjectAction18.GetContributedActionOnContributeeWithValue x.api
         
-//        [<Test>]
-//        member x.GetContributedActionOnContributer() = ObjectAction18.GetContributedActionOnContributer x.api
+        [<Test>]
+        member x.GetContributedActionOnContributer() = ObjectAction18.GetContributedActionOnContributer x.api
         
-//        [<Test>]
-//        member x.GetContributedActionOnContributerOnBaseClass() = 
-//            ObjectAction18.GetContributedActionOnContributerBaseClass x.api
+        [<Test>]
+        member x.GetContributedActionOnContributerOnBaseClass() = 
+            ObjectAction18.GetContributedActionOnContributerBaseClass x.api
         
-//        [<Test>]
-//        member x.GetContributedActionOnContributerWithRef() = 
-//            ObjectAction18.GetContributedActionOnContributerWithRef x.api
+        [<Test>]
+        member x.GetContributedActionOnContributerWithRef() = 
+            ObjectAction18.GetContributedActionOnContributerWithRef x.api
         
-//        [<Test>]
-//        member x.GetContributedActionOnContributerWithValue() = 
-//            ObjectAction18.GetContributedActionOnContributerWithValue x.api
+        [<Test>]
+        member x.GetContributedActionOnContributerWithValue() = 
+            ObjectAction18.GetContributedActionOnContributerWithValue x.api
         
-//        [<Test>]
-//        member x.GetInvalidActionPropertyObject() = ObjectAction18.GetInvalidActionPropertyObject x.api
+        [<Test>]
+        member x.GetInvalidActionPropertyObject() = ObjectAction18.GetInvalidActionPropertyObject x.api
         
-//        [<Test>]
-//        member x.GetInvalidActionPropertyService() = ObjectAction18.GetInvalidActionPropertyService x.api
+        [<Test>]
+        member x.GetInvalidActionPropertyService() = ObjectAction18.GetInvalidActionPropertyService x.api
         
-//        [<Test>]
-//        member x.GetInvalidActionPropertyViewModel() = ObjectAction18.GetInvalidActionPropertyViewModel x.api
+        [<Test>]
+        member x.GetInvalidActionPropertyViewModel() = ObjectAction18.GetInvalidActionPropertyViewModel x.api
         
-//        [<Test>]
-//        member x.GetNotFoundActionPropertyObject() = ObjectAction18.GetNotFoundActionPropertyObject x.api
+        [<Test>]
+        member x.GetNotFoundActionPropertyObject() = ObjectAction18.GetNotFoundActionPropertyObject x.api
         
-//        [<Test>]
-//        member x.GetNotFoundActionPropertyService() = ObjectAction18.GetNotFoundActionPropertyService x.api
+        [<Test>]
+        member x.GetNotFoundActionPropertyService() = ObjectAction18.GetNotFoundActionPropertyService x.api
         
-//        [<Test>]
-//        member x.GetNotFoundActionPropertyViewModel() = ObjectAction18.GetNotFoundActionPropertyViewModel x.api
+        [<Test>]
+        member x.GetNotFoundActionPropertyViewModel() = ObjectAction18.GetNotFoundActionPropertyViewModel x.api
         
-//        [<Test>]
-//        member x.GetUserDisabledActionObject() = ObjectAction18.GetUserDisabledActionObject x.api
+        [<Test>]
+        member x.GetUserDisabledActionObject() = ObjectAction18.GetUserDisabledActionObject x.api
         
-//        [<Test>]
-//        member x.GetUserDisabledActionService() = ObjectAction18.GetUserDisabledActionService x.api
+        [<Test>]
+        member x.GetUserDisabledActionService() = ObjectAction18.GetUserDisabledActionService x.api
         
-//        [<Test>]
-//        member x.GetUserDisabledActionViewModel() = ObjectAction18.GetUserDisabledActionViewModel x.api
+        [<Test>]
+        member x.GetUserDisabledActionViewModel() = ObjectAction18.GetUserDisabledActionViewModel x.api
         
-//        [<Test>]
-//        member x.GetHiddenActionPropertyObject() = ObjectAction18.GetHiddenActionPropertyObject x.api
+        [<Test>]
+        member x.GetHiddenActionPropertyObject() = ObjectAction18.GetHiddenActionPropertyObject x.api
         
-//        [<Test>]
-//        member x.GetHiddenActionPropertyService() = ObjectAction18.GetHiddenActionPropertyService x.api
+        [<Test>]
+        member x.GetHiddenActionPropertyService() = ObjectAction18.GetHiddenActionPropertyService x.api
         
-//        [<Test>]
-//        member x.GetHiddenActionPropertyViewModel() = ObjectAction18.GetHiddenActionPropertyViewModel x.api
+        [<Test>]
+        member x.GetHiddenActionPropertyViewModel() = ObjectAction18.GetHiddenActionPropertyViewModel x.api
         
-//        [<Test>]
-//        member x.NotAcceptableGetActionWrongMediaTypeObject() = 
-//            ObjectAction18.NotAcceptableGetActionWrongMediaTypeObject x.api
+        [<Test>]
+        member x.NotAcceptableGetActionWrongMediaTypeObject() = 
+            ObjectAction18.NotAcceptableGetActionWrongMediaTypeObject x.api
         
-//        [<Test>]
-//        member x.NotAcceptableGetActionWrongMediaTypeService() = 
-//            ObjectAction18.NotAcceptableGetActionWrongMediaTypeService x.api
+        [<Test>]
+        member x.NotAcceptableGetActionWrongMediaTypeService() = 
+            ObjectAction18.NotAcceptableGetActionWrongMediaTypeService x.api
         
-//        [<Test>]
-//        member x.NotAcceptableGetActionWrongMediaTypeViewModel() = 
-//            ObjectAction18.NotAcceptableGetActionWrongMediaTypeViewModel x.api
+        [<Test>]
+        member x.NotAcceptableGetActionWrongMediaTypeViewModel() = 
+            ObjectAction18.NotAcceptableGetActionWrongMediaTypeViewModel x.api
         
         [<Test>]
         member x.GetQueryActionObject() = ObjectAction18.GetQueryActionObject x.api
@@ -1533,8 +1533,8 @@ type RestTests() =
         member x.GetCollectionActionWithParmsViewModelSimpleOnly() = 
             ObjectAction18.GetCollectionActionWithParmsViewModelSimpleOnly x.api
         
-//        [<Test>]
-//        member x.ActionNotFound() = ObjectAction18.ActionNotFound x.api
+        [<Test>]
+        member x.ActionNotFound() = ObjectAction18.ActionNotFound x.api
         
 //        [<Test>]
 //        member x.PostInvokeActionReturnObjectObject() = ObjectActionInvoke19.PostInvokeActionReturnObjectObject x.api
