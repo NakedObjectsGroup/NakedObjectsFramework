@@ -1154,242 +1154,248 @@ type RestTests() =
         [<Test>]
         member x.GetOverloadedActionPropertyViewModel() = ObjectAction18.GetOverloadedActionPropertyViewModel x.api
         
-//        [<Test>]
-//        member x.GetUserDisabledActionPropertyObject() = ObjectAction18.GetUserDisabledActionPropertyObject x.api
+        [<Test>]
+        member x.GetUserDisabledActionPropertyObject() = ObjectAction18.GetUserDisabledActionPropertyObject x.api
         
-//        [<Test>]
-//        member x.GetUserDisabledActionPropertyService() = ObjectAction18.GetUserDisabledActionPropertyService x.api
+        [<Test>]
+        member x.GetUserDisabledActionPropertyService() = ObjectAction18.GetUserDisabledActionPropertyService x.api
         
-//        [<Test>]
-//        member x.GetUserDisabledActionPropertyViewModel() = ObjectAction18.GetUserDisabledActionPropertyViewModel x.api
+        [<Test>]
+        member x.GetUserDisabledActionPropertyViewModel() = ObjectAction18.GetUserDisabledActionPropertyViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyQueryOnlyObject() = ObjectAction18.GetActionPropertyQueryOnlyObject x.api
+        [<Test>]
+        member x.GetActionPropertyQueryOnlyObject() = ObjectAction18.GetActionPropertyQueryOnlyObject x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyQueryOnlyService() = ObjectAction18.GetActionPropertyQueryOnlyService x.api
+        [<Test>]
+        member x.GetActionPropertyQueryOnlyService() = ObjectAction18.GetActionPropertyQueryOnlyService x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyQueryOnlyViewModel() = ObjectAction18.GetActionPropertyQueryOnlyViewModel x.api
+        [<Test>]
+        member x.GetActionPropertyQueryOnlyViewModel() = ObjectAction18.GetActionPropertyQueryOnlyViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyIdempotentObject() = ObjectAction18.GetActionPropertyIdempotentObject x.api
+        [<Test>]
+        member x.GetActionPropertyIdempotentObject() = ObjectAction18.GetActionPropertyIdempotentObject x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyIdempotentService() = ObjectAction18.GetActionPropertyIdempotentService x.api
+        [<Test>]
+        member x.GetActionPropertyIdempotentService() = ObjectAction18.GetActionPropertyIdempotentService x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyIdempotentViewModel() = ObjectAction18.GetActionPropertyIdempotentViewModel x.api
+        [<Test>]
+        member x.GetActionPropertyIdempotentViewModel() = ObjectAction18.GetActionPropertyIdempotentViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyWithOptObject() = ObjectAction18.GetActionPropertyWithOptObject x.api
+        [<Test>]
+        member x.GetActionPropertyWithOptObject() = ObjectAction18.GetActionPropertyWithOptObject x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyWithOptService() = ObjectAction18.GetActionPropertyWithOptService x.api
+        [<Test>]
+        member x.GetActionPropertyWithOptService() = ObjectAction18.GetActionPropertyWithOptService x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyWithOptViewModel() = ObjectAction18.GetActionPropertyWithOptViewModel x.api
+        [<Test>]
+        member x.GetActionPropertyWithOptViewModel() = ObjectAction18.GetActionPropertyWithOptViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyWithOptObjectSimpleOnly() = 
-//            ObjectAction18.GetActionPropertyWithOptObjectSimpleOnly x.api
+        [<Test>]
+        member x.GetActionPropertyWithOptObjectSimpleOnly() = 
+            ObjectAction18.GetActionPropertyWithOptObjectSimpleOnly x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyWithOptServiceSimpleOnly() = 
-//            ObjectAction18.GetActionPropertyWithOptServiceSimpleOnly x.api
+        [<Test>]
+        member x.GetActionPropertyWithOptServiceSimpleOnly() = 
+            ObjectAction18.GetActionPropertyWithOptServiceSimpleOnly x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyWithOptViewModelSimpleOnly() = 
-//            ObjectAction18.GetActionPropertyWithOptViewModelSimpleOnly x.api
+        [<Test>]
+        member x.GetActionPropertyWithOptViewModelSimpleOnly() = 
+            ObjectAction18.GetActionPropertyWithOptViewModelSimpleOnly x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyObjectWithMediaType() = ObjectAction18.GetActionPropertyObjectWithMediaType x.api
+        [<Test>]
+        member x.GetActionPropertyObjectWithMediaType() = ObjectAction18.GetActionPropertyObjectWithMediaType x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyServiceWithMediaType() = ObjectAction18.GetActionPropertyServiceWithMediaType x.api
+        [<Test>]
+        member x.GetActionPropertyServiceWithMediaType() = ObjectAction18.GetActionPropertyServiceWithMediaType x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyViewModelWithMediaType() = 
-//            ObjectAction18.GetActionPropertyViewModelWithMediaType x.api
+        [<Test>]
+        member x.GetActionPropertyViewModelWithMediaType() = 
+            ObjectAction18.GetActionPropertyViewModelWithMediaType x.api
         
-//        [<Test>]
-//        member x.GetScalarActionObject() = ObjectAction18.GetScalarActionObject x.api
+        [<Test>]
+        member x.GetScalarActionObject() = ObjectAction18.GetScalarActionObject x.api
         
-//        [<Test>]
-//        member x.GetScalarActionService() = ObjectAction18.GetScalarActionService x.api
+        [<Test>]
+        member x.GetScalarActionService() = ObjectAction18.GetScalarActionService x.api
         
-//        [<Test>]
-//        member x.GetScalarActionViewModel() = ObjectAction18.GetScalarActionViewModel x.api
+        [<Test>]
+        member x.GetScalarActionViewModel() = ObjectAction18.GetScalarActionViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionWithValueParmObject() = ObjectAction18.GetActionWithValueParmObject x.api
+        [<Test>]
+        member x.GetActionWithValueParmObject() = ObjectAction18.GetActionWithValueParmObject x.api
         
-//        [<Test>]
-//        member x.GetActionWithValueParmService() = ObjectAction18.GetActionWithValueParmService x.api
+        [<Test>]
+        member x.GetActionWithValueParmService() = ObjectAction18.GetActionWithValueParmService x.api
         
-//        [<Test>]
-//        member x.GetActionWithValueParmViewModel() = ObjectAction18.GetActionWithValueParmViewModel x.api
+        [<Test>]
+        member x.GetActionWithValueParmViewModel() = ObjectAction18.GetActionWithValueParmViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionWithValueParmWithChoicesObject() = 
-//            ObjectAction18.GetActionWithValueParmWithChoicesObject x.api
+        [<Test>]
+        member x.GetActionWithValueParmWithChoicesObject() = 
+            ObjectAction18.GetActionWithValueParmWithChoicesObject x.api
         
-//        [<Test>]
-//        member x.GetActionWithValueParmWithChoicesService() = 
-//            ObjectAction18.GetActionWithValueParmWithChoicesService x.api
+        [<Test>]
+        member x.GetActionWithValueParmWithChoicesService() = 
+            ObjectAction18.GetActionWithValueParmWithChoicesService x.api
         
-//        [<Test>]
-//        member x.GetActionWithValueParmWithChoicesViewModel() = 
-//            ObjectAction18.GetActionWithValueParmWithChoicesViewModel x.api
+        [<Test>]
+        member x.GetActionWithValueParmWithChoicesViewModel() = 
+            ObjectAction18.GetActionWithValueParmWithChoicesViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionWithValueParmWithDefaultObject() = 
-//            ObjectAction18.GetActionWithValueParmWithDefaultObject x.api
+        [<Test>]
+        member x.GetActionWithValueParmWithDefaultObject() = 
+            ObjectAction18.GetActionWithValueParmWithDefaultObject x.api
         
-//        [<Test>]
-//        member x.GetActionWithValueParmWithDefaultService() = 
-//            ObjectAction18.GetActionWithValueParmWithDefaultService x.api
+        [<Test>]
+        member x.GetActionWithValueParmWithDefaultService() = 
+            ObjectAction18.GetActionWithValueParmWithDefaultService x.api
         
-//        [<Test>]
-//        member x.GetActionWithValueParmWithDefaultViewModel() = 
-//            ObjectAction18.GetActionWithValueParmWithDefaultViewModel x.api
+        [<Test>]
+        member x.GetActionWithValueParmWithDefaultViewModel() = 
+            ObjectAction18.GetActionWithValueParmWithDefaultViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionWithReferenceParmObject() = ObjectAction18.GetActionWithReferenceParmObject x.api
+        [<Test>]
+        member x.GetActionWithReferenceParmObject() = ObjectAction18.GetActionWithReferenceParmObject x.api
         
-//        [<Test>]
-//        member x.GetActionWithReferenceParmService() = ObjectAction18.GetActionWithReferenceParmService x.api
+        [<Test>]
+        member x.GetActionWithReferenceParmService() = ObjectAction18.GetActionWithReferenceParmService x.api
         
-//        [<Test>]
-//        member x.GetActionWithReferenceParmViewModel() = ObjectAction18.GetActionWithReferenceParmViewModel x.api
+        [<Test>]
+        member x.GetActionWithReferenceParmViewModel() = ObjectAction18.GetActionWithReferenceParmViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionWithReferenceParmWithChoicesObject() = 
-//            ObjectAction18.GetActionWithReferenceParmWithChoicesObject x.api
+        [<Test>]
+        member x.GetActionWithReferenceParmWithChoicesObject() = 
+            ObjectAction18.GetActionWithReferenceParmWithChoicesObject x.api
         
-//        [<Test>]
-//        member x.GetActionWithReferenceParmWithChoicesService() = 
-//            ObjectAction18.GetActionWithReferenceParmWithChoicesService x.api
+        [<Test>]
+        member x.GetActionWithReferenceParmWithChoicesService() = 
+            ObjectAction18.GetActionWithReferenceParmWithChoicesService x.api
         
-//        [<Test>]
-//        member x.GetActionWithReferenceParmWithChoicesViewModel() = 
-//            ObjectAction18.GetActionWithReferenceParmWithChoicesViewModel x.api
+        [<Test>]
+        member x.GetActionWithReferenceParmWithChoicesViewModel() = 
+            ObjectAction18.GetActionWithReferenceParmWithChoicesViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionWithReferenceParmsWithAutoCompleteObject() = 
-//            ObjectAction18.GetActionWithReferenceParmsWithAutoCompleteObject x.api
+        [<Test>]
+        member x.GetActionWithReferenceParmsWithAutoCompleteObject() = 
+            ObjectAction18.GetActionWithReferenceParmsWithAutoCompleteObject x.api
         
-//        [<Test>]
-//        member x.GetActionWithReferenceParmsWithAutoCompleteService() = 
-//            ObjectAction18.GetActionWithReferenceParmsWithAutoCompleteService x.api
+        [<Test>]
+        member x.GetActionWithReferenceParmsWithAutoCompleteService() = 
+            ObjectAction18.GetActionWithReferenceParmsWithAutoCompleteService x.api
         
-//        [<Test>]
-//        member x.GetActionWithReferenceParmsWithAutoCompleteViewModel() = 
-//            ObjectAction18.GetActionWithReferenceParmsWithAutoCompleteViewModel x.api
+        [<Test>]
+        member x.GetActionWithReferenceParmsWithAutoCompleteViewModel() = 
+            ObjectAction18.GetActionWithReferenceParmsWithAutoCompleteViewModel x.api
         
-//        [<Test>]
-//        member x.InvokeParmWithAutoCompleteObject() = ObjectAction18.InvokeParmWithAutoCompleteObject x.api
+        [<Test>]
+        member x.InvokeParmWithAutoCompleteObject() = ObjectAction18.InvokeParmWithAutoCompleteObject x.api
         
-//        [<Test>]
-//        member x.InvokeParmWithAutoCompleteService() = ObjectAction18.InvokeParmWithAutoCompleteService x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithAutoCompleteViewModel() = ObjectAction18.InvokeParmWithAutoCompleteViewModel x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithAutoCompleteObjectErrorNoParm() = 
-//            ObjectAction18.InvokeParmWithAutoCompleteObjectErrorNoParm x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithAutoCompleteServiceErrorNoParm() = 
-//            ObjectAction18.InvokeParmWithAutoCompleteServiceErrorNoParm x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithAutoCompleteViewModelErrorNoParm() = 
-//            ObjectAction18.InvokeParmWithAutoCompleteViewModelErrorNoParm x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithAutoCompleteObjectErrorMalformedParm() = 
-//            ObjectAction18.InvokeParmWithAutoCompleteObjectErrorMalformedParm x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithAutoCompleteServiceErrorMalformedParm() = 
-//            ObjectAction18.InvokeParmWithAutoCompleteServiceErrorMalformedParm x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithAutoCompleteViewModelErrorMalformedParm() = 
-//            ObjectAction18.InvokeParmWithAutoCompleteViewModelErrorMalformedParm x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithAutoCompleteObjectErrorUnrecognisedParm() = 
-//            ObjectAction18.InvokeParmWithAutoCompleteObjectErrorUnrecognisedParm x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithAutoCompleteServiceErrorUnrecognisedParm() = 
-//            ObjectAction18.InvokeParmWithAutoCompleteServiceErrorUnrecognisedParm x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithAutoCompleteViewModelErrorUnrecognisedParm() = 
-//            ObjectAction18.InvokeParmWithAutoCompleteViewModelErrorUnrecognisedParm x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithConditionalChoicesObject() = ObjectAction18.InvokeParmWithConditionalChoicesObject x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithConditionalChoicesService() = 
-//            ObjectAction18.InvokeParmWithConditionalChoicesService x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithConditionalChoicesViewModel() = 
-//            ObjectAction18.InvokeParmWithConditionalChoicesViewModel x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithConditionalChoicesObjectErrorMalformedParm() = 
-//            ObjectAction18.InvokeParmWithConditionalChoicesObjectErrorMalformedParm x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithConditionalChoicesServiceErrorMalformedParm() = 
-//            ObjectAction18.InvokeParmWithConditionalChoicesServiceErrorMalformedParm x.api
-        
-//        [<Test>]
-//        member x.InvokeParmWithConditionalChoicesViewModelErrorMalformedParm() = 
-//            ObjectAction18.InvokeParmWithConditionalChoicesViewModelErrorMalformedParm x.api
-        
-//        [<Test>]
-//        member x.InvokeValueParmWithConditionalChoicesObjectErrorMissingParm() = 
-//            ObjectAction18.InvokeValueParmWithConditionalChoicesObjectErrorMissingParm x.api
-        
-//        [<Test>]
-//        member x.InvokeValueParmWithConditionalChoicesServiceErrorMissingParm() = 
-//            ObjectAction18.InvokeValueParmWithConditionalChoicesServiceErrorMissingParm x.api
-        
-//        [<Test>]
-//        member x.InvokeValueParmWithConditionalChoicesViewModelErrorMissingParm() = 
-//            ObjectAction18.InvokeValueParmWithConditionalChoicesViewModelErrorMissingParm x.api
-        
-//        [<Test>]
-//        member x.InvokeValueParmWithConditionalChoicesObject() = 
-//            ObjectAction18.InvokeValueParmWithConditionalChoicesObject x.api
-        
-//        [<Test>]
-//        member x.InvokeValueParmWithConditionalChoicesService() = 
-//            ObjectAction18.InvokeValueParmWithConditionalChoicesService x.api
-        
-//        [<Test>]
-//        member x.InvokeValueParmWithConditionalChoicesViewModel() = 
-//            ObjectAction18.InvokeValueParmWithConditionalChoicesViewModel x.api
-        
-//        [<Test>]
-//        member x.GetActionWithReferenceParmWithDefaultObject() = 
-//            ObjectAction18.GetActionWithReferenceParmWithDefaultObject x.api
-        
-//        [<Test>]
-//        member x.GetActionWithReferenceParmWithDefaultService() = 
-//            ObjectAction18.GetActionWithReferenceParmWithDefaultService x.api
-        
-//        [<Test>]
-//        member x.GetActionWithReferenceParmWithDefaultViewModel() = 
-//            ObjectAction18.GetActionWithReferenceParmWithDefaultViewModel x.api
+        [<Test>]
+        member x.InvokeParmWithAutoCompleteService() = ObjectAction18.InvokeParmWithAutoCompleteService x.api
+        
+        [<Test>]
+        member x.InvokeParmWithAutoCompleteViewModel() = ObjectAction18.InvokeParmWithAutoCompleteViewModel x.api
+        
+        [<Test>]
+        member x.InvokeParmWithAutoCompleteObjectErrorNoParm() = 
+            ObjectAction18.InvokeParmWithAutoCompleteObjectErrorNoParm x.api
+        
+        [<Test>]
+        member x.InvokeParmWithAutoCompleteServiceErrorNoParm() = 
+            ObjectAction18.InvokeParmWithAutoCompleteServiceErrorNoParm x.api
+        
+        [<Test>]
+        member x.InvokeParmWithAutoCompleteViewModelErrorNoParm() = 
+            ObjectAction18.InvokeParmWithAutoCompleteViewModelErrorNoParm x.api
+        
+        [<Test>]
+        member x.InvokeParmWithAutoCompleteObjectErrorMalformedParm() = 
+            ObjectAction18.InvokeParmWithAutoCompleteObjectErrorMalformedParm x.api
+        
+        [<Test>]
+        member x.InvokeParmWithAutoCompleteServiceErrorMalformedParm() = 
+            ObjectAction18.InvokeParmWithAutoCompleteServiceErrorMalformedParm x.api
+        
+        [<Test>]
+        member x.InvokeParmWithAutoCompleteViewModelErrorMalformedParm() = 
+            ObjectAction18.InvokeParmWithAutoCompleteViewModelErrorMalformedParm x.api
+        
+        [<Test>]
+        member x.InvokeParmWithAutoCompleteObjectErrorUnrecognisedParm() = 
+            ObjectAction18.InvokeParmWithAutoCompleteObjectErrorUnrecognisedParm x.api
+        
+        [<Test>]
+        member x.InvokeParmWithAutoCompleteServiceErrorUnrecognisedParm() = 
+            ObjectAction18.InvokeParmWithAutoCompleteServiceErrorUnrecognisedParm x.api
+        
+        [<Test>]
+        member x.InvokeParmWithAutoCompleteViewModelErrorUnrecognisedParm() = 
+            ObjectAction18.InvokeParmWithAutoCompleteViewModelErrorUnrecognisedParm x.api
+        
+        [<Test>]
+        member x.InvokeParmWithConditionalChoicesObject() = ObjectAction18.InvokeParmWithConditionalChoicesObject x.api
+        
+        [<Test>]
+        member x.InvokeParmWithConditionalChoicesService() = 
+            ObjectAction18.InvokeParmWithConditionalChoicesService x.api
+        
+        [<Test>]
+        member x.InvokeParmWithConditionalChoicesViewModel() = 
+            ObjectAction18.InvokeParmWithConditionalChoicesViewModel x.api
+        
+        [<Test>]
+        member x.InvokeParmWithConditionalChoicesObjectErrorMalformedParm() = 
+            ObjectAction18.InvokeParmWithConditionalChoicesObjectErrorMalformedParm x.api
+        
+        [<Test>]
+        member x.InvokeParmWithConditionalChoicesServiceErrorMalformedParm() = 
+            ObjectAction18.InvokeParmWithConditionalChoicesServiceErrorMalformedParm x.api
+        
+        [<Test>]
+        member x.InvokeParmWithConditionalChoicesViewModelErrorMalformedParm() = 
+            ObjectAction18.InvokeParmWithConditionalChoicesViewModelErrorMalformedParm x.api
+        
+        [<Test>]
+        member x.InvokeValueParmWithConditionalChoicesObjectErrorMissingParm() = 
+            ObjectAction18.InvokeValueParmWithConditionalChoicesObjectErrorMissingParm x.api
+        
+        [<Test>]
+        member x.InvokeValueParmWithConditionalChoicesServiceErrorMissingParm() = 
+            ObjectAction18.InvokeValueParmWithConditionalChoicesServiceErrorMissingParm x.api
+        
+        [<Test>]
+        member x.InvokeValueParmWithConditionalChoicesViewModelErrorMissingParm() = 
+            ObjectAction18.InvokeValueParmWithConditionalChoicesViewModelErrorMissingParm x.api
+        
+        [<Test>]
+        member x.InvokeValueParmWithConditionalChoicesObject() =
+            let api1 = x.api
+            let api2 = x.api
+            ObjectAction18.InvokeValueParmWithConditionalChoicesObject api1 api2
+        
+        [<Test>]
+        member x.InvokeValueParmWithConditionalChoicesService() =
+            let api1 = x.api
+            let api2 = x.api
+            ObjectAction18.InvokeValueParmWithConditionalChoicesService api1 api2
+        
+        [<Test>]
+        member x.InvokeValueParmWithConditionalChoicesViewModel() =
+            let api1 = x.api
+            let api2 = x.api
+            ObjectAction18.InvokeValueParmWithConditionalChoicesViewModel api1 api2
+        
+        [<Test>]
+        member x.GetActionWithReferenceParmWithDefaultObject() = 
+            ObjectAction18.GetActionWithReferenceParmWithDefaultObject x.api
+        
+        [<Test>]
+        member x.GetActionWithReferenceParmWithDefaultService() = 
+            ObjectAction18.GetActionWithReferenceParmWithDefaultService x.api
+        
+        [<Test>]
+        member x.GetActionWithReferenceParmWithDefaultViewModel() = 
+            ObjectAction18.GetActionWithReferenceParmWithDefaultViewModel x.api
         
 //        [<Test>]
 //        member x.GetActionWithChoicesAndDefaultObject() = ObjectAction18.GetActionWithChoicesAndDefaultObject x.api
@@ -1479,53 +1485,53 @@ type RestTests() =
 //        member x.NotAcceptableGetActionWrongMediaTypeViewModel() = 
 //            ObjectAction18.NotAcceptableGetActionWrongMediaTypeViewModel x.api
         
-//        [<Test>]
-//        member x.GetQueryActionObject() = ObjectAction18.GetQueryActionObject x.api
+        [<Test>]
+        member x.GetQueryActionObject() = ObjectAction18.GetQueryActionObject x.api
         
-//        [<Test>]
-//        member x.GetQueryActionService() = ObjectAction18.GetQueryActionService x.api
+        [<Test>]
+        member x.GetQueryActionService() = ObjectAction18.GetQueryActionService x.api
         
-//        [<Test>]
-//        member x.GetQueryActionViewModel() = ObjectAction18.GetQueryActionViewModel x.api
+        [<Test>]
+        member x.GetQueryActionViewModel() = ObjectAction18.GetQueryActionViewModel x.api
         
-//        [<Test>]
-//        member x.GetQueryActionWithParmsObject() = ObjectAction18.GetQueryActionWithParmsObject x.api
+        [<Test>]
+        member x.GetQueryActionWithParmsObject() = ObjectAction18.GetQueryActionWithParmsObject x.api
         
-//        [<Test>]
-//        member x.GetQueryActionWithParmsService() = ObjectAction18.GetQueryActionWithParmsService x.api
+        [<Test>]
+        member x.GetQueryActionWithParmsService() = ObjectAction18.GetQueryActionWithParmsService x.api
         
-//        [<Test>]
-//        member x.GetQueryActionWithParmsViewModel() = ObjectAction18.GetQueryActionWithParmsViewModel x.api
+        [<Test>]
+        member x.GetQueryActionWithParmsViewModel() = ObjectAction18.GetQueryActionWithParmsViewModel x.api
         
-//        [<Test>]
-//        member x.GetCollectionActionObject() = ObjectAction18.GetCollectionActionObject x.api
+        [<Test>]
+        member x.GetCollectionActionObject() = ObjectAction18.GetCollectionActionObject x.api
         
-//        [<Test>]
-//        member x.GetCollectionActionService() = ObjectAction18.GetCollectionActionService x.api
+        [<Test>]
+        member x.GetCollectionActionService() = ObjectAction18.GetCollectionActionService x.api
         
-//        [<Test>]
-//        member x.GetCollectionActionViewModel() = ObjectAction18.GetCollectionActionViewModel x.api
+        [<Test>]
+        member x.GetCollectionActionViewModel() = ObjectAction18.GetCollectionActionViewModel x.api
         
-//        [<Test>]
-//        member x.GetCollectionActionWithParmsObject() = ObjectAction18.GetCollectionActionWithParmsObject x.api
+        [<Test>]
+        member x.GetCollectionActionWithParmsObject() = ObjectAction18.GetCollectionActionWithParmsObject x.api
         
-//        [<Test>]
-//        member x.GetCollectionActionWithParmsService() = ObjectAction18.GetCollectionActionWithParmsService x.api
+        [<Test>]
+        member x.GetCollectionActionWithParmsService() = ObjectAction18.GetCollectionActionWithParmsService x.api
         
-//        [<Test>]
-//        member x.GetCollectionActionWithParmsViewModel() = ObjectAction18.GetCollectionActionWithParmsViewModel x.api
+        [<Test>]
+        member x.GetCollectionActionWithParmsViewModel() = ObjectAction18.GetCollectionActionWithParmsViewModel x.api
         
-//        [<Test>]
-//        member x.GetCollectionActionWithParmsObjectSimpleOnly() = 
-//            ObjectAction18.GetCollectionActionWithParmsObjectSimpleOnly x.api
+        [<Test>]
+        member x.GetCollectionActionWithParmsObjectSimpleOnly() = 
+            ObjectAction18.GetCollectionActionWithParmsObjectSimpleOnly x.api
         
-//        [<Test>]
-//        member x.GetCollectionActionWithParmsServiceSimpleOnly() = 
-//            ObjectAction18.GetCollectionActionWithParmsServiceSimpleOnly x.api
+        [<Test>]
+        member x.GetCollectionActionWithParmsServiceSimpleOnly() = 
+            ObjectAction18.GetCollectionActionWithParmsServiceSimpleOnly x.api
         
-//        [<Test>]
-//        member x.GetCollectionActionWithParmsViewModelSimpleOnly() = 
-//            ObjectAction18.GetCollectionActionWithParmsViewModelSimpleOnly x.api
+        [<Test>]
+        member x.GetCollectionActionWithParmsViewModelSimpleOnly() = 
+            ObjectAction18.GetCollectionActionWithParmsViewModelSimpleOnly x.api
         
 //        [<Test>]
 //        member x.ActionNotFound() = ObjectAction18.ActionNotFound x.api
