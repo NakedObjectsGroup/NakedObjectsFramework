@@ -118,7 +118,7 @@ let makeFriendly (s : string) =
     for c in s do  if Char.IsUpper(c) then  newS <- newS + " " + new string(c, 1)   else   newS <- newS + new string(c, 1)
     newS.Trim()
 
-let wrap f (a, b, c, d) = f (a, c, d) 
+let wrap f (a, b, c) = f (a, c) 
 
 let wrap1 f (a, b, c) = f (a, c) 
 

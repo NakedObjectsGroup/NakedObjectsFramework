@@ -6,280 +6,269 @@
 //// See the License for the specific language governing permissions and limitations under the License.
 module ObjectAction18
 
-//open NUnit.Framework
-//open NakedObjects.Rest
-//open System.Net
-//open System.Net.Http.Headers
-//open Newtonsoft.Json.Linq
-//open NakedObjects.Rest.Snapshot.Constants
-//open System.Web.Http
-//open System.Linq
-//open RestTestFunctions
-//open System.Security.Principal
+open NUnit.Framework
+open NakedObjects.Rest
+open System.Net
+open System.Net.Http.Headers
+open Newtonsoft.Json.Linq
+open NakedObjects.Rest.Snapshot.Constants
+open System.Web.Http
+open System.Linq
+open RestTestFunctions
+open System.Security.Principal
 
-//// 18.2 get action no parms 
-//let VerifyActionProperty refType oType oid f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnAction"
-//    let ourl = sprintf "%s/%s" refType oid
-//    let purl = sprintf "%s/actions/%s" ourl pid
-  
-//    let args = CreateReservedArgs ""
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    let invokeRelType = RelValues.Invoke + makeParm RelParamValues.Action pid
+// 18.2 get action no parms 
+let VerifyActionProperty refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let oid = ktc "1"
+    let pid = "AnAction"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
+    let url = sprintf "http://localhost/%s" purl
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
-//          TProperty(JsonPropertyNames.Parameters, TObjectJson([]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Action"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(ttc "RestfulObjects.Test.Data.MostSimple"))
-//                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
-//                                  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class5 class6"))
-//                                  TProperty(JsonPropertyNames.HasParams, TObjectVal(false)) ]))
-//          TProperty(JsonPropertyNames.Links, 
-//                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
-//                             TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
-                             
-//                             TObjectJson
-//                                 (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
-//                                  :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                             
-//                              ])) ]
-//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
-//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
-//    assertTransactionalCache headers
-//    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
-//    compareObject expected parsedResult
+    jsonSetGetMsg api.Request url   
+    let result = f (oType, oid, pid)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
 
-//let GetActionPropertyViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyActionProperty "objects" oType oid api.GetAction api
+    let invokeRelType = RelValues.Invoke + makeParm RelParamValues.Action pid
+    
+    let expected = 
+        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
+          TProperty(JsonPropertyNames.Parameters, TObjectJson([]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Action"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(ttc "RestfulObjects.Test.Data.MostSimple"))
+                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
+                                  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class5 class6"))
+                                  TProperty(JsonPropertyNames.HasParams, TObjectVal(false)) ]))
+          TProperty(JsonPropertyNames.Links, 
+                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
+                             TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)                             
+                             TObjectJson
+                                 (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
+                                  :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")                             
+                              ])) ]
+    
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    assertTransactionalCache headers
+    compareObject expected parsedResult
 
-//let GetActionPropertyObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyActionProperty "objects" oType oid api.GetAction api
+let GetActionPropertyViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oid = ktc "1"
+    let oName = oType + "/" + oid
+    VerifyActionProperty "objects" oType oName api.GetAction api
 
-//let GetActionPropertyService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyActionProperty "services" oType oid (wrap api.GetServiceAction) api
+let GetActionPropertyObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oid = ktc "1"
+    let oName = oType + "/" + oid
+    VerifyActionProperty "objects" oType oName api.GetAction api
 
-//let VerifyActionPropertyWithDateTime refType oType oid f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionWithDateTimeParm"
-//    let pmid = "parm"
-//    let ourl = sprintf "%s/%s" refType oid
-//    let purl = sprintf "%s/actions/%s" ourl pid
+let GetActionPropertyService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyActionProperty "services" oType oName (wrap api.GetServiceAction) api
+
+let VerifyActionPropertyWithDateTime refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let oid = ktc "1"
+    let pid = "AnActionWithDateTimeParm"
+    let pmid = "parm"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
+    let url = sprintf "http://localhost/%s" purl
    
-   
-//    let args = CreateReservedArgs ""
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
+    jsonSetGetMsg api.Request url   
+    let result = f (oType, oid, pid)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
     
-//    let parm1 = 
-//        TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal("2016-02-16"))
-//                      TProperty
-//                          (JsonPropertyNames.Links, 
-//                           TArray([  ]))
-//                      TProperty(JsonPropertyNames.Extensions, 
-//                                TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm"))
-//                                              TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                              TProperty(JsonPropertyNames.ReturnType, TObjectVal("string"))
-//                                              TProperty(JsonPropertyNames.Format, TObjectVal("date"))
-//                                              TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
-//                                              TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
-//                                              TProperty(JsonPropertyNames.CustomMask, TObjectVal("d"))
-//                                              TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+    let parm1 = 
+        TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal("2016-02-16"))
+                      TProperty
+                          (JsonPropertyNames.Links, 
+                           TArray([  ]))
+                      TProperty(JsonPropertyNames.Extensions, 
+                                TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm"))
+                                              TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.ReturnType, TObjectVal("string"))
+                                              TProperty(JsonPropertyNames.Format, TObjectVal("date"))
+                                              TProperty(JsonPropertyNames.MaxLength, TObjectVal(0))
+                                              TProperty(JsonPropertyNames.Pattern, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.CustomMask, TObjectVal("d"))
+                                              TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
     
-//    let args = TObjectJson([ TProperty(pmid, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ])
-//    let invokeRelType = RelValues.Invoke + makeParm RelParamValues.Action pid
+    let args = TObjectJson([ TProperty(pmid, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ])
+    let invokeRelType = RelValues.Invoke + makeParm RelParamValues.Action pid
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
-//          TProperty(JsonPropertyNames.Parameters, TObjectJson([ TProperty(pmid, parm1) ]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Action With Date Time Parm"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
-//                                  TProperty(JsonPropertyNames.HasParams, TObjectVal(true)) ]))
-          
-//          TProperty
-//              (JsonPropertyNames.Links, 
-               
-//               TArray
-//                   ([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
-//                      TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
-                      
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                     
-                      
-                      
-//                       ])) ]
-//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
-//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
-//    assertTransactionalCache headers
-//   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
-//    compareObject expected parsedResult
-
-//let GetActionPropertyDateTimeViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyActionPropertyWithDateTime "objects" oType oid api.GetAction api
-
-//let GetActionPropertyDateTimeObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyActionPropertyWithDateTime "objects" oType oid api.GetAction api
-
-//let GetActionPropertyDateTimeService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    //let f = wrap api.GetServiceAction
-//    VerifyActionPropertyWithDateTime "services" oType oid (wrap api.GetServiceAction) api
-
-//let VerifyActionPropertyWithCollection refType oType oid f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionWithCollectionParameter"
-//    let pmid = "parm"
-//    let ourl = sprintf "%s/%s" refType oid
-//    let purl = sprintf "%s/actions/%s" ourl pid
-   
-   
-//    let args = CreateReservedArgs ""
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
+    let expected = 
+        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
+          TProperty(JsonPropertyNames.Parameters, TObjectJson([ TProperty(pmid, parm1) ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Action With Date Time Parm"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
+                                  TProperty(JsonPropertyNames.HasParams, TObjectVal(true)) ]))          
+          TProperty
+              (JsonPropertyNames.Links,                
+               TArray
+                   ([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
+                      TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)                      
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")                                                                 
+                       ])) ]
     
-//    let parm1 = 
-//        TObjectJson([ TProperty(JsonPropertyNames.Choices, 
-//                                TArray([ TObjectVal("string1")
-//                                         TObjectVal("string2")
-//                                         TObjectVal("string3") ]))
-//                      TProperty(JsonPropertyNames.Default, 
-//                                TArray([ TObjectVal("string2")
-//                                         TObjectVal("string3") ]))
-                      
-//                      TProperty
-//                          (JsonPropertyNames.Links, 
-//                           TArray([  ]))
-//                      TProperty(JsonPropertyNames.Extensions, 
-//                                TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm"))
-//                                              TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                              TProperty(JsonPropertyNames.ReturnType, TObjectVal("list"))
-//                                              TProperty(JsonPropertyNames.ElementType, TObjectVal("string"))
-//                                              TProperty(JsonPropertyNames.PluralName, TObjectVal("Strings"))
-//                                              TProperty(JsonPropertyNames.CustomChoices, 
-//                                                        TObjectJson([ TProperty("string1", TObjectVal("string1"))
-//                                                                      TProperty("string2", TObjectVal("string2"))
-//                                                                      TProperty("string3", TObjectVal("string3")) ]))
-//                                              TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    assertTransactionalCache headers
+    compareObject expected parsedResult
+
+let GetActionPropertyDateTimeViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType + "/" + ktc "1"
+    VerifyActionPropertyWithDateTime "objects" oType oName api.GetAction api
+
+let GetActionPropertyDateTimeObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyActionPropertyWithDateTime "objects" oType oName api.GetAction api
+
+let GetActionPropertyDateTimeService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyActionPropertyWithDateTime "services" oType oName (wrap api.GetServiceAction) api
+
+let VerifyActionPropertyWithCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let oid = ktc "1"
+    let pid = "AnActionWithCollectionParameter"
+    let pmid = "parm"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
+    let url = sprintf "http://localhost/%s" purl
+
+    jsonSetGetMsg api.Request url   
+    let result = f (oType, oid, pid)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
     
-//    let args = TObjectJson([ TProperty(pmid, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ])
-//    let invokeRelType = RelValues.Invoke + makeParm RelParamValues.Action pid
+    let parm1 = 
+        TObjectJson([ TProperty(JsonPropertyNames.Choices, 
+                                TArray([ TObjectVal("string1")
+                                         TObjectVal("string2")
+                                         TObjectVal("string3") ]))
+                      TProperty(JsonPropertyNames.Default, 
+                                TArray([ TObjectVal("string2")
+                                         TObjectVal("string3") ]))                      
+                      TProperty
+                          (JsonPropertyNames.Links, 
+                           TArray([  ]))
+                      TProperty(JsonPropertyNames.Extensions, 
+                                TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Parm"))
+                                              TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.ReturnType, TObjectVal("list"))
+                                              TProperty(JsonPropertyNames.ElementType, TObjectVal("string"))
+                                              TProperty(JsonPropertyNames.PluralName, TObjectVal("Strings"))
+                                              TProperty(JsonPropertyNames.CustomChoices, 
+                                                        TObjectJson([ TProperty("string1", TObjectVal("string1"))
+                                                                      TProperty("string2", TObjectVal("string2"))
+                                                                      TProperty("string3", TObjectVal("string3")) ]))
+                                              TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
-//          TProperty(JsonPropertyNames.Parameters, TObjectJson([ TProperty(pmid, parm1) ]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Action With Collection Parameter"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
-//                                  TProperty(JsonPropertyNames.HasParams, TObjectVal(true)) ]))
-          
-//          TProperty
-//              (JsonPropertyNames.Links, 
-               
-//               TArray
-//                   ([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
-//                      TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
-                      
-//                      TObjectJson
-//                          (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                      
-                      
-                      
-//                       ])) ]
-//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
-//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
-//    assertTransactionalCache headers
-//   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
-//    compareObject expected parsedResult
-
-//let GetActionPropertyCollectionViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyActionPropertyWithCollection "objects" oType oid api.GetAction api
-
-//let GetActionPropertyCollectionObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyActionPropertyWithCollection "objects" oType oid api.GetAction api
-
-//let GetActionPropertyCollectionService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    //let f = wrap api.GetServiceAction
-//    VerifyActionPropertyWithCollection "services" oType oid (wrap api.GetServiceAction) api
-
-//let VerifyOverloadedActionProperty refType oType oid f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnOverloadedAction0"
-//    let ourl = sprintf "%s/%s" refType oid
-//    let purl = sprintf "%s/actions/%s" ourl pid
+    let args = TObjectJson([ TProperty(pmid, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ])
+    let invokeRelType = RelValues.Invoke + makeParm RelParamValues.Action pid
     
-//    let args = CreateReservedArgs ""
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    let invokeRelType = RelValues.Invoke + makeParm RelParamValues.Action pid
+    let expected = 
+        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
+          TProperty(JsonPropertyNames.Parameters, TObjectJson([ TProperty(pmid, parm1) ]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Action With Collection Parameter"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
+                                  TProperty(JsonPropertyNames.HasParams, TObjectVal(true)) ]))          
+          TProperty
+              (JsonPropertyNames.Links,                
+               TArray
+                   ([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
+                      TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)                      
+                      TObjectJson
+                          (TProperty(JsonPropertyNames.Arguments, args) :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")                                                                  
+                       ])) ]
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
-//          TProperty(JsonPropertyNames.Parameters, TObjectJson([]))
-//          TProperty(JsonPropertyNames.Extensions, 
-//                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Overloaded Action"))
-//                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(ttc "RestfulObjects.Test.Data.MostSimple"))
-//                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
-//                                  TProperty(JsonPropertyNames.HasParams, TObjectVal(false)) ]))
-//          TProperty(JsonPropertyNames.Links, 
-//                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
-//                             TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)
-                             
-//                             TObjectJson
-//                                 (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
-//                                  :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")
-                             
-//                              ])) ]
-//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
-//    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
-//    assertTransactionalCache headers
-//   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
-//    compareObject expected parsedResult
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    assertTransactionalCache headers
+    // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
 
-//let GetOverloadedActionPropertyViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyOverloadedActionProperty "objects" oType oid api.GetAction api
+let GetActionPropertyCollectionViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oid = ktc "1"
+    let oName = oType + "/" + oid
+    VerifyActionPropertyWithCollection "objects" oType oName api.GetAction api
 
-//let GetOverloadedActionPropertyObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyOverloadedActionProperty "objects" oType oid api.GetAction api
+let GetActionPropertyCollectionObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oid = ktc "1"
+    let oName = oType + "/" + oid
+    VerifyActionPropertyWithCollection "objects" oType oName api.GetAction api
 
-//let GetOverloadedActionPropertyService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    //let f = wrap api.GetServiceAction
-//    VerifyOverloadedActionProperty "services" oType oid (wrap api.GetServiceAction) api
+let GetActionPropertyCollectionService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyActionPropertyWithCollection "services" oType oName (wrap api.GetServiceAction) api
+
+let VerifyOverloadedActionProperty refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let oid = ktc "1"
+    let pid = "AnOverloadedAction0"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
+    let url = sprintf "http://localhost/%s" purl
+    
+    jsonSetGetMsg api.Request url   
+    let result = f (oType, oid, pid)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
+    
+    let invokeRelType = RelValues.Invoke + makeParm RelParamValues.Action pid
+    
+    let expected = 
+        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
+          TProperty(JsonPropertyNames.Parameters, TObjectJson([]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("An Overloaded Action"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(ttc "RestfulObjects.Test.Data.MostSimple"))
+                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
+                                  TProperty(JsonPropertyNames.HasParams, TObjectVal(false)) ]))
+          TProperty(JsonPropertyNames.Links, 
+                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
+                             TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)                             
+                             TObjectJson
+                                 (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
+                                  :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")                             
+                              ])) ]
+
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    assertTransactionalCache headers
+    compareObject expected parsedResult
+
+let GetOverloadedActionPropertyViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType + "/" + ktc "1"
+    VerifyOverloadedActionProperty "objects" oType oName api.GetAction api
+
+let GetOverloadedActionPropertyObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyOverloadedActionProperty "objects" oType oName api.GetAction api
+
+let GetOverloadedActionPropertyService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyOverloadedActionProperty "services" oType oName (wrap api.GetServiceAction) api
 
 //let VerifyContributedServiceAction refType oType oid f (api : RestfulObjectsControllerBase) = 
 //    let pid = "ANonContributedAction"
@@ -320,7 +309,7 @@ module ObjectAction18
 //let GetActionContributedService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.ContributorService"
 //    let oid = oType
-//    //let f = wrap api.GetServiceAction
+//    let f = wrap api.GetServiceAction
 //    VerifyContributedServiceAction "services" oType oid (wrap api.GetServiceAction) api
 
 //let VerifyUserDisabledActionProperty refType oType oid f (api : RestfulObjectsControllerBase) = 

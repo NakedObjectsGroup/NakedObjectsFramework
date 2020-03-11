@@ -1115,44 +1115,44 @@ type RestTests() =
         [<Test>]
         member x.GetCollectionAsProperty() = ObjectCollection17.GetCollectionAsProperty x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyObject() = ObjectAction18.GetActionPropertyObject x.api
+        [<Test>]
+        member x.GetActionPropertyObject() = ObjectAction18.GetActionPropertyObject x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyService() = ObjectAction18.GetActionPropertyService x.api
+        [<Test>]
+        member x.GetActionPropertyService() = ObjectAction18.GetActionPropertyService x.api
         
-//        [<Test>]
-//        member x.GetActionContributedService() = ObjectAction18.GetActionContributedService x.api
+        //[<Test>]
+        //member x.GetActionContributedService() = ObjectAction18.GetActionContributedService x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyViewModel() = ObjectAction18.GetActionPropertyViewModel x.api
+        [<Test>]
+        member x.GetActionPropertyViewModel() = ObjectAction18.GetActionPropertyViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyDateTimeViewModel() = ObjectAction18.GetActionPropertyDateTimeViewModel x.api
+        [<Test>]
+        member x.GetActionPropertyDateTimeViewModel() = ObjectAction18.GetActionPropertyDateTimeViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyDateTimeService() = ObjectAction18.GetActionPropertyDateTimeService x.api
+        [<Test>]
+        member x.GetActionPropertyDateTimeService() = ObjectAction18.GetActionPropertyDateTimeService x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyDateTimeObject() = ObjectAction18.GetActionPropertyDateTimeObject x.api
+        [<Test>]
+        member x.GetActionPropertyDateTimeObject() = ObjectAction18.GetActionPropertyDateTimeObject x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyCollectionViewModel() = ObjectAction18.GetActionPropertyCollectionViewModel x.api
+        [<Test>]
+        member x.GetActionPropertyCollectionViewModel() = ObjectAction18.GetActionPropertyCollectionViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyCollectionService() = ObjectAction18.GetActionPropertyCollectionService x.api
+        [<Test>]
+        member x.GetActionPropertyCollectionService() = ObjectAction18.GetActionPropertyCollectionService x.api
         
-//        [<Test>]
-//        member x.GetActionPropertyCollectionObject() = ObjectAction18.GetActionPropertyCollectionObject x.api
+        [<Test>]
+        member x.GetActionPropertyCollectionObject() = ObjectAction18.GetActionPropertyCollectionObject x.api
         
-//        [<Test>]
-//        member x.GetOverloadedActionPropertyObject() = ObjectAction18.GetOverloadedActionPropertyObject x.api
+        [<Test>]
+        member x.GetOverloadedActionPropertyObject() = ObjectAction18.GetOverloadedActionPropertyObject x.api
         
-//        [<Test>]
-//        member x.GetOverloadedActionPropertyService() = ObjectAction18.GetOverloadedActionPropertyService x.api
+        [<Test>]
+        member x.GetOverloadedActionPropertyService() = ObjectAction18.GetOverloadedActionPropertyService x.api
         
-//        [<Test>]
-//        member x.GetOverloadedActionPropertyViewModel() = ObjectAction18.GetOverloadedActionPropertyViewModel x.api
+        [<Test>]
+        member x.GetOverloadedActionPropertyViewModel() = ObjectAction18.GetOverloadedActionPropertyViewModel x.api
         
 //        [<Test>]
 //        member x.GetUserDisabledActionPropertyObject() = ObjectAction18.GetUserDisabledActionPropertyObject x.api
