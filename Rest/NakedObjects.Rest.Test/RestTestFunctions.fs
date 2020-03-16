@@ -124,6 +124,9 @@ let wrap1 f (a, b, c) = f (a, c)
 
 let wrap2 f (a, b, c, d, e) = f (a, c, d, e) 
 
+let wrap3 f (a, b, c, d) = f (a, c, d) 
+
+
 let ComputeMD5HashFromString(s : string) = 
     let crypto = new System.Security.Cryptography.MD5CryptoServiceProvider()
     crypto.ComputeHash(System.Text.Encoding.UTF8.GetBytes(s))

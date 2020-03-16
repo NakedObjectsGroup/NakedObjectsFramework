@@ -1536,15 +1536,15 @@ type RestTests() =
         [<Test>]
         member x.ActionNotFound() = ObjectAction18.ActionNotFound x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnObjectObject() = ObjectActionInvoke19.PostInvokeActionReturnObjectObject x.api
+        [<Test>]
+        member x.PostInvokeActionReturnObjectObject() = ObjectActionInvoke19.PostInvokeActionReturnObjectObject x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnObjectService() = ObjectActionInvoke19.PostInvokeActionReturnObjectService x.api
+        [<Test>]
+        member x.PostInvokeActionReturnObjectService() = ObjectActionInvoke19.PostInvokeActionReturnObjectService x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnObjectViewModel() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnObjectViewModel x.api
+        [<Test>]
+        member x.PostInvokeActionReturnObjectViewModel() = 
+            ObjectActionInvoke19.PostInvokeActionReturnObjectViewModel x.api
         
 //        [<Test>]
 //        member x.PostInvokeOverloadedActionReturnObjectObject() = 

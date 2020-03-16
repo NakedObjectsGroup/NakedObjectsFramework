@@ -1,122 +1,125 @@
-﻿//// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-//// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-//// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-//// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-//// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//// See the License for the specific language governing permissions and limitations under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 module ObjectActionInvoke19
 
-//open NUnit.Framework
-//open NakedObjects.Rest
-//open System.Net
-//open System.Net.Http.Headers
-//open Newtonsoft.Json.Linq
-//open System.Web
-//open System
-//open NakedObjects.Rest.Snapshot.Utility
-//open NakedObjects.Rest.Snapshot.Constants
-//open System.Web.Http
-//open System.Linq
-//open RestTestFunctions
+open NUnit.Framework
+open NakedObjects.Rest
+open System.Net
+open System.Net.Http.Headers
+open Newtonsoft.Json.Linq
+open System.Web
+open System
+open NakedObjects.Rest.Snapshot.Utility
+open NakedObjects.Rest.Snapshot.Constants
+open System.Web.Http
+open System.Linq
+open RestTestFunctions
 
 
-//let makeCollectionParm  contribName pmid pid fid rt = 
-     
+let makeCollectionParm  contribName pmid pid fid rt = 
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([ ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("list"))
+                                                  TProperty(JsonPropertyNames.ElementType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
+
+let makeValueParm  contribName pmid pid fid rt = 
+        let dburl = sprintf "domain-types/%s/actions/%s" contribName pid
+        let pmurl = sprintf "%s/params/%s" dburl pmid
         
-//        let p = 
-//            TObjectJson([ TProperty
-//                              (JsonPropertyNames.Links, 
-//                               TArray([ ]))
-//                          TProperty(JsonPropertyNames.Extensions, 
-//                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
-//                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("list"))
-//                                                  TProperty(JsonPropertyNames.ElementType, TObjectVal(rt))
-//                                                  TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
-//                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
-//        TProperty(pmid, p)
-
-//let makeValueParm  contribName pmid pid fid rt = 
-//        let dburl = sprintf "domain-types/%s/actions/%s" contribName pid
-//        let pmurl = sprintf "%s/params/%s" dburl pmid
-        
-//        let p = 
-//            TObjectJson([ TProperty
-//                              (JsonPropertyNames.Links, 
-//                               TArray([  ]))
-//                          TProperty(JsonPropertyNames.Extensions, 
-//                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
-//                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
-//                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
-//                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
-//        TProperty(pmid, p)
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([  ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
+                                                  TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+        TProperty(pmid, p)
 
 
-//// 19.3 post to invoke non-idempotent action no parms 
-//let VerifyPostInvokeActionReturnObject refType oType oid f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnAction"
-//    let ourl = sprintf "%s/%s" refType oid
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//    let roid = roType + "/" + ktc "1"
-//    let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+// 19.3 post to invoke non-idempotent action no parms 
+let VerifyPostInvokeActionReturnObject refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let oid = ktc "1"
+    let pid = "AnAction"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid
+    let url = sprintf "http://localhost/%s" purl
+
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetEmptyPostMsg api.Request url
+    setIfMatch api.Request "*"
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
+       
+    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let roid = roType + "/" + oid
+    let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
     
-//    let resultObject = 
-//        TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
-//                      TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
-//                      TProperty(JsonPropertyNames.Title, TObjectVal("1"))
-//                      TProperty(JsonPropertyNames.Links, 
-//                                TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object roType)
-//                                         TObjectJson(sb(roType)); TObjectJson(sp(roType))
-//                                         TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid) RepresentationTypes.Object roType) ]))
+    let resultObject = 
+        TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
+                      TProperty(JsonPropertyNames.InstanceId, TObjectVal(oid))
+                      TProperty(JsonPropertyNames.Title, TObjectVal("1"))
+                      TProperty(JsonPropertyNames.Links, 
+                                TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object roType)
+                                         TObjectJson(sb(roType)); TObjectJson(sp(roType))
+                                         TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid) RepresentationTypes.Object roType) ]))
                       
-//                      TProperty
-//                          (JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]))
-//                      TProperty(JsonPropertyNames.Extensions, 
-//                                TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
-//                                              TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
-//                                              TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
-//                                              TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
-//                                              TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
+                      TProperty
+                          (JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]))
+                      TProperty(JsonPropertyNames.Extensions, 
+                                TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
+                                              TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
+                                              TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
+                                              TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
+                                              TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.Links, TArray([]))
-//          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
-//          TProperty(JsonPropertyNames.Result, resultObject)
-//          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+    let expected = 
+        [ TProperty(JsonPropertyNames.Links, TArray([]))
+          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
+          TProperty(JsonPropertyNames.Result, resultObject)
+          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
-//    assertTransactionalCache headers
-//    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-//    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
-//    compareObject expected parsedResult
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
+    assertTransactionalCache headers
+    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
 
-//let PostInvokeActionReturnObjectObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnObject "objects" oType oid api.PostInvoke api
+let PostInvokeActionReturnObjectObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyPostInvokeActionReturnObject "objects" oType oName api.PostInvoke api
 
-//let PostInvokeActionReturnObjectService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnObject "services" oType oid (wrap api.PostInvokeOnService) api
+let PostInvokeActionReturnObjectService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyPostInvokeActionReturnObject "services" oType oName (wrap3 api.PostInvokeOnService) api
 
-//let PostInvokeActionReturnObjectViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnObject "objects" oType oid api.PostInvoke api
+let PostInvokeActionReturnObjectViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType + "/" + ktc "1"
+    VerifyPostInvokeActionReturnObject "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeOverloadedActionReturnObject refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeOverloadedActionReturnObject refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnOverloadedAction0"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -161,22 +164,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeOverloadedActionReturnObjectObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeOverloadedActionReturnObject "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeOverloadedActionReturnObject "objects" oType oName api.PostInvoke api
 
 //let PostInvokeOverloadedActionReturnObjectService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeOverloadedActionReturnObject "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeOverloadedActionReturnObject "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeOverloadedActionReturnObjectViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeOverloadedActionReturnObject "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeOverloadedActionReturnObject "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeContributedService refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeContributedService refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "ANonContributedAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -221,12 +224,12 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionContributedService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.ContributorService"
-//    let oid = oType
-//    VerifyPostInvokeContributedService "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeContributedService "services" oType oName (wrap api.PostInvokeOnService) api
 
-//let VerifyPostInvokeCollectionContributedActionContributedService refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeCollectionContributedActionContributedService refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "ACollectionContributedActionParm"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 
@@ -282,12 +285,12 @@ module ObjectActionInvoke19
 
 //let PostInvokeCollectionContributedActionContributedService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.ContributorService"
-//    let oid = oType
-//    VerifyPostInvokeCollectionContributedActionContributedService "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeCollectionContributedActionContributedService "services" oType oName (wrap api.PostInvokeOnService) api
 
-//let VerifyPostInvokeCollectionContributedActionContributedServiceMissingParm refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeCollectionContributedActionContributedServiceMissingParm refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "ACollectionContributedActionParm"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 
@@ -345,13 +348,13 @@ module ObjectActionInvoke19
 
 //let PostInvokeCollectionContributedActionContributedServiceMissingParm(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.ContributorService"
-//    let oid = oType
-//    VerifyPostInvokeCollectionContributedActionContributedServiceMissingParm "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeCollectionContributedActionContributedServiceMissingParm "services" oType oName (wrap api.PostInvokeOnService) api
 
 
-//let VerifyPostInvokeActionReturnRedirectedObject refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnRedirectedObject refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsRedirectedObject"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    try 
 //        let args = CreateArgMap(new JObject())
@@ -364,22 +367,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnRedirectedObjectObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnRedirectedObject "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnRedirectedObject "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnRedirectedObjectService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnRedirectedObject "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnRedirectedObject "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnRedirectedObjectViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnRedirectedObject "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnRedirectedObject "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionReturnViewModel refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnViewModel refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsViewModel"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -424,22 +427,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnViewModelObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnViewModel "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnViewModel "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnViewModelService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnViewModel "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnViewModel "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnViewModelViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnViewModel "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnViewModel "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionReturnObjectConcurrencySuccess refType oType oid f tag (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnObjectConcurrencySuccess refType oType oName f tag (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
 //    let args = CreateArgMap(new JObject())
@@ -483,8 +486,8 @@ module ObjectActionInvoke19
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
-//let GetTag oType oid (api : RestfulObjectsControllerBase) = 
-//    let url = sprintf "http://localhost/objects/%s" oid
+//let GetTag oType oName (api : RestfulObjectsControllerBase) = 
+//    let url = sprintf "http://localhost/objects/%s" oName
 //    api.Request <- jsonGetMsg (url)
 //    let args = CreateReservedArgs ""
 //    let result = api.GetObject(oType, ktc "1", args)
@@ -492,22 +495,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnObjectObjectConcurrencySuccess(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnObjectConcurrencySuccess "objects" oType oid api.PostInvoke (GetTag oType oid api) api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnObjectConcurrencySuccess "objects" oType oName api.PostInvoke (GetTag oType oName api) api
 
 //let PostInvokeActionReturnObjectServiceConcurrencySuccess(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnObjectConcurrencySuccess "services" oType oid (wrap api.PostInvokeOnService) "\"any\"" api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnObjectConcurrencySuccess "services" oType oName (wrap api.PostInvokeOnService) "\"any\"" api
 
 //let PostInvokeActionReturnObjectViewModelConcurrencySuccess(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnObjectConcurrencySuccess "objects" oType oid api.PostInvoke (GetTag oType oid api) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnObjectConcurrencySuccess "objects" oType oName api.PostInvoke (GetTag oType oName api) api
 
-//let VerifyPostInvokeUserDisabledActionReturnObject refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeUserDisabledActionReturnObject refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -552,24 +555,24 @@ module ObjectActionInvoke19
 
 //let PostInvokeUserDisabledActionReturnObjectObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeUserDisabledActionReturnObject "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeUserDisabledActionReturnObject "objects" oType oName api.PostInvoke api
 
 //let PostInvokeUserDisabledActionReturnObjectService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeUserDisabledActionReturnObject "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeUserDisabledActionReturnObject "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeUserDisabledActionReturnObjectViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeUserDisabledActionReturnObject "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeUserDisabledActionReturnObject "objects" oType oName api.PostInvoke api
 
 //let PostInvokeContribActionReturnObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
+//    let oName = oType + "/" + ktc "1"
 //    let pid = "AzContributedAction"
-//    let ourl = sprintf "%s/%s" "objects" oid
+//    let ourl = sprintf "%s/%s" "objects" oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -614,13 +617,13 @@ module ObjectActionInvoke19
 
 //let PostInvokeContribActionReturnObjectBaseClass(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = ktc "1"
+//    let oName = ktc "1"
 //    let pid = "AzContributedActionOnBaseClass"
-//    let ourl = sprintf "%s/%s" "objects" oid
+//    let ourl = sprintf "%s/%s" "objects" oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    let result = api.PostInvoke(oType, oid, pid, args)
+//    let result = api.PostInvoke(oType, oName, pid, args)
 //    let jsonResult = readSnapshotToJson result
 //    let parsedResult = JObject.Parse(jsonResult)
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
@@ -661,9 +664,9 @@ module ObjectActionInvoke19
 
 //let PostInvokeContribActionReturnObjectWithRefParm(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/1"
+//    let oName = oType + "/1"
 //    let pid = "AzContributedActionWithRefParm"
-//    let ourl = sprintf "%s/%s" "objects" oid
+//    let ourl = sprintf "%s/%s" "objects" oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" oType (ktc "1"))).ToString()))
 //    let parms = new JObject(new JProperty("withOtherAction", new JObject(new JProperty(JsonPropertyNames.Value, refParm))))
@@ -710,9 +713,9 @@ module ObjectActionInvoke19
 
 //let PostInvokeContribActionReturnObjectWithValueParm(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/1"
+//    let oName = oType + "/1"
 //    let pid = "AzContributedActionWithValueParm"
-//    let ourl = sprintf "%s/%s" "objects" oid
+//    let ourl = sprintf "%s/%s" "objects" oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let parms = new JObject(new JProperty("parm", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))))
 //    let args = CreateArgMap parms
@@ -756,9 +759,9 @@ module ObjectActionInvoke19
 //    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
 //    compareObject expected parsedResult
 
-//let VerifyPostInvokeActionReturnNullObject refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnNullObject refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsNull"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -780,22 +783,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnNullObjectObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = ktc "1"
-//    VerifyPostInvokeActionReturnNullObject "objects" oType oid api.PostInvoke api
+//    let oName = ktc "1"
+//    VerifyPostInvokeActionReturnNullObject "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnNullObjectService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnNullObject "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnNullObject "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnNullObjectViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnNullObject "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnNullObject "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionReturnNullViewModel refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnNullViewModel refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsNullViewModel"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -817,22 +820,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnNullViewModelObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = ktc "1"
-//    VerifyPostInvokeActionReturnNullViewModel "objects" oType oid api.PostInvoke api
+//    let oName = ktc "1"
+//    VerifyPostInvokeActionReturnNullViewModel "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnNullViewModelService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnNullViewModel "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnNullViewModel "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnNullViewModelViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnNullViewModel "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnNullViewModel "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionReturnObjectValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnObjectValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap parms
@@ -844,22 +847,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnObjectValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnObjectValidateOnly "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnObjectServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnObjectValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnObjectValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnObjectViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnObjectValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnObjectValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyPutInvokeActionReturnObject refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPutInvokeActionReturnObject refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionAnnotatedIdempotent"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) ""
@@ -904,22 +907,22 @@ module ObjectActionInvoke19
 
 //let PutInvokeActionReturnObjectObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPutInvokeActionReturnObject "objects" oType oid api.PutInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPutInvokeActionReturnObject "objects" oType oName api.PutInvoke api
 
 //let PutInvokeActionReturnObjectService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPutInvokeActionReturnObject "services" oType oid (wrap api.PutInvokeOnService) api
+//    let oName = oType
+//    VerifyPutInvokeActionReturnObject "services" oType oName (wrap api.PutInvokeOnService) api
 
 //let PutInvokeActionReturnObjectViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPutInvokeActionReturnObject "objects" oType oid api.PutInvoke api
+//    let oName = oType
+//    VerifyPutInvokeActionReturnObject "objects" oType oName api.PutInvoke api
 
-//let VerifyPutInvokeActionReturnViewModel refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPutInvokeActionReturnViewModel refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionAnnotatedIdempotentReturnsViewModel"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) ""
@@ -964,22 +967,22 @@ module ObjectActionInvoke19
 
 //let PutInvokeActionReturnViewModelObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPutInvokeActionReturnViewModel "objects" oType oid api.PutInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPutInvokeActionReturnViewModel "objects" oType oName api.PutInvoke api
 
 //let PutInvokeActionReturnViewModelService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPutInvokeActionReturnViewModel "services" oType oid (wrap api.PutInvokeOnService) api
+//    let oName = oType
+//    VerifyPutInvokeActionReturnViewModel "services" oType oName (wrap api.PutInvokeOnService) api
 
 //let PutInvokeActionReturnViewModelViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPutInvokeActionReturnViewModel "objects" oType oid api.PutInvoke api
+//    let oName = oType
+//    VerifyPutInvokeActionReturnViewModel "objects" oType oName api.PutInvoke api
 
-//let VerifyPutInvokeActionReturnObjectConcurrencySuccess refType oType oid f tag (api : RestfulObjectsControllerBase) = 
+//let VerifyPutInvokeActionReturnObjectConcurrencySuccess refType oType oName f tag (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionAnnotatedIdempotent"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
 //    let args = CreateArgMap(new JObject())
@@ -1025,22 +1028,22 @@ module ObjectActionInvoke19
 
 //let PutInvokeActionReturnObjectObjectConcurrencySuccess(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPutInvokeActionReturnObjectConcurrencySuccess "objects" oType oid api.PutInvoke (GetTag oType oid api) api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPutInvokeActionReturnObjectConcurrencySuccess "objects" oType oName api.PutInvoke (GetTag oType oName api) api
 
 //let PutInvokeActionReturnObjectServiceConcurrencySuccess(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPutInvokeActionReturnObjectConcurrencySuccess "services" oType oid (wrap api.PutInvokeOnService) "\"any\"" api
+//    let oName = oType
+//    VerifyPutInvokeActionReturnObjectConcurrencySuccess "services" oType oName (wrap api.PutInvokeOnService) "\"any\"" api
 
 //let PutInvokeActionReturnObjectViewModelConcurrencySuccess(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPutInvokeActionReturnObjectConcurrencySuccess "objects" oType oid api.PutInvoke (GetTag oType oid api) api
+//    let oName = oType
+//    VerifyPutInvokeActionReturnObjectConcurrencySuccess "objects" oType oName api.PutInvoke (GetTag oType oName api) api
 
-//let VerifyPutInvokeActionReturnNullObject refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPutInvokeActionReturnNullObject refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionAnnotatedIdempotentReturnsNull"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) ""
@@ -1062,22 +1065,22 @@ module ObjectActionInvoke19
 
 //let PutInvokeActionReturnNullObjectObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPutInvokeActionReturnNullObject "objects" oType oid api.PutInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPutInvokeActionReturnNullObject "objects" oType oName api.PutInvoke api
 
 //let PutInvokeActionReturnNullObjectService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPutInvokeActionReturnNullObject "services" oType oid (wrap api.PutInvokeOnService) api
+//    let oName = oType
+//    VerifyPutInvokeActionReturnNullObject "services" oType oName (wrap api.PutInvokeOnService) api
 
 //let PutInvokeActionReturnNullObjectViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPutInvokeActionReturnNullObject "objects" oType oid api.PutInvoke api
+//    let oName = oType
+//    VerifyPutInvokeActionReturnNullObject "objects" oType oName api.PutInvoke api
 
-//let VerifyPutInvokeActionReturnObjectValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPutInvokeActionReturnObjectValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionAnnotatedIdempotent"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap parms
@@ -1089,22 +1092,22 @@ module ObjectActionInvoke19
 
 //let PutInvokeActionReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPutInvokeActionReturnObjectValidateOnly "objects" oType oid api.PutInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPutInvokeActionReturnObjectValidateOnly "objects" oType oName api.PutInvoke api
 
 //let PutInvokeActionReturnObjectServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPutInvokeActionReturnObjectValidateOnly "services" oType oid (wrap api.PutInvokeOnService) api
+//    let oName = oType
+//    VerifyPutInvokeActionReturnObjectValidateOnly "services" oType oName (wrap api.PutInvokeOnService) api
 
 //let PutInvokeActionReturnObjectViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPutInvokeActionReturnObjectValidateOnly "objects" oType oid api.PutInvoke api
+//    let oName = oType
+//    VerifyPutInvokeActionReturnObjectValidateOnly "objects" oType oName api.PutInvoke api
 
-//let VerifyGetInvokeActionReturnObject refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionReturnObject refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionAnnotatedQueryOnly"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
@@ -1145,7 +1148,7 @@ module ObjectActionInvoke19
 //        TArray
 //            ([ TObjectJson
 //                   (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
-//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
+//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oName pid) RepresentationTypes.ActionResult 
 //                           roType "" true) ])
     
 //    let expected = 
@@ -1162,22 +1165,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionReturnObjectObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnObject "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnObject "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionReturnObjectService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionReturnObject "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionReturnObject "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionReturnObjectViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnObject "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnObject "objects" oType oName api.GetInvoke api
 
-//let VerifyGetInvokeActionReturnViewModel refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionReturnViewModel refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionAnnotatedQueryOnlyReturnsViewModel"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
@@ -1216,7 +1219,7 @@ module ObjectActionInvoke19
 //        TArray
 //            ([ TObjectJson
 //                   (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
-//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
+//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oName pid) RepresentationTypes.ActionResult 
 //                           roType "" true) ])
     
 //    let expected = 
@@ -1233,22 +1236,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionReturnViewModelObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnViewModel "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnViewModel "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionReturnViewModelService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionReturnViewModel "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionReturnViewModel "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionReturnViewModelViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnViewModel "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnViewModel "objects" oType oName api.GetInvoke api
 
-//let VerifyGetInvokeActionReturnObjectConcurrencySuccess refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionReturnObjectConcurrencySuccess refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionAnnotatedQueryOnly"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
 //    let args = CreateArgMap(new JObject())
@@ -1292,7 +1295,7 @@ module ObjectActionInvoke19
 //        TArray
 //            ([ TObjectJson
 //                   (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
-//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
+//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oName pid) RepresentationTypes.ActionResult 
 //                           roType "" true) ])
     
 //    let expected = 
@@ -1309,22 +1312,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionReturnObjectObjectConcurrencySuccess(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnObjectConcurrencySuccess "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnObjectConcurrencySuccess "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionReturnObjectServiceConcurrencySuccess(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionReturnObjectConcurrencySuccess "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionReturnObjectConcurrencySuccess "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionReturnObjectViewModelConcurrencySuccess(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnObjectConcurrencySuccess "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnObjectConcurrencySuccess "objects" oType oName api.GetInvoke api
 
-//let VerifyGetInvokeActionReturnObjectConcurrencyNoIfMatch refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionReturnObjectConcurrencyNoIfMatch refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionAnnotatedQueryOnly"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
 //    let args = CreateArgMap(new JObject())
@@ -1368,7 +1371,7 @@ module ObjectActionInvoke19
 //        TArray
 //            ([ TObjectJson
 //                   (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
-//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
+//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oName pid) RepresentationTypes.ActionResult 
 //                           roType "" true) ])
     
 //    let expected = 
@@ -1385,22 +1388,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionReturnObjectObjectConcurrencyNoIfMatch(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnObjectConcurrencyNoIfMatch "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnObjectConcurrencyNoIfMatch "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionReturnObjectServiceConcurrencyNoIfMatch(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionReturnObjectConcurrencyNoIfMatch "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionReturnObjectConcurrencyNoIfMatch "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionReturnObjectViewModelConcurrencyNoIfMatch(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnObjectConcurrencyNoIfMatch "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnObjectConcurrencyNoIfMatch "objects" oType oName api.GetInvoke api
 
-//let VerifyGetInvokeActionReturnNullObject refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionReturnNullObject refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionAnnotatedQueryOnlyReturnsNull"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
@@ -1412,7 +1415,7 @@ module ObjectActionInvoke19
 //        TArray
 //            ([ TObjectJson
 //                   (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
-//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
+//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oName pid) RepresentationTypes.ActionResult 
 //                           roType "" true) ])
     
 //    let expected = 
@@ -1428,22 +1431,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionReturnNullObjectObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnNullObject "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnNullObject "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionReturnNullObjectService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionReturnNullObject "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionReturnNullObject "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionReturnNullObjectViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnNullObject "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnNullObject "objects" oType oName api.GetInvoke api
 
-//let VerifyGetInvokeActionReturnObjectValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionReturnObjectValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionAnnotatedQueryOnly"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
@@ -1456,22 +1459,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnObjectValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnObjectValidateOnly "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionReturnObjectServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionReturnObjectValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionReturnObjectValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionReturnObjectViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyGetInvokeActionReturnObjectValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyGetInvokeActionReturnObjectValidateOnly "objects" oType oName api.GetInvoke api
 
-//let VerifyPostInvokeActionReturnObjectWithMediaType refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnObjectWithMediaType refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let msg = jsonPostMsg (sprintf "http://localhost/%s" purl) ""
 //    msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue("profile", (makeProfile RepresentationTypes.ActionResult)))
@@ -1518,22 +1521,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnObjectObjectWithMediaType(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnObjectWithMediaType "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnObjectWithMediaType "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnObjectServiceWithMediaType(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnObjectWithMediaType "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnObjectWithMediaType "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnObjectViewModelWithMediaType(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnObjectWithMediaType "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnObjectWithMediaType "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionReturnScalar refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnScalar refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsScalar"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -1564,24 +1567,24 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnScalarObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnScalar "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnScalar "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnScalarService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnScalar "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnScalar "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnScalarViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnScalar "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnScalar "objects" oType oName api.PostInvoke api
 
 
 
-//let VerifyPostInvokeActionReturnEmptyScalar refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnEmptyScalar refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsScalarEmpty"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -1612,22 +1615,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnEmptyScalarObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnEmptyScalar "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnEmptyScalar "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnEmptyScalarService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnEmptyScalar "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnEmptyScalar "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnEmptyScalarViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnEmptyScalar "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnEmptyScalar "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionReturnNullScalar refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnNullScalar refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsScalarNull"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -1649,22 +1652,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnNullScalarObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnNullScalar "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnNullScalar "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnNullScalarService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnNullScalar "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnNullScalar "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnNullScalarViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnNullScalar "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnNullScalar "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionReturnScalarValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnScalarValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsScalar"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap parms
@@ -1676,22 +1679,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnScalarObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnScalarValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnScalarValidateOnly "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnScalarServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnScalarValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnScalarValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnScalarViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnScalarValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnScalarValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionReturnVoid refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnVoid refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsVoid"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    //let parms =  new JObject (new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap(new JObject())
@@ -1712,24 +1715,24 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnVoidObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnVoid "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnVoid "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnVoidService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnVoid "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnVoid "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnVoidViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnVoid "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnVoid "objects" oType oName api.PostInvoke api
 
 
 
-//let VerifyPostInvokeActionReturnVoidValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnVoidValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsVoid"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap parms
@@ -1741,22 +1744,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnVoidObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnVoidValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnVoidValidateOnly "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnVoidServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnVoidValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnVoidValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnVoidViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnVoidValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnVoidValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyGetInvokeActionReturnQueryable refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionReturnQueryable refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryable"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
@@ -1776,7 +1779,7 @@ module ObjectActionInvoke19
 //        TArray
 //            ([ TObjectJson
 //                   (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
-//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
+//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oName pid) RepresentationTypes.ActionResult 
 //                           "" roType true) ])
     
 //    let resultProp = 
@@ -1827,22 +1830,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionReturnQueryObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnQueryable "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnQueryable "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionReturnQueryService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionReturnQueryable "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionReturnQueryable "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionReturnQueryViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnQueryable "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnQueryable "objects" oType oName api.GetInvoke api
 
-//let VerifyGetInvokeActionReturnQueryableWithPaging refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionReturnQueryableWithPaging refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryable"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-page", 2), new JProperty("x-ro-pageSize", 1))
 //    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
@@ -1862,7 +1865,7 @@ module ObjectActionInvoke19
 //        TArray
 //            ([ TObjectJson
 //                   (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
-//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
+//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oName pid) RepresentationTypes.ActionResult 
 //                           "" roType true) ])
     
 //    let resultProp = 
@@ -1912,23 +1915,23 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionReturnQueryObjectWithPaging(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnQueryableWithPaging "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnQueryableWithPaging "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionReturnQueryServiceWithPaging(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionReturnQueryableWithPaging "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionReturnQueryableWithPaging "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionReturnQueryViewModelWithPaging(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnQueryableWithPaging "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnQueryableWithPaging "objects" oType oName api.GetInvoke api
 
 
-//let VerifyGetInvokeActionReturnQueryableValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionReturnQueryableValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryable"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
@@ -1941,22 +1944,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionReturnQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnQueryableValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnQueryableValidateOnly "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionReturnQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionReturnQueryableValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionReturnQueryableValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionReturnQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyGetInvokeActionReturnQueryableValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyGetInvokeActionReturnQueryableValidateOnly "objects" oType oName api.GetInvoke api
 
-//let VerifyPostInvokeActionReturnCollection refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollection"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -2015,24 +2018,24 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnCollectionObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnCollection "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnCollectionService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnCollection "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnCollection "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnCollectionViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnCollection "objects" oType oName api.PostInvoke api
 
 
 
-//let VerifyPostInvokeActionReturnEmptyCollection refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnEmptyCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionEmpty"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -2081,22 +2084,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnEmptyCollectionObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnEmptyCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnEmptyCollection "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnEmptyCollectionService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnEmptyCollection "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnEmptyCollection "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnEmptyCollectionViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnEmptyCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnEmptyCollection "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionReturnNullCollection refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnNullCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionNull"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -2118,22 +2121,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnNullCollectionObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnNullCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnNullCollection "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnNullCollectionService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnNullCollection "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnNullCollection "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnNullCollectionViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnNullCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnNullCollection "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionReturnCollectionVerifyOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnCollectionVerifyOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollection"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap parms
@@ -2145,22 +2148,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnCollectionObjectVerifyOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnCollectionVerifyOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnCollectionVerifyOnly "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnCollectionServiceVerifyOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnCollectionVerifyOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnCollectionVerifyOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnCollectionViewModelVerifyOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnCollectionVerifyOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnCollectionVerifyOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyGetInvokeActionWithScalarParmsReturnQuerySimple refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionWithScalarParmsReturnQuerySimple refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = "parm2=fred&parm1=100"
 //    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parms
 //    let args = CreateArgMapFromUrl parms
@@ -2184,7 +2187,7 @@ module ObjectActionInvoke19
 //        TArray
 //            ([ TObjectJson
 //                   (TProperty(JsonPropertyNames.Arguments, args) 
-//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
+//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oName pid) RepresentationTypes.ActionResult 
 //                           "" roType true) ])
     
 //    let pageProp = 
@@ -2235,22 +2238,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionWithScalarParmsReturnQuerySimpleObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithScalarParmsReturnQuerySimple "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithScalarParmsReturnQuerySimple "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionWithScalarParmsReturnQuerySimpleService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionWithScalarParmsReturnQuerySimple "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionWithScalarParmsReturnQuerySimple "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionWithScalarParmsReturnQuerySimpleViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithScalarParmsReturnQuerySimple "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithScalarParmsReturnQuerySimple "objects" oType oName api.GetInvoke api
 
-//let VerifyGetInvokeActionWithMissingScalarParmsReturnQuerySimple refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionWithMissingScalarParmsReturnQuerySimple refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionWithOptionalParmQueryOnly"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = "parm="
 //    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parms
 //    let args = CreateArgMapFromUrl parms
@@ -2286,7 +2289,7 @@ module ObjectActionInvoke19
 //        TArray
 //            ([ TObjectJson
 //                   (TProperty(JsonPropertyNames.Arguments, args) 
-//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
+//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oName pid) RepresentationTypes.ActionResult 
 //                           roType "" true) ])
     
 //    let expected = 
@@ -2303,22 +2306,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionWithScalarMissingParmsSimpleObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithMissingScalarParmsReturnQuerySimple "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithMissingScalarParmsReturnQuerySimple "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionWithScalarMissingParmsSimpleService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionWithMissingScalarParmsReturnQuerySimple "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionWithMissingScalarParmsReturnQuerySimple "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionWithScalarMissingParmsSimpleViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithMissingScalarParmsReturnQuerySimple "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithMissingScalarParmsReturnQuerySimple "objects" oType oName api.GetInvoke api
 
-//let VerifyGetInvokeActionWithScalarParmsReturnQuerySimpleValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionWithScalarParmsReturnQuerySimpleValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = "parm2=fred&parm1=100&x-ro-validate-only=true"
 //    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parms
 //    let args = CreateArgMapFromUrl parms
@@ -2330,18 +2333,18 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionWithScalarParmsReturnQuerySimpleObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithScalarParmsReturnQuerySimpleValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithScalarParmsReturnQuerySimpleValidateOnly "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionWithScalarParmsReturnQuerySimpleServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionWithScalarParmsReturnQuerySimpleValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionWithScalarParmsReturnQuerySimpleValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionWithScalarParmsReturnQuerySimpleViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyGetInvokeActionWithScalarParmsReturnQuerySimpleValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyGetInvokeActionWithScalarParmsReturnQuerySimpleValidateOnly "objects" oType oName api.GetInvoke api
 
 
 
@@ -2356,9 +2359,9 @@ module ObjectActionInvoke19
 
 
 
-//let VerifyPostInvokeActionReturnQuery refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryable"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -2376,7 +2379,7 @@ module ObjectActionInvoke19
 //        TArray
 //            ([ TObjectJson
 //                   (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
-//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
+//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oName pid) RepresentationTypes.ActionResult 
 //                           "" roType true) ])
     
 //    let pageProp = 
@@ -2424,22 +2427,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnQueryObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnQuery "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnQuery "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnQueryService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnQuery "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnQuery "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnQueryViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnQuery "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnQuery "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionReturnQueryValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryable"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap parms
@@ -2451,23 +2454,23 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnQueryValidateOnly "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionReturnQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnQueryValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnQueryValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionReturnQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionReturnQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionReturnQueryValidateOnly "objects" oType oName api.PostInvoke api
 
 //// 19.3 post to invoke action with scalar parms 
-//let VerifyPostInvokeActionWithScalarParmsReturnQuery refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionWithScalarParmsReturnQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 100))))
@@ -2493,7 +2496,7 @@ module ObjectActionInvoke19
 //        TArray
 //            ([ TObjectJson
 //                   (TProperty(JsonPropertyNames.Arguments, args) 
-//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
+//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oName pid) RepresentationTypes.ActionResult 
 //                           "" roType true) ])
     
 //    let pageProp = 
@@ -2540,22 +2543,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionWithScalarParmsReturnQueryObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithScalarParmsReturnQuery "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithScalarParmsReturnQuery "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionWithScalarParmsReturnQueryService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionWithScalarParmsReturnQuery "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionWithScalarParmsReturnQuery "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionWithScalarParmsReturnQueryViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithScalarParmsReturnQuery "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithScalarParmsReturnQuery "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeOverloadedAction refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeOverloadedAction refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnOverloadedAction1"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = new JObject(new JProperty("parm", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))))
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap parms
@@ -2603,22 +2606,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeOverloadedActionObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeOverloadedAction "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeOverloadedAction "objects" oType oName api.PostInvoke api
 
 //let PostInvokeOverloadedActionService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeOverloadedAction "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeOverloadedAction "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeOverloadedActionViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeOverloadedAction "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeOverloadedAction "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionWithScalarParmsReturnQueryValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionWithScalarParmsReturnQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 100))), new JProperty("x-ro-validate-only", true))
@@ -2632,22 +2635,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionWithScalarParmsReturnQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithScalarParmsReturnQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithScalarParmsReturnQueryValidateOnly "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionWithScalarParmsReturnQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionWithScalarParmsReturnQuery "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionWithScalarParmsReturnQuery "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionWithScalarParmsReturnQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithScalarParmsReturnQuery "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithScalarParmsReturnQuery "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionWithScalarParmsReturnCollection refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionWithScalarParmsReturnCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 100))))
@@ -2708,22 +2711,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionWithScalarParmsReturnCollectionObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithScalarParmsReturnCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithScalarParmsReturnCollection "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionWithScalarParmsReturnCollectionService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionWithScalarParmsReturnCollection "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionWithScalarParmsReturnCollection "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionWithScalarParmsReturnCollectionViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionWithScalarParmsReturnCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionWithScalarParmsReturnCollection "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionWithScalarParmsReturnCollectionValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionWithScalarParmsReturnCollectionValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 100))), new JProperty("x-ro-validate-only", true))
@@ -2737,22 +2740,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionWithScalarParmsReturnCollectionObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithScalarParmsReturnCollectionValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithScalarParmsReturnCollectionValidateOnly "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionWithScalarParmsReturnCollectionServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionWithScalarParmsReturnCollectionValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionWithScalarParmsReturnCollectionValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionWithScalarParmsReturnCollectionViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionWithScalarParmsReturnCollectionValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionWithScalarParmsReturnCollectionValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionWithReferenceParmsReturnQuery refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionWithReferenceParmsReturnQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -2780,7 +2783,7 @@ module ObjectActionInvoke19
 //        TArray
 //            ([ TObjectJson
 //                   (TProperty(JsonPropertyNames.Arguments, args) 
-//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
+//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oName pid) RepresentationTypes.ActionResult 
 //                           "" roType true) ])
     
 //    let pageProp = 
@@ -2828,22 +2831,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionWithReferenceParmsReturnQueryObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithReferenceParmsReturnQuery "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithReferenceParmsReturnQuery "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionWithReferenceParmsReturnQueryService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnQuery "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnQuery "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionWithReferenceParmsReturnQueryViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithReferenceParmsReturnQuery "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithReferenceParmsReturnQuery "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionWithReferenceParmsReturnQueryValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionWithReferenceParmsReturnQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -2859,22 +2862,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionWithReferenceParmsReturnQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithReferenceParmsReturnQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithReferenceParmsReturnQueryValidateOnly "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionWithReferenceParmsReturnQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnQueryValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnQueryValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionWithReferenceParmsReturnQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnQueryValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionWithReferenceParmsReturnCollection refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionWithReferenceParmsReturnCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -2929,22 +2932,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionWithReferenceParmsReturnCollectionObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithReferenceParmsReturnCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithReferenceParmsReturnCollection "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionWithReferenceParmsReturnCollectionService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnCollection "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnCollection "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionWithReferenceParmsReturnCollectionViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnCollection "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionWithReferenceParmsReturnCollectionValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionWithReferenceParmsReturnCollectionValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -2960,23 +2963,23 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionWithReferenceParmsReturnCollectionObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithReferenceParmsReturnCollectionValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithReferenceParmsReturnCollectionValidateOnly "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionWithReferenceParmsReturnCollectionServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnCollectionValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnCollectionValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionWithReferenceParmsReturnCollectionViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnCollectionValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnCollectionValidateOnly "objects" oType oName api.PostInvoke api
 
 //// w
-//let VerifyPostInvokeActionWithReferenceParmsReturnScalar refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionWithReferenceParmsReturnScalar refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsScalarWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let mst = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" mst (ktc "1")))).ToString()))
 //    let parms = 
@@ -3012,22 +3015,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionWithReferenceParmsReturnScalarObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithReferenceParmsReturnScalar "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithReferenceParmsReturnScalar "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionWithReferenceParmsReturnScalarService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnScalar "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnScalar "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionWithReferenceParmsReturnScalarViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnScalar "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnScalar "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionWithReferenceParmsReturnScalarValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionWithReferenceParmsReturnScalarValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsScalarWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -3043,22 +3046,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionWithReferenceParmsReturnScalarObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithReferenceParmsReturnScalarValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithReferenceParmsReturnScalarValidateOnly "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionWithReferenceParmsReturnScalarServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnScalarValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnScalarValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionWithReferenceParmsReturnScalarViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnScalarValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnScalarValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionWithReferenceParmsReturnVoid refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionWithReferenceParmsReturnVoid refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsVoidWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -3083,22 +3086,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionWithReferenceParmsReturnVoidObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithReferenceParmsReturnVoid "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithReferenceParmsReturnVoid "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionWithReferenceParmsReturnVoidService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnVoid "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnVoid "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionWithReferenceParmsReturnVoidViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnVoid "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnVoid "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionWithReferenceParmsReturnVoidValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionWithReferenceParmsReturnVoidValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsVoidWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -3114,22 +3117,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionWithReferenceParmsReturnVoidObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithReferenceParmsReturnVoidValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithReferenceParmsReturnVoidValidateOnly "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionWithReferenceParmsReturnVoidServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnVoidValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnVoidValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionWithReferenceParmsReturnVoidViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnVoidValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnVoidValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionWithReferenceParmsReturnObject refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionWithReferenceParmsReturnObject refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsObjectWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -3178,22 +3181,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionWithReferenceParmsReturnObjectObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithReferenceParmsReturnObject "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithReferenceParmsReturnObject "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionWithReferenceParmsReturnObjectService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnObject "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnObject "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionWithReferenceParmsReturnObjectViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnObject "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnObject "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionWithReferenceParmsReturnObjectValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionWithReferenceParmsReturnObjectValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsObjectWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -3209,22 +3212,22 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionWithReferenceParmsReturnObjectValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionWithReferenceParmsReturnObjectValidateOnly "objects" oType oName api.PostInvoke api
 
 //let PostInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnObjectValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnObjectValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostInvokeActionWithReferenceParmsReturnObjectValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostInvokeActionWithReferenceParmsReturnObjectValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyPutInvokeActionWithReferenceParmsReturnObject refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPutInvokeActionWithReferenceParmsReturnObject refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsObjectWithParametersAnnotatedIdempotent"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -3273,22 +3276,22 @@ module ObjectActionInvoke19
 
 //let PutInvokeActionWithReferenceParmsReturnObjectObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPutInvokeActionWithReferenceParmsReturnObject "objects" oType oid api.PutInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPutInvokeActionWithReferenceParmsReturnObject "objects" oType oName api.PutInvoke api
 
 //let PutInvokeActionWithReferenceParmsReturnObjectService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPutInvokeActionWithReferenceParmsReturnObject "services" oType oid (wrap api.PutInvokeOnService) api
+//    let oName = oType
+//    VerifyPutInvokeActionWithReferenceParmsReturnObject "services" oType oName (wrap api.PutInvokeOnService) api
 
 //let PutInvokeActionWithReferenceParmsReturnObjectViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPutInvokeActionWithReferenceParmsReturnObject "objects" oType oid api.PutInvoke api
+//    let oName = oType
+//    VerifyPutInvokeActionWithReferenceParmsReturnObject "objects" oType oName api.PutInvoke api
 
-//let VerifyPutInvokeActionWithReferenceParmsReturnObjectValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPutInvokeActionWithReferenceParmsReturnObjectValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsObjectWithParametersAnnotatedIdempotent"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -3304,22 +3307,22 @@ module ObjectActionInvoke19
 
 //let PutInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPutInvokeActionWithReferenceParmsReturnObjectValidateOnly "objects" oType oid api.PutInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPutInvokeActionWithReferenceParmsReturnObjectValidateOnly "objects" oType oName api.PutInvoke api
 
 //let PutInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPutInvokeActionWithReferenceParmsReturnObjectValidateOnly "services" oType oid (wrap api.PutInvokeOnService) api
+//    let oName = oType
+//    VerifyPutInvokeActionWithReferenceParmsReturnObjectValidateOnly "services" oType oName (wrap api.PutInvokeOnService) api
 
 //let PutInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPutInvokeActionWithReferenceParmsReturnObjectValidateOnly "objects" oType oid api.PutInvoke api
+//    let oName = oType
+//    VerifyPutInvokeActionWithReferenceParmsReturnObjectValidateOnly "objects" oType oName api.PutInvoke api
 
-//let VerifyGetInvokeActionWithReferenceParmsReturnObject refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionWithReferenceParmsReturnObject refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsObjectWithParametersAnnotatedQueryOnly"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -3372,7 +3375,7 @@ module ObjectActionInvoke19
 //        TArray
 //            ([ TObjectJson
 //                   (TProperty(JsonPropertyNames.Arguments, args) 
-//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
+//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oName pid) RepresentationTypes.ActionResult 
 //                           roType "" true) ])
     
 //    let expected = 
@@ -3389,27 +3392,27 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionWithReferenceParmsReturnObjectObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithReferenceParmsReturnObject "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithReferenceParmsReturnObject "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionWithReferenceParmsReturnObjectService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionWithReferenceParmsReturnObject "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionWithReferenceParmsReturnObject "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionWithReferenceParmsReturnObjectViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithReferenceParmsReturnObject "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithReferenceParmsReturnObject "objects" oType oName api.GetInvoke api
 
 //let VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm (api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.FormViewModel"
-//    let oid =  ktc "1--1"
+//    let oName =  ktc "1--1"
     
 //    let refType = "objects"
    
 //    let pid = "Step"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.FormViewModel"
 //    let mst = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" mst (ktc "1")))).ToString()))
@@ -3507,12 +3510,12 @@ module ObjectActionInvoke19
 
 //let VerifyPostInvokeActionMissingParmOnForm (api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.FormViewModel"
-//    let oid =  ktc "1--1"
+//    let oName =  ktc "1--1"
     
 //    let refType = "objects"
    
 //    let pid = "Step"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.FormViewModel"
 //    let mst = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" mst (ktc "1")))).ToString()))
@@ -3550,9 +3553,9 @@ module ObjectActionInvoke19
 
 
 
-//let VerifyGetInvokeActionWithParmReturnObject refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionWithParmReturnObject refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsObjectWithParameterAnnotatedQueryOnly"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = new JObject(new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 101))))
 //    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
 //    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parmsEncoded
@@ -3598,7 +3601,7 @@ module ObjectActionInvoke19
 //        TArray
 //            ([ TObjectJson
 //                   (TProperty(JsonPropertyNames.Arguments, args) 
-//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oid pid) RepresentationTypes.ActionResult 
+//                    :: makeLinkPropWithMethodAndTypes "GET" RelValues.Self (sprintf "%s/%s/actions/%s/invoke" refType oName pid) RepresentationTypes.ActionResult 
 //                           roType "" true) ])
     
 //    let expected = 
@@ -3615,22 +3618,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionWithParmReturnObjectObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithParmReturnObject "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithParmReturnObject "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionWithParmReturnObjectService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionWithParmReturnObject "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionWithParmReturnObject "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionWithParmReturnObjectViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithParmReturnObject "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithParmReturnObject "objects" oType oName api.GetInvoke api
 
-//let VerifyGetInvokeActionWithReferenceParmsReturnObjectValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionWithReferenceParmsReturnObjectValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsObjectWithParametersAnnotatedQueryOnly"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -3647,23 +3650,23 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithReferenceParmsReturnObjectValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithReferenceParmsReturnObjectValidateOnly "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionWithReferenceParmsReturnObjectValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionWithReferenceParmsReturnObjectValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyGetInvokeActionWithReferenceParmsReturnObjectValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyGetInvokeActionWithReferenceParmsReturnObjectValidateOnly "objects" oType oName api.GetInvoke api
 
 //// get action missing arguments - 400
-//let VerifyMissingParmsOnGetQuery refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyMissingParmsOnGetQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
@@ -3685,22 +3688,22 @@ module ObjectActionInvoke19
 
 //let MissingParmsOnGetQueryObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyMissingParmsOnGetQuery "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyMissingParmsOnGetQuery "objects" oType oName api.GetInvoke api
 
 //let MissingParmsOnGetQueryService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyMissingParmsOnGetQuery "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyMissingParmsOnGetQuery "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let MissingParmsOnGetQueryViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyMissingParmsOnGetQuery "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyMissingParmsOnGetQuery "objects" oType oName api.GetInvoke api
 
-//let VerifyMissingParmsOnPostCollection refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyMissingParmsOnPostCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -3722,23 +3725,23 @@ module ObjectActionInvoke19
 
 //let MissingParmsOnPostCollectionObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyMissingParmsOnPostCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyMissingParmsOnPostCollection "objects" oType oName api.PostInvoke api
 
 //let MissingParmsOnPostCollectionService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyMissingParmsOnPostCollection "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyMissingParmsOnPostCollection "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let MissingParmsOnPostCollectionViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyMissingParmsOnPostCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyMissingParmsOnPostCollection "objects" oType oName api.PostInvoke api
 
 //// malformed args 
-//let VerifyMalformedSimpleParmsOnGetQuery refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyMalformedSimpleParmsOnGetQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = "malformed=fred&parm1=100"
 //    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parms
 //    let args = CreateArgMapFromUrl parms
@@ -3751,22 +3754,22 @@ module ObjectActionInvoke19
 
 //let MalformedSimpleParmsOnGetQueryObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyMalformedSimpleParmsOnGetQuery "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyMalformedSimpleParmsOnGetQuery "objects" oType oName api.GetInvoke api
 
 //let MalformedSimpleParmsOnGetQueryService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyMalformedSimpleParmsOnGetQuery "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyMalformedSimpleParmsOnGetQuery "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let MalformedSimpleParmsOnGetQueryViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyMalformedSimpleParmsOnGetQuery "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyMalformedSimpleParmsOnGetQuery "objects" oType oName api.GetInvoke api
 
-//let VerifyMalformedFormalParmsOnGetQuery refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyMalformedFormalParmsOnGetQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("malformed", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 100))))
@@ -3782,22 +3785,22 @@ module ObjectActionInvoke19
 
 //let MalformedFormalParmsOnGetQueryObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyMalformedFormalParmsOnGetQuery "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyMalformedFormalParmsOnGetQuery "objects" oType oName api.GetInvoke api
 
 //let MalformedFormalParmsOnGetQueryService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyMalformedFormalParmsOnGetQuery "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyMalformedFormalParmsOnGetQuery "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let MalformedFormalParmsOnGetQueryViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyMalformedFormalParmsOnGetQuery "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyMalformedFormalParmsOnGetQuery "objects" oType oName api.GetInvoke api
 
-//let VerifyMalformedFormalParmsOnGetCollection refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyMalformedFormalParmsOnGetCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("malformed", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 100))))
@@ -3813,22 +3816,22 @@ module ObjectActionInvoke19
 
 //let MalformedFormalParmsOnPostCollectionObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyMalformedFormalParmsOnGetCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyMalformedFormalParmsOnGetCollection "objects" oType oName api.PostInvoke api
 
 //let MalformedFormalParmsOnPostCollectionService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyMalformedFormalParmsOnGetCollection "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyMalformedFormalParmsOnGetCollection "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let MalformedFormalParmsOnPostCollectionViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyMalformedFormalParmsOnGetCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyMalformedFormalParmsOnGetCollection "objects" oType oName api.PostInvoke api
 
-//let VerifyInvalidSimpleParmsOnGetQuery refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyInvalidSimpleParmsOnGetQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = "parm2=fred&parm1=invalidvalue"
 //    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parms
 //    let args = CreateArgMapFromUrl parms
@@ -3848,22 +3851,22 @@ module ObjectActionInvoke19
 
 //let InvalidSimpleParmsOnGetQueryObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyInvalidSimpleParmsOnGetQuery "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyInvalidSimpleParmsOnGetQuery "objects" oType oName api.GetInvoke api
 
 //let InvalidSimpleParmsOnGetQueryService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyInvalidSimpleParmsOnGetQuery "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyInvalidSimpleParmsOnGetQuery "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let InvalidSimpleParmsOnGetQueryViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyInvalidSimpleParmsOnGetQuery "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyInvalidSimpleParmsOnGetQuery "objects" oType oName api.GetInvoke api
 
-//let VerifyInvalidFormalParmsOnGetQuery refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyInvalidFormalParmsOnGetQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, "invalidvalue"))))
@@ -3886,22 +3889,22 @@ module ObjectActionInvoke19
 
 //let InvalidFormalParmsOnGetQueryObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyInvalidFormalParmsOnGetQuery "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyInvalidFormalParmsOnGetQuery "objects" oType oName api.GetInvoke api
 
 //let InvalidFormalParmsOnGetQueryService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyInvalidFormalParmsOnGetQuery "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyInvalidFormalParmsOnGetQuery "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let InvalidFormalParmsOnGetQueryViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyInvalidFormalParmsOnGetQuery "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyInvalidFormalParmsOnGetQuery "objects" oType oName api.GetInvoke api
 
-//let VerifyInvalidFormalParmsOnPostCollection refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyInvalidFormalParmsOnPostCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, "invalidvalue"))))
@@ -3924,22 +3927,22 @@ module ObjectActionInvoke19
 
 //let InvalidFormalParmsOnPostCollectionObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyInvalidFormalParmsOnPostCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyInvalidFormalParmsOnPostCollection "objects" oType oName api.PostInvoke api
 
 //let InvalidFormalParmsOnPostCollectionService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyInvalidFormalParmsOnPostCollection "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyInvalidFormalParmsOnPostCollection "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let InvalidFormalParmsOnPostCollectionViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyInvalidFormalParmsOnPostCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyInvalidFormalParmsOnPostCollection "objects" oType oName api.PostInvoke api
 
-//let VerifyDisabledActionInvokeQuery refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyDisabledActionInvokeQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "ADisabledQueryAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
@@ -3951,23 +3954,23 @@ module ObjectActionInvoke19
 
 //let DisabledActionInvokeQueryObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyDisabledActionInvokeQuery "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyDisabledActionInvokeQuery "objects" oType oName api.GetInvoke api
 
 //let DisabledActionInvokeQueryService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyDisabledActionInvokeQuery "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyDisabledActionInvokeQuery "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let DisabledActionInvokeQueryViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyDisabledActionInvokeQuery "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyDisabledActionInvokeQuery "objects" oType oName api.GetInvoke api
 
-//let VerifyDisabledActionInvokeCollection refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyDisabledActionInvokeCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let error = "Always disabled"
 //    let pid = "ADisabledCollectionAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -3979,23 +3982,23 @@ module ObjectActionInvoke19
 
 //let DisabledActionInvokeCollectionObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyDisabledActionInvokeCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyDisabledActionInvokeCollection "objects" oType oName api.PostInvoke api
 
 //let DisabledActionInvokeCollectionService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyDisabledActionInvokeCollection "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyDisabledActionInvokeCollection "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let DisabledActionInvokeCollectionViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyDisabledActionInvokeCollection "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyDisabledActionInvokeCollection "objects" oType oName api.PostInvoke api
 
 //// 404 
-//let VerifyNotFoundActionInvoke refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyNotFoundActionInvoke refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "ANonExistentAction" // doesn't exist 
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
@@ -4007,22 +4010,22 @@ module ObjectActionInvoke19
 
 //let NotFoundActionInvokeObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyNotFoundActionInvoke "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyNotFoundActionInvoke "objects" oType oName api.GetInvoke api
 
 //let NotFoundActionInvokeService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyNotFoundActionInvoke "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyNotFoundActionInvoke "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let NotFoundActionInvokeViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyNotFoundActionInvoke "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyNotFoundActionInvoke "objects" oType oName api.GetInvoke api
 
-//let VerifyHiddenActionInvoke refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyHiddenActionInvoke refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AHiddenAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
@@ -4034,22 +4037,22 @@ module ObjectActionInvoke19
 
 //let HiddenActionInvokeObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyHiddenActionInvoke "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyHiddenActionInvoke "objects" oType oName api.GetInvoke api
 
 //let HiddenActionInvokeService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyHiddenActionInvoke "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyHiddenActionInvoke "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let HiddenActionInvokeViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyHiddenActionInvoke "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyHiddenActionInvoke "objects" oType oName api.GetInvoke api
 
-//let VerifyGetActionWithSideEffects refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetActionWithSideEffects refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsVoid"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
@@ -4061,22 +4064,22 @@ module ObjectActionInvoke19
 
 //let GetActionWithSideEffectsObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetActionWithSideEffects "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetActionWithSideEffects "objects" oType oName api.GetInvoke api
 
 //let GetActionWithSideEffectsService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetActionWithSideEffects "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetActionWithSideEffects "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetActionWithSideEffectsViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyGetActionWithSideEffects "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyGetActionWithSideEffects "objects" oType oName api.GetInvoke api
 
-//let VerifyGetActionWithIdempotent refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetActionWithIdempotent refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionAnnotatedIdempotent"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
@@ -4088,22 +4091,22 @@ module ObjectActionInvoke19
 
 //let GetActionWithIdempotentObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetActionWithIdempotent "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetActionWithIdempotent "objects" oType oName api.GetInvoke api
 
 //let GetActionWithIdempotentService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetActionWithIdempotent "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetActionWithIdempotent "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetActionWithIdempotentViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyGetActionWithIdempotent "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyGetActionWithIdempotent "objects" oType oName api.GetInvoke api
 
-//let VerifyPutActionWithQueryOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPutActionWithQueryOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsVoid"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) ""
@@ -4115,22 +4118,22 @@ module ObjectActionInvoke19
 
 //let PutActionWithQueryOnlyObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPutActionWithQueryOnly "objects" oType oid api.PutInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPutActionWithQueryOnly "objects" oType oName api.PutInvoke api
 
 //let PutActionWithQueryOnlyService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPutActionWithQueryOnly "services" oType oid (wrap api.PutInvokeOnService) api
+//    let oName = oType
+//    VerifyPutActionWithQueryOnly "services" oType oName (wrap api.PutInvokeOnService) api
 
 //let PutActionWithQueryOnlyViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPutActionWithQueryOnly "objects" oType oid api.PutInvoke api
+//    let oName = oType
+//    VerifyPutActionWithQueryOnly "objects" oType oName api.PutInvoke api
 
-//let VerifyNotAcceptableGetInvokeWrongMediaType refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyNotAcceptableGetInvokeWrongMediaType refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryable"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    try 
 //        let args = CreateArgMap(new JObject())
@@ -4143,22 +4146,22 @@ module ObjectActionInvoke19
 
 //let NotAcceptableGetInvokeWrongMediaTypeObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = ktc "1"
-//    VerifyNotAcceptableGetInvokeWrongMediaType "objects" oType oid api.GetInvoke api
+//    let oName = ktc "1"
+//    VerifyNotAcceptableGetInvokeWrongMediaType "objects" oType oName api.GetInvoke api
 
 //let NotAcceptableGetInvokeWrongMediaTypeService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyNotAcceptableGetInvokeWrongMediaType "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyNotAcceptableGetInvokeWrongMediaType "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let NotAcceptableGetInvokeWrongMediaTypeViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyNotAcceptableGetInvokeWrongMediaType "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyNotAcceptableGetInvokeWrongMediaType "objects" oType oName api.GetInvoke api
 
-//let VerifyGetQueryActionWithError refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetQueryActionWithError refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnErrorQuery"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
@@ -4181,22 +4184,22 @@ module ObjectActionInvoke19
 
 //let GetQueryActionWithErrorObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetQueryActionWithError "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetQueryActionWithError "objects" oType oName api.GetInvoke api
 
 //let GetQueryActionWithErrorService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetQueryActionWithError "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetQueryActionWithError "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetQueryActionWithErrorViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyGetQueryActionWithError "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyGetQueryActionWithError "objects" oType oName api.GetInvoke api
 
-//let VerifyPostCollectionActionWithError refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostCollectionActionWithError refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnErrorCollection"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -4219,22 +4222,22 @@ module ObjectActionInvoke19
 
 //let PostCollectionActionWithErrorObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostCollectionActionWithError "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostCollectionActionWithError "objects" oType oName api.PostInvoke api
 
 //let PostCollectionActionWithErrorService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostCollectionActionWithError "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostCollectionActionWithError "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostCollectionActionWithErrorViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostCollectionActionWithError "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostCollectionActionWithError "objects" oType oName api.PostInvoke api
 
-//let VerifyMissingParmsOnPost refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyMissingParmsOnPost refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsScalarWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -4256,22 +4259,22 @@ module ObjectActionInvoke19
 
 //let MissingParmsOnPostObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyMissingParmsOnPost "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyMissingParmsOnPost "objects" oType oName api.PostInvoke api
 
 //let MissingParmsOnPostService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyMissingParmsOnPost "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyMissingParmsOnPost "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let MissingParmsOnPostViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyMissingParmsOnPost "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyMissingParmsOnPost "objects" oType oName api.PostInvoke api
 
-//let VerifyMalformedFormalParmsOnPostQuery refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyMalformedFormalParmsOnPostQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -4288,22 +4291,22 @@ module ObjectActionInvoke19
 
 //let MalformedFormalParmsOnPostQueryObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyMalformedFormalParmsOnPostQuery "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyMalformedFormalParmsOnPostQuery "objects" oType oName api.PostInvoke api
 
 //let MalformedFormalParmsOnPostQueryService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyMalformedFormalParmsOnPostQuery "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyMalformedFormalParmsOnPostQuery "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let MalformedFormalParmsOnPostQueryViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyMalformedFormalParmsOnPostQuery "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyMalformedFormalParmsOnPostQuery "objects" oType oName api.PostInvoke api
 
-//let VerifyWrongTypeParmsOnPostQuery refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyWrongTypeParmsOnPostQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 1))), 
 //                    new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, 2))))
@@ -4326,22 +4329,22 @@ module ObjectActionInvoke19
 
 //let WrongTypeFormalParmsOnPostQueryObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyWrongTypeParmsOnPostQuery "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyWrongTypeParmsOnPostQuery "objects" oType oName api.PostInvoke api
 
 //let WrongTypeFormalParmsOnPostQueryService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyWrongTypeParmsOnPostQuery "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyWrongTypeParmsOnPostQuery "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let WrongTypeFormalParmsOnPostQueryViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyWrongTypeParmsOnPostQuery "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyWrongTypeParmsOnPostQuery "objects" oType oName api.PostInvoke api
 
-//let VerifyEmptyParmsOnPostQuery refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyEmptyParmsOnPostQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, ""))), 
 //                    new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, ""))))
@@ -4366,22 +4369,22 @@ module ObjectActionInvoke19
 
 //let EmptyFormalParmsOnPostQueryObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyEmptyParmsOnPostQuery "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyEmptyParmsOnPostQuery "objects" oType oName api.PostInvoke api
 
 //let EmptyFormalParmsOnPostQueryService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyEmptyParmsOnPostQuery "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyEmptyParmsOnPostQuery "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let EmptyFormalParmsOnPostQueryViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyEmptyParmsOnPostQuery "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyEmptyParmsOnPostQuery "objects" oType oName api.PostInvoke api
 
-//let VerifyInvalidFormalParmsOnPostQuery refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyInvalidFormalParmsOnPostQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -4406,24 +4409,24 @@ module ObjectActionInvoke19
 
 //let InvalidFormalParmsOnPostQueryObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyInvalidFormalParmsOnPostQuery "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyInvalidFormalParmsOnPostQuery "objects" oType oName api.PostInvoke api
 
 //let InvalidFormalParmsOnPostQueryService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyInvalidFormalParmsOnPostQuery "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyInvalidFormalParmsOnPostQuery "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let InvalidFormalParmsOnPostQueryViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyInvalidFormalParmsOnPostQuery "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyInvalidFormalParmsOnPostQuery "objects" oType oName api.PostInvoke api
 
 //// Always disabled
-//let VerifyDisabledPostActionInvoke refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyDisabledPostActionInvoke refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let error = "Always disabled"
 //    let pid = "ADisabledAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -4435,22 +4438,22 @@ module ObjectActionInvoke19
 
 //let DisabledActionPostInvokeObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyDisabledPostActionInvoke "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyDisabledPostActionInvoke "objects" oType oName api.PostInvoke api
 
 //let DisabledActionPostInvokeService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyDisabledPostActionInvoke "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyDisabledPostActionInvoke "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let DisabledActionPostInvokeViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyDisabledPostActionInvoke "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyDisabledPostActionInvoke "objects" oType oName api.PostInvoke api
 
-//let VerifyUserDisabledPostActionInvoke refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyUserDisabledPostActionInvoke refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AUserDisabledAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -4462,22 +4465,22 @@ module ObjectActionInvoke19
 
 //let UserDisabledActionPostInvokeObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyUserDisabledPostActionInvoke "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyUserDisabledPostActionInvoke "objects" oType oName api.PostInvoke api
 
 //let UserDisabledActionPostInvokeService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyUserDisabledPostActionInvoke "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyUserDisabledPostActionInvoke "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let UserDisabledActionPostInvokeViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyUserDisabledPostActionInvoke "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyUserDisabledPostActionInvoke "objects" oType oName api.PostInvoke api
 
-//let VerifyNotFoundActionPostInvoke refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyNotFoundActionPostInvoke refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "ANonExistentAction" // doesn't exist 
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -4489,22 +4492,22 @@ module ObjectActionInvoke19
 
 //let NotFoundActionPostInvokeObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyNotFoundActionPostInvoke "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyNotFoundActionPostInvoke "objects" oType oName api.PostInvoke api
 
 //let NotFoundActionPostInvokeService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyNotFoundActionPostInvoke "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyNotFoundActionPostInvoke "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let NotFoundActionPostInvokeViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyNotFoundActionPostInvoke "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyNotFoundActionPostInvoke "objects" oType oName api.PostInvoke api
 
-//let VerifyHiddenActionPostInvoke refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyHiddenActionPostInvoke refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AHiddenAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -4516,22 +4519,22 @@ module ObjectActionInvoke19
 
 //let HiddenActionPostInvokeObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyHiddenActionPostInvoke "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyHiddenActionPostInvoke "objects" oType oName api.PostInvoke api
 
 //let HiddenActionPostInvokeService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyHiddenActionPostInvoke "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyHiddenActionPostInvoke "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let HiddenActionPostInvokeViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyHiddenActionPostInvoke "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyHiddenActionPostInvoke "objects" oType oName api.PostInvoke api
 
-//let VerifyNotAcceptablePostInvokeWrongMediaType refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyNotAcceptablePostInvokeWrongMediaType refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnAction"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/properties/%s" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    try 
@@ -4544,22 +4547,22 @@ module ObjectActionInvoke19
 
 //let NotAcceptablePostInvokeWrongMediaTypeObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyNotAcceptablePostInvokeWrongMediaType "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyNotAcceptablePostInvokeWrongMediaType "objects" oType oName api.PostInvoke api
 
 //let NotAcceptablePostInvokeWrongMediaTypeService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyNotAcceptablePostInvokeWrongMediaType "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyNotAcceptablePostInvokeWrongMediaType "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let NotAcceptablePostInvokeWrongMediaTypeViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyNotAcceptablePostInvokeWrongMediaType "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyNotAcceptablePostInvokeWrongMediaType "objects" oType oName api.PostInvoke api
 
-//let VerifyPostQueryActionWithError refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostQueryActionWithError refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnErrorQuery"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
@@ -4582,22 +4585,22 @@ module ObjectActionInvoke19
 
 //let PostQueryActionWithErrorObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostQueryActionWithError "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostQueryActionWithError "objects" oType oName api.PostInvoke api
 
 //let PostQueryActionWithErrorService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostQueryActionWithError "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostQueryActionWithError "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostQueryActionWithErrorViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostQueryActionWithError "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostQueryActionWithError "objects" oType oName api.PostInvoke api
 
-//let VerifyPostQueryActionWithValidateFail refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostQueryActionWithValidateFail refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionValidateParameters"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let parms = 
 //        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, 0))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 0))))
@@ -4621,22 +4624,22 @@ module ObjectActionInvoke19
 
 //let PostQueryActionWithValidateFailObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostQueryActionWithValidateFail "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostQueryActionWithValidateFail "objects" oType oName api.PostInvoke api
 
 //let PostQueryActionWithValidateFailService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostQueryActionWithValidateFail "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostQueryActionWithValidateFail "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostQueryActionWithValidateFailViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostQueryActionWithValidateFail "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostQueryActionWithValidateFail "objects" oType oName api.PostInvoke api
 
-//let VerifyPostQueryActionWithCrossValidateFail refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostQueryActionWithCrossValidateFail refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionValidateParameters"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let parms = 
 //        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, 1))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 2))))
@@ -4659,22 +4662,22 @@ module ObjectActionInvoke19
 
 //let PostQueryActionWithCrossValidateFailObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostQueryActionWithCrossValidateFail "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostQueryActionWithCrossValidateFail "objects" oType oName api.PostInvoke api
 
 //let PostQueryActionWithCrossValidateFailService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostQueryActionWithCrossValidateFail "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostQueryActionWithCrossValidateFail "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostQueryActionWithCrossValidateFailViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostQueryActionWithCrossValidateFail "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostQueryActionWithCrossValidateFail "objects" oType oName api.PostInvoke api
 
-//let VerifyGetInvokeActionReturnCollection refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionReturnCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollection"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
@@ -4686,22 +4689,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionReturnCollectionObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnCollection "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnCollection "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionReturnCollectionService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionReturnCollection "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionReturnCollection "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionReturnCollectionViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyGetInvokeActionReturnCollection "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyGetInvokeActionReturnCollection "objects" oType oName api.GetInvoke api
 
-//let VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke?parm2=fred&parm1=100" ourl pid
 //    let args = CreateArgMap(new JObject())
 //    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
@@ -4713,22 +4716,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionWithScalarParmsReturnCollectionSimpleObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionWithScalarParmsReturnCollectionSimpleService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionWithScalarParmsReturnCollectionSimpleViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple "objects" oType oName api.GetInvoke api
 
-//let VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 100))))
@@ -4744,22 +4747,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionWithScalarParmsReturnCollectionFormalObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionWithScalarParmsReturnCollectionFormalService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionWithScalarParmsReturnCollectionFormalViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal "objects" oType oName api.GetInvoke api
 
-//let VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -4777,23 +4780,23 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionWithReferenceParmsReturnCollectionFormalObject(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionWithReferenceParmsReturnCollectionFormalService(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModel(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal "objects" oType oName api.GetInvoke api
 
 //// new validate only
-//let VerifyMissingParmsOnGetQueryValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyMissingParmsOnGetQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
@@ -4817,22 +4820,22 @@ module ObjectActionInvoke19
 
 //let MissingParmsOnGetQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyMissingParmsOnGetQueryValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyMissingParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
 
 //let MissingParmsOnGetQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyMissingParmsOnGetQueryValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyMissingParmsOnGetQueryValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let MissingParmsOnGetQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyMissingParmsOnGetQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyMissingParmsOnGetQueryValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyMissingParmsOnPostCollectionValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyMissingParmsOnPostCollectionValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap parms
@@ -4855,23 +4858,23 @@ module ObjectActionInvoke19
 
 //let MissingParmsOnPostCollectionObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyMissingParmsOnPostCollectionValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyMissingParmsOnPostCollectionValidateOnly "objects" oType oName api.PostInvoke api
 
 //let MissingParmsOnPostCollectionServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyMissingParmsOnPostCollectionValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyMissingParmsOnPostCollectionValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let MissingParmsOnPostCollectionViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyMissingParmsOnPostCollectionValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyMissingParmsOnPostCollectionValidateOnly "objects" oType oName api.PostInvoke api
 
 //// malformed args 
-//let VerifyMalformedSimpleParmsOnGetQueryValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyMalformedSimpleParmsOnGetQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = "malformed=fred&parm1=100&x-ro-validate-only=true"
 //    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parms
 //    let args = CreateArgMapFromUrl parms
@@ -4884,22 +4887,22 @@ module ObjectActionInvoke19
 
 //let MalformedSimpleParmsOnGetQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyMalformedSimpleParmsOnGetQueryValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyMalformedSimpleParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
 
 //let MalformedSimpleParmsOnGetQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyMalformedSimpleParmsOnGetQueryValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyMalformedSimpleParmsOnGetQueryValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let MalformedSimpleParmsOnGetQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyMalformedSimpleParmsOnGetQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyMalformedSimpleParmsOnGetQueryValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyMalformedFormalParmsOnGetQueryValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyMalformedFormalParmsOnGetQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("malformed", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 100))), new JProperty("x-ro-validate-only", true))
@@ -4915,22 +4918,22 @@ module ObjectActionInvoke19
 
 //let MalformedFormalParmsOnGetQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyMalformedFormalParmsOnGetQueryValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyMalformedFormalParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
 
 //let MalformedFormalParmsOnGetQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyMalformedFormalParmsOnGetQueryValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyMalformedFormalParmsOnGetQueryValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let MalformedFormalParmsOnGetQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyMalformedFormalParmsOnGetQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyMalformedFormalParmsOnGetQueryValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyMalformedFormalParmsOnGetCollectionValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyMalformedFormalParmsOnGetCollectionValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("malformed", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 100))), new JProperty("x-ro-validate-only", true))
@@ -4946,22 +4949,22 @@ module ObjectActionInvoke19
 
 //let MalformedFormalParmsOnPostCollectionObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyMalformedFormalParmsOnGetCollectionValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyMalformedFormalParmsOnGetCollectionValidateOnly "objects" oType oName api.PostInvoke api
 
 //let MalformedFormalParmsOnPostCollectionServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyMalformedFormalParmsOnGetCollectionValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyMalformedFormalParmsOnGetCollectionValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let MalformedFormalParmsOnPostCollectionViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyMalformedFormalParmsOnGetCollectionValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyMalformedFormalParmsOnGetCollectionValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyInvalidSimpleParmsOnGetQueryValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyInvalidSimpleParmsOnGetQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = "parm2=fred&parm1=invalidvalue&x-ro-validate-only=true"
 //    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parms
 //    let args = CreateArgMapFromUrl parms
@@ -4981,22 +4984,22 @@ module ObjectActionInvoke19
 
 //let InvalidSimpleParmsOnGetQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyInvalidSimpleParmsOnGetQueryValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyInvalidSimpleParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
 
 //let InvalidSimpleParmsOnGetQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyInvalidSimpleParmsOnGetQueryValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyInvalidSimpleParmsOnGetQueryValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let InvalidSimpleParmsOnGetQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyInvalidSimpleParmsOnGetQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyInvalidSimpleParmsOnGetQueryValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyInvalidFormalParmsOnGetQueryValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyInvalidFormalParmsOnGetQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, "invalidvalue"))), new JProperty("x-ro-validate-only", true))
@@ -5019,22 +5022,22 @@ module ObjectActionInvoke19
 
 //let InvalidFormalParmsOnGetQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyInvalidFormalParmsOnGetQueryValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyInvalidFormalParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
 
 //let InvalidFormalParmsOnGetQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyInvalidFormalParmsOnGetQueryValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyInvalidFormalParmsOnGetQueryValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let InvalidFormalParmsOnGetQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyInvalidFormalParmsOnGetQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyInvalidFormalParmsOnGetQueryValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyInvalidFormalParmsOnPostCollectionValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyInvalidFormalParmsOnPostCollectionValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, "invalidvalue"))), new JProperty("x-ro-validate-only", true))
@@ -5057,22 +5060,22 @@ module ObjectActionInvoke19
 
 //let InvalidFormalParmsOnPostCollectionObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyInvalidFormalParmsOnPostCollectionValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyInvalidFormalParmsOnPostCollectionValidateOnly "objects" oType oName api.PostInvoke api
 
 //let InvalidFormalParmsOnPostCollectionServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyInvalidFormalParmsOnPostCollectionValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyInvalidFormalParmsOnPostCollectionValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let InvalidFormalParmsOnPostCollectionViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyInvalidFormalParmsOnPostCollectionValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyInvalidFormalParmsOnPostCollectionValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyDisabledActionInvokeQueryValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyDisabledActionInvokeQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "ADisabledQueryAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
@@ -5086,23 +5089,23 @@ module ObjectActionInvoke19
 
 //let DisabledActionInvokeQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyDisabledActionInvokeQueryValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyDisabledActionInvokeQueryValidateOnly "objects" oType oName api.GetInvoke api
 
 //let DisabledActionInvokeQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyDisabledActionInvokeQueryValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyDisabledActionInvokeQueryValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let DisabledActionInvokeQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyDisabledActionInvokeQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyDisabledActionInvokeQueryValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyDisabledActionInvokeCollectionValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyDisabledActionInvokeCollectionValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let error = "Always disabled"
 //    let pid = "ADisabledCollectionAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap parms
@@ -5115,23 +5118,23 @@ module ObjectActionInvoke19
 
 //let DisabledActionInvokeCollectionObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyDisabledActionInvokeCollectionValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyDisabledActionInvokeCollectionValidateOnly "objects" oType oName api.PostInvoke api
 
 //let DisabledActionInvokeCollectionServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyDisabledActionInvokeCollectionValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyDisabledActionInvokeCollectionValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let DisabledActionInvokeCollectionViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyDisabledActionInvokeCollectionValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyDisabledActionInvokeCollectionValidateOnly "objects" oType oName api.PostInvoke api
 
 //// 404 
-//let VerifyNotFoundActionInvokeValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyNotFoundActionInvokeValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "ANonExistentAction" // doesn't exist 
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
@@ -5145,22 +5148,22 @@ module ObjectActionInvoke19
 
 //let NotFoundActionInvokeObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyNotFoundActionInvokeValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyNotFoundActionInvokeValidateOnly "objects" oType oName api.GetInvoke api
 
 //let NotFoundActionInvokeServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyNotFoundActionInvokeValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyNotFoundActionInvokeValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let NotFoundActionInvokeViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyNotFoundActionInvokeValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyNotFoundActionInvokeValidateOnly "objects" oType oName api.GetInvoke api
 
-//let VerifyHiddenActionInvokeValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyHiddenActionInvokeValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AHiddenAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
@@ -5174,22 +5177,22 @@ module ObjectActionInvoke19
 
 //let HiddenActionInvokeObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyHiddenActionInvokeValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyHiddenActionInvokeValidateOnly "objects" oType oName api.GetInvoke api
 
 //let HiddenActionInvokeServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyHiddenActionInvokeValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyHiddenActionInvokeValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let HiddenActionInvokeViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyHiddenActionInvokeValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyHiddenActionInvokeValidateOnly "objects" oType oName api.GetInvoke api
 
-//let VerifyGetActionWithSideEffectsValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetActionWithSideEffectsValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsVoid"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
@@ -5203,22 +5206,22 @@ module ObjectActionInvoke19
 
 //let GetActionWithSideEffectsObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetActionWithSideEffectsValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetActionWithSideEffectsValidateOnly "objects" oType oName api.GetInvoke api
 
 //let GetActionWithSideEffectsServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetActionWithSideEffectsValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetActionWithSideEffectsValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetActionWithSideEffectsViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyGetActionWithSideEffectsValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyGetActionWithSideEffectsValidateOnly "objects" oType oName api.GetInvoke api
 
-//let VerifyGetActionWithIdempotentValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetActionWithIdempotentValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionAnnotatedIdempotent"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
@@ -5232,22 +5235,22 @@ module ObjectActionInvoke19
 
 //let GetActionWithIdempotentObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetActionWithIdempotentValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetActionWithIdempotentValidateOnly "objects" oType oName api.GetInvoke api
 
 //let GetActionWithIdempotentServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetActionWithIdempotentValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetActionWithIdempotentValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetActionWithIdempotentViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyGetActionWithIdempotentValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyGetActionWithIdempotentValidateOnly "objects" oType oName api.GetInvoke api
 
-//let VerifyPutActionWithQueryOnlyValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPutActionWithQueryOnlyValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsVoid"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap parms
@@ -5260,22 +5263,22 @@ module ObjectActionInvoke19
 
 //let PutActionWithQueryOnlyObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPutActionWithQueryOnlyValidateOnly "objects" oType oid api.PutInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPutActionWithQueryOnlyValidateOnly "objects" oType oName api.PutInvoke api
 
 //let PutActionWithQueryOnlyServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPutActionWithQueryOnlyValidateOnly "services" oType oid (wrap api.PutInvokeOnService) api
+//    let oName = oType
+//    VerifyPutActionWithQueryOnlyValidateOnly "services" oType oName (wrap api.PutInvokeOnService) api
 
 //let PutActionWithQueryOnlyViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPutActionWithQueryOnlyValidateOnly "objects" oType oid api.PutInvoke api
+//    let oName = oType
+//    VerifyPutActionWithQueryOnlyValidateOnly "objects" oType oName api.PutInvoke api
 
-//let VerifyGetQueryActionWithErrorValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetQueryActionWithErrorValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnErrorQuery"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
@@ -5288,22 +5291,22 @@ module ObjectActionInvoke19
 
 //let GetQueryActionWithErrorObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetQueryActionWithErrorValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetQueryActionWithErrorValidateOnly "objects" oType oName api.GetInvoke api
 
 //let GetQueryActionWithErrorServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetQueryActionWithErrorValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetQueryActionWithErrorValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetQueryActionWithErrorViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyGetQueryActionWithErrorValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyGetQueryActionWithErrorValidateOnly "objects" oType oName api.GetInvoke api
 
-//let VerifyPostCollectionActionWithErrorValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostCollectionActionWithErrorValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnErrorCollection"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap parms
@@ -5315,22 +5318,22 @@ module ObjectActionInvoke19
 
 //let PostCollectionActionWithErrorObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostCollectionActionWithErrorValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostCollectionActionWithErrorValidateOnly "objects" oType oName api.PostInvoke api
 
 //let PostCollectionActionWithErrorServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostCollectionActionWithErrorValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostCollectionActionWithErrorValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostCollectionActionWithErrorViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostCollectionActionWithErrorValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostCollectionActionWithErrorValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyMissingParmsOnPostValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyMissingParmsOnPostValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsScalarWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap parms
@@ -5353,22 +5356,22 @@ module ObjectActionInvoke19
 
 //let MissingParmsOnPostObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyMissingParmsOnPostValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyMissingParmsOnPostValidateOnly "objects" oType oName api.PostInvoke api
 
 //let MissingParmsOnPostServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyMissingParmsOnPostValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyMissingParmsOnPostValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let MissingParmsOnPostViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyMissingParmsOnPostValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyMissingParmsOnPostValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyMalformedFormalParmsOnPostQueryValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyMalformedFormalParmsOnPostQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -5385,22 +5388,22 @@ module ObjectActionInvoke19
 
 //let MalformedFormalParmsOnPostQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyMalformedFormalParmsOnPostQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyMalformedFormalParmsOnPostQueryValidateOnly "objects" oType oName api.PostInvoke api
 
 //let MalformedFormalParmsOnPostQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyMalformedFormalParmsOnPostQueryValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyMalformedFormalParmsOnPostQueryValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let MalformedFormalParmsOnPostQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyMalformedFormalParmsOnPostQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyMalformedFormalParmsOnPostQueryValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyInvalidFormalParmsOnPostQueryValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyInvalidFormalParmsOnPostQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -5425,22 +5428,22 @@ module ObjectActionInvoke19
 
 //let InvalidFormalParmsOnPostQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyInvalidFormalParmsOnPostQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyInvalidFormalParmsOnPostQueryValidateOnly "objects" oType oName api.PostInvoke api
 
 //let InvalidFormalParmsOnPostQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyInvalidFormalParmsOnPostQueryValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyInvalidFormalParmsOnPostQueryValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let InvalidFormalParmsOnPostQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyInvalidFormalParmsOnPostQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyInvalidFormalParmsOnPostQueryValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyInvalidUrlOnPostQueryValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyInvalidUrlOnPostQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType(sprintf "objects/%s/%s" roType (ktc "10"))).ToString()))
 //    let parms = 
@@ -5457,24 +5460,24 @@ module ObjectActionInvoke19
 
 //let InvalidUrlOnPostQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyInvalidUrlOnPostQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyInvalidUrlOnPostQueryValidateOnly "objects" oType oName api.PostInvoke api
 
 //let InvalidUrlOnPostQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyInvalidUrlOnPostQueryValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyInvalidUrlOnPostQueryValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let InvalidUrlOnPostQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyInvalidUrlOnPostQueryValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyInvalidUrlOnPostQueryValidateOnly "objects" oType oName api.PostInvoke api
 
 //// Always disabled
-//let VerifyDisabledPostActionInvokeValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyDisabledPostActionInvokeValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let error = "Always disabled"
 //    let pid = "ADisabledAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap parms
@@ -5487,22 +5490,22 @@ module ObjectActionInvoke19
 
 //let DisabledActionPostInvokeObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyDisabledPostActionInvokeValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyDisabledPostActionInvokeValidateOnly "objects" oType oName api.PostInvoke api
 
 //let DisabledActionPostInvokeServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyDisabledPostActionInvokeValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyDisabledPostActionInvokeValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let DisabledActionPostInvokeViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyDisabledPostActionInvokeValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyDisabledPostActionInvokeValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyNotFoundActionPostInvokeValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyNotFoundActionPostInvokeValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "ANonExistentAction" // doesn't exist 
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap parms
@@ -5515,22 +5518,22 @@ module ObjectActionInvoke19
 
 //let NotFoundActionPostInvokeObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyNotFoundActionPostInvokeValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyNotFoundActionPostInvokeValidateOnly "objects" oType oName api.PostInvoke api
 
 //let NotFoundActionPostInvokeServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyNotFoundActionPostInvokeValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyNotFoundActionPostInvokeValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let NotFoundActionPostInvokeViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyNotFoundActionPostInvokeValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyNotFoundActionPostInvokeValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyHiddenActionPostInvokeValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyHiddenActionPostInvokeValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AHiddenAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap parms
@@ -5543,22 +5546,22 @@ module ObjectActionInvoke19
 
 //let HiddenActionPostInvokeObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyHiddenActionPostInvokeValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyHiddenActionPostInvokeValidateOnly "objects" oType oName api.PostInvoke api
 
 //let HiddenActionPostInvokeServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyHiddenActionPostInvokeValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyHiddenActionPostInvokeValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let HiddenActionPostInvokeViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyHiddenActionPostInvokeValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyHiddenActionPostInvokeValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyPostQueryActionWithErrorValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyPostQueryActionWithErrorValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnErrorQuery"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let args = CreateArgMap parms
@@ -5570,22 +5573,22 @@ module ObjectActionInvoke19
 
 //let PostQueryActionWithErrorObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostQueryActionWithErrorValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostQueryActionWithErrorValidateOnly "objects" oType oName api.PostInvoke api
 
 //let PostQueryActionWithErrorServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyPostQueryActionWithErrorValidateOnly "services" oType oid (wrap api.PostInvokeOnService) api
+//    let oName = oType
+//    VerifyPostQueryActionWithErrorValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
 
 //let PostQueryActionWithErrorViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyPostQueryActionWithErrorValidateOnly "objects" oType oid api.PostInvoke api
+//    let oName = oType
+//    VerifyPostQueryActionWithErrorValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyGetInvokeActionReturnCollectionValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionReturnCollectionValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollection"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
@@ -5599,22 +5602,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionReturnCollectionObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnCollectionValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionReturnCollectionValidateOnly "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionReturnCollectionServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionReturnCollectionValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionReturnCollectionValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionReturnCollectionViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyGetInvokeActionReturnCollectionValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyGetInvokeActionReturnCollectionValidateOnly "objects" oType oName api.GetInvoke api
 
-//let VerifyGetInvokeActionWithScalarParmsReturnCollectionSimpleValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionWithScalarParmsReturnCollectionSimpleValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let purl = sprintf "%s/actions/%s/invoke?parm2=fred&parm1=100" ourl pid
 //    let parms = new JObject(new JProperty("x-ro-validate-only", true))
 //    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
@@ -5628,22 +5631,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionWithScalarParmsReturnCollectionSimpleObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimpleValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimpleValidateOnly "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionWithScalarParmsReturnCollectionSimpleServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimpleValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimpleValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionWithScalarParmsReturnCollectionSimpleViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimpleValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimpleValidateOnly "objects" oType oName api.GetInvoke api
 
-//let VerifyGetInvokeActionWithScalarParmsReturnCollectionFormalValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionWithScalarParmsReturnCollectionFormalValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let parms = 
 //        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
 //                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 100))), new JProperty("x-ro-validate-only", true))
@@ -5659,22 +5662,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionWithScalarParmsReturnCollectionFormalObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormalValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormalValidateOnly "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionWithScalarParmsReturnCollectionFormalServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormalValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormalValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionWithScalarParmsReturnCollectionFormalViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormalValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormalValidateOnly "objects" oType oName api.GetInvoke api
 
-//let VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormalValidateOnly refType oType oid f (api : RestfulObjectsControllerBase) = 
+//let VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormalValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oid
+//    let ourl = sprintf "%s/%s/%s" refType oType oName
 //    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
 //    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
 //    let parms = 
@@ -5692,22 +5695,22 @@ module ObjectActionInvoke19
 
 //let GetInvokeActionWithReferenceParmsReturnCollectionFormalObjectValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormalValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormalValidateOnly "objects" oType oName api.GetInvoke api
 
 //let GetInvokeActionWithReferenceParmsReturnCollectionFormalServiceValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oid = oType
-//    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormalValidateOnly "services" oType oid (wrap api.GetInvokeOnService) api
+//    let oName = oType
+//    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormalValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
 
 //let GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oid = oType
-//    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormalValidateOnly "objects" oType oid api.GetInvoke api
+//    let oName = oType
+//    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormalValidateOnly "objects" oType oName api.GetInvoke api
 
-//let VerifyPostInvokeActionReturnObjectConcurrencyFail refType oType oid f tag (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnObjectConcurrencyFail refType oType oName f tag (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
 //    let args = CreateArgMap(new JObject())
@@ -5720,12 +5723,12 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnObjectObjectConcurrencyFail(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnObjectConcurrencyFail "objects" oType oid api.PostInvoke "\"fail\"" api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnObjectConcurrencyFail "objects" oType oName api.PostInvoke "\"fail\"" api
 
-//let VerifyPutInvokeActionReturnObjectConcurrencyFail refType oType oid f tag (api : RestfulObjectsControllerBase) = 
+//let VerifyPutInvokeActionReturnObjectConcurrencyFail refType oType oName f tag (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionAnnotatedIdempotent"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
 //    let args = CreateArgMap(new JObject())
@@ -5738,12 +5741,12 @@ module ObjectActionInvoke19
 
 //let PutInvokeActionReturnObjectObjectConcurrencyFail(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = ktc "1"
-//    VerifyPutInvokeActionReturnObjectConcurrencyFail "objects" oType oid api.PutInvoke "\"fail\"" api
+//    let oName = ktc "1"
+//    VerifyPutInvokeActionReturnObjectConcurrencyFail "objects" oType oName api.PutInvoke "\"fail\"" api
 
-//let VerifyPostInvokeActionReturnObjectMissingIfMatch refType oType oid f tag (api : RestfulObjectsControllerBase) = 
+//let VerifyPostInvokeActionReturnObjectMissingIfMatch refType oType oName f tag (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnAction"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
 //    let args = CreateArgMap(new JObject())
@@ -5758,12 +5761,12 @@ module ObjectActionInvoke19
 
 //let PostInvokeActionReturnObjectObjectMissingIfMatch(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnObjectMissingIfMatch "objects" oType oid api.PostInvoke "\"fail\"" api
+//    let oName = oType + "/" + ktc "1"
+//    VerifyPostInvokeActionReturnObjectMissingIfMatch "objects" oType oName api.PostInvoke "\"fail\"" api
 
-//let VerifyPutInvokeActionReturnObjectMissingIfMatch refType oType oid f tag (api : RestfulObjectsControllerBase) = 
+//let VerifyPutInvokeActionReturnObjectMissingIfMatch refType oType oName f tag (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionAnnotatedIdempotent"
-//    let ourl = sprintf "%s/%s" refType oid
+//    let ourl = sprintf "%s/%s" refType oName
 //    let purl = sprintf "%s/actions/%s/invoke" ourl pid
 //    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
 //    let args = CreateArgMap(new JObject())
@@ -5778,5 +5781,5 @@ module ObjectActionInvoke19
 
 //let PutInvokeActionReturnObjectObjectMissingIfMatch(api : RestfulObjectsControllerBase) = 
 //    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oid = ktc "1"
-//    VerifyPutInvokeActionReturnObjectMissingIfMatch "objects" oType oid api.PutInvoke "\"fail\"" api
+//    let oName = ktc "1"
+//    VerifyPutInvokeActionReturnObjectMissingIfMatch "objects" oType oName api.PutInvoke "\"fail\"" api
