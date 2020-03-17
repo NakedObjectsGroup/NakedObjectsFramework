@@ -1565,261 +1565,286 @@ let GetInvokeActionReturnObjectViewModelValidateOnly(api : RestfulObjectsControl
     let oName = oType
     VerifyGetInvokeActionReturnObjectValidateOnly "objects" oType oName api.GetInvoke api
 
-//let VerifyPostInvokeActionReturnObjectWithMediaType refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnAction"
-//    let ourl = sprintf "%s/%s" refType oName
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let msg = jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue("profile", (makeProfile RepresentationTypes.ActionResult)))
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- msg
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//    let roid = roType + "/" + ktc "1"
-//    let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+let VerifyPostInvokeActionReturnObjectWithMediaType refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let oid = ktc "1"
+    let pid = "AnAction"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid
+     
+    let args = CreateArgMap(new JObject())
+    let url = sprintf "http://localhost/%s" purl
+    jsonSetEmptyPostMsgWithProfile api.Request url RepresentationTypes.ActionResult
+    setIfMatch api.Request "*"
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
     
-//    let resultObject = 
-//        TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
-//                      TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
-//                      TProperty(JsonPropertyNames.Title, TObjectVal("1"))
-//                      TProperty(JsonPropertyNames.Links, 
-//                                TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object roType)
-//                                         TObjectJson(sb(roType)); TObjectJson(sp(roType))
-//                                         TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid) RepresentationTypes.Object roType) ]))
+    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let roid = roType + "/" + ktc "1"
+    let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
+    
+    let resultObject = 
+        TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
+                      TProperty(JsonPropertyNames.InstanceId, TObjectVal(ktc "1"))
+                      TProperty(JsonPropertyNames.Title, TObjectVal("1"))
+                      TProperty(JsonPropertyNames.Links, 
+                                TArray([ TObjectJson(makeGetLinkProp RelValues.Self (sprintf "objects/%s" roid) RepresentationTypes.Object roType)
+                                         TObjectJson(sb(roType)); TObjectJson(sp(roType))
+                                         TObjectJson(args :: makePutLinkProp RelValues.Update (sprintf "objects/%s" roid) RepresentationTypes.Object roType) ]))
                       
-//                      TProperty
-//                          (JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]))
-//                      TProperty(JsonPropertyNames.Extensions, 
-//                                TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
-//                                              TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
-//                                              TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
-//                                              TProperty(JsonPropertyNames.Description, TObjectVal(""))
-//                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
-//                                              TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
+                      TProperty
+                          (JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson(makeObjectPropertyMember "Id" roid "Id" (TObjectVal(1)))) ]))
+                      TProperty(JsonPropertyNames.Extensions, 
+                                TObjectJson([ TProperty(JsonPropertyNames.DomainType, TObjectVal(roType))
+                                              TProperty(JsonPropertyNames.FriendlyName, TObjectVal("Most Simple"))
+                                              TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
+                                              TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.InteractionMode, TObjectVal("persistent"))
+                                              TProperty(JsonPropertyNames.IsService, TObjectVal(false)) ])) ])
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.Links, TArray([]))
-//          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
-//          TProperty(JsonPropertyNames.Result, resultObject)
-//          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+    let expected = 
+        [ TProperty(JsonPropertyNames.Links, TArray([]))
+          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Object))
+          TProperty(JsonPropertyNames.Result, resultObject)
+          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
-//    assertTransactionalCache headers
-//    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
-//    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
-//    compareObject expected parsedResult
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
+    assertTransactionalCache headers
+    //Assert.IsNull(result.Headers.ETag) - change to spec 22/2/16 
+    //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
 
-//let PostInvokeActionReturnObjectObjectWithMediaType(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnObjectWithMediaType "objects" oType oName api.PostInvoke api
+let PostInvokeActionReturnObjectObjectWithMediaType(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyPostInvokeActionReturnObjectWithMediaType "objects" oType oName api.PostInvoke api
 
-//let PostInvokeActionReturnObjectServiceWithMediaType(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyPostInvokeActionReturnObjectWithMediaType "services" oType oName (wrap api.PostInvokeOnService) api
+let PostInvokeActionReturnObjectServiceWithMediaType(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyPostInvokeActionReturnObjectWithMediaType "services" oType oName (wrap3 api.PostInvokeOnService) api
 
-//let PostInvokeActionReturnObjectViewModelWithMediaType(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyPostInvokeActionReturnObjectWithMediaType "objects" oType oName api.PostInvoke api
+let PostInvokeActionReturnObjectViewModelWithMediaType(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyPostInvokeActionReturnObjectWithMediaType "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionReturnScalar refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsScalar"
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    let roType = ttc "int"
+let VerifyPostInvokeActionReturnScalar refType oType oName f (api : RestfulObjectsControllerBase) = 
     
-//    let resultObject = 
-//        TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(999))
+    let pid = "AnActionReturnsScalar"
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid
+    let oid = ktc "1"
+    let args = CreateArgMapWithReserved(new JObject())
+    let url = sprintf "http://localhost/%s" purl
+    jsonSetEmptyPostMsg api.Request url 
+    setIfMatch api.Request "*"
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
+    
+    let roType = ttc "int"
+    
+    let resultObject = 
+        TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(999))
                       
-//                      TProperty
-//                          (JsonPropertyNames.Links, 
-//                           TArray([ ]))
-//                      TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ])
+                      TProperty
+                          (JsonPropertyNames.Links, 
+                           TArray([ ]))
+                      TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ])
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.Links, TArray([]))
-//          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Scalar))
-//          TProperty(JsonPropertyNames.Result, resultObject)
-//          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+    let expected = 
+        [ TProperty(JsonPropertyNames.Links, TArray([]))
+          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Scalar))
+          TProperty(JsonPropertyNames.Result, resultObject)
+          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "number", "", true), headers.ContentType)
-//    assertTransactionalCache headers
-//    Assert.IsNull(result.Headers.ETag)
-//    compareObject expected parsedResult
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, "number", "", true), headers.ContentType)
+    assertTransactionalCache headers
+    Assert.IsNull(headers.ETag)
+    compareObject expected parsedResult
 
-//let PostInvokeActionReturnScalarObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnScalar "objects" oType oName api.PostInvoke api
+let PostInvokeActionReturnScalarObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyPostInvokeActionReturnScalar "objects" oType oName api.PostInvoke api
 
-//let PostInvokeActionReturnScalarService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyPostInvokeActionReturnScalar "services" oType oName (wrap api.PostInvokeOnService) api
+let PostInvokeActionReturnScalarService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyPostInvokeActionReturnScalar "services" oType oName (wrap3 api.PostInvokeOnService) api
 
-//let PostInvokeActionReturnScalarViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyPostInvokeActionReturnScalar "objects" oType oName api.PostInvoke api
+let PostInvokeActionReturnScalarViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyPostInvokeActionReturnScalar "objects" oType oName api.PostInvoke api
 
 
 
-//let VerifyPostInvokeActionReturnEmptyScalar refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsScalarEmpty"
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    let roType = ttc "string"
+let VerifyPostInvokeActionReturnEmptyScalar refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsScalarEmpty"
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid
+    let oid = ktc "1"
+    let args = CreateArgMapWithReserved(new JObject())
+    let url = sprintf "http://localhost/%s" purl
+    jsonSetEmptyPostMsg api.Request url 
+    setIfMatch api.Request "*"
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
     
-//    let resultObject = 
-//        TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(""))
+    let roType = ttc "string"
+    
+    let resultObject = 
+        TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(""))
                       
-//                      TProperty
-//                          (JsonPropertyNames.Links, 
-//                           TArray([  ]))
-//                      TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ])
+                      TProperty
+                          (JsonPropertyNames.Links, 
+                           TArray([  ]))
+                      TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ])
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.Links, TArray([]))
-//          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Scalar))
-//          TProperty(JsonPropertyNames.Result, resultObject)
-//          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+    let expected = 
+        [ TProperty(JsonPropertyNames.Links, TArray([]))
+          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Scalar))
+          TProperty(JsonPropertyNames.Result, resultObject)
+          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
     
-//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
-//    assertTransactionalCache headers
-//    Assert.IsNull(result.Headers.ETag)
-//    compareObject expected parsedResult
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
+    assertTransactionalCache headers
+    Assert.IsNull(headers.ETag)
+    compareObject expected parsedResult
 
-//let PostInvokeActionReturnEmptyScalarObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnEmptyScalar "objects" oType oName api.PostInvoke api
+let PostInvokeActionReturnEmptyScalarObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyPostInvokeActionReturnEmptyScalar "objects" oType oName api.PostInvoke api
 
-//let PostInvokeActionReturnEmptyScalarService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyPostInvokeActionReturnEmptyScalar "services" oType oName (wrap api.PostInvokeOnService) api
+let PostInvokeActionReturnEmptyScalarService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyPostInvokeActionReturnEmptyScalar "services" oType oName (wrap3 api.PostInvokeOnService) api
 
-//let PostInvokeActionReturnEmptyScalarViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyPostInvokeActionReturnEmptyScalar "objects" oType oName api.PostInvoke api
+let PostInvokeActionReturnEmptyScalarViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyPostInvokeActionReturnEmptyScalar "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionReturnNullScalar refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsScalarNull"
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-//    let roType = "string"
+let VerifyPostInvokeActionReturnNullScalar refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsScalarNull"
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid
+
+    let oid = ktc "1"
+    let args = CreateArgMapWithReserved(new JObject())
+    let url = sprintf "http://localhost/%s" purl
+    jsonSetEmptyPostMsg api.Request url 
+    setIfMatch api.Request "*"
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
+     
+    let roType = "string"
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.Links, TArray([]))
-//          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Scalar))
-//          TProperty(JsonPropertyNames.Result, TObjectVal(null))
-//          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
-//    assertTransactionalCache headers
-//    Assert.IsNull(result.Headers.ETag)
-//    compareObject expected parsedResult
+    let expected = 
+        [ TProperty(JsonPropertyNames.Links, TArray([]))
+          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Scalar))
+          TProperty(JsonPropertyNames.Result, TObjectVal(null))
+          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult, roType, "", true), headers.ContentType)
+    assertTransactionalCache headers
+    Assert.IsNull(headers.ETag)
+    compareObject expected parsedResult
 
-//let PostInvokeActionReturnNullScalarObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnNullScalar "objects" oType oName api.PostInvoke api
+let PostInvokeActionReturnNullScalarObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyPostInvokeActionReturnNullScalar "objects" oType oName api.PostInvoke api
 
-//let PostInvokeActionReturnNullScalarService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyPostInvokeActionReturnNullScalar "services" oType oName (wrap api.PostInvokeOnService) api
+let PostInvokeActionReturnNullScalarService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyPostInvokeActionReturnNullScalar "services" oType oName (wrap3 api.PostInvokeOnService) api
 
-//let PostInvokeActionReturnNullScalarViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyPostInvokeActionReturnNullScalar "objects" oType oName api.PostInvoke api
+let PostInvokeActionReturnNullScalarViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyPostInvokeActionReturnNullScalar "objects" oType oName api.PostInvoke api
 
-//let VerifyPostInvokeActionReturnScalarValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsScalar"
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let parms = new JObject(new JProperty("x-ro-validate-only", true))
-//    let args = CreateArgMap parms
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
-//    Assert.AreEqual("", jsonResult)
-
-//let PostInvokeActionReturnScalarObjectValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnScalarValidateOnly "objects" oType oName api.PostInvoke api
-
-//let PostInvokeActionReturnScalarServiceValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyPostInvokeActionReturnScalarValidateOnly "services" oType oName (wrap api.PostInvokeOnService) api
-
-//let PostInvokeActionReturnScalarViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyPostInvokeActionReturnScalarValidateOnly "objects" oType oName api.PostInvoke api
-
-//let VerifyPostInvokeActionReturnVoid refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsVoid"
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    //let parms =  new JObject (new JProperty("x-ro-validate-only", true))
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
+let VerifyPostInvokeActionReturnScalarValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsScalar"
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid
+    let parms = new JObject(new JProperty("x-ro-validate-only", true))
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.Links, TArray([]))
-//          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Void))
-//          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-//    assertStatusCode HttpStatusCode.OK statusCode jsonResult
-//    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult), headers.ContentType)
-//    assertTransactionalCache headers
-//    Assert.IsNull(result.Headers.ETag)
-//    compareObject expected parsedResult
+    let oid = ktc "1"
+    let args = CreateArgMapWithReserved(parms)
+    let url = sprintf "http://localhost/%s" purl
+    jsonSetPostMsg api.Request url (parms.ToString())
+    setIfMatch api.Request "*"
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    
+    assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
+    Assert.AreEqual("", jsonResult)
 
-//let PostInvokeActionReturnVoidObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyPostInvokeActionReturnVoid "objects" oType oName api.PostInvoke api
+let PostInvokeActionReturnScalarObjectValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyPostInvokeActionReturnScalarValidateOnly "objects" oType oName api.PostInvoke api
 
-//let PostInvokeActionReturnVoidService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyPostInvokeActionReturnVoid "services" oType oName (wrap api.PostInvokeOnService) api
+let PostInvokeActionReturnScalarServiceValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyPostInvokeActionReturnScalarValidateOnly "services" oType oName (wrap3 api.PostInvokeOnService) api
 
-//let PostInvokeActionReturnVoidViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyPostInvokeActionReturnVoid "objects" oType oName api.PostInvoke api
+let PostInvokeActionReturnScalarViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyPostInvokeActionReturnScalarValidateOnly "objects" oType oName api.PostInvoke api
+
+let VerifyPostInvokeActionReturnVoid refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsVoid"
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid
+    let oid = ktc "1"
+    let args = CreateArgMapWithReserved(new JObject())
+    let url = sprintf "http://localhost/%s" purl
+    jsonSetEmptyPostMsg api.Request url 
+    setIfMatch api.Request "*"
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
+    
+    let expected = 
+        [ TProperty(JsonPropertyNames.Links, TArray([]))
+          TProperty(JsonPropertyNames.ResultType, TObjectVal(ResultTypes.Void))
+          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+   
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.ActionResult), headers.ContentType)
+    assertTransactionalCache headers
+    Assert.IsNull(headers.ETag)
+    compareObject expected parsedResult
+
+let PostInvokeActionReturnVoidObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyPostInvokeActionReturnVoid "objects" oType oName api.PostInvoke api
+
+let PostInvokeActionReturnVoidService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyPostInvokeActionReturnVoid "services" oType oName (wrap3 api.PostInvokeOnService) api
+
+let PostInvokeActionReturnVoidViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyPostInvokeActionReturnVoid "objects" oType oName api.PostInvoke api
 
 
 

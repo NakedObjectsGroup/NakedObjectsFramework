@@ -1748,39 +1748,39 @@ type RestTests() =
         member x.PostInvokeContribActionReturnObjectBaseClass() = 
             ObjectActionInvoke19.PostInvokeContribActionReturnObjectBaseClass x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnObjectObjectWithMediaType() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnObjectObjectWithMediaType x.api
+        [<Test>]
+        member x.PostInvokeActionReturnObjectObjectWithMediaType() = 
+            ObjectActionInvoke19.PostInvokeActionReturnObjectObjectWithMediaType x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnObjectServiceWithMediaType() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnObjectServiceWithMediaType x.api
+        [<Test>]
+        member x.PostInvokeActionReturnObjectServiceWithMediaType() = 
+            ObjectActionInvoke19.PostInvokeActionReturnObjectServiceWithMediaType x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnObjectViewModelWithMediaType() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnObjectViewModelWithMediaType x.api
+        [<Test>]
+        member x.PostInvokeActionReturnObjectViewModelWithMediaType() = 
+            ObjectActionInvoke19.PostInvokeActionReturnObjectViewModelWithMediaType x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnScalarObject() = ObjectActionInvoke19.PostInvokeActionReturnScalarObject x.api
+        [<Test>]
+        member x.PostInvokeActionReturnScalarObject() = ObjectActionInvoke19.PostInvokeActionReturnScalarObject x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnScalarService() = ObjectActionInvoke19.PostInvokeActionReturnScalarService x.api
+        [<Test>]
+        member x.PostInvokeActionReturnScalarService() = ObjectActionInvoke19.PostInvokeActionReturnScalarService x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnScalarViewModel() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnScalarViewModel x.api
+        [<Test>]
+        member x.PostInvokeActionReturnScalarViewModel() = 
+            ObjectActionInvoke19.PostInvokeActionReturnScalarViewModel x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnScalarObjectValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnScalarObjectValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionReturnScalarObjectValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionReturnScalarObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnScalarServiceValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnScalarServiceValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionReturnScalarServiceValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionReturnScalarServiceValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnScalarViewModelValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnScalarViewModelValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionReturnScalarViewModelValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionReturnScalarViewModelValidateOnly x.api
         
 //        [<Test>]
 //        member x.PostInvokeActionReturnEmptyScalarObject() = 
@@ -1794,26 +1794,26 @@ type RestTests() =
 //        member x.PostInvokeActionReturnEmptyScalarViewModel() = 
 //            ObjectActionInvoke19.PostInvokeActionReturnEmptyScalarViewModel x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnNullScalarObject() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnNullScalarObject x.api
+        [<Test>]
+        member x.PostInvokeActionReturnNullScalarObject() = 
+            ObjectActionInvoke19.PostInvokeActionReturnNullScalarObject x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnNullScalarService() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnNullScalarService x.api
+        [<Test>]
+        member x.PostInvokeActionReturnNullScalarService() = 
+            ObjectActionInvoke19.PostInvokeActionReturnNullScalarService x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnNullScalarViewModel() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnNullScalarViewModel x.api
+        [<Test>]
+        member x.PostInvokeActionReturnNullScalarViewModel() = 
+            ObjectActionInvoke19.PostInvokeActionReturnNullScalarViewModel x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnVoidObject() = ObjectActionInvoke19.PostInvokeActionReturnVoidObject x.api
+        [<Test>]
+        member x.PostInvokeActionReturnVoidObject() = ObjectActionInvoke19.PostInvokeActionReturnVoidObject x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnVoidService() = ObjectActionInvoke19.PostInvokeActionReturnVoidService x.api
+        [<Test>]
+        member x.PostInvokeActionReturnVoidService() = ObjectActionInvoke19.PostInvokeActionReturnVoidService x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnVoidViewModel() = ObjectActionInvoke19.PostInvokeActionReturnVoidViewModel x.api
+        [<Test>]
+        member x.PostInvokeActionReturnVoidViewModel() = ObjectActionInvoke19.PostInvokeActionReturnVoidViewModel x.api
         
 //        [<Test>]
 //        member x.PostInvokeActionReturnVoidObjectValidateOnly() = 
