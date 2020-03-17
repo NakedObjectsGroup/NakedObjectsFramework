@@ -1675,63 +1675,63 @@ type RestTests() =
         member x.PutInvokeActionReturnNullObjectViewModel() = 
             ObjectActionInvoke19.PutInvokeActionReturnNullObjectViewModel x.api
         
-//        [<Test>]
-//        member x.PutInvokeActionReturnObjectObjectValidateOnly() = 
-//            ObjectActionInvoke19.PutInvokeActionReturnObjectObjectValidateOnly x.api
+        [<Test>]
+        member x.PutInvokeActionReturnObjectObjectValidateOnly() = 
+            ObjectActionInvoke19.PutInvokeActionReturnObjectObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutInvokeActionReturnObjectServiceValidateOnly() = 
-//            ObjectActionInvoke19.PutInvokeActionReturnObjectServiceValidateOnly x.api
+        [<Test>]
+        member x.PutInvokeActionReturnObjectServiceValidateOnly() = 
+            ObjectActionInvoke19.PutInvokeActionReturnObjectServiceValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutInvokeActionReturnObjectViewModelValidateOnly() = 
-//            ObjectActionInvoke19.PutInvokeActionReturnObjectViewModelValidateOnly x.api
+        [<Test>]
+        member x.PutInvokeActionReturnObjectViewModelValidateOnly() = 
+            ObjectActionInvoke19.PutInvokeActionReturnObjectViewModelValidateOnly x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionReturnObjectObject() = ObjectActionInvoke19.GetInvokeActionReturnObjectObject x.api
+        [<Test>]
+        member x.GetInvokeActionReturnObjectObject() = ObjectActionInvoke19.GetInvokeActionReturnObjectObject x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionReturnObjectService() = ObjectActionInvoke19.GetInvokeActionReturnObjectService x.api
+        [<Test>]
+        member x.GetInvokeActionReturnObjectService() = ObjectActionInvoke19.GetInvokeActionReturnObjectService x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionReturnObjectViewModel() = 
-//            ObjectActionInvoke19.GetInvokeActionReturnObjectViewModel x.api
+        [<Test>]
+        member x.GetInvokeActionReturnObjectViewModel() = 
+            ObjectActionInvoke19.GetInvokeActionReturnObjectViewModel x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionReturnViewModelObject() = 
-//            ObjectActionInvoke19.GetInvokeActionReturnViewModelObject x.api
+        [<Test>]
+        member x.GetInvokeActionReturnViewModelObject() = 
+            ObjectActionInvoke19.GetInvokeActionReturnViewModelObject x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionReturnViewModelService() = 
-//            ObjectActionInvoke19.GetInvokeActionReturnViewModelService x.api
+        [<Test>]
+        member x.GetInvokeActionReturnViewModelService() = 
+            ObjectActionInvoke19.GetInvokeActionReturnViewModelService x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionReturnViewModelViewModel() = 
-//            ObjectActionInvoke19.GetInvokeActionReturnViewModelViewModel x.api
+        [<Test>]
+        member x.GetInvokeActionReturnViewModelViewModel() = 
+            ObjectActionInvoke19.GetInvokeActionReturnViewModelViewModel x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionReturnNullObjectObject() = 
-//            ObjectActionInvoke19.GetInvokeActionReturnNullObjectObject x.api
+        [<Test>]
+        member x.GetInvokeActionReturnNullObjectObject() = 
+            ObjectActionInvoke19.GetInvokeActionReturnNullObjectObject x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionReturnNullObjectService() = 
-//            ObjectActionInvoke19.GetInvokeActionReturnNullObjectService x.api
+        [<Test>]
+        member x.GetInvokeActionReturnNullObjectService() = 
+            ObjectActionInvoke19.GetInvokeActionReturnNullObjectService x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionReturnNullObjectViewModel() = 
-//            ObjectActionInvoke19.GetInvokeActionReturnNullObjectViewModel x.api
+        [<Test>]
+        member x.GetInvokeActionReturnNullObjectViewModel() = 
+            ObjectActionInvoke19.GetInvokeActionReturnNullObjectViewModel x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionReturnObjectObjectValidateOnly() = 
-//            ObjectActionInvoke19.GetInvokeActionReturnObjectObjectValidateOnly x.api
+        [<Test>]
+        member x.GetInvokeActionReturnObjectObjectValidateOnly() = 
+            ObjectActionInvoke19.GetInvokeActionReturnObjectObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionReturnObjectServiceValidateOnly() = 
-//            ObjectActionInvoke19.GetInvokeActionReturnObjectServiceValidateOnly x.api
+        [<Test>]
+        member x.GetInvokeActionReturnObjectServiceValidateOnly() = 
+            ObjectActionInvoke19.GetInvokeActionReturnObjectServiceValidateOnly x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionReturnObjectViewModelValidateOnly() = 
-//            ObjectActionInvoke19.GetInvokeActionReturnObjectViewModelValidateOnly x.api
+        [<Test>]
+        member x.GetInvokeActionReturnObjectViewModelValidateOnly() = 
+            ObjectActionInvoke19.GetInvokeActionReturnObjectViewModelValidateOnly x.api
         
         [<Test>]
         member x.PostInvokeContribActionReturnObject() = ObjectActionInvoke19.PostInvokeContribActionReturnObject x.api
