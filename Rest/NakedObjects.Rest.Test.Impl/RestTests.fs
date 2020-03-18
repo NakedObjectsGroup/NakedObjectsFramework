@@ -2243,96 +2243,96 @@ type RestTests() =
 //        [<Test>]
 //        member x.DisabledActionInvokeQueryViewModel() = ObjectActionInvoke19.DisabledActionInvokeQueryViewModel x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionWithScalarParmsReturnQuerySimpleObject() = 
-//            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleObject x.api
+        [<Test>]
+        member x.GetInvokeActionWithScalarParmsReturnQuerySimpleObject() = 
+            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleObject x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionWithScalarParmsReturnQuerySimpleService() = 
-//            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleService x.api
+        [<Test>]
+        member x.GetInvokeActionWithScalarParmsReturnQuerySimpleService() = 
+            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleService x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModel() = 
-//            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModel x.api
+        [<Test>]
+        member x.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModel() = 
+            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModel x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionWithScalarMissingParmsSimpleObject() = 
-//            ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsSimpleObject x.api
+        [<Test>]
+        member x.GetInvokeActionWithScalarMissingParmsSimpleObject() = 
+            ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsSimpleObject x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionWithScalarMissingParmsSimpleService() = 
-//            ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsSimpleService x.api
+        [<Test>]
+        member x.GetInvokeActionWithScalarMissingParmsSimpleService() = 
+            ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsSimpleService x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionWithScalarMissingParmsSimpleViewModel() = 
-//            ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsSimpleViewModel x.api
+        [<Test>]
+        member x.GetInvokeActionWithScalarMissingParmsSimpleViewModel() = 
+            ObjectActionInvoke19.GetInvokeActionWithScalarMissingParmsSimpleViewModel x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionWithScalarParmsReturnQuerySimpleObjectValidateOnly() = 
-//            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleObjectValidateOnly x.api
+        [<Test>]
+        member x.GetInvokeActionWithScalarParmsReturnQuerySimpleObjectValidateOnly() = 
+            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionWithScalarParmsReturnQuerySimpleServiceValidateOnly() = 
-//            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleServiceValidateOnly x.api
+        [<Test>]
+        member x.GetInvokeActionWithScalarParmsReturnQuerySimpleServiceValidateOnly() = 
+            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleServiceValidateOnly x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModelValidateOnly() = 
-//            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModelValidateOnly x.api
+        [<Test>]
+        member x.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModelValidateOnly() = 
+            ObjectActionInvoke19.GetInvokeActionWithScalarParmsReturnQuerySimpleViewModelValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnQueryObject() = ObjectActionInvoke19.PostInvokeActionReturnQueryObject x.api
+        [<Test>]
+        member x.PostInvokeActionReturnQueryObject() = ObjectActionInvoke19.PostInvokeActionReturnQueryObject x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnQueryService() = ObjectActionInvoke19.PostInvokeActionReturnQueryService x.api
+        [<Test>]
+        member x.PostInvokeActionReturnQueryService() = ObjectActionInvoke19.PostInvokeActionReturnQueryService x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnQueryViewModel() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnQueryViewModel x.api
+        [<Test>]
+        member x.PostInvokeActionReturnQueryViewModel() = 
+            ObjectActionInvoke19.PostInvokeActionReturnQueryViewModel x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnQueryObjectValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnQueryObjectValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionReturnQueryObjectValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionReturnQueryObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnQueryServiceValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnQueryServiceValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionReturnQueryServiceValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionReturnQueryServiceValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnQueryViewModelValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnQueryViewModelValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionReturnQueryViewModelValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionReturnQueryViewModelValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithScalarParmsReturnQueryObject() = 
-//            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryObject x.api
+        [<Test>]
+        member x.PostInvokeActionWithScalarParmsReturnQueryObject() = 
+            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryObject x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithScalarParmsReturnQueryService() = 
-//            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryService x.api
+        [<Test>]
+        member x.PostInvokeActionWithScalarParmsReturnQueryService() = 
+            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryService x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithScalarParmsReturnQueryViewModel() = 
-//            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryViewModel x.api
+        [<Test>]
+        member x.PostInvokeActionWithScalarParmsReturnQueryViewModel() = 
+            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryViewModel x.api
         
-//        [<Test>]
-//        member x.PostInvokeOverloadedActionObject() = ObjectActionInvoke19.PostInvokeOverloadedActionObject x.api
+        [<Test>]
+        member x.PostInvokeOverloadedActionObject() = ObjectActionInvoke19.PostInvokeOverloadedActionObject x.api
         
-//        [<Test>]
-//        member x.PostInvokeOverloadedActionService() = ObjectActionInvoke19.PostInvokeOverloadedActionService x.api
+        [<Test>]
+        member x.PostInvokeOverloadedActionService() = ObjectActionInvoke19.PostInvokeOverloadedActionService x.api
         
-//        [<Test>]
-//        member x.PostInvokeOverloadedActionViewModel() = ObjectActionInvoke19.PostInvokeOverloadedActionViewModel x.api
+        [<Test>]
+        member x.PostInvokeOverloadedActionViewModel() = ObjectActionInvoke19.PostInvokeOverloadedActionViewModel x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithScalarParmsReturnQueryObjectValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryObjectValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionWithScalarParmsReturnQueryObjectValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithScalarParmsReturnQueryServiceValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryServiceValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionWithScalarParmsReturnQueryServiceValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryServiceValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithScalarParmsReturnQueryViewModelValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryViewModelValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionWithScalarParmsReturnQueryViewModelValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnQueryViewModelValidateOnly x.api
         
 //        [<Test>]
 //        member x.PostInvokeActionWithReferenceParmsReturnQueryObject() = 
@@ -2346,17 +2346,17 @@ type RestTests() =
 //        member x.PostInvokeActionWithReferenceParmsReturnQueryViewModel() = 
 //            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryViewModel x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithReferenceParmsReturnQueryObjectValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryObjectValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionWithReferenceParmsReturnQueryObjectValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithReferenceParmsReturnQueryServiceValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryServiceValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionWithReferenceParmsReturnQueryServiceValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryServiceValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithReferenceParmsReturnQueryViewModelValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryViewModelValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionWithReferenceParmsReturnQueryViewModelValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnQueryViewModelValidateOnly x.api
         
 //        [<Test>]
 //        member x.PostCollectionActionWithErrorObject() = ObjectActionInvoke19.PostCollectionActionWithErrorObject x.api
@@ -2427,17 +2427,17 @@ type RestTests() =
         member x.PostInvokeActionReturnCollectionViewModel() = 
             ObjectActionInvoke19.PostInvokeActionReturnCollectionViewModel x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnCollectionObjectVerifyOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnCollectionObjectVerifyOnly x.api
+        [<Test>]
+        member x.PostInvokeActionReturnCollectionObjectVerifyOnly() = 
+            ObjectActionInvoke19.PostInvokeActionReturnCollectionObjectVerifyOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnCollectionServiceVerifyOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnCollectionServiceVerifyOnly x.api
+        [<Test>]
+        member x.PostInvokeActionReturnCollectionServiceVerifyOnly() = 
+            ObjectActionInvoke19.PostInvokeActionReturnCollectionServiceVerifyOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnCollectionViewModelVerifyOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnCollectionViewModelVerifyOnly x.api
+        [<Test>]
+        member x.PostInvokeActionReturnCollectionViewModelVerifyOnly() = 
+            ObjectActionInvoke19.PostInvokeActionReturnCollectionViewModelVerifyOnly x.api
         
         [<Test>]
         member x.PostInvokeActionReturnEmptyCollectionObject() = 
@@ -2451,65 +2451,65 @@ type RestTests() =
         member x.PostInvokeActionReturnEmptyCollectionViewModel() = 
             ObjectActionInvoke19.PostInvokeActionReturnEmptyCollectionViewModel x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnNullCollectionObject() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnNullCollectionObject x.api
+        [<Test>]
+        member x.PostInvokeActionReturnNullCollectionObject() = 
+            ObjectActionInvoke19.PostInvokeActionReturnNullCollectionObject x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnNullCollectionService() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnNullCollectionService x.api
+        [<Test>]
+        member x.PostInvokeActionReturnNullCollectionService() = 
+            ObjectActionInvoke19.PostInvokeActionReturnNullCollectionService x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnNullCollectionViewModel() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnNullCollectionViewModel x.api
+        [<Test>]
+        member x.PostInvokeActionReturnNullCollectionViewModel() = 
+            ObjectActionInvoke19.PostInvokeActionReturnNullCollectionViewModel x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithScalarParmsReturnCollectionObject() = 
-//            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionObject x.api
+        [<Test>]
+        member x.PostInvokeActionWithScalarParmsReturnCollectionObject() = 
+            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionObject x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithScalarParmsReturnCollectionService() = 
-//            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionService x.api
+        [<Test>]
+        member x.PostInvokeActionWithScalarParmsReturnCollectionService() = 
+            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionService x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithScalarParmsReturnCollectionViewModel() = 
-//            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionViewModel x.api
+        [<Test>]
+        member x.PostInvokeActionWithScalarParmsReturnCollectionViewModel() = 
+            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionViewModel x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithScalarParmsReturnCollectionObjectValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionObjectValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionWithScalarParmsReturnCollectionObjectValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithScalarParmsReturnCollectionServiceValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionServiceValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionWithScalarParmsReturnCollectionServiceValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionServiceValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithScalarParmsReturnCollectionViewModelValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionViewModelValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionWithScalarParmsReturnCollectionViewModelValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionWithScalarParmsReturnCollectionViewModelValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithReferenceParmsReturnCollectionObject() = 
-//            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionObject x.api
+        [<Test>]
+        member x.PostInvokeActionWithReferenceParmsReturnCollectionObject() = 
+            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionObject x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithReferenceParmsReturnCollectionService() = 
-//            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionService x.api
+        [<Test>]
+        member x.PostInvokeActionWithReferenceParmsReturnCollectionService() = 
+            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionService x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithReferenceParmsReturnCollectionViewModel() = 
-//            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionViewModel x.api
+        [<Test>]
+        member x.PostInvokeActionWithReferenceParmsReturnCollectionViewModel() = 
+            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionViewModel x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithReferenceParmsReturnCollectionObjectValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionObjectValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionWithReferenceParmsReturnCollectionObjectValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithReferenceParmsReturnCollectionServiceValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionServiceValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionWithReferenceParmsReturnCollectionServiceValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionServiceValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionWithReferenceParmsReturnCollectionViewModelValidateOnly() = 
-//            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionViewModelValidateOnly x.api
+        [<Test>]
+        member x.PostInvokeActionWithReferenceParmsReturnCollectionViewModelValidateOnly() = 
+            ObjectActionInvoke19.PostInvokeActionWithReferenceParmsReturnCollectionViewModelValidateOnly x.api
         
 //        [<Test>]
 //        member x.PostQueryActionWithValidateFailObject() = 
