@@ -1782,17 +1782,17 @@ type RestTests() =
         member x.PostInvokeActionReturnScalarViewModelValidateOnly() = 
             ObjectActionInvoke19.PostInvokeActionReturnScalarViewModelValidateOnly x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnEmptyScalarObject() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnEmptyScalarObject x.api
+        [<Test>]
+        member x.PostInvokeActionReturnEmptyScalarObject() = 
+            ObjectActionInvoke19.PostInvokeActionReturnEmptyScalarObject x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnEmptyScalarService() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnEmptyScalarService x.api
+        [<Test>]
+        member x.PostInvokeActionReturnEmptyScalarService() = 
+            ObjectActionInvoke19.PostInvokeActionReturnEmptyScalarService x.api
         
-//        [<Test>]
-//        member x.PostInvokeActionReturnEmptyScalarViewModel() = 
-//            ObjectActionInvoke19.PostInvokeActionReturnEmptyScalarViewModel x.api
+        [<Test>]
+        member x.PostInvokeActionReturnEmptyScalarViewModel() = 
+            ObjectActionInvoke19.PostInvokeActionReturnEmptyScalarViewModel x.api
         
         [<Test>]
         member x.PostInvokeActionReturnNullScalarObject() = 
@@ -1968,40 +1968,37 @@ type RestTests() =
         member x.GetInvokeActionWithReferenceParmsReturnObjectViewModel() = 
             ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectViewModel x.api
         
-        
-//        [<Test>]
-//        member x.VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm() = 
-//            ObjectActionInvoke19.VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm x.api
+        [<Test>]
+        member x.VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm() = 
+            ObjectActionInvoke19.VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm x.api
 
-        
+        [<Test>]
+        member x.VerifyPostInvokeActionMissingParmOnForm() = 
+            ObjectActionInvoke19.VerifyPostInvokeActionMissingParmOnForm x.api
 
-//        [<Test>]
-//        member x.VerifyPostInvokeActionMissingParmOnForm() = 
-//            ObjectActionInvoke19.VerifyPostInvokeActionMissingParmOnForm x.api
-
-//        [<Test>]
-//        member x.GetInvokeActionWithParmReturnObjectObject() = 
-//            ObjectActionInvoke19.GetInvokeActionWithParmReturnObjectObject x.api
+        [<Test>]
+        member x.GetInvokeActionWithParmReturnObjectObject() = 
+            ObjectActionInvoke19.GetInvokeActionWithParmReturnObjectObject x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionWithParmReturnObjectService() = 
-//            ObjectActionInvoke19.GetInvokeActionWithParmReturnObjectService x.api
+        [<Test>]
+        member x.GetInvokeActionWithParmReturnObjectService() = 
+            ObjectActionInvoke19.GetInvokeActionWithParmReturnObjectService x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionWithParmReturnObjectViewModel() = 
-//            ObjectActionInvoke19.GetInvokeActionWithParmReturnObjectViewModel x.api
+        [<Test>]
+        member x.GetInvokeActionWithParmReturnObjectViewModel() = 
+            ObjectActionInvoke19.GetInvokeActionWithParmReturnObjectViewModel x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly() = 
-//            ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly x.api
+        [<Test>]
+        member x.GetInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly() = 
+            ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly() = 
-//            ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly x.api
+        [<Test>]
+        member x.GetInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly() = 
+            ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectServiceValidateOnly x.api
         
-//        [<Test>]
-//        member x.GetInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly() = 
-//            ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly x.api
+        [<Test>]
+        member x.GetInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly() = 
+            ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly x.api
         
 //        [<Test>]
 //        member x.NotFoundActionInvokeObject() = ObjectActionInvoke19.NotFoundActionInvokeObject x.api
@@ -2181,58 +2178,58 @@ type RestTests() =
 //        member x.InvalidFormalParmsOnPostQueryViewModel() = 
 //            ObjectActionInvoke19.InvalidFormalParmsOnPostQueryViewModel x.api
         
-//        [<Test>]
-//        member x.MissingParmsOnGetQueryObject() = ObjectActionInvoke19.MissingParmsOnGetQueryObject x.api
+        [<Test>]
+        member x.MissingParmsOnGetQueryObject() = ObjectActionInvoke19.MissingParmsOnGetQueryObject x.api
         
-//        [<Test>]
-//        member x.MissingParmsOnGetQueryService() = ObjectActionInvoke19.MissingParmsOnGetQueryService x.api
+        [<Test>]
+        member x.MissingParmsOnGetQueryService() = ObjectActionInvoke19.MissingParmsOnGetQueryService x.api
         
-//        [<Test>]
-//        member x.MissingParmsOnGetQueryViewModel() = ObjectActionInvoke19.MissingParmsOnGetQueryViewModel x.api
+        [<Test>]
+        member x.MissingParmsOnGetQueryViewModel() = ObjectActionInvoke19.MissingParmsOnGetQueryViewModel x.api
         
-//        [<Test>]
-//        member x.MalformedSimpleParmsOnGetQueryObject() = 
-//            ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryObject x.api
+        [<Test>]
+        member x.MalformedSimpleParmsOnGetQueryObject() = 
+            ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryObject x.api
         
-//        [<Test>]
-//        member x.MalformedSimpleParmsOnGetQueryService() = 
-//            ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryService x.api
+        [<Test>]
+        member x.MalformedSimpleParmsOnGetQueryService() = 
+            ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryService x.api
         
-//        [<Test>]
-//        member x.MalformedSimpleParmsOnGetQueryViewModel() = 
-//            ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryViewModel x.api
+        [<Test>]
+        member x.MalformedSimpleParmsOnGetQueryViewModel() = 
+            ObjectActionInvoke19.MalformedSimpleParmsOnGetQueryViewModel x.api
         
-//        [<Test>]
-//        member x.MalformedFormalParmsOnGetQueryObject() = 
-//            ObjectActionInvoke19.MalformedFormalParmsOnGetQueryObject x.api
+        [<Test>]
+        member x.MalformedFormalParmsOnGetQueryObject() = 
+            ObjectActionInvoke19.MalformedFormalParmsOnGetQueryObject x.api
         
-//        [<Test>]
-//        member x.MalformedFormalParmsOnGetQueryService() = 
-//            ObjectActionInvoke19.MalformedFormalParmsOnGetQueryService x.api
+        [<Test>]
+        member x.MalformedFormalParmsOnGetQueryService() = 
+            ObjectActionInvoke19.MalformedFormalParmsOnGetQueryService x.api
         
-//        [<Test>]
-//        member x.MalformedFormalParmsOnGetQueryViewModel() = 
-//            ObjectActionInvoke19.MalformedFormalParmsOnGetQueryViewModel x.api
+        [<Test>]
+        member x.MalformedFormalParmsOnGetQueryViewModel() = 
+            ObjectActionInvoke19.MalformedFormalParmsOnGetQueryViewModel x.api
         
-//        [<Test>]
-//        member x.InvalidSimpleParmsOnGetQueryObject() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryObject x.api
+        [<Test>]
+        member x.InvalidSimpleParmsOnGetQueryObject() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryObject x.api
         
-//        [<Test>]
-//        member x.InvalidSimpleParmsOnGetQueryService() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryService x.api
+        [<Test>]
+        member x.InvalidSimpleParmsOnGetQueryService() = ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryService x.api
         
-//        [<Test>]
-//        member x.InvalidSimpleParmsOnGetQueryViewModel() = 
-//            ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryViewModel x.api
+        [<Test>]
+        member x.InvalidSimpleParmsOnGetQueryViewModel() = 
+            ObjectActionInvoke19.InvalidSimpleParmsOnGetQueryViewModel x.api
         
-//        [<Test>]
-//        member x.InvalidFormalParmsOnGetQueryObject() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryObject x.api
+        [<Test>]
+        member x.InvalidFormalParmsOnGetQueryObject() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryObject x.api
         
-//        [<Test>]
-//        member x.InvalidFormalParmsOnGetQueryService() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryService x.api
+        [<Test>]
+        member x.InvalidFormalParmsOnGetQueryService() = ObjectActionInvoke19.InvalidFormalParmsOnGetQueryService x.api
         
-//        [<Test>]
-//        member x.InvalidFormalParmsOnGetQueryViewModel() = 
-//            ObjectActionInvoke19.InvalidFormalParmsOnGetQueryViewModel x.api
+        [<Test>]
+        member x.InvalidFormalParmsOnGetQueryViewModel() = 
+            ObjectActionInvoke19.InvalidFormalParmsOnGetQueryViewModel x.api
         
 //        [<Test>]
 //        member x.DisabledActionInvokeQueryObject() = ObjectActionInvoke19.DisabledActionInvokeQueryObject x.api
@@ -2369,15 +2366,15 @@ type RestTests() =
 //        member x.PostCollectionActionWithErrorViewModel() = 
 //            ObjectActionInvoke19.PostCollectionActionWithErrorViewModel x.api
         
-//        [<Test>]
-//        member x.MissingParmsOnPostCollectionObject() = ObjectActionInvoke19.MissingParmsOnPostCollectionObject x.api
+        [<Test>]
+        member x.MissingParmsOnPostCollectionObject() = ObjectActionInvoke19.MissingParmsOnPostCollectionObject x.api
         
-//        [<Test>]
-//        member x.MissingParmsOnPostCollectionService() = ObjectActionInvoke19.MissingParmsOnPostCollectionService x.api
+        [<Test>]
+        member x.MissingParmsOnPostCollectionService() = ObjectActionInvoke19.MissingParmsOnPostCollectionService x.api
         
-//        [<Test>]
-//        member x.MissingParmsOnPostCollectionViewModel() = 
-//            ObjectActionInvoke19.MissingParmsOnPostCollectionViewModel x.api
+        [<Test>]
+        member x.MissingParmsOnPostCollectionViewModel() = 
+            ObjectActionInvoke19.MissingParmsOnPostCollectionViewModel x.api
         
 //        [<Test>]
 //        member x.MalformedFormalParmsOnPostCollectionObject() = 
