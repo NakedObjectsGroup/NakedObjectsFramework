@@ -4193,70 +4193,78 @@ let InvalidFormalParmsOnGetQueryViewModel(api : RestfulObjectsControllerBase) =
     let oName = oType
     VerifyInvalidFormalParmsOnGetQuery "objects" oType oName api.GetInvoke api
 
-//let VerifyInvalidFormalParmsOnPostCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsCollectionWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let parms = 
-//        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
-//                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, "invalidvalue"))))
-//    //let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let args = CreateArgMap parms
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
+let VerifyInvalidFormalParmsOnPostCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsCollectionWithScalarParameters"
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let parms = 
+        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
+                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, "invalidvalue"))))
+    //let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
+   
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid 
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(parms)
+    jsonSetPostMsg api.Request url (parms.ToString())
+    setIfMatch api.Request "*"
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    let parsedResult = JObject.Parse(jsonResult)
+
+    let expected = 
+        [ TProperty("parm1", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
+          TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", headers.Headers.["Warning"].ToString())
+    compareObject expected parsedResult
+
+let InvalidFormalParmsOnPostCollectionObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyInvalidFormalParmsOnPostCollection "objects" oType oName api.PostInvoke api
+
+let InvalidFormalParmsOnPostCollectionService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyInvalidFormalParmsOnPostCollection "services" oType oName (wrap3 api.PostInvokeOnService) api
+
+let InvalidFormalParmsOnPostCollectionViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyInvalidFormalParmsOnPostCollection "objects" oType oName api.PostInvoke api
+
+let VerifyDisabledActionInvokeQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "ADisabledQueryAction"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
     
-//    let expected = 
-//        [ TProperty("parm1", 
-//                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
-//          TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
-//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", headers.Headers.["Warning"].ToString())
-//    compareObject expected parsedResult
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetGetMsg api.Request url
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    
+    assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"Always disabled\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
-//let InvalidFormalParmsOnPostCollectionObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyInvalidFormalParmsOnPostCollection "objects" oType oName api.PostInvoke api
+let DisabledActionInvokeQueryObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyDisabledActionInvokeQuery "objects" oType oName api.GetInvoke api
 
-//let InvalidFormalParmsOnPostCollectionService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyInvalidFormalParmsOnPostCollection "services" oType oName (wrap api.PostInvokeOnService) api
+let DisabledActionInvokeQueryService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyDisabledActionInvokeQuery "services" oType oName (wrap3 api.GetInvokeOnService) api
 
-//let InvalidFormalParmsOnPostCollectionViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyInvalidFormalParmsOnPostCollection "objects" oType oName api.PostInvoke api
-
-//let VerifyDisabledActionInvokeQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "ADisabledQueryAction"
-//    let ourl = sprintf "%s/%s" refType oName
-//    let purl = sprintf "%s/actions/%s" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"Always disabled\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
-
-//let DisabledActionInvokeQueryObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyDisabledActionInvokeQuery "objects" oType oName api.GetInvoke api
-
-//let DisabledActionInvokeQueryService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyDisabledActionInvokeQuery "services" oType oName (wrap api.GetInvokeOnService) api
-
-//let DisabledActionInvokeQueryViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyDisabledActionInvokeQuery "objects" oType oName api.GetInvoke api
+let DisabledActionInvokeQueryViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyDisabledActionInvokeQuery "objects" oType oName api.GetInvoke api
 
 //let VerifyDisabledActionInvokeCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let error = "Always disabled"

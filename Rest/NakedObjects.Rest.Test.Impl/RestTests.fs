@@ -2231,14 +2231,14 @@ type RestTests() =
         member x.InvalidFormalParmsOnGetQueryViewModel() = 
             ObjectActionInvoke19.InvalidFormalParmsOnGetQueryViewModel x.api
         
-//        [<Test>]
-//        member x.DisabledActionInvokeQueryObject() = ObjectActionInvoke19.DisabledActionInvokeQueryObject x.api
+        [<Test>]
+        member x.DisabledActionInvokeQueryObject() = ObjectActionInvoke19.DisabledActionInvokeQueryObject x.api
         
-//        [<Test>]
-//        member x.DisabledActionInvokeQueryService() = ObjectActionInvoke19.DisabledActionInvokeQueryService x.api
+        [<Test>]
+        member x.DisabledActionInvokeQueryService() = ObjectActionInvoke19.DisabledActionInvokeQueryService x.api
         
-//        [<Test>]
-//        member x.DisabledActionInvokeQueryViewModel() = ObjectActionInvoke19.DisabledActionInvokeQueryViewModel x.api
+        [<Test>]
+        member x.DisabledActionInvokeQueryViewModel() = ObjectActionInvoke19.DisabledActionInvokeQueryViewModel x.api
         
         [<Test>]
         member x.GetInvokeActionWithScalarParmsReturnQuerySimpleObject() = 
@@ -2388,17 +2388,17 @@ type RestTests() =
 //        member x.MalformedFormalParmsOnPostCollectionViewModel() = 
 //            ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionViewModel x.api
         
-//        [<Test>]
-//        member x.InvalidFormalParmsOnPostCollectionObject() = 
-//            ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionObject x.api
+        [<Test>]
+        member x.InvalidFormalParmsOnPostCollectionObject() = 
+            ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionObject x.api
         
-//        [<Test>]
-//        member x.InvalidFormalParmsOnPostCollectionService() = 
-//            ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionService x.api
+        [<Test>]
+        member x.InvalidFormalParmsOnPostCollectionService() = 
+            ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionService x.api
         
-//        [<Test>]
-//        member x.InvalidFormalParmsOnPostCollectionViewModel() = 
-//            ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionViewModel x.api
+        [<Test>]
+        member x.InvalidFormalParmsOnPostCollectionViewModel() = 
+            ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionViewModel x.api
         
 //        [<Test>]
 //        member x.DisabledActionInvokeCollectionObject() = 
