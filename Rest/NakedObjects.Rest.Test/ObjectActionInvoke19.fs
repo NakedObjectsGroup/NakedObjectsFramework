@@ -4456,71 +4456,76 @@ let PutActionWithQueryOnlyViewModel(api : RestfulObjectsControllerBase) =
     let oName = oType
     VerifyPutActionWithQueryOnly "objects" oType oName api.PutInvoke api
 
-//let VerifyNotAcceptableGetInvokeWrongMediaType refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsQueryable"
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let purl = sprintf "%s/actions/%s" ourl pid
-//    try 
-//        let args = CreateArgMap(new JObject())
-//        let msg = jsonGetMsg (sprintf "http://localhost/%s" purl)
-//        msg.Headers.Accept.Single().Parameters.Add(new NameValueHeaderValue("profile", (makeProfile RepresentationTypes.ActionDescription)))
-//        api.Request <- msg
-//        f (oType, ktc "1", pid, args) |> ignore
-//        Assert.Fail("expect exception")
-//    with :? HttpResponseException as ex -> Assert.AreEqual(HttpStatusCode.NotAcceptable, ex.Response.StatusCode)
+let VerifyNotAcceptableGetInvokeWrongMediaType refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsQueryable"
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
 
-//let NotAcceptableGetInvokeWrongMediaTypeObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = ktc "1"
-//    VerifyNotAcceptableGetInvokeWrongMediaType "objects" oType oName api.GetInvoke api
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetGetMsgWithProfile api.Request url RepresentationTypes.ActionDescription
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
 
-//let NotAcceptableGetInvokeWrongMediaTypeService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyNotAcceptableGetInvokeWrongMediaType "services" oType oName (wrap api.GetInvokeOnService) api
+    assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
 
-//let NotAcceptableGetInvokeWrongMediaTypeViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyNotAcceptableGetInvokeWrongMediaType "objects" oType oName api.GetInvoke api
+let NotAcceptableGetInvokeWrongMediaTypeObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = ktc "1"
+    VerifyNotAcceptableGetInvokeWrongMediaType "objects" oType oName api.GetInvoke api
 
-//let VerifyGetQueryActionWithError refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnErrorQuery"
-//    let ourl = sprintf "%s/%s" refType oName
-//    let purl = sprintf "%s/actions/%s" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
+let NotAcceptableGetInvokeWrongMediaTypeService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyNotAcceptableGetInvokeWrongMediaType "services" oType oName (wrap3 api.GetInvokeOnService) api
+
+let NotAcceptableGetInvokeWrongMediaTypeViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyNotAcceptableGetInvokeWrongMediaType "objects" oType oName api.GetInvoke api
+
+let VerifyGetQueryActionWithError refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnErrorQuery"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
+    let args = CreateArgMap(new JObject())
     
-//    let expected = 
-//        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
-//          TProperty(JsonPropertyNames.StackTrace, 
-//                    TArray([TObjectVal(new errorType(" at  in "));
-//                            TObjectVal(new errorType(" at  in "));
-//                            TObjectVal(new errorType(" at  in "));
-//                          ]))
-//          TProperty(JsonPropertyNames.Links, TArray([]))
-//          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
-//    assertStatusCode HttpStatusCode.InternalServerError statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"An error exception\"", headers.Headers.["Warning"].ToString())
-//    compareObject expected parsedResult
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetGetMsg api.Request url
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    let parsedResult = JObject.Parse(jsonResult)
 
-//let GetQueryActionWithErrorObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyGetQueryActionWithError "objects" oType oName api.GetInvoke api
+    let expected = 
+        [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
+          TProperty(JsonPropertyNames.StackTrace, 
+                    TArray([TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                            TObjectVal(new errorType(" at  in "));
+                          ]))
+          TProperty(JsonPropertyNames.Links, TArray([]))
+          TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+    assertStatusCode HttpStatusCode.InternalServerError statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"An error exception\"", headers.Headers.["Warning"].ToString())
+    compareObject expected parsedResult
 
-//let GetQueryActionWithErrorService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyGetQueryActionWithError "services" oType oName (wrap api.GetInvokeOnService) api
+let GetQueryActionWithErrorObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyGetQueryActionWithError "objects" oType oName api.GetInvoke api
 
-//let GetQueryActionWithErrorViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyGetQueryActionWithError "objects" oType oName api.GetInvoke api
+let GetQueryActionWithErrorService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyGetQueryActionWithError "services" oType oName (wrap3 api.GetInvokeOnService) api
+
+let GetQueryActionWithErrorViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyGetQueryActionWithError "objects" oType oName api.GetInvoke api
 
 //let VerifyPostCollectionActionWithError refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnErrorCollection"
@@ -5000,163 +5005,182 @@ let PutActionWithQueryOnlyViewModel(api : RestfulObjectsControllerBase) =
 //    let oName = oType
 //    VerifyPostQueryActionWithCrossValidateFail "objects" oType oName api.PostInvoke api
 
-//let VerifyGetInvokeActionReturnCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsCollection"
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
-
-//let GetInvokeActionReturnCollectionObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionReturnCollection "objects" oType oName api.GetInvoke api
-
-//let GetInvokeActionReturnCollectionService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyGetInvokeActionReturnCollection "services" oType oName (wrap api.GetInvokeOnService) api
-
-//let GetInvokeActionReturnCollectionViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyGetInvokeActionReturnCollection "objects" oType oName api.GetInvoke api
-
-//let VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsCollectionWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let purl = sprintf "%s/actions/%s/invoke?parm2=fred&parm1=100" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
-
-//let GetInvokeActionWithScalarParmsReturnCollectionSimpleObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple "objects" oType oName api.GetInvoke api
-
-//let GetInvokeActionWithScalarParmsReturnCollectionSimpleService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple "services" oType oName (wrap api.GetInvokeOnService) api
-
-//let GetInvokeActionWithScalarParmsReturnCollectionSimpleViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple "objects" oType oName api.GetInvoke api
-
-//let VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsCollectionWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let parms = 
-//        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
-//                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 100))))
-//    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parmsEncoded
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
-
-//let GetInvokeActionWithScalarParmsReturnCollectionFormalObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal "objects" oType oName api.GetInvoke api
-
-//let GetInvokeActionWithScalarParmsReturnCollectionFormalService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal "services" oType oName (wrap api.GetInvokeOnService) api
-
-//let GetInvokeActionWithScalarParmsReturnCollectionFormalViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal "objects" oType oName api.GetInvoke api
-
-//let VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsCollectionWithParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
-//    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
-//    let parms = 
-//        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, refParm))), 
-//                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 101))))
-//    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parmsEncoded
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
-
-//let GetInvokeActionWithReferenceParmsReturnCollectionFormalObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal "objects" oType oName api.GetInvoke api
-
-//let GetInvokeActionWithReferenceParmsReturnCollectionFormalService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal "services" oType oName (wrap api.GetInvokeOnService) api
-
-//let GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal "objects" oType oName api.GetInvoke api
-
-//// new validate only
-//let VerifyMissingParmsOnGetQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    let parms = new JObject(new JProperty("x-ro-validate-only", true))
-//    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s?%s" purl parmsEncoded)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
+let VerifyGetInvokeActionReturnCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsCollection"
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetGetMsg api.Request url
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
     
-//    let expected = 
-//        [ TProperty("parm1", 
-//                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ]))
-//          TProperty("parm2", 
-//                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
-//    assertStatusCode unprocessableEntity statusCode jsonResult
-//    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
-//    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", headers.Headers.["Warning"].First().ToString())
-//    compareObject expected parsedResult
+    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
-//let MissingParmsOnGetQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyMissingParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
+let GetInvokeActionReturnCollectionObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyGetInvokeActionReturnCollection "objects" oType oName api.GetInvoke api
 
-//let MissingParmsOnGetQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyMissingParmsOnGetQueryValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
+let GetInvokeActionReturnCollectionService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyGetInvokeActionReturnCollection "services" oType oName (wrap3 api.GetInvokeOnService) api
 
-//let MissingParmsOnGetQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyMissingParmsOnGetQueryValidateOnly "objects" oType oName api.PostInvoke api
+let GetInvokeActionReturnCollectionViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyGetInvokeActionReturnCollection "objects" oType oName api.GetInvoke api
+
+let VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsCollectionWithScalarParameters"
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let purl = sprintf "%s/actions/%s/invoke?parm2=fred&parm1=100" ourl pid
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetGetMsg api.Request url
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    
+    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
+
+let GetInvokeActionWithScalarParmsReturnCollectionSimpleObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple "objects" oType oName api.GetInvoke api
+
+let GetInvokeActionWithScalarParmsReturnCollectionSimpleService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple "services" oType oName (wrap3 api.GetInvokeOnService) api
+
+let GetInvokeActionWithScalarParmsReturnCollectionSimpleViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType + "/" + ktc "1"
+    VerifyGetInvokeActionWithScalarParmsReturnCollectionSimple "objects" oType oName api.GetInvoke api
+
+let VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsCollectionWithScalarParameters"
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let parms = 
+        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
+                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 100))))
+    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
+    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parmsEncoded
+    
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetGetMsg api.Request url
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    
+    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
+
+let GetInvokeActionWithScalarParmsReturnCollectionFormalObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal "objects" oType oName api.GetInvoke api
+
+let GetInvokeActionWithScalarParmsReturnCollectionFormalService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal "services" oType oName (wrap3 api.GetInvokeOnService) api
+
+let GetInvokeActionWithScalarParmsReturnCollectionFormalViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType + "/" + ktc "1"
+    VerifyGetInvokeActionWithScalarParmsReturnCollectionFormal "objects" oType oName api.GetInvoke api
+
+let VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsCollectionWithParameters"
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let roType = ttc "RestfulObjects.Test.Data.MostSimple"
+    let refParm = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType (ktc "1")))).ToString()))
+    let parms = 
+        new JObject(new JProperty("parm2", new JObject(new JProperty(JsonPropertyNames.Value, refParm))), 
+                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 101))))
+    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
+    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parmsEncoded
+    
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetGetMsg api.Request url
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    
+    
+    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
+
+let GetInvokeActionWithReferenceParmsReturnCollectionFormalObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal "objects" oType oName api.GetInvoke api
+
+let GetInvokeActionWithReferenceParmsReturnCollectionFormalService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal "services" oType oName (wrap3 api.GetInvokeOnService) api
+
+let GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType + "/" + ktc "1"
+    VerifyGetInvokeActionWithReferenceParmsReturnCollectionFormal "objects" oType oName api.GetInvoke api
+
+// new validate only
+let VerifyMissingParmsOnGetQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsQueryableWithScalarParameters"
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid
+    let parms = new JObject(new JProperty("x-ro-validate-only", true))
+    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
+    
+    
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s?%s" purl parmsEncoded
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetGetMsg api.Request url
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    let parsedResult = JObject.Parse(jsonResult)
+
+    let expected = 
+        [ TProperty("parm1", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ]))
+          TProperty("parm2", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Mandatory")) ])) ]
+    assertStatusCode unprocessableEntity statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.BadArguments), headers.ContentType)
+    Assert.AreEqual("199 RestfulObjects \"Mandatory\"", headers.Headers.["Warning"].First().ToString())
+    compareObject expected parsedResult
+
+let MissingParmsOnGetQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyMissingParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
+
+let MissingParmsOnGetQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyMissingParmsOnGetQueryValidateOnly "services" oType oName (wrap3 api.GetInvokeOnService) api
+
+let MissingParmsOnGetQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyMissingParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
 
 //let VerifyMissingParmsOnPostCollectionValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithScalarParameters"
@@ -5197,64 +5221,71 @@ let PutActionWithQueryOnlyViewModel(api : RestfulObjectsControllerBase) =
 //    VerifyMissingParmsOnPostCollectionValidateOnly "objects" oType oName api.PostInvoke api
 
 //// malformed args 
-//let VerifyMalformedSimpleParmsOnGetQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let parms = "malformed=fred&parm1=100&x-ro-validate-only=true"
-//    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parms
-//    let args = CreateArgMapFromUrl parms
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+let VerifyMalformedSimpleParmsOnGetQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsQueryableWithScalarParameters"
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let parms = "malformed=fred&parm1=100&x-ro-validate-only=true"
+    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parms
+       
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapFromUrl parms
+    jsonSetGetMsg api.Request url
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
-//let MalformedSimpleParmsOnGetQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyMalformedSimpleParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
+let MalformedSimpleParmsOnGetQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyMalformedSimpleParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
 
-//let MalformedSimpleParmsOnGetQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyMalformedSimpleParmsOnGetQueryValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
+let MalformedSimpleParmsOnGetQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyMalformedSimpleParmsOnGetQueryValidateOnly "services" oType oName (wrap3 api.GetInvokeOnService) api
 
-//let MalformedSimpleParmsOnGetQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyMalformedSimpleParmsOnGetQueryValidateOnly "objects" oType oName api.PostInvoke api
+let MalformedSimpleParmsOnGetQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyMalformedSimpleParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
 
-//let VerifyMalformedFormalParmsOnGetQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let parms = 
-//        new JObject(new JProperty("malformed", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
-//                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 100))), new JProperty("x-ro-validate-only", true))
-//    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-//    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parmsEncoded
-//    let args = CreateArgMap parms
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+let VerifyMalformedFormalParmsOnGetQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsQueryableWithScalarParameters"
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let parms = 
+        new JObject(new JProperty("malformed", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
+                    new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 100))), new JProperty("x-ro-validate-only", true))
+    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
+    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parmsEncoded
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s?%s" purl parmsEncoded
+    let args = CreateArgMapWithReserved(parms)
+    jsonSetGetMsg api.Request url
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
-//let MalformedFormalParmsOnGetQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyMalformedFormalParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
+let MalformedFormalParmsOnGetQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyMalformedFormalParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
 
-//let MalformedFormalParmsOnGetQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyMalformedFormalParmsOnGetQueryValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
+let MalformedFormalParmsOnGetQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyMalformedFormalParmsOnGetQueryValidateOnly "services" oType oName (wrap3 api.GetInvokeOnService) api
 
-//let MalformedFormalParmsOnGetQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyMalformedFormalParmsOnGetQueryValidateOnly "objects" oType oName api.PostInvoke api
+let MalformedFormalParmsOnGetQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyMalformedFormalParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
 
 //let VerifyMalformedFormalParmsOnGetCollectionValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsCollectionWithScalarParameters"
@@ -5287,40 +5318,42 @@ let PutActionWithQueryOnlyViewModel(api : RestfulObjectsControllerBase) =
 //    let oName = oType
 //    VerifyMalformedFormalParmsOnGetCollectionValidateOnly "objects" oType oName api.PostInvoke api
 
-//let VerifyInvalidSimpleParmsOnGetQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsQueryableWithScalarParameters"
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let parms = "parm2=fred&parm1=invalidvalue&x-ro-validate-only=true"
-//    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parms
-//    let args = CreateArgMapFromUrl parms
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    let parsedResult = JObject.Parse(jsonResult)
-    
-//    let expected = 
-//        [ TProperty("parm1", 
-//                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
-//                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
-//          TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
-//    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", headers.Headers.["Warning"].ToString())
-//    compareObject expected parsedResult
+let VerifyInvalidSimpleParmsOnGetQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsQueryableWithScalarParameters"
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let parms = "parm2=fred&parm1=invalidvalue&x-ro-validate-only=true"
+    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parms
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl 
+    let args = CreateArgMapFromUrl parms
+    jsonSetGetMsg api.Request url
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    let parsedResult = JObject.Parse(jsonResult)
 
-//let InvalidSimpleParmsOnGetQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyInvalidSimpleParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
+    let expected = 
+        [ TProperty("parm1", 
+                    TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("invalidvalue"))
+                                  TProperty(JsonPropertyNames.InvalidReason, TObjectVal("Invalid Entry")) ]))
+          TProperty("parm2", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal("fred")) ])) ]
+    assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"Invalid Entry\"", headers.Headers.["Warning"].ToString())
+    compareObject expected parsedResult
 
-//let InvalidSimpleParmsOnGetQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyInvalidSimpleParmsOnGetQueryValidateOnly "services" oType oName (wrap api.GetInvokeOnService) api
+let InvalidSimpleParmsOnGetQueryObjectValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyInvalidSimpleParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
 
-//let InvalidSimpleParmsOnGetQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyInvalidSimpleParmsOnGetQueryValidateOnly "objects" oType oName api.PostInvoke api
+let InvalidSimpleParmsOnGetQueryServiceValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyInvalidSimpleParmsOnGetQueryValidateOnly "services" oType oName (wrap3 api.GetInvokeOnService) api
+
+let InvalidSimpleParmsOnGetQueryViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyInvalidSimpleParmsOnGetQueryValidateOnly "objects" oType oName api.GetInvoke api
 
 //let VerifyInvalidFormalParmsOnGetQueryValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryableWithScalarParameters"
