@@ -2000,50 +2000,50 @@ type RestTests() =
         member x.GetInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly() = 
             ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnObjectViewModelValidateOnly x.api
         
-//        [<Test>]
-//        member x.NotFoundActionInvokeObject() = ObjectActionInvoke19.NotFoundActionInvokeObject x.api
+        [<Test>]
+        member x.NotFoundActionInvokeObject() = ObjectActionInvoke19.NotFoundActionInvokeObject x.api
         
-//        [<Test>]
-//        member x.NotFoundActionInvokeService() = ObjectActionInvoke19.NotFoundActionInvokeService x.api
+        [<Test>]
+        member x.NotFoundActionInvokeService() = ObjectActionInvoke19.NotFoundActionInvokeService x.api
         
-//        [<Test>]
-//        member x.NotFoundActionInvokeViewModel() = ObjectActionInvoke19.NotFoundActionInvokeViewModel x.api
+        [<Test>]
+        member x.NotFoundActionInvokeViewModel() = ObjectActionInvoke19.NotFoundActionInvokeViewModel x.api
         
-//        [<Test>]
-//        member x.HiddenActionInvokeObject() = ObjectActionInvoke19.HiddenActionInvokeObject x.api
+        [<Test>]
+        member x.HiddenActionInvokeObject() = ObjectActionInvoke19.HiddenActionInvokeObject x.api
         
-//        [<Test>]
-//        member x.HiddenActionInvokeService() = ObjectActionInvoke19.HiddenActionInvokeService x.api
+        [<Test>]
+        member x.HiddenActionInvokeService() = ObjectActionInvoke19.HiddenActionInvokeService x.api
         
-//        [<Test>]
-//        member x.HiddenActionInvokeViewModel() = ObjectActionInvoke19.HiddenActionInvokeViewModel x.api
+        [<Test>]
+        member x.HiddenActionInvokeViewModel() = ObjectActionInvoke19.HiddenActionInvokeViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionWithSideEffectsObject() = ObjectActionInvoke19.GetActionWithSideEffectsObject x.api
+        [<Test>]
+        member x.GetActionWithSideEffectsObject() = ObjectActionInvoke19.GetActionWithSideEffectsObject x.api
         
-//        [<Test>]
-//        member x.GetActionWithSideEffectsService() = ObjectActionInvoke19.GetActionWithSideEffectsService x.api
+        [<Test>]
+        member x.GetActionWithSideEffectsService() = ObjectActionInvoke19.GetActionWithSideEffectsService x.api
         
-//        [<Test>]
-//        member x.GetActionWithSideEffectsViewModel() = ObjectActionInvoke19.GetActionWithSideEffectsViewModel x.api
+        [<Test>]
+        member x.GetActionWithSideEffectsViewModel() = ObjectActionInvoke19.GetActionWithSideEffectsViewModel x.api
         
-//        [<Test>]
-//        member x.GetActionWithIdempotentObject() = ObjectActionInvoke19.GetActionWithIdempotentObject x.api
+        [<Test>]
+        member x.GetActionWithIdempotentObject() = ObjectActionInvoke19.GetActionWithIdempotentObject x.api
         
-//        [<Test>]
-//        member x.GetActionWithIdempotentService() = ObjectActionInvoke19.GetActionWithIdempotentService x.api
+        [<Test>]
+        member x.GetActionWithIdempotentService() = ObjectActionInvoke19.GetActionWithIdempotentService x.api
         
-//        [<Test>]
-//        member x.GetActionWithIdempotentViewModel() = ObjectActionInvoke19.GetActionWithIdempotentViewModel x.api
+        [<Test>]
+        member x.GetActionWithIdempotentViewModel() = ObjectActionInvoke19.GetActionWithIdempotentViewModel x.api
         
-//        [<Test>]
-//        member x.PutActionWithQueryOnlyObject() = ObjectActionInvoke19.PutActionWithQueryOnlyObject x.api
+        [<Test>]
+        member x.PutActionWithQueryOnlyObject() = ObjectActionInvoke19.PutActionWithQueryOnlyObject x.api
         
-//        [<Test>]
-//        member x.PutActionWithQueryOnlyService() = ObjectActionInvoke19.PutActionWithQueryOnlyService x.api
+        [<Test>]
+        member x.PutActionWithQueryOnlyService() = ObjectActionInvoke19.PutActionWithQueryOnlyService x.api
         
-//        [<Test>]
-//        member x.PutActionWithQueryOnlyViewModel() = ObjectActionInvoke19.PutActionWithQueryOnlyViewModel x.api
+        [<Test>]
+        member x.PutActionWithQueryOnlyViewModel() = ObjectActionInvoke19.PutActionWithQueryOnlyViewModel x.api
         
 //        [<Test>]
 //        member x.NotAcceptableGetInvokeWrongMediaTypeObject() = 
@@ -2400,17 +2400,17 @@ type RestTests() =
         member x.InvalidFormalParmsOnPostCollectionViewModel() = 
             ObjectActionInvoke19.InvalidFormalParmsOnPostCollectionViewModel x.api
         
-//        [<Test>]
-//        member x.DisabledActionInvokeCollectionObject() = 
-//            ObjectActionInvoke19.DisabledActionInvokeCollectionObject x.api
+        [<Test>]
+        member x.DisabledActionInvokeCollectionObject() = 
+            ObjectActionInvoke19.DisabledActionInvokeCollectionObject x.api
         
-//        [<Test>]
-//        member x.DisabledActionInvokeCollectionService() = 
-//            ObjectActionInvoke19.DisabledActionInvokeCollectionService x.api
+        [<Test>]
+        member x.DisabledActionInvokeCollectionService() = 
+            ObjectActionInvoke19.DisabledActionInvokeCollectionService x.api
         
-//        [<Test>]
-//        member x.DisabledActionInvokeCollectionViewModel() = 
-//            ObjectActionInvoke19.DisabledActionInvokeCollectionViewModel x.api
+        [<Test>]
+        member x.DisabledActionInvokeCollectionViewModel() = 
+            ObjectActionInvoke19.DisabledActionInvokeCollectionViewModel x.api
         
         [<Test>]
         member x.PostInvokeActionReturnCollectionObject() = 
@@ -2748,17 +2748,17 @@ type RestTests() =
 //        member x.GetActionWithIdempotentViewModelValidateOnly() = 
 //            ObjectActionInvoke19.GetActionWithIdempotentViewModelValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutActionWithQueryOnlyObjectValidateOnly() = 
-//            ObjectActionInvoke19.PutActionWithQueryOnlyObjectValidateOnly x.api
+        [<Test>]
+        member x.PutActionWithQueryOnlyObjectValidateOnly() = 
+            ObjectActionInvoke19.PutActionWithQueryOnlyObjectValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutActionWithQueryOnlyServiceValidateOnly() = 
-//            ObjectActionInvoke19.PutActionWithQueryOnlyServiceValidateOnly x.api
+        [<Test>]
+        member x.PutActionWithQueryOnlyServiceValidateOnly() = 
+            ObjectActionInvoke19.PutActionWithQueryOnlyServiceValidateOnly x.api
         
-//        [<Test>]
-//        member x.PutActionWithQueryOnlyViewModelValidateOnly() = 
-//            ObjectActionInvoke19.PutActionWithQueryOnlyViewModelValidateOnly x.api
+        [<Test>]
+        member x.PutActionWithQueryOnlyViewModelValidateOnly() = 
+            ObjectActionInvoke19.PutActionWithQueryOnlyViewModelValidateOnly x.api
         
 //        [<Test>]
 //        member x.GetQueryActionWithErrorObjectValidateOnly() = 

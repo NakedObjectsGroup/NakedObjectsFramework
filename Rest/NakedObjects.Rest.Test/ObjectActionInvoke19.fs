@@ -4266,169 +4266,195 @@ let DisabledActionInvokeQueryViewModel(api : RestfulObjectsControllerBase) =
     let oName = oType
     VerifyDisabledActionInvokeQuery "objects" oType oName api.GetInvoke api
 
-//let VerifyDisabledActionInvokeCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let error = "Always disabled"
-//    let pid = "ADisabledCollectionAction"
-//    let ourl = sprintf "%s/%s" refType oName
-//    let purl = sprintf "%s/actions/%s" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPostMsg (sprintf "http://localhost/%s" purl) ""
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+let VerifyDisabledActionInvokeCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let error = "Always disabled"
+    let pid = "ADisabledCollectionAction"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
+    
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetEmptyPostMsg api.Request url
+    setIfMatch api.Request "*"
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    
+    assertStatusCode HttpStatusCode.Forbidden statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"" + error + "\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
-//let DisabledActionInvokeCollectionObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyDisabledActionInvokeCollection "objects" oType oName api.PostInvoke api
+let DisabledActionInvokeCollectionObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyDisabledActionInvokeCollection "objects" oType oName api.PostInvoke api
 
-//let DisabledActionInvokeCollectionService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyDisabledActionInvokeCollection "services" oType oName (wrap api.PostInvokeOnService) api
+let DisabledActionInvokeCollectionService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyDisabledActionInvokeCollection "services" oType oName (wrap3 api.PostInvokeOnService) api
 
-//let DisabledActionInvokeCollectionViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyDisabledActionInvokeCollection "objects" oType oName api.PostInvoke api
+let DisabledActionInvokeCollectionViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyDisabledActionInvokeCollection "objects" oType oName api.PostInvoke api
 
-//// 404 
-//let VerifyNotFoundActionInvoke refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "ANonExistentAction" // doesn't exist 
-//    let ourl = sprintf "%s/%s/%s" refType oType oName
-//    let purl = sprintf "%s/actions/%s" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"No such action ANonExistentAction\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+// 404 
+let VerifyNotFoundActionInvoke refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "ANonExistentAction" // doesn't exist 
+    let ourl = sprintf "%s/%s/%s" refType oType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
+    
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetGetMsg api.Request url
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    
+    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"No such action ANonExistentAction\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
-//let NotFoundActionInvokeObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyNotFoundActionInvoke "objects" oType oName api.GetInvoke api
+let NotFoundActionInvokeObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyNotFoundActionInvoke "objects" oType oName api.GetInvoke api
 
-//let NotFoundActionInvokeService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyNotFoundActionInvoke "services" oType oName (wrap api.GetInvokeOnService) api
+let NotFoundActionInvokeService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyNotFoundActionInvoke "services" oType oName (wrap3 api.GetInvokeOnService) api
 
-//let NotFoundActionInvokeViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyNotFoundActionInvoke "objects" oType oName api.GetInvoke api
+let NotFoundActionInvokeViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyNotFoundActionInvoke "objects" oType oName api.GetInvoke api
 
-//let VerifyHiddenActionInvoke refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AHiddenAction"
-//    let ourl = sprintf "%s/%s" refType oName
-//    let purl = sprintf "%s/actions/%s" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"No such action AHiddenAction\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+let VerifyHiddenActionInvoke refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AHiddenAction"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
+    
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetGetMsg api.Request url
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    
+    assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"No such action AHiddenAction\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
-//let HiddenActionInvokeObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyHiddenActionInvoke "objects" oType oName api.GetInvoke api
+let HiddenActionInvokeObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyHiddenActionInvoke "objects" oType oName api.GetInvoke api
 
-//let HiddenActionInvokeService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyHiddenActionInvoke "services" oType oName (wrap api.GetInvokeOnService) api
+let HiddenActionInvokeService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyHiddenActionInvoke "services" oType oName (wrap3 api.GetInvokeOnService) api
 
-//let HiddenActionInvokeViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyHiddenActionInvoke "objects" oType oName api.GetInvoke api
+let HiddenActionInvokeViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyHiddenActionInvoke "objects" oType oName api.GetInvoke api
 
-//let VerifyGetActionWithSideEffects refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsVoid"
-//    let ourl = sprintf "%s/%s" refType oName
-//    let purl = sprintf "%s/actions/%s" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+let VerifyGetActionWithSideEffects refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsVoid"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
+    
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetGetMsg api.Request url
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    
+    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
-//let GetActionWithSideEffectsObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyGetActionWithSideEffects "objects" oType oName api.GetInvoke api
+let GetActionWithSideEffectsObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyGetActionWithSideEffects "objects" oType oName api.GetInvoke api
 
-//let GetActionWithSideEffectsService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyGetActionWithSideEffects "services" oType oName (wrap api.GetInvokeOnService) api
+let GetActionWithSideEffectsService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyGetActionWithSideEffects "services" oType oName (wrap3 api.GetInvokeOnService) api
 
-//let GetActionWithSideEffectsViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyGetActionWithSideEffects "objects" oType oName api.GetInvoke api
+let GetActionWithSideEffectsViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyGetActionWithSideEffects "objects" oType oName api.GetInvoke api
 
-//let VerifyGetActionWithIdempotent refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionAnnotatedIdempotent"
-//    let ourl = sprintf "%s/%s" refType oName
-//    let purl = sprintf "%s/actions/%s" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonGetMsg (sprintf "http://localhost/%s" purl)
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+let VerifyGetActionWithIdempotent refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionAnnotatedIdempotent"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
+    
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetGetMsg api.Request url
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    
+    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"action is not side-effect free\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
-//let GetActionWithIdempotentObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyGetActionWithIdempotent "objects" oType oName api.GetInvoke api
+let GetActionWithIdempotentObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyGetActionWithIdempotent "objects" oType oName api.GetInvoke api
 
-//let GetActionWithIdempotentService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyGetActionWithIdempotent "services" oType oName (wrap api.GetInvokeOnService) api
+let GetActionWithIdempotentService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyGetActionWithIdempotent "services" oType oName (wrap3 api.GetInvokeOnService) api
 
-//let GetActionWithIdempotentViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyGetActionWithIdempotent "objects" oType oName api.GetInvoke api
+let GetActionWithIdempotentViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyGetActionWithIdempotent "objects" oType oName api.GetInvoke api
 
-//let VerifyPutActionWithQueryOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsVoid"
-//    let ourl = sprintf "%s/%s" refType oName
-//    let purl = sprintf "%s/actions/%s" ourl pid
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) ""
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"action is not idempotent\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+let VerifyPutActionWithQueryOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsVoid"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
+       
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetEmptyPutMsg api.Request url
+    setIfMatch api.Request "*"
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    
+    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"action is not idempotent\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
-//let PutActionWithQueryOnlyObject(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyPutActionWithQueryOnly "objects" oType oName api.PutInvoke api
+let PutActionWithQueryOnlyObject(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyPutActionWithQueryOnly "objects" oType oName api.PutInvoke api
 
-//let PutActionWithQueryOnlyService(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyPutActionWithQueryOnly "services" oType oName (wrap api.PutInvokeOnService) api
+let PutActionWithQueryOnlyService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyPutActionWithQueryOnly "services" oType oName (wrap3 api.PutInvokeOnService) api
 
-//let PutActionWithQueryOnlyViewModel(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyPutActionWithQueryOnly "objects" oType oName api.PutInvoke api
+let PutActionWithQueryOnlyViewModel(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyPutActionWithQueryOnly "objects" oType oName api.PutInvoke api
 
 //let VerifyNotAcceptableGetInvokeWrongMediaType refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnActionReturnsQueryable"
@@ -5547,33 +5573,39 @@ let DisabledActionInvokeQueryViewModel(api : RestfulObjectsControllerBase) =
 //    let oName = oType
 //    VerifyGetActionWithIdempotentValidateOnly "objects" oType oName api.GetInvoke api
 
-//let VerifyPutActionWithQueryOnlyValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionReturnsVoid"
-//    let ourl = sprintf "%s/%s" refType oName
-//    let purl = sprintf "%s/actions/%s" ourl pid
-//    let parms = new JObject(new JProperty("x-ro-validate-only", true))
-//    let args = CreateArgMap parms
-//    api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) (parms.ToString())
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
-//    Assert.AreEqual("199 RestfulObjects \"action is not idempotent\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+let VerifyPutActionWithQueryOnlyValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionReturnsVoid"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
+    let parms = new JObject(new JProperty("x-ro-validate-only", true))
+    
+    
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(parms)
+    jsonSetPutMsg api.Request url (parms.ToString())
+    setIfMatch api.Request "*"
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext    
+    
+    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
+    Assert.AreEqual("199 RestfulObjects \"action is not idempotent\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
-//let PutActionWithQueryOnlyObjectValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = oType + "/" + ktc "1"
-//    VerifyPutActionWithQueryOnlyValidateOnly "objects" oType oName api.PutInvoke api
+let PutActionWithQueryOnlyObjectValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = oType + "/" + ktc "1"
+    VerifyPutActionWithQueryOnlyValidateOnly "objects" oType oName api.PutInvoke api
 
-//let PutActionWithQueryOnlyServiceValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
-//    let oName = oType
-//    VerifyPutActionWithQueryOnlyValidateOnly "services" oType oName (wrap api.PutInvokeOnService) api
+let PutActionWithQueryOnlyServiceValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionService"
+    let oName = oType
+    VerifyPutActionWithQueryOnlyValidateOnly "services" oType oName (wrap3 api.PutInvokeOnService) api
 
-//let PutActionWithQueryOnlyViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
-//    let oName = oType
-//    VerifyPutActionWithQueryOnlyValidateOnly "objects" oType oName api.PutInvoke api
+let PutActionWithQueryOnlyViewModelValidateOnly(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
+    let oName = oType
+    VerifyPutActionWithQueryOnlyValidateOnly "objects" oType oName api.PutInvoke api
 
 //let VerifyGetQueryActionWithErrorValidateOnly refType oType oName f (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnErrorQuery"
@@ -6025,23 +6057,27 @@ let DisabledActionInvokeQueryViewModel(api : RestfulObjectsControllerBase) =
 //    let oName = oType + "/" + ktc "1"
 //    VerifyPostInvokeActionReturnObjectConcurrencyFail "objects" oType oName api.PostInvoke "\"fail\"" api
 
-//let VerifyPutInvokeActionReturnObjectConcurrencyFail refType oType oName f tag (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionAnnotatedIdempotent"
-//    let ourl = sprintf "%s/%s" refType oName
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPutMsgAndTag (sprintf "http://localhost/%s" purl) "" tag
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(HttpStatusCode.PreconditionFailed, result.StatusCode, jsonResult)
-//    Assert.AreEqual("199 RestfulObjects \"Object changed by another user\"", headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+let VerifyPutInvokeActionReturnObjectConcurrencyFail refType oType oName f tag (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionAnnotatedIdempotent"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid
+   
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetEmptyPutMsg api.Request url
+    setIfMatch api.Request tag
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+     
+    Assert.AreEqual(HttpStatusCode.PreconditionFailed, statusCode, jsonResult)
+    Assert.AreEqual("199 RestfulObjects \"Object changed by another user\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
 
-//let PutInvokeActionReturnObjectObjectConcurrencyFail(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = ktc "1"
-//    VerifyPutInvokeActionReturnObjectConcurrencyFail "objects" oType oName api.PutInvoke "\"fail\"" api
+let PutInvokeActionReturnObjectObjectConcurrencyFail(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = ktc "1"
+    VerifyPutInvokeActionReturnObjectConcurrencyFail "objects" oType oName api.PutInvoke "\"fail\"" api
 
 //let VerifyPostInvokeActionReturnObjectMissingIfMatch refType oType oName f tag (api : RestfulObjectsControllerBase) = 
 //    let pid = "AnAction"
@@ -6063,22 +6099,25 @@ let DisabledActionInvokeQueryViewModel(api : RestfulObjectsControllerBase) =
 //    let oName = oType + "/" + ktc "1"
 //    VerifyPostInvokeActionReturnObjectMissingIfMatch "objects" oType oName api.PostInvoke "\"fail\"" api
 
-//let VerifyPutInvokeActionReturnObjectMissingIfMatch refType oType oName f tag (api : RestfulObjectsControllerBase) = 
-//    let pid = "AnActionAnnotatedIdempotent"
-//    let ourl = sprintf "%s/%s" refType oName
-//    let purl = sprintf "%s/actions/%s/invoke" ourl pid
-//    //RestfulObjectsControllerBase.ConcurrencyChecking <- true
-//    let args = CreateArgMap(new JObject())
-//    api.Request <- jsonPutMsg (sprintf "http://localhost/%s" purl) ""
-//    let result = f (oType, ktc "1", pid, args)
-//    let jsonResult = readSnapshotToJson result
-//    Assert.AreEqual(preconditionHeaderMissing, result.StatusCode, jsonResult)
-//    Assert.AreEqual
-//        ("199 RestfulObjects \"If-Match header required with last-known value of ETag for the resource in order to modify its state\"", 
-//         headers.Headers.["Warning"].ToString())
-//    Assert.AreEqual("", jsonResult)
+let VerifyPutInvokeActionReturnObjectMissingIfMatch refType oType oName f tag (api : RestfulObjectsControllerBase) = 
+    let pid = "AnActionAnnotatedIdempotent"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid
+    
+    let oid = ktc "1"
+    let url = sprintf "http://localhost/%s" purl
+    let args = CreateArgMapWithReserved(new JObject())
+    jsonSetEmptyPutMsg api.Request url
+    let result = f (oType, oid, pid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
 
-//let PutInvokeActionReturnObjectObjectMissingIfMatch(api : RestfulObjectsControllerBase) = 
-//    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
-//    let oName = ktc "1"
-//    VerifyPutInvokeActionReturnObjectMissingIfMatch "objects" oType oName api.PutInvoke "\"fail\"" api
+    Assert.AreEqual(preconditionHeaderMissing, statusCode, jsonResult)
+    Assert.AreEqual
+        ("199 RestfulObjects \"If-Match header required with last-known value of ETag for the resource in order to modify its state\"", 
+         headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("", jsonResult)
+
+let PutInvokeActionReturnObjectObjectMissingIfMatch(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
+    let oName = ktc "1"
+    VerifyPutInvokeActionReturnObjectMissingIfMatch "objects" oType oName api.PutInvoke "\"fail\"" api
