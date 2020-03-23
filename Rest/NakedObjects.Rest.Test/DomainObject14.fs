@@ -1053,7 +1053,7 @@ let PutWithValueObjectValidateOnly(api : RestfulObjectsControllerBase) =
     Assert.IsNull(headers.ContentType)
     Assert.AreEqual("", jsonResult)
 
-let PutWithValueObjectConcurrencySuccess(api : RestfulObjectsControllerBase) = 
+let PutWithValueObjectConcurrencySuccess(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
     let oid = ktc "1"
     let oName = sprintf "%s/%s" oType oid
@@ -1064,18 +1064,18 @@ let PutWithValueObjectConcurrencySuccess(api : RestfulObjectsControllerBase) =
                     new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 555))))
     
     let url = sprintf "http://localhost/objects/%s/%s" oType oid
-    jsonSetGetMsg api.Request url
-    let result = api.GetObject(oType, oid)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    jsonSetGetMsg api1.Request url
+    let result = api1.GetObject(oType, oid)
+    let (jsonResult, statusCode, headers) = readActionResult result api1.ControllerContext.HttpContext
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
 
     let tag = headers.ETag.Tag
     let args = CreateArgMapWithReserved props
 
-    jsonSetPutMsg api.Request url (props.ToString())
-    setIfMatch api.Request (tag.ToString())
-    let result = api.PutObject(oType, oid, args)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    jsonSetPutMsg api2.Request url (props.ToString())
+    setIfMatch api2.Request (tag.ToString())
+    let result = api2.PutObject(oType, oid, args)
+    let (jsonResult, statusCode, headers) = readActionResult result api2.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
 
     let disabledValue = 

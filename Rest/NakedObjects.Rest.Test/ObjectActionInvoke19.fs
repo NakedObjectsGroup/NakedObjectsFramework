@@ -455,7 +455,7 @@ let PostInvokeActionReturnViewModelViewModel(api : RestfulObjectsControllerBase)
     let oName = oType + "/" + ktc "1"
     VerifyPostInvokeActionReturnViewModel "objects" oType oName api.PostInvoke api
 
-let VerifyPostInvokeActionReturnObjectConcurrencySuccess refType oType oName f tag (api : RestfulObjectsControllerBase) = 
+let VerifyPostInvokeActionReturnObjectConcurrencySuccess refType oType oName f tag (api : RestfulObjectsControllerBase)  = 
     let pid = "AnAction"
     let ourl = sprintf "%s/%s" refType oName
     let purl = sprintf "%s/actions/%s/invoke" ourl pid
@@ -512,20 +512,20 @@ let GetTag oType oName (api : RestfulObjectsControllerBase) =
     let (_, _, headers) = readActionResult result api.ControllerContext.HttpContext
     headers.ETag.Tag.ToString()
 
-let PostInvokeActionReturnObjectObjectConcurrencySuccess(api : RestfulObjectsControllerBase) = 
+let PostInvokeActionReturnObjectObjectConcurrencySuccess(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
     let oName = oType + "/" + ktc "1"
-    VerifyPostInvokeActionReturnObjectConcurrencySuccess "objects" oType oName api.PostInvoke (GetTag oType oName api) api
+    VerifyPostInvokeActionReturnObjectConcurrencySuccess "objects" oType oName api2.PostInvoke (GetTag oType oName api1) api2
 
 let PostInvokeActionReturnObjectServiceConcurrencySuccess(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithActionService"
     let oName = oType
     VerifyPostInvokeActionReturnObjectConcurrencySuccess "services" oType oName (wrap3 api.PostInvokeOnService) "\"any\"" api
 
-let PostInvokeActionReturnObjectViewModelConcurrencySuccess(api : RestfulObjectsControllerBase) = 
+let PostInvokeActionReturnObjectViewModelConcurrencySuccess(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
     let oName = oType
-    VerifyPostInvokeActionReturnObjectConcurrencySuccess "objects" oType oName api.PostInvoke (GetTag oType oName api) api
+    VerifyPostInvokeActionReturnObjectConcurrencySuccess "objects" oType oName api2.PostInvoke (GetTag oType oName api1) api2
 
 let VerifyPostInvokeUserDisabledActionReturnObject refType oType oName f (api : RestfulObjectsControllerBase) = 
     let pid = "AnAction"
@@ -1093,20 +1093,20 @@ let VerifyPutInvokeActionReturnObjectConcurrencySuccess refType oType oName f ta
     //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
-let PutInvokeActionReturnObjectObjectConcurrencySuccess(api : RestfulObjectsControllerBase) = 
+let PutInvokeActionReturnObjectObjectConcurrencySuccess(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)= 
     let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
     let oName = oType + "/" + ktc "1"
-    VerifyPutInvokeActionReturnObjectConcurrencySuccess "objects" oType oName api.PutInvoke (GetTag oType oName api) api
+    VerifyPutInvokeActionReturnObjectConcurrencySuccess "objects" oType oName api2.PutInvoke (GetTag oType oName api1) api2
 
 let PutInvokeActionReturnObjectServiceConcurrencySuccess(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithActionService"
     let oName = oType
     VerifyPutInvokeActionReturnObjectConcurrencySuccess "services" oType oName (wrap3 api.PutInvokeOnService) "\"any\"" api
 
-let PutInvokeActionReturnObjectViewModelConcurrencySuccess(api : RestfulObjectsControllerBase) = 
+let PutInvokeActionReturnObjectViewModelConcurrencySuccess(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase)= 
     let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
     let oName = oType
-    VerifyPutInvokeActionReturnObjectConcurrencySuccess "objects" oType oName api.PutInvoke (GetTag oType oName api) api
+    VerifyPutInvokeActionReturnObjectConcurrencySuccess "objects" oType oName api2.PutInvoke (GetTag oType oName api1) api2
 
 let VerifyPutInvokeActionReturnNullObject refType oType oName f (api : RestfulObjectsControllerBase) = 
     let pid = "AnActionAnnotatedIdempotentReturnsNull"
@@ -6229,8 +6229,9 @@ let VerifyPostInvokeActionReturnObjectConcurrencyFail refType oType oName f tag 
     setIfMatch api.Request tag
     let result = f (oType, oid, pid, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
-    let parsedResult = JObject.Parse(jsonResult)
-    Assert.AreEqual(HttpStatusCode.PreconditionFailed, statusCode, jsonResult)
+    
+    assertStatusCode HttpStatusCode.PreconditionFailed statusCode  jsonResult
+
     Assert.AreEqual("199 RestfulObjects \"Object changed by another user\"", headers.Headers.["Warning"].ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -6252,7 +6253,8 @@ let VerifyPutInvokeActionReturnObjectConcurrencyFail refType oType oName f tag (
     let result = f (oType, oid, pid, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
      
-    Assert.AreEqual(HttpStatusCode.PreconditionFailed, statusCode, jsonResult)
+    assertStatusCode HttpStatusCode.PreconditionFailed statusCode  jsonResult
+
     Assert.AreEqual("199 RestfulObjects \"Object changed by another user\"", headers.Headers.["Warning"].ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -6271,7 +6273,6 @@ let VerifyPostInvokeActionReturnObjectMissingIfMatch refType oType oName f tag (
     jsonSetEmptyPostMsg api.Request url
     let result = f (oType, oid, pid, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
-    let parsedResult = JObject.Parse(jsonResult)
     assertStatusCode preconditionHeaderMissing statusCode  jsonResult
     Assert.AreEqual
         ("199 RestfulObjects \"If-Match header required with last-known value of ETag for the resource in order to modify its state\"", 
@@ -6295,7 +6296,8 @@ let VerifyPutInvokeActionReturnObjectMissingIfMatch refType oType oName f tag (a
     let result = f (oType, oid, pid, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
 
-    Assert.AreEqual(preconditionHeaderMissing, statusCode, jsonResult)
+    assertStatusCode preconditionHeaderMissing statusCode  jsonResult
+
     Assert.AreEqual
         ("199 RestfulObjects \"If-Match header required with last-known value of ETag for the resource in order to modify its state\"", 
          headers.Headers.["Warning"].ToString())

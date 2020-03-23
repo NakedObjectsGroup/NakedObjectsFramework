@@ -1535,7 +1535,7 @@ let PutUserDisabledValuePropertySuccess(api : RestfulObjectsControllerBase) =
     //Assert.IsTrue(result.Headers.ETag.Tag.Length > 0)
     compareObject expected parsedResult
 
-let PutValuePropertyConcurrencySuccess(api : RestfulObjectsControllerBase) = 
+let PutValuePropertyConcurrencySuccess(api1 : RestfulObjectsControllerBase) (api2 : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
     let oid = ktc "1"
     let pid = "AValue"
@@ -1544,20 +1544,20 @@ let PutValuePropertyConcurrencySuccess(api : RestfulObjectsControllerBase) =
     let gurl = sprintf "http://localhost/objects/%s/%s" oType oid
     let parms = new JObject(new JProperty(JsonPropertyNames.Value, 101))
     
-    jsonSetGetMsg api.Request gurl
-    let result = api.GetObject(oType, oid)
-    let (_, _, headers) = readActionResult result api.ControllerContext.HttpContext
+    jsonSetGetMsg api1.Request gurl
+    let result = api1.GetObject(oType, oid)
+    let (_, _, headers) = readActionResult result api1.ControllerContext.HttpContext
     
     let tag = headers.ETag.Tag
 
     let url = sprintf "http://localhost/%s" purl
     
     let arg = CreateSingleValueArgWithReserved parms
-    jsonSetPutMsg api.Request url (parms.ToString())
-    setIfMatch api.Request (tag.ToString())
+    jsonSetPutMsg api2.Request url (parms.ToString())
+    setIfMatch api2.Request (tag.ToString())
 
-    let result = api.PutProperty(oType, oid, pid, arg)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let result = api2.PutProperty(oType, oid, pid, arg)
+    let (jsonResult, statusCode, headers) = readActionResult result api2.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
       
     let modifyRel = RelValues.Modify + makeParm RelParamValues.Property "AValue"
@@ -3204,7 +3204,8 @@ let PutValuePropertyConcurrencyFail(api : RestfulObjectsControllerBase) =
     let result = api.PutProperty(oType, oid, pid, arg)    
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
 
-    Assert.AreEqual(HttpStatusCode.PreconditionFailed, statusCode, jsonResult)
+    assertStatusCode HttpStatusCode.PreconditionFailed statusCode jsonResult
+
     Assert.AreEqual("199 RestfulObjects \"Object changed by another user\"", headers.Headers.["Warning"].ToString())
     Assert.AreEqual("", jsonResult)
 
@@ -3220,7 +3221,8 @@ let PutValuePropertyMissingIfMatch(api : RestfulObjectsControllerBase) =
     let result = api.PutProperty(oType, oid, pid, arg)    
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     
-    Assert.AreEqual(preconditionHeaderMissing, statusCode, jsonResult)
+    assertStatusCode preconditionHeaderMissing statusCode jsonResult
+
     Assert.AreEqual
         ("199 RestfulObjects \"If-Match header required with last-known value of ETag for the resource in order to modify its state\"", 
          headers.Headers.["Warning"].ToString())
