@@ -2928,86 +2928,86 @@ type RestTests() =
         member x.GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModelValidateOnly() = 
             ObjectActionInvoke19.GetInvokeActionWithReferenceParmsReturnCollectionFormalViewModelValidateOnly x.api
         
-//        [<Test>]
-//        member x.GetIsSubTypeOfReturnFalseSimpleParms() = 
-//            DomainTypeActionInvoke26.GetIsSubTypeOfReturnFalseSimpleParms x.api
+        [<Test>]
+        member x.GetIsSubTypeOfReturnFalseSimpleParms() = 
+            DomainTypeActionInvoke26.GetIsSubTypeOfReturnFalseSimpleParms x.api
         
-//        [<Test>]
-//        member x.GetIsSuperTypeOfReturnFalseSimpleParms() = 
-//            DomainTypeActionInvoke26.GetIsSuperTypeOfReturnFalseSimpleParms x.api
+        [<Test>]
+        member x.GetIsSuperTypeOfReturnFalseSimpleParms() = 
+            DomainTypeActionInvoke26.GetIsSuperTypeOfReturnFalseSimpleParms x.api
         
-//        [<Test>]
-//        member x.GetIsSubTypeOfReturnTrueSimpleParms() = 
-//            DomainTypeActionInvoke26.GetIsSubTypeOfReturnTrueSimpleParms x.api
+        [<Test>]
+        member x.GetIsSubTypeOfReturnTrueSimpleParms() = 
+            DomainTypeActionInvoke26.GetIsSubTypeOfReturnTrueSimpleParms x.api
         
-//        [<Test>]
-//        member x.GetIsSuperTypeOfReturnTrueSimpleParms() = 
-//            DomainTypeActionInvoke26.GetIsSuperTypeOfReturnTrueSimpleParms x.api
+        [<Test>]
+        member x.GetIsSuperTypeOfReturnTrueSimpleParms() = 
+            DomainTypeActionInvoke26.GetIsSuperTypeOfReturnTrueSimpleParms x.api
         
-//        [<Test>]
-//        member x.GetIsSubTypeOfReturnFalseFormalParms() = 
-//            DomainTypeActionInvoke26.GetIsSubTypeOfReturnFalseFormalParms x.api
+        [<Test>]
+        member x.GetIsSubTypeOfReturnFalseFormalParms() = 
+            DomainTypeActionInvoke26.GetIsSubTypeOfReturnFalseFormalParms x.api
         
-//        [<Test>]
-//        member x.GetIsSuperTypeOfReturnFalseFormalParms() = 
-//            DomainTypeActionInvoke26.GetIsSuperTypeOfReturnFalseFormalParms x.api
+        [<Test>]
+        member x.GetIsSuperTypeOfReturnFalseFormalParms() = 
+            DomainTypeActionInvoke26.GetIsSuperTypeOfReturnFalseFormalParms x.api
         
-//        [<Test>]
-//        member x.GetIsSubTypeOfReturnTrueFormalParms() = 
-//            DomainTypeActionInvoke26.GetIsSubTypeOfReturnTrueFormalParms x.api
+        [<Test>]
+        member x.GetIsSubTypeOfReturnTrueFormalParms() = 
+            DomainTypeActionInvoke26.GetIsSubTypeOfReturnTrueFormalParms x.api
         
-//        [<Test>]
-//        member x.GetIsSuperTypeOfReturnTrueFormalParms() = 
-//            DomainTypeActionInvoke26.GetIsSuperTypeOfReturnTrueFormalParms x.api
+        [<Test>]
+        member x.GetIsSuperTypeOfReturnTrueFormalParms() = 
+            DomainTypeActionInvoke26.GetIsSuperTypeOfReturnTrueFormalParms x.api
         
-//        [<Test>]
-//        member x.NotFoundTypeIsSubTypeOfSimpleParms() = 
-//            DomainTypeActionInvoke26.NotFoundTypeIsSubTypeOfSimpleParms x.api
+        [<Test>]
+        member x.NotFoundTypeIsSubTypeOfSimpleParms() = 
+            DomainTypeActionInvoke26.NotFoundTypeIsSubTypeOfSimpleParms x.api
         
-//        [<Test>]
-//        member x.NotFoundTypeIsSuperTypeOfSimpleParms() = 
-//            DomainTypeActionInvoke26.NotFoundTypeIsSuperTypeOfSimpleParms x.api
+        [<Test>]
+        member x.NotFoundTypeIsSuperTypeOfSimpleParms() = 
+            DomainTypeActionInvoke26.NotFoundTypeIsSuperTypeOfSimpleParms x.api
         
-//        [<Test>]
-//        member x.NotFoundTypeIsSubTypeOfFormalParms() = 
-//            DomainTypeActionInvoke26.NotFoundTypeIsSubTypeOfFormalParms x.api
+        [<Test>]
+        member x.NotFoundTypeIsSubTypeOfFormalParms() = 
+            DomainTypeActionInvoke26.NotFoundTypeIsSubTypeOfFormalParms x.api
         
-//        [<Test>]
-//        member x.NotFoundTypeIsSuperTypeOfFormalParms() = 
-//            DomainTypeActionInvoke26.NotFoundTypeIsSuperTypeOfFormalParms x.api
+        [<Test>]
+        member x.NotFoundTypeIsSuperTypeOfFormalParms() = 
+            DomainTypeActionInvoke26.NotFoundTypeIsSuperTypeOfFormalParms x.api
         
-//        [<Test>]
-//        member x.NotFoundActionSimpleParms() = DomainTypeActionInvoke26.NotFoundActionSimpleParms x.api
+        [<Test>]
+        member x.NotFoundActionSimpleParms() = DomainTypeActionInvoke26.NotFoundActionSimpleParms x.api
         
-//        [<Test>]
-//        member x.NotFoundActionFormalParms() = DomainTypeActionInvoke26.NotFoundActionFormalParms x.api
+        [<Test>]
+        member x.NotFoundActionFormalParms() = DomainTypeActionInvoke26.NotFoundActionFormalParms x.api
         
-//        [<Test>]
-//        member x.NotFoundSuperTypeIsSubTypeOfSimpleParms() = 
-//            DomainTypeActionInvoke26.NotFoundSuperTypeIsSubTypeOfSimpleParms x.api
+        [<Test>]
+        member x.NotFoundSuperTypeIsSubTypeOfSimpleParms() = 
+            DomainTypeActionInvoke26.NotFoundSuperTypeIsSubTypeOfSimpleParms x.api
         
-//        [<Test>]
-//        member x.NotFoundSubTypeIsSuperTypeOfSimpleParms() = 
-//            DomainTypeActionInvoke26.NotFoundSubTypeIsSuperTypeOfSimpleParms x.api
+        [<Test>]
+        member x.NotFoundSubTypeIsSuperTypeOfSimpleParms() = 
+            DomainTypeActionInvoke26.NotFoundSubTypeIsSuperTypeOfSimpleParms x.api
         
-//        [<Test>]
-//        member x.NotFoundSuperTypeIsSubTypeOfFormalParms() = 
-//            DomainTypeActionInvoke26.NotFoundSuperTypeIsSubTypeOfFormalParms x.api
+        [<Test>]
+        member x.NotFoundSuperTypeIsSubTypeOfFormalParms() = 
+            DomainTypeActionInvoke26.NotFoundSuperTypeIsSubTypeOfFormalParms x.api
         
-//        [<Test>]
-//        member x.NotFoundSubTypeIsSuperTypeOfFormalParms() = 
-//            DomainTypeActionInvoke26.NotFoundSubTypeIsSuperTypeOfFormalParms x.api
+        [<Test>]
+        member x.NotFoundSubTypeIsSuperTypeOfFormalParms() = 
+            DomainTypeActionInvoke26.NotFoundSubTypeIsSuperTypeOfFormalParms x.api
         
-//        [<Test>]
-//        member x.MissingParmsIsSubTypeOf() = DomainTypeActionInvoke26.MissingParmsIsSubTypeOf x.api
+        [<Test>]
+        member x.MissingParmsIsSubTypeOf() = DomainTypeActionInvoke26.MissingParmsIsSubTypeOf x.api
         
-//        [<Test>]
-//        member x.MalformedSimpleParmsIsSubTypeOf() = DomainTypeActionInvoke26.MalformedSimpleParmsIsSubTypeOf x.api
+        [<Test>]
+        member x.MalformedSimpleParmsIsSubTypeOf() = DomainTypeActionInvoke26.MalformedSimpleParmsIsSubTypeOf x.api
         
-//        [<Test>]
-//        member x.MalformedFormalParmsIsSubTypeOf() = DomainTypeActionInvoke26.MalformedFormalParmsIsSubTypeOf x.api
+        [<Test>]
+        member x.MalformedFormalParmsIsSubTypeOf() = DomainTypeActionInvoke26.MalformedFormalParmsIsSubTypeOf x.api
         
-//        [<Test>]
-//        member x.NotAcceptableIsSubTypeOf() = DomainTypeActionInvoke26.NotAcceptableIsSubTypeOf x.api
+        [<Test>]
+        member x.NotAcceptableIsSubTypeOf() = DomainTypeActionInvoke26.NotAcceptableIsSubTypeOf x.api
     end
 

@@ -651,12 +651,15 @@ namespace NakedObjects.Rest {
         public virtual ActionResult GetInvokeTypeActions(string typeName, string actionName, ArgumentMap arguments) {
 
             Func<RestSnapshot> GetTypeAction() => SnapshotFactory.TypeActionSnapshot(OidStrategy, () => GetIsTypeOf(actionName, typeName, arguments), Request, GetFlags());
+            Func<RestSnapshot> FailGetTypeAction() => () => throw new TypeActionResourceNotFoundException(actionName, typeName);
+            Func<RestSnapshot> NoSuchTypeAction() => FailGetTypeAction();
+
 
             Func<RestSnapshot> TypeAction() =>
                 actionName switch {
                     WellKnownIds.IsSubtypeOf => GetTypeAction(),
                     WellKnownIds.IsSupertypeOf => GetTypeAction(),
-                    _ => throw new TypeActionResourceNotFoundException(actionName, typeName)
+                    _ => NoSuchTypeAction()
                 };
 
             return InitAndHandleErrors(TypeAction());
