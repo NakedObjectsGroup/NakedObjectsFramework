@@ -2376,17 +2376,17 @@ type RestTests() =
         member x.MissingParmsOnPostCollectionViewModel() = 
             ObjectActionInvoke19.MissingParmsOnPostCollectionViewModel x.api
         
-        //[<Test>]
-        //member x.MalformedFormalParmsOnPostCollectionObject() = 
-        //    ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionObject x.api
+        [<Test>]
+        member x.MalformedFormalParmsOnPostCollectionObject() = 
+            ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionObject x.api
         
-        //[<Test>]
-        //member x.MalformedFormalParmsOnPostCollectionService() = 
-        //    ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionService x.api
+        [<Test>]
+        member x.MalformedFormalParmsOnPostCollectionService() = 
+            ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionService x.api
         
-        //[<Test>]
-        //member x.MalformedFormalParmsOnPostCollectionViewModel() = 
-        //    ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionViewModel x.api
+        [<Test>]
+        member x.MalformedFormalParmsOnPostCollectionViewModel() = 
+            ObjectActionInvoke19.MalformedFormalParmsOnPostCollectionViewModel x.api
         
         [<Test>]
         member x.InvalidFormalParmsOnPostCollectionObject() = 

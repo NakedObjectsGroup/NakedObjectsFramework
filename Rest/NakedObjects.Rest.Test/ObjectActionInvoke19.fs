@@ -4082,18 +4082,19 @@ let MalformedFormalParmsOnGetQueryViewModel(api : RestfulObjectsControllerBase) 
     let oName = oType
     VerifyMalformedFormalParmsOnGetQuery "objects" oType oName api.GetInvoke api
 
-let VerifyMalformedFormalParmsOnGetCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
+let VerifyMalformedFormalParmsOnPostCollection refType oType oName f (api : RestfulObjectsControllerBase) = 
     let pid = "AnActionReturnsCollectionWithScalarParameters"
     let ourl = sprintf "%s/%s/%s" refType oType oName
     let parms = 
         new JObject(new JProperty("malformed", new JObject(new JProperty(JsonPropertyNames.Value, "fred"))), 
                     new JProperty("parm1", new JObject(new JProperty(JsonPropertyNames.Value, 100))))
-    let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
-    let purl = sprintf "%s/actions/%s/invoke?%s" ourl pid parmsEncoded
+    //let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
+    let purl = sprintf "%s/actions/%s/invoke" ourl pid
     let oid = ktc "1"
     let url = sprintf "http://localhost/%s" purl
     let args = CreateArgMapWithReserved parms
-    jsonSetGetMsg api.Request url
+    setIfMatch api.Request "*"
+    jsonSetPostMsg api.Request url (parms.ToString())
     let result = f (oType, oid, pid, args)
 
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
@@ -4104,17 +4105,17 @@ let VerifyMalformedFormalParmsOnGetCollection refType oType oName f (api : Restf
 let MalformedFormalParmsOnPostCollectionObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithActionObject"
     let oName = oType + "/" + ktc "1"
-    VerifyMalformedFormalParmsOnGetCollection "objects" oType oName api.GetInvoke api
+    VerifyMalformedFormalParmsOnPostCollection "objects" oType oName api.PostInvoke api
 
 let MalformedFormalParmsOnPostCollectionService(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithActionService"
     let oName = oType
-    VerifyMalformedFormalParmsOnGetCollection "services" oType oName (wrap3 api.GetInvokeOnService) api
+    VerifyMalformedFormalParmsOnPostCollection "services" oType oName (wrap3 api.PostInvokeOnService) api
 
 let MalformedFormalParmsOnPostCollectionViewModel(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithActionViewModel"
     let oName = oType
-    VerifyMalformedFormalParmsOnGetCollection "objects" oType oName api.GetInvoke api
+    VerifyMalformedFormalParmsOnPostCollection "objects" oType oName api.PostInvoke api
 
 let VerifyInvalidSimpleParmsOnGetQuery refType oType oName f (api : RestfulObjectsControllerBase) = 
     let pid = "AnActionReturnsQueryableWithScalarParameters"
