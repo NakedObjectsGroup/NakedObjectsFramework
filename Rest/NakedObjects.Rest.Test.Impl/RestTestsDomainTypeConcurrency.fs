@@ -85,7 +85,6 @@ type DNof4TestsDomainTypeConcurrency() =
           config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
           config
           
-
         override x.RegisterTypes(services) =
           base.RegisterTypes(services)
           services.AddScoped<IOidStrategy, EntityOidStrategy>() |> ignore
@@ -111,9 +110,6 @@ type DNof4TestsDomainTypeConcurrency() =
         [<SetUp>]
         member x.Setup() = 
           x.StartTest()
-          // UriMtHelper.GetApplicationPath <- Func<string>(fun () -> "")
-          //RestfulObjectsControllerBase.IsReadOnly <- false
-          //GlobalConfiguration.Configuration.Formatters.[0] <- new JsonNetFormatter(null)
         
         [<TearDown>]
         member x.TearDown() =        

@@ -85,7 +85,6 @@ type CNof4TestsDomainType() =
            config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
            config
            
-
         override x.RegisterTypes(services) =
            base.RegisterTypes(services)
            services.AddScoped<IOidStrategy, EntityOidStrategy>() |> ignore
@@ -111,9 +110,6 @@ type CNof4TestsDomainType() =
         [<SetUp>]
         member x.Setup() = 
            x.StartTest()
-           // UriMtHelper.GetApplicationPath <- Func<string>(fun () -> "")
-           //RestfulObjectsControllerBase.IsReadOnly <- false
-           //GlobalConfiguration.Configuration.Formatters.[0] <- new JsonNetFormatter(null)
         
         [<TearDown>]
         member x.TearDown() =        
@@ -126,8 +122,7 @@ type CNof4TestsDomainType() =
            let sp = x.GetConfiguredContainer()
            let api = sp.GetService<RestfulObjectsController>()
            setMockContext api sp
-        
-        
+              
         [<Test>]
         member x.GetHomePage() = HomePage5.GetHomePage x.api
         

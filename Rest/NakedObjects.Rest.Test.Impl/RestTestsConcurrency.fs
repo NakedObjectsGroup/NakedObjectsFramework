@@ -24,7 +24,6 @@ open Newtonsoft.Json
 open RestTestFunctions
 open NakedObjects.Rest.Snapshot.Utility
 
-
 [<TestFixture>]
 type BNof4TestsConcurrency() = 
     class
@@ -86,7 +85,6 @@ type BNof4TestsConcurrency() =
             config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
             config
             
-
         override x.RegisterTypes(services) =
             base.RegisterTypes(services)
             services.AddScoped<IOidStrategy, EntityOidStrategy>() |> ignore
@@ -108,9 +106,6 @@ type BNof4TestsConcurrency() =
         [<SetUp>]
         member x.Setup() = 
             x.StartTest()
-            //UriMtHelper.GetApplicationPath <- Func<string>(fun () -> "")
-            //RestfulObjectsControllerBase.IsReadOnly <- false
-            //GlobalConfiguration.Configuration.Formatters.[0] <- new JsonNetFormatter(null)
                
         [<TearDown>]
         member x.TearDown() =        

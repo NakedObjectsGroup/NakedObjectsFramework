@@ -107,9 +107,6 @@ type RestTests() =
         [<SetUp>]
         member x.Setup() = 
             x.StartTest()
-            //UriMtHelper.GetApplicationPath <- Func<string>(fun () -> "")
-            //RestfulObjectsControllerBase.IsReadOnly <- false
-            //GlobalConfiguration.Configuration.Formatters.[0] <- new JsonNetFormatter(null)
         
         [<TearDown>]
         member x.TearDown() =        
