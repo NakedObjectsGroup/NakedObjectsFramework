@@ -1121,8 +1121,8 @@ type RestTests() =
         [<Test>]
         member x.GetActionPropertyService() = ObjectAction18.GetActionPropertyService x.api
         
-        //[<Test>]
-        //member x.GetActionContributedService() = ObjectAction18.GetActionContributedService x.api
+        [<Test>]
+        member x.GetActionContributedService() = ObjectAction18.GetActionContributedService x.api
         
         [<Test>]
         member x.GetActionPropertyViewModel() = ObjectAction18.GetActionPropertyViewModel x.api

@@ -267,6 +267,47 @@ let GetOverloadedActionPropertyService(api : RestfulObjectsControllerBase) =
     let oName = oType
     VerifyOverloadedActionProperty "services" oType oName (wrap api.GetServiceAction) api
 
+let VerifyContributedServiceAction refType oType oName f (api : RestfulObjectsControllerBase) = 
+    let oid = ktc "1"
+    let pid = "ANonContributedAction"
+    let ourl = sprintf "%s/%s" refType oName
+    let purl = sprintf "%s/actions/%s" ourl pid
+    let url = sprintf "http://localhost/%s" purl
+
+    jsonSetGetMsg api.Request url   
+    let result = f (oType, oid, pid)
+    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let parsedResult = JObject.Parse(jsonResult)
+    let invokeRelType = RelValues.Invoke + makeParm RelParamValues.Action pid
+    
+    let expected = 
+        [ TProperty(JsonPropertyNames.Id, TObjectVal(pid))
+          TProperty(JsonPropertyNames.Parameters, TObjectJson([]))
+          TProperty(JsonPropertyNames.Extensions, 
+                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal("A Non Contributed Action"))
+                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(ttc "RestfulObjects.Test.Data.MostSimple"))
+                                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(0))
+                                  TProperty(JsonPropertyNames.HasParams, TObjectVal(false)) ]))
+          TProperty(JsonPropertyNames.Links, 
+                    TArray([ TObjectJson(makeGetLinkProp RelValues.Self purl RepresentationTypes.ObjectAction "")
+                             TObjectJson(makeGetLinkProp RelValues.Up ourl RepresentationTypes.Object oType)                             
+                             TObjectJson
+                                 (TProperty(JsonPropertyNames.Arguments, TObjectJson([])) 
+                                  :: makePostLinkProp invokeRelType (purl + "/invoke") RepresentationTypes.ActionResult "")                 
+                              ])) ]
+
+    assertStatusCode HttpStatusCode.OK statusCode jsonResult
+    Assert.AreEqual(new typeType(RepresentationTypes.ObjectAction), headers.ContentType)
+    assertTransactionalCache headers
+   // Assert.IsTrue(refType = "services" || result.Headers.ETag.Tag.Length > 0)
+    compareObject expected parsedResult
+
+let GetActionContributedService(api : RestfulObjectsControllerBase) = 
+    let oType = ttc "RestfulObjects.Test.Data.ContributorService"
+    let oid = oType
+    //let f = wrap api.GetServiceAction
+    VerifyContributedServiceAction "services" oType oid (wrap api.GetServiceAction) api
 
 let VerifyUserDisabledActionProperty refType oType oName f (api : RestfulObjectsControllerBase) = 
     let oid = ktc "1"
