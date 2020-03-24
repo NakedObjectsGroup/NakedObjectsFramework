@@ -23,7 +23,7 @@ open System.Text.RegularExpressions
 open System.Xml.Linq
 
 #if APPVEYOR 
-let cs = @"Data Source=.\SQL2017;Initial Catalog=TestObject;Integrated Security=True;"
+let cs = @"Server=(local)\SQL2017;Database=TestObject;Integrated Security=True;"
 #else
 let cs = @"Data Source=.\SQLEXPRESS;Initial Catalog=TestObject;Integrated Security=True;"
 #endif
