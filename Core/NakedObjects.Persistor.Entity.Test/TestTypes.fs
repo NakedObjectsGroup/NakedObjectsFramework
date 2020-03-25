@@ -30,6 +30,8 @@ let csCOCE = @"Data Source=.\SQL2017;Initial Catalog=CodeOnlyCeTests;Integrated 
 let csCS = @"Data Source=.\SQL2017;Initial Catalog=CodeSystemTest;Integrated Security=True;"
 let csTDCO = @"Data Source=.\SQL2017;Initial Catalog=TestDataCodeOnly;Integrated Security=True;"
 
+fred
+
 #else
 
 let csAW = @"Data Source=.\SQLEXPRESS;Initial Catalog=AdventureWorks;Integrated Security=True;"
