@@ -4,15 +4,18 @@
 //// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 //// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //// See the License for the specific language governing permissions and limitations under the License.
-module NakedObjects.Rest.Test.A
+
+module NakedObjects.Rest.Test
 
 open NUnit.Framework
 open NakedObjects.Rest
+open NakedObjects.Rest.Test
 open System
 open RestfulObjects.Test.Data
 open NakedObjects.Facade.Impl.Implementation
 open NakedObjects.Facade.Impl.Utility
-open NakedObjects.Rest.Test.RestTestsHelpers
+open NakedObjects.Rest.Test.Helpers
+open NakedObjects.Rest.Test.Functions
 open NakedObjects.Persistor.Entity.Configuration
 open NakedObjects.Facade
 open NakedObjects.Facade.Translation
@@ -21,11 +24,10 @@ open NakedObjects.Facade.Interface
 open NakedObjects.Architecture.Menu
 open Microsoft.Extensions.DependencyInjection
 open Newtonsoft.Json
-open RestTestFunctions
 open NakedObjects.Rest.Snapshot.Utility
 
 [<TestFixture>]
-type RestTests() = 
+type Tests() = 
     class
         inherit NakedObjects.Xat.AcceptanceTestCase()
         

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="RestTestsHelpers.fs" />
     <Compile Include="RestTestFunctions.fs" />
     <Compile Include="HomePage5.fs" />
     <Compile Include="User6.fs" />
@@ -28,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.Rest.Snapshot\NakedObjects.Rest.Snapshot.csproj" />
     <ProjectReference Include="..\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj" />
     <ProjectReference Include="..\NakedObjects.Rest\NakedObjects.Rest.csproj" />
   </ItemGroup>

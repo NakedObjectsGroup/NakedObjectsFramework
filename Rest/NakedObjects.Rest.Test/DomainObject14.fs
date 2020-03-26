@@ -4,14 +4,15 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
-module DomainObject14
+
+module NakedObjects.Rest.Test.DomainObject14
 
 open NUnit.Framework
 open NakedObjects.Rest
 open System.Net
 open System
 open NakedObjects.Rest.Snapshot.Constants
-open RestTestFunctions
+open NakedObjects.Rest.Test.Functions
 open Newtonsoft.Json.Linq
 open System.Linq
 open RestfulObjects.Test.Data

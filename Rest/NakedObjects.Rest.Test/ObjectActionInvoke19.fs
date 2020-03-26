@@ -4,7 +4,8 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
-module ObjectActionInvoke19
+
+module NakedObjects.Rest.Test.ObjectActionInvoke19
 
 open NUnit.Framework
 open NakedObjects.Rest
@@ -17,7 +18,7 @@ open NakedObjects.Rest.Snapshot.Utility
 open NakedObjects.Rest.Snapshot.Constants
 open System.Web.Http
 open System.Linq
-open RestTestFunctions
+open NakedObjects.Rest.Test.Functions
 
 
 let makeCollectionParm  contribName pmid pid fid rt = 

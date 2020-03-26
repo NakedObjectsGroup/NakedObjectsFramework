@@ -4,7 +4,8 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
-module ObjectProperty16
+
+module NakedObjects.Rest.Test.ObjectProperty16
 
 open NUnit.Framework
 open NakedObjects.Rest
@@ -14,7 +15,7 @@ open System.Web
 open System
 open NakedObjects.Rest.Snapshot.Constants
 open System.Linq
-open RestTestFunctions
+open NakedObjects.Rest.Test.Functions
 open System.Security.Principal
 
 let GetValueProperty(api : RestfulObjectsControllerBase) = 
