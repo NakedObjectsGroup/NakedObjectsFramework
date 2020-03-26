@@ -2934,3 +2934,6 @@ type Tests() =
         [<Test>]
         member x.NotAcceptableIsSubTypeOf() = DomainTypeActionInvoke26.NotAcceptableIsSubTypeOf x.api
     end
+    // to avoid warning
+    [<EntryPoint>]
+    let main argv = 0
