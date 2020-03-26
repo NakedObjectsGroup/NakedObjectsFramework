@@ -13,19 +13,19 @@ open RestfulObjects.Test.Data
 
 //#if APPVEYOR 
 
-//let csRTA = @"Data Source=.\SQL2017;Initial Catalog=RestTestA;Integrated Security=True;"
-//let csRTB = @"Data Source=.\SQL2017;Initial Catalog=RestTestB;Integrated Security=True;"
-//let csRTZ = @"Data Source=.\SQL2017;Initial Catalog=RestTestZ;Integrated Security=True;"
-//let csRTD = @"Data Source=.\SQL2017;Initial Catalog=RestTestD;Integrated Security=True;"
-//let csRTDT = @"Data Source=.\SQL2017;Initial Catalog=RestTestDT;Integrated Security=True;"
+let csRTA = @"Data Source=.\SQL2017;Initial Catalog=RestTestA;Integrated Security=True;"
+let csRTB = @"Data Source=.\SQL2017;Initial Catalog=RestTestB;Integrated Security=True;"
+let csRTZ = @"Data Source=.\SQL2017;Initial Catalog=RestTestZ;Integrated Security=True;"
+let csRTD = @"Data Source=.\SQL2017;Initial Catalog=RestTestD;Integrated Security=True;"
+let csRTDT = @"Data Source=.\SQL2017;Initial Catalog=RestTestDT;Integrated Security=True;"
 
 //#else
 
-let csRTA = @"Data Source=.\SQLEXPRESS;Initial Catalog=RestTestA;Integrated Security=True;"
-let csRTB = @"Data Source=.\SQLEXPRESS;Initial Catalog=RestTestB;Integrated Security=True;"
-let csRTZ = @"Data Source=.\SQLEXPRESS;Initial Catalog=RestTestZ;Integrated Security=True;"
-let csRTD = @"Data Source=.\SQLEXPRESS;Initial Catalog=RestTestD;Integrated Security=True;"
-let csRTDT = @"Data Source=.\SQLEXPRESS;Initial Catalog=RestTestDT;Integrated Security=True;"
+//let csRTA = @"Data Source=.\SQLEXPRESS;Initial Catalog=RestTestA;Integrated Security=True;"
+//let csRTB = @"Data Source=.\SQLEXPRESS;Initial Catalog=RestTestB;Integrated Security=True;"
+//let csRTZ = @"Data Source=.\SQLEXPRESS;Initial Catalog=RestTestZ;Integrated Security=True;"
+//let csRTD = @"Data Source=.\SQLEXPRESS;Initial Catalog=RestTestD;Integrated Security=True;"
+//let csRTDT = @"Data Source=.\SQLEXPRESS;Initial Catalog=RestTestDT;Integrated Security=True;"
 
 //#endif
 
