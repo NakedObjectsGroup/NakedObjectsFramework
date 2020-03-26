@@ -186,6 +186,14 @@ namespace NakedObjects.Persistor.Entity.Util {
             return os;
         }
 
+        public static ObjectQuery GetObjectSetNonDynamic(this EntityObjectStore.LocalContext context, Type type) {
+            Type mostBaseType = context.GetMostBaseType(type);
+            MethodInfo mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(mostBaseType);
+            ObjectQuery os = (ObjectQuery)mi.Invoke(context.WrappedObjectContext, null);
+            os.MergeOption = context.DefaultMergeOption;
+            return os;
+        }
+
         public static IQueryable<TDerived> GetObjectSetOfType<TDerived, TBase>(this EntityObjectStore.LocalContext context) where TDerived : TBase {
             MethodInfo mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(typeof (TBase));
             var os = (IQueryable<TBase>) InvokeUtils.Invoke(mi, context.WrappedObjectContext, null);
@@ -204,7 +212,7 @@ namespace NakedObjects.Persistor.Entity.Util {
         }
 
         public static dynamic CreateObject(this EntityObjectStore.LocalContext context, Type type) {
-            object objectSet = context.GetObjectSet(type);
+            ObjectQuery objectSet = context.GetObjectSetNonDynamic(type);
             MethodInfo[] methods = objectSet.GetType().GetMethods();
             MethodInfo mi = methods.Single(m => m.Name == "CreateObject" && m.IsGenericMethod).MakeGenericMethod(type);
             return InvokeUtils.Invoke(mi, objectSet, null);
