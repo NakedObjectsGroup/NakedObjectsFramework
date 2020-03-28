@@ -219,7 +219,7 @@ namespace NakedObjects.Persistor.Entity.Util {
                 MethodInfo mi = objectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes);
                 MethodInfo gmi = mi.MakeGenericMethod(mostBaseType);
                 preState = RecordState(type, mostBaseType, mi, gmi, objectContext);
-                ObjectQuery os = (ObjectQuery) mi.Invoke(objectContext, null);
+                ObjectQuery os = (ObjectQuery) gmi.Invoke(objectContext, null);
                 os.MergeOption = context.DefaultMergeOption;
                 return os;
             }
