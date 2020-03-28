@@ -186,12 +186,55 @@ namespace NakedObjects.Persistor.Entity.Util {
             return os;
         }
 
+        private static string RecordState(Type type, Type msb, MethodInfo mi, MethodInfo gmi, ObjectContext context) {
+            try {
+                string typeName = type.FullName;
+                string msbTypeName = msb.FullName;
+                string methodName = mi.Name;
+                string methodOwner = mi.DeclaringType.FullName;
+                string gMethodName = gmi.Name;
+                string gMethodOwner = gmi.DeclaringType.FullName;
+                string contextType = context.GetType().FullName;
+                return " type: " + typeName +
+                       " msb type: " + msbTypeName +
+                       " method: " + methodName +
+                       " owner: " + methodOwner +
+                       " g method: " + gMethodName +
+                       " g owner: " + gMethodOwner +
+                       " contextType: " + contextType;
+            }
+            catch (Exception) {
+                // catch all errors
+                return " state failed ";
+            }
+        }
+
         public static ObjectQuery GetObjectSetNonDynamic(this EntityObjectStore.LocalContext context, Type type) {
-            Type mostBaseType = context.GetMostBaseType(type);
-            MethodInfo mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(mostBaseType);
-            ObjectQuery os = (ObjectQuery)mi.Invoke(context.WrappedObjectContext, null);
-            os.MergeOption = context.DefaultMergeOption;
-            return os;
+
+            string preState = "";
+
+            try {
+                Type mostBaseType = context.GetMostBaseType(type);
+                ObjectContext objectContext = context.WrappedObjectContext;
+                MethodInfo mi = objectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes);
+                MethodInfo gmi = mi.MakeGenericMethod(mostBaseType);
+                preState = RecordState(type, mostBaseType, mi, gmi, objectContext);
+                ObjectQuery os = (ObjectQuery) mi.Invoke(objectContext, null);
+                os.MergeOption = context.DefaultMergeOption;
+                return os;
+            }
+            catch (Exception e) {
+                Type mostBaseType = context.GetMostBaseType(type);
+                ObjectContext objectContext = context.WrappedObjectContext;
+                MethodInfo mi = objectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes);
+                MethodInfo gmi = mi.MakeGenericMethod(mostBaseType);
+                string postState = RecordState(type, mostBaseType, mi, gmi, objectContext);
+
+                string error = "pre - " + preState + " post - " + postState;
+                Log.Error(error);
+                var ee = new Exception(error, e);
+                throw ee;
+            }
         }
 
         public static IQueryable<TDerived> GetObjectSetOfType<TDerived, TBase>(this EntityObjectStore.LocalContext context) where TDerived : TBase {
