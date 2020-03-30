@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using Common.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -26,8 +25,6 @@ using NakedObjects.Rest.Model;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Representations;
 using NakedObjects.Rest.Snapshot.Utility;
-using CacheControlHeaderValue = Microsoft.Net.Http.Headers.CacheControlHeaderValue;
-using MediaTypeHeaderValue = Microsoft.Net.Http.Headers.MediaTypeHeaderValue;
 
 namespace NakedObjects.Rest {
     public class RestfulObjectsControllerBase : ControllerBase {
@@ -75,15 +72,13 @@ namespace NakedObjects.Rest {
         public IOidStrategy OidStrategy { get; set; }
         public static bool AllowMutatingActionOnImmutableObject { get; set; }
 
-        private static string PrefixRoute(string segment, string prefix)
-            => string.IsNullOrWhiteSpace(prefix) ? segment : EnsureTrailingSlash(prefix) + segment;
+        private static string PrefixRoute(string segment, string prefix) => string.IsNullOrWhiteSpace(prefix) ? segment : EnsureTrailingSlash(prefix) + segment;
 
-        private static string EnsureTrailingSlash(string path)
-            => path.EndsWith("/") ? path : path + "/";
+        private static string EnsureTrailingSlash(string path) => path.EndsWith("/") ? path : path + "/";
 
         public static void AddRestRoutes(IRouteBuilder routes, string routePrefix = "") {
             if (!string.IsNullOrWhiteSpace(routePrefix)) {
-                UriMtHelper.GetApplicationPath = (req) => {
+                UriMtHelper.GetApplicationPath = req => {
                     var appPath = req.PathBase.ToString() ?? "";
                     return EnsureTrailingSlash(appPath) + EnsureTrailingSlash(routePrefix);
                 };
@@ -444,40 +439,42 @@ namespace NakedObjects.Rest {
         [FromQuery(Name = RestControlFlags.InlineCollectionItemsReserved)]
         public bool? InlineCollectionItems { get; set; }
 
-        public virtual ActionResult GetHome() =>
-            InitAndHandleErrors(SnapshotFactory.HomeSnapshot(OidStrategy, Request, GetFlags()));
+        public virtual ActionResult GetHome() => InitAndHandleErrors(SnapshotFactory.HomeSnapshot(OidStrategy, Request, GetFlags()));
 
-        public virtual ActionResult GetUser() =>
-            InitAndHandleErrors(SnapshotFactory.UserSnapshot(OidStrategy, FrameworkFacade.GetUser, Request, GetFlags()));
+        public virtual ActionResult GetUser() => InitAndHandleErrors(SnapshotFactory.UserSnapshot(OidStrategy, FrameworkFacade.GetUser, Request, GetFlags()));
 
-        public virtual ActionResult GetServices() =>
-            InitAndHandleErrors(SnapshotFactory.ServicesSnapshot(OidStrategy, FrameworkFacade.GetServices, Request, GetFlags()));
+        public virtual ActionResult GetServices() => InitAndHandleErrors(SnapshotFactory.ServicesSnapshot(OidStrategy, FrameworkFacade.GetServices, Request, GetFlags()));
 
-        public virtual ActionResult GetMenus() =>
-            InitAndHandleErrors(SnapshotFactory.MenusSnapshot(OidStrategy, FrameworkFacade.GetMainMenus, Request, GetFlags()));
+        public virtual ActionResult GetMenus() => InitAndHandleErrors(SnapshotFactory.MenusSnapshot(OidStrategy, FrameworkFacade.GetMainMenus, Request, GetFlags()));
 
-        public virtual ActionResult GetVersion() =>
-            InitAndHandleErrors(SnapshotFactory.VersionSnapshot(OidStrategy, GetOptionalCapabilities, Request, GetFlags()));
+        public virtual ActionResult GetVersion() => InitAndHandleErrors(SnapshotFactory.VersionSnapshot(OidStrategy, GetOptionalCapabilities, Request, GetFlags()));
 
-        public virtual ActionResult GetService(string serviceName) =>
-            InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetServiceByName(serviceName), Request, GetFlags()));
+        public virtual ActionResult GetService(string serviceName) {
+            return InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetServiceByName(serviceName), Request, GetFlags()));
+        }
 
-        public virtual ActionResult GetMenu(string menuName) =>
-            InitAndHandleErrors(SnapshotFactory.MenuSnapshot(OidStrategy, () => FrameworkFacade.GetMenuByName(menuName), Request, GetFlags()));
+        public virtual ActionResult GetMenu(string menuName) {
+            return InitAndHandleErrors(SnapshotFactory.MenuSnapshot(OidStrategy, () => FrameworkFacade.GetMenuByName(menuName), Request, GetFlags()));
+        }
 
-        public virtual ActionResult GetServiceAction(string serviceName, string actionName) =>
-            InitAndHandleErrors(SnapshotFactory.ActionSnapshot(OidStrategy, () => FrameworkFacade.GetServiceActionByName(serviceName, actionName), Request, GetFlags()));
+        public virtual ActionResult GetServiceAction(string serviceName, string actionName) {
+            return InitAndHandleErrors(SnapshotFactory.ActionSnapshot(OidStrategy, () => FrameworkFacade.GetServiceActionByName(serviceName, actionName), Request, GetFlags()));
+        }
 
-        public virtual ActionResult GetImage(string imageId) =>
-            InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetImage(imageId), Request, GetFlags()));
+        public virtual ActionResult GetImage(string imageId) {
+            return InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetImage(imageId), Request, GetFlags()));
+        }
 
-        public virtual ActionResult GetObject(string domainType, string instanceId) =>
-            InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetObjectByName(domainType, instanceId), Request, GetFlags()));
+        public virtual ActionResult GetObject(string domainType, string instanceId) {
+            return InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetObjectByName(domainType, instanceId), Request, GetFlags()));
+        }
 
         public virtual ActionResult GetPropertyPrompt(string domainType, string instanceId, string propertyName, ArgumentMap arguments) {
             Func<RestSnapshot> PromptSnapshot() {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
+
                 PropertyContextFacade PropertyContext() => FrameworkFacade.GetPropertyByName(domainType, instanceId, propertyName, argsContext);
+
                 return SnapshotFactory.PromptSnaphot(OidStrategy, PropertyContext, Request, flags);
             }
 
@@ -488,7 +485,9 @@ namespace NakedObjects.Rest {
             Func<RestSnapshot> PromptSnapshot() {
                 var persistArgs = ProcessPromptArguments(promptArguments);
                 var (promptArgs, flags) = ProcessArgumentMap(promptArguments, false, false);
+
                 PropertyContextFacade PropertyContext() => FrameworkFacade.GetTransientPropertyByName(domainType, propertyName, persistArgs, promptArgs);
+
                 return SnapshotFactory.PromptSnaphot(OidStrategy, PropertyContext, Request, flags);
             }
 
@@ -498,7 +497,9 @@ namespace NakedObjects.Rest {
         public virtual ActionResult GetParameterPrompt(string domainType, string instanceId, string actionName, string parmName, ArgumentMap arguments) {
             Func<RestSnapshot> PromptSnapshot() {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
+
                 ParameterContextFacade ParameterContext() => FrameworkFacade.GetObjectParameterByName(domainType, instanceId, actionName, parmName, argsContext);
+
                 return SnapshotFactory.PromptSnaphot(OidStrategy, ParameterContext, Request, flags);
             }
 
@@ -508,7 +509,9 @@ namespace NakedObjects.Rest {
         public virtual ActionResult GetParameterPromptOnService(string serviceName, string actionName, string parmName, ArgumentMap arguments) {
             Func<RestSnapshot> PromptSnapshot() {
                 var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
+
                 ParameterContextFacade ParameterContext() => FrameworkFacade.GetServiceParameterByName(serviceName, actionName, parmName, argsContext);
+
                 return SnapshotFactory.PromptSnaphot(OidStrategy, ParameterContext, Request, flags);
             }
 
@@ -520,7 +523,7 @@ namespace NakedObjects.Rest {
                 RejectRequestIfReadOnly();
                 var (argsContext, flags) = ProcessArgumentMap(arguments, true, false);
                 // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
-                ObjectContextFacade context = FrameworkFacade.PutObjectAndValidate(domainType, instanceId, argsContext);
+                var context = FrameworkFacade.PutObjectAndValidate(domainType, instanceId, argsContext);
                 return (SnapshotFactory.ObjectSnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
             }
 
@@ -535,7 +538,7 @@ namespace NakedObjects.Rest {
                 RejectRequestIfReadOnly();
                 var (argsContext, flags) = ProcessPersistArguments(arguments);
                 // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
-                ObjectContextFacade context = FrameworkFacade.PersistObjectAndValidate(domainType, argsContext, flags);
+                var context = FrameworkFacade.PersistObjectAndValidate(domainType, argsContext, flags);
                 return (SnapshotFactory.ObjectSnapshot(OidStrategy, () => context, Request, flags, HttpStatusCode.Created), flags.ValidateOnly);
             }
 
@@ -545,17 +548,21 @@ namespace NakedObjects.Rest {
             });
         }
 
-        public virtual ActionResult GetProperty(string domainType, string instanceId, string propertyName) =>
-            InitAndHandleErrors(SnapshotFactory.PropertySnapshot(OidStrategy, () => FrameworkFacade.GetPropertyByName(domainType, instanceId, propertyName), Request, GetFlags()));
+        public virtual ActionResult GetProperty(string domainType, string instanceId, string propertyName) {
+            return InitAndHandleErrors(SnapshotFactory.PropertySnapshot(OidStrategy, () => FrameworkFacade.GetPropertyByName(domainType, instanceId, propertyName), Request, GetFlags()));
+        }
 
-        public virtual ActionResult GetCollection(string domainType, string instanceId, string propertyName) =>
-            InitAndHandleErrors(SnapshotFactory.PropertySnapshot(OidStrategy, () => FrameworkFacade.GetCollectionPropertyByName(domainType, instanceId, propertyName), Request, GetFlags()));
+        public virtual ActionResult GetCollection(string domainType, string instanceId, string propertyName) {
+            return InitAndHandleErrors(SnapshotFactory.PropertySnapshot(OidStrategy, () => FrameworkFacade.GetCollectionPropertyByName(domainType, instanceId, propertyName), Request, GetFlags()));
+        }
 
-        public virtual ActionResult GetCollectionValue(string domainType, string instanceId, string propertyName) =>
-            InitAndHandleErrors(SnapshotFactory.CollectionValueSnapshot(OidStrategy, () => FrameworkFacade.GetCollectionPropertyByName(domainType, instanceId, propertyName), Request, GetFlags()));
+        public virtual ActionResult GetCollectionValue(string domainType, string instanceId, string propertyName) {
+            return InitAndHandleErrors(SnapshotFactory.CollectionValueSnapshot(OidStrategy, () => FrameworkFacade.GetCollectionPropertyByName(domainType, instanceId, propertyName), Request, GetFlags()));
+        }
 
-        public virtual ActionResult GetAction(string domainType, string instanceId, string actionName) =>
-            InitAndHandleErrors(SnapshotFactory.ActionSnapshot(OidStrategy, () => FrameworkFacade.GetObjectActionByName(domainType, instanceId, actionName), Request, GetFlags()));
+        public virtual ActionResult GetAction(string domainType, string instanceId, string actionName) {
+            return InitAndHandleErrors(SnapshotFactory.ActionSnapshot(OidStrategy, () => FrameworkFacade.GetObjectActionByName(domainType, instanceId, actionName), Request, GetFlags()));
+        }
 
         public virtual ActionResult PutProperty(string domainType, string instanceId, string propertyName, SingleValueArgument argument) {
             (Func<RestSnapshot>, bool) PutProperty() {
@@ -587,11 +594,9 @@ namespace NakedObjects.Rest {
             });
         }
 
-        public virtual ActionResult PostCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument)
-            => StatusCode((int) HttpStatusCode.Forbidden);
+        public virtual ActionResult PostCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument) => StatusCode((int) HttpStatusCode.Forbidden);
 
-        public virtual ActionResult DeleteCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument)
-            => StatusCode((int) HttpStatusCode.Forbidden);
+        public virtual ActionResult DeleteCollection(string domainType, string instanceId, string propertyName, SingleValueArgument argument) => StatusCode((int) HttpStatusCode.Forbidden);
 
         private ActionResult Invoke(string domainType, string instanceId, string actionName, ArgumentMap arguments, bool queryOnly) {
             (Func<RestSnapshot>, bool) Execute() {
@@ -611,14 +616,11 @@ namespace NakedObjects.Rest {
             });
         }
 
-        public virtual ActionResult GetInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) =>
-            Invoke(domainType, instanceId, actionName, arguments, true);
+        public virtual ActionResult GetInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) => Invoke(domainType, instanceId, actionName, arguments, true);
 
-        public virtual ActionResult PutInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) =>
-            Invoke(domainType, instanceId, actionName, arguments, false);
+        public virtual ActionResult PutInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) => Invoke(domainType, instanceId, actionName, arguments, false);
 
-        public virtual ActionResult PostInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) =>
-            Invoke(domainType, instanceId, actionName, arguments, false);
+        public virtual ActionResult PostInvoke(string domainType, string instanceId, string actionName, ArgumentMap arguments) => Invoke(domainType, instanceId, actionName, arguments, false);
 
         private ActionResult InvokeOnService(string serviceName, string actionName, ArgumentMap arguments, bool queryOnly) {
             (Func<RestSnapshot>, bool) Execute() {
@@ -639,28 +641,30 @@ namespace NakedObjects.Rest {
             });
         }
 
-        public virtual ActionResult GetInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) =>
-            InvokeOnService(serviceName, actionName, arguments, true);
+        public virtual ActionResult GetInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) => InvokeOnService(serviceName, actionName, arguments, true);
 
-        public virtual ActionResult PutInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) =>
-            InvokeOnService(serviceName, actionName, arguments, false);
+        public virtual ActionResult PutInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) => InvokeOnService(serviceName, actionName, arguments, false);
 
-        public virtual ActionResult PostInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) =>
-            InvokeOnService(serviceName, actionName, arguments, true);
+        public virtual ActionResult PostInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) => InvokeOnService(serviceName, actionName, arguments, true);
 
         public virtual ActionResult GetInvokeTypeActions(string typeName, string actionName, ArgumentMap arguments) {
+            Func<RestSnapshot> GetTypeAction() {
+                return SnapshotFactory.TypeActionSnapshot(OidStrategy, () => GetIsTypeOf(actionName, typeName, arguments), Request, GetFlags());
+            }
 
-            Func<RestSnapshot> GetTypeAction() => SnapshotFactory.TypeActionSnapshot(OidStrategy, () => GetIsTypeOf(actionName, typeName, arguments), Request, GetFlags());
-            Func<RestSnapshot> FailGetTypeAction() => () => throw new TypeActionResourceNotFoundException(actionName, typeName);
+            Func<RestSnapshot> FailGetTypeAction() {
+                return () => throw new TypeActionResourceNotFoundException(actionName, typeName);
+            }
+
             Func<RestSnapshot> NoSuchTypeAction() => FailGetTypeAction();
 
-
-            Func<RestSnapshot> TypeAction() =>
-                actionName switch {
+            Func<RestSnapshot> TypeAction() {
+                return actionName switch {
                     WellKnownIds.IsSubtypeOf => GetTypeAction(),
                     WellKnownIds.IsSupertypeOf => GetTypeAction(),
                     _ => NoSuchTypeAction()
                 };
+            }
 
             return InitAndHandleErrors(TypeAction());
         }
@@ -671,8 +675,8 @@ namespace NakedObjects.Rest {
 
         #region helpers
 
-        private RestControlFlags GetFlags() {
-            return RestControlFlags.FlagsFromArguments(ValidateOnly,
+        private RestControlFlags GetFlags() =>
+            RestControlFlags.FlagsFromArguments(ValidateOnly,
                 Page,
                 PageSize,
                 DomainModel,
@@ -681,7 +685,6 @@ namespace NakedObjects.Rest {
                 InlinePropertyDetails.HasValue ? InlinePropertyDetails.Value : InlineDetailsInPropertyMemberRepresentations,
                 InlineCollectionItems.HasValue && InlineCollectionItems.Value,
                 AllowMutatingActionOnImmutableObject);
-        }
 
         private RestControlFlags GetFlags(ArgumentMap arguments) {
             if (arguments.IsMalformed || arguments.ReservedArguments == null) {
@@ -705,8 +708,8 @@ namespace NakedObjects.Rest {
             return GetFlagsFromArguments(arguments.ReservedArguments);
         }
 
-        private static RestControlFlags GetFlagsFromArguments(ReservedArguments reservedArguments) {
-            return RestControlFlags.FlagsFromArguments(reservedArguments.ValidateOnly,
+        private static RestControlFlags GetFlagsFromArguments(ReservedArguments reservedArguments) =>
+            RestControlFlags.FlagsFromArguments(reservedArguments.ValidateOnly,
                 reservedArguments.Page,
                 reservedArguments.PageSize,
                 reservedArguments.DomainModel,
@@ -715,21 +718,19 @@ namespace NakedObjects.Rest {
                 reservedArguments.InlinePropertyDetails.HasValue ? reservedArguments.InlinePropertyDetails.Value : InlineDetailsInPropertyMemberRepresentations,
                 reservedArguments.InlineCollectionItems.HasValue && reservedArguments.InlineCollectionItems.Value,
                 AllowMutatingActionOnImmutableObject);
-        }
 
         private string GetIfMatchTag() {
             var headers = Request.GetTypedHeaders();
 
             if (headers.IfMatch.Any()) {
-                string quotedTag = headers.IfMatch.First().Tag.ToString();
+                var quotedTag = headers.IfMatch.First().Tag.ToString();
                 return quotedTag.Replace("\"", "");
             }
 
             return null;
         }
 
-        private RestSnapshot SnapshotOrNoContent(Func<RestSnapshot> ss, bool validateOnly)
-            => validateOnly ? throw new NoContentNOSException() : ss();
+        private RestSnapshot SnapshotOrNoContent(Func<RestSnapshot> ss, bool validateOnly) => validateOnly ? throw new NoContentNOSException() : ss();
 
         private MethodType GetExpectedMethodType(HttpMethod method) {
             if (method == HttpMethod.Get) {
@@ -744,7 +745,7 @@ namespace NakedObjects.Rest {
         }
 
         private void SetCaching(ResponseHeaders m, RestSnapshot ss, (int, int, int) cacheSettings) {
-            int cacheTime = 0;
+            var cacheTime = 0;
 
             switch (ss.Representation.GetCaching()) {
                 case CacheType.Transactional:
@@ -766,7 +767,7 @@ namespace NakedObjects.Rest {
                 m.CacheControl = new CacheControlHeaderValue {MaxAge = new TimeSpan(0, 0, 0, cacheTime)};
             }
 
-            DateTime now = DateTime.UtcNow;
+            var now = DateTime.UtcNow;
 
             m.Date = new DateTimeOffset(now);
             m.Expires = new DateTimeOffset(now).Add(new TimeSpan(0, 0, 0, cacheTime));
@@ -782,11 +783,11 @@ namespace NakedObjects.Rest {
             var msg = ControllerContext.HttpContext.Response;
             var responseHeaders = GetResponseHeaders();
 
-            foreach (WarningHeaderValue w in ss.WarningHeaders) {
+            foreach (var w in ss.WarningHeaders) {
                 AppendWarningHeader(responseHeaders, w.ToString());
             }
 
-            foreach (string allowHeader in ss.AllowHeaders) {
+            foreach (var allowHeader in ss.AllowHeaders) {
                 responseHeaders.Append(HeaderNames.Allow, allowHeader);
             }
 
@@ -798,13 +799,7 @@ namespace NakedObjects.Rest {
                 responseHeaders.ETag = ss.Etag;
             }
 
-            MediaTypeHeaderValue ct = ss.Representation.GetContentType();
-
-            if (ct != null) {
-                //formatter.SupportedMediaTypes.Add(ct);
-            }
-
-            responseHeaders.ContentType = ct;
+            responseHeaders.ContentType = ss.Representation.GetContentType();
 
             SetCaching(responseHeaders, ss, CacheSettings);
 
@@ -814,7 +809,6 @@ namespace NakedObjects.Rest {
 
         private void ValidateDomainModel() {
             if (DomainModel != null && DomainModel != RestControlFlags.DomainModelType.Simple.ToString().ToLower() && DomainModel != RestControlFlags.DomainModelType.Formal.ToString().ToLower()) {
-
                 var msg = $"Invalid domainModel: {DomainModel}";
 
                 throw new ValidationException((int) HttpStatusCode.BadRequest, msg);
@@ -833,7 +827,7 @@ namespace NakedObjects.Rest {
         }
 
         private ActionResult InitAndHandleErrors(Func<RestSnapshot> f) {
-            bool success = false;
+            var success = false;
             Exception endTransactionError = null;
             RestSnapshot ss;
             try {
@@ -890,18 +884,16 @@ namespace NakedObjects.Rest {
             }
         }
 
-        private ActionResult ErrorResult(Exception e) => 
-            RepresentationResult(SnapshotFactory.ErrorSnapshot(OidStrategy, e, Request)());
+        private ActionResult ErrorResult(Exception e) => RepresentationResult(SnapshotFactory.ErrorSnapshot(OidStrategy, e, Request)());
 
-        private ResponseHeaders GetResponseHeaders() =>
-            ControllerContext.HttpContext.Response.GetTypedHeaders();
+        private ResponseHeaders GetResponseHeaders() => ControllerContext.HttpContext.Response.GetTypedHeaders();
 
         private ActionResult RepresentationResult(RestSnapshot ss) {
             ss.Populate();
             SetHeaders(ss);
 
             if (ss.Representation is NullRepresentation) {
-                return new StatusCodeResult((int)ss.HttpStatusCode);
+                return new StatusCodeResult((int) ss.HttpStatusCode);
             }
 
             // there maybe better way of doing 
@@ -915,13 +907,12 @@ namespace NakedObjects.Rest {
                 return File(attachmentRepresentation.AsStream, attachmentRepresentation.GetContentType().ToString());
             }
 
-
             return new JsonResult(ss.Representation);
         }
 
         private static void RejectRequestIfReadOnly() {
             if (IsReadOnly) {
-                var msg = RestSnapshot.DebugWarnings ?  "In readonly mode" : "";
+                var msg = RestSnapshot.DebugWarnings ? "In readonly mode" : "";
                 throw new ValidationException((int) HttpStatusCode.Forbidden, msg);
             }
         }
@@ -940,7 +931,7 @@ namespace NakedObjects.Rest {
 
         private static void ValidateArguments(SingleValueArgument arguments, bool errorIfNone = true) {
             if (arguments.IsMalformed) {
-                var msg = $"Malformed arguments{(RestSnapshot.DebugWarnings ? " : " + arguments.MalformedReason : "")}"; 
+                var msg = $"Malformed arguments{(RestSnapshot.DebugWarnings ? " : " + arguments.MalformedReason : "")}";
 
                 throw new BadRequestNOSException(msg); // todo i18n
             }
@@ -969,7 +960,7 @@ namespace NakedObjects.Rest {
             return HandleMalformed(() => {
                 ValidateArguments(argument);
                 var flags = argument.ReservedArguments == null ? GetFlags() : GetFlags(argument);
-                object parm = argument.Value.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy);
+                var parm = argument.Value.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy);
                 return (parm, flags);
             });
         }
@@ -1004,9 +995,9 @@ namespace NakedObjects.Rest {
                 throw new BadRequestNOSException("Malformed arguments");
             }
 
-            ITypeFacade thisSpecification = FrameworkFacade.GetDomainType(typeName);
-            IValue parameter = arguments.Map[context.ParameterId];
-            object value = parameter.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy);
+            var thisSpecification = FrameworkFacade.GetDomainType(typeName);
+            var parameter = arguments.Map[context.ParameterId];
+            var value = parameter.GetValue(FrameworkFacade, new UriMtHelper(OidStrategy, Request), OidStrategy);
             var otherSpecification = (ITypeFacade) (value is ITypeFacade ? value : FrameworkFacade.GetDomainType((string) value));
             context.ThisSpecification = thisSpecification;
             context.OtherSpecification = otherSpecification;
@@ -1072,8 +1063,8 @@ namespace NakedObjects.Rest {
             }, flags);
         }
 
-        private static IDictionary<string, string> GetOptionalCapabilities() {
-            return new Dictionary<string, string> {
+        private static IDictionary<string, string> GetOptionalCapabilities() =>
+            new Dictionary<string, string> {
                 {"protoPersistentObjects", "yes"},
                 {"deleteObjects", "no"},
                 {"validateOnly", "yes"},
@@ -1081,7 +1072,6 @@ namespace NakedObjects.Rest {
                 {"blobsClobs", "attachments"},
                 {"inlinedMemberRepresentations", "yes"}
             };
-        }
 
         #endregion
     }

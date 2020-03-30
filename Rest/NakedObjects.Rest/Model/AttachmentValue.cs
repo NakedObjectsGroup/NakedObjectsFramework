@@ -12,15 +12,11 @@ namespace NakedObjects.Rest.Model {
     public class AttachmentValue : IValue {
         private readonly byte[] internalValue;
 
-        public AttachmentValue(byte[] value) {
-            internalValue = value;
-        }
+        public AttachmentValue(byte[] value) => internalValue = value;
 
         #region IValue Members
 
-        public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
-            return internalValue;
-        }
+        object IValue.GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) => internalValue;
 
         #endregion
     }

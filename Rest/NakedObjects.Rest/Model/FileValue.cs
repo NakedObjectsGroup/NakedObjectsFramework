@@ -13,15 +13,11 @@ namespace NakedObjects.Rest.Model {
     public class FileValue : IValue {
         private readonly IAttachmentFacade value;
 
-        public FileValue(string data, string type, string name) {
-            value = new JsonFileAdapter(data, type, name);
-        }
+        public FileValue(string data, string type, string name) => value = new JsonFileAdapter(data, type, name);
 
         #region IValue Members
 
-        public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
-            return value;
-        }
+        public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) => value;
 
         #endregion
     }

@@ -11,7 +11,6 @@ namespace NakedObjects.Rest.Model {
     [ModelBinder(BinderType = typeof(SingleValueArgumentBinder))]
     public class SingleValueArgument : Arguments {
         public IValue Value { get; set; }
-
         public bool HasValue => Value != null;
     }
 }

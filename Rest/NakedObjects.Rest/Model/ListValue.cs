@@ -20,20 +20,18 @@ namespace NakedObjects.Rest.Model {
         private const string CastleProxyPrefix = "Castle.Proxies.";
         private readonly IValue[] internalValue;
 
-        public ListValue(IValue[] value) {
-            internalValue = value;
-        }
+        public ListValue(IValue[] value) => internalValue = value;
 
         #region IValue Members
 
         public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
-            object[] items = internalValue.Select(iv => iv.GetValue(facade, helper, oidStrategy)).ToArray();
+            var items = internalValue.Select(iv => iv.GetValue(facade, helper, oidStrategy)).ToArray();
 
             if (items.Any()) {
-                Type[] types = items.Select(i => GetProxiedType(i.GetType())).ToArray();
-                Type type = GetCommonBaseType(types, types.First());
+                var types = items.Select(i => GetProxiedType(i.GetType())).ToArray();
+                var type = GetCommonBaseType(types, types.First());
 
-                Type collType = typeof(List<>).MakeGenericType(type);
+                var collType = typeof(List<>).MakeGenericType(type);
                 var coll = (IList) Activator.CreateInstance(collType);
 
                 Array.ForEach(items, i => coll.Add(i));
@@ -45,29 +43,17 @@ namespace NakedObjects.Rest.Model {
 
         #endregion
 
-        private static bool IsNakedObjectsProxy(string typeName) {
-            return typeName.StartsWith(NakedObjectsProxyPrefix);
-        }
+        private static bool IsNakedObjectsProxy(string typeName) => typeName.StartsWith(NakedObjectsProxyPrefix);
 
-        private static bool IsCastleProxy(string typeName) {
-            return typeName.StartsWith(CastleProxyPrefix);
-        }
+        private static bool IsCastleProxy(string typeName) => typeName.StartsWith(CastleProxyPrefix);
 
-        private static bool IsEntityProxy(string typeName) {
-            return typeName.StartsWith(EntityProxyPrefix);
-        }
+        private static bool IsEntityProxy(string typeName) => typeName.StartsWith(EntityProxyPrefix);
 
-        private static bool IsProxy(Type type) {
-            return IsProxy(type.FullName ?? "");
-        }
+        private static bool IsProxy(Type type) => IsProxy(type.FullName ?? "");
 
-        private static bool IsProxy(string typeName) {
-            return IsEntityProxy(typeName) || IsNakedObjectsProxy(typeName) || IsCastleProxy(typeName);
-        }
+        private static bool IsProxy(string typeName) => IsEntityProxy(typeName) || IsNakedObjectsProxy(typeName) || IsCastleProxy(typeName);
 
-        public static Type GetProxiedType(Type type) {
-            return IsProxy(type) ? type.BaseType : type;
-        }
+        public static Type GetProxiedType(Type type) => IsProxy(type) ? type.BaseType : type;
 
         // end clone 
 

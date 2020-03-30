@@ -6,14 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
 namespace NakedObjects.Rest.Model {
     [ModelBinder(BinderType = typeof(PromptArgumentMapBinder))]
     public class PromptArgumentMap : ArgumentMap {
         public IDictionary<string, IValue> MemberMap { get; set; } = new Dictionary<string, IValue>();
-
-        public bool HasMembers => MemberMap.Any();
     }
 }

@@ -12,11 +12,10 @@ namespace NakedObjects.Rest.Model {
     public class ArgumentMapBinder : IModelBinder {
         #region IModelBinder Members
 
-        public Task BindModelAsync(ModelBindingContext bindingContext) {
-            return bindingContext.HttpContext.Request.IsGet()
+        public Task BindModelAsync(ModelBindingContext bindingContext) =>
+            bindingContext.HttpContext.Request.IsGet()
                 ? BindFromQuery(bindingContext)
                 : BindFromBody(bindingContext);
-        }
 
         #endregion
 

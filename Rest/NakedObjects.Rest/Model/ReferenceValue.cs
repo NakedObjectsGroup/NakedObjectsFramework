@@ -17,29 +17,30 @@ namespace NakedObjects.Rest.Model {
 
         public ReferenceValue(object value, string name) {
             internalValue = value as string;
+            Validate(internalValue, name);
+        }
 
+        #region IValue Members
+
+        public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) => GetObjectByHref(internalValue, facade, helper, oidStrategy);
+
+        #endregion
+
+        private static void Validate(string internalValue, string name) {
             if (string.IsNullOrWhiteSpace(internalValue)) {
                 Logger.ErrorFormat("Malformed json name: {0} arguments: href = null or empty", name);
                 throw new ArgumentException("malformed arguments");
             }
         }
 
-        #region IValue Members
-
-        public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
-            return GetObjectByHref(internalValue, facade, helper, oidStrategy);
-        }
-
-        #endregion
-
         private object GetObjectByHref(string href, IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
-            string[] oids = helper.GetObjectId(href);
+            var oids = helper.GetObjectId(href);
             if (oids != null) {
                 var oid = facade.OidTranslator.GetOidTranslation(oids[0] + "/" + oids[1]);
                 return facade.GetObject(oid).Target?.Object;
             }
 
-            string typeName = helper.GetTypeId(href);
+            var typeName = helper.GetTypeId(href);
             return facade.GetDomainType(typeName);
         }
     }

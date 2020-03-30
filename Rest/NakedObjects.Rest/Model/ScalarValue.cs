@@ -12,15 +12,11 @@ namespace NakedObjects.Rest.Model {
     public class ScalarValue : IValue {
         private readonly object internalValue;
 
-        public ScalarValue(object value) {
-            internalValue = value;
-        }
+        public ScalarValue(object value) => internalValue = value;
 
         #region IValue Members
 
-        public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
-            return internalValue;
-        }
+        public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) => internalValue;
 
         #endregion
     }

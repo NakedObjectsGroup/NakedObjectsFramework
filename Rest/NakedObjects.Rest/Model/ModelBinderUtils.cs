@@ -26,24 +26,11 @@ namespace NakedObjects.Rest.Model {
     public static class ModelBinderUtils {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(ModelBinderUtils));
 
-        private static string ExceptionWarning(Exception e) {
-            if (RestSnapshot.DebugWarnings) {
-                var msg = e.Message;
-                var st = e.StackTrace.Replace("\r", " ").Replace("\n", " ");
+        private static string ExceptionWarning(Exception e) => RestSnapshot.DebugWarnings ? $"{e.Message} {e.StackTrace.Replace("\r", " ").Replace("\n", " ")}" : "";
 
-                return $"{msg} {st}";
-            }
-
-            return "";
-        }
-
-
-        private static bool IsReservedName(string name) {
-            return name.StartsWith(RestControlFlags.ReservedPrefix);
-        }
+        private static bool IsReservedName(string name) => name.StartsWith(RestControlFlags.ReservedPrefix);
 
         public static async Task<JObject> DeserializeJsonStreamAsync(Stream stream) {
-
             using var streamReader = new StreamReader(stream, new UTF8Encoding(false, true));
             using var jsonTextReader = new JsonTextReader(streamReader);
             return await JObject.LoadAsync(jsonTextReader);
@@ -59,7 +46,7 @@ namespace NakedObjects.Rest.Model {
         }
 
         public static Stream QueryStringToStream(string qs) {
-            string decodedQs = HttpUtility.UrlDecode(qs)?.Remove(0, 1); // trim '?'
+            var decodedQs = HttpUtility.UrlDecode(qs)?.Remove(0, 1); // trim '?'
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream);
 
@@ -76,11 +63,10 @@ namespace NakedObjects.Rest.Model {
                 throw new ArgumentException("malformed arguments");
             }
 
-            JToken value = jObject[JsonPropertyNames.Value];
-            var valueAsArray = value as JArray;
+            var value = jObject[JsonPropertyNames.Value];
 
-            if (valueAsArray != null) {
-                IValue[] arr = valueAsArray.Children().Select(v => ToIValue("", v)).ToArray();
+            if (value is JArray valueAsArray) {
+                var arr = valueAsArray.Children().Select(v => ToIValue("", v)).ToArray();
                 return new ListValue(arr);
             }
 
@@ -88,8 +74,8 @@ namespace NakedObjects.Rest.Model {
         }
 
         private static IValue ToIValue(string name, JToken value) {
-            JValue href = value.HasValues ? value[JsonPropertyNames.Href] as JValue : null;
-            JValue type = value.HasValues ? value[JsonPropertyNames.Type] as JValue : null;
+            var href = value.HasValues ? value[JsonPropertyNames.Href] as JValue : null;
+            var type = value.HasValues ? value[JsonPropertyNames.Type] as JValue : null;
             if (href == null) {
                 return new ScalarValue(((JValue) value).Value);
             }
@@ -98,50 +84,41 @@ namespace NakedObjects.Rest.Model {
                 return new ReferenceValue(href.Value, name);
             }
 
-            string fileName = value.HasValues ? (value[JsonPropertyNames.Title] as JValue)?.Value as string : "";
+            var fileName = value.HasValues ? (value[JsonPropertyNames.Title] as JValue)?.Value as string : "";
             return new FileValue((string) href.Value, (string) type.Value, fileName);
         }
 
         private static string GetSearchTerm(JObject jObject) {
             var searchTerm = jObject[RestControlFlags.SearchTermReserved] as JObject;
-            JValue value = searchTerm == null ? null : searchTerm[JsonPropertyNames.Value] as JValue;
+            var value = searchTerm?[JsonPropertyNames.Value] as JValue;
 
-            return value == null ? null : (string) value.Value;
+            return (string) value?.Value;
         }
 
-        private static bool GetValidateOnlyFlag(JObject jObject) {
-            var voFlag = jObject[RestControlFlags.ValidateOnlyReserved] as JValue;
-            return voFlag != null && (bool) voFlag.Value;
-        }
+        private static bool GetValidateOnlyFlag(JObject jObject) => jObject[RestControlFlags.ValidateOnlyReserved] is JValue voFlag && (bool) voFlag.Value;
 
         private static bool? GetInlinePropertyDetailsFlag(JObject jObject) {
             var flag = jObject[RestControlFlags.InlinePropertyDetailsReserved] as JValue;
-            return flag == null ? (bool?) null : (bool) flag.Value;
+            return (bool?) flag?.Value;
         }
 
         private static bool? GetInlineCollectionItemsFlag(JObject jObject) {
             var flag = jObject[RestControlFlags.InlineCollectionItemsReserved] as JValue;
-            return flag == null ? (bool?) null : (bool) flag.Value;
+            return (bool?) flag?.Value;
         }
 
-        private static int GetPageValue(JObject jObject) {
-            var pageValue = jObject[RestControlFlags.PageReserved] as JValue;
-            return pageValue == null ? 0 : Convert.ToInt32(pageValue.Value);
-        }
+        private static int GetIntValue(JObject jObject, string name) => jObject[name] is JValue v ? Convert.ToInt32(v.Value) : 0;
 
-        private static int GetPageSizeValue(JObject jObject) {
-            var pageSizeValue = jObject[RestControlFlags.PageSizeReserved] as JValue;
-            return pageSizeValue == null ? 0 : Convert.ToInt32(pageSizeValue.Value);
-        }
+        private static int GetPageValue(JObject jObject) => GetIntValue(jObject, RestControlFlags.PageReserved);
+
+        private static int GetPageSizeValue(JObject jObject) => GetIntValue(jObject, RestControlFlags.PageSizeReserved);
 
         private static string GetDomainModelValue(JObject m) {
             var domainModel = m[RestControlFlags.DomainModelReserved] as JValue;
-            return domainModel == null ? null : (string) domainModel.Value;
+            return (string) domainModel?.Value;
         }
 
-        private static IEnumerable<JProperty> FilterProperties(JToken jToken, Func<JProperty, bool> filter) {
-            return jToken.Children().Cast<JProperty>().Where(filter);
-        }
+        private static IEnumerable<JProperty> FilterProperties(JToken jToken, Func<JProperty, bool> filter) => jToken.Children().Cast<JProperty>().Where(filter);
 
         private static IEnumerable<JProperty> GetNonReservedProperties(JToken jToken) {
             return FilterProperties(jToken, c => !IsReservedName(c.Name));
@@ -156,11 +133,11 @@ namespace NakedObjects.Rest.Model {
             if (jObject != null) {
                 try {
                     arg.Value = GetValue(jObject, "Single");
-                    arg.IsMalformed = (!arg.HasValue && GetNonReservedProperties(jObject).Any()) ||
-                                      (arg.HasValue && GetNonReservedProperties(jObject).Count() > 1);
+                    arg.IsMalformed = !arg.HasValue && GetNonReservedProperties(jObject).Any() ||
+                                      arg.HasValue && GetNonReservedProperties(jObject).Count() > 1;
 
                     if (includeReservedArgs) {
-                        arg.ReservedArguments = new ReservedArguments() {
+                        arg.ReservedArguments = new ReservedArguments {
                             ValidateOnly = GetValidateOnlyFlag(jObject)
                         };
                     }
@@ -174,7 +151,7 @@ namespace NakedObjects.Rest.Model {
 
             if (bObject != null) {
                 arg.Value = new AttachmentValue(bObject);
-                arg.ReservedArguments = new ReservedArguments() {
+                arg.ReservedArguments = new ReservedArguments {
                     ValidateOnly = false
                 }; // not supported on blob/clob
             }
@@ -190,7 +167,7 @@ namespace NakedObjects.Rest.Model {
                     populate(jObject, arg);
 
                     if (includeReservedArgs) {
-                        arg.ReservedArguments = new ReservedArguments() {
+                        arg.ReservedArguments = new ReservedArguments {
                             ValidateOnly = GetValidateOnlyFlag(jObject),
                             DomainModel = GetDomainModelValue(jObject),
                             SearchTerm = GetSearchTerm(jObject),
@@ -200,8 +177,6 @@ namespace NakedObjects.Rest.Model {
                             InlineCollectionItems = GetInlineCollectionItemsFlag(jObject)
                         };
                     }
-
-                    ;
                 }
                 catch (Exception e) {
                     Logger.ErrorFormat("Malformed argument map: {0}", e.Message);
@@ -216,59 +191,39 @@ namespace NakedObjects.Rest.Model {
             return arg;
         }
 
+        private static IDictionary<string, IValue> ExtractProperties(JToken jObject) {
+            return GetNonReservedProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
+        }
+
         private static void PopulateArgumentMap(JToken jObject, ArgumentMap arg) {
-            arg.Map = GetNonReservedProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
+            arg.Map = ExtractProperties(jObject);
         }
 
         private static void PopulatePersistArgumentMap(JToken jObject, PersistArgumentMap arg) {
-            JToken members = jObject[JsonPropertyNames.Members];
-
-            if (members != null) {
-                PopulateArgumentMap(members, arg);
-            }
-            else {
-                arg.Map = new Dictionary<string, IValue>();
-            }
+            var members = jObject[JsonPropertyNames.Members];
+            arg.Map = members != null ? ExtractProperties(members) : new Dictionary<string, IValue>();
         }
 
         private static void PopulatePromptArgumentMap(JToken jObject, PromptArgumentMap arg) {
-            JToken members = jObject[JsonPropertyNames.PromptMembers];
-            var promptArgumentMap = arg as PromptArgumentMap;
-
-            if (promptArgumentMap != null) {
-                if (members != null) {
-                    promptArgumentMap.MemberMap = GetNonReservedProperties(members).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
-                }
-                else {
-                    promptArgumentMap.MemberMap = new Dictionary<string, IValue>();
-                }
-            }
-
-            arg.Map = GetNonReservedProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
+            var members = jObject[JsonPropertyNames.PromptMembers];
+            arg.MemberMap = members != null ? ExtractProperties(members) : new Dictionary<string, IValue>();
+            arg.Map = ExtractProperties(jObject);
         }
 
-        public static ArgumentMap CreateArgumentMap(JObject jObject, bool includeReservedArgs) {
-            return InitArgumentMap<ArgumentMap>(jObject, PopulateArgumentMap, includeReservedArgs);
-        }
+        public static ArgumentMap CreateArgumentMap(JObject jObject, bool includeReservedArgs) => InitArgumentMap<ArgumentMap>(jObject, PopulateArgumentMap, includeReservedArgs);
 
-        public static PersistArgumentMap CreatePersistArgMap(JObject jObject, bool includeReservedArgs) {
-            return InitArgumentMap<PersistArgumentMap>(jObject, PopulatePersistArgumentMap, includeReservedArgs);
-        }
+        public static PersistArgumentMap CreatePersistArgMap(JObject jObject, bool includeReservedArgs) => InitArgumentMap<PersistArgumentMap>(jObject, PopulatePersistArgumentMap, includeReservedArgs);
 
-        public static PromptArgumentMap CreatePromptArgMap(JObject jObject, bool includeReservedArgs) {
-            return InitArgumentMap<PromptArgumentMap>(jObject, PopulatePromptArgumentMap, includeReservedArgs);
-        }
+        public static PromptArgumentMap CreatePromptArgMap(JObject jObject, bool includeReservedArgs) => InitArgumentMap<PromptArgumentMap>(jObject, PopulatePromptArgumentMap, includeReservedArgs);
 
-        public static T CreateMalformedArguments<T>(string msg) where T : Arguments, new() {
-            return new T {IsMalformed = true, MalformedReason = RestSnapshot.DebugWarnings ? msg : ""};
-        }
+        public static T CreateMalformedArguments<T>(string msg) where T : Arguments, new() => new T {IsMalformed = true, MalformedReason = RestSnapshot.DebugWarnings ? msg : ""};
 
         private static void PopulateSimpleArgumentMap(NameValueCollection collection, ArgumentMap args) {
             args.Map = collection.AllKeys.Where(k => !IsReservedName(k)).ToDictionary(s => s, s => (IValue) new ScalarValue(collection[s]));
         }
 
         public static ArgumentMap CreateSimpleArgumentMap(string query) {
-            NameValueCollection collection = HttpUtility.ParseQueryString(query);
+            var collection = HttpUtility.ParseQueryString(query);
 
             if (collection.AllKeys.Any() && collection.AllKeys.First() == null) {
                 return null;
@@ -288,12 +243,10 @@ namespace NakedObjects.Rest.Model {
             return new JObject();
         }
 
-        public static byte[] DeserializeBinaryContent(ModelBindingContext bindingContext) {
-            return DeserializeBinaryStream(bindingContext.HttpContext.Request.Body);
-        }
+        public static byte[] DeserializeBinaryContent(ModelBindingContext bindingContext) => DeserializeBinaryStream(bindingContext.HttpContext.Request.Body);
 
         public static async Task<JObject> DeserializeQueryString(ModelBindingContext bindingContext) {
-            using Stream stream = QueryStringToStream(bindingContext.HttpContext.Request.QueryString.ToString());
+            using var stream = QueryStringToStream(bindingContext.HttpContext.Request.QueryString.ToString());
             return await DeserializeJsonStreamAsync(stream);
         }
 
@@ -326,12 +279,12 @@ namespace NakedObjects.Rest.Model {
             try {
                 var reservedArgs = args.ReservedArguments;
 
-                string voFlag = collection[RestControlFlags.ValidateOnlyReserved];
-                string domainModel = collection[RestControlFlags.DomainModelReserved];
-                string page = collection[RestControlFlags.PageReserved];
-                string pageSize = collection[RestControlFlags.PageSizeReserved];
-                string inlineFlag = collection[RestControlFlags.InlinePropertyDetailsReserved];
-                string inlineItemsFlag = collection[RestControlFlags.InlineCollectionItemsReserved];
+                var voFlag = collection[RestControlFlags.ValidateOnlyReserved];
+                var domainModel = collection[RestControlFlags.DomainModelReserved];
+                var page = collection[RestControlFlags.PageReserved];
+                var pageSize = collection[RestControlFlags.PageSizeReserved];
+                var inlineFlag = collection[RestControlFlags.InlinePropertyDetailsReserved];
+                var inlineItemsFlag = collection[RestControlFlags.InlineCollectionItemsReserved];
 
                 reservedArgs.ValidateOnly = voFlag != null && bool.Parse(voFlag);
                 reservedArgs.DomainModel = domainModel;
@@ -347,18 +300,6 @@ namespace NakedObjects.Rest.Model {
             }
         }
 
-        //public static ReservedArguments CreateReservedArguments(string query) {
-        //    NameValueCollection collection = HttpUtility.ParseQueryString(query);
-        //    var args = new ReservedArguments();
-        //    PopulateReservedArgs(collection, args);
-        //    return args;
-        //}
-
-        //public static ReservedArguments CreateReservedArgumentsForMalformedArgs() {
-        //    return new ReservedArguments {IsMalformed = true};
-        //}
-
-        public static bool IsGet(this HttpRequest request)
-            => new HttpMethod(request.Method) == HttpMethod.Get;
+        public static bool IsGet(this HttpRequest request) => new HttpMethod(request.Method) == HttpMethod.Get;
     }
 }

@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
-using Microsoft.AspNetCore.SignalR;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Utility;
@@ -91,7 +90,6 @@ namespace NakedObjects.Rest.API {
             return objectContext;
         }
 
-
         public static ObjectContextFacade PutObjectAndValidate(this IFrameworkFacade frameworkFacade, string domainType, string instanceId, ArgumentsContextFacade argsContext) {
             var link = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
             var context = frameworkFacade.PutObject(link, argsContext);
@@ -150,14 +148,13 @@ namespace NakedObjects.Rest.API {
 
         public static PropertyContextFacade PutPropertyAndValidate(this IFrameworkFacade frameworkFacade, string domainType, string instanceId, string propertyName, ArgumentContextFacade argContext) {
             var link = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
-            PropertyContextFacade context = frameworkFacade.PutProperty(link, propertyName, argContext);
+            var context = frameworkFacade.PutProperty(link, propertyName, argContext);
             return ValidatePropertyContext(context);
         }
 
-        public static PropertyContextFacade DeletePropertyAndValidate(this IFrameworkFacade frameworkFacade, string domainType, string instanceId, string propertyName, ArgumentContextFacade argContext)
-        {
+        public static PropertyContextFacade DeletePropertyAndValidate(this IFrameworkFacade frameworkFacade, string domainType, string instanceId, string propertyName, ArgumentContextFacade argContext) {
             var link = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
-            PropertyContextFacade context = frameworkFacade.DeleteProperty(link, propertyName, argContext);
+            var context = frameworkFacade.DeleteProperty(link, propertyName, argContext);
             return ValidatePropertyContext(context);
         }
 
@@ -191,15 +188,14 @@ namespace NakedObjects.Rest.API {
 
         public static ActionResultContextFacade ExecuteActionAndValidate(this IFrameworkFacade frameworkFacade, string domainType, string instanceId, string actionName, ArgumentsContextFacade argsContext) {
             var link = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
-            ActionResultContextFacade context = frameworkFacade.ExecuteObjectAction(link, actionName, argsContext);
+            var context = frameworkFacade.ExecuteObjectAction(link, actionName, argsContext);
             return ValidateActionResult(context);
         }
 
         public static ActionResultContextFacade ExecuteServiceActionAndValidate(this IFrameworkFacade frameworkFacade, string serviceName, string actionName, ArgumentsContextFacade argsContext) {
             var link = frameworkFacade.OidTranslator.GetOidTranslation(serviceName);
-            ActionResultContextFacade context = frameworkFacade.ExecuteServiceAction(link, actionName, argsContext);
+            var context = frameworkFacade.ExecuteServiceAction(link, actionName, argsContext);
             return ValidateActionResult(context);
         }
-
     }
 }
