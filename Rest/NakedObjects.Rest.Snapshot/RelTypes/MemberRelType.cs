@@ -11,17 +11,15 @@ using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class MemberRelType : RelType {
-        public MemberRelType(UriMtHelper helper) : base(RelValues.Details, helper) {}
-        public MemberRelType(string name, UriMtHelper helper) : base(name, helper) {}
+        public MemberRelType(UriMtHelper helper) : base(RelValues.Details, helper) { }
+        public MemberRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
-        public override string Name => base.Name + (HasRelParameter ? Helper.GetRelParameters() : "");
+        public override string Name => $"{base.Name}{(HasRelParameter ? Helper.GetRelParameters() : "")}";
 
-        public override Uri GetUri() {
-            return Helper.GetDetailsUri();
-        }
+        public override Uri GetUri() => Helper.GetDetailsUri();
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            MediaTypeHeaderValue mediaType = UriMtHelper.GetJsonMediaType(Helper.GetMemberMediaType());
+            var mediaType = UriMtHelper.GetJsonMediaType(Helper.GetMemberMediaType());
             Helper.AddObjectCollectionRepresentationParameter(mediaType, flags);
             return mediaType;
         }

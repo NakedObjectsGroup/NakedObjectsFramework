@@ -11,19 +11,13 @@ using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class MenuRelType : RelType {
-        public MenuRelType(UriMtHelper helper) : base(RelValues.Menu, helper) {}
-        public MenuRelType(string name, UriMtHelper helper) : base(name, helper) {}
+        public MenuRelType(UriMtHelper helper) : base(RelValues.Menu, helper) { }
+        public MenuRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
         public override string Name => base.Name + (HasRelParameter ? Helper.GetMenuRelParameter() : "");
 
-        public override Uri GetUri() {
-            return Helper.GetMenuUri();
-        }
+        public override Uri GetUri() => Helper.GetMenuUri();
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            MediaTypeHeaderValue mediaType = UriMtHelper.GetJsonMediaType(Helper.GetMenuMediaType());
-            // helper.AddObjectRepresentationParameter(mediaType, flags);
-            return mediaType;
-        }
+        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(Helper.GetMenuMediaType());
     }
 }

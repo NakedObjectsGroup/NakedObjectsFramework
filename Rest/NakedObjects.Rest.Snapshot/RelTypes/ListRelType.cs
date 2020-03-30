@@ -13,17 +13,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
     public class ListRelType : RelType {
         private readonly string endPoint;
 
-        public ListRelType(string name, string endPoint, UriMtHelper helper)
-            : base(name, helper) {
-            this.endPoint = endPoint;
-        }
+        public ListRelType(string name, string endPoint, UriMtHelper helper) : base(name, helper) => this.endPoint = endPoint;
 
-        public override Uri GetUri() {
-            return Helper.GetWellKnownUri(endPoint);
-        }
+        public override Uri GetUri() => Helper.GetWellKnownUri(endPoint);
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            MediaTypeHeaderValue mediaType = UriMtHelper.GetJsonMediaType(RepresentationTypes.List);
+            var mediaType = UriMtHelper.GetJsonMediaType(RepresentationTypes.List);
             Helper.AddListRepresentationParameter(mediaType, flags);
             return mediaType;
         }

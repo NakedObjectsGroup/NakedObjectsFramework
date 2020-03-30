@@ -11,15 +11,11 @@ using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class VersionRelType : RelType {
-        public VersionRelType(UriMtHelper helper) : base(RelValues.Version, helper) {}
-        public VersionRelType(string name, UriMtHelper helper) : base(name, helper) {}
+        public VersionRelType(UriMtHelper helper) : base(RelValues.Version, helper) { }
+        public VersionRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
-        public override Uri GetUri() {
-            return Helper.GetWellKnownUri(SegmentValues.Version);
-        }
+        public override Uri GetUri() => Helper.GetWellKnownUri(SegmentValues.Version);
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            return UriMtHelper.GetJsonMediaType(RepresentationTypes.Version);
-        }
+        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(RepresentationTypes.Version);
     }
 }

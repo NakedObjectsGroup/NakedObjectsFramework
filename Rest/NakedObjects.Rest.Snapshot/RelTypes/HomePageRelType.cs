@@ -11,14 +11,10 @@ using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class HomePageRelType : RelType {
-        public HomePageRelType(string name, UriMtHelper helper) : base(name, helper) {}
+        public HomePageRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
-        public override Uri GetUri() {
-            return Helper.GetHomeUri();
-        }
+        public override Uri GetUri() => Helper.GetHomeUri();
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            return UriMtHelper.GetJsonMediaType(RepresentationTypes.HomePage);
-        }
+        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(RepresentationTypes.HomePage);
     }
 }

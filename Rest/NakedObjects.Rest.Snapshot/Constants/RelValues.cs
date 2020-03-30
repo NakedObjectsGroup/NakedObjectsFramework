@@ -17,6 +17,7 @@ namespace NakedObjects.Rest.Snapshot.Constants {
         public const string Up = "up";
 
         private const string Prfx = "urn:org.restfulobjects:rels/";
+
         // RO values 
         public const string Action = Prfx + "action";
         public const string ActionParam = Prfx + "action-param";

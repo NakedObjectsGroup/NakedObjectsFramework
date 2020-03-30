@@ -11,18 +11,8 @@ using NakedObjects.Facade.Contexts;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class BadPersistArgumentsException : BadArgumentsNOSException {
-        public BadPersistArgumentsException(string message, IList<ContextFacade> contexts, RestControlFlags flags) : base(message, contexts) {
-            Flags = flags;
-        }
+        public BadPersistArgumentsException(string message, ObjectContextFacade context, IList<ContextFacade> contexts, RestControlFlags flags) : base(message, context, contexts) => Flags = flags;
 
-        public BadPersistArgumentsException(string message, ObjectContextFacade context, RestControlFlags flags) : base(message, context) {
-            Flags = flags;
-        }
-
-        public BadPersistArgumentsException(string message, ObjectContextFacade context, IList<ContextFacade> contexts, RestControlFlags flags) : base(message, context, contexts) {
-            Flags = flags;
-        }
-
-        public RestControlFlags Flags { get; private set; }
+        public RestControlFlags Flags { get; }
     }
 }

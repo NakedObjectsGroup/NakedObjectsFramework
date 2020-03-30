@@ -11,11 +11,9 @@ using NakedObjects.Rest.Snapshot.Constants;
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class ValueRelType : ObjectRelType {
         private readonly IMemberFacade member;
-        public ValueRelType(UriMtHelper helper) : base(RelValues.Value, helper) {}
+        public ValueRelType(UriMtHelper helper) : base(RelValues.Value, helper) { }
 
-        public ValueRelType(IAssociationFacade property, UriMtHelper helper) : this(helper) {
-            member = property;
-        }
+        public ValueRelType(IAssociationFacade property, UriMtHelper helper) : this(helper) => member = property;
 
         public override string Name => base.Name + Helper.GetRelParametersFor(member);
     }

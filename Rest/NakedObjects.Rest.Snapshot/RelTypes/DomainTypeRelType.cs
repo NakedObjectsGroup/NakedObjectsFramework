@@ -11,15 +11,10 @@ using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class DomainTypeRelType : RelType {
-        public DomainTypeRelType(UriMtHelper helper) : base(RelValues.DomainType, helper) {}
-        public DomainTypeRelType(string name, UriMtHelper helper) : base(name, helper) {}
+        public DomainTypeRelType(UriMtHelper helper) : base(RelValues.DomainType, helper) { }
 
-        public override Uri GetUri() {
-            return Helper.GetDomainTypeUri();
-        }
+        public override Uri GetUri() => Helper.GetDomainTypeUri();
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            return UriMtHelper.GetJsonMediaType(RepresentationTypes.DomainType);
-        }
+        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(RepresentationTypes.DomainType);
     }
 }

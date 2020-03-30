@@ -61,7 +61,9 @@ namespace NakedObjects.Rest.Snapshot.Constants {
         public const string Value = "value";
         public const string XRoInvalidReason = "x-ro-invalidReason";
         public const string XRoSearchTerm = RestControlFlags.SearchTermReserved;
+
         public const string XRoMembers = "x-ro-nof-members";
+
         // custom 
         public const string CustomMask = "x-ro-nof-mask";
         public const string CustomChoices = "x-ro-nof-choices";

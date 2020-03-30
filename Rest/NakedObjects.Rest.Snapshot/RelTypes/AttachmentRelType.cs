@@ -11,16 +11,12 @@ using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class AttachmentRelType : RelType {
-        public AttachmentRelType(UriMtHelper helper) : base(RelValues.Attachment, helper) {}
+        public AttachmentRelType(UriMtHelper helper) : base(RelValues.Attachment, helper) { }
 
-        public override string Name => base.Name + (HasRelParameter ? Helper.GetRelParameters() : "");
+        public override string Name => $"{base.Name}{(HasRelParameter ? Helper.GetRelParameters() : "")}";
 
-        public override Uri GetUri() {
-            return Helper.GetDetailsUri();
-        }
+        public override Uri GetUri() => Helper.GetDetailsUri();
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            return Helper.GetAttachmentMediaType();
-        }
+        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => Helper.GetAttachmentMediaType();
     }
 }

@@ -5,20 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects.Facade;
 using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class DefaultRelType : ObjectRelType {
         private readonly string actionId;
         private readonly string paramId;
-        private readonly IActionParameterFacade parameter;
-        private DefaultRelType(UriMtHelper helper) : base(RelValues.Default, helper) {}
-
-        public DefaultRelType(IActionParameterFacade parameter, UriMtHelper helper)
-            : this(helper) {
-            this.parameter = parameter;
-        }
+        private DefaultRelType(UriMtHelper helper) : base(RelValues.Default, helper) { }
 
         public DefaultRelType(string actionId, string paramId, UriMtHelper helper)
             : this(helper) {
@@ -26,6 +19,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             this.paramId = paramId;
         }
 
-        public override string Name => base.Name + (parameter == null ? Helper.GetRelParametersFor(actionId, paramId) : Helper.GetRelParametersFor(parameter));
+        public override string Name => $"{base.Name}{Helper.GetRelParametersFor(actionId, paramId)}";
     }
 }

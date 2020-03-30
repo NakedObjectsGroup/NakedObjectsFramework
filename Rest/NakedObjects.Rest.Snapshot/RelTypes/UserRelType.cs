@@ -11,15 +11,11 @@ using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class UserRelType : RelType {
-        public UserRelType(UriMtHelper helper) : base(RelValues.User, helper) {}
-        public UserRelType(string name, UriMtHelper helper) : base(name, helper) {}
+        public UserRelType(UriMtHelper helper) : base(RelValues.User, helper) { }
+        public UserRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
-        public override Uri GetUri() {
-            return Helper.GetWellKnownUri(SegmentValues.User);
-        }
+        public override Uri GetUri() => Helper.GetWellKnownUri(SegmentValues.User);
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            return UriMtHelper.GetJsonMediaType(RepresentationTypes.User);
-        }
+        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(RepresentationTypes.User);
     }
 }

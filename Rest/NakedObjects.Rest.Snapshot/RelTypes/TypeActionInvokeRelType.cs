@@ -11,14 +11,10 @@ using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class TypeActionInvokeRelType : RelType {
-        public TypeActionInvokeRelType(string name, UriMtHelper helper) : base(name, helper) {}
+        public TypeActionInvokeRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
-        public override Uri GetUri() {
-            return Helper.GetTypeActionInvokeUri();
-        }
+        public override Uri GetUri() => Helper.GetTypeActionInvokeUri();
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            return UriMtHelper.GetJsonMediaType(RepresentationTypes.TypeActionResult);
-        }
+        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(RepresentationTypes.TypeActionResult);
     }
 }

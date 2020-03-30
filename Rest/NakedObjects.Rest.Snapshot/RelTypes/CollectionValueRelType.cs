@@ -11,18 +11,13 @@ using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class CollectionValueRelType : RelType {
-        public CollectionValueRelType(UriMtHelper helper) : base(RelValues.CollectionValue, helper) {}
-        public CollectionValueRelType(string name, UriMtHelper helper) : base(name, helper) {}
+        public CollectionValueRelType(UriMtHelper helper) : base(RelValues.CollectionValue, helper) { }
+        public CollectionValueRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
-        public override string Name => base.Name + (HasRelParameter ? Helper.GetRelParameters() : "");
+        public override string Name => $"{base.Name}{(HasRelParameter ? Helper.GetRelParameters() : "")}";
 
-        public override Uri GetUri() {
-            return Helper.GetCollectionValueUri();
-        }
+        public override Uri GetUri() => Helper.GetCollectionValueUri();
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            MediaTypeHeaderValue mediaType = UriMtHelper.GetJsonMediaType(RepresentationTypes.CollectionValue);
-            return mediaType;
-        }
+        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(RepresentationTypes.CollectionValue);
     }
 }

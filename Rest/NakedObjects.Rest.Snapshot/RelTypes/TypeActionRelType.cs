@@ -13,21 +13,14 @@ namespace NakedObjects.Rest.Snapshot.Utility {
     public class TypeActionRelType : RelType {
         private readonly string action;
 
-        public TypeActionRelType(UriMtHelper helper, string action) : this(RelValues.Invoke, helper, action) {}
+        public TypeActionRelType(UriMtHelper helper, string action) : this(RelValues.Invoke, helper, action) { }
 
-        public TypeActionRelType(string name, UriMtHelper helper, string action)
-            : base(name, helper) {
-            this.action = action;
-        }
+        public TypeActionRelType(string name, UriMtHelper helper, string action) : base(name, helper) => this.action = action;
 
-        public override string Name => base.Name + Helper.GetRelParametersFor(action);
+        public override string Name => $"{base.Name}{Helper.GetRelParametersFor(action)}";
 
-        public override Uri GetUri() {
-            return Helper.GetTypeActionsUri(action);
-        }
+        public override Uri GetUri() => Helper.GetTypeActionsUri(action);
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            return UriMtHelper.GetJsonMediaType(Helper.GetTypeActionMediaType());
-        }
+        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(Helper.GetTypeActionMediaType());
     }
 }

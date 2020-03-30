@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using Microsoft.Net.Http.Headers;
 using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
@@ -27,12 +27,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             HasRelParameter = HasRelParameterSet.Contains(name);
         }
 
-        public virtual string Name { get; private set; }
+        public virtual string Name { get; }
         public RelMethod Method { get; set; }
-        protected bool HasRelParameter { get; private set; }
+        protected bool HasRelParameter { get; }
 
         public abstract Uri GetUri();
 
-        public abstract Microsoft.Net.Http.Headers.MediaTypeHeaderValue GetMediaType(RestControlFlags flags);
+        public abstract MediaTypeHeaderValue GetMediaType(RestControlFlags flags);
     }
 }

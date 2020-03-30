@@ -10,14 +10,12 @@ using Microsoft.Net.Http.Headers;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class ActionResultRelType : RelType {
-        public ActionResultRelType(string name, UriMtHelper helper) : base(name, helper) {}
+        public ActionResultRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
-        public override Uri GetUri() {
-            return Helper.GetInvokeUri();
-        }
+        public override Uri GetUri() => Helper.GetInvokeUri();
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            MediaTypeHeaderValue mediaType = UriMtHelper.GetJsonMediaType(Helper.GetActionResultMediaType());
+            var mediaType = UriMtHelper.GetJsonMediaType(Helper.GetActionResultMediaType());
             Helper.AddActionResultRepresentationParameter(mediaType, flags);
             return mediaType;
         }

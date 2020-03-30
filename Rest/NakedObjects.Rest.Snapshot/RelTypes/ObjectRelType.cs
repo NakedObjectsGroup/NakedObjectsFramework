@@ -10,15 +10,12 @@ using Microsoft.Net.Http.Headers;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class ObjectRelType : RelType {
-        //public ObjectRelType(UriMtHelper helper) : base(RelValues.Object, helper) {}
-        public ObjectRelType(string name, UriMtHelper helper) : base(name, helper) {}
+        public ObjectRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
-        public override Uri GetUri() {
-            return Helper.GetObjectUri();
-        }
+        public override Uri GetUri() => Helper.GetObjectUri();
 
         public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) {
-            MediaTypeHeaderValue mediaType = UriMtHelper.GetJsonMediaType(Helper.GetObjectMediaType());
+            var mediaType = UriMtHelper.GetJsonMediaType(Helper.GetObjectMediaType());
             Helper.AddObjectRepresentationParameter(mediaType, flags);
             return mediaType;
         }

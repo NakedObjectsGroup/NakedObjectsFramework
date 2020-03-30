@@ -5,21 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Linq;
-
 namespace NakedObjects.Rest.Snapshot.Constants {
     public static class PredefinedTypeExtensions {
-        public static string ToRoString(this PredefinedFormatType pdt) {
-            return pdt.ToString().Replace('_', '-').ToLower();
-        }
+        public static string ToRoString(this PredefinedFormatType pdt) => pdt.ToString().Replace('_', '-').ToLower();
 
-        public static string ToRoString(this PredefinedJsonType pjt) {
-            return pjt.ToString().ToLower();
-        }
-
-        public static string[] PredefinedTypeValues() {
-            return Enum.GetValues(typeof(PredefinedFormatType)).Cast<PredefinedFormatType>().Select(pdt => pdt.ToRoString()).ToArray();
-        }
+        public static string ToRoString(this PredefinedJsonType pjt) => pjt.ToString().ToLower();
     }
 }
