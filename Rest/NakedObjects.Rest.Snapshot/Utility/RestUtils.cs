@@ -454,7 +454,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 // remove all \" within warning message as they cause format exception 
                 return new WarningHeaderValue(code, agent, "\"" + warning.Replace('"', ' ') + "\"");
             }
-            catch (FormatException fe) {
+            catch (FormatException) {
                 //logger.WarnFormat("Failed to parse warning message: {0} : {1}", w, fe.Message);
                 return new WarningHeaderValue(code, agent, "\"" + "Failed to parse warning message" + "\"");
             }

@@ -41,7 +41,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         public static MemberAbstractRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
-            IConsentFacade consent = propertyContext.Property.IsUsable(propertyContext.Target);
+            var consent = propertyContext.Property.IsUsable(propertyContext.Target);
             var optionals = new List<OptionalProperty>();
 
             if (consent.IsVetoed) {

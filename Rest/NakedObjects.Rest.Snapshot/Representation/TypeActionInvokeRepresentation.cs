@@ -41,16 +41,12 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Value = context.Value;
         }
 
-        private void SetHeader() {
-            Caching = CacheType.NonExpiring;
-        }
+        private void SetHeader() => Caching = CacheType.NonExpiring;
 
-        private void SetExtensions() {
-            Extensions = MapRepresentation.Create();
-        }
+        private void SetExtensions() => Extensions = MapRepresentation.Create();
 
         private void SetLinks(HttpRequest req, TypeActionInvokeContext context) {
-            string uri = new DomainTypeRelType(new UriMtHelper(OidStrategy, req, context.OtherSpecification)).GetUri().AbsoluteUri;
+            var uri = new DomainTypeRelType(new UriMtHelper(OidStrategy, req, context.OtherSpecification)).GetUri().AbsoluteUri;
 
             var tempLinks = new List<LinkRepresentation> {
                 LinkRepresentation.Create(OidStrategy, SelfRelType,
@@ -64,8 +60,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Links = tempLinks.ToArray();
         }
 
-        public static TypeActionInvokeRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, TypeActionInvokeContext context, RestControlFlags flags) {
-            return new TypeActionInvokeRepresentation(oidStrategy, req, context, flags);
-        }
+        public static TypeActionInvokeRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, TypeActionInvokeContext context, RestControlFlags flags) => new TypeActionInvokeRepresentation(oidStrategy, req, context, flags);
     }
 }

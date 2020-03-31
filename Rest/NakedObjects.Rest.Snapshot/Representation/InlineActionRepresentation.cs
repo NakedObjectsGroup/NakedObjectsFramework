@@ -28,7 +28,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         public static InlineActionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) {
-            IConsentFacade consent = actionContext.Action.IsUsable(actionContext.Target);
+            var consent = actionContext.Action.IsUsable(actionContext.Target);
 
             var strategy = AbstractActionRepresentationStrategy.GetStrategy(true, oidStrategy, req, actionContext, flags);
             var optionals = new List<OptionalProperty>();
@@ -42,7 +42,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             }
 
             if (optionals.Any()) {
-                return CreateWithOptionals<InlineActionRepresentation>(new object[] { oidStrategy, strategy }, optionals);
+                return CreateWithOptionals<InlineActionRepresentation>(new object[] {oidStrategy, strategy}, optionals);
             }
 
             return new InlineActionRepresentation(oidStrategy, strategy);

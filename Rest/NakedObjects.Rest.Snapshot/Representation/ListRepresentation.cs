@@ -72,7 +72,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private void SetLinks(HttpRequest req, ITypeFacade spec) {
-            Links = new LinkRepresentation[] {};
+            Links = new LinkRepresentation[] { };
         }
 
         private void SetLinks(HttpRequest req, ActionContextFacade actionContext) {
@@ -85,7 +85,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         protected virtual LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade no, ActionContextFacade actionContext = null) {
             var helper = new UriMtHelper(oidStrategy, req, no);
-            ObjectRelType rt = no.Specification.IsService ? new ServiceRelType(helper) : new ObjectRelType(RelValues.Element, helper);
+            var rt = no.Specification.IsService ? new ServiceRelType(helper) : new ObjectRelType(RelValues.Element, helper);
 
             return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
         }
@@ -97,12 +97,8 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return LinkRepresentation.Create(oidStrategy, rt, Flags, new OptionalProperty(JsonPropertyNames.Title, menu.Name));
         }
 
-        public static ListRepresentation Create(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequest req, RestControlFlags flags) {
-            return new ListRepresentation(oidStrategy, listContext, req, flags);
-        }
+        public static ListRepresentation Create(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequest req, RestControlFlags flags) => new ListRepresentation(oidStrategy, listContext, req, flags);
 
-        public static ListRepresentation Create(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequest req, RestControlFlags flags) {
-            return new ListRepresentation(oidStrategy, menus, req, flags);
-        }
+        public static ListRepresentation Create(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequest req, RestControlFlags flags) => new ListRepresentation(oidStrategy, menus, req, flags);
     }
 }

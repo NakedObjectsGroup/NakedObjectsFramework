@@ -16,7 +16,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class HomePageRepresentation : Representation {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (HomePageRepresentation));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(HomePageRepresentation));
 
         protected HomePageRepresentation(IOidStrategy oidStrategy, HttpRequest req, RestControlFlags flags)
             : base(oidStrategy, flags) {
@@ -52,8 +52,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Links = tempLinks.ToArray();
         }
 
-        public static HomePageRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, RestControlFlags flags) {
-            return new HomePageRepresentation(oidStrategy, req, flags);
-        }
+        public static HomePageRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, RestControlFlags flags) => new HomePageRepresentation(oidStrategy, req, flags);
     }
 }

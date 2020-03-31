@@ -83,18 +83,17 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 return menuFacade.MenuItems.SelectMany(i => GetMenuItem(i, parent)).ToArray();
             }
 
-            return new Tuple<string, ActionContextFacade>[] {};
+            return new Tuple<string, ActionContextFacade>[] { };
         }
 
-        private bool IsVisibleAndUsable(ActionContextFacade actionContextFacade) {
-            return actionContextFacade.Action.IsVisible(actionContextFacade.Target) && 
-                   actionContextFacade.Action.IsUsable(actionContextFacade.Target).IsAllowed;
-        }
+        private bool IsVisibleAndUsable(ActionContextFacade actionContextFacade) =>
+            actionContextFacade.Action.IsVisible(actionContextFacade.Target) &&
+            actionContextFacade.Action.IsUsable(actionContextFacade.Target).IsAllowed;
 
         private void SetMembers(IMenuFacade menu, HttpRequest req, List<LinkRepresentation> tempLinks) {
             var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(i)).Where(af => IsVisibleAndUsable(af.Item2));
 
-            InlineActionRepresentation[] actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a.Item2, Flags)).ToArray();
+            var actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a.Item2, Flags)).ToArray();
 
             var eq = new Eq();
             // todo fix distinct
@@ -107,22 +106,16 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Extensions = MapRepresentation.Create();
         }
 
-        public static MenuRepresentation Create(IOidStrategy oidStrategy, IMenuFacade menu, HttpRequest req, RestControlFlags flags) {
-            return new MenuRepresentation(oidStrategy, req, menu, flags);
-        }
+        public static MenuRepresentation Create(IOidStrategy oidStrategy, IMenuFacade menu, HttpRequest req, RestControlFlags flags) => new MenuRepresentation(oidStrategy, req, menu, flags);
 
         #region Nested type: Eq
 
         private class Eq : IEqualityComparer<InlineActionRepresentation> {
             #region IEqualityComparer<InlineActionRepresentation> Members
 
-            public bool Equals(InlineActionRepresentation x, InlineActionRepresentation y) {
-                return x.Id == y.Id;
-            }
+            public bool Equals(InlineActionRepresentation x, InlineActionRepresentation y) => x.Id == y.Id;
 
-            public int GetHashCode(InlineActionRepresentation obj) {
-                return obj.Id.GetHashCode();
-            }
+            public int GetHashCode(InlineActionRepresentation obj) => obj.Id.GetHashCode();
 
             #endregion
         }

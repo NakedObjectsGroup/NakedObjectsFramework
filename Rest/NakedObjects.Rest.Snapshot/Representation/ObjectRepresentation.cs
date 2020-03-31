@@ -11,7 +11,6 @@ using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Translation;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
 
@@ -40,17 +39,11 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Members)]
         public MapRepresentation Members { get; set; }
 
-        private UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequest req, ObjectContextFacade objectContext) {
-            return new UriMtHelper(oidStrategy, req, objectContext.Target);
-        }
+        private UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequest req, ObjectContextFacade objectContext) => new UriMtHelper(oidStrategy, req, objectContext.Target);
 
-        private static bool IsProtoPersistent(IObjectFacade objectFacade) {
-            return objectFacade.IsTransient;
-        }
+        private static bool IsProtoPersistent(IObjectFacade objectFacade) => objectFacade.IsTransient;
 
-        private static bool IsForm(IObjectFacade objectFacade) {
-            return objectFacade.IsViewModelEditView;
-        }
+        private static bool IsForm(IObjectFacade objectFacade) => objectFacade.IsViewModelEditView;
 
         private void SetScalars(ObjectContextFacade objectContext) {
             Title = objectContext.Target.TitleString;
@@ -61,20 +54,18 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             SetEtag(objectContext.Target);
         }
 
-
         private LinkRepresentation[] CreateIsOfTypeLinks(HttpRequest req, ObjectContextFacade objectContext) {
             var spec = objectContext.Target.Specification;
 
             return new[] {
                 LinkRepresentation.Create(OidStrategy, new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.IsSubtypeOf), Flags,
                     new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSubtypeOf),
-                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SuperType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))))),
+                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SuperType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))))),
                 LinkRepresentation.Create(OidStrategy, new TypeActionRelType(new UriMtHelper(OidStrategy, req, spec), WellKnownIds.IsSupertypeOf), Flags,
                     new OptionalProperty(JsonPropertyNames.Id, WellKnownIds.IsSupertypeOf),
-                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SubType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)))))))
+                    new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.SubType, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)))))))
             };
         }
-
 
         private void SetLinksAndMembers(HttpRequest req, ObjectContextFacade objectContext) {
             var tempLinks = new List<LinkRepresentation>();
@@ -91,50 +82,49 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private void SetMembers(ObjectContextFacade objectContext, HttpRequest req, List<LinkRepresentation> tempLinks) {
-            PropertyContextFacade[] visiblePropertiesAndCollections = objectContext.VisibleProperties;
+            var visiblePropertiesAndCollections = objectContext.VisibleProperties;
 
             if (!Flags.BlobsClobs) {
                 // filter any blobs and clobs 
                 visiblePropertiesAndCollections = visiblePropertiesAndCollections.Where(vp => !RestUtils.IsBlobOrClob(vp.Specification)).ToArray();
             }
 
-            PropertyContextFacade[] visibleProperties = visiblePropertiesAndCollections.Where(p => !p.Property.IsCollection).ToArray();
+            var visibleProperties = visiblePropertiesAndCollections.Where(p => !p.Property.IsCollection).ToArray();
 
             if (!IsProtoPersistent(objectContext.Target) && !IsForm(objectContext.Target) && visibleProperties.Any(p => p.Property.IsUsable(objectContext.Target).IsAllowed)) {
-                string[] ids = visibleProperties.Where(p => p.Property.IsUsable(objectContext.Target).IsAllowed && !p.Property.IsInline).Select(p => p.Id).ToArray();
-                OptionalProperty[] props = ids.Select(s => new OptionalProperty(s, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))).ToArray();
+                var ids = visibleProperties.Where(p => p.Property.IsUsable(objectContext.Target).IsAllowed && !p.Property.IsInline).Select(p => p.Id).ToArray();
+                var props = ids.Select(s => new OptionalProperty(s, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))).ToArray();
 
                 var helper = GetHelper(OidStrategy, req, objectContext);
 
-                LinkRepresentation modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, helper) {Method = RelMethod.Put }, Flags,
+                var modifyLink = LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Update, helper) {Method = RelMethod.Put}, Flags,
                     new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(props)));
 
                 tempLinks.Add(modifyLink);
             }
 
             if (IsProtoPersistent(objectContext.Target)) {
-                KeyValuePair<string, object>[] ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => {
-
+                var ids = objectContext.Target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline).ToDictionary(p => p.Id, p => {
                     var useDate = p.IsDateOnly;
                     return GetPropertyValue(OidStrategy, req, p, objectContext.Target, Flags, true, useDate);
                 }).ToArray();
-                OptionalProperty[] props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
+                var props = ids.Select(kvp => new OptionalProperty(kvp.Key, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, kvp.Value)))).ToArray();
 
                 var argMembers = new OptionalProperty(JsonPropertyNames.Members, MapRepresentation.Create(props));
                 var args = new List<OptionalProperty> {argMembers};
 
-                LinkRepresentation persistLink = LinkRepresentation.Create(OidStrategy, new ObjectsRelType(RelValues.Persist, new UriMtHelper(OidStrategy, req, objectContext.Target.Specification)) {Method = RelMethod.Post}, Flags,
+                var persistLink = LinkRepresentation.Create(OidStrategy, new ObjectsRelType(RelValues.Persist, new UriMtHelper(OidStrategy, req, objectContext.Target.Specification)) {Method = RelMethod.Post}, Flags,
                     new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(args.ToArray())));
 
                 tempLinks.Add(persistLink);
             }
 
-            InlineMemberAbstractRepresentation[] properties = visiblePropertiesAndCollections.Select(p => InlineMemberAbstractRepresentation.Create(OidStrategy, req, p, Flags, false)).ToArray();
+            var properties = visiblePropertiesAndCollections.Select(p => InlineMemberAbstractRepresentation.Create(OidStrategy, req, p, Flags, false)).ToArray();
 
             ActionContextFacade[] visibleActions;
 
             if (IsProtoPersistent(objectContext.Target)) {
-                visibleActions = new ActionContextFacade[] {};
+                visibleActions = new ActionContextFacade[] { };
             }
             else if (IsForm(objectContext.Target)) {
                 visibleActions = objectContext.VisibleActions.Where(af => af.Action.ParameterCount == 0).ToArray();
@@ -143,9 +133,9 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 visibleActions = FilterLocallyContributedActions(objectContext.VisibleActions, visiblePropertiesAndCollections.Where(p => p.Property.IsCollection).ToArray());
             }
 
-            InlineActionRepresentation[] actions = visibleActions.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a, Flags)).ToArray();
-          
-            IEnumerable<InlineMemberAbstractRepresentation> allMembers = properties.Union(actions);
+            var actions = visibleActions.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a, Flags)).ToArray();
+
+            var allMembers = properties.Union(actions);
 
             Members = RestUtils.CreateMap(allMembers.ToDictionary(m => m.Id, m => (object) m));
         }
@@ -156,7 +146,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private IDictionary<string, object> GetCustomExtensions(IObjectFacade objectFacade) {
-
             InteractionMode mode;
 
             if (objectFacade.IsNotPersistent && !objectFacade.IsViewModel) {
@@ -181,29 +170,28 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Extensions = GetExtensions(objectFacade);
         }
 
-        private MapRepresentation GetExtensions(IObjectFacade objectFacade) {
-            return RestUtils.GetExtensions(
-                           friendlyname: objectFacade.Specification.SingularName,
-                           description: objectFacade.Specification.Description,
-                           pluralName: objectFacade.Specification.PluralName,
-                           domainType: objectFacade.Specification.DomainTypeName(OidStrategy),
-                           isService: objectFacade.Specification.IsService,
-                           hasParams: null,
-                           optional: null,
-                           maxLength: null,
-                           pattern: null,
-                           memberOrder: null,
-                           dataType: null,
-                           presentationHint: objectFacade.PresentationHint,
-                           customExtensions: GetCustomExtensions(objectFacade),
-                           returnType: null,
-                           elementType: null,
-                           oidStrategy: OidStrategy,
-                           useDateOverDateTime: false);
-        }
+        private MapRepresentation GetExtensions(IObjectFacade objectFacade) =>
+            RestUtils.GetExtensions(
+                objectFacade.Specification.SingularName,
+                objectFacade.Specification.Description,
+                objectFacade.Specification.PluralName,
+                objectFacade.Specification.DomainTypeName(OidStrategy),
+                objectFacade.Specification.IsService,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                objectFacade.PresentationHint,
+                GetCustomExtensions(objectFacade),
+                null,
+                null,
+                OidStrategy,
+                false);
 
         public static ObjectRepresentation Create(IOidStrategy oidStrategy, IObjectFacade target, HttpRequest req, RestControlFlags flags) {
-            ObjectContextFacade oc = target.FrameworkFacade.GetObject(target);
+            var oc = target.FrameworkFacade.GetObject(target);
             return Create(oidStrategy, oc, req, flags);
         }
 
@@ -216,7 +204,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private static ObjectRepresentation CreateObjectWithOptionals(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
-            IOidTranslation oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectContext.Target);
+            var oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectContext.Target);
 
             var props = new List<OptionalProperty>();
             if (objectContext.Specification.IsService) {

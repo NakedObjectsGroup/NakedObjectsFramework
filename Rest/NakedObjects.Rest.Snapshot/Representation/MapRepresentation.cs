@@ -12,18 +12,16 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     public class MapRepresentation : Representation {
         private MediaTypeHeaderValue mediaType;
-        public MapRepresentation() : base(null, RestControlFlags.DefaultFlags()) {}
+        public MapRepresentation() : base(null, RestControlFlags.DefaultFlags()) { }
 
         public static MapRepresentation Create(params OptionalProperty[] properties) {
-            return properties.Any() ? CreateWithOptionals<MapRepresentation>(new object[] {}, properties) : new MapRepresentation();
+            return properties.Any() ? CreateWithOptionals<MapRepresentation>(new object[] { }, properties) : new MapRepresentation();
         }
 
         public void SetContentType(MediaTypeHeaderValue mt) {
             mediaType = mt;
         }
 
-        public override MediaTypeHeaderValue GetContentType() {
-            return mediaType ?? base.GetContentType();
-        }
+        public override MediaTypeHeaderValue GetContentType() => mediaType ?? base.GetContentType();
     }
 }

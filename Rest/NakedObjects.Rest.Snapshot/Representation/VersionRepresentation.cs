@@ -43,42 +43,31 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.OptionalCapabilities)]
         public MapRepresentation OptionalCapabilities { get; set; }
 
-        private void SetHeader() {
-            Caching = CacheType.NonExpiring;
-        }
+        private void SetHeader() => Caching = CacheType.NonExpiring;
 
         private void SetScalars() {
             SpecVersion = "1.1";
-            //ImplVersion = "8.0.0-Beta7"; //TODO: derive automatically from package version
             var assembly = Assembly.GetExecutingAssembly();
             const string resourceName = "NakedObjects.Rest.Snapshot.version.txt";
 
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName)) {
-                if (stream != null) {
-                    using (StreamReader reader = new StreamReader(stream)) {
-                        ImplVersion = reader.ReadToEnd();
-                    }
-                }
+            using var stream = assembly.GetManifestResourceStream(resourceName);
+            if (stream != null) {
+                using var reader = new StreamReader(stream);
+                ImplVersion = reader.ReadToEnd();
             }
 
             ImplVersion = string.IsNullOrWhiteSpace(ImplVersion) ? "Failed to read version" : ImplVersion;
         }
 
         private void SetOptionalCapabilities(IDictionary<string, string> capabilitiesMap) {
-            OptionalProperty[] properties = capabilitiesMap.Select(kvp => new OptionalProperty(kvp.Key, kvp.Value)).ToArray();
+            var properties = capabilitiesMap.Select(kvp => new OptionalProperty(kvp.Key, kvp.Value)).ToArray();
             OptionalCapabilities = MapRepresentation.Create(properties);
         }
 
-        private void SetExtensions() {
-            Extensions = new MapRepresentation();
-        }
+        private void SetExtensions() => Extensions = new MapRepresentation();
 
-        private void SetLinks(HomePageRelType homePageRelType) {
-            Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, homePageRelType, Flags)};
-        }
+        private void SetLinks(HomePageRelType homePageRelType) => Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, homePageRelType, Flags)};
 
-        public static VersionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IDictionary<string, string> capabilities, RestControlFlags flags) {
-            return new VersionRepresentation(oidStrategy, req, capabilities, flags);
-        }
+        public static VersionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IDictionary<string, string> capabilities, RestControlFlags flags) => new VersionRepresentation(oidStrategy, req, capabilities, flags);
     }
 }

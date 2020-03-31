@@ -31,20 +31,12 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Extensions)]
         public MapRepresentation Extensions { get; set; }
 
-        private void SetScalars(ObjectContextFacade objectContext) {
-            Value = RestUtils.ObjectToPredefinedType(objectContext.Target.Object);
-        }
+        private void SetScalars(ObjectContextFacade objectContext) => Value = RestUtils.ObjectToPredefinedType(objectContext.Target.Object);
 
-        private void SetLinks(HttpRequest req, ObjectContextFacade objectContext) {
-            Links = new LinkRepresentation[] {};
-        }
+        private void SetLinks(HttpRequest req, ObjectContextFacade objectContext) => Links = new LinkRepresentation[] { };
 
-        private void SetExtensions() {
-            Extensions = MapRepresentation.Create();
-        }
+        private void SetExtensions() => Extensions = MapRepresentation.Create();
 
-        public static ScalarRepresentation Create(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
-            return new ScalarRepresentation(oidStrategy, req, objectContext, flags);
-        }
+        public static ScalarRepresentation Create(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) => new ScalarRepresentation(oidStrategy, req, objectContext, flags);
     }
 }

@@ -40,7 +40,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         public LinkRepresentation[] Value { get; set; }
 
         private void SetValue(PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags) {
-            IEnumerable<IObjectFacade> collectionItems = propertyContext.Property.GetValue(propertyContext.Target).ToEnumerable();
+            var collectionItems = propertyContext.Property.GetValue(propertyContext.Target).ToEnumerable();
             Value = collectionItems.Select(i => LinkRepresentation.Create(OidStrategy, new ValueRelType(propertyContext.Property, new UriMtHelper(OidStrategy, req, i)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i)))).ToArray();
         }
 
@@ -66,8 +66,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             SetEtag(target);
         }
 
-        public static CollectionValueRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags) {
-            return new CollectionValueRepresentation(oidStrategy, propertyContext, req, flags);
-        }
+        public static CollectionValueRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags) => new CollectionValueRepresentation(oidStrategy, propertyContext, req, flags);
     }
 }

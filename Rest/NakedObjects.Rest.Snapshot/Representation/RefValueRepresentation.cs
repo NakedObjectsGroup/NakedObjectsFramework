@@ -14,15 +14,12 @@ namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class RefValueRepresentation : Representation {
         protected RefValueRepresentation(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags)
-            : base(oidStrategy, flags) {
+            : base(oidStrategy, flags) =>
             Href = relType.GetUri().AbsoluteUri;
-        }
 
         [DataMember(Name = JsonPropertyNames.Href)]
         public string Href { get; set; }
 
-        public static RefValueRepresentation Create(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags) {
-            return new RefValueRepresentation(oidStrategy, relType, flags);
-        }
+        public static RefValueRepresentation Create(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags) => new RefValueRepresentation(oidStrategy, relType, flags);
     }
 }

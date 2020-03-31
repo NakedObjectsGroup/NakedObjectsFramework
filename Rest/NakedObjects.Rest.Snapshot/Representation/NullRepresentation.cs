@@ -5,16 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Runtime.Serialization;
 using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class NullRepresentation : Representation {
-        public NullRepresentation() : base(null, RestControlFlags.DefaultFlags()) {}
+        public NullRepresentation() : base(null, RestControlFlags.DefaultFlags()) { }
 
         //public override HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
         //    var msg = new HttpResponseMessage {Content = new StringContent("")};
@@ -23,8 +20,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         //    return msg;
         //}
 
-        public static Representation Create() {
-            return new NullRepresentation();
-        }
+        public static Representation Create() => new NullRepresentation();
     }
 }

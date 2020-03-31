@@ -20,7 +20,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         }
 
         public IOidStrategy OidStrategy { get; set; }
-        public RestControlFlags Flags { get; private set; }
+        public RestControlFlags Flags { get; }
 
         public MapRepresentation GetExtensions() {
             return GetExtensionsForSimple();

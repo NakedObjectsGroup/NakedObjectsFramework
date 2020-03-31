@@ -34,7 +34,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Value, strategy.GetPropertyValue(oidStrategy, req, propertyContext.Property, propertyContext.Target, flags, false, strategy.UseDateOverDateTime())));
             }
 
-            if (strategy.ShowChoices()) {              
+            if (strategy.ShowChoices()) {
                 RestUtils.AddChoices(oidStrategy, req, propertyContext, optionals, flags);
                 optionals.Add(new OptionalProperty(JsonPropertyNames.HasChoices, strategy.GetHasChoices()));
             }

@@ -6,22 +6,22 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Net.Http;
-using System.Net.Http.Formatting;
-
+using Microsoft.Net.Http.Headers;
 
 namespace NakedObjects.Rest.Snapshot.Representations {
     public enum CacheType {
         Transactional,
         UserInfo,
         NonExpiring
-    };
+    }
 
     public interface IRepresentation {
-        Microsoft.Net.Http.Headers.MediaTypeHeaderValue GetContentType();
-        Microsoft.Net.Http.Headers.EntityTagHeaderValue GetEtag();
+        MediaTypeHeaderValue GetContentType();
+        EntityTagHeaderValue GetEtag();
         CacheType GetCaching();
+
         string[] GetWarnings();
+
         //HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings);
         Uri GetLocation();
     }

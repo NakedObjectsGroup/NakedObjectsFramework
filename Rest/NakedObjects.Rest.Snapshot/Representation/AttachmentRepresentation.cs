@@ -7,9 +7,6 @@
 
 using System;
 using System.IO;
-using System.Net.Http;
-using System.Net.Http.Formatting;
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 using NakedObjects.Facade;
@@ -43,9 +40,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         //    return msg;
         //}
 
-        public override MediaTypeHeaderValue GetContentType() {
-            return contentType;
-        }
+        public override MediaTypeHeaderValue GetContentType() => contentType;
 
         private void SetHeader(IObjectFacade target) {
             Caching = CacheType.Transactional;
@@ -53,26 +48,24 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private void SetContentType(PropertyContextFacade context) {
-            IObjectFacade no = context.Property.GetValue(context.Target);
+            var no = context.Property.GetValue(context.Target);
             Func<string> defaultMimeType = () => no == null ? AttachmentContextFacade.DefaultMimeType : no.GetAttachment().DefaultMimeType();
-            string mtv = string.IsNullOrWhiteSpace(no?.GetAttachment().MimeType) ? defaultMimeType() : no.GetAttachment().MimeType;
+            var mtv = string.IsNullOrWhiteSpace(no?.GetAttachment().MimeType) ? defaultMimeType() : no.GetAttachment().MimeType;
             contentType = new MediaTypeHeaderValue(mtv);
         }
 
         private void SetContentDisposition(PropertyContextFacade context) {
-            IObjectFacade no = context.Property.GetValue(context.Target);
-            string cd = string.IsNullOrWhiteSpace(no?.GetAttachment().ContentDisposition) ? AttachmentContextFacade.DefaultContentDisposition : no.GetAttachment().ContentDisposition;
-            string fn = no?.GetAttachment().FileName ?? AttachmentContextFacade.DefaultFileName;
+            var no = context.Property.GetValue(context.Target);
+            var cd = string.IsNullOrWhiteSpace(no?.GetAttachment().ContentDisposition) ? AttachmentContextFacade.DefaultContentDisposition : no.GetAttachment().ContentDisposition;
+            var fn = no?.GetAttachment().FileName ?? AttachmentContextFacade.DefaultFileName;
             ContentDisposition = new ContentDispositionHeaderValue(cd) {FileName = fn};
         }
 
         private void SetStream(PropertyContextFacade context) {
-            IObjectFacade no = context.Property.GetValue(context.Target);
+            var no = context.Property.GetValue(context.Target);
             AsStream = no != null ? no.GetAttachment().Content : new MemoryStream();
         }
 
-        public static Representation Create(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
-            return new AttachmentRepresentation(oidStrategy, req, propertyContext, flags);
-        }
+        public static Representation Create(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) => new AttachmentRepresentation(oidStrategy, req, propertyContext, flags);
     }
 }

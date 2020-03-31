@@ -16,7 +16,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public abstract class InlineMemberAbstractRepresentation : Representation {
-        protected InlineMemberAbstractRepresentation(IOidStrategy oidStrategy, RestControlFlags flags) : base(oidStrategy, flags) {}
+        protected InlineMemberAbstractRepresentation(IOidStrategy oidStrategy, RestControlFlags flags) : base(oidStrategy, flags) { }
 
         [DataMember(Name = JsonPropertyNames.MemberType)]
         public string MemberType { get; set; }
@@ -35,7 +35,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         public static InlineMemberAbstractRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags, bool asTableColumn) {
-            IConsentFacade consent = propertyContext.Property.IsUsable(propertyContext.Target);
+            var consent = propertyContext.Property.IsUsable(propertyContext.Target);
             var optionals = new List<OptionalProperty>();
             if (consent.IsVetoed) {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.DisabledReason, consent.Reason));
@@ -47,7 +47,5 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
             return InlinePropertyRepresentation.Create(oidStrategy, req, propertyContext, optionals, flags);
         }
-
-       
     }
 }

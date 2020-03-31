@@ -38,7 +38,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         private void SetHeader(ActionResultContextFacade actionResult) {
             Caching = CacheType.Transactional;
-    
+
             if (actionResult.Specification.IsObject && actionResult.Result != null) {
                 if (actionResult.Result.Target.IsTransient) {
                     SetEtag(actionResult.TransientSecurityHash);
@@ -56,7 +56,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private void SetExtensions(ActionResultContextFacade actionResult) {
-
             var exts = new Dictionary<string, object>();
 
             AddIfPresent(exts, actionResult.Warnings, JsonPropertyNames.CustomWarnings);
@@ -66,7 +65,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private void SetLinks(HttpRequest req, ActionResultContextFacade actionResult) {
-            Links = actionResult.ActionContext.Action.IsQueryOnly ? new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(req, actionResult)))} : new LinkRepresentation[] {};
+            Links = actionResult.ActionContext.Action.IsQueryOnly ? new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags, new OptionalProperty(JsonPropertyNames.Arguments, CreateArguments(req, actionResult)))} : new LinkRepresentation[] { };
         }
 
         private void SetResultType(ActionResultContextFacade actionResult) {
@@ -84,18 +83,18 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         private MapRepresentation CreateArguments(HttpRequest req, ActionResultContextFacade actionResult) {
             var optionalProperties = new List<OptionalProperty>();
 
-            foreach (ParameterContextFacade visibleParamContext in actionResult.ActionContext.VisibleParameters) {
+            foreach (var visibleParamContext in actionResult.ActionContext.VisibleParameters) {
                 IRepresentation value;
 
                 if (visibleParamContext.Specification.IsParseable) {
-                    object proposedObj = visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade?.Object;
-                    object valueObj = RestUtils.ObjectToPredefinedType(proposedObj);
+                    var proposedObj = visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade?.Object;
+                    var valueObj = RestUtils.ObjectToPredefinedType(proposedObj);
                     value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObj));
                 }
                 else if (visibleParamContext.Specification.IsCollection) {
                     if (visibleParamContext.ElementSpecification.IsParseable) {
                         var proposedEnumerable = (visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade?.Object) as IEnumerable;
-                        var proposedCollection = proposedEnumerable == null ? new object[]{} : proposedEnumerable.Cast<object>();
+                        var proposedCollection = proposedEnumerable == null ? new object[] { } : proposedEnumerable.Cast<object>();
 
                         var valueObjs = proposedCollection.Select(i => RestUtils.ObjectToPredefinedType(i)).ToArray();
                         value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObjs));
@@ -112,11 +111,13 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                     if (visibleParamContext.ProposedObjectFacade != null) {
                         valueRef = RefValueRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Self, new UriMtHelper(OidStrategy, req, visibleParamContext.ProposedObjectFacade)), Flags);
                     }
+
                     value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueRef));
                 }
 
                 optionalProperties.Add(new OptionalProperty(visibleParamContext.Id, value));
             }
+
             return MapRepresentation.Create(optionalProperties.ToArray());
         }
 
@@ -139,6 +140,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
                 return CreateWithOptionals<ActionResultRepresentation>(new object[] {oidStrategy, req, actionResult, flags}, new[] {new OptionalProperty(JsonPropertyNames.Result, result)});
             }
+
             return new ActionResultRepresentation(oidStrategy, req, actionResult, flags);
         }
     }

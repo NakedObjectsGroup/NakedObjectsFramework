@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 using NakedObjects.Facade;
@@ -22,13 +21,13 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         public enum Format {
             Full,
             MembersOnly
-        };
+        }
 
         #endregion
 
         private static RefValueRepresentation CreateObjectRef(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade no, RestControlFlags flags) {
             var helper = new UriMtHelper(oidStrategy, req, no);
-            ObjectRelType rt = new ObjectRelType(RelValues.Element, helper);
+            var rt = new ObjectRelType(RelValues.Element, helper);
 
             return RefValueRepresentation.Create(oidStrategy, rt, flags);
         }
@@ -51,6 +50,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             else {
                 value = CreateMap(context, RefValueRepresentation.Create(oidStrategy, new ObjectRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, context.ProposedObjectFacade)), flags));
             }
+
             return value;
         }
 
@@ -59,12 +59,13 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             if (!string.IsNullOrEmpty(context.Reason)) {
                 opts.Add(new OptionalProperty(JsonPropertyNames.InvalidReason, context.Reason));
             }
+
             return Create(opts.ToArray());
         }
 
         public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ContextFacade contextFacade, IList<ContextFacade> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
             var memberValues = contexts.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, req, c, flags))).ToList();
-            IObjectFacade target = contexts.First().Target;
+            var target = contexts.First().Target;
             MapRepresentation mapRepresentation;
 
             if (format == Format.Full) {
@@ -96,18 +97,20 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             MapRepresentation mapRepresentation;
 
             if (objectContext != null) {
-                List<OptionalProperty> optionalProperties = objectContext.VisibleProperties.Where(p => p.Reason != null || p.ProposedValue != null).Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, req, c, flags))).ToList();
+                var optionalProperties = objectContext.VisibleProperties.Where(p => p.Reason != null || p.ProposedValue != null).Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, req, c, flags))).ToList();
                 if (!string.IsNullOrEmpty(objectContext.Reason)) {
                     optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, objectContext.Reason));
                 }
+
                 mapRepresentation = Create(optionalProperties.ToArray());
             }
             else if (actionResultContext != null) {
-                List<OptionalProperty> optionalProperties = actionResultContext.ActionContext.VisibleParameters.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, req, c, flags))).ToList();
+                var optionalProperties = actionResultContext.ActionContext.VisibleParameters.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, req, c, flags))).ToList();
 
                 if (!string.IsNullOrEmpty(actionResultContext.Reason)) {
                     optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, actionResultContext.Reason));
                 }
+
                 mapRepresentation = Create(optionalProperties.ToArray());
             }
             else {
@@ -119,8 +122,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return mapRepresentation;
         }
 
-        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IList<ContextFacade> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
-            return Create(oidStrategy, req, null, contexts, format, flags, mt);
-        }
+        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IList<ContextFacade> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) => Create(oidStrategy, req, null, contexts, format, flags, mt);
     }
 }

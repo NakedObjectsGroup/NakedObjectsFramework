@@ -7,7 +7,6 @@
 
 using System;
 using System.Linq;
-
 using System.Runtime.Serialization;
 using Microsoft.Net.Http.Headers;
 using NakedObjects.Facade;
@@ -18,11 +17,11 @@ namespace NakedObjects.Rest.Snapshot.Representations {
     public class ErrorRepresentation : Representation {
         public ErrorRepresentation(IOidStrategy oidStrategy, Exception e)
             : base(oidStrategy, RestControlFlags.DefaultFlags()) {
-            Exception exception = GetInnermostException(e);
+            var exception = GetInnermostException(e);
             Message = exception.Message;
             StackTrace = exception.StackTrace.Split('\n').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
 
-            Links = new LinkRepresentation[] {};
+            Links = new LinkRepresentation[] { };
             Extensions = new MapRepresentation();
         }
 
@@ -38,16 +37,10 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Extensions)]
         public MapRepresentation Extensions { get; set; }
 
-        public override MediaTypeHeaderValue GetContentType() {
-            return UriMtHelper.GetJsonMediaType(RepresentationTypes.Error);
-        }
+        public override MediaTypeHeaderValue GetContentType() => UriMtHelper.GetJsonMediaType(RepresentationTypes.Error);
 
-        private static Exception GetInnermostException(Exception e) {
-            return e.InnerException == null ? e : GetInnermostException(e.InnerException);
-        }
+        private static Exception GetInnermostException(Exception e) => e.InnerException == null ? e : GetInnermostException(e.InnerException);
 
-        public static Representation Create(IOidStrategy oidStrategy, Exception exception) {
-            return new ErrorRepresentation(oidStrategy, exception);
-        }
+        public static Representation Create(IOidStrategy oidStrategy, Exception exception) => new ErrorRepresentation(oidStrategy, exception);
     }
 }

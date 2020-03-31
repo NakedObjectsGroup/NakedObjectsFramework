@@ -35,7 +35,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             }
 
             RestUtils.AddChoices(oidStrategy, req, propertyContext, optionals, flags);
-            
+
             return CreateWithOptionals<PropertyRepresentation>(new object[] {oidStrategy, strategy}, optionals);
         }
     }

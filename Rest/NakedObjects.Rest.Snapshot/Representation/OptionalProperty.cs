@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Rest.Snapshot.Representations {
     public class OptionalProperty {
-        public OptionalProperty(string name, object value) : this(name, value, value == null ? typeof (object) : value.GetType()) {}
+        public OptionalProperty(string name, object value) : this(name, value, value == null ? typeof(object) : value.GetType()) { }
 
         public OptionalProperty(string name, object value, Type propertyType) {
             Name = name;

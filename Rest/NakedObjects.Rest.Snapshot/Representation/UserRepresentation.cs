@@ -38,23 +38,15 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         private void SetScalars(IPrincipal user) {
             UserName = user.Identity.Name ?? "";
-            Roles = new string[] {};
+            Roles = new string[] { };
         }
 
-        private void SetHeader() {
-            Caching = CacheType.UserInfo;
-        }
+        private void SetHeader() => Caching = CacheType.UserInfo;
 
-        private void SetLinks(HomePageRelType homePageRelType) {
-            Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, homePageRelType, Flags)};
-        }
+        private void SetLinks(HomePageRelType homePageRelType) => Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, homePageRelType, Flags)};
 
-        private void SetExtensions() {
-            Extensions = new MapRepresentation();
-        }
+        private void SetExtensions() => Extensions = new MapRepresentation();
 
-        public static UserRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IPrincipal user, RestControlFlags flags) {
-            return new UserRepresentation(oidStrategy, req, user, flags);
-        }
+        public static UserRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IPrincipal user, RestControlFlags flags) => new UserRepresentation(oidStrategy, req, user, flags);
     }
 }

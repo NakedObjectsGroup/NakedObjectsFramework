@@ -30,13 +30,9 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Members)]
         public MapRepresentation Members { get; set; }
 
-        private static IObjectFacade Page(ObjectContextFacade objectContext, RestControlFlags flags, ActionContextFacade actionContext) {
-            return objectContext.Target.Page(flags.Page, PageSize(flags, actionContext), true);
-        }
+        private static IObjectFacade Page(ObjectContextFacade objectContext, RestControlFlags flags, ActionContextFacade actionContext) => objectContext.Target.Page(flags.Page, PageSize(flags, actionContext), true);
 
-        private static int PageSize(RestControlFlags flags, ActionContextFacade actionContext) {
-            return actionContext.Action.PageSize > 0 ? actionContext.Action.PageSize : flags.PageSize;
-        }
+        private static int PageSize(RestControlFlags flags, ActionContextFacade actionContext) => actionContext.Action.PageSize > 0 ? actionContext.Action.PageSize : flags.PageSize;
 
         // custom extension for pagination 
         private void SetPagination(IObjectFacade list, RestControlFlags flags, ActionContextFacade actionContext) {
@@ -45,7 +41,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             var totalCount = list.Count();
             var pageSize = PageSize(flags, actionContext);
             var page = flags.Page;
-            var numPages = (int) Math.Round(totalCount/(decimal) pageSize + 0.5m);
+            var numPages = (int) Math.Round(totalCount / (decimal) pageSize + 0.5m);
             numPages = numPages == 0 ? 1 : numPages;
 
             var exts = new Dictionary<string, object> {
@@ -59,20 +55,14 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private void SetActions(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
-            InlineActionRepresentation[] actions = objectContext.VisibleActions.Select(a => InlineActionRepresentation.Create(oidStrategy, req, a, flags)).ToArray();
+            var actions = objectContext.VisibleActions.Select(a => InlineActionRepresentation.Create(oidStrategy, req, a, flags)).ToArray();
             Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
         }
 
-        public static ListRepresentation Create(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequest req, RestControlFlags flags) {
-            return new PagedListRepresentation(oidStrategy, actionResultContext.Result, req, flags, actionResultContext.ActionContext);
-        }
+        public static ListRepresentation Create(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequest req, RestControlFlags flags) => new PagedListRepresentation(oidStrategy, actionResultContext.Result, req, flags, actionResultContext.ActionContext);
 
-        private LinkRepresentation CreateTableRowValueLink(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade no, ActionContextFacade actionContext) {
-            return RestUtils.CreateTableRowValueLink(no, actionContext, OidStrategy, req, Flags);
-        }
+        private LinkRepresentation CreateTableRowValueLink(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade no, ActionContextFacade actionContext) => RestUtils.CreateTableRowValueLink(no, actionContext, OidStrategy, req, Flags);
 
-        protected override LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade no, ActionContextFacade actionContext = null) {
-            return !Flags.InlineCollectionItems ? base.CreateObjectLink(oidStrategy, req, no, actionContext) : CreateTableRowValueLink(oidStrategy, req, no, actionContext);
-        }
+        protected override LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade no, ActionContextFacade actionContext = null) => !Flags.InlineCollectionItems ? base.CreateObjectLink(oidStrategy, req, no, actionContext) : CreateTableRowValueLink(oidStrategy, req, no, actionContext);
     }
 }

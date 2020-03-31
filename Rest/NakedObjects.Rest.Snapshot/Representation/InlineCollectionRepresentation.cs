@@ -30,7 +30,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         public static InlineCollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags, bool asTableColumn) {
             var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(asTableColumn, true, oidStrategy, req, propertyContext, flags);
 
-            int? size = collectionRepresentationStrategy.GetSize();
+            var size = collectionRepresentationStrategy.GetSize();
 
             if (size != null) {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Size, size));
@@ -42,18 +42,17 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Value, value));
             }
 
-
             var actions = collectionRepresentationStrategy.GetActions();
 
             if (actions.Length > 0) {
-                var members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object)m));
+                var members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Members, members));
             }
-
 
             if (optionals.Count == 0) {
                 return new InlineCollectionRepresentation(oidStrategy, collectionRepresentationStrategy);
             }
+
             return CreateWithOptionals<InlineCollectionRepresentation>(new object[] {oidStrategy, collectionRepresentationStrategy}, optionals);
         }
     }
