@@ -22,17 +22,10 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         private IObjectFacade collection;
 
-        protected IObjectFacade Collection {
-            get {
-                if (collection == null) {
-                    collection = PropertyContext.Property.GetValue(PropertyContext.Target);
-                }
-                return collection;
-            }
-        }
+        protected IObjectFacade Collection => collection ??= PropertyContext.Property.GetValue(PropertyContext.Target);
 
-        protected override MapRepresentation GetExtensionsForSimple() {
-            return RestUtils.GetExtensions(
+        protected override MapRepresentation GetExtensionsForSimple() =>
+            RestUtils.GetExtensions(
                 friendlyname: PropertyContext.Property.Name,
                 description: PropertyContext.Property.Description,
                 pluralName: null,
@@ -50,13 +43,12 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 elementType: PropertyContext.ElementSpecification,
                 oidStrategy: OidStrategy,
                 useDateOverDateTime: false);
-        }
 
         private IDictionary<string, object> GetCustomPropertyExtensions() {
             var exts = GetTableViewCustomExtensions(PropertyContext.Property.TableViewData);
 
             if (PropertyContext.Property.RenderEagerly) {
-                exts = exts ?? new Dictionary<string, object>();
+                exts ??= new Dictionary<string, object>();
                 exts[JsonPropertyNames.CustomRenderEagerly] = true;
             }
             return exts;
@@ -64,25 +56,17 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         public abstract LinkRepresentation[] GetValue();
 
-        protected LinkRepresentation CreateValueLink(IObjectFacade no) {
-            return LinkRepresentation.Create(OidStrategy, new ValueRelType(PropertyContext.Property, new UriMtHelper(OidStrategy, Req, no)), Flags,
+        protected LinkRepresentation CreateValueLink(IObjectFacade no) =>
+            LinkRepresentation.Create(OidStrategy, new ValueRelType(PropertyContext.Property, new UriMtHelper(OidStrategy, Req, no)), Flags,
                 new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(no)));
-        }
 
-       
-        protected LinkRepresentation CreateTableRowValueLink(IObjectFacade no) {
-            return RestUtils.CreateTableRowValueLink(no, PropertyContext, OidStrategy, Req, Flags);
-        }
+        protected LinkRepresentation CreateTableRowValueLink(IObjectFacade no) => RestUtils.CreateTableRowValueLink(no, PropertyContext, OidStrategy, Req, Flags);
 
         public abstract int? GetSize();
 
-        private static bool InlineDetails(PropertyContextFacade propertyContext, RestControlFlags flags) {
-            return flags.InlineDetailsInCollectionMemberRepresentations || propertyContext.Property.RenderEagerly;
-        }
+        private static bool InlineDetails(PropertyContextFacade propertyContext, RestControlFlags flags) => flags.InlineDetailsInCollectionMemberRepresentations || propertyContext.Property.RenderEagerly;
 
-        private static bool DoNotCount(PropertyContextFacade propertyContext) {
-            return propertyContext.Property.DoNotCount && !propertyContext.Property.RenderEagerly;
-        }
+        private static bool DoNotCount(PropertyContextFacade propertyContext) => propertyContext.Property.DoNotCount && !propertyContext.Property.RenderEagerly;
 
         public static AbstractCollectionRepresentationStrategy GetStrategy(bool asTableColumn,  bool inline, IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
          
@@ -105,14 +89,13 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return new CollectionWithDetailsRepresentationStrategy(oidStrategy, req, propertyContext, flags);
         }
 
-        private ActionContextFacade ActionContext(IActionFacade actionFacade, IObjectFacade target) {
-            return new ActionContextFacade {
+        private ActionContextFacade ActionContext(IActionFacade actionFacade, IObjectFacade target) =>
+            new ActionContextFacade {
                 MenuPath = "",
                 Target = target,
                 Action = actionFacade,
                 VisibleParameters = actionFacade.Parameters.Select(p => new ParameterContextFacade { Parameter = p, Action = actionFacade }).ToArray()
             };
-        }
 
         public virtual InlineActionRepresentation[] GetActions() {
 

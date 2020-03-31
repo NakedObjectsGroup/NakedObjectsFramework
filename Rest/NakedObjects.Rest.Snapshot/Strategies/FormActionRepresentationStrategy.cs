@@ -23,21 +23,18 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return visibleProperties.Select(GetParameter);
         }
 
-        public override LinkRepresentation[] GetLinks() {
-            return new List<LinkRepresentation> {
+        public override LinkRepresentation[] GetLinks() =>
+            new List<LinkRepresentation> {
                 CreateSelfLink(),
                 CreateUpLink(),
                 CreateActionLink()
             }.ToArray();
-        }
 
         protected ParameterRepresentation GetParameter(IAssociationFacade assoc) {
             IObjectFacade objectFacade = ActionContext.Target;
             return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, assoc, ActionContext, Flags);
         }
 
-        protected override bool HasParams() {
-            return GetParameterList().Any();
-        }
+        protected override bool HasParams() => GetParameterList().Any();
     }
 }

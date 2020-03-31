@@ -16,14 +16,8 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         public CollectionMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
             : base(oidStrategy, req, propertyContext, flags) {}
 
-        public override LinkRepresentation[] GetValue() {
-            return null;
-        }
+        public override LinkRepresentation[] GetValue() => null;
 
-        public override int? GetSize() {
-            return PropertyContext.Property.Count(PropertyContext.Target);
-        }
-
-      
+        public override int? GetSize() => PropertyContext.Property.Count(PropertyContext.Target);
     }
 }

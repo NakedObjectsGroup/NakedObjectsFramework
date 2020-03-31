@@ -14,8 +14,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest.Snapshot.Strategies {
     public class ActionMemberRepresentationStrategy : AbstractActionRepresentationStrategy {
-        public ActionMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
-            : base(oidStrategy, req, actionContext, flags) {}
+        public ActionMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) : base(oidStrategy, req, actionContext, flags) {}
 
         public override LinkRepresentation[] GetLinks() {
             var links = new List<LinkRepresentation> {CreateDetailsLink()};
@@ -27,8 +26,6 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return links.ToArray();
         }
 
-        public override bool ShowParameters() {
-            return false;
-        }
+        public override bool ShowParameters() => false;
     }
 }

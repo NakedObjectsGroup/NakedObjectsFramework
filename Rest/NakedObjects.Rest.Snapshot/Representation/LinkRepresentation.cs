@@ -36,7 +36,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         public static LinkRepresentation Create(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags, params OptionalProperty[] properties) =>
             properties.Any()
-            ? CreateWithOptionals<LinkRepresentation>(new object[] {oidStrategy, relType, flags}, properties)
-            : new LinkRepresentation(oidStrategy, relType, flags);
+                ? CreateWithOptionals<LinkRepresentation>(new object[] {oidStrategy, relType, flags}, properties)
+                : new LinkRepresentation(oidStrategy, relType, flags);
     }
 }

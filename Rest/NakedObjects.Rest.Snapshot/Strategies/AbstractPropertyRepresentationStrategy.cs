@@ -89,14 +89,11 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             }
         }
 
-        private LinkRepresentation CreateClearLink() {
-            return LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Clear, GetHelper()) {Method = RelMethod.Delete}, Flags);
-        }
+        private LinkRepresentation CreateClearLink() => LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Clear, GetHelper()) {Method = RelMethod.Delete}, Flags);
 
-        private LinkRepresentation CreateModifyLink() {
-            return LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Modify, GetHelper()) {Method = RelMethod.Put}, Flags,
+        private LinkRepresentation CreateModifyLink() =>
+            LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Modify, GetHelper()) {Method = RelMethod.Put}, Flags,
                 new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object)))));
-        }
 
         private IDictionary<string, object> GetCustomPropertyExtensions() {
             if (CustomExtensions == null) {
@@ -105,19 +102,19 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 string mask = PropertyContext.Property.Mask;
 
                 if (!string.IsNullOrWhiteSpace(mask)) {
-                    CustomExtensions = CustomExtensions ?? new Dictionary<string, object>();
+                    CustomExtensions ??= new Dictionary<string, object>();
                     CustomExtensions[JsonPropertyNames.CustomMask] = mask;
                 }
 
                 var multipleLines = PropertyContext.Property.NumberOfLines;
 
                 if (multipleLines > 1) {
-                    CustomExtensions = CustomExtensions ?? new Dictionary<string, object>();
+                    CustomExtensions ??= new Dictionary<string, object>();
                     CustomExtensions[JsonPropertyNames.CustomMultipleLines] = multipleLines;
                 }
 
                 if (PropertyContext.Property.NotNavigable) {
-                    CustomExtensions = CustomExtensions ?? new Dictionary<string, object>();
+                    CustomExtensions ??= new Dictionary<string, object>();
                     CustomExtensions[JsonPropertyNames.CustomNotNavigable] = true;
                 }
 
@@ -127,12 +124,10 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return CustomExtensions;
         }
 
-        public bool UseDateOverDateTime() {
-            return PropertyContext.Property.IsDateOnly;
-        }
+        public bool UseDateOverDateTime() => PropertyContext.Property.IsDateOnly;
 
-        protected override MapRepresentation GetExtensionsForSimple() {
-            return RestUtils.GetExtensions(
+        protected override MapRepresentation GetExtensionsForSimple() =>
+            RestUtils.GetExtensions(
                 friendlyname: PropertyContext.Property.Name,
                 description: PropertyContext.Property.Description,
                 pluralName: null,
@@ -150,20 +145,16 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 elementType: PropertyContext.ElementSpecification,
                 oidStrategy: OidStrategy,
                 useDateOverDateTime: UseDateOverDateTime());
-        }
 
-        public bool GetHasChoices() {
-            return PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled && !PropertyContext.Property.GetChoicesParameters().Any();
-        }
+        public bool GetHasChoices() => PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled && !PropertyContext.Property.GetChoicesParameters().Any();
 
         public abstract bool ShowChoices();
 
-        private static bool InlineDetails(PropertyContextFacade propertyContext, RestControlFlags flags) {
-            return flags.InlineDetailsInPropertyMemberRepresentations ||
-                    propertyContext.Property.RenderEagerly ||
-                    propertyContext.Target.IsViewModelEditView ||
-                    propertyContext.Target.IsTransient;
-        }
+        private static bool InlineDetails(PropertyContextFacade propertyContext, RestControlFlags flags) =>
+            flags.InlineDetailsInPropertyMemberRepresentations ||
+            propertyContext.Property.RenderEagerly ||
+            propertyContext.Target.IsViewModelEditView ||
+            propertyContext.Target.IsTransient;
 
         public static AbstractPropertyRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
 
@@ -184,7 +175,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         protected void AddChoicesCustomExtension() {
             if (AddChoices()) {
-                CustomExtensions = CustomExtensions ?? new Dictionary<string, object>();
+                CustomExtensions ??= new Dictionary<string, object>();
 
                 Tuple<IObjectFacade, string>[] choices = PropertyContext.Property.GetChoicesAndTitles(PropertyContext.Target, null);
                 Tuple<object, string>[] choicesArray = choices.Select(tuple => new Tuple<object, string>(RestUtils.GetChoiceValue(OidStrategy, Req, tuple.Item1, PropertyContext.Property, Flags), tuple.Item2)).ToArray();
@@ -196,8 +187,6 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             }
         }
 
-        public virtual object GetPropertyValue(IOidStrategy oidStrategy, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) {
-            return Representation.GetPropertyValue(oidStrategy, req, property, target, flags, valueOnly, useDateOverDateTime);
-        }
+        public virtual object GetPropertyValue(IOidStrategy oidStrategy, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) => Representation.GetPropertyValue(oidStrategy, req, property, target, flags, valueOnly, useDateOverDateTime);
     }
 }

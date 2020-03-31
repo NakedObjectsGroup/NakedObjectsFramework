@@ -18,18 +18,13 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         public PropertyMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
             base(oidStrategy, req, propertyContext, flags) {}
 
-        public override bool ShowChoices() {
-            return false;
-        }
+        public override bool ShowChoices() => false;
 
-        public override LinkRepresentation[] GetLinks() {
-            return GetLinks(true);
-        }
+        public override LinkRepresentation[] GetLinks() => GetLinks(true);
 
-        protected override bool AddChoices() {
-            return PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
-                   (PropertyContext.Property.Specification.IsEnum ||
-                    PropertyContext.Property.Specification.IsParseable);
-        }
+        protected override bool AddChoices() =>
+            PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
+            (PropertyContext.Property.Specification.IsEnum ||
+             PropertyContext.Property.Specification.IsParseable);
     }
 }

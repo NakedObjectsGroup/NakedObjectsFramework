@@ -17,12 +17,11 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         public ActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, req, actionContext, flags) {}
 
-        public override LinkRepresentation[] GetLinks() {
-            return new List<LinkRepresentation> {
+        public override LinkRepresentation[] GetLinks() =>
+            new List<LinkRepresentation> {
                 CreateSelfLink(),
                 CreateUpLink(),
                 CreateActionLink()
             }.ToArray();
-        }
     }
 }

@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net.Http;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;

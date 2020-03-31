@@ -18,8 +18,6 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             : base(oidStrategy, req, actionContext, flags) {}
 
 
-        public override LinkRepresentation[] GetLinks() {
-            return new List<LinkRepresentation> { CreateDetailsLink(), CreateActionLink() }.ToArray();
-        }
+        public override LinkRepresentation[] GetLinks() => new List<LinkRepresentation> { CreateDetailsLink(), CreateActionLink() }.ToArray();
     }
 }

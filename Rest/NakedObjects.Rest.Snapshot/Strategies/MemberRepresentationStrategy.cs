@@ -32,17 +32,11 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         protected PropertyContextFacade PropertyContext { get; }
 
-        public IObjectFacade GetTarget() {
-            return PropertyContext.Target;
-        }
+        public IObjectFacade GetTarget() => PropertyContext.Target;
 
-        public string GetId() {
-            return PropertyContext.Property.Id;
-        }
+        public string GetId() => PropertyContext.Property.Id;
 
-        protected UriMtHelper GetHelper() {
-            return new UriMtHelper(OidStrategy, Req, PropertyContext);
-        }
+        protected UriMtHelper GetHelper() => new UriMtHelper(OidStrategy, Req, PropertyContext);
 
         protected string GetAttachmentFileName(PropertyContextFacade context) {
             IObjectFacade no = context.Property.GetValue(context.Target);
@@ -54,13 +48,9 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return LinkRepresentation.Create(OidStrategy, new AttachmentRelType(GetHelper()), Flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
-        private LinkRepresentation CreateSelfLink() {
-            return LinkRepresentation.Create(OidStrategy, self, Flags);
-        }
+        private LinkRepresentation CreateSelfLink() => LinkRepresentation.Create(OidStrategy, self, Flags);
 
-        private LinkRepresentation CreateUpLink() {
-            return LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Up, objectUri), Flags);
-        }
+        private LinkRepresentation CreateUpLink() => LinkRepresentation.Create(OidStrategy, new ObjectRelType(RelValues.Up, objectUri), Flags);
 
         public virtual LinkRepresentation[] GetLinks(bool inline) {
             var tempLinks = new List<LinkRepresentation>();
@@ -93,16 +83,10 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return LinkRepresentation.Create(OidStrategy, new MemberRelType(GetHelper()), Flags, opts.ToArray());
         }
 
-        private LinkRepresentation CreateCollectionValueLink() {
-            return LinkRepresentation.Create(OidStrategy, new CollectionValueRelType(GetHelper()), Flags);
-        }
+        private LinkRepresentation CreateCollectionValueLink() => LinkRepresentation.Create(OidStrategy, new CollectionValueRelType(GetHelper()), Flags);
 
-        public RelType GetSelf() {
-            return new MemberRelType(RelValues.Self, GetHelper());
-        }
+        public RelType GetSelf() => new MemberRelType(RelValues.Self, GetHelper());
 
-        public RestControlFlags GetFlags() {
-            return Flags;
-        }
+        public RestControlFlags GetFlags() => Flags;
     }
 }

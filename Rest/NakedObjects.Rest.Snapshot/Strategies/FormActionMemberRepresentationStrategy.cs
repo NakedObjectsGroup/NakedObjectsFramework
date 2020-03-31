@@ -17,8 +17,6 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         public FormActionMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, req, actionContext, flags) {}
 
-        public override LinkRepresentation[] GetLinks() {
-            return new List<LinkRepresentation> { CreateDetailsLink(), CreateActionLink() }.ToArray();
-        }
+        public override LinkRepresentation[] GetLinks() => new List<LinkRepresentation> { CreateDetailsLink(), CreateActionLink() }.ToArray();
     }
 }

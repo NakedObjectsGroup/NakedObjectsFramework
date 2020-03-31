@@ -18,25 +18,15 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         public PropertyTableRowRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
             base(oidStrategy, req, propertyContext, flags) {}
 
-        public override bool ShowChoices() {
-            return false;
-        }
+        public override bool ShowChoices() => false;
 
-        public override LinkRepresentation[] GetLinks() {
-            return new LinkRepresentation[] {};
-        }
+        public override LinkRepresentation[] GetLinks() => new LinkRepresentation[] {};
 
-        protected override bool AddChoices() {
-            return PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
-                   (PropertyContext.Property.Specification.IsEnum ||
-                    PropertyContext.Property.Specification.IsParseable);
-        }
+        protected override bool AddChoices() =>
+            PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
+            (PropertyContext.Property.Specification.IsEnum ||
+             PropertyContext.Property.Specification.IsParseable);
 
-        public override object GetPropertyValue(IOidStrategy oidStrategy, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) {
-            
-
-            // todo minimise this 
-            return Representation.GetPropertyValue(oidStrategy, req, property, target, flags, valueOnly, useDateOverDateTime);
-        }
+        public override object GetPropertyValue(IOidStrategy oidStrategy, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) => Representation.GetPropertyValue(oidStrategy, req, property, target, flags, valueOnly, useDateOverDateTime);
     }
 }

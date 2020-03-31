@@ -23,12 +23,6 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return Collection.ToEnumerable().Select(createLink).ToArray();
         }
 
-        public override int? GetSize() {
-            return PropertyContext.Property.Count(PropertyContext.Target);
-        }
-
-       
-
-     
+        public override int? GetSize() => PropertyContext.Property.Count(PropertyContext.Target);
     }
 }

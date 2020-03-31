@@ -22,9 +22,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         public IOidStrategy OidStrategy { get; set; }
         public RestControlFlags Flags { get; }
 
-        public MapRepresentation GetExtensions() {
-            return GetExtensionsForSimple();
-        }
+        public MapRepresentation GetExtensions() => GetExtensionsForSimple();
 
         protected IDictionary<string, object> GetTableViewCustomExtensions(Tuple<bool, string[]> tableViewData) {
             if (tableViewData == null) {

@@ -30,46 +30,28 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         protected HttpRequest Req { get; }
 
-        public virtual bool ShowParameters() {
-            return true;
-        }
+        public virtual bool ShowParameters() => true;
 
-        public virtual void CreateParameters() {
-            parameterList = GetParameterList();
-        }
+        public virtual void CreateParameters() => parameterList = GetParameterList();
 
-        public virtual RestControlFlags GetFlags() {
-            return Flags;
-        }
+        public virtual RestControlFlags GetFlags() => Flags;
 
-        public virtual IObjectFacade GetTarget() {
-            return ActionContext.Target;
-        }
+        public virtual IObjectFacade GetTarget() => ActionContext.Target;
 
-        public virtual RelType GetSelf() {
-            return self;
-        }
+        public virtual RelType GetSelf() => self;
 
-        public virtual string GetId() {
-            return ActionContext.Action.Id;
-        }
+        public virtual string GetId() => ActionContext.Action.Id;
 
         protected ParameterRepresentation GetParameter(IActionParameterFacade parameter) {
             IObjectFacade objectFacade = ActionContext.Target;
             return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, parameter, Flags);
         }
 
-        protected virtual IEnumerable<ParameterRepresentation> GetParameterList() {
-            return ActionContext.VisibleParameters.Select(p => GetParameter(p.Parameter));
-        }
+        protected virtual IEnumerable<ParameterRepresentation> GetParameterList() => ActionContext.VisibleParameters.Select(p => GetParameter(p.Parameter));
 
-        public virtual MapRepresentation GetParameters() {
-            return RestUtils.CreateMap(parameterList.ToDictionary(p => p.Name, p => (object) p));
-        }
+        public virtual MapRepresentation GetParameters() => RestUtils.CreateMap(parameterList.ToDictionary(p => p.Name, p => (object) p));
 
-        protected LinkRepresentation CreateDetailsLink() {
-            return LinkRepresentation.Create(OidStrategy, new MemberRelType(new UriMtHelper(OidStrategy, Req, ActionContext)), Flags);
-        }
+        protected LinkRepresentation CreateDetailsLink() => LinkRepresentation.Create(OidStrategy, new MemberRelType(new UriMtHelper(OidStrategy, Req, ActionContext)), Flags);
 
         public abstract LinkRepresentation[] GetLinks();
 
@@ -79,16 +61,12 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return LinkRepresentation.Create(OidStrategy, parentRelType, Flags);
         }
 
-        protected LinkRepresentation CreateSelfLink() {
-            return LinkRepresentation.Create(OidStrategy, self, Flags);
-        }
+        protected LinkRepresentation CreateSelfLink() => LinkRepresentation.Create(OidStrategy, self, Flags);
 
-        protected virtual bool HasParams() {
-            return ActionContext.VisibleParameters.Any();
-        }
+        protected virtual bool HasParams() => ActionContext.VisibleParameters.Any();
 
-        protected override MapRepresentation GetExtensionsForSimple() {
-            return RestUtils.GetExtensions(
+        protected override MapRepresentation GetExtensionsForSimple() =>
+            RestUtils.GetExtensions(
                 friendlyname: ActionContext.Action.Name,
                 description: ActionContext.Action.Description,
                 pluralName: null,
@@ -106,25 +84,24 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 elementType: ActionContext.Action.ElementType,
                 oidStrategy: OidStrategy,
                 useDateOverDateTime: false);
-        }
 
         protected IDictionary<string, object> GetCustomActionExtensions() {
             var ext = GetTableViewCustomExtensions(ActionContext.Action.TableViewData);
 
             if (!string.IsNullOrEmpty(ActionContext.MenuPath)) {
-                ext = ext ?? new Dictionary<string, object>();
+                ext ??= new Dictionary<string, object>();
                 ext[JsonPropertyNames.CustomMenuPath] = ActionContext.MenuPath;
             }
 
             if (ActionContext.Action.RenderEagerly) {
-                ext = ext ?? new Dictionary<string, object>();
+                ext ??= new Dictionary<string, object>();
                 ext[JsonPropertyNames.CustomRenderEagerly] = true;
             }
 
             var multipleLines = ActionContext.Action.NumberOfLines;
 
             if (multipleLines.HasValue) {
-                ext = ext ?? new Dictionary<string, object>();
+                ext ??= new Dictionary<string, object>();
                 ext[JsonPropertyNames.CustomMultipleLines] = multipleLines.Value;
             }
 
@@ -146,9 +123,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return ActionContext.Action.IsIdempotent ? RelMethod.Put : RelMethod.Post;
         }
 
-        private static bool InlineDetails(ActionContextFacade actionContext, RestControlFlags flags) {
-            return flags.InlineDetailsInActionMemberRepresentations || actionContext.Action.RenderEagerly;
-        }
+        private static bool InlineDetails(ActionContextFacade actionContext, RestControlFlags flags) => flags.InlineDetailsInActionMemberRepresentations || actionContext.Action.RenderEagerly;
 
         public static AbstractActionRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) {
             AbstractActionRepresentationStrategy strategy;
