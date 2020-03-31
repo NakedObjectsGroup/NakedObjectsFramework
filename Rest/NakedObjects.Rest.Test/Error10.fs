@@ -18,7 +18,7 @@ let Error(api : RestfulObjectsControllerBase) =
     let oid = ktc "1"
     let pid = "AnError"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/objects/%s/%s/actions/%s/invoke" oType oid pid
     jsonSetEmptyPostMsg api.Request url
     setIfMatch api.Request "*"
@@ -45,7 +45,7 @@ let NotAcceptableError(api : RestfulObjectsControllerBase) =
     let oid = ktc "1"
     let pid = "AnError"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/objects/%s/%s/actions/%s/invoke" oType oid pid
     jsonSetEmptyPostMsgWithProfile api.Request url RepresentationTypes.ObjectCollection
     setIfMatch api.Request "*"

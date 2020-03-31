@@ -682,7 +682,7 @@ namespace NakedObjects.Rest {
                 DomainModel,
                 InlineDetailsInActionMemberRepresentations,
                 InlineDetailsInCollectionMemberRepresentations,
-                InlinePropertyDetails.HasValue ? InlinePropertyDetails.Value : InlineDetailsInPropertyMemberRepresentations,
+                InlinePropertyDetails ?? InlineDetailsInPropertyMemberRepresentations,
                 InlineCollectionItems.HasValue && InlineCollectionItems.Value,
                 AllowMutatingActionOnImmutableObject);
 
@@ -715,7 +715,7 @@ namespace NakedObjects.Rest {
                 reservedArguments.DomainModel,
                 InlineDetailsInActionMemberRepresentations,
                 InlineDetailsInCollectionMemberRepresentations,
-                reservedArguments.InlinePropertyDetails.HasValue ? reservedArguments.InlinePropertyDetails.Value : InlineDetailsInPropertyMemberRepresentations,
+                reservedArguments.InlinePropertyDetails ?? InlineDetailsInPropertyMemberRepresentations,
                 reservedArguments.InlineCollectionItems.HasValue && reservedArguments.InlineCollectionItems.Value,
                 AllowMutatingActionOnImmutableObject);
 
@@ -897,9 +897,8 @@ namespace NakedObjects.Rest {
             }
 
             // there maybe better way of doing 
-            var attachmentRepresentation = ss.Representation as AttachmentRepresentation;
 
-            if (attachmentRepresentation != null) {
+            if (ss.Representation is AttachmentRepresentation attachmentRepresentation) {
                 var responseHeaders = GetResponseHeaders();
 
                 responseHeaders.Append(HeaderNames.ContentDisposition, attachmentRepresentation.ContentDisposition.ToString());

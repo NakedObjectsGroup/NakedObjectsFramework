@@ -16,15 +16,10 @@ namespace NakedObjects.Rest.Snapshot.Utility {
     public class FieldFacadeAdapter {
         private readonly IAssociationFacade association;
         private readonly IActionParameterFacade parameter;
-       
 
-        public FieldFacadeAdapter(IActionParameterFacade parameter) {
-            this.parameter = parameter;
-        }
+        public FieldFacadeAdapter(IActionParameterFacade parameter) => this.parameter = parameter;
 
-        public FieldFacadeAdapter(IAssociationFacade association) {
-            this.association = association;
-        }
+        public FieldFacadeAdapter(IAssociationFacade association) => this.association = association;
 
         public IFieldFacade AsField => (IFieldFacade) parameter ?? association;
 
@@ -45,18 +40,11 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public DataType? DataType => parameter?.DataType ?? association?.DataType;
         public string PresentationHint => parameter?.PresentationHint ?? association?.PresentationHint;
 
-        public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
-            return parameter?.GetChoicesParameters() ?? association?.GetChoicesParameters();
-        }
+        public Tuple<string, ITypeFacade>[] GetChoicesParameters() => parameter?.GetChoicesParameters() ?? association?.GetChoicesParameters();
 
-        public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) {
-            return parameter?.GetChoicesAndTitles(objectFacade, parameterNameValues) ?? association?.GetChoicesAndTitles(objectFacade, parameterNameValues); 
-        }
+        public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) => parameter?.GetChoicesAndTitles(objectFacade, parameterNameValues) ?? association?.GetChoicesAndTitles(objectFacade, parameterNameValues);
 
-
-        public  object GetChoiceValue(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade item, RestControlFlags flags) {
-            return association != null ? RestUtils.GetChoiceValue(oidStrategy, req, item, association, flags) : RestUtils.GetChoiceValue(oidStrategy, req, item, parameter, flags);
-        }
+        public object GetChoiceValue(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade item, RestControlFlags flags) => association != null ? RestUtils.GetChoiceValue(oidStrategy, req, item, association, flags) : RestUtils.GetChoiceValue(oidStrategy, req, item, parameter, flags);
 
         public UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade objectFacade) {
             if (parameter != null) {
@@ -70,6 +58,5 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
             return new UriMtHelper(oidStrategy, req, association, objectFacade);
         }
-
     }
 }

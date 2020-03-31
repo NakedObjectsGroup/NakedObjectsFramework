@@ -15,7 +15,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public enum ActionType {
             IsSubtypeOf,
             IsSupertypeOf
-        };
+        }
 
         #endregion
 

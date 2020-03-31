@@ -10,50 +10,30 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Configuration;
+using NakedObjects.DependencyInjection;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;
-using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Facade.Impl.Implementation;
 using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
-using NakedObjects.DependencyInjection;
+using NakedObjects.Persistor.Entity.Configuration;
 
-namespace NakedObjects.Rest.Test.App
-{
-
-
+namespace NakedObjects.Rest.Test.App {
     public class InvariantStringHasher : IStringHasher {
-        public string GetHash(string toHash) {
-            return "1234";
-        }
+        public string GetHash(string toHash) => "1234";
     }
 
-
     /// <summary>
-    /// Specifies the Unity configuration for the main container.
+    ///     Specifies the Unity configuration for the main container.
     /// </summary>
     public static class DIConfig {
-        #region Unity Container
-
-        //private static readonly Lazy<IUnityContainer> container = new Lazy<IUnityContainer>(() => {
-        //    var container = new UnityContainer();
-        //    RegisterTypes(container);
-        //    return container;
-        //});
-
-        ///// <summary>
-        ///// Gets the configured Unity container.
-        ///// </summary>
-        //public static IUnityContainer GetConfiguredContainer() {
-        //    return container.Value;
-        //}
-
-        #endregion
-        /// <summary>Registers the type mappings with the Unity container.</summary>
+        /// <summary>Registers the type mappings with the DI container.</summary>
         /// <param name="container">The unity container to configure.</param>
-        /// <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
-        /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
+        /// <remarks>
+        ///     There is no need to register concrete types such as controllers or API controllers (unless you want to
+        ///     change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.
+        /// </remarks>
         public static void AddNakedObjects(this IServiceCollection services, IConfiguration configuration) {
             // NOTE: To load from web.config uncomment the line below. Make sure to add a Microsoft.Practices.Unity.Configuration to the using statements.
             // container.LoadConfiguration();
@@ -74,7 +54,6 @@ namespace NakedObjects.Rest.Test.App
             services.AddTransient<IStringHasher, InvariantStringHasher>();
             services.AddTransient<IFrameworkFacade, FrameworkFacade>();
 
-            
             //Externals
             services.AddScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);
         }

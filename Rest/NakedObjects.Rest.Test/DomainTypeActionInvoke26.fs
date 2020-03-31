@@ -105,7 +105,7 @@ let GetIsSubTypeOfReturnFalseFormalParms(api : RestfulObjectsControllerBase) =
     let parms = 
         new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JObject(new JProperty(JsonPropertyNames.Href, oourl))))))
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
-    let args = CreateArgMap parms
+    let args = CreateArgMapWithReserved parms
     jsonSetGetMsg api.Request url
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyResult result resultValue oType oRel ooType ooRel api
@@ -120,7 +120,7 @@ let GetIsSuperTypeOfReturnFalseFormalParms(api : RestfulObjectsControllerBase) =
     let parms = 
         new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JObject(new JProperty(JsonPropertyNames.Href, oourl))))))
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
-    let args = CreateArgMap parms
+    let args = CreateArgMapWithReserved parms
     jsonSetGetMsg api.Request url
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyResult result resultValue oType oRel ooType ooRel api
@@ -135,7 +135,7 @@ let GetIsSubTypeOfReturnTrueFormalParms(api : RestfulObjectsControllerBase) =
     let parms = 
         new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JObject(new JProperty(JsonPropertyNames.Href, oourl))))))
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
-    let args = CreateArgMap parms
+    let args = CreateArgMapWithReserved parms
     jsonSetGetMsg api.Request url
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyResult result resultValue oType oRel ooType ooRel api
@@ -150,7 +150,7 @@ let GetIsSuperTypeOfReturnTrueFormalParms(api : RestfulObjectsControllerBase) =
     let parms = 
         new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JObject(new JProperty(JsonPropertyNames.Href, oourl))))))
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel (parms.ToString())
-    let args = CreateArgMap parms
+    let args = CreateArgMapWithReserved parms
     jsonSetGetMsg api.Request url
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     VerifyResult result resultValue oType oRel ooType ooRel api
@@ -210,7 +210,7 @@ let NotFoundTypeIsSubTypeOfFormalParms(api : RestfulObjectsControllerBase) =
         new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JObject(new JProperty(JsonPropertyNames.Href, oourl))))))
     let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel parmsEncoded
-    let args = CreateArgMap parms
+    let args = CreateArgMapWithReserved parms
     jsonSetGetMsg api.Request url
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
@@ -228,7 +228,7 @@ let NotFoundTypeIsSuperTypeOfFormalParms(api : RestfulObjectsControllerBase) =
         new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JObject(new JProperty(JsonPropertyNames.Href, oourl))))))
     let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel parmsEncoded
-    let args = CreateArgMap parms
+    let args = CreateArgMapWithReserved parms
     jsonSetGetMsg api.Request url
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
@@ -261,7 +261,7 @@ let NotFoundActionFormalParms(api : RestfulObjectsControllerBase) =
         new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JObject(new JProperty(JsonPropertyNames.Href, oourl))))))
     let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel parmsEncoded
-    let args = CreateArgMap parms
+    let args = CreateArgMapWithReserved parms
     jsonSetGetMsg api.Request url
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
@@ -309,7 +309,7 @@ let NotFoundSuperTypeIsSubTypeOfFormalParms(api : RestfulObjectsControllerBase) 
         new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JObject(new JProperty(JsonPropertyNames.Href, oourl))))))
     let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel parmsEncoded
-    let args = CreateArgMap parms
+    let args = CreateArgMapWithReserved parms
     jsonSetGetMsg api.Request url
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
@@ -327,7 +327,7 @@ let NotFoundSubTypeIsSuperTypeOfFormalParms(api : RestfulObjectsControllerBase) 
         new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JObject(new JProperty(JsonPropertyNames.Href, oourl))))))
     let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel parmsEncoded
-    let args = CreateArgMap parms
+    let args = CreateArgMapWithReserved parms
     jsonSetGetMsg api.Request url
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
@@ -373,7 +373,7 @@ let MalformedFormalParmsIsSubTypeOf(api : RestfulObjectsControllerBase) =
         new JObject(new JProperty(ooRel, new JObject(new JProperty(JsonPropertyNames.Value, new JObject(new JProperty(JsonPropertyNames.Href, oourl))))))
     let parmsEncoded = HttpUtility.UrlEncode(parms.ToString())
     let url = sprintf "http://localhost/domain-types/%s/type-actions/%s/invoke?%s" oType oRel parmsEncoded
-    let args = CreateArgMap parms
+    let args = CreateArgMapWithReserved parms
     jsonSetGetMsg api.Request url
     let result = api.GetInvokeTypeActions(oType, oRel, args)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 

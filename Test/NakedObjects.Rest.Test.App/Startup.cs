@@ -59,18 +59,7 @@ namespace NakedObjects.Rest.Test.App {
             }
 
             app.UseCors(MyAllowSpecificOrigins);
-
-            //app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            //app.UseAuthorization();
-
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllers();
-            //});
-
             app.UseMvc(routeBuilder => RestfulObjectsConfig.RegisterRestfulObjectsRoutes(routeBuilder));
         }
     }

@@ -108,35 +108,26 @@ type TObject =
     | TArray of seq<TObject> 
 and TProp = TProperty of string * TObject
 
-let makeProfile s = new StringSegment(sprintf "\"urn:org.restfulobjects:repr-types/%s\"" s)
+let internal makeProfile s = new StringSegment(sprintf "\"urn:org.restfulobjects:repr-types/%s\"" s)
 
-let makeParm r n = sprintf ";%s=\"%s\"" r n 
+let internal makeParm r n = sprintf ";%s=\"%s\"" r n 
 
-let makeFriendly (s : string) = 
+let internal makeFriendly (s : string) = 
     let mutable newS = ""
     for c in s do  if Char.IsUpper(c) then  newS <- newS + " " + new string(c, 1)   else   newS <- newS + new string(c, 1)
     newS.Trim()
 
-let wrap f (a, b, c) = f (a, c) 
+let internal wrap f (a, b, c) = f (a, c) 
 
-let wrap1 f (a, b, c) = f (a, c) 
+let internal wrap2 f (a, b, c, d, e) = f (a, c, d, e) 
 
-let wrap2 f (a, b, c, d, e) = f (a, c, d, e) 
+let internal wrap3 f (a, b, c, d) = f (a, c, d) 
 
-let wrap3 f (a, b, c, d) = f (a, c, d) 
-
-
-let ComputeMD5HashFromString(s : string) = 
+let internal ComputeMD5HashFromString(s : string) = 
     let crypto = new System.Security.Cryptography.MD5CryptoServiceProvider()
     crypto.ComputeHash(System.Text.Encoding.UTF8.GetBytes(s))
 
-//let ComputeMD5HashAsString(s : string) = 
-//    let hash = ComputeMD5HashFromString(s), 0
-//    let i = BitConverter.ToInt64(hash)
-//    let abs = Math.Abs(i)
-//    abs.ToString(System.Globalization.CultureInfo.InvariantCulture)
-
-let createTestHttpContext sp =
+let internal createTestHttpContext sp =
     let httpContext = new DefaultHttpContext() 
     httpContext.RequestServices <- sp
     httpContext.Response.Body <- new MemoryStream()
@@ -149,17 +140,16 @@ let setMockContext (api : RestfulObjectsControllerBase) sp =
     api.ControllerContext <- mockContext
     api
 
-let setContent (msg : HttpRequest) (content : string) = 
+let internal setContent (msg : HttpRequest) (content : string) = 
     msg.Body <- new MemoryStream()
     use writer = new StreamWriter(msg.Body)
     writer.Write(content)
     msg.Body.Position <- 0L
 
-
-let setMethod (msg : HttpRequest) (method : HttpMethod) = 
+let internal setMethod (msg : HttpRequest) (method : HttpMethod) = 
     msg.Method <- method.ToString()
 
-let setMediaType (msg : HttpRequest) mt parms = 
+let internal setMediaType (msg : HttpRequest) mt parms = 
     let accept = new MediaTypeHeaderValue(new StringSegment(mt))
     for p in parms do
         let (name, value) = p
@@ -171,180 +161,62 @@ let setMediaType (msg : HttpRequest) mt parms =
         msg.Headers.["Accept"] <- acceptValue
     else 
         msg.Headers.Add("Accept", acceptValue)
-
-
-let setMediaType1 (msg : HttpRequest) mt repType = 
-    let accept = new MediaTypeHeaderValue(new StringSegment(mt))
-    if not (repType = "") then 
-        accept.Parameters.Add(new NameValueHeaderValue(new StringSegment("profile"), (makeProfile repType)))
-    let acceptValue = new StringValues(accept.ToString())
-    if (msg.Headers.ContainsKey("Accept")) then 
-        msg.Headers.["Accept"] <- acceptValue
-    else 
-        msg.Headers.Add("Accept", acceptValue)
  
-let setUrl (msg : HttpRequest) url =
+let internal setUrl (msg : HttpRequest) url =
     let uri = new Uri(url)
     msg.Scheme <- "http"
     msg.Host <- new HostString(uri.Host)
     msg.Path <- new PathString(uri.PathAndQuery)
 
-let jsonSetGetMsgAndMediaType (msg : HttpRequest) url mt parms = 
+let internal jsonSetGetMsgAndMediaType (msg : HttpRequest) url mt parms = 
     setMethod msg HttpMethod.Get
     setMediaType msg mt parms 
     setUrl msg url
 
-let jsonSetDeleteMsgAndMediaType (msg : HttpRequest) url mt parms = 
+let internal jsonSetDeleteMsgAndMediaType (msg : HttpRequest) url mt parms = 
     setMethod msg HttpMethod.Delete
     setMediaType msg mt parms 
     setUrl msg url
 
-let jsonSetPotentMsgAndMediaType (msg : HttpRequest) method url mt parms content = 
+let internal jsonSetPotentMsgAndMediaType (msg : HttpRequest) method url mt parms content = 
     setMethod msg method
     setMediaType msg mt parms 
     setContent msg content
     setUrl msg url
 
-    //msg.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(mt))
-    //msg
+let internal jsonSetGetMsg msg url = jsonSetGetMsgAndMediaType msg url "application/json" []
 
-//let jsonGetMsgAndMediaType mt (url : string) = 
-//    let message = new HttpRequest(HttpMethod.Get, url)
-//    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(mt))
-//    message
+let internal jsonSetGetMsgWithMediaType msg url mt = jsonSetGetMsgAndMediaType msg url mt []
 
-//let jsonGetMsg url = jsonGetMsgAndMediaType "application/json" url
+let internal jsonSetGetMsgWithProfile msg url profVal = jsonSetGetMsgAndMediaType msg url "application/json" [("profile", profVal)]
 
-let jsonSetGetMsg msg url = jsonSetGetMsgAndMediaType msg url "application/json" []
+let internal jsonSetEmptyPostMsg msg url = jsonSetPotentMsgAndMediaType msg HttpMethod.Post url "application/json" [] ""
 
-let jsonSetGetMsgWithMediaType msg url mt = jsonSetGetMsgAndMediaType msg url mt []
+let internal jsonSetPostMsg msg url content = jsonSetPotentMsgAndMediaType msg HttpMethod.Post url "application/json" [] content
 
-let jsonSetGetMsgWithProfile msg url profVal = jsonSetGetMsgAndMediaType msg url "application/json" [("profile", profVal)]
+let internal jsonSetEmptyPostMsgWithProfile msg url profVal = jsonSetPotentMsgAndMediaType msg HttpMethod.Post url "application/json" [("profile", profVal)] ""
 
-let jsonSetEmptyPostMsg msg url = jsonSetPotentMsgAndMediaType msg HttpMethod.Post url "application/json" [] ""
+let internal jsonSetEmptyPutMsg msg url = jsonSetPotentMsgAndMediaType msg HttpMethod.Put url "application/json" [] ""
 
-let jsonSetPostMsg msg url content = jsonSetPotentMsgAndMediaType msg HttpMethod.Post url "application/json" [] content
+let internal jsonSetPutMsg msg url content = jsonSetPotentMsgAndMediaType msg HttpMethod.Put url "application/json" [] content
 
-let jsonSetEmptyPostMsgWithProfile msg url profVal = jsonSetPotentMsgAndMediaType msg HttpMethod.Post url "application/json" [("profile", profVal)] ""
+let internal jsonSetPutMsgWithProfile msg url content profVal = jsonSetPotentMsgAndMediaType msg HttpMethod.Put url "application/json" [("profile", profVal)] content
 
-let jsonSetEmptyPutMsg msg url = jsonSetPotentMsgAndMediaType msg HttpMethod.Put url "application/json" [] ""
+let internal jsonSetDeleteMsg msg url = jsonSetDeleteMsgAndMediaType msg url "application/json" []
 
-let jsonSetPutMsg msg url content = jsonSetPotentMsgAndMediaType msg HttpMethod.Put url "application/json" [] content
+let internal jsonSetDeleteMsgWithProfile msg url profVal = jsonSetDeleteMsgAndMediaType msg url "application/json" [("profile", profVal)]
 
-let jsonSetPutMsgWithProfile msg url content profVal = jsonSetPotentMsgAndMediaType msg HttpMethod.Put url "application/json" [("profile", profVal)] content
-
-
-let jsonSetDeleteMsg msg url = jsonSetDeleteMsgAndMediaType msg url "application/json" []
-
-let jsonSetDeleteMsgWithProfile msg url profVal = jsonSetDeleteMsgAndMediaType msg url "application/json" [("profile", profVal)]
-
-
-
-//let jsonGetMsgAndTag (url : string) tag = 
-//    let message = jsonGetMsgAndMediaType "application/json" url
-//    message.Headers.IfMatch.Add(new EntityTagHeaderValue(tag))
-//    message
-
-//let xmlGetMsg url =  jsonGetMsgAndMediaType "application/xml" url
-
-let msgWithContent url content = 
-    let message = new HttpRequestMessage()
-    message.Content <- new StringContent(content)
-    message.RequestUri <- new Uri(url)
-    message.Content.Headers.ContentLength <- Nullable(int64(content.Length))
-    message
-
-let setIfMatch (msg : HttpRequest) etag = 
+let internal setIfMatch (msg : HttpRequest) etag = 
     msg.GetTypedHeaders().IfMatch <- [| new EntityTagHeaderValue(new StringSegment(etag))|] :> IList<EntityTagHeaderValue>
 
-
-//let msgWithoutContent url  = 
-//    let message = new HttpRequestMessage()
-//    message.RequestUri <- new Uri(url)
-//    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"))
-//    //message.Content.Headers.ContentLength <- Nullable(int64(0))
-//    message
-
-//let msgWithoutContentWithTag url tag  = 
-//    let message = new HttpRequestMessage()
-//    message.RequestUri <- new Uri(url)
-//    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"))
-//    message.Headers.IfMatch.Add(new EntityTagHeaderValue(tag))
-//    //message.Content.Headers.ContentLength <- Nullable(int64(0))
-//    message
-
-//let jsonMsgWithContent url content = 
-//    let message = msgWithContent url content 
-//    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"))
-//   // message.Content.Headers.ContentType <- new MediaTypeWithQualityHeaderValue("application/json")
-//    message
-
-//let jsonMsgWithContentAndTag url content tag = 
-//    let message = msgWithContent url content 
-//    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"))
-//    message.Headers.IfMatch.Add(new EntityTagHeaderValue(tag))
-//   // message.Content.Headers.ContentType <- new MediaTypeWithQualityHeaderValue("application/json")
-//    message
-
-//let xmlMsgWithContent url content = 
-//    let message = msgWithContent url content 
-//    message.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/xml"))
-//    //message.Content.Headers.ContentType <- new MediaTypeWithQualityHeaderValue("application/xml")
-//    message
-
-//let jsonPostMsg url content = 
-//    let message = jsonMsgWithContent url content
-//    message.Method <- HttpMethod.Post
-//    message
-
-//let jsonPostMsgAndTag url content tag = 
-//    let message = jsonMsgWithContentAndTag url content tag
-//    message.Method <- HttpMethod.Post
-//    message
-
-//let jsonDeleteMsg url  = 
-//    let message = msgWithoutContent url
-//    message.Method <- HttpMethod.Delete
-//    message
-
-//let jsonDeleteMsgAndTag url tag = 
-//    let message = msgWithoutContentWithTag url tag
-//    message.Method <- HttpMethod.Delete
-//    message
-
-//let jsonPutMsg url content = 
-//    let message = jsonMsgWithContent url content
-//    message.Method <- HttpMethod.Put
-//    message
-
-//let jsonPutMsgAndTag url content tag = 
-//    let message = jsonMsgWithContentAndTag url content tag
-//    message.Method <- HttpMethod.Put
-//    message
-
-//let xmlPutMsg url content = 
-//    let message = xmlMsgWithContent url content
-//    message.Method <- HttpMethod.Put
-//    message
-
-//let xmlDeleteMsg url content = 
-//    let message = xmlMsgWithContent url content
-//    message.Method <- HttpMethod.Delete
-//    message
-
-//let xmlPostMsg url content = 
-//    let message = xmlMsgWithContent url content
-//    message.Method <- HttpMethod.Post
-//    message
-
-let readSnapshotToJson (ss : HttpResponseMessage) = 
+let internal readSnapshotToJson (ss : HttpResponseMessage) = 
     // ReasAsStringAsync seems to hang so need to do this ......
     use s = ss.Content.ReadAsStreamAsync().Result
     s.Position <- 0L
     use sr = new StreamReader(s)
     sr.ReadToEnd()
 
-let readActionResult (ar : ActionResult) (hc : HttpContext) = 
+let internal readActionResult (ar : ActionResult) (hc : HttpContext) = 
     let testContext = new ActionContext()
     testContext.HttpContext <- hc
     ar.ExecuteResultAsync testContext |> Async.AwaitTask |> Async.RunSynchronously
@@ -357,13 +229,13 @@ let readActionResult (ar : ActionResult) (hc : HttpContext) =
     (json, statusCode, headers)
      
 
-let comp (a : obj) (b : obj) e = 
+let internal comp (a : obj) (b : obj) e = 
     Assert.AreEqual(a, b, e)   
 
-let listProperties (result : JObject) = 
+let internal listProperties (result : JObject) = 
     (result |> Seq.map (fun i -> (i :?> JProperty).Name) |> Seq.fold (fun a s ->  a + " " + s) "Properties: " )
 
-let listExpected (expected : seq<TProp>) = 
+let internal listExpected (expected : seq<TProp>) = 
     (expected |> Seq.map (fun r -> match r with | TProperty(s, _) -> s) |> Seq.fold (fun a s ->  a + " " + s) "Expected: " )
 
 let rec compareArray (expected : seq<TObject>) (result : JArray) =
@@ -421,7 +293,7 @@ and toString expected indent : string  =
     | TArray(sq)  -> toStringArray sq  (indent + 1)
 
 
-let makeLinkPropWithMethodAndTypesValue (meth : string) (rel : string) href typ dTyp eTyp simple vObj = 
+let internal makeLinkPropWithMethodAndTypesValue (meth : string) (rel : string) href typ dTyp eTyp simple vObj = 
      [ TProperty(JsonPropertyNames.Rel, TObjectVal(rel));
        TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(href)));
        TProperty(JsonPropertyNames.Type, TObjectVal(new typeType(typ, dTyp, eTyp, simple)));
@@ -429,19 +301,19 @@ let makeLinkPropWithMethodAndTypesValue (meth : string) (rel : string) href typ 
        TProperty(JsonPropertyNames.Method, TObjectVal(meth)) ]
 
 
-let makeLinkPropWithMethodAndTypes (meth : string) (rel : string) href typ dTyp eTyp simple = 
+let internal makeLinkPropWithMethodAndTypes (meth : string) (rel : string) href typ dTyp eTyp simple = 
      [ TProperty(JsonPropertyNames.Rel, TObjectVal(rel));
        TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(href)));
        TProperty(JsonPropertyNames.Type, TObjectVal(new typeType(typ, dTyp, eTyp, simple)));
        TProperty(JsonPropertyNames.Method, TObjectVal(meth)) ]
 
-let makeLinkPropWithMethod (meth : string) (rel : string) href typ dTyp = 
+let internal makeLinkPropWithMethod (meth : string) (rel : string) href typ dTyp = 
      [ TProperty(JsonPropertyNames.Rel, TObjectVal(rel));
        TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(href)));
        TProperty(JsonPropertyNames.Type, TObjectVal(new typeType(typ, dTyp)));
        TProperty(JsonPropertyNames.Method, TObjectVal(meth)) ]
 
-let makeLinkPropWithMethodValue (meth : string) (rel : string) href typ dTyp vObj = 
+let internal makeLinkPropWithMethodValue (meth : string) (rel : string) href typ dTyp vObj = 
      [ TProperty(JsonPropertyNames.Rel, TObjectVal(rel));
        TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(href)));
        TProperty(JsonPropertyNames.Type, TObjectVal(new typeType(typ, dTyp)));
@@ -449,30 +321,28 @@ let makeLinkPropWithMethodValue (meth : string) (rel : string) href typ dTyp vOb
        TProperty(JsonPropertyNames.Method, TObjectVal(meth)) ]
 
 
-let makeHref href =  [ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(href))) ]
+let internal makeHref href =  [ TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType(href))) ]
 
-let makeGetLinkProp = makeLinkPropWithMethod "GET"
+let internal makeGetLinkProp = makeLinkPropWithMethod "GET"
 
-let makePutLinkProp = makeLinkPropWithMethod "PUT"
+let internal makePutLinkProp = makeLinkPropWithMethod "PUT"
 
-let makePostLinkProp = makeLinkPropWithMethod "POST"
+let internal makePostLinkProp = makeLinkPropWithMethod "POST"
 
-let makeDeleteLinkProp = makeLinkPropWithMethod "DELETE"
+let internal makeDeleteLinkProp = makeLinkPropWithMethod "DELETE"
   
-let makeIconLink() = 
+let internal makeIconLink() = 
         [ TProperty(JsonPropertyNames.Rel, TObjectVal(RelValues.Icon) );
           TProperty(JsonPropertyNames.Href, TObjectVal(new hrefType("images/Default.gif")) );
           TProperty(JsonPropertyNames.Type, TObjectVal("image/gif") );
           TProperty(JsonPropertyNames.Method, TObjectVal("GET") ) ]
 
-let makeArgs parms =
+let internal makeArgs parms =
     let getArg pmid = TProperty(pmid, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]));
     let argVals = parms |> Seq.map (fun i -> match i with | TProperty(s, _) -> s ) |> Seq.map (fun s -> getArg s)
     TObjectJson(argVals) 
   
-let makeListParm pmid pid fid rt = 
-      
-        
+let internal makeListParm pmid pid fid rt =        
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
@@ -486,9 +356,7 @@ let makeListParm pmid pid fid rt =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
 
-let makeStringParm pmid pid fid rt = 
-      
-        
+let internal makeStringParm pmid pid fid rt =      
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
@@ -503,13 +371,11 @@ let makeStringParm pmid pid fid rt =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
 
-
-let p1 ms = makeListParm "acollection" "LocallyContributedAction" "Acollection" ms
-let p2 ms = makeListParm "acollection" "LocallyContributedActionWithParm" "Acollection" ms
-let p3 = makeStringParm "p1" "LocallyContributedActionWithParm" "P1" (ttc "string")
-  
+let internal p1 ms = makeListParm "acollection" "LocallyContributedAction" "Acollection" ms
+let internal p2 ms = makeListParm "acollection" "LocallyContributedActionWithParm" "Acollection" ms
+let internal p3 = makeStringParm "p1" "LocallyContributedActionWithParm" "P1" (ttc "string")
     
-let makeActionMember oType  mName (oName : string) fName desc rType parms  =
+let internal makeActionMember oType  mName (oName : string) fName desc rType parms  =
         let index = oName.IndexOf("/")
         let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 1 
@@ -517,7 +383,6 @@ let makeActionMember oType  mName (oName : string) fName desc rType parms  =
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
 
         let makeLinkProp = if mName.Contains("Query") then makeGetLinkProp else if mName.Contains("Idempotent") then makePutLinkProp else makePostLinkProp
-
 
         let hParms = Seq.length parms > 0    
         let presHint = mName = "AnAction"
@@ -541,7 +406,7 @@ let makeActionMember oType  mName (oName : string) fName desc rType parms  =
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");                                                      
                                                        ]))]
 
-let makeActionMemberSimple oType  mName (oName : string) fName desc rType parms =
+let internal makeActionMemberSimple oType  mName (oName : string) fName desc rType parms =
         let index = oName.IndexOf("/")
         let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 1 
@@ -549,7 +414,6 @@ let makeActionMemberSimple oType  mName (oName : string) fName desc rType parms 
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
 
         let makeLinkProp = if mName.Contains("Query") then makeGetLinkProp else if mName.Contains("Idempotent") then makePutLinkProp else makePostLinkProp
-
 
         let hParms = Seq.length parms > 0     
         let presHint = mName = "AnAction"
@@ -565,7 +429,6 @@ let makeActionMemberSimple oType  mName (oName : string) fName desc rType parms 
 
         let extArray = if multiLine then  TProperty(JsonPropertyNames.CustomMultipleLines, TObjectVal(1)) :: extArray else extArray
 
-
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
           TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );
           TProperty(JsonPropertyNames.Id, TObjectVal(mName));
@@ -573,8 +436,7 @@ let makeActionMemberSimple oType  mName (oName : string) fName desc rType parms 
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "") ]))]
 
-
-let makeActionMemberString oType mName (oName : string) fName desc rType parms =
+let internal makeActionMemberString oType mName (oName : string) fName desc rType parms =
         let index = oName.IndexOf("/")
         let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 1   
@@ -601,7 +463,7 @@ let makeActionMemberString oType mName (oName : string) fName desc rType parms =
                                                       
                                                       ]))]
 
-let makeActionMemberNumber oType mName (oName : string) fName desc rType parms =
+let internal makeActionMemberNumber oType mName (oName : string) fName desc rType parms =
         let index = oName.IndexOf("/")
         let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 1   
@@ -609,7 +471,6 @@ let makeActionMemberNumber oType mName (oName : string) fName desc rType parms =
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
 
         let makeLinkProp = if mName.Contains("Query") then makeGetLinkProp else if mName.Contains("Idempotent") then makePutLinkProp else makePostLinkProp
-
 
         let hParms = Seq.length parms > 0      
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
@@ -627,7 +488,7 @@ let makeActionMemberNumber oType mName (oName : string) fName desc rType parms =
                                                        ]))]
 
 
-let makeActionMemberStringSimple oType mName (oName : string) fName desc rType parms =
+let internal makeActionMemberStringSimple oType mName (oName : string) fName desc rType parms =
         let index = oName.IndexOf("/")
         let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 1   
@@ -660,7 +521,6 @@ let makeActionMemberNumberSimple oType mName (oName : string) fName desc rType p
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
 
         let makeLinkProp = if mName.Contains("Query") then makeGetLinkProp else if mName.Contains("Idempotent") then makePutLinkProp else makePostLinkProp
-
         
         let hParms = Seq.length parms > 0     
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
@@ -677,7 +537,7 @@ let makeActionMemberNumberSimple oType mName (oName : string) fName desc rType p
 
 
 
-let makeActionMemberWithType oType mName (oName : string) fName desc rType parms =
+let internal makeActionMemberWithType oType mName (oName : string) fName desc rType parms =
         let index = oName.IndexOf("/")
         let oTypeName =  if index = -1 then oName else  oName.Substring(0, index) 
         let order = if desc = "" then 0 else 1  
@@ -701,7 +561,7 @@ let makeActionMemberWithType oType mName (oName : string) fName desc rType parms
                                                       
                                                        ]))]
 
-let makeVoidActionMember oType mName (oName : string) fName desc parms =
+let internal makeVoidActionMember oType mName (oName : string) fName desc parms =
         let index = oName.IndexOf("/")
         let oTypeName =  if index = -1 then oName else  oName.Substring(0, index) 
         let order = if desc = "" then 0 else 1  
@@ -723,7 +583,7 @@ let makeVoidActionMember oType mName (oName : string) fName desc parms =
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
                                                        ]))]
 
-let makeVoidActionMemberSimple oType mName (oName : string) fName desc parms =
+let internal makeVoidActionMemberSimple oType mName (oName : string) fName desc parms =
         let index = oName.IndexOf("/")
         let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 1   
@@ -744,9 +604,7 @@ let makeVoidActionMemberSimple oType mName (oName : string) fName desc parms =
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "")]))]
 
-
-
-let makeActionMemberCollection oType  mName (oName : string)  fName desc rType eType parms =
+let internal makeActionMemberCollection oType  mName (oName : string)  fName desc rType eType parms =
         let index = oName.IndexOf("/")
         let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 2    
@@ -784,7 +642,7 @@ let makeActionMemberCollection oType  mName (oName : string)  fName desc rType e
                                                       
                                                        ]))]
 
-let makeActionMemberCollectionSimple oType  mName (oName : string)  fName desc rType eType parms =
+let internal makeActionMemberCollectionSimple oType  mName (oName : string)  fName desc rType eType parms =
         let index = oName.IndexOf("/")
         let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 2       
@@ -810,9 +668,7 @@ let makeActionMemberCollectionSimple oType  mName (oName : string)  fName desc r
                 exts
             else 
                 extArray
-
-
-           
+          
         [ TProperty(JsonPropertyNames.Parameters, TObjectJson(parms));
           TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Action) );
           TProperty(JsonPropertyNames.Id, TObjectVal(mName));
@@ -821,12 +677,7 @@ let makeActionMemberCollectionSimple oType  mName (oName : string)  fName desc r
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "");
  ]))]
 
-
-
-
-
-
-let makePropertyMemberShort oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) (dValue : TProp list) =
+let internal makePropertyMemberShort oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) (dValue : TProp list) =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 2  
       let conditionalChoices = mName.Contains("ConditionalChoices")
@@ -849,8 +700,7 @@ let makePropertyMemberShort oType (mName : string) (oName : string) fName desc r
 
       let acLink = 
         if conditionalChoices then 
-           
-            
+                       
             let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [TProperty("areference", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
                                                                                                                  TProperty(JsonPropertyNames.Links, TArray([]))]))]))
             
@@ -887,7 +737,7 @@ let makePropertyMemberShort oType (mName : string) (oName : string) fName desc r
       else
         props; 
 
-let makePropertyMemberShortNoDetails oType (mName : string) (oTypeName : string) fName desc rType opt (oValue : TObject) args =
+let internal makePropertyMemberShortNoDetails oType (mName : string) (oTypeName : string) fName desc rType opt (oValue : TObject) args =
       let order = if desc = "" then 0 else 2 
       let conditionalChoices = mName.Contains("ConditionalChoices")
       let choices = mName.Contains("Choices") && (not conditionalChoices)
@@ -897,9 +747,7 @@ let makePropertyMemberShortNoDetails oType (mName : string) (oTypeName : string)
       let autoRel = RelValues.Prompt + makeParm RelParamValues.Property mName
 
       let acLink = 
-        if conditionalChoices then 
-           
-            
+        if conditionalChoices then           
             let argP = TProperty(JsonPropertyNames.Arguments, TObjectJson( [ args
                                                                              TProperty("areference", TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null));
                                                                                                                  TProperty(JsonPropertyNames.Links, TArray([]))]))]))
@@ -939,7 +787,7 @@ let makePropertyMemberShortNoDetails oType (mName : string) (oTypeName : string)
       else
         props;                                                       
 
-let makePropertyMemberFullAttachment mName  (oName : string) fName title mt =
+let internal makePropertyMemberFullAttachment mName  (oName : string) fName title mt =
       let oType = "objects"
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName 
@@ -964,8 +812,7 @@ let makePropertyMemberFullAttachment mName  (oName : string) fName title mt =
 
 
       let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "");
-                    TObjectJson( attLink);
-                   ]
+                    TObjectJson( attLink); ]
 
   
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
@@ -976,7 +823,7 @@ let makePropertyMemberFullAttachment mName  (oName : string) fName title mt =
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
 
-let makePropertyMemberFull oType mName  (oName : string) fName desc opt (oValue : TObject) =
+let internal makePropertyMemberFull oType mName  (oName : string) fName desc opt (oValue : TObject) =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 2 
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName 
@@ -1040,9 +887,8 @@ let makePropertyMemberFull oType mName  (oName : string) fName desc opt (oValue 
       else
         props;
 
-let makeTablePropertyMember (mName : string) (oValue : TObject) =
-     
-    
+let internal makeTablePropertyMember (mName : string) (oValue : TObject) =
+       
       let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(mName));
                       TProperty(JsonPropertyNames.Description, TObjectVal(""));
                       TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"));
@@ -1058,9 +904,8 @@ let makeTablePropertyMember (mName : string) (oValue : TObject) =
         TProperty(JsonPropertyNames.Extensions, exts);
         TProperty(JsonPropertyNames.Links, TArray([  ]))]
 
-let makeNoDetailsPropertyMember (mName : string)  (oName : string) (oValue : TObject) =
-     
-    
+let internal makeNoDetailsPropertyMember (mName : string)  (oName : string) (oValue : TObject) =
+      
       let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(mName));
                       TProperty(JsonPropertyNames.Description, TObjectVal(""));
                       TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"));
@@ -1078,7 +923,7 @@ let makeNoDetailsPropertyMember (mName : string)  (oName : string) (oValue : TOb
         TProperty(JsonPropertyNames.Extensions, exts);
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
-let makePropertyMemberFullNoDetails oType (mName : string) (oTypeName : string) fName desc opt (oValue : TObject) =
+let internal makePropertyMemberFullNoDetails oType (mName : string) (oTypeName : string) fName desc opt (oValue : TObject) =
       let order = if desc = "" then 0 else 2 
       let choices = mName.Contains("Choices")
       let disabled = mName.Contains("Disabled")  || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel") || oTypeName.Contains("Edit"))))       
@@ -1103,15 +948,13 @@ let makePropertyMemberFullNoDetails oType (mName : string) (oTypeName : string) 
         TProperty(JsonPropertyNames.Extensions, exts);
         TProperty(JsonPropertyNames.Links, TArray([  ]))]
 
-let makePropertyMemberGuid oType (oName : string) (mName : string) (oValue : TObject) tName =
-     
-            
+let internal makePropertyMemberGuid oType (oName : string) (mName : string) (oValue : TObject) tName =
+               
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
 
       let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "");
                      ]
-
       let links =  (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()               
 
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
@@ -1126,7 +969,7 @@ let makePropertyMemberGuid oType (oName : string) (mName : string) (oValue : TOb
                                                              TProperty(JsonPropertyNames.Optional, TObjectVal(false))]));
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
-let makePropertyMemberDateTime oType (mName : string) (oName : string) fName desc opt (oValue : TObject) format =
+let internal makePropertyMemberDateTime oType (mName : string) (oName : string) fName desc opt (oValue : TObject) format =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 4
       let disabled = mName.Contains("Disabled") || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel") || oTypeName.Contains("Edit"))))        
@@ -1156,7 +999,7 @@ let makePropertyMemberDateTime oType (mName : string) (oName : string) fName des
                                                              TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]));
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
-let makePropertyMemberTimeSpan oType (mName : string) (oName : string) fName desc opt (oValue : TObject) format =
+let internal makePropertyMemberTimeSpan oType (mName : string) (oName : string) fName desc opt (oValue : TObject) format =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 5
       let disabled = mName.Contains("Disabled") || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel") || oTypeName.Contains("Edit") )))        
@@ -1187,7 +1030,7 @@ let makePropertyMemberTimeSpan oType (mName : string) (oName : string) fName des
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
 
-let makePropertyMemberString oType (mName : string) (oName : string) fName desc opt (oValue : TObject) (dValue : TProp list) =
+let internal makePropertyMemberString oType (mName : string) (oName : string) fName desc opt (oValue : TObject) (dValue : TProp list) =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 3
       let disabled = mName.Contains("Disabled")    || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel") || oTypeName.Contains("Edit"))))       
@@ -1220,7 +1063,7 @@ let makePropertyMemberString oType (mName : string) (oName : string) fName desc 
                                                              TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]));
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
-let makePropertyMemberWithType oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
+let internal makePropertyMemberWithType oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 3
       let disabled = mName.Contains("Disabled")   || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel") || oTypeName.Contains("Edit"))))        
@@ -1289,10 +1132,7 @@ let makePropertyMemberWithNumber oType (mName : string) (oName : string) fName d
         TProperty(JsonPropertyNames.Choices, TArray([ TObjectVal(0); TObjectVal(1); ])) :: props;
       else
         props; 
-
-
-
-      
+        
 let makePropertyMemberWithFormat oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 3
@@ -1301,8 +1141,7 @@ let makePropertyMemberWithFormat oType (mName : string) (oName : string) fName d
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
       let clearRel = RelValues.Modify + makeParm RelParamValues.Property mName
 
-      let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "");
-                    ]
+      let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""); ]
 
       let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()               
       let links = if opt then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
@@ -1316,9 +1155,7 @@ let makePropertyMemberWithFormat oType (mName : string) (oName : string) fName d
                   TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
                   TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]
 
-
       let exts = if mName = "Password" then  TProperty(JsonPropertyNames.CustomDataType, TObjectVal("password")) :: exts else exts
-
 
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
         TProperty(JsonPropertyNames.Id, TObjectVal(mName));
@@ -1327,8 +1164,6 @@ let makePropertyMemberWithFormat oType (mName : string) (oName : string) fName d
         
         TProperty(JsonPropertyNames.Extensions, TObjectJson(exts));
         TProperty(JsonPropertyNames.Links, TArray(links))]
-
-
 
 let makePropertyMemberWithTypeNoValue oType (mName : string) (oName : string) fName desc rType opt =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
@@ -1343,7 +1178,6 @@ let makePropertyMemberWithTypeNoValue oType (mName : string) (oName : string) fN
       let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()                                                                                  
       let links = if opt then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
 
-
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
         TProperty(JsonPropertyNames.Id, TObjectVal(mName));
         TProperty(JsonPropertyNames.HasChoices, TObjectVal(false));
@@ -1357,10 +1191,6 @@ let makePropertyMemberWithTypeNoValue oType (mName : string) (oName : string) fN
                                                              TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
                                                              TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]));
         TProperty(JsonPropertyNames.Links, TArray(links))]
-
-
-
-
 
 let makePropertyMemberSimple oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
       let order = if desc = "" then 0 else 3
@@ -1411,8 +1241,6 @@ let makePropertyMemberSimpleNumber oType (mName : string) (oName : string) fName
                                                              TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]));
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
-
-
 let makePropertyMemberNone oType mName (oName : string)  (oValue : TObject) =
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName  
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
@@ -1430,15 +1258,7 @@ let makePropertyMemberNone oType mName (oName : string)  (oValue : TObject) =
         TProperty(JsonPropertyNames.Extensions, TObjectJson([]));
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
-
 let makePropertyMember oType mName oName fName (oValue : TObject) = makePropertyMemberFull "objects" mName oName fName "" false oValue 
-
-
-
-
-
-
-
 
 let makeCollectionMemberNoDetails mName oName fName desc =
       let order = if desc = "" then 0 else 2
@@ -1481,9 +1301,6 @@ let makeCollectionMemberNoValue mName (oName : string) fName desc rType size cTy
         TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
         TProperty(JsonPropertyNames.Links, TArray ([  ]))]
 
-
-
-
 let makeServiceActionMember mName oName rType parms = makeActionMember "services" mName oName (makeFriendly(mName)) "" rType parms
 
 let makeServiceActionMemberSimple mName oName rType parms = makeActionMemberSimple "services" mName oName (makeFriendly(mName)) "" rType parms
@@ -1504,7 +1321,6 @@ let membersProp (oName : string, oType : string) =
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty("LocallyContributedAction", TObjectJson(makeObjectActionCollectionMember "LocallyContributedAction" oName oType [ p1 oType ]))
                                   TProperty("LocallyContributedActionWithParm", TObjectJson(makeObjectActionCollectionMember "LocallyContributedActionWithParm" oName oType [ p2 oType; p3 ])) ]))
-
 
 
 let makeCollectionMemberTypeValue mName (oName : string) fName desc rType size cType cName cValue (dValue : TProp list) =
@@ -1588,11 +1404,7 @@ let makeCollectionMemberSimpleType mName (oName : string) fName desc rType size 
                       TProperty(JsonPropertyNames.ElementType, TObjectVal(cType))]
 
       let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class7 class8")) :: extArray else extArray
-      let extArray = if renderEagerly then  TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: extArray else extArray
-
-     
-
-     
+      let extArray = if renderEagerly then  TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: extArray else extArray   
 
       let props =  [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
                      TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
@@ -1623,10 +1435,6 @@ let makeCollectionMemberSimpleTypeValue mName (oName : string) fName desc rType 
                       TProperty(JsonPropertyNames.ElementType, TObjectVal(cType))]
 
       let extArray = if renderEagerly then  TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: extArray else extArray
-
-  
-
-
       let props = [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
                     TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
                     TProperty(JsonPropertyNames.Size, TObjectVal( size) );
@@ -1634,8 +1442,6 @@ let makeCollectionMemberSimpleTypeValue mName (oName : string) fName desc rType 
                     TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"));
                     TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
                     TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson(detailsLink) ]))]
-
-     
 
       let members = mName = "ACollection"
 
@@ -1675,8 +1481,6 @@ let makeCollectionMemberType mName (oName : string) fName desc rType size cType 
       let props = if members then membersProp(oName, cType) :: props else  props
 
       props
-
-
 
 let makeCollectionMember mName (oName : string) fName desc rType size value = makeCollectionMemberType mName (oName : string) fName desc rType size (ttc "RestfulObjects.Test.Data.MostSimple") "Most Simples" value
 
@@ -1729,20 +1533,11 @@ let assertNonExpiringCache (headers : Headers.ResponseHeaders) =
 let assertStatusCode (sc : HttpStatusCode) iSc msg= 
     Assert.AreEqual((int)sc, iSc, msg)
 
-
-//let CreateSingleValueArgWithReserved (m : JObject) = ModelBinderUtils.CreateSingleValueArgument(m, false)
-
 let CreateSingleValueArgWithReserved (m : JObject) = ModelBinderUtils.CreateSingleValueArgument(m, true)
      
-let CreateArgMap (m : JObject) = ModelBinderUtils.CreateArgumentMap(m, false)
-
 let CreateArgMapWithReserved (m : JObject) = ModelBinderUtils.CreateArgumentMap(m, true)
-
-//let CreateReservedArgs (s : string) = ModelBinderUtils.CreateReservedArguments(s)
    
 let CreateArgMapFromUrl (s : string) = ModelBinderUtils.CreateSimpleArgumentMap(s)
-
-let CreatePersistArgMap (m : JObject) = ModelBinderUtils.CreatePersistArgMap(m, false)
 
 let CreatePersistArgMapWithReserved (m : JObject) = ModelBinderUtils.CreatePersistArgMap(m, true)
 
@@ -1783,7 +1578,6 @@ let sb (oType : string) =
                         TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ])) 
        :: makeGetLinkProp invokeRelTypeSb (sprintf "domain-types/%s/type-actions/isSubtypeOf/invoke" oType) 
               RepresentationTypes.TypeActionResult "")
-
 
 // create isSupertypeOf rep
 let sp (oType : string) = 

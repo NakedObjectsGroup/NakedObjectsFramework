@@ -19,7 +19,7 @@ open System.Net
 let GetMostSimpleTransientObject(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let pid = "CreateTransientMostSimple"
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api.Request url
     let result = api.PostInvokeOnService(oType, pid, args)
@@ -135,7 +135,7 @@ let PersistMostSimpleTransientObject(api1 : RestfulObjectsControllerBase) (api2 
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let roType = ttc "RestfulObjects.Test.Data.MostSimplePersist"
     let pid = "CreateTransientMostSimple"
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -188,7 +188,7 @@ let PersistMostSimpleTransientObjectValidateOnly(api1 : RestfulObjectsController
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let roType = ttc "RestfulObjects.Test.Data.MostSimplePersist"
     let pid = "CreateTransientMostSimple"
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -224,7 +224,7 @@ let PersistMostSimpleTransientObjectSimpleOnly(api1 : RestfulObjectsControllerBa
     let pid = "CreateTransientMostSimple"
     let simpleProp = new JProperty("x-ro-domain-model", "simple")
     let parms = new JObject(simpleProp)
-    let args = CreateArgMap parms
+    let args = CreateArgMapWithReserved parms
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -284,7 +284,7 @@ let GetWithValueTransientObject(api : RestfulObjectsControllerBase) =
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let roType = ttc "RestfulObjects.Test.Data.WithValuePersist"
     let pid = "CreateTransientWithValue"
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api.Request url
     let result = api.PostInvokeOnService(oType, pid, args)
@@ -584,7 +584,7 @@ let GetWithReferenceTransientObject(api : RestfulObjectsControllerBase) =
     let roType = ttc "RestfulObjects.Test.Data.WithReferencePersist"
     let pid = "CreateTransientWithReference"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api.Request url
     let result = api.PostInvokeOnService(oType, pid, args)
@@ -774,7 +774,7 @@ let GetWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
     let roType = ttc "RestfulObjects.Test.Data.WithCollectionPersist"
     let pid = "CreateTransientWithCollection"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api.Request url
     let result = api.PostInvokeOnService(oType, pid, args)
@@ -912,7 +912,7 @@ let PersistWithValueTransientObject(api1 : RestfulObjectsControllerBase) (api2 :
     let roType = ttc "RestfulObjects.Test.Data.WithValuePersist"
     let pid = "CreateTransientWithValue"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -1017,7 +1017,7 @@ let PersistWithReferenceTransientObject(api1 : RestfulObjectsControllerBase) (ap
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let pid = "CreateTransientWithReference"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -1194,7 +1194,7 @@ let PersistWithCollectionTransientObject(api1 : RestfulObjectsControllerBase) (a
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let pid = "CreateTransientWithCollection"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -1332,7 +1332,7 @@ let PersistWithValueTransientObjectValidateOnly(api1 : RestfulObjectsControllerB
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let pid = "CreateTransientWithValue"
     
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -1364,7 +1364,7 @@ let PersistWithReferenceTransientObjectValidateOnly(api1 : RestfulObjectsControl
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let pid = "CreateTransientWithReference"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -1396,7 +1396,7 @@ let PersistWithCollectionTransientObjectValidateOnly(api1 : RestfulObjectsContro
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let pid = "CreateTransientWithCollection"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -1428,7 +1428,7 @@ let PersistWithValueTransientObjectValidateOnlyFail(api1 : RestfulObjectsControl
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let pid = "CreateTransientWithValue"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -1554,7 +1554,7 @@ let PersistWithReferenceTransientObjectValidateOnlyFail(api1 : RestfulObjectsCon
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let pid = "CreateTransientWithReference"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -1616,7 +1616,7 @@ let PersistWithCollectionTransientObjectValidateOnlyFail(api1 : RestfulObjectsCo
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let pid = "CreateTransientWithCollection"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -1667,7 +1667,7 @@ let PersistWithValueTransientObjectFail(api1 : RestfulObjectsControllerBase) (ap
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let pid = "CreateTransientWithValue"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -1726,7 +1726,7 @@ let PersistWithValueTransientObjectFailInvalid(api1 : RestfulObjectsControllerBa
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let pid = "CreateTransientWithValue"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -1786,7 +1786,7 @@ let PersistWithReferenceTransientObjectFail(api1 : RestfulObjectsControllerBase)
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let pid = "CreateTransientWithReference"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -1850,7 +1850,7 @@ let PersistWithReferenceTransientObjectFailInvalid(api1 : RestfulObjectsControll
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let pid = "CreateTransientWithReference"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -1911,7 +1911,7 @@ let PersistWithCollectionTransientObjectFail(api1 : RestfulObjectsControllerBase
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let pid = "CreateTransientWithCollection"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 
@@ -2117,7 +2117,7 @@ let PersistWithValueTransientObjectFailCrossValidation(api1 : RestfulObjectsCont
     let oType = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let pid = "CreateTransientWithValue"
 
-    let args = CreateArgMap(new JObject())
+    let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/services/%s/actions/%s/invoke" oType pid
     jsonSetEmptyPostMsg api1.Request url
     // create transient 

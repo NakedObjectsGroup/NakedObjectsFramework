@@ -9,8 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Security.Principal;
 using Common.Logging;
@@ -20,8 +18,8 @@ using Microsoft.Extensions.Primitives;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
-
 using NakedObjects.Rest.Snapshot.Representations;
+using EntityTagHeaderValue = Microsoft.Net.Http.Headers.EntityTagHeaderValue;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class RestSnapshot {
@@ -84,8 +82,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-       
-
         public RestSnapshot(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
             populator = () => {
@@ -118,10 +114,11 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                     Representation = CollectionValueRepresentation.Create(oidStrategy, propertyContext, req, flags);
                 }
                 else {
-                    Representation = RequestingAttachment() 
-                        ? AttachmentRepresentation.Create(oidStrategy, req, propertyContext, flags) 
+                    Representation = RequestingAttachment()
+                        ? AttachmentRepresentation.Create(oidStrategy, req, propertyContext, flags)
                         : MemberAbstractRepresentation.Create(oidStrategy, req, propertyContext, flags);
                 }
+
                 SetHeaders();
             };
         }
@@ -136,18 +133,14 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public RestSnapshot(IOidStrategy oidStrategy, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-
             populator = () => {
                 Representation = HomePageRepresentation.Create(oidStrategy, req, flags);
                 SetHeaders();
             };
         }
 
-      
-
         public RestSnapshot(IOidStrategy oidStrategy, IDictionary<string, string> capabilities, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-
             populator = () => {
                 Representation = VersionRepresentation.Create(oidStrategy, req, capabilities, flags);
                 SetHeaders();
@@ -156,17 +149,14 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public RestSnapshot(IOidStrategy oidStrategy, IPrincipal user, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-
             populator = () => {
                 Representation = UserRepresentation.Create(oidStrategy, req, user, flags);
                 SetHeaders();
             };
         }
 
-        
         public RestSnapshot(IOidStrategy oidStrategy, TypeActionInvokeContext typeActionInvokeContext, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-
             populator = () => {
                 Representation = TypeActionInvokeRepresentation.Create(oidStrategy, req, typeActionInvokeContext, flags);
                 SetHeaders();
@@ -175,7 +165,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public RestSnapshot(IOidStrategy oidStrategy, Exception exception, HttpRequest req)
             : this(oidStrategy, req, true) {
-
             populator = () => {
                 MapToHttpError(exception);
                 MapToRepresentation(exception, req);
@@ -198,40 +187,15 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public HttpStatusCode HttpStatusCode { get; private set; } = HttpStatusCode.OK;
 
-        public Microsoft.Net.Http.Headers.EntityTagHeaderValue Etag { get; set; }
-
-        //public HttpResponseMessage ConfigureMsg(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
-        //    HttpResponseMessage msg = Representation.GetAsMessage(formatter, cacheSettings);
-
-        //    foreach (WarningHeaderValue w in WarningHeaders) {
-        //        msg.Headers.Warning.Add(w);
-        //    }
-
-        //    foreach (string a in AllowHeaders) {
-        //        msg.Content.Headers.Allow.Add(a);
-        //    }
-
-        //    if (Location != null) {
-        //        msg.Headers.Location = Location;
-        //    }
-
-        //    if (Etag != null) {
-        //       // msg.Headers.ETag = Etag;
-        //    }
-
-        //    ValidateOutgoingMediaType(Representation is AttachmentRepresentation);
-        //    msg.StatusCode = HttpStatusCode;
-
-        //    return msg;
-        //}
+        public EntityTagHeaderValue Etag { get; set; }
 
         private static void CheckForRedirection(IOidStrategy oidStrategy, ContextFacade context, HttpRequest req) {
             var ocs = context as ObjectContextFacade;
             var arcs = context as ActionResultContextFacade;
-            Tuple<string, string> redirected = (ocs != null ? ocs.Redirected : null) ?? (arcs?.Result != null ? arcs.Result.Redirected : null);
+            var redirected = ocs?.Redirected ?? arcs?.Result?.Redirected;
 
             if (redirected != null) {
-                Uri redirectAddress = new UriMtHelper(oidStrategy, req).GetRedirectUri(req, redirected.Item1, redirected.Item2);
+                var redirectAddress = new UriMtHelper(oidStrategy, req).GetRedirectUri(req, redirected.Item1, redirected.Item2);
                 throw new RedirectionException(redirectAddress);
             }
         }
@@ -277,7 +241,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
                 var msg = DebugWarnings ? $"Failed incoming MT validation: {string.Join(',', incomingMediaTypes.Select(mt => mt.MediaType.ToString()).ToArray())}" : "";
 
-                throw new ValidationException((int)HttpStatusCode.NotAcceptable, msg);
+                throw new ValidationException((int) HttpStatusCode.NotAcceptable, msg);
             }
         }
 
@@ -297,13 +261,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             var headers = requestMessage.GetTypedHeaders();
 
             var incomingMediaTypes = headers.Accept.Select(a => a.MediaType).ToList();
-            var outgoingMediaType = contentType == null ? "" : contentType.MediaType;
+            var outgoingMediaType = contentType?.MediaType ?? "";
 
             if (!incomingMediaTypes.Contains(outgoingMediaType)) {
-
                 var msg = DebugWarnings ? $"Failed outgoing attachment MT validation ic: {string.Join(',', incomingMediaTypes.ToArray())} og: {outgoingMediaType}" : "";
 
-                throw new ValidationException((int)HttpStatusCode.NotAcceptable, msg);
+                throw new ValidationException((int) HttpStatusCode.NotAcceptable, msg);
             }
         }
 
@@ -312,8 +275,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             var headers = requestMessage.GetTypedHeaders();
             var incomingParameters = headers.Accept.SelectMany(a => a.Parameters).ToList();
 
-           var incomingProfiles = incomingParameters.Where(nv => nv.Name.ToString() == "profile").Select(nv => nv.Value).Distinct().ToArray();
-           var outgoingProfiles = contentType != null ? contentType.Parameters.Where(nv => nv.Name == "profile").Select(nv => nv.Value).Distinct().ToArray() : new StringSegment[] { };
+            var incomingProfiles = incomingParameters.Where(nv => nv.Name.ToString() == "profile").Select(nv => nv.Value).Distinct().ToArray();
+            var outgoingProfiles = contentType != null ? contentType.Parameters.Where(nv => nv.Name == "profile").Select(nv => nv.Value).Distinct().ToArray() : new StringSegment[] { };
 
             if (incomingProfiles.Any() && outgoingProfiles.Any() && !outgoingProfiles.Intersect(incomingProfiles).Any()) {
                 if (outgoingProfiles.Contains(UriMtHelper.GetJsonMediaType(RepresentationTypes.Error).Parameters.First().Value)) {
@@ -324,17 +287,15 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                     var msg = DebugWarnings ? $"Failed outgoing json MT validation ic: {string.Join(',', incomingProfiles.ToArray())} og: {string.Join(',', outgoingProfiles.ToArray())}" : "";
 
                     // outgoing profile not included in incoming profiles and not already an error so throw a 406
-                    throw new ValidationException((int)HttpStatusCode.NotAcceptable, msg);
+                    throw new ValidationException((int) HttpStatusCode.NotAcceptable, msg);
                 }
             }
         }
 
-        private void MapToRepresentation(System.Exception e, HttpRequest req) {
-            if (e is WithContextNOSException) {
-                ArgumentsRepresentation.Format format = e is BadPersistArgumentsException ? ArgumentsRepresentation.Format.Full : ArgumentsRepresentation.Format.MembersOnly;
-                RestControlFlags flags = e is BadPersistArgumentsException ? ((BadPersistArgumentsException) e).Flags : RestControlFlags.DefaultFlags();
-
-                var contextNosException = e as WithContextNOSException;
+        private void MapToRepresentation(Exception e, HttpRequest req) {
+            if (e is WithContextNOSException contextNosException) {
+                var format = e is BadPersistArgumentsException ? ArgumentsRepresentation.Format.Full : ArgumentsRepresentation.Format.MembersOnly;
+                var flags = e is BadPersistArgumentsException bpe ? bpe.Flags : RestControlFlags.DefaultFlags();
 
                 if (contextNosException.Contexts.Any(c => c.ErrorCause == Cause.Disabled || c.ErrorCause == Cause.Immutable)) {
                     Representation = NullRepresentation.Create();
@@ -366,11 +327,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         private void SetHeaders() {
             if (Representation != null) {
-                //ContentType = representation.GetContentType();
                 Etag = Representation.GetEtag();
-                //Caching = representation.GetCaching();
 
-                foreach (string w in Representation.GetWarnings()) {
+                foreach (var w in Representation.GetWarnings()) {
                     warningHeaders.Add(RestUtils.ToWarningHeaderValue(299, w));
                 }
 
@@ -387,9 +346,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             if (e is ResourceNotFoundNOSException) {
                 HttpStatusCode = HttpStatusCode.NotFound;
             }
-            else if (e is BadArgumentsNOSException) {
-                var bre = e as BadArgumentsNOSException;
-
+            else if (e is BadArgumentsNOSException bre) {
                 if (bre.Contexts.Any(c => c.ErrorCause == Cause.Immutable)) {
                     HttpStatusCode = HttpStatusCode.MethodNotAllowed;
                 }
@@ -426,15 +383,13 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             if (e is ResourceNotFoundNOSException) {
                 warnings.Add(e.Message);
             }
-            else if (e is WithContextNOSException) {
-                var bae = e as WithContextNOSException;
-
+            else if (e is WithContextNOSException bae) {
                 if (bae.Contexts.Any(c => c.ErrorCause == Cause.Immutable)) {
                     warnings.Add("object is immutable");
                     allowHeaders.Add("GET");
                 }
                 else if (bae.Contexts.Any(c => !string.IsNullOrEmpty(c.Reason))) {
-                    foreach (string w in bae.Contexts.Where(c => !string.IsNullOrEmpty(c.Reason)).Select(c => c.Reason)) {
+                    foreach (var w in bae.Contexts.Where(c => !string.IsNullOrEmpty(c.Reason)).Select(c => c.Reason)) {
                         warnings.Add(w);
                     }
                 }
@@ -449,7 +404,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 warnings.Add(e.Message);
             }
 
-            foreach (string w in warnings) {
+            foreach (var w in warnings) {
                 warningHeaders.Add(RestUtils.ToWarningHeaderValue(199, w));
             }
         }

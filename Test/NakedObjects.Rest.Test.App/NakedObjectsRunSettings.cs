@@ -21,15 +21,10 @@ using RestfulObjects.Test.Data;
 
 namespace NakedObjects.Rest.Test.App {
     public class NakedObjectsRunSettings {
-        private static string[] ModelNamespaces {
-            get {
-                return new string[] {"RestfulObjects.Test.Data"}; //Add top-level namespace(s) that cover the domain model
-            }
-        }
 
         private static Type[] Types {
             get {
-                return new Type[] {
+                return new[] {
                     typeof(TestEnum),
                     typeof(MostSimple),
                     typeof(VerySimple),
@@ -66,7 +61,7 @@ namespace NakedObjects.Rest.Test.App {
 
         private static Type[] Services {
             get {
-                return new Type[] {
+                return new[] {
                     typeof(RestDataRepository),
                     typeof(WithActionService),
                     typeof(ContributorService),

@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using NakedObjects.Facade;
 using NakedObjects.Rest.Snapshot.Constants;
 
 namespace NakedObjects.Rest.Snapshot.Utility {
@@ -19,7 +18,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             None,
             Simple,
             Formal
-        };
+        }
 
         #endregion
 
@@ -30,7 +29,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public const string DomainModelReserved = ReservedPrefix + "domain-model";
         public const string FollowLinksReserved = ReservedPrefix + "follow-links";
         public const string SortByReserved = ReservedPrefix + "sort-by";
+
         public const string SearchTermReserved = ReservedPrefix + "searchTerm";
+
         // custom extensions 
         public const string PageReserved = ReservedPrefix + JsonPropertyNames.Page;
         public const string PageSizeReserved = ReservedPrefix + JsonPropertyNames.PageSize;
@@ -38,7 +39,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public const string InlineCollectionItemsReserved = ReservedPrefix + "inline-collection-items";
 
         public static readonly List<string> Reserved = new List<string> {ValidateOnlyReserved, DomainTypeReserved, ElementTypeReserved, DomainModelReserved, FollowLinksReserved, SortByReserved};
-        protected RestControlFlags() {}
+        protected RestControlFlags() { }
         public static int ConfiguredPageSize { get; set; }
 
         public int Page { get; private set; }
@@ -55,67 +56,58 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         private static bool GetBool(object value) {
             if (value == null) { return false; }
-            if (value is string) { return bool.Parse((string) value); }
-            if (value is bool) { return (bool) value; }
+
+            if (value is string s) { return bool.Parse(s); }
+
+            if (value is bool b) { return b; }
+
             return false;
         }
 
         private static int GetInt(object value) {
             if (value == null) { return 0; }
-            if (value is string) { return int.Parse((string) value); }
-            if (value is int) { return (int) value; }
+
+            if (value is string s) { return int.Parse(s); }
+
+            if (value is int i) { return i; }
+
             return 0;
         }
 
-        private static int DefaultPageSize(int pageSize) {
-            return pageSize == 0 ? ConfiguredPageSize : pageSize;
-        }
+        private static int DefaultPageSize(int pageSize) => pageSize == 0 ? ConfiguredPageSize : pageSize;
 
-        private static int DefaultPage(int page) {
-            return page == 0 ? 1 : page;
-        }
+        private static int DefaultPage(int page) => page == 0 ? 1 : page;
 
-        private static int GetPageSize(object value) {
-            return DefaultPageSize(GetInt(value));
-        }
+        private static int GetPageSize(object value) => DefaultPageSize(GetInt(value));
 
-        private static int GetPage(object value) {
-            return DefaultPage(GetInt(value));
-        }
+        private static int GetPage(object value) => DefaultPage(GetInt(value));
 
         private static RestControlFlags GetFlags(Func<string, object> getValue) {
             var controlFlags = new RestControlFlags {
-                ValidateOnly = GetBool(getValue(ValidateOnlyReserved)),              
+                ValidateOnly = GetBool(getValue(ValidateOnlyReserved)),
                 FollowLinks = GetBool(getValue(FollowLinksReserved)),
                 SortBy = GetBool(getValue(SortByReserved)),
                 BlobsClobs = false,
                 Page = GetPage(getValue(PageReserved)),
-                PageSize = GetPageSize(getValue(PageSizeReserved)),
+                PageSize = GetPageSize(getValue(PageSizeReserved))
             };
 
             return controlFlags;
         }
 
-        public static RestControlFlags DefaultFlags() {
-            return GetFlags(s => null);
-        }
+        public static RestControlFlags DefaultFlags() => GetFlags(s => null);
 
         public static RestControlFlags FlagsFromArguments(bool validateOnly,
-                                                          int page,
-                                                          int pageSize,
-                                                          string domainModel,
-                                                          bool inlineDetailsInActionMemberRepresentations,
-                                                          bool inlineDetailsInCollectionMemberRepresentations,
-                                                          bool inlineDetailsInPropertyMemberRepresentations,
-                                                          bool inlineCollectionItems,
-                                                          bool allowMutatingActionsOnImmutableObjects) {
-            // validate domainModel 
-            //if (domainModel != null && domainModel != DomainModelType.Simple.ToString().ToLower() && domainModel != DomainModelType.Formal.ToString().ToLower()) {
-            //    throw new BadRequestNOSException("Invalid domainModel: " + domainModel);
-            //}
-
-            var controlFlags = new RestControlFlags {
-                ValidateOnly = validateOnly,            
+                                                            int page,
+                                                            int pageSize,
+                                                            string domainModel,
+                                                            bool inlineDetailsInActionMemberRepresentations,
+                                                            bool inlineDetailsInCollectionMemberRepresentations,
+                                                            bool inlineDetailsInPropertyMemberRepresentations,
+                                                            bool inlineCollectionItems,
+                                                            bool allowMutatingActionsOnImmutableObjects) =>
+                                                            new RestControlFlags {
+                ValidateOnly = validateOnly,
                 FollowLinks = false,
                 SortBy = false,
                 BlobsClobs = false,
@@ -127,10 +119,5 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 InlineCollectionItems = inlineCollectionItems,
                 AllowMutatingActionsOnImmutableObject = allowMutatingActionsOnImmutableObjects
             };
-
-            return controlFlags;
-        }
-
-        
     }
 }
