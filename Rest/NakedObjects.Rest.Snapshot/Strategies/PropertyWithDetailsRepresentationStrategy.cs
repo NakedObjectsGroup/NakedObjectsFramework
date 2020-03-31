@@ -21,13 +21,10 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         private readonly bool inline;
 
         public PropertyWithDetailsRepresentationStrategy(bool inline, IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
-            base(oidStrategy, req, propertyContext, flags) {
+            base(oidStrategy, req, propertyContext, flags) =>
             this.inline = inline;
-        }
 
-        public override bool ShowChoices() {
-            return true;
-        }
+        public override bool ShowChoices() => true;
 
         public override LinkRepresentation[] GetLinks() {
             var links = new List<LinkRepresentation>(GetLinks(inline));
@@ -41,10 +38,9 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return links.ToArray();
         }
 
-        protected override bool AddChoices() {
-            return PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
-                   (PropertyContext.Property.Specification.IsParseable || (PropertyContext.Property.Specification.IsCollection && PropertyContext.Property.ElementSpecification.IsParseable)) &&
-                   !PropertyContext.Property.GetChoicesParameters().Any();
-        }
+        protected override bool AddChoices() =>
+            PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&
+            (PropertyContext.Property.Specification.IsParseable || PropertyContext.Property.Specification.IsCollection && PropertyContext.Property.ElementSpecification.IsParseable) &&
+            !PropertyContext.Property.GetChoicesParameters().Any();
     }
 }

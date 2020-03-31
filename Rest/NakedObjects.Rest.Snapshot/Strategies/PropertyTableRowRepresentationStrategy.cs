@@ -16,11 +16,11 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
     [DataContract]
     public class PropertyTableRowRepresentationStrategy : AbstractPropertyRepresentationStrategy {
         public PropertyTableRowRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
-            base(oidStrategy, req, propertyContext, flags) {}
+            base(oidStrategy, req, propertyContext, flags) { }
 
         public override bool ShowChoices() => false;
 
-        public override LinkRepresentation[] GetLinks() => new LinkRepresentation[] {};
+        public override LinkRepresentation[] GetLinks() => new LinkRepresentation[] { };
 
         protected override bool AddChoices() =>
             PropertyContext.Property.IsChoicesEnabled != Choices.NotEnabled &&

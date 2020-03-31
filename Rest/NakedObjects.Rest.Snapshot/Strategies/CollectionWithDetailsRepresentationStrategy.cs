@@ -16,7 +16,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Strategies {
     public class CollectionWithDetailsRepresentationStrategy : AbstractCollectionRepresentationStrategy {
         public CollectionWithDetailsRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
-            : base(oidStrategy, req, propertyContext, flags) {}
+            : base(oidStrategy, req, propertyContext, flags) { }
 
         public override LinkRepresentation[] GetValue() {
             Func<IObjectFacade, LinkRepresentation> createLink = no => Flags.InlineCollectionItems ? CreateTableRowValueLink(no) : CreateValueLink(no);

@@ -28,11 +28,11 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             if (tableViewData == null) {
                 return null;
             }
+
             return new Dictionary<string, object> {
                 [JsonPropertyNames.CustomTableViewTitle] = tableViewData.Item1,
                 [JsonPropertyNames.CustomTableViewColumns] = tableViewData.Item2
             };
-           
         }
 
         protected abstract MapRepresentation GetExtensionsForSimple();

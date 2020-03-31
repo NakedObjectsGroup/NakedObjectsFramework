@@ -39,12 +39,12 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         protected UriMtHelper GetHelper() => new UriMtHelper(OidStrategy, Req, PropertyContext);
 
         protected string GetAttachmentFileName(PropertyContextFacade context) {
-            IObjectFacade no = context.Property.GetValue(context.Target);
+            var no = context.Property.GetValue(context.Target);
             return no != null ? no.GetAttachment().FileName : "UnknownFile";
         }
 
         private LinkRepresentation CreateAttachmentLink() {
-            string title = GetAttachmentFileName(PropertyContext);
+            var title = GetAttachmentFileName(PropertyContext);
             return LinkRepresentation.Create(OidStrategy, new AttachmentRelType(GetHelper()), Flags, new OptionalProperty(JsonPropertyNames.Title, title));
         }
 
@@ -63,6 +63,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 if (PropertyContext.Property.IsCollection && !PropertyContext.Property.IsEager(PropertyContext.Target)) {
                     tempLinks.Add(CreateCollectionValueLink());
                 }
+
                 tempLinks.Add(CreateDetailsLink());
             }
 

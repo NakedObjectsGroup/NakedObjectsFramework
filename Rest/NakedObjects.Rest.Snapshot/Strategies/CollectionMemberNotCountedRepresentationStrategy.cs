@@ -14,7 +14,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Strategies {
     public class CollectionMemberNotCountedRepresentationStrategy : AbstractCollectionRepresentationStrategy {
         public CollectionMemberNotCountedRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
-            : base(oidStrategy, req, propertyContext, flags) {}
+            : base(oidStrategy, req, propertyContext, flags) { }
 
         public override LinkRepresentation[] GetValue() => null;
 

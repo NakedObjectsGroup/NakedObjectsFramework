@@ -15,7 +15,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Strategies {
     public class ActionRepresentationStrategy : AbstractActionRepresentationStrategy {
         public ActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
-            : base(oidStrategy, req, actionContext, flags) {}
+            : base(oidStrategy, req, actionContext, flags) { }
 
         public override LinkRepresentation[] GetLinks() =>
             new List<LinkRepresentation> {

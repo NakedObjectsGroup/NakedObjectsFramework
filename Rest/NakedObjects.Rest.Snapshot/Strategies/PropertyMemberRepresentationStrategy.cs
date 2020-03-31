@@ -16,7 +16,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
     [DataContract]
     public class PropertyMemberRepresentationStrategy : AbstractPropertyRepresentationStrategy {
         public PropertyMemberRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) :
-            base(oidStrategy, req, propertyContext, flags) {}
+            base(oidStrategy, req, propertyContext, flags) { }
 
         public override bool ShowChoices() => false;
 

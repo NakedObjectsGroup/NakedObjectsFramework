@@ -16,7 +16,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Strategies {
     public class FormActionRepresentationStrategy : AbstractActionRepresentationStrategy {
         public FormActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
-            : base(oidStrategy, req, actionContext, flags) {}
+            : base(oidStrategy, req, actionContext, flags) { }
 
         protected override IEnumerable<ParameterRepresentation> GetParameterList() {
             var visibleProperties = ActionContext.Target.Specification.Properties.Where(p => p.IsUsable(ActionContext.Target).IsAllowed && p.IsVisible(ActionContext.Target));
@@ -31,7 +31,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             }.ToArray();
 
         protected ParameterRepresentation GetParameter(IAssociationFacade assoc) {
-            IObjectFacade objectFacade = ActionContext.Target;
+            var objectFacade = ActionContext.Target;
             return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, assoc, ActionContext, Flags);
         }
 

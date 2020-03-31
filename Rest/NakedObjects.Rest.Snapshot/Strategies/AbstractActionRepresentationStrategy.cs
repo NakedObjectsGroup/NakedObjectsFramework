@@ -43,7 +43,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         public virtual string GetId() => ActionContext.Action.Id;
 
         protected ParameterRepresentation GetParameter(IActionParameterFacade parameter) {
-            IObjectFacade objectFacade = ActionContext.Target;
+            var objectFacade = ActionContext.Target;
             return ParameterRepresentation.Create(OidStrategy, Req, objectFacade, parameter, Flags);
         }
 
@@ -57,7 +57,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         protected LinkRepresentation CreateUpLink() {
             var helper = new UriMtHelper(OidStrategy, Req, ActionContext.Target);
-            ObjectRelType parentRelType = ActionContext.Target.Specification.IsService ? new ServiceRelType(RelValues.Up, helper) : new ObjectRelType(RelValues.Up, helper);
+            var parentRelType = ActionContext.Target.Specification.IsService ? new ServiceRelType(RelValues.Up, helper) : new ObjectRelType(RelValues.Up, helper);
             return LinkRepresentation.Create(OidStrategy, parentRelType, Flags);
         }
 
@@ -67,23 +67,23 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         protected override MapRepresentation GetExtensionsForSimple() =>
             RestUtils.GetExtensions(
-                friendlyname: ActionContext.Action.Name,
-                description: ActionContext.Action.Description,
-                pluralName: null,
-                domainType: null,
-                isService: null,
-                hasParams: HasParams(),
-                optional: null,
-                maxLength: null,
-                pattern: null,
-                memberOrder: ActionContext.Action.MemberOrder,
-                dataType: null,
-                presentationHint: ActionContext.Action.PresentationHint,
-                customExtensions: GetCustomActionExtensions(),
-                returnType: ActionContext.Action.ReturnType,
-                elementType: ActionContext.Action.ElementType,
-                oidStrategy: OidStrategy,
-                useDateOverDateTime: false);
+                ActionContext.Action.Name,
+                ActionContext.Action.Description,
+                null,
+                null,
+                null,
+                HasParams(),
+                null,
+                null,
+                null,
+                ActionContext.Action.MemberOrder,
+                null,
+                ActionContext.Action.PresentationHint,
+                GetCustomActionExtensions(),
+                ActionContext.Action.ReturnType,
+                ActionContext.Action.ElementType,
+                OidStrategy,
+                false);
 
         protected IDictionary<string, object> GetCustomActionExtensions() {
             var ext = GetTableViewCustomExtensions(ActionContext.Action.TableViewData);
@@ -109,9 +109,9 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         }
 
         protected virtual LinkRepresentation CreateActionLink() {
-            List<OptionalProperty> optionalProperties = parameterList.Select(pr => new OptionalProperty(pr.Name, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof (object))))).ToList();
+            var optionalProperties = parameterList.Select(pr => new OptionalProperty(pr.Name, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object))))).ToList();
 
-            RelMethod method = GetRelMethod();
+            var method = GetRelMethod();
             return LinkRepresentation.Create(OidStrategy, new InvokeRelType(new UriMtHelper(OidStrategy, Req, ActionContext)) {Method = method}, Flags,
                 new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(optionalProperties.ToArray())));
         }
@@ -120,6 +120,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             if (ActionContext.Action.IsQueryOnly) {
                 return RelMethod.Get;
             }
+
             return ActionContext.Action.IsIdempotent ? RelMethod.Put : RelMethod.Post;
         }
 

@@ -16,33 +16,32 @@ using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest.Snapshot.Strategies {
     public abstract class AbstractCollectionRepresentationStrategy : MemberRepresentationStrategy {
-        protected AbstractCollectionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
-            : base(oidStrategy, req, propertyContext, flags) {           
-        }
-
         private IObjectFacade collection;
+
+        protected AbstractCollectionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags)
+            : base(oidStrategy, req, propertyContext, flags) { }
 
         protected IObjectFacade Collection => collection ??= PropertyContext.Property.GetValue(PropertyContext.Target);
 
         protected override MapRepresentation GetExtensionsForSimple() =>
             RestUtils.GetExtensions(
-                friendlyname: PropertyContext.Property.Name,
-                description: PropertyContext.Property.Description,
-                pluralName: null,
-                domainType: null,
-                isService: null,
-                hasParams: null,
-                optional: null,
-                maxLength: null,
-                pattern: null,
-                memberOrder: PropertyContext.Property.MemberOrder,
-                dataType: PropertyContext.Property.DataType,
-                presentationHint: PropertyContext.Property.PresentationHint,
-                customExtensions: GetCustomPropertyExtensions(),
-                returnType: PropertyContext.Specification,
-                elementType: PropertyContext.ElementSpecification,
-                oidStrategy: OidStrategy,
-                useDateOverDateTime: false);
+                PropertyContext.Property.Name,
+                PropertyContext.Property.Description,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                PropertyContext.Property.MemberOrder,
+                PropertyContext.Property.DataType,
+                PropertyContext.Property.PresentationHint,
+                GetCustomPropertyExtensions(),
+                PropertyContext.Specification,
+                PropertyContext.ElementSpecification,
+                OidStrategy,
+                false);
 
         private IDictionary<string, object> GetCustomPropertyExtensions() {
             var exts = GetTableViewCustomExtensions(PropertyContext.Property.TableViewData);
@@ -51,6 +50,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 exts ??= new Dictionary<string, object>();
                 exts[JsonPropertyNames.CustomRenderEagerly] = true;
             }
+
             return exts;
         }
 
@@ -68,11 +68,10 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         private static bool DoNotCount(PropertyContextFacade propertyContext) => propertyContext.Property.DoNotCount && !propertyContext.Property.RenderEagerly;
 
-        public static AbstractCollectionRepresentationStrategy GetStrategy(bool asTableColumn,  bool inline, IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
-         
+        public static AbstractCollectionRepresentationStrategy GetStrategy(bool asTableColumn, bool inline, IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
             if (asTableColumn) {
                 if (propertyContext.Property.DoNotCount) {
-                     return new CollectionMemberNotCountedRepresentationStrategy(oidStrategy, req, propertyContext, flags);
+                    return new CollectionMemberNotCountedRepresentationStrategy(oidStrategy, req, propertyContext, flags);
                 }
 
                 return new CollectionMemberRepresentationStrategy(oidStrategy, req, propertyContext, flags);
@@ -94,11 +93,10 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 MenuPath = "",
                 Target = target,
                 Action = actionFacade,
-                VisibleParameters = actionFacade.Parameters.Select(p => new ParameterContextFacade { Parameter = p, Action = actionFacade }).ToArray()
+                VisibleParameters = actionFacade.Parameters.Select(p => new ParameterContextFacade {Parameter = p, Action = actionFacade}).ToArray()
             };
 
         public virtual InlineActionRepresentation[] GetActions() {
-
             if (!PropertyContext.Target.IsTransient) {
                 var lcas = PropertyContext.Target.Specification.GetLocallyContributedActions(PropertyContext.Property.ElementSpecification, PropertyContext.Property.Id);
 
