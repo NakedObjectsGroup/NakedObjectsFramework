@@ -14,7 +14,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public ServiceRelType(UriMtHelper helper) : base(RelValues.Service, helper) { }
         public ServiceRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
-        public override string Name => base.Name + (HasRelParameter ? Helper.GetServiceRelParameter() : "");
+        public override string Name => $"{base.Name}{(HasRelParameter ? Helper.GetServiceRelParameter() : "")}";
 
         public override Uri GetUri() => Helper.GetServiceUri();
 

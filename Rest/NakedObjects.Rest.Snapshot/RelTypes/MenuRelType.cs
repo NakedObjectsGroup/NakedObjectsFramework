@@ -14,7 +14,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public MenuRelType(UriMtHelper helper) : base(RelValues.Menu, helper) { }
         public MenuRelType(string name, UriMtHelper helper) : base(name, helper) { }
 
-        public override string Name => base.Name + (HasRelParameter ? Helper.GetMenuRelParameter() : "");
+        public override string Name => $"{base.Name}{(HasRelParameter ? Helper.GetMenuRelParameter() : "")}";
 
         public override Uri GetUri() => Helper.GetMenuUri();
 

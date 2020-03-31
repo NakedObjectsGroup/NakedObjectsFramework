@@ -15,6 +15,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public ValueRelType(IAssociationFacade property, UriMtHelper helper) : this(helper) => member = property;
 
-        public override string Name => base.Name + Helper.GetRelParametersFor(member);
+        public override string Name => $"{base.Name}{Helper.GetRelParametersFor(member)}";
     }
 }
