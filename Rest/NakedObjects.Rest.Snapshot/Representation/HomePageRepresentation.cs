@@ -32,13 +32,9 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Extensions)]
         public MapRepresentation Extensions { get; set; }
 
-        private void SetHeader() {
-            Caching = CacheType.NonExpiring;
-        }
+        private void SetHeader() => Caching = CacheType.NonExpiring;
 
-        private void SetExtensions() {
-            Extensions = new MapRepresentation();
-        }
+        private void SetExtensions() => Extensions = new MapRepresentation();
 
         private void SetLinks(HttpRequest req) {
             var tempLinks = new List<LinkRepresentation> {

@@ -45,7 +45,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         public static ActionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) {
             var actionRepresentationStrategy = AbstractActionRepresentationStrategy.GetStrategy(false, oidStrategy, req, actionContext, flags);
-
             return new ActionRepresentation(oidStrategy, actionRepresentationStrategy);
         }
     }

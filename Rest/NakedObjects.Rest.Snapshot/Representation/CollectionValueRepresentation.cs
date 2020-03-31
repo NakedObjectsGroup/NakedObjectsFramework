@@ -44,13 +44,9 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Value = collectionItems.Select(i => LinkRepresentation.Create(OidStrategy, new ValueRelType(propertyContext.Property, new UriMtHelper(OidStrategy, req, i)), flags, new OptionalProperty(JsonPropertyNames.Title, RestUtils.SafeGetTitle(i)))).ToArray();
         }
 
-        private void SetScalars(PropertyContextFacade propertyContext) {
-            Id = propertyContext.Property.Id;
-        }
+        private void SetScalars(PropertyContextFacade propertyContext) => Id = propertyContext.Property.Id;
 
-        private void SetExtensions() {
-            Extensions = new MapRepresentation();
-        }
+        private void SetExtensions() => Extensions = new MapRepresentation();
 
         private void SetLinks(HttpRequest req, PropertyContextFacade propertyContext, RelType parentRelType) {
             var tempLinks = new List<LinkRepresentation> {

@@ -34,8 +34,9 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Type = relType.GetMediaType(Flags).ToString();
         }
 
-        public static LinkRepresentation Create(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags, params OptionalProperty[] properties) {
-            return properties.Any() ? CreateWithOptionals<LinkRepresentation>(new object[] {oidStrategy, relType, flags}, properties) : new LinkRepresentation(oidStrategy, relType, flags);
-        }
+        public static LinkRepresentation Create(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags, params OptionalProperty[] properties) =>
+            properties.Any()
+            ? CreateWithOptionals<LinkRepresentation>(new object[] {oidStrategy, relType, flags}, properties)
+            : new LinkRepresentation(oidStrategy, relType, flags);
     }
 }

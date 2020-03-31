@@ -55,21 +55,13 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         private static UriMtHelper GetParentHelper(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req) => new UriMtHelper(oidStrategy, req, propertyContext.Target);
 
-        private void SetChoices(PropertyContextFacade propertyContext, HttpRequest req) {
-            Choices = propertyContext.Completions.List.Select(c => RestUtils.GetChoiceValue(OidStrategy, req, c, propertyContext.Property, Flags)).ToArray();
-        }
+        private void SetChoices(PropertyContextFacade propertyContext, HttpRequest req) => Choices = propertyContext.Completions.List.Select(c => RestUtils.GetChoiceValue(OidStrategy, req, c, propertyContext.Property, Flags)).ToArray();
 
-        private void SetChoices(ParameterContextFacade paramContext, HttpRequest req) {
-            Choices = paramContext.Completions.List.Select(c => RestUtils.GetChoiceValue(OidStrategy, req, c, paramContext.Parameter, Flags)).ToArray();
-        }
+        private void SetChoices(ParameterContextFacade paramContext, HttpRequest req) => Choices = paramContext.Completions.List.Select(c => RestUtils.GetChoiceValue(OidStrategy, req, c, paramContext.Parameter, Flags)).ToArray();
 
-        private void SetScalars(string id) {
-            Id = id;
-        }
+        private void SetScalars(string id) => Id = id;
 
-        private void SetExtensions() {
-            Extensions = new MapRepresentation();
-        }
+        private void SetExtensions() => Extensions = new MapRepresentation();
 
         private void SetLinks(HttpRequest req, ITypeFacade spec, RelType parentRelType) {
             var tempLinks = new List<LinkRepresentation> {
@@ -80,9 +72,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Links = tempLinks.ToArray();
         }
 
-        private void SetHeader(bool isListOfServices) {
-            Caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
-        }
+        private void SetHeader(bool isListOfServices) => Caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
 
         public static PromptRepresentation Create(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags) => new PromptRepresentation(oidStrategy, propertyContext, req, flags);
 

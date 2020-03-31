@@ -30,9 +30,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Extensions)]
         public MapRepresentation Extensions { get; set; }
 
-        protected void SetHeader(IObjectFacade target) {
-            SetEtag(target);
-        }
+        protected void SetHeader(IObjectFacade target) => SetEtag(target);
 
         public static InlineMemberAbstractRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags, bool asTableColumn) {
             var consent = propertyContext.Property.IsUsable(propertyContext.Target);

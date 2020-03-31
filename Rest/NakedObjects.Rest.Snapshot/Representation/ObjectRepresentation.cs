@@ -45,9 +45,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         private static bool IsForm(IObjectFacade objectFacade) => objectFacade.IsViewModelEditView;
 
-        private void SetScalars(ObjectContextFacade objectContext) {
-            Title = objectContext.Target.TitleString;
-        }
+        private void SetScalars(ObjectContextFacade objectContext) => Title = objectContext.Target.TitleString;
 
         private void SetHeader(ObjectContextFacade objectContext) {
             Caching = objectContext.Specification.IsService ? CacheType.NonExpiring : CacheType.Transactional;
@@ -166,9 +164,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             };
         }
 
-        private void SetExtensions(IObjectFacade objectFacade) {
-            Extensions = GetExtensions(objectFacade);
-        }
+        private void SetExtensions(IObjectFacade objectFacade) => Extensions = GetExtensions(objectFacade);
 
         private MapRepresentation GetExtensions(IObjectFacade objectFacade) =>
             RestUtils.GetExtensions(

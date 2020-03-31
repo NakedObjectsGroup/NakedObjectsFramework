@@ -18,9 +18,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class CollectionRepresentation : MemberAbstractRepresentation {
-        protected CollectionRepresentation(IOidStrategy oidStrategy, AbstractCollectionRepresentationStrategy strategy)
-            : base(oidStrategy, strategy) =>
-            Extensions = strategy.GetExtensions();
+        protected CollectionRepresentation(IOidStrategy oidStrategy, AbstractCollectionRepresentationStrategy strategy) : base(oidStrategy, strategy) => Extensions = strategy.GetExtensions();
 
         public static CollectionRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, IList<OptionalProperty> optionals, RestControlFlags flags) {
             var collectionRepresentationStrategy = AbstractCollectionRepresentationStrategy.GetStrategy(false, false, oidStrategy, req, propertyContext, flags);

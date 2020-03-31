@@ -34,13 +34,9 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Extensions)]
         public MapRepresentation Extensions { get; set; }
 
-        private void SetHeader(IObjectFacade objectFacade) {
-            SetEtag(objectFacade);
-        }
+        private void SetHeader(IObjectFacade objectFacade) => SetEtag(objectFacade);
 
-        private void SetName(FieldFacadeAdapter parameter) {
-            Name = parameter.Id;
-        }
+        private void SetName(FieldFacadeAdapter parameter) => Name = parameter.Id;
 
         private LinkRepresentation CreatePromptLink(HttpRequest req, IObjectFacade objectFacade, FieldFacadeAdapter parameter) {
             var opts = new List<OptionalProperty>();
@@ -89,14 +85,14 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             var mask = parameter.Mask;
 
             if (!string.IsNullOrWhiteSpace(mask)) {
-                custom = custom ?? new Dictionary<string, object>();
+                custom ??= new Dictionary<string, object>();
                 custom[JsonPropertyNames.CustomMask] = mask;
             }
 
             var multipleLines = parameter.NumberOfLines;
 
             if (multipleLines > 1) {
-                custom = custom ?? new Dictionary<string, object>();
+                custom ??= new Dictionary<string, object>();
                 custom[JsonPropertyNames.CustomMultipleLines] = multipleLines;
             }
 

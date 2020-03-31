@@ -29,17 +29,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         public Stream AsStream { get; set; }
 
-        //public override HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
-        //    var content = new StreamContent(AsStream);
-        //    var msg = new HttpResponseMessage { Content = content };
-        //    //msg.Content.Headers.ContentDisposition = ContentDisposition;
-
-        //    //msg.Content.Headers.ContentType = GetContentType();
-
-        //    SetCaching(msg, cacheSettings);
-        //    return msg;
-        //}
-
         public override MediaTypeHeaderValue GetContentType() => contentType;
 
         private void SetHeader(IObjectFacade target) {
@@ -49,8 +38,8 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         private void SetContentType(PropertyContextFacade context) {
             var no = context.Property.GetValue(context.Target);
-            Func<string> defaultMimeType = () => no == null ? AttachmentContextFacade.DefaultMimeType : no.GetAttachment().DefaultMimeType();
-            var mtv = string.IsNullOrWhiteSpace(no?.GetAttachment().MimeType) ? defaultMimeType() : no.GetAttachment().MimeType;
+            string DefaultMimeType() => no == null ? AttachmentContextFacade.DefaultMimeType : no.GetAttachment().DefaultMimeType();
+            var mtv = string.IsNullOrWhiteSpace(no?.GetAttachment().MimeType) ? DefaultMimeType() : no.GetAttachment().MimeType;
             contentType = new MediaTypeHeaderValue(mtv);
         }
 

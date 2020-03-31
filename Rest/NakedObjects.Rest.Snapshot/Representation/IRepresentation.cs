@@ -22,7 +22,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         string[] GetWarnings();
 
-        //HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings);
         Uri GetLocation();
     }
 }

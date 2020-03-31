@@ -13,9 +13,7 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class RefValueRepresentation : Representation {
-        protected RefValueRepresentation(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags)
-            : base(oidStrategy, flags) =>
-            Href = relType.GetUri().AbsoluteUri;
+        protected RefValueRepresentation(IOidStrategy oidStrategy, RelType relType, RestControlFlags flags) : base(oidStrategy, flags) => Href = relType.GetUri().AbsoluteUri;
 
         [DataMember(Name = JsonPropertyNames.Href)]
         public string Href { get; set; }

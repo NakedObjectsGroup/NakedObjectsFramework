@@ -43,58 +43,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         protected RelType SelfRelType { get; set; }
 
-        protected void SetCaching(HttpResponseMessage m, Tuple<int, int, int> cacheSettings) {
-            //int cacheTime = 0;
-
-            //switch (GetCaching()) {
-            //    case CacheType.Transactional:
-            //        cacheTime = cacheSettings.Item1;
-            //        break;
-            //    case CacheType.UserInfo:
-            //        cacheTime = cacheSettings.Item2;
-            //        break;
-            //    case CacheType.NonExpiring:
-            //        cacheTime = cacheSettings.Item3;
-            //        break;
-            //}
-
-            //if (cacheTime == 0) {
-            //    m.Headers.CacheControl = new CacheControlHeaderValue {NoCache = true};
-            //    m.Headers.Pragma.Add(new NameValueHeaderValue("no-cache"));
-            //}
-            //else {
-            //    m.Headers.CacheControl = new CacheControlHeaderValue {MaxAge = new TimeSpan(0, 0, 0, cacheTime)};
-            //}
-
-            //DateTime now = DateTime.UtcNow;
-
-            //m.Headers.Date = new DateTimeOffset(now);
-            //m.Content.Headers.Expires = new DateTimeOffset(now).Add(new TimeSpan(0, 0, 0, cacheTime));
-        }
-
-        protected string GetPropertyValueForEtag(IAssociationFacade property, IObjectFacade target) {
-            var valueNakedObject = property.GetValue(target);
-
-            if (valueNakedObject == null) {
-                return "";
-            }
-
-            if (property.Specification.IsParseable) {
-                return valueNakedObject.Object.ToString();
-            }
-
-            return OidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(target).Encode();
-        }
-
-        protected string GetTransientEtag(IObjectFacade target) {
-            var allProperties = target.Specification.Properties.Where(p => !p.IsCollection && !p.IsInline);
-            var unusableProperties = allProperties.Where(p => p.IsUsable(target).IsVetoed && !p.IsVisible(target));
-
-            var propertyValues = unusableProperties.ToDictionary(p => p.Id, p => GetPropertyValueForEtag(p, target));
-
-            return propertyValues.Aggregate("", (s, kvp) => s + kvp.Key + ":" + kvp.Value);
-        }
-
         protected void SetEtag(string digest) {
             if (digest != null) {
                 Etag = digest;
@@ -151,9 +99,9 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             propertyBuilder.SetCustomAttribute(customAttribute);
         }
 
-        private static string ComputeMD5HashAsString(string s) => Math.Abs(BitConverter.ToInt64(ComputMD5HashFromString(s), 0)).ToString(CultureInfo.InvariantCulture);
+        private static string ComputeMD5HashAsString(string s) => Math.Abs(BitConverter.ToInt64(ComputeMD5HashFromString(s), 0)).ToString(CultureInfo.InvariantCulture);
 
-        private static byte[] ComputMD5HashFromString(string s) {
+        private static byte[] ComputeMD5HashFromString(string s) {
             var idAsBytes = Encoding.UTF8.GetBytes(s);
             return new MD5CryptoServiceProvider().ComputeHash(idAsBytes);
         }
@@ -217,22 +165,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             }
         }
 
-        protected static void AddStringProperties(ITypeFacade spec, int? maxLength, string pattern, Dictionary<string, object> exts) {
-            if (spec.IsParseable) {
-                if (maxLength != null) {
-                    exts.Add(JsonPropertyNames.MaxLength, maxLength);
-                }
-
-                if (!string.IsNullOrEmpty(pattern)) {
-                    exts.Add(JsonPropertyNames.Pattern, pattern);
-                }
-
-                if (spec.IsDateTime) {
-                    exts.Add(JsonPropertyNames.Format, PredefinedFormatType.Date_time.ToRoString());
-                }
-            }
-        }
-
         public static object GetPropertyValue(IOidStrategy oidStrategy, HttpRequest req, IAssociationFacade property, IObjectFacade target, RestControlFlags flags, bool valueOnly, bool useDateOverDateTime) {
             var valueNakedObject = property.GetValue(target);
 
@@ -265,7 +197,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         #region IRepresentation Members
 
-        public virtual MediaTypeHeaderValue GetContentType() => SelfRelType != null ? SelfRelType.GetMediaType(Flags) : null;
+        public virtual MediaTypeHeaderValue GetContentType() => SelfRelType?.GetMediaType(Flags);
 
         public EntityTagHeaderValue GetEtag() => Etag != null ? new EntityTagHeaderValue($"\"{Etag}\"") : null;
 
@@ -291,23 +223,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return allWarnings.ToArray();
         }
 
-        //public virtual HttpResponseMessage GetAsMessage(MediaTypeFormatter formatter, Tuple<int, int, int> cacheSettings) {
-        //    Microsoft.Net.Http.Headers.MediaTypeHeaderValue ct = GetContentType();
-
-        //    if (ct != null) {
-        //        //formatter.SupportedMediaTypes.Add(ct);
-        //    }
-
-        //    var content = new ObjectContent<Representation>(this, formatter);
-        //    var msg = new HttpResponseMessage {Content = content};
-        //    //msg.Content.Headers.ContentType = ct;
-
-        //    SetCaching(msg, cacheSettings);
-
-        //    return msg;
-        //}
-
-        public Uri GetLocation() => SelfRelType != null ? SelfRelType.GetUri() : null;
+        public Uri GetLocation() => SelfRelType?.GetUri();
 
         #endregion
     }

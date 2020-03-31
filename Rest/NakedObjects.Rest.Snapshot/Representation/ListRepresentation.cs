@@ -53,9 +53,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Value)]
         public LinkRepresentation[] Value { get; set; }
 
-        private void SetExtensions() {
-            Extensions = new MapRepresentation();
-        }
+        private void SetExtensions() => Extensions = new MapRepresentation();
 
         private void SetExtensions(IOidStrategy oidStrategy, ActionContextFacade actionContext) {
             var exts = new Dictionary<string, object> {
@@ -67,21 +65,13 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Extensions = RestUtils.CreateMap(exts);
         }
 
-        private void SetLinks(HttpRequest req) {
-            Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, new HomePageRelType(RelValues.Up, new UriMtHelper(OidStrategy, req)), Flags)};
-        }
+        private void SetLinks(HttpRequest req) => Links = new[] {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags), LinkRepresentation.Create(OidStrategy, new HomePageRelType(RelValues.Up, new UriMtHelper(OidStrategy, req)), Flags)};
 
-        private void SetLinks(HttpRequest req, ITypeFacade spec) {
-            Links = new LinkRepresentation[] { };
-        }
+        private void SetLinks(HttpRequest req, ITypeFacade spec) => Links = new LinkRepresentation[] { };
 
-        private void SetLinks(HttpRequest req, ActionContextFacade actionContext) {
-            SetLinks(req, actionContext.ElementSpecification);
-        }
+        private void SetLinks(HttpRequest req, ActionContextFacade actionContext) => SetLinks(req, actionContext.ElementSpecification);
 
-        private void SetHeader(bool isListOfServices) {
-            Caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
-        }
+        private void SetHeader(bool isListOfServices) => Caching = isListOfServices ? CacheType.NonExpiring : CacheType.Transactional;
 
         protected virtual LinkRepresentation CreateObjectLink(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade no, ActionContextFacade actionContext = null) {
             var helper = new UriMtHelper(oidStrategy, req, no);

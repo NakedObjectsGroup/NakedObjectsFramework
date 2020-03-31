@@ -49,9 +49,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             MenuId = menu.Id;
         }
 
-        private void SetHeader(IMenuFacade menu) {
-            Caching = CacheType.NonExpiring;
-        }
+        private void SetHeader(IMenuFacade menu) => Caching = CacheType.NonExpiring;
 
         private void SetLinksAndMembers(HttpRequest req, IMenuFacade menu) {
             var tempLinks = new List<LinkRepresentation> {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)};
@@ -60,25 +58,20 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Links = tempLinks.ToArray();
         }
 
-        private ActionContextFacade ActionContext(IMenuActionFacade actionFacade, string menuPath) {
-            return new ActionContextFacade {
+        private ActionContextFacade ActionContext(IMenuActionFacade actionFacade, string menuPath) =>
+            new ActionContextFacade {
                 MenuPath = menuPath,
                 Target = OidStrategy.FrameworkFacade.GetServices().List.Single(s => s.Specification.IsOfType(actionFacade.Action.OnType)),
                 Action = actionFacade.Action,
                 VisibleParameters = actionFacade.Action.Parameters.Select(p => new ParameterContextFacade {Parameter = p, Action = actionFacade.Action}).ToArray()
             };
-        }
 
         private Tuple<string, ActionContextFacade>[] GetMenuItem(IMenuItemFacade item, string parent = "") {
-            var menuActionFacade = item as IMenuActionFacade;
-
-            if (menuActionFacade != null) {
+            if (item is IMenuActionFacade menuActionFacade) {
                 return new[] {new Tuple<string, ActionContextFacade>(item.Name, ActionContext(menuActionFacade, parent))};
             }
 
-            var menuFacade = item as IMenuFacade;
-
-            if (menuFacade != null) {
+            if (item is IMenuFacade menuFacade) {
                 parent = parent + (string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider) + menuFacade.Name;
                 return menuFacade.MenuItems.SelectMany(i => GetMenuItem(i, parent)).ToArray();
             }
@@ -95,22 +88,20 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
             var actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a.Item2, Flags)).ToArray();
 
-            var eq = new Eq();
+            var actionComparer = new ActionComparer();
             // todo fix distinct
-            actions = actions.Distinct(eq).ToArray();
+            actions = actions.Distinct(actionComparer).ToArray();
 
             Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
         }
 
-        private void SetExtensions(IMenuFacade menu) {
-            Extensions = MapRepresentation.Create();
-        }
+        private void SetExtensions(IMenuFacade menu) => Extensions = MapRepresentation.Create();
 
         public static MenuRepresentation Create(IOidStrategy oidStrategy, IMenuFacade menu, HttpRequest req, RestControlFlags flags) => new MenuRepresentation(oidStrategy, req, menu, flags);
 
-        #region Nested type: Eq
+        #region Nested type: ActionComparer
 
-        private class Eq : IEqualityComparer<InlineActionRepresentation> {
+        private class ActionComparer : IEqualityComparer<InlineActionRepresentation> {
             #region IEqualityComparer<InlineActionRepresentation> Members
 
             public bool Equals(InlineActionRepresentation x, InlineActionRepresentation y) => x.Id == y.Id;
