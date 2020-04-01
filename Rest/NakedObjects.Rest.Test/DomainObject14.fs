@@ -1034,8 +1034,6 @@ let PutWithValueObject(api : RestfulObjectsControllerBase) =
 let PutWithValueObjectValidateOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
     let oid = ktc "1"
-    let oName = sprintf "%s/%s" oType oid
-
     let props = 
         new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, 222))), 
                     new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 333))),
@@ -1057,8 +1055,6 @@ let PutWithValueObjectConcurrencySuccess(api1 : RestfulObjectsControllerBase) (a
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
     let oid = ktc "1"
     let oName = sprintf "%s/%s" oType oid
-
-    let url = sprintf "http://localhost/objects/%s" oName
     let props = 
         new JObject(new JProperty("AValue", new JObject(new JProperty(JsonPropertyNames.Value, 444))), 
                     new JProperty("AChoicesValue", new JObject(new JProperty(JsonPropertyNames.Value, 555))))
@@ -1410,8 +1406,6 @@ let PutWithReferenceObject(api : RestfulObjectsControllerBase) =
 let PutWithReferenceObjectValidateOnly(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithReference"
     let oid = ktc "1"
-    let oName = sprintf "%s/%s" oType oid
-
     let roType = ttc "RestfulObjects.Test.Data.MostSimple"
     let roid = ktc "2"
     let ref2 = new JObject(new JProperty(JsonPropertyNames.Href, (new hrefType((sprintf "objects/%s/%s" roType roid))).ToString()))
@@ -1447,7 +1441,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ]))
     let mp r n = sprintf ";%s=\"%s\"" r n
     
-    let makeParm pmid pid fid rt =       
+    let makeParm pmid fid rt =       
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
@@ -1566,7 +1560,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
-    let makeStringParmWithDefaults pmid pid fid rt et =               
+    let makeStringParmWithDefaults pmid fid rt et =               
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Choices, 
                                     TArray([ TObjectVal("string1")
@@ -1629,7 +1623,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
-    let makeValueParm pmid pid fid rt =              
+    let makeValueParm pmid fid rt =              
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
@@ -1644,7 +1638,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
-    let makeIntParm pmid pid fid rt =               
+    let makeIntParm pmid fid rt =               
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
@@ -1657,7 +1651,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
    
-    let makeIntParmWithHint pmid pid fid rt =              
+    let makeIntParmWithHint pmid fid rt =              
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
@@ -1671,7 +1665,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
-    let makeIntParmWithRange pmid pid fid rt =               
+    let makeIntParmWithRange pmid fid rt =               
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
@@ -1685,7 +1679,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
 
-    let makeIntParmWithChoicesAndDefault pmid pid fid rt =                
+    let makeIntParmWithChoicesAndDefault pmid fid rt =                
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal(4))
                           TProperty(JsonPropertyNames.Choices, 
@@ -1707,7 +1701,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
-    let makeIntParmWithChoices pmid pid fid rt =               
+    let makeIntParmWithChoices pmid fid rt =               
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Choices, 
                                     TArray([ TObjectVal(1)
@@ -1729,7 +1723,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
-    let makeIntParmWithDefault pmid pid fid rt =             
+    let makeIntParmWithDefault pmid fid rt =             
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal(4))                          
                           TProperty
@@ -1743,7 +1737,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
-    let makeOptParm pmid pid fid rt d ml p =                
+    let makeOptParm pmid fid rt d ml p =                
         let p = 
             TObjectJson([ 
                           TProperty
@@ -1759,7 +1753,7 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(true)) ])) ])
         TProperty(pmid, p)
     
-    let makeDTParm pmid pid =             
+    let makeDTParm pmid =             
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal("2016-02-16"))
                           TProperty
@@ -1830,51 +1824,51 @@ let GetWithActionObject(api : RestfulObjectsControllerBase) =
     let str = ttc "string"
     let lst = ttc "list"
 
-    let p1 = makeIntParm "parm1" "AnActionReturnsObjectWithParameterAnnotatedQueryOnly" "Parm1" num
-    let p2 = makeIntParm "parm1" "AnActionReturnsObjectWithParameters" "Parm1" num
-    let p3 = makeParm "parm2" "AnActionReturnsObjectWithParameters" "Parm2" mst
-    let p4 = makeIntParm "parm1" "AnActionReturnsObjectWithParametersAnnotatedIdempotent" "Parm1" num
-    let p5 = makeParm "parm2" "AnActionReturnsObjectWithParametersAnnotatedIdempotent" "Parm2" mst
-    let p6 = makeIntParm "parm1" "AnActionReturnsObjectWithParametersAnnotatedQueryOnly" "Parm1" num
-    let p7 = makeParm "parm2" "AnActionReturnsObjectWithParametersAnnotatedQueryOnly" "Parm2" mst
-    let p8 = makeOptParm "parm" "AnActionWithOptionalParm" "Optional Parm" str "an optional parm" 101 "[A-Z]"
-    let p9 = makeOptParm "parm" "AnActionWithOptionalParmQueryOnly" "Parm" str "" 0 ""
-    let p10 = makeIntParm "parm1" "AnActionWithParametersWithChoicesWithDefaults" "Parm1" num
-    let p11 = makeIntParmWithChoicesAndDefault "parm7" "AnActionWithParametersWithChoicesWithDefaults" "Parm7" num
-    let p12 = makeParm "parm2" "AnActionWithParametersWithChoicesWithDefaults" "Parm2" mst
+    let p1 = makeIntParm "parm1" "Parm1" num
+    let p2 = makeIntParm "parm1" "Parm1" num
+    let p3 = makeParm "parm2" "Parm2" mst
+    let p4 = makeIntParm "parm1" "Parm1" num
+    let p5 = makeParm "parm2" "Parm2" mst
+    let p6 = makeIntParm "parm1" "Parm1" num
+    let p7 = makeParm "parm2" "Parm2" mst
+    let p8 = makeOptParm "parm" "Optional Parm" str "an optional parm" 101 "[A-Z]"
+    let p9 = makeOptParm "parm" "Parm" str "" 0 ""
+    let p10 = makeIntParm "parm1" "Parm1" num
+    let p11 = makeIntParmWithChoicesAndDefault "parm7" "Parm7" num
+    let p12 = makeParm "parm2" "Parm2" mst
     let p13 = makeParmWithChoicesAndDefault "parm8" "AnActionWithParametersWithChoicesWithDefaults" "Parm8" mst
-    let p14 = makeParm "parm2" "AnActionWithReferenceParameter" "Parm2" mst
+    let p14 = makeParm "parm2" "Parm2" mst
     let p15 = makeParmWithChoices "parm4" "AnActionWithReferenceParameterWithChoices" "Parm4" mst
     let p16 = makeParmWithDefault "parm6" "AnActionWithReferenceParameterWithDefault" "Parm6" mst
     let p17 = makeParmWithAC "parm0" "AnActionWithReferenceParametersWithAutoComplete" "Parm0" mst
     let p18 = makeParmWithAC "parm1" "AnActionWithReferenceParametersWithAutoComplete" "Parm1" mst
-    let p19 = makeValueParm "parm" "AnOverloadedAction1" "Parm" str
-    let p20 = makeIntParm "parm1" "AnActionWithValueParameter" "Parm1" num
-    let p21 = makeIntParmWithChoices "parm3" "AnActionWithValueParameterWithChoices" "Parm3" num
-    let p22 = makeIntParmWithDefault "parm5" "AnActionWithValueParameterWithDefault" "Parm5" num
-    let p23 = makeParm "withOtherAction" "AzContributedActionWithRefParm" "With Other Action" (ttc "RestfulObjects.Test.Data.WithActionObject")
-    let p24 = makeValueParm "parm" "AzContributedActionWithValueParm" "Parm" str
-    let p25 = makeIntParm "parm1" "AnActionReturnsCollectionWithParameters" "Parm1" num
-    let p26 = makeParm "parm2" "AnActionReturnsCollectionWithParameters" "Parm2" mst
-    let p27 = makeIntParmWithHint "parm1" "AnActionReturnsCollectionWithScalarParameters" "Parm1" num
-    let p28 = makeValueParm "parm2" "AnActionReturnsCollectionWithScalarParameters" "Parm2" str
-    let p29 = makeIntParm "parm1" "AnActionReturnsQueryableWithParameters" "Parm1" num
-    let p30 = makeParm "parm2" "AnActionReturnsQueryableWithParameters" "Parm2" mst
-    let p31 = makeIntParm "parm1" "AnActionReturnsQueryableWithScalarParameters" "Parm1" num
-    let p32 = makeValueParm "parm2" "AnActionReturnsQueryableWithScalarParameters" "Parm2" str
-    let p33 = makeIntParm "parm1" "AnActionReturnsScalarWithParameters" "Parm1" num
-    let p34 = makeParm "parm2" "AnActionReturnsScalarWithParameters" "Parm2" mst
-    let p35 = makeIntParm "parm1" "AnActionReturnsVoidWithParameters" "Parm1" num
-    let p36 = makeParm "parm2" "AnActionReturnsVoidWithParameters" "Parm2" mst
-    let p37 = makeIntParm "parm1" "AnActionValidateParameters" "Parm1" num
-    let p38 = makeIntParm "parm2" "AnActionValidateParameters" "Parm2" num
-    let p39 = makeDTParm "parm" "AnActionWithDateTimeParm"
+    let p19 = makeValueParm "parm" "Parm" str
+    let p20 = makeIntParm "parm1" "Parm1" num
+    let p21 = makeIntParmWithChoices "parm3" "Parm3" num
+    let p22 = makeIntParmWithDefault "parm5" "Parm5" num
+    let p23 = makeParm "withOtherAction" "With Other Action" (ttc "RestfulObjects.Test.Data.WithActionObject")
+    let p24 = makeValueParm "parm" "Parm" str
+    let p25 = makeIntParm "parm1" "Parm1" num
+    let p26 = makeParm "parm2" "Parm2" mst
+    let p27 = makeIntParmWithHint "parm1" "Parm1" num
+    let p28 = makeValueParm "parm2" "Parm2" str
+    let p29 = makeIntParm "parm1" "Parm1" num
+    let p30 = makeParm "parm2" "Parm2" mst
+    let p31 = makeIntParm "parm1" "Parm1" num
+    let p32 = makeValueParm "parm2" "Parm2" str
+    let p33 = makeIntParm "parm1" "Parm1" num
+    let p34 = makeParm "parm2" "Parm2" mst
+    let p35 = makeIntParm "parm1" "Parm1" num
+    let p36 = makeParm "parm2" "Parm2" mst
+    let p37 = makeIntParm "parm1" "Parm1" num
+    let p38 = makeIntParm "parm2" "Parm2" num
+    let p39 = makeDTParm "parm"
     let p40 = makeParmWithConditionalChoices "parm4" "AnActionWithReferenceParameterWithConditionalChoices" "Parm4" mst
     let p41 = makeIntParmWithConditionalChoices "parm3" "AnActionWithValueParametersWithConditionalChoices" "Parm3" num
     let p42 = makeStringParmWithConditionalChoices "parm4" "AnActionWithValueParametersWithConditionalChoices" "Parm4" str
-    let p43 = makeStringParmWithDefaults "parm" "AnActionWithCollectionParameter" "Parm" lst str
+    let p43 = makeStringParmWithDefaults "parm" "Parm" lst str
     let p44 = makeParmWithDefaults "parm" "AnActionWithCollectionParameterRef" "Parm" lst mst    
-    let p45 = makeIntParmWithRange "parm1" "AnActionWithValueParameterWithRange" "Parm1" num
+    let p45 = makeIntParmWithRange "parm1" "Parm1" num
 
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
@@ -3090,7 +3084,7 @@ let GetFormViewModel(api : RestfulObjectsControllerBase) =
         
     let valueRel3 = RelValues.Value + makeParm RelParamValues.Property "MostSimple"
 
-    let makeValueParm pmid pid fid rt =      
+    let makeValueParm pmid fid rt =      
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Links, TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
@@ -3125,7 +3119,7 @@ let GetFormViewModel(api : RestfulObjectsControllerBase) =
              :: makeGetLinkProp valueRel3 (sprintf "objects/%s/%s" mst oid) RepresentationTypes.Object mst)
 
     let p2 = makeParm "MostSimple" "Step" "Most Simple" mst
-    let p3 = makeValueParm "Name" "Step" "Name" "string"
+    let p3 = makeValueParm "Name" "Name" "string"
 
     let expected = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))
@@ -4555,7 +4549,7 @@ let NotAcceptableGetObjectWrongMediaType(api : RestfulObjectsControllerBase) =
    
     jsonSetGetMsgWithProfile api.Request url RepresentationTypes.ObjectCollection
     let result = api.GetObject(oType, oid)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
     Assert.AreEqual("", jsonResult)

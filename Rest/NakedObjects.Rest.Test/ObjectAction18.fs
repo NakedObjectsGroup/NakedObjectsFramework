@@ -2664,7 +2664,7 @@ let ActionNotFound(api : RestfulObjectsControllerBase) =
 
     jsonSetGetMsg api.Request url   
     let result = api.GetAction(oType, oName, pid)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
     Assert.AreEqual("", jsonResult)
@@ -2678,7 +2678,7 @@ let VerifyNotAcceptableGetActionWrongMediaType refType oType oName f (api : Rest
 
     jsonSetGetMsgWithProfile api.Request url RepresentationTypes.ObjectCollection
     let result = f (oType, oid, pid)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
        
     assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
     Assert.AreEqual("", jsonResult)

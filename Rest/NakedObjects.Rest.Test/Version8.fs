@@ -14,7 +14,7 @@ open NUnit.Framework
 open NakedObjects.Rest.Test.Functions
 open System.Net
 
-let capabilities = 
+let internal capabilities = 
     TObjectJson([ TProperty("protoPersistentObjects", TObjectVal("yes"))
                   TProperty("deleteObjects", TObjectVal("no"))
                   TProperty("validateOnly", TObjectVal("yes"))
@@ -23,11 +23,11 @@ let capabilities =
                   TProperty("blobsClobs", TObjectVal("attachments")) ])
 
 
-let links = 
+let internal links = 
     TArray([ TObjectJson(makeGetLinkProp RelValues.Self SegmentValues.Version RepresentationTypes.Version "")
              TObjectJson(makeGetLinkProp RelValues.Up SegmentValues.HomePage RepresentationTypes.HomePage "") ])
 
-let expected = 
+let internal expected = 
     [ TProperty(JsonPropertyNames.Links, links)
       TProperty(JsonPropertyNames.SpecVersion, TObjectVal("1.1"))
       TProperty(JsonPropertyNames.ImplVersion, TObjectVal("11.0.0-beta01"))

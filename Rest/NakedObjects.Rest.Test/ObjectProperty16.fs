@@ -320,9 +320,6 @@ let GetValuePropertySimpleOnly(api : RestfulObjectsControllerBase) =
     let pid = "AValue"
     let ourl = sprintf "objects/%s/%s" oType oid
     let purl = sprintf "%s/properties/%s" ourl pid
-    let argS = "x-ro-domain-model=simple"
-    let url = sprintf "%s?%s" purl argS
-    
     let url = sprintf "http://localhost/%s" purl
     
     jsonSetGetMsg api.Request url
@@ -1649,7 +1646,7 @@ let PutValuePropertySuccessValidateOnly(api : RestfulObjectsControllerBase) =
     setIfMatch api.Request "*"
 
     let result = api.PutProperty(oType, oid, pid, arg)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
        
     assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
     Assert.AreEqual("", jsonResult)
@@ -1710,7 +1707,7 @@ let DeleteValuePropertySuccessValidateOnly(api : RestfulObjectsControllerBase) =
     setIfMatch api.Request "*"
     api.ValidateOnly <- true
     let result = api.DeleteProperty(oType, oid, pid)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
     Assert.AreEqual("", jsonResult)
@@ -1775,7 +1772,7 @@ let PutNullValuePropertySuccessValidateOnly(api : RestfulObjectsControllerBase) 
     setIfMatch api.Request "*"
 
     let result = api.PutProperty(oType, oid, pid, arg)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
     
     assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
     Assert.AreEqual("", jsonResult)
@@ -1846,7 +1843,7 @@ let PutReferencePropertySuccessValidateOnly(api : RestfulObjectsControllerBase) 
     setIfMatch api.Request "*"
 
     let result = api.PutProperty(oType, oid, pid, arg)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
     Assert.AreEqual("", jsonResult)
@@ -1908,7 +1905,7 @@ let DeleteReferencePropertySuccessValidateOnly(api : RestfulObjectsControllerBas
     setIfMatch api.Request "*"
     api.ValidateOnly <- true
     let result = api.DeleteProperty(oType, oid, pid)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
       
     assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
     Assert.AreEqual("", jsonResult)
@@ -1971,7 +1968,7 @@ let PutNullReferencePropertySuccessValidateOnly(api : RestfulObjectsControllerBa
     jsonSetPutMsg api.Request url (parms.ToString())
     setIfMatch api.Request "*"
     let result = api.PutProperty(oType, oid, pid, arg)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.NoContent statusCode jsonResult
     Assert.AreEqual("", jsonResult)
@@ -2317,6 +2314,7 @@ let PutWithReferencePropertyOnImmutableObject(api : RestfulObjectsControllerBase
     let result = api.PutProperty(oType, oid, pid, arg)
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
 
+    assertStatusCode HttpStatusCode.MethodNotAllowed statusCode jsonResult
     Assert.AreEqual("199 RestfulObjects \"object is immutable\"", headers.Headers.["Warning"].ToString())
     Assert.AreEqual("GET", headers.Headers.["Allow"].ToString())
     Assert.AreEqual("", jsonResult)
@@ -2356,7 +2354,7 @@ let NotAcceptablePutPropertyWrongMediaType(api : RestfulObjectsControllerBase) =
     jsonSetPutMsgWithProfile api.Request url (parms.ToString()) RepresentationTypes.ObjectCollection
     setIfMatch api.Request "*"
     let result = api.PutProperty(oType, oid, pid, arg)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
     Assert.AreEqual("", jsonResult)
@@ -2750,9 +2748,9 @@ let PutWithReferencePropertyInternalError(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
     
-    let arr1 = [ for i in 1 .. 5 ->   TObjectVal(new errorType(" at  in ")) ]
-    let arr2 = [ for i in 1 .. 4 ->   TObjectVal(new errorType(" at  in ")) ]
-    let arr3 = [ for i in 1 .. 6 ->   TObjectVal(new errorType(" at  in ")) ]
+    let arr1 = [ for _ in 1 .. 5 ->   TObjectVal(new errorType(" at  in ")) ]
+    let arr2 = [ for _ in 1 .. 4 ->   TObjectVal(new errorType(" at  in ")) ]
+    let arr3 = [ for _ in 1 .. 6 ->   TObjectVal(new errorType(" at  in ")) ]
 
     let expected1 = 
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
@@ -2922,7 +2920,7 @@ let NotAcceptableDeletePropertyWrongMediaType(api : RestfulObjectsControllerBase
     jsonSetDeleteMsgWithProfile api.Request url RepresentationTypes.ObjectCollection
     setIfMatch api.Request "*"
     let result = api.DeleteProperty(oType, oid, pid)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
       
     assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
     Assert.AreEqual("", jsonResult)
@@ -3129,9 +3127,9 @@ let DeleteReferencePropertyInternalError(api1 : RestfulObjectsControllerBase) (a
     let (jsonResult, statusCode, headers) = readActionResult result api2.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
     
-    let arr1 = [ for i in 1 .. 5 ->   TObjectVal(new errorType(" at  in ")) ]
-    let arr2 = [ for i in 1 .. 4 ->   TObjectVal(new errorType(" at  in ")) ]
-    let arr3 = [ for i in 1 .. 6 ->   TObjectVal(new errorType(" at  in ")) ]
+    let arr1 = [ for _ in 1 .. 5 ->   TObjectVal(new errorType(" at  in ")) ]
+    let arr2 = [ for _ in 1 .. 4 ->   TObjectVal(new errorType(" at  in ")) ]
+    let arr3 = [ for _ in 1 .. 6 ->   TObjectVal(new errorType(" at  in ")) ]
 
     let expected1 = 
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          
@@ -3171,7 +3169,7 @@ let NotAcceptableGetPropertyWrongMediaType(api : RestfulObjectsControllerBase) =
     let url = sprintf "http://localhost/objects/%s/properties/%s" oid pid
     jsonSetGetMsgWithProfile api.Request url RepresentationTypes.ObjectCollection
     let result = api.GetProperty(oType, oid, pid)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
     Assert.AreEqual("", jsonResult)
@@ -3185,7 +3183,7 @@ let PropertyNotFound(api : RestfulObjectsControllerBase) =
    
     jsonSetGetMsg api.Request url
     let result = api.GetProperty(oType, oid, pid)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.NotFound statusCode jsonResult
     Assert.AreEqual("", jsonResult)

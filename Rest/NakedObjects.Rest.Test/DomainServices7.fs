@@ -14,7 +14,7 @@ open NUnit.Framework
 open NakedObjects.Rest.Test.Functions
 open System.Net
 
-let getExpected() = 
+let internal getExpected() = 
     let sName1 = ttc "RestfulObjects.Test.Data.RestDataRepository"
     let sName2 = ttc "RestfulObjects.Test.Data.WithActionService"
     let sName3 = ttc "RestfulObjects.Test.Data.ContributorService"
@@ -67,46 +67,7 @@ let getExpected() =
                TObjectJson
                    (TProperty(JsonPropertyNames.Title, TObjectVal("Test Key Code Mapper")) 
                     :: makeGetLinkProp srvRel5 (sprintf "services/%s" sName5) RepresentationTypes.Object sName5) ])
-    
-    let formalValue = 
-        TArray
-            ([ TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel1 (sprintf "services/%s" sName1) RepresentationTypes.Object sName1 "" false)
-               
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("With Action Service")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel2 (sprintf "services/%s" sName2) RepresentationTypes.Object sName2 "" false)
-               
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Contributor Service")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel3 (sprintf "services/%s" sName3) RepresentationTypes.Object sName3 "" false) ])
-                    
-    
-    let formalValueWithTTC = 
-        TArray
-            ([ TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Rest Data Repository")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel1 (sprintf "services/%s" sName1) RepresentationTypes.Object sName1 "" false)
-               
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("With Action Service")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel2 (sprintf "services/%s" sName2) RepresentationTypes.Object sName2 "" false)
-               
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Contributor Service")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel3 (sprintf "services/%s" sName3) RepresentationTypes.Object sName3 "" false) 
-                    
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Test Type Code Mapper")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel4 (sprintf "services/%s" sName4) RepresentationTypes.Object sName4 "" false)
-                    
-               TObjectJson
-                   (TProperty(JsonPropertyNames.Title, TObjectVal("Test Key Code Mapper")) 
-                    :: makeLinkPropWithMethodAndTypes "GET" srvRel5 (sprintf "services/%s" sName5) RepresentationTypes.Object sName5 "" false) ])
-
-
-
+   
     let simpleExpected = 
         [ TProperty(JsonPropertyNames.Links, simpleLinks)
           TProperty(JsonPropertyNames.Value, value)

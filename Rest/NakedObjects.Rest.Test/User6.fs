@@ -14,13 +14,6 @@ open NUnit.Framework
 open NakedObjects.Rest.Test.Functions
 open System.Net
 
-let expected = 
-    [ TProperty(JsonPropertyNames.Links, 
-                TArray([ TObjectJson(makeGetLinkProp RelValues.Self SegmentValues.User RepresentationTypes.User "")
-                         TObjectJson(makeGetLinkProp RelValues.Up SegmentValues.HomePage RepresentationTypes.HomePage "") ]))
-      TProperty(JsonPropertyNames.UserName, TObjectVal("Test"))
-      TProperty(JsonPropertyNames.Roles, TArray([]))
-      TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
 let GetUser(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.User
@@ -31,7 +24,7 @@ let GetUser(api : RestfulObjectsControllerBase) =
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
     Assert.AreEqual(new typeType(RepresentationTypes.User), headers.ContentType)
     //assertUserInfoCache headers
-    compareObject expected parsedResult
+    compareObject expectedUser parsedResult
 
 let GetUserWithMediaType(api : RestfulObjectsControllerBase) = 
     let url = testRoot + SegmentValues.User
@@ -42,7 +35,7 @@ let GetUserWithMediaType(api : RestfulObjectsControllerBase) =
     assertStatusCode HttpStatusCode.OK statusCode jsonResult
     Assert.AreEqual(new typeType(RepresentationTypes.User), headers.ContentType)
     //assertUserInfoCache headers
-    compareObject expected parsedResult
+    compareObject expectedUser parsedResult
 
 // 406   
 let NotAcceptableGetUser(api : RestfulObjectsControllerBase) = 

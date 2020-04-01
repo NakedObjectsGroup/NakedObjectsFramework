@@ -391,7 +391,7 @@ let NotAcceptableIsSubTypeOf(api : RestfulObjectsControllerBase) =
     let args = CreateArgMapFromUrl qs
     jsonSetGetMsgWithProfile api.Request url RepresentationTypes.ActionDescription
     let result = api.GetInvokeTypeActions(oType, oRel, args)
-    let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext 
+    let (jsonResult, statusCode, _) = readActionResult result api.ControllerContext.HttpContext 
 
     assertStatusCode HttpStatusCode.NotAcceptable statusCode jsonResult
 

@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OtherFlags>--warnon:1182</OtherFlags>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="RestTestsHelpers.fs" />
     <Compile Include="RestTestFunctions.fs" />

@@ -14,7 +14,7 @@ open NUnit.Framework
 open NakedObjects.Rest.Test.Functions
 open System.Net
 
-let getExpected() = 
+let internal getExpected() = 
     let sName1 = "RestDataRepository"
     let sName2 = "WithActionService"
     let sName3 = "ContributorService"

@@ -14,16 +14,6 @@ open NUnit.Framework
 open NakedObjects.Rest.Test.Functions
 open System.Net
 
-let simpleLinks = 
-    [ TObjectJson(makeGetLinkProp RelValues.Self SegmentValues.HomePage RepresentationTypes.HomePage "")
-      TObjectJson(makeGetLinkProp RelValues.User SegmentValues.User RepresentationTypes.User "")
-      TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Services SegmentValues.Services RepresentationTypes.List "" "System.Object" true)
-      TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Menus SegmentValues.Menus RepresentationTypes.List "" "System.Object" true)
-      TObjectJson(makeGetLinkProp RelValues.Version SegmentValues.Version RepresentationTypes.Version "") ]
-
-let expectedSimple = 
-    [ TProperty(JsonPropertyNames.Links, TArray(simpleLinks))
-      TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
 let GetHomePage(api : RestfulObjectsControllerBase) = 
     let url = testRoot

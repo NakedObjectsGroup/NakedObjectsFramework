@@ -737,7 +737,6 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
     let p16 = makeParmWithDefault "parm6" "AnActionWithReferenceParameterWithDefault" "Parm6" mst
     let p17 = makeParmWithAC "parm0" "AnActionWithReferenceParametersWithAutoComplete" "Parm0" mst
     let p18 = makeParmWithAC "parm1" "AnActionWithReferenceParametersWithAutoComplete" "Parm1" mst
-    let p19 = makeValueParm "parm" "Parm" str
     let p20 = makeIntParm "parm1" "Parm1" num
     let p21 = makeIntParmWithChoices "parm3" "Parm3" num
     let p22 = makeIntParmWithDefault "parm5" "Parm5" num

@@ -22,11 +22,11 @@ open Microsoft.AspNetCore.Mvc
 open Microsoft.Net.Http.Headers
 open System.Collections.Generic
 
-let mapCodeToType (code : string) : string = code
-let mapTypeToCode (typ : string) : string = typ
+let internal mapCodeToType (code : string) : string = code
+let internal mapTypeToCode (typ : string) : string = typ
 
-let mapCodeToKey (code : string) : string = code
-let mapKeyToCode (key : string) : string = key
+let internal mapCodeToKey (code : string) : string = code
+let internal mapKeyToCode (key : string) : string = key
 
 let mutable ctt = mapCodeToType
 let mutable ttc = mapTypeToCode
@@ -34,17 +34,17 @@ let mutable ttc = mapTypeToCode
 let mutable ctk = mapCodeToKey
 let mutable ktc = mapKeyToCode
 
-let testRoot = "http://localhost/"
+let internal testRoot = "http://localhost/"
 
-let oneDay = new TimeSpan(1,0,0,0)
+let internal oneDay = new TimeSpan(1,0,0,0)
 
-let oneHour = new TimeSpan(1,0,0)
+let internal oneHour = new TimeSpan(1,0,0)
 
-let unprocessableEntity = box(422) :?> System.Net.HttpStatusCode
+let internal unprocessableEntity = box(422) :?> System.Net.HttpStatusCode
 
-let preconditionHeaderMissing = box(428) :?> System.Net.HttpStatusCode
+let internal preconditionHeaderMissing = box(428) :?> System.Net.HttpStatusCode
 
-type partCmp (s : string) =
+type internal  partCmp (s : string) =
     let partS = s 
     override x.Equals (o : obj) =
         partS.StartsWith(o.ToString()) 
@@ -53,7 +53,7 @@ type partCmp (s : string) =
     override x.ToString() = 
         partS
 
-type hrefType (href : string) =
+type internal hrefType (href : string) =
     let h = href 
     member x.full with get() = sprintf "http://localhost/%s" h  
     member x.fullWithPort with get() = sprintf "http://localhost:80/%s" h  // temp hack for json.net bug ? 
@@ -64,7 +64,7 @@ type hrefType (href : string) =
     override x.ToString() = 
         x.full
         
-type typeType (mt, dt, et, simple) =
+type internal typeType (mt, dt, et, simple) =
     let m = mt 
     let d = dt
     let e = et
@@ -91,7 +91,7 @@ type typeType (mt, dt, et, simple) =
     override x.ToString() = 
         x.full
 
-type errorType (error : string) =
+type internal errorType (error : string) =
     let e = error 
     member x.getStart s =  e.Split([|" in "|], System.StringSplitOptions.None).[0]
     member x.toCompare with get() = x.getStart e
@@ -102,11 +102,11 @@ type errorType (error : string) =
     override x.ToString() = 
         x.toCompare
 
-type TObject = 
+type internal TObject = 
     | TObjectJson of seq<TProp>
     | TObjectVal of obj 
     | TArray of seq<TObject> 
-and TProp = TProperty of string * TObject
+and internal TProp = TProperty of string * TObject
 
 let internal makeProfile s = new StringSegment(sprintf "\"urn:org.restfulobjects:repr-types/%s\"" s)
 
@@ -238,7 +238,7 @@ let internal listProperties (result : JObject) =
 let internal listExpected (expected : seq<TProp>) = 
     (expected |> Seq.map (fun r -> match r with | TProperty(s, _) -> s) |> Seq.fold (fun a s ->  a + " " + s) "Expected: " )
 
-let rec compareArray (expected : seq<TObject>) (result : JArray) =
+let rec internal compareArray (expected : seq<TObject>) (result : JArray) =
      
     let ps = if expected |> Seq.length <> result.Count then result.ToString() else ""
         
@@ -246,7 +246,7 @@ let rec compareArray (expected : seq<TObject>) (result : JArray) =
     result |> Seq.zip expected 
            |> Seq.iter (fun i ->  compare (fst(i)) (snd(i)) )     
 
-and compareObject (expected : seq<TProp>) (result : JObject) = 
+and internal compareObject (expected : seq<TProp>) (result : JObject) = 
     
     Assert.AreEqual (expected |> Seq.length, result.Count, ((listProperties result) + " " + (listExpected expected)) )
 
@@ -260,7 +260,7 @@ and compareObject (expected : seq<TProp>) (result : JObject) =
                    |> Seq.zip (expected |> Seq.sortBy (fun r -> match r with | TProperty(s, _) -> s) |> Seq.map (fun r -> match r with | TProperty(_, o) -> o))                                                    
                    |> Seq.iter (fun i ->  compare (fst(i)) (snd(i)) ) 
 
-and compare expected (result : JToken) = 
+and internal compare expected (result : JToken) = 
     match expected  with 
     | TObjectJson(sq) -> compareObject sq (result :?> JObject )
     | TObjectVal(o) ->  Assert.AreEqual(o, (result :?> JValue).Value) 
@@ -273,20 +273,20 @@ let getIndent i =
         if count = 0 then indent else makeIndent (indent + oneIndent) (count - 1)
     makeIndent "" i 
 
-let rec toStringArray (expected : seq<TObject>) indent : string =
+let rec internal toStringArray (expected : seq<TObject>) indent : string =
     
     (getIndent indent) + "[\n" + ( expected |> Seq.fold (fun i j -> i + (toString j indent)) "") + "\n],"
 
-and toStringProp (expected : TProp) indent : string = 
+and internal toStringProp (expected : TProp) indent : string = 
 
     match expected with 
     | TProperty(i, j) ->   (getIndent indent) +  i  + ": "  + (toString j indent) + ",\n"
 
-and toStringObject (expected : seq<TProp>) indent : string = 
+and internal toStringObject (expected : seq<TProp>) indent : string = 
 
     (getIndent indent) +  "{\n" +   ( if expected = null then "null" else  expected |> Seq.fold (fun i j -> i + (toStringProp j (indent + 1) )) "") + "\n},"
    
-and toString expected indent : string  = 
+and internal toString expected indent : string  = 
     match expected  with 
     | TObjectJson(sq) -> toStringObject sq (indent + 1)
     | TObjectVal(o) ->  if o = null then "null" else  o.ToString() 
@@ -376,8 +376,6 @@ let internal p2 ms = makeListParm "acollection" "LocallyContributedActionWithPar
 let internal p3 = makeStringParm "p1" "LocallyContributedActionWithParm" "P1" (ttc "string")
     
 let internal makeActionMember oType  mName (oName : string) fName desc rType parms  =
-        let index = oName.IndexOf("/")
-        let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 1 
         let detailsRelValue = RelValues.Details + makeParm RelParamValues.Action mName
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
@@ -407,8 +405,6 @@ let internal makeActionMember oType  mName (oName : string) fName desc rType par
                                                        ]))]
 
 let internal makeActionMemberSimple oType  mName (oName : string) fName desc rType parms =
-        let index = oName.IndexOf("/")
-        let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 1 
         let detailsRelValue = RelValues.Details + makeParm RelParamValues.Action mName
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
@@ -437,8 +433,6 @@ let internal makeActionMemberSimple oType  mName (oName : string) fName desc rTy
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "") ]))]
 
 let internal makeActionMemberString oType mName (oName : string) fName desc rType parms =
-        let index = oName.IndexOf("/")
-        let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 1   
         let detailsRelValue = RelValues.Details + makeParm RelParamValues.Action mName
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
@@ -464,8 +458,6 @@ let internal makeActionMemberString oType mName (oName : string) fName desc rTyp
                                                       ]))]
 
 let internal makeActionMemberNumber oType mName (oName : string) fName desc rType parms =
-        let index = oName.IndexOf("/")
-        let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 1   
         let detailsRelValue = RelValues.Details + makeParm RelParamValues.Action mName
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
@@ -489,8 +481,6 @@ let internal makeActionMemberNumber oType mName (oName : string) fName desc rTyp
 
 
 let internal makeActionMemberStringSimple oType mName (oName : string) fName desc rType parms =
-        let index = oName.IndexOf("/")
-        let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 1   
         let detailsRelValue = RelValues.Details + makeParm RelParamValues.Action mName
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
@@ -513,9 +503,7 @@ let internal makeActionMemberStringSimple oType mName (oName : string) fName des
           TProperty(JsonPropertyNames.Links, TArray([ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/actions/%s" oType oName mName) RepresentationTypes.ObjectAction "");
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult ""); ]))]
 
-let makeActionMemberNumberSimple oType mName (oName : string) fName desc rType parms =
-        let index = oName.IndexOf("/")
-        let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
+let internal makeActionMemberNumberSimple oType mName (oName : string) fName desc rType parms =
         let order = if desc = "" then 0 else 1   
         let detailsRelValue = RelValues.Details + makeParm RelParamValues.Action mName
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
@@ -538,8 +526,6 @@ let makeActionMemberNumberSimple oType mName (oName : string) fName desc rType p
 
 
 let internal makeActionMemberWithType oType mName (oName : string) fName desc rType parms =
-        let index = oName.IndexOf("/")
-        let oTypeName =  if index = -1 then oName else  oName.Substring(0, index) 
         let order = if desc = "" then 0 else 1  
         let detailsRelValue = RelValues.Details + makeParm RelParamValues.Action mName
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
@@ -562,8 +548,6 @@ let internal makeActionMemberWithType oType mName (oName : string) fName desc rT
                                                        ]))]
 
 let internal makeVoidActionMember oType mName (oName : string) fName desc parms =
-        let index = oName.IndexOf("/")
-        let oTypeName =  if index = -1 then oName else  oName.Substring(0, index) 
         let order = if desc = "" then 0 else 1  
         let detailsRelValue = RelValues.Details + makeParm RelParamValues.Action mName
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
@@ -584,8 +568,6 @@ let internal makeVoidActionMember oType mName (oName : string) fName desc parms 
                                                        ]))]
 
 let internal makeVoidActionMemberSimple oType mName (oName : string) fName desc parms =
-        let index = oName.IndexOf("/")
-        let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 1   
         let detailsRelValue = RelValues.Details + makeParm RelParamValues.Action mName
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
@@ -605,8 +587,6 @@ let internal makeVoidActionMemberSimple oType mName (oName : string) fName desc 
                                                       TObjectJson( TProperty(JsonPropertyNames.Arguments, makeArgs parms)  :: makeLinkProp invokeRelValue (sprintf "%s/%s/actions/%s/invoke" oType oName mName) RepresentationTypes.ActionResult "")]))]
 
 let internal makeActionMemberCollection oType  mName (oName : string)  fName desc rType eType parms =
-        let index = oName.IndexOf("/")
-        let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 2    
         let detailsRelValue = RelValues.Details + makeParm RelParamValues.Action mName
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
@@ -643,8 +623,6 @@ let internal makeActionMemberCollection oType  mName (oName : string)  fName des
                                                        ]))]
 
 let internal makeActionMemberCollectionSimple oType  mName (oName : string)  fName desc rType eType parms =
-        let index = oName.IndexOf("/")
-        let oTypeName =  if index = -1 then oName else  oName.Substring(0, index)
         let order = if desc = "" then 0 else 2       
         let detailsRelValue = RelValues.Details + makeParm RelParamValues.Action mName
         let invokeRelValue = RelValues.Invoke + makeParm RelParamValues.Action mName
@@ -741,9 +719,7 @@ let internal makePropertyMemberShortNoDetails oType (mName : string) (oTypeName 
       let order = if desc = "" then 0 else 2 
       let conditionalChoices = mName.Contains("ConditionalChoices")
       let choices = mName.Contains("Choices") && (not conditionalChoices)
-      let disabled = mName.Contains("Disabled") || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel") || oTypeName.Contains("Edit"))))            
       let autocomplete = mName.Contains("AutoComplete")
-      let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
       let autoRel = RelValues.Prompt + makeParm RelParamValues.Property mName
 
       let acLink = 
@@ -789,7 +765,6 @@ let internal makePropertyMemberShortNoDetails oType (mName : string) (oTypeName 
 
 let internal makePropertyMemberFullAttachment mName  (oName : string) fName title mt =
       let oType = "objects"
-      let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName 
       let attachRelValue = RelValues.Attachment + makeParm RelParamValues.Property mName 
 
@@ -923,11 +898,9 @@ let internal makeNoDetailsPropertyMember (mName : string)  (oName : string) (oVa
         TProperty(JsonPropertyNames.Extensions, exts);
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
-let internal makePropertyMemberFullNoDetails oType (mName : string) (oTypeName : string) fName desc opt (oValue : TObject) =
+let internal makePropertyMemberFullNoDetails (mName : string) fName desc opt (oValue : TObject) =
       let order = if desc = "" then 0 else 2 
       let choices = mName.Contains("Choices")
-      let disabled = mName.Contains("Disabled")  || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel") || oTypeName.Contains("Edit"))))       
-      let autocomplete = mName.Contains("AutoComplete")
 
       let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
                       TProperty(JsonPropertyNames.Description, TObjectVal(desc));
@@ -1089,13 +1062,12 @@ let internal makePropertyMemberWithType oType (mName : string) (oName : string) 
                                                              TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]));
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
-let makePropertyMemberWithNumber oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
+let internal makePropertyMemberWithNumber oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 3
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
       let choices = mName.Contains("Choices")
       let disabled = mName.Contains("Disabled")  || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel") || oTypeName.Contains("Edit"))))          
-      let autocomplete = mName.Contains("AutoComplete")
       let range = mName.Contains("Range")
 
       let extArray = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
@@ -1133,7 +1105,7 @@ let makePropertyMemberWithNumber oType (mName : string) (oName : string) fName d
       else
         props; 
         
-let makePropertyMemberWithFormat oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
+let internal makePropertyMemberWithFormat oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 3
       let disabled = mName.Contains("Disabled")    || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel") || oTypeName.Contains("Edit")))) 
@@ -1165,7 +1137,7 @@ let makePropertyMemberWithFormat oType (mName : string) (oName : string) fName d
         TProperty(JsonPropertyNames.Extensions, TObjectJson(exts));
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
-let makePropertyMemberWithTypeNoValue oType (mName : string) (oName : string) fName desc rType opt =
+let internal makePropertyMemberWithTypeNoValue oType (mName : string) (oName : string) fName desc rType opt =
       let oTypeName = oName.Substring(0, oName.IndexOf("/"))
       let order = if desc = "" then 0 else 3
       let disabled = mName.Contains("Disabled")  || (oTypeName.Contains("ViewModel") && (not (oTypeName.Contains("FormViewModel") || oTypeName.Contains("Edit"))))         
@@ -1192,7 +1164,7 @@ let makePropertyMemberWithTypeNoValue oType (mName : string) (oName : string) fN
                                                              TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]));
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
-let makePropertyMemberSimple oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
+let internal makePropertyMemberSimple oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
       let order = if desc = "" then 0 else 3
       let disabled = mName.Contains("Disabled")   || (oName.Contains("ViewModel") && (not (oName.Contains("FormViewModel")))) 
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
@@ -1216,7 +1188,7 @@ let makePropertyMemberSimple oType (mName : string) (oName : string) fName desc 
                                                              TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]));
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
-let makePropertyMemberSimpleNumber oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
+let internal makePropertyMemberSimpleNumber oType (mName : string) (oName : string) fName desc rType opt (oValue : TObject) =
       let order = if desc = "" then 0 else 3
       let disabled = mName.Contains("Disabled")   || (oName.Contains("ViewModel") && (not (oName.Contains("FormViewModel"))))        
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName
@@ -1241,15 +1213,12 @@ let makePropertyMemberSimpleNumber oType (mName : string) (oName : string) fName
                                                              TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]));
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
-let makePropertyMemberNone oType mName (oName : string)  (oValue : TObject) =
+let internal makePropertyMemberNone oType mName (oName : string)  (oValue : TObject) =
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName  
       let modifyRel = RelValues.Modify + makeParm RelParamValues.Property mName
-      let clearRel = RelValues.Modify + makeParm RelParamValues.Property mName
 
       let links = [ TObjectJson( makeGetLinkProp detailsRelValue (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "");
                     TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""); ]
-
-      //let links = if opt then TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "") :: links else links
 
       [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
         TProperty(JsonPropertyNames.Id, TObjectVal(mName));
@@ -1258,9 +1227,9 @@ let makePropertyMemberNone oType mName (oName : string)  (oValue : TObject) =
         TProperty(JsonPropertyNames.Extensions, TObjectJson([]));
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
-let makePropertyMember oType mName oName fName (oValue : TObject) = makePropertyMemberFull "objects" mName oName fName "" false oValue 
+let internal makePropertyMember oType mName oName fName (oValue : TObject) = makePropertyMemberFull "objects" mName oName fName "" false oValue 
 
-let makeCollectionMemberNoDetails mName oName fName desc =
+let internal makeCollectionMemberNoDetails mName oName fName desc =
       let order = if desc = "" then 0 else 2
       let mst = ttc "RestfulObjects.Test.Data.MostSimple"
       let valueRelValue = RelValues.CollectionValue + makeParm RelParamValues.Collection mName
@@ -1276,8 +1245,7 @@ let makeCollectionMemberNoDetails mName oName fName desc =
         TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson( makeLinkPropWithMethodAndTypes "GET" valueRelValue (sprintf "objects/%s/collections/%s/value" oName mName) RepresentationTypes.CollectionValue "" "" true)  ]))]
 
 
-let makeCollectionMemberNoValue mName (oName : string) fName desc rType size cType cText =
-      let oTypeName = oName.Substring(0, oName.IndexOf("/"))
+let internal makeCollectionMemberNoValue mName (oName : string) fName desc rType size cType cText =
       let order = if desc = "" then 0 else 2
      
       let presHint = mName = "ACollection"
@@ -1301,30 +1269,29 @@ let makeCollectionMemberNoValue mName (oName : string) fName desc rType size cTy
         TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
         TProperty(JsonPropertyNames.Links, TArray ([  ]))]
 
-let makeServiceActionMember mName oName rType parms = makeActionMember "services" mName oName (makeFriendly(mName)) "" rType parms
+let internal makeServiceActionMember mName oName rType parms = makeActionMember "services" mName oName (makeFriendly(mName)) "" rType parms
 
-let makeServiceActionMemberSimple mName oName rType parms = makeActionMemberSimple "services" mName oName (makeFriendly(mName)) "" rType parms
+let internal makeServiceActionMemberSimple mName oName rType parms = makeActionMemberSimple "services" mName oName (makeFriendly(mName)) "" rType parms
 
-let makeObjectActionMember mName oName rType parms = makeActionMember "objects" mName oName (makeFriendly(mName)) "" rType parms
+let internal makeObjectActionMember mName oName rType parms = makeActionMember "objects" mName oName (makeFriendly(mName)) "" rType parms
 
-let makeObjectActionMemberSimple mName oName rType parms = makeActionMemberSimple "objects" mName oName (makeFriendly(mName)) "" rType parms
+let internal makeObjectActionMemberSimple mName oName rType parms = makeActionMemberSimple "objects" mName oName (makeFriendly(mName)) "" rType parms
 
-let makeObjectActionCollectionMember mName oName eType parms = makeActionMemberCollection "objects" mName oName (makeFriendly(mName)) "" ResultTypes.List eType parms
+let internal makeObjectActionCollectionMember mName oName eType parms = makeActionMemberCollection "objects" mName oName (makeFriendly(mName)) "" ResultTypes.List eType parms
 
-let makeObjectActionCollectionMemberSimple mName oName eType parms  = makeActionMemberCollectionSimple "objects" mName oName (makeFriendly(mName)) "" ResultTypes.List eType parms
+let internal makeObjectActionCollectionMemberSimple mName oName eType parms  = makeActionMemberCollectionSimple "objects" mName oName (makeFriendly(mName)) "" ResultTypes.List eType parms
 
-let makeObjectActionCollectionMemberNoParms mName oName eType  = makeActionMemberCollection "objects" mName oName (makeFriendly(mName)) "" ResultTypes.List eType []
+let internal makeObjectActionCollectionMemberNoParms mName oName eType  = makeActionMemberCollection "objects" mName oName (makeFriendly(mName)) "" ResultTypes.List eType []
 
-let makeObjectActionCollectionMemberNoParmsSimple mName oName eType  = makeActionMemberCollectionSimple "objects" mName oName (makeFriendly(mName)) "" ResultTypes.List eType []
+let internal makeObjectActionCollectionMemberNoParmsSimple mName oName eType  = makeActionMemberCollectionSimple "objects" mName oName (makeFriendly(mName)) "" ResultTypes.List eType []
 
-let membersProp (oName : string, oType : string) = 
+let internal membersProp (oName : string, oType : string) = 
           TProperty(JsonPropertyNames.Members, 
                     TObjectJson([ TProperty("LocallyContributedAction", TObjectJson(makeObjectActionCollectionMember "LocallyContributedAction" oName oType [ p1 oType ]))
                                   TProperty("LocallyContributedActionWithParm", TObjectJson(makeObjectActionCollectionMember "LocallyContributedActionWithParm" oName oType [ p2 oType; p3 ])) ]))
 
 
-let makeCollectionMemberTypeValue mName (oName : string) fName desc rType size cType cName cValue (dValue : TProp list) =
-      let oTypeName = oName.Substring(0, oName.IndexOf("/"))
+let internal makeCollectionMemberTypeValue mName (oName : string) fName desc rType size cType cName cValue (dValue : TProp list) =
       let order = if desc = "" then 0 else 2
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Collection mName
 
@@ -1353,8 +1320,7 @@ let makeCollectionMemberTypeValue mName (oName : string) fName desc rType size c
 
       let props = if members then membersProp(oName, cType) :: props else props
       props
-let makeCollectionMemberWithValue mName (oName : string) fName desc rType values size cType cText =
-      let oTypeName = oName.Substring(0, oName.IndexOf("/"))
+let internal makeCollectionMemberWithValue mName (oName : string) fName desc rType values size cType cText =
       let order = if desc = "" then 0 else 2
      
       let presHint = mName = "ACollection"
@@ -1370,11 +1336,6 @@ let makeCollectionMemberWithValue mName (oName : string) fName desc rType values
       let extArray = if presHint then  TProperty(JsonPropertyNames.PresentationHint, TObjectVal("class7 class8")) :: extArray else extArray
       let extArray = if renderEagerly then  TProperty(JsonPropertyNames.CustomRenderEagerly, TObjectVal(true)) :: extArray else extArray
 
-     
-    
-      
-    
-
       let props = [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Collection) );
                     TProperty(JsonPropertyNames.Id, TObjectVal( mName) );
                     TProperty(JsonPropertyNames.Size, TObjectVal( size) );
@@ -1382,13 +1343,11 @@ let makeCollectionMemberWithValue mName (oName : string) fName desc rType values
                     TProperty(JsonPropertyNames.DisabledReason, TObjectVal("Field not editable"));
                     TProperty(JsonPropertyNames.Extensions, TObjectJson(extArray));
                     TProperty(JsonPropertyNames.Links, TArray ([  ]))]
-
-      
+ 
       props 
 
 
-let makeCollectionMemberSimpleType mName (oName : string) fName desc rType size cType cName value =
-      let oTypeName = oName.Substring(0, oName.IndexOf("/"))
+let internal makeCollectionMemberSimpleType mName (oName : string) fName desc rType size cType cName value =
       let order = if desc = "" then 0 else 2
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Collection mName
       let valueRelValue = RelValues.CollectionValue + makeParm RelParamValues.Collection mName
@@ -1419,8 +1378,7 @@ let makeCollectionMemberSimpleType mName (oName : string) fName desc rType size 
       let props = if members then membersProp(oName, cType) :: props else  props
       props 
 
-let makeCollectionMemberSimpleTypeValue mName (oName : string) fName desc rType size cType cName cValue (dValue : TProp list) =
-      let oTypeName = oName.Substring(0, oName.IndexOf("/"))
+let internal makeCollectionMemberSimpleTypeValue mName (oName : string) fName desc rType size cType cName cValue (dValue : TProp list) =
       let order = if desc = "" then 0 else 2
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Collection mName
      
@@ -1448,10 +1406,9 @@ let makeCollectionMemberSimpleTypeValue mName (oName : string) fName desc rType 
       let props = if members then membersProp(oName, cType) :: props else props
       props
 
-let makeCollectionMemberSimple mName (oName : string) fName desc rType size value = makeCollectionMemberSimpleType mName oName fName desc rType size (ttc "RestfulObjects.Test.Data.MostSimple") "Most Simples" value
+let internal makeCollectionMemberSimple mName (oName : string) fName desc rType size value = makeCollectionMemberSimpleType mName oName fName desc rType size (ttc "RestfulObjects.Test.Data.MostSimple") "Most Simples" value
 
-let makeCollectionMemberType mName (oName : string) fName desc rType size cType cName value=
-      let oTypeName = oName.Substring(0, oName.IndexOf("/"))
+let internal makeCollectionMemberType mName (oName : string) fName desc rType size cType cName value=
       let order = if desc = "" then 0 else 2
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Collection mName
       let valueRelValue = RelValues.CollectionValue + makeParm RelParamValues.Collection mName
@@ -1482,66 +1439,66 @@ let makeCollectionMemberType mName (oName : string) fName desc rType size cType 
 
       props
 
-let makeCollectionMember mName (oName : string) fName desc rType size value = makeCollectionMemberType mName (oName : string) fName desc rType size (ttc "RestfulObjects.Test.Data.MostSimple") "Most Simples" value
+let internal makeCollectionMember mName (oName : string) fName desc rType size value = makeCollectionMemberType mName (oName : string) fName desc rType size (ttc "RestfulObjects.Test.Data.MostSimple") "Most Simples" value
 
-let makeObjectActionVoidMember mName oName  = makeVoidActionMember "objects" mName oName (makeFriendly(mName)) ""  []
+let internal makeObjectActionVoidMember mName oName  = makeVoidActionMember "objects" mName oName (makeFriendly(mName)) ""  []
 
-let makeObjectActionVoidMemberSimple mName oName  = makeVoidActionMemberSimple "objects" mName oName (makeFriendly(mName)) ""  []
+let internal makeObjectActionVoidMemberSimple mName oName  = makeVoidActionMemberSimple "objects" mName oName (makeFriendly(mName)) ""  []
 
-let makeServiceActionMemberNoParms mName oName rType  = makeActionMember "services" mName oName (makeFriendly(mName)) "" rType []
+let internal makeServiceActionMemberNoParms mName oName rType  = makeActionMember "services" mName oName (makeFriendly(mName)) "" rType []
 
-let makeServiceActionMemberNoParmsSimple mName oName rType  = makeActionMemberSimple "services" mName oName (makeFriendly(mName)) "" rType []
+let internal makeServiceActionMemberNoParmsSimple mName oName rType  = makeActionMemberSimple "services" mName oName (makeFriendly(mName)) "" rType []
 
-let makeObjectActionMemberNoParms mName oName rType  = makeActionMember "objects" mName oName (makeFriendly(mName)) "" rType []
+let internal makeObjectActionMemberNoParms mName oName rType  = makeActionMember "objects" mName oName (makeFriendly(mName)) "" rType []
 
-let makeObjectActionMemberNoParmsSimple mName oName rType  = makeActionMemberSimple "objects" mName oName (makeFriendly(mName)) "" rType []
+let internal makeObjectActionMemberNoParmsSimple mName oName rType  = makeActionMemberSimple "objects" mName oName (makeFriendly(mName)) "" rType []
 
-let makeObjectPropertyMember mName oName fName (oValue : TObject) =  makePropertyMember "objects" mName oName fName oValue 
+let internal makeObjectPropertyMember mName oName fName (oValue : TObject) =  makePropertyMember "objects" mName oName fName oValue 
 
-let makeObjectPropertyMemberWithDesc mName oName fName desc opt (oValue : TObject) =  makePropertyMemberFull "objects" mName oName fName desc opt oValue 
+let internal makeObjectPropertyMemberWithDesc mName oName fName desc opt (oValue : TObject) =  makePropertyMemberFull "objects" mName oName fName desc opt oValue 
 
-let makeServiceActionCollectionMember mName oName eType parms = makeActionMemberCollection "services" mName oName (makeFriendly(mName)) "" ResultTypes.List eType parms
+let internal makeServiceActionCollectionMember mName oName eType parms = makeActionMemberCollection "services" mName oName (makeFriendly(mName)) "" ResultTypes.List eType parms
 
-let makeServiceActionCollectionMemberNoParms mName oName eType  = makeActionMemberCollection "services" mName oName (makeFriendly(mName)) "" ResultTypes.List eType []
+let internal makeServiceActionCollectionMemberNoParms mName oName eType  = makeActionMemberCollection "services" mName oName (makeFriendly(mName)) "" ResultTypes.List eType []
 
-let makeServiceActionVoidMember mName oName  = makeVoidActionMember "services" mName oName (makeFriendly(mName)) ""  []
+let internal makeServiceActionVoidMember mName oName  = makeVoidActionMember "services" mName oName (makeFriendly(mName)) ""  []
 
-let assertTransactionalCache  (headers : Headers.ResponseHeaders) = 
+let internal assertTransactionalCache  (headers : Headers.ResponseHeaders) = 
     Assert.AreEqual(true, headers.CacheControl.NoCache)
     Assert.AreEqual("no-cache", headers.Headers.["Pragma"].ToString())
     Assert.AreEqual(headers.Date, headers.Expires)
 
-let assertConfigCache secs  (headers : Headers.ResponseHeaders) = 
+let internal assertConfigCache secs  (headers : Headers.ResponseHeaders) = 
     let ts = new TimeSpan(0, 0, secs)
     Assert.AreEqual(ts, headers.CacheControl.MaxAge)
     Assert.IsTrue(headers.Date.HasValue)
     let expire = headers.Date.Value + ts
     Assert.AreEqual(expire, headers.Expires)
 
-let assertUserInfoCache (headers : Headers.ResponseHeaders) = 
+let internal assertUserInfoCache (headers : Headers.ResponseHeaders) = 
     Assert.AreEqual(oneHour, headers.CacheControl.MaxAge)
     Assert.IsTrue(headers.Date.HasValue)
     let expire = headers.Date.Value + oneHour
     Assert.AreEqual(expire, headers.Expires)
 
-let assertNonExpiringCache (headers : Headers.ResponseHeaders) = 
+let internal assertNonExpiringCache (headers : Headers.ResponseHeaders) = 
     Assert.AreEqual(oneDay, headers.CacheControl.MaxAge)
     Assert.IsTrue(headers.Date.HasValue)
     let expire = headers.Date.Value + oneDay
     Assert.AreEqual(expire, headers.Expires)
 
-let assertStatusCode (sc : HttpStatusCode) iSc msg= 
+let internal assertStatusCode (sc : HttpStatusCode) iSc msg= 
     Assert.AreEqual((int)sc, iSc, msg)
 
-let CreateSingleValueArgWithReserved (m : JObject) = ModelBinderUtils.CreateSingleValueArgument(m, true)
+let internal CreateSingleValueArgWithReserved (m : JObject) = ModelBinderUtils.CreateSingleValueArgument(m, true)
      
-let CreateArgMapWithReserved (m : JObject) = ModelBinderUtils.CreateArgumentMap(m, true)
+let internal CreateArgMapWithReserved (m : JObject) = ModelBinderUtils.CreateArgumentMap(m, true)
    
-let CreateArgMapFromUrl (s : string) = ModelBinderUtils.CreateSimpleArgumentMap(s)
+let internal CreateArgMapFromUrl (s : string) = ModelBinderUtils.CreateSimpleArgumentMap(s)
 
-let CreatePersistArgMapWithReserved (m : JObject) = ModelBinderUtils.CreatePersistArgMap(m, true)
+let internal CreatePersistArgMapWithReserved (m : JObject) = ModelBinderUtils.CreatePersistArgMap(m, true)
 
-let GetDomainType (m : JObject) = 
+let internal GetDomainType (m : JObject) = 
   
     let dm = m.["x-ro-domain-model"]
     let dt = m.["domainType"]
@@ -1564,11 +1521,11 @@ let GetDomainType (m : JObject) =
     else 
         ""
                
-let invokeRelTypeSb = RelValues.Invoke + makeParm RelParamValues.TypeAction "isSubtypeOf"
-let invokeRelTypeSp = RelValues.Invoke + makeParm RelParamValues.TypeAction "isSupertypeOf"
+let internal invokeRelTypeSb = RelValues.Invoke + makeParm RelParamValues.TypeAction "isSubtypeOf"
+let internal invokeRelTypeSp = RelValues.Invoke + makeParm RelParamValues.TypeAction "isSupertypeOf"
 
 // create isSubtypeOf rep
-let sb (oType : string) = 
+let internal sb (oType : string) = 
     TProperty(JsonPropertyNames.Id, TObjectVal("isSubtypeOf")) 
     :: (TProperty
            (JsonPropertyNames.Arguments, 
@@ -1580,7 +1537,7 @@ let sb (oType : string) =
               RepresentationTypes.TypeActionResult "")
 
 // create isSupertypeOf rep
-let sp (oType : string) = 
+let internal sp (oType : string) = 
     TProperty(JsonPropertyNames.Id, TObjectVal("isSupertypeOf")) 
     :: (TProperty
            (JsonPropertyNames.Arguments, 
@@ -1589,4 +1546,49 @@ let sp (oType : string) =
                        (JsonPropertyNames.SubType, TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ])) ])) 
        :: makeGetLinkProp invokeRelTypeSp (sprintf "domain-types/%s/type-actions/isSupertypeOf/invoke" oType) 
               RepresentationTypes.TypeActionResult "")
-   
+
+let internal simpleLinks = 
+  [ TObjectJson(makeGetLinkProp RelValues.Self SegmentValues.HomePage RepresentationTypes.HomePage "")
+    TObjectJson(makeGetLinkProp RelValues.User SegmentValues.User RepresentationTypes.User "")
+    TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Services SegmentValues.Services RepresentationTypes.List "" "System.Object" true)
+    TObjectJson(makeLinkPropWithMethodAndTypes "GET" RelValues.Menus SegmentValues.Menus RepresentationTypes.List "" "System.Object" true)
+    TObjectJson(makeGetLinkProp RelValues.Version SegmentValues.Version RepresentationTypes.Version "") ]
+              
+let internal expectedSimple = 
+  [ TProperty(JsonPropertyNames.Links, TArray(simpleLinks))
+    TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
+
+let internal makeInvokeCollectionParm  contribName pmid pid fid rt = 
+    let p = 
+        TObjectJson([ TProperty
+                          (JsonPropertyNames.Links, 
+                           TArray([ ]))
+                      TProperty(JsonPropertyNames.Extensions, 
+                                TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                              TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.ReturnType, TObjectVal("list"))
+                                              TProperty(JsonPropertyNames.ElementType, TObjectVal(rt))
+                                              TProperty(JsonPropertyNames.PluralName, TObjectVal("Most Simples"))
+                                              TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+    TProperty(pmid, p)
+
+let internal makeInvokeValueParm pmid fid =    
+    let p = 
+        TObjectJson([ TProperty
+                          (JsonPropertyNames.Links, 
+                           TArray([  ]))
+                      TProperty(JsonPropertyNames.Extensions, 
+                                TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                              TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                              TProperty(JsonPropertyNames.ReturnType, TObjectVal("number"))
+                                              TProperty(JsonPropertyNames.Format, TObjectVal("int"))
+                                              TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
+    TProperty(pmid, p)
+
+let internal expectedUser = 
+    [ TProperty(JsonPropertyNames.Links, 
+                TArray([ TObjectJson(makeGetLinkProp RelValues.Self SegmentValues.User RepresentationTypes.User "")
+                         TObjectJson(makeGetLinkProp RelValues.Up SegmentValues.HomePage RepresentationTypes.HomePage "") ]))
+      TProperty(JsonPropertyNames.UserName, TObjectVal("Test"))
+      TProperty(JsonPropertyNames.Roles, TArray([]))
+      TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
