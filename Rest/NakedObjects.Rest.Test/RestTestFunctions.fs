@@ -117,11 +117,11 @@ let internal makeFriendly (s : string) =
     for c in s do  if Char.IsUpper(c) then  newS <- newS + " " + new string(c, 1)   else   newS <- newS + new string(c, 1)
     newS.Trim()
 
-let internal wrap f (a, b, c) = f (a, c) 
+let internal wrap f (a, _, c) = f (a, c) 
 
-let internal wrap2 f (a, b, c, d, e) = f (a, c, d, e) 
+let internal wrap2 f (a, _, c, d, e) = f (a, c, d, e) 
 
-let internal wrap3 f (a, b, c, d) = f (a, c, d) 
+let internal wrap3 f (a, _, c, d) = f (a, c, d) 
 
 let internal ComputeMD5HashFromString(s : string) = 
     let crypto = new System.Security.Cryptography.MD5CryptoServiceProvider()
@@ -342,7 +342,7 @@ let internal makeArgs parms =
     let argVals = parms |> Seq.map (fun i -> match i with | TProperty(s, _) -> s ) |> Seq.map (fun s -> getArg s)
     TObjectJson(argVals) 
   
-let internal makeListParm pmid pid fid rt =        
+let internal makeListParm pmid fid rt =        
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
@@ -356,7 +356,7 @@ let internal makeListParm pmid pid fid rt =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
 
-let internal makeStringParm pmid pid fid rt =      
+let internal makeStringParm pmid fid rt =      
         let p = 
             TObjectJson([ TProperty
                               (JsonPropertyNames.Links, 
@@ -371,9 +371,9 @@ let internal makeStringParm pmid pid fid rt =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
 
-let internal p1 ms = makeListParm "acollection" "LocallyContributedAction" "Acollection" ms
-let internal p2 ms = makeListParm "acollection" "LocallyContributedActionWithParm" "Acollection" ms
-let internal p3 = makeStringParm "p1" "LocallyContributedActionWithParm" "P1" (ttc "string")
+let internal p1 ms = makeListParm "acollection" "Acollection" ms
+let internal p2 ms = makeListParm "acollection" "Acollection" ms
+let internal p3 = makeStringParm "p1" "P1" (ttc "string")
     
 let internal makeActionMember oType  mName (oName : string) fName desc rType parms  =
         let order = if desc = "" then 0 else 1 
@@ -1227,7 +1227,7 @@ let internal makePropertyMemberNone oType mName (oName : string)  (oValue : TObj
         TProperty(JsonPropertyNames.Extensions, TObjectJson([]));
         TProperty(JsonPropertyNames.Links, TArray(links))]
 
-let internal makePropertyMember oType mName oName fName (oValue : TObject) = makePropertyMemberFull "objects" mName oName fName "" false oValue 
+let internal makePropertyMember mName oName fName (oValue : TObject) = makePropertyMemberFull "objects" mName oName fName "" false oValue 
 
 let internal makeCollectionMemberNoDetails mName oName fName desc =
       let order = if desc = "" then 0 else 2
@@ -1245,7 +1245,7 @@ let internal makeCollectionMemberNoDetails mName oName fName desc =
         TProperty(JsonPropertyNames.Links, TArray ([ TObjectJson( makeLinkPropWithMethodAndTypes "GET" valueRelValue (sprintf "objects/%s/collections/%s/value" oName mName) RepresentationTypes.CollectionValue "" "" true)  ]))]
 
 
-let internal makeCollectionMemberNoValue mName (oName : string) fName desc rType size cType cText =
+let internal makeCollectionMemberNoValue mName fName desc rType size cType cText =
       let order = if desc = "" then 0 else 2
      
       let presHint = mName = "ACollection"
@@ -1320,7 +1320,8 @@ let internal makeCollectionMemberTypeValue mName (oName : string) fName desc rTy
 
       let props = if members then membersProp(oName, cType) :: props else props
       props
-let internal makeCollectionMemberWithValue mName (oName : string) fName desc rType values size cType cText =
+
+let internal makeCollectionMemberWithValue mName fName desc rType values size cType cText =
       let order = if desc = "" then 0 else 2
      
       let presHint = mName = "ACollection"
@@ -1453,7 +1454,7 @@ let internal makeObjectActionMemberNoParms mName oName rType  = makeActionMember
 
 let internal makeObjectActionMemberNoParmsSimple mName oName rType  = makeActionMemberSimple "objects" mName oName (makeFriendly(mName)) "" rType []
 
-let internal makeObjectPropertyMember mName oName fName (oValue : TObject) =  makePropertyMember "objects" mName oName fName oValue 
+let internal makeObjectPropertyMember mName oName fName (oValue : TObject) =  makePropertyMember mName oName fName oValue 
 
 let internal makeObjectPropertyMemberWithDesc mName oName fName desc opt (oValue : TObject) =  makePropertyMemberFull "objects" mName oName fName desc opt oValue 
 
@@ -1558,7 +1559,7 @@ let internal expectedSimple =
   [ TProperty(JsonPropertyNames.Links, TArray(simpleLinks))
     TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
-let internal makeInvokeCollectionParm  contribName pmid pid fid rt = 
+let internal makeInvokeCollectionParm pmid fid rt = 
     let p = 
         TObjectJson([ TProperty
                           (JsonPropertyNames.Links, 

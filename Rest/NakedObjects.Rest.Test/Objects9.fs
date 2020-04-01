@@ -783,7 +783,6 @@ let GetWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
     
     let mst = ttc "RestfulObjects.Test.Data.MostSimple"
     let mstv = ttc "RestfulObjects.Test.Data.MostSimpleViewModel"
-    let roid = sprintf "%s/0" roType
     let argsMembers = TProperty(JsonPropertyNames.Members, TObjectJson([ TProperty("Id", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(0)) ])) ]))
     let args = TProperty(JsonPropertyNames.Arguments, TObjectJson([ argsMembers ]))
 
@@ -850,42 +849,42 @@ let GetWithCollectionTransientObject(api : RestfulObjectsControllerBase) =
                           (JsonPropertyNames.Members, 
                            TObjectJson([ TProperty
                                              ("ACollection", 
-                                              TObjectJson(makeCollectionMemberWithValue "ACollection" roid "A Collection" "" "list" value 2 mst "Most Simples"))
+                                              TObjectJson(makeCollectionMemberWithValue "ACollection" "A Collection" "" "list" value 2 mst "Most Simples"))
                                          
                                          TProperty
                                              ("ACollectionViewModels", 
                                               
                                               TObjectJson
-                                                  (makeCollectionMemberWithValue "ACollectionViewModels" roid "A Collection View Models" "" "list" valuevm 2 mstv 
+                                                  (makeCollectionMemberWithValue "ACollectionViewModels" "A Collection View Models" "" "list" valuevm 2 mstv 
                                                        "Most Simple View Models"))
                                          
                                          TProperty
                                              ("ADisabledCollection", 
                                               
                                               TObjectJson
-                                                  ((makeCollectionMemberWithValue "ADisabledCollection" roid "A Disabled Collection" "" "list" valued 2 mst 
+                                                  ((makeCollectionMemberWithValue "ADisabledCollection" "A Disabled Collection" "" "list" valued 2 mst 
                                                         "Most Simples")))
                                          
                                          TProperty
                                              ("AnEmptyCollection", 
                                               
                                               TObjectJson
-                                                  (makeCollectionMemberWithValue "AnEmptyCollection" roid "An Empty Collection" "an empty collection for testing" 
+                                                  (makeCollectionMemberWithValue "AnEmptyCollection" "An Empty Collection" "an empty collection for testing" 
                                                        "list" emptyValue 0 mst "Most Simples"))
                                          
                                          TProperty
                                              ("AnEagerCollection", 
                                               
                                               TObjectJson
-                                                  (makeCollectionMemberWithValue "AnEagerCollection" roid "An Eager Collection" "" "list" valuee 2 mst "Most Simples"))
+                                                  (makeCollectionMemberWithValue "AnEagerCollection" "An Eager Collection" "" "list" valuee 2 mst "Most Simples"))
                                          
-                                         TProperty("ASet", TObjectJson(makeCollectionMemberWithValue "ASet" roid "A Set" "" "set" valueset 2 mst "Most Simples"))
+                                         TProperty("ASet", TObjectJson(makeCollectionMemberWithValue "ASet" "A Set" "" "set" valueset 2 mst "Most Simples"))
                                          
                                          TProperty
                                              ("AnEmptySet", 
                                               
                                               TObjectJson
-                                                  (makeCollectionMemberWithValue "AnEmptySet" roid "An Empty Set" "an empty set for testing" "set" emptyValue 0 mst 
+                                                  (makeCollectionMemberWithValue "AnEmptySet" "An Empty Set" "an empty set for testing" "set" emptyValue 0 mst 
                                                        "Most Simples"))
                                          TProperty("Id", TObjectJson(makePropertyMemberFullNoDetails "Id" "Id" "" false (TObjectVal(0)))) ]))
                       TProperty(JsonPropertyNames.Extensions, 

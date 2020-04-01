@@ -3730,7 +3730,6 @@ let InvalidGetObject(api : RestfulObjectsControllerBase) =
 let PutWithValueObjectMissingArgs(api : RestfulObjectsControllerBase) = 
     let oType = ttc "RestfulObjects.Test.Data.WithValue"
     let oid = ktc "1"
-    let oName = oType + "/" + oid
     
     let args = CreateArgMapWithReserved(new JObject())
     let url = sprintf "http://localhost/objects/%s/%s" oType oid
@@ -4625,9 +4624,9 @@ let PutWithReferenceInternalError(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
     let parsedResult = JObject.Parse(jsonResult)
     
-    let arr1 = [ for i in 1 .. 5 ->   TObjectVal(new errorType(" at  in ")) ]
-    let arr2 = [ for i in 1 .. 4 ->   TObjectVal(new errorType(" at  in ")) ]
-    let arr3 = [ for i in 1 .. 6 ->   TObjectVal(new errorType(" at  in ")) ]
+    let arr1 = [ for _ in 1 .. 5 ->   TObjectVal(new errorType(" at  in ")) ]
+    let arr2 = [ for _ in 1 .. 4 ->   TObjectVal(new errorType(" at  in ")) ]
+    let arr3 = [ for _ in 1 .. 6 ->   TObjectVal(new errorType(" at  in ")) ]
 
     let expected1 = 
         [ TProperty(JsonPropertyNames.Message, TObjectVal("An error exception"))          

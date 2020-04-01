@@ -1856,8 +1856,8 @@ let VerifyGetInvokeActionReturnQueryable refType oType oName f (api : RestfulObj
 
     
     
-    let p1 = makeInvokeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
-    let p2 = makeInvokeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p1 = makeInvokeCollectionParm "ms" "Ms" roType
+    let p2 = makeInvokeCollectionParm "ms" "Ms" roType
     let p3 = makeInvokeValueParm "id" "Id"
 
     let membersProp = 
@@ -1941,8 +1941,8 @@ let VerifyGetInvokeActionReturnQueryableWithPaging refType oType oName f (api : 
     
     let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
 
-    let p1 = makeInvokeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
-    let p2 = makeInvokeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p1 = makeInvokeCollectionParm "ms" "Ms" roType
+    let p2 = makeInvokeCollectionParm "ms" "Ms" roType
     let p3 = makeInvokeValueParm "id" "Id" 
 
     let membersProp = 
@@ -2116,8 +2116,6 @@ let VerifyPostInvokeActionReturnEmptyCollection refType oType oName f (api : Res
                                TProperty(JsonPropertyNames.NumPages, TObjectVal(1)) 
                                TProperty(JsonPropertyNames.TotalCount, TObjectVal(0))]))
 
-    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
-
     let membersProp = 
         TProperty(JsonPropertyNames.Members, TObjectJson([]))
 
@@ -2272,8 +2270,8 @@ let VerifyGetInvokeActionWithScalarParmsReturnQuerySimple refType oType oName f 
     
     let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
     
-    let p1 = makeInvokeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
-    let p2 = makeInvokeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p1 = makeInvokeCollectionParm  "ms"  "Ms" roType
+    let p2 = makeInvokeCollectionParm  "ms"  "Ms" roType
     let p3 = makeInvokeValueParm "id" "Id"
 
     let membersProp = 
@@ -2464,8 +2462,8 @@ let VerifyPostInvokeActionReturnQuery refType oType oName f (api : RestfulObject
 
     let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
     
-    let p1 = makeInvokeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
-    let p2 = makeInvokeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p1 = makeInvokeCollectionParm  "ms"  "Ms" roType
+    let p2 = makeInvokeCollectionParm  "ms"  "Ms" roType
     let p3 = makeInvokeValueParm "id" "Id"
 
     let membersProp = 
@@ -2590,8 +2588,8 @@ let VerifyPostInvokeActionWithScalarParmsReturnQuery refType oType oName f (api 
 
     let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
     
-    let p1 = makeInvokeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
-    let p2 = makeInvokeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p1 = makeInvokeCollectionParm  "ms"  "Ms" roType
+    let p2 = makeInvokeCollectionParm  "ms"  "Ms" roType
     let p3 = makeInvokeValueParm "id" "Id"
 
     let membersProp = 
@@ -2764,15 +2762,12 @@ let VerifyPostInvokeActionWithScalarParmsReturnCollection refType oType oName f 
         TProperty(JsonPropertyNames.Title, TObjectVal("2")) 
         :: makeGetLinkProp RelValues.Element (sprintf "objects/%s/%s" roType (ktc "2")) RepresentationTypes.Object roType
     
-
     let pageProp = 
         TProperty(JsonPropertyNames.Pagination, 
                   TObjectJson([TProperty(JsonPropertyNames.Page, TObjectVal(1)) 
                                TProperty(JsonPropertyNames.PageSize, TObjectVal(20)) 
                                TProperty(JsonPropertyNames.NumPages, TObjectVal(1)) 
                                TProperty(JsonPropertyNames.TotalCount, TObjectVal(2))]))
-
-    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
 
     let membersProp = 
         TProperty(JsonPropertyNames.Members, TObjectJson([]))
@@ -2895,8 +2890,8 @@ let VerifyPostInvokeActionWithReferenceParmsReturnQuery refType oType oName f (a
 
     let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
     
-    let p1 = makeInvokeCollectionParm contribName "ms" "ACollectionContributedActionNoParms" "Ms" roType
-    let p2 = makeInvokeCollectionParm contribName "ms" "ACollectionContributedActionParm" "Ms" roType
+    let p1 = makeInvokeCollectionParm  "ms"  "Ms" roType
+    let p2 = makeInvokeCollectionParm  "ms"  "Ms" roType
     let p3 = makeInvokeValueParm "id" "Id" 
 
     let membersProp = 
@@ -3012,8 +3007,6 @@ let VerifyPostInvokeActionWithReferenceParmsReturnCollection refType oType oName
                                TProperty(JsonPropertyNames.PageSize, TObjectVal(20)) 
                                TProperty(JsonPropertyNames.NumPages, TObjectVal(1)) 
                                TProperty(JsonPropertyNames.TotalCount, TObjectVal(2))]))
-
-    let contribName = ttc "RestfulObjects.Test.Data.ContributorService"
     
     let membersProp = 
         TProperty(JsonPropertyNames.Members, TObjectJson([]))
@@ -3588,7 +3581,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm (api : RestfulObj
     
     let valueRel3 = RelValues.Value + makeParm RelParamValues.Property "MostSimple"
 
-    let makeValueParm pmid pid fid rt =    
+    let makeValueParm pmid fid rt =    
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Links, TArray([  ]))
                           TProperty(JsonPropertyNames.Extensions, 
@@ -3626,7 +3619,7 @@ let VerifyPostInvokeActionWithReferenceParmsReturnObjectOnForm (api : RestfulObj
              :: makeGetLinkProp valueRel3 (sprintf "objects/%s/%s" mst (ktc "1")) RepresentationTypes.Object mst)
 
     let p2 = makeParm "MostSimple" "Step" "Most Simple" mst
-    let p3 = makeValueParm "Name" "Step" "Name" "string"
+    let p3 = makeValueParm "Name" "Name" "string"
 
     let resultObject = 
         [ TProperty(JsonPropertyNames.DomainType, TObjectVal(oType))

@@ -574,7 +574,7 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
     
-    let makeIntParmWithChoicesAndDefault pmid pid fid rt =                
+    let makeIntParmWithChoicesAndDefault pmid fid rt =                
         let p = 
             TObjectJson([ TProperty(JsonPropertyNames.Default, TObjectVal(4))
                           TProperty(JsonPropertyNames.Choices, 
@@ -749,7 +749,7 @@ let GetWithActionService(api : RestfulObjectsControllerBase) =
     let p8 = makeOptParm "parm" "Optional Parm" str "an optional parm" 101 "[A-Z]"
     let p9 = makeOptParm "parm" "Parm" str "" 0 ""
     let p10 = makeIntParm "parm1" "Parm1" num
-    let p11 = makeIntParmWithChoicesAndDefault "parm7" "AnActionWithParametersWithChoicesWithDefaults" "Parm7" num
+    let p11 = makeIntParmWithChoicesAndDefault "parm7" "Parm7" num
     let p12 = makeParm "parm2" "Parm2" mst
     let p13 = makeParmWithChoicesAndDefault "parm8" "AnActionWithParametersWithChoicesWithDefaults" "Parm8" mst
     let p14 = makeParm "parm2" "Parm2" mst
