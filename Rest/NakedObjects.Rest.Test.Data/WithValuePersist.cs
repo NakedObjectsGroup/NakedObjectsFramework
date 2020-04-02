@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,10 +15,10 @@ using NakedObjects.Security;
 namespace RestfulObjects.Test.Data {
     [PresentationHint("class1 class2")]
     public class WithValuePersist {
-        private DateTime aDateTimeValue = new DateTime(2012, 2, 10);
-        private TimeSpan aTimeSpanValue = new TimeSpan(1, 2, 3, 4, 5);
-
-        [Key, Title, ConcurrencyCheck, DefaultValue(0)]
+        [Key]
+        [Title]
+        [ConcurrencyCheck]
+        [DefaultValue(0)]
         public virtual int Id { get; set; }
 
         [PresentationHint("class3 class4")]
@@ -43,22 +43,14 @@ namespace RestfulObjects.Test.Data {
         [DescribedAs("A datetime value for testing")]
         [Mask("d")]
         [MemberOrder(Sequence = "4")]
-        public virtual DateTime ADateTimeValue {
-            get { return aDateTimeValue; }
-            set { aDateTimeValue = value; }
-        }
+        public virtual DateTime ADateTimeValue { get; set; } = new DateTime(2012, 2, 10);
 
         [Optionally]
         [DescribedAs("A timespan value for testing")]
         [Mask("d")]
         [NotMapped]
         [MemberOrder(Sequence = "5")]
-        public virtual TimeSpan ATimeSpanValue
-        {
-            get { return aTimeSpanValue; }
-            set { aTimeSpanValue = value; }
-        }
-
+        public virtual TimeSpan ATimeSpanValue { get; set; } = new TimeSpan(1, 2, 3, 4, 5);
 
         [AuthorizeProperty(ViewUsers = "viewUser")]
         public virtual int AUserHiddenValue { get; set; }
@@ -76,6 +68,7 @@ namespace RestfulObjects.Test.Data {
             if (aValue == 101 && aChoicesValue == 3) {
                 return "Cross validation failed";
             }
+
             return "";
         }
 

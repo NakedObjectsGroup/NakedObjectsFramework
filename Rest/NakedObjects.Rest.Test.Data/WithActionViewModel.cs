@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -11,6 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Security;
+
 //using NUnit.Framework;
 
 namespace RestfulObjects.Test.Data {
@@ -19,100 +20,52 @@ namespace RestfulObjects.Test.Data {
         private MostSimple ms1;
         private MostSimpleViewModel vm1;
 
-        [Key, Title, ConcurrencyCheck]
+        [Key]
+        [Title]
+        [ConcurrencyCheck]
         public virtual int Id { get; set; }
 
-        #region IViewModel Members
-
-        [NakedObjectsIgnore]
-        public string[] DeriveKeys() {
-            return new[] {Id.ToString()};
-        }
-
-        [NakedObjectsIgnore]
-        public void PopulateUsingKeys(string[] keys) {
-            Id = int.Parse(keys.First());
-
-            ms1 = Container.Instances<MostSimple>().Single(x => x.Id == 1);
-            dt1 = Container.Instances<WithDateTimeKey>().FirstOrDefault();
-            vm1 = Container.NewViewModel<MostSimpleViewModel>();
-            vm1.Id = 1;
-        }
-
-        #endregion
-
-        public override MostSimpleViewModel AnActionReturnsViewModel() {
-            return vm1;
-        }
-
+        public override MostSimpleViewModel AnActionReturnsViewModel() => vm1;
 
         [QueryOnly]
-        public override WithDateTimeKey AnActionReturnsWithDateTimeKeyQueryOnly() {
-            return dt1;
-        }
+        public override WithDateTimeKey AnActionReturnsWithDateTimeKeyQueryOnly() => dt1;
 
         [AuthorizeAction(Users = "ViewUser")]
-        public override MostSimple AUserDisabledAction() {
-            return ms1;
-        }
+        public override MostSimple AUserDisabledAction() => ms1;
 
-        public override MostSimple AnActionReturnsNull() {
-            return null;
-        }
+        public override MostSimple AnActionReturnsNull() => null;
 
-        public override MostSimpleViewModel AnActionReturnsNullViewModel() {
-            return null;
-        }
+        public override MostSimpleViewModel AnActionReturnsNullViewModel() => null;
 
-
-        public override MostSimple AnActionWithOptionalParm([Optionally, Named("Optional Parm"), DescribedAs("an optional parm"), MaxLength(101), RegEx(Validation = @"[A-Z]")] string parm) {
-            return ms1;
-        }
+        public override MostSimple AnActionWithOptionalParm([Optionally] [Named("Optional Parm")] [DescribedAs("an optional parm")] [MaxLength(101)] [RegEx(Validation = @"[A-Z]")]
+            string parm) => ms1;
 
         [QueryOnly]
-        public override MostSimple AnActionWithOptionalParmQueryOnly([Optionally] string parm) {
-            return ms1;
-        }
+        public override MostSimple AnActionWithOptionalParmQueryOnly([Optionally] string parm) => ms1;
 
         [QueryOnly]
-        public override MostSimple AnActionAnnotatedQueryOnly() {
-            return ms1;
-        }
+        public override MostSimple AnActionAnnotatedQueryOnly() => ms1;
 
         [QueryOnly]
-        public override MostSimpleViewModel AnActionAnnotatedQueryOnlyReturnsViewModel() {
-            return vm1;
-        }
+        public override MostSimpleViewModel AnActionAnnotatedQueryOnlyReturnsViewModel() => vm1;
 
         [QueryOnly]
-        public override MostSimple AnActionAnnotatedQueryOnlyReturnsNull() {
-            return null;
-        }
+        public override MostSimple AnActionAnnotatedQueryOnlyReturnsNull() => null;
 
         [Idempotent]
-        public override MostSimple AnActionAnnotatedIdempotent() {
-            return ms1;
-        }
+        public override MostSimple AnActionAnnotatedIdempotent() => ms1;
 
         [Idempotent]
-        public override MostSimpleViewModel AnActionAnnotatedIdempotentReturnsViewModel() {
-            return vm1;
-        }
+        public override MostSimpleViewModel AnActionAnnotatedIdempotentReturnsViewModel() => vm1;
 
         [Idempotent]
-        public override MostSimple AnActionAnnotatedIdempotentReturnsNull() {
-            return null;
-        }
+        public override MostSimple AnActionAnnotatedIdempotentReturnsNull() => null;
 
         [Hidden(WhenTo.Always)]
-        public override MostSimple AHiddenAction() {
-            return ms1;
-        }
+        public override MostSimple AHiddenAction() => ms1;
 
         [Disabled]
-        public override MostSimple ADisabledAction() {
-            return ms1;
-        }
+        public override MostSimple ADisabledAction() => ms1;
 
         [Disabled]
         public override IQueryable<MostSimple> ADisabledQueryAction() {
@@ -124,20 +77,13 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Where(x => x.Id == 1).ToList();
         }
 
-        public override int AnActionReturnsScalar() {
-            return 999;
-        }
+        public override int AnActionReturnsScalar() => 999;
 
-        public override string AnActionReturnsScalarEmpty() {
-            return "";
-        }
+        public override string AnActionReturnsScalarEmpty() => "";
 
-        public override string AnActionReturnsScalarNull() {
-            return null;
-        }
+        public override string AnActionReturnsScalarNull() => null;
 
-
-        public override void AnActionReturnsVoid() {}
+        public override void AnActionReturnsVoid() { }
 
         [PageSize(0)]
         public override IQueryable<MostSimple> AnActionReturnsQueryable() {
@@ -148,15 +94,11 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList();
         }
 
-        public override ICollection<MostSimple> AnActionReturnsCollectionEmpty() {
-            return new List<MostSimple>();
-        }
+        public override ICollection<MostSimple> AnActionReturnsCollectionEmpty() => new List<MostSimple>();
 
-        public override ICollection<MostSimple> AnActionReturnsCollectionNull() {
-            return null;
-        }
+        public override ICollection<MostSimple> AnActionReturnsCollectionNull() => null;
 
-        public override void AnActionWithDateTimeParm(DateTime parm) {}
+        public override void AnActionWithDateTimeParm(DateTime parm) { }
 
         public override IQueryable<MostSimple> AnActionReturnsQueryableWithScalarParameters(int parm1, string parm2) {
             Assert.AreEqual(100, parm1);
@@ -237,9 +179,7 @@ namespace RestfulObjects.Test.Data {
             return new[] {1, 2, 3};
         }
 
-        public override int Default0AnActionWithValueParameterWithDefault() {
-            return 4;
-        }
+        public override int Default0AnActionWithValueParameterWithDefault() => 4;
 
         public override MostSimple AnActionWithReferenceParameter(MostSimple parm2) {
             return Container.Instances<MostSimple>().Single(x => x.Id == parm2.Id);
@@ -257,40 +197,45 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList();
         }
 
-        public override MostSimple Default0AnActionWithReferenceParameterWithDefault() {
-            return Container.Instances<MostSimple>().First();
-        }
+        public override MostSimple Default0AnActionWithReferenceParameterWithDefault() => Container.Instances<MostSimple>().First();
 
-        public override MostSimple AnActionWithParametersWithChoicesWithDefaults(int parm1, int parm7, MostSimple parm2, MostSimple parm8) {
-            return Container.Instances<MostSimple>().First();
-        }
+        public override MostSimple AnActionWithParametersWithChoicesWithDefaults(int parm1, int parm7, MostSimple parm2, MostSimple parm8) => Container.Instances<MostSimple>().First();
 
         public override IList<int> Choices1AnActionWithParametersWithChoicesWithDefaults() {
             return new[] {1, 2, 3};
         }
 
-        public override int Default1AnActionWithParametersWithChoicesWithDefaults() {
-            return 4;
-        }
+        public override int Default1AnActionWithParametersWithChoicesWithDefaults() => 4;
 
         public override IList<MostSimple> Choices3AnActionWithParametersWithChoicesWithDefaults() {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList();
         }
 
-        public override MostSimple Default3AnActionWithParametersWithChoicesWithDefaults() {
-            return Container.Instances<MostSimple>().First();
+        public override MostSimple Default3AnActionWithParametersWithChoicesWithDefaults() => Container.Instances<MostSimple>().First();
+
+        public override int AnError() => throw new DomainException("An error exception");
+
+        public override IQueryable<MostSimple> AnErrorQuery() => throw new DomainException("An error exception");
+
+        public override ICollection<MostSimple> AnErrorCollection() => throw new DomainException("An error exception");
+
+        #region IViewModel Members
+
+        [NakedObjectsIgnore]
+        public string[] DeriveKeys() {
+            return new[] {Id.ToString()};
         }
 
-        public override int AnError() {
-            throw new DomainException("An error exception");
+        [NakedObjectsIgnore]
+        public void PopulateUsingKeys(string[] keys) {
+            Id = int.Parse(keys.First());
+
+            ms1 = Container.Instances<MostSimple>().Single(x => x.Id == 1);
+            dt1 = Container.Instances<WithDateTimeKey>().FirstOrDefault();
+            vm1 = Container.NewViewModel<MostSimpleViewModel>();
+            vm1.Id = 1;
         }
 
-        public override IQueryable<MostSimple> AnErrorQuery() {
-            throw new DomainException("An error exception");
-        }
-
-        public override ICollection<MostSimple> AnErrorCollection() {
-            throw new DomainException("An error exception");
-        }
+        #endregion
     }
 }

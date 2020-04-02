@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,9 @@ namespace RestfulObjects.Test.Data {
             get { return DeriveKeys().Aggregate("", (s, t) => s + " " + t); }
         }
 
-        [Key, Title, ConcurrencyCheck]
+        [Key]
+        [Title]
+        [ConcurrencyCheck]
         public virtual int Id { get; set; }
 
         public virtual MostSimple AReference { get; set; }
@@ -39,6 +41,18 @@ namespace RestfulObjects.Test.Data {
         [Eagerly(EagerlyAttribute.Do.Rendering)]
         public virtual MostSimple AnEagerReference { get; set; }
 
+        public virtual MostSimple[] ChoicesAChoicesReference() {
+            return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToArray();
+        }
+
+        public virtual string Validate(MostSimple aReference, MostSimple aChoicesReference) {
+            if (aReference != null && aReference.Id == 1 && aChoicesReference.Id == 2) {
+                return "Cross validation failed";
+            }
+
+            return "";
+        }
+
         #region IViewModel Members
 
         [NakedObjectsIgnore]
@@ -55,10 +69,10 @@ namespace RestfulObjects.Test.Data {
 
         [NakedObjectsIgnore]
         public void PopulateUsingKeys(string[] keys) {
-            int rId = int.Parse(keys[0]);
-            int drId = int.Parse(keys[1]);
-            int hrId = int.Parse(keys[2]);
-            int crId = int.Parse(keys[3]);
+            var rId = int.Parse(keys[0]);
+            var drId = int.Parse(keys[1]);
+            var hrId = int.Parse(keys[2]);
+            var crId = int.Parse(keys[3]);
 
             Id = rId;
 
@@ -70,16 +84,5 @@ namespace RestfulObjects.Test.Data {
         }
 
         #endregion
-
-        public virtual MostSimple[] ChoicesAChoicesReference() {
-            return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToArray();
-        }
-
-        public virtual string Validate(MostSimple aReference, MostSimple aChoicesReference) {
-            if (aReference != null && aReference.Id == 1 && aChoicesReference.Id == 2) {
-                return "Cross validation failed";
-            }
-            return "";
-        }
     }
 }

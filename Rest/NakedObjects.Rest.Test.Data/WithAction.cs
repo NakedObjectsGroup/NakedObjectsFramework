@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -12,61 +12,17 @@ using System.Globalization;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Security;
+
 //using NUnit.Framework;
 
 namespace RestfulObjects.Test.Data {
     public abstract class WithAction {
         public IDomainObjectContainer Container { set; protected get; }
 
-
-        //public virtual MostSimpleViewModel AAAViewModel() {
-        //    var vm = Container.NewViewModel<MostSimpleViewModel>();
-        //    vm.Id = 1;
-        //    return vm;
-        //}
-
-        //public virtual FormViewModel AAFormViewModel() {
-        //    var vm = Container.NewViewModel<FormViewModel>();
-        //    var ms = Container.Instances<MostSimple>().Single(x => x.Id == 1);
-        //    vm.Id = 1;
-        //    vm.MostSimple = ms;
-        //    return vm;
-        //}
-
-        //public virtual SwitchableViewModel AASwitchableViewModelView() {
-        //    var vm = Container.NewViewModel<SwitchableViewModel>();
-        //    var ms = Container.Instances<MostSimple>().Single(x => x.Id == 1);
-        //    vm.Id = 1;
-        //    vm.MostSimple = ms;
-        //    vm.IsEdit = false;
-        //    return vm;
-        //}
-
-        //public virtual SwitchableViewModel AASwitchableViewModelEdit() {
-        //    var vm = Container.NewViewModel<SwitchableViewModel>();
-        //    var ms = Container.Instances<MostSimple>().Single(x => x.Id == 1);
-        //    vm.Id = 1;
-        //    vm.MostSimple = ms;
-        //    vm.IsEdit = true;
-        //    return vm;
-        //}
-
-
         [PresentationHint("class5 class6")]
         public virtual MostSimple AnAction() {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }
-
-        //[QueryOnly]
-        //public virtual MostSimple AnActionWithWarningsAndMessages() {
-        //    Container.WarnUser("warn1");
-        //    Container.WarnUser("warn2");
-        //    Container.InformUser("message1");
-        //    Container.InformUser("message2");
-
-        //    return Container.Instances<MostSimple>().Single(x => x.Id == 1);
-        //}
-
 
         public virtual MostSimpleViewModel AnActionReturnsViewModel() {
             var vm = Container.NewViewModel<MostSimpleViewModel>();
@@ -79,9 +35,7 @@ namespace RestfulObjects.Test.Data {
         }
 
         [QueryOnly]
-        public virtual WithDateTimeKey AnActionReturnsWithDateTimeKeyQueryOnly() {
-            return Container.Instances<WithDateTimeKey>().FirstOrDefault();
-        }
+        public virtual WithDateTimeKey AnActionReturnsWithDateTimeKeyQueryOnly() => Container.Instances<WithDateTimeKey>().FirstOrDefault();
 
         [AuthorizeAction(Users = "ViewUser")]
         public virtual MostSimple AUserDisabledAction() {
@@ -89,16 +43,12 @@ namespace RestfulObjects.Test.Data {
         }
 
         [MultiLine(NumberOfLines = 1)]
-        public virtual MostSimple AnActionReturnsNull() {
-            return null;
-        }
+        public virtual MostSimple AnActionReturnsNull() => null;
 
-        public virtual MostSimpleViewModel AnActionReturnsNullViewModel() {
-            return null;
-        }
+        public virtual MostSimpleViewModel AnActionReturnsNullViewModel() => null;
 
-
-        public virtual MostSimple AnActionWithOptionalParm([Optionally, Named("Optional Parm"), DescribedAs("an optional parm"), MaxLength(101), RegEx(Validation = @"[A-Z]")] string parm) {
+        public virtual MostSimple AnActionWithOptionalParm([Optionally] [Named("Optional Parm")] [DescribedAs("an optional parm")] [MaxLength(101)] [RegEx(Validation = @"[A-Z]")]
+            string parm) {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }
 
@@ -113,14 +63,10 @@ namespace RestfulObjects.Test.Data {
         }
 
         [QueryOnly]
-        public virtual MostSimpleViewModel AnActionAnnotatedQueryOnlyReturnsViewModel() {
-            return AnActionReturnsViewModel();
-        }
+        public virtual MostSimpleViewModel AnActionAnnotatedQueryOnlyReturnsViewModel() => AnActionReturnsViewModel();
 
         [QueryOnly]
-        public virtual MostSimple AnActionAnnotatedQueryOnlyReturnsNull() {
-            return null;
-        }
+        public virtual MostSimple AnActionAnnotatedQueryOnlyReturnsNull() => null;
 
         [Idempotent]
         public virtual MostSimple AnActionAnnotatedIdempotent() {
@@ -128,14 +74,10 @@ namespace RestfulObjects.Test.Data {
         }
 
         [Idempotent]
-        public virtual MostSimpleViewModel AnActionAnnotatedIdempotentReturnsViewModel() {
-            return AnActionReturnsViewModel();
-        }
+        public virtual MostSimpleViewModel AnActionAnnotatedIdempotentReturnsViewModel() => AnActionReturnsViewModel();
 
         [Idempotent]
-        public virtual MostSimple AnActionAnnotatedIdempotentReturnsNull() {
-            return null;
-        }
+        public virtual MostSimple AnActionAnnotatedIdempotentReturnsNull() => null;
 
         [Hidden(WhenTo.Always)]
         public virtual MostSimple AHiddenAction() {
@@ -157,20 +99,13 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Where(x => x.Id == 1).ToList();
         }
 
-        public virtual int AnActionReturnsScalar() {
-            return 999;
-        }
+        public virtual int AnActionReturnsScalar() => 999;
 
-        public virtual string AnActionReturnsScalarEmpty() {
-            return "";
-        }
+        public virtual string AnActionReturnsScalarEmpty() => "";
 
-        public virtual string AnActionReturnsScalarNull() {
-            return null;
-        }
+        public virtual string AnActionReturnsScalarNull() => null;
 
-
-        public virtual void AnActionReturnsVoid() {}
+        public virtual void AnActionReturnsVoid() { }
 
         [PageSize(0)]
         [Eagerly(EagerlyAttribute.Do.Rendering)]
@@ -183,19 +118,13 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList();
         }
 
-        public virtual ICollection<MostSimple> AnActionReturnsCollectionEmpty() {
-            return new List<MostSimple>();
-        }
+        public virtual ICollection<MostSimple> AnActionReturnsCollectionEmpty() => new List<MostSimple>();
 
-        public virtual ICollection<MostSimple> AnActionReturnsCollectionNull() {
-            return null;
-        }
+        public virtual ICollection<MostSimple> AnActionReturnsCollectionNull() => null;
 
-        public virtual void AnActionWithDateTimeParm([Mask("d")] DateTime parm) {}
+        public virtual void AnActionWithDateTimeParm([Mask("d")] DateTime parm) { }
 
-        public DateTime Default0AnActionWithDateTimeParm() {
-            return new DateTime(2016, 2, 16);
-        }
+        public DateTime Default0AnActionWithDateTimeParm() => new DateTime(2016, 2, 16);
 
         public virtual IQueryable<MostSimple> AnActionReturnsQueryableWithScalarParameters(int parm1, string parm2) {
             Assert.AreEqual(100, parm1);
@@ -209,13 +138,11 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList();
         }
 
-
         public virtual IQueryable<MostSimple> AnActionReturnsQueryableWithParameters(int parm1, MostSimple parm2) {
             Assert.AreEqual(101, parm1);
             Assert.AreEqual(Container.Instances<MostSimple>().First(), parm2);
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2);
         }
-
 
         public virtual ICollection<MostSimple> AnActionReturnsCollectionWithParameters(int parm1, MostSimple parm2) {
             Assert.AreEqual(101, parm1);
@@ -266,7 +193,7 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Single(x => x.Id == parm1);
         }
 
-        public virtual MostSimple AnActionWithValueParameterWithRange([System.ComponentModel.DataAnnotations.Range (1, 500)] int parm1) {
+        public virtual MostSimple AnActionWithValueParameterWithRange([Range(1, 500)] int parm1) {
             return Container.Instances<MostSimple>().Single(x => x.Id == parm1);
         }
 
@@ -282,9 +209,7 @@ namespace RestfulObjects.Test.Data {
             return new[] {1, 2, 3};
         }
 
-        public virtual int Default0AnActionWithValueParameterWithDefault() {
-            return 4;
-        }
+        public virtual int Default0AnActionWithValueParameterWithDefault() => 4;
 
         public virtual MostSimple AnActionWithValueParametersWithConditionalChoices(int parm3, string parm4) {
             return Container.Instances<MostSimple>().Single(x => x.Id == parm3);
@@ -322,50 +247,35 @@ namespace RestfulObjects.Test.Data {
             return parm4 == null ? new List<MostSimple>() : Container.Instances<MostSimple>().Where(ms => ms.Id != parm4.Id).ToList();
         }
 
-        public virtual MostSimple Default0AnActionWithReferenceParameterWithDefault() {
-            return Container.Instances<MostSimple>().First();
-        }
+        public virtual MostSimple Default0AnActionWithReferenceParameterWithDefault() => Container.Instances<MostSimple>().First();
 
-        public virtual MostSimple AnActionWithParametersWithChoicesWithDefaults(int parm1, int parm7, MostSimple parm2, MostSimple parm8) {
-            return Container.Instances<MostSimple>().First();
-        }
+        public virtual MostSimple AnActionWithParametersWithChoicesWithDefaults(int parm1, int parm7, MostSimple parm2, MostSimple parm8) => Container.Instances<MostSimple>().First();
 
         public virtual IList<int> Choices1AnActionWithParametersWithChoicesWithDefaults() {
             return new[] {1, 2, 3};
         }
 
-        public virtual int Default1AnActionWithParametersWithChoicesWithDefaults() {
-            return 4;
-        }
+        public virtual int Default1AnActionWithParametersWithChoicesWithDefaults() => 4;
 
         public virtual IList<MostSimple> Choices3AnActionWithParametersWithChoicesWithDefaults() {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToList();
         }
 
-        public virtual MostSimple Default3AnActionWithParametersWithChoicesWithDefaults() {
-            return Container.Instances<MostSimple>().First();
-        }
+        public virtual MostSimple Default3AnActionWithParametersWithChoicesWithDefaults() => Container.Instances<MostSimple>().First();
 
-        public virtual int AnError() {
-            throw new DomainException("An error exception");
-        }
+        public virtual int AnError() => throw new DomainException("An error exception");
 
-        public virtual IQueryable<MostSimple> AnErrorQuery() {
-            throw new DomainException("An error exception");
-        }
+        public virtual IQueryable<MostSimple> AnErrorQuery() => throw new DomainException("An error exception");
 
-        public virtual ICollection<MostSimple> AnErrorCollection() {
-            throw new DomainException("An error exception");
-        }
+        public virtual ICollection<MostSimple> AnErrorCollection() => throw new DomainException("An error exception");
 
-        public virtual int AnActionValidateParameters(int parm1, int parm2) {
-            return parm1 + parm2;
-        }
+        public virtual int AnActionValidateParameters(int parm1, int parm2) => parm1 + parm2;
 
         public virtual string ValidateAnActionValidateParameters(int parm1) {
             if (parm1 == 0) {
                 return "Fail validation parm1";
             }
+
             return null;
         }
 
@@ -373,12 +283,11 @@ namespace RestfulObjects.Test.Data {
             if (parm1 > parm2) {
                 return "Cross validation failed";
             }
+
             return null;
         }
 
-        public virtual MostSimple AnActionWithReferenceParametersWithAutoComplete(MostSimple parm0, MostSimple parm1) {
-            return parm0;
-        }
+        public virtual MostSimple AnActionWithReferenceParametersWithAutoComplete(MostSimple parm0, MostSimple parm1) => parm0;
 
         public virtual IQueryable<MostSimple> AutoComplete0AnActionWithReferenceParametersWithAutoComplete([MinLength(3)] string name) {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2);
@@ -396,7 +305,7 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }
 
-        public void AnActionWithCollectionParameter(IEnumerable<string> parm) {}
+        public void AnActionWithCollectionParameter(IEnumerable<string> parm) { }
 
         public string[] Choices0AnActionWithCollectionParameter() {
             return new[] {
@@ -413,7 +322,7 @@ namespace RestfulObjects.Test.Data {
             };
         }
 
-        public void AnActionWithCollectionParameterRef(IEnumerable<MostSimple> parm) {}
+        public void AnActionWithCollectionParameterRef(IEnumerable<MostSimple> parm) { }
 
         public MostSimple[] Choices0AnActionWithCollectionParameterRef() {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToArray();

@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -12,14 +12,11 @@ using NakedObjects;
 
 namespace RestfulObjects.Test.Data {
     public class WithCollectionViewModel : IViewModel {
-        private IList<MostSimple> anEmptyCollection = new List<MostSimple>();
-
-        private ISet<MostSimple> anEmptySet = new HashSet<MostSimple>();
-
         public IDomainObjectContainer Container { set; protected get; }
 
-
-        [Key, Title, ConcurrencyCheck]
+        [Key]
+        [Title]
+        [ConcurrencyCheck]
         public virtual int Id { get; set; }
 
         public virtual IList<MostSimple> ACollection { get; set; }
@@ -36,20 +33,20 @@ namespace RestfulObjects.Test.Data {
 
         [DescribedAs("an empty collection for testing")]
         [MemberOrder(Sequence = "2")]
-        public virtual IList<MostSimple> AnEmptyCollection {
-            get { return anEmptyCollection; }
-            set { anEmptyCollection = value; }
-        }
+        public virtual IList<MostSimple> AnEmptyCollection { get; set; } = new List<MostSimple>();
 
         [DescribedAs("an empty set for testing")]
         [MemberOrder(Sequence = "2")]
-        public virtual ISet<MostSimple> AnEmptySet {
-            get { return anEmptySet; }
-            set { anEmptySet = value; }
-        }
+        public virtual ISet<MostSimple> AnEmptySet { get; set; } = new HashSet<MostSimple>();
 
         [Eagerly(EagerlyAttribute.Do.Rendering)]
         public virtual IList<MostSimple> AnEagerCollection { get; set; }
+
+        private MostSimpleViewModel NewVM(int id) {
+            var vm = Container.NewViewModel<MostSimpleViewModel>();
+            vm.Id = id;
+            return vm;
+        }
 
         #region IViewModel Members
 
@@ -65,9 +62,8 @@ namespace RestfulObjects.Test.Data {
 
         [NakedObjectsIgnore]
         public void PopulateUsingKeys(string[] keys) {
-            int fId = int.Parse(keys[0]);
-            int lId = int.Parse(keys[1]);
-
+            var fId = int.Parse(keys[0]);
+            var lId = int.Parse(keys[1]);
 
             Id = fId;
 
@@ -80,11 +76,5 @@ namespace RestfulObjects.Test.Data {
         }
 
         #endregion
-
-        private MostSimpleViewModel NewVM(int id) {
-            var vm = Container.NewViewModel<MostSimpleViewModel>();
-            vm.Id = id;
-            return vm;
-        }
     }
 }

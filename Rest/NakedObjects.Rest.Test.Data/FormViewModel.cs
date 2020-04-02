@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,14 +14,24 @@ namespace RestfulObjects.Test.Data {
     public class FormViewModel : IViewModelEdit {
         public virtual IDomainObjectContainer Container { set; protected get; }
 
-        [Key, ConcurrencyCheck, Hidden(WhenTo.Always)]
+        [Key]
+        [ConcurrencyCheck]
+        [Hidden(WhenTo.Always)]
         public virtual int Id { get; set; }
 
         [Title]
         public virtual string Name { get; set; }
 
-        [Optionally, Title]
+        [Optionally]
+        [Title]
         public virtual MostSimple MostSimple { get; set; }
+
+        public FormViewModel Step() {
+            var vm = Container.NewViewModel<FormViewModel>();
+            vm.Id = 2;
+            vm.MostSimple = MostSimple;
+            return vm;
+        }
 
         #region IViewModelEdit Members
 
@@ -38,17 +48,10 @@ namespace RestfulObjects.Test.Data {
         [NakedObjectsIgnore]
         public void PopulateUsingKeys(string[] keys) {
             Id = int.Parse(keys[0]);
-            int msId = int.Parse(keys[1]);
+            var msId = int.Parse(keys[1]);
             MostSimple = Container.Instances<MostSimple>().FirstOrDefault(ms => ms.Id == msId);
         }
 
         #endregion
-
-        public FormViewModel Step() {
-            var vm = Container.NewViewModel<FormViewModel>();
-            vm.Id = 2;
-            vm.MostSimple = MostSimple;
-            return vm;
-        }
     }
 }

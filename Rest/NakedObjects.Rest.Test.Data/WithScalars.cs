@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,11 +18,8 @@ namespace RestfulObjects.Test.Data {
         Value2
     }
 
-
     public class WithScalars {
         private char c;
-        private ICollection<MostSimple> list = new List<MostSimple>();
-        private ISet<MostSimple> set = new HashSet<MostSimple>();
 
         public WithScalars() {
             SByte = 10;
@@ -32,7 +29,10 @@ namespace RestfulObjects.Test.Data {
             DateTime = DateTime.UtcNow;
         }
 
-        [Key, Title, ConcurrencyCheck, DefaultValue(0)]
+        [Key]
+        [Title]
+        [ConcurrencyCheck]
+        [DefaultValue(0)]
         public virtual int Id { get; set; }
 
         [NotMapped]
@@ -58,10 +58,9 @@ namespace RestfulObjects.Test.Data {
         [NotMapped]
         public virtual ulong ULong { get; set; }
 
-
         public virtual char Char {
-            get { return '3'; }
-            set { c = value; }
+            get => '3';
+            set => c = value;
         }
 
         public virtual bool Bool { get; set; }
@@ -73,26 +72,18 @@ namespace RestfulObjects.Test.Data {
         public virtual sbyte[] SByteArray { get; set; }
         public virtual char[] CharArray { get; set; }
 
-       
         public virtual DateTime DateTime { get; set; }
 
         [DataType(DataType.Password)]
         [NotMapped]
         public virtual string Password { get; set; }
 
-        public virtual ICollection<MostSimple> List {
-            get { return list; }
-            set { list = value; }
-        }
-
+        public virtual ICollection<MostSimple> List { get; set; } = new List<MostSimple>();
 
         [NotMapped]
-        public virtual ISet<MostSimple> Set {
-            get { return set; }
-            set { set = value; }
-        }
+        public virtual ISet<MostSimple> Set { get; set; } = new HashSet<MostSimple>();
 
-        [EnumDataType(typeof (TestEnum))]
+        [EnumDataType(typeof(TestEnum))]
         public virtual int EnumByAttributeChoices { get; set; }
     }
 }

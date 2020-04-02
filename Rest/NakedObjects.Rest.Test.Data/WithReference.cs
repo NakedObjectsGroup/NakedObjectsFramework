@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,10 +14,11 @@ namespace RestfulObjects.Test.Data {
     public class WithReference {
         public IDomainObjectContainer Container { set; protected get; }
 
-
-        [Key, Title, ConcurrencyCheck, DefaultValue(0)]
+        [Key]
+        [Title]
+        [ConcurrencyCheck]
+        [DefaultValue(0)]
         public virtual int Id { get; set; }
-
 
         public virtual MostSimple AReference { get; set; }
 
@@ -30,7 +31,6 @@ namespace RestfulObjects.Test.Data {
         [Hidden(WhenTo.Always)]
         [Optionally]
         public virtual MostSimple AHiddenReference { get; set; }
-
 
         public virtual MostSimple AChoicesReference { get; set; }
 
@@ -52,6 +52,7 @@ namespace RestfulObjects.Test.Data {
             if (aReference != null && aReference.Id == 1 && aChoicesReference.Id == 2) {
                 return "Cross validation failed";
             }
+
             return "";
         }
 
@@ -59,7 +60,8 @@ namespace RestfulObjects.Test.Data {
             if (aReference != null) {
                 return Container.Instances<MostSimple>().Where(ms => ms.Id != aReference.Id).ToArray();
             }
-            return new MostSimple[] {};
+
+            return new MostSimple[] { };
         }
     }
 }

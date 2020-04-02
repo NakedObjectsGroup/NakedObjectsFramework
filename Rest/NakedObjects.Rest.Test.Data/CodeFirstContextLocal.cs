@@ -51,7 +51,7 @@ namespace RestfulObjects.Test.Data {
 
             var wr1 = new WithReference {Id = 1, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1};
             var wr2 = new WithReference {Id = 2, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1};
-            var wr3 = new WithReference { Id = 3, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1 };
+            var wr3 = new WithReference {Id = 3, AReference = ms1, ADisabledReference = ms1, AChoicesReference = ms1, AnEagerReference = ms1, AnAutoCompleteReference = ms1};
 
             context.WithReferences.Add(wr1);
 
@@ -142,7 +142,7 @@ namespace RestfulObjects.Test.Data {
             var vse1 = new VerySimpleEager {Id = 1};
             context.VerySimpleEagers.Add(vse1);
 
-            var dt1 = new WithDateTimeKey {Id = (new DateTime(634835232000000000L)).Date};
+            var dt1 = new WithDateTimeKey {Id = new DateTime(634835232000000000L).Date};
             context.WithDateTimeKeys.Add(dt1);
 
             var rdo1 = new RedirectedObject {Id = 1, ServerName = "RedirectedToServer", Oid = "RedirectedToOid"};
