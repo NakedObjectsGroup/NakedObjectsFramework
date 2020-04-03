@@ -1,321 +1,324 @@
-﻿//// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-//// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-//// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-//// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-//// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//// See the License for the specific language governing permissions and limitations under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
-//using System;
-//using System.Collections;
-//using System.Collections.Concurrent;
-//using System.Collections.Generic;
-//using System.Diagnostics;
-//using System.Globalization;
-//using System.IO;
-//using System.Linq;
-//using System.Reflection;
-//using System.Reflection.Emit;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-//namespace NakedObjects.SystemTest.Util {
-//    public class GetTypeFromLoadedAssembliesTestAbstract {
-//        private static readonly IList<string> MasterTypeList = new List<string>();
-//        private static readonly IDictionary<string, Runs> Results = new Dictionary<string, Runs>();
+namespace NakedObjects.SystemTest.Util {
+    public class GetTypeFromLoadedAssembliesTestAbstract {
+        private static readonly IList<string> MasterTypeList = new List<string>();
+        private static readonly IDictionary<string, Runs> Results = new Dictionary<string, Runs>();
 
-//        private static ModuleBuilder CreateModuleBuilder(string name) {
-//            AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName {Name = name}, AssemblyBuilderAccess.Run);
-//            return assemblyBuilder.DefineDynamicModule(name + "Module");
-//        }
+        private static ModuleBuilder CreateModuleBuilder(string name) {
+            //AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName {Name = name}, AssemblyBuilderAccess.Run);
+            var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName {Name = name}, AssemblyBuilderAccess.Run);
 
-//        private static void AddClass(ModuleBuilder moduleBuilder, string name) {
-//            TypeBuilder typeBuilder = moduleBuilder.DefineType(name, TypeAttributes.Public);
-//            ConstructorBuilder constructorBuilder = typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, null);
-//            ILGenerator ilGenerator = constructorBuilder.GetILGenerator();
+            return assemblyBuilder.DefineDynamicModule(name + "Module");
+        }
 
-//            ilGenerator.EmitWriteLine(name + " instantiated!");
-//            ilGenerator.Emit(OpCodes.Ret);
+        private static void AddClass(ModuleBuilder moduleBuilder, string name) {
+            var typeBuilder = moduleBuilder.DefineType(name, TypeAttributes.Public);
+            var constructorBuilder = typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, null);
+            var ilGenerator = constructorBuilder.GetILGenerator();
 
-//            typeBuilder.CreateType();
-//        }
+            ilGenerator.EmitWriteLine(name + " instantiated!");
+            ilGenerator.Emit(OpCodes.Ret);
 
-//        // randomizing code from stack overflow !
-//        private static IList<T> Shuffle<T>(IList<T> list) {
-//            List<T> shuffled = list.Select(i => i).ToList();
-//            int n = shuffled.Count();
-//            while (n > 1) {
-//                n--;
-//                int k = ThreadSafeRandom.ThisThreadsRandom.Next(n + 1);
-//                T value = shuffled[k];
-//                shuffled[k] = shuffled[n];
-//                shuffled[n] = value;
-//            }
-//            return shuffled;
-//        }
+            typeBuilder.CreateType();
+        }
 
-//        private static IList<T> RandomSelection<T>(IList<T> list) {
-//            List<T> randomSelection = list.Select(i => i).ToList();
-//            int n = randomSelection.Count();
-//            while (n > 1) {
-//                n--;
-//                int k = ThreadSafeRandom.ThisThreadsRandom.Next(n + 1);
-//                T value = list[k];
-//                randomSelection[n] = value;
-//            }
-//            return randomSelection;
-//        }
+        // randomizing code from stack overflow !
+        private static IList<T> Shuffle<T>(IList<T> list) {
+            var shuffled = list.Select(i => i).ToList();
+            var n = shuffled.Count();
+            while (n > 1) {
+                n--;
+                var k = ThreadSafeRandom.ThisThreadsRandom.Next(n + 1);
+                var value = shuffled[k];
+                shuffled[k] = shuffled[n];
+                shuffled[n] = value;
+            }
 
-//        public static void SetupTypeData(TestContext context) {
-//            for (int i = 0; i < 100; i++) {
-//                ModuleBuilder mb = CreateModuleBuilder("Assembly" + i);
+            return shuffled;
+        }
 
-//                for (int j = 0; j < 100; j++) {
-//                    string classname = "Class" + i.ToString(CultureInfo.InvariantCulture) + j;
+        private static IList<T> RandomSelection<T>(IList<T> list) {
+            var randomSelection = list.Select(i => i).ToList();
+            var n = randomSelection.Count();
+            while (n > 1) {
+                n--;
+                var k = ThreadSafeRandom.ThisThreadsRandom.Next(n + 1);
+                var value = list[k];
+                randomSelection[n] = value;
+            }
 
-//                    AddClass(mb, classname);
+            return randomSelection;
+        }
 
-//                    MasterTypeList.Add(classname);
-//                }
-//            }
-//            Results.Clear();
-//        }
+        public static void SetupTypeData(TestContext context) {
+            for (var i = 0; i < 100; i++) {
+                var mb = CreateModuleBuilder("Assembly" + i);
 
-//        private static void DisplayResults() {
-//            foreach (var result in Results) {
-//                string indRuns = result.Value.IndividualRuns.Select(ts => ts.ToString()).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "\t" : "\r\n\t\t") + t);
-//                string shortName = result.Key.Replace("TestHarnessFindTypeFromLoadedAssemblies", "");
+                for (var j = 0; j < 100; j++) {
+                    var classname = "Class" + i.ToString(CultureInfo.InvariantCulture) + j;
 
-//                Console.WriteLine("Name: {0}\t\tTotal : {1}\r\n\tRuns :{2}", shortName, result.Value.TotalRun, indRuns);
-//            }
-//        }
+                    AddClass(mb, classname);
 
-//        public static void OutputCsv(string name) {
-//            string fileName = name + DateTime.Now.Ticks;
+                    MasterTypeList.Add(classname);
+                }
+            }
 
-//            const string dir = @"C:\LoadAssemblyTestRuns";
-//            string filePath = dir + @"\" + fileName + ".csv";
+            Results.Clear();
+        }
 
-//            Directory.CreateDirectory(dir);
-//            using (FileStream fs = File.Create(filePath)) {
-//                using (var sw = new StreamWriter(fs)) {
-//                    const string header = "Test, Total Time, Time Run 1,Time Run 2,Time Run 3,Time Run 4,Time Run 5,Time Run 6,Time Run 7,Time Run 8,Time Run 9,Time Run 10";
+        private static void DisplayResults() {
+            foreach (var result in Results) {
+                var indRuns = result.Value.IndividualRuns.Select(ts => ts.ToString()).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "\t" : "\r\n\t\t") + t);
+                var shortName = result.Key.Replace("TestHarnessFindTypeFromLoadedAssemblies", "");
 
-//                    sw.WriteLine(header);
+                Console.WriteLine("Name: {0}\t\tTotal : {1}\r\n\tRuns :{2}", shortName, result.Value.TotalRun, indRuns);
+            }
+        }
 
-//                    foreach (var result in Results) {
-//                        string indRuns = result.Value.IndividualRuns.Select(ts => ts.ToString()).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ",") + t);
-//                        string shortName = result.Key.Replace("TestHarnessFindTypeFromLoadedAssemblies", "");
+        public static void OutputCsv(string name) {
+            var fileName = name + DateTime.Now.Ticks;
 
-//                        string line = string.Format("{0}, {1}, {2}", shortName, result.Value.TotalRun, indRuns);
-//                        sw.WriteLine(line);
-//                    }
-//                }
-//            }
-//        }
+            const string dir = @"C:\LoadAssemblyTestRuns";
+            var filePath = dir + @"\" + fileName + ".csv";
 
-//        private static void CollateResults(string testName, Runs runs) {
-//            lock (Results) {
-//                Results[testName] = runs;
-//            }
-//            DisplayResults();
-//        }
+            Directory.CreateDirectory(dir);
+            using (var fs = File.Create(filePath)) {
+                using (var sw = new StreamWriter(fs)) {
+                    const string header = "Test, Total Time, Time Run 1,Time Run 2,Time Run 3,Time Run 4,Time Run 5,Time Run 6,Time Run 7,Time Run 8,Time Run 9,Time Run 10";
 
-//        private static void CollateResults(string testName, Runs[] runs) {
-//            lock (Results) {
-//                for (int i = 0; i < runs.Count(); i++) {
-//                    string name = testName + "x" + i;
-//                    Results[name] = runs[i];
-//                }
-//            }
-//            DisplayResults();
-//        }
+                    sw.WriteLine(header);
 
-//        private long FindTypeFromLoadedAssemblies(Func<string, Type> funcUnderTest, IList<string> typeList) {
-//            var sw = new Stopwatch();
+                    foreach (var result in Results) {
+                        var indRuns = result.Value.IndividualRuns.Select(ts => ts.ToString()).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ",") + t);
+                        var shortName = result.Key.Replace("TestHarnessFindTypeFromLoadedAssemblies", "");
 
-//            foreach (string s in typeList) {
-//                sw.Start();
-//                Type t = funcUnderTest(s);
-//                sw.Stop();
-//                Assert.IsNotNull(t);
-//                Assert.AreEqual(s, t.FullName);
-//            }
+                        var line = string.Format("{0}, {1}, {2}", shortName, result.Value.TotalRun, indRuns);
+                        sw.WriteLine(line);
+                    }
+                }
+            }
+        }
 
-//            return sw.ElapsedMilliseconds;
-//        }
+        private static void CollateResults(string testName, Runs runs) {
+            lock (Results) {
+                Results[testName] = runs;
+            }
 
-//        private string GetCurrentMethod() {
-//            var st = new StackTrace();
-//            StackFrame sf = st.GetFrame(1);
-//            return sf.GetMethod().Name;
-//        }
+            DisplayResults();
+        }
 
-//        private long FindTypeFromLoadedAssembliesOnce(Func<string, Type> funcUnderTest, IList<string> typeList) {
-//            return FindTypeFromLoadedAssemblies(funcUnderTest, typeList);
-//        }
+        private static void CollateResults(string testName, Runs[] runs) {
+            lock (Results) {
+                for (var i = 0; i < runs.Count(); i++) {
+                    var name = testName + "x" + i;
+                    Results[name] = runs[i];
+                }
+            }
 
-//        private Runs FindTypeFromLoadedAssembliesTenTimes(Func<string, Type> funcUnderTest, IList<string> typeList) {
-//            var totalElapsed = 0L;
-//            var indRuns = new BlockingCollection<long>();
+            DisplayResults();
+        }
 
-//            for (int i = 0; i < 10; i++) {
-//                var elapsed = FindTypeFromLoadedAssemblies(funcUnderTest, typeList);
-//                totalElapsed += elapsed;
-//                indRuns.Add(elapsed);
-//            }
+        private long FindTypeFromLoadedAssemblies(Func<string, Type> funcUnderTest, IList<string> typeList) {
+            var sw = new Stopwatch();
 
-//            return new Runs {IndividualRuns = indRuns.ToArray(), TotalRun = totalElapsed};
-//        }
+            foreach (var s in typeList) {
+                sw.Start();
+                var t = funcUnderTest(s);
+                sw.Stop();
+                Assert.IsNotNull(t);
+                Assert.AreEqual(s, t.FullName);
+            }
 
-//        private Task<long> CreateTask(Func<string, Type> funcUnderTest, IList<string> typeList, BlockingCollection<long> indRuns) {
-//            return Task<long>.Factory.StartNew(() => {
-//                var elapsed = FindTypeFromLoadedAssemblies(funcUnderTest, typeList);
-//                indRuns.Add(elapsed);
-//                return elapsed;
-//            });
-//        }
+            return sw.ElapsedMilliseconds;
+        }
 
-//        private Runs FindTypeFromLoadedAssembliesInParallel(Func<string, Type> funcUnderTest, IList<string>[] typeLists) {
-//            var indRuns = new BlockingCollection<long>();
+        private string GetCurrentMethod() {
+            var st = new StackTrace();
+            var sf = st.GetFrame(1);
+            return sf.GetMethod().Name;
+        }
 
-//            Task<long>[] tasks = typeLists.Select(list => CreateTask(funcUnderTest, list, indRuns)).ToArray();
+        private long FindTypeFromLoadedAssembliesOnce(Func<string, Type> funcUnderTest, IList<string> typeList) => FindTypeFromLoadedAssemblies(funcUnderTest, typeList);
 
-//            var sw = new Stopwatch();
+        private Runs FindTypeFromLoadedAssembliesTenTimes(Func<string, Type> funcUnderTest, IList<string> typeList) {
+            var totalElapsed = 0L;
+            var indRuns = new BlockingCollection<long>();
 
-//            sw.Start();
-//            Task.WaitAll(tasks);
-//            sw.Stop();
+            for (var i = 0; i < 10; i++) {
+                var elapsed = FindTypeFromLoadedAssemblies(funcUnderTest, typeList);
+                totalElapsed += elapsed;
+                indRuns.Add(elapsed);
+            }
 
-//            return new Runs {IndividualRuns = indRuns.ToArray(), TotalRun = sw.ElapsedMilliseconds};
-//        }
+            return new Runs {IndividualRuns = indRuns.ToArray(), TotalRun = totalElapsed};
+        }
 
-//        private Runs[] FindTypeFromLoadedAssembliesInParallelTenTimes(Func<string, Type> funcUnderTest, IList<string>[] typeLists) {
-//            var runsList = new List<Runs>();
-//            for (int i = 0; i < 10; i++) {
-//                runsList.Add(FindTypeFromLoadedAssembliesInParallel(funcUnderTest, typeLists));
-//            }
-//            return runsList.ToArray();
-//        }
+        private Task<long> CreateTask(Func<string, Type> funcUnderTest, IList<string> typeList, BlockingCollection<long> indRuns) {
+            return Task<long>.Factory.StartNew(() => {
+                var elapsed = FindTypeFromLoadedAssemblies(funcUnderTest, typeList);
+                indRuns.Add(elapsed);
+                return elapsed;
+            });
+        }
 
-//        #region Nested type: Runs
+        private Runs FindTypeFromLoadedAssembliesInParallel(Func<string, Type> funcUnderTest, IList<string>[] typeLists) {
+            var indRuns = new BlockingCollection<long>();
 
-//        private class Runs {
-//            public long[] IndividualRuns { get; set; }
-//            public long TotalRun { get; set; }
-//        }
+            var tasks = typeLists.Select(list => CreateTask(funcUnderTest, list, indRuns)).ToArray();
 
-//        #endregion
+            var sw = new Stopwatch();
 
-//        #region Nested type: ThreadSafeRandom
+            sw.Start();
+            Task.WaitAll(tasks);
+            sw.Stop();
 
-//        private static class ThreadSafeRandom {
-//            [ThreadStatic] private static Random local;
+            return new Runs {IndividualRuns = indRuns.ToArray(), TotalRun = sw.ElapsedMilliseconds};
+        }
 
-//            public static Random ThisThreadsRandom {
-//                get { return local ?? (local = new Random(unchecked(Environment.TickCount*31 + Thread.CurrentThread.ManagedThreadId))); }
-//            }
-//        }
+        private Runs[] FindTypeFromLoadedAssembliesInParallelTenTimes(Func<string, Type> funcUnderTest, IList<string>[] typeLists) {
+            var runsList = new List<Runs>();
+            for (var i = 0; i < 10; i++) {
+                runsList.Add(FindTypeFromLoadedAssembliesInParallel(funcUnderTest, typeLists));
+            }
 
-//        #endregion
+            return runsList.ToArray();
+        }
 
-//        #region tests
+        #region Nested type: Runs
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesOnce(Func<string, Type> funcUnderTest) {
-//            // find each type in order
-//            var elapsed = FindTypeFromLoadedAssembliesOnce(funcUnderTest, MasterTypeList);
-//            CollateResults(GetCurrentMethod(), new Runs {IndividualRuns = new[] {elapsed}, TotalRun = elapsed});
-//        }
+        private class Runs {
+            public long[] IndividualRuns { get; set; }
+            public long TotalRun { get; set; }
+        }
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesOnceRandomOrder(Func<string, Type> funcUnderTest) {
-//            // find each type in random order
-//            IList<string> randomList = Shuffle(MasterTypeList);
-//            var elapsed = FindTypeFromLoadedAssembliesOnce(funcUnderTest, randomList);
-//            CollateResults(GetCurrentMethod(), new Runs {IndividualRuns = new[] {elapsed}, TotalRun = elapsed});
-//        }
+        #endregion
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesOnceRandomSelection(Func<string, Type> funcUnderTest) {
-//            // find a random selection of types 
-//            IList<string> randomList = RandomSelection(MasterTypeList);
-//            var elapsed = FindTypeFromLoadedAssembliesOnce(funcUnderTest, randomList);
-//            CollateResults(GetCurrentMethod(), new Runs {IndividualRuns = new[] {elapsed}, TotalRun = elapsed});
-//        }
+        #region Nested type: ThreadSafeRandom
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesTenTimes(Func<string, Type> funcUnderTest) {
-//            Runs runs = FindTypeFromLoadedAssembliesTenTimes(funcUnderTest, MasterTypeList);
-//            CollateResults(GetCurrentMethod(), runs);
-//        }
+        private static class ThreadSafeRandom {
+            [ThreadStatic] private static Random local;
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesTenTimesRandomOrder(Func<string, Type> funcUnderTest) {
-//            IList<string> randomList = Shuffle(MasterTypeList);
-//            Runs runs = FindTypeFromLoadedAssembliesTenTimes(funcUnderTest, randomList);
-//            CollateResults(GetCurrentMethod(), runs);
-//        }
+            public static Random ThisThreadsRandom => local ?? (local = new Random(unchecked(Environment.TickCount * 31 + Thread.CurrentThread.ManagedThreadId)));
+        }
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesTenTimesRandomSelection(Func<string, Type> funcUnderTest) {
-//            IList<string> randomList = RandomSelection(MasterTypeList);
-//            Runs runs = FindTypeFromLoadedAssembliesTenTimes(funcUnderTest, randomList);
-//            CollateResults(GetCurrentMethod(), runs);
-//        }
+        #endregion
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesInParallel(Func<string, Type> funcUnderTest) {
-//            Runs runs = FindTypeFromLoadedAssembliesInParallel(funcUnderTest, Enumerable.Repeat(MasterTypeList, 10).ToArray());
-//            CollateResults(GetCurrentMethod(), runs);
-//        }
+        #region tests
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesInParallelRandomOrder(Func<string, Type> funcUnderTest) {
-//            IList<string> randomList = Shuffle(MasterTypeList);
-//            Runs runs = FindTypeFromLoadedAssembliesInParallel(funcUnderTest, Enumerable.Repeat(randomList, 10).ToArray());
-//            CollateResults(GetCurrentMethod(), runs);
-//        }
+        public void TestHarnessFindTypeFromLoadedAssembliesOnce(Func<string, Type> funcUnderTest) {
+            // find each type in order
+            var elapsed = FindTypeFromLoadedAssembliesOnce(funcUnderTest, MasterTypeList);
+            CollateResults(GetCurrentMethod(), new Runs {IndividualRuns = new[] {elapsed}, TotalRun = elapsed});
+        }
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesInParallelRandomSelection(Func<string, Type> funcUnderTest) {
-//            IList<string> randomList = RandomSelection(MasterTypeList);
-//            Runs runs = FindTypeFromLoadedAssembliesInParallel(funcUnderTest, Enumerable.Repeat(randomList, 10).ToArray());
-//            CollateResults(GetCurrentMethod(), runs);
-//        }
+        public void TestHarnessFindTypeFromLoadedAssembliesOnceRandomOrder(Func<string, Type> funcUnderTest) {
+            // find each type in random order
+            var randomList = Shuffle(MasterTypeList);
+            var elapsed = FindTypeFromLoadedAssembliesOnce(funcUnderTest, randomList);
+            CollateResults(GetCurrentMethod(), new Runs {IndividualRuns = new[] {elapsed}, TotalRun = elapsed});
+        }
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomOrder(Func<string, Type> funcUnderTest) {
-//            IList<string>[] randomLists = Enumerable.Repeat(MasterTypeList, 10).Select<IList<string>, IList<string>>(Shuffle).ToArray();
-//            Runs runs = FindTypeFromLoadedAssembliesInParallel(funcUnderTest, randomLists);
-//            CollateResults(GetCurrentMethod(), runs);
-//        }
+        public void TestHarnessFindTypeFromLoadedAssembliesOnceRandomSelection(Func<string, Type> funcUnderTest) {
+            // find a random selection of types 
+            var randomList = RandomSelection(MasterTypeList);
+            var elapsed = FindTypeFromLoadedAssembliesOnce(funcUnderTest, randomList);
+            CollateResults(GetCurrentMethod(), new Runs {IndividualRuns = new[] {elapsed}, TotalRun = elapsed});
+        }
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomSelection(Func<string, Type> funcUnderTest) {
-//            IList<string>[] randomLists = Enumerable.Repeat(MasterTypeList, 10).Select<IList<string>, IList<string>>(RandomSelection).ToArray();
-//            Runs runs = FindTypeFromLoadedAssembliesInParallel(funcUnderTest, randomLists);
-//            CollateResults(GetCurrentMethod(), runs);
-//        }
+        public void TestHarnessFindTypeFromLoadedAssembliesTenTimes(Func<string, Type> funcUnderTest) {
+            var runs = FindTypeFromLoadedAssembliesTenTimes(funcUnderTest, MasterTypeList);
+            CollateResults(GetCurrentMethod(), runs);
+        }
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesInParallelTenTimes(Func<string, Type> funcUnderTest) {
-//            Runs[] runs = FindTypeFromLoadedAssembliesInParallelTenTimes(funcUnderTest, Enumerable.Repeat(MasterTypeList, 10).ToArray());
-//            CollateResults(GetCurrentMethod(), runs);
-//        }
+        public void TestHarnessFindTypeFromLoadedAssembliesTenTimesRandomOrder(Func<string, Type> funcUnderTest) {
+            var randomList = Shuffle(MasterTypeList);
+            var runs = FindTypeFromLoadedAssembliesTenTimes(funcUnderTest, randomList);
+            CollateResults(GetCurrentMethod(), runs);
+        }
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesInParallelRandomOrderTenTimes(Func<string, Type> funcUnderTest) {
-//            IList<string> randomList = Shuffle(MasterTypeList);
-//            Runs[] runs = FindTypeFromLoadedAssembliesInParallelTenTimes(funcUnderTest, Enumerable.Repeat(randomList, 10).ToArray());
-//            CollateResults(GetCurrentMethod(), runs);
-//        }
+        public void TestHarnessFindTypeFromLoadedAssembliesTenTimesRandomSelection(Func<string, Type> funcUnderTest) {
+            var randomList = RandomSelection(MasterTypeList);
+            var runs = FindTypeFromLoadedAssembliesTenTimes(funcUnderTest, randomList);
+            CollateResults(GetCurrentMethod(), runs);
+        }
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesInParallelRandomSelectionTenTimes(Func<string, Type> funcUnderTest) {
-//            IList<string> randomList = RandomSelection(MasterTypeList);
-//            Runs[] runs = FindTypeFromLoadedAssembliesInParallelTenTimes(funcUnderTest, Enumerable.Repeat(randomList, 10).ToArray());
-//            CollateResults(GetCurrentMethod(), runs);
-//        }
+        public void TestHarnessFindTypeFromLoadedAssembliesInParallel(Func<string, Type> funcUnderTest) {
+            var runs = FindTypeFromLoadedAssembliesInParallel(funcUnderTest, Enumerable.Repeat(MasterTypeList, 10).ToArray());
+            CollateResults(GetCurrentMethod(), runs);
+        }
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomOrderTenTimes(Func<string, Type> funcUnderTest) {
-//            IList<string>[] randomLists = Enumerable.Repeat(MasterTypeList, 10).Select<IList<string>, IList<string>>(Shuffle).ToArray();
-//            Runs[] runs = FindTypeFromLoadedAssembliesInParallelTenTimes(funcUnderTest, randomLists);
-//            CollateResults(GetCurrentMethod(), runs);
-//        }
+        public void TestHarnessFindTypeFromLoadedAssembliesInParallelRandomOrder(Func<string, Type> funcUnderTest) {
+            var randomList = Shuffle(MasterTypeList);
+            var runs = FindTypeFromLoadedAssembliesInParallel(funcUnderTest, Enumerable.Repeat(randomList, 10).ToArray());
+            CollateResults(GetCurrentMethod(), runs);
+        }
 
-//        public void TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomSelectionTenTimes(Func<string, Type> funcUnderTest) {
-//            IList<string>[] randomLists = Enumerable.Repeat(MasterTypeList, 10).Select<IList<string>, IList<string>>(RandomSelection).ToArray();
-//            Runs[] runs = FindTypeFromLoadedAssembliesInParallelTenTimes(funcUnderTest, randomLists);
-//            CollateResults(GetCurrentMethod(), runs);
-//        }
+        public void TestHarnessFindTypeFromLoadedAssembliesInParallelRandomSelection(Func<string, Type> funcUnderTest) {
+            var randomList = RandomSelection(MasterTypeList);
+            var runs = FindTypeFromLoadedAssembliesInParallel(funcUnderTest, Enumerable.Repeat(randomList, 10).ToArray());
+            CollateResults(GetCurrentMethod(), runs);
+        }
 
-//        #endregion
-//    }
-//}
+        public void TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomOrder(Func<string, Type> funcUnderTest) {
+            var randomLists = Enumerable.Repeat(MasterTypeList, 10).Select(Shuffle).ToArray();
+            var runs = FindTypeFromLoadedAssembliesInParallel(funcUnderTest, randomLists);
+            CollateResults(GetCurrentMethod(), runs);
+        }
+
+        public void TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomSelection(Func<string, Type> funcUnderTest) {
+            var randomLists = Enumerable.Repeat(MasterTypeList, 10).Select(RandomSelection).ToArray();
+            var runs = FindTypeFromLoadedAssembliesInParallel(funcUnderTest, randomLists);
+            CollateResults(GetCurrentMethod(), runs);
+        }
+
+        public void TestHarnessFindTypeFromLoadedAssembliesInParallelTenTimes(Func<string, Type> funcUnderTest) {
+            var runs = FindTypeFromLoadedAssembliesInParallelTenTimes(funcUnderTest, Enumerable.Repeat(MasterTypeList, 10).ToArray());
+            CollateResults(GetCurrentMethod(), runs);
+        }
+
+        public void TestHarnessFindTypeFromLoadedAssembliesInParallelRandomOrderTenTimes(Func<string, Type> funcUnderTest) {
+            var randomList = Shuffle(MasterTypeList);
+            var runs = FindTypeFromLoadedAssembliesInParallelTenTimes(funcUnderTest, Enumerable.Repeat(randomList, 10).ToArray());
+            CollateResults(GetCurrentMethod(), runs);
+        }
+
+        public void TestHarnessFindTypeFromLoadedAssembliesInParallelRandomSelectionTenTimes(Func<string, Type> funcUnderTest) {
+            var randomList = RandomSelection(MasterTypeList);
+            var runs = FindTypeFromLoadedAssembliesInParallelTenTimes(funcUnderTest, Enumerable.Repeat(randomList, 10).ToArray());
+            CollateResults(GetCurrentMethod(), runs);
+        }
+
+        public void TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomOrderTenTimes(Func<string, Type> funcUnderTest) {
+            var randomLists = Enumerable.Repeat(MasterTypeList, 10).Select(Shuffle).ToArray();
+            var runs = FindTypeFromLoadedAssembliesInParallelTenTimes(funcUnderTest, randomLists);
+            CollateResults(GetCurrentMethod(), runs);
+        }
+
+        public void TestHarnessFindTypeFromLoadedAssembliesInParallelMultiRandomSelectionTenTimes(Func<string, Type> funcUnderTest) {
+            var randomLists = Enumerable.Repeat(MasterTypeList, 10).Select(RandomSelection).ToArray();
+            var runs = FindTypeFromLoadedAssembliesInParallelTenTimes(funcUnderTest, randomLists);
+            CollateResults(GetCurrentMethod(), runs);
+        }
+
+        #endregion
+    }
+}
