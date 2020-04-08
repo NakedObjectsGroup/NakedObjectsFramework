@@ -7,13 +7,13 @@
 
 using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.SystemTest.Util {
-    [TestClass]
+    [TestFixture]
     public class DateTimeExtensionsTest {
-        [TestMethod]
+        [Test]
         public void TestEndOfMonth() {
             var wellKnownMonth1 = new DateTime(2009, 2, 11);
             var endOfWellKnownMonth1 = new DateTime(2009, 2, 28);
@@ -26,7 +26,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(wellKnownMonth2.EndOfMonth().Equals(endOfWellKnownMonth1));
         }
 
-        [TestMethod]
+        [Test]
         public void TestEndOfWeek() {
             var wellKnownWeek1 = new DateTime(2009, 2, 11);
             var endOfWellKnownWeek1 = new DateTime(2009, 2, 14);
@@ -39,7 +39,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(wellKnownWeek2.EndOfWeek().Equals(endOfWellKnownWeek1));
         }
 
-        [TestMethod]
+        [Test]
         public void TestEndOfYear() {
             var wellKnownYear1 = new DateTime(2009, 12, 31);
             var endOfWellKnownYear1 = new DateTime(2009, 12, 31);
@@ -52,7 +52,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(wellKnownYear2.EndOfYear().Equals(endOfWellKnownYear1));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsAfterNullableToday() {
             Enumerable.Range(1, 9).Select(x => DateTime.Now.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => Assert.IsTrue(x.IsAfterToday()));
 
@@ -61,14 +61,14 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(((DateTime?) null).IsAfterToday());
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsAfterToday() {
             Enumerable.Range(1, 9).Select(x => DateTime.Now.AddDays(x)).ToList().ForEach(x => Assert.IsTrue(x.IsAfterToday()));
 
             Enumerable.Range(-10, 9).Select(x => DateTime.Now.AddDays(x)).ToList().ForEach(x => Assert.IsFalse(x.IsAfterToday()));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsBeforeNullableToday() {
             Enumerable.Range(-10, 9).Select(x => DateTime.Now.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => Assert.IsTrue(x.IsBeforeToday()));
 
@@ -77,14 +77,14 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(((DateTime?) null).IsBeforeToday());
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsBeforeToday() {
             Enumerable.Range(-10, 9).Select(x => DateTime.Now.AddDays(x)).ToList().ForEach(x => Assert.IsTrue(x.IsBeforeToday()));
 
             Enumerable.Range(1, 9).Select(x => DateTime.Now.AddDays(x)).ToList().ForEach(x => Assert.IsFalse(x.IsBeforeToday()));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsNullableToday() {
             DateTime? today = DateTime.Now;
             DateTime? tomorrow = today.Value.AddDays(1);
@@ -97,7 +97,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(((DateTime?) null).IsToday());
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsSameDayAs() {
             var wellKnownDay = new DateTime(2005, 5, 18);
             var afterWellKnownDay = wellKnownDay.AddDays(1);
@@ -109,7 +109,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(wellKnownDay.IsSameDayAs(null));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsSameMonthAs() {
             var wellKnownDay = new DateTime(2005, 5, 18);
             var afterWellKnownDay = wellKnownDay.AddMonths(1);
@@ -121,7 +121,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(wellKnownDay.IsSameMonthAs(null));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsSameNullableDayAs() {
             DateTime? wellKnownDay = new DateTime(2005, 5, 18);
             DateTime? afterWellKnownDay = wellKnownDay.Value.AddDays(1);
@@ -135,7 +135,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(((DateTime?) null).IsSameDayAs(null));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsSameNullableMonthAs() {
             DateTime? wellKnownDay = new DateTime(2005, 5, 18);
             DateTime? afterWellKnownDay = wellKnownDay.Value.AddMonths(1);
@@ -149,7 +149,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(((DateTime?) null).IsSameMonthAs(null));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsSameNullableWeekAs() {
             DateTime? wellKnownDay = new DateTime(2005, 5, 18);
             DateTime? afterWellKnownDay = wellKnownDay.Value.AddDays(7);
@@ -163,7 +163,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(((DateTime?) null).IsSameWeekAs(null));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsSameNullableYearAs() {
             DateTime? wellKnownDay = new DateTime(2005, 5, 18);
             DateTime? afterWellKnownDay = wellKnownDay.Value.AddYears(1);
@@ -177,7 +177,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(((DateTime?) null).IsSameYearAs(null));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsSameWeekAs() {
             var wellKnownDay = new DateTime(2005, 5, 18);
             var afterWellKnownDay = wellKnownDay.AddDays(7);
@@ -189,7 +189,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(wellKnownDay.IsSameWeekAs(null));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsSameYearAs() {
             var wellKnownDay = new DateTime(2005, 5, 18);
             var afterWellKnownDay = wellKnownDay.AddYears(1);
@@ -201,7 +201,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(wellKnownDay.IsSameYearAs(null));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsToday() {
             var today = DateTime.Now;
             var tomorrow = today.AddDays(1);
@@ -212,7 +212,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(yesterday.IsToday());
         }
 
-        [TestMethod]
+        [Test]
         public void TestStartOfMonth() {
             var wellKnownMonth1 = new DateTime(2009, 2, 11);
             var startOfWellKnownMonth1 = new DateTime(2009, 2, 1);
@@ -225,7 +225,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(wellKnownMonth2.StartOfMonth().Equals(startOfWellKnownMonth1));
         }
 
-        [TestMethod]
+        [Test]
         public void TestStartOfWeek() {
             var wellKnownWeek1 = new DateTime(2009, 2, 11);
             var startOfWellKnownWeek1 = new DateTime(2009, 2, 8);
@@ -238,7 +238,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(wellKnownWeek2.StartOfWeek().Equals(startOfWellKnownWeek1));
         }
 
-        [TestMethod]
+        [Test]
         public void TestStartOfYear() {
             var wellKnownYear1 = new DateTime(2009, 1, 1);
             var startOfWellKnownYear1 = new DateTime(2009, 1, 1);
@@ -251,7 +251,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(wellKnownYear2.StartOfYear().Equals(startOfWellKnownYear1));
         }
 #pragma warning disable 618
-        [TestMethod]
+        [Test]
         public void TestIsAtLeastADayAfter() {
             var wellKnownDay = new DateTime(2002, 4, 4);
 
@@ -262,7 +262,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(null));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsAtLeastADayBefore() {
             var wellKnownDay = new DateTime(2002, 4, 4);
 
@@ -273,7 +273,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(null));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsAtLeastANullableDayAfter() {
             DateTime? wellKnownDay = new DateTime(2002, 4, 4);
 
@@ -286,7 +286,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(null));
         }
 
-        [TestMethod]
+        [Test]
         public void TestIsAtLeastANullableDayBefore() {
             DateTime? wellKnownDay = new DateTime(2002, 4, 4);
 

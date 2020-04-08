@@ -9,7 +9,7 @@
 //using System.Collections.Generic;
 //using System.Data.Entity;
 //using System.Linq;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Architecture.Configuration;
 //using NakedObjects.Architecture.Menu;
 //using NakedObjects.Core.Configuration;
@@ -21,9 +21,9 @@
 
 
 //namespace NakedObjects.SystemTest.Menus.Service {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestMainMenusUsingDelegation : AbstractSystemTest<MenusDbContext> {
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestMainMenus() {
 //            var menus = AllMainMenus();
 
@@ -55,14 +55,14 @@
 //            CleanupNakedObjectsFramework(new TestMainMenusUsingDelegation());
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //        }
 
-//        [TestCleanup()]
-//        public void TestCleanup() {}
+//        [TearDown()]
+//        public void TearDown() {}
 
 //        #endregion
 

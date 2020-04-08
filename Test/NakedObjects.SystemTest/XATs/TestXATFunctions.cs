@@ -11,7 +11,7 @@
 //using System.Globalization;
 //using System.Linq;
 //using System.Threading;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Menu;
 //using NakedObjects.Services;
 //using NakedObjects.Xat;
@@ -20,7 +20,7 @@
 //    /// <summary>
 //    ///     Tests various functions of the XATs themselves
 //    /// </summary>
-//    [TestClass]
+//    [TestFixture]
 //    public class TestXATFunctions : AbstractSystemTest<XatDbContext> {
 //        #region TestEnum enum
 
@@ -43,7 +43,7 @@
 //            get { return base.Fixtures; }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestGetTestService() {
 //            GetTestService("My Service1");
 //            GetTestService("Service Two");
@@ -80,7 +80,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void InvokeActionWithIncorrectParams() {
 //            ITestObject obj1 = NewTestObject<Object1>();
 //            try {
@@ -93,7 +93,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void IncorrectTitle() {
 //            ITestObject obj1 = NewTestObject<Object1>();
 
@@ -107,7 +107,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void VisiblePropertyHasSameNameAsHiddenProperty() {
 //            ITestObject obj1 = NewTestObject<Object1>();
 //            try {
@@ -120,7 +120,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestEnumDefault() {
 //            ITestObject obj = NewTestObject<Object1>();
 
@@ -136,7 +136,7 @@
 //            Assert.AreEqual(null, def2);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestReturnString() {
 //            ITestObject obj = NewTestObject<Object1>();
 
@@ -149,7 +149,7 @@
 //            a1.Invoke();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestTooFewParms() {
 //            ITestObject obj = NewTestObject<Object1>();
 
@@ -164,7 +164,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestGetProperty() {
 //            var culture = Thread.CurrentThread.CurrentCulture;
 //            try {
@@ -198,7 +198,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestPropertyValue() {
 //            var culture = Thread.CurrentThread.CurrentCulture;
 //            try {
@@ -217,7 +217,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestGetAction() {
 //            ITestObject obj = NewTestObject<Object1>();
 
@@ -267,7 +267,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestGetActionById() {
 //            ITestObject obj = NewTestObject<Object1>();
 
@@ -317,7 +317,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestActionAssertHasFriendlyName() {
 //            ITestObject obj = NewTestObject<Object1>();
 //            obj.GetActionById("ActionNumber1").AssertHasFriendlyName("Action Number1");
@@ -414,14 +414,14 @@
 //            Database.Delete(XatDbContext.DatabaseName);
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //        }
 
-//        [TestCleanup()]
-//        public void TestCleanup() {}
+//        [TearDown()]
+//        public void TearDown() {}
 
 //        #endregion
 //    }

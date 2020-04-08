@@ -7,24 +7,27 @@
 
 using System;
 using System.Globalization;
+using System.Linq.Expressions;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.SystemTest.Util {
 #pragma warning disable 618
-    [TestClass]
+    [TestFixture]
     public class TitleBuilderWithInitialContentTest {
         private TitleBuilder builder;
         private CultureInfo culture;
 
-        [TestInitialize]
+        [SetUp]
         public void NewBuilder() {
             culture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             builder = new TitleBuilder("Text");
         }
 
-        [TestCleanup]
+        [TearDown]
         public void Cleanup() {
             Thread.CurrentThread.CurrentCulture = culture;
         }
@@ -33,103 +36,103 @@ namespace NakedObjects.SystemTest.Util {
             Assert.AreEqual(expected, builder.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void TestNewBuilderContainsUnmodifiedText() {
             builder = new TitleBuilder("Text");
             AssertTitleIs("Text");
         }
 
-        [TestMethod]
+        [Test]
         public void TestConcatAddsText() {
             builder.Concat("added");
             AssertTitleIs("Textadded");
         }
 
-        [TestMethod]
+        [Test]
         public void TestConcatAddsTextWithJoiner() {
             builder.Concat("+", "added");
             AssertTitleIs("Text+added");
         }
 
-        [TestMethod]
+        [Test]
         public void TestConcatAddsTitleAttribute() {
             builder.Concat(new ObjectWithTitleAttribute());
             AssertTitleIs("Textfrom property");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendAddsTextAndSpace() {
             builder.Append("added");
             AssertTitleIs("Text added");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendNullAddsNoTextAndNoSpace() {
             builder.Append(null);
             AssertTitleIs("Text");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendAddsToString() {
             builder.Append(new ObjectWithToString());
             AssertTitleIs("Text from ToString");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendAddsToStringWithJoiner() {
             builder.Append("-", new ObjectWithToString());
             AssertTitleIs("Text- from ToString");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendAddsTitleMethod() {
             builder.Append(new ObjectWithTitleMethod());
             AssertTitleIs("Text from Title method");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendAddsTitleAttribute() {
             builder.Append(new ObjectWithTitleAttribute());
             AssertTitleIs("Text from property");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendAddsNullTitleAttribute() {
             builder.Append(new ObjectWithNullTitleAttribute());
             AssertTitleIs("Text");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendAddsTitleAttributeThatIsAReference() {
             builder.Append(new ObjectWithTitleAttributeThatIsAReference());
             AssertTitleIs("Text from Title method");
         }
 
-        [TestMethod]
+        [Test]
         public void TestConcatNoJoiner() {
             builder.Concat(":", null, "d", null);
             AssertTitleIs("Text");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendNoJoiner() {
             builder.Append(":", null, "d", null);
             AssertTitleIs("Text");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendNoJoinerNoDefault() {
             builder.Append(":", null, "d", null);
             AssertTitleIs("Text");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendFormatWithDefault() {
             builder.Append(":", null, "d", "no date");
             AssertTitleIs("Text: no date");
         }
 
-        [TestMethod]
+        [Test]
         public void TestTitleTruncated() {
             builder.Append("no date");
             builder.Truncate(3);
@@ -138,19 +141,28 @@ namespace NakedObjects.SystemTest.Util {
             AssertTitleIs("Text no ...");
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void TestTitleTruncateLenghtChecked() {
-            builder.Truncate(0);
+        [Test]
+        // [ExpectedException(typeof(ArgumentException))]
+        public void TestTitleTruncateLenghtChecked()
+        {
+            try
+            {
+                builder.Truncate(0);
+                Assert.Fail(); // expect exception
+            }
+            catch (ArgumentException)
+            {
+                // expected
+            }
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendFormat() {
             builder.Append(":", new DateTime(2007, 4, 2), "d", null);
             AssertTitleIs("Text: 04/02/2007");
         }
 
-        [TestMethod]
+        [Test]
         public void Test() {
             builder.Append("added");
             AssertTitleIs("Text added");

@@ -7,16 +7,16 @@
 
 //using System;
 //using System.Data.Entity;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Architecture.Menu;
 //using NakedObjects.Meta.Menu;
 //using TestObjectMenu;
 //using Microsoft.Practices.Unity;
 
 //namespace NakedObjects.SystemTest.Menus {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestServiceMenus : AbstractSystemTest<MenusDbContext> {
-//        [TestMethod]
+//        [Test]
 //        public void TestDefaultServiceMenu() {
 //            var menu = GetTestService("Foo Service").GetMenu();
 //            var items = menu.AssertItemCountIs(3).AllItems();
@@ -25,7 +25,7 @@
 //            items[2].AssertIsAction().AssertNameEquals("Foo Action1");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void TestDefaultServiceMenuWithSubMenus() {
 //            var bars = GetTestService("Bars").GetMenu();
 //            bars.AssertItemCountIs(4);
@@ -36,7 +36,7 @@
 //            bars.AllItems()[3].AssertIsAction().AssertNameEquals("Bar Action3");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void TestWhenMainMenusNotSpecifiedServiceMenusAreUsed() {
 //            var bars = GetMainMenu("Bars"); //i.e. same as asking for GetService("Bars").GetMenu();
 //            bars.AssertItemCountIs(4);
@@ -62,14 +62,14 @@
 //            CleanupNakedObjectsFramework(new TestServiceMenus());
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //        }
 
-//        [TestCleanup()]
-//        public void TestCleanup() {}
+//        [TearDown()]
+//        public void TearDown() {}
 
 //        #endregion
 

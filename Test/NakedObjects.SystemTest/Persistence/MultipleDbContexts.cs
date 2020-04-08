@@ -5,7 +5,7 @@
 //using NakedObjects.Services;
 //using NakedObjects.Xat;
 //using NakedObjects.Xat.Database;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using System.Data.Entity;
 //using System.Data.Entity.Infrastructure;
 //using System;
@@ -13,7 +13,7 @@
 //namespace NakedObjects.SystemTest.Persistence2
 //{
 
-//    [TestClass()]
+//    [TestFixture()]
 //    public class MultipleDbContexts : AcceptanceTestCase
 //    {
 
@@ -52,14 +52,14 @@
 
 //        #region Initialize and Cleanup
 
-//        [TestInitialize()]
+//        [SetUp()]
 //        public void Initialize()
 //        {
 //            InitializeNakedObjectsFramework();
 //            // Use e.g. DatabaseUtils.RestoreDatabase to revert database before each test (or within a [ClassInitialize()] method).
 //        }
 
-//        [TestCleanup()]
+//        [TearDown()]
 //        public void Cleanup()
 //        {
 //            CleanupNakedObjectsFramework();
@@ -67,7 +67,7 @@
 
 //        #endregion
 
-//        [TestMethod()]
+//        [Test()]
 //        public virtual void ExceptionInSecond()
 //        {
 //            var getFoos = GetTestService("Foos").GetAction("All Instances");

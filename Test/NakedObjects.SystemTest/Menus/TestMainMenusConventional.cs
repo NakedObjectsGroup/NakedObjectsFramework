@@ -8,7 +8,7 @@
 //using System;
 //using System.Data.Entity;
 //using System.Linq;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Architecture.Configuration;
 //using NakedObjects.Architecture.Menu;
 //using NakedObjects.Core.Configuration;
@@ -20,25 +20,25 @@
 
 
 //namespace NakedObjects.SystemTest.Menus.Service2 {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestMainMenusConventional : AbstractSystemTest<MenusDbContext> {
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestMainMenuCount() {
 //            AssertMainMenuCountIs(7);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestAllMainMenus() {
 //            var menus = AllMainMenus();
 //            Assert.AreEqual(menus.Count(), menus.OfType<ITestMenu>().Count());
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void TestGetMainMenu() {
 //            GetMainMenu("Foo Service").AssertNameEquals("Foo Service");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestMainMenuNames() {
 //            var menus = AllMainMenus();
 
@@ -47,7 +47,7 @@
 //            menus[2].AssertNameEquals("Qs"); //Named attribute overridden in menu construction
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestAddAllActions() {
 //            var foo = GetMainMenu("Foo Service");
 //            foo.AssertItemCountIs(3);
@@ -58,7 +58,7 @@
 //            foo.AllItems()[2].AssertNameEquals("Foo Action2");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestAddingActionsToAMenu() {
 //            var q = GetMainMenu("Qs");
 //            q.AssertItemCountIs(4);
@@ -69,7 +69,7 @@
 //            q.AllItems()[3].AssertIsAction().AssertNameEquals("Qux Action2");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestAddingSubMenuToAMenu() {
 //            var subs = GetMainMenu("Subs");
 //            subs.AssertItemCountIs(2);
@@ -84,7 +84,7 @@
 //            sub2.AllItems()[1].AssertIsAction().AssertNameEquals("Action0");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestAddAllActionsRecognisesMemberOrder() {
 //            var bars = GetMainMenu("Bars");
 //            bars.AssertItemCountIs(4);
@@ -95,7 +95,7 @@
 //            bars.AllItems()[3].AssertIsAction().AssertNameEquals("Bar Action3");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void TestHybridMenu() {
 //            var hyb = GetMainMenu("Hybrid");
 //            hyb.AssertItemCountIs(6);
@@ -108,20 +108,20 @@
 //            hyb.AllItems()[5].AssertIsAction().AssertNameEquals("Qux Action3");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestMenuWithNoActions() {
 //            var e = GetMainMenu("Empty");
 //            e.AssertItemCountIs(0);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestSubMenuWithNoActions() {
 //            var e = GetMainMenu("Empty2");
 //            e.AssertItemCountIs(1);
 //            e.AllItems()[0].AssertIsSubMenu().AssertNameEquals("Sub").AsSubMenu().AssertItemCountIs(0);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TestActionVisibility() {
 //            var q = GetMainMenu("Qs");
 //            q.AssertItemCountIs(4);
@@ -145,14 +145,14 @@
 //            CleanupNakedObjectsFramework(new TestMainMenusConventional());
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //        }
 
-//        [TestCleanup()]
-//        public void TestCleanup() {}
+//        [TearDown()]
+//        public void TearDown() {}
 
 //        #endregion
 

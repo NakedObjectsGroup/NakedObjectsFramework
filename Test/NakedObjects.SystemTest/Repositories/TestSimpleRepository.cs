@@ -7,12 +7,12 @@
 
 //using System;
 //using System.Data.Entity;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Services;
 //using NakedObjects.Xat;
 
 //namespace NakedObjects.SystemTest.Repositories {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestSimpleRepository : AbstractSystemTest<SimpleRepositoryDbContext> {
 //        protected override object[] MenuServices {
 //            get {
@@ -22,7 +22,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void FindByKey() {
 //            var find = GetTestService("Customers").GetAction("Find By Key");
 //            var result = find.InvokeReturnObject(1);
@@ -31,7 +31,7 @@
 //            result.GetPropertyByName("Id").AssertValueIsEqual("2");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void KeyValueDoesNotExist() {
 //            var find = GetTestService("Customers").GetAction("Find By Key");
 //            var result = find.InvokeReturnObject(1000);
@@ -57,8 +57,8 @@
 //            Database.Delete(SimpleRepositoryDbContext.DatabaseName);
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //            ITestObject cust1To = NewTestObject<Customer>();
@@ -76,8 +76,8 @@
 //            get { return new[] {typeof (Customer).Namespace}; }
 //        }
 
-//        [TestCleanup()]
-//        public void TestCleanup() {}
+//        [TearDown()]
+//        public void TearDown() {}
 
 //        #endregion
 //    }

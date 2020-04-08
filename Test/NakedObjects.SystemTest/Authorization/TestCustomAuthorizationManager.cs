@@ -8,7 +8,7 @@
 //using System;
 //using System.Data.Entity;
 //using System.Security.Principal;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Architecture.Component;
 //using NakedObjects.Architecture.Configuration;
 //using NakedObjects.Core.Configuration;
@@ -22,7 +22,7 @@
 //using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 //namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
 //        protected override void RegisterTypes(IUnityContainer container) {
 //            base.RegisterTypes(container);
@@ -67,15 +67,15 @@
 //            CleanupNakedObjectsFramework(new TestCustomAuthorizationManager());
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //            SetUser("sven");
 //        }
 
-//        [TestCleanup()]
-//        public void TestCleanup() {}
+//        [TearDown()]
+//        public void TearDown() {}
 
 //        #endregion
 
@@ -100,7 +100,7 @@
 
 //        #region Tests
 
-//        [TestMethod]
+//        [Test]
 //        public void VisibilityUsingSpecificTypeAuthorizer() {
 //            ITestObject foo = GetTestService(typeof (SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
 //            try {
@@ -112,7 +112,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void EditabilityUsingSpecificTypeAuthorizer() {
 //            ITestObject qux = GetTestService(typeof (SimpleRepository<Qux>)).GetAction("New Instance").InvokeReturnObject();
 //            try {
@@ -124,7 +124,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DefaultAuthorizerCalledForNonSpecificType() {
 //            ITestObject bar1 = GetTestService(typeof (SimpleRepository<Bar>)).GetAction("New Instance").InvokeReturnObject();
 //            ITestProperty prop1 = bar1.GetPropertyByName("Prop1");
@@ -132,7 +132,7 @@
 //            prop1.AssertIsModifiable();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void SubClassIsNotPickedUpByTypeAuthorizer() {
 //            ITestObject fooSub = GetTestService(typeof (SimpleRepository<FooSub>)).GetAction("New Instance").InvokeReturnObject();
 //            ITestProperty prop1 = fooSub.GetPropertyByName("Prop1");
@@ -140,7 +140,7 @@
 //            prop1.AssertIsModifiable();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void SubClassIsNotPickedUpByTypeAuthorizerWhereSubTypeNameExtendsSupertypeName() {
 //            ITestObject fooSub = GetTestService(typeof (SimpleRepository<SubTypeOfFoo>)).GetAction("New Instance").InvokeReturnObject();
 //            ITestProperty prop1 = fooSub.GetPropertyByName("Prop1");

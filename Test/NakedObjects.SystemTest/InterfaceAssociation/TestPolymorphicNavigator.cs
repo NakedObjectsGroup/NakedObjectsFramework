@@ -6,7 +6,7 @@
 //// See the License for the specific language governing permissions and limitations under the License.
 
 //using System.Data.Entity;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Architecture.Menu;
 //using NakedObjects.Persistor.Entity.Configuration;
 //using NakedObjects.SystemTest.PolymorphicAssociations;
@@ -15,7 +15,7 @@
 
 
 //namespace NakedObjects.SystemTest.PolymorphicNavigator {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestPolymorphicNavigator : TestPolymorphicNavigatorAbstract {
 //        private const string databaseName = "TestPolymorphicNavigator";
 
@@ -23,57 +23,57 @@
 //            get { return new[] {typeof (PolymorphicPayment).Namespace}; }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void SetPolymorphicPropertyOnTransientObject() {
 //            base.SetPolymorphicPropertyOnTransientObject("NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {
 //            base.AttemptSetPolymorphicPropertyWithATransientAssociatedObject();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void SetPolymorphicPropertyOnPersistentObject() {
 //            SetPolymorphicPropertyOnPersistentObject("NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ChangePolymorphicPropertyOnPersistentObject() {
 //            ChangePolymorphicPropertyOnPersistentObject("NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee", "NakedObjects.SystemTest.PolymorphicAssociations.SupplierAsPayee");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public override void ClearPolymorphicProperty() {
 //            base.ClearPolymorphicProperty();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void PolymorphicCollectionAddMutlipleItemsOfOneType() {
 //            base.PolymorphicCollectionAddMutlipleItemsOfOneType("NakedObjects.SystemTest.PolymorphicAssociations.InvoiceAsPayableItem");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void PolymorphicCollectionAddDifferentItems() {
 //            base.PolymorphicCollectionAddDifferentItems("NakedObjects.SystemTest.PolymorphicAssociations.InvoiceAsPayableItem", "NakedObjects.SystemTest.PolymorphicAssociations.ExpenseClaimAsPayableItem");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public override void AttemptToAddSameItemTwice() {
 //            base.AttemptToAddSameItemTwice();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public override void RemoveItem() {
 //            base.RemoveItem();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public override void AttemptToRemoveNonExistentItem() {
 //            base.AttemptToRemoveNonExistentItem();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public override void FindOwnersForObject() {
 //            base.FindOwnersForObject();
 //        }
@@ -95,8 +95,8 @@
 
 //        private static bool fixturesRun;
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            if (!fixturesRun) {
 //                RunFixtures();

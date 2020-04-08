@@ -8,11 +8,11 @@
 //using System;
 //using System.ComponentModel.DataAnnotations;
 //using System.Data.Entity;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Services;
 
 //namespace NakedObjects.SystemTest.Container {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestContainer : AbstractSystemTest<ContainerDbContext> {
 //        protected override Type[] Types {
 //            get { return new[] {typeof (Object1), typeof (Object2), typeof (ViewModel2)}; }
@@ -26,7 +26,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DefaultsTransient() {
 //            var testObject = (Object1) NewTestObject<Object1>().GetDomainObject();
 //            Assert.IsNotNull(testObject.Container);
@@ -45,7 +45,7 @@
 //            Assert.IsNull(o2.TestNullableEnumDt);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DefaultsViewModel() {
 //            var testObject = (Object1) NewTestObject<Object1>().GetDomainObject();
 //            Assert.IsNotNull(testObject.Container);
@@ -79,8 +79,8 @@
 //            CleanupNakedObjectsFramework(new TestContainer());
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //        }

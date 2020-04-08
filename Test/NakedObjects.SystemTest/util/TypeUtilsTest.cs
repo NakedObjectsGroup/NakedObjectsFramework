@@ -5,13 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using NakedObjects.Util;
+using NUnit.Framework;
 
 namespace NakedObjects.SystemTest.Util {
-    [TestClass]
+    [TestFixture]
     public class TypeUtilsTest {
-        [TestMethod]
+        [Test]
         public void TestMatch() {
             var m = new Match();
             Assert.IsTrue(m.IsPropertyMatch("Prop1", mm => mm.Prop1));
@@ -25,7 +26,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(m.IsPropertyMatch(null, mm => mm.Prop2));
         }
 
-        [TestMethod]
+        [Test]
         public void TestMatchObject() {
             var o = new Match() as object;
 

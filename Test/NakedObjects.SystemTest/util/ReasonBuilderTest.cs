@@ -5,14 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.SystemTest.Util {
-    [TestClass]
+    [TestFixture]
     public class ReasonBuilderTest {
         private ReasonBuilder builder;
 
-        [TestInitialize]
+        [SetUp]
         public void SetUp() {
             builder = new ReasonBuilder();
         }
@@ -21,7 +23,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.AreEqual(expected, builder.Reason);
         }
 
-        [TestMethod]
+        [Test]
         public void WithNothingAppendedReasonReturnsNull() {
             Assert.IsNull(builder.Reason);
             builder.Append("Reason 1");
@@ -29,7 +31,7 @@ namespace NakedObjects.SystemTest.Util {
             AssertMessageIs("Reason 1");
         }
 
-        [TestMethod]
+        [Test]
         public void Append() {
             builder.Append("Reason 1");
             AssertMessageIs("Reason 1");
@@ -39,7 +41,7 @@ namespace NakedObjects.SystemTest.Util {
             AssertMessageIs("Reason 1; Reason 2; Reason 3");
         }
 
-        [TestMethod]
+        [Test]
         public void AppendOnCondition() {
             builder.AppendOnCondition(false, "Reason 1");
             Assert.IsNull(builder.Reason);

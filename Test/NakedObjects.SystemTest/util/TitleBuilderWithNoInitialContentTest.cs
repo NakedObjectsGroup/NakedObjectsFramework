@@ -8,23 +8,25 @@
 using System;
 using System.Globalization;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.SystemTest.Util {
 #pragma warning disable 618
-    [TestClass]
+    [TestFixture]
     public class TitleBuilderWithNoIntialContentTest {
         private TitleBuilder builder;
         private CultureInfo culture;
 
-        [TestInitialize]
+        [SetUp]
         public void NewBuilder() {
             culture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             builder = new TitleBuilder();
         }
 
-        [TestCleanup]
+        [TearDown]
         public void Cleanup() {
             Thread.CurrentThread.CurrentCulture = culture;
         }
@@ -33,87 +35,87 @@ namespace NakedObjects.SystemTest.Util {
             Assert.AreEqual(expected, builder.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void TestNewBuilderContainsUnmodifiedText() {
             AssertTitleIs("");
         }
 
-        [TestMethod]
+        [Test]
         public void TestConcatAddsText() {
             builder.Concat("added");
             AssertTitleIs("added");
         }
 
-        [TestMethod]
+        [Test]
         public void TestConcatNoJoiner() {
             builder.Concat(":", null, "d", null);
             AssertTitleIs("");
         }
 
-        [TestMethod]
+        [Test]
         public void TestConcatAddsTextWithJoiner() {
             builder.Concat("+", "1Add");
             builder.Concat("+", "2Add");
             AssertTitleIs("1Add+2Add");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendAddsTextWithJoiner() {
             builder.Append("+", "1Add");
             builder.Append("+", "2Add");
             AssertTitleIs("1Add+ 2Add");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendNullAddsNoTextAndNoSpace() {
             builder.Append(null);
             AssertTitleIs("");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendFormatWithDefault() {
             builder.Append("x");
             builder.Append(":", null, "d", "no date");
             AssertTitleIs("x: no date");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendToEmptyFormatWithDefault() {
             builder.Append(":", null, "d", "no date");
             AssertTitleIs("no date");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendFormat() {
             builder.Append(new DateTime(2007, 4, 2), "d", null);
             AssertTitleIs("04/02/2007");
         }
 
-        [TestMethod]
+        [Test]
         public void TestAppendWithJoiner() {
             builder.Append(1).Append("~", 2).Append(" !", 3);
             AssertTitleIs("1~ 2 ! 3");
         }
 
-        [TestMethod]
+        [Test]
         public void TestJoinerOmmittedIfNullIsAppended() {
             builder.Append(1).Append("~", null);
             AssertTitleIs("1");
         }
 
-        [TestMethod]
+        [Test]
         public void TestJoinerOmmittedIfBeingAppendedToNothing() {
             builder.Append("~", 1);
             AssertTitleIs("1");
         }
 
-        [TestMethod]
+        [Test]
         public void TestSecondNullDoesNotNegateFirstOne() {
             builder.Append(1).Append("~", 2).Append(" !", null);
             AssertTitleIs("1~ 2");
         }
 
-        [TestMethod]
+        [Test]
         public void EnumAsArgumentWithSingleWord() {
             var t = new TitleBuilder();
             t.Append(Sex.Female);
@@ -121,7 +123,7 @@ namespace NakedObjects.SystemTest.Util {
             Assert.AreEqual("Female", t.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void EnumAsArgumentWithMultipleWordsFormatted() {
             var t = new TitleBuilder();
             t.Append(Sex.NotSpecified);

@@ -7,12 +7,12 @@
 
 //using System.Collections.Generic;
 //using System.Data.Entity;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Services;
 
 //namespace NakedObjects.SystemTest.ParentChild {
 //    namespace ParentChild {
-//        [TestClass]
+//        [TestFixture]
 //        public class TestParentChildPersistence : AbstractSystemTest<ParentChildDbContext> {
 //            protected override string[] Namespaces {
 //                get { return new[] {typeof (Parent).Namespace}; }
@@ -28,7 +28,7 @@
 //                }
 //            }
 
-//            [TestMethod]
+//            [Test]
 //            public virtual void CannotSaveParentIfChildHasMandatoryFieldsMissing() {
 //                var parent = GetTestService("Parents").GetAction("New Instance").InvokeReturnObject();
 //                var parent0 = parent.GetPropertyByName("Prop0").AssertIsMandatory().AssertIsEmpty();
@@ -62,8 +62,8 @@
 //                Database.Delete(ParentChildDbContext.DatabaseName);
 //            }
 
-//            [TestInitialize()]
-//            public void TestInitialize() {
+//            [SetUp()]
+//            public void SetUp() {
 //                InitializeNakedObjectsFrameworkOnce();
 //                StartTest();
 //            }

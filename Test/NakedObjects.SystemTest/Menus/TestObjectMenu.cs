@@ -9,7 +9,7 @@
 //using System.ComponentModel;
 //using System.Data.Entity;
 //using System.Linq;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects;
 //using NakedObjects.Architecture.Menu;
 //using NakedObjects.Menu;
@@ -19,13 +19,13 @@
 //using Microsoft.Practices.Unity;
 
 //namespace NakedObjects.SystemTest.Menus {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestObjectMenu : AbstractSystemTest<MenusDbContext> {
 //        protected override string[] Namespaces {
 //            get { return new[] {typeof (Foo).Namespace}; }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void TestDefaultMenu() {
 //            var foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject().Save();
 //            var menu = foo.GetMenu();
@@ -46,7 +46,7 @@
 //            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void TestDefaultMenuOnSubClass() {
 //            var foo2 = GetTestService("Foo2s").GetAction("New Instance").InvokeReturnObject().Save();
 //            var menu = foo2.GetMenu();
@@ -68,7 +68,7 @@
 //            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void TestSpecifiedMenu() {
 //            var bar = GetTestService("Bars").GetAction("New Instance").InvokeReturnObject().Save();
 //            var menu = bar.GetMenu();
@@ -93,7 +93,7 @@
 //            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void SubClassWithNoNewActionsOrMenuGetsDefaultMenu() {
 //            var bar2 = GetTestService("Bar2s").GetAction("New Instance").InvokeReturnObject().Save();
 //            var menu = bar2.GetMenu();
@@ -118,7 +118,7 @@
 //            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action8");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void SubClassDelegatingToSuperMenu() {
 //            var bar3 = GetTestService("Bar3s").GetAction("New Instance").InvokeReturnObject().Save();
 //            var menu = bar3.GetMenu();
@@ -147,7 +147,7 @@
 //            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void SubClassAddingNewSubMenuAboveSuperMenu() {
 //            var bar4 = GetTestService("Bar4s").GetAction("New Instance").InvokeReturnObject().Save();
 //            var menu = bar4.GetMenu();
@@ -175,7 +175,7 @@
 //            sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void TwoLevelsOfInheritance() {
 //            var bar5 = GetTestService("Bar5s").GetAction("New Instance").InvokeReturnObject().Save();
 //            var menu = bar5.GetMenu();
@@ -219,14 +219,14 @@
 //            CleanupNakedObjectsFramework(new TestObjectMenu());
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //        }
 
-//        [TestCleanup()]
-//        public void TestCleanup() {}
+//        [TearDown()]
+//        public void TearDown() {}
 
 //        #endregion
 

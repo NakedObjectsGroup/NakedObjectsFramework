@@ -8,7 +8,7 @@
 //using System;
 //using System.Data.Entity;
 //using System.Security.Principal;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using MyApp.MyCluster1;
 //using MyApp.MyCluster2;
 //using NakedObjects;
@@ -23,7 +23,7 @@
 
 
 //namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestNamespaceAuthorization : AbstractSystemTest<NamespaceAuthorizationDbContext> {
 //        #region Services & Fixtures
 
@@ -68,7 +68,7 @@
 //            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AuthorizerWithMostSpecificNamespaceIsInvokedForVisibility() {
 //            //Bar1
 //            var bar1 = GetTestService(typeof (SimpleRepository<Bar1>)).GetAction("New Instance").InvokeReturnObject();
@@ -120,15 +120,15 @@
 //            CleanupNakedObjectsFramework(new TestNamespaceAuthorization());
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //            SetUser("sven");
 //        }
 
-//        [TestCleanup()]
-//        public void TestCleanup() {}
+//        [TearDown()]
+//        public void TearDown() {}
 
 //        #endregion
 //    }

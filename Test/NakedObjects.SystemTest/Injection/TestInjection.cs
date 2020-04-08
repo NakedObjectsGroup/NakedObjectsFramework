@@ -8,11 +8,11 @@
 //using System;
 //using System.Data.Entity;
 //using System.Linq;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Services;
 
 //namespace NakedObjects.SystemTest.Injection {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestInjection : AbstractSystemTest<InjectionDbContext> {
 //        protected override Type[] Types {
 //            get { return new[] {typeof (Object1), typeof (Object2), typeof (Object3), typeof (Object4), typeof (Object5), typeof (Service1), typeof (IService2), typeof (IService3)}; }
@@ -35,21 +35,21 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void InjectContainer() {
 //            var testObject = (Object1) NewTestObject<Object1>().GetDomainObject();
 //            Assert.IsNotNull(testObject.Container);
 //            Assert.IsInstanceOfType(testObject.Container, typeof (IDomainObjectContainer));
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void InjectService() {
 //            var testObject = (Object2) NewTestObject<Object2>().GetDomainObject();
 //            Assert.IsNotNull(testObject.GetService1());
 //            Assert.IsInstanceOfType(testObject.GetService1(), typeof (Service1));
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void InjectServiceDefinedByInterface() {
 //            var testObject = (Object2) NewTestObject<Object2>().GetDomainObject();
 //            Assert.IsNotNull(testObject.GetService2());
@@ -59,7 +59,7 @@
 //            Assert.IsNull(testObject.GetObject());
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void InjectedPropertiesAreHidden() {
 //            var obj = NewTestObject<Object2>();
 //            try {
@@ -74,7 +74,7 @@
 //            prop.AssertIsVisible();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void InjectArrayOfServicesDefinedByInterface() {
 //            var testObject = (Object4) NewTestObject<Object4>().GetDomainObject();
 //            var arr = testObject.GetService4s();
@@ -103,7 +103,7 @@
 //            Assert.IsNull(emptyArr);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void RuntimeExceptionForAmbigiousInjecton() {
 //            try {
 //                var testObject = (Object5) NewTestObject<Object5>().GetDomainObject();
@@ -130,8 +130,8 @@
 //            Database.Delete(InjectionDbContext.DatabaseName);
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //        }

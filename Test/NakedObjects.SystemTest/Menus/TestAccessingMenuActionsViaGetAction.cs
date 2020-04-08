@@ -8,7 +8,7 @@
 //using System;
 //using System.Data.Entity;
 //using SystemTest.ContributedActions;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects;
 //using NakedObjects.Menu;
 //using NakedObjects.Services;
@@ -16,15 +16,15 @@
 //namespace NakedObjects.SystemTest.Menus {
 //    //This class is not testing menus, nor TestMenus, but simply backwards compatibility
 //    //of GetAction, including with specified subMenu.
-//    [TestClass]
+//    [TestFixture]
 //    public class TestAccessingMenuActionsViaGetAction : AbstractSystemTest<CADbContext> {
-//        [TestMethod]
+//        [Test]
 //        public void ContributedActionToObjectWithDefaultMenu() {
 //            var foo = NewTestObject<Foo>();
 //            Assert.IsNotNull(foo.GetAction("Action1"));
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ContributedActionToSubMenuObjectWithDefaultMenu() {
 //            var foo = NewTestObject<Foo>();
 //            Assert.IsNotNull(foo.GetAction("Action2", "Sub"));
@@ -37,7 +37,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ContributedActionToObjectWithExplicitMenu() {
 //            var bar = NewTestObject<Bar>();
 //            Assert.IsNotNull(bar.GetAction("Action3"));
@@ -62,8 +62,8 @@
 //            CleanupNakedObjectsFramework(new TestAccessingMenuActionsViaGetAction());
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //        }
@@ -93,7 +93,7 @@
 
 //namespace SystemTest.ContributedActions {
 //    public class CADbContext : DbContext {
-//        public const string DatabaseName = "TestMethods";
+//        public const string DatabaseName = "Tests";
 //        public CADbContext() : base(DatabaseName) {}
 
 //        public DbSet<Foo> Foos { get; set; }

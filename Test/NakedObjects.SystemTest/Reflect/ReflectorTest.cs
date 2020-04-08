@@ -12,7 +12,7 @@
 //using System.Linq;
 //using System.Security.Principal;
 //using AdventureWorksModel;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Architecture.Component;
 //using NakedObjects.Architecture.Configuration;
 //using NakedObjects.Architecture.Facet;
@@ -32,7 +32,7 @@
 
 
 //namespace NakedObjects.SystemTest.Reflect {
-//    [TestClass]
+//    [TestFixture]
 //    public class ReflectorTest {
 //        protected IUnityContainer GetContainer() {
 //            var c = new UnityContainer();
@@ -65,7 +65,7 @@
 //            container.RegisterType<IMetamodelBuilder, Metamodel>();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ReflectNoTypes() {
 //            IUnityContainer container = GetContainer();
 //            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new string[] {});
@@ -79,7 +79,7 @@
 //            Assert.IsFalse(reflector.AllObjectSpecImmutables.Any());
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ReflectWithDecorators() {
 //            IUnityContainer container = GetContainer();
 //            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new string[] {});
@@ -110,7 +110,7 @@
 //            return allTypes.Where(t => t.IsPublic && !t.IsAbstract && t.FullName.StartsWith("AdventureWorksModel")).ToArray();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ReflectAdventureworks() {
 //            // load adventurework
 
@@ -139,7 +139,7 @@
 //        // this still fails - looks to be one of the facets on the OneToOneSpecImmutable causing a BinaryHeader error
 //        // need further investigation
 //        // how about wring a test that serialises/deserialises all facets ?
-//        //[TestMethod]
+//        //[Test]
 //        //public void SerializeAdventureworks() {
 //        //    // load adventurework
 
@@ -214,7 +214,7 @@
 //        //        deserializeInterval);
 //        //}
 
-//        //[TestMethod]
+//        //[Test]
 //        //public void SerializeAdventureworksByType() {
 //        //    // load adventurework
 
@@ -250,7 +250,7 @@
 //        //    SerializeDeserialize(cache, file);
 //        //}
 
-//        [TestMethod]
+//        [Test]
 //        public void SerializeAdventureworksFacets() {
 //            // load adventurework
 

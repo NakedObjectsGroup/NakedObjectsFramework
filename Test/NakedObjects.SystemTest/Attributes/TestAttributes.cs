@@ -35,7 +35,7 @@ using ITestAction = NakedObjects.Xat.ITestAction;
  //   <add name = "ObjectFinderInstances" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=ObjectFinderInstances;Integrated Security=True;" providerName="System.Data.SqlClient" />
  //   <add name = "ObjectFinderGuid" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=ObjectFinderGuid;Integrated Security=True;" providerName="System.Data.SqlClient" />
  //   <add name = "ObjectFinderSingleKey" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=ObjectFinderSingleKey;Integrated Security=True;" providerName="System.Data.SqlClient" />
- //   <add name = "TestMethods" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestMethods;Integrated Security=True;" providerName="System.Data.SqlClient" />
+ //   <add name = "Tests" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Tests;Integrated Security=True;" providerName="System.Data.SqlClient" />
  //   <add name = "TestMenus" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestMenus;Integrated Security=True;" providerName="System.Data.SqlClient" />
  //   <add name = "TestEnums" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestEnums;Integrated Security=True;" providerName="System.Data.SqlClient" />
  //   <add name = "TestParentChild" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestParentChild;Integrated Security=True;" providerName="System.Data.SqlClient" />
@@ -163,7 +163,7 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [TearDown]
-        public void TestCleanup() {
+        public void TearDown() {
             //EndTest();
         }
 

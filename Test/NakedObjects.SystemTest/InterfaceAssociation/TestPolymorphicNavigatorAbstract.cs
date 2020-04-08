@@ -8,13 +8,13 @@
 //using System;
 //using System.Data.Entity.SqlServer;
 //using System.Linq;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Services;
 //using NakedObjects.SystemTest.PolymorphicAssociations;
 //using NakedObjects.Xat;
 
 //namespace NakedObjects.SystemTest.PolymorphicNavigator {
-//    [TestClass]
+//    [TestFixture]
 //    public abstract class TestPolymorphicNavigatorAbstract : AbstractSystemTest<PolymorphicNavigationContext> {
 //        #region Setup/Teardown
 

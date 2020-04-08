@@ -9,13 +9,13 @@
 //using System.ComponentModel.DataAnnotations;
 //using System.Data.Entity;
 //using System.Linq;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Services;
 //using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 //using NakedObjects.Xat;
 
 //namespace NakedObjects.SystemTest.ObjectFinderGuid {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestObjectFinderWithGuids : AbstractSystemTest<PaymentContext> {
 //        private ITestObject customer1;
 //        private ITestObject customer2;
@@ -39,7 +39,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void SetAssociatedObject() {
 //            payee1.SetObject(customer1);
 //            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderGuid.Customer|0c1ced04-7016-11e0-9c44-78544824019b");
@@ -50,7 +50,7 @@
 //            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderGuid.Customer|3d9d6ca0-7016-11e0-b12a-9e544824019b");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ChangeAssociatedObjectType() {
 //            payee1.SetObject(customer1);
 //            payee1.ClearObject();
@@ -60,14 +60,14 @@
 //            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderGuid.Supplier|89bc90ec-7017-11e0-a08c-57564824019b");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ClearAssociatedObject() {
 //            payee1.SetObject(customer1);
 //            payee1.ClearObject();
 //            key1.AssertIsEmpty();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void GetAssociatedObject() {
 //            key1.SetValue("NakedObjects.SystemTest.ObjectFinderGuid.Customer|0c1ced04-7016-11e0-9c44-78544824019b");
 //            payee1.AssertIsNotEmpty();
@@ -80,7 +80,7 @@
 //            payee1.ContentAsObject.GetPropertyByName("Guid").AssertValueIsEqual("3d9d6ca0-7016-11e0-b12a-9e544824019b");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void NoAssociatedObject() {
 //            key1.AssertIsEmpty();
 //        }
@@ -102,7 +102,7 @@
 //            Database.Delete(PaymentContext.DatabaseName);
 //        }
 
-//        [TestInitialize]
+//        [SetUp]
 //        public void Initialize() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();

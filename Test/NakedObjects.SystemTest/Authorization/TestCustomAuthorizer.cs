@@ -8,7 +8,7 @@
 //using System;
 //using System.Data.Entity;
 //using System.Security.Principal;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Architecture.Component;
 //using NakedObjects.Architecture.Configuration;
 //using NakedObjects.Core;
@@ -41,14 +41,14 @@
 //        }
 //    }
 
-//    [TestClass] //Use DefaultAuthorizer1
+//    [TestFixture] //Use DefaultAuthorizer1
 //    public class TestCustomAuthorizer1 : TestCustomAuthorizer {
 //        protected override void RegisterTypes(IUnityContainer container) {
 //            base.RegisterTypes(container);
 //            RegisterAuthorizerTypes<DefaultAuthorizer1>(container);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AttemptToUseAuthorizerForAbstractType() {
 //            try {
 //                InitializeNakedObjectsFramework(this);
@@ -76,14 +76,14 @@
 //        #endregion
 //    }
 
-//    [TestClass] //Use DefaultAuthorizer2
+//    [TestFixture] //Use DefaultAuthorizer2
 //    public class TestCustomAuthorizer2 : TestCustomAuthorizer {
 //        protected override void RegisterTypes(IUnityContainer container) {
 //            base.RegisterTypes(container);
 //            RegisterAuthorizerTypes<DefaultAuthorizer2>(container);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AttemptToUseNonImplementationOfITestAuthorizer() {
 //            try {
 //                InitializeNakedObjectsFramework(this);
@@ -104,14 +104,14 @@
 //        #endregion
 //    }
 
-//    [TestClass] //Use DefaultAuthorizer1
+//    [TestFixture] //Use DefaultAuthorizer1
 //    public class TestCustomAuthorizer3 : TestCustomAuthorizer {
 //        protected override void RegisterTypes(IUnityContainer container) {
 //            base.RegisterTypes(container);
 //            RegisterAuthorizerTypes<DefaultAuthorizer1>(container);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AttemptToUseITestAuthorizerOfObject() {
 //            try {
 //                InitializeNakedObjectsFramework(this);
@@ -129,8 +129,8 @@
 //            Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
 //        }
 
-//        [TestInitialize]
-//        public void TestInitialize() {
+//        [SetUp]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //        }
@@ -138,14 +138,14 @@
 //        #endregion
 //    }
 
-//    [TestClass] //Use DefaultAuthorizer3
+//    [TestFixture] //Use DefaultAuthorizer3
 //    public class TestCustomAuthoriser4 : TestCustomAuthorizer {
 //        protected override void RegisterTypes(IUnityContainer container) {
 //            base.RegisterTypes(container);
 //            RegisterAuthorizerTypes<DefaultAuthorizer3>(container);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AccessByAuthorizedUserName() {
 //            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
 //        }
@@ -165,8 +165,8 @@
 //            CleanupNakedObjectsFramework(new TestCustomAuthoriser4());
 //        }
 
-//        [TestInitialize]
-//        public void TestInitialize() {
+//        [SetUp]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //            SetUser("Fred");
@@ -175,14 +175,14 @@
 //        #endregion
 //    }
 
-//    [TestClass] //Use DefaultAuthorizer3
+//    [TestFixture] //Use DefaultAuthorizer3
 //    public class TestCustomAuthoriser5 : TestCustomAuthorizer {
 //        protected override void RegisterTypes(IUnityContainer container) {
 //            base.RegisterTypes(container);
 //            RegisterAuthorizerTypes<DefaultAuthorizer3>(container);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AccessByAnonUserWithoutRole() {
 //            GetTestService("Foos").GetAction("New Instance").AssertIsInvisible();
 //        }
@@ -195,8 +195,8 @@
 //            Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
 //        }
 
-//        [TestInitialize]
-//        public void TestInitialize() {
+//        [SetUp]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //            SetUser("Anon");
@@ -205,14 +205,14 @@
 //        #endregion
 //    }
 
-//    [TestClass] //Use DefaultAuthorizer3
+//    [TestFixture] //Use DefaultAuthorizer3
 //    public class TestCustomAuthoriser6 : TestCustomAuthorizer {
 //        protected override void RegisterTypes(IUnityContainer container) {
 //            base.RegisterTypes(container);
 //            RegisterAuthorizerTypes<DefaultAuthorizer3>(container);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AccessByAnonUserWithRole() {
 //            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
 //        }
@@ -225,8 +225,8 @@
 //            Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
 //        }
 
-//        [TestInitialize]
-//        public void TestInitialize() {
+//        [SetUp]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //            SetUser("Anon", "sysAdmin");
@@ -235,14 +235,14 @@
 //        #endregion
 //    }
 
-//    [TestClass] //Use DefaultAuthorizer3
+//    [TestFixture] //Use DefaultAuthorizer3
 //    public class TestCustomAuthoriser7 : TestCustomAuthorizer {
 //        protected override void RegisterTypes(IUnityContainer container) {
 //            base.RegisterTypes(container);
 //            RegisterAuthorizerTypes<DefaultAuthorizer3>(container);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AccessByAnonUserWithMultipleRoles() {
 //            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
 //        }
@@ -255,8 +255,8 @@
 //            Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
 //        }
 
-//        [TestInitialize]
-//        public void TestInitialize() {
+//        [SetUp]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //            SetUser("Anon", "service", "sysAdmin");

@@ -12,12 +12,12 @@
 //using System.Globalization;
 //using System.Linq;
 //using System.Threading;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Services;
 //using NakedObjects.Xat;
 
 //namespace NakedObjects.SystemTest.Method {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
 //        #region Setup/Teardown
 
@@ -34,8 +34,8 @@
 //            CleanupNakedObjectsFramework(new TestRecognisedMethods());
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //        }
@@ -118,7 +118,7 @@
 
 //        #region AutoComplete
 
-//        [TestMethod]
+//        [Test]
 //        public void RecognisedAutoCompleteMethodDoesNotShowUpAsAction() {
 //            var obj1 = NewTestObject<Auto1>();
 //            try {
@@ -159,7 +159,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void UnmatchedAutoCompleteMethodShowsUpAsAction() {
 //            ITestObject obj3 = NewTestObject<Auto3>();
 //            obj3.GetAction("Auto Complete Prop1");
@@ -177,7 +177,7 @@
 //            obj2.Save();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void AutoCompleteParameters() {
 //            CreateAuto2("Bar1");
 //            CreateAuto2("Bar2");
@@ -194,7 +194,7 @@
 //            Assert.AreEqual(2, cho2.Count());
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void AutoCompleteReferenceProperty() {
 //            CreateAuto2("Foo1");
 //            CreateAuto2("Foo2");
@@ -207,7 +207,7 @@
 //            Assert.AreEqual("Foo1", cho[0].Title);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void AutoCompleteStringProperty() {
 //            var obj1 = NewTestObject<Auto1>();
 //            ITestProperty prop = obj1.GetPropertyByName("Prop2");
@@ -220,7 +220,7 @@
 
 //        #region Choices
 
-//        [TestMethod]
+//        [Test]
 //        public void ChoicesMethodDoesNotShowUpAsAction() {
 //            var obj1 = NewTestObject<Choices1>();
 //            try {
@@ -240,7 +240,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ChoicesNumericProperty() {
 //            var obj1 = NewTestObject<Choices1>();
 //            ITestProperty prop = obj1.GetPropertyByName("Prop1");
@@ -255,7 +255,7 @@
 //            obj2.Save();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ChoicesParameters() {
 //            CreateChoices<Choices2>("Bar1");
 //            CreateChoices<Choices2>("Bar2");
@@ -276,7 +276,7 @@
 //            Assert.AreEqual("Bar1", cho2[0].Title);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ChoicesReferenceProperty() {
 //            CreateChoices<Choices4>("Bar1");
 //            CreateChoices<Choices4>("Bar2");
@@ -289,7 +289,7 @@
 //            Assert.AreEqual("Bar1", cho[0].Title);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ChoicesStringProperty() {
 //            var obj1 = NewTestObject<Choices1>();
 //            ITestProperty prop = obj1.GetPropertyByName("Prop2");
@@ -298,7 +298,7 @@
 //            Assert.AreEqual("Fee", cho[0].Title);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void UnmatchedChoicesMethodShowsUpAsAction() {
 //            var obj3 = NewTestObject<Choices3>();
 //            obj3.GetAction("Choices Prop1");
@@ -313,7 +313,7 @@
 //        #region Clear
 
 //        // Note Clear Prefix has been removed as a recognised prefix for complementary actions 
-//        [TestMethod]
+//        [Test]
 //        public void ClearMethodDoesShowUpAsAnAction() {
 //            ITestObject obj1 = NewTestObject<Clear1>();
 //            var action = obj1.GetAction("Clear Prop1");
@@ -321,7 +321,7 @@
 //        }
 
 
-//        [TestMethod]
+//        [Test]
 //        public void UnmatchedClearMethodShowsUpAsAnAction() {
 //            ITestObject obj2 = NewTestObject<Clear2>();
 //            obj2.GetAction("Clear Prop2");
@@ -333,14 +333,14 @@
 
 //        #region Created
 
-//        [TestMethod]
+//        [Test]
 //        public void CreatedCalled() {
 //            ITestObject obj1 = NewTestObject<Created1>();
 //            var dom1 = (Created1) obj1.GetDomainObject();
 //            Assert.IsTrue(dom1.CreatedCalled);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void CreatedDoesNotShowUpAsAnAction() {
 //            ITestObject obj1 = NewTestObject<Created1>();
 //            try {
@@ -352,7 +352,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void LowerCaseCreatedNotRecognisedAndShowsAsAction() {
 //            ITestObject obj1 = NewTestObject<Created2>();
 //            var dom1 = (Created2) obj1.GetDomainObject();
@@ -364,7 +364,7 @@
 
 //        #region Default
 
-//        [TestMethod]
+//        [Test]
 //        public void DefaultMethodDoesNotShowUpAsAction() {
 //            var obj = NewTestObject<Default1>();
 //            try {
@@ -383,7 +383,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void DefaultNumericProperty() {
 //            var obj1 = NewTestObject<Default1>();
 //            var prop = obj1.GetPropertyByName("Prop1");
@@ -392,7 +392,7 @@
 //            Assert.AreEqual("8", def);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DefaultParameters() {
 //            //Set up choices
 //            var obj2 = NewTestObject<Default4>();
@@ -420,7 +420,7 @@
 //            Assert.AreEqual("Bar2", def2);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void DefaultReferenceProperty() {
 //            //Set up choices
 //            var obj2 = NewTestObject<Default2>();
@@ -440,7 +440,7 @@
 //            Assert.AreEqual("Bar2", def);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void DefaultStringProperty() {
 //            var obj1 = NewTestObject<Default1>();
 //            var prop = obj1.GetPropertyByName("Prop2");
@@ -449,7 +449,7 @@
 //            Assert.AreEqual("Foo", def);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void UnmatchedDefaultMethodShowsUpAsAction() {
 //            var obj = NewTestObject<Default3>();
 //            obj.GetAction("Default Prop1");
@@ -458,7 +458,7 @@
 //            obj.GetAction("Default 0 Do Something");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DefaultNumericMethodOverAnnotation() {
 //            var obj1 = NewTestObject<Default1>();
 //            var prop = obj1.GetPropertyByName("Prop4");
@@ -467,7 +467,7 @@
 //            Assert.AreEqual("8", def);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DefaultStringMethodOverAnnotation() {
 //            var obj1 = NewTestObject<Default1>();
 //            var prop = obj1.GetPropertyByName("Prop5");
@@ -476,7 +476,7 @@
 //            Assert.AreEqual("Foo", def);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DefaultParametersOverAnnotation() {
 //            var obj1 = NewTestObject<Default1>();
 //            var action = obj1.GetAction("Do Something Else");
@@ -493,7 +493,7 @@
 
 //        #region Deleted
 
-//        [TestMethod]
+//        [Test]
 //        public void DeletedCalled() {
 //            ITestObject obj1 = NewTestObject<Deleted1>();
 //            var dom1 = (Deleted1) obj1.GetDomainObject();
@@ -505,7 +505,7 @@
 //            Deleted1.DeletedCalled = false;
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DeletedDoesNotShowUpAsAnAction() {
 //            ITestObject obj1 = NewTestObject<Deleted1>();
 //            try {
@@ -517,7 +517,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void LowerCaseDeletedNotRecognisedAndShowsAsAction() {
 //            ITestObject obj1 = NewTestObject<Deleted2>();
 //            var dom1 = (Deleted2) obj1.GetDomainObject();
@@ -535,7 +535,7 @@
 
 //        #region Deleting
 
-//        [TestMethod]
+//        [Test]
 //        public void DeletingCalled() {
 //            ITestObject obj1 = NewTestObject<Deleting1>();
 //            var dom1 = (Deleting1) obj1.GetDomainObject();
@@ -548,7 +548,7 @@
 //            Assert.IsTrue(Deleting1.DeletingCalled);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DeletingDoesNotShowUpAsAnAction() {
 //            ITestObject obj1 = NewTestObject<Deleting1>();
 //            try {
@@ -560,7 +560,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void LowerCaseDeletingNotRecognisedAndShowsAsAction() {
 //            ITestObject obj1 = NewTestObject<Deleting2>().Save();
 //            var dom1 = (Deleting2) obj1.GetDomainObject();
@@ -577,7 +577,7 @@
 
 //        #region Disable
 
-//        [TestMethod]
+//        [Test]
 //        public void DisableAction() {
 //            ITestObject obj = NewTestObject<Disable3>();
 //            obj.GetPropertyByName("Prop4").SetValue("avalue");
@@ -589,7 +589,7 @@
 //            obj.GetAction("Action4").AssertIsDisabled();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DisableMethodDoesNotShowUpAsAnAction() {
 //            ITestObject obj = NewTestObject<Disable3>();
 //            try {
@@ -601,7 +601,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DisableProperty() {
 //            ITestObject obj = NewTestObject<Disable3>();
 //            ITestProperty prop6 = obj.GetPropertyByName("Prop6");
@@ -614,14 +614,14 @@
 //            prop6.AssertIsUnmodifiable();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void UnmatchedDisableMethodShowsUpAsAction() {
 //            ITestObject obj = NewTestObject<Disable3>();
 //            obj.GetAction("Disable Prop1");
 //            obj.GetAction("Disable Prop4");
 //        }
 
-//        [TestMethod] //Pending #9228
+//        [Test] //Pending #9228
 //        public void DisableMethodsWithParamsNotRecognised() {
 //            ITestObject obj = NewTestObject<Disable3>();
 //            obj.GetAction("Disable Action2");
@@ -630,14 +630,14 @@
 //            obj.GetAction("Disable Prop8");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DisableActionDefault() {
 //            ITestObject obj = NewTestObject<Disable2>();
 //            obj.GetAction("Action1").AssertIsDisabled();
 //            obj.GetAction("Action2").AssertIsDisabled();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DisableActionDefaultDoesNotDisableProperties() {
 //            ITestObject obj = NewTestObject<Disable2>();
 //            obj.GetPropertyByName("Prop1").AssertIsModifiable();
@@ -645,7 +645,7 @@
 //            //obj.GetPropertyByName("Prop4").AssertIsModifiable(); - collection disabled by default
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DisableActionDefaultDoesNotShowUpAsAnAction() {
 //            ITestObject obj = NewTestObject<Disable2>();
 //            try {
@@ -657,13 +657,13 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DisableActionDefaultOverriddenByActionLevelMethod() {
 //            ITestObject obj = NewTestObject<Disable2>();
 //            obj.GetAction("Action3").AssertIsEnabled();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DisablePropertyDefault() {
 //            ITestObject obj = NewTestObject<Disable1>();
 //            obj.GetPropertyByName("Prop1").AssertIsUnmodifiable();
@@ -671,14 +671,14 @@
 //            obj.GetPropertyByName("Prop4").AssertIsUnmodifiable();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DisablePropertyDefaultDoesNotDisableActions() {
 //            ITestObject obj = NewTestObject<Disable1>();
 //            obj.GetAction("Action1").AssertIsEnabled();
 //            obj.GetAction("Action2").AssertIsEnabled();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DisablePropertyDefaultDoesNotShowUpAsAnAction() {
 //            ITestObject obj = NewTestObject<Disable1>();
 //            try {
@@ -690,7 +690,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DisablePropertyPropertyOverriddenByPropertyLevelMethod() {
 //            ITestObject obj = NewTestObject<Disable1>();
 //            obj.GetPropertyByName("Prop3").AssertIsModifiable();
@@ -701,7 +701,7 @@
 
 //        #region Hide
 
-//        [TestMethod]
+//        [Test]
 //        public void HideAction() {
 //            ITestObject obj = NewTestObject<Hide3>();
 //            obj.Save();
@@ -710,7 +710,7 @@
 //            obj.GetAction("Do Something").AssertIsInvisible();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void HideMethodDoesNotShowUpAsAnAction() {
 //            ITestObject obj = NewTestObject<Hide3>();
 //            try {
@@ -722,7 +722,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void HideProperty() {
 //            ITestObject obj = NewTestObject<Hide3>();
 //            ITestProperty prop6 = obj.GetPropertyByName("Prop6");
@@ -735,7 +735,7 @@
 //            prop6.AssertIsInvisible();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void UnmatchedHideMethodShowsUpAsAnAction() {
 //            ITestObject obj = NewTestObject<Hide3>();
 //            obj.GetAction("Hide Prop7");
@@ -744,7 +744,7 @@
 //            obj.GetAction("Hide Do Somthing Else");
 //        }
 
-//        [TestMethod] // pending #9228
+//        [Test] // pending #9228
 //        public void HideMethodsWithParamsNotRecognised() {
 //            ITestObject obj = NewTestObject<Hide3>();
 //            obj.GetAction("Hide Prop8");
@@ -753,14 +753,14 @@
 //            obj.GetAction("Hide Action2");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void HideActionDefault() {
 //            ITestObject obj = NewTestObject<Hide2>();
 //            obj.GetAction("Action1").AssertIsInvisible();
 //            obj.GetAction("Action2").AssertIsInvisible();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void HideActionDefaultDoesNotHideProperties() {
 //            ITestObject obj = NewTestObject<Hide2>();
 //            obj.GetPropertyByName("Prop1").AssertIsVisible();
@@ -768,7 +768,7 @@
 //            obj.GetPropertyByName("Prop4").AssertIsVisible();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void HideActionDefaultDoesNotShowUpAsAnAction() {
 //            ITestObject obj = NewTestObject<Hide2>();
 //            try {
@@ -780,13 +780,13 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void HideActionDefaultOverriddenByActionLevelMethod() {
 //            ITestObject obj = NewTestObject<Hide2>();
 //            obj.GetAction("Action3").AssertIsVisible();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void HidePropertyDefault() {
 //            ITestObject obj = NewTestObject<Hide1>();
 //            obj.GetPropertyByName("Prop1").AssertIsInvisible();
@@ -794,14 +794,14 @@
 //            obj.GetPropertyByName("Prop4").AssertIsInvisible();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void HidePropertyDefaultDoesNotHideActions() {
 //            ITestObject obj = NewTestObject<Hide1>();
 //            obj.GetAction("Action1").AssertIsVisible();
 //            obj.GetAction("Action2").AssertIsVisible();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void HidePropertyDefaultDoesNotShowUpAsAnAction() {
 //            ITestObject obj = NewTestObject<Hide1>();
 //            try {
@@ -813,7 +813,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void HidePropertyPropertyOverriddenByPropertyLevelMethod() {
 //            ITestObject obj = NewTestObject<Hide1>();
 //            obj.GetPropertyByName("Prop3").AssertIsVisible();
@@ -824,7 +824,7 @@
 
 //        #region Modify
 
-//        [TestMethod]
+//        [Test]
 //        public void ModifyMethodDoesNotShowUpAsAnAction() {
 //            ITestObject obj1 = NewTestObject<Modify1>();
 //            try {
@@ -836,7 +836,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ModifyMethodOnReferenceProperty() {
 //            ITestObject obj3 = NewTestObject<Modify3>();
 //            obj3.GetPropertyByName("Prop1").SetValue("Foo");
@@ -854,7 +854,7 @@
 //            prop3.AssertValueIsEqual("Prop4 has been modified");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ModifyMethodOnValueProperty() {
 //            ITestObject obj = NewTestObject<Modify1>();
 //            ITestProperty prop0 = obj.GetPropertyByName("Prop0");
@@ -868,7 +868,7 @@
 //            prop0.AssertValueIsEqual("Prop1 has been modified");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void CalledWhenReferencePropertyCleared() {
 //            ITestObject obj3 = NewTestObject<Modify3>();
 //            obj3.GetPropertyByName("Prop1").SetValue("Foo");
@@ -890,7 +890,7 @@
 //            prop3.AssertValueIsEqual("Prop4 has been modified");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void CalledWhenValuePropertyIsCleared() {
 //            ITestObject obj = NewTestObject<Modify1>();
 //            ITestProperty prop0 = obj.GetPropertyByName("Prop0");
@@ -904,7 +904,7 @@
 //            prop0.AssertValueIsEqual("Prop1 has been modified");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void UnmatchedModifyMethodShowsUpAsAnAction() {
 //            ITestObject obj2 = NewTestObject<Modify2>();
 //            obj2.GetAction("Modify Prop2");
@@ -916,7 +916,7 @@
 
 //        #region Persisted
 
-//        [TestMethod]
+//        [Test]
 //        public void LowerCasePersistedNotRecognisedAndShowsAsAction() {
 //            ITestObject obj1 = NewTestObject<Persisted2>();
 //            var dom1 = (Persisted2) obj1.GetDomainObject();
@@ -924,7 +924,7 @@
 //            obj1.GetAction("Persisted");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void PersistedCalled() {
 //            ITestObject obj1 = NewTestObject<Persisted1>();
 //            var dom1 = (Persisted1) obj1.GetDomainObject();
@@ -937,7 +937,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void PersistedDoesNotShowUpAsAnAction() {
 //            ITestObject obj1 = NewTestObject<Persisted1>();
 //            try {
@@ -949,7 +949,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void PersistedMarkedAsIgnoredIsNotCalledAndIsNotAnAction() {
 //            ITestObject obj = NewTestObject<Persisted3>();
 //            obj.Save(); //Would throw an exception if the Persisted had been called.
@@ -966,7 +966,7 @@
 
 //        #region Persisting
 
-//        [TestMethod]
+//        [Test]
 //        public void PersistingCalled() {
 //            ITestObject obj1 = NewTestObject<Persisting1>();
 //            var dom1 = (Persisting1) obj1.GetDomainObject();
@@ -977,7 +977,7 @@
 //            Assert.IsTrue(Persisting1.PersistingCalled);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void PersistingDoesNotShowUpAsAnAction() {
 //            ITestObject obj1 = NewTestObject<Persisting1>();
 //            try {
@@ -993,7 +993,7 @@
 
 //        #region Title & ToString
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ObjectWithSimpleToString() {
 //            var obj = NewTestObject<Title1>();
 //            var prop1 = obj.GetPropertyByName("Prop1");
@@ -1003,7 +1003,7 @@
 //            obj.AssertTitleEquals("Bar");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TitleMethod() {
 //            var obj = NewTestObject<Title3>();
 //            obj.AssertTitleEquals("Untitled Title3");
@@ -1014,7 +1014,7 @@
 //            obj.AssertTitleEquals("Foo");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TitleMethodTakesPrecedenceOverToString() {
 //            var obj = NewTestObject<Title4>();
 //            Equals("Bar", obj.GetDomainObject().ToString());
@@ -1026,7 +1026,7 @@
 //            obj.AssertTitleEquals("Foo");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ToStringRecognisedAsATitle() {
 //            var obj = NewTestObject<Title5>();
 //            var prop1 = obj.GetPropertyByName("Prop1");
@@ -1036,31 +1036,31 @@
 //            obj.AssertTitleEquals("Bar");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void UsingITitleBuilderZeroParamConstructor() {
 //            var obj = NewTestObject<Title6>();
 //            obj.AssertTitleEquals("TB6");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void UsingITitleBuilderStringConstructor() {
 //            var obj = NewTestObject<Title7>();
 //            obj.AssertTitleEquals("TB7");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void UsingITitleBuilderObjectConstructor() {
 //            var obj = NewTestObject<Title8>();
 //            obj.AssertTitleEquals("TB8");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void UsingITitleBuilderObjectConstructorWithNullAndDefault() {
 //            var obj = NewTestObject<Title9>();
 //            obj.AssertTitleEquals("TB9");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ITitleBuilderTestAllAppendsAndConcats() {
 //            var culture = Thread.CurrentThread.CurrentCulture;
 //            try {
@@ -1073,7 +1073,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void TitleMethodMarkedIgnoredIsNotCalled() {
 //            var obj = NewTestObject<Title11>();
 //            obj.AssertTitleEquals("Untitled Title 11");
@@ -1083,7 +1083,7 @@
 
 //        #region Updated
 
-//        [TestMethod]
+//        [Test]
 //        public void LowerCaseNotRecognisedAndShowsAsAction() {
 //            var obj1 = NewTestObject<Updated2>();
 //            var dom1 = (Updated2) obj1.GetDomainObject();
@@ -1091,7 +1091,7 @@
 //            obj1.GetAction("Updated");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void UpdatedCalled() {
 //            var obj1 = NewTestObject<Updated1>();
 //            var dom1 = (Updated1) obj1.GetDomainObject();
@@ -1103,7 +1103,7 @@
 //            catch (Exception) {}
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void UpdatedDoesNotShowUpAsAnAction() {
 //            var obj1 = NewTestObject<Updated1>();
 //            try {
@@ -1119,13 +1119,13 @@
 
 //        #region Updating
 
-//        [TestMethod]
+//        [Test]
 //        public void LowerCaseUpdatingNotRecognisedAndShowsAsAction() {
 //            ITestObject obj1 = NewTestObject<Updating2>();
 //            obj1.GetAction("Updating");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void UpdatingCalled() {
 //            ITestObject obj1 = NewTestObject<Updating1>();
 //            var dom1 = (Updating1) obj1.GetDomainObject();
@@ -1138,7 +1138,7 @@
 //            catch (Exception) {}
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void UpdatingDoesNotShowUpAsAnAction() {
 //            ITestObject obj1 = NewTestObject<Updating1>();
 //            try {
@@ -1154,7 +1154,7 @@
 
 //        #region Validate
 
-//        [TestMethod]
+//        [Test]
 //        public void UnmatchedValidateMethodShowsUpAsAnAction() {
 //            ITestObject obj = NewTestObject<Validate3>();
 //            obj.GetAction("Validate Prop1");
@@ -1165,7 +1165,7 @@
 //            obj.GetAction("Validate 1 Do Something");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ValidateMethodDoesNotShowUpAsAnAction() {
 //            ITestObject obj = NewTestObject<Validate1>();
 //            try {
@@ -1193,7 +1193,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ValidateNumericalProperty() {
 //            ITestObject obj = NewTestObject<Validate1>();
 //            ITestProperty prop1 = obj.GetPropertyByName("Prop1");
@@ -1209,7 +1209,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ValidatePropertyMarkedNakedObjectsIgnoreIsNotEffectiveAndDoesNotShowAsAction() {
 //            ITestObject obj = NewTestObject<Validate1>();
 //            ITestProperty prop1 = obj.GetPropertyByName("Prop4");
@@ -1225,7 +1225,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ValidateStringProperty() {
 //            ITestObject obj = NewTestObject<Validate1>();
 //            ITestProperty prop1 = obj.GetPropertyByName("Prop2");
@@ -1241,7 +1241,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ValidateReferenceProperty() {
 //            ITestObject obj1 = NewTestObject<Validate1>();
 //            ITestProperty obj1Prop3 = obj1.GetPropertyByName("Prop3");
@@ -1263,7 +1263,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ValidateParametersIndividually() {
 //            ITestObject obj1 = NewTestObject<Validate1>();
 //            ITestAction action = obj1.GetAction("Do Something");
@@ -1280,7 +1280,7 @@
 //            action.AssertIsInvalidWithParms(new object[] {5, "abar", obj2b}).AssertLastMessageIs("Invalid Object");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ValidateParameterMarkedIgnoreIsNotUsedAndDoesNotShowAsAction() {
 //            ITestObject obj1 = NewTestObject<Validate1>();
 //            ITestAction action = obj1.GetAction("Do Something More");
@@ -1297,7 +1297,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ValidateParametersCollectively() {
 //            ITestObject obj1 = NewTestObject<Validate1>();
 //            ITestAction action = obj1.GetAction("Do Something Else");
@@ -1314,7 +1314,7 @@
 //            action.AssertIsInvalidWithParms(new object[] {5, "abar", obj2b}).AssertLastMessageIs("Something amiss");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ValidateCrossValidationFail4() {
 //            ITestObject obj = NewTestObject<Validate4>();
 //            obj.GetPropertyByName("Prop1").SetValue("value1");
@@ -1329,7 +1329,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ValidateCrossValidationSuccess4() {
 //            ITestObject obj = NewTestObject<Validate4>();
 //            obj.GetPropertyByName("Prop1").SetValue("value1");
@@ -1337,7 +1337,7 @@
 //            obj.Save();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ValidateCrossValidationFail5A() {
 //            ITestObject obj = NewTestObject<Validate5>();
 //            ITestObject obj4 = NewTestObject<Validate4>();
@@ -1355,7 +1355,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ValidateCrossValidationFail5B() {
 //            ITestObject obj = NewTestObject<Validate5>();
 //            ITestObject obj4 = NewTestObject<Validate4>();
@@ -1373,7 +1373,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ValidateCrossValidationFail5C() {
 //            ITestObject obj = NewTestObject<Validate5>();
 //            obj.GetPropertyByName("Prop1").SetValue("value1");
@@ -1390,7 +1390,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ValidateCrossValidationSuccess5() {
 //            ITestObject obj = NewTestObject<Validate5>();
 //            ITestObject obj4 = NewTestObject<Validate4>();
@@ -1403,7 +1403,7 @@
 //        }
 
 //        //Test added because > 6 params relies on reflection rather than a delegate
-//        [TestMethod]
+//        [Test]
 //        public virtual void ValidateActionWithMoreThanSixParams() {
 //            ITestObject obj = NewTestObject<Validate1>();
 //            ITestAction action = obj.GetAction("Do Something With Many Params");
@@ -1420,7 +1420,7 @@
 //    #region Classes used in test
 
 //    public class MethodsDbContext : DbContext {
-//        public const string DatabaseName = "TestMethods";
+//        public const string DatabaseName = "Tests";
 //        public MethodsDbContext() : base(DatabaseName) {}
 
 //        public DbSet<Auto1> Auto1 { get; set; }

@@ -10,7 +10,7 @@
 //using System.Data.Entity;
 //using System.Linq;
 //using System.Security.Principal;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Architecture.Component;
 //using NakedObjects.Architecture.Configuration;
 //using NakedObjects.Core.Configuration;
@@ -23,9 +23,9 @@
 //using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 //namespace NakedObjects.SystemTest.Profile {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
-//        [TestMethod]
+//        [Test]
 //        public void TestActionInvocation() {
 //            ITestObject foo = GetTestService(typeof (SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
 
@@ -55,7 +55,7 @@
 //            Assert.IsTrue(endCalled);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void TestPropertySet() {
 //            ITestObject foo = GetTestService(typeof (SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
 
@@ -108,7 +108,7 @@
 //            testCallback2(callbackData[5]);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void TestCallbacks() {
 //            int beginCalledCount = 0;
 //            int endCalledCount = 0;
@@ -355,15 +355,15 @@
 //            Database.Delete(ProfileDbContext.DatabaseName);
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //            SetUser("sven");
 //        }
 
-//        [TestCleanup()]
-//        public void TestCleanup() {
+//        [TearDown()]
+//        public void TearDown() {
 //            MyProfiler.BeginCallback = (p, e, t, s) => { };
 //            MyProfiler.EndCallback = (p, e, t, s) => { };
 //        }

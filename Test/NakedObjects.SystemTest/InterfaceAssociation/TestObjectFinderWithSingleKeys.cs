@@ -8,12 +8,12 @@
 //using System;
 //using System.ComponentModel.DataAnnotations;
 //using System.Data.Entity;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Services;
 //using NakedObjects.Xat;
 
 //namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestObjectFinderWithSingleKeys : AbstractSystemTest<PaymentContext> {
 //        private ITestObject customer1 = null;
 //        private ITestObject customer2 = null;
@@ -40,7 +40,7 @@
 //            }
 //        }
 
-//        [TestCleanup]
+//        [TearDown]
 //        public void CleanUp() {
 //            payment1 = null;
 //            customer1 = null;
@@ -50,7 +50,7 @@
 //            emp2 = null;
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void SetAssociatedObject() {
 //            payee1.SetObject(customer1);
 //            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Customer|1");
@@ -61,7 +61,7 @@
 //            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Customer|2");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ChangeAssociatedObjectType() {
 //            payee1.SetObject(customer1);
 //            payee1.ClearObject();
@@ -71,14 +71,14 @@
 //            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Supplier|1");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ClearAssociatedObject() {
 //            payee1.SetObject(customer1);
 //            payee1.ClearObject();
 //            key1.AssertIsEmpty();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void GetAssociatedObject() {
 //            key1.SetValue("NakedObjects.SystemTest.ObjectFinderSingleKey.Customer|1");
 //            payee1.AssertIsNotEmpty();
@@ -91,12 +91,12 @@
 //            payee1.ContentAsObject.GetPropertyByName("Id").AssertValueIsEqual("2");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void NoAssociatedObject() {
 //            key1.AssertIsEmpty();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void SetAssociatedObjectObjectWithAStringKey() {
 //            payee1.SetObject(emp1);
 //            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Employee|foo");
@@ -105,7 +105,7 @@
 //            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Employee|bar");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void GetAssociatedObjectWithAStringKey() {
 //            key1.SetValue("NakedObjects.SystemTest.ObjectFinderSingleKey.Employee|foo");
 //            payee1.AssertObjectIsEqual(emp1);
@@ -123,8 +123,8 @@
 //            Database.SetInitializer(new DatabaseInitializer());
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //            payment1 = GetAllInstances<Payment>(0);

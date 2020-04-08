@@ -10,12 +10,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using NakedObjects.Util;
 using NakedObjects.UtilInternal;
+using NUnit.Framework;
 
 namespace NakedObjects.SystemTest.Util {
-    [TestClass]
+    [TestFixture]
     public class KeyUtilsTest {
         #region Test classes ComponentModel.DataAnnotations.Key
 
@@ -171,7 +172,7 @@ namespace NakedObjects.SystemTest.Util {
 
         #region tests ComponentModel.DataAnnotations.Key
 
-        [TestMethod]
+        [Test]
         public void TestGetKeys() {
             var container = new TestContainer();
             var keys = container.GetKeys(typeof(TestKey));
@@ -179,14 +180,14 @@ namespace NakedObjects.SystemTest.Util {
             Assert.AreSame(typeof(TestKey).GetProperty("AName"), keys.Single());
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetNoKeys() {
             var container = new TestContainer();
             var keys = container.GetKeys(typeof(TestNoKey));
             Assert.AreEqual(0, keys.Count());
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetMultiKeys() {
             var container = new TestContainer();
             var keys = container.GetKeys(typeof(TestMultiKey));
@@ -195,14 +196,14 @@ namespace NakedObjects.SystemTest.Util {
             Assert.AreSame(typeof(TestMultiKey).GetProperty("AName1"), keys.Last());
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetSingleKey() {
             var container = new TestContainer();
             var key = container.GetSingleKey(typeof(TestKey));
             Assert.AreSame(typeof(TestKey).GetProperty("AName"), key);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetSingleNoKey() {
             var container = new TestContainer();
 
@@ -215,7 +216,7 @@ namespace NakedObjects.SystemTest.Util {
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetSingleMultiKey() {
             var container = new TestContainer();
             try {

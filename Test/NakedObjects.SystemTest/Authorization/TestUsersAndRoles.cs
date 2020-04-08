@@ -8,7 +8,7 @@
 //using System;
 //using System.Data.Entity;
 //using System.Security.Principal;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Architecture.Component;
 //using NakedObjects.Architecture.Configuration;
 //using NakedObjects.Core.Configuration;
@@ -20,7 +20,7 @@
 
 
 //namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestUsersAndRoles : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
 //        protected override void RegisterTypes(IUnityContainer container) {
 //            base.RegisterTypes(container);
@@ -44,7 +44,7 @@
 
 //        #region Tests
 
-//        [TestMethod] //Pending #9227
+//        [Test] //Pending #9227
 //        public void SetUserOnTestIsPassedThroughToAuthorizer() {
 //            SetUser("svenFoo", "Bar");
 //            try {
@@ -89,15 +89,15 @@
 //        [ClassCleanup]
 //        public static void ClassCleanup() {}
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFramework(this);
 //            StartTest();
 //            SetUser("default");
 //        }
 
-//        [TestCleanup()]
-//        public void TestCleanup() {}
+//        [TearDown()]
+//        public void TearDown() {}
 
 //        #endregion
 

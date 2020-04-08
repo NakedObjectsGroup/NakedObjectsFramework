@@ -7,7 +7,7 @@
 
 //using System;
 //using System.Data.Entity;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Architecture.Menu;
 //using NakedObjects.Persistor.Entity.Configuration;
 //using NakedObjects.Services;
@@ -17,63 +17,63 @@
 
 
 //namespace NakedObjects.SystemTest.PolymorphicNavigator {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract {
 //        protected override string[] Namespaces {
 //            get { return new[] {typeof (PolymorphicPayment).Namespace}; }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void SetPolymorphicPropertyOnTransientObject() {
 //            base.SetPolymorphicPropertyOnTransientObject("CUS");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {
 //            base.AttemptSetPolymorphicPropertyWithATransientAssociatedObject();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void SetPolymorphicPropertyOnPersistentObject() {
 //            base.SetPolymorphicPropertyOnPersistentObject("CUS");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ChangePolymorphicPropertyOnPersistentObject() {
 //            ChangePolymorphicPropertyOnPersistentObject("CUS", "SUP");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public override void ClearPolymorphicProperty() {
 //            base.ClearPolymorphicProperty();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void PolymorphicCollectionAddMutlipleItemsOfOneType() {
 //            base.PolymorphicCollectionAddMutlipleItemsOfOneType("INV");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void PolymorphicCollectionAddDifferentItems() {
 //            base.PolymorphicCollectionAddDifferentItems("INV", "EXP");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public override void AttemptToAddSameItemTwice() {
 //            base.AttemptToAddSameItemTwice();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public override void RemoveItem() {
 //            base.RemoveItem();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public override void AttemptToRemoveNonExistentItem() {
 //            base.AttemptToRemoveNonExistentItem();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public override void FindOwnersForObject() {
 //            base.FindOwnersForObject();
 //        }
@@ -97,8 +97,8 @@
 
 //        private static bool fixturesRun;
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            if (!fixturesRun) {
 //                RunFixtures();

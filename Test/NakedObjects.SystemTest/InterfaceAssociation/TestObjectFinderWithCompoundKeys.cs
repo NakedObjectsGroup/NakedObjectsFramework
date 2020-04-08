@@ -9,11 +9,11 @@
 //using System.Data.Entity;
 //using System.Globalization;
 //using System.Threading;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Services;
 
 //namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {
 //        protected override string[] Namespaces {
 //            get { return new[] {typeof (Payment).Namespace}; }
@@ -48,7 +48,7 @@
 //            CleanupNakedObjectsFramework(new TestObjectFinderWithCompoundKeys());
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void SetAssociatedObject() {
 //            payee1.SetObject(customer2a);
 //            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
@@ -59,7 +59,7 @@
 //            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|2|1002");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void WorksWithASingleIntegerKey() {
 //            payee1.SetObject(customer1);
 //            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerOne|1");
@@ -70,7 +70,7 @@
 //            payee1.AssertObjectIsEqual(customer1);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void WorksWithADateTimeKey() {
 //            var culture = Thread.CurrentThread.CurrentCulture;
 //            try {
@@ -89,7 +89,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void WorksWithTripleIntegerKey() {
 //            payee1.SetObject(customer3);
 //            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree|1|1001|2001");
@@ -100,7 +100,7 @@
 //            payee1.AssertObjectIsEqual(customer3);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void FailsIfTypeNameIsEmpty() {
 //            key1.SetValue("|1|1001|2001");
 //            try {
@@ -112,7 +112,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void FailsIfTypeNameIsWrong() {
 //            key1.SetValue("CustomerThree|1|1001|2001");
 //            try {
@@ -124,7 +124,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void FailsIfTooFewKeysSupplied() {
 //            key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree|1|1001");
 //            try {
@@ -136,7 +136,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void FailsIfTooManyKeysSupplied() {
 //            key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001|2001");
 //            try {
@@ -148,7 +148,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ChangeAssociatedObjectType() {
 //            payee1.SetObject(customer2a);
 //            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
@@ -158,14 +158,14 @@
 //            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderCompoundKeys.Supplier|1|2001");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ClearAssociatedObject() {
 //            payee1.SetObject(customer2a);
 //            payee1.ClearObject();
 //            key1.AssertIsEmpty();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void GetAssociatedObject() {
 //            key1.SetValue("NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo|1|1001");
 //            payee1.AssertIsNotEmpty();
@@ -178,7 +178,7 @@
 //            payee1.ContentAsObject.GetPropertyByName("Id").AssertValueIsEqual("2");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void NoAssociatedObject() {
 //            key1.AssertIsEmpty();
 //        }

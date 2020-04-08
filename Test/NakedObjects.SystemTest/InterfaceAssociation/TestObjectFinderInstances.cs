@@ -9,13 +9,13 @@
 //using System.Collections.Generic;
 //using System.Data.Entity;
 //using System.Linq;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Services;
 //using NakedObjects.Util;
 //using NakedObjects.Xat;
 
 //namespace NakedObjects.SystemTest.ObjectFinderInstances {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestObjectFinderInstances : AbstractSystemTest<PaymentContext> {
 //        protected override string[] Namespaces {
 //            get { return new[] {typeof (Customer).Namespace}; }
@@ -32,10 +32,10 @@
 //            }
 //        }
 
-//        [TestCleanup]
+//        [TearDown]
 //        public void CleanUp() {}
 
-//        [TestMethod]
+//        [Test]
 //        public void FindInstances() {
 //            string namesp = "NakedObjects.SystemTest.ObjectFinderInstances.";
 //            ITestAction payees = GetTestService("My Service").GetAction("Payees");
@@ -49,7 +49,7 @@
 //        }
 
 //        //This tests that the results are coming back as a Queryable<T>
-//        [TestMethod]
+//        [Test]
 //        public void FindInstancesFilteredByInterfaceProperty() {
 //            string namesp = "NakedObjects.SystemTest.ObjectFinderInstances.";
 //            ITestAction find = GetTestService("My Service").GetAction("Find Payee");
@@ -69,8 +69,8 @@
 //            Database.SetInitializer(new DatabaseInitializer());
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //        }

@@ -8,23 +8,25 @@
 using System;
 using System.Globalization;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.SystemTest.Util {
 #pragma warning disable 618
-    [TestClass]
+    [TestFixture]
     public class NewTitleBuilderWithNoInitialContentTest {
         private CultureInfo culture;
         private NewTitleBuilder initiallyEmptyBuilder;
 
-        [TestInitialize]
+        [SetUp]
         public void NewBuilder() {
             culture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             initiallyEmptyBuilder = new NewTitleBuilder();
         }
 
-        [TestCleanup]
+        [TearDown]
         public void Cleanup() {
             Thread.CurrentThread.CurrentCulture = culture;
         }
@@ -33,33 +35,33 @@ namespace NakedObjects.SystemTest.Util {
             Assert.AreEqual(expected, builder.ToString());
         }
 
-        [TestMethod]
+        [Test]
         public void ContainsEmptyString() {
             AssertTitleIs("", initiallyEmptyBuilder);
         }
 
         // Concat
 
-        [TestMethod]
+        [Test]
         public void ConcatNullLeaveTextUnmodified() {
             initiallyEmptyBuilder.Concat(null);
             AssertTitleIs("", initiallyEmptyBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void ConcatString() {
             initiallyEmptyBuilder.Concat("Text");
             AssertTitleIs("Text", initiallyEmptyBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void ConcatTwice() {
             initiallyEmptyBuilder.Concat("Text");
             initiallyEmptyBuilder.Concat("ing");
             AssertTitleIs("Texting", initiallyEmptyBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void ConcatNumber() {
             initiallyEmptyBuilder.Concat(4.5);
             AssertTitleIs("4.5", initiallyEmptyBuilder);
@@ -67,19 +69,19 @@ namespace NakedObjects.SystemTest.Util {
 
         // Appends
 
-        [TestMethod]
+        [Test]
         public void AppendNullLeavesTextUnmodified() {
             initiallyEmptyBuilder.Append(null);
             AssertTitleIs("", initiallyEmptyBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void AppendStringIncludesNoSpace() {
             initiallyEmptyBuilder.Append("string");
             AssertTitleIs("string", initiallyEmptyBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void AppendNumberIncludesNoSpace() {
             initiallyEmptyBuilder.Append(4.5);
             AssertTitleIs("4.5", initiallyEmptyBuilder);
@@ -87,13 +89,13 @@ namespace NakedObjects.SystemTest.Util {
 
         // Format
 
-        [TestMethod]
+        [Test]
         public void ConcatNumberWithFormat() {
             initiallyEmptyBuilder.Concat(4.5).Format("00.00");
             AssertTitleIs("04.50", initiallyEmptyBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void AppendNumbersWithAndWithFormats() {
             initiallyEmptyBuilder.Append(4.5).Format("00.00");
             initiallyEmptyBuilder.Append(90);
@@ -101,21 +103,21 @@ namespace NakedObjects.SystemTest.Util {
         }
 
         // default
-        [TestMethod]
+        [Test]
         public void DefaultAppliedWhenNull() {
             initiallyEmptyBuilder.Default("zero");
             AssertTitleIs("zero", initiallyEmptyBuilder);
         }
 
         // joiner
-        [TestMethod]
+        [Test]
         public void JoinerIgnoredWhenNoExistingText() {
             initiallyEmptyBuilder.Append("test");
             initiallyEmptyBuilder.Separator(",");
             AssertTitleIs("test", initiallyEmptyBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void Compound() {
             var date = new DateTime(2007, 4, 1);
             initiallyEmptyBuilder.Append("Order");
@@ -127,42 +129,42 @@ namespace NakedObjects.SystemTest.Util {
 
         // truncate
 
-        [TestMethod]
+        [Test]
         public void TestTruncate() {
             initiallyEmptyBuilder.Append("The quick brown fox jumped");
             initiallyEmptyBuilder.Truncate(14);
             AssertTitleIs("The quick brow", initiallyEmptyBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTruncateWithContinuation() {
             initiallyEmptyBuilder.Append("The quick brown fox jumped");
             initiallyEmptyBuilder.Truncate(16, false, "...");
             AssertTitleIs("The quick bro...", initiallyEmptyBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTruncateRemovesSpace() {
             initiallyEmptyBuilder.Append("The quick brown fox jumped");
             initiallyEmptyBuilder.Truncate(10);
             AssertTitleIs("The quick", initiallyEmptyBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTruncateRemovesSpaceWithContinuation() {
             initiallyEmptyBuilder.Append("The quick brown fox jumped");
             initiallyEmptyBuilder.Truncate(13, false, "...");
             AssertTitleIs("The quick...", initiallyEmptyBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTruncateToWordBoundary() {
             initiallyEmptyBuilder.Append("The quick brown fox jumped");
             initiallyEmptyBuilder.Truncate(18, true);
             AssertTitleIs("The quick brown", initiallyEmptyBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void TestTruncateToWordBoundaryWithContinuation() {
             initiallyEmptyBuilder.Append("The quick brown fox jumped");
             initiallyEmptyBuilder.Truncate(18, true, "...");
@@ -171,7 +173,7 @@ namespace NakedObjects.SystemTest.Util {
 
         // complex
 
-        [TestMethod]
+        [Test]
         public void Compound3() {
             var customer = new Customer();
             var date = new DateTime(2007, 4, 1);
@@ -179,14 +181,14 @@ namespace NakedObjects.SystemTest.Util {
             AssertTitleIs("Harry Smith - 04/01/2007", initiallyEmptyBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void Compound4() {
             var date = new DateTime(2007, 4, 1);
             initiallyEmptyBuilder.Append(null).Separator(" - ").Concat(date).Format("d");
             AssertTitleIs("04/01/2007", initiallyEmptyBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void Compound5() {
             var customer = new Customer();
             var date = new DateTime(2007, 4, 1);
@@ -194,7 +196,7 @@ namespace NakedObjects.SystemTest.Util {
             AssertTitleIs("Harry Smith", initiallyEmptyBuilder);
         }
 
-        [TestMethod]
+        [Test]
         public void Compound6() {
             var customer = new Customer();
             initiallyEmptyBuilder.Append(customer).Separator(" - ").Append(customer).Separator("!").Append(null);

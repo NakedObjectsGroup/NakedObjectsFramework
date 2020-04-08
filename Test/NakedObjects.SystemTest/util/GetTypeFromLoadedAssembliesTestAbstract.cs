@@ -16,7 +16,9 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Assert = NUnit.Framework.Assert;
+
+
 
 namespace NakedObjects.SystemTest.Util {
     public class GetTypeFromLoadedAssembliesTestAbstract {
@@ -69,7 +71,7 @@ namespace NakedObjects.SystemTest.Util {
             return randomSelection;
         }
 
-        public static void SetupTypeData(TestContext context) {
+        public static void SetupTypeData() {
             for (var i = 0; i < 100; i++) {
                 var mb = CreateModuleBuilder("Assembly" + i);
 

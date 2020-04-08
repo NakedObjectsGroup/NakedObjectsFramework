@@ -5,12 +5,12 @@
 //// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //// See the License for the specific language governing permissions and limitations under the License.
 
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Services;
 //using NakedObjects.Xat;
 
 //namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
-//    [TestClass]
+//    [TestFixture]
 //    public abstract class TestObjectFinderWithCompoundKeysAbstract : AbstractSystemTest<PaymentContext> {
 //        protected ITestObject customer1;
 //        protected ITestObject customer2a;
@@ -24,7 +24,7 @@
 //        protected ITestObject payment1;
 //        protected ITestObject supplier1;
 
-//        [TestInitialize]
+//        [SetUp]
 //        public void Initialize() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
@@ -42,7 +42,7 @@
 //            emp1 = GetAllInstances(typeof (SimpleRepository<Employee>), 0);
 //        }
 
-//        [TestCleanup]
+//        [TearDown]
 //        public void CleanUp() {
 //            payment1 = null;
 //            customer1 = null;

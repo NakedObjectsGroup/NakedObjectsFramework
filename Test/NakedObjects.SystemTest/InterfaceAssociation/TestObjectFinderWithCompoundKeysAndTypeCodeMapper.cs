@@ -7,12 +7,12 @@
 
 //using System;
 //using System.Data.Entity;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Services;
 //using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 
 //namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinderWithCompoundKeysAbstract {
 //        protected override string[] Namespaces {
 //            get { return new[] {typeof (Payment).Namespace}; }
@@ -49,7 +49,7 @@
 //            Database.Delete(PaymentContext.DatabaseName);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void SetAssociatedObject() {
 //            payee1.SetObject(customer2a);
 //            key1.AssertValueIsEqual("CU2|1|1001");
@@ -60,7 +60,7 @@
 //            key1.AssertValueIsEqual("CU2|2|1002");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void WorksWithASingleIntegerKey() {
 //            payee1.SetObject(customer1);
 //            key1.AssertValueIsEqual("CU1|1");
@@ -71,7 +71,7 @@
 //            payee1.AssertObjectIsEqual(customer1);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void WorksWithTripleIntegerKey() {
 //            payee1.SetObject(customer3);
 //            key1.AssertValueIsEqual("CU3|1|1001|2001");
@@ -82,7 +82,7 @@
 //            payee1.AssertObjectIsEqual(customer3);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void FailsIfTypeNameIsEmpty() {
 //            key1.SetValue("|1|1001|2001");
 //            try {
@@ -94,7 +94,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void FailsIfCodeNotRecognised() {
 //            key1.SetValue("EMP|1");
 //            try {
@@ -106,7 +106,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void FailsIfTypeNotRecognisedByEncodingService() {
 //            try {
 //                payee1.SetObject(emp1);
@@ -117,7 +117,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void FailsIfTooFewKeysSupplied() {
 //            key1.SetValue("CU3|1|1001");
 //            try {
@@ -129,7 +129,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void FailsIfTooManyKeysSupplied() {
 //            key1.SetValue("CU2|1|1001|2001");
 //            try {
@@ -141,7 +141,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ChangeAssociatedObjectType() {
 //            payee1.SetObject(customer2a);
 //            key1.AssertValueIsEqual("CU2|1|1001");
@@ -151,14 +151,14 @@
 //            key1.AssertValueIsEqual("SUP|1|2001");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void ClearAssociatedObject() {
 //            payee1.SetObject(customer2a);
 //            payee1.ClearObject();
 //            key1.AssertIsEmpty();
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void GetAssociatedObject() {
 //            key1.SetValue("CU2|1|1001");
 //            payee1.AssertIsNotEmpty();
@@ -171,7 +171,7 @@
 //            payee1.ContentAsObject.GetPropertyByName("Id").AssertValueIsEqual("2");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void NoAssociatedObject() {
 //            key1.AssertIsEmpty();
 //        }

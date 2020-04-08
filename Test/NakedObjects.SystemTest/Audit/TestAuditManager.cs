@@ -9,7 +9,7 @@
 //using System.Data.Entity;
 //using System.Linq;
 //using System.Security.Principal;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Architecture.Component;
 //using NakedObjects.Architecture.Configuration;
 //using NakedObjects.Audit;
@@ -24,7 +24,7 @@
 //using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 //namespace NakedObjects.SystemTest.Audit {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestAuditManager : AbstractSystemTest<AuditDbContext> {
 //        #region Run Configuration
 
@@ -71,7 +71,7 @@
 //            return (p, a, s, b, pp) => UnexpectedCall(auditor);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AuditUsingSpecificTypeAuditorAction() {
 //            MyDefaultAuditor.SetActionCallbacksExpected();
 
@@ -95,7 +95,7 @@
 //            Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AuditUsingSpecificTypeAuditorServiceAction() {
 //            ITestService foo = GetTestService("Foo Service");
 
@@ -116,7 +116,7 @@
 //            Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AuditUsingSpecificTypeAuditorQueryOnlyAction() {
 //            MyDefaultAuditor.SetActionCallbacksExpected();
 //            ITestObject foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
@@ -139,7 +139,7 @@
 //            Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AuditUsingSpecificTypeAuditorImplicitQueryOnlyAction() {
 //            MyDefaultAuditor.SetActionCallbacksExpected();
 //            ITestObject foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
@@ -162,7 +162,7 @@
 //            Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AuditUsingSpecificTypeAuditorQueryOnlyServiceAction() {
 //            MyDefaultAuditor.SetActionCallbacksExpected();
 //            ITestService foo = GetTestService("Foo Service");
@@ -184,7 +184,7 @@
 //            Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AuditUsingSpecificTypeAuditorActionWithParm() {
 //            MyDefaultAuditor.SetActionCallbacksExpected();
 //            ITestObject foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
@@ -207,7 +207,7 @@
 //            Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AuditUsingSpecificTypeAuditorServiceActionWithParm() {
 //            ITestService foo = GetTestService("Foo Service");
 //            MyDefaultAuditor.SetActionCallbacksUnexpected();
@@ -228,7 +228,7 @@
 //            Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AuditUsingSpecificTypeAuditorActionWithParms() {
 //            MyDefaultAuditor.SetActionCallbacksExpected();
 //            ITestObject foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
@@ -252,7 +252,7 @@
 //            Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AuditUsingSpecificTypeAuditorServiceActionWithParms() {
 //            MyDefaultAuditor.SetActionCallbacksExpected();
 //            ITestService foo = GetTestService("Foo Service");
@@ -276,7 +276,7 @@
 //            Assert.AreEqual(1, fooCalledCount, "expect foo auditor to be called");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AuditUsingSpecificTypeAuditorUpdate() {
 //            MyDefaultAuditor.SetActionCallbacksExpected();
 //            ITestObject foo = GetTestService("Foos").GetAction("New Instance").InvokeReturnObject();
@@ -315,7 +315,7 @@
 //            Assert.AreEqual(1, fooPersistedCount, "expect foo auditor to be called for persists");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AuditUsingSpecificTypeAuditorActionQux() {
 //            MyDefaultAuditor.SetActionCallbacksExpected();
 //            ITestObject qux = GetTestService("Quxes").GetAction("New Instance").InvokeReturnObject();
@@ -337,7 +337,7 @@
 //            Assert.AreEqual(1, quxCalledCound, "expect qux auditor to be called");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AuditUsingSpecificTypeAuditorServiceActionQux() {
 //            ITestService qux = GetTestService("Qux Service");
 //            MyDefaultAuditor.SetActionCallbacksUnexpected();
@@ -357,7 +357,7 @@
 //            Assert.AreEqual(1, quxCalledCound, "expect qux auditor to be called");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void AuditUsingSpecificTypeAuditorUpdateQux() {
 //            MyDefaultAuditor.SetActionCallbacksExpected();
 //            ITestObject qux = GetTestService("Quxes").GetAction("New Instance").InvokeReturnObject();
@@ -395,7 +395,7 @@
 //            Assert.AreEqual(1, quxPersistedCount, "expect qux auditor to be called for persists");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DefaultAuditorCalledForNonSpecificTypeAction() {
 //            MyDefaultAuditor.SetActionCallbacksExpected();
 //            ITestObject bar = GetTestService(typeof (SimpleRepository<Bar>)).GetAction("New Instance").InvokeReturnObject();
@@ -417,7 +417,7 @@
 //            Assert.AreEqual(1, defaultCalledCount, "expect default auditor to be called");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DefaultAuditorCalledForNonSpecificTypeServiceAction() {
 //            ITestService bar = GetTestService(typeof (SimpleRepository<Bar>));
 //            MyDefaultAuditor.SetActionCallbacksUnexpected();
@@ -437,7 +437,7 @@
 //            Assert.AreEqual(1, defaultCalledCount, "expect default auditor to be called");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public void DefaultAuditorCalledForNonSpecificTypeUpdate() {
 //            MyDefaultAuditor.SetActionCallbacksExpected();
 //            ITestObject bar = GetTestService("Bars").GetAction("New Instance").InvokeReturnObject();
@@ -487,15 +487,15 @@
 //            CleanupNakedObjectsFramework(new TestAuditManager());
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //            SetUser("sven");
 //        }
 
-//        [TestCleanup()]
-//        public void TestCleanup() {}
+//        [TearDown()]
+//        public void TearDown() {}
 
 //        #endregion
 

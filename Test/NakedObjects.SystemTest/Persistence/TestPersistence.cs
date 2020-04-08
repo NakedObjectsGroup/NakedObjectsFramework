@@ -9,7 +9,7 @@
 //using System.Data.Entity;
 //using System.Data.Entity.Core.Objects;
 //using System.Linq;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Architecture.Configuration;
 //using NakedObjects.Core.Configuration;
 //using NakedObjects.Services;
@@ -17,7 +17,7 @@
 //using Microsoft.Practices.Unity;
 
 //namespace NakedObjects.SystemTest.Persistence {
-//    [TestClass]
+//    [TestFixture]
 //    public class TestPersistence : AbstractSystemTest<PersistenceDbContext> {
 //        private static bool triggerFail = false;
 
@@ -38,7 +38,7 @@
 //            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void IdIsSetByTheTimePersistedIsCalled() {
 //            ITestObject foo = GetTestService(typeof (SimpleRepository<Foo1>)).GetAction("New Instance").InvokeReturnObject();
 //            foo.AssertIsTransient();
@@ -51,7 +51,7 @@
 //            idPersisted.AssertValueIsEqual("1");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ExceptionInPersistedCausesWholeTransactionToFail() {
 //            ITestObject bar = GetTestService("Bar1s").GetAction("New Instance").InvokeReturnObject();
 //            try {
@@ -68,7 +68,7 @@
 //            }
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void ExceptionInUpdatedCausesWholeTransactionToFail() {
 //            ITestAction qs = GetTestService(typeof (SimpleRepository<Qux1>)).GetAction("All Instances");
 //            ITestObject q = qs.InvokeReturnCollection().AssertCountIs(1).ElementAt(0);
@@ -103,8 +103,8 @@
 //            CleanupNakedObjectsFramework(new TestPersistence());
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //        }

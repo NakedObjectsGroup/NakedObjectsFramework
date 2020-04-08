@@ -9,12 +9,12 @@
 //using System.ComponentModel.DataAnnotations;
 //using System.Data.Entity;
 //using System.Linq;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//
 //using NakedObjects.Services;
 //using NakedObjects.Xat;
 
 //namespace NakedObjects.SystemTest.Enum {
-//    [TestClass]
+//    [TestFixture]
 //    public class EnumTest : AbstractSystemTest<EnumDbContext> {
 //        protected override Type[] Types {
 //            get { return new[] {typeof (Foo), typeof (Sexes), typeof (HairColours)}; }
@@ -28,7 +28,7 @@
 
 //        #endregion
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void EnumPropertyBasic() {
 //            ITestObject foo = NewTestObject<Foo>();
 
@@ -44,7 +44,7 @@
 //            sex1.AssertFieldEntryInvalid("Man");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void EnumPropertyWithDefault() {
 //            ITestObject foo = NewTestObject<Foo>();
 //            //Property with no default
@@ -53,7 +53,7 @@
 //            foo.GetPropertyByName("Sex2").AssertValueIsEqual("Unknown");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void EnumPropertyWithChoices() {
 //            ITestObject foo = NewTestObject<Foo>();
 
@@ -64,7 +64,7 @@
 //            Assert.AreEqual("Female", values.ElementAt(1).NakedObject.TitleString());
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void EnumPropertyWithChoicesAndDefault() {
 //            ITestObject foo = NewTestObject<Foo>();
 
@@ -73,7 +73,7 @@
 //            Assert.AreEqual(2, values.Count());
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void EnumPropertyByteEnum() {
 //            ITestObject foo = NewTestObject<Foo>();
 
@@ -87,7 +87,7 @@
 //            sex1.AssertFieldEntryInvalid("Fair");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void IntPropertyAsEnum() {
 //            ITestObject foo = NewTestObject<Foo>();
 
@@ -100,7 +100,7 @@
 //            Assert.AreEqual("Unknown", values.ElementAt(3).NakedObject.TitleString());
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void EnumParameter() {
 //            ITestObject foo = NewTestObject<Foo>();
 //            ITestAction act1 = foo.GetAction("Action1");
@@ -112,7 +112,7 @@
 //            Assert.AreEqual("Unknown", values.ElementAt(3).NakedObject.TitleString());
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public virtual void EnumParameterWithDefault() {
 //            ITestObject foo = NewTestObject<Foo>();
 //            ITestAction act1 = foo.GetAction("Action1");
@@ -137,14 +137,14 @@
 //            CleanupNakedObjectsFramework(new EnumTest());
 //        }
 
-//        [TestInitialize()]
-//        public void TestInitialize() {
+//        [SetUp()]
+//        public void SetUp() {
 //            InitializeNakedObjectsFrameworkOnce();
 //            StartTest();
 //        }
 
-//        [TestCleanup()]
-//        public void TestCleanup() {}
+//        [TearDown()]
+//        public void TearDown() {}
 
 //        #endregion
 //    }
