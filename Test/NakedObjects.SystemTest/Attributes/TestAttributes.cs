@@ -1220,7 +1220,9 @@ namespace NakedObjects.SystemTest.Attributes
     {
         public static void Delete() => System.Data.Entity.Database.Delete(csTA);
 
-        private static string csTA = @"Data Source=.\SQLEXPRESS;Initial Catalog=TestAttributes;Integrated Security=True;";
+        private static string csTA = @"Data Source=(local)\SQL2017;Initial Catalog=TestAttributes;Integrated Security=True;";
+
+        //private static string csTA = @"Data Source=.\SQLEXPRESS;Initial Catalog=TestAttributes;Integrated Security=True;";
 
         public const string DatabaseName = "TestAttributes";
         public AttributesDbContext() : base(csTA) { }
