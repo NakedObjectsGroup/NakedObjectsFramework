@@ -140,7 +140,7 @@
 //            context.Database.Create();
 //        }
 
-//        [ClassCleanup]
+//        [OneTimeSetUp]
 //        public static void ClassCleanup() {
 //            CleanupNakedObjectsFramework(new TestMainMenusConventional());
 //        }

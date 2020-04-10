@@ -88,7 +88,7 @@
 //            container.RegisterType<IMenuFactory, ReflectorTest.NullMenuFactory>();
 //        }
 
-//        [ClassCleanup]
+//        [OneTimeSetUp]
 //        public static void DeleteDatabase() {
 //            Database.Delete(databaseName);
 //        }

@@ -349,7 +349,7 @@
 
 //        #region Setup/Teardown
 
-//        [ClassCleanup]
+//        [OneTimeSetUp]
 //        public static void ClassCleanup() {
 //            CleanupNakedObjectsFramework(new TestProfileManager());
 //            Database.Delete(ProfileDbContext.DatabaseName);

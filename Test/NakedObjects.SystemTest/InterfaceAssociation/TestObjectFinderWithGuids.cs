@@ -96,7 +96,7 @@
 //            DatabaseInitializer.Seed(context);
 //        }
 
-//        [ClassCleanup]
+//        [OneTimeSetUp]
 //        public static void TearDownTest() {
 //            CleanupNakedObjectsFramework(new TestObjectFinderWithGuids());
 //            Database.Delete(PaymentContext.DatabaseName);

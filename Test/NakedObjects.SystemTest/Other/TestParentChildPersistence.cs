@@ -56,7 +56,7 @@
 //                InitializeNakedObjectsFramework(new TestParentChildPersistence());
 //            }
 
-//            [ClassCleanup]
+//            [OneTimeSetUp]
 //            public static void ClassCleanup() {
 //                CleanupNakedObjectsFramework(new TestParentChildPersistence());
 //                Database.Delete(ParentChildDbContext.DatabaseName);

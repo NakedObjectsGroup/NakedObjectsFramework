@@ -98,7 +98,7 @@
 //            MyDbInitialiser.Seed(context);
 //        }
 
-//        [ClassCleanup]
+//        [OneTimeSetUp]
 //        public static void ClassCleanup() {
 //            CleanupNakedObjectsFramework(new TestPersistence());
 //        }

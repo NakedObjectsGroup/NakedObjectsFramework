@@ -43,7 +43,7 @@
 //            DatabaseInitializer.Seed(context);
 //        }
 
-//        [ClassCleanup]
+//        [OneTimeSetUp]
 //        public static void TearDownTest() {
 //            CleanupNakedObjectsFramework(new TestObjectFinderWithCompoundKeys());
 //        }
