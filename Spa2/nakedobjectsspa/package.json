@@ -65,7 +65,7 @@
         "@angular/platform-browser": "~7.2.0",
         "@angular/platform-browser-dynamic": "~7.2.0",
         "@angular/router": "~7.2.0",
-        "auth0-js": "^9.8.2",
+        "auth0-js": "^9.13.2",
         "core-js": "^2.5.4",
         "lodash": "~4.17.11",
         "lodash-es": "~4.17.11",
