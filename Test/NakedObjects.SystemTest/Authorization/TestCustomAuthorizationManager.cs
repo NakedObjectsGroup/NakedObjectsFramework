@@ -173,14 +173,12 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer
 
     public class CustomAuthorizationManagerDbContext : DbContext
     {
-        public static void Delete() => System.Data.Entity.Database.Delete(csTA);
+        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
 
-        private static string csTA = @"Data Source=(local)\SQL2017;Initial Catalog=TestCustomAuthorizationManager;Integrated Security=True;";
-        //private static string csTA = @"Data Source=.\SQLEXPRESS;Initial Catalog=TestCustomAuthorizationManager;Integrated Security=True;";
-
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
 
         public const string DatabaseName = "TestCustomAuthorizationManager";
-        public CustomAuthorizationManagerDbContext() : base(csTA) { }
+        public CustomAuthorizationManagerDbContext() : base(Cs) { }
 
         public DbSet<Foo> Foos { get; set; }
         public DbSet<Bar> Bars { get; set; }

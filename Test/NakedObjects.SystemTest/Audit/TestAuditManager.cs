@@ -559,13 +559,12 @@ namespace NakedObjects.SystemTest.Audit
     #region Classes used by tests
 
     public class AuditDbContext : DbContext {
-        //private static string csTA = @"Data Source=.\SQLEXPRESS;Initial Catalog=TestAudit;Integrated Security=True;";
-        private static string csTA = @"Data Source=(local)\SQL2017;Initial Catalog=TestAudit;Integrated Security=True;";
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
 
-        public static void Delete() => System.Data.Entity.Database.Delete(csTA);
+        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
 
         public const string DatabaseName = "TestAudit";
-        public AuditDbContext() : base(csTA) { }
+        public AuditDbContext() : base(Cs) { }
 
         public DbSet<Foo> Foos { get; set; }
         public DbSet<Bar> Bars { get; set; }

@@ -1218,14 +1218,12 @@ namespace NakedObjects.SystemTest.Attributes
 
     public class AttributesDbContext : DbContext
     {
-        public static void Delete() => System.Data.Entity.Database.Delete(csTA);
+        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
 
-        private static string csTA = @"Data Source=(local)\SQL2017;Initial Catalog=TestAttributes;Integrated Security=True;";
-
-        //private static string csTA = @"Data Source=.\SQLEXPRESS;Initial Catalog=TestAttributes;Integrated Security=True;";
+        private static string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
 
         public const string DatabaseName = "TestAttributes";
-        public AttributesDbContext() : base(csTA) { }
+        public AttributesDbContext() : base(Cs) { }
 
         public DbSet<Default1> Default1s { get; set; }
         public DbSet<Describedas1> DescribedAs1s { get; set; }

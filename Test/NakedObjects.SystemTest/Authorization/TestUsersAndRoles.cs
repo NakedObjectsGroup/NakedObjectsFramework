@@ -1,167 +1,197 @@
-﻿//// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-//// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-//// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-//// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-//// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//// See the License for the specific language governing permissions and limitations under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
-//using System;
-//using System.Data.Entity;
-//using System.Security.Principal;
-//
-//using NakedObjects.Architecture.Component;
-//using NakedObjects.Architecture.Configuration;
-//using NakedObjects.Core.Configuration;
-//using NakedObjects.Meta.Authorization;
-//using NakedObjects.Security;
-//using NakedObjects.Services;
-//using NakedObjects.SystemTest.Audit;
-//using Microsoft.Practices.Unity;
+using System;
+using System.Data.Entity;
+using System.Security.Principal;
+using Microsoft.Extensions.DependencyInjection;
+using NakedObjects.Architecture.Component;
+using NakedObjects.Meta.Authorization;
+using NakedObjects.Security;
+using NakedObjects.Services;
+using NakedObjects.SystemTest.Audit;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
 
+namespace NakedObjects.SystemTest.Authorization.UsersAndRoles
+{
+    [TestFixture]
+    public class TestUsersAndRoles : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
+        protected override Type[] Types => new[] { typeof(MyDefaultAuthorizer)};
 
-//namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
-//    [TestFixture]
-//    public class TestUsersAndRoles : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
-//        protected override void RegisterTypes(IUnityContainer container) {
-//            base.RegisterTypes(container);
-//            var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
+    protected override Type[] Services
+        {
+            get
+            {
+                return new[] {
+                    typeof (SimpleRepository<Foo>),
+                    typeof (FooService),
+                };
+            }
+        }
 
-//            container.RegisterInstance<IAuthorizationConfiguration>(config, (new ContainerControlledLifetimeManager()));
-//            container.RegisterType<IFacetDecorator, AuthorizationManager>("AuthorizationManager", new ContainerControlledLifetimeManager());
+        protected override string[] Namespaces => new[] { typeof(Foo).Namespace };
 
-//            var reflectorConfig = new ReflectorConfiguration(
-//                new[] {
-//                    typeof (MyDefaultAuthorizer),
-//                },
-//                new[] {
-//                    typeof (SimpleRepository<Foo>),
-//                    typeof (FooService),
-//                },
-//                new[] {typeof (Foo).Namespace});
+        protected override void RegisterTypes(IServiceCollection services)
+        {
+            base.RegisterTypes(services);
+            var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
 
-//            container.RegisterInstance<IReflectorConfiguration>(reflectorConfig, new ContainerControlledLifetimeManager());
-//        }
+            services.AddSingleton<IAuthorizationConfiguration>(config);
+            services.AddSingleton<IFacetDecorator, AuthorizationManager>();
 
-//        #region Tests
+          
+        }
 
-//        [Test] //Pending #9227
-//        public void SetUserOnTestIsPassedThroughToAuthorizer() {
-//            SetUser("svenFoo", "Bar");
-//            try {
-//                GetTestService(typeof (SimpleRepository<Foo>)).GetAction("New Instance").AssertIsVisible();
-//                Assert.Fail("Should not get to here");
-//            }
-//            catch (Exception e) {
-//                Assert.AreEqual("User name: svenFoo, IsInRole Bar = True", e.Message);
-//            }
+        #region Tests
 
-//            SetUser("svenBar", "Bar");
-//            try {
-//                GetTestService(typeof (SimpleRepository<Foo>)).GetAction("New Instance").AssertIsVisible();
-//                Assert.Fail("Should not get to here");
-//            }
-//            catch (Exception e) {
-//                Assert.AreEqual("User name: svenBar, IsInRole Bar = True", e.Message);
-//            }
+        [Test] //Pending #9227
+        public void SetUserOnTestIsPassedThroughToAuthorizer()
+        {
+            SetUser("svenFoo", "Bar");
+            try
+            {
+                GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").AssertIsVisible();
+                Assert.Fail("Should not get to here");
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("User name: svenFoo, IsInRole Bar = True", e.Message);
+            }
 
-//            SetUser("svenFoo");
-//            try {
-//                GetTestService(typeof (SimpleRepository<Foo>)).GetAction("New Instance").AssertIsVisible();
-//                Assert.Fail("Should not get to here");
-//            }
-//            catch (Exception e) {
-//                Assert.AreEqual("User name: svenFoo, IsInRole Bar = False", e.Message);
-//            }
-//        }
+            SetUser("svenBar", "Bar");
+            try
+            {
+                GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").AssertIsVisible();
+                Assert.Fail("Should not get to here");
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("User name: svenBar, IsInRole Bar = True", e.Message);
+            }
 
-//        #endregion
+            SetUser("svenFoo");
+            try
+            {
+                GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").AssertIsVisible();
+                Assert.Fail("Should not get to here");
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("User name: svenFoo, IsInRole Bar = False", e.Message);
+            }
+        }
 
-//        #region Setup/Teardown
+        #endregion
 
-//        [ClassInitialize]
-//        public static void ClassInitialize(TestContext tc) {
-//            Database.Delete(CustomAuthorizationManagerDbContext.DatabaseName);
-//            var context = Activator.CreateInstance<CustomAuthorizationManagerDbContext>();
+        #region Setup/Teardown
 
-//            context.Database.Create();
-//        }
+        [OneTimeSetUp]
+        public  void ClassInitialize()
+        {
+            CustomAuthorizationManagerDbContext.Delete();
+            var context = Activator.CreateInstance<CustomAuthorizationManagerDbContext>();
 
-//        [OneTimeSetUp]
-//        public static void ClassCleanup() {}
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
 
-//        [SetUp()]
-//        public void SetUp() {
-//            InitializeNakedObjectsFramework(this);
-//            StartTest();
-//            SetUser("default");
-//        }
+        }
 
-//        [TearDown()]
-//        public void TearDown() {}
+        [OneTimeTearDown]
+        public  void ClassCleanup() { }
 
-//        #endregion
+        [SetUp()]
+        public void SetUp()
+        {
+            StartTest();
+            SetUser("default");
+        }
 
-//        #region "Services & Fixtures"
+        [TearDown()]
+        public void TearDown() { }
 
-//        protected override object[] Fixtures {
-//            get { return (new object[] {}); }
-//        }
+        #endregion
 
-//        protected override object[] MenuServices {
-//            get {
-//                return (new object[] {
-//                    new SimpleRepository<Foo>()
-//                });
-//            }
-//        }
+        #region "Services & Fixtures"
 
-//        #endregion
-//    }
+        protected override object[] Fixtures
+        {
+            get { return (new object[] { }); }
+        }
 
-//    #region Classes used by tests
+        protected override object[] MenuServices
+        {
+            get
+            {
+                return (new object[] {
+                    new SimpleRepository<Foo>()
+                });
+            }
+        }
 
-//    public class CustomAuthorizationManagerDbContext : DbContext {
-//        public const string DatabaseName = "TestCustomAuthorizationManager";
-//        public CustomAuthorizationManagerDbContext() : base(DatabaseName) {}
+        #endregion
+    }
 
-//        public DbSet<Foo> Foos { get; set; }
-//    }
+    #region Classes used by tests
 
-//    public class MyDefaultAuthorizer : ITypeAuthorizer<object> {
-//        public IDomainObjectContainer Container { protected get; set; }
-//        public SimpleRepository<Foo> Service { protected get; set; }
+    public class CustomAuthorizationManagerDbContext : DbContext
+    {
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
 
-//        #region ITypeAuthorizer<object> Members
+        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
 
-//        public bool IsEditable(IPrincipal principal, object target, string memberName) {
-//            throw new NotImplementedException();
-//        }
+        public const string DatabaseName = "TestCustomAuthorizationManager";
+        public CustomAuthorizationManagerDbContext() : base(Cs) { }
 
-//        public bool IsVisible(IPrincipal principal, object target, string memberName) {
-//            throw new Exception("User name: " + principal.Identity.Name + ", IsInRole Bar = " + principal.IsInRole("Bar"));
-//        }
+        public DbSet<Foo> Foos { get; set; }
+    }
 
-//        #endregion
+    public class MyDefaultAuthorizer : ITypeAuthorizer<object>
+    {
+        public IDomainObjectContainer Container { protected get; set; }
+        public SimpleRepository<Foo> Service { protected get; set; }
 
-//        public void Init() {
-//            throw new NotImplementedException();
-//        }
+        #region ITypeAuthorizer<object> Members
 
-//        public void Shutdown() {
-//            //Does nothing
-//        }
-//    }
+        public bool IsEditable(IPrincipal principal, object target, string memberName)
+        {
+            throw new NotImplementedException();
+        }
 
-//    public class Foo {
-//        public virtual int Id { get; set; }
+        public bool IsVisible(IPrincipal principal, object target, string memberName)
+        {
+            throw new Exception("User name: " + principal.Identity.Name + ", IsInRole Bar = " + principal.IsInRole("Bar"));
+        }
 
-//        [Optionally]
-//        public virtual string Prop1 { get; set; }
+        #endregion
 
-//        public override string ToString() {
-//            return "foo1";
-//        }
-//    }
+        public void Init()
+        {
+            throw new NotImplementedException();
+        }
 
-//    #endregion
-//}
+        public void Shutdown()
+        {
+            //Does nothing
+        }
+    }
+
+    public class Foo
+    {
+        public virtual int Id { get; set; }
+
+        [Optionally]
+        public virtual string Prop1 { get; set; }
+
+        public override string ToString()
+        {
+            return "foo1";
+        }
+    }
+
+    #endregion
+}

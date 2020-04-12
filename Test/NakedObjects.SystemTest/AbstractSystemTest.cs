@@ -11,12 +11,24 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
+using System.Net.Security;
+using System.Security.Policy;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Util;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest {
+
+    public static class Constants {
+        public static string AppveyorServer => @"(local)\SQL2017";
+        public static string LocalServer => @".\SQLEXPRESS";
+        public static string Server => LocalServer;
+
+    }
+
+
+
     public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase
         where TContext : DbContext {
 

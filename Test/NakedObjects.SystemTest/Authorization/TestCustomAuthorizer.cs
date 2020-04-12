@@ -311,14 +311,12 @@ namespace NakedObjects.SystemTest.Authorization.Installer
 
     public class CustomAuthorizerInstallerDbContext : DbContext
     {
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
 
-        //private static string cs = @"Data Source=.\SQLEXPRESS;Initial Catalog=TestCustomAuthorizerInstaller;Integrated Security=True;";
-        private static string cs = @"Data Source=(local)\SQL2017;Initial Catalog=TestCustomAuthorizerInstaller;Integrated Security=True;";
-
-        public static void Delete() => System.Data.Entity.Database.Delete(cs);
+        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
 
         public const string DatabaseName = "TestCustomAuthorizerInstaller";
-        public CustomAuthorizerInstallerDbContext() : base(cs) { }
+        public CustomAuthorizerInstallerDbContext() : base(Cs) { }
 
         public DbSet<Foo> Foos { get; set; }
     }
