@@ -1,258 +1,302 @@
-﻿//// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-//// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-//// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-//// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-//// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//// See the License for the specific language governing permissions and limitations under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
-//using System;
-//using System.Data.Entity;
-//using System.Linq;
-//
-//using NakedObjects.Services;
+using System;
+using System.Data.Entity;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Services;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
+using TestContext = NUnit.Framework.TestContext;
 
-//namespace NakedObjects.SystemTest.Injection {
-//    [TestFixture]
-//    public class TestInjection : AbstractSystemTest<InjectionDbContext> {
-//        protected override Type[] Types {
-//            get { return new[] {typeof (Object1), typeof (Object2), typeof (Object3), typeof (Object4), typeof (Object5), typeof (Service1), typeof (IService2), typeof (IService3)}; }
-//        }
+namespace NakedObjects.SystemTest.Injection
+{
+    [TestFixture]
+    public class TestInjection : AbstractSystemTest<InjectionDbContext>
+    {
+        private static void IsInstanceOfType(object obj, Type typ) {
+            Assert.IsTrue(typ.IsInstanceOfType(obj), $"{obj.GetType()} isn't a {typ}");
+        }
 
-//        protected override object[] MenuServices {
-//            get {
-//                return (new object[] {
-//                    new SimpleRepository<Object1>(),
-//                    new SimpleRepository<Object2>(),
-//                    new SimpleRepository<Object3>(),
-//                    new SimpleRepository<Object4>(),
-//                    new SimpleRepository<Object5>(),
-//                    new Service1(),
-//                    new ServiceImplementation(),
-//                    new Service4ImplA(),
-//                    new Service4ImplB(),
-//                    new Service4ImplC()
-//                });
-//            }
-//        }
+        protected override Type[] Types
+        {
+            get { return new[] { typeof(Object1), typeof(Object2), typeof(Object3), typeof(Object4), typeof(Object5), typeof(Service1), typeof(IService2), typeof(IService3) }; }
+        }
 
-//        [Test]
-//        public void InjectContainer() {
-//            var testObject = (Object1) NewTestObject<Object1>().GetDomainObject();
-//            Assert.IsNotNull(testObject.Container);
-//            Assert.IsInstanceOfType(testObject.Container, typeof (IDomainObjectContainer));
-//        }
+        protected override Type[] Services
+        {
+            get
+            {
+                return (new Type[] {
+                    typeof (SimpleRepository<Object1>),
+                    typeof (SimpleRepository<Object2>),
+                    typeof (SimpleRepository<Object3>),
+                    typeof (SimpleRepository<Object4>),
+                    typeof (SimpleRepository<Object5>),
+                    typeof (Service1),
+                    typeof (ServiceImplementation),
+                    typeof (Service4ImplA),
+                    typeof (Service4ImplB),
+                    typeof (Service4ImplC)
+                });
+            }
+        }
 
-//        [Test]
-//        public void InjectService() {
-//            var testObject = (Object2) NewTestObject<Object2>().GetDomainObject();
-//            Assert.IsNotNull(testObject.GetService1());
-//            Assert.IsInstanceOfType(testObject.GetService1(), typeof (Service1));
-//        }
+        [Test]
+        public void InjectContainer()
+        {
+            var testObject = (Object1)NewTestObject<Object1>().GetDomainObject();
+            Assert.IsNotNull(testObject.Container);
+            IsInstanceOfType(testObject.Container, typeof(IDomainObjectContainer));
+        }
 
-//        [Test]
-//        public void InjectServiceDefinedByInterface() {
-//            var testObject = (Object2) NewTestObject<Object2>().GetDomainObject();
-//            Assert.IsNotNull(testObject.GetService2());
-//            Assert.IsInstanceOfType(testObject.GetService2(), typeof (ServiceImplementation));
-//            Assert.IsNotNull(testObject.GetService3());
-//            Assert.IsInstanceOfType(testObject.GetService3(), typeof (ServiceImplementation));
-//            Assert.IsNull(testObject.GetObject());
-//        }
+        [Test]
+        public void InjectService()
+        {
+            var testObject = (Object2)NewTestObject<Object2>().GetDomainObject();
+            Assert.IsNotNull(testObject.GetService1());
+            IsInstanceOfType(testObject.GetService1(), typeof(Service1));
+        }
 
-//        [Test]
-//        public void InjectedPropertiesAreHidden() {
-//            var obj = NewTestObject<Object2>();
-//            try {
-//                obj.GetPropertyByName("My Service1");
-//                Assert.Fail();
-//            }
-//            catch (Exception e) {
-//                Assert.AreEqual("Assert.Fail failed. No Property named 'My Service1'", e.Message);
-//            }
+        [Test]
+        public void InjectServiceDefinedByInterface()
+        {
+            var testObject = (Object2)NewTestObject<Object2>().GetDomainObject();
+            Assert.IsNotNull(testObject.GetService2());
+            IsInstanceOfType(testObject.GetService2(), typeof(ServiceImplementation));
+            Assert.IsNotNull(testObject.GetService3());
+            IsInstanceOfType(testObject.GetService3(), typeof(ServiceImplementation));
+            Assert.IsNull(testObject.GetObject());
+        }
 
-//            var prop = obj.GetPropertyByName("Id");
-//            prop.AssertIsVisible();
-//        }
+        [Test]
+        public void InjectedPropertiesAreHidden()
+        {
+            var obj = NewTestObject<Object2>();
+            try
+            {
+                obj.GetPropertyByName("My Service1");
+                Assert.Fail();
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Assert.Fail failed. No Property named 'My Service1'", e.Message);
+            }
 
-//        [Test]
-//        public void InjectArrayOfServicesDefinedByInterface() {
-//            var testObject = (Object4) NewTestObject<Object4>().GetDomainObject();
-//            var arr = testObject.GetService4s();
-//            Assert.IsNotNull(arr);
-//            Assert.AreEqual(3, arr.Count());
-//            Assert.IsTrue(arr[0].GetType() == typeof (Service4ImplA));
-//            Assert.IsTrue(arr[1].GetType() == typeof (Service4ImplB));
-//            Assert.IsTrue(arr[2].GetType() == typeof (Service4ImplC));
+            var prop = obj.GetPropertyByName("Id");
+            prop.AssertIsVisible();
+        }
 
-//            arr = testObject.GetService4ImplBs();
-//            Assert.IsNotNull(arr);
-//            Assert.AreEqual(2, arr.Count());
-//            Assert.IsTrue(arr[0].GetType() == typeof (Service4ImplB));
-//            Assert.IsTrue(arr[1].GetType() == typeof (Service4ImplC));
+        [Test]
+        public void InjectArrayOfServicesDefinedByInterface()
+        {
+            var testObject = (Object4)NewTestObject<Object4>().GetDomainObject();
+            var arr = testObject.GetService4s();
+            Assert.IsNotNull(arr);
+            Assert.AreEqual(3, arr.Count());
+            Assert.IsTrue(arr[0].GetType() == typeof(Service4ImplA));
+            Assert.IsTrue(arr[1].GetType() == typeof(Service4ImplB));
+            Assert.IsTrue(arr[2].GetType() == typeof(Service4ImplC));
 
-//            arr = testObject.GetService4ImplAs();
-//            Assert.IsNotNull(arr);
-//            Assert.AreEqual(1, arr.Count());
-//            Assert.IsTrue(arr[0].GetType() == typeof (Service4ImplA));
+            arr = testObject.GetService4ImplBs();
+            Assert.IsNotNull(arr);
+            Assert.AreEqual(2, arr.Count());
+            Assert.IsTrue(arr[0].GetType() == typeof(Service4ImplB));
+            Assert.IsTrue(arr[1].GetType() == typeof(Service4ImplC));
 
-//            var value = testObject.GetService4ImplC();
-//            Assert.IsNotNull(value);
-//            Assert.IsTrue(value.GetType() == typeof (Service4ImplC));
+            arr = testObject.GetService4ImplAs();
+            Assert.IsNotNull(arr);
+            Assert.AreEqual(1, arr.Count());
+            Assert.IsTrue(arr[0].GetType() == typeof(Service4ImplA));
 
-//            var emptyArr = testObject.GetObjects();
-//            Assert.IsNull(emptyArr);
-//        }
+            var value = testObject.GetService4ImplC();
+            Assert.IsNotNull(value);
+            Assert.IsTrue(value.GetType() == typeof(Service4ImplC));
 
-//        [Test]
-//        public void RuntimeExceptionForAmbigiousInjecton() {
-//            try {
-//                var testObject = (Object5) NewTestObject<Object5>().GetDomainObject();
-//                Assert.Fail("Should not get to here");
-//            }
-//            catch (Exception e) {
-//                Assert.AreEqual("Cannot inject service into property Service4 on target NakedObjects.SystemTest.Injection.Object5 because multiple services implement type NakedObjects.SystemTest.Injection.IService4: NakedObjects.SystemTest.Injection.Service4ImplA; NakedObjects.SystemTest.Injection.Service4ImplB; NakedObjects.SystemTest.Injection.Service4ImplC; ", e.Message);
-//            }
-//        }
+            var emptyArr = testObject.GetObjects();
+            Assert.IsNull(emptyArr);
+        }
 
-//        #region Setup/Teardown
+        [Test]
+        public void RuntimeExceptionForAmbigiousInjecton()
+        {
+            try
+            {
+                var testObject = (Object5)NewTestObject<Object5>().GetDomainObject();
+                Assert.Fail("Should not get to here");
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual("Cannot inject service into property Service4 on target NakedObjects.SystemTest.Injection.Object5 because multiple services implement type NakedObjects.SystemTest.Injection.IService4: NakedObjects.SystemTest.Injection.Service4ImplA; NakedObjects.SystemTest.Injection.Service4ImplB; NakedObjects.SystemTest.Injection.Service4ImplC; ", e.Message);
+            }
+        }
 
-//        [ClassInitialize]
-//        public static void ClassInitialize(TestContext tc) {
-//            Database.Delete(InjectionDbContext.DatabaseName);
-//            var context = Activator.CreateInstance<InjectionDbContext>();
+        #region Setup/Teardown
 
-//            context.Database.Create();
-//        }
+        [OneTimeSetUp]
+        public  void ClassInitialize()
+        {
+            InjectionDbContext.Delete();
+            var context = Activator.CreateInstance<InjectionDbContext>();
 
-//        [OneTimeSetUp]
-//        public static void ClassCleanup() {
-//            CleanupNakedObjectsFramework(new TestInjection());
-//            Database.Delete(InjectionDbContext.DatabaseName);
-//        }
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
 
-//        [SetUp()]
-//        public void SetUp() {
-//            InitializeNakedObjectsFrameworkOnce();
-//            StartTest();
-//        }
+        [OneTimeTearDown]
+        public  void ClassCleanup()
+        {
+            CleanupNakedObjectsFramework(this);
+        }
 
-//        #endregion
-//    }
+        [SetUp()]
+        public void SetUp()
+        {
+            StartTest();
+        }
 
-//    #region Domain classes used by tests
+        #endregion
+    }
 
-//    public class InjectionDbContext : DbContext {
-//        public const string DatabaseName = "TestInjection";
-//        public InjectionDbContext() : base(DatabaseName) {}
+    #region Domain classes used by tests
 
-//        public DbSet<Object1> Object1 { get; set; }
-//        public DbSet<Object2> Object2 { get; set; }
-//        public DbSet<Object3> Object3 { get; set; }
-//        public DbSet<Object4> Object4 { get; set; }
-//        public DbSet<Object5> Object5 { get; set; }
-//    }
+    public class InjectionDbContext : DbContext
+    {
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
 
-//    public class Object1 {
-//        public IDomainObjectContainer Container { get; set; }
+        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
 
-//        public virtual int Id { get; set; }
-//    }
 
-//    public class Object2 {
-//        public Service1 MyService1 { protected get; set; }
-//        public IService2 MyService2 { protected get; set; }
-//        public IService3 MyService3 { protected get; set; }
+        public const string DatabaseName = "TestInjection";
+        public InjectionDbContext() : base(Cs) { }
 
-//        public virtual int Id { get; set; }
+        public DbSet<Object1> Object1 { get; set; }
+        public DbSet<Object2> Object2 { get; set; }
+        public DbSet<Object3> Object3 { get; set; }
+        public DbSet<Object4> Object4 { get; set; }
+        public DbSet<Object5> Object5 { get; set; }
+    }
 
-//        //Should be ignored by injector mechanism
-//        public object Object { protected get; set; }
+    public class Object1
+    {
+        public IDomainObjectContainer Container { get; set; }
 
-//        public object GetService1() {
-//            return MyService1;
-//        }
+        public virtual int Id { get; set; }
+    }
 
-//        public object GetService2() {
-//            return MyService2;
-//        }
+    public class Object2
+    {
+        public Service1 MyService1 { protected get; set; }
+        public IService2 MyService2 { protected get; set; }
+        public IService3 MyService3 { protected get; set; }
 
-//        public object GetService3() {
-//            return MyService3;
-//        }
+        public virtual int Id { get; set; }
 
-//        public object GetObject() {
-//            return Object;
-//        }
-//    }
+        //Should be ignored by injector mechanism
+        public object Object { protected get; set; }
 
-//    public class Object3 {
-//        public Service1 MyService1 { protected get; set; }
-//        public NotRegisteredService MyService2 { protected get; set; }
+        public object GetService1()
+        {
+            return MyService1;
+        }
 
-//        public virtual int Id { get; set; }
-//    }
+        public object GetService2()
+        {
+            return MyService2;
+        }
 
-//    public class Object4 {
-//        public IService4[] Service4s { protected get; set; }
+        public object GetService3()
+        {
+            return MyService3;
+        }
 
-//        public Service4ImplB[] Service4ImplBs { protected get; set; }
+        public object GetObject()
+        {
+            return Object;
+        }
+    }
 
-//        public Service4ImplA[] Service4ImplAs { protected get; set; }
+    public class Object3
+    {
+        public Service1 MyService1 { protected get; set; }
+        public NotRegisteredService MyService2 { protected get; set; }
 
-//        public Service4ImplC Service4ImplC { protected get; set; }
+        public virtual int Id { get; set; }
+    }
 
-//        //Should be ignored by injector mechanism
-//        public object[] Objects { protected get; set; }
+    public class Object4
+    {
+        public IService4[] Service4s { protected get; set; }
 
-//        public virtual int Id { get; set; }
+        public Service4ImplB[] Service4ImplBs { protected get; set; }
 
-//        public object[] GetService4s() {
-//            return Service4s;
-//        }
+        public Service4ImplA[] Service4ImplAs { protected get; set; }
 
-//        public object[] GetService4ImplBs() {
-//            return Service4ImplBs;
-//        }
+        public Service4ImplC Service4ImplC { protected get; set; }
 
-//        public object[] GetService4ImplAs() {
-//            return Service4ImplAs;
-//        }
+        //Should be ignored by injector mechanism
+        public object[] Objects { protected get; set; }
 
-//        public object GetService4ImplC() {
-//            return Service4ImplC;
-//        }
+        public virtual int Id { get; set; }
 
-//        public object[] GetObjects() {
-//            return Objects;
-//        }
-//    }
+        public object[] GetService4s()
+        {
+            return Service4s;
+        }
 
-//    public class Object5 {
-//        //Should cause runtime exception as there is more than one implementation
-//        public IService4 Service4 { protected get; set; }
+        public object[] GetService4ImplBs()
+        {
+            return Service4ImplBs;
+        }
 
-//        public virtual int Id { get; set; }
-//    }
+        public object[] GetService4ImplAs()
+        {
+            return Service4ImplAs;
+        }
 
-//    public class Service1 {}
+        public object GetService4ImplC()
+        {
+            return Service4ImplC;
+        }
 
-//    public interface IService2 {}
+        public object[] GetObjects()
+        {
+            return Objects;
+        }
+    }
 
-//    public interface IService3 {}
+    public class Object5
+    {
+        //Should cause runtime exception as there is more than one implementation
+        public IService4 Service4 { protected get; set; }
 
-//    public interface IService4 {}
+        public virtual int Id { get; set; }
+    }
 
-//    public class NotRegisteredService {}
+    public class Service1 { }
 
-//    public class ServiceImplementation : IService2, IService3 {}
+    public interface IService2 { }
 
-//    public class Service4ImplA : IService4 {}
+    public interface IService3 { }
 
-//    public class Service4ImplB : IService4 {}
+    public interface IService4 { }
 
-//    public class Service4ImplC : Service4ImplB {}
+    public class NotRegisteredService { }
 
-//    public class Service4ImplNotRegistered : IService4 {}
+    public class ServiceImplementation : IService2, IService3 { }
 
-//    #endregion
-//}
+    public class Service4ImplA : IService4 { }
+
+    public class Service4ImplB : IService4 { }
+
+    public class Service4ImplC : Service4ImplB { }
+
+    public class Service4ImplNotRegistered : IService4 { }
+
+    #endregion
+}

@@ -1,171 +1,197 @@
-﻿//// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-//// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-//// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-//// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-//// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//// See the License for the specific language governing permissions and limitations under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
-//using System;
-//using System.ComponentModel.DataAnnotations;
-//using System.Data.Entity;
-//
-//using NakedObjects.Services;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Services;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
+using TestContext = NUnit.Framework.TestContext;
 
-//namespace NakedObjects.SystemTest.Container {
-//    [TestFixture]
-//    public class TestContainer : AbstractSystemTest<ContainerDbContext> {
-//        protected override Type[] Types {
-//            get { return new[] {typeof (Object1), typeof (Object2), typeof (ViewModel2)}; }
-//        }
+namespace NakedObjects.SystemTest.Container
+{
+    [TestFixture]
+    public class TestContainer : AbstractSystemTest<ContainerDbContext>
+    {
+        protected override Type[] Types
+        {
+            get { return new[] { typeof(Object1), typeof(Object2), typeof(ViewModel2) }; }
+        }
 
-//        protected override object[] MenuServices {
-//            get {
-//                return (new object[] {
-//                    new SimpleRepository<Object1>()
-//                });
-//            }
-//        }
+        protected override Type[] Services
+        {
+            get
+            {
+                return new [] {
+                    typeof(SimpleRepository<Object1>)
+                };
+            }
+        }
 
-//        [Test]
-//        public void DefaultsTransient() {
-//            var testObject = (Object1) NewTestObject<Object1>().GetDomainObject();
-//            Assert.IsNotNull(testObject.Container);
+        [Test]
+        public void DefaultsTransient()
+        {
+            var testObject = (Object1)NewTestObject<Object1>().GetDomainObject();
+            Assert.IsNotNull(testObject.Container);
 
-//            var o2 = testObject.Container.NewTransientInstance<Object2>();
+            var o2 = testObject.Container.NewTransientInstance<Object2>();
 
-//            Assert.AreEqual(o2.TestDateTime, new DateTime());
-//            Assert.IsNull(o2.TestNullableDateTime);
-//            Assert.AreEqual(o2.TestInt, 0);
-//            Assert.IsNull(o2.TestNullableInt);
+            Assert.AreEqual(o2.TestDateTime, new DateTime());
+            Assert.IsNull(o2.TestNullableDateTime);
+            Assert.AreEqual(o2.TestInt, 0);
+            Assert.IsNull(o2.TestNullableInt);
 
-//            Assert.AreEqual(o2.TestEnum, TestEnum.Value1);
-//            Assert.IsNull(o2.TestNullableEnum);
+            Assert.AreEqual(o2.TestEnum, TestEnum.Value1);
+            Assert.IsNull(o2.TestNullableEnum);
 
-//            Assert.AreEqual(o2.TestEnumDt, 0);
-//            Assert.IsNull(o2.TestNullableEnumDt);
-//        }
+            Assert.AreEqual(o2.TestEnumDt, 0);
+            Assert.IsNull(o2.TestNullableEnumDt);
+        }
 
-//        [Test]
-//        public void DefaultsViewModel() {
-//            var testObject = (Object1) NewTestObject<Object1>().GetDomainObject();
-//            Assert.IsNotNull(testObject.Container);
+        [Test]
+        public void DefaultsViewModel()
+        {
+            var testObject = (Object1)NewTestObject<Object1>().GetDomainObject();
+            Assert.IsNotNull(testObject.Container);
 
-//            var vm = testObject.NewViewModel();
+            var vm = testObject.NewViewModel();
 
-//            Assert.AreEqual(vm.TestDateTime, new DateTime());
-//            Assert.IsNull(vm.TestNullableDateTime);
-//            Assert.AreEqual(vm.TestInt, 0);
-//            Assert.IsNull(vm.TestNullableInt);
+            Assert.AreEqual(vm.TestDateTime, new DateTime());
+            Assert.IsNull(vm.TestNullableDateTime);
+            Assert.AreEqual(vm.TestInt, 0);
+            Assert.IsNull(vm.TestNullableInt);
 
-//            Assert.AreEqual(vm.TestEnum, TestEnum.Value1);
-//            Assert.IsNull(vm.TestNullableEnum);
+            Assert.AreEqual(vm.TestEnum, TestEnum.Value1);
+            Assert.IsNull(vm.TestNullableEnum);
 
-//            Assert.AreEqual(vm.TestEnumDt, 0);
-//            Assert.IsNull(vm.TestNullableEnumDt);
-//        }
+            Assert.AreEqual(vm.TestEnumDt, 0);
+            Assert.IsNull(vm.TestNullableEnumDt);
+        }
 
-//        #region Setup/Teardown
+        #region Setup/Teardown
 
-//        [ClassInitialize]
-//        public static void ClassInitialize(TestContext tc) {
-//            Database.Delete(ContainerDbContext.DatabaseName);
-//            var context = Activator.CreateInstance<ContainerDbContext>();
+        [OneTimeSetUp]
+        public  void ClassInitialize()
+        {
+            ContainerDbContext.Delete();
+            var context = Activator.CreateInstance<ContainerDbContext>();
 
-//            context.Database.Create();
-//        }
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
 
-//        [OneTimeSetUp]
-//        public static void ClassCleanup() {
-//            CleanupNakedObjectsFramework(new TestContainer());
-//        }
+        [OneTimeTearDown]
+        public  void ClassCleanup()
+        {
+            CleanupNakedObjectsFramework(this);
+        }
 
-//        [SetUp()]
-//        public void SetUp() {
-//            InitializeNakedObjectsFrameworkOnce();
-//            StartTest();
-//        }
+        [SetUp()]
+        public void SetUp()
+        {
+            
+            StartTest();
+        }
 
-//        #endregion
-//    }
+        #endregion
+    }
 
-//    #region Domain classes used by tests
+    #region Domain classes used by tests
 
-//    public class ContainerDbContext : DbContext {
-//        public const string DatabaseName = "TestContainer";
-//        public ContainerDbContext() : base(DatabaseName) {}
-//        public DbSet<Object1> Object1 { get; set; }
-//    }
+    public class ContainerDbContext : DbContext
+    {
+        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
 
-//    public class Object1 {
-//        public IDomainObjectContainer Container { get; set; }
-//        public virtual int Id { get; set; }
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
 
-//        public ViewModel2 NewViewModel() {
-//            return Container.NewViewModel<ViewModel2>();
-//        }
-//    }
+        public const string DatabaseName = "TestContainer";
+        public ContainerDbContext() : base(Cs) { }
+        public DbSet<Object1> Object1 { get; set; }
+    }
 
-//    public class Object2 {
-//        public virtual int Id { get; set; }
+    public class Object1
+    {
+        public IDomainObjectContainer Container { get; set; }
+        public virtual int Id { get; set; }
 
-//        public DateTime TestDateTime { get; set; }
+        public ViewModel2 NewViewModel()
+        {
+            return Container.NewViewModel<ViewModel2>();
+        }
+    }
 
-//        public DateTime? TestNullableDateTime { get; set; }
+    public class Object2
+    {
+        public virtual int Id { get; set; }
 
-//        public int TestInt { get; set; }
+        public DateTime TestDateTime { get; set; }
 
-//        public int? TestNullableInt { get; set; }
+        public DateTime? TestNullableDateTime { get; set; }
 
-//        public TestEnum TestEnum { get; set; }
+        public int TestInt { get; set; }
 
-//        public TestEnum? TestNullableEnum { get; set; }
+        public int? TestNullableInt { get; set; }
 
-//        [EnumDataType(typeof (TestEnum))]
-//        public int TestEnumDt { get; set; }
+        public TestEnum TestEnum { get; set; }
 
-//        [EnumDataType(typeof (TestEnum))]
-//        public int? TestNullableEnumDt { get; set; }
-//    }
+        public TestEnum? TestNullableEnum { get; set; }
 
-//    public enum TestEnum {
-//        Value1,
-//        Value2
-//    };
+        [EnumDataType(typeof(TestEnum))]
+        public int TestEnumDt { get; set; }
 
-//    public class ViewModel2 : IViewModel {
-//        public virtual int Id { get; set; }
+        [EnumDataType(typeof(TestEnum))]
+        public int? TestNullableEnumDt { get; set; }
+    }
 
-//        public DateTime TestDateTime { get; set; }
+    public enum TestEnum
+    {
+        Value1,
+        Value2
+    };
 
-//        public DateTime? TestNullableDateTime { get; set; }
+    public class ViewModel2 : IViewModel
+    {
+        public virtual int Id { get; set; }
 
-//        public int TestInt { get; set; }
+        public DateTime TestDateTime { get; set; }
 
-//        public int? TestNullableInt { get; set; }
+        public DateTime? TestNullableDateTime { get; set; }
 
-//        public TestEnum TestEnum { get; set; }
+        public int TestInt { get; set; }
 
-//        public TestEnum? TestNullableEnum { get; set; }
+        public int? TestNullableInt { get; set; }
 
-//        [EnumDataType(typeof (TestEnum))]
-//        public int TestEnumDt { get; set; }
+        public TestEnum TestEnum { get; set; }
 
-//        [EnumDataType(typeof (TestEnum))]
-//        public int? TestNullableEnumDt { get; set; }
+        public TestEnum? TestNullableEnum { get; set; }
 
-//        #region IViewModel Members
+        [EnumDataType(typeof(TestEnum))]
+        public int TestEnumDt { get; set; }
 
-//        public string[] DeriveKeys() {
-//            //  throw new NotImplementedException();
-//            return new string[] {};
-//        }
+        [EnumDataType(typeof(TestEnum))]
+        public int? TestNullableEnumDt { get; set; }
 
-//        public void PopulateUsingKeys(string[] keys) {
-//            // throw new NotImplementedException();
-//        }
+        #region IViewModel Members
 
-//        #endregion
-//    }
+        public string[] DeriveKeys()
+        {
+            //  throw new NotImplementedException();
+            return new string[] { };
+        }
 
-//    #endregion
-//}
+        public void PopulateUsingKeys(string[] keys)
+        {
+            // throw new NotImplementedException();
+        }
+
+        #endregion
+    }
+
+    #endregion
+}
