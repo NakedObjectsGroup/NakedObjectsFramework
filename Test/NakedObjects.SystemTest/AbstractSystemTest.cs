@@ -23,7 +23,7 @@ namespace NakedObjects.SystemTest {
     public static class Constants {
         public static string AppveyorServer => @"(local)\SQL2017";
         public static string LocalServer => @".\SQLEXPRESS";
-        public static string Server => LocalServer;
+        public static string Server => AppveyorServer;
 
     }
 
