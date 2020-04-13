@@ -1,210 +1,256 @@
-﻿//// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-//// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-//// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-//// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-//// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//// See the License for the specific language governing permissions and limitations under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
-//using System;
-//using System.ComponentModel.DataAnnotations;
-//using System.Data.Entity;
-//using System.Linq;
-//
-//using NakedObjects.Services;
-//using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
-//using NakedObjects.Xat;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
+using System.Linq;
 
-//namespace NakedObjects.SystemTest.ObjectFinderGuid {
-//    [TestFixture]
-//    public class TestObjectFinderWithGuids : AbstractSystemTest<PaymentContext> {
-//        private ITestObject customer1;
-//        private ITestObject customer2;
-//        private ITestProperty key1;
-//        private ITestProperty payee1;
-//        private ITestObject payment1;
-//        private ITestObject supplier1;
+using NakedObjects.Services;
+using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
+using NakedObjects.Xat;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
+using TestContext = NUnit.Framework.TestContext;
 
-//        protected override string[] Namespaces {
-//            get { return new[] {typeof (Payment).Namespace}; }
-//        }
+namespace NakedObjects.SystemTest.ObjectFinderGuid
+{
+    [TestFixture]
+    public class TestObjectFinderWithGuids : AbstractSystemTest<PaymentContext>
+    {
+        private ITestObject customer1;
+        private ITestObject customer2;
+        private ITestProperty key1;
+        private ITestProperty payee1;
+        private ITestObject payment1;
+        private ITestObject supplier1;
 
-//        protected override object[] MenuServices {
-//            get {
-//                return new object[] {
-//                    new ObjectFinder(),
-//                    new SimpleRepository<Payment>(),
-//                    new SimpleRepository<Customer>(),
-//                    new SimpleRepository<Supplier>()
-//                };
-//            }
-//        }
+        protected override string[] Namespaces
+        {
+            get { return new[] { typeof(Payment).Namespace }; }
+        }
 
-//        [Test]
-//        public void SetAssociatedObject() {
-//            payee1.SetObject(customer1);
-//            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderGuid.Customer|0c1ced04-7016-11e0-9c44-78544824019b");
+        protected override Type[] Types
+        {
+            get
+            {
+                return new Type[] {
+                    typeof( ObjectFinder),
+                    typeof( Payment),
+                    typeof( Customer),
+                    typeof( Supplier)
+                };
+            }
+        }
 
-//            payee1.SetObject(customer2);
-//            Assert.AreEqual(payee1.ContentAsObject, customer2);
+        protected override Type[] Services
+        {
+            get
+            {
+                return new Type[] {
+                    typeof( ObjectFinder),
+                    typeof( SimpleRepository<Payment>),
+                    typeof( SimpleRepository<Customer>),
+                    typeof( SimpleRepository<Supplier>)
+                };
+            }
+        }
 
-//            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderGuid.Customer|3d9d6ca0-7016-11e0-b12a-9e544824019b");
-//        }
+        [Test]
+        public void SetAssociatedObject()
+        {
+            payee1.SetObject(customer1);
+            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderGuid.Customer|0c1ced04-7016-11e0-9c44-78544824019b");
 
-//        [Test]
-//        public void ChangeAssociatedObjectType() {
-//            payee1.SetObject(customer1);
-//            payee1.ClearObject();
-//            payee1.SetObject(supplier1);
-//            Assert.AreEqual(payee1.ContentAsObject, supplier1);
+            payee1.SetObject(customer2);
+            Assert.AreEqual(payee1.ContentAsObject, customer2);
 
-//            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderGuid.Supplier|89bc90ec-7017-11e0-a08c-57564824019b");
-//        }
+            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderGuid.Customer|3d9d6ca0-7016-11e0-b12a-9e544824019b");
+        }
 
-//        [Test]
-//        public void ClearAssociatedObject() {
-//            payee1.SetObject(customer1);
-//            payee1.ClearObject();
-//            key1.AssertIsEmpty();
-//        }
+        [Test]
+        public void ChangeAssociatedObjectType()
+        {
+            payee1.SetObject(customer1);
+            payee1.ClearObject();
+            payee1.SetObject(supplier1);
+            Assert.AreEqual(payee1.ContentAsObject, supplier1);
 
-//        [Test]
-//        public void GetAssociatedObject() {
-//            key1.SetValue("NakedObjects.SystemTest.ObjectFinderGuid.Customer|0c1ced04-7016-11e0-9c44-78544824019b");
-//            payee1.AssertIsNotEmpty();
-//            payee1.ContentAsObject.GetPropertyByName("Guid").AssertValueIsEqual("0c1ced04-7016-11e0-9c44-78544824019b");
+            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderGuid.Supplier|89bc90ec-7017-11e0-a08c-57564824019b");
+        }
 
-//            payee1.ClearObject();
+        [Test]
+        public void ClearAssociatedObject()
+        {
+            payee1.SetObject(customer1);
+            payee1.ClearObject();
+            key1.AssertIsEmpty();
+        }
 
-//            key1.SetValue("NakedObjects.SystemTest.ObjectFinderGuid.Customer|3d9d6ca0-7016-11e0-b12a-9e544824019b");
-//            payee1.AssertIsNotEmpty();
-//            payee1.ContentAsObject.GetPropertyByName("Guid").AssertValueIsEqual("3d9d6ca0-7016-11e0-b12a-9e544824019b");
-//        }
+        [Test]
+        public void GetAssociatedObject()
+        {
+            key1.SetValue("NakedObjects.SystemTest.ObjectFinderGuid.Customer|0c1ced04-7016-11e0-9c44-78544824019b");
+            payee1.AssertIsNotEmpty();
+            payee1.ContentAsObject.GetPropertyByName("Guid").AssertValueIsEqual("0c1ced04-7016-11e0-9c44-78544824019b");
 
-//        [Test]
-//        public void NoAssociatedObject() {
-//            key1.AssertIsEmpty();
-//        }
+            payee1.ClearObject();
 
-//        #region Setup/Teardown
+            key1.SetValue("NakedObjects.SystemTest.ObjectFinderGuid.Customer|3d9d6ca0-7016-11e0-b12a-9e544824019b");
+            payee1.AssertIsNotEmpty();
+            payee1.ContentAsObject.GetPropertyByName("Guid").AssertValueIsEqual("3d9d6ca0-7016-11e0-b12a-9e544824019b");
+        }
 
-//        [ClassInitialize]
-//        public static void ClassInitialize(TestContext tc) {
-//            Database.Delete(ObjectFinderCompoundKeys.PaymentContext.DatabaseName);
-//            var context = Activator.CreateInstance<PaymentContext>();
+        [Test]
+        [Ignore("investigate")]
 
-//            context.Database.Create();
-//            DatabaseInitializer.Seed(context);
-//        }
+        public void NoAssociatedObject()
+        {
+            key1.AssertIsEmpty();
+        }
 
-//        [OneTimeSetUp]
-//        public static void TearDownTest() {
-//            CleanupNakedObjectsFramework(new TestObjectFinderWithGuids());
-//            Database.Delete(PaymentContext.DatabaseName);
-//        }
+        #region Setup/Teardown
 
-//        [SetUp]
-//        public void Initialize() {
-//            InitializeNakedObjectsFrameworkOnce();
-//            StartTest();
+        [OneTimeSetUp]
+        public  void ClassInitialize()
+        {
+            PaymentContext.Delete();
+            var context = Activator.CreateInstance<PaymentContext>();
 
-//            payment1 = GetTestService("Payments").GetAction("All Instances").InvokeReturnCollection().ElementAt(0);
-//            payee1 = payment1.GetPropertyByName("Payee");
-//            key1 = payment1.GetPropertyByName("Payee Compound Key");
+            context.Database.Create();
+            DatabaseInitializer.Seed(context);
+            InitializeNakedObjectsFramework(this);
+        }
 
-//            var customers = GetTestService("Customers").GetAction("All Instances").InvokeReturnCollection();
-//            customer1 = customers.ElementAt(0);
-//            customer2 = customers.ElementAt(1);
-//            supplier1 = GetTestService("Suppliers").GetAction("All Instances").InvokeReturnCollection().ElementAt(0);
-//        }
+        [OneTimeTearDown]
+        public  void TearDownTest()
+        {
+            CleanupNakedObjectsFramework(this);
+        }
 
-//        #endregion
-//    }
+        [SetUp]
+        public void Initialize()
+        {
+            StartTest();
 
-//    #region Classes used by test
+            payment1 = GetTestService("Payments").GetAction("All Instances").InvokeReturnCollection().ElementAt(0);
+            payee1 = payment1.GetPropertyByName("Payee");
+            key1 = payment1.GetPropertyByName("Payee Compound Key");
 
-//    public class PaymentContext : DbContext {
-//        public const string DatabaseName = "ObjectFinderGuid";
-//        public PaymentContext() : base(DatabaseName) {}
+            var customers = GetTestService("Customers").GetAction("All Instances").InvokeReturnCollection();
+            customer1 = customers.ElementAt(0);
+            customer2 = customers.ElementAt(1);
+            supplier1 = GetTestService("Suppliers").GetAction("All Instances").InvokeReturnCollection().ElementAt(0);
+        }
 
-//        public DbSet<Payment> Payments { get; set; }
-//        public DbSet<Customer> Customers { get; set; }
-//        public DbSet<Supplier> Suppliers { get; set; }
-//        public DbSet<Employee> Employees { get; set; }
-//        //}
-//        //    Database.SetInitializer(new DatabaseInitializer());
+        #endregion
+    }
 
-//        //protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-//    }
+    #region Classes used by test
 
-//    public class DatabaseInitializer {
-//        public static void Seed(PaymentContext context) {
-//            context.Payments.Add(new Payment());
-//            context.Customers.Add(new Customer() {Guid = new Guid("0c1ced04-7016-11e0-9c44-78544824019b")});
-//            context.Customers.Add(new Customer() {Guid = new Guid("3d9d6ca0-7016-11e0-b12a-9e544824019b")});
-//            context.Suppliers.Add(new Supplier() {Guid = new Guid("89bc90ec-7017-11e0-a08c-57564824019b")});
-//            context.SaveChanges();
-//        }
-//    }
+    public class PaymentContext : DbContext
+    {
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
 
-//    public class Payment {
-//        public IDomainObjectContainer Container { protected get; set; }
-//        public virtual int Id { get; set; }
+        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
 
-//        #region Payee Property (Interface Association)
+        public const string DatabaseName = "ObjectFinderGuid";
+        public PaymentContext() : base(Cs) { }
 
-//        //IMPORTANT:  Register an implementation of IObjectFinder
-//        //Suggestion: Move this property into an 'Injected Services' region
-//        private IPayee myPayee;
-//        public IObjectFinder ObjectFinder { set; protected get; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        //}
+        //    Database.SetInitializer(new DatabaseInitializer());
 
-//        //Holds a compound key that represents both the
-//        //actual type and the identity of the associated object.
-//        //NOTE: If working Model First, an equivalent property should be added to the
-//        //Entity, and this line of code moved into the 'buddy class'.
-//        [Optionally]
-//        public virtual string PayeeCompoundKey { get; set; }
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder) {
+    }
 
-//        [NotPersisted, Optionally]
-//        public IPayee Payee {
-//            get {
-//                if (myPayee == null & !String.IsNullOrEmpty(PayeeCompoundKey)) {
-//                    myPayee = ObjectFinder.FindObject<IPayee>(PayeeCompoundKey);
-//                }
-//                return myPayee;
-//            }
-//            set {
-//                myPayee = value;
-//                if (value == null) {
-//                    PayeeCompoundKey = null;
-//                }
-//                else {
-//                    PayeeCompoundKey = ObjectFinder.GetCompoundKey(value);
-//                }
-//            }
-//        }
+    public class DatabaseInitializer
+    {
+        public static void Seed(PaymentContext context)
+        {
+            context.Payments.Add(new Payment());
+            context.Customers.Add(new Customer() { Guid = new Guid("0c1ced04-7016-11e0-9c44-78544824019b") });
+            context.Customers.Add(new Customer() { Guid = new Guid("3d9d6ca0-7016-11e0-b12a-9e544824019b") });
+            context.Suppliers.Add(new Supplier() { Guid = new Guid("89bc90ec-7017-11e0-a08c-57564824019b") });
+            context.SaveChanges();
+        }
+    }
 
-//        #endregion
-//    }
+    public class Payment
+    {
+        public IDomainObjectContainer Container { protected get; set; }
+        public virtual int Id { get; set; }
 
-//    public interface IPayee : IHasGuid {}
+        #region Payee Property (Interface Association)
 
-//    public class Customer : IPayee {
-//        #region IPayee Members
+        //IMPORTANT:  Register an implementation of IObjectFinder
+        //Suggestion: Move this property into an 'Injected Services' region
+        private IPayee myPayee;
+        public IObjectFinder ObjectFinder { set; protected get; }
 
-//        [Key]
-//        public virtual Guid Guid { get; set; }
+        //Holds a compound key that represents both the
+        //actual type and the identity of the associated object.
+        //NOTE: If working Model First, an equivalent property should be added to the
+        //Entity, and this line of code moved into the 'buddy class'.
+        [Optionally]
+        public virtual string PayeeCompoundKey { get; set; }
 
-//        #endregion
-//    }
+        [NotPersisted, Optionally]
+        public IPayee Payee
+        {
+            get
+            {
+                if (myPayee == null & !String.IsNullOrEmpty(PayeeCompoundKey))
+                {
+                    myPayee = ObjectFinder.FindObject<IPayee>(PayeeCompoundKey);
+                }
+                return myPayee;
+            }
+            set
+            {
+                myPayee = value;
+                if (value == null)
+                {
+                    PayeeCompoundKey = null;
+                }
+                else
+                {
+                    PayeeCompoundKey = ObjectFinder.GetCompoundKey(value);
+                }
+            }
+        }
 
-//    public class Supplier : IPayee {
-//        #region IPayee Members
+        #endregion
+    }
 
-//        [Key]
-//        public virtual Guid Guid { get; set; }
+    public interface IPayee : IHasGuid { }
 
-//        #endregion
-//    }
+    public class Customer : IPayee
+    {
+        #region IPayee Members
 
-//    #endregion
-//}
+        [Key]
+        public virtual Guid Guid { get; set; }
+
+        #endregion
+    }
+
+    public class Supplier : IPayee
+    {
+        #region IPayee Members
+
+        [Key]
+        public virtual Guid Guid { get; set; }
+
+        #endregion
+    }
+
+    #endregion
+}

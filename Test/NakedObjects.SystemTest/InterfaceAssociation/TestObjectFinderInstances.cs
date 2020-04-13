@@ -1,144 +1,172 @@
-﻿//// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-//// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-//// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-//// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-//// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//// See the License for the specific language governing permissions and limitations under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
-//using System;
-//using System.Collections.Generic;
-//using System.Data.Entity;
-//using System.Linq;
-//
-//using NakedObjects.Services;
-//using NakedObjects.Util;
-//using NakedObjects.Xat;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
-//namespace NakedObjects.SystemTest.ObjectFinderInstances {
-//    [TestFixture]
-//    public class TestObjectFinderInstances : AbstractSystemTest<PaymentContext> {
-//        protected override string[] Namespaces {
-//            get { return new[] {typeof (Customer).Namespace}; }
-//        }
+using NakedObjects.Services;
+using NakedObjects.Util;
+using NUnit.Framework;
+using ITestAction = NakedObjects.Xat.ITestAction;
+using TestContext = NUnit.Framework.TestContext;
 
-//        protected override object[] MenuServices {
-//            get {
-//                return new object[] {
-//                    new ObjectFinder(),
-//                    new SimpleRepository<Customer>(),
-//                    new SimpleRepository<Supplier>(),
-//                    new MyService()
-//                };
-//            }
-//        }
+namespace NakedObjects.SystemTest.ObjectFinderInstances
+{
+    [TestFixture]
+    public class TestObjectFinderInstances : AbstractSystemTest<PaymentContext>
+    {
+        protected override string[] Namespaces
+        {
+            get { return new[] { typeof(Customer).Namespace }; }
+        }
 
-//        [TearDown]
-//        public void CleanUp() {}
+        protected override object[] MenuServices
+        {
+            get
+            {
+                return new object[] {
+                    new ObjectFinder(),
+                    new SimpleRepository<Customer>(),
+                    new SimpleRepository<Supplier>(),
+                    new MyService()
+                };
+            }
+        }
 
-//        [Test]
-//        public void FindInstances() {
-//            string namesp = "NakedObjects.SystemTest.ObjectFinderInstances.";
-//            ITestAction payees = GetTestService("My Service").GetAction("Payees");
-//            var results = payees.InvokeReturnCollection(namesp + "Customer");
-//            results.AssertCountIs(2);
-//            results.ElementAt(0).AssertIsType(typeof (Customer));
+        [TearDown]
+        public void CleanUp() { }
 
-//            results = payees.InvokeReturnCollection(namesp + "Supplier");
-//            results.AssertCountIs(3);
-//            results.ElementAt(0).AssertIsType(typeof (Supplier));
-//        }
+        [Test]
+        public void FindInstances()
+        {
+            string namesp = "NakedObjects.SystemTest.ObjectFinderInstances.";
+            ITestAction payees = GetTestService("My Service").GetAction("Payees");
+            var results = payees.InvokeReturnCollection(namesp + "Customer");
+            results.AssertCountIs(2);
+            results.ElementAt(0).AssertIsType(typeof(Customer));
 
-//        //This tests that the results are coming back as a Queryable<T>
-//        [Test]
-//        public void FindInstancesFilteredByInterfaceProperty() {
-//            string namesp = "NakedObjects.SystemTest.ObjectFinderInstances.";
-//            ITestAction find = GetTestService("My Service").GetAction("Find Payee");
-//            var result = find.InvokeReturnObject(namesp + "Customer", 2);
-//            result.AssertIsType(typeof (Customer));
-//            result.GetPropertyByName("Id").AssertValueIsEqual("2");
+            results = payees.InvokeReturnCollection(namesp + "Supplier");
+            results.AssertCountIs(3);
+            results.ElementAt(0).AssertIsType(typeof(Supplier));
+        }
 
-//            result = find.InvokeReturnObject(namesp + "Supplier", 3);
-//            result.AssertIsType(typeof (Supplier));
-//            result.GetPropertyByName("Id").AssertValueIsEqual("3");
-//        }
+        //This tests that the results are coming back as a Queryable<T>
+        [Test]
+        public void FindInstancesFilteredByInterfaceProperty()
+        {
+            string namesp = "NakedObjects.SystemTest.ObjectFinderInstances.";
+            ITestAction find = GetTestService("My Service").GetAction("Find Payee");
+            var result = find.InvokeReturnObject(namesp + "Customer", 2);
+            result.AssertIsType(typeof(Customer));
+            result.GetPropertyByName("Id").AssertValueIsEqual("2");
 
-//        #region Setup/Teardown
+            result = find.InvokeReturnObject(namesp + "Supplier", 3);
+            result.AssertIsType(typeof(Supplier));
+            result.GetPropertyByName("Id").AssertValueIsEqual("3");
+        }
 
-//        [ClassInitialize]
-//        public static void SetupTestFixture(TestContext tc) {
-//            Database.SetInitializer(new DatabaseInitializer());
-//        }
+        #region Setup/Teardown
 
-//        [SetUp()]
-//        public void SetUp() {
-//            InitializeNakedObjectsFrameworkOnce();
-//            StartTest();
-//        }
+        [OneTimeSetUp]
+        public  void SetupTestFixture()
+        {
+            Database.SetInitializer(new DatabaseInitializer());
+            InitializeNakedObjectsFramework(this);
+        }
 
-//        #endregion
-//    }
+        [SetUp]
+        public void SetUp()
+        {
+            
+            StartTest();
+        }
 
-//    #region Classes used by test
+        #endregion
+    }
 
-//    public class PaymentContext : DbContext {
-//        public const string DatabaseName = "ObjectFinderInstances";
+    #region Classes used by test
 
-//        public PaymentContext() : base(DatabaseName) {}
+    public class PaymentContext : DbContext
+    {
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
 
-//        public DbSet<Customer> Customers { get; set; }
-//        public DbSet<Supplier> Suppliers { get; set; }
+        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
 
-//        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-//            Database.SetInitializer(new DatabaseInitializer());
-//        }
-//    }
 
-//    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {
-//        protected override void Seed(PaymentContext context) {
-//            context.Customers.Add(new Customer());
-//            context.Customers.Add(new Customer());
-//            context.Suppliers.Add(new Supplier());
-//            context.Suppliers.Add(new Supplier());
-//            context.Suppliers.Add(new Supplier());
-//            context.SaveChanges();
-//        }
-//    }
+        public const string DatabaseName = "ObjectFinderInstances";
 
-//    public interface IPayee {
-//        int Id { get; }
-//    }
+        public PaymentContext() : base(Cs) { }
 
-//    public class Customer : IPayee {
-//        #region IPayee Members
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
 
-//        [Disabled]
-//        public virtual int Id { get; set; }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            Database.SetInitializer(new DatabaseInitializer());
+        }
+    }
 
-//        #endregion
-//    }
+    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext>
+    {
+        protected override void Seed(PaymentContext context)
+        {
+            context.Customers.Add(new Customer());
+            context.Customers.Add(new Customer());
+            context.Suppliers.Add(new Supplier());
+            context.Suppliers.Add(new Supplier());
+            context.Suppliers.Add(new Supplier());
+            context.SaveChanges();
+        }
+    }
 
-//    public class Supplier : IPayee {
-//        #region IPayee Members
+    public interface IPayee
+    {
+        int Id { get; }
+    }
 
-//        [Disabled]
-//        public virtual int Id { get; set; }
+    public class Customer : IPayee
+    {
+        #region IPayee Members
 
-//        #endregion
-//    }
+        [Disabled]
+        public virtual int Id { get; set; }
 
-//    public class MyService {
-//        public IObjectFinder ObjectFinder { set; protected get; }
+        #endregion
+    }
 
-//        public IList<IPayee> Payees(string ofType) {
-//            Type type = TypeUtils.GetType(ofType);
-//            return ObjectFinder.Instances<IPayee>(type).ToList();
-//        }
+    public class Supplier : IPayee
+    {
+        #region IPayee Members
 
-//        public IPayee FindPayee(string ofType, int Id) {
-//            Type type = TypeUtils.GetType(ofType);
-//            return ObjectFinder.Instances<IPayee>(type).SingleOrDefault(p => p.Id == Id);
-//        }
-//    }
+        [Disabled]
+        public virtual int Id { get; set; }
 
-//    #endregion
-//}
+        #endregion
+    }
+
+    public class MyService
+    {
+        public IObjectFinder ObjectFinder { set; protected get; }
+
+        public IList<IPayee> Payees(string ofType)
+        {
+            Type type = TypeUtils.GetType(ofType);
+            return ObjectFinder.Instances<IPayee>(type).ToList();
+        }
+
+        public IPayee FindPayee(string ofType, int Id)
+        {
+            Type type = TypeUtils.GetType(ofType);
+            return ObjectFinder.Instances<IPayee>(type).SingleOrDefault(p => p.Id == Id);
+        }
+    }
+
+    #endregion
+}

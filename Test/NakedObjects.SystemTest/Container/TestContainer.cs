@@ -8,7 +8,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using NakedObjects.Services;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;

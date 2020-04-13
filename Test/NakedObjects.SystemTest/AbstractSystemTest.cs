@@ -13,12 +13,42 @@ using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using System.Net.Security;
 using System.Security.Policy;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Util;
 using NakedObjects.Xat;
 
 namespace NakedObjects.SystemTest {
+
+    #region Nested type: NullMenuFactory
+
+    public class NullMenuFactory : IMenuFactory
+    {
+        #region IMenuFactory Members
+
+        public IMenu NewMenu<T>(bool addAllActions, string name = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IMenu NewMenu(Type type, bool addAllActions = false, string name = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        public IMenu NewMenu(string name)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    #endregion
+
+
 
     public static class Constants {
         public static string AppveyorServer => @"(local)\SQL2017";
@@ -27,6 +57,7 @@ namespace NakedObjects.SystemTest {
 
     }
 
+   
 
 
     public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase

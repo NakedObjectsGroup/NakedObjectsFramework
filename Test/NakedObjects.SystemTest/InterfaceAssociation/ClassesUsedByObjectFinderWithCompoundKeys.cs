@@ -1,145 +1,166 @@
-﻿//// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-//// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-//// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-//// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-//// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//// See the License for the specific language governing permissions and limitations under the License.
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
 
-//using System;
-//using System.ComponentModel.DataAnnotations;
-//using System.ComponentModel.DataAnnotations.Schema;
-//using System.Data.Entity;
-//using NakedObjects.Services;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
+using NakedObjects.Services;
 
-//namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
+namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
+{
 
-//    #region Classes used by test
+    #region Classes used by test
 
-//    public class PaymentContext : DbContext {
-//        public const string DatabaseName = "ObjectFinderWithCompoundKeys";
-//        public PaymentContext() : base(DatabaseName) {}
+    public class PaymentContext : DbContext
+    {
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
 
-//        public DbSet<Payment> Payments { get; set; }
-//        public DbSet<CustomerOne> CustomerOnes { get; set; }
-//        public DbSet<CustomerTwo> CustomerTwos { get; set; }
-//        public DbSet<CustomerThree> CustomerThrees { get; set; }
-//        public DbSet<CustomerFour> CustomerFours { get; set; }
-//        public DbSet<Supplier> Suppliers { get; set; }
-//        public DbSet<Employee> Employees { get; set; }
-//        //}
-//        //    Database.SetInitializer(new DatabaseInitializer());
+        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
 
-//        //protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-//    }
+        public const string DatabaseName = "ObjectFinderWithCompoundKeys";
+        public PaymentContext() : base(Cs) { }
 
-//    public class DatabaseInitializer {
-//        public static void Seed(PaymentContext context) {
-//            context.Payments.Add(new Payment());
-//            context.CustomerOnes.Add(new CustomerOne() {Id = 1});
-//            context.CustomerTwos.Add(new CustomerTwo() {Id = 1, Id2 = "1001"});
-//            context.CustomerTwos.Add(new CustomerTwo() {Id = 2, Id2 = "1002"});
-//            context.CustomerThrees.Add(new CustomerThree() {Id = 1, Id2 = "1001", Number = 2001});
-//            context.CustomerFours.Add(new CustomerFour() {Id = 1, Id2 = new DateTime(2015, 1, 16)});
-//            context.CustomerFours.Add(new CustomerFour() {Id = 1, Id2 = new DateTime(2015, 1, 17)});
-//            context.Suppliers.Add(new Supplier() {Id = 1, Id2 = 2001});
-//            context.Employees.Add(new Employee() {Id = 1, Id2 = "foo"});
-//            context.SaveChanges();
-//        }
-//    }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<CustomerOne> CustomerOnes { get; set; }
+        public DbSet<CustomerTwo> CustomerTwos { get; set; }
+        public DbSet<CustomerThree> CustomerThrees { get; set; }
+        public DbSet<CustomerFour> CustomerFours { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        //}
+        //    Database.SetInitializer(new DatabaseInitializer());
 
-//    public class Payment {
-//        public IDomainObjectContainer Container { protected get; set; }
-//        public virtual int Id { get; set; }
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder) {
+    }
 
-//        #region Payee Property (Interface Association)
+    public class DatabaseInitializer
+    {
+        public static void Seed(PaymentContext context)
+        {
+            context.Payments.Add(new Payment());
+            context.CustomerOnes.Add(new CustomerOne() { Id = 1 });
+            context.CustomerTwos.Add(new CustomerTwo() { Id = 1, Id2 = "1001" });
+            context.CustomerTwos.Add(new CustomerTwo() { Id = 2, Id2 = "1002" });
+            context.CustomerThrees.Add(new CustomerThree() { Id = 1, Id2 = "1001", Number = 2001 });
+            context.CustomerFours.Add(new CustomerFour() { Id = 1, Id2 = new DateTime(2015, 1, 16) });
+            context.CustomerFours.Add(new CustomerFour() { Id = 1, Id2 = new DateTime(2015, 1, 17) });
+            context.Suppliers.Add(new Supplier() { Id = 1, Id2 = 2001 });
+            context.Employees.Add(new Employee() { Id = 1, Id2 = "foo" });
+            context.SaveChanges();
+        }
+    }
 
-//        private IPayee myPayee;
-//        public IObjectFinder ObjectFinder { set; protected get; }
+    public class Payment
+    {
+        public IDomainObjectContainer Container { protected get; set; }
+        public virtual int Id { get; set; }
 
-//        [Optionally]
-//        public virtual string PayeeCompoundKey { get; set; }
+        #region Payee Property (Interface Association)
 
-//        [NotPersisted, Optionally]
-//        public IPayee Payee {
-//            get {
-//                if (myPayee == null & !String.IsNullOrEmpty(PayeeCompoundKey)) {
-//                    myPayee = ObjectFinder.FindObject<IPayee>(PayeeCompoundKey);
-//                }
-//                return myPayee;
-//            }
-//            set {
-//                myPayee = value;
-//                if (value == null) {
-//                    PayeeCompoundKey = null;
-//                }
-//                else {
-//                    PayeeCompoundKey = ObjectFinder.GetCompoundKey(value);
-//                }
-//            }
-//        }
+        private IPayee myPayee;
+        public IObjectFinder ObjectFinder { set; protected get; }
 
-//        #endregion
-//    }
+        [Optionally]
+        public virtual string PayeeCompoundKey { get; set; }
 
-//    public interface IPayee {}
+        [NotPersisted, Optionally]
+        public IPayee Payee
+        {
+            get
+            {
+                if (myPayee == null & !String.IsNullOrEmpty(PayeeCompoundKey))
+                {
+                    myPayee = ObjectFinder.FindObject<IPayee>(PayeeCompoundKey);
+                }
+                return myPayee;
+            }
+            set
+            {
+                myPayee = value;
+                if (value == null)
+                {
+                    PayeeCompoundKey = null;
+                }
+                else
+                {
+                    PayeeCompoundKey = ObjectFinder.GetCompoundKey(value);
+                }
+            }
+        }
 
-//    public class CustomerOne : IPayee {
-//        public virtual int Id { get; set; }
-//    }
+        #endregion
+    }
 
-//    public class CustomerTwo : IPayee {
-//        [Key]
-//        [Column(Order = 1)]
-//        public virtual int Id { get; set; }
+    public interface IPayee { }
 
-//        [Key]
-//        [Column(Order = 2)]
-//        public virtual string Id2 { get; set; }
-//    }
+    public class CustomerOne : IPayee
+    {
+        public virtual int Id { get; set; }
+    }
 
-//    public class CustomerThree : IPayee {
-//        [Key]
-//        [Column(Order = 1)]
-//        public virtual int Id { get; set; }
+    public class CustomerTwo : IPayee
+    {
+        [Key]
+        [Column(Order = 1)]
+        public virtual int Id { get; set; }
 
-//        [Key]
-//        [Column(Order = 2)]
-//        public virtual string Id2 { get; set; }
+        [Key]
+        [Column(Order = 2)]
+        public virtual string Id2 { get; set; }
+    }
 
-//        [Key]
-//        [Column(Order = 3)]
-//        public virtual int Number { get; set; }
-//    }
+    public class CustomerThree : IPayee
+    {
+        [Key]
+        [Column(Order = 1)]
+        public virtual int Id { get; set; }
 
-//    public class CustomerFour : IPayee {
-//        [Key]
-//        [Column(Order = 1)]
-//        public virtual int Id { get; set; }
+        [Key]
+        [Column(Order = 2)]
+        public virtual string Id2 { get; set; }
 
-//        [Key]
-//        [Column(Order = 2)]
-//        public virtual DateTime Id2 { get; set; }
-//    }
+        [Key]
+        [Column(Order = 3)]
+        public virtual int Number { get; set; }
+    }
 
-//    public class Supplier : IPayee {
-//        [Key]
-//        [Column(Order = 1)]
-//        public virtual int Id { get; set; }
+    public class CustomerFour : IPayee
+    {
+        [Key]
+        [Column(Order = 1)]
+        public virtual int Id { get; set; }
 
-//        [Key]
-//        [Column(Order = 2)]
-//        public virtual short Id2 { get; set; }
-//    }
+        [Key]
+        [Column(Order = 2)]
+        public virtual DateTime Id2 { get; set; }
+    }
 
-//    public class Employee : IPayee {
-//        [Key]
-//        [Column(Order = 1)]
-//        public virtual int Id { get; set; }
+    public class Supplier : IPayee
+    {
+        [Key]
+        [Column(Order = 1)]
+        public virtual int Id { get; set; }
 
-//        [Key]
-//        [Column(Order = 2)]
-//        public virtual string Id2 { get; set; }
-//    }
+        [Key]
+        [Column(Order = 2)]
+        public virtual short Id2 { get; set; }
+    }
 
-//    #endregion
-//}
+    public class Employee : IPayee
+    {
+        [Key]
+        [Column(Order = 1)]
+        public virtual int Id { get; set; }
+
+        [Key]
+        [Column(Order = 2)]
+        public virtual string Id2 { get; set; }
+    }
+
+    #endregion
+}
