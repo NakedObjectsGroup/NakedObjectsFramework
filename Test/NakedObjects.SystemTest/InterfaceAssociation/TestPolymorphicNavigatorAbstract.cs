@@ -16,7 +16,7 @@ using NUnit.Framework;
 
 namespace NakedObjects.SystemTest.PolymorphicNavigator
 {
-    [TestFixture]
+    //[TestFixture]
     public abstract class TestPolymorphicNavigatorAbstract : AbstractSystemTest<PolymorphicNavigationContext>
     {
         #region Setup/Teardown

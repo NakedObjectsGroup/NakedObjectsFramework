@@ -1,250 +1,282 @@
-//// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-//// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
-//// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
-//// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
-//// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//// See the License for the specific language governing permissions and limitations under the License.
-
-//using System;
-//using System.ComponentModel.DataAnnotations;
-//using System.Data.Entity;
-//using System.Linq;
-//
-//using NakedObjects.Services;
-//using NakedObjects.Xat;
-
-//namespace NakedObjects.SystemTest.Enum {
-//    [TestFixture]
-//    public class EnumTest : AbstractSystemTest<EnumDbContext> {
-//        protected override Type[] Types {
-//            get { return new[] {typeof (Foo), typeof (Sexes), typeof (HairColours)}; }
-//        }
-
-//        #region Run configuration
-
-//        protected override object[] MenuServices {
-//            get { return (new object[] {new SimpleRepository<Foo>()}); }
-//        }
-
-//        #endregion
-
-//        [Test]
-//        public virtual void EnumPropertyBasic() {
-//            ITestObject foo = NewTestObject<Foo>();
-
-//            ITestProperty sex1 = foo.GetPropertyByName("Sex1");
-//            ITestNaked[] values = sex1.GetChoices();
-//            Assert.AreEqual(4, values.Count());
-//            Assert.AreEqual("Female", values.ElementAt(0).NakedObject.TitleString());
-//            Assert.AreEqual("Male", values.ElementAt(1).NakedObject.TitleString());
-//            Assert.AreEqual("Not Specified", values.ElementAt(2).NakedObject.TitleString());
-//            Assert.AreEqual("Unknown", values.ElementAt(3).NakedObject.TitleString());
-
-//            sex1.AssertFieldEntryIsValid("Male");
-//            sex1.AssertFieldEntryInvalid("Man");
-//        }
-
-//        [Test]
-//        public virtual void EnumPropertyWithDefault() {
-//            ITestObject foo = NewTestObject<Foo>();
-//            //Property with no default
-//            foo.GetPropertyByName("Sex1").AssertValueIsEqual("Male");
-//            //Property with default
-//            foo.GetPropertyByName("Sex2").AssertValueIsEqual("Unknown");
-//        }
-
-//        [Test]
-//        public virtual void EnumPropertyWithChoices() {
-//            ITestObject foo = NewTestObject<Foo>();
-
-//            ITestProperty sex1 = foo.GetPropertyByName("Sex3").AssertValueIsEqual("Male");
-//            ITestNaked[] values = sex1.GetChoices();
-//            Assert.AreEqual(2, values.Count());
-//            Assert.AreEqual("Male", values.ElementAt(0).NakedObject.TitleString());
-//            Assert.AreEqual("Female", values.ElementAt(1).NakedObject.TitleString());
-//        }
-
-//        [Test]
-//        public virtual void EnumPropertyWithChoicesAndDefault() {
-//            ITestObject foo = NewTestObject<Foo>();
-
-//            ITestProperty sex1 = foo.GetPropertyByName("Sex4").AssertValueIsEqual("Male");
-//            ITestNaked[] values = sex1.GetChoices();
-//            Assert.AreEqual(2, values.Count());
-//        }
-
-//        [Test]
-//        public virtual void EnumPropertyByteEnum() {
-//            ITestObject foo = NewTestObject<Foo>();
-
-//            ITestProperty sex1 = foo.GetPropertyByName("Hair Colour1");
-//            ITestNaked[] values = sex1.GetChoices();
-//            Assert.AreEqual(5, values.Count());
-//            Assert.AreEqual("Black", values.ElementAt(0).NakedObject.TitleString());
-//            Assert.AreEqual("White", values.ElementAt(4).NakedObject.TitleString());
-
-//            sex1.AssertFieldEntryIsValid("Brunette");
-//            sex1.AssertFieldEntryInvalid("Fair");
-//        }
-
-//        [Test]
-//        public virtual void IntPropertyAsEnum() {
-//            ITestObject foo = NewTestObject<Foo>();
-
-//            ITestProperty sex1 = foo.GetPropertyByName("Sex5");
-//            ITestNaked[] values = sex1.GetChoices();
-//            Assert.AreEqual(4, values.Count());
-//            Assert.AreEqual("Female", values.ElementAt(0).NakedObject.TitleString());
-//            Assert.AreEqual("Male", values.ElementAt(1).NakedObject.TitleString());
-//            Assert.AreEqual("Not Specified", values.ElementAt(2).NakedObject.TitleString());
-//            Assert.AreEqual("Unknown", values.ElementAt(3).NakedObject.TitleString());
-//        }
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
+using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Services;
+using NakedObjects.Xat;
+using NUnit.Framework;
+using Assert = NUnit.Framework.Assert;
+using ITestAction = NakedObjects.Xat.ITestAction;
+using TestContext = NUnit.Framework.TestContext;
+
+namespace NakedObjects.SystemTest.Enum
+{
+    [TestFixture]
+    public class EnumTest : AbstractSystemTest<EnumDbContext>
+    {
+        protected override Type[] Types
+        {
+            get { return new[] { typeof(Foo), typeof(Sexes), typeof(HairColours) }; }
+        }
+
+        #region Run configuration
+
+        protected override object[] MenuServices
+        {
+            get { return (new object[] { new SimpleRepository<Foo>() }); }
+        }
+
+        #endregion
+
+        [Test]
+        public virtual void EnumPropertyBasic()
+        {
+            ITestObject foo = NewTestObject<Foo>();
+
+            ITestProperty sex1 = foo.GetPropertyByName("Sex1");
+            ITestNaked[] values = sex1.GetChoices();
+            Assert.AreEqual(4, values.Count());
+            Assert.AreEqual("Female", values.ElementAt(0).NakedObject.TitleString());
+            Assert.AreEqual("Male", values.ElementAt(1).NakedObject.TitleString());
+            Assert.AreEqual("Not Specified", values.ElementAt(2).NakedObject.TitleString());
+            Assert.AreEqual("Unknown", values.ElementAt(3).NakedObject.TitleString());
+
+            sex1.AssertFieldEntryIsValid("Male");
+            sex1.AssertFieldEntryInvalid("Man");
+        }
+
+        [Test]
+        public virtual void EnumPropertyWithDefault()
+        {
+            ITestObject foo = NewTestObject<Foo>();
+            //Property with no default
+            foo.GetPropertyByName("Sex1").AssertValueIsEqual("Male");
+            //Property with default
+            foo.GetPropertyByName("Sex2").AssertValueIsEqual("Unknown");
+        }
+
+        [Test]
+        public virtual void EnumPropertyWithChoices()
+        {
+            ITestObject foo = NewTestObject<Foo>();
+
+            ITestProperty sex1 = foo.GetPropertyByName("Sex3").AssertValueIsEqual("Male");
+            ITestNaked[] values = sex1.GetChoices();
+            Assert.AreEqual(2, values.Count());
+            Assert.AreEqual("Male", values.ElementAt(0).NakedObject.TitleString());
+            Assert.AreEqual("Female", values.ElementAt(1).NakedObject.TitleString());
+        }
+
+        [Test]
+        public virtual void EnumPropertyWithChoicesAndDefault()
+        {
+            ITestObject foo = NewTestObject<Foo>();
+
+            ITestProperty sex1 = foo.GetPropertyByName("Sex4").AssertValueIsEqual("Male");
+            ITestNaked[] values = sex1.GetChoices();
+            Assert.AreEqual(2, values.Count());
+        }
+
+        [Test]
+        public virtual void EnumPropertyByteEnum()
+        {
+            ITestObject foo = NewTestObject<Foo>();
+
+            ITestProperty sex1 = foo.GetPropertyByName("Hair Colour1");
+            ITestNaked[] values = sex1.GetChoices();
+            Assert.AreEqual(5, values.Count());
+            Assert.AreEqual("Black", values.ElementAt(0).NakedObject.TitleString());
+            Assert.AreEqual("White", values.ElementAt(4).NakedObject.TitleString());
+
+            sex1.AssertFieldEntryIsValid("Brunette");
+            sex1.AssertFieldEntryInvalid("Fair");
+        }
+
+        [Test]
+        public virtual void IntPropertyAsEnum()
+        {
+            ITestObject foo = NewTestObject<Foo>();
 
-//        [Test]
-//        public virtual void EnumParameter() {
-//            ITestObject foo = NewTestObject<Foo>();
-//            ITestAction act1 = foo.GetAction("Action1");
-//            ITestNaked[] values = act1.Parameters[0].GetChoices();
-//            Assert.AreEqual(4, values.Count());
-//            Assert.AreEqual("Female", values.ElementAt(0).NakedObject.TitleString());
-//            Assert.AreEqual("Male", values.ElementAt(1).NakedObject.TitleString());
-//            Assert.AreEqual("Not Specified", values.ElementAt(2).NakedObject.TitleString());
-//            Assert.AreEqual("Unknown", values.ElementAt(3).NakedObject.TitleString());
-//        }
+            ITestProperty sex1 = foo.GetPropertyByName("Sex5");
+            ITestNaked[] values = sex1.GetChoices();
+            Assert.AreEqual(4, values.Count());
+            Assert.AreEqual("Female", values.ElementAt(0).NakedObject.TitleString());
+            Assert.AreEqual("Male", values.ElementAt(1).NakedObject.TitleString());
+            Assert.AreEqual("Not Specified", values.ElementAt(2).NakedObject.TitleString());
+            Assert.AreEqual("Unknown", values.ElementAt(3).NakedObject.TitleString());
+        }
 
-//        [Test]
-//        public virtual void EnumParameterWithDefault() {
-//            ITestObject foo = NewTestObject<Foo>();
-//            ITestAction act1 = foo.GetAction("Action1");
-//            Assert.AreEqual(null, act1.Parameters[0].GetDefault());
+        [Test]
+        public virtual void EnumParameter()
+        {
+            ITestObject foo = NewTestObject<Foo>();
+            ITestAction act1 = foo.GetAction("Action1");
+            ITestNaked[] values = act1.Parameters[0].GetChoices();
+            Assert.AreEqual(4, values.Count());
+            Assert.AreEqual("Female", values.ElementAt(0).NakedObject.TitleString());
+            Assert.AreEqual("Male", values.ElementAt(1).NakedObject.TitleString());
+            Assert.AreEqual("Not Specified", values.ElementAt(2).NakedObject.TitleString());
+            Assert.AreEqual("Unknown", values.ElementAt(3).NakedObject.TitleString());
+        }
 
-//            ITestAction act2 = foo.GetAction("Action2");
-//            Assert.AreEqual("Unknown", act2.Parameters[0].GetDefault().Title);
-//        }
+        [Test]
+        public virtual void EnumParameterWithDefault()
+        {
+            ITestObject foo = NewTestObject<Foo>();
+            ITestAction act1 = foo.GetAction("Action1");
+            Assert.AreEqual(null, act1.Parameters[0].GetDefault());
 
-//        #region Setup/Teardown
+            ITestAction act2 = foo.GetAction("Action2");
+            Assert.AreEqual("Unknown", act2.Parameters[0].GetDefault().Title);
+        }
 
-//        [ClassInitialize]
-//        public static void ClassInitialize(TestContext tc) {
-//            Database.Delete(EnumDbContext.DatabaseName);
-//            var context = Activator.CreateInstance<EnumDbContext>();
+        #region Setup/Teardown
 
-//            context.Database.Create();
-//        }
+        [OneTimeSetUp]
+        public  void ClassInitialize( )
+        {
+            EnumDbContext.Delete();
+            var context = Activator.CreateInstance<EnumDbContext>();
 
-//        [OneTimeSetUp]
-//        public static void ClassCleanup() {
-//            CleanupNakedObjectsFramework(new EnumTest());
-//        }
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
 
-//        [SetUp()]
-//        public void SetUp() {
-//            InitializeNakedObjectsFrameworkOnce();
-//            StartTest();
-//        }
+        [OneTimeTearDown]
+        public  void ClassCleanup()
+        {
+            CleanupNakedObjectsFramework(this);
+        }
 
-//        [TearDown()]
-//        public void TearDown() {}
+        [SetUp()]
+        public void SetUp()
+        {
+            StartTest();
+        }
 
-//        #endregion
-//    }
+        [TearDown()]
+        public void TearDown() { }
 
-//    #region Classes used in tests
+        #endregion
+    }
 
-//    public class EnumDbContext : DbContext {
-//        public const string DatabaseName = "TestEnums";
-//        public EnumDbContext() : base(DatabaseName) {}
+    #region Classes used in tests
 
-//        public DbSet<Foo> Foos { get; set; }
-//    }
+    public class EnumDbContext : DbContext
+    {
+        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
 
-//    public class Foo {
-//        public virtual int Id { get; set; }
+        private static string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
 
-//        #region Sex1
+        public const string DatabaseName = "TestEnums";
+        public EnumDbContext() : base(Cs) { }
 
-//        public virtual Sexes Sex1 { get; set; }
+        public DbSet<Foo> Foos { get; set; }
+    }
 
-//        #endregion
+    public class Foo
+    {
+        public virtual int Id { get; set; }
 
-//        #region Sex5
+        #region Sex1
 
-//        [EnumDataType(typeof (Sexes))]
-//        public virtual int Sex5 { get; set; }
+        public virtual Sexes Sex1 { get; set; }
 
-//        #endregion
+        #endregion
 
-//        #region HairColour1
+        #region Sex5
 
-//        public virtual HairColours HairColour1 { get; set; }
+        [EnumDataType(typeof(Sexes))]
+        public virtual int Sex5 { get; set; }
 
-//        #endregion
+        #endregion
 
-//        #region Action1
+        #region HairColour1
 
-//        public void Action1(Sexes sex) {}
+        public virtual HairColours HairColour1 { get; set; }
 
-//        #endregion
+        #endregion
 
-//        #region Sex2
+        #region Action1
 
-//        public virtual Sexes Sex2 { get; set; }
+        public void Action1(Sexes sex) { }
 
-//        public Sexes DefaultSex2() {
-//            return Sexes.Unknown;
-//        }
+        #endregion
 
-//        #endregion
+        #region Sex2
 
-//        #region Sex3
+        public virtual Sexes Sex2 { get; set; }
 
-//        public virtual Sexes Sex3 { get; set; }
+        public Sexes DefaultSex2()
+        {
+            return Sexes.Unknown;
+        }
 
-//        public Sexes[] ChoicesSex3() {
-//            return new[] {Sexes.Male, Sexes.Female};
-//        }
+        #endregion
 
-//        #endregion
+        #region Sex3
 
-//        #region Sex4
+        public virtual Sexes Sex3 { get; set; }
 
-//        public virtual Sexes Sex4 { get; set; }
+        public Sexes[] ChoicesSex3()
+        {
+            return new[] { Sexes.Male, Sexes.Female };
+        }
 
-//        public Sexes[] ChoicesSex4() {
-//            return new[] {Sexes.Male, Sexes.Female};
-//        }
+        #endregion
 
-//        public Sexes DefaultSex4() {
-//            return Sexes.Male;
-//        }
+        #region Sex4
 
-//        #endregion
+        public virtual Sexes Sex4 { get; set; }
 
-//        #region Action2
+        public Sexes[] ChoicesSex4()
+        {
+            return new[] { Sexes.Male, Sexes.Female };
+        }
 
-//        public void Action2(Sexes sex) {}
+        public Sexes DefaultSex4()
+        {
+            return Sexes.Male;
+        }
 
-//        public Sexes Default0Action2() {
-//            return Sexes.Unknown;
-//        }
+        #endregion
 
-//        #endregion
-//    }
+        #region Action2
 
-//    public enum Sexes {
-//        Male = 1,
-//        Female = 2,
-//        Unknown = 3,
-//        NotSpecified = 4
-//    }
+        public void Action2(Sexes sex) { }
 
-//    public enum HairColours : byte {
-//        Black = 1,
-//        Blond = 2,
-//        Brunette = 3,
-//        Grey = 4,
-//        White = 5
-//    }
+        public Sexes Default0Action2()
+        {
+            return Sexes.Unknown;
+        }
 
-//    #endregion
-//}
+        #endregion
+    }
+
+    public enum Sexes
+    {
+        Male = 1,
+        Female = 2,
+        Unknown = 3,
+        NotSpecified = 4
+    }
+
+    public enum HairColours : byte
+    {
+        Black = 1,
+        Blond = 2,
+        Brunette = 3,
+        Grey = 4,
+        White = 5
+    }
+
+    #endregion
+}
