@@ -1,14 +1,8 @@
-//using System.Linq;
-//using NakedObjects.Boot;
-//using NakedObjects.Core.NakedObjectsSystem;
-//using NakedObjects.EntityObjectStore;
 //using NakedObjects.Services;
 //using NakedObjects.Xat;
-//using NakedObjects.Xat.Database;
-//
 //using System.Data.Entity;
 //using System.Data.Entity.Infrastructure;
-//using System;
+//using NUnit.Framework;
 
 //namespace NakedObjects.SystemTest.Persistence2
 //{
@@ -30,7 +24,7 @@
 //            get
 //            {
 //                return new ServicesInstaller(
-//                    new SimpleRepository<Foo>(), 
+//                    new SimpleRepository<Foo>(),
 //                    new SimpleRepository<Bar>(),
 //                    new SimpleRepository<Qux>());
 //            }
@@ -40,11 +34,11 @@
 //        {
 //            get
 //            {
-//               Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0"); 
+//                Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
 //                var installer = new EntityPersistorInstaller();
 //                installer.AddCodeFirstDbContextConstructor(() => new QuxContext());
 //                installer.AddCodeFirstDbContextConstructor(() => new FooContext());
-//                installer.AddCodeFirstDbContextConstructor(() => new BarContext()); 
+//                installer.AddCodeFirstDbContextConstructor(() => new BarContext());
 //                return installer;
 //            }
 //        }
@@ -80,32 +74,32 @@
 
 //    public class Foo
 //    {
-//        public IDomainObjectContainer Container{ set; protected get; }
+//        public IDomainObjectContainer Container { set; protected get; }
 
 //        public virtual int Id { get; set; }
-      
+
 
 //        public void Persisted()
 //        {
 //            var bar = Container.NewTransientInstance<Bar>();
 //            bar.CreatorId = this.Id;
 //            Container.Persist(ref bar);
-//        }      
+//        }
 //    }
 
 //    public class Bar
 //    {
-//        public IDomainObjectContainer Container{ set; protected get; }
+//        public IDomainObjectContainer Container { set; protected get; }
 
-//        public virtual int Id { get; set; }  
-  
-        
-//      public virtual int CreatorId { get; set;}
-      
+//        public virtual int Id { get; set; }
+
+
+//        public virtual int CreatorId { get; set; }
+
 
 //        public void Persisted()
 //        {
-//             var qux = Container.NewTransientInstance<Qux>();
+//            var qux = Container.NewTransientInstance<Qux>();
 //            qux.CreatorId = this.Id;
 //            Container.Persist(ref qux);
 //        }
@@ -115,7 +109,7 @@
 //    {
 //        public virtual int Id { get; set; }
 
-//           public virtual int CreatorId { get; set;}
+//        public virtual int CreatorId { get; set; }
 
 //    }
 
@@ -124,12 +118,12 @@
 //        public DbSet<Foo> Foos { get; set; }
 //    }
 
-//        public class BarContext : DbContext
+//    public class BarContext : DbContext
 //    {
 //        public DbSet<Bar> Bars { get; set; }
 //    }
 
-//        public class QuxContext : DbContext
+//    public class QuxContext : DbContext
 //    {
 //        public DbSet<Qux> Quxes { get; set; }
 //    }
