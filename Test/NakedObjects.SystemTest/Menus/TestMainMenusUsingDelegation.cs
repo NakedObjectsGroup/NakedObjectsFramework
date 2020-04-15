@@ -47,7 +47,7 @@ namespace NakedObjects.SystemTest.Menus.Service
         [OneTimeSetUp]
         public  void ClassInitialize()
         {
-            Database.Delete(MenusDbContext.DatabaseName);
+            MenusDbContext.Delete();
             var context = Activator.CreateInstance<MenusDbContext>();
 
             context.Database.Create();

@@ -102,7 +102,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         public void ClassCleanup()
         {
             CleanupNakedObjectsFramework(this);
-            Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
+            CustomAuthorizerInstallerDbContext.Delete();
         }
 
         #endregion
@@ -138,7 +138,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         public  void ClassCleanup()
         {
             CleanupNakedObjectsFramework(this);
-            Database.Delete(CustomAuthorizerInstallerDbContext.DatabaseName);
+            CustomAuthorizerInstallerDbContext.Delete();
         }
 
         [SetUp]

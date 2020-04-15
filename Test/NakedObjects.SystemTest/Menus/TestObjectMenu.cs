@@ -217,7 +217,7 @@ namespace NakedObjects.SystemTest.Menus
         [OneTimeSetUp]
         public  void ClassInitialize()
         {
-            Database.Delete(MenusDbContext.DatabaseName);
+            MenusDbContext.Delete();
             var context = Activator.CreateInstance<MenusDbContext>();
 
             context.Database.Create();
@@ -277,8 +277,12 @@ namespace TestObjectMenu
 {
     public class MenusDbContext : DbContext
     {
+        private static readonly string Cs = @$"Data Source={NakedObjects.SystemTest.Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+
+        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
+
         public const string DatabaseName = "TestMenus";
-        public MenusDbContext() : base(DatabaseName) { }
+        public MenusDbContext() : base(Cs) { }
 
         public DbSet<Foo> Foo { get; set; }
         public DbSet<Bar> Bar { get; set; }

@@ -23,7 +23,7 @@
 
 //        [OneTimeSetUp]
 //        public static void ClassInitialize() {
-//            Database.Delete(MethodsDbContext.DatabaseName);
+//            MethodsDbContext.Delete();
 //            var context = Activator.CreateInstance<MethodsDbContext>();
 
 //            context.Database.Create();

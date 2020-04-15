@@ -60,7 +60,7 @@ namespace NakedObjects.SystemTest.Menus
         [OneTimeSetUp]
         public  void ClassInitialize()
         {
-            Database.Delete(CADbContext.DatabaseName);
+            CADbContext.Delete();
             var context = Activator.CreateInstance<CADbContext>();
 
             context.Database.Create();
@@ -110,8 +110,13 @@ namespace SystemTest.ContributedActions
 {
     public class CADbContext : DbContext
     {
+        private static readonly string Cs = @$"Data Source={NakedObjects.SystemTest.Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
+
+        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
+
+
         public const string DatabaseName = "Tests";
-        public CADbContext() : base(DatabaseName) { }
+        public CADbContext() : base(Cs) { }
 
         public DbSet<Foo> Foos { get; set; }
         public DbSet<Bar> Bars { get; set; }
