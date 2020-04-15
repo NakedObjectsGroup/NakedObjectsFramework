@@ -8,13 +8,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
-using System.Runtime.CompilerServices;
-
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
-using TestContext = NUnit.Framework.TestContext;
 
 namespace NakedObjects.SystemTest.ObjectFinderSingleKey
 {

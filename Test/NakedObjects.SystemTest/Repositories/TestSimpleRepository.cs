@@ -7,7 +7,6 @@
 
 using System;
 using System.Data.Entity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
@@ -64,7 +63,7 @@ namespace NakedObjects.SystemTest.Repositories
         [OneTimeTearDown]
         public  void ClassCleanup()
         {
-            CleanupNakedObjectsFramework(new TestSimpleRepository());
+            CleanupNakedObjectsFramework(this);
             //Database.Delete(SimpleRepositoryDbContext.DatabaseName);
         }
 

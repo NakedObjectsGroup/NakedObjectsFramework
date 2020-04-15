@@ -15,7 +15,6 @@ using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
-using TestContext = NUnit.Framework.TestContext;
 
 namespace NakedObjects.SystemTest.ObjectFinderGuid
 {

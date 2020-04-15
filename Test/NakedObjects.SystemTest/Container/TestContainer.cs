@@ -12,7 +12,6 @@ using System.Data.Entity;
 using NakedObjects.Services;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
-using TestContext = NUnit.Framework.TestContext;
 
 namespace NakedObjects.SystemTest.Container
 {

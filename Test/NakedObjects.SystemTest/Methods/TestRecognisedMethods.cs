@@ -21,8 +21,8 @@
 //    public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
 //        #region Setup/Teardown
 
-//        [ClassInitialize]
-//        public static void ClassInitialize(TestContext tc) {
+//        [OneTimeSetUp]
+//        public static void ClassInitialize() {
 //            Database.Delete(MethodsDbContext.DatabaseName);
 //            var context = Activator.CreateInstance<MethodsDbContext>();
 
@@ -31,7 +31,7 @@
 
 //        [OneTimeSetUp]
 //        public static void ClassCleanup() {
-//            CleanupNakedObjectsFramework(new TestRecognisedMethods());
+//            CleanupNakedObjectsFramework(this);
 //        }
 
 //        [SetUp()]

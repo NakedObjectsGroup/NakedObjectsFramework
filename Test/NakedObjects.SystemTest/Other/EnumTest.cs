@@ -9,13 +9,11 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 using ITestAction = NakedObjects.Xat.ITestAction;
-using TestContext = NUnit.Framework.TestContext;
 
 namespace NakedObjects.SystemTest.Enum
 {

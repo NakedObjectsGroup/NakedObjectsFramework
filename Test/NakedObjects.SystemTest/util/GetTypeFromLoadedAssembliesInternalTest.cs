@@ -8,7 +8,6 @@
 
 using NakedObjects.Util;
 using NUnit.Framework;
-using TestContext = NUnit.Framework.TestContext;
 
 namespace NakedObjects.SystemTest.Util {
     [TestFixture]

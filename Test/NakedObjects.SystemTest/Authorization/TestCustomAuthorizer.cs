@@ -10,19 +10,12 @@ using System.Data.Entity;
 using System.Security.Principal;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core;
-using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
-using NakedObjects.Core.Util;
-using NakedObjects.SystemTest.Audit;
-using NakedObjects.SystemTest.Authorization.CustomAuthorizer;
 using NUnit.Framework;
 //using Assert = NakedObjects.Core.Util.Assert;
-using Bar = NakedObjects.SystemTest.Authorization.CustomAuthorizer.Bar;
-using Qux = NakedObjects.SystemTest.Authorization.CustomAuthorizer.Qux;
 using Assert = NUnit.Framework.Assert;
 
 
@@ -183,7 +176,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         [OneTimeTearDown]
         public  void ClassCleanup()
         {
-            CleanupNakedObjectsFramework(new TestCustomAuthoriser4());
+            CleanupNakedObjectsFramework(this);
         }
 
         [SetUp]
@@ -217,9 +210,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         }
 
         [OneTimeTearDown]
-        public static void ClassCleanup()
+        public  void ClassCleanup()
         {
-            CleanupNakedObjectsFramework(new TestCustomAuthoriser5());
+            CleanupNakedObjectsFramework(this);
             CustomAuthorizerInstallerDbContext.Delete();
         }
 

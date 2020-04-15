@@ -6,13 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity;
-
 using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
-using TestContext = NUnit.Framework.TestContext;
 
 namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper
 {

@@ -306,8 +306,8 @@
 
 //        #region Run Configuration
 
-//        [ClassInitialize]
-//        public static void ClassInitialize(TestContext tc) {
+//        [OneTimeSetUp]
+//        public static void ClassInitialize() {
 //            Database.Delete(ProfileDbContext.DatabaseName);
 //            var context = Activator.CreateInstance<ProfileDbContext>();
 
@@ -351,7 +351,7 @@
 
 //        [OneTimeSetUp]
 //        public static void ClassCleanup() {
-//            CleanupNakedObjectsFramework(new TestProfileManager());
+//            CleanupNakedObjectsFramework(this);
 //            Database.Delete(ProfileDbContext.DatabaseName);
 //        }
 

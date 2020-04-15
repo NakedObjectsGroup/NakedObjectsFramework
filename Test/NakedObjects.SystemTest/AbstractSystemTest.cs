@@ -11,12 +11,9 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
-using System.Net.Security;
-using System.Security.Policy;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Services;
 using NakedObjects.Util;
 using NakedObjects.Xat;
 
@@ -49,16 +46,11 @@ namespace NakedObjects.SystemTest {
     #endregion
 
 
-
     public static class Constants {
         public static string AppveyorServer => @"(local)\SQL2017";
         public static string LocalServer => @".\SQLEXPRESS";
         public static string Server => AppveyorServer;
-
     }
-
-   
-
 
     public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase
         where TContext : DbContext {

@@ -9,13 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Runtime.CompilerServices;
-
 using NakedObjects.Services;
 using NakedObjects.Util;
 using NUnit.Framework;
 using ITestAction = NakedObjects.Xat.ITestAction;
-using TestContext = NUnit.Framework.TestContext;
 
 namespace NakedObjects.SystemTest.ObjectFinderInstances
 {

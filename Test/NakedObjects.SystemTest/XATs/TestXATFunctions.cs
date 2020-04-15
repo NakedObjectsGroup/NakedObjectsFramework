@@ -400,8 +400,8 @@
 
 //        #region Setup/Teardown
 
-//        [ClassInitialize]
-//        public static void ClassInitialize(TestContext tc) {
+//        [OneTimeSetUp]
+//        public static void ClassInitialize() {
 //            Database.Delete(XatDbContext.DatabaseName);
 //            var context = Activator.CreateInstance<XatDbContext>();
 
@@ -410,7 +410,7 @@
 
 //        [OneTimeSetUp]
 //        public static void ClassCleanup() {
-//            CleanupNakedObjectsFramework(new TestXATFunctions());
+//            CleanupNakedObjectsFramework(this);
 //            Database.Delete(XatDbContext.DatabaseName);
 //        }
 

@@ -14,7 +14,6 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using SystemTest.Attributes;
-using Microsoft.VisualBasic.FileIO;
 using NakedObjects;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Services;
