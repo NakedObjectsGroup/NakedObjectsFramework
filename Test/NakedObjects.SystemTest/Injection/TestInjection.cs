@@ -18,9 +18,7 @@ namespace NakedObjects.SystemTest.Injection
     [TestFixture]
     public class TestInjection : AbstractSystemTest<InjectionDbContext>
     {
-        private static void IsInstanceOfType(object obj, Type typ) {
-            Assert.IsTrue(typ.IsInstanceOfType(obj), $"{obj.GetType()} isn't a {typ}");
-        }
+        
 
         protected override Type[] Types
         {

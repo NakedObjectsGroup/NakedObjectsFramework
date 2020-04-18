@@ -16,6 +16,7 @@ using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Util;
 using NakedObjects.Xat;
+using NUnit.Framework;
 
 namespace NakedObjects.SystemTest {
 
@@ -92,5 +93,10 @@ namespace NakedObjects.SystemTest {
         protected ITestObject FindById<T>(int id) => GetSimpleRepositoryTestService<T>().GetAction("Find By Key").InvokeReturnObject(id);
 
         protected ITestObject FindById(string simpleRepositoryName, int id) => GetTestService(simpleRepositoryName).GetAction("Find By Key").InvokeReturnObject(id);
+
+        protected static void IsInstanceOfType(object obj, Type typ)
+        {
+            Assert.IsTrue(typ.IsInstanceOfType(obj), $"{obj.GetType()} isn't a {typ}");
+        }
     }
 }

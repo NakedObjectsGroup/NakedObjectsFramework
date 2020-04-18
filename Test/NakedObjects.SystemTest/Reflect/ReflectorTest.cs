@@ -12,7 +12,7 @@
 //using System.Linq;
 //using System.Security.Principal;
 //using AdventureWorksModel;
-//
+
 //using NakedObjects.Architecture.Component;
 //using NakedObjects.Architecture.Configuration;
 //using NakedObjects.Architecture.Facet;
@@ -29,30 +29,37 @@
 //using NakedObjects.Reflect.Component;
 //using NakedObjects.Security;
 //using Microsoft.Practices.Unity;
+//using NUnit.Framework;
 
-
-//namespace NakedObjects.SystemTest.Reflect {
+//namespace NakedObjects.SystemTest.Reflect
+//{
 //    [TestFixture]
-//    public class ReflectorTest {
-//        protected IUnityContainer GetContainer() {
+//    public class ReflectorTest
+//    {
+//        protected IUnityContainer GetContainer()
+//        {
 //            var c = new UnityContainer();
 //            RegisterTypes(c);
 //            return c;
 //        }
 
-//        protected static void RegisterFacetFactories(IUnityContainer container) {
+//        protected static void RegisterFacetFactories(IUnityContainer container)
+//        {
 //            var factoryTypes = FacetFactories.StandardFacetFactories();
-//            for (int i = 0; i < factoryTypes.Length; i++) {
+//            for (int i = 0; i < factoryTypes.Length; i++)
+//            {
 //                RegisterFacetFactory(factoryTypes[i], container, i);
 //            }
 //        }
 
-//        private static int RegisterFacetFactory(Type factory, IUnityContainer container, int order) {
-//            container.RegisterType(typeof (IFacetFactory), factory, factory.Name, new ContainerControlledLifetimeManager(), new InjectionConstructor(order));
+//        private static int RegisterFacetFactory(Type factory, IUnityContainer container, int order)
+//        {
+//            container.RegisterType(typeof(IFacetFactory), factory, factory.Name, new ContainerControlledLifetimeManager(), new InjectionConstructor(order));
 //            return order;
 //        }
 
-//        protected virtual void RegisterTypes(IUnityContainer container) {
+//        protected virtual void RegisterTypes(IUnityContainer container)
+//        {
 //            ReflectorConfiguration.NoValidate = true;
 //            RegisterFacetFactories(container);
 
@@ -66,9 +73,10 @@
 //        }
 
 //        [Test]
-//        public void ReflectNoTypes() {
+//        public void ReflectNoTypes()
+//        {
 //            IUnityContainer container = GetContainer();
-//            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new string[] {});
+//            var rc = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { });
 
 //            rc.SupportedSystemTypes.Clear();
 
@@ -80,9 +88,10 @@
 //        }
 
 //        [Test]
-//        public void ReflectWithDecorators() {
+//        public void ReflectWithDecorators()
+//        {
 //            IUnityContainer container = GetContainer();
-//            var rc = new ReflectorConfiguration(new Type[] {}, new Type[] {}, new string[] {});
+//            var rc = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { });
 
 //            rc.SupportedSystemTypes.Clear();
 
@@ -102,7 +111,8 @@
 //            //Assert.AreEqual(7, set.FacetDecorators.Count());
 //        }
 
-//        private static Type[] AdventureWorksTypes() {
+//        private static Type[] AdventureWorksTypes()
+//        {
 //            Type[] allTypes =
 //                AppDomain.CurrentDomain.GetAssemblies()
 //                    .Single(a => a.GetName().Name == "AdventureWorksModel")
@@ -111,14 +121,15 @@
 //        }
 
 //        [Test]
-//        public void ReflectAdventureworks() {
+//        public void ReflectAdventureworks()
+//        {
 //            // load adventurework
 
 //            AssemblyHook.EnsureAssemblyLoaded();
 
 //            Type[] types = AdventureWorksTypes();
 //            IUnityContainer container = GetContainer();
-//            var rc = new ReflectorConfiguration(types, new Type[] {}, types.Select(t => t.Namespace).Distinct().ToArray());
+//            var rc = new ReflectorConfiguration(types, new Type[] { }, types.Select(t => t.Namespace).Distinct().ToArray());
 
 //            container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -251,7 +262,8 @@
 //        //}
 
 //        [Test]
-//        public void SerializeAdventureworksFacets() {
+//        public void SerializeAdventureworksFacets()
+//        {
 //            // load adventurework
 
 //            AssemblyHook.EnsureAssemblyLoaded();
@@ -261,7 +273,7 @@
 //            Type[] types50 = AdventureWorksTypes().Take(50).ToArray();
 //            Type[] types51 = AdventureWorksTypes().Take(51).ToArray();
 //            IUnityContainer container = GetContainer();
-//            var rc = new ReflectorConfiguration(types50, new Type[] {}, types50.Select(t => t.Namespace).Distinct().ToArray());
+//            var rc = new ReflectorConfiguration(types50, new Type[] { }, types50.Select(t => t.Namespace).Distinct().ToArray());
 
 //            container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -271,7 +283,7 @@
 
 //            ITypeSpecImmutable[] cache1 = container.Resolve<ISpecificationCache>().AllSpecifications();
 
-//            rc = new ReflectorConfiguration(types51, new Type[] {}, types51.Select(t => t.Namespace).Distinct().ToArray());
+//            rc = new ReflectorConfiguration(types51, new Type[] { }, types51.Select(t => t.Namespace).Distinct().ToArray());
 
 //            container.RegisterInstance<IReflectorConfiguration>(rc);
 
@@ -284,11 +296,14 @@
 //            int c1 = cache1.Count();
 //            int c2 = cache2.Count();
 
-//            foreach (IObjectSpecImmutable objectSpecImmutable in cache2) {
-//                if (cache1.Any(s => s.FullName == objectSpecImmutable.FullName)) {
+//            foreach (IObjectSpecImmutable objectSpecImmutable in cache2)
+//            {
+//                if (cache1.Any(s => s.FullName == objectSpecImmutable.FullName))
+//                {
 //                    //Console.WriteLine("Found {0}", objectSpecImmutable.FullName);
 //                }
-//                else {
+//                else
+//                {
 //                    Console.WriteLine("Not Found object spec {0}", objectSpecImmutable.FullName);
 //                }
 //            }
@@ -296,11 +311,14 @@
 //            IEnumerable<IFacet> f1 = cache1.SelectMany(s => s.GetFacets()).Distinct();
 //            IEnumerable<IFacet> f2 = cache2.SelectMany(s => s.GetFacets()).Distinct();
 
-//            foreach (IFacet f in f2) {
-//                if (f1.Any(s => s.GetType() == f.GetType())) {
+//            foreach (IFacet f in f2)
+//            {
+//                if (f1.Any(s => s.GetType() == f.GetType()))
+//                {
 //                    //Console.WriteLine("Found {0}", f.GetType().FullName);
 //                }
-//                else {
+//                else
+//                {
 //                    Console.WriteLine("Not Found object facet {0}", f.GetType().FullName);
 //                }
 //            }
@@ -316,11 +334,14 @@
 //                    .SelectMany(s => s.GetFacets())
 //                    .Distinct();
 
-//            foreach (IFacet f in f2) {
-//                if (f1.Any(s => s.GetType() == f.GetType())) {
+//            foreach (IFacet f in f2)
+//            {
+//                if (f1.Any(s => s.GetType() == f.GetType()))
+//                {
 //                    //Console.WriteLine("Found {0}", f.GetType().FullName);
 //                }
-//                else {
+//                else
+//                {
 //                    Console.WriteLine("Not Found action facet  {0}", f.GetType().FullName);
 //                }
 //            }
@@ -338,11 +359,14 @@
 //                    .SelectMany(s => s.GetFacets())
 //                    .Distinct();
 
-//            foreach (IFacet f in f2) {
-//                if (f1.Any(s => s.GetType() == f.GetType())) {
+//            foreach (IFacet f in f2)
+//            {
+//                if (f1.Any(s => s.GetType() == f.GetType()))
+//                {
 //                    //Console.WriteLine("Found {0}", f.GetType().FullName);
 //                }
-//                else {
+//                else
+//                {
 //                    Console.WriteLine("Not Found parm facet  {0}", f.GetType().FullName);
 //                }
 //            }
@@ -358,29 +382,35 @@
 //                    .SelectMany(s => s.GetFacets())
 //                    .Distinct();
 
-//            foreach (IFacet f in f2) {
-//                if (f1.Any(s => s.GetType() == f.GetType())) {
+//            foreach (IFacet f in f2)
+//            {
+//                if (f1.Any(s => s.GetType() == f.GetType()))
+//                {
 //                    //Console.WriteLine("Found {0}", f.GetType().FullName);
 //                }
-//                else {
+//                else
+//                {
 //                    Console.WriteLine("Not Found field facet  {0}", f.GetType().FullName);
 //                }
 //            }
 //        }
 
-//        private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache) {
+//        private static void CompareCaches(ISpecificationCache cache, ISpecificationCache newCache)
+//        {
 //            Assert.AreEqual(cache.AllSpecifications().Count(), newCache.AllSpecifications().Count());
 
-//            var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new {a, b});
+//            var zipped = cache.AllSpecifications().Zip(newCache.AllSpecifications(), (a, b) => new { a, b });
 
-//            foreach (var item in zipped) {
+//            foreach (var item in zipped)
+//            {
 //                Assert.AreEqual(item.a.FullName, item.b.FullName);
 
 //                Assert.AreEqual(item.a.GetFacets().Count(), item.b.GetFacets().Count());
 
-//                var zipfacets = item.a.GetFacets().Zip(item.b.GetFacets(), (x, y) => new {x, y});
+//                var zipfacets = item.a.GetFacets().Zip(item.b.GetFacets(), (x, y) => new { x, y });
 
-//                foreach (var zipfacet in zipfacets) {
+//                foreach (var zipfacet in zipfacets)
+//                {
 //                    Assert.AreEqual(zipfacet.x.FacetType, zipfacet.y.FacetType);
 //                }
 //            }
@@ -388,20 +418,24 @@
 
 //        #region Nested type: NullMenuFactory
 
-//        public class NullMenuFactory : IMenuFactory {
+//        public class NullMenuFactory : IMenuFactory
+//        {
 //            #region IMenuFactory Members
 
-//            public IMenu NewMenu<T>(bool addAllActions, string name = null) {
+//            public IMenu NewMenu<T>(bool addAllActions, string name = null)
+//            {
 //                throw new NotImplementedException();
 //            }
 
-//            public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) {
+//            public IMenu NewMenu(Type type, bool addAllActions = false, string name = null)
+//            {
 //                throw new NotImplementedException();
 //            }
 
 //            #endregion
 
-//            public IMenu NewMenu(string name) {
+//            public IMenu NewMenu(string name)
+//            {
 //                throw new NotImplementedException();
 //            }
 //        }
@@ -410,16 +444,17 @@
 
 //        #region Nested type: TestAuditor
 
-//        public class TestAuditor : IAuditor {
+//        public class TestAuditor : IAuditor
+//        {
 //            #region IAuditor Members
 
-//            public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {}
+//            public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) { }
 
-//            public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {}
+//            public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) { }
 
-//            public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {}
+//            public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) { }
 
-//            public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {}
+//            public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) { }
 
 //            #endregion
 //        }
@@ -428,24 +463,29 @@
 
 //        #region Nested type: TestAuthorizer
 
-//        public class TestAuthorizer : ITypeAuthorizer<object> {
+//        public class TestAuthorizer : ITypeAuthorizer<object>
+//        {
 //            #region ITypeAuthorizer<object> Members
 
-//            public bool IsEditable(IPrincipal principal, object target, string memberName) {
+//            public bool IsEditable(IPrincipal principal, object target, string memberName)
+//            {
 //                throw new NotImplementedException();
 //            }
 
-//            public bool IsVisible(IPrincipal principal, object target, string memberName) {
+//            public bool IsVisible(IPrincipal principal, object target, string memberName)
+//            {
 //                throw new NotImplementedException();
 //            }
 
 //            #endregion
 
-//            public void Init() {
+//            public void Init()
+//            {
 //                throw new NotImplementedException();
 //            }
 
-//            public void Shutdown() {
+//            public void Shutdown()
+//            {
 //                throw new NotImplementedException();
 //            }
 //        }
