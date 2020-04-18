@@ -296,6 +296,8 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator
             {
                 return (new Type[] {
                     typeof (PolymorphicPayment),
+                    typeof (PolymorphicPaymentPayeeLink),
+                    typeof (PolymorphicPaymentPayableItemLink),
                     typeof (CustomerAsPayee),
                     typeof (SupplierAsPayee),
                     typeof (InvoiceAsPayableItem),
@@ -304,24 +306,21 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator
             }
         }
 
-        protected override object[] MenuServices
+        protected override Type[] Services
         {
             get
             {
-                return (new object[] {
-                    new SimpleRepository<PolymorphicPayment>(),
-                    new SimpleRepository<CustomerAsPayee>(),
-                    new SimpleRepository<SupplierAsPayee>(),
-                    new SimpleRepository<InvoiceAsPayableItem>(),
-                    new SimpleRepository<ExpenseClaimAsPayableItem>()
+                return (new Type[] {
+                    typeof (SimpleRepository<PolymorphicPayment>),
+                    typeof (SimpleRepository<CustomerAsPayee>),
+                    typeof (SimpleRepository<SupplierAsPayee>),
+                    typeof (SimpleRepository<InvoiceAsPayableItem>),
+                    typeof (SimpleRepository<ExpenseClaimAsPayableItem>),
+                    typeof (Services.PolymorphicNavigator)
                 });
             }
         }
 
-        protected override object[] SystemServices
-        {
-            get { return new object[] { new Services.PolymorphicNavigator() }; }
-        }
 
         #endregion
     }

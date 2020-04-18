@@ -155,11 +155,9 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations
     {
         private static string GetCs(string name) => @$"Data Source={Constants.Server};Initial Catalog={name};Integrated Security=True;";
 
-        private readonly string cs;
+        public static void Delete(string name) => System.Data.Entity.Database.Delete(GetCs(name));
 
-        public void Delete() => System.Data.Entity.Database.Delete(cs);
-
-        public PolymorphicNavigationContext(string name) : base(GetCs(name)) => cs = GetCs(name);
+        public PolymorphicNavigationContext(string name) : base(GetCs(name)) { }
         public DbSet<PolymorphicPayment> Payments { get; set; }
         public DbSet<PolymorphicPaymentPayeeLink> PayeeLinks { get; set; }
         public DbSet<PolymorphicPaymentPayableItemLink> PayableItemLinks { get; set; }
