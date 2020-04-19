@@ -7,6 +7,7 @@
 
 using System;
 using System.Data.Entity;
+using System.Linq;
 using System.Security.Principal;
 using Microsoft.Extensions.DependencyInjection;
 using MyApp.MyCluster1;
@@ -26,7 +27,6 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization
     public class TestNamespaceAuthorization : AbstractSystemTest<NamespaceAuthorizationDbContext>
     {
 
-
         protected override Type[] Types => new[] {
                 typeof (Bar1),
                 typeof (Bar2),
@@ -40,7 +40,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization
             typeof(SimpleRepository<Foo2>),
         };
 
-        protected override string[] Namespaces => new[] { typeof(Bar1).Namespace, typeof(Bar2).Namespace, typeof(Foo2).Namespace };
+        protected override string[] Namespaces => Types.Select(t => t.Namespace).ToArray();
 
         protected override void RegisterTypes(IServiceCollection services)
         {
@@ -56,7 +56,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization
         }
 
         [Test]
-        [Ignore("investigate")]
+        //[Ignore("investigate")]
         public void AuthorizerWithMostSpecificNamespaceIsInvokedForVisibility()
         {
             //Bar1

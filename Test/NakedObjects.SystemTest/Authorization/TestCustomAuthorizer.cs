@@ -7,6 +7,7 @@
 
 using System;
 using System.Data.Entity;
+using System.Linq;
 using System.Security.Principal;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Component;
@@ -24,11 +25,11 @@ namespace NakedObjects.SystemTest.Authorization.Installer
     public abstract class TestCustomAuthorizer<TDefault> : AbstractSystemTest<CustomAuthorizerInstallerDbContext> where TDefault : ITypeAuthorizer<object>
      {
 
-        protected override Type[] Types => new[] {typeof(TDefault)};
+        protected override Type[] Types => new[] {typeof(TDefault), typeof(Foo) };
 
         protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
 
-        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
+        protected override string[] Namespaces => Types.Select(t => t.Namespace).ToArray();
 
         protected override void RegisterTypes(IServiceCollection services) {
 

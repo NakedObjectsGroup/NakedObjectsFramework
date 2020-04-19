@@ -35,7 +35,7 @@ namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
         private static readonly ILog Log;
 
-        protected readonly IServiceProvider RootServiceProvider;
+        protected IServiceProvider RootServiceProvider;
         private IServiceProvider scopeServiceProvider;
         private FixtureServices fixtureServices;
         private IDictionary<string, ITestService> servicesCache = new Dictionary<string, ITestService>();
@@ -64,10 +64,6 @@ namespace NakedObjects.Xat {
         {
             Name = name;
             DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
-
-            var host = CreateHostBuilder(new string[]{}).Build();
-            
-            RootServiceProvider = host.Services;
         }
 
         /// <summary>
@@ -363,6 +359,8 @@ namespace NakedObjects.Xat {
         }
 
         protected static void InitializeNakedObjectsFramework(AcceptanceTestCase tc) {
+            var host = tc.CreateHostBuilder(new string[] { }).Build();
+            tc.RootServiceProvider = host.Services;
             tc.servicesCache = new Dictionary<string, ITestService>();
             tc.RootServiceProvider.GetService<IReflector>().Reflect();
         }
@@ -371,6 +369,7 @@ namespace NakedObjects.Xat {
             tc.servicesCache.Clear();
             tc.servicesCache = null;
             tc.testObjectFactory = null;
+            tc.RootServiceProvider = null;
         }
 
         protected virtual void RegisterTypes(IServiceCollection services) {

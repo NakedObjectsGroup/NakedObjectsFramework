@@ -69,8 +69,7 @@ namespace NakedObjects.Meta.Authorization {
             //Look for exact-fit TypeAuthorizer
             string fullyQualifiedOfTarget = target.Spec.FullName;
             Type authorizer = typeAuthorizers.Where(ta => ta.Key == fullyQualifiedOfTarget).Select(ta => ta.Value).FirstOrDefault() ??
-                              // already ordered OrderByDescending(x => x.Key.Length).
-                              namespaceAuthorizers.Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault() ??
+                              namespaceAuthorizers.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault() ??
                               defaultAuthorizer;
 
             return CreateAuthorizer(authorizer, lifecycleManager);
@@ -93,7 +92,7 @@ namespace NakedObjects.Meta.Authorization {
             };
 
             if (authorizationConfiguration.NamespaceAuthorizers.Any()) {
-                namespaceAuthorizers = authorizationConfiguration.NamespaceAuthorizers.OrderByDescending(x => x.Key.Length).ToImmutableDictionary();
+                namespaceAuthorizers = authorizationConfiguration.NamespaceAuthorizers.ToImmutableDictionary();
             }
 
             if (authorizationConfiguration.TypeAuthorizers.Any()) {
