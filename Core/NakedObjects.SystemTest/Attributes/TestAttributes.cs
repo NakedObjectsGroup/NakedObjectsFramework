@@ -14,12 +14,14 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using SystemTest.Attributes;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
-
+using Assert = NUnit.Framework.Assert;
 using ITestAction = NakedObjects.Xat.ITestAction;
 
 
@@ -1176,38 +1178,46 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [Test]
-        [Ignore("investigate")]
+        //[Ignore("investigate")]
         public virtual void ValidateObjectChange()
         {
             ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
             var vpu1 = NewTestObject<Validateprogrammaticupdates1>();
-
             service.GetAction("Save Object1").InvokeReturnObject(vpu1);
 
-            try
-            {
-                (vpu1.GetDomainObject() as Validateprogrammaticupdates1).Prop1 = "fail";
+            try {
+                vpu1.GetPropertyByName("Prop1").SetValue("fail");
                 Assert.Fail();
             }
-            catch (Exception /*expected*/) { }
+            catch (AssertFailedException e)
+            {
+                Assert.AreEqual(e.Message, "Assert.IsFalse failed. Content: 'fail' is not valid. Reason: fail");
+            }
+            catch (Exception e)
+            {
+                Assert.Fail(e.Message);
+            }
         }
 
         [Test]
-        [Ignore("investigate")]
+        //[Ignore("investigate")]
 
         public virtual void ValidateObjectCrossValidationChange()
         {
             ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
             var vpu2 = NewTestObject<Validateprogrammaticupdates2>();
 
-            service.GetAction("Save Object2").InvokeReturnObject(vpu2);
-
-            try
-            {
-                (vpu2.GetDomainObject() as Validateprogrammaticupdates2).Prop1 = "fail";
+            try {
+                vpu2.GetPropertyByName("Prop1").SetValue("fail");
+                service.GetAction("Save Object2").InvokeReturnObject(vpu2);
                 Assert.Fail();
             }
-            catch (Exception /*expected*/) { }
+            catch (PersistFailedException e) {
+                Assert.AreEqual(e.Message, @"Validateprogrammaticupdates2/Untitled Validateprogrammaticupdates2 not in a valid state to be persisted - fail");
+            }
+            catch (Exception e) {
+                Assert.Fail(e.Message);
+            }
         }
 
         #endregion
