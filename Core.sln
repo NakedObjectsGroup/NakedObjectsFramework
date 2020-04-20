@@ -51,7 +51,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Snapshot.Xml.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Snapshot.Xml", "Core\NakedObjects.Snapshot.Xml\NakedObjects.Snapshot.Xml.csproj", "{601A68BC-8CE4-4B20-ADFA-171E7E2F166E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.SystemTest", "Test\NakedObjects.SystemTest\NakedObjects.SystemTest.csproj", "{5C2683B5-CF79-49EA-A3E2-DE0DCECBF0AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.SystemTest", "Core\NakedObjects.SystemTest\NakedObjects.SystemTest.csproj", "{9E417E55-47B0-41BD-B8CD-89B05464EAD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -151,10 +151,10 @@ Global
 		{601A68BC-8CE4-4B20-ADFA-171E7E2F166E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{601A68BC-8CE4-4B20-ADFA-171E7E2F166E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{601A68BC-8CE4-4B20-ADFA-171E7E2F166E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C2683B5-CF79-49EA-A3E2-DE0DCECBF0AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C2683B5-CF79-49EA-A3E2-DE0DCECBF0AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C2683B5-CF79-49EA-A3E2-DE0DCECBF0AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C2683B5-CF79-49EA-A3E2-DE0DCECBF0AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E417E55-47B0-41BD-B8CD-89B05464EAD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E417E55-47B0-41BD-B8CD-89B05464EAD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E417E55-47B0-41BD-B8CD-89B05464EAD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E417E55-47B0-41BD-B8CD-89B05464EAD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
