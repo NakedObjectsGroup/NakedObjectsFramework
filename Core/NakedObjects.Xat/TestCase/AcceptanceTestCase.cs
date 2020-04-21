@@ -180,6 +180,9 @@ namespace NakedObjects.Xat {
             ServiceScope.Dispose();
             ServiceScope = null;
             scopeServiceProvider = null;
+            servicesCache = new Dictionary<string, ITestService>();
+            testObjectFactory = null;
+            testPrincipal = null;
         }
 
         private void InstallFixtures(ITransactionManager transactionManager, IDomainObjectInjector injector, object[] newFixtures) {
@@ -288,6 +291,7 @@ namespace NakedObjects.Xat {
                     }
                 }
                 Assert.Fail("No such service: " + serviceName);
+                return null;
             }
             return servicesCache[serviceName.ToLower()];
         }
@@ -365,7 +369,7 @@ namespace NakedObjects.Xat {
             tc.RootServiceProvider.GetService<IReflector>().Reflect();
         }
 
-        protected static void CleanupNakedObjectsFramework(AcceptanceTestCase tc) {           
+        protected static void CleanupNakedObjectsFramework(AcceptanceTestCase tc) {
             tc.servicesCache.Clear();
             tc.servicesCache = null;
             tc.testObjectFactory = null;

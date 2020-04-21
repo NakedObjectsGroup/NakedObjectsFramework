@@ -28,7 +28,7 @@ namespace NakedObjects.Meta.Audit {
 
         public AuditManager(IAuditConfiguration config) {
             defaultAuditor = config.DefaultAuditor;
-            namespaceAuditors = config.NamespaceAuditors.OrderByDescending(x => x.Key.Length).ToImmutableDictionary();
+            namespaceAuditors = config.NamespaceAuditors.ToImmutableDictionary();
             Validate();
         }
 
@@ -103,8 +103,8 @@ namespace NakedObjects.Meta.Audit {
             Assert.AssertNotNull(target);
             string fullyQualifiedOfTarget = target.Spec.FullName;
 
-            // already ordered OrderByDescending(x => x.Key.Length).
-            Type auditor = namespaceAuditors.Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault();
+            // order here as ImmutableDictionary not ordered
+            Type auditor = namespaceAuditors.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault();
 
             return auditor != null ? CreateAuditor(auditor, lifecycleManager) : null;
         }

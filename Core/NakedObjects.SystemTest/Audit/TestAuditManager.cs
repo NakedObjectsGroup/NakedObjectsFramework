@@ -541,7 +541,9 @@ namespace NakedObjects.SystemTest.Audit
         }
 
         [TearDown()]
-        public void TearDown() { }
+        public void TearDown() {
+            EndTest();
+        }
 
         #endregion
 

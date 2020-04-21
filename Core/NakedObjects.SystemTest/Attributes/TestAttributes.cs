@@ -1178,7 +1178,6 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [Test]
-        //[Ignore("investigate")]
         public virtual void ValidateObjectChange()
         {
             ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));
@@ -1200,8 +1199,6 @@ namespace NakedObjects.SystemTest.Attributes
         }
 
         [Test]
-        //[Ignore("investigate")]
-
         public virtual void ValidateObjectCrossValidationChange()
         {
             ITestService service = GetTestService(typeof(TestServiceValidateProgrammaticUpdates));

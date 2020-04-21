@@ -67,6 +67,7 @@ namespace NakedObjects.Meta.Authorization {
             Assert.AssertNotNull(target);
 
             //Look for exact-fit TypeAuthorizer
+            // order here as ImmutableDictionarynot ordered
             string fullyQualifiedOfTarget = target.Spec.FullName;
             Type authorizer = typeAuthorizers.Where(ta => ta.Key == fullyQualifiedOfTarget).Select(ta => ta.Value).FirstOrDefault() ??
                               namespaceAuthorizers.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault() ??
