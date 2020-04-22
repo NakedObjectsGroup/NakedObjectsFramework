@@ -326,7 +326,8 @@ namespace NakedObjects.SystemTest.Profile
 
         #endregion
 
-        #region Run Configuration
+        #region Setup/Teardown
+
 
         [OneTimeSetUp]
         public  void ClassInitialize()
@@ -371,9 +372,7 @@ namespace NakedObjects.SystemTest.Profile
             services.AddSingleton<IFacetDecorator, ProfileManager>();
         }
 
-        #endregion
 
-        #region Setup/Teardown
 
 
 
@@ -394,6 +393,7 @@ namespace NakedObjects.SystemTest.Profile
         [TearDown()]
         public void TearDown()
         {
+            base.EndTest();
             MyProfiler.BeginCallback = (p, e, t, s) => { };
             MyProfiler.EndCallback = (p, e, t, s) => { };
         }

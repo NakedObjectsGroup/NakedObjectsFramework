@@ -145,6 +145,12 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator
             StartTest();
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            base.EndTest();
+        }
+
         protected override object[] Fixtures
         {
             get { return new object[] { new FixtureEntities(), new FixtureLinksUsingTypeCode() }; }

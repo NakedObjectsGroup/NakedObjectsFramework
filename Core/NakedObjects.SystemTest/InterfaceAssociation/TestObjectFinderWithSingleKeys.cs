@@ -158,6 +158,11 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey
             emp2 = GetAllInstances<Employee>(0); //They seem to be persisted in reverse order!
         }
 
+        [TearDown]
+        public void TearDown() {
+            base.EndTest();
+        }
+
         #endregion
     }
 

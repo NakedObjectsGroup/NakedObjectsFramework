@@ -58,6 +58,20 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
             CleanupNakedObjectsFramework(this);
         }
 
+
+        [SetUp]
+        public void SetUp()
+        {
+            base.Initialize();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            base.CleanUp();
+        }
+
+
         [Test]
         public void SetAssociatedObject()
         {

@@ -12,7 +12,6 @@ using NUnit.Framework;
 
 namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
 {
-    [TestFixture]
     public abstract class TestObjectFinderWithCompoundKeysAbstract : AbstractSystemTest<PaymentContext>
     {
         protected ITestObject customer1;
@@ -27,7 +26,6 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
         protected ITestObject payment1;
         protected ITestObject supplier1;
 
-        [SetUp]
         public void Initialize()
         {
             StartTest();
@@ -45,9 +43,9 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
             emp1 = GetAllInstances(typeof(SimpleRepository<Employee>), 0);
         }
 
-        [TearDown]
         public void CleanUp()
         {
+            EndTest();
             payment1 = null;
             customer1 = null;
             customer2a = null;

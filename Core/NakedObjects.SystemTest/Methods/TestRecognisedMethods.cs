@@ -48,6 +48,11 @@ namespace NakedObjects.SystemTest.Method
             StartTest();
         }
 
+        [TearDown()]
+        public void TearDown() {
+            EndTest();
+        }
+
         #endregion
 
         #region Configuration
@@ -1236,15 +1241,17 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [Test]
-        [Ignore("investigate")]
+        //[Ignore("investigate")]
         public void UpdatedCalled()
         {
             var obj1 = NewTestObject<Updated1>();
             var dom1 = (Updated1)obj1.GetDomainObject();
             obj1.Save();
-            try
-            {
+            try {
+                NakedObjectsFramework.TransactionManager.StartTransaction();
                 obj1.GetPropertyByName("Prop1").SetValue("Foo");
+                NakedObjectsFramework.TransactionManager.EndTransaction();
+
                 Assert.Fail("Shouldn't get to here");
             }
             catch (Exception) { }
@@ -1277,16 +1284,19 @@ namespace NakedObjects.SystemTest.Method
         }
 
         [Test]
-        [Ignore("investigate")]
+        //[Ignore("investigate")]
         public void UpdatingCalled()
         {
             ITestObject obj1 = NewTestObject<Updating1>();
             var dom1 = (Updating1)obj1.GetDomainObject();
             obj1.Save();
-
             try
             {
+                NakedObjectsFramework.TransactionManager.StartTransaction();
+
                 obj1.GetPropertyByName("Prop1").SetValue("Foo");
+                NakedObjectsFramework.TransactionManager.EndTransaction();
+
                 Assert.Fail("Should not get to here");
             }
             catch (Exception) { }

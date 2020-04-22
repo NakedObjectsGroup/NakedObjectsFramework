@@ -146,6 +146,11 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid
             supplier1 = GetTestService("Suppliers").GetAction("All Instances").InvokeReturnCollection().ElementAt(0);
         }
 
+        [TearDown]
+        public void TearDown() {
+            base.EndTest();
+        }
+
         #endregion
     }
 

@@ -214,5 +214,16 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
         {
             key1.AssertIsEmpty();
         }
+
+        [SetUp]
+        public void SetUp() {
+            base.Initialize();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            base.CleanUp();
+        }
     }
 }

@@ -38,7 +38,9 @@ namespace NakedObjects.SystemTest.ObjectFinderInstances
         }
 
         [TearDown]
-        public void CleanUp() { }
+        public void CleanUp() {
+            EndTest();
+        }
 
         [Test]
         public void FindInstances()
