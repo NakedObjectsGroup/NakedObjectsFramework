@@ -105,7 +105,7 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid
         }
 
         [Test]
-        [Ignore("investigate")]
+        //[Ignore("investigate")]
 
         public void NoAssociatedObject()
         {

@@ -29,7 +29,7 @@ using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 using Microsoft.Extensions.Hosting;
-
+using NakedObjects.Meta.SpecImmutable;
 
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
@@ -177,7 +177,7 @@ namespace NakedObjects.Xat {
         }
 
         protected virtual void EndTest() {
-            ServiceScope.Dispose();
+            ServiceScope?.Dispose();
             ServiceScope = null;
             scopeServiceProvider = null;
             servicesCache = new Dictionary<string, ITestService>();
@@ -370,6 +370,10 @@ namespace NakedObjects.Xat {
         }
 
         protected static void CleanupNakedObjectsFramework(AcceptanceTestCase tc) {
+            // TODO THIS IS A SMELL !!
+            ImmutableSpecFactory.ClearCache();
+            tc.RootServiceProvider.GetService<ISpecificationCache>().Clear();
+            tc.EndTest();
             tc.servicesCache.Clear();
             tc.servicesCache = null;
             tc.testObjectFactory = null;

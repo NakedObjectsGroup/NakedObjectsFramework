@@ -50,7 +50,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator
         }
 
         [Test]
-        [Ignore("investigate")]
+        //[Ignore("investigate")]
 
         public override void ClearPolymorphicProperty()
         {
@@ -70,14 +70,14 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator
         }
 
         [Test]
-        [Ignore("investigate")]
+        //[Ignore("investigate")]
         public override void AttemptToAddSameItemTwice()
         {
             base.AttemptToAddSameItemTwice();
         }
 
         [Test]
-        [Ignore("investigate")]
+        //[Ignore("investigate")]
 
         public override void RemoveItem()
         {

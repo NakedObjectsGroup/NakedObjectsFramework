@@ -202,7 +202,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
         }
 
         [Test]
-        [Ignore("investigate")]
+        ////[Ignore("investigate")]
 
         public void NoAssociatedObject()
         {

@@ -171,8 +171,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer
     [TestFixture] //Use DefaultAuthorizer3
     public class TestCustomAuthoriser4 : TestCustomAuthorizer<DefaultAuthorizer3>
     {
-       
-
+        
         [Test]
         public void AccessByAuthorizedUserName()
         {
@@ -185,6 +184,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         public  void ClassInitialize()
         {
             CustomAuthorizerInstallerDbContext.Delete();
+
             var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
 
             context.Database.Create();
@@ -195,6 +195,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         public  void ClassCleanup()
         {
             CleanupNakedObjectsFramework(this);
+            CustomAuthorizerInstallerDbContext.Delete();
         }
 
         [SetUp]
@@ -219,7 +220,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer
        
 
         [Test]
-        //[Ignore("investigate")]
+        ////[Ignore("investigate")]
         public void AccessByAnonUserWithoutRole()
         {
             GetTestService("Foos").GetAction("New Instance").AssertIsInvisible();
@@ -231,6 +232,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         public void ClassSetUp()
         {
             CustomAuthorizerInstallerDbContext.Delete();
+
             var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
 
             context.Database.Create();
@@ -266,7 +268,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer
        
 
         [Test]
-       // [Ignore("investigate")]
+       // //[Ignore("investigate")]
         public void AccessByAnonUserWithRole()
         {
             GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
@@ -277,7 +279,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         [OneTimeSetUp]
         public void ClassSetUp()
         {
-            CustomAuthorizerInstallerDbContext.Delete();
+            //CustomAuthorizerInstallerDbContext.Delete();
             var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
 
             context.Database.Create();
@@ -313,7 +315,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         
 
         [Test]
-        //[Ignore("investigate")]
+        ////[Ignore("investigate")]
         public void AccessByAnonUserWithMultipleRoles()
         {
             GetTestService("Foos").GetAction("New Instance").AssertIsVisible();

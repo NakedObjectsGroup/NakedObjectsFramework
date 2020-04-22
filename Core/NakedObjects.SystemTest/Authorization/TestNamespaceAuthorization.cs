@@ -56,7 +56,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization
         }
 
         [Test]
-        //[Ignore("investigate")]
+        ////[Ignore("investigate")]
         public void AuthorizerWithMostSpecificNamespaceIsInvokedForVisibility()
         {
             //Bar1

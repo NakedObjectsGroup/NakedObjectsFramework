@@ -209,7 +209,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
         }
 
         [Test]
-        [NUnit.Framework.Ignore("investigate")]
+        //[NUnit.Framework.Ignore("investigate")]
         public virtual void NoAssociatedObject()
         {
             key1.AssertIsEmpty();

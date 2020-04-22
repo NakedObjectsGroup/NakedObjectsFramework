@@ -20,6 +20,9 @@ namespace NakedObjects.ParallelReflect.Component {
 
         public CachingClassStrategy(IClassStrategy classStrategy) {
             this.classStrategy = classStrategy;
+            lock (Cache) {
+                Cache.Clear();
+            }
         }
 
         #region IClassStrategy Members
