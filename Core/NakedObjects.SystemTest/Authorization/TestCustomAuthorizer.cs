@@ -44,8 +44,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer
     [TestFixture] //Use DefaultAuthorizer1
     public class TestCustomAuthorizer1 : TestCustomAuthorizer<DefaultAuthorizer1>
     {
-      
-
+        
         [Test]
         public void AttemptToUseAuthorizerForAbstractType()
         {
@@ -75,6 +74,12 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         {
             CleanupNakedObjectsFramework(this);
         }
+
+        [TearDown]
+        public void TearDown() {
+           // EndTest();
+        }
+
 
         #endregion
     }
@@ -106,6 +111,12 @@ namespace NakedObjects.SystemTest.Authorization.Installer
             CustomAuthorizerInstallerDbContext.Delete();
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            //EndTest();
+        }
+
         #endregion
     }
 
@@ -129,11 +140,11 @@ namespace NakedObjects.SystemTest.Authorization.Installer
 
         #region Setup/Teardown
 
-        [OneTimeSetUp]
-        public  void ClassSetUp()
-        {
-            InitializeNakedObjectsFramework(this);
-        }
+        //[OneTimeSetUp]
+        //public  void ClassSetUp()
+        //{
+        //    InitializeNakedObjectsFramework(this);
+        //}
 
         [OneTimeTearDown]
         public  void ClassCleanup()
@@ -142,10 +153,16 @@ namespace NakedObjects.SystemTest.Authorization.Installer
             CustomAuthorizerInstallerDbContext.Delete();
         }
 
-        [SetUp]
-        public void SetUp()
+        //[SetUp]
+        //public void SetUp()
+        //{
+        //    StartTest();
+        //}
+
+        [TearDown]
+        public void TearDown()
         {
-            StartTest();
+            //EndTest();
         }
 
         #endregion
@@ -187,6 +204,12 @@ namespace NakedObjects.SystemTest.Authorization.Installer
             SetUser("Fred");
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            EndTest();
+        }
+
         #endregion
     }
 
@@ -196,7 +219,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer
        
 
         [Test]
-        [Ignore("investigate")]
+        //[Ignore("investigate")]
         public void AccessByAnonUserWithoutRole()
         {
             GetTestService("Foos").GetAction("New Instance").AssertIsInvisible();
@@ -207,6 +230,10 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         [OneTimeSetUp]
         public void ClassSetUp()
         {
+            CustomAuthorizerInstallerDbContext.Delete();
+            var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
+
+            context.Database.Create();
             InitializeNakedObjectsFramework(this);
         }
 
@@ -224,6 +251,12 @@ namespace NakedObjects.SystemTest.Authorization.Installer
             SetUser("Anon");
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            EndTest();
+        }
+
         #endregion
     }
 
@@ -233,7 +266,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer
        
 
         [Test]
-        [Ignore("investigate")]
+       // [Ignore("investigate")]
         public void AccessByAnonUserWithRole()
         {
             GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
@@ -244,6 +277,10 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         [OneTimeSetUp]
         public void ClassSetUp()
         {
+            CustomAuthorizerInstallerDbContext.Delete();
+            var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
+
+            context.Database.Create();
             InitializeNakedObjectsFramework(this);
         }
 
@@ -261,6 +298,12 @@ namespace NakedObjects.SystemTest.Authorization.Installer
             SetUser("Anon", "sysAdmin");
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            EndTest();
+        }
+
         #endregion
     }
 
@@ -270,7 +313,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         
 
         [Test]
-        [Ignore("investigate")]
+        //[Ignore("investigate")]
         public void AccessByAnonUserWithMultipleRoles()
         {
             GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
@@ -296,6 +339,12 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         {
             StartTest();
             SetUser("Anon", "service", "sysAdmin");
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            EndTest();
         }
 
         #endregion
