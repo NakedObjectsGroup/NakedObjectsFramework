@@ -91,7 +91,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator
         }
 
         [Test]
-        [Ignore("investigate")]
+        //[Ignore("investigate")]
 
         public override void FindOwnersForObject()
         {

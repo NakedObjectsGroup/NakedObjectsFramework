@@ -372,10 +372,6 @@ namespace NakedObjects.SystemTest.Profile
             services.AddSingleton<IFacetDecorator, ProfileManager>();
         }
 
-
-
-
-
         [OneTimeTearDown]
         public  void ClassCleanup()
         {

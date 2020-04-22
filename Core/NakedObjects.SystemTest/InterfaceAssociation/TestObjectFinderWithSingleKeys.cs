@@ -103,7 +103,7 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey
         }
 
         [Test]
-        [Ignore("investigate")]
+        //[Ignore("investigate")]
 
         public void NoAssociatedObject()
         {
