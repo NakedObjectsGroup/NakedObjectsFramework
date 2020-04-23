@@ -64,18 +64,6 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
             services.AddSingleton<IFacetDecorator, AuthorizationManager>();
         }
 
-        //protected override object[] Fixtures {
-        //    get { return new object[] { }; }
-        //}
-
-        //protected override object[] MenuServices {
-        //    get {
-        //        return new object[] {
-        //            new SimpleRepository<Foo>()
-        //        };
-        //    }
-        //}
-
         [Test] //Pending #9227
         public void SetUserOnTestIsPassedThroughToAuthorizer() {
             SetUser("svenFoo", "Bar");

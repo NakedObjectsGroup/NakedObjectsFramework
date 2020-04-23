@@ -15,21 +15,10 @@ namespace NakedObjects.SystemTest.Container {
     [TestFixture]
     public class TestContainer : AbstractSystemTest<ContainerDbContext> {
         [SetUp]
-        public void SetUp() {
-            StartTest();
-        }
+        public void SetUp() => StartTest();
 
-        protected override Type[] Types {
-            get { return new[] {typeof(Object1), typeof(Object2), typeof(ViewModel2)}; }
-        }
-
-        protected override Type[] Services {
-            get {
-                return new[] {
-                    typeof(SimpleRepository<Object1>)
-                };
-            }
-        }
+        [TearDown]
+        public void TearDown() => EndTest();
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
@@ -43,7 +32,15 @@ namespace NakedObjects.SystemTest.Container {
         [OneTimeTearDown]
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
+            ContainerDbContext.Delete();
         }
+
+        protected override Type[] Types => new[] {typeof(Object1), typeof(Object2), typeof(ViewModel2)};
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(SimpleRepository<Object1>)
+            };
 
         [Test]
         public void DefaultsTransient() {
