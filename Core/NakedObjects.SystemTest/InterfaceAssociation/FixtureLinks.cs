@@ -7,18 +7,15 @@
 
 using System.Linq;
 
-namespace NakedObjects.SystemTest.PolymorphicAssociations
-{
-    public abstract class FixtureLinks
-    {
+namespace NakedObjects.SystemTest.PolymorphicAssociations {
+    public abstract class FixtureLinks {
         #region Injected Services
 
         public IDomainObjectContainer Container { set; protected get; }
 
         #endregion
 
-        public void Install()
-        {
+        public void Install() {
             //Link Payment3 to Customer1
             var payment3 = FindById<PolymorphicPayment>(3);
             var link1 = Container.NewTransientInstance<PolymorphicPaymentPayeeLink>();
@@ -59,35 +56,20 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations
 
         protected abstract string CustomerType();
 
-        private T FindById<T>(int id) where T : class, IHasIntegerId, new()
-        {
+        private T FindById<T>(int id) where T : class, IHasIntegerId, new() {
             return Container.Instances<T>().Single(x => x.Id == id);
         }
     }
 
-    public class FixtureLinksUsingTypeName : FixtureLinks
-    {
-        protected override string InvoiceType()
-        {
-            return "NakedObjects.SystemTest.PolymorphicAssociations.InvoiceAsPayableItem";
-        }
+    public class FixtureLinksUsingTypeName : FixtureLinks {
+        protected override string InvoiceType() => "NakedObjects.SystemTest.PolymorphicAssociations.InvoiceAsPayableItem";
 
-        protected override string CustomerType()
-        {
-            return "NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee";
-        }
+        protected override string CustomerType() => "NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee";
     }
 
-    public class FixtureLinksUsingTypeCode : FixtureLinks
-    {
-        protected override string InvoiceType()
-        {
-            return "INV";
-        }
+    public class FixtureLinksUsingTypeCode : FixtureLinks {
+        protected override string InvoiceType() => "INV";
 
-        protected override string CustomerType()
-        {
-            return "CUS";
-        }
+        protected override string CustomerType() => "CUS";
     }
 }

@@ -8,17 +8,12 @@
 using System;
 using System.Globalization;
 using System.Threading;
-
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.SystemTest.Util {
 #pragma warning disable 618
     [TestFixture]
     public class TitleBuilderWithInitialContentTest {
-        private TitleBuilder builder;
-        private CultureInfo culture;
-
         [SetUp]
         public void NewBuilder() {
             culture = Thread.CurrentThread.CurrentCulture;
@@ -31,13 +26,88 @@ namespace NakedObjects.SystemTest.Util {
             Thread.CurrentThread.CurrentCulture = culture;
         }
 
+        private TitleBuilder builder;
+        private CultureInfo culture;
+
         private void AssertTitleIs(string expected) {
             Assert.AreEqual(expected, builder.ToString());
         }
 
         [Test]
-        public void TestNewBuilderContainsUnmodifiedText() {
-            builder = new TitleBuilder("Text");
+        public void Test() {
+            builder.Append("added");
+            AssertTitleIs("Text added");
+        }
+
+        [Test]
+        public void TestAppendAddsNullTitleAttribute() {
+            builder.Append(new ObjectWithNullTitleAttribute());
+            AssertTitleIs("Text");
+        }
+
+        [Test]
+        public void TestAppendAddsTextAndSpace() {
+            builder.Append("added");
+            AssertTitleIs("Text added");
+        }
+
+        [Test]
+        public void TestAppendAddsTitleAttribute() {
+            builder.Append(new ObjectWithTitleAttribute());
+            AssertTitleIs("Text from property");
+        }
+
+        [Test]
+        public void TestAppendAddsTitleAttributeThatIsAReference() {
+            builder.Append(new ObjectWithTitleAttributeThatIsAReference());
+            AssertTitleIs("Text from Title method");
+        }
+
+        [Test]
+        public void TestAppendAddsTitleMethod() {
+            builder.Append(new ObjectWithTitleMethod());
+            AssertTitleIs("Text from Title method");
+        }
+
+        [Test]
+        public void TestAppendAddsToString() {
+            builder.Append(new ObjectWithToString());
+            AssertTitleIs("Text from ToString");
+        }
+
+        [Test]
+        public void TestAppendAddsToStringWithJoiner() {
+            builder.Append("-", new ObjectWithToString());
+            AssertTitleIs("Text- from ToString");
+        }
+
+        [Test]
+        public void TestAppendFormat() {
+            builder.Append(":", new DateTime(2007, 4, 2), "d", null);
+            AssertTitleIs("Text: 04/02/2007");
+        }
+
+        [Test]
+        public void TestAppendFormatWithDefault() {
+            builder.Append(":", null, "d", "no date");
+            AssertTitleIs("Text: no date");
+        }
+
+        [Test]
+        public void TestAppendNoJoiner() {
+            builder.Append(":", null, "d", null);
+            AssertTitleIs("Text");
+        }
+
+        [Test]
+        public void TestAppendNoJoinerNoDefault() {
+            builder.Append(":", null, "d", null);
+            AssertTitleIs("Text");
+        }
+
+        [Test]
+        public void TestAppendNullAddsNoTextAndNoSpace() {
+            builder.Append(null);
             AssertTitleIs("Text");
         }
 
@@ -60,75 +130,15 @@ namespace NakedObjects.SystemTest.Util {
         }
 
         [Test]
-        public void TestAppendAddsTextAndSpace() {
-            builder.Append("added");
-            AssertTitleIs("Text added");
-        }
-
-        [Test]
-        public void TestAppendNullAddsNoTextAndNoSpace() {
-            builder.Append(null);
-            AssertTitleIs("Text");
-        }
-
-        [Test]
-        public void TestAppendAddsToString() {
-            builder.Append(new ObjectWithToString());
-            AssertTitleIs("Text from ToString");
-        }
-
-        [Test]
-        public void TestAppendAddsToStringWithJoiner() {
-            builder.Append("-", new ObjectWithToString());
-            AssertTitleIs("Text- from ToString");
-        }
-
-        [Test]
-        public void TestAppendAddsTitleMethod() {
-            builder.Append(new ObjectWithTitleMethod());
-            AssertTitleIs("Text from Title method");
-        }
-
-        [Test]
-        public void TestAppendAddsTitleAttribute() {
-            builder.Append(new ObjectWithTitleAttribute());
-            AssertTitleIs("Text from property");
-        }
-
-        [Test]
-        public void TestAppendAddsNullTitleAttribute() {
-            builder.Append(new ObjectWithNullTitleAttribute());
-            AssertTitleIs("Text");
-        }
-
-        [Test]
-        public void TestAppendAddsTitleAttributeThatIsAReference() {
-            builder.Append(new ObjectWithTitleAttributeThatIsAReference());
-            AssertTitleIs("Text from Title method");
-        }
-
-        [Test]
         public void TestConcatNoJoiner() {
             builder.Concat(":", null, "d", null);
             AssertTitleIs("Text");
         }
 
         [Test]
-        public void TestAppendNoJoiner() {
-            builder.Append(":", null, "d", null);
+        public void TestNewBuilderContainsUnmodifiedText() {
+            builder = new TitleBuilder("Text");
             AssertTitleIs("Text");
-        }
-
-        [Test]
-        public void TestAppendNoJoinerNoDefault() {
-            builder.Append(":", null, "d", null);
-            AssertTitleIs("Text");
-        }
-
-        [Test]
-        public void TestAppendFormatWithDefault() {
-            builder.Append(":", null, "d", "no date");
-            AssertTitleIs("Text: no date");
         }
 
         [Test]
@@ -142,29 +152,14 @@ namespace NakedObjects.SystemTest.Util {
 
         [Test]
         // [ExpectedException(typeof(ArgumentException))]
-        public void TestTitleTruncateLenghtChecked()
-        {
-            try
-            {
+        public void TestTitleTruncateLenghtChecked() {
+            try {
                 builder.Truncate(0);
                 Assert.Fail(); // expect exception
             }
-            catch (ArgumentException)
-            {
+            catch (ArgumentException) {
                 // expected
             }
-        }
-
-        [Test]
-        public void TestAppendFormat() {
-            builder.Append(":", new DateTime(2007, 4, 2), "d", null);
-            AssertTitleIs("Text: 04/02/2007");
-        }
-
-        [Test]
-        public void Test() {
-            builder.Append("added");
-            AssertTitleIs("Text added");
         }
     }
 #pragma warning restore 618

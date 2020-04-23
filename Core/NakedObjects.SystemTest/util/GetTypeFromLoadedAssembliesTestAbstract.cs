@@ -16,9 +16,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
 using System.Threading.Tasks;
-using Assert = NUnit.Framework.Assert;
-
-
+using NUnit.Framework;
 
 namespace NakedObjects.SystemTest.Util {
     public class GetTypeFromLoadedAssembliesTestAbstract {

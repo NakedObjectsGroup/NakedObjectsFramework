@@ -19,33 +19,21 @@ using NakedObjects.Xat;
 using NUnit.Framework;
 
 namespace NakedObjects.SystemTest {
-
     #region Nested type: NullMenuFactory
 
-    public class NullMenuFactory : IMenuFactory
-    {
+    public class NullMenuFactory : IMenuFactory {
+        public IMenu NewMenu(string name) => throw new NotImplementedException();
+
         #region IMenuFactory Members
 
-        public IMenu NewMenu<T>(bool addAllActions, string name = null)
-        {
-            throw new NotImplementedException();
-        }
+        public IMenu NewMenu<T>(bool addAllActions, string name = null) => throw new NotImplementedException();
 
-        public IMenu NewMenu(Type type, bool addAllActions = false, string name = null)
-        {
-            throw new NotImplementedException();
-        }
+        public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) => throw new NotImplementedException();
 
         #endregion
-
-        public IMenu NewMenu(string name)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     #endregion
-
 
     public static class Constants {
         public static string AppveyorServer => @"(local)\SQL2017";
@@ -55,7 +43,6 @@ namespace NakedObjects.SystemTest {
 
     public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase
         where TContext : DbContext {
-
         protected override Type[] Types {
             get {
                 return new[] {
@@ -94,8 +81,7 @@ namespace NakedObjects.SystemTest {
 
         protected ITestObject FindById(string simpleRepositoryName, int id) => GetTestService(simpleRepositoryName).GetAction("Find By Key").InvokeReturnObject(id);
 
-        protected static void IsInstanceOfType(object obj, Type typ)
-        {
+        protected static void IsInstanceOfType(object obj, Type typ) {
             Assert.IsTrue(typ.IsInstanceOfType(obj), $"{obj.GetType()} isn't a {typ}");
         }
     }

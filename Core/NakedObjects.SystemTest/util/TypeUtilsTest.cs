@@ -5,13 +5,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
 using NakedObjects.Util;
 using NUnit.Framework;
 
 namespace NakedObjects.SystemTest.Util {
     [TestFixture]
     public class TypeUtilsTest {
+        public class Match {
+            public string Prop1 { get; set; }
+            public int Prop2 { get; set; }
+            public Match Prop3 { get; set; }
+            public int? Prop4 { get; set; }
+        }
+
         [Test]
         public void TestMatch() {
             var m = new Match();
@@ -52,16 +58,5 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(oo.IsPropertyMatch<Match, int>("", mm => mm.Prop2));
             Assert.IsFalse(oo.IsPropertyMatch<Match, int>(null, mm => mm.Prop2));
         }
-
-        #region Nested type: Match
-
-        public class Match {
-            public string Prop1 { get; set; }
-            public int Prop2 { get; set; }
-            public Match Prop3 { get; set; }
-            public int? Prop4 { get; set; }
-        }
-
-        #endregion
     }
 }

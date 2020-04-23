@@ -9,182 +9,59 @@ using System;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
 
-namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper
-{
+namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper {
     [TestFixture]
-    public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinderWithCompoundKeysAbstract
-    {
-        protected override string[] Namespaces
-        {
-            get { return new[] { typeof(Payment).Namespace }; }
+    public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinderWithCompoundKeysAbstract {
+        [SetUp]
+        public void SetUp() {
+            Initialize();
         }
 
-        protected override Type[] Types => new Type[] { typeof(Payment), typeof(CustomerOne), typeof(CustomerTwo), typeof(CustomerThree), typeof(CustomerFour), typeof(Supplier), typeof(Employee), };
+        [TearDown]
+        public void TearDown() {
+            CleanUp();
+        }
 
-        protected override Type[] Services
-        {
-            get
-            {
-                return (new Type[] {
-                    typeof ( ObjectFinderWithTypeCodeMapper),
-                    typeof ( SimpleRepository<Payment>),
-                    typeof (SimpleRepository<CustomerOne>),
-                    typeof (SimpleRepository<CustomerTwo>),
+        protected override string[] Namespaces {
+            get { return new[] {typeof(Payment).Namespace}; }
+        }
+
+        protected override Type[] Types => new[] {typeof(Payment), typeof(CustomerOne), typeof(CustomerTwo), typeof(CustomerThree), typeof(CustomerFour), typeof(Supplier), typeof(Employee)};
+
+        protected override Type[] Services {
+            get {
+                return new[] {
+                    typeof(ObjectFinderWithTypeCodeMapper),
+                    typeof(SimpleRepository<Payment>),
+                    typeof(SimpleRepository<CustomerOne>),
+                    typeof(SimpleRepository<CustomerTwo>),
                     typeof(SimpleRepository<CustomerThree>),
                     typeof(SimpleRepository<CustomerFour>),
                     typeof(SimpleRepository<Supplier>),
                     typeof(SimpleRepository<Employee>),
                     typeof(SimpleTypeCodeMapper)
-                });
+                };
             }
         }
 
         [OneTimeSetUp]
-        public  void ClassInitialize( )
-        {
+        public void ClassInitialize() {
             PaymentContext.Delete();
             var context = Activator.CreateInstance<PaymentContext>();
 
             context.Database.Create();
-            ObjectFinderCompoundKeys.DatabaseInitializer.Seed(context);
+            DatabaseInitializer.Seed(context);
             InitializeNakedObjectsFramework(this);
         }
 
         [OneTimeTearDown]
-        public  void TearDownTest()
-        {
+        public void TearDownTest() {
             CleanupNakedObjectsFramework(this);
         }
 
-
-        [SetUp]
-        public void SetUp()
-        {
-            base.Initialize();
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            base.CleanUp();
-        }
-
-
         [Test]
-        public void SetAssociatedObject()
-        {
-            payee1.SetObject(customer2a);
-            key1.AssertValueIsEqual("CU2|1|1001");
-
-            payee1.SetObject(customer2b);
-            Assert.AreEqual(payee1.ContentAsObject, customer2b);
-
-            key1.AssertValueIsEqual("CU2|2|1002");
-        }
-
-        [Test]
-        public void WorksWithASingleIntegerKey()
-        {
-            payee1.SetObject(customer1);
-            key1.AssertValueIsEqual("CU1|1");
-            payee1.ClearObject();
-
-            key1.SetValue("CU1|1");
-            payee1.AssertIsNotEmpty();
-            payee1.AssertObjectIsEqual(customer1);
-        }
-
-        [Test]
-        public void WorksWithTripleIntegerKey()
-        {
-            payee1.SetObject(customer3);
-            key1.AssertValueIsEqual("CU3|1|1001|2001");
-            payee1.ClearObject();
-
-            key1.SetValue("CU3|1|1001|2001");
-            payee1.AssertIsNotEmpty();
-            payee1.AssertObjectIsEqual(customer3);
-        }
-
-        [Test]
-        public void FailsIfTypeNameIsEmpty()
-        {
-            key1.SetValue("|1|1001|2001");
-            try
-            {
-                payee1.AssertIsNotEmpty();
-                Assert.Fail("Exception should have been thrown");
-            }
-            catch (Exception ex)
-            {
-                Assert.AreEqual("Compound key: |1|1001|2001 does not contain an object type", ex.Message);
-            }
-        }
-
-        [Test]
-        public void FailsIfCodeNotRecognised()
-        {
-            key1.SetValue("EMP|1");
-            try
-            {
-                payee1.AssertIsNotEmpty();
-                Assert.Fail("Exception should have been thrown");
-            }
-            catch (Exception ex)
-            {
-                Assert.AreEqual("Code not recognised: EMP", ex.Message);
-            }
-        }
-
-        [Test]
-        public void FailsIfTypeNotRecognisedByEncodingService()
-        {
-            try
-            {
-                payee1.SetObject(emp1);
-                Assert.Fail("Exception should have been thrown");
-            }
-            catch (Exception ex)
-            {
-                Assert.AreEqual("Type not recognised: NakedObjects.SystemTest.ObjectFinderCompoundKeys.Employee", ex.Message);
-            }
-        }
-
-        [Test]
-        public void FailsIfTooFewKeysSupplied()
-        {
-            key1.SetValue("CU3|1|1001");
-            try
-            {
-                payee1.AssertIsNotEmpty();
-                Assert.Fail("Exception should have been thrown");
-            }
-            catch (Exception ex)
-            {
-                Assert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree", ex.Message);
-            }
-        }
-
-        [Test]
-        public void FailsIfTooManyKeysSupplied()
-        {
-            key1.SetValue("CU2|1|1001|2001");
-            try
-            {
-                payee1.AssertIsNotEmpty();
-                Assert.Fail("Exception should have been thrown");
-            }
-            catch (Exception ex)
-            {
-                Assert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo", ex.Message);
-            }
-        }
-
-        [Test]
-        public void ChangeAssociatedObjectType()
-        {
+        public void ChangeAssociatedObjectType() {
             payee1.SetObject(customer2a);
             key1.AssertValueIsEqual("CU2|1|1001");
             payee1.SetObject(supplier1);
@@ -194,16 +71,73 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
         }
 
         [Test]
-        public void ClearAssociatedObject()
-        {
+        public void ClearAssociatedObject() {
             payee1.SetObject(customer2a);
             payee1.ClearObject();
             key1.AssertIsEmpty();
         }
 
         [Test]
-        public void GetAssociatedObject()
-        {
+        public void FailsIfCodeNotRecognised() {
+            key1.SetValue("EMP|1");
+            try {
+                payee1.AssertIsNotEmpty();
+                Assert.Fail("Exception should have been thrown");
+            }
+            catch (Exception ex) {
+                Assert.AreEqual("Code not recognised: EMP", ex.Message);
+            }
+        }
+
+        [Test]
+        public void FailsIfTooFewKeysSupplied() {
+            key1.SetValue("CU3|1|1001");
+            try {
+                payee1.AssertIsNotEmpty();
+                Assert.Fail("Exception should have been thrown");
+            }
+            catch (Exception ex) {
+                Assert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerThree", ex.Message);
+            }
+        }
+
+        [Test]
+        public void FailsIfTooManyKeysSupplied() {
+            key1.SetValue("CU2|1|1001|2001");
+            try {
+                payee1.AssertIsNotEmpty();
+                Assert.Fail("Exception should have been thrown");
+            }
+            catch (Exception ex) {
+                Assert.AreEqual("Number of keys provided does not match the number of keys specified for type: NakedObjects.SystemTest.ObjectFinderCompoundKeys.CustomerTwo", ex.Message);
+            }
+        }
+
+        [Test]
+        public void FailsIfTypeNameIsEmpty() {
+            key1.SetValue("|1|1001|2001");
+            try {
+                payee1.AssertIsNotEmpty();
+                Assert.Fail("Exception should have been thrown");
+            }
+            catch (Exception ex) {
+                Assert.AreEqual("Compound key: |1|1001|2001 does not contain an object type", ex.Message);
+            }
+        }
+
+        [Test]
+        public void FailsIfTypeNotRecognisedByEncodingService() {
+            try {
+                payee1.SetObject(emp1);
+                Assert.Fail("Exception should have been thrown");
+            }
+            catch (Exception ex) {
+                Assert.AreEqual("Type not recognised: NakedObjects.SystemTest.ObjectFinderCompoundKeys.Employee", ex.Message);
+            }
+        }
+
+        [Test]
+        public void GetAssociatedObject() {
             key1.SetValue("CU2|1|1001");
             payee1.AssertIsNotEmpty();
             payee1.ContentAsObject.GetPropertyByName("Id").AssertValueIsEqual("1");
@@ -217,34 +151,70 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
 
         [Test]
         ////[Ignore("investigate")]
-
-        public void NoAssociatedObject()
-        {
+        public void NoAssociatedObject() {
             key1.AssertIsEmpty();
+        }
+
+        [Test]
+        public void SetAssociatedObject() {
+            payee1.SetObject(customer2a);
+            key1.AssertValueIsEqual("CU2|1|1001");
+
+            payee1.SetObject(customer2b);
+            Assert.AreEqual(payee1.ContentAsObject, customer2b);
+
+            key1.AssertValueIsEqual("CU2|2|1002");
+        }
+
+        [Test]
+        public void WorksWithASingleIntegerKey() {
+            payee1.SetObject(customer1);
+            key1.AssertValueIsEqual("CU1|1");
+            payee1.ClearObject();
+
+            key1.SetValue("CU1|1");
+            payee1.AssertIsNotEmpty();
+            payee1.AssertObjectIsEqual(customer1);
+        }
+
+        [Test]
+        public void WorksWithTripleIntegerKey() {
+            payee1.SetObject(customer3);
+            key1.AssertValueIsEqual("CU3|1|1001|2001");
+            payee1.ClearObject();
+
+            key1.SetValue("CU3|1|1001|2001");
+            payee1.AssertIsNotEmpty();
+            payee1.AssertObjectIsEqual(customer3);
         }
     }
 
     #region Classes used by test
 
-    public class SimpleTypeCodeMapper : ITypeCodeMapper
-    {
+    public class SimpleTypeCodeMapper : ITypeCodeMapper {
         #region ITypeCodeMapper Members
 
-        public Type TypeFromCode(string code)
-        {
+        public Type TypeFromCode(string code) {
             if (code == "CU1") { return typeof(CustomerOne); }
+
             if (code == "CU2") { return typeof(CustomerTwo); }
+
             if (code == "CU3") { return typeof(CustomerThree); }
+
             if (code == "SUP") { return typeof(Supplier); }
+
             throw new DomainException("Code not recognised: " + code);
         }
 
-        public string CodeFromType(Type type)
-        {
+        public string CodeFromType(Type type) {
             if (type == typeof(CustomerOne)) { return "CU1"; }
+
             if (type == typeof(CustomerTwo)) { return "CU2"; }
+
             if (type == typeof(CustomerThree)) { return "CU3"; }
+
             if (type == typeof(Supplier)) { return "SUP"; }
+
             throw new DomainException("Type not recognised: " + type);
         }
 

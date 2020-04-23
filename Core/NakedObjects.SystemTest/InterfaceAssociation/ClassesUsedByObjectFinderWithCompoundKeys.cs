@@ -11,18 +11,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using NakedObjects.Services;
 
-namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
-{
-
+namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
     #region Classes used by test
 
-    public class PaymentContext : DbContext
-    {
-        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
-
-        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
-
+    public class PaymentContext : DbContext {
         public const string DatabaseName = "ObjectFinderWithCompoundKeys";
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
         public PaymentContext() : base(Cs) { }
 
         public DbSet<Payment> Payments { get; set; }
@@ -32,31 +26,30 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
         public DbSet<CustomerFour> CustomerFours { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Employee> Employees { get; set; }
+
+        public static void Delete() => Database.Delete(Cs);
         //}
         //    Database.SetInitializer(new DatabaseInitializer());
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder) {
     }
 
-    public class DatabaseInitializer
-    {
-        public static void Seed(PaymentContext context)
-        {
+    public class DatabaseInitializer {
+        public static void Seed(PaymentContext context) {
             context.Payments.Add(new Payment());
-            context.CustomerOnes.Add(new CustomerOne() { Id = 1 });
-            context.CustomerTwos.Add(new CustomerTwo() { Id = 1, Id2 = "1001" });
-            context.CustomerTwos.Add(new CustomerTwo() { Id = 2, Id2 = "1002" });
-            context.CustomerThrees.Add(new CustomerThree() { Id = 1, Id2 = "1001", Number = 2001 });
-            context.CustomerFours.Add(new CustomerFour() { Id = 1, Id2 = new DateTime(2015, 1, 16) });
-            context.CustomerFours.Add(new CustomerFour() { Id = 1, Id2 = new DateTime(2015, 1, 17) });
-            context.Suppliers.Add(new Supplier() { Id = 1, Id2 = 2001 });
-            context.Employees.Add(new Employee() { Id = 1, Id2 = "foo" });
+            context.CustomerOnes.Add(new CustomerOne {Id = 1});
+            context.CustomerTwos.Add(new CustomerTwo {Id = 1, Id2 = "1001"});
+            context.CustomerTwos.Add(new CustomerTwo {Id = 2, Id2 = "1002"});
+            context.CustomerThrees.Add(new CustomerThree {Id = 1, Id2 = "1001", Number = 2001});
+            context.CustomerFours.Add(new CustomerFour {Id = 1, Id2 = new DateTime(2015, 1, 16)});
+            context.CustomerFours.Add(new CustomerFour {Id = 1, Id2 = new DateTime(2015, 1, 17)});
+            context.Suppliers.Add(new Supplier {Id = 1, Id2 = 2001});
+            context.Employees.Add(new Employee {Id = 1, Id2 = "foo"});
             context.SaveChanges();
         }
     }
 
-    public class Payment
-    {
+    public class Payment {
         public IDomainObjectContainer Container { protected get; set; }
         public virtual int Id { get; set; }
 
@@ -68,26 +61,22 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
         [Optionally]
         public virtual string PayeeCompoundKey { get; set; }
 
-        [NotPersisted, Optionally]
-        public IPayee Payee
-        {
-            get
-            {
-                if (myPayee == null & !String.IsNullOrEmpty(PayeeCompoundKey))
-                {
+        [NotPersisted]
+        [Optionally]
+        public IPayee Payee {
+            get {
+                if ((myPayee == null) & !string.IsNullOrEmpty(PayeeCompoundKey)) {
                     myPayee = ObjectFinder.FindObject<IPayee>(PayeeCompoundKey);
                 }
+
                 return myPayee;
             }
-            set
-            {
+            set {
                 myPayee = value;
-                if (value == null)
-                {
+                if (value == null) {
                     PayeeCompoundKey = null;
                 }
-                else
-                {
+                else {
                     PayeeCompoundKey = ObjectFinder.GetCompoundKey(value);
                 }
             }
@@ -98,13 +87,11 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
 
     public interface IPayee { }
 
-    public class CustomerOne : IPayee
-    {
+    public class CustomerOne : IPayee {
         public virtual int Id { get; set; }
     }
 
-    public class CustomerTwo : IPayee
-    {
+    public class CustomerTwo : IPayee {
         [Key]
         [Column(Order = 1)]
         public virtual int Id { get; set; }
@@ -114,8 +101,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
         public virtual string Id2 { get; set; }
     }
 
-    public class CustomerThree : IPayee
-    {
+    public class CustomerThree : IPayee {
         [Key]
         [Column(Order = 1)]
         public virtual int Id { get; set; }
@@ -129,8 +115,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
         public virtual int Number { get; set; }
     }
 
-    public class CustomerFour : IPayee
-    {
+    public class CustomerFour : IPayee {
         [Key]
         [Column(Order = 1)]
         public virtual int Id { get; set; }
@@ -140,8 +125,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
         public virtual DateTime Id2 { get; set; }
     }
 
-    public class Supplier : IPayee
-    {
+    public class Supplier : IPayee {
         [Key]
         [Column(Order = 1)]
         public virtual int Id { get; set; }
@@ -151,8 +135,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
         public virtual short Id2 { get; set; }
     }
 
-    public class Employee : IPayee
-    {
+    public class Employee : IPayee {
         [Key]
         [Column(Order = 1)]
         public virtual int Id { get; set; }

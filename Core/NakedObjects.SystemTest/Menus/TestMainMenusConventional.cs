@@ -6,54 +6,81 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity;
 using System.Linq;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Xat;
-using TestObjectMenu;
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
+using TestObjectMenu;
 
-namespace NakedObjects.SystemTest.Menus.Service2
-{
+namespace NakedObjects.SystemTest.Menus.Service2 {
     [TestFixture]
-    public class TestMainMenusConventional : AbstractSystemTest<MenusDbContext>
-    {
-        [Test]
-        public virtual void TestMainMenuCount()
-        {
-            AssertMainMenuCountIs(7);
+    public class TestMainMenusConventional : AbstractSystemTest<MenusDbContext> {
+        [SetUp]
+        public void SetUp() {
+            StartTest();
+        }
+
+        [TearDown]
+        public void TearDown() { }
+
+        [OneTimeSetUp]
+        public void ClassInitialize() {
+            MenusDbContext.Delete();
+            var context = Activator.CreateInstance<MenusDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void ClassCleanup() {
+            CleanupNakedObjectsFramework(this);
+        }
+
+        protected override IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
+
+        protected override Type[] Services {
+            get {
+                return new[] {
+                    typeof(FooService),
+                    typeof(ServiceWithSubMenus),
+                    typeof(BarService),
+                    typeof(QuxService)
+                };
+            }
+        }
+
+        protected override string[] Namespaces => Types.Select(t => t.Namespace).Distinct().ToArray();
+
+        //protected override void RegisterTypes(IUnityContainer container)
+        //{
+        //    base.RegisterTypes(container);
+        //    container.RegisterType<IMenuFactory, MenuFactory>();
+        //    container.RegisterInstance<IReflectorConfiguration>(MyReflectorConfig(), (new ContainerControlledLifetimeManager()));
+        //}
+
+        private IReflectorConfiguration MyReflectorConfig() {
+            return new ReflectorConfiguration(
+                Types ?? new Type[] { },
+                Services,
+                Types.Select(t => t.Namespace).Distinct().ToArray(),
+                LocalMainMenus.MainMenus);
         }
 
         [Test]
-        public virtual void TestAllMainMenus()
-        {
-            var menus = AllMainMenus();
-            Assert.AreEqual(menus.Count(), menus.OfType<ITestMenu>().Count());
+        public virtual void TestActionVisibility() {
+            var q = GetMainMenu("Qs");
+            q.AssertItemCountIs(4);
+
+            q.GetAction("Qux Action0").AssertIsVisible();
+            q.GetAction("Qux Action3").AssertIsInvisible();
         }
 
         [Test]
-        public void TestGetMainMenu()
-        {
-            GetMainMenu("Foo Service").AssertNameEquals("Foo Service");
-        }
-
-        [Test]
-        public virtual void TestMainMenuNames()
-        {
-            var menus = AllMainMenus();
-
-            menus[0].AssertNameEquals("Foo Service");
-            menus[1].AssertNameEquals("Bars"); //Picks up Named attribute on service
-            menus[2].AssertNameEquals("Qs"); //Named attribute overridden in menu construction
-        }
-
-        [Test]
-        public virtual void TestAddAllActions()
-        {
+        public virtual void TestAddAllActions() {
             var foo = GetMainMenu("Foo Service");
             foo.AssertItemCountIs(3);
             Assert.AreEqual(3, foo.AllItems().OfType<ITestMenuItem>().Count());
@@ -64,8 +91,18 @@ namespace NakedObjects.SystemTest.Menus.Service2
         }
 
         [Test]
-        public virtual void TestAddingActionsToAMenu()
-        {
+        public virtual void TestAddAllActionsRecognisesMemberOrder() {
+            var bars = GetMainMenu("Bars");
+            bars.AssertItemCountIs(4);
+
+            bars.AllItems()[0].AssertIsAction().AssertNameEquals("Bar Action1");
+            bars.AllItems()[1].AssertIsAction().AssertNameEquals("Bar Action0");
+            bars.AllItems()[2].AssertIsAction().AssertNameEquals("Bar Action2");
+            bars.AllItems()[3].AssertIsAction().AssertNameEquals("Bar Action3");
+        }
+
+        [Test]
+        public virtual void TestAddingActionsToAMenu() {
             var q = GetMainMenu("Qs");
             q.AssertItemCountIs(4);
 
@@ -76,8 +113,7 @@ namespace NakedObjects.SystemTest.Menus.Service2
         }
 
         [Test]
-        public virtual void TestAddingSubMenuToAMenu()
-        {
+        public virtual void TestAddingSubMenuToAMenu() {
             var subs = GetMainMenu("Subs");
             subs.AssertItemCountIs(2);
             var sub1 = subs.AllItems()[0].AssertIsSubMenu().AssertNameEquals("Sub1").AsSubMenu();
@@ -92,20 +128,18 @@ namespace NakedObjects.SystemTest.Menus.Service2
         }
 
         [Test]
-        public virtual void TestAddAllActionsRecognisesMemberOrder()
-        {
-            var bars = GetMainMenu("Bars");
-            bars.AssertItemCountIs(4);
-
-            bars.AllItems()[0].AssertIsAction().AssertNameEquals("Bar Action1");
-            bars.AllItems()[1].AssertIsAction().AssertNameEquals("Bar Action0");
-            bars.AllItems()[2].AssertIsAction().AssertNameEquals("Bar Action2");
-            bars.AllItems()[3].AssertIsAction().AssertNameEquals("Bar Action3");
+        public virtual void TestAllMainMenus() {
+            var menus = AllMainMenus();
+            Assert.AreEqual(menus.Count(), menus.OfType<ITestMenu>().Count());
         }
 
         [Test]
-        public void TestHybridMenu()
-        {
+        public void TestGetMainMenu() {
+            GetMainMenu("Foo Service").AssertNameEquals("Foo Service");
+        }
+
+        [Test]
+        public void TestHybridMenu() {
             var hyb = GetMainMenu("Hybrid");
             hyb.AssertItemCountIs(6);
 
@@ -118,104 +152,37 @@ namespace NakedObjects.SystemTest.Menus.Service2
         }
 
         [Test]
-        public virtual void TestMenuWithNoActions()
-        {
+        public virtual void TestMainMenuCount() {
+            AssertMainMenuCountIs(7);
+        }
+
+        [Test]
+        public virtual void TestMainMenuNames() {
+            var menus = AllMainMenus();
+
+            menus[0].AssertNameEquals("Foo Service");
+            menus[1].AssertNameEquals("Bars"); //Picks up Named attribute on service
+            menus[2].AssertNameEquals("Qs"); //Named attribute overridden in menu construction
+        }
+
+        [Test]
+        public virtual void TestMenuWithNoActions() {
             var e = GetMainMenu("Empty");
             e.AssertItemCountIs(0);
         }
 
         [Test]
-        public virtual void TestSubMenuWithNoActions()
-        {
+        public virtual void TestSubMenuWithNoActions() {
             var e = GetMainMenu("Empty2");
             e.AssertItemCountIs(1);
             e.AllItems()[0].AssertIsSubMenu().AssertNameEquals("Sub").AsSubMenu().AssertItemCountIs(0);
         }
-
-        [Test]
-        public virtual void TestActionVisibility()
-        {
-            var q = GetMainMenu("Qs");
-            q.AssertItemCountIs(4);
-
-            q.GetAction("Qux Action0").AssertIsVisible();
-            q.GetAction("Qux Action3").AssertIsInvisible();
-        }
-
-        #region Setup/Teardown
-
-        [OneTimeSetUp]
-        public  void ClassInitialize()
-        {
-            MenusDbContext.Delete();
-            var context = Activator.CreateInstance<MenusDbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-
-        }
-
-        [OneTimeTearDown]
-        public  void ClassCleanup()
-        {
-            CleanupNakedObjectsFramework(this);
-        }
-
-        [SetUp()]
-        public void SetUp()
-        {
-            StartTest();
-        }
-
-        [TearDown()]
-        public void TearDown() { }
-
-        #endregion
-
-        #region System Config
-
-        protected override IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
-
-        protected override Type[] Services
-        {
-            get
-            {
-                return new[] {
-                    typeof(FooService),
-                    typeof (ServiceWithSubMenus),
-                    typeof (BarService),
-                    typeof (QuxService)
-                };
-            }
-        }
-
-        protected override string[] Namespaces => Types.Select(t => t.Namespace).Distinct().ToArray();
-
-        //protected override void RegisterTypes(IUnityContainer container)
-        //{
-        //    base.RegisterTypes(container);
-        //    container.RegisterType<IMenuFactory, MenuFactory>();
-        //    container.RegisterInstance<IReflectorConfiguration>(MyReflectorConfig(), (new ContainerControlledLifetimeManager()));
-        //}
-
-        private IReflectorConfiguration MyReflectorConfig()
-        {
-            return new ReflectorConfiguration(
-                this.Types ?? new Type[] { },
-                this.Services,
-                Types.Select(t => t.Namespace).Distinct().ToArray(),
-                LocalMainMenus.MainMenus);
-        }
-
-        #endregion
     }
 
     #region Classes used in test
 
-    public class LocalMainMenus
-    {
-        public static IMenu[] MainMenus(IMenuFactory factory)
-        {
+    public class LocalMainMenus {
+        public static IMenu[] MainMenus(IMenuFactory factory) {
             var foos = factory.NewMenu<FooService>(true);
             var bars = factory.NewMenu<BarService>(true);
 
@@ -224,7 +191,7 @@ namespace NakedObjects.SystemTest.Menus.Service2
             q.AddAction("QuxAction3");
             q.AddRemainingNativeActions();
 
-            var subs = factory.NewMenu<ServiceWithSubMenus>(false);
+            var subs = factory.NewMenu<ServiceWithSubMenus>();
             var sub1 = subs.CreateSubMenu("Sub1");
             sub1.AddAction("Action1");
             sub1.AddAction("Action3");
@@ -245,12 +212,11 @@ namespace NakedObjects.SystemTest.Menus.Service2
             var empty2 = factory.NewMenu<object>(false, "Empty2");
             empty2.CreateSubMenu("Sub");
 
-            return new[] { foos, bars, q, subs, hyb, empty, empty2 };
+            return new[] {foos, bars, q, subs, hyb, empty, empty2};
         }
     }
 
-    public class FooService
-    {
+    public class FooService {
         public void FooAction0() { }
 
         public void FooAction1() { }
@@ -259,8 +225,7 @@ namespace NakedObjects.SystemTest.Menus.Service2
     }
 
     [Named("Quxes")]
-    public class QuxService
-    {
+    public class QuxService {
         public void QuxAction0() { }
 
         public void QuxAction1() { }
@@ -272,8 +237,7 @@ namespace NakedObjects.SystemTest.Menus.Service2
     }
 
     [Named("Subs")]
-    public class ServiceWithSubMenus
-    {
+    public class ServiceWithSubMenus {
         public void Action0() { }
 
         public void Action1() { }
@@ -284,8 +248,7 @@ namespace NakedObjects.SystemTest.Menus.Service2
     }
 
     [Named("Bars")]
-    public class BarService
-    {
+    public class BarService {
         [MemberOrder(10)]
         public void BarAction0() { }
 

@@ -11,42 +11,56 @@ using SystemTest.ContributedActions;
 using NakedObjects;
 using NakedObjects.Menu;
 using NakedObjects.Services;
+using NakedObjects.SystemTest;
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
 
-namespace NakedObjects.SystemTest.Menus
-{
+namespace NakedObjects.SystemTest.Menus {
     //This class is not testing menus, nor TestMenus, but simply backwards compatibility
     //of GetAction, including with specified subMenu.
     [TestFixture]
-    public class TestAccessingMenuActionsViaGetAction : AbstractSystemTest<CADbContext>
-    {
+    public class TestAccessingMenuActionsViaGetAction : AbstractSystemTest<CADbContext> {
+        [SetUp]
+        public void SetUp() {
+            StartTest();
+        }
+
+        [OneTimeSetUp]
+        public void ClassInitialize() {
+            CADbContext.Delete();
+            var context = Activator.CreateInstance<CADbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void ClassCleanup() {
+            CleanupNakedObjectsFramework(this);
+        }
+
+        protected override string[] Namespaces {
+            get { return new[] {typeof(Foo).Namespace}; }
+        }
+
+        protected override Type[] Services {
+            get {
+                return new[] {
+                    typeof(SimpleRepository<Foo>),
+                    typeof(SimpleRepository<Foo2>),
+                    typeof(SimpleRepository<Bar>),
+                    typeof(ContributingService)
+                };
+            }
+        }
+
         [Test]
-        public void ContributedActionToObjectWithDefaultMenu()
-        {
+        public void ContributedActionToObjectWithDefaultMenu() {
             var foo = NewTestObject<Foo>();
             Assert.IsNotNull(foo.GetAction("Action1"));
         }
 
         [Test]
-        public void ContributedActionToSubMenuObjectWithDefaultMenu()
-        {
-            var foo = NewTestObject<Foo>();
-            Assert.IsNotNull(foo.GetAction("Action2", "Sub"));
-            Assert.IsNotNull(foo.GetAction("Action2")); //Note that you can also access the action directly
-            try
-            {
-                foo.GetAction("Action1", "Sub");
-            }
-            catch (Exception e)
-            {
-                Assert.AreEqual("Assert.IsNotNull failed. No menu item with name: Action1", e.Message);
-            }
-        }
-
-        [Test]
-        public void ContributedActionToObjectWithExplicitMenu()
-        {
+        public void ContributedActionToObjectWithExplicitMenu() {
             var bar = NewTestObject<Bar>();
             Assert.IsNotNull(bar.GetAction("Action3"));
             Assert.IsNotNull(bar.GetAction("Action4"));
@@ -55,75 +69,34 @@ namespace NakedObjects.SystemTest.Menus
             Assert.IsNotNull(bar.GetAction("Action5", "Sub2"));
         }
 
-        #region Setup/Teardown 
-
-        [OneTimeSetUp]
-        public  void ClassInitialize()
-        {
-            CADbContext.Delete();
-            var context = Activator.CreateInstance<CADbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-
-        }
-
-        [OneTimeTearDown]
-        public  void ClassCleanup()
-        {
-            CleanupNakedObjectsFramework(this);
-        }
-
-        [SetUp()]
-        public void SetUp()
-        {
-            StartTest();
-        }
-
-        #endregion
-
-        #region Configuration
-
-        protected override string[] Namespaces
-        {
-            get { return new[] { typeof(Foo).Namespace }; }
-        }
-
-        protected override Type[] Services
-        {
-            get
-            {
-                return new[] {
-                    typeof (SimpleRepository<Foo>),
-                    typeof (SimpleRepository<Foo2>),
-                    typeof (SimpleRepository<Bar>),
-                    typeof (ContributingService)
-                };
+        [Test]
+        public void ContributedActionToSubMenuObjectWithDefaultMenu() {
+            var foo = NewTestObject<Foo>();
+            Assert.IsNotNull(foo.GetAction("Action2", "Sub"));
+            Assert.IsNotNull(foo.GetAction("Action2")); //Note that you can also access the action directly
+            try {
+                foo.GetAction("Action1", "Sub");
+            }
+            catch (Exception e) {
+                Assert.AreEqual("Assert.IsNotNull failed. No menu item with name: Action1", e.Message);
             }
         }
-
-        #endregion
     }
 }
 
-namespace SystemTest.ContributedActions
-{
-    public class CADbContext : DbContext
-    {
-        private static readonly string Cs = @$"Data Source={NakedObjects.SystemTest.Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
-
-        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
-
-
+namespace SystemTest.ContributedActions {
+    public class CADbContext : DbContext {
         public const string DatabaseName = "Tests";
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
         public CADbContext() : base(Cs) { }
 
         public DbSet<Foo> Foos { get; set; }
         public DbSet<Bar> Bars { get; set; }
+
+        public static void Delete() => Database.Delete(Cs);
     }
 
-    public class Foo
-    {
+    public class Foo {
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
@@ -132,20 +105,17 @@ namespace SystemTest.ContributedActions
 
     public class Foo2 : Foo { }
 
-    public class Bar
-    {
+    public class Bar {
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
-        public static void Menu(IMenu menu)
-        {
+        public static void Menu(IMenu menu) {
             menu.CreateSubMenu("Sub1");
             menu.AddContributedActions();
         }
     }
 
-    public class ContributingService
-    {
+    public class ContributingService {
         public void Action1(string str, [ContributedAction] Foo foo) { }
 
         public void Action2(string str, [ContributedAction("Sub")] Foo foo) { }

@@ -5,21 +5,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-namespace NakedObjects.SystemTest.PolymorphicAssociations
-{
-    public class FixtureEntities
-    {
+namespace NakedObjects.SystemTest.PolymorphicAssociations {
+    public class FixtureEntities {
         #region Injected Services
 
         public IDomainObjectContainer Container { set; protected get; }
 
         #endregion
 
-        public void Install()
-        {
+        public void Install() {
             //Create Payments 1 to 11
-            for (int i = 1; i <= 11; i++)
-            {
+            for (var i = 1; i <= 11; i++) {
                 NewPersisted<PolymorphicPayment>();
             }
 
@@ -31,8 +27,7 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations
             NewPersisted<InvoiceAsPayableItem>();
         }
 
-        private T NewPersisted<T>() where T : class, new()
-        {
+        private T NewPersisted<T>() where T : class, new() {
             var t = Container.NewTransientInstance<T>();
             Container.Persist(ref t);
             return t;

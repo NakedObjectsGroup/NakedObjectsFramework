@@ -6,108 +6,37 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.PolymorphicNavigator
-{
+namespace NakedObjects.SystemTest.PolymorphicNavigator {
     [TestFixture]
-    public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract
-    {
-        protected override string[] Namespaces
-        {
-            get { return new[] { typeof(PolymorphicPayment).Namespace }; }
+    public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract {
+        //private static bool fixturesRun;
+
+        [SetUp]
+        public void SetUp() {
+            StartTest();
         }
 
-        [Test]
-        public void SetPolymorphicPropertyOnTransientObject()
-        {
-            base.SetPolymorphicPropertyOnTransientObject("CUS");
+        [TearDown]
+        public void TearDown() {
+            base.EndTest();
         }
 
-        [Test]
-        public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject()
-        {
-            base.AttemptSetPolymorphicPropertyWithATransientAssociatedObject();
+        protected override string[] Namespaces {
+            get { return new[] {typeof(PolymorphicPayment).Namespace}; }
         }
-
-        [Test]
-        public void SetPolymorphicPropertyOnPersistentObject()
-        {
-            base.SetPolymorphicPropertyOnPersistentObject("CUS");
-        }
-
-        [Test]
-        public void ChangePolymorphicPropertyOnPersistentObject()
-        {
-            ChangePolymorphicPropertyOnPersistentObject("CUS", "SUP");
-        }
-
-        [Test]
-        //[Ignore("investigate")]
-
-        public override void ClearPolymorphicProperty()
-        {
-            base.ClearPolymorphicProperty();
-        }
-
-        [Test]
-        public void PolymorphicCollectionAddMutlipleItemsOfOneType()
-        {
-            base.PolymorphicCollectionAddMutlipleItemsOfOneType("INV");
-        }
-
-        [Test]
-        public void PolymorphicCollectionAddDifferentItems()
-        {
-            base.PolymorphicCollectionAddDifferentItems("INV", "EXP");
-        }
-
-        [Test]
-        //[Ignore("investigate")]
-        public override void AttemptToAddSameItemTwice()
-        {
-            base.AttemptToAddSameItemTwice();
-        }
-
-        [Test]
-        //[Ignore("investigate")]
-
-        public override void RemoveItem()
-        {
-            base.RemoveItem();
-        }
-
-        [Test]
-        public override void AttemptToRemoveNonExistentItem()
-        {
-            base.AttemptToRemoveNonExistentItem();
-        }
-
-        [Test]
-        //[Ignore("investigate")]
-
-        public override void FindOwnersForObject()
-        {
-            base.FindOwnersForObject();
-        }
-
-        #region
 
         private const string databaseName = "TestPolymorphicNavigatorWithTypeCodeMapper";
 
-        protected override EntityObjectStoreConfiguration Persistor
-        {
-            get
-            {
-                var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
-                config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(databaseName) { });
+        protected override EntityObjectStoreConfiguration Persistor {
+            get {
+                var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+                config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(databaseName));
                 return config;
             }
         }
@@ -122,65 +51,107 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator
         //}
 
         [OneTimeSetUp]
-        public void OneTimeSetUp()
-        {
+        public void OneTimeSetUp() {
             //PolymorphicNavigationContext.Delete(databaseName);
             InitializeNakedObjectsFramework(this);
             RunFixtures();
         }
 
         [OneTimeTearDown]
-        public void DeleteDatabase()
-        {
+        public void DeleteDatabase() {
             CleanupNakedObjectsFramework(this);
         }
 
-        //private static bool fixturesRun;
-
-        [SetUp()]
-        public void SetUp()
-        {
-
-         
-            StartTest();
+        protected override object[] Fixtures {
+            get { return new object[] {new FixtureEntities(), new FixtureLinksUsingTypeCode()}; }
         }
 
-        [TearDown]
-        public void TearDown()
-        {
-            base.EndTest();
+        protected override Type[] Services => base.Services.Union(new[] {typeof(Services.PolymorphicNavigator), typeof(SimpleTypeCodeMapper)}).ToArray();
+
+        [Test]
+        public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {
+            base.AttemptSetPolymorphicPropertyWithATransientAssociatedObject();
         }
 
-        protected override object[] Fixtures
-        {
-            get { return new object[] { new FixtureEntities(), new FixtureLinksUsingTypeCode() }; }
+        [Test]
+        //[Ignore("investigate")]
+        public override void AttemptToAddSameItemTwice() {
+            base.AttemptToAddSameItemTwice();
         }
 
-        protected override Type[] Services => base.Services.Union(new Type[] { typeof(Services.PolymorphicNavigator), typeof(SimpleTypeCodeMapper)}).ToArray();
-      
+        [Test]
+        public override void AttemptToRemoveNonExistentItem() {
+            base.AttemptToRemoveNonExistentItem();
+        }
 
-        #endregion
+        [Test]
+        public void ChangePolymorphicPropertyOnPersistentObject() {
+            ChangePolymorphicPropertyOnPersistentObject("CUS", "SUP");
+        }
+
+        [Test]
+        //[Ignore("investigate")]
+        public override void ClearPolymorphicProperty() {
+            base.ClearPolymorphicProperty();
+        }
+
+        [Test]
+        //[Ignore("investigate")]
+        public override void FindOwnersForObject() {
+            base.FindOwnersForObject();
+        }
+
+        [Test]
+        public void PolymorphicCollectionAddDifferentItems() {
+            base.PolymorphicCollectionAddDifferentItems("INV", "EXP");
+        }
+
+        [Test]
+        public void PolymorphicCollectionAddMutlipleItemsOfOneType() {
+            base.PolymorphicCollectionAddMutlipleItemsOfOneType("INV");
+        }
+
+        [Test]
+        //[Ignore("investigate")]
+        public override void RemoveItem() {
+            base.RemoveItem();
+        }
+
+        [Test]
+        public void SetPolymorphicPropertyOnPersistentObject() {
+            base.SetPolymorphicPropertyOnPersistentObject("CUS");
+        }
+
+        [Test]
+        public void SetPolymorphicPropertyOnTransientObject() {
+            base.SetPolymorphicPropertyOnTransientObject("CUS");
+        }
     }
 
-    public class SimpleTypeCodeMapper : ITypeCodeMapper
-    {
+    public class SimpleTypeCodeMapper : ITypeCodeMapper {
         #region ITypeCodeMapper Members
 
-        public Type TypeFromCode(string code)
-        {
+        public Type TypeFromCode(string code) {
             if (code == "CUS") { return typeof(CustomerAsPayee); }
+
             if (code == "SUP") { return typeof(SupplierAsPayee); }
+
             if (code == "INV") { return typeof(InvoiceAsPayableItem); }
+
             if (code == "EXP") { return typeof(ExpenseClaimAsPayableItem); }
+
             throw new DomainException("Code not recognised: " + code);
         }
 
-        public string CodeFromType(Type type)
-        {
+        public string CodeFromType(Type type) {
             if (type == typeof(CustomerAsPayee)) { return "CUS"; }
+
             if (type == typeof(SupplierAsPayee)) { return "SUP"; }
+
             if (type == typeof(InvoiceAsPayableItem)) { return "INV"; }
+
             if (type == typeof(ExpenseClaimAsPayableItem)) { return "EXP"; }
+
             throw new DomainException("Type not recognised: " + type);
         }
 

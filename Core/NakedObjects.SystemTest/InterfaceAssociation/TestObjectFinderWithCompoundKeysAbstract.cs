@@ -5,15 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
 using NakedObjects.Services;
 using NakedObjects.Xat;
-using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
-{
-    public abstract class TestObjectFinderWithCompoundKeysAbstract : AbstractSystemTest<PaymentContext>
-    {
+namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
+    public abstract class TestObjectFinderWithCompoundKeysAbstract : AbstractSystemTest<PaymentContext> {
         protected ITestObject customer1;
         protected ITestObject customer2a;
         protected ITestObject customer2b;
@@ -26,8 +22,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
         protected ITestObject payment1;
         protected ITestObject supplier1;
 
-        public void Initialize()
-        {
+        public void Initialize() {
             StartTest();
             payment1 = GetAllInstances(typeof(SimpleRepository<Payment>), 0);
             payee1 = payment1.GetPropertyByName("Payee");
@@ -43,8 +38,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys
             emp1 = GetAllInstances(typeof(SimpleRepository<Employee>), 0);
         }
 
-        public void CleanUp()
-        {
+        public void CleanUp() {
             EndTest();
             payment1 = null;
             customer1 = null;

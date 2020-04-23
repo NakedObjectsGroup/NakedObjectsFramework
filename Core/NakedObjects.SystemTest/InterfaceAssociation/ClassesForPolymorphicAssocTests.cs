@@ -10,15 +10,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
 
-namespace NakedObjects.SystemTest.PolymorphicAssociations
-{
-
+namespace NakedObjects.SystemTest.PolymorphicAssociations {
     #region Classes used by test
 
     public interface IPayee : IHasIntegerId { }
 
-    public class PolymorphicPayment : IHasIntegerId
-    {
+    public class PolymorphicPayment : IHasIntegerId {
         public Services.PolymorphicNavigator PolymorphicNavigator { set; protected get; }
 
         public IDomainObjectContainer Container { protected get; set; }
@@ -36,20 +33,18 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations
         [Disabled]
         public virtual PolymorphicPaymentPayeeLink PayeeLink { get; set; }
 
-        [NotPersisted, Optionally]
-        public IPayee Payee
-        {
-            get { return PolymorphicNavigator.RoleObjectFromLink(ref _Payee, PayeeLink, this); }
-            set
-            {
+        [NotPersisted]
+        [Optionally]
+        public IPayee Payee {
+            get => PolymorphicNavigator.RoleObjectFromLink(ref _Payee, PayeeLink, this);
+            set {
                 _Payee = value;
                 PayeeLink = PolymorphicNavigator.UpdateAddOrDeleteLink(_Payee, PayeeLink, this);
             }
         }
 
         //TODO:  Move this method into LifeCycle Methods region, or add code into existing Persisting method
-        public void Persisting()
-        {
+        public void Persisting() {
             PayeeLink = PolymorphicNavigator.NewTransientLink<PolymorphicPaymentPayeeLink, IPayee, PolymorphicPayment>(_Payee, this);
         }
 
@@ -69,18 +64,15 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations
         ///     expensive in processing terms.  Use this pattern only on smaller collections.
         /// </summary>
         [NotPersisted]
-        public ICollection<IPayableItem> PayableItems
-        {
+        public ICollection<IPayableItem> PayableItems {
             get { return PayableItemLinks.Select(x => x.AssociatedRoleObject).ToList(); }
         }
 
-        public void AddPayableItem(IPayableItem value)
-        {
+        public void AddPayableItem(IPayableItem value) {
             PolymorphicNavigator.AddLink<PolymorphicPaymentPayableItemLink, IPayableItem, PolymorphicPayment>(value, this);
         }
 
-        public void RemovePayableItem(IPayableItem value)
-        {
+        public void RemovePayableItem(IPayableItem value) {
             PolymorphicNavigator.RemoveLink<PolymorphicPaymentPayableItemLink, IPayableItem, PolymorphicPayment>(value, this);
         }
 
@@ -89,8 +81,7 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations
 
     public class PolymorphicPaymentPayeeLink : PolymorphicLink<IPayee, PolymorphicPayment> { }
 
-    public class CustomerAsPayee : IPayee
-    {
+    public class CustomerAsPayee : IPayee {
         public Services.PolymorphicNavigator PolymorphicNavigator { set; protected get; }
 
         #region IPayee Members
@@ -100,14 +91,10 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations
 
         #endregion
 
-        public IQueryable<PolymorphicPayment> PaymentsToThisPayee()
-        {
-            return PolymorphicNavigator.FindOwners<PolymorphicPaymentPayeeLink, IPayee, PolymorphicPayment>(this);
-        }
+        public IQueryable<PolymorphicPayment> PaymentsToThisPayee() => PolymorphicNavigator.FindOwners<PolymorphicPaymentPayeeLink, IPayee, PolymorphicPayment>(this);
     }
 
-    public class SupplierAsPayee : IPayee
-    {
+    public class SupplierAsPayee : IPayee {
         #region IPayee Members
 
         [Key]
@@ -116,12 +103,11 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations
         #endregion
     }
 
-    public interface IPayableItem : IHasIntegerId { };
+    public interface IPayableItem : IHasIntegerId { }
 
     public class PolymorphicPaymentPayableItemLink : PolymorphicLink<IPayableItem, PolymorphicPayment> { }
 
-    public class InvoiceAsPayableItem : IPayableItem
-    {
+    public class InvoiceAsPayableItem : IPayableItem {
         public Services.PolymorphicNavigator PolymorphicNavigator { set; protected get; }
 
         #region IPayableItem Members
@@ -131,14 +117,10 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations
 
         #endregion
 
-        public IQueryable<PolymorphicPayment> PaymentsContainingThis()
-        {
-            return PolymorphicNavigator.FindOwners<PolymorphicPaymentPayableItemLink, IPayableItem, PolymorphicPayment>(this);
-        }
+        public IQueryable<PolymorphicPayment> PaymentsContainingThis() => PolymorphicNavigator.FindOwners<PolymorphicPaymentPayableItemLink, IPayableItem, PolymorphicPayment>(this);
     }
 
-    public class ExpenseClaimAsPayableItem : IPayableItem
-    {
+    public class ExpenseClaimAsPayableItem : IPayableItem {
         #region IPayableItem Members
 
         [Key]
@@ -149,14 +131,9 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations
 
     #endregion
 
-    #region Code First DBContext 
+    #region Code First DBContext
 
-    public class PolymorphicNavigationContext : DbContext
-    {
-        private static string GetCs(string name) => @$"Data Source={Constants.Server};Initial Catalog={name};Integrated Security=True;";
-
-        public static void Delete(string name) => System.Data.Entity.Database.Delete(GetCs(name));
-
+    public class PolymorphicNavigationContext : DbContext {
         public PolymorphicNavigationContext(string name) : base(GetCs(name)) { }
         public DbSet<PolymorphicPayment> Payments { get; set; }
         public DbSet<PolymorphicPaymentPayeeLink> PayeeLinks { get; set; }
@@ -165,9 +142,11 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations
         public DbSet<SupplierAsPayee> Suppliers { get; set; }
         public DbSet<InvoiceAsPayableItem> Invoices { get; set; }
         public DbSet<ExpenseClaimAsPayableItem> ExpenseClaims { get; set; }
+        private static string GetCs(string name) => @$"Data Source={Constants.Server};Initial Catalog={name};Integrated Security=True;";
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
+        public static void Delete(string name) => Database.Delete(GetCs(name));
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
             Database.SetInitializer(new DropCreateDatabaseAlways<PolymorphicNavigationContext>());
         }
     }

@@ -6,18 +6,47 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity;
-using TestObjectMenu;
 using NUnit.Framework;
+using TestObjectMenu;
 
-namespace NakedObjects.SystemTest.Menus
-{
+namespace NakedObjects.SystemTest.Menus {
     [TestFixture]
-    public class TestServiceMenus : AbstractSystemTest<MenusDbContext>
-    {
+    public class TestServiceMenus : AbstractSystemTest<MenusDbContext> {
+        [SetUp]
+        public void SetUp() {
+            StartTest();
+        }
+
+        [TearDown]
+        public void TearDown() { }
+
+        [OneTimeSetUp]
+        public void ClassInitialize() {
+            MenusDbContext.Delete();
+            var context = Activator.CreateInstance<MenusDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void ClassCleanup() {
+            CleanupNakedObjectsFramework(this);
+        }
+
+        protected override object[] SystemServices {
+            get {
+                return new object[] {
+                    new FooService(),
+                    new ServiceWithSubMenus(),
+                    new BarService(),
+                    new QuxService()
+                };
+            }
+        }
+
         [Test]
-        public void TestDefaultServiceMenu()
-        {
+        public void TestDefaultServiceMenu() {
             var menu = GetTestService("Foo Service").GetMenu();
             var items = menu.AssertItemCountIs(3).AllItems();
             items[0].AssertIsAction().AssertNameEquals("Foo Action0");
@@ -26,8 +55,7 @@ namespace NakedObjects.SystemTest.Menus
         }
 
         [Test]
-        public void TestDefaultServiceMenuWithSubMenus()
-        {
+        public void TestDefaultServiceMenuWithSubMenus() {
             var bars = GetTestService("Bars").GetMenu();
             bars.AssertItemCountIs(4);
 
@@ -38,8 +66,7 @@ namespace NakedObjects.SystemTest.Menus
         }
 
         [Test]
-        public void TestWhenMainMenusNotSpecifiedServiceMenusAreUsed()
-        {
+        public void TestWhenMainMenusNotSpecifiedServiceMenusAreUsed() {
             var bars = GetMainMenu("Bars"); //i.e. same as asking for GetService("Bars").GetMenu();
             bars.AssertItemCountIs(4);
 
@@ -49,64 +76,16 @@ namespace NakedObjects.SystemTest.Menus
             bars.AllItems()[3].AssertIsAction().AssertNameEquals("Bar Action3");
         }
 
-        #region Setup/Teardown
-
-        [OneTimeSetUp]
-        public  void ClassInitialize()
-        {
-            MenusDbContext.Delete();
-            var context = Activator.CreateInstance<MenusDbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-
-        }
-
-        [OneTimeTearDown]
-        public  void ClassCleanup()
-        {
-            CleanupNakedObjectsFramework(this);
-        }
-
-        [SetUp()]
-        public void SetUp()
-        {
-            StartTest();
-        }
-
-        [TearDown()]
-        public void TearDown() { }
-
-        #endregion
-
-        #region System Config
-
-        protected override object[] SystemServices
-        {
-            get
-            {
-                return new object[] {
-                    new FooService(),
-                    new ServiceWithSubMenus(),
-                    new BarService(),
-                    new QuxService()
-                };
-            }
-        }
-
         //protected override void RegisterTypes(IUnityContainer container)
         //{
         //    base.RegisterTypes(container);
         //    container.RegisterType<IMenuFactory, MenuFactory>();
         //}
-
-        #endregion
     }
 
     #region Classes used in test
 
-    public class FooService
-    {
+    public class FooService {
         [MemberOrder(1)]
         public void FooAction0() { }
 
@@ -118,8 +97,7 @@ namespace NakedObjects.SystemTest.Menus
     }
 
     [Named("Quxes")]
-    public class QuxService
-    {
+    public class QuxService {
         public void QuxAction0() { }
 
         public void QuxAction1() { }
@@ -131,8 +109,7 @@ namespace NakedObjects.SystemTest.Menus
     }
 
     [Named("Subs")]
-    public class ServiceWithSubMenus
-    {
+    public class ServiceWithSubMenus {
         public void Action0() { }
 
         public void Action1() { }
@@ -143,8 +120,7 @@ namespace NakedObjects.SystemTest.Menus
     }
 
     [Named("Bars")]
-    public class BarService
-    {
+    public class BarService {
         [MemberOrder(10)]
         public void BarAction0() { }
 

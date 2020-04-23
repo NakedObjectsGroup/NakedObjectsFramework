@@ -5,50 +5,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
 
-namespace NakedObjects.SystemTest.ObjectFinderSingleKey
-{
+namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
     [TestFixture]
-    public class TestObjectFinderWithSingleKeys : AbstractSystemTest<PaymentContext>
-    {
-        private ITestObject customer1 = null;
-        private ITestObject customer2 = null;
-        private ITestObject emp1 = null;
-        private ITestObject emp2 = null;
-        private ITestProperty key1 = null;
-        private ITestProperty payee1 = null;
-        private ITestObject payment1 = null;
-        private ITestObject supplier1 = null;
-
-        protected override string[] Namespaces
-        {
-            get { return new[] { typeof(Payment).Namespace }; }
-        }
-
-        protected override object[] MenuServices
-        {
-            get
-            {
-                return new object[] {
-                    new ObjectFinder(),
-                    new SimpleRepository<Payment>(),
-                    new SimpleRepository<Customer>(),
-                    new SimpleRepository<Supplier>(),
-                    new SimpleRepository<Employee>()
-                };
-            }
-        }
-
+    public class TestObjectFinderWithSingleKeys : AbstractSystemTest<PaymentContext> {
         [TearDown]
-        public void CleanUp()
-        {
+        public void CleanUp() {
             payment1 = null;
             customer1 = null;
             payee1 = null;
@@ -57,96 +24,8 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey
             emp2 = null;
         }
 
-        [Test]
-        public void SetAssociatedObject()
-        {
-            payee1.SetObject(customer1);
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Customer|1");
-
-            payee1.SetObject(customer2);
-            Assert.AreEqual(payee1.ContentAsObject, customer2);
-
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Customer|2");
-        }
-
-        [Test]
-        public void ChangeAssociatedObjectType()
-        {
-            payee1.SetObject(customer1);
-            payee1.ClearObject();
-            payee1.SetObject(supplier1);
-            Assert.AreEqual(payee1.ContentAsObject, supplier1);
-
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Supplier|1");
-        }
-
-        [Test]
-        public void ClearAssociatedObject()
-        {
-            payee1.SetObject(customer1);
-            payee1.ClearObject();
-            key1.AssertIsEmpty();
-        }
-
-        [Test]
-        public void GetAssociatedObject()
-        {
-            key1.SetValue("NakedObjects.SystemTest.ObjectFinderSingleKey.Customer|1");
-            payee1.AssertIsNotEmpty();
-            payee1.ContentAsObject.GetPropertyByName("Id").AssertValueIsEqual("1");
-
-            payee1.ClearObject();
-
-            key1.SetValue("NakedObjects.SystemTest.ObjectFinderSingleKey.Customer|2");
-            payee1.AssertIsNotEmpty();
-            payee1.ContentAsObject.GetPropertyByName("Id").AssertValueIsEqual("2");
-        }
-
-        [Test]
-        //[Ignore("investigate")]
-
-        public void NoAssociatedObject()
-        {
-            key1.AssertIsEmpty();
-        }
-
-        [Test]
-        public void SetAssociatedObjectObjectWithAStringKey()
-        {
-            payee1.SetObject(emp1);
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Employee|foo");
-
-            payee1.SetObject(emp2);
-            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Employee|bar");
-        }
-
-        [Test]
-        //[Ignore("investigate")]
-
-        public void GetAssociatedObjectWithAStringKey()
-        {
-            key1.SetValue("NakedObjects.SystemTest.ObjectFinderSingleKey.Employee|foo");
-            payee1.AssertObjectIsEqual(emp1);
-
-            payee1.ClearObject();
-
-            key1.SetValue("NakedObjects.SystemTest.ObjectFinderSingleKey.Employee|bar");
-            payee1.AssertObjectIsEqual(emp2);
-        }
-
-        #region Setup/Teardown
-
-        [OneTimeSetUp]
-        public  void SetupTestFixture()
-        {
-            Database.SetInitializer(new DatabaseInitializer());
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [SetUp()]
-        public void SetUp()
-        {
-            
+        [SetUp]
+        public void SetUp() {
             StartTest();
             payment1 = GetAllInstances<Payment>(0);
             payee1 = payment1.GetPropertyByName("Payee");
@@ -163,19 +42,111 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey
             base.EndTest();
         }
 
-        #endregion
+        private ITestObject customer1;
+        private ITestObject customer2;
+        private ITestObject emp1;
+        private ITestObject emp2;
+        private ITestProperty key1;
+        private ITestProperty payee1;
+        private ITestObject payment1;
+        private ITestObject supplier1;
+
+        protected override string[] Namespaces {
+            get { return new[] {typeof(Payment).Namespace}; }
+        }
+
+        protected override object[] MenuServices {
+            get {
+                return new object[] {
+                    new ObjectFinder(),
+                    new SimpleRepository<Payment>(),
+                    new SimpleRepository<Customer>(),
+                    new SimpleRepository<Supplier>(),
+                    new SimpleRepository<Employee>()
+                };
+            }
+        }
+
+        [OneTimeSetUp]
+        public void SetupTestFixture() {
+            Database.SetInitializer(new DatabaseInitializer());
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [Test]
+        public void ChangeAssociatedObjectType() {
+            payee1.SetObject(customer1);
+            payee1.ClearObject();
+            payee1.SetObject(supplier1);
+            Assert.AreEqual(payee1.ContentAsObject, supplier1);
+
+            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Supplier|1");
+        }
+
+        [Test]
+        public void ClearAssociatedObject() {
+            payee1.SetObject(customer1);
+            payee1.ClearObject();
+            key1.AssertIsEmpty();
+        }
+
+        [Test]
+        public void GetAssociatedObject() {
+            key1.SetValue("NakedObjects.SystemTest.ObjectFinderSingleKey.Customer|1");
+            payee1.AssertIsNotEmpty();
+            payee1.ContentAsObject.GetPropertyByName("Id").AssertValueIsEqual("1");
+
+            payee1.ClearObject();
+
+            key1.SetValue("NakedObjects.SystemTest.ObjectFinderSingleKey.Customer|2");
+            payee1.AssertIsNotEmpty();
+            payee1.ContentAsObject.GetPropertyByName("Id").AssertValueIsEqual("2");
+        }
+
+        [Test]
+        //[Ignore("investigate")]
+        public void GetAssociatedObjectWithAStringKey() {
+            key1.SetValue("NakedObjects.SystemTest.ObjectFinderSingleKey.Employee|foo");
+            payee1.AssertObjectIsEqual(emp1);
+
+            payee1.ClearObject();
+
+            key1.SetValue("NakedObjects.SystemTest.ObjectFinderSingleKey.Employee|bar");
+            payee1.AssertObjectIsEqual(emp2);
+        }
+
+        [Test]
+        //[Ignore("investigate")]
+        public void NoAssociatedObject() {
+            key1.AssertIsEmpty();
+        }
+
+        [Test]
+        public void SetAssociatedObject() {
+            payee1.SetObject(customer1);
+            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Customer|1");
+
+            payee1.SetObject(customer2);
+            Assert.AreEqual(payee1.ContentAsObject, customer2);
+
+            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Customer|2");
+        }
+
+        [Test]
+        public void SetAssociatedObjectObjectWithAStringKey() {
+            payee1.SetObject(emp1);
+            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Employee|foo");
+
+            payee1.SetObject(emp2);
+            key1.AssertValueIsEqual("NakedObjects.SystemTest.ObjectFinderSingleKey.Employee|bar");
+        }
     }
 
     #region Classes used by test
 
-    public class PaymentContext : DbContext
-    {
-        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
-
-        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
-
-
+    public class PaymentContext : DbContext {
         public const string DatabaseName = "ObjectFinderSingleKey";
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
 
         public PaymentContext() : base(Cs) { }
 
@@ -184,28 +155,26 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Employee> Employees { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
+        public static void Delete() => Database.Delete(Cs);
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
             Database.SetInitializer(new DatabaseInitializer());
         }
     }
 
-    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext>
-    {
-        protected override void Seed(PaymentContext context)
-        {
+    public class DatabaseInitializer : DropCreateDatabaseAlways<PaymentContext> {
+        protected override void Seed(PaymentContext context) {
             context.Payments.Add(new Payment());
             context.Customers.Add(new Customer());
             context.Customers.Add(new Customer());
             context.Suppliers.Add(new Supplier());
-            context.Employees.Add(new Employee() { Id = "foo" });
-            context.Employees.Add(new Employee() { Id = "bar" });
+            context.Employees.Add(new Employee {Id = "foo"});
+            context.Employees.Add(new Employee {Id = "bar"});
             context.SaveChanges();
         }
     }
 
-    public class Payment
-    {
+    public class Payment {
         public IDomainObjectContainer Container { protected get; set; }
 
         [Disabled]
@@ -225,26 +194,22 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey
         [Optionally]
         public virtual string PayeeCompoundKey { get; set; }
 
-        [NotPersisted, Optionally]
-        public IPayee Payee
-        {
-            get
-            {
-                if (myPayee == null & !String.IsNullOrEmpty(PayeeCompoundKey))
-                {
+        [NotPersisted]
+        [Optionally]
+        public IPayee Payee {
+            get {
+                if ((myPayee == null) & !string.IsNullOrEmpty(PayeeCompoundKey)) {
                     myPayee = ObjectFinder.FindObject<IPayee>(PayeeCompoundKey);
                 }
+
                 return myPayee;
             }
-            set
-            {
+            set {
                 myPayee = value;
-                if (value == null)
-                {
+                if (value == null) {
                     PayeeCompoundKey = null;
                 }
-                else
-                {
+                else {
                     PayeeCompoundKey = ObjectFinder.GetCompoundKey(value);
                 }
             }
@@ -255,20 +220,17 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey
 
     public interface IPayee { }
 
-    public class Customer : IPayee
-    {
+    public class Customer : IPayee {
         [Disabled]
         public virtual int Id { get; set; }
     }
 
-    public class Supplier : IPayee
-    {
+    public class Supplier : IPayee {
         [Disabled]
         public virtual int Id { get; set; }
     }
 
-    public class Employee : IPayee
-    {
+    public class Employee : IPayee {
         [Key]
         public virtual string Id { get; set; }
     }

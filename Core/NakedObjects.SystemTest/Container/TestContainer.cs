@@ -8,35 +8,46 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
-
 using NakedObjects.Services;
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
 
-namespace NakedObjects.SystemTest.Container
-{
+namespace NakedObjects.SystemTest.Container {
     [TestFixture]
-    public class TestContainer : AbstractSystemTest<ContainerDbContext>
-    {
-        protected override Type[] Types
-        {
-            get { return new[] { typeof(Object1), typeof(Object2), typeof(ViewModel2) }; }
+    public class TestContainer : AbstractSystemTest<ContainerDbContext> {
+        [SetUp]
+        public void SetUp() {
+            StartTest();
         }
 
-        protected override Type[] Services
-        {
-            get
-            {
-                return new [] {
+        protected override Type[] Types {
+            get { return new[] {typeof(Object1), typeof(Object2), typeof(ViewModel2)}; }
+        }
+
+        protected override Type[] Services {
+            get {
+                return new[] {
                     typeof(SimpleRepository<Object1>)
                 };
             }
         }
 
+        [OneTimeSetUp]
+        public void ClassInitialize() {
+            ContainerDbContext.Delete();
+            var context = Activator.CreateInstance<ContainerDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void ClassCleanup() {
+            CleanupNakedObjectsFramework(this);
+        }
+
         [Test]
-        public void DefaultsTransient()
-        {
-            var testObject = (Object1)NewTestObject<Object1>().GetDomainObject();
+        public void DefaultsTransient() {
+            var testObject = (Object1) NewTestObject<Object1>().GetDomainObject();
             Assert.IsNotNull(testObject.Container);
 
             var o2 = testObject.Container.NewTransientInstance<Object2>();
@@ -54,9 +65,8 @@ namespace NakedObjects.SystemTest.Container
         }
 
         [Test]
-        public void DefaultsViewModel()
-        {
-            var testObject = (Object1)NewTestObject<Object1>().GetDomainObject();
+        public void DefaultsViewModel() {
+            var testObject = (Object1) NewTestObject<Object1>().GetDomainObject();
             Assert.IsNotNull(testObject.Container);
 
             var vm = testObject.NewViewModel();
@@ -72,61 +82,27 @@ namespace NakedObjects.SystemTest.Container
             Assert.AreEqual(vm.TestEnumDt, 0);
             Assert.IsNull(vm.TestNullableEnumDt);
         }
-
-        #region Setup/Teardown
-
-        [OneTimeSetUp]
-        public  void ClassInitialize()
-        {
-            ContainerDbContext.Delete();
-            var context = Activator.CreateInstance<ContainerDbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [OneTimeTearDown]
-        public  void ClassCleanup()
-        {
-            CleanupNakedObjectsFramework(this);
-        }
-
-        [SetUp()]
-        public void SetUp()
-        {
-            
-            StartTest();
-        }
-
-        #endregion
     }
 
     #region Domain classes used by tests
 
-    public class ContainerDbContext : DbContext
-    {
-        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
+    public class ContainerDbContext : DbContext {
+        public const string DatabaseName = "TestContainer";
 
         private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
-
-        public const string DatabaseName = "TestContainer";
         public ContainerDbContext() : base(Cs) { }
         public DbSet<Object1> Object1 { get; set; }
+        public static void Delete() => Database.Delete(Cs);
     }
 
-    public class Object1
-    {
+    public class Object1 {
         public IDomainObjectContainer Container { get; set; }
         public virtual int Id { get; set; }
 
-        public ViewModel2 NewViewModel()
-        {
-            return Container.NewViewModel<ViewModel2>();
-        }
+        public ViewModel2 NewViewModel() => Container.NewViewModel<ViewModel2>();
     }
 
-    public class Object2
-    {
+    public class Object2 {
         public virtual int Id { get; set; }
 
         public DateTime TestDateTime { get; set; }
@@ -148,14 +124,12 @@ namespace NakedObjects.SystemTest.Container
         public int? TestNullableEnumDt { get; set; }
     }
 
-    public enum TestEnum
-    {
+    public enum TestEnum {
         Value1,
         Value2
-    };
+    }
 
-    public class ViewModel2 : IViewModel
-    {
+    public class ViewModel2 : IViewModel {
         public virtual int Id { get; set; }
 
         public DateTime TestDateTime { get; set; }
@@ -178,14 +152,12 @@ namespace NakedObjects.SystemTest.Container
 
         #region IViewModel Members
 
-        public string[] DeriveKeys()
-        {
+        public string[] DeriveKeys() {
             //  throw new NotImplementedException();
             return new string[] { };
         }
 
-        public void PopulateUsingKeys(string[] keys)
-        {
+        public void PopulateUsingKeys(string[] keys) {
             // throw new NotImplementedException();
         }
 

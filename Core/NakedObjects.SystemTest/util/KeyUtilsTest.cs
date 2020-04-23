@@ -10,7 +10,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
-
 using NakedObjects.Util;
 using NakedObjects.UtilInternal;
 using NUnit.Framework;
@@ -18,10 +17,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Util {
     [TestFixture]
     public class KeyUtilsTest {
-        #region Test classes ComponentModel.DataAnnotations.Key
-
-        #region Nested type: TestContainer
-
         public class TestContainer : IDomainObjectContainer, IInternalAccess {
             #region IDomainObjectContainer Members
 
@@ -128,18 +123,10 @@ namespace NakedObjects.SystemTest.Util {
             #endregion
         }
 
-        #endregion
-
-        #region Nested type: TestKey
-
         public class TestKey {
             [Key]
             public int AName { get; set; }
         }
-
-        #endregion
-
-        #region Nested type: TestMultiKey
 
         public class TestMultiKey {
             [Key]
@@ -149,28 +136,14 @@ namespace NakedObjects.SystemTest.Util {
             public int AName1 { get; set; }
         }
 
-        #endregion
-
-        #region Nested type: TestNoKey
-
         public class TestNoKey {
             public int AName { get; set; }
         }
-
-        #endregion
-
-        #region Nested type: TestStringKey
 
         public class TestStringKey {
             [Key]
             public string AName { get; set; }
         }
-
-        #endregion
-
-        #endregion
-
-        #region tests ComponentModel.DataAnnotations.Key
 
         [Test]
         public void TestGetKeys() {
@@ -178,13 +151,6 @@ namespace NakedObjects.SystemTest.Util {
             var keys = container.GetKeys(typeof(TestKey));
             Assert.AreEqual(1, keys.Count());
             Assert.AreSame(typeof(TestKey).GetProperty("AName"), keys.Single());
-        }
-
-        [Test]
-        public void TestGetNoKeys() {
-            var container = new TestContainer();
-            var keys = container.GetKeys(typeof(TestNoKey));
-            Assert.AreEqual(0, keys.Count());
         }
 
         [Test]
@@ -197,23 +163,17 @@ namespace NakedObjects.SystemTest.Util {
         }
 
         [Test]
+        public void TestGetNoKeys() {
+            var container = new TestContainer();
+            var keys = container.GetKeys(typeof(TestNoKey));
+            Assert.AreEqual(0, keys.Count());
+        }
+
+        [Test]
         public void TestGetSingleKey() {
             var container = new TestContainer();
             var key = container.GetSingleKey(typeof(TestKey));
             Assert.AreSame(typeof(TestKey).GetProperty("AName"), key);
-        }
-
-        [Test]
-        public void TestGetSingleNoKey() {
-            var container = new TestContainer();
-
-            try {
-                var key = container.GetSingleKey(typeof(TestNoKey));
-                Assert.Fail("Exception expected");
-            }
-            catch (DomainException) {
-                // expected
-            }
         }
 
         [Test]
@@ -228,6 +188,17 @@ namespace NakedObjects.SystemTest.Util {
             }
         }
 
-        #endregion
+        [Test]
+        public void TestGetSingleNoKey() {
+            var container = new TestContainer();
+
+            try {
+                var key = container.GetSingleKey(typeof(TestNoKey));
+                Assert.Fail("Exception expected");
+            }
+            catch (DomainException) {
+                // expected
+            }
+        }
     }
 }

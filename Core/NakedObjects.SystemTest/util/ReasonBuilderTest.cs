@@ -5,30 +5,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.SystemTest.Util {
     [TestFixture]
     public class ReasonBuilderTest {
-        private ReasonBuilder builder;
-
         [SetUp]
         public void SetUp() {
             builder = new ReasonBuilder();
         }
 
+        private ReasonBuilder builder;
+
         private void AssertMessageIs(string expected) {
             Assert.AreEqual(expected, builder.Reason);
-        }
-
-        [Test]
-        public void WithNothingAppendedReasonReturnsNull() {
-            Assert.IsNull(builder.Reason);
-            builder.Append("Reason 1");
-            Assert.IsNotNull(builder.Reason);
-            AssertMessageIs("Reason 1");
         }
 
         [Test]
@@ -51,6 +41,14 @@ namespace NakedObjects.SystemTest.Util {
             AssertMessageIs("Reason 2");
             builder.AppendOnCondition(true, "Reason 4");
             AssertMessageIs("Reason 2; Reason 4");
+        }
+
+        [Test]
+        public void WithNothingAppendedReasonReturnsNull() {
+            Assert.IsNull(builder.Reason);
+            builder.Append("Reason 1");
+            Assert.IsNotNull(builder.Reason);
+            AssertMessageIs("Reason 1");
         }
     }
 }

@@ -10,22 +10,21 @@ using System.Data.Entity;
 using NakedObjects.Services;
 using NUnit.Framework;
 
-namespace NakedObjects.SystemTest.ParentChild
-{
-    namespace ParentChild
-    {
+namespace NakedObjects.SystemTest.ParentChild {
+    namespace ParentChild {
         [TestFixture]
-        public class TestParentChildPersistence : AbstractSystemTest<ParentChildDbContext>
-        {
-            protected override string[] Namespaces
-            {
-                get { return new[] { typeof(Parent).Namespace }; }
+        public class TestParentChildPersistence : AbstractSystemTest<ParentChildDbContext> {
+            [SetUp]
+            public void SetUp() {
+                StartTest();
             }
 
-            protected override object[] MenuServices
-            {
-                get
-                {
+            protected override string[] Namespaces {
+                get { return new[] {typeof(Parent).Namespace}; }
+            }
+
+            protected override object[] MenuServices {
+                get {
                     return new object[] {
                         new SimpleRepository<Parent>(),
                         new SimpleRepository<Parent2>(),
@@ -34,9 +33,19 @@ namespace NakedObjects.SystemTest.ParentChild
                 }
             }
 
+            [OneTimeSetUp]
+            public void ClassInitialize() {
+                InitializeNakedObjectsFramework(this);
+            }
+
+            [OneTimeTearDown]
+            public void ClassCleanup() {
+                CleanupNakedObjectsFramework(this);
+                ParentChildDbContext.Delete();
+            }
+
             [Test]
-            public virtual void CannotSaveParentIfChildHasMandatoryFieldsMissing()
-            {
+            public virtual void CannotSaveParentIfChildHasMandatoryFieldsMissing() {
                 var parent = GetTestService("Parents").GetAction("New Instance").InvokeReturnObject();
                 var parent0 = parent.GetPropertyByName("Prop0").AssertIsMandatory().AssertIsEmpty();
                 parent.AssertCannotBeSaved();
@@ -55,50 +64,23 @@ namespace NakedObjects.SystemTest.ParentChild
                 parent.AssertCanBeSaved();
                 parent.Save();
             }
-
-            #region Setup/Teardown
-
-            [OneTimeSetUp]
-            public  void ClassInitialize( )
-            {
-                InitializeNakedObjectsFramework(this);
-            }
-
-            [OneTimeTearDown]
-            public  void ClassCleanup()
-            {
-                CleanupNakedObjectsFramework(this);
-                ParentChildDbContext.Delete();
-            }
-
-            [SetUp()]
-            public void SetUp()
-            {
-                StartTest();
-            }
-
-            #endregion
         }
 
         #region Classes used in tests
 
-        public class ParentChildDbContext : DbContext
-        {
-            public static void Delete() => System.Data.Entity.Database.Delete(Cs);
-
-            private static string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
-
-
+        public class ParentChildDbContext : DbContext {
             public const string DatabaseName = "TestParentChild";
+
+            private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
             public ParentChildDbContext() : base(Cs) { }
 
             public DbSet<Parent> Parents { get; set; }
             public DbSet<Parent2> Parent2s { get; set; }
             public DbSet<Child> Children { get; set; }
+            public static void Delete() => Database.Delete(Cs);
         }
 
-        public class Parent
-        {
+        public class Parent {
             public IDomainObjectContainer Container { set; protected get; }
 
             [NakedObjectsIgnore]
@@ -108,14 +90,12 @@ namespace NakedObjects.SystemTest.ParentChild
 
             public virtual Child Child { get; set; }
 
-            public void Created()
-            {
+            public void Created() {
                 Child = Container.NewTransientInstance<Child>();
             }
         }
 
-        public class Parent2
-        {
+        public class Parent2 {
             [NakedObjectsIgnore]
             public virtual int Id { get; set; }
 
@@ -125,24 +105,19 @@ namespace NakedObjects.SystemTest.ParentChild
 
             private ICollection<Child> myChildren = new List<Child>();
 
-            public virtual ICollection<Child> Children
-            {
-                get { return myChildren; }
-                set { myChildren = value; }
+            public virtual ICollection<Child> Children {
+                get => myChildren;
+                set => myChildren = value;
             }
 
-            public virtual void AddToChildren(Child value)
-            {
-                if (!(myChildren.Contains(value)))
-                {
+            public virtual void AddToChildren(Child value) {
+                if (!myChildren.Contains(value)) {
                     myChildren.Add(value);
                 }
             }
 
-            public virtual void RemoveFromChildren(Child value)
-            {
-                if (myChildren.Contains(value))
-                {
+            public virtual void RemoveFromChildren(Child value) {
+                if (myChildren.Contains(value)) {
                     myChildren.Remove(value);
                 }
             }
@@ -150,8 +125,7 @@ namespace NakedObjects.SystemTest.ParentChild
             #endregion
         }
 
-        public class Child
-        {
+        public class Child {
             [NakedObjectsIgnore]
             public virtual int Id { get; set; }
 

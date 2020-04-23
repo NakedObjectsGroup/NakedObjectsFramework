@@ -7,26 +7,72 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Xat;
-using TestObjectMenu;
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
+using TestObjectMenu;
 
-namespace NakedObjects.SystemTest.Menus.Service
-{
+namespace NakedObjects.SystemTest.Menus.Service {
     [TestFixture]
-    public class TestMainMenusUsingDelegation : AbstractSystemTest<MenusDbContext>
-    {
+    public class TestMainMenusUsingDelegation : AbstractSystemTest<MenusDbContext> {
+        [SetUp]
+        public void SetUp() {
+            StartTest();
+        }
+
+        [TearDown]
+        public void TearDown() { }
+
+        [OneTimeSetUp]
+        public void ClassInitialize() {
+            MenusDbContext.Delete();
+            var context = Activator.CreateInstance<MenusDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void ClassCleanup() {
+            CleanupNakedObjectsFramework(this);
+        }
+
+        protected override Type[] Services {
+            get {
+                return new[] {
+                    typeof(FooService),
+                    typeof(ServiceWithSubMenus),
+                    typeof(BarService),
+                    typeof(QuxService)
+                };
+            }
+        }
+
+        protected override IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
+
+        protected override string[] Namespaces => Types.Select(t => t.Namespace).Distinct().ToArray();
+
+        //protected override void RegisterTypes(IUnityContainer container)
+        //{
+        //    base.RegisterTypes(container);
+        //    container.RegisterType<IMenuFactory, MenuFactory>();
+        //    container.RegisterInstance<IReflectorConfiguration>(MyReflectorConfig(), (new ContainerControlledLifetimeManager()));
+        //}
+
+        private IReflectorConfiguration MyReflectorConfig() {
+            return new ReflectorConfiguration(
+                Types ?? new Type[] { },
+                Services,
+                Types.Select(t => t.Namespace).Distinct().ToArray(),
+                LocalMainMenus.MainMenus);
+        }
+
         [Test]
-        public virtual void TestMainMenus()
-        {
+        public virtual void TestMainMenus() {
             var menus = AllMainMenus();
 
             menus[0].AssertNameEquals("Foo Service");
@@ -41,102 +87,30 @@ namespace NakedObjects.SystemTest.Menus.Service
             foo.AllItems()[1].AssertNameEquals("Foo Action1");
             foo.AllItems()[2].AssertNameEquals("Foo Action2");
         }
-
-        #region Setup/Teardown
-
-        [OneTimeSetUp]
-        public  void ClassInitialize()
-        {
-            MenusDbContext.Delete();
-            var context = Activator.CreateInstance<MenusDbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-
-        }
-
-        [OneTimeTearDown]
-        public  void ClassCleanup()
-        {
-            CleanupNakedObjectsFramework(this);
-        }
-
-        [SetUp()]
-        public void SetUp()
-        {
-            StartTest();
-        }
-
-        [TearDown()]
-        public void TearDown() { }
-
-        #endregion
-
-        #region System Config
-
-        protected override Type[] Services
-        {
-            get
-            {
-                return new [] {
-                    typeof(FooService),
-                    typeof (ServiceWithSubMenus),
-                    typeof (BarService),
-                    typeof (QuxService)
-                };
-            }
-        }
-
-        protected override IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
-
-        protected override string[] Namespaces => Types.Select(t => t.Namespace).Distinct().ToArray();
-
-
-        //protected override void RegisterTypes(IUnityContainer container)
-        //{
-        //    base.RegisterTypes(container);
-        //    container.RegisterType<IMenuFactory, MenuFactory>();
-        //    container.RegisterInstance<IReflectorConfiguration>(MyReflectorConfig(), (new ContainerControlledLifetimeManager()));
-        //}
-
-        private IReflectorConfiguration MyReflectorConfig()
-        {
-            return new ReflectorConfiguration(
-                this.Types ?? new Type[] { },
-                this.Services,
-                Types.Select(t => t.Namespace).Distinct().ToArray(),
-                LocalMainMenus.MainMenus);
-        }
-
-        #endregion
     }
 
     #region Classes used in test
 
-    public class LocalMainMenus
-    {
-        public static IMenu[] MainMenus(IMenuFactory factory)
-        {
+    public class LocalMainMenus {
+        public static IMenu[] MainMenus(IMenuFactory factory) {
             var menuDefs = new Dictionary<Type, Action<IMenu>>();
             menuDefs.Add(typeof(FooService), FooService.Menu);
             menuDefs.Add(typeof(BarService), BarService.Menu);
             menuDefs.Add(typeof(ServiceWithSubMenus), ServiceWithSubMenus.Menu);
 
             var menus = new List<IMenu>();
-            foreach (var menuDef in menuDefs)
-            {
+            foreach (var menuDef in menuDefs) {
                 var menu = factory.NewMenu(menuDef.Key);
                 menuDef.Value(menu);
                 menus.Add(menu);
             }
+
             return menus.ToArray();
         }
     }
 
-    public class FooService
-    {
-        public static void Menu(IMenu menu)
-        {
+    public class FooService {
+        public static void Menu(IMenu menu) {
             menu.Type = typeof(FooService);
             menu.AddRemainingNativeActions();
         }
@@ -149,10 +123,8 @@ namespace NakedObjects.SystemTest.Menus.Service
     }
 
     [Named("Subs")]
-    public class ServiceWithSubMenus
-    {
-        public static void Menu(IMenu menu)
-        {
+    public class ServiceWithSubMenus {
+        public static void Menu(IMenu menu) {
             menu.Type = typeof(ServiceWithSubMenus);
             var sub1 = menu.CreateSubMenu("Sub1");
             sub1.AddAction("Action1");
@@ -172,10 +144,8 @@ namespace NakedObjects.SystemTest.Menus.Service
     }
 
     [Named("Bars")]
-    public class BarService
-    {
-        public static void Menu(IMenu menu)
-        {
+    public class BarService {
+        public static void Menu(IMenu menu) {
             menu.Type = typeof(BarService);
             menu.AddRemainingNativeActions();
         }

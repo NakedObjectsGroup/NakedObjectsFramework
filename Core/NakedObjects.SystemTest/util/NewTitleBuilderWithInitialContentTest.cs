@@ -7,17 +7,12 @@
 
 using System.Globalization;
 using System.Threading;
-
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.SystemTest.Util {
 #pragma warning disable 618
     [TestFixture]
     public class NewTitleBuilderWithInitialContentTest {
-        private NewTitleBuilder builder;
-        private CultureInfo culture;
-
         [SetUp]
         public void NewBuilder() {
             culture = Thread.CurrentThread.CurrentCulture;
@@ -30,42 +25,56 @@ namespace NakedObjects.SystemTest.Util {
             Thread.CurrentThread.CurrentCulture = culture;
         }
 
+        private NewTitleBuilder builder;
+        private CultureInfo culture;
+
         private void AssertTitleIs(string expected, NewTitleBuilder builder) {
             Assert.AreEqual(expected, builder.ToString());
         }
 
         [Test]
-        public void ContainsConstructorString() {
+        public void AppendAndConcatOnlyIncludesSpaceOnAppend() {
+            builder.Append("Test");
+            builder.Concat("ing");
+            AssertTitleIs("Text Testing", builder);
+        }
+
+        [Test]
+        public void AppendNullLeavesTextUnmodified() {
+            builder.Append(null);
             AssertTitleIs("Text", builder);
         }
 
-        #region Default
-
         [Test]
-        public void DefaultIgnoredWhenNotNull() {
-            builder.Default("zero");
-            AssertTitleIs("Text", builder);
+        public void AppendNumberIncludesSpace() {
+            builder.Append(4.5);
+            AssertTitleIs("Text 4.5", builder);
         }
 
-        #endregion
-
-        #region Joiner
+        // Format
 
         [Test]
-        public void JoinerUsedWhenTextExists() {
-            builder.Separator(",");
-            builder.Append("test");
-            AssertTitleIs("Text, test", builder);
+        public void AppendNumberWithFormat() {
+            builder.Append(4.5).Format("00.00");
+            AssertTitleIs("Text 04.50", builder);
         }
 
-        #endregion
-
-        #region Concat
+        [Test]
+        public void AppendStringIncludesSpace() {
+            builder.Append("string");
+            AssertTitleIs("Text string", builder);
+        }
 
         [Test]
         public void ConcatNullLeaveTextUnmodified() {
             builder.Concat(null);
             AssertTitleIs("Text", builder);
+        }
+
+        [Test]
+        public void ConcatNumber() {
+            builder.Concat(4.5);
+            AssertTitleIs("Text4.5", builder);
         }
 
         [Test]
@@ -82,51 +91,22 @@ namespace NakedObjects.SystemTest.Util {
         }
 
         [Test]
-        public void ConcatNumber() {
-            builder.Concat(4.5);
-            AssertTitleIs("Text4.5", builder);
-        }
-
-        #endregion
-
-        #region Append
-
-        [Test]
-        public void AppendNullLeavesTextUnmodified() {
-            builder.Append(null);
+        public void ContainsConstructorString() {
             AssertTitleIs("Text", builder);
         }
 
         [Test]
-        public void AppendStringIncludesSpace() {
-            builder.Append("string");
-            AssertTitleIs("Text string", builder);
+        public void DefaultIgnoredWhenNotNull() {
+            builder.Default("zero");
+            AssertTitleIs("Text", builder);
         }
 
         [Test]
-        public void AppendNumberIncludesSpace() {
-            builder.Append(4.5);
-            AssertTitleIs("Text 4.5", builder);
+        public void JoinerUsedWhenTextExists() {
+            builder.Separator(",");
+            builder.Append("test");
+            AssertTitleIs("Text, test", builder);
         }
-
-        [Test]
-        public void AppendAndConcatOnlyIncludesSpaceOnAppend() {
-            builder.Append("Test");
-            builder.Concat("ing");
-            AssertTitleIs("Text Testing", builder);
-        }
-
-        // Format
-
-        [Test]
-        public void AppendNumberWithFormat() {
-            builder.Append(4.5).Format("00.00");
-            AssertTitleIs("Text 04.50", builder);
-        }
-
-        #endregion
-
-        #region Truncate
 
         [Test]
         public void TestTruncateDoesNothingOnShortString() {
@@ -140,8 +120,6 @@ namespace NakedObjects.SystemTest.Util {
             builder.Truncate(13, false, "...");
             AssertTitleIs("Text The quick...", builder);
         }
-
-        #endregion
     }
 #pragma warning restore 618
 }

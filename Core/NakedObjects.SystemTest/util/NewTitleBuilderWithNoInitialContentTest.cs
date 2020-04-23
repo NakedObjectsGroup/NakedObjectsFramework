@@ -8,17 +8,12 @@
 using System;
 using System.Globalization;
 using System.Threading;
-
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.SystemTest.Util {
 #pragma warning disable 618
     [TestFixture]
     public class NewTitleBuilderWithNoInitialContentTest {
-        private CultureInfo culture;
-        private NewTitleBuilder initiallyEmptyBuilder;
-
         [SetUp]
         public void NewBuilder() {
             culture = Thread.CurrentThread.CurrentCulture;
@@ -31,40 +26,11 @@ namespace NakedObjects.SystemTest.Util {
             Thread.CurrentThread.CurrentCulture = culture;
         }
 
+        private CultureInfo culture;
+        private NewTitleBuilder initiallyEmptyBuilder;
+
         private void AssertTitleIs(string expected, NewTitleBuilder builder) {
             Assert.AreEqual(expected, builder.ToString());
-        }
-
-        [Test]
-        public void ContainsEmptyString() {
-            AssertTitleIs("", initiallyEmptyBuilder);
-        }
-
-        // Concat
-
-        [Test]
-        public void ConcatNullLeaveTextUnmodified() {
-            initiallyEmptyBuilder.Concat(null);
-            AssertTitleIs("", initiallyEmptyBuilder);
-        }
-
-        [Test]
-        public void ConcatString() {
-            initiallyEmptyBuilder.Concat("Text");
-            AssertTitleIs("Text", initiallyEmptyBuilder);
-        }
-
-        [Test]
-        public void ConcatTwice() {
-            initiallyEmptyBuilder.Concat("Text");
-            initiallyEmptyBuilder.Concat("ing");
-            AssertTitleIs("Texting", initiallyEmptyBuilder);
-        }
-
-        [Test]
-        public void ConcatNumber() {
-            initiallyEmptyBuilder.Concat(4.5);
-            AssertTitleIs("4.5", initiallyEmptyBuilder);
         }
 
         // Appends
@@ -76,23 +42,9 @@ namespace NakedObjects.SystemTest.Util {
         }
 
         [Test]
-        public void AppendStringIncludesNoSpace() {
-            initiallyEmptyBuilder.Append("string");
-            AssertTitleIs("string", initiallyEmptyBuilder);
-        }
-
-        [Test]
         public void AppendNumberIncludesNoSpace() {
             initiallyEmptyBuilder.Append(4.5);
             AssertTitleIs("4.5", initiallyEmptyBuilder);
-        }
-
-        // Format
-
-        [Test]
-        public void ConcatNumberWithFormat() {
-            initiallyEmptyBuilder.Concat(4.5).Format("00.00");
-            AssertTitleIs("04.50", initiallyEmptyBuilder);
         }
 
         [Test]
@@ -102,19 +54,10 @@ namespace NakedObjects.SystemTest.Util {
             AssertTitleIs("04.50 90", initiallyEmptyBuilder);
         }
 
-        // default
         [Test]
-        public void DefaultAppliedWhenNull() {
-            initiallyEmptyBuilder.Default("zero");
-            AssertTitleIs("zero", initiallyEmptyBuilder);
-        }
-
-        // joiner
-        [Test]
-        public void JoinerIgnoredWhenNoExistingText() {
-            initiallyEmptyBuilder.Append("test");
-            initiallyEmptyBuilder.Separator(",");
-            AssertTitleIs("test", initiallyEmptyBuilder);
+        public void AppendStringIncludesNoSpace() {
+            initiallyEmptyBuilder.Append("string");
+            AssertTitleIs("string", initiallyEmptyBuilder);
         }
 
         [Test]
@@ -125,50 +68,6 @@ namespace NakedObjects.SystemTest.Util {
             initiallyEmptyBuilder.Separator(" -").Append(date).Format("d");
             //   builder.Default("no date");
             AssertTitleIs("Order 0034 - 04/01/2007", initiallyEmptyBuilder);
-        }
-
-        // truncate
-
-        [Test]
-        public void TestTruncate() {
-            initiallyEmptyBuilder.Append("The quick brown fox jumped");
-            initiallyEmptyBuilder.Truncate(14);
-            AssertTitleIs("The quick brow", initiallyEmptyBuilder);
-        }
-
-        [Test]
-        public void TestTruncateWithContinuation() {
-            initiallyEmptyBuilder.Append("The quick brown fox jumped");
-            initiallyEmptyBuilder.Truncate(16, false, "...");
-            AssertTitleIs("The quick bro...", initiallyEmptyBuilder);
-        }
-
-        [Test]
-        public void TestTruncateRemovesSpace() {
-            initiallyEmptyBuilder.Append("The quick brown fox jumped");
-            initiallyEmptyBuilder.Truncate(10);
-            AssertTitleIs("The quick", initiallyEmptyBuilder);
-        }
-
-        [Test]
-        public void TestTruncateRemovesSpaceWithContinuation() {
-            initiallyEmptyBuilder.Append("The quick brown fox jumped");
-            initiallyEmptyBuilder.Truncate(13, false, "...");
-            AssertTitleIs("The quick...", initiallyEmptyBuilder);
-        }
-
-        [Test]
-        public void TestTruncateToWordBoundary() {
-            initiallyEmptyBuilder.Append("The quick brown fox jumped");
-            initiallyEmptyBuilder.Truncate(18, true);
-            AssertTitleIs("The quick brown", initiallyEmptyBuilder);
-        }
-
-        [Test]
-        public void TestTruncateToWordBoundaryWithContinuation() {
-            initiallyEmptyBuilder.Append("The quick brown fox jumped");
-            initiallyEmptyBuilder.Truncate(18, true, "...");
-            AssertTitleIs("The quick...", initiallyEmptyBuilder);
         }
 
         // complex
@@ -201,6 +100,105 @@ namespace NakedObjects.SystemTest.Util {
             var customer = new Customer();
             initiallyEmptyBuilder.Append(customer).Separator(" - ").Append(customer).Separator("!").Append(null);
             AssertTitleIs("Harry Smith -  Harry Smith", initiallyEmptyBuilder);
+        }
+
+        // Concat
+
+        [Test]
+        public void ConcatNullLeaveTextUnmodified() {
+            initiallyEmptyBuilder.Concat(null);
+            AssertTitleIs("", initiallyEmptyBuilder);
+        }
+
+        [Test]
+        public void ConcatNumber() {
+            initiallyEmptyBuilder.Concat(4.5);
+            AssertTitleIs("4.5", initiallyEmptyBuilder);
+        }
+
+        // Format
+
+        [Test]
+        public void ConcatNumberWithFormat() {
+            initiallyEmptyBuilder.Concat(4.5).Format("00.00");
+            AssertTitleIs("04.50", initiallyEmptyBuilder);
+        }
+
+        [Test]
+        public void ConcatString() {
+            initiallyEmptyBuilder.Concat("Text");
+            AssertTitleIs("Text", initiallyEmptyBuilder);
+        }
+
+        [Test]
+        public void ConcatTwice() {
+            initiallyEmptyBuilder.Concat("Text");
+            initiallyEmptyBuilder.Concat("ing");
+            AssertTitleIs("Texting", initiallyEmptyBuilder);
+        }
+
+        [Test]
+        public void ContainsEmptyString() {
+            AssertTitleIs("", initiallyEmptyBuilder);
+        }
+
+        // default
+        [Test]
+        public void DefaultAppliedWhenNull() {
+            initiallyEmptyBuilder.Default("zero");
+            AssertTitleIs("zero", initiallyEmptyBuilder);
+        }
+
+        // joiner
+        [Test]
+        public void JoinerIgnoredWhenNoExistingText() {
+            initiallyEmptyBuilder.Append("test");
+            initiallyEmptyBuilder.Separator(",");
+            AssertTitleIs("test", initiallyEmptyBuilder);
+        }
+
+        // truncate
+
+        [Test]
+        public void TestTruncate() {
+            initiallyEmptyBuilder.Append("The quick brown fox jumped");
+            initiallyEmptyBuilder.Truncate(14);
+            AssertTitleIs("The quick brow", initiallyEmptyBuilder);
+        }
+
+        [Test]
+        public void TestTruncateRemovesSpace() {
+            initiallyEmptyBuilder.Append("The quick brown fox jumped");
+            initiallyEmptyBuilder.Truncate(10);
+            AssertTitleIs("The quick", initiallyEmptyBuilder);
+        }
+
+        [Test]
+        public void TestTruncateRemovesSpaceWithContinuation() {
+            initiallyEmptyBuilder.Append("The quick brown fox jumped");
+            initiallyEmptyBuilder.Truncate(13, false, "...");
+            AssertTitleIs("The quick...", initiallyEmptyBuilder);
+        }
+
+        [Test]
+        public void TestTruncateToWordBoundary() {
+            initiallyEmptyBuilder.Append("The quick brown fox jumped");
+            initiallyEmptyBuilder.Truncate(18, true);
+            AssertTitleIs("The quick brown", initiallyEmptyBuilder);
+        }
+
+        [Test]
+        public void TestTruncateToWordBoundaryWithContinuation() {
+            initiallyEmptyBuilder.Append("The quick brown fox jumped");
+            initiallyEmptyBuilder.Truncate(18, true, "...");
+            AssertTitleIs("The quick...", initiallyEmptyBuilder);
+        }
+
+        [Test]
+        public void TestTruncateWithContinuation() {
+            initiallyEmptyBuilder.Append("The quick brown fox jumped");
+            initiallyEmptyBuilder.Truncate(16, false, "...");
+            AssertTitleIs("The quick bro...", initiallyEmptyBuilder);
         }
     }
 

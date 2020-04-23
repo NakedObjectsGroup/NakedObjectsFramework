@@ -15,24 +15,17 @@ using NakedObjects.Core;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
-using NUnit.Framework;
-//using Assert = NakedObjects.Core.Util.Assert;
-using Assert = NUnit.Framework.Assert;
+using NUnit.Framework; //using Assert = NakedObjects.Core.Util.Assert;
 
-
-namespace NakedObjects.SystemTest.Authorization.Installer
-{
-    public abstract class TestCustomAuthorizer<TDefault> : AbstractSystemTest<CustomAuthorizerInstallerDbContext> where TDefault : ITypeAuthorizer<object>
-     {
-
-        protected override Type[] Types => new[] {typeof(TDefault), typeof(Foo) };
+namespace NakedObjects.SystemTest.Authorization.Installer {
+    public abstract class TestCustomAuthorizer<TDefault> : AbstractSystemTest<CustomAuthorizerInstallerDbContext> where TDefault : ITypeAuthorizer<object> {
+        protected override Type[] Types => new[] {typeof(TDefault), typeof(Foo)};
 
         protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
 
         protected override string[] Namespaces => Types.Select(t => t.Namespace).ToArray();
 
         protected override void RegisterTypes(IServiceCollection services) {
-
             base.RegisterTypes(services);
             var config = new AuthorizationConfiguration<TDefault>();
 
@@ -42,27 +35,14 @@ namespace NakedObjects.SystemTest.Authorization.Installer
     }
 
     [TestFixture] //Use DefaultAuthorizer1
-    public class TestCustomAuthorizer1 : TestCustomAuthorizer<DefaultAuthorizer1>
-    {
-        
-        [Test]
-        public void AttemptToUseAuthorizerForAbstractType()
-        {
-            try
-            {
-                InitializeNakedObjectsFramework(this);
-            }
-            catch (InitialisationException e)
-            {
-                Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", e.Message);
-            }
+    public class TestCustomAuthorizer1 : TestCustomAuthorizer<DefaultAuthorizer1> {
+        [TearDown]
+        public void TearDown() {
+            // EndTest();
         }
 
-        #region Setup/Teardown
-
         [OneTimeSetUp]
-        public  void ClassInitialize()
-        {
+        public void ClassInitialize() {
             CustomAuthorizerInstallerDbContext.Delete();
             var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
 
@@ -70,75 +50,57 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         }
 
         [OneTimeTearDown]
-        public  void ClassCleanup()
-        {
+        public void ClassCleanup() {
             CleanupNakedObjectsFramework(this);
         }
 
-        [TearDown]
-        public void TearDown() {
-           // EndTest();
-        }
-
-
-        #endregion
-    }
-
-    [TestFixture] //Use DefaultAuthorizer2
-    public class TestCustomAuthorizer2 : TestCustomAuthorizer<DefaultAuthorizer2>
-    {
-      
-
         [Test]
-        public void AttemptToUseNonImplementationOfITestAuthorizer()
-        {
-            try
-            {
+        public void AttemptToUseAuthorizerForAbstractType() {
+            try {
                 InitializeNakedObjectsFramework(this);
             }
-            catch (InitialisationException e)
-            {
+            catch (InitialisationException e) {
                 Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", e.Message);
             }
         }
+    }
 
-        #region Setup/Teardown
+    [TestFixture] //Use DefaultAuthorizer2
+    public class TestCustomAuthorizer2 : TestCustomAuthorizer<DefaultAuthorizer2> {
+        [TearDown]
+        public void TearDown() {
+            //EndTest();
+        }
 
         [OneTimeTearDown]
-        public void ClassCleanup()
-        {
+        public void ClassCleanup() {
             CleanupNakedObjectsFramework(this);
             CustomAuthorizerInstallerDbContext.Delete();
         }
 
-        [TearDown]
-        public void TearDown()
-        {
-            //EndTest();
-        }
-
-        #endregion
-    }
-
-    [TestFixture] //Use DefaultAuthorizer1
-    public class TestCustomAuthorizer3 : TestCustomAuthorizer<DefaultAuthorizer1>
-    {
-      
-
         [Test]
-        public void AttemptToUseITestAuthorizerOfObject()
-        {
-            try
-            {
+        public void AttemptToUseNonImplementationOfITestAuthorizer() {
+            try {
                 InitializeNakedObjectsFramework(this);
             }
-            catch (InitialisationException e)
-            {
+            catch (InitialisationException e) {
                 Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", e.Message);
             }
         }
+    }
 
-        #region Setup/Teardown
+    [TestFixture] //Use DefaultAuthorizer1
+    public class TestCustomAuthorizer3 : TestCustomAuthorizer<DefaultAuthorizer1> {
+        //[SetUp]
+        //public void SetUp()
+        //{
+        //    StartTest();
+        //}
+
+        [TearDown]
+        public void TearDown() {
+            //EndTest();
+        }
 
         //[OneTimeSetUp]
         //public  void ClassSetUp()
@@ -147,90 +109,37 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         //}
 
         [OneTimeTearDown]
-        public  void ClassCleanup()
-        {
+        public void ClassCleanup() {
             CleanupNakedObjectsFramework(this);
             CustomAuthorizerInstallerDbContext.Delete();
         }
 
-        //[SetUp]
-        //public void SetUp()
-        //{
-        //    StartTest();
-        //}
-
-        [TearDown]
-        public void TearDown()
-        {
-            //EndTest();
+        [Test]
+        public void AttemptToUseITestAuthorizerOfObject() {
+            try {
+                InitializeNakedObjectsFramework(this);
+            }
+            catch (InitialisationException e) {
+                Assert.AreEqual("Attempting to specify a typeAuthorizer that does not implement ITypeAuthorizer<T>, where T is concrete", e.Message);
+            }
         }
-
-        #endregion
     }
 
     [TestFixture] //Use DefaultAuthorizer3
-    public class TestCustomAuthoriser4 : TestCustomAuthorizer<DefaultAuthorizer3>
-    {
-        
-        [Test]
-        public void AccessByAuthorizedUserName()
-        {
-            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
-        }
-
-        #region Setup/Teardown
-
-        [OneTimeSetUp]
-        public  void ClassInitialize()
-        {
-            CustomAuthorizerInstallerDbContext.Delete();
-
-            var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [OneTimeTearDown]
-        public  void ClassCleanup()
-        {
-            CleanupNakedObjectsFramework(this);
-            CustomAuthorizerInstallerDbContext.Delete();
-        }
-
+    public class TestCustomAuthoriser4 : TestCustomAuthorizer<DefaultAuthorizer3> {
         [SetUp]
-        public void SetUp()
-        {
+        public void SetUp() {
             StartTest();
             SetUser("Fred");
         }
 
         [TearDown]
-        public void TearDown()
-        {
+        public void TearDown() {
             EndTest();
         }
 
-        #endregion
-    }
-
-    [TestFixture] //Use DefaultAuthorizer3
-    public class TestCustomAuthoriser5 : TestCustomAuthorizer<DefaultAuthorizer3>
-    {
-       
-
-        [Test]
-        ////[Ignore("investigate")]
-        public void AccessByAnonUserWithoutRole()
-        {
-            GetTestService("Foos").GetAction("New Instance").AssertIsInvisible();
-        }
-
-        #region Setup/Teardown
-
         [OneTimeSetUp]
-        public void ClassSetUp()
-        {
+        public void ClassInitialize() {
             CustomAuthorizerInstallerDbContext.Delete();
 
             var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
@@ -240,45 +149,68 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         }
 
         [OneTimeTearDown]
-        public  void ClassCleanup()
-        {
+        public void ClassCleanup() {
             CleanupNakedObjectsFramework(this);
             CustomAuthorizerInstallerDbContext.Delete();
         }
 
+        [Test]
+        public void AccessByAuthorizedUserName() {
+            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
+        }
+    }
+
+    [TestFixture] //Use DefaultAuthorizer3
+    public class TestCustomAuthoriser5 : TestCustomAuthorizer<DefaultAuthorizer3> {
         [SetUp]
-        public void SetUp()
-        {
+        public void SetUp() {
             StartTest();
             SetUser("Anon");
         }
 
         [TearDown]
-        public void TearDown()
-        {
+        public void TearDown() {
             EndTest();
         }
 
-        #endregion
+        [OneTimeSetUp]
+        public void ClassSetUp() {
+            CustomAuthorizerInstallerDbContext.Delete();
+
+            var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void ClassCleanup() {
+            CleanupNakedObjectsFramework(this);
+            CustomAuthorizerInstallerDbContext.Delete();
+        }
+
+        [Test]
+        ////[Ignore("investigate")]
+        public void AccessByAnonUserWithoutRole() {
+            GetTestService("Foos").GetAction("New Instance").AssertIsInvisible();
+        }
     }
 
     [TestFixture] //Use DefaultAuthorizer3
-    public class TestCustomAuthoriser6 : TestCustomAuthorizer<DefaultAuthorizer3>
-    {
-       
-
-        [Test]
-       // //[Ignore("investigate")]
-        public void AccessByAnonUserWithRole()
-        {
-            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
+    public class TestCustomAuthoriser6 : TestCustomAuthorizer<DefaultAuthorizer3> {
+        [SetUp]
+        public void SetUp() {
+            StartTest();
+            SetUser("Anon", "sysAdmin");
         }
 
-        #region Setup/Teardown
+        [TearDown]
+        public void TearDown() {
+            EndTest();
+        }
 
         [OneTimeSetUp]
-        public void ClassSetUp()
-        {
+        public void ClassSetUp() {
             //CustomAuthorizerInstallerDbContext.Delete();
             var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
 
@@ -287,200 +219,138 @@ namespace NakedObjects.SystemTest.Authorization.Installer
         }
 
         [OneTimeTearDown]
-        public  void ClassCleanup()
-        {
+        public void ClassCleanup() {
             CleanupNakedObjectsFramework(this);
             CustomAuthorizerInstallerDbContext.Delete();
         }
 
-        [SetUp]
-        public void SetUp()
-        {
-            StartTest();
-            SetUser("Anon", "sysAdmin");
+        [Test]
+        // //[Ignore("investigate")]
+        public void AccessByAnonUserWithRole() {
+            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
         }
-
-        [TearDown]
-        public void TearDown()
-        {
-            EndTest();
-        }
-
-        #endregion
     }
 
     [TestFixture] //Use DefaultAuthorizer3
-    public class TestCustomAuthoriser7 : TestCustomAuthorizer<DefaultAuthorizer3>
-    {
-        
-
-        [Test]
-        ////[Ignore("investigate")]
-        public void AccessByAnonUserWithMultipleRoles()
-        {
-            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
-        }
-
-        #region Setup/Teardown
-
-        [OneTimeSetUp]
-        public void ClassSetUp()
-        {
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [OneTimeTearDown]
-        public  void ClassCleanup()
-        {
-            CleanupNakedObjectsFramework(this);
-            CustomAuthorizerInstallerDbContext.Delete();
-        }
-
+    public class TestCustomAuthoriser7 : TestCustomAuthorizer<DefaultAuthorizer3> {
         [SetUp]
-        public void SetUp()
-        {
+        public void SetUp() {
             StartTest();
             SetUser("Anon", "service", "sysAdmin");
         }
 
         [TearDown]
-        public void TearDown()
-        {
+        public void TearDown() {
             EndTest();
         }
 
-        #endregion
+        [OneTimeSetUp]
+        public void ClassSetUp() {
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void ClassCleanup() {
+            CleanupNakedObjectsFramework(this);
+            CustomAuthorizerInstallerDbContext.Delete();
+        }
+
+        [Test]
+        ////[Ignore("investigate")]
+        public void AccessByAnonUserWithMultipleRoles() {
+            GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
+        }
     }
 
     #region Classes used by tests
 
-    public class CustomAuthorizerInstallerDbContext : DbContext
-    {
-        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
-
-        public static void Delete() => System.Data.Entity.Database.Delete(Cs);
-
+    public class CustomAuthorizerInstallerDbContext : DbContext {
         public const string DatabaseName = "TestCustomAuthorizerInstaller";
+        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
         public CustomAuthorizerInstallerDbContext() : base(Cs) { }
 
         public DbSet<Foo> Foos { get; set; }
+
+        public static void Delete() => Database.Delete(Cs);
     }
 
-    public class DefaultAuthorizer1 : ITypeAuthorizer<object>
-    {
-        #region ITypeAuthorizer<object> Members
-
-        public bool IsEditable(IPrincipal principal, object target, string memberName)
-        {
-            return true;
-        }
-
-        public bool IsVisible(IPrincipal principal, object target, string memberName)
-        {
-            return true;
-        }
-
-        #endregion
-
-        public void Init()
-        {
+    public class DefaultAuthorizer1 : ITypeAuthorizer<object> {
+        public void Init() {
             //Does nothing
         }
 
-        public void Shutdown()
-        {
+        public void Shutdown() {
             //Does nothing
         }
-    }
 
-    public class DefaultAuthorizer2 : ITypeAuthorizer<object>
-    {
         #region ITypeAuthorizer<object> Members
 
-        public bool IsEditable(IPrincipal principal, object target, string memberName)
-        {
-            return true;
-        }
+        public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
 
-        public bool IsVisible(IPrincipal principal, object target, string memberName)
-        {
-            return true;
-        }
+        public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
 
         #endregion
+    }
 
-        public void Init()
-        {
+    public class DefaultAuthorizer2 : ITypeAuthorizer<object> {
+        public void Init() {
             throw new NotImplementedException();
         }
 
-        public void Shutdown()
-        {
+        public void Shutdown() {
             //Does nothing
         }
-    }
 
-    public class DefaultAuthorizer3 : ITypeAuthorizer<object>
-    {
         #region ITypeAuthorizer<object> Members
 
-        public bool IsEditable(IPrincipal principal, object target, string memberName)
-        {
-            return true;
-        }
+        public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
 
-        public bool IsVisible(IPrincipal principal, object target, string memberName)
-        {
-            return principal.Identity.Name == "Fred" || principal.IsInRole("sysAdmin");
-        }
+        public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
 
         #endregion
-
-        public void Init()
-        {
-            //Does nothing
-        }
-
-        public void Shutdown()
-        {
-            //Does nothing
-        }
     }
 
-    public class FooAbstractAuthorizer : ITypeAuthorizer<BarAbstract>
-    {
+    public class DefaultAuthorizer3 : ITypeAuthorizer<object> {
+        public void Init() {
+            //Does nothing
+        }
+
+        public void Shutdown() {
+            //Does nothing
+        }
+
+        #region ITypeAuthorizer<object> Members
+
+        public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
+
+        public bool IsVisible(IPrincipal principal, object target, string memberName) => principal.Identity.Name == "Fred" || principal.IsInRole("sysAdmin");
+
+        #endregion
+    }
+
+    public class FooAbstractAuthorizer : ITypeAuthorizer<BarAbstract> {
+        public void Init() {
+            //Does nothing
+        }
+
+        public void Shutdown() {
+            //Does nothing
+        }
+
         #region ITypeAuthorizer<BarAbstract> Members
 
-        public bool IsEditable(IPrincipal principal, BarAbstract target, string memberName)
-        {
-            throw new NotImplementedException();
-        }
+        public bool IsEditable(IPrincipal principal, BarAbstract target, string memberName) => throw new NotImplementedException();
 
-        public bool IsVisible(IPrincipal principal, BarAbstract target, string memberName)
-        {
-            throw new NotImplementedException();
-        }
+        public bool IsVisible(IPrincipal principal, BarAbstract target, string memberName) => throw new NotImplementedException();
 
         #endregion
-
-        public void Init()
-        {
-            //Does nothing
-        }
-
-        public void Shutdown()
-        {
-            //Does nothing
-        }
     }
 
-    public abstract class BarAbstract
-    {
+    public abstract class BarAbstract {
         public void Act1() { }
     }
 
-    public class Foo
-    {
+    public class Foo {
         public virtual int Id { get; set; }
         public virtual string Prop1 { get; set; }
     }
