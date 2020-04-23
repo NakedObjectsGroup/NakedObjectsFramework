@@ -91,22 +91,10 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
 
     [TestFixture] //Use DefaultAuthorizer1
     public class TestCustomAuthorizer3 : TestCustomAuthorizer<DefaultAuthorizer1> {
-        //[SetUp]
-        //public void SetUp()
-        //{
-        //    StartTest();
-        //}
-
         [TearDown]
         public void TearDown() {
             EndTest();
         }
-
-        //[OneTimeSetUp]
-        //public  void ClassSetUp()
-        //{
-        //    InitializeNakedObjectsFramework(this);
-        //}
 
         [OneTimeTearDown]
         public void FixtureTearDown() {
@@ -210,7 +198,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
 
         [OneTimeSetUp]
         public void ClassSetUp() {
-            //CustomAuthorizerInstallerDbContext.Delete();
+            CustomAuthorizerInstallerDbContext.Delete();
             var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
 
             context.Database.Create();
@@ -244,6 +232,10 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
 
         [OneTimeSetUp]
         public void ClassSetUp() {
+            CustomAuthorizerInstallerDbContext.Delete();
+            var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
+
+            context.Database.Create();
             InitializeNakedObjectsFramework(this);
         }
 

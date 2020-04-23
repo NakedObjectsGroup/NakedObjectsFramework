@@ -29,8 +29,21 @@ namespace NakedObjects.SystemTest.Audit {
         }
 
         [TearDown]
-        public void TearDown() {
-            EndTest();
+        public void TearDown() => EndTest();
+
+        [OneTimeSetUp]
+        public void FixtureSetUp() {
+            AuditDbContext.Delete();
+            var context = Activator.CreateInstance<AuditDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown() {
+            CleanupNakedObjectsFramework(this);
+            AuditDbContext.Delete();
         }
 
         protected override Type[] Types => new[] {
@@ -74,24 +87,6 @@ namespace NakedObjects.SystemTest.Audit {
         public static Action<IPrincipal, string, string, bool, object[]> UnexpectedServiceActionCallback(string auditor) {
             return (p, a, s, b, pp) => UnexpectedCall(auditor);
         }
-
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            AuditDbContext.Delete();
-            var context = Activator.CreateInstance<AuditDbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-        }
-
-        private static readonly FooAuditor fooAuditor = new FooAuditor();
-        protected static MyDefaultAuditor myDefaultAuditor = new MyDefaultAuditor();
-        protected static QuxAuditor quxAuditor = new QuxAuditor();
 
         [Test]
         public void AuditUsingSpecificTypeAuditorAction() {

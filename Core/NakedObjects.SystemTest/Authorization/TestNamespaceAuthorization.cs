@@ -30,7 +30,22 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         }
 
         [TearDown]
-        public void TearDown() { }
+        public void TearDown() => EndTest();
+
+        [OneTimeSetUp]
+        public void FixtureSetUp() {
+            NamespaceAuthorizationDbContext.Delete();
+            var context = Activator.CreateInstance<NamespaceAuthorizationDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown() {
+            CleanupNakedObjectsFramework(this);
+            NamespaceAuthorizationDbContext.Delete();
+        }
 
         protected override Type[] Types => new[] {
             typeof(Bar1),
@@ -59,22 +74,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
             services.AddSingleton<IFacetDecorator, AuthorizationManager>();
         }
 
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            NamespaceAuthorizationDbContext.Delete();
-            var context = Activator.CreateInstance<NamespaceAuthorizationDbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-        }
-
         [Test]
-        ////[Ignore("investigate")]
         public void AuthorizerWithMostSpecificNamespaceIsInvokedForVisibility() {
             //Bar1
             var bar1 = GetTestService(typeof(SimpleRepository<Bar1>)).GetAction("New Instance").InvokeReturnObject();

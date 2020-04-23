@@ -16,7 +16,7 @@ using NakedObjects.Security;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.Audit;
 using NUnit.Framework;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     [TestFixture]
@@ -28,7 +28,22 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         }
 
         [TearDown]
-        public void TearDown() { }
+        public void TearDown() => EndTest();
+
+        [OneTimeSetUp]
+        public void FixtureSetUp() {
+            CustomAuthorizationManagerDbContext.Delete();
+            var context = Activator.CreateInstance<CustomAuthorizationManagerDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown() {
+            CleanupNakedObjectsFramework(this);
+            CustomAuthorizationManagerDbContext.Delete();
+        }
 
         protected override Type[] Types => new[] {
             typeof(QueryableList<Foo>)
@@ -57,34 +72,20 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
             services.AddSingleton<IFacetDecorator, AuthorizationManager>();
         }
 
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            CustomAuthorizationManagerDbContext.Delete();
-            var context = Activator.CreateInstance<CustomAuthorizationManagerDbContext>();
+        //protected override object[] Fixtures {
+        //    get { return new object[] { }; }
+        //}
 
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-        }
-
-        protected override object[] Fixtures {
-            get { return new object[] { }; }
-        }
-
-        protected override object[] MenuServices {
-            get {
-                return new object[] {
-                    new SimpleRepository<Foo>(),
-                    new SimpleRepository<Bar>(),
-                    new SimpleRepository<FooSub>(),
-                    new SimpleRepository<Qux>()
-                };
-            }
-        }
+        //protected override object[] MenuServices {
+        //    get {
+        //        return new object[] {
+        //            new SimpleRepository<Foo>(),
+        //            new SimpleRepository<Bar>(),
+        //            new SimpleRepository<FooSub>(),
+        //            new SimpleRepository<Qux>()
+        //        };
+        //    }
+        //}
 
         [Test]
         public void DefaultAuthorizerCalledForNonSpecificType() {

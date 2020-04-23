@@ -26,7 +26,22 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
         }
 
         [TearDown]
-        public void TearDown() { }
+        public void TearDown() => EndTest();
+
+        [OneTimeSetUp]
+        public void FixtureSetUp() {
+            CustomAuthorizationManagerDbContext.Delete();
+            var context = Activator.CreateInstance<CustomAuthorizationManagerDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown() {
+            CleanupNakedObjectsFramework(this);
+            CustomAuthorizationManagerDbContext.Delete();
+        }
 
         protected override Type[] Types => new[] {typeof(MyDefaultAuthorizer)};
 
@@ -49,29 +64,17 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
             services.AddSingleton<IFacetDecorator, AuthorizationManager>();
         }
 
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            CustomAuthorizationManagerDbContext.Delete();
-            var context = Activator.CreateInstance<CustomAuthorizationManagerDbContext>();
+        //protected override object[] Fixtures {
+        //    get { return new object[] { }; }
+        //}
 
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [OneTimeTearDown]
-        public void FixtureTearDown() { }
-
-        protected override object[] Fixtures {
-            get { return new object[] { }; }
-        }
-
-        protected override object[] MenuServices {
-            get {
-                return new object[] {
-                    new SimpleRepository<Foo>()
-                };
-            }
-        }
+        //protected override object[] MenuServices {
+        //    get {
+        //        return new object[] {
+        //            new SimpleRepository<Foo>()
+        //        };
+        //    }
+        //}
 
         [Test] //Pending #9227
         public void SetUserOnTestIsPassedThroughToAuthorizer() {
