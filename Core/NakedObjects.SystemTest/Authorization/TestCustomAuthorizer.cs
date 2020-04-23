@@ -15,7 +15,7 @@ using NakedObjects.Core;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;
-using NUnit.Framework; //using Assert = NakedObjects.Core.Util.Assert;
+using NUnit.Framework;
 
 namespace NakedObjects.SystemTest.Authorization.Installer {
     public abstract class TestCustomAuthorizer<TDefault> : AbstractSystemTest<CustomAuthorizerInstallerDbContext> where TDefault : ITypeAuthorizer<object> {
@@ -38,7 +38,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
     public class TestCustomAuthorizer1 : TestCustomAuthorizer<DefaultAuthorizer1> {
         [TearDown]
         public void TearDown() {
-            // EndTest();
+            EndTest();
         }
 
         [OneTimeSetUp]
@@ -69,7 +69,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
     public class TestCustomAuthorizer2 : TestCustomAuthorizer<DefaultAuthorizer2> {
         [TearDown]
         public void TearDown() {
-            //EndTest();
+            EndTest();
         }
 
         [OneTimeTearDown]
@@ -99,7 +99,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
 
         [TearDown]
         public void TearDown() {
-            //EndTest();
+            EndTest();
         }
 
         //[OneTimeSetUp]
@@ -190,7 +190,6 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
 
         [Test]
-        ////[Ignore("investigate")]
         public void AccessByAnonUserWithoutRole() {
             GetTestService("Foos").GetAction("New Instance").AssertIsInvisible();
         }
@@ -225,7 +224,6 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
 
         [Test]
-        // //[Ignore("investigate")]
         public void AccessByAnonUserWithRole() {
             GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
         }
@@ -256,7 +254,6 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
 
         [Test]
-        ////[Ignore("investigate")]
         public void AccessByAnonUserWithMultipleRoles() {
             GetTestService("Foos").GetAction("New Instance").AssertIsVisible();
         }

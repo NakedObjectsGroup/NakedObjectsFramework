@@ -26,10 +26,14 @@ using Assert = NUnit.Framework.Assert;
 namespace NakedObjects.SystemTest.Attributes {
     [TestFixture]
     public class TestAttributes : AbstractSystemTest<AttributesDbContext> {
-        
+        [SetUp]
+        public void TestSetup() => StartTest();
+
+        [TearDown]
+        public void TearDown() => EndTest();
+
         [OneTimeSetUp]
-        public void FixtureSetUp()
-        {
+        public void FixtureSetUp() {
             AttributesDbContext.Delete();
             var context = Activator.CreateInstance<AttributesDbContext>();
 
@@ -38,25 +42,12 @@ namespace NakedObjects.SystemTest.Attributes {
         }
 
         [OneTimeTearDown]
-        public void FixtureTearDown()
-        {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
             AttributesDbContext.Delete();
         }
 
-        [SetUp]
-        public void TestSetup() {
-            StartTest();
-        }
-
-        [TearDown]
-        public void TearDown() {
-            EndTest();
-        }
-
-        protected override string[] Namespaces {
-            get { return new[] {"NakedObjects.SystemTest.Attributes", "SystemTest.Attributes"}; }
-        }
+        protected override string[] Namespaces => new[] {"NakedObjects.SystemTest.Attributes", "SystemTest.Attributes"};
 
         protected override Type[] Services {
             get {
