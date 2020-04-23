@@ -23,32 +23,27 @@ using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 
-//<connectionStrings>
-//   <add name = "TestAttributes" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestAttributes;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "TestAudit" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestAudit;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "TestCustomAuthorizationManager" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestCustomAuthorizationManager;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "TestCustomAuthorizerInstaller" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestCustomAuthorizerInstaller;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "TestContainer" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestContainer;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "TestInjection" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestInjection;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "ObjectFinderWithCompoundKeys" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=ObjectFinderWithCompoundKeys;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "ObjectFinderInstances" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=ObjectFinderInstances;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "ObjectFinderGuid" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=ObjectFinderGuid;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "ObjectFinderSingleKey" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=ObjectFinderSingleKey;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "Tests" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Tests;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "TestMenus" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestMenus;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "TestEnums" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestEnums;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "TestParentChild" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestParentChild;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "TestPersistence" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestPersistence;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "TestProfile" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestProfile;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "TestSimpleRepository" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestSimpleRepository;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "TestXats" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestXats;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "TestPolymorphicNavigator" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestPolymorphicNavigator;Integrated Security=True;" providerName="System.Data.SqlClient" />
-//   <add name = "TestPolymorphicNavigatorWithTypeCodeMapper" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=TestPolymorphicNavigatorWithTypeCodeMapper;Integrated Security=True;" providerName="System.Data.SqlClient" />
-// </connectionStrings>
-
 namespace NakedObjects.SystemTest.Attributes {
     [TestFixture]
     public class TestAttributes : AbstractSystemTest<AttributesDbContext> {
+        
+        [OneTimeSetUp]
+        public void FixtureSetUp()
+        {
+            AttributesDbContext.Delete();
+            var context = Activator.CreateInstance<AttributesDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown()
+        {
+            CleanupNakedObjectsFramework(this);
+            AttributesDbContext.Delete();
+        }
+
         [SetUp]
         public void TestSetup() {
             StartTest();
@@ -56,7 +51,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
         [TearDown]
         public void TearDown() {
-            //EndTest();
+            EndTest();
         }
 
         protected override string[] Namespaces {
@@ -119,20 +114,6 @@ namespace NakedObjects.SystemTest.Attributes {
                     typeof(TestServiceFinderAction)
                 };
             }
-        }
-
-        [OneTimeTearDown]
-        public void ClassCleanup() {
-            CleanupNakedObjectsFramework(this);
-        }
-
-        [OneTimeSetUp]
-        public void ClassInitialize() {
-            AttributesDbContext.Delete();
-            var context = Activator.CreateInstance<AttributesDbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
         }
 
         private ITestObject NewTransientDisabled1() => GetTestService("Disabled1s").GetAction("New Instance").InvokeReturnObject();
@@ -1879,7 +1860,7 @@ namespace NakedObjects.SystemTest.Attributes {
     #endregion
 }
 
-// Change the namespace of these test classes as if they start wuith 'NakedObjects' we will not introspect them
+// Change the namespace of these test classes as if they start with 'NakedObjects' we will not introspect them
 
 namespace SystemTest.Attributes {
     public class TestServiceContributedAction {

@@ -46,7 +46,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             PaymentContext.Delete();
             var context = Activator.CreateInstance<PaymentContext>();
 

@@ -32,7 +32,7 @@ namespace NakedObjects.SystemTest.Container {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             ContainerDbContext.Delete();
             var context = Activator.CreateInstance<ContainerDbContext>();
 
@@ -41,7 +41,7 @@ namespace NakedObjects.SystemTest.Container {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
         }
 

@@ -50,7 +50,7 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             CustomAuthorizationManagerDbContext.Delete();
             var context = Activator.CreateInstance<CustomAuthorizationManagerDbContext>();
 
@@ -59,7 +59,7 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() { }
+        public void FixtureTearDown() { }
 
         protected override object[] Fixtures {
             get { return new object[] { }; }

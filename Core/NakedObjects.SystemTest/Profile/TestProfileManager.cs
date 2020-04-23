@@ -50,7 +50,7 @@ namespace NakedObjects.SystemTest.Profile {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             //ImmutableSpecFactory.ClearCache();
             ProfileDbContext.Delete();
             var context = Activator.CreateInstance<ProfileDbContext>();
@@ -91,7 +91,7 @@ namespace NakedObjects.SystemTest.Profile {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
             ProfileDbContext.Delete();
         }

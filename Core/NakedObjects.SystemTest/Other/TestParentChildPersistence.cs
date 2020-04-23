@@ -34,12 +34,12 @@ namespace NakedObjects.SystemTest.ParentChild {
             }
 
             [OneTimeSetUp]
-            public void ClassInitialize() {
+            public void FixtureSetUp() {
                 InitializeNakedObjectsFramework(this);
             }
 
             [OneTimeTearDown]
-            public void ClassCleanup() {
+            public void FixtureTearDown() {
                 CleanupNakedObjectsFramework(this);
                 ParentChildDbContext.Delete();
             }

@@ -99,7 +99,7 @@ namespace NakedObjects.SystemTest.XATs {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             XatDbContext.Delete();
             var context = Activator.CreateInstance<XatDbContext>();
 
@@ -108,7 +108,7 @@ namespace NakedObjects.SystemTest.XATs {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
             XatDbContext.Delete();
         }

@@ -19,21 +19,21 @@ using NakedObjects.Xat;
 using NUnit.Framework;
 
 namespace NakedObjects.SystemTest {
-    #region Nested type: NullMenuFactory
+    //#region Nested type: NullMenuFactory
 
-    public class NullMenuFactory : IMenuFactory {
-        public IMenu NewMenu(string name) => throw new NotImplementedException();
+    //public class NullMenuFactory : IMenuFactory {
+    //    public IMenu NewMenu(string name) => throw new NotImplementedException();
 
-        #region IMenuFactory Members
+    //    #region IMenuFactory Members
 
-        public IMenu NewMenu<T>(bool addAllActions, string name = null) => throw new NotImplementedException();
+    //    public IMenu NewMenu<T>(bool addAllActions, string name = null) => throw new NotImplementedException();
 
-        public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) => throw new NotImplementedException();
+    //    public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) => throw new NotImplementedException();
 
-        #endregion
-    }
+    //    #endregion
+    //}
 
-    #endregion
+    //#endregion
 
     public static class Constants {
         public static string AppveyorServer => @"(local)\SQL2017";
@@ -73,13 +73,13 @@ namespace NakedObjects.SystemTest {
 
         protected ITestObject GetAllInstances<T>(int number) => GetSimpleRepositoryTestService<T>().GetAction("All Instances").InvokeReturnCollection().ElementAt(number);
 
-        protected ITestObject GetAllInstances(string simpleRepositoryName, int number) => GetTestService(simpleRepositoryName).GetAction("All Instances").InvokeReturnCollection().ElementAt(number);
+        //protected ITestObject GetAllInstances(string simpleRepositoryName, int number) => GetTestService(simpleRepositoryName).GetAction("All Instances").InvokeReturnCollection().ElementAt(number);
 
         protected ITestObject GetAllInstances(Type repositoryType, int number) => GetTestService(repositoryType).GetAction("All Instances").InvokeReturnCollection().ElementAt(number);
 
         protected ITestObject FindById<T>(int id) => GetSimpleRepositoryTestService<T>().GetAction("Find By Key").InvokeReturnObject(id);
 
-        protected ITestObject FindById(string simpleRepositoryName, int id) => GetTestService(simpleRepositoryName).GetAction("Find By Key").InvokeReturnObject(id);
+        //protected ITestObject FindById(string simpleRepositoryName, int id) => GetTestService(simpleRepositoryName).GetAction("Find By Key").InvokeReturnObject(id);
 
         protected static void IsInstanceOfType(object obj, Type typ) {
             Assert.IsTrue(typ.IsInstanceOfType(obj), $"{obj.GetType()} isn't a {typ}");

@@ -58,7 +58,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             CustomAuthorizationManagerDbContext.Delete();
             var context = Activator.CreateInstance<CustomAuthorizationManagerDbContext>();
 
@@ -67,7 +67,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
         }
 

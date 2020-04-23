@@ -41,7 +41,7 @@ namespace NakedObjects.SystemTest.Injection {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             InjectionDbContext.Delete();
             var context = Activator.CreateInstance<InjectionDbContext>();
 
@@ -50,7 +50,7 @@ namespace NakedObjects.SystemTest.Injection {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
         }
 

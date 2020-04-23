@@ -42,7 +42,7 @@ namespace NakedObjects.SystemTest.Repositories {
         private Customer cust2;
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             SimpleRepositoryDbContext.Delete();
             var context = Activator.CreateInstance<SimpleRepositoryDbContext>();
 
@@ -51,7 +51,7 @@ namespace NakedObjects.SystemTest.Repositories {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
             //Database.Delete(SimpleRepositoryDbContext.DatabaseName);
         }

@@ -60,7 +60,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             NamespaceAuthorizationDbContext.Delete();
             var context = Activator.CreateInstance<NamespaceAuthorizationDbContext>();
 
@@ -69,7 +69,7 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
         }
 

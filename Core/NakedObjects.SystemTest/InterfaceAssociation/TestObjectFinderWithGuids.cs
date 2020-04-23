@@ -70,7 +70,7 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             PaymentContext.Delete();
             var context = Activator.CreateInstance<PaymentContext>();
 

@@ -76,7 +76,7 @@ namespace NakedObjects.SystemTest.Audit {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             AuditDbContext.Delete();
             var context = Activator.CreateInstance<AuditDbContext>();
 
@@ -85,7 +85,7 @@ namespace NakedObjects.SystemTest.Audit {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
         }
 

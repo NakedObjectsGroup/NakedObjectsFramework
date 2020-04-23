@@ -42,7 +42,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             CustomAuthorizerInstallerDbContext.Delete();
             var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
 
@@ -50,7 +50,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
         }
 
@@ -73,7 +73,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
             CustomAuthorizerInstallerDbContext.Delete();
         }
@@ -109,7 +109,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         //}
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
             CustomAuthorizerInstallerDbContext.Delete();
         }
@@ -139,7 +139,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             CustomAuthorizerInstallerDbContext.Delete();
 
             var context = Activator.CreateInstance<CustomAuthorizerInstallerDbContext>();
@@ -149,7 +149,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
             CustomAuthorizerInstallerDbContext.Delete();
         }
@@ -184,7 +184,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
             CustomAuthorizerInstallerDbContext.Delete();
         }
@@ -219,7 +219,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
             CustomAuthorizerInstallerDbContext.Delete();
         }
@@ -250,7 +250,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
             CustomAuthorizerInstallerDbContext.Delete();
         }

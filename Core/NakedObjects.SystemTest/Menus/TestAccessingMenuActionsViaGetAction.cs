@@ -25,7 +25,7 @@ namespace NakedObjects.SystemTest.Menus {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             CADbContext.Delete();
             var context = Activator.CreateInstance<CADbContext>();
 
@@ -34,7 +34,7 @@ namespace NakedObjects.SystemTest.Menus {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
         }
 

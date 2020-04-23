@@ -28,7 +28,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
         public void TearDown() { }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             MenusDbContext.Delete();
             var context = Activator.CreateInstance<MenusDbContext>();
 
@@ -37,7 +37,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
         }
 

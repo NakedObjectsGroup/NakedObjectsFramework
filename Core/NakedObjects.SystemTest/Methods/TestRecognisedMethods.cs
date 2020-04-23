@@ -29,7 +29,7 @@ namespace NakedObjects.SystemTest.Method {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             MethodsDbContext.Delete();
             var context = Activator.CreateInstance<MethodsDbContext>();
 
@@ -38,7 +38,7 @@ namespace NakedObjects.SystemTest.Method {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
         }
 

@@ -32,7 +32,7 @@ namespace NakedObjects.SystemTest.Enum {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             EnumDbContext.Delete();
             var context = Activator.CreateInstance<EnumDbContext>();
 
@@ -41,7 +41,7 @@ namespace NakedObjects.SystemTest.Enum {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
         }
 

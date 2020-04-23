@@ -42,7 +42,7 @@ namespace NakedObjects.SystemTest.Persistence {
         }
 
         [OneTimeSetUp]
-        public void ClassInitialize() {
+        public void FixtureSetUp() {
             PersistenceDbContext.Delete();
             var context = Activator.CreateInstance<PersistenceDbContext>();
 
@@ -52,7 +52,7 @@ namespace NakedObjects.SystemTest.Persistence {
         }
 
         [OneTimeTearDown]
-        public void ClassCleanup() {
+        public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
         }
 
