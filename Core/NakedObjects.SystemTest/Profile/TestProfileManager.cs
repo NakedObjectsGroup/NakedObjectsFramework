@@ -16,11 +16,12 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Profile;
+using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Profile;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.SystemTest.Profile
 {
@@ -62,7 +63,7 @@ namespace NakedObjects.SystemTest.Profile
         }
 
         [Test]
-        [Ignore("investigate")]
+        //Ignore("investigate")]
         public void TestPropertySet()
         {
             ITestObject foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
@@ -122,7 +123,7 @@ namespace NakedObjects.SystemTest.Profile
         }
 
         [Test]
-        [Ignore("investigate")]
+        //[Ignore("investigate")]
         public void TestCallbacks()
         {
             int beginCalledCount = 0;
@@ -332,6 +333,7 @@ namespace NakedObjects.SystemTest.Profile
         [OneTimeSetUp]
         public  void ClassInitialize()
         {
+            //ImmutableSpecFactory.ClearCache();
             ProfileDbContext.Delete();
             var context = Activator.CreateInstance<ProfileDbContext>();
 

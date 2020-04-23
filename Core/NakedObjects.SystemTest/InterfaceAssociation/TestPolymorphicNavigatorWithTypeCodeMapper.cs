@@ -132,7 +132,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator
         [OneTimeTearDown]
         public void DeleteDatabase()
         {
-            //Database.Delete(databaseName);
+            CleanupNakedObjectsFramework(this);
         }
 
         //private static bool fixturesRun;
