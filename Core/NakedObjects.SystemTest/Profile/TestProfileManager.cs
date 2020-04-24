@@ -35,28 +35,19 @@ namespace NakedObjects.SystemTest.Profile {
             MyProfiler.EndCallback = (p, e, t, s) => { };
         }
 
-        private class CallbackData {
-            public CallbackData(IPrincipal principal, ProfileEvent profileEvent, Type type, string member) {
-                Principal = principal;
-                ProfileEvent = profileEvent;
-                Type = type;
-                Member = member;
-            }
-
-            public IPrincipal Principal { get; }
-            public ProfileEvent ProfileEvent { get; }
-            public Type Type { get; }
-            public string Member { get; }
-        }
-
         [OneTimeSetUp]
         public void FixtureSetUp() {
-            //ImmutableSpecFactory.ClearCache();
             ProfileDbContext.Delete();
             var context = Activator.CreateInstance<ProfileDbContext>();
 
             context.Database.Create();
             InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown() {
+            CleanupNakedObjectsFramework(this);
+            ProfileDbContext.Delete();
         }
 
         protected override Type[] Types => new[] {
@@ -90,10 +81,18 @@ namespace NakedObjects.SystemTest.Profile {
             services.AddSingleton<IFacetDecorator, ProfileManager>();
         }
 
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-            ProfileDbContext.Delete();
+        private class CallbackData {
+            public CallbackData(IPrincipal principal, ProfileEvent profileEvent, Type type, string member) {
+                Principal = principal;
+                ProfileEvent = profileEvent;
+                Type = type;
+                Member = member;
+            }
+
+            public IPrincipal Principal { get; }
+            public ProfileEvent ProfileEvent { get; }
+            public Type Type { get; }
+            public string Member { get; }
         }
 
         [Test]
@@ -127,7 +126,6 @@ namespace NakedObjects.SystemTest.Profile {
         }
 
         [Test]
-        //[Ignore("investigate")]
         public void TestCallbacks() {
             var beginCalledCount = 0;
             var endCalledCount = 0;
@@ -306,7 +304,6 @@ namespace NakedObjects.SystemTest.Profile {
         }
 
         [Test]
-        //Ignore("investigate")]
         public void TestPropertySet() {
             var foo = GetTestService(typeof(SimpleRepository<Foo>)).GetAction("New Instance").InvokeReturnObject();
 

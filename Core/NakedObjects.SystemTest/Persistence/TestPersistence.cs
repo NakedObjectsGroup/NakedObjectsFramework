@@ -16,30 +16,10 @@ namespace NakedObjects.SystemTest.Persistence {
     [TestFixture]
     public class TestPersistence : AbstractSystemTest<PersistenceDbContext> {
         [SetUp]
-        public void SetUp() {
-            StartTest();
-        }
+        public void SetUp() => StartTest();
 
-        private static bool triggerFail;
-
-        protected override Type[] Types => new[] {
-            typeof(ObjectQuery<Qux1>),
-            typeof(Foo1)
-        };
-
-        protected override Type[] Services => new[] {
-            typeof(SimpleRepository<Foo1>),
-            typeof(SimpleRepository<Bar1>),
-            typeof(SimpleRepository<Qux1>)
-        };
-
-        protected override string[] Namespaces => new[] {typeof(Foo1).Namespace};
-
-        internal static void FailAsRequired() {
-            if (triggerFail) {
-                throw new NotImplementedException();
-            }
-        }
+        [TearDown]
+        public void TearDown() => EndTest();
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
@@ -54,6 +34,29 @@ namespace NakedObjects.SystemTest.Persistence {
         [OneTimeTearDown]
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
+            PersistenceDbContext.Delete();
+        }
+
+        private static bool triggerFail;
+
+        protected override Type[] Types =>
+            new[] {
+                typeof(ObjectQuery<Qux1>),
+                typeof(Foo1)
+            };
+
+        protected override Type[] Services => new[] {
+            typeof(SimpleRepository<Foo1>),
+            typeof(SimpleRepository<Bar1>),
+            typeof(SimpleRepository<Qux1>)
+        };
+
+        protected override string[] Namespaces => new[] {typeof(Foo1).Namespace};
+
+        internal static void FailAsRequired() {
+            if (triggerFail) {
+                throw new NotImplementedException();
+            }
         }
 
         [Test]
