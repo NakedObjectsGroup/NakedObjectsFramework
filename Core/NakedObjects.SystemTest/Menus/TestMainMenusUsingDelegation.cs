@@ -8,9 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Xat;
 using NUnit.Framework;
@@ -20,12 +18,10 @@ namespace NakedObjects.SystemTest.Menus.Service {
     [TestFixture]
     public class TestMainMenusUsingDelegation : AbstractSystemTest<MenusDbContext> {
         [SetUp]
-        public void SetUp() {
-            StartTest();
-        }
+        public void SetUp() => StartTest();
 
         [TearDown]
-        public void TearDown() { }
+        public void CleanUp() => EndTest();
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
@@ -39,37 +35,20 @@ namespace NakedObjects.SystemTest.Menus.Service {
         [OneTimeTearDown]
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
+            MenusDbContext.Delete();
         }
 
-        protected override Type[] Services {
-            get {
-                return new[] {
-                    typeof(FooService),
-                    typeof(ServiceWithSubMenus),
-                    typeof(BarService),
-                    typeof(QuxService)
-                };
-            }
-        }
+        protected override Type[] Services =>
+            new[] {
+                typeof(FooService),
+                typeof(ServiceWithSubMenus),
+                typeof(BarService),
+                typeof(QuxService)
+            };
 
         protected override IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
 
         protected override string[] Namespaces => Types.Select(t => t.Namespace).Distinct().ToArray();
-
-        //protected override void RegisterTypes(IUnityContainer container)
-        //{
-        //    base.RegisterTypes(container);
-        //    container.RegisterType<IMenuFactory, MenuFactory>();
-        //    container.RegisterInstance<IReflectorConfiguration>(MyReflectorConfig(), (new ContainerControlledLifetimeManager()));
-        //}
-
-        private IReflectorConfiguration MyReflectorConfig() {
-            return new ReflectorConfiguration(
-                Types ?? new Type[] { },
-                Services,
-                Types.Select(t => t.Namespace).Distinct().ToArray(),
-                LocalMainMenus.MainMenus);
-        }
 
         [Test]
         public virtual void TestMainMenus() {

@@ -20,16 +20,10 @@ namespace NakedObjects.SystemTest.Menus {
     [TestFixture]
     public class TestObjectMenu : AbstractSystemTest<MenusDbContext> {
         [SetUp]
-        public void SetUp() {
-            StartTest();
-        }
+        public void SetUp() => StartTest();
 
         [TearDown]
-        public void TearDown() { }
-
-        protected override string[] Namespaces {
-            get { return new[] {typeof(Foo).Namespace}; }
-        }
+        public void TearDown() => EndTest();
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
@@ -43,24 +37,24 @@ namespace NakedObjects.SystemTest.Menus {
         [OneTimeTearDown]
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
+            MenusDbContext.Delete();
         }
 
-        protected override object[] MenuServices {
-            get {
-                return new object[] {
-                    new SimpleRepository<Foo>(),
-                    new SimpleRepository<Foo2>(),
-                    new SimpleRepository<Bar>(),
-                    new SimpleRepository<Bar2>(),
-                    new SimpleRepository<Bar3>(),
-                    new SimpleRepository<Bar4>(),
-                    new SimpleRepository<Bar5>(),
-                    new Contrib1(),
-                    new Contrib2(),
-                    new Contrib3()
-                };
-            }
-        }
+        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(SimpleRepository<Foo>),
+                typeof(SimpleRepository<Foo2>),
+                typeof(SimpleRepository<Bar>),
+                typeof(SimpleRepository<Bar2>),
+                typeof(SimpleRepository<Bar3>),
+                typeof(SimpleRepository<Bar4>),
+                typeof(SimpleRepository<Bar5>),
+                typeof(Contrib1),
+                typeof(Contrib2),
+                typeof(Contrib3)
+            };
 
         [Test]
         public void SubClassAddingNewSubMenuAboveSuperMenu() {
@@ -240,12 +234,6 @@ namespace NakedObjects.SystemTest.Menus {
             sub = items[7].AssertIsSubMenu().AssertNameEquals("Contrib2a").AsSubMenu().AssertItemCountIs(1);
             sub.AllItems()[0].AssertIsAction().AssertNameEquals("Action7");
         }
-
-        //protected override void RegisterTypes(IUnityContainer container)
-        //{
-        //    base.RegisterTypes(container);
-        //    container.RegisterType<IMenuFactory, MenuFactory>();
-        //}
     }
 }
 

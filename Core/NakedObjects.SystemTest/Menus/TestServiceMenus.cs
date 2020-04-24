@@ -13,12 +13,10 @@ namespace NakedObjects.SystemTest.Menus {
     [TestFixture]
     public class TestServiceMenus : AbstractSystemTest<MenusDbContext> {
         [SetUp]
-        public void SetUp() {
-            StartTest();
-        }
+        public void SetUp() => StartTest();
 
         [TearDown]
-        public void TearDown() { }
+        public void TearDown() => EndTest();
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
@@ -32,18 +30,16 @@ namespace NakedObjects.SystemTest.Menus {
         [OneTimeTearDown]
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
+            MenusDbContext.Delete();
         }
 
-        protected override object[] SystemServices {
-            get {
-                return new object[] {
-                    new FooService(),
-                    new ServiceWithSubMenus(),
-                    new BarService(),
-                    new QuxService()
-                };
-            }
-        }
+        protected override Type[] Services =>
+            new[] {
+                typeof(FooService),
+                typeof(ServiceWithSubMenus),
+                typeof(BarService),
+                typeof(QuxService)
+            };
 
         [Test]
         public void TestDefaultServiceMenu() {
@@ -75,12 +71,6 @@ namespace NakedObjects.SystemTest.Menus {
             bars.AllItems()[2].AssertIsAction().AssertNameEquals("Bar Action2");
             bars.AllItems()[3].AssertIsAction().AssertNameEquals("Bar Action3");
         }
-
-        //protected override void RegisterTypes(IUnityContainer container)
-        //{
-        //    base.RegisterTypes(container);
-        //    container.RegisterType<IMenuFactory, MenuFactory>();
-        //}
     }
 
     #region Classes used in test

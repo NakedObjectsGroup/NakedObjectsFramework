@@ -106,7 +106,6 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
         }
 
         [Test]
-        //[Ignore("investigate")]
         public void NoAssociatedObject() {
             key1.AssertIsEmpty();
         }

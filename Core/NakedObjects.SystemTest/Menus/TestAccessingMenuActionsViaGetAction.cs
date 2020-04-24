@@ -20,9 +20,10 @@ namespace NakedObjects.SystemTest.Menus {
     [TestFixture]
     public class TestAccessingMenuActionsViaGetAction : AbstractSystemTest<CADbContext> {
         [SetUp]
-        public void SetUp() {
-            StartTest();
-        }
+        public void SetUp() => StartTest();
+
+        [TearDown]
+        public void CleanUp() => EndTest();
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
@@ -36,22 +37,18 @@ namespace NakedObjects.SystemTest.Menus {
         [OneTimeTearDown]
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
+            CADbContext.Delete();
         }
 
-        protected override string[] Namespaces {
-            get { return new[] {typeof(Foo).Namespace}; }
-        }
+        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
 
-        protected override Type[] Services {
-            get {
-                return new[] {
-                    typeof(SimpleRepository<Foo>),
-                    typeof(SimpleRepository<Foo2>),
-                    typeof(SimpleRepository<Bar>),
-                    typeof(ContributingService)
-                };
-            }
-        }
+        protected override Type[] Services =>
+            new[] {
+                typeof(SimpleRepository<Foo>),
+                typeof(SimpleRepository<Foo2>),
+                typeof(SimpleRepository<Bar>),
+                typeof(ContributingService)
+            };
 
         [Test]
         public void ContributedActionToObjectWithDefaultMenu() {
