@@ -32,42 +32,7 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
         }
 
         [TearDown]
-        public void TearDown() {
-            base.EndTest();
-        }
-
-        private ITestObject customer1;
-        private ITestObject customer2;
-        private ITestProperty key1;
-        private ITestProperty payee1;
-        private ITestObject payment1;
-        private ITestObject supplier1;
-
-        protected override string[] Namespaces {
-            get { return new[] {typeof(Payment).Namespace}; }
-        }
-
-        protected override Type[] Types {
-            get {
-                return new[] {
-                    typeof(ObjectFinder),
-                    typeof(Payment),
-                    typeof(Customer),
-                    typeof(Supplier)
-                };
-            }
-        }
-
-        protected override Type[] Services {
-            get {
-                return new[] {
-                    typeof(ObjectFinder),
-                    typeof(SimpleRepository<Payment>),
-                    typeof(SimpleRepository<Customer>),
-                    typeof(SimpleRepository<Supplier>)
-                };
-            }
-        }
+        public void TearDown() => EndTest();
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
@@ -80,9 +45,35 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
         }
 
         [OneTimeTearDown]
-        public void TearDownTest() {
+        public void TearDownFixture() {
             CleanupNakedObjectsFramework(this);
+            PaymentContext.Delete();
         }
+
+        private ITestObject customer1;
+        private ITestObject customer2;
+        private ITestProperty key1;
+        private ITestProperty payee1;
+        private ITestObject payment1;
+        private ITestObject supplier1;
+
+        protected override string[] Namespaces => new[] {typeof(Payment).Namespace};
+
+        protected override Type[] Types =>
+            new[] {
+                typeof(ObjectFinder),
+                typeof(Payment),
+                typeof(Customer),
+                typeof(Supplier)
+            };
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(ObjectFinder),
+                typeof(SimpleRepository<Payment>),
+                typeof(SimpleRepository<Customer>),
+                typeof(SimpleRepository<Supplier>)
+            };
 
         [Test]
         public void ChangeAssociatedObjectType() {

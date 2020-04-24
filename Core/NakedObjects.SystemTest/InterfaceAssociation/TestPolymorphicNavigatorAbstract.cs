@@ -18,7 +18,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         #region Setup/Teardown
 
         // to get EF SqlServer Dll in memory
-        public SqlProviderServices instance = SqlProviderServices.Instance;
+        public SqlProviderServices ProviderInstance = SqlProviderServices.Instance;
 
         #endregion
 

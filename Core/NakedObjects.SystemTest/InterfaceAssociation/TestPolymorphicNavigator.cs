@@ -13,59 +13,35 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
     [TestFixture]
     public class TestPolymorphicNavigator : TestPolymorphicNavigatorAbstract {
         [SetUp]
-        public void SetUp() {
-            if (!fixturesRun) {
-                RunFixtures();
-                fixturesRun = true;
-            }
-
-            StartTest();
-        }
+        public void SetUp() => StartTest();
 
         [TearDown]
-        public void TearDown() {
-            base.EndTest();
-        }
-
-        private const string databaseName = "TestPolymorphicNavigator";
-
-        protected override string[] Namespaces {
-            get { return new[] {typeof(PolymorphicPayment).Namespace}; }
-        }
-
-        protected override EntityObjectStoreConfiguration Persistor {
-            get {
-                var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-                config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(databaseName));
-                return config;
-            }
-        }
-
-        //protected override void RegisterTypes(IServiceCollection services)
-        //{
-        //    base.RegisterTypes(services);
-        //    var config = new EntityObjectStoreConfiguration { EnforceProxies = false };
-        //    config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(databaseName));
-        //    services.AddSingleton<IEntityObjectStoreConfiguration>(config);
-        //    services.AddSingleton<IMenuFactory, NullMenuFactory>();
-        //}
+        public void TearDown() => EndTest();
 
         [OneTimeSetUp]
         public void OneTimeSetUp() {
             InitializeNakedObjectsFramework(this);
+            RunFixtures();
         }
 
         [OneTimeTearDown]
         public void DeleteDatabase() {
-            // Database.Delete(databaseName);
             CleanupNakedObjectsFramework(this);
         }
 
-        private static bool fixturesRun;
+        private const string DatabaseName = "TestPolymorphicNavigator";
 
-        protected override object[] Fixtures {
-            get { return new object[] {new FixtureEntities(), new FixtureLinksUsingTypeName()}; }
+        protected override string[] Namespaces => new[] {typeof(PolymorphicPayment).Namespace};
+
+        protected override EntityObjectStoreConfiguration Persistor {
+            get {
+                var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+                config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(DatabaseName));
+                return config;
+            }
         }
+
+        protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeName()};
 
         [Test]
         public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {
@@ -73,7 +49,6 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         }
 
         [Test]
-        //[Ignore("investigate")]
         public override void AttemptToAddSameItemTwice() {
             base.AttemptToAddSameItemTwice();
         }
@@ -89,29 +64,26 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         }
 
         [Test]
-        //[Ignore("investigate")]
         public override void ClearPolymorphicProperty() {
             base.ClearPolymorphicProperty();
         }
 
         [Test]
-        //[Ignore("investigate")]
         public override void FindOwnersForObject() {
             base.FindOwnersForObject();
         }
 
         [Test]
         public void PolymorphicCollectionAddDifferentItems() {
-            base.PolymorphicCollectionAddDifferentItems("NakedObjects.SystemTest.PolymorphicAssociations.InvoiceAsPayableItem", "NakedObjects.SystemTest.PolymorphicAssociations.ExpenseClaimAsPayableItem");
+            PolymorphicCollectionAddDifferentItems("NakedObjects.SystemTest.PolymorphicAssociations.InvoiceAsPayableItem", "NakedObjects.SystemTest.PolymorphicAssociations.ExpenseClaimAsPayableItem");
         }
 
         [Test]
         public void PolymorphicCollectionAddMutlipleItemsOfOneType() {
-            base.PolymorphicCollectionAddMutlipleItemsOfOneType("NakedObjects.SystemTest.PolymorphicAssociations.InvoiceAsPayableItem");
+            PolymorphicCollectionAddMutlipleItemsOfOneType("NakedObjects.SystemTest.PolymorphicAssociations.InvoiceAsPayableItem");
         }
 
         [Test]
-        //[Ignore("investigate")]
         public override void RemoveItem() {
             base.RemoveItem();
         }
@@ -123,7 +95,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
 
         [Test]
         public void SetPolymorphicPropertyOnTransientObject() {
-            base.SetPolymorphicPropertyOnTransientObject("NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee");
+            SetPolymorphicPropertyOnTransientObject("NakedObjects.SystemTest.PolymorphicAssociations.CustomerAsPayee");
         }
     }
 }

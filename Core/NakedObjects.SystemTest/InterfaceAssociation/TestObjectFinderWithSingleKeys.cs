@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using NakedObjects.Services;
@@ -14,16 +15,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
     [TestFixture]
     public class TestObjectFinderWithSingleKeys : AbstractSystemTest<PaymentContext> {
-        [TearDown]
-        public void CleanUp() {
-            payment1 = null;
-            customer1 = null;
-            payee1 = null;
-            key1 = null;
-            emp1 = null;
-            emp2 = null;
-        }
-
         [SetUp]
         public void SetUp() {
             StartTest();
@@ -38,8 +29,26 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
         }
 
         [TearDown]
-        public void TearDown() {
-            base.EndTest();
+        public void CleanUp() {
+            EndTest();
+            payment1 = null;
+            customer1 = null;
+            payee1 = null;
+            key1 = null;
+            emp1 = null;
+            emp2 = null;
+        }
+
+        [OneTimeSetUp]
+        public void SetupTestFixture() {
+            Database.SetInitializer(new DatabaseInitializer());
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void TearDownFixture() {
+            CleanupNakedObjectsFramework(this);
+            PaymentContext.Delete();
         }
 
         private ITestObject customer1;
@@ -51,27 +60,16 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
         private ITestObject payment1;
         private ITestObject supplier1;
 
-        protected override string[] Namespaces {
-            get { return new[] {typeof(Payment).Namespace}; }
-        }
+        protected override string[] Namespaces => new[] {typeof(Payment).Namespace};
 
-        protected override object[] MenuServices {
-            get {
-                return new object[] {
-                    new ObjectFinder(),
-                    new SimpleRepository<Payment>(),
-                    new SimpleRepository<Customer>(),
-                    new SimpleRepository<Supplier>(),
-                    new SimpleRepository<Employee>()
-                };
-            }
-        }
-
-        [OneTimeSetUp]
-        public void SetupTestFixture() {
-            Database.SetInitializer(new DatabaseInitializer());
-            InitializeNakedObjectsFramework(this);
-        }
+        protected override Type[] Services =>
+            new[] {
+                typeof(ObjectFinder),
+                typeof(SimpleRepository<Payment>),
+                typeof(SimpleRepository<Customer>),
+                typeof(SimpleRepository<Supplier>),
+                typeof(SimpleRepository<Employee>)
+            };
 
         [Test]
         public void ChangeAssociatedObjectType() {
@@ -104,7 +102,6 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
         }
 
         [Test]
-        //[Ignore("investigate")]
         public void GetAssociatedObjectWithAStringKey() {
             key1.SetValue("NakedObjects.SystemTest.ObjectFinderSingleKey.Employee|foo");
             payee1.AssertObjectIsEqual(emp1);
@@ -116,7 +113,6 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
         }
 
         [Test]
-        //[Ignore("investigate")]
         public void NoAssociatedObject() {
             key1.AssertIsEmpty();
         }

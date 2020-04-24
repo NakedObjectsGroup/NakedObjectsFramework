@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -15,36 +16,33 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.ObjectFinderInstances {
     [TestFixture]
     public class TestObjectFinderInstances : AbstractSystemTest<PaymentContext> {
-        [TearDown]
-        public void CleanUp() {
-            EndTest();
-        }
-
         [SetUp]
-        public void SetUp() {
-            StartTest();
-        }
+        public void SetUp() => StartTest();
 
-        protected override string[] Namespaces {
-            get { return new[] {typeof(Customer).Namespace}; }
-        }
-
-        protected override object[] MenuServices {
-            get {
-                return new object[] {
-                    new ObjectFinder(),
-                    new SimpleRepository<Customer>(),
-                    new SimpleRepository<Supplier>(),
-                    new MyService()
-                };
-            }
-        }
+        [TearDown]
+        public void CleanUp() => EndTest();
 
         [OneTimeSetUp]
         public void SetupTestFixture() {
             Database.SetInitializer(new DatabaseInitializer());
             InitializeNakedObjectsFramework(this);
         }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown() {
+            CleanupNakedObjectsFramework(this);
+            PaymentContext.Delete();
+        }
+
+        protected override string[] Namespaces => new[] {typeof(Customer).Namespace};
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(ObjectFinder),
+                typeof(SimpleRepository<Customer>),
+                typeof(SimpleRepository<Supplier>),
+                typeof(MyService)
+            };
 
         [Test]
         public void FindInstances() {

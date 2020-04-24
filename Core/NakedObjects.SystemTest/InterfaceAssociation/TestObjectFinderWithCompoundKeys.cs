@@ -17,33 +17,10 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
     [TestFixture]
     public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {
         [SetUp]
-        public void SetUp() {
-            Initialize();
-        }
+        public void SetUp() => Initialize();
 
         [TearDown]
-        public void TearDown() {
-            CleanUp();
-        }
-
-        protected override string[] Namespaces {
-            get { return new[] {typeof(Payment).Namespace}; }
-        }
-
-        protected override object[] MenuServices {
-            get {
-                return new object[] {
-                    new ObjectFinder(),
-                    new SimpleRepository<Payment>(),
-                    new SimpleRepository<CustomerOne>(),
-                    new SimpleRepository<CustomerTwo>(),
-                    new SimpleRepository<CustomerThree>(),
-                    new SimpleRepository<CustomerFour>(),
-                    new SimpleRepository<Supplier>(),
-                    new SimpleRepository<Employee>()
-                };
-            }
-        }
+        public void TearDown() => CleanUp();
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
@@ -58,7 +35,22 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         [OneTimeTearDown]
         public void TearDownTest() {
             CleanupNakedObjectsFramework(this);
+            PaymentContext.Delete();
         }
+
+        protected override string[] Namespaces => new[] {typeof(Payment).Namespace};
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(ObjectFinder),
+                typeof(SimpleRepository<Payment>),
+                typeof(SimpleRepository<CustomerOne>),
+                typeof(SimpleRepository<CustomerTwo>),
+                typeof(SimpleRepository<CustomerThree>),
+                typeof(SimpleRepository<CustomerFour>),
+                typeof(SimpleRepository<Supplier>),
+                typeof(SimpleRepository<Employee>)
+            };
 
         [Test]
         public virtual void ChangeAssociatedObjectType() {
