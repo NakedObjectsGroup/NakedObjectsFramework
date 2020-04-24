@@ -16,20 +16,10 @@ namespace NakedObjects.SystemTest.Enum {
     [TestFixture]
     public class EnumTest : AbstractSystemTest<EnumDbContext> {
         [SetUp]
-        public void SetUp() {
-            StartTest();
-        }
+        public void SetUp() => StartTest();
 
         [TearDown]
-        public void TearDown() { }
-
-        protected override Type[] Types {
-            get { return new[] {typeof(Foo), typeof(Sexes), typeof(HairColours)}; }
-        }
-
-        protected override object[] MenuServices {
-            get { return new object[] {new SimpleRepository<Foo>()}; }
-        }
+        public void TearDown() => EndTest();
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
@@ -43,7 +33,12 @@ namespace NakedObjects.SystemTest.Enum {
         [OneTimeTearDown]
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
+            EnumDbContext.Delete();
         }
+
+        protected override Type[] Types => new[] {typeof(Foo), typeof(Sexes), typeof(HairColours)};
+
+        protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
 
         [Test]
         public virtual void EnumParameter() {

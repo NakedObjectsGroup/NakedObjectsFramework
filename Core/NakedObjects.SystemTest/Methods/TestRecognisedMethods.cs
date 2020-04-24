@@ -19,14 +19,10 @@ namespace NakedObjects.SystemTest.Method {
     [TestFixture]
     public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
         [SetUp]
-        public void SetUp() {
-            StartTest();
-        }
+        public void SetUp() => StartTest();
 
         [TearDown]
-        public void TearDown() {
-            EndTest();
-        }
+        public void TearDown() => EndTest();
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
@@ -40,77 +36,71 @@ namespace NakedObjects.SystemTest.Method {
         [OneTimeTearDown]
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
+            MethodsDbContext.Delete();
         }
 
-        protected override string[] Namespaces {
-            get { return new[] {typeof(Auto1).Namespace}; }
-        }
+        protected override string[] Namespaces => new[] {typeof(Auto1).Namespace};
 
-        protected override Type[] Types {
-            get { return new[] {typeof(Sex)}; }
-        }
+        protected override Type[] Types => new[] {typeof(Sex)};
 
-        protected override object[] MenuServices {
-            get {
-                return new object[] {
-                    new SimpleRepository<Auto1>(),
-                    new SimpleRepository<Auto2>(),
-                    new SimpleRepository<Auto3>(),
-                    new SimpleRepository<Choices1>(),
-                    new SimpleRepository<Choices2>(),
-                    new SimpleRepository<Choices3>(),
-                    new SimpleRepository<Choices4>(),
-                    new SimpleRepository<Clear1>(),
-                    new SimpleRepository<Clear2>(),
-                    new SimpleRepository<Clear3>(),
-                    new SimpleRepository<Created1>(),
-                    new SimpleRepository<Created2>(),
-                    new SimpleRepository<Default1>(),
-                    new SimpleRepository<Default2>(),
-                    new SimpleRepository<Default3>(),
-                    new SimpleRepository<Default4>(),
-                    new SimpleRepository<Deleted1>(),
-                    new SimpleRepository<Deleted2>(),
-                    new SimpleRepository<Deleting1>(),
-                    new SimpleRepository<Deleting2>(),
-                    new SimpleRepository<Disable1>(),
-                    new SimpleRepository<Disable2>(),
-                    new SimpleRepository<Disable3>(),
-                    new SimpleRepository<Hide1>(),
-                    new SimpleRepository<Hide2>(),
-                    new SimpleRepository<Hide3>(),
-                    new SimpleRepository<Modify1>(),
-                    new SimpleRepository<Modify2>(),
-                    new SimpleRepository<Modify3>(),
-                    new SimpleRepository<Modify4>(),
-                    new SimpleRepository<Persisted1>(),
-                    new SimpleRepository<Persisted2>(),
-                    new SimpleRepository<Persisted3>(),
-                    new SimpleRepository<Persisting1>(),
-                    new SimpleRepository<Persisting2>(),
-                    new SimpleRepository<Title1>(),
-                    new SimpleRepository<Title2>(),
-                    new SimpleRepository<Title3>(),
-                    new SimpleRepository<Title4>(),
-                    new SimpleRepository<Title5>(),
-                    new SimpleRepository<Title6>(),
-                    new SimpleRepository<Title7>(),
-                    new SimpleRepository<Title8>(),
-                    new SimpleRepository<Title9>(),
-                    new SimpleRepository<Title10>(),
-                    new SimpleRepository<Title11>(),
-                    new SimpleRepository<Updated1>(),
-                    new SimpleRepository<Updated2>(),
-                    new SimpleRepository<Updating1>(),
-                    new SimpleRepository<Updating2>(),
-                    new SimpleRepository<Validate1>(),
-                    new SimpleRepository<Validate2>(),
-                    new SimpleRepository<Validate3>(),
-                    new SimpleRepository<Validate4>(),
-                    new SimpleRepository<Validate5>()
-                };
-            }
-        }
+        protected override Type[] Services =>
+            new[] {
+                typeof(SimpleRepository<Auto1>),
+                typeof(SimpleRepository<Auto2>),
+                typeof(SimpleRepository<Auto3>),
+                typeof(SimpleRepository<Choices1>),
+                typeof(SimpleRepository<Choices2>),
+                typeof(SimpleRepository<Choices3>),
+                typeof(SimpleRepository<Choices4>),
+                typeof(SimpleRepository<Clear1>),
+                typeof(SimpleRepository<Clear2>),
+                typeof(SimpleRepository<Clear3>),
+                typeof(SimpleRepository<Created1>),
+                typeof(SimpleRepository<Created2>),
+                typeof(SimpleRepository<Default1>),
+                typeof(SimpleRepository<Default2>),
+                typeof(SimpleRepository<Default3>),
+                typeof(SimpleRepository<Default4>),
+                typeof(SimpleRepository<Deleted1>),
+                typeof(SimpleRepository<Deleted2>),
+                typeof(SimpleRepository<Deleting1>),
+                typeof(SimpleRepository<Deleting2>),
+                typeof(SimpleRepository<Disable1>),
+                typeof(SimpleRepository<Disable2>),
+                typeof(SimpleRepository<Disable3>),
+                typeof(SimpleRepository<Hide1>),
+                typeof(SimpleRepository<Hide2>),
+                typeof(SimpleRepository<Hide3>),
+                typeof(SimpleRepository<Modify1>),
+                typeof(SimpleRepository<Modify2>),
+                typeof(SimpleRepository<Modify3>),
+                typeof(SimpleRepository<Modify4>),
+                typeof(SimpleRepository<Persisted1>),
+                typeof(SimpleRepository<Persisted2>),
+                typeof(SimpleRepository<Persisted3>),
+                typeof(SimpleRepository<Persisting1>),
+                typeof(SimpleRepository<Persisting2>),
+                typeof(SimpleRepository<Title1>),
+                typeof(SimpleRepository<Title2>),
+                typeof(SimpleRepository<Title3>),
+                typeof(SimpleRepository<Title4>),
+                typeof(SimpleRepository<Title5>),
+                typeof(SimpleRepository<Title6>),
+                typeof(SimpleRepository<Title7>),
+                typeof(SimpleRepository<Title8>),
+                typeof(SimpleRepository<Title9>),
+                typeof(SimpleRepository<Title10>),
+                typeof(SimpleRepository<Title11>),
+                typeof(SimpleRepository<Updated1>),
+                typeof(SimpleRepository<Updated2>),
+                typeof(SimpleRepository<Updating1>),
+                typeof(SimpleRepository<Updating2>),
+                typeof(SimpleRepository<Validate1>),
+                typeof(SimpleRepository<Validate2>),
+                typeof(SimpleRepository<Validate3>),
+                typeof(SimpleRepository<Validate4>),
+                typeof(SimpleRepository<Validate5>)
+            };
 
         private void CreateAuto2(string prop1) {
             var obj2 = NewTestObject<Auto2>();
@@ -1030,7 +1020,6 @@ namespace NakedObjects.SystemTest.Method {
         }
 
         [Test]
-        //[Ignore("investigate")]
         public void UpdatedCalled() {
             var obj1 = NewTestObject<Updated1>();
             var dom1 = (Updated1) obj1.GetDomainObject();
@@ -1058,7 +1047,6 @@ namespace NakedObjects.SystemTest.Method {
         }
 
         [Test]
-        //[Ignore("investigate")]
         public void UpdatingCalled() {
             var obj1 = NewTestObject<Updating1>();
             var dom1 = (Updating1) obj1.GetDomainObject();

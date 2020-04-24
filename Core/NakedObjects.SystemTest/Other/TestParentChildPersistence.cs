@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using NakedObjects.Services;
@@ -15,26 +16,14 @@ namespace NakedObjects.SystemTest.ParentChild {
         [TestFixture]
         public class TestParentChildPersistence : AbstractSystemTest<ParentChildDbContext> {
             [SetUp]
-            public void SetUp() {
-                StartTest();
-            }
+            public void SetUp() => StartTest();
 
-            protected override string[] Namespaces {
-                get { return new[] {typeof(Parent).Namespace}; }
-            }
-
-            protected override object[] MenuServices {
-                get {
-                    return new object[] {
-                        new SimpleRepository<Parent>(),
-                        new SimpleRepository<Parent2>(),
-                        new SimpleRepository<Child>()
-                    };
-                }
-            }
+            [TearDown]
+            public void TearDown() => EndTest();
 
             [OneTimeSetUp]
             public void FixtureSetUp() {
+                ParentChildDbContext.Delete();
                 InitializeNakedObjectsFramework(this);
             }
 
@@ -43,6 +32,15 @@ namespace NakedObjects.SystemTest.ParentChild {
                 CleanupNakedObjectsFramework(this);
                 ParentChildDbContext.Delete();
             }
+
+            protected override string[] Namespaces => new[] {typeof(Parent).Namespace};
+
+            protected override Type[] Services =>
+                new[] {
+                    typeof(SimpleRepository<Parent>),
+                    typeof(SimpleRepository<Parent2>),
+                    typeof(SimpleRepository<Child>)
+                };
 
             [Test]
             public virtual void CannotSaveParentIfChildHasMandatoryFieldsMissing() {
