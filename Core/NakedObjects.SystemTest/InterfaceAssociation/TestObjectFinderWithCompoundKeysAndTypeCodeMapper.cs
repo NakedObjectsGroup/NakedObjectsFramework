@@ -142,7 +142,6 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
         }
 
         [Test]
-        ////[Ignore("investigate")]
         public void NoAssociatedObject() {
             key1.AssertIsEmpty();
         }

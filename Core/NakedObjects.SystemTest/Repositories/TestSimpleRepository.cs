@@ -28,18 +28,7 @@ namespace NakedObjects.SystemTest.Repositories {
         }
 
         [TearDown]
-        public void TearDown() { }
-
-        protected override object[] MenuServices {
-            get {
-                return new object[] {
-                    new SimpleRepository<Customer>()
-                };
-            }
-        }
-
-        private Customer cust1;
-        private Customer cust2;
+        public void TearDown() => EndTest();
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
@@ -53,12 +42,18 @@ namespace NakedObjects.SystemTest.Repositories {
         [OneTimeTearDown]
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
-            //Database.Delete(SimpleRepositoryDbContext.DatabaseName);
+            SimpleRepositoryDbContext.Delete();
         }
 
-        protected override string[] Namespaces {
-            get { return new[] {typeof(Customer).Namespace}; }
-        }
+        protected override Type[] Services =>
+            new[] {
+                typeof(SimpleRepository<Customer>)
+            };
+
+        protected override string[] Namespaces => new[] {typeof(Customer).Namespace};
+
+        private Customer cust1;
+        private Customer cust2;
 
         [Test]
         public void FindByKey() {

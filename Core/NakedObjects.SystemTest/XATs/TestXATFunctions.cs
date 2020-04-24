@@ -24,27 +24,34 @@ namespace NakedObjects.SystemTest.XATs {
     [TestFixture]
     public class TestXATFunctions : AbstractSystemTest<XatDbContext> {
         [SetUp]
-        public void SetUp() {
-            StartTest();
-        }
+        public void SetUp() => StartTest();
 
         [TearDown]
-        public void TearDown() { }
+        public void TearDown() => EndTest();
+
+        [OneTimeSetUp]
+        public void FixtureSetUp() {
+            XatDbContext.Delete();
+            var context = Activator.CreateInstance<XatDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown() {
+            CleanupNakedObjectsFramework(this);
+            XatDbContext.Delete();
+        }
+
+        protected override string[] Namespaces => new[] {typeof(Object1).Namespace};
+
+        protected override Type[] Services => new[] {typeof(SimpleRepository<Object1>), typeof(MyService1), typeof(MyService2)};
 
         public enum TestEnum {
             Value1,
             Value2
         }
-
-        protected override string[] Namespaces {
-            get { return new[] {typeof(Object1).Namespace}; }
-        }
-
-        protected override object[] MenuServices {
-            get { return new object[] {new SimpleRepository<Object1>(), new MyService1(), new MyService2()}; }
-        }
-
-        protected override object[] Fixtures => base.Fixtures;
 
         public class MyService1 { }
 
@@ -96,21 +103,6 @@ namespace NakedObjects.SystemTest.XATs {
             public void ActionNumber3(string p1, int p2) { }
 
             public void ActionNumber4(string p1, int p2) { }
-        }
-
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            XatDbContext.Delete();
-            var context = Activator.CreateInstance<XatDbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-            XatDbContext.Delete();
         }
 
         [Test]
