@@ -35,7 +35,7 @@ namespace NakedObjects.Selenium {
 
             Assembly assembly = Assembly.GetExecutingAssembly();
 
-            using (Stream stream = assembly.GetManifestResourceStream("NakedObjects.Selenium." + resourcename)) {
+            using (Stream stream = assembly.GetManifestResourceStream("NakedObjects.Spa.Selenium.Test." + resourcename)) {
                 using (FileStream fileStream = File.Create(newFile, (int) stream.Length)) {
                     var bytesInStream = new byte[stream.Length];
                     stream.Read(bytesInStream, 0, bytesInStream.Length);
