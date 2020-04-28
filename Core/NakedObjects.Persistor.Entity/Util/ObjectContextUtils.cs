@@ -24,6 +24,12 @@ namespace NakedObjects.Persistor.Entity.Util {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectContextUtils));
         private static readonly Dictionary<Type, IList<object>> GeneratedKeys = new Dictionary<Type, IList<object>>();
 
+        internal static T Invoke<T>(this object onObject, string name, params object[] parms) => (T) onObject.GetType().GetMethod(name)?.Invoke(onObject, parms);
+
+        internal static void Invoke(this object onObject, string name, params object[] parms) => onObject.GetType().GetMethod(name)?.Invoke(onObject, parms);
+
+        internal static T GetProperty<T>(this object onObject, string name) => (T)onObject.GetType().GetProperty(name)?.GetValue(onObject);
+
         private static string GetNamespaceForType(this ObjectContext context, Type type) {
             return context.MetadataWorkspace.GetItems(DataSpace.CSpace).Where(x => x.BuiltInTypeKind == BuiltInTypeKind.EntityType || x.BuiltInTypeKind == BuiltInTypeKind.ComplexType).OfType<EdmType>().Where(et => et.Name == type.Name).Select(et => et.NamespaceName).SingleOrDefault();
         }
@@ -72,16 +78,6 @@ namespace NakedObjects.Persistor.Entity.Util {
             GeneratedKeys[type].Add(key);
 
             return key;
-        }
-
-        public static object GetNextKey(this EntityObjectStore.LocalContext context, Type type) {
-            PropertyInfo idMember = context.GetIdMembers(type).Single();
-            string query = string.Format("max(it.{0}) + 1", idMember.Name);
-
-            dynamic os = context.GetObjectSet(type);
-            ObjectQuery<DbDataRecord> results = os.Select(query);
-            DbDataRecord result = results.Single();
-            return GetNextKey(type, result.IsDBNull(0) ? 1 : (int) result[0]);
         }
 
         public static bool IdMembersAreIdentity(this EntityObjectStore.LocalContext context, Type type) {
@@ -145,15 +141,15 @@ namespace NakedObjects.Persistor.Entity.Util {
             return context.GetMembers(type).Where(x => !context.GetIdMembers(type).Contains(x)).ToArray();
         }
 
-        public static dynamic CreateQuery(this EntityObjectStore.LocalContext context, Type type, string queryString, params ObjectParameter[] parameters) {
+        public static object CreateQuery(this EntityObjectStore.LocalContext context, Type type, string queryString, params ObjectParameter[] parameters) {
             Type mostBaseType = context.GetMostBaseType(type);
             MethodInfo mi = context.WrappedObjectContext.GetType().GetMethod("CreateQuery").MakeGenericMethod(mostBaseType);
             var parms = new List<object> {queryString, new ObjectParameter[] { }};
 
-            dynamic os = mi.Invoke(context.WrappedObjectContext, parms.ToArray());
+            object os = mi.Invoke(context.WrappedObjectContext, parms.ToArray());
 
             if (type != mostBaseType) {
-                dynamic ot = os.GetType().GetMethod("OfType").MakeGenericMethod(type);
+                MethodInfo ot = os.GetType().GetMethod("OfType").MakeGenericMethod(type);
                 os = ot.Invoke(os, null);
             }
 
@@ -177,10 +173,10 @@ namespace NakedObjects.Persistor.Entity.Util {
             return false;
         }
 
-        public static dynamic GetObjectSet(this EntityObjectStore.LocalContext context, Type type) {
+        public static ObjectQuery GetObjectSet(this EntityObjectStore.LocalContext context, Type type) {
             Type mostBaseType = context.GetMostBaseType(type);
             MethodInfo mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(mostBaseType);
-            dynamic os = mi.Invoke(context.WrappedObjectContext, null);
+            ObjectQuery os = (ObjectQuery) mi.Invoke(context.WrappedObjectContext, null);
             os.MergeOption = context.DefaultMergeOption;
             return os;
         }
@@ -192,17 +188,17 @@ namespace NakedObjects.Persistor.Entity.Util {
             return os.OfType<TDerived>();
         }
 
-        public static dynamic GetQueryableOfDerivedType<T>(this EntityObjectStore.LocalContext context) {
+        public static object GetQueryableOfDerivedType<T>(this EntityObjectStore.LocalContext context) {
             return context.GetQueryableOfDerivedType(typeof(T));
         }
 
-        public static dynamic GetQueryableOfDerivedType(this EntityObjectStore.LocalContext context, Type type) {
+        public static object GetQueryableOfDerivedType(this EntityObjectStore.LocalContext context, Type type) {
             Type mostBaseType = context.GetMostBaseType(type);
             MethodInfo mi = typeof(ObjectContextUtils).GetMethod("GetObjectSetOfType").MakeGenericMethod(type, mostBaseType);
             return InvokeUtils.InvokeStatic(mi, new object[] {context});
         }
 
-        public static dynamic CreateObject(this EntityObjectStore.LocalContext context, Type type) {
+        public static object CreateObject(this EntityObjectStore.LocalContext context, Type type) {
             object objectSet = context.GetObjectSet(type);
             MethodInfo[] methods = objectSet.GetType().GetMethods();
             MethodInfo mi = methods.Single(m => m.Name == "CreateObject" && m.IsGenericMethod).MakeGenericMethod(type);
@@ -214,13 +210,13 @@ namespace NakedObjects.Persistor.Entity.Util {
                 return objectToProxy;
             }
 
-            object newObject = context.GetObjectSet(objectToProxy.GetType()).CreateObject();
+            object newObject = context.GetObjectSet(objectToProxy.GetType()).Invoke<object>( "CreateObject");
 
             PropertyInfo[] idMembers = context.GetIdMembers(objectToProxy.GetType());
 
             idMembers.ForEach(pi => newObject.GetType().GetProperty(pi.Name).SetValue(newObject, pi.GetValue(objectToProxy, null), null));
 
-            return context.GetObjectSet(objectToProxy.GetType()).ApplyCurrentValues((dynamic) newObject);
+            return context.GetObjectSet(objectToProxy.GetType()).Invoke<object>("ApplyCurrentValues", newObject);
         }
 
         public static object[] GetKey(this EntityObjectStore.LocalContext context, object domainObject) {

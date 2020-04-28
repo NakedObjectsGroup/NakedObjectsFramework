@@ -258,12 +258,11 @@ namespace NakedObjects.Persistor.Entity.Component {
                 LocalContext currentContext = GetContext(entityType);
 
                 IEnumerable<string> propertynames = currentContext.GetNavigationMembers(entityType).Select(x => x.Name);
-                dynamic objectSet = currentContext.GetObjectSet(entityType);
+                ObjectQuery objectSet = currentContext.GetObjectSet(entityType);
 
-                // can't use LINQ with dynamic
                 // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (string name in propertynames) {
-                    objectSet = objectSet.Include(name);
+                    objectSet = objectSet.Invoke<ObjectQuery>("Include", name);
                 }
 
                 IList<PropertyInfo> idmembers = currentContext.GetIdMembers(entityType);
@@ -275,7 +274,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 string query = memberValueMap.Aggregate(string.Empty, (s, kvp) => string.Format("{0}it.{1}=@{1}", s.Length == 0 ? s : s + " and ", kvp.Key));
                 ObjectParameter[] parms = memberValueMap.Select(kvp => new ObjectParameter(kvp.Key, kvp.Value)).ToArray();
 
-                First(objectSet.Where(query, parms));
+                First(objectSet.Invoke<IEnumerable>("Where", query, parms) );
             }
 
             EndResolving(nakedObjectAdapter);
@@ -287,11 +286,11 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         public IQueryable<T> GetInstances<T>() where T : class {
-            return GetContext(typeof(T)).GetQueryableOfDerivedType<T>();
+            return (IQueryable<T>)  GetContext(typeof(T)).GetQueryableOfDerivedType<T>();
         }
 
         public IQueryable GetInstances(Type type) {
-            return GetContext(type).GetQueryableOfDerivedType(type);
+            return (IQueryable)  GetContext(type).GetQueryableOfDerivedType(type);
         }
 
         public object CreateInstance(Type type) {
@@ -560,20 +559,20 @@ namespace NakedObjects.Persistor.Entity.Component {
             LocalContext context = GetContext(type);
             List<KeyValuePair<string, object>> memberValueMap = GetMemberValueMap(type, eoid, out entitySetName);
 
-            dynamic oq = context.CreateQuery(type, entitySetName);
+            object oq = context.CreateQuery(type, entitySetName);
 
             foreach (KeyValuePair<string, object> kvp in memberValueMap) {
                 string query = string.Format("it.{0}=@{0}", kvp.Key);
-                oq = oq.Where(query, new ObjectParameter(kvp.Key, kvp.Value));
+                oq = oq.Invoke<object>("Where", query, new[] {new ObjectParameter(kvp.Key, kvp.Value)});
             }
 
-            context.GetNavigationMembers(type).Where(m => !CollectionUtils.IsCollection(m.PropertyType)).ForEach(pi => oq = oq.Include(pi.Name));
-            return First((IEnumerable) oq.Execute(context.DefaultMergeOption));
+            context.GetNavigationMembers(type).Where(m => !CollectionUtils.IsCollection(m.PropertyType)).ForEach(pi => oq = oq.Invoke<object>("Include", pi.Name));
+            return First(oq.Invoke<IEnumerable>("Execute", context.DefaultMergeOption));
         }
 
         private List<KeyValuePair<string, object>> GetMemberValueMap(Type type, IEntityOid eoid, out string entitySetName) {
             LocalContext context = GetContext(type);
-            dynamic set = context.GetObjectSet(type).EntitySet;
+            EntitySet set = context.GetObjectSet(type).GetProperty<EntitySet>("EntitySet");
             entitySetName = set.EntityContainer.Name + "." + set.Name;
             IList<PropertyInfo> idmembers = context.GetIdMembers(type);
             IList<object> keyValues = eoid.Key;
@@ -712,7 +711,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         private static IEnumerable<object> GetRelationshipEndsForEntity(IEnumerable<ObjectStateEntry> addedOses) {
             IEnumerable<IRelatedEnd> relatedends = addedOses.Where(ose => !ose.IsRelationship).SelectMany(x => x.RelationshipManager.GetAllRelatedEnds());
             IEnumerable<IRelatedEnd> references = relatedends.Where(x => x.GetType().GetGenericTypeDefinition() == typeof(EntityReference<>));
-            return references.Select<IRelatedEnd, object>(x => ((dynamic) x).Value);
+            return references.Select<IRelatedEnd, object>(x => x.GetProperty<object>("Value"));
         }
 
         private static IEnumerable<object> GetChangedComplexObjectsInContext(LocalContext context) {
@@ -850,7 +849,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                     }
 
                     if (add) {
-                        context.GetObjectSet(originalObject.GetEntityProxiedType()).AddObject(originalObject);
+                        context.GetObjectSet(originalObject.GetEntityProxiedType()).Invoke("AddObject", originalObject);
                     }
 
                     return originalObject;
@@ -870,7 +869,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
 
             private object ProxyObject(object originalObject, INakedObjectAdapter adapterForOriginalObjectAdapter) {
-                dynamic objectToAdd = context.CreateObject(originalObject.GetType());
+                object objectToAdd = context.CreateObject(originalObject.GetType());
 
                 bool proxied = objectToAdd.GetType() != originalObject.GetType();
                 if (!proxied) {
@@ -885,7 +884,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 INakedObjectAdapter proxyAdapter = parent.createAdapter(null, objectToAdd);
 
                 SetKeyAsNecessary(originalObject, objectToAdd);
-                context.GetObjectSet(originalObject.GetType()).AddObject(objectToAdd);
+                context.GetObjectSet(originalObject.GetType()).Invoke("AddObject", objectToAdd);
 
                 if (proxied) {
                     ProxyReferencesAndCopyValuesToProxy(originalObject, objectToAdd);
@@ -931,7 +930,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 }
             }
 
-            private void ProxyReferencesAndCopyValuesToProxy(object objectToProxy, dynamic proxy) {
+            private void ProxyReferencesAndCopyValuesToProxy(object objectToProxy, object proxy) {
                 PropertyInfo[] nonIdMembers = context.GetNonIdMembers(objectToProxy.GetType());
                 nonIdMembers.ForEach(pi => proxy.GetType().GetProperty(pi.Name).SetValue(proxy, pi.GetValue(objectToProxy, null), null));
 
@@ -940,10 +939,10 @@ namespace NakedObjects.Persistor.Entity.Component {
 
                 PropertyInfo[] colmembers = context.GetCollectionMembers(objectToProxy.GetType());
                 foreach (PropertyInfo pi in colmembers) {
-                    dynamic toCol = proxy.GetType().GetProperty(pi.Name).GetValue(proxy, null);
+                    object toCol = proxy.GetType().GetProperty(pi.Name).GetValue(proxy, null);
                     var fromCol = (IEnumerable) pi.GetValue(objectToProxy, null);
                     foreach (object item in fromCol) {
-                        toCol.Add((dynamic) ProxyObjectIfAppropriate(item));
+                        toCol.Invoke("Add", ProxyObjectIfAppropriate(item));
                     }
                 }
 
