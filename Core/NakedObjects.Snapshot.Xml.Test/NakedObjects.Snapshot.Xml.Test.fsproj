@@ -13,7 +13,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,6 +49,10 @@
     <ProjectReference Include="..\NakedObjects.Snapshot.Xml.Test.Data\NakedObjects.Snapshot.Xml.Test.Data.csproj" />
     <ProjectReference Include="..\NakedObjects.Snapshot.Xml\NakedObjects.Snapshot.Xml.csproj" />
     <ProjectReference Include="..\NakedObjects.Xat\NakedObjects.Xat.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="4.7.1" />
   </ItemGroup>
 
 </Project>
