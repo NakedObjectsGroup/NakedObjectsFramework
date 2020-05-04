@@ -10,23 +10,20 @@ open NakedObjects.Facade
 open NakedObjects.Rest
 open RestfulObjects.Test.Data
 
-//#if APPVEYOR 
+let appveyorServer = @"Data Source=(local)\SQL2017;"
+let localServer = @"Data Source=.\SQLEXPRESS;"
 
-let csRTA = @"Data Source=.\SQL2017;Initial Catalog=RestTestA;Integrated Security=True;"
-let csRTB = @"Data Source=.\SQL2017;Initial Catalog=RestTestB;Integrated Security=True;"
-let csRTZ = @"Data Source=.\SQL2017;Initial Catalog=RestTestZ;Integrated Security=True;"
-let csRTD = @"Data Source=.\SQL2017;Initial Catalog=RestTestD;Integrated Security=True;"
-let csRTDT = @"Data Source=.\SQL2017;Initial Catalog=RestTestDT;Integrated Security=True;"
+#if APPVEYOR 
+let server = appveyorServer
+#else
+let server = localServer
+#endif
 
-//#else
-
-//let csRTA = @"Data Source=.\SQLEXPRESS;Initial Catalog=RestTestA;Integrated Security=True;"
-//let csRTB = @"Data Source=.\SQLEXPRESS;Initial Catalog=RestTestB;Integrated Security=True;"
-//let csRTZ = @"Data Source=.\SQLEXPRESS;Initial Catalog=RestTestZ;Integrated Security=True;"
-//let csRTD = @"Data Source=.\SQLEXPRESS;Initial Catalog=RestTestD;Integrated Security=True;"
-//let csRTDT = @"Data Source=.\SQLEXPRESS;Initial Catalog=RestTestDT;Integrated Security=True;"
-
-//#endif
+let csRTA = server + @"Initial Catalog=RestTestA;Integrated Security=True;"
+let csRTB = server + @"Initial Catalog=RestTestB;Integrated Security=True;"
+let csRTZ = server + @"Initial Catalog=RestTestZ;Integrated Security=True;"
+let csRTD = server + @"Initial Catalog=RestTestD;Integrated Security=True;"
+let csRTDT = server + @"Initial Catalog=RestTestDT;Integrated Security=True;"
 
 
 type CodeFirstInitializer() = 
