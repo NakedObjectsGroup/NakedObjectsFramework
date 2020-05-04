@@ -162,18 +162,6 @@ type EntityTestSuite() =
     member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
     
     override x.Fixtures = [| box (new TestDataFixture()) |]
-    
-    override x.MenuServices = 
-        let service = new SimpleRepository<Person>()
-        [| (box service) |]
-    
-    override x.ContributedActions = 
-        let service = new SimpleRepository<Product>()
-        [| (box service) |]
-    
-    override x.SystemServices = 
-        let service = new SimpleRepository<Address>()
-        [| (box service) |]
      
     member x.Tests = new PersistorTestSuite(x.NakedObjectsFramework)
     

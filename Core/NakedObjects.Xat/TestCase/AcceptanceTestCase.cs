@@ -88,15 +88,7 @@ namespace NakedObjects.Xat {
             set { testPrincipal = value; }
         }
 
-        [Obsolete("Use NakedObjectsFramework")]
-        protected INakedObjectsFramework NakedObjectsContext { get; set; }
-
-        protected virtual INakedObjectsFramework NakedObjectsFramework {
-#pragma warning disable 618
-            get { return NakedObjectsContext; }
-            set { NakedObjectsContext = value; }
-#pragma warning restore 618
-        }
+        protected INakedObjectsFramework NakedObjectsFramework { get; set; }
 
         protected virtual object[] Fixtures {
             get { return new object[] {}; }
@@ -109,35 +101,7 @@ namespace NakedObjects.Xat {
         /// will be ignored.
         /// </summary>
         protected virtual Type[] Services {
-            get {
-                return new List<Type>().Union(MenuServices.Select(s => s.GetType()))
-                    .Union(ContributedActions.Select(s => s.GetType()))
-                    .Union(SystemServices.Select(s => s.GetType())).ToArray();
-            }
-        }
-
-        /// <summary>
-        /// For backwards compatibility only.  For new tests, register
-        /// all services in the Services property only.
-        /// </summary>
-        protected virtual object[] MenuServices {
-            get { return new object[] {}; }
-        }
-
-        /// <summary>
-        /// For backwards compatibility only.  For new tests, register
-        /// all services in the Services property only.
-        /// </summary>
-        protected virtual object[] ContributedActions {
-            get { return new object[] {}; }
-        }
-
-        /// <summary>
-        /// For backwards compatibility only.  For new tests, register
-        /// all services in the Services property only.
-        /// </summary>
-        protected virtual object[] SystemServices {
-            get { return new object[] {}; }
+            get { return new Type[] { }; }
         }
 
         protected virtual Type[] Types {
@@ -169,11 +133,9 @@ namespace NakedObjects.Xat {
         }
 
         protected virtual void StartTest() {
-#pragma warning disable 618
             ServiceScope = RootServiceProvider.CreateScope();
             scopeServiceProvider =  ServiceScope.ServiceProvider;
-            NakedObjectsContext = scopeServiceProvider.GetService<INakedObjectsFramework>();
-#pragma warning restore 618
+            NakedObjectsFramework = scopeServiceProvider.GetService<INakedObjectsFramework>();
         }
 
         protected virtual void EndTest() {
@@ -255,12 +217,10 @@ namespace NakedObjects.Xat {
         }
 
         protected virtual void RunFixtures() {
-#pragma warning disable 618
             using var fixtureServiceScope = RootServiceProvider.CreateScope();
-            NakedObjectsContext = fixtureServiceScope.ServiceProvider.GetService<INakedObjectsFramework>();
+            NakedObjectsFramework = fixtureServiceScope.ServiceProvider.GetService<INakedObjectsFramework>();
             InstallFixtures(NakedObjectsFramework.TransactionManager, NakedObjectsFramework.DomainObjectInjector, Fixtures);
-            NakedObjectsContext = null;
-#pragma warning restore 618
+            NakedObjectsFramework = null;
         }
 
         protected ITestService GetTestService<T>() {

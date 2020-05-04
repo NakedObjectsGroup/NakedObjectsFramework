@@ -47,10 +47,6 @@ type ModelSystemTests() =
     [<OneTimeTearDown>]
     member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
     
-    override x.MenuServices = 
-        let service = new SimpleRepository<Person>()
-        [| (box service) |]
-    
     member x.CreatePerson() = 
         let setter (p : Person) = 
             p.Id <- x.GetNextPersonID()

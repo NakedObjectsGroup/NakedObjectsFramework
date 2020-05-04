@@ -50,10 +50,6 @@ type DomainSystemTests() =
     [<OneTimeTearDown>]
     member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
     
-    override x.MenuServices = 
-        let service = new SimpleRepository<ScrapReason>()
-        ([| (box service) |])
-    
     member x.GetScrapReasonDomainObject() = 
         let srs = x.NakedObjectsFramework.Persistor.Instances<ScrapReason>()
         srs

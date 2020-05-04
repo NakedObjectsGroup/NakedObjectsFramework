@@ -94,13 +94,10 @@ type DomainTests() =
                "NakedObjects.XmlSnapshotService.DomainTests";
                "NakedObjects.Snapshot" |]
 
-        override x.MenuServices = 
-            let testService = new SimpleRepository<TestObject>()
-            let xmlService = new XmlSnapshotService()
-            let transformService = new TransformRepository()
-            [| (box testService)
-               (box xmlService)
-               (box transformService) |]
+        override x.Services =         
+            [| typeof<SimpleRepository<TestObject>>
+               typeof<XmlSnapshotService>
+               typeof<TransformRepository> |]
         
         member x.TestService = x.GetTestService("Test Objects")
         

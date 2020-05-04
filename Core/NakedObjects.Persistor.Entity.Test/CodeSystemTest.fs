@@ -50,10 +50,6 @@ type CodeSystemTests() =
     [<OneTimeTearDown>]
     member x.TearDownFixture() = NakedObjects.Xat.AcceptanceTestCase.CleanupNakedObjectsFramework(x)
     
-    override x.MenuServices = 
-        let service = new SimpleRepository<Person>()
-        [| (box service) |]
-    
     member x.GetPersonDomainObject() = 
         let pp = x.NakedObjectsFramework.Persistor.Instances<Person>()
         pp |> Seq.head

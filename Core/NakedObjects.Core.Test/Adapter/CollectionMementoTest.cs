@@ -110,8 +110,8 @@ namespace NakedObjects.Core.Test.Adapter {
             get { return new object[] {new TestDataFixture()}; }
         }
 
-        protected override object[] MenuServices {
-            get { return new object[] {new SimpleRepository<TestDomainObject>()}; }
+        protected override Type[] Services {
+            get { return new [] {typeof(SimpleRepository<TestDomainObject>)}; }
         }
 
         protected override EntityObjectStoreConfiguration Persistor {

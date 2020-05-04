@@ -11,7 +11,7 @@
 //using NUnit.Framework;
 
 //namespace NakedObjects.SystemTest.Util {
-//#pragma warning disable 618
+//
 //    [TestFixture]
 //    public class TitleBuilderWithInitialContentTest {
 //        [SetUp]
@@ -162,5 +162,4 @@
 //            }
 //        }
 //    }
-//#pragma warning restore 618
 //}

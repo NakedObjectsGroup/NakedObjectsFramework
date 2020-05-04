@@ -33,9 +33,8 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) {
-#pragma warning disable 618
+
             return attribute == null ? null : new MemberOrderFacet(attribute.Name, attribute.Sequence, holder);
-#pragma warning restore 618
         }
     }
 }
