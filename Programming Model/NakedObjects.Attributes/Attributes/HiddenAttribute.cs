@@ -14,10 +14,6 @@ namespace NakedObjects {
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class HiddenAttribute : Attribute {
-        [Obsolete("If not intended for the UI, use [NakedObjectsIgnore].  Otherwise use [Hidden(WhenTo.Always)]")]
-        public HiddenAttribute() {
-            Value = WhenTo.Always;
-        }
 
         public HiddenAttribute(WhenTo w) {
             Value = w;
