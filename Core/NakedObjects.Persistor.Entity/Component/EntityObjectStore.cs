@@ -274,7 +274,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 string query = memberValueMap.Aggregate(string.Empty, (s, kvp) => string.Format("{0}it.{1}=@{1}", s.Length == 0 ? s : s + " and ", kvp.Key));
                 ObjectParameter[] parms = memberValueMap.Select(kvp => new ObjectParameter(kvp.Key, kvp.Value)).ToArray();
 
-                First(objectSet.Invoke<IEnumerable>("Where", query, parms) );
+                First(objectSet.Invoke<IQueryable>("Where", query, parms) );
             }
 
             EndResolving(nakedObjectAdapter);
