@@ -93,7 +93,7 @@ type internal typeType (mt, dt, et, simple) =
 
 type internal errorType (error : string) =
     let e = error 
-    member x.getStart s =  e.Split([|" in "|], System.StringSplitOptions.None).[0]
+    member x.getStart _ =  e.Split([|" in "|], System.StringSplitOptions.None).[0]
     member x.toCompare with get() = x.getStart e
     override x.Equals (o : obj) =
         x.toCompare  = x.getStart (o.ToString())
