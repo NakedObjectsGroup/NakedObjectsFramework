@@ -20,7 +20,12 @@ namespace NakedObjects.SystemTest {
     public static class Constants {
         public static string AppveyorServer => @"(local)\SQL2017";
         public static string LocalServer => @".\SQLEXPRESS";
+        
+#if APPVEYOR
         public static string Server => AppveyorServer;
+#else
+        public static string Server => LocalServer;
+#endif
     }
 
     public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase

@@ -19,7 +19,12 @@ open System.Reflection
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer = @"Data Source=.\SQLEXPRESS;"
+
+#if APPVEYOR 
 let server = appveyorServer
+#else
+let server = localServer
+#endif
 
 let csAW = server + @"Initial Catalog=AdventureWorks;Integrated Security=True;"
 let csAWMARS = server + @"initial catalog=AdventureWorks;integrated security=True;MultipleActiveResultSets=True;"

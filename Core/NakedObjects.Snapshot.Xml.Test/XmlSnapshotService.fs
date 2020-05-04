@@ -24,7 +24,13 @@ open System.Xml.Linq
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer = @"Data Source=.\SQLEXPRESS;"
+
+#if APPVEYOR 
 let server = appveyorServer
+#else
+let server = localServer
+#endif
+
 
 let cs = server + @"Initial Catalog=TestObject;Integrated Security=True;"
 
