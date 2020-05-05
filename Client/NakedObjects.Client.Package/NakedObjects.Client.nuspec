@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NakedObjects.Client</id>
+    <version>11.0.0-beta01</version>
+    <authors>Naked Objects Group Ltd</authors>
+    <owners>Naked Objects Group Ltd</owners>
+    <license type="expression">Apache-2.0</license>
+    <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
+    <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Single Page Application user interface to run against a NakedObjects Server.
+    </summary>
+    <tags>rest restful objects naked nakedobjects ddd domain driven design api</tags>
+    <description>Single Page Application client for a Naked Objects application.</description>
+  </metadata>
+  <files>
+    <file src="..\nakedobjectsspa\pack\*" target="Content"/>
+    <file src="..\nakedobjectsspa\pack\assets\*" target="Content\assets"/>
+  </files>
+</package>
