@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NakedObjects.Server</id>
+    <version>11.0.0-beta02</version>
+    <authors>Naked Objects Group Ltd</authors>
+    <owners>Naked Objects Group Ltd</owners>
+    <license type="expression">Apache-2.0</license>
+    <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
+    <icon>images\icon.png</icon>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Naked Objects is a framework that implements the 'naked objects' pattern for .NET.</summary>
+    <description>
+  This package is typically used indirectly e.g. by the NakedObjects.Run</description>
+    <tags>naked objects nakedobjects ddd domain driven design</tags>
+    <dependencies>
+      <group targetFramework="netcoreapp3.1">
+        <dependency id="NakedObjects.ProgrammingModel" version="[11.0.0-beta02, 12)" />
+        <dependency id="Common.Logging" version="[3.4.1, 4)" />
+        <dependency id="Common.Logging.Core" version="[3.4.1, 4)" />
+        <dependency id="EntityFramework" version="[6.4.0, 7)" />
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="[3.1.3, 4)" />
+        <dependency id="Microsoft.Extensions.Configuration" version="[3.1.3, 4)" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="icon.png" target="images\"/>
+    <file src="..\..\Core\NakedObjects.Architecture\bin\Debug\**\NakedObjects.Architecture.dll" target="lib"/>
+    <file src="..\..\Core\NakedObjects.Core\bin\Debug\**\NakedObjects.Core.dll" target="lib"/>
+    <file src="..\..\Core\NakedObjects.FWResources\bin\Debug\**\NakedObjects.FWResources.dll" target="lib"/>
+    <file src="..\..\Core\NakedObjects.Metamodel\bin\Debug\**\NakedObjects.Metamodel.dll" target="lib"/>
+    <file src="..\..\Core\NakedObjects.ParallelReflector\bin\Debug\**\NakedObjects.ParallelReflector.dll" target="lib"/>
+    <file src="..\..\Core\NakedObjects.Persistor.Entity\bin\Debug\**\NakedObjects.Persistor.Entity.dll" target="lib"/>
+    <file src="..\..\Core\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.dll" target="lib"/>
+    <file src="..\..\Core\NakedObjects.DependencyInjection\bin\Debug\**\NakedObjects.DependencyInjection.dll" target="lib"/>
+    <file src="..\..\Facade\NakedObjects.Facade\bin\Debug\**\NakedObjects.Facade.dll" target="lib"/>
+    <file src="..\..\Facade\NakedObjects.Facade.Impl\bin\Debug\**\NakedObjects.Facade.Impl.dll" target="lib"/>
+    <file src="..\..\Rest\NakedObjects.Rest\bin\Debug\**\NakedObjects.Rest.dll" target="lib"/>
+    <file src="..\..\Rest\NakedObjects.Rest.Snapshot\bin\Debug\**\NakedObjects.Rest.Snapshot.dll" target="lib"/>
+    <file src="..\..\Core\NakedObjects.Architecture\bin\Debug\**\NakedObjects.Architecture.pdb" target="lib"/>
+    <file src="..\..\Core\NakedObjects.Core\bin\Debug\**\NakedObjects.Core.pdb" target="lib"/>
+    <file src="..\..\Core\NakedObjects.FWResources\bin\Debug\**\NakedObjects.FWResources.pdb" target="lib"/>
+    <file src="..\..\Core\NakedObjects.Metamodel\bin\Debug\**\NakedObjects.Metamodel.pdb" target="lib"/>
+    <file src="..\..\Core\NakedObjects.ParallelReflector\bin\Debug\**\NakedObjects.ParallelReflector.pdb" target="lib"/>
+    <file src="..\..\Core\NakedObjects.Persistor.Entity\bin\Debug\**\NakedObjects.Persistor.Entity.pdb" target="lib"/>
+    <file src="..\..\Core\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.pdb" target="lib"/>
+    <file src="..\..\Core\NakedObjects.DependencyInjection\bin\Debug\**\NakedObjects.DependencyInjection.pdb" target="lib"/>
+    <file src="..\..\Facade\NakedObjects.Facade\bin\Debug\**\NakedObjects.Facade.pdb" target="lib"/>
+    <file src="..\..\Facade\NakedObjects.Facade.Impl\bin\Debug\**\NakedObjects.Facade.Impl.pdb" target="lib"/>
+    <file src="..\..\Rest\NakedObjects.Rest\bin\Debug\**\NakedObjects.Rest.dll" target="lib"/>
+    <file src="..\..\Rest\NakedObjects.Rest.Snapshot\bin\Debug\**\NakedObjects.Rest.Snapshot.pdb" target="lib"/>
+  </files>
+</package>

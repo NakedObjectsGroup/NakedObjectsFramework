@@ -19,8 +19,11 @@
   <ItemGroup>
     <PackageReference Include="Common.Logging" Version="3.4.1" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
-    <PackageReference Include="NakedObjects.Facade" Version="11.0.0-beta02" />
     <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Facade\NakedObjects.Facade\NakedObjects.Facade.csproj" />
   </ItemGroup>
 
 </Project>

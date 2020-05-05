@@ -6,8 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.0" />
-    <PackageReference Include="NakedObjects.Facade" Version="11.0.0-beta02" />
     <PackageReference Include="NakedObjects.ProgrammingModel" Version="11.0.0-beta02" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Facade\NakedObjects.Facade\NakedObjects.Facade.csproj" />
   </ItemGroup>
 
 </Project>
