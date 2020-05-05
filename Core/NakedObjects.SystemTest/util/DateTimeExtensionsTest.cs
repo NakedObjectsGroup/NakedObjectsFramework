@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -249,53 +249,5 @@ namespace NakedObjects.SystemTest.Util {
             Assert.IsFalse(wellKnownYear1.StartOfYear().Equals(startOfWellKnownYear2));
             Assert.IsFalse(wellKnownYear2.StartOfYear().Equals(startOfWellKnownYear1));
         }
-
-        //[Test]
-        //public void TestIsAtLeastADayAfter() {
-        //    var wellKnownDay = new DateTime(2002, 4, 4);
-
-        //    Enumerable.Range(1, 9).Select(x => wellKnownDay.AddDays(x)).ToList().ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
-
-        //    Enumerable.Range(-10, 9).Select(x => wellKnownDay.AddDays(x)).ToList().ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(x)));
-
-        //    Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(null));
-        //}
-
-        //[Test]
-        //public void TestIsAtLeastADayBefore() {
-        //    var wellKnownDay = new DateTime(2002, 4, 4);
-
-        //    Enumerable.Range(-10, 9).Select(x => wellKnownDay.AddDays(x)).ToList().ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayBefore(x)));
-
-        //    Enumerable.Range(1, 9).Select(x => wellKnownDay.AddDays(x)).ToList().ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(x)));
-
-        //    Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(null));
-        //}
-
-        //[Test]
-        //public void TestIsAtLeastANullableDayAfter() {
-        //    DateTime? wellKnownDay = new DateTime(2002, 4, 4);
-
-        //    Enumerable.Range(1, 9).Select(x => wellKnownDay.Value.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayAfter(x)));
-
-        //    Enumerable.Range(-10, 9).Select(x => wellKnownDay.Value.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(x)));
-
-        //    Assert.IsFalse(((DateTime?) null).IsAtLeastADayAfter(wellKnownDay));
-        //    Assert.IsFalse(((DateTime?) null).IsAtLeastADayAfter(null));
-        //    Assert.IsFalse(wellKnownDay.IsAtLeastADayAfter(null));
-        //}
-
-        //[Test]
-        //public void TestIsAtLeastANullableDayBefore() {
-        //    DateTime? wellKnownDay = new DateTime(2002, 4, 4);
-
-        //    Enumerable.Range(-10, 9).Select(x => wellKnownDay.Value.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => Assert.IsTrue(wellKnownDay.IsAtLeastADayBefore(x)));
-
-        //    Enumerable.Range(1, 9).Select(x => wellKnownDay.Value.AddDays(x)).Select(x => new DateTime?(x)).ToList().ForEach(x => Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(x)));
-
-        //    Assert.IsFalse(((DateTime?) null).IsAtLeastADayBefore(wellKnownDay));
-        //    Assert.IsFalse(((DateTime?) null).IsAtLeastADayBefore(null));
-        //    Assert.IsFalse(wellKnownDay.IsAtLeastADayBefore(null));
-        //}
     }
 }
