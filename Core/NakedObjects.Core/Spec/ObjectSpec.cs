@@ -19,23 +19,23 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Core.Spec {
     public sealed class ObjectSpec : TypeSpec, IObjectSpec {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectSpec));
+
+        private readonly IDictionary<string, IActionSpec[]> locallyContributedActions = new Dictionary<string, IActionSpec[]>();
         private IActionSpec[] collectionContributedActions;
         private IActionSpec[] combinedActions;
         private IActionSpec[] contributedActions;
         private IActionSpec[] finderActions;
-
-        private readonly IDictionary<string, IActionSpec[]> locallyContributedActions = new Dictionary<string, IActionSpec[]>();
         private IAssociationSpec[] objectFields;
 
         public ObjectSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, IObjectSpecImmutable innerSpec) :
             base(memberFactory, metamodelManager, nakedObjectManager, innerSpec) { }
 
-        private IActionSpec[] ContributedActions => contributedActions ?? (contributedActions = MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions));
+        private IActionSpec[] ContributedActions => contributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions);
 
         #region IObjectSpec Members
 
         public IAssociationSpec[] Properties {
-            get { return objectFields ?? (objectFields = InnerSpec.Fields.Select(element => MemberFactory.CreateAssociationSpec(element)).ToArray()); }
+            get { return objectFields ??= InnerSpec.Fields.Select(element => MemberFactory.CreateAssociationSpec(element)).ToArray(); }
         }
 
         public IAssociationSpec GetProperty(string id) {
@@ -58,13 +58,9 @@ namespace NakedObjects.Core.Spec {
             return combinedActions;
         }
 
-        public IActionSpec[] GetCollectionContributedActions() {
-            return collectionContributedActions ?? (collectionContributedActions = MemberFactory.CreateActionSpecs(InnerSpec.CollectionContributedActions));
-        }
+        public IActionSpec[] GetCollectionContributedActions() => collectionContributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.CollectionContributedActions);
 
-        public IActionSpec[] GetFinderActions() {
-            return finderActions ?? (finderActions = MemberFactory.CreateActionSpecs(InnerSpec.FinderActions));
-        }
+        public IActionSpec[] GetFinderActions() => finderActions ??= MemberFactory.CreateActionSpecs(InnerSpec.FinderActions);
 
         public IActionSpec[] GetLocallyContributedActions(ITypeSpec typeSpec, string id) {
             if (!locallyContributedActions.ContainsKey(id)) {

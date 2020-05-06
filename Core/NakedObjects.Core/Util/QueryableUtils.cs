@@ -8,64 +8,61 @@
 using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace NakedObjects.Core.Util.Query {
     public static class QueryableUtils {
         public static int Count(this IQueryable q) {
-            MethodInfo countMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Count" && m.GetParameters().Count() == 1);
-            MethodInfo gm = countMethod.MakeGenericMethod(q.ElementType);
+            var countMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Count" && m.GetParameters().Length == 1);
+            var gm = countMethod.MakeGenericMethod(q.ElementType);
             return (int) gm.Invoke(null, new object[] {q});
         }
 
         public static object First(this IQueryable q) {
-            MethodInfo firstMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "First" && m.GetParameters().Count() == 1);
-            MethodInfo gm = firstMethod.MakeGenericMethod(q.ElementType);
+            var firstMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "First" && m.GetParameters().Length == 1);
+            var gm = firstMethod.MakeGenericMethod(q.ElementType);
             return gm.Invoke(null, new object[] {q});
         }
 
         public static IQueryable Take(this IQueryable q, int count) {
-            MethodInfo takeMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Take" && m.GetParameters().Count() == 2);
-            MethodInfo gm = takeMethod.MakeGenericMethod(q.ElementType);
+            var takeMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Take" && m.GetParameters().Length == 2);
+            var gm = takeMethod.MakeGenericMethod(q.ElementType);
             return (IQueryable) gm.Invoke(null, new object[] {q, count});
         }
 
         public static IQueryable Skip(this IQueryable q, int count) {
-            MethodInfo takeMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Skip" && m.GetParameters().Count() == 2);
-            MethodInfo gm = takeMethod.MakeGenericMethod(q.ElementType);
+            var takeMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Skip" && m.GetParameters().Length == 2);
+            var gm = takeMethod.MakeGenericMethod(q.ElementType);
             return (IQueryable) gm.Invoke(null, new object[] {q, count});
         }
 
         public static bool Contains(this IQueryable q, object item) {
-            MethodInfo containsMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Contains" && m.GetParameters().Count() == 2);
-            MethodInfo gm = containsMethod.MakeGenericMethod(q.ElementType);
+            var containsMethod = typeof(Queryable).GetMethods().Single(m => m.Name == "Contains" && m.GetParameters().Length == 2);
+            var gm = containsMethod.MakeGenericMethod(q.ElementType);
             return (bool) gm.Invoke(null, new[] {q, item});
         }
 
         public static object[] ToArray(this IQueryable q) {
-            MethodInfo toArrayMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "ToArray" && m.GetParameters().Count() == 1);
-            MethodInfo gm = toArrayMethod.MakeGenericMethod(q.ElementType);
+            var toArrayMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "ToArray" && m.GetParameters().Length == 1);
+            var gm = toArrayMethod.MakeGenericMethod(q.ElementType);
             return (object[]) gm.Invoke(null, new object[] {q});
         }
 
         public static IList ToList(this IQueryable q) {
-            MethodInfo toArrayMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "ToList" && m.GetParameters().Count() == 1);
-            MethodInfo gm = toArrayMethod.MakeGenericMethod(q.ElementType);
+            var toArrayMethod = typeof(Enumerable).GetMethods().Single(m => m.Name == "ToList" && m.GetParameters().Length == 1);
+            var gm = toArrayMethod.MakeGenericMethod(q.ElementType);
             return (IList) gm.Invoke(null, new object[] {q});
         }
 
         private static bool IsOrderExpression(Expression expr) {
             var expression = expr as MethodCallExpression;
             if (expression != null) {
-                MethodInfo method = expression.Method;
+                var method = expression.Method;
                 return !method.Name.StartsWith("Distinct") && (method.Name.StartsWith("OrderBy") || method.Name.StartsWith("ThenBy") || expression.Arguments.Any(IsOrderExpression));
             }
 
             return false;
         }
 
-        public static bool IsOrdered(this IQueryable queryable) {
-            return IsOrderExpression(queryable.Expression);
-        }
+        public static bool IsOrdered(this IQueryable queryable) => IsOrderExpression(queryable.Expression);
     }
 }

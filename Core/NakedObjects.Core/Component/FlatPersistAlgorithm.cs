@@ -14,8 +14,9 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     /// <summary>
-    /// Algorithm to use when the object store will automatically persist all associated objects. Simply adds the single object or each 
-    /// object in the collection to the store.
+    ///     Algorithm to use when the object store will automatically persist all associated objects. Simply adds the single
+    ///     object or each
+    ///     object in the collection to the store.
     /// </summary>
     public sealed class FlatPersistAlgorithm : IPersistAlgorithm {
         private static readonly ILog Log = LogManager.GetLogger(typeof(FlatPersistAlgorithm));
@@ -29,9 +30,7 @@ namespace NakedObjects.Core.Component {
 
         #region IPersistAlgorithm Members
 
-        public string Name {
-            get { return "Entity Framework Persist Algorithm"; }
-        }
+        public string Name => "Entity Framework Persist Algorithm";
 
         public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
             if (nakedObjectAdapter.Spec.IsCollection) {
@@ -69,8 +68,6 @@ namespace NakedObjects.Core.Component {
             collection.GetAsEnumerable(manager).ForEach(MakePersistent);
         }
 
-        public override string ToString() {
-            return Name;
-        }
+        public override string ToString() => Name;
     }
 }

@@ -18,19 +18,13 @@ namespace NakedObjects.Core.Util {
         private class EnumeratorWrapper<T> : IEnumerable<T> {
             private readonly IEnumerator<T> enumerator;
 
-            public EnumeratorWrapper(IEnumerator<T> enumerator) {
-                this.enumerator = enumerator;
-            }
+            public EnumeratorWrapper(IEnumerator<T> enumerator) => this.enumerator = enumerator;
 
             #region IEnumerable<T> Members
 
-            public IEnumerator<T> GetEnumerator() {
-                return enumerator;
-            }
+            public IEnumerator<T> GetEnumerator() => enumerator;
 
-            IEnumerator IEnumerable.GetEnumerator() {
-                return GetEnumerator();
-            }
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
             #endregion
         }
@@ -38,15 +32,11 @@ namespace NakedObjects.Core.Util {
         private class EnumeratorWrapper : IEnumerable {
             private readonly IEnumerator enumerator;
 
-            public EnumeratorWrapper(IEnumerator enumerator) {
-                this.enumerator = enumerator;
-            }
+            public EnumeratorWrapper(IEnumerator enumerator) => this.enumerator = enumerator;
 
             #region IEnumerable Members
 
-            IEnumerator IEnumerable.GetEnumerator() {
-                return enumerator;
-            }
+            IEnumerator IEnumerable.GetEnumerator() => enumerator;
 
             #endregion
         }
@@ -57,73 +47,51 @@ namespace NakedObjects.Core.Util {
 
         public const int IncompleteCollection = -1;
 
-        public static bool IsDictionary(Type type) {
-            return IsGenericEnumerable(type) && IsGenericOfKeyValuePair(type);
-        }
+        public static bool IsDictionary(Type type) => IsGenericEnumerable(type) && IsGenericOfKeyValuePair(type);
 
         /// <summary>IEnumerable of T where T is not a value type</summary>
-        public static bool IsGenericEnumerableOfRefType(Type type) {
-            return IsGenericEnumerable(type) && IsGenericOfRefType(type);
-        }
+        public static bool IsGenericEnumerableOfRefType(Type type) => IsGenericEnumerable(type) && IsGenericOfRefType(type);
 
-        public static bool IsGenericEnumerable(Type type) {
-            return IsGenericType(type, typeof(IEnumerable<>)) && type.GetGenericArguments().Count() == 1;
-        }
+        public static bool IsGenericEnumerable(Type type) => IsGenericType(type, typeof(IEnumerable<>)) && type.GetGenericArguments().Length == 1;
 
-        public static bool IsGenericCollection(Type type) {
-            return IsGenericType(type, typeof(ICollection<>)) && type.GetGenericArguments().Count() == 1;
-        }
+        public static bool IsGenericCollection(Type type) => IsGenericType(type, typeof(ICollection<>)) && type.GetGenericArguments().Length == 1;
 
         /// <summary>IEnumerable of T where T is not a value type</summary>
-        public static bool IsGenericQueryable(Type type) {
-            return IsGenericType(type, typeof(IQueryable<>)) && type.GetGenericArguments().Count() == 1;
-        }
+        public static bool IsGenericQueryable(Type type) => IsGenericType(type, typeof(IQueryable<>)) && type.GetGenericArguments().Length == 1;
 
         /// <summary>IQueryable or IQueryable of T</summary>
-        public static bool IsQueryable(Type type) {
-            return typeof(IQueryable).IsAssignableFrom(type);
-        }
+        public static bool IsQueryable(Type type) => typeof(IQueryable).IsAssignableFrom(type);
 
         /// <summary> ICollection but not Array or IEnumerable of T where T is not a value type </summary>
-        public static bool IsCollectionButNotArray(Type type) {
-            return IsCollection(type) && !type.IsArray;
-        }
+        public static bool IsCollectionButNotArray(Type type) => IsCollection(type) && !type.IsArray;
 
         /// <summary> ICollection or IEnumerable of T or Array of T where T is not a value type </summary>
-        public static bool IsCollection(Type type) {
-            return IsNonGenericCollection(type) || IsGenericCollection(type);
-        }
+        public static bool IsCollection(Type type) => IsNonGenericCollection(type) || IsGenericCollection(type);
 
-        public static Type ElementType(Type type) {
-            return IsGenericEnumerable(type) ? GetGenericEnumerableType(type).GetGenericArguments().Single() : typeof(object);
-        }
+        public static Type ElementType(Type type) => IsGenericEnumerable(type) ? GetGenericEnumerableType(type).GetGenericArguments().Single() : typeof(object);
 
-        public static bool IsBlobOrClob(Type type) {
-            return type.IsArray && (type.GetElementType() == typeof(byte) || type.GetElementType() == typeof(sbyte) || type.GetElementType() == typeof(char));
-        }
+        public static bool IsBlobOrClob(Type type) => type.IsArray && (type.GetElementType() == typeof(byte) || type.GetElementType() == typeof(sbyte) || type.GetElementType() == typeof(char));
 
         public static bool IsGenericOfEnum(Type type) {
-            return type.GetGenericArguments().Count() == 1 && type.GetGenericArguments().All(t => t.IsEnum);
+            return type.GetGenericArguments().Length == 1 && type.GetGenericArguments().All(t => t.IsEnum);
         }
 
         // ReSharper disable once CompareNonConstrainedGenericWithNull
-        public static List<T> InList<T>(this T item) {
-            return item != null ? new List<T> {item} : new List<T>();
-        }
+        public static List<T> InList<T>(this T item) => item != null ? new List<T> {item} : new List<T>();
 
         public static void ForEach<T>(this T[] toIterate, Action<T> action) {
             Array.ForEach(toIterate, action);
         }
 
         public static void ForEach<T>(this IEnumerable<T> toIterate, Action<T> action) {
-            foreach (T item in toIterate) {
+            foreach (var item in toIterate) {
                 action(item);
             }
         }
 
         public static void ForEach<T>(this IEnumerable<T> toIterate, Action<T, int> action) {
-            int i = 0;
-            foreach (T item in toIterate) {
+            var i = 0;
+            foreach (var item in toIterate) {
                 action(item, i++);
             }
         }
@@ -133,30 +101,24 @@ namespace NakedObjects.Core.Util {
         }
 
         public static IList CloneCollection(object toClone) {
-            Type collectionType = MakeCollectionType(toClone, typeof(List<>));
+            var collectionType = MakeCollectionType(toClone, typeof(List<>));
             return Activator.CreateInstance(collectionType) as IList;
         }
 
         public static IList CloneCollectionAndPopulate(object toClone, IEnumerable<object> contents) {
-            IList newCollection = CloneCollection(toClone);
+            var newCollection = CloneCollection(toClone);
             contents.ForEach(o => newCollection.Add(o));
             return newCollection;
         }
 
-        public static bool IsSet(Type type) {
-            return IsGenericType(type, typeof(ISet<>));
-        }
+        public static bool IsSet(Type type) => IsGenericType(type, typeof(ISet<>));
 
-        public static IEnumerable<T> ToEnumerable<T>(this IEnumerator<T> enumerator) {
-            return new EnumeratorWrapper<T>(enumerator);
-        }
+        public static IEnumerable<T> ToEnumerable<T>(this IEnumerator<T> enumerator) => new EnumeratorWrapper<T>(enumerator);
 
-        public static IEnumerable ToEnumerable(this IEnumerator enumerator) {
-            return new EnumeratorWrapper(enumerator);
-        }
+        public static IEnumerable ToEnumerable(this IEnumerator enumerator) => new EnumeratorWrapper(enumerator);
 
         public static IList ToTypedIList(IEnumerable<object> toWrap, Type instanceType) {
-            Type typedListType = typeof(List<>).MakeGenericType(instanceType);
+            var typedListType = typeof(List<>).MakeGenericType(instanceType);
             var typedList = (IList) Activator.CreateInstance(typedListType);
             toWrap.ForEach(o => typedList.Add(o));
             return typedList;
@@ -179,15 +141,13 @@ namespace NakedObjects.Core.Util {
         }
 
         private static bool IsGenericOfRefType(Type type) {
-            return type.GetGenericArguments().Count() == 1 && type.GetGenericArguments().All(t => !t.IsValueType);
+            return type.GetGenericArguments().Length == 1 && type.GetGenericArguments().All(t => !t.IsValueType);
         }
 
-        private static bool IsNonGenericCollection(Type type) {
-            return typeof(ICollection).IsAssignableFrom(type);
-        }
+        private static bool IsNonGenericCollection(Type type) => typeof(ICollection).IsAssignableFrom(type);
 
         private static Type MakeCollectionType(object toClone, Type genericCollectionType) {
-            Type itemType = toClone.GetType().IsGenericType ? toClone.GetType().GetGenericArguments().Single() : typeof(object);
+            var itemType = toClone.GetType().IsGenericType ? toClone.GetType().GetGenericArguments().Single() : typeof(object);
             return genericCollectionType.MakeGenericType(itemType);
         }
 
@@ -195,9 +155,7 @@ namespace NakedObjects.Core.Util {
             return type.IsGenericType && (type.GetGenericTypeDefinition() == toMatch || type.GetInterfaces().Any(interfaceType => IsGenericType(interfaceType, toMatch)));
         }
 
-        private static Type GetGenericEnumerableType(Type type) {
-            return type.IsGenericType ? (type.GetGenericTypeDefinition() == typeof(IEnumerable<>) ? type : type.GetInterfaces().FirstOrDefault(IsGenericEnumerable)) : null;
-        }
+        private static Type GetGenericEnumerableType(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() == typeof(IEnumerable<>) ? type : type.GetInterfaces().FirstOrDefault(IsGenericEnumerable) : null;
 
         private static string CollectionTitleStringKnownType(IObjectSpec elementSpec, int size) {
             switch (size) {

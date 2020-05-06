@@ -30,13 +30,9 @@ namespace NakedObjects.Core.Util {
         }
 
         // for test purposes only 
-        public static ICollectionMemento TestMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager, INakedObjectAdapter target, IActionSpec actionSpec, INakedObjectAdapter[] parameters) {
-            return new CollectionMemento(lifecycleManager, nakedObjectManager, metamodelManager, target, actionSpec, parameters);
-        }
+        public static ICollectionMemento TestMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager, INakedObjectAdapter target, IActionSpec actionSpec, INakedObjectAdapter[] parameters) => new CollectionMemento(lifecycleManager, nakedObjectManager, metamodelManager, target, actionSpec, parameters);
 
         // for test purposes only 
-        public static ICollectionMemento TestMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager, string[] strings) {
-            return new CollectionMemento(lifecycleManager, nakedObjectManager, metamodelManager, strings);
-        }
+        public static ICollectionMemento TestMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager, string[] strings) => new CollectionMemento(lifecycleManager, nakedObjectManager, metamodelManager, strings);
     }
 }

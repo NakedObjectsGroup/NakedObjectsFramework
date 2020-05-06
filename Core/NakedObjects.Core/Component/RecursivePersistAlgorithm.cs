@@ -15,7 +15,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     /// <summary>
-    /// Recursively walk the object's fields and collections persisting them.  
+    ///     Recursively walk the object's fields and collections persisting them.
     /// </summary>
     public sealed class RecursivePersistAlgorithm : IPersistAlgorithm {
         private static readonly ILog Log = LogManager.GetLogger(typeof(RecursivePersistAlgorithm));
@@ -59,21 +59,21 @@ namespace NakedObjects.Core.Component {
         #endregion
 
         private void Persist(INakedObjectAdapter nakedObjectAdapter) {
-            if (nakedObjectAdapter.ResolveState.IsAggregated() || (nakedObjectAdapter.ResolveState.IsTransient() && nakedObjectAdapter.Spec.Persistable != PersistableType.Transient)) {
-                IAssociationSpec[] fields = ((IObjectSpec) nakedObjectAdapter.Spec).Properties;
+            if (nakedObjectAdapter.ResolveState.IsAggregated() || nakedObjectAdapter.ResolveState.IsTransient() && nakedObjectAdapter.Spec.Persistable != PersistableType.Transient) {
+                var fields = ((IObjectSpec) nakedObjectAdapter.Spec).Properties;
                 if (!nakedObjectAdapter.Spec.IsEncodeable && fields.Length > 0) {
                     nakedObjectAdapter.Persisting();
                     if (!nakedObjectAdapter.Spec.ContainsFacet(typeof(IComplexTypeFacet))) {
                         manager.MadePersistent(nakedObjectAdapter);
                     }
 
-                    foreach (IAssociationSpec field in fields) {
+                    foreach (var field in fields) {
                         if (!field.IsPersisted) {
                             continue;
                         }
 
                         if (field is IOneToManyAssociationSpec) {
-                            INakedObjectAdapter collection = field.GetNakedObject(nakedObjectAdapter);
+                            var collection = field.GetNakedObject(nakedObjectAdapter);
                             if (collection == null) {
                                 throw new NotPersistableException(Log.LogAndReturn($"Collection {field.Name} does not exist in {nakedObjectAdapter.Spec.FullName}"));
                             }
@@ -81,7 +81,7 @@ namespace NakedObjects.Core.Component {
                             MakePersistent(collection);
                         }
                         else {
-                            INakedObjectAdapter fieldValue = field.GetNakedObject(nakedObjectAdapter);
+                            var fieldValue = field.GetNakedObject(nakedObjectAdapter);
                             if (fieldValue == null) {
                                 continue;
                             }
@@ -95,9 +95,7 @@ namespace NakedObjects.Core.Component {
             }
         }
 
-        public override string ToString() {
-            return new AsString(this).ToString();
-        }
+        public override string ToString() => new AsString(this).ToString();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

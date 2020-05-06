@@ -12,7 +12,6 @@ using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Resolve;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
@@ -43,7 +42,7 @@ namespace NakedObjects.Core.Adapter {
             this.nakedObjectManager = nakedObjectManager;
             this.lifecycleManager = lifecycleManager;
 
-            this.Object = poco;
+            Object = poco;
             Oid = oid;
             ResolveState = new ResolveStateMachine(this, session);
             Version = new NullVersion();
@@ -60,22 +59,11 @@ namespace NakedObjects.Core.Adapter {
         /// <summary>
         ///     Returns the name of the icon to use to represent this object
         /// </summary>
-        public string IconName() {
-            return Spec.GetIconName(this);
-        }
+        public string IconName() => Spec.GetIconName(this);
 
-        public IResolveStateMachine ResolveState { get; private set; }
+        public IResolveStateMachine ResolveState { get; }
 
-        public ITypeSpec Spec {
-            get {
-                if (spec == null) {
-                    spec = metamodel.GetSpecification(Object.GetType());
-                    DefaultTitle = "A" + (" " + spec.SingularName).ToLower();
-                }
-
-                return spec;
-            }
-        }
+        public ITypeSpec Spec => spec ?? SetSpec();
 
         public IVersion Version { get; private set; }
 
@@ -106,26 +94,22 @@ namespace NakedObjects.Core.Adapter {
             }
         }
 
-        public string InvariantString() {
-            return Spec.GetInvariantString(this);
-        }
+        public string InvariantString() => Spec.GetInvariantString(this);
 
         /// <summary>
         ///     Sometimes it is necessary to manage the replacement of the underlying domain object (by another
         ///     component such as an object store). This method allows the adapter to be kept while the domain object
         ///     is replaced.
         /// </summary>
-        public void ReplacePoco(object obj) {
-            Object = obj;
-        }
+        public void ReplacePoco(object obj) => Object = obj;
 
         public string ValidToPersist() {
             var objectSpec = Spec as IObjectSpec;
             Trace.Assert(objectSpec != null);
 
-            IAssociationSpec[] properties = objectSpec.Properties;
-            foreach (IAssociationSpec property in properties) {
-                INakedObjectAdapter referencedObjectAdapter = property.GetNakedObject(this);
+            var properties = objectSpec.Properties;
+            foreach (var property in properties) {
+                var referencedObjectAdapter = property.GetNakedObject(this);
                 if (property.IsUsable(this).IsAllowed && property.IsVisible(this)) {
                     if (property.IsMandatory && property.IsEmpty(this)) {
                         return string.Format(Resources.NakedObjects.PropertyMandatory, objectSpec.ShortName, property.Name);
@@ -133,7 +117,7 @@ namespace NakedObjects.Core.Adapter {
 
                     var associationSpec = property as IOneToOneAssociationSpec;
                     if (associationSpec != null) {
-                        IConsent valid = associationSpec.IsAssociationValid(this, referencedObjectAdapter);
+                        var valid = associationSpec.IsAssociationValid(this, referencedObjectAdapter);
                         if (valid.IsVetoed) {
                             return string.Format(Resources.NakedObjects.PropertyInvalid, objectSpec.ShortName, associationSpec.Name, valid.Reason);
                         }
@@ -142,7 +126,7 @@ namespace NakedObjects.Core.Adapter {
 
                 if (property is IOneToOneAssociationSpec) {
                     if (referencedObjectAdapter != null && referencedObjectAdapter.ResolveState.IsTransient()) {
-                        string referencedObjectMessage = referencedObjectAdapter.ValidToPersist();
+                        var referencedObjectMessage = referencedObjectAdapter.ValidToPersist();
                         if (referencedObjectMessage != null) {
                             return referencedObjectMessage;
                         }
@@ -177,57 +161,39 @@ namespace NakedObjects.Core.Adapter {
             persistor.LoadComplexTypes(this, ResolveState.IsGhost());
         }
 
-        public void Created() {
-            CallCallback<ICreatedCallbackFacet>();
-        }
+        public void Created() => CallCallback<ICreatedCallbackFacet>();
 
-        public void Deleting() {
-            CallCallback<IDeletingCallbackFacet>();
-        }
+        public void Deleting() => CallCallback<IDeletingCallbackFacet>();
 
-        public void Deleted() {
-            CallCallback<IDeletedCallbackFacet>();
-        }
+        public void Deleted() => CallCallback<IDeletedCallbackFacet>();
 
-        public void Loading() {
-            CallCallback<ILoadingCallbackFacet>();
-        }
+        public void Loading() => CallCallback<ILoadingCallbackFacet>();
 
-        public void Loaded() {
-            CallCallback<ILoadedCallbackFacet>();
-        }
+        public void Loaded() => CallCallback<ILoadedCallbackFacet>();
 
-        public void Persisting() {
-            CallCallback<IPersistingCallbackFacet>();
-        }
+        public void Persisting() => CallCallback<IPersistingCallbackFacet>();
 
-        public void Persisted() {
-            CallCallback<IPersistedCallbackFacet>();
-        }
+        public void Persisted() => CallCallback<IPersistedCallbackFacet>();
 
-        public void Updating() {
-            CallCallback<IUpdatingCallbackFacet>();
-        }
+        public void Updating() => CallCallback<IUpdatingCallbackFacet>();
 
-        public void Updated() {
-            CallCallback<IUpdatedCallbackFacet>();
-        }
+        public void Updated() => CallCallback<IUpdatedCallbackFacet>();
 
         #endregion
 
+        private ITypeSpec SetSpec() {
+            spec = metamodel.GetSpecification(Object.GetType());
+            DefaultTitle = "A" + (" " + spec.SingularName).ToLower();
+            return spec;
+        }
+
         private string CollectionTitleString(ICollectionFacet facet) {
-            int size = CanCount() ? facet.AsEnumerable(this, nakedObjectManager).Count() : CollectionUtils.IncompleteCollection;
+            var size = CanCount() ? facet.AsEnumerable(this, nakedObjectManager).Count() : CollectionUtils.IncompleteCollection;
             var elementSpecification = TypeOfFacet == null ? null : metamodel.GetSpecification(TypeOfFacet.GetValueSpec(this, metamodel.Metamodel));
             return CollectionUtils.CollectionTitleString(elementSpecification, size);
         }
 
-        private bool CanCount() {
-            return !Spec.ContainsFacet<INotCountedFacet>();
-        }
-
-        private bool ElementsLoaded() {
-            return ResolveState.IsTransient() || ResolveState.IsResolved();
-        }
+        private bool CanCount() => !Spec.ContainsFacet<INotCountedFacet>();
 
         public override string ToString() {
             var str = new AsString(this);
@@ -242,9 +208,7 @@ namespace NakedObjects.Core.Adapter {
             return str.ToString();
         }
 
-        private bool ShouldSetVersion(IVersion newVersion) {
-            return newVersion.IsDifferent(Version);
-        }
+        private bool ShouldSetVersion(IVersion newVersion) => newVersion.IsDifferent(Version);
 
         private void ToString(AsString str) {
             str.Append(ResolveState.CurrentState.Code);
@@ -276,9 +240,7 @@ namespace NakedObjects.Core.Adapter {
             str.Append("version", Version == null ? null : Version.AsSequence());
         }
 
-        private void CallCallback<T>() where T : ICallbackFacet {
-            Spec.GetFacet<T>().Invoke(this, session, lifecycleManager, metamodel);
-        }
+        private void CallCallback<T>() where T : ICallbackFacet => Spec.GetFacet<T>().Invoke(this, session, lifecycleManager, metamodel);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -10,9 +10,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Authentication {
     public sealed class SimpleSession : WindowsSession {
-        public SimpleSession(IPrincipal principal, string code) : base(principal) {
-            this.ValidationCode = code;
-        }
+        public SimpleSession(IPrincipal principal, string code) : base(principal) => ValidationCode = code;
 
         public SimpleSession(IPrincipal principal)
             : this(principal, string.Empty) { }

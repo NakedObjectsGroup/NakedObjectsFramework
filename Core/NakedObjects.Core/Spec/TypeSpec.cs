@@ -52,19 +52,15 @@ namespace NakedObjects.Core.Spec {
             Assert.AssertNotNull(nakedObjectManager);
             Assert.AssertNotNull(innerSpec);
 
-            this.MemberFactory = memberFactory;
+            MemberFactory = memberFactory;
             this.metamodelManager = metamodelManager;
             this.nakedObjectManager = nakedObjectManager;
-            this.InnerSpec = innerSpec;
+            InnerSpec = innerSpec;
         }
 
-        private Type Type {
-            get { return InnerSpec.Type; }
-        }
+        private Type Type => InnerSpec.Type;
 
-        protected IActionSpec[] ObjectActions {
-            get { return objectActions ?? (objectActions = MemberFactory.CreateActionSpecs(InnerSpec.ObjectActions)); }
-        }
+        protected IActionSpec[] ObjectActions => objectActions ??= MemberFactory.CreateActionSpecs(InnerSpec.ObjectActions);
 
         protected SpecFactory MemberFactory { get; }
 
@@ -72,47 +68,27 @@ namespace NakedObjects.Core.Spec {
 
         public ITypeSpecImmutable InnerSpec { get; }
 
-        public virtual string FullName {
-            get { return InnerSpec.FullName; }
-        }
+        public virtual string FullName => InnerSpec.FullName;
 
-        public virtual object DefaultValue {
-            get { return null; }
-        }
+        public virtual object DefaultValue => null;
 
-        public Type[] FacetTypes {
-            get { return InnerSpec.FacetTypes; }
-        }
+        public Type[] FacetTypes => InnerSpec.FacetTypes;
 
-        public IIdentifier Identifier {
-            get { return InnerSpec.Identifier; }
-        }
+        public IIdentifier Identifier => InnerSpec.Identifier;
 
-        public bool ContainsFacet(Type facetType) {
-            return InnerSpec.ContainsFacet(facetType);
-        }
+        public bool ContainsFacet(Type facetType) => InnerSpec.ContainsFacet(facetType);
 
-        public bool ContainsFacet<T>() where T : IFacet {
-            return InnerSpec.ContainsFacet<T>();
-        }
+        public bool ContainsFacet<T>() where T : IFacet => InnerSpec.ContainsFacet<T>();
 
-        public IFacet GetFacet(Type type) {
-            return InnerSpec.GetFacet(type);
-        }
+        public IFacet GetFacet(Type type) => InnerSpec.GetFacet(type);
 
-        public T GetFacet<T>() where T : IFacet {
-            return InnerSpec.GetFacet<T>();
-        }
+        public T GetFacet<T>() where T : IFacet => InnerSpec.GetFacet<T>();
 
-        public IEnumerable<IFacet> GetFacets() {
-            return InnerSpec.GetFacets();
-        }
+        public IEnumerable<IFacet> GetFacets() => InnerSpec.GetFacets();
 
         public virtual bool IsParseable {
             get {
-                if (!isParseable.HasValue) {
-                    isParseable = InnerSpec.ContainsFacet(typeof(IParseableFacet));
-                }
+                isParseable ??= InnerSpec.ContainsFacet(typeof(IParseableFacet));
 
                 return isParseable.Value;
             }
@@ -120,9 +96,7 @@ namespace NakedObjects.Core.Spec {
 
         public virtual bool IsEncodeable {
             get {
-                if (!isEncodeable.HasValue) {
-                    isEncodeable = InnerSpec.ContainsFacet(typeof(IEncodeableFacet));
-                }
+                isEncodeable ??= InnerSpec.ContainsFacet(typeof(IEncodeableFacet));
 
                 return isEncodeable.Value;
             }
@@ -130,9 +104,7 @@ namespace NakedObjects.Core.Spec {
 
         public virtual bool IsAggregated {
             get {
-                if (!isAggregated.HasValue) {
-                    isAggregated = InnerSpec.ContainsFacet(typeof(IAggregatedFacet));
-                }
+                isAggregated ??= InnerSpec.ContainsFacet(typeof(IAggregatedFacet));
 
                 return isAggregated.Value;
             }
@@ -140,9 +112,7 @@ namespace NakedObjects.Core.Spec {
 
         public virtual bool IsCollection {
             get {
-                if (!isCollection.HasValue) {
-                    isCollection = InnerSpec.ContainsFacet(typeof(ICollectionFacet));
-                }
+                isCollection ??= InnerSpec.ContainsFacet(typeof(ICollectionFacet));
 
                 return isCollection.Value;
             }
@@ -150,17 +120,13 @@ namespace NakedObjects.Core.Spec {
 
         public virtual bool IsViewModel {
             get {
-                if (!isViewModel.HasValue) {
-                    isViewModel = InnerSpec.ContainsFacet(typeof(IViewModelFacet));
-                }
+                isViewModel ??= InnerSpec.ContainsFacet(typeof(IViewModelFacet));
 
                 return isViewModel.Value;
             }
         }
 
-        public virtual bool IsObject {
-            get { return !IsCollection; }
-        }
+        public virtual bool IsObject => !IsCollection;
 
         public virtual ITypeSpec Superclass {
             get {
@@ -174,9 +140,7 @@ namespace NakedObjects.Core.Spec {
 
         public abstract IActionSpec[] GetActions();
 
-        public IMenuImmutable Menu {
-            get { return InnerSpec.ObjectMenu; }
-        }
+        public IMenuImmutable Menu => InnerSpec.ObjectMenu;
 
         public bool IsASet {
             get {
@@ -191,27 +155,23 @@ namespace NakedObjects.Core.Spec {
 
         public bool HasSubclasses {
             get {
-                if (!hasSubclasses.HasValue) {
-                    hasSubclasses = InnerSpec.Subclasses.Any();
-                }
+                hasSubclasses ??= InnerSpec.Subclasses.Any();
 
                 return hasSubclasses.Value;
             }
         }
 
         public ITypeSpec[] Interfaces {
-            get { return interfaces ?? (interfaces = InnerSpec.Interfaces.Select(i => metamodelManager.GetSpecification(i)).ToArray()); }
+            get { return interfaces ??= InnerSpec.Interfaces.Select(i => metamodelManager.GetSpecification(i)).ToArray(); }
         }
 
         public ITypeSpec[] Subclasses {
-            get { return subclasses ?? (subclasses = InnerSpec.Subclasses.Select(i => metamodelManager.GetSpecification(i)).ToArray()); }
+            get { return subclasses ??= InnerSpec.Subclasses.Select(i => metamodelManager.GetSpecification(i)).ToArray(); }
         }
 
         public bool IsAbstract {
             get {
-                if (!isAbstract.HasValue) {
-                    isAbstract = InnerSpec.GetFacet<ITypeIsAbstractFacet>().Flag;
-                }
+                isAbstract ??= InnerSpec.GetFacet<ITypeIsAbstractFacet>().Flag;
 
                 return isAbstract.Value;
             }
@@ -219,9 +179,7 @@ namespace NakedObjects.Core.Spec {
 
         public bool IsInterface {
             get {
-                if (!isInterface.HasValue) {
-                    isInterface = InnerSpec.GetFacet<ITypeIsInterfaceFacet>().Flag;
-                }
+                isInterface ??= InnerSpec.GetFacet<ITypeIsInterfaceFacet>().Flag;
 
                 return isInterface.Value;
             }
@@ -230,7 +188,7 @@ namespace NakedObjects.Core.Spec {
         public string ShortName {
             get {
                 if (shortName == null) {
-                    string postfix = "";
+                    var postfix = "";
                     if (Type.IsGenericType && !IsCollection) {
                         postfix = Type.GetGenericArguments().Aggregate(string.Empty, (x, y) => x + "-" + metamodelManager.GetSpecification(y).ShortName);
                     }
@@ -242,27 +200,17 @@ namespace NakedObjects.Core.Spec {
             }
         }
 
-        public string SingularName {
-            get { return singularName ?? (singularName = InnerSpec.GetFacet<INamedFacet>().NaturalName); }
-        }
+        public string SingularName => singularName ??= InnerSpec.GetFacet<INamedFacet>().NaturalName;
 
-        public string UntitledName {
-            get { return untitledName ?? (untitledName = Resources.NakedObjects.Untitled + SingularName); }
-        }
+        public string UntitledName => untitledName ??= Resources.NakedObjects.Untitled + SingularName;
 
-        public string PluralName {
-            get { return pluralName ?? (pluralName = InnerSpec.GetFacet<IPluralFacet>().Value); }
-        }
+        public string PluralName => pluralName ??= InnerSpec.GetFacet<IPluralFacet>().Value;
 
-        public string Description {
-            get { return description ?? (description = InnerSpec.GetFacet<IDescribedAsFacet>().Value ?? ""); }
-        }
+        public string Description => description ??= InnerSpec.GetFacet<IDescribedAsFacet>().Value ?? "";
 
         public bool HasNoIdentity {
             get {
-                if (!hasNoIdentity.HasValue) {
-                    hasNoIdentity = InnerSpec.GetFacet<ICollectionFacet>() != null || InnerSpec.GetFacet<IParseableFacet>() != null;
-                }
+                hasNoIdentity ??= InnerSpec.GetFacet<ICollectionFacet>() != null || InnerSpec.GetFacet<IParseableFacet>() != null;
 
                 return hasNoIdentity.Value;
             }
@@ -270,9 +218,7 @@ namespace NakedObjects.Core.Spec {
 
         public bool IsQueryable {
             get {
-                if (!isQueryable.HasValue) {
-                    isQueryable = InnerSpec.IsQueryable;
-                }
+                isQueryable ??= InnerSpec.IsQueryable;
 
                 return isQueryable.Value;
             }
@@ -280,9 +226,7 @@ namespace NakedObjects.Core.Spec {
 
         public bool IsVoid {
             get {
-                if (!isVoid.HasValue) {
-                    isVoid = InnerSpec.GetFacet<ITypeIsVoidFacet>().Flag;
-                }
+                isVoid ??= InnerSpec.GetFacet<ITypeIsVoidFacet>().Flag;
 
                 return isVoid.Value;
             }
@@ -290,9 +234,7 @@ namespace NakedObjects.Core.Spec {
 
         public PersistableType Persistable {
             get {
-                if (!persistable.HasValue) {
-                    persistable = GetPersistable();
-                }
+                persistable ??= GetPersistable();
 
                 return persistable.Value;
             }
@@ -301,13 +243,11 @@ namespace NakedObjects.Core.Spec {
         /// <summary>
         ///     Determines if this class represents the same class, or a subclass, of the specified class.
         /// </summary>
-        public bool IsOfType(ITypeSpec spec) {
-            return InnerSpec.IsOfType(spec.InnerSpec);
-        }
+        public bool IsOfType(ITypeSpec spec) => InnerSpec.IsOfType(spec.InnerSpec);
 
         public string GetTitle(INakedObjectAdapter nakedObjectAdapter) {
             var titleFacet = GetFacet<ITitleFacet>();
-            string title = titleFacet == null ? null : titleFacet.GetTitle(nakedObjectAdapter, nakedObjectManager);
+            var title = titleFacet == null ? null : titleFacet.GetTitle(nakedObjectAdapter, nakedObjectManager);
             return title ?? DefaultTitle();
         }
 
@@ -316,21 +256,15 @@ namespace NakedObjects.Core.Spec {
             return parser == null ? null : parser.InvariantString(nakedObjectAdapter);
         }
 
-        public string GetIconName(INakedObjectAdapter forObjectAdapter) {
-            return InnerSpec.GetIconName(forObjectAdapter, metamodelManager.Metamodel);
-        }
+        public string GetIconName(INakedObjectAdapter forObjectAdapter) => InnerSpec.GetIconName(forObjectAdapter, metamodelManager.Metamodel);
 
         #endregion
 
-        private string DefaultTitle() {
-            return InnerSpec is IServiceSpecImmutable ? SingularName : UntitledName;
-        }
+        private string DefaultTitle() => InnerSpec is IServiceSpecImmutable ? SingularName : UntitledName;
 
         protected abstract PersistableType GetPersistable();
 
-        private string TypeNameFor() {
-            return IsCollection ? "Collection" : "Object";
-        }
+        private string TypeNameFor() => IsCollection ? "Collection" : "Object";
 
         public override string ToString() {
             var str = new AsString(this);
@@ -341,20 +275,25 @@ namespace NakedObjects.Core.Spec {
             return str.ToString();
         }
 
-        protected bool Equals(TypeSpec other) {
-            return Equals(InnerSpec, other.InnerSpec);
-        }
+        protected bool Equals(TypeSpec other) => Equals(InnerSpec, other.InnerSpec);
 
         public override bool Equals(object obj) {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
+            if (ReferenceEquals(null, obj)) {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj)) {
+                return true;
+            }
+
+            if (obj.GetType() != GetType()) {
+                return false;
+            }
+
             return Equals((TypeSpec) obj);
         }
 
-        public override int GetHashCode() {
-            return InnerSpec != null ? InnerSpec.GetHashCode() : 0;
-        }
+        public override int GetHashCode() => InnerSpec != null ? InnerSpec.GetHashCode() : 0;
     }
 }
 

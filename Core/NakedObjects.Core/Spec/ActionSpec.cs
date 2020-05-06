@@ -26,7 +26,6 @@ namespace NakedObjects.Core.Spec {
     public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ActionSpec));
         private readonly IActionSpecImmutable actionSpecImmutable;
-        private readonly SpecFactory memberFactory;
         private readonly IMessageBroker messageBroker;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IServicesManager servicesManager;
@@ -48,77 +47,54 @@ namespace NakedObjects.Core.Spec {
             Assert.AssertNotNull(nakedObjectManager);
             Assert.AssertNotNull(actionSpecImmutable);
 
-            this.memberFactory = memberFactory;
             this.servicesManager = servicesManager;
             this.nakedObjectManager = nakedObjectManager;
             this.actionSpecImmutable = actionSpecImmutable;
             this.messageBroker = messageBroker;
             this.transactionManager = transactionManager;
-            int index = 0;
-            Parameters = this.actionSpecImmutable.Parameters.Select(pp => this.memberFactory.CreateParameter(pp, this, index++)).ToArray();
+            var index = 0;
+            Parameters = this.actionSpecImmutable.Parameters.Select(pp => memberFactory.CreateParameter(pp, this, index++)).ToArray();
         }
 
-        private IActionInvocationFacet ActionInvocationFacet {
-            get { return actionSpecImmutable.GetFacet<IActionInvocationFacet>(); }
-        }
+        private IActionInvocationFacet ActionInvocationFacet => actionSpecImmutable.GetFacet<IActionInvocationFacet>();
 
-        public IActionSpec[] Actions {
-            get { return new IActionSpec[0]; }
-        }
+        public IActionSpec[] Actions => new IActionSpec[0];
 
         #region IActionSpec Members
 
-        public override IObjectSpec ReturnSpec {
-            get { return returnSpec ?? (returnSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ReturnSpec)); }
-        }
+        public override IObjectSpec ReturnSpec => returnSpec ??= MetamodelManager.GetSpecification(actionSpecImmutable.ReturnSpec);
 
-        public override IObjectSpec ElementSpec {
-            get { return elementSpec ?? (elementSpec = MetamodelManager.GetSpecification(actionSpecImmutable.ElementSpec)); }
-        }
+        public override IObjectSpec ElementSpec => elementSpec ??= MetamodelManager.GetSpecification(actionSpecImmutable.ElementSpec);
 
-        public ITypeSpec OnSpec {
-            get { return onSpec ?? (onSpec = MetamodelManager.GetSpecification(ActionInvocationFacet.OnType)); }
-        }
+        public ITypeSpec OnSpec => onSpec ??= MetamodelManager.GetSpecification(ActionInvocationFacet.OnType);
 
-        public override Type[] FacetTypes {
-            get { return actionSpecImmutable.FacetTypes; }
-        }
+        public override Type[] FacetTypes => actionSpecImmutable.FacetTypes;
 
-        public override IIdentifier Identifier {
-            get { return actionSpecImmutable.Identifier; }
-        }
+        public override IIdentifier Identifier => actionSpecImmutable.Identifier;
 
-        public int ParameterCount {
-            get { return actionSpecImmutable.Parameters.Length; }
-        }
+        public int ParameterCount => actionSpecImmutable.Parameters.Length;
 
         public Where ExecutedWhere {
             get {
-                if (!executedWhere.HasValue) {
-                    executedWhere = GetFacet<IExecutedFacet>().ExecutedWhere();
-                }
+                executedWhere ??= GetFacet<IExecutedFacet>().ExecutedWhere();
 
                 return executedWhere.Value;
             }
         }
 
-        public bool IsContributedMethod {
-            get { return actionSpecImmutable.IsContributedMethod; }
-        }
+        public bool IsContributedMethod => actionSpecImmutable.IsContributedMethod;
 
         public bool IsFinderMethod {
             get {
-                if (!isFinderMethod.HasValue) {
-                    isFinderMethod = actionSpecImmutable.IsFinderMethod;
-                }
+                isFinderMethod ??= actionSpecImmutable.IsFinderMethod;
 
                 return isFinderMethod.Value;
             }
         }
 
         public INakedObjectAdapter Execute(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameterSet) {
-            INakedObjectAdapter[] parms = RealParameters(nakedObjectAdapter, parameterSet);
-            INakedObjectAdapter target = RealTarget(nakedObjectAdapter);
+            var parms = RealParameters(nakedObjectAdapter, parameterSet);
+            var target = RealTarget(nakedObjectAdapter);
             var result = ActionInvocationFacet.Invoke(target, parms, LifecycleManager, MetamodelManager, Session, nakedObjectManager, messageBroker, transactionManager);
 
             if (result != null && result.Oid == null) {
@@ -144,17 +120,11 @@ namespace NakedObjects.Core.Spec {
             return target;
         }
 
-        public override bool ContainsFacet(Type facetType) {
-            return actionSpecImmutable.ContainsFacet(facetType);
-        }
+        public override bool ContainsFacet(Type facetType) => actionSpecImmutable.ContainsFacet(facetType);
 
-        public override IFacet GetFacet(Type type) {
-            return actionSpecImmutable.GetFacet(type);
-        }
+        public override IFacet GetFacet(Type type) => actionSpecImmutable.GetFacet(type);
 
-        public override IEnumerable<IFacet> GetFacets() {
-            return actionSpecImmutable.GetFacets();
-        }
+        public override IEnumerable<IFacet> GetFacets() => actionSpecImmutable.GetFacets();
 
         public IActionParameterSpec[] Parameters { get; }
 
@@ -163,9 +133,7 @@ namespace NakedObjects.Core.Spec {
         /// </summary>
         public bool HasReturn {
             get {
-                if (!hasReturn.HasValue) {
-                    hasReturn = ReturnSpec != null;
-                }
+                hasReturn ??= ReturnSpec != null;
 
                 return hasReturn.Value;
             }
@@ -178,14 +146,14 @@ namespace NakedObjects.Core.Spec {
             IInteractionContext ic;
             var buf = new InteractionBuffer();
             if (parameterSet != null) {
-                INakedObjectAdapter[] parms = RealParameters(nakedObjectAdapter, parameterSet);
-                for (int i = 0; i < parms.Length; i++) {
+                var parms = RealParameters(nakedObjectAdapter, parameterSet);
+                for (var i = 0; i < parms.Length; i++) {
                     ic = InteractionContext.ModifyingPropParam(Session, false, RealTarget(nakedObjectAdapter), Identifier, parameterSet[i]);
                     InteractionUtils.IsValid(GetParameter(i), ic, buf);
                 }
             }
 
-            INakedObjectAdapter target = RealTarget(nakedObjectAdapter);
+            var target = RealTarget(nakedObjectAdapter);
             ic = InteractionContext.InvokingAction(Session, false, target, Identifier, parameterSet);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
@@ -196,13 +164,9 @@ namespace NakedObjects.Core.Spec {
             return InteractionUtils.IsUsable(this, ic);
         }
 
-        public override bool IsVisible(INakedObjectAdapter target) {
-            return base.IsVisible(RealTarget(target));
-        }
+        public override bool IsVisible(INakedObjectAdapter target) => base.IsVisible(RealTarget(target));
 
-        public override bool IsVisibleWhenPersistent(INakedObjectAdapter target) {
-            return base.IsVisibleWhenPersistent(RealTarget(target));
-        }
+        public override bool IsVisibleWhenPersistent(INakedObjectAdapter target) => base.IsVisibleWhenPersistent(RealTarget(target));
 
         public INakedObjectAdapter[] RealParameters(INakedObjectAdapter target, INakedObjectAdapter[] parameterSet) {
             return parameterSet ?? (IsContributedMethod ? new[] {target} : new INakedObjectAdapter[0]);
@@ -215,12 +179,10 @@ namespace NakedObjects.Core.Spec {
 
         #endregion
 
-        private bool FindServiceOnSpecOrSpecSuperclass(ITypeSpec spec) {
-            return spec != null && (spec.Equals(OnSpec) || FindServiceOnSpecOrSpecSuperclass(spec.Superclass));
-        }
+        private bool FindServiceOnSpecOrSpecSuperclass(ITypeSpec spec) => spec != null && (spec.Equals(OnSpec) || FindServiceOnSpecOrSpecSuperclass(spec.Superclass));
 
         private INakedObjectAdapter FindService() {
-            foreach (INakedObjectAdapter serviceAdapter in servicesManager.GetServices()) {
+            foreach (var serviceAdapter in servicesManager.GetServices()) {
                 if (FindServiceOnSpecOrSpecSuperclass(serviceAdapter.Spec)) {
                     return serviceAdapter;
                 }
@@ -244,7 +206,7 @@ namespace NakedObjects.Core.Spec {
             sb.Append(",returns=");
             sb.Append(ReturnSpec);
             sb.Append(",parameters={");
-            for (int i = 0; i < ParameterCount; i++) {
+            for (var i = 0; i < ParameterCount; i++) {
                 if (i > 0) {
                     sb.Append(",");
                 }

@@ -29,9 +29,7 @@ namespace NakedObjects.Core.Util {
         #region IList Members
 
         [Hidden(WhenTo.Always)]
-        public IEnumerator GetEnumerator() {
-            return wrappedList.GetEnumerator();
-        }
+        public IEnumerator GetEnumerator() => wrappedList.GetEnumerator();
 
         [Hidden(WhenTo.Always)]
         public void CopyTo(Array array, int index) {
@@ -39,19 +37,13 @@ namespace NakedObjects.Core.Util {
         }
 
         [Hidden(WhenTo.Always)]
-        public int Count {
-            get { return wrappedList.Count; }
-        }
+        public int Count => wrappedList.Count;
 
         [Hidden(WhenTo.Always)]
-        public object SyncRoot {
-            get { return ((ICollection) wrappedList).SyncRoot; }
-        }
+        public object SyncRoot => ((ICollection) wrappedList).SyncRoot;
 
         [Hidden(WhenTo.Always)]
-        public bool IsSynchronized {
-            get { return ((ICollection) wrappedList).IsSynchronized; }
-        }
+        public bool IsSynchronized => ((ICollection) wrappedList).IsSynchronized;
 
         [Hidden(WhenTo.Always)]
         public int Add(object value) {
@@ -60,9 +52,7 @@ namespace NakedObjects.Core.Util {
         }
 
         [Hidden(WhenTo.Always)]
-        public bool Contains(object value) {
-            return wrappedList.Contains((T) value);
-        }
+        public bool Contains(object value) => wrappedList.Contains((T) value);
 
         [Hidden(WhenTo.Always)]
         public void Clear() {
@@ -70,9 +60,7 @@ namespace NakedObjects.Core.Util {
         }
 
         [Hidden(WhenTo.Always)]
-        public int IndexOf(object value) {
-            return wrappedList.IndexOf((T) value);
-        }
+        public int IndexOf(object value) => wrappedList.IndexOf((T) value);
 
         [Hidden(WhenTo.Always)]
         public void Insert(int index, object value) {
@@ -91,27 +79,21 @@ namespace NakedObjects.Core.Util {
 
         [Hidden(WhenTo.Always)]
         public object this[int index] {
-            get { return wrappedList[index]; }
-            set { wrappedList[index] = (T) value; }
+            get => wrappedList[index];
+            set => wrappedList[index] = (T) value;
         }
 
         [Hidden(WhenTo.Always)]
-        public bool IsReadOnly {
-            get { return wrappedList.IsReadOnly; }
-        }
+        public bool IsReadOnly => wrappedList.IsReadOnly;
 
         [Hidden(WhenTo.Always)]
-        public bool IsFixedSize {
-            get { return ((IList) wrappedList).IsFixedSize; }
-        }
+        public bool IsFixedSize => ((IList) wrappedList).IsFixedSize;
 
         #endregion
 
         #region IList<T> Members
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() {
-            return wrappedList.GetEnumerator();
-        }
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() => wrappedList.GetEnumerator();
 
         [Hidden(WhenTo.Always)]
         public void CopyTo(T[] array, int arrayIndex) {
@@ -119,9 +101,7 @@ namespace NakedObjects.Core.Util {
         }
 
         [Hidden(WhenTo.Always)]
-        public bool Remove(T item) {
-            return wrappedList.Remove(item);
-        }
+        public bool Remove(T item) => wrappedList.Remove(item);
 
         [Hidden(WhenTo.Always)]
         public void Add(T item) {
@@ -129,14 +109,10 @@ namespace NakedObjects.Core.Util {
         }
 
         [Hidden(WhenTo.Always)]
-        public bool Contains(T item) {
-            return wrappedList.Contains(item);
-        }
+        public bool Contains(T item) => wrappedList.Contains(item);
 
         [Hidden(WhenTo.Always)]
-        public int IndexOf(T item) {
-            return wrappedList.IndexOf(item);
-        }
+        public int IndexOf(T item) => wrappedList.IndexOf(item);
 
         [Hidden(WhenTo.Always)]
         public void Insert(int index, T item) {
@@ -145,8 +121,8 @@ namespace NakedObjects.Core.Util {
 
         [Hidden(WhenTo.Always)]
         T IList<T>.this[int index] {
-            get { return wrappedList[index]; }
-            set { wrappedList[index] = value; }
+            get => wrappedList[index];
+            set => wrappedList[index] = value;
         }
 
         #endregion
@@ -154,19 +130,13 @@ namespace NakedObjects.Core.Util {
         #region IQueryable<T> Members
 
         [Hidden(WhenTo.Always)]
-        public Expression Expression {
-            get { return wrappedListAsQueryable.Expression; }
-        }
+        public Expression Expression => wrappedListAsQueryable.Expression;
 
         [Hidden(WhenTo.Always)]
-        public Type ElementType {
-            get { return wrappedListAsQueryable.ElementType; }
-        }
+        public Type ElementType => wrappedListAsQueryable.ElementType;
 
         [Hidden(WhenTo.Always)]
-        public IQueryProvider Provider {
-            get { return wrappedListAsQueryable.Provider; }
-        }
+        public IQueryProvider Provider => wrappedListAsQueryable.Provider;
 
         #endregion
     }

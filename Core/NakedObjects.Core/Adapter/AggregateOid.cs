@@ -45,25 +45,15 @@ namespace NakedObjects.Core.Adapter {
 
         public string FieldName { get; }
 
-        public IOid Previous {
-            get { return null; }
-        }
+        public IOid Previous => null;
 
-        public bool IsTransient {
-            get { return ParentOid.IsTransient; }
-        }
+        public bool IsTransient => ParentOid.IsTransient;
 
-        public void CopyFrom(IOid oid) {
-            Trace.Assert(false, "CopyFRom not supported on Aggregate oid");
-        }
+        public void CopyFrom(IOid oid) => Trace.Assert(false, "CopyFRom not supported on Aggregate oid");
 
-        public ITypeSpec Spec {
-            get { return metamodel.GetSpecification(typeName); }
-        }
+        public ITypeSpec Spec => metamodel.GetSpecification(typeName);
 
-        public bool HasPrevious {
-            get { return false; }
-        }
+        public bool HasPrevious => false;
 
         #endregion
 
@@ -80,9 +70,7 @@ namespace NakedObjects.Core.Adapter {
             return helper.ToArray();
         }
 
-        public string[] ToShortEncodedStrings() {
-            return ToEncodedStrings();
-        }
+        public string[] ToShortEncodedStrings() => ToEncodedStrings();
 
         #endregion
 
@@ -95,22 +83,19 @@ namespace NakedObjects.Core.Adapter {
             return otherOid != null && Equals(otherOid);
         }
 
-        private bool Equals(AggregateOid otherOid) {
-            return otherOid.ParentOid.Equals(ParentOid) &&
-                   otherOid.FieldName.Equals(FieldName) &&
-                   otherOid.typeName.Equals(typeName);
-        }
+        private bool Equals(AggregateOid otherOid) =>
+            otherOid.ParentOid.Equals(ParentOid) &&
+            otherOid.FieldName.Equals(FieldName) &&
+            otherOid.typeName.Equals(typeName);
 
         public override int GetHashCode() {
-            int hashCode = 17;
+            var hashCode = 17;
             hashCode = 37 * hashCode + ParentOid.GetHashCode();
             hashCode = 37 * hashCode + FieldName.GetHashCode();
             return hashCode;
         }
 
-        public override string ToString() {
-            return "AOID[" + ParentOid + "," + FieldName + "]";
-        }
+        public override string ToString() => "AOID[" + ParentOid + "," + FieldName + "]";
     }
 
     // Copyright (c) Naked Objects Group Ltd.

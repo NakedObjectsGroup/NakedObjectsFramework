@@ -17,15 +17,11 @@ namespace NakedObjects.Core.Spec {
 
         #region IServiceSpec Members
 
-        public override IActionSpec[] GetActions() {
-            return ObjectActions;
-        }
+        public override IActionSpec[] GetActions() => ObjectActions;
 
         #endregion
 
-        protected override PersistableType GetPersistable() {
-            return PersistableType.ProgramPersistable;
-        }
+        protected override PersistableType GetPersistable() => PersistableType.ProgramPersistable;
     }
 }
 

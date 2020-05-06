@@ -115,10 +115,12 @@ namespace NakedObjects.Core.Configuration {
         #endregion
 
         private void ValidateConfig() {
-            if (NoValidate) return;
+            if (NoValidate) {
+                return;
+            }
 
-            string msg = "Reflector configuration errors;\r\n";
-            bool configError = false;
+            var msg = "Reflector configuration errors;\r\n";
+            var configError = false;
 
             if (Services == null || !Services.Any()) {
                 configError = true;

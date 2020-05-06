@@ -53,32 +53,24 @@ namespace NakedObjects.Core.Adapter {
             return helper.ToArray();
         }
 
-        public string[] ToShortEncodedStrings() {
-            return ToEncodedStrings();
-        }
+        public string[] ToShortEncodedStrings() => ToEncodedStrings();
 
         #endregion
 
         #region IViewModelOid Members
 
-        public string TypeName { get; private set; }
+        public string TypeName { get; }
         public string[] Keys { get; private set; }
         public bool IsFinal { get; private set; }
         public void CopyFrom(IOid oid) { }
 
-        public IOid Previous {
-            get { return previous; }
-        }
+        public IOid Previous => previous;
 
-        public bool IsTransient { get; private set; }
+        public bool IsTransient { get; }
 
-        public bool HasPrevious {
-            get { return previous != null; }
-        }
+        public bool HasPrevious => previous != null;
 
-        public ITypeSpec Spec {
-            get { return metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName)); }
-        }
+        public ITypeSpec Spec => metamodel.GetSpecification(TypeNameUtils.DecodeTypeName(TypeName));
 
         public void UpdateKeys(string[] newKeys, bool final) {
             previous = new ViewModelOid(metamodel, (IObjectSpec) Spec) {Keys = Keys};
@@ -94,9 +86,9 @@ namespace NakedObjects.Core.Adapter {
             cachedHashCode = HashCodeUtils.Hash(cachedHashCode, TypeName);
             cachedHashCode = HashCodeUtils.Hash(cachedHashCode, Keys);
 
-            object keys = Keys.Aggregate((s, t) => s + ":" + t);
+            var keys = Keys.Aggregate((s, t) => s + ":" + t);
 
-            cachedToString = string.Format("{0}VMOID#{1}{2}", IsTransient ? "T" : "", keys, previous == null ? "" : "+");
+            cachedToString = $"{(IsTransient ? "T" : "")}VMOID#{keys}{(previous == null ? "" : "+")}";
         }
 
         #region Object Overrides
@@ -106,23 +98,14 @@ namespace NakedObjects.Core.Adapter {
                 return true;
             }
 
-            var oid = obj as ViewModelOid;
-            if (oid != null) {
-                return TypeName.Equals(oid.TypeName) && Keys.SequenceEqual(oid.Keys);
-            }
-
-            return false;
+            return obj is ViewModelOid oid && TypeName.Equals(oid.TypeName) && Keys.SequenceEqual(oid.Keys);
         }
 
         // ReSharper disable once NonReadonlyFieldInGetHashCode
         // investigate making Oid immutable
-        public override int GetHashCode() {
-            return cachedHashCode;
-        }
+        public override int GetHashCode() => cachedHashCode;
 
-        public override string ToString() {
-            return cachedToString;
-        }
+        public override string ToString() => cachedToString;
 
         #endregion
     }

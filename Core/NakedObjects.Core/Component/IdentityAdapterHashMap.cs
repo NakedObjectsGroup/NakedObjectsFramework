@@ -18,13 +18,9 @@ namespace NakedObjects.Core.Component {
         private readonly IDictionary<IOid, INakedObjectAdapter> adapters;
         private readonly int capacity = 10;
 
-        static IdentityAdapterHashMap() {
-            Log = LogManager.GetLogger(typeof(IdentityAdapterHashMap));
-        }
+        static IdentityAdapterHashMap() => Log = LogManager.GetLogger(typeof(IdentityAdapterHashMap));
 
-        public IdentityAdapterHashMap() {
-            adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
-        }
+        public IdentityAdapterHashMap() => adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
 
         public IdentityAdapterHashMap(IConfiguration config) : this() {
             var capacityFromConfig = config.GetSection("NakedObjects")["HashMapCapacity"];
@@ -40,37 +36,19 @@ namespace NakedObjects.Core.Component {
 
         #region IIdentityAdapterMap Members
 
-        public void Add(IOid oid, INakedObjectAdapter adapter) {
-            adapters[oid] = adapter;
-        }
+        public void Add(IOid oid, INakedObjectAdapter adapter) => adapters[oid] = adapter;
 
-        public INakedObjectAdapter GetAdapter(IOid oid) {
-            if (adapters.ContainsKey(oid)) {
-                return adapters[oid];
-            }
+        public INakedObjectAdapter GetAdapter(IOid oid) => adapters.ContainsKey(oid) ? adapters[oid] : null;
 
-            return null;
-        }
+        public bool IsIdentityKnown(IOid oid) => adapters.ContainsKey(oid);
 
-        public bool IsIdentityKnown(IOid oid) {
-            return adapters.ContainsKey(oid);
-        }
+        public IEnumerator<IOid> GetEnumerator() => adapters.Keys.GetEnumerator();
 
-        public IEnumerator<IOid> GetEnumerator() {
-            return adapters.Keys.GetEnumerator();
-        }
+        public void Remove(IOid oid) => adapters.Remove(oid);
 
-        public void Remove(IOid oid) {
-            adapters.Remove(oid);
-        }
+        public void Reset() => adapters.Clear();
 
-        public void Reset() {
-            adapters.Clear();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
     }

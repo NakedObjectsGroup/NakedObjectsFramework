@@ -17,7 +17,7 @@ namespace NakedObjects.Core.Adapter {
         private readonly object version;
 
         public ConcurrencyCheckVersion(string user, DateTime time, object version) {
-            this.User = user;
+            User = user;
             this.time = time;
             this.version = version;
         }
@@ -43,9 +43,7 @@ namespace NakedObjects.Core.Adapter {
             return helper.ToArray();
         }
 
-        public string[] ToShortEncodedStrings() {
-            return ToEncodedStrings();
-        }
+        public string[] ToShortEncodedStrings() => ToEncodedStrings();
 
         #endregion
 
@@ -57,17 +55,11 @@ namespace NakedObjects.Core.Adapter {
 
         public string Digest => version != null ? IdentifierUtils.ComputeMD5HashAsString(version.ToString()) : null;
 
-        public bool IsDifferent(IVersion otherVersion) {
-            return !Equals(otherVersion);
-        }
+        public bool IsDifferent(IVersion otherVersion) => !Equals(otherVersion);
 
-        public bool IsDifferent(string digest) {
-            return digest != Wildcard && Digest != digest;
-        }
+        public bool IsDifferent(string digest) => digest != Wildcard && Digest != digest;
 
-        public string AsSequence() {
-            return version.ToString();
-        }
+        public string AsSequence() => version.ToString();
 
         public bool Equals(IVersion other) {
             var entityVersion = other as ConcurrencyCheckVersion;
@@ -81,12 +73,8 @@ namespace NakedObjects.Core.Adapter {
             return Equals(entityVersion);
         }
 
-        public override int GetHashCode() {
-            return version.GetHashCode();
-        }
+        public override int GetHashCode() => version.GetHashCode();
 
-        public override string ToString() {
-            return $"Version: {version} (last read at : {Time} by : {User})";
-        }
+        public override string ToString() => $"Version: {version} (last read at : {Time} by : {User})";
     }
 }

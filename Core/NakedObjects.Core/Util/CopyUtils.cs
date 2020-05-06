@@ -31,19 +31,19 @@ namespace NakedObjects.Core.Util {
         }
 
         private static void ShallowCopyCollection(object fromCollection, object toCollection) {
-            MethodInfo cm = typeof(CopyUtils).GetMethod("ShallowCopyCollectionGeneric", BindingFlags.Static | BindingFlags.NonPublic);
-            MethodInfo gcm = cm.MakeGenericMethod(toCollection.GetType().GetGenericArguments());
+            var cm = typeof(CopyUtils).GetMethod("ShallowCopyCollectionGeneric", BindingFlags.Static | BindingFlags.NonPublic);
+            var gcm = cm.MakeGenericMethod(toCollection.GetType().GetGenericArguments());
             gcm.Invoke(null, new[] {fromCollection, toCollection});
         }
 
         private static void ShallowUpdateCollection(object fromCollection, object toCollection) {
-            MethodInfo cm = typeof(CopyUtils).GetMethod("ShallowUpdateCollectionGeneric", BindingFlags.Static | BindingFlags.NonPublic);
-            MethodInfo gcm = cm.MakeGenericMethod(toCollection.GetType().GetGenericArguments());
+            var cm = typeof(CopyUtils).GetMethod("ShallowUpdateCollectionGeneric", BindingFlags.Static | BindingFlags.NonPublic);
+            var gcm = cm.MakeGenericMethod(toCollection.GetType().GetGenericArguments());
             gcm.Invoke(null, new[] {fromCollection, toCollection});
         }
 
         public static object CloneObjectTest(object domainObject) {
-            object clone = Activator.CreateInstance(domainObject.GetType());
+            var clone = Activator.CreateInstance(domainObject.GetType());
             return CopyProperties(domainObject, clone);
         }
 

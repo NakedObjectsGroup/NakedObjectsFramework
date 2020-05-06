@@ -25,7 +25,7 @@ namespace NakedObjects.Core.Component {
             Assert.AssertNotNull(metamodel);
 
             this.specFactory = specFactory;
-            this.Metamodel = metamodel;
+            Metamodel = metamodel;
         }
 
         #region IMetamodelManager Members
@@ -36,33 +36,19 @@ namespace NakedObjects.Core.Component {
 
         public IMetamodel Metamodel { get; }
 
-        public ITypeSpec GetSpecification(Type type) {
-            return type == null ? null : NewObjectSpec(GetInnerSpec(type));
-        }
+        public ITypeSpec GetSpecification(Type type) => type == null ? null : NewObjectSpec(GetInnerSpec(type));
 
-        public ITypeSpec GetSpecification(string name) {
-            return string.IsNullOrWhiteSpace(name) ? null : NewObjectSpec(GetInnerSpec(name));
-        }
+        public ITypeSpec GetSpecification(string name) => string.IsNullOrWhiteSpace(name) ? null : NewObjectSpec(GetInnerSpec(name));
 
-        public ITypeSpec GetSpecification(ITypeSpecImmutable spec) {
-            return spec == null ? null : NewObjectSpec(spec);
-        }
+        public ITypeSpec GetSpecification(ITypeSpecImmutable spec) => spec == null ? null : NewObjectSpec(spec);
 
-        public IObjectSpec GetSpecification(IObjectSpecImmutable spec) {
-            return GetSpecification(spec as ITypeSpecImmutable) as IObjectSpec;
-        }
+        public IObjectSpec GetSpecification(IObjectSpecImmutable spec) => GetSpecification(spec as ITypeSpecImmutable) as IObjectSpec;
 
-        public IServiceSpec GetSpecification(IServiceSpecImmutable spec) {
-            return GetSpecification(spec as ITypeSpecImmutable) as IServiceSpec;
-        }
+        public IServiceSpec GetSpecification(IServiceSpecImmutable spec) => GetSpecification(spec as ITypeSpecImmutable) as IServiceSpec;
 
-        public IMenuImmutable[] MainMenus() {
-            return Metamodel.MainMenus;
-        }
+        public IMenuImmutable[] MainMenus() => Metamodel.MainMenus;
 
-        public IActionSpec GetActionSpec(IActionSpecImmutable spec) {
-            return specFactory.CreateActionSpec(spec);
-        }
+        public IActionSpec GetActionSpec(IActionSpecImmutable spec) => specFactory.CreateActionSpec(spec);
 
         #endregion
 
@@ -74,12 +60,8 @@ namespace NakedObjects.Core.Component {
             return localCache[spec];
         }
 
-        private ITypeSpecImmutable GetInnerSpec(Type type) {
-            return Metamodel.GetSpecification(type);
-        }
+        private ITypeSpecImmutable GetInnerSpec(Type type) => Metamodel.GetSpecification(type);
 
-        private ITypeSpecImmutable GetInnerSpec(string name) {
-            return Metamodel.GetSpecification(name);
-        }
+        private ITypeSpecImmutable GetInnerSpec(string name) => Metamodel.GetSpecification(name);
     }
 }

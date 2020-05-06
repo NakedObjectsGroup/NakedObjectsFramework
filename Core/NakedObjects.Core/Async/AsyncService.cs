@@ -30,9 +30,7 @@ namespace NakedObjects.Core.Async {
         ///     object instances.
         /// </summary>
         /// <param name="toRun"></param>
-        public Task RunAsync(Action<IDomainObjectContainer> toRun) {
-            return TaskWrapper(toRun);
-        }
+        public Task RunAsync(Action<IDomainObjectContainer> toRun) => TaskWrapper(toRun);
 
         #endregion
 

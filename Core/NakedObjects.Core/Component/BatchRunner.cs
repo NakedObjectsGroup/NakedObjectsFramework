@@ -28,12 +28,8 @@ namespace NakedObjects.Core.Component {
 
         #endregion
 
-        private void StartTransaction() {
-            framework.TransactionManager.StartTransaction();
-        }
+        private void StartTransaction() => framework.TransactionManager.StartTransaction();
 
-        private void EndTransaction() {
-            framework.TransactionManager.EndTransaction();
-        }
+        private void EndTransaction() => framework.TransactionManager.EndTransaction();
     }
 }

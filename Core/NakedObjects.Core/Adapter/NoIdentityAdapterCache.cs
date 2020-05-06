@@ -14,21 +14,11 @@ namespace NakedObjects.Core.Adapter {
 
         #region INoIdentityAdapterCache Members
 
-        public void AddAdapter(INakedObjectAdapter adapter) {
-            adapters[adapter.Object] = adapter;
-        }
+        public void AddAdapter(INakedObjectAdapter adapter) => adapters[adapter.Object] = adapter;
 
-        public INakedObjectAdapter GetAdapter(object domainObject) {
-            if (adapters.ContainsKey(domainObject)) {
-                return adapters[domainObject];
-            }
+        public INakedObjectAdapter GetAdapter(object domainObject) => adapters.ContainsKey(domainObject) ? adapters[domainObject] : null;
 
-            return null;
-        }
-
-        public void Reset() {
-            adapters.Clear();
-        }
+        public void Reset() => adapters.Clear();
 
         #endregion
     }

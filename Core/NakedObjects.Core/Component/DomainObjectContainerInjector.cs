@@ -26,17 +26,7 @@ namespace NakedObjects.Core.Component {
             serviceTypes = config.Services.ToList();
         }
 
-        private List<object> Services {
-            get {
-                if (services == null) {
-                    services = serviceTypes.Select(Activator.CreateInstance).ToList();
-                    services.Add(Framework);
-                    services.ForEach(InjectInto);
-                }
-
-                return services;
-            }
-        }
+        private List<object> Services => services ?? SetServices();
 
         #region IDomainObjectInjector Members
 
@@ -57,6 +47,13 @@ namespace NakedObjects.Core.Component {
         }
 
         #endregion
+
+        private List<object> SetServices() {
+            services = serviceTypes.Select(Activator.CreateInstance).ToList();
+            services.Add(Framework);
+            services.ForEach(InjectInto);
+            return services;
+        }
 
         private void Initialize() {
             if (!initialized) {

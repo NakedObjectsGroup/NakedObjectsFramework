@@ -26,12 +26,12 @@ namespace NakedObjects.Core.Interactions {
                                    IIdentifier id,
                                    INakedObjectAdapter proposedArgument,
                                    INakedObjectAdapter[] arguments) {
-            this.InteractionType = interactionType;
-            this.IsProgrammatic = programmatic;
-            this.Id = id;
-            this.Session = session;
-            this.Target = target;
-            this.ProposedArgument = proposedArgument;
+            InteractionType = interactionType;
+            IsProgrammatic = programmatic;
+            Id = id;
+            Session = session;
+            Target = target;
+            ProposedArgument = proposedArgument;
             ProposedArguments = arguments;
         }
 
@@ -76,7 +76,8 @@ namespace NakedObjects.Core.Interactions {
         ///     The identifier of the object or member that is being identified with.
         /// </summary>
         /// <para>
-        ///     If the <see cref="InteractionType" /> type is <see cref="Architecture.Interactions.InteractionType.ObjectPersist" />,
+        ///     If the <see cref="InteractionType" /> type is
+        ///     <see cref="Architecture.Interactions.InteractionType.ObjectPersist" />,
         ///     will be the identifier of the <see cref="Target" /> object's specification.
         ///     Otherwise will be the identifier of the member.
         /// </para>
@@ -106,7 +107,8 @@ namespace NakedObjects.Core.Interactions {
         ///     The arguments for a proposed action invocation.
         /// </summary>
         /// <para>
-        ///     Will be set if the <see cref="InteractionType" /> type is <see cref="Architecture.Interactions.InteractionType.ActionInvoke" />;
+        ///     Will be set if the <see cref="InteractionType" /> type is
+        ///     <see cref="Architecture.Interactions.InteractionType.ActionInvoke" />;
         ///     <c>null</c> otherwise.
         /// </para>
         public INakedObjectAdapter[] ProposedArguments { get; }
@@ -115,9 +117,7 @@ namespace NakedObjects.Core.Interactions {
         ///     Convenience to allow implementors of <see cref="IValidatingInteractionAdvisor" /> etc to determine
         ///     if the interaction's type applies.
         /// </summary>
-        public bool TypeEquals(InteractionType other) {
-            return InteractionType.Equals(other);
-        }
+        public bool TypeEquals(InteractionType other) => InteractionType.Equals(other);
 
         #endregion
 
@@ -128,15 +128,14 @@ namespace NakedObjects.Core.Interactions {
         public static InteractionContext AccessMember(ISession session,
                                                       bool programmatic,
                                                       INakedObjectAdapter target,
-                                                      IIdentifier memberIdentifier) {
-            return new InteractionContext(InteractionType.MemberAccess,
+                                                      IIdentifier memberIdentifier) =>
+            new InteractionContext(InteractionType.MemberAccess,
                 session,
                 programmatic,
                 target,
                 memberIdentifier,
                 null,
                 null);
-        }
 
         /// <summary>
         ///     Factory method to create an an <see cref="InteractionContext" /> to represent
@@ -146,15 +145,14 @@ namespace NakedObjects.Core.Interactions {
                                                             bool programmatic,
                                                             INakedObjectAdapter target,
                                                             IIdentifier propertyIdentifier,
-                                                            INakedObjectAdapter proposedArgument) {
-            return new InteractionContext(InteractionType.PropertyParamModify,
+                                                            INakedObjectAdapter proposedArgument) =>
+            new InteractionContext(InteractionType.PropertyParamModify,
                 session,
                 programmatic,
                 target,
                 propertyIdentifier,
                 proposedArgument,
                 null);
-        }
 
         /// <summary>
         ///     Factory method to create an an <see cref="InteractionContext" /> to represent
@@ -164,15 +162,14 @@ namespace NakedObjects.Core.Interactions {
                                                         bool programmatic,
                                                         INakedObjectAdapter target,
                                                         IIdentifier actionIdentifier,
-                                                        INakedObjectAdapter[] arguments) {
-            return new InteractionContext(InteractionType.ActionInvoke,
+                                                        INakedObjectAdapter[] arguments) =>
+            new InteractionContext(InteractionType.ActionInvoke,
                 session,
                 programmatic,
                 target,
                 actionIdentifier,
                 null,
                 arguments);
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

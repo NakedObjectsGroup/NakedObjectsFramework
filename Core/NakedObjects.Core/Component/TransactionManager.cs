@@ -23,15 +23,7 @@ namespace NakedObjects.Core.Component {
             this.objectStore = objectStore;
         }
 
-        private ITransaction Transaction {
-            get {
-                if (transaction == null) {
-                    return new NestedTransaction(objectStore);
-                }
-
-                return transaction;
-            }
-        }
+        private ITransaction Transaction => transaction ?? new NestedTransaction(objectStore);
 
         #region ITransactionManager Members
 
@@ -46,13 +38,7 @@ namespace NakedObjects.Core.Component {
             TransactionLevel++;
         }
 
-        public bool FlushTransaction() {
-            if (transaction != null) {
-                return transaction.Flush();
-            }
-
-            return false;
-        }
+        public bool FlushTransaction() => transaction != null && transaction.Flush();
 
         public void AbortTransaction() {
             if (transaction != null) {

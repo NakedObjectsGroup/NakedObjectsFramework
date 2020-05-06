@@ -18,9 +18,7 @@ namespace NakedObjects.Core.Component {
         private readonly int capacity = 10;
         private readonly IDictionary<object, INakedObjectAdapter> domainObjects;
 
-        public NakedObjectAdapterHashMap() {
-            domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
-        }
+        public NakedObjectAdapterHashMap() => domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
 
         public NakedObjectAdapterHashMap(IConfiguration config) : this() {
             var capacityFromConfig = config.GetSection("NakedObjects")["HashMapCapacity"];
@@ -36,41 +34,21 @@ namespace NakedObjects.Core.Component {
 
         #region INakedObjectAdapterMap Members
 
-        public void Add(object obj, INakedObjectAdapter adapter) {
-            domainObjects[obj] = adapter;
-        }
+        public void Add(object obj, INakedObjectAdapter adapter) => domainObjects[obj] = adapter;
 
-        public bool ContainsObject(object obj) {
-            return domainObjects.ContainsKey(obj);
-        }
+        public bool ContainsObject(object obj) => domainObjects.ContainsKey(obj);
 
-        public IEnumerator<INakedObjectAdapter> GetEnumerator() {
-            return domainObjects.Values.GetEnumerator();
-        }
+        public IEnumerator<INakedObjectAdapter> GetEnumerator() => domainObjects.Values.GetEnumerator();
 
-        public INakedObjectAdapter GetObject(object obj) {
-            if (ContainsObject(obj)) {
-                return domainObjects[obj];
-            }
+        public INakedObjectAdapter GetObject(object obj) => ContainsObject(obj) ? domainObjects[obj] : null;
 
-            return null;
-        }
+        public void Reset() => domainObjects.Clear();
 
-        public void Reset() {
-            domainObjects.Clear();
-        }
+        public void Shutdown() => domainObjects.Clear();
 
-        public void Shutdown() {
-            domainObjects.Clear();
-        }
+        public void Remove(INakedObjectAdapter nakedObjectAdapter) => domainObjects.Remove(nakedObjectAdapter.Object);
 
-        public void Remove(INakedObjectAdapter nakedObjectAdapter) {
-            domainObjects.Remove(nakedObjectAdapter.Object);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
     }

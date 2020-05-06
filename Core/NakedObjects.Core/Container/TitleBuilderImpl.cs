@@ -12,7 +12,7 @@ namespace NakedObjects.Core.Container {
     public sealed class TitleBuilderImpl : ITitleBuilder {
         private const string Space = " ";
         private StringBuilder Title { get; set; }
-        private IDomainObjectContainer Container { get; set; }
+        private IDomainObjectContainer Container { get; }
 
         #region ITitleBuilder Members
 
@@ -141,9 +141,7 @@ namespace NakedObjects.Core.Container {
         /// <returns>
         ///     a reference to the called object (itself)
         /// </returns>
-        public ITitleBuilder Concat(object obj) {
-            return Concat(obj, null, "");
-        }
+        public ITitleBuilder Concat(object obj) => Concat(obj, null, "");
 
         /// <summary>
         ///     Concatenate the the Title value (the result of calling an objects Title() method), or the specified
@@ -213,9 +211,7 @@ namespace NakedObjects.Core.Container {
         /// <summary>
         ///     Returns a string that represents the value of this obj
         /// </summary>
-        public override string ToString() {
-            return Title.ToString();
-        }
+        public override string ToString() => Title.ToString();
 
         /// <summary>
         ///     Truncates this Title so it has a maximum number of words. Spaces are used to determine words, thus two
@@ -230,13 +226,13 @@ namespace NakedObjects.Core.Container {
                 throw new ArgumentException("Truncation must be to one or more words");
             }
 
-            string[] words = Title.ToString().Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            var words = Title.ToString().Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
             if (noWords >= words.Length) {
                 return this;
             }
 
             Title = new StringBuilder();
-            for (int i = 0; i < noWords; i++) {
+            for (var i = 0; i < noWords; i++) {
                 Title.Append(words[i]).Append(" ");
             }
 
@@ -251,17 +247,13 @@ namespace NakedObjects.Core.Container {
         ///     return true if either: the specified reference is null; the object's <c>ToString()</c> method
         ///     returns null; or if the <c>ToString()</c> returns an empty string
         /// </summary>
-        public bool IsEmpty(object obj, string format) {
-            return obj == null || IsEmpty(Container.TitleOf(obj, format));
-        }
+        public bool IsEmpty(object obj, string format) => obj == null || IsEmpty(Container.TitleOf(obj, format));
 
         /// <summary>
         ///     Determines if the specified text is empty. Will return true if either: the specified reference is null;
         ///     or if the reference is an empty string
         /// </summary>
-        public bool IsEmpty(string text) {
-            return string.IsNullOrEmpty(text);
-        }
+        public bool IsEmpty(string text) => string.IsNullOrEmpty(text);
 
         #region Constructors
 

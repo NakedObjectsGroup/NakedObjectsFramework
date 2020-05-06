@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Util;
 
@@ -72,8 +71,8 @@ namespace NakedObjects.Core.Adapter {
             : this(lifecycleManager, nakedObjectManager, metamodel) {
             var helper = new StringDecoderHelper(metamodel, strings, true);
             // ReSharper disable once UnusedVariable
-            string specName = helper.GetNextString();
-            string actionId = helper.GetNextString();
+            var specName = helper.GetNextString();
+            var actionId = helper.GetNextString();
             var targetOid = (IOid) helper.GetNextEncodedToStrings();
 
             Target = RestoreObject(targetOid);
@@ -86,24 +85,22 @@ namespace NakedObjects.Core.Adapter {
 
                 switch (parmType) {
                     case ParameterType.Value:
-                        object obj = helper.GetNextObject();
+                        var obj = helper.GetNextObject();
                         parameters.Add(nakedObjectManager.CreateAdapter(obj, null, null));
                         break;
                     case ParameterType.Object:
                         var oid = (IOid) helper.GetNextEncodedToStrings();
-                        INakedObjectAdapter nakedObjectAdapter = RestoreObject(oid);
+                        var nakedObjectAdapter = RestoreObject(oid);
                         parameters.Add(nakedObjectAdapter);
                         break;
                     case ParameterType.ValueCollection:
-                        Type vInstanceType;
-                        IList<object> vColl = helper.GetNextValueCollection(out vInstanceType);
-                        IList typedVColl = CollectionUtils.ToTypedIList(vColl, vInstanceType);
+                        var vColl = helper.GetNextValueCollection(out var vInstanceType);
+                        var typedVColl = CollectionUtils.ToTypedIList(vColl, vInstanceType);
                         parameters.Add(nakedObjectManager.CreateAdapter(typedVColl, null, null));
                         break;
                     case ParameterType.ObjectCollection:
-                        Type oInstanceType;
-                        List<object> oColl = helper.GetNextObjectCollection(out oInstanceType).Cast<IOid>().Select(o => RestoreObject(o).Object).ToList();
-                        IList typedOColl = CollectionUtils.ToTypedIList(oColl, oInstanceType);
+                        var oColl = helper.GetNextObjectCollection(out var oInstanceType).Cast<IOid>().Select(o => RestoreObject(o).Object).ToList();
+                        var typedOColl = CollectionUtils.ToTypedIList(oColl, oInstanceType);
                         parameters.Add(nakedObjectManager.CreateAdapter(typedOColl, null, null));
                         break;
                     default:
@@ -125,7 +122,7 @@ namespace NakedObjects.Core.Adapter {
 
         public object[] SelectedObjects {
             get { return selectedObjects ?? new object[] { }; }
-            private set { selectedObjects = value; }
+            private set => selectedObjects = value;
         }
 
         public IOid Previous => null;
@@ -140,16 +137,14 @@ namespace NakedObjects.Core.Adapter {
 
         public ITypeSpec Spec => Target.Spec;
 
-        public ICollectionMemento NewSelectionMemento(object[] objects, bool isPaged) {
-            return new CollectionMemento(lifecycleManager, nakedObjectManager, metamodel, this, objects) {IsPaged = isPaged};
-        }
+        public ICollectionMemento NewSelectionMemento(object[] objects, bool isPaged) => new CollectionMemento(lifecycleManager, nakedObjectManager, metamodel, this, objects) {IsPaged = isPaged};
 
         public INakedObjectAdapter RecoverCollection() {
-            INakedObjectAdapter nakedObjectAdapter = Action.Execute(Target, Parameters);
+            var nakedObjectAdapter = Action.Execute(Target, Parameters);
 
             if (selectedObjects != null) {
-                IEnumerable<object> selected = nakedObjectAdapter.GetDomainObject<IEnumerable>().Cast<object>().Where(x => selectedObjects.Contains(x));
-                IList newResult = CollectionUtils.CloneCollectionAndPopulate(nakedObjectAdapter.Object, selected);
+                var selected = nakedObjectAdapter.GetDomainObject<IEnumerable>().Cast<object>().Where(x => selectedObjects.Contains(x));
+                var newResult = CollectionUtils.CloneCollectionAndPopulate(nakedObjectAdapter.Object, selected);
                 nakedObjectAdapter = nakedObjectManager.CreateAdapter(newResult, null, null);
             }
 
@@ -167,7 +162,7 @@ namespace NakedObjects.Core.Adapter {
             helper.Add(Action.Id);
             helper.Add(Target.Oid as IEncodedToStrings);
 
-            foreach (INakedObjectAdapter parameter in Parameters) {
+            foreach (var parameter in Parameters) {
                 if (parameter == null) {
                     helper.Add(ParameterType.Value);
                     helper.Add((object) null);
@@ -177,8 +172,8 @@ namespace NakedObjects.Core.Adapter {
                     helper.Add(parameter.Object);
                 }
                 else if (parameter.Spec.IsCollection) {
-                    IObjectSpecImmutable instanceSpec = parameter.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(parameter, metamodel.Metamodel);
-                    Type instanceType = TypeUtils.GetType(instanceSpec.FullName);
+                    var instanceSpec = parameter.Spec.GetFacet<ITypeOfFacet>().GetValueSpec(parameter, metamodel.Metamodel);
+                    var instanceType = TypeUtils.GetType(instanceSpec.FullName);
 
                     if (instanceSpec.IsParseable) {
                         helper.Add(ParameterType.ValueCollection);
@@ -198,9 +193,7 @@ namespace NakedObjects.Core.Adapter {
             return helper.ToArray();
         }
 
-        public string[] ToShortEncodedStrings() {
-            return ToEncodedStrings();
-        }
+        public string[] ToShortEncodedStrings() => ToEncodedStrings();
 
         #endregion
 

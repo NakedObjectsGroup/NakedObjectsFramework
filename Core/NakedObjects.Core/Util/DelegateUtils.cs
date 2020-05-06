@@ -55,24 +55,24 @@ namespace NakedObjects.Core.Util {
                 return null;
             }
 
-            MethodInfo delegateHelper = MakeDelegateHelper(method.DeclaringType, method);
+            var delegateHelper = MakeDelegateHelper(method.DeclaringType, method);
 
             // Now call it. The null argument is because it’s a static method.
-            object ret = delegateHelper.Invoke(null, new object[] {method});
+            var ret = delegateHelper.Invoke(null, new object[] {method});
 
             // Cast the result to the right kind of delegate and return it
             return (Func<object, object[], object>) ret;
         }
 
         public static Action<object> CreateCallbackDelegate(MethodInfo method) {
-            MethodInfo genericHelper = typeof(DelegateUtils).GetMethod("CallbackHelper", BindingFlags.Static | BindingFlags.NonPublic);
+            var genericHelper = typeof(DelegateUtils).GetMethod("CallbackHelper", BindingFlags.Static | BindingFlags.NonPublic);
 
             // Now supply the type arguments
             var typeArgs = new List<Type> {method.DeclaringType};
             var delegateHelper = genericHelper.MakeGenericMethod(typeArgs.ToArray());
 
             // Now call it. The null argument is because it’s a static method.
-            object ret = delegateHelper.Invoke(null, new object[] {method});
+            var ret = delegateHelper.Invoke(null, new object[] {method});
 
             // Cast the result to the right kind of delegate and return it
             return (Action<object>) ret;
@@ -87,14 +87,14 @@ namespace NakedObjects.Core.Util {
         }
 
         public static Func<object, IPrincipal, object, string, bool> CreateTypeAuthorizerDelegate(MethodInfo method) {
-            MethodInfo genericHelper = typeof(DelegateUtils).GetMethod("TypeAuthorizerHelper", BindingFlags.Static | BindingFlags.NonPublic);
+            var genericHelper = typeof(DelegateUtils).GetMethod("TypeAuthorizerHelper", BindingFlags.Static | BindingFlags.NonPublic);
 
             // Now supply the type arguments
             var typeArgs = new List<Type> {method.DeclaringType, GetTypeAuthorizerType(method.DeclaringType).GenericTypeArguments.First()};
             var delegateHelper = genericHelper.MakeGenericMethod(typeArgs.ToArray());
 
             // Now call it. The null argument is because it’s a static method.
-            object ret = delegateHelper.Invoke(null, new object[] {method});
+            var ret = delegateHelper.Invoke(null, new object[] {method});
 
             // Cast the result to the right kind of delegate and return it
             return (Func<object, IPrincipal, object, string, bool>) ret;
@@ -106,7 +106,7 @@ namespace NakedObjects.Core.Util {
             helperName += method.GetParameters().Length;
 
             // First fetch the generic form
-            MethodInfo genericHelper = typeof(DelegateUtils).GetMethod(helperName, BindingFlags.Static | BindingFlags.NonPublic);
+            var genericHelper = typeof(DelegateUtils).GetMethod(helperName, BindingFlags.Static | BindingFlags.NonPublic);
 
             // Now supply the type arguments
             var typeArgs = new List<Type> {targetType};
@@ -119,12 +119,11 @@ namespace NakedObjects.Core.Util {
             return genericHelper.MakeGenericMethod(typeArgs.ToArray());
         }
 
-        private static T Cast<T>(object tocast) {
+        private static T Cast<T>(object tocast) =>
             // ReSharper disable once MergeConditionalExpression
             // Do not simplify - this is to catch value parms and cast to their default value if they're being cleared
             // with a null. 
-            return (T) (tocast ?? default(T));
-        }
+            (T) (tocast ?? default(T));
 
         private static Func<object, object[], object> WrapException(Func<object, object[], object> func) {
             return (target, param) => {

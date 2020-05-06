@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Serialization;
 using System.Web;
 using Common.Logging;
@@ -70,9 +69,9 @@ namespace NakedObjects.Core.Adapter {
 
         public string[] GetNextArray() {
             var list = new List<string>();
-            int count = GetNextInt();
+            var count = GetNextInt();
 
-            for (int i = 0; i < count; i++) {
+            for (var i = 0; i < count; i++) {
                 list.Add(GetNextString());
             }
 
@@ -81,11 +80,11 @@ namespace NakedObjects.Core.Adapter {
 
         public IList<object> GetNextValueCollection(out Type instanceType) {
             var list = new List<object>();
-            int count = GetNextInt();
-            string type = GetNextString();
+            var count = GetNextInt();
+            var type = GetNextString();
             instanceType = TypeUtils.GetType(type);
 
-            for (int i = 0; i < count; i++) {
+            for (var i = 0; i < count; i++) {
                 list.Add(GetNextObject());
             }
 
@@ -94,11 +93,11 @@ namespace NakedObjects.Core.Adapter {
 
         public IList<IEncodedToStrings> GetNextObjectCollection(out Type instanceType) {
             var list = new List<IEncodedToStrings>();
-            int count = GetNextInt();
-            string type = GetNextString();
+            var count = GetNextInt();
+            var type = GetNextString();
             instanceType = TypeUtils.GetType(type);
 
-            for (int i = 0; i < count; i++) {
+            for (var i = 0; i < count; i++) {
                 list.Add(GetNextEncodedToStrings());
             }
 
@@ -106,15 +105,15 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public object GetNextObject() {
-            string type = GetNextString();
-            string value = GetNextString();
+            var type = GetNextString();
+            var value = GetNextString();
 
             if (type.Length == 0) {
                 // null object indicated by empty type string 
                 return null;
             }
 
-            Type objectType = TypeUtils.GetType(type);
+            var objectType = TypeUtils.GetType(type);
             if (objectType == null) {
                 throw new Exception(Log.LogAndReturn($"Cannot find type for name: {type}"));
             }
@@ -127,12 +126,12 @@ namespace NakedObjects.Core.Adapter {
                 return Enum.Parse(objectType, value);
             }
 
-            MethodInfo parseMethod = objectType.GetMethod("Parse", new[] {typeof(string)});
+            var parseMethod = objectType.GetMethod("Parse", new[] {typeof(string)});
             if (parseMethod == null) {
                 throw new Exception(Log.LogAndReturn($"Cannot find Parse method on type: {objectType}"));
             }
 
-            object result = parseMethod.Invoke(null, new object[] {value});
+            var result = parseMethod.Invoke(null, new object[] {value});
             if (result == null) {
                 throw new Exception(Log.LogAndReturn($"Failed to Parse value: {value} on type: {objectType}"));
             }
@@ -142,9 +141,9 @@ namespace NakedObjects.Core.Adapter {
 
         public object[] GetNextObjectArray() {
             var list = new List<object>();
-            int count = GetNextInt();
+            var count = GetNextInt();
 
-            for (int i = 0; i < count; i++) {
+            for (var i = 0; i < count; i++) {
                 list.Add(GetNextObject());
             }
 
@@ -152,14 +151,14 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public object GetNextSerializable() {
-            string type = GetNextString();
-            string value = GetNextString();
+            var type = GetNextString();
+            var value = GetNextString();
             if (type.Length == 0) {
                 // null object indicated by empty type string 
                 return null;
             }
 
-            Type objectType = TypeUtils.GetType(type);
+            var objectType = TypeUtils.GetType(type);
             if (objectType == null) {
                 throw new Exception(Log.LogAndReturn($"Cannot find type for name: {type}"));
             }
@@ -174,15 +173,15 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public IEncodedToStrings GetNextEncodedToStrings() {
-            string type = GetNextString();
-            string[] encodedData = GetNextArray();
+            var type = GetNextString();
+            var encodedData = GetNextArray();
 
             if (type.Length == 0) {
                 // null object indicated by empty type string 
                 return null;
             }
 
-            Type objectType = TypeUtils.GetType(type);
+            var objectType = TypeUtils.GetType(type);
             if (objectType == null) {
                 throw new Exception(Log.LogAndReturn($"Cannot find type for name: {type}"));
             }

@@ -14,9 +14,8 @@ namespace NakedObjects.Core {
             : this(string.Format(Resources.NakedObjects.DataUpdateMessage, nakedObjectAdapter.Version.User, nakedObjectAdapter.TitleString(), DateTime.Now.ToLongTimeString(), Environment.NewLine, Environment.NewLine, nakedObjectAdapter.Version, updated), nakedObjectAdapter.Oid) { }
 
         public DataUpdateException(string message, IOid source)
-            : base(message) {
+            : base(message) =>
             SourceOid = source;
-        }
 
         public DataUpdateException(string message, Exception cause)
             : base(message, cause) { }

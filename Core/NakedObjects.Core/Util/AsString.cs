@@ -15,9 +15,7 @@ namespace NakedObjects.Core.Util {
         private bool addComma;
         private bool useLineBreaks;
 
-        private AsString() {
-            buffer = new StringBuilder();
-        }
+        private AsString() => buffer = new StringBuilder();
 
         public AsString(object forObject) {
             buffer = new StringBuilder();
@@ -40,7 +38,7 @@ namespace NakedObjects.Core.Util {
         }
 
         public bool UseLineBreaks {
-            set { useLineBreaks = value; }
+            set => useLineBreaks = value;
         }
 
         public static string CreateName(object forObject) {
@@ -56,17 +54,13 @@ namespace NakedObjects.Core.Util {
         }
 
         public static string Name(object forObject) {
-            string name = forObject.GetType().FullName;
+            var name = forObject.GetType().FullName;
             return name.Substring(name.LastIndexOf('.') + 1);
         }
 
-        public static string Timestamp(DateTime? date) {
-            return date == null ? "" : date.GetValueOrDefault().ToLongTimeString();
-        }
+        public static string Timestamp(DateTime? date) => date == null ? "" : date.GetValueOrDefault().ToLongTimeString();
 
-        public static AsString CreateWithIdentifier(object obj) {
-            return new AsString(obj);
-        }
+        public static AsString CreateWithIdentifier(object obj) => new AsString(obj);
 
         public static AsString CreateAnonymous(object obj) {
             var asString = new AsString();
@@ -144,7 +138,7 @@ namespace NakedObjects.Core.Util {
         }
 
         public void AppendAsTimestamp(string name, ref DateTime date) {
-            string dateString = Timestamp(date);
+            var dateString = Timestamp(date);
             Append(name, dateString);
         }
 

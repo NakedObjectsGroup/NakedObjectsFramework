@@ -52,7 +52,7 @@ namespace NakedObjects.Core.Spec {
             Assert.AssertNotNull(persistor);
 
             this.metamodel = metamodel;
-            this.Number = number;
+            Number = number;
             parentAction = actionSpec;
             this.actionParameterSpecImmutable = actionParameterSpecImmutable;
             this.manager = manager;
@@ -64,7 +64,7 @@ namespace NakedObjects.Core.Spec {
             get {
                 if (!checkedForElementSpec) {
                     var facet = GetFacet<IElementTypeFacet>();
-                    IObjectSpecImmutable es = facet != null ? facet.ValueSpec : null;
+                    var es = facet != null ? facet.ValueSpec : null;
                     elementSpec = es == null ? null : metamodel.GetSpecification(es);
                     checkedForElementSpec = true;
                 }
@@ -77,9 +77,7 @@ namespace NakedObjects.Core.Spec {
 
         public bool IsAutoCompleteEnabled {
             get {
-                if (!isAutoCompleteEnabled.HasValue) {
-                    isAutoCompleteEnabled = ContainsFacet<IAutoCompleteFacet>();
-                }
+                isAutoCompleteEnabled ??= ContainsFacet<IAutoCompleteFacet>();
 
                 return isAutoCompleteEnabled.Value;
             }
@@ -87,9 +85,7 @@ namespace NakedObjects.Core.Spec {
 
         public bool IsChoicesEnabled {
             get {
-                if (!isChoicesEnabled.HasValue) {
-                    isChoicesEnabled = !IsMultipleChoicesEnabled && actionParameterSpecImmutable.IsChoicesEnabled;
-                }
+                isChoicesEnabled ??= !IsMultipleChoicesEnabled && actionParameterSpecImmutable.IsChoicesEnabled;
 
                 return isChoicesEnabled.Value;
             }
@@ -97,10 +93,9 @@ namespace NakedObjects.Core.Spec {
 
         public bool IsMultipleChoicesEnabled {
             get {
-                if (!isMultipleChoicesEnabled.HasValue) {
-                    isMultipleChoicesEnabled = Spec.IsCollectionOfBoundedSet(ElementSpec) ||
-                                               Spec.IsCollectionOfEnum(ElementSpec) || actionParameterSpecImmutable.IsMultipleChoicesEnabled;
-                }
+                isMultipleChoicesEnabled ??= Spec.IsCollectionOfBoundedSet(ElementSpec) ||
+                                             Spec.IsCollectionOfEnum(ElementSpec) ||
+                                             actionParameterSpecImmutable.IsMultipleChoicesEnabled;
 
                 return isMultipleChoicesEnabled.Value;
             }
@@ -108,63 +103,39 @@ namespace NakedObjects.Core.Spec {
 
         public virtual int Number { get; }
 
-        public virtual IActionSpec Action {
-            get { return parentAction; }
-        }
+        public virtual IActionSpec Action => parentAction;
 
-        public virtual IObjectSpec Spec {
-            get { return spec ?? (spec = metamodel.GetSpecification(actionParameterSpecImmutable.Specification)); }
-        }
+        public virtual IObjectSpec Spec => spec ??= metamodel.GetSpecification(actionParameterSpecImmutable.Specification);
 
-        public string Name {
-            get { return name ?? (name = GetFacet<INamedFacet>().NaturalName); }
-        }
+        public string Name => name ??= GetFacet<INamedFacet>().NaturalName;
 
-        public virtual string Description {
-            get { return description ?? (description = GetFacet<IDescribedAsFacet>().Value ?? ""); }
-        }
+        public virtual string Description => description ??= GetFacet<IDescribedAsFacet>().Value ?? "";
 
         public virtual bool IsMandatory {
             get {
-                if (!isMandatory.HasValue) {
-                    isMandatory = GetFacet<IMandatoryFacet>().IsMandatory;
-                }
+                isMandatory ??= GetFacet<IMandatoryFacet>().IsMandatory;
 
                 return isMandatory.Value;
             }
         }
 
-        public virtual Type[] FacetTypes {
-            get { return actionParameterSpecImmutable.FacetTypes; }
-        }
+        public virtual Type[] FacetTypes => actionParameterSpecImmutable.FacetTypes;
 
-        public virtual IIdentifier Identifier {
-            get { return parentAction.Identifier; }
-        }
+        public virtual IIdentifier Identifier => parentAction.Identifier;
 
-        public virtual bool ContainsFacet(Type facetType) {
-            return actionParameterSpecImmutable.ContainsFacet(facetType);
-        }
+        public virtual bool ContainsFacet(Type facetType) => actionParameterSpecImmutable.ContainsFacet(facetType);
 
-        public virtual bool ContainsFacet<T>() where T : IFacet {
-            return actionParameterSpecImmutable.ContainsFacet<T>();
-        }
+        public virtual bool ContainsFacet<T>() where T : IFacet => actionParameterSpecImmutable.ContainsFacet<T>();
 
-        public virtual IFacet GetFacet(Type type) {
-            return actionParameterSpecImmutable.GetFacet(type);
-        }
+        public virtual IFacet GetFacet(Type type) => actionParameterSpecImmutable.GetFacet(type);
 
-        public virtual T GetFacet<T>() where T : IFacet {
-            return actionParameterSpecImmutable.GetFacet<T>();
-        }
+        public virtual T GetFacet<T>() where T : IFacet => actionParameterSpecImmutable.GetFacet<T>();
 
-        public virtual IEnumerable<IFacet> GetFacets() {
-            return actionParameterSpecImmutable.GetFacets();
-        }
+        public virtual IEnumerable<IFacet> GetFacets() => actionParameterSpecImmutable.GetFacets();
 
         public IConsent IsValid(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter proposedValue) {
             if (proposedValue != null && !proposedValue.Spec.IsOfType(Spec)) {
-                string msg = string.Format(Resources.NakedObjects.TypeMismatchError, Spec.SingularName);
+                var msg = string.Format(Resources.NakedObjects.TypeMismatchError, Spec.SingularName);
                 return GetConsent(msg);
             }
 
@@ -174,15 +145,11 @@ namespace NakedObjects.Core.Spec {
             return InteractionUtils.IsValid(buf);
         }
 
-        public virtual IConsent IsUsable(INakedObjectAdapter target) {
-            return Allow.Default;
-        }
+        public virtual IConsent IsUsable(INakedObjectAdapter target) => Allow.Default;
 
         public bool IsNullable {
             get {
-                if (!isNullable.HasValue) {
-                    isNullable = ContainsFacet(typeof(INullableFacet));
-                }
+                isNullable ??= ContainsFacet(typeof(INullableFacet));
 
                 return isNullable.Value;
             }
@@ -202,7 +169,7 @@ namespace NakedObjects.Core.Spec {
             var enumFacet = GetFacet<IEnumFacet>();
 
             if (choicesFacet != null) {
-                object[] options = choicesFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter), parameterNameValues);
+                var options = choicesFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter), parameterNameValues);
                 if (enumFacet == null) {
                     return manager.GetCollectionOfAdaptedObjects(options).ToArray();
                 }
@@ -220,7 +187,7 @@ namespace NakedObjects.Core.Spec {
 
             if (Spec.IsCollectionOfBoundedSet(ElementSpec) || Spec.IsCollectionOfEnum(ElementSpec)) {
                 var elementEnumFacet = ElementSpec.GetFacet<IEnumFacet>();
-                IEnumerable domainObjects = elementEnumFacet != null ? (IEnumerable) elementEnumFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter)) : persistor.Instances(ElementSpec);
+                var domainObjects = elementEnumFacet != null ? (IEnumerable) elementEnumFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter)) : persistor.Instances(ElementSpec);
                 return manager.GetCollectionOfAdaptedObjects(domainObjects).ToArray();
             }
 
@@ -232,23 +199,17 @@ namespace NakedObjects.Core.Spec {
             return autoCompleteFacet == null ? null : manager.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObjectAdapter), autoCompleteParm)).ToArray();
         }
 
-        public INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter) {
-            return GetDefaultValueAndType(nakedObjectAdapter).Item1;
-        }
+        public INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter) => GetDefaultValueAndType(nakedObjectAdapter).Item1;
 
-        public TypeOfDefaultValue GetDefaultType(INakedObjectAdapter nakedObjectAdapter) {
-            return GetDefaultValueAndType(nakedObjectAdapter).Item2;
-        }
+        public TypeOfDefaultValue GetDefaultType(INakedObjectAdapter nakedObjectAdapter) => GetDefaultValueAndType(nakedObjectAdapter).Item2;
 
-        public string Id {
-            get { return Identifier.MemberParameterNames[Number]; }
-        }
+        public string Id => Identifier.MemberParameterNames[Number];
 
         #endregion
 
         private Tuple<INakedObjectAdapter, TypeOfDefaultValue> GetDefaultValueAndType(INakedObjectAdapter nakedObjectAdapter) {
             if (parentAction.IsContributedMethod && nakedObjectAdapter != null) {
-                IActionParameterSpec[] matchingParms = parentAction.Parameters.Where(p => nakedObjectAdapter.Spec.IsOfType(p.Spec)).ToArray();
+                var matchingParms = parentAction.Parameters.Where(p => nakedObjectAdapter.Spec.IsOfType(p.Spec)).ToArray();
 
                 if (matchingParms.Any() && matchingParms.First() == this) {
                     return new Tuple<INakedObjectAdapter, TypeOfDefaultValue>(nakedObjectAdapter, TypeOfDefaultValue.Explicit);
@@ -272,15 +233,13 @@ namespace NakedObjects.Core.Spec {
             }
 
             if (defaultValue == null) {
-                object rawValue = nakedObjectAdapter == null ? null : nakedObjectAdapter.Object.GetType().IsValueType ? (object) 0 : null;
+                var rawValue = nakedObjectAdapter == null ? null : nakedObjectAdapter.Object.GetType().IsValueType ? (object) 0 : null;
                 defaultValue = new Tuple<object, TypeOfDefaultValue>(rawValue, TypeOfDefaultValue.Implicit);
             }
 
             return new Tuple<INakedObjectAdapter, TypeOfDefaultValue>(manager.CreateAdapter(defaultValue.Item1, null, null), defaultValue.Item2);
         }
 
-        private IConsent GetConsent(string message) {
-            return message == null ? (IConsent) Allow.Default : new Veto(message);
-        }
+        private IConsent GetConsent(string message) => message == null ? (IConsent) Allow.Default : new Veto(message);
     }
 }

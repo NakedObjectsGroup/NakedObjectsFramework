@@ -39,23 +39,17 @@ namespace NakedObjects.Core.Util {
         /// </summary>
         private const int SeedConst = 23;
 
-        public static int Seed {
-            get { return SeedConst; }
-        }
+        public static int Seed => SeedConst;
 
         /// <summary>
         ///     <see cref="bool" />
         /// </summary>
-        public static int Hash(int aSeed, bool aBoolean) {
-            return FirstTerm(aSeed) + (aBoolean ? 1 : 0);
-        }
+        public static int Hash(int aSeed, bool aBoolean) => FirstTerm(aSeed) + (aBoolean ? 1 : 0);
 
         /// <summary>
         ///     <see cref="char" />
         /// </summary>
-        public static int Hash(int aSeed, char aChar) {
-            return FirstTerm(aSeed) + aChar;
-        }
+        public static int Hash(int aSeed, char aChar) => FirstTerm(aSeed) + aChar;
 
         /// <summary>
         ///     <see cref="int" />
@@ -63,9 +57,7 @@ namespace NakedObjects.Core.Util {
         /// <para>
         ///     <see cref="byte" /> and <see cref="short" /> are handled by this method, through implicit conversion.
         /// </para>
-        public static int Hash(int aSeed, int aInt) {
-            return FirstTerm(aSeed) + aInt;
-        }
+        public static int Hash(int aSeed, int aInt) => FirstTerm(aSeed) + aInt;
 
         private static long URShift(long number, int bits) {
             if (number >= 0) {
@@ -78,23 +70,17 @@ namespace NakedObjects.Core.Util {
         /// <summary>
         ///     <see cref="long" />
         /// </summary>
-        public static int Hash(int aSeed, long aLong) {
-            return FirstTerm(aSeed) + (int) (aLong ^ URShift(aLong, 32));
-        }
+        public static int Hash(int aSeed, long aLong) => FirstTerm(aSeed) + (int) (aLong ^ URShift(aLong, 32));
 
         /// <summary>
         ///     <see cref="float" />
         /// </summary>
-        public static int Hash(int aSeed, float aFloat) {
-            return Hash(aSeed, BitConverter.DoubleToInt64Bits(aFloat));
-        }
+        public static int Hash(int aSeed, float aFloat) => Hash(aSeed, BitConverter.DoubleToInt64Bits(aFloat));
 
         /// <summary>
         ///     <see cref="double" />
         /// </summary>
-        public static int Hash(int aSeed, double aDouble) {
-            return Hash(aSeed, BitConverter.DoubleToInt64Bits(aDouble));
-        }
+        public static int Hash(int aSeed, double aDouble) => Hash(aSeed, BitConverter.DoubleToInt64Bits(aDouble));
 
         /// <summary>
         ///     <c>aObject</c> is a possibly-null object field, and possibly an array.
@@ -103,7 +89,7 @@ namespace NakedObjects.Core.Util {
         ///     If <c>aObject</c> is an array, then each element may be a primitive or a possibly-null object.
         /// </para>
         public static int Hash(int aSeed, object aObject) {
-            int result = aSeed;
+            var result = aSeed;
             if (aObject == null) {
                 result = Hash(result, 0);
             }
@@ -117,12 +103,8 @@ namespace NakedObjects.Core.Util {
             return result;
         }
 
-        private static int FirstTerm(int aSeed) {
-            return OddPrimeNumber * aSeed;
-        }
+        private static int FirstTerm(int aSeed) => OddPrimeNumber * aSeed;
 
-        private static bool IsArray(object aObject) {
-            return aObject.GetType().IsArray;
-        }
+        private static bool IsArray(object aObject) => aObject.GetType().IsArray;
     }
 }

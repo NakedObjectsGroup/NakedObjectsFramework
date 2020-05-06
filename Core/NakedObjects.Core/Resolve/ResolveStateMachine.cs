@@ -45,21 +45,19 @@ namespace NakedObjects.Core.Resolve {
         public IResolveState CurrentState { get; private set; }
 
         public void Handle(IResolveEvent rEvent) {
-            IResolveState newState = CurrentState.Handle(rEvent, Owner, this, Session);
+            var newState = CurrentState.Handle(rEvent, Owner, this, Session);
             history.Add(new HistoryEvent(CurrentState, newState, rEvent, FullTrace));
             CurrentState = newState;
         }
 
         public void AddHistoryNote(string note) {
-            HistoryEvent lastEvent = history.LastOrDefault();
+            var lastEvent = history.LastOrDefault();
             lastEvent?.AddNote(note);
         }
 
         #endregion
 
-        public override string ToString() {
-            return CurrentState.ToString();
-        }
+        public override string ToString() => CurrentState.ToString();
 
         #region Nested type: HistoryEvent
 
@@ -90,7 +88,7 @@ namespace NakedObjects.Core.Resolve {
             }
 
             public override string ToString() {
-                string notes = Notes.Aggregate("", (s1, s2) => s1 + ":" + s2);
+                var notes = Notes.Aggregate("", (s1, s2) => s1 + ":" + s2);
                 return $"Transition from: {StartState} to: {EndState} by: {Event} at: {TimeStamp} with: {notes}";
             }
         }
@@ -331,9 +329,7 @@ namespace NakedObjects.Core.Resolve {
         #region Nested type: ResolveState
 
         public abstract class ResolveState {
-            protected ResolveState() {
-                EventMap = new Dictionary<IResolveEvent, EventHandler>();
-            }
+            protected ResolveState() => EventMap = new Dictionary<IResolveEvent, EventHandler>();
 
             public abstract string Name { get; }
             public abstract string Code { get; }
@@ -350,9 +346,7 @@ namespace NakedObjects.Core.Resolve {
                 rsm.AddHistoryNote("Loaded");
             }
 
-            public override string ToString() {
-                return $"ResolveState [name={Name},code={Code}]";
-            }
+            public override string ToString() => $"ResolveState [name={Name},code={Code}]";
 
             public IResolveState Handle(IResolveEvent rEvent, INakedObjectAdapter owner, IResolveStateMachine rsm, ISession s) {
                 if (EventMap.ContainsKey(rEvent)) {

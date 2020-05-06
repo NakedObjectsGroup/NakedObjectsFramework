@@ -34,9 +34,7 @@ namespace NakedObjects.Core.Component {
 
         #region IIdentityMap Members
 
-        public IEnumerator<INakedObjectAdapter> GetEnumerator() {
-            return nakedObjectAdapterMap.GetEnumerator();
-        }
+        public IEnumerator<INakedObjectAdapter> GetEnumerator() => nakedObjectAdapterMap.GetEnumerator();
 
         public void Reset() {
             identityAdapterMap.Reset();
@@ -46,11 +44,11 @@ namespace NakedObjects.Core.Component {
 
         public void AddAdapter(INakedObjectAdapter nakedObjectAdapter) {
             Assert.AssertNotNull("Cannot add null adapter to IdentityAdapterMap", nakedObjectAdapter);
-            object obj = nakedObjectAdapter.Object;
+            var obj = nakedObjectAdapter.Object;
             Assert.AssertFalse("POCO Map already contains object", obj, nakedObjectAdapterMap.ContainsObject(obj));
 
             if (unloadedObjects.ContainsKey(obj)) {
-                string msg = string.Format(Resources.NakedObjects.TransientReferenceMessage, obj);
+                var msg = string.Format(Resources.NakedObjects.TransientReferenceMessage, obj);
                 throw new TransientReferenceException(Log.LogAndReturn(msg));
             }
 
@@ -65,7 +63,7 @@ namespace NakedObjects.Core.Component {
         }
 
         public void MadePersistent(INakedObjectAdapter adapter) {
-            IOid oid = adapter.Oid;
+            var oid = adapter.Oid;
 
             // Changing the OID object that is already a key in the identity map messes up the hashing so it can't
             // be found afterwards. To work properly, we therefore remove the identity first then change the oid,
@@ -83,7 +81,7 @@ namespace NakedObjects.Core.Component {
         }
 
         public void UpdateViewModel(INakedObjectAdapter adapter, string[] keys) {
-            IOid oid = adapter.Oid;
+            var oid = adapter.Oid;
 
             // Changing the OID object that is already a key in the identity map messes up the hashing so it can't
             // be found afterwards. To work properly, we therefore remove the identity first then change the oid,
@@ -103,7 +101,7 @@ namespace NakedObjects.Core.Component {
             // create a different NakedObjectAdapter and no OID will exist to identify - hence the adapter will appear as
             // transient and will no longer be usable as a persistent object
 
-            IOid oid = nakedObjectAdapter.Oid;
+            var oid = nakedObjectAdapter.Oid;
             if (oid != null) {
                 identityAdapterMap.Remove(oid);
             }
@@ -132,9 +130,7 @@ namespace NakedObjects.Core.Component {
             unloadedObjects[domainObject] = domainObject;
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
 
@@ -145,11 +141,11 @@ namespace NakedObjects.Core.Component {
         /// </summary>
         private void ProcessChangedOid(IOid updatedOid) {
             if (updatedOid.HasPrevious) {
-                IOid previousOid = updatedOid.Previous;
-                INakedObjectAdapter nakedObjectAdapter = identityAdapterMap.GetAdapter(previousOid);
+                var previousOid = updatedOid.Previous;
+                var nakedObjectAdapter = identityAdapterMap.GetAdapter(previousOid);
                 if (nakedObjectAdapter != null) {
                     identityAdapterMap.Remove(previousOid);
-                    IOid oidFromObject = nakedObjectAdapter.Oid;
+                    var oidFromObject = nakedObjectAdapter.Oid;
                     oidFromObject.CopyFrom(updatedOid);
                     identityAdapterMap.Add(oidFromObject, nakedObjectAdapter);
                 }

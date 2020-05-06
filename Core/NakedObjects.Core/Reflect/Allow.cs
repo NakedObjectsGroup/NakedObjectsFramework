@@ -23,16 +23,12 @@ namespace NakedObjects.Core.Reflect {
         /// <summary>
         ///     Returns <c>true</c>
         /// </summary>
-        public override bool IsAllowed {
-            get { return true; }
-        }
+        public override bool IsAllowed => true;
 
         /// <summary>
         ///     Returns <c>false</c>
         /// </summary>
-        public override bool IsVetoed {
-            get { return false; }
-        }
+        public override bool IsVetoed => false;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

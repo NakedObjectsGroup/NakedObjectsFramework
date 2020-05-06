@@ -11,21 +11,15 @@ using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.Authentication {
     public class WindowsSession : ISession {
-        public WindowsSession(IPrincipal principal) {
-            Principal = principal ?? new EmptyPrincipal();
-        }
+        public WindowsSession(IPrincipal principal) => Principal = principal ?? new EmptyPrincipal();
 
         #region ISession Members
 
         public IPrincipal Principal { get; protected set; }
 
-        public string UserName {
-            get { return Path.GetFileName(Principal.Identity.Name); }
-        }
+        public string UserName => Path.GetFileName(Principal.Identity?.Name);
 
-        public bool IsAuthenticated {
-            get { return Principal.Identity.IsAuthenticated; }
-        }
+        public bool IsAuthenticated => Principal.Identity?.IsAuthenticated ?? false;
 
         #endregion
 
@@ -40,9 +34,9 @@ namespace NakedObjects.Core.Authentication {
 
             #region IIdentity Members
 
-            public string Name { get; private set; }
-            public string AuthenticationType { get; private set; }
-            public bool IsAuthenticated { get; private set; }
+            public string Name { get; }
+            public string AuthenticationType { get; }
+            public bool IsAuthenticated { get; }
 
             #endregion
         }
@@ -52,17 +46,13 @@ namespace NakedObjects.Core.Authentication {
         #region Nested type: EmptyPrincipal
 
         private class EmptyPrincipal : IPrincipal {
-            public EmptyPrincipal() {
-                Identity = new EmptyIdentity();
-            }
+            public EmptyPrincipal() => Identity = new EmptyIdentity();
 
             #region IPrincipal Members
 
-            public bool IsInRole(string role) {
-                return false;
-            }
+            public bool IsInRole(string role) => false;
 
-            public IIdentity Identity { get; private set; }
+            public IIdentity Identity { get; }
 
             #endregion
         }

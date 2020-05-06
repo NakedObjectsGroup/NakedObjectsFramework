@@ -23,8 +23,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Core.Component {
     /// <summary>
-    /// This is generic portion of persistence logic, implemented as a composite wrapping the ObjectStore which is 
-    /// the store specific portion of the logic. 
+    ///     This is generic portion of persistence logic, implemented as a composite wrapping the ObjectStore which is
+    ///     the store specific portion of the logic.
     /// </summary>
     public sealed class ObjectPersistor : IObjectPersistor {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectPersistor));
@@ -42,17 +42,11 @@ namespace NakedObjects.Core.Component {
 
         #region IObjectPersistor Members
 
-        public IQueryable<T> Instances<T>() where T : class {
-            return GetInstances<T>();
-        }
+        public IQueryable<T> Instances<T>() where T : class => GetInstances<T>();
 
-        public IQueryable Instances(Type type) {
-            return GetInstances(type);
-        }
+        public IQueryable Instances(Type type) => GetInstances(type);
 
-        public IQueryable Instances(IObjectSpec spec) {
-            return GetInstances(spec);
-        }
+        public IQueryable Instances(IObjectSpec spec) => GetInstances(spec);
 
         public INakedObjectAdapter LoadObject(IOid oid, IObjectSpec spec) {
             Assert.AssertNotNull("needs an OID", oid);
@@ -67,16 +61,14 @@ namespace NakedObjects.Core.Component {
             }
         }
 
-        public void Reload(INakedObjectAdapter nakedObjectAdapter) {
-            objectStore.Reload(nakedObjectAdapter);
-        }
+        public void Reload(INakedObjectAdapter nakedObjectAdapter) => objectStore.Reload(nakedObjectAdapter);
 
         public void ResolveField(INakedObjectAdapter nakedObjectAdapter, IAssociationSpec field) {
             if (field.ReturnSpec.HasNoIdentity) {
                 return;
             }
 
-            INakedObjectAdapter reference = field.GetNakedObject(nakedObjectAdapter);
+            var reference = field.GetNakedObject(nakedObjectAdapter);
             if (reference == null || reference.ResolveState.IsResolved()) {
                 return;
             }
@@ -92,7 +84,7 @@ namespace NakedObjects.Core.Component {
         public void LoadField(INakedObjectAdapter nakedObjectAdapter, string field) {
             var spec = nakedObjectAdapter.Spec as IObjectSpec;
             Trace.Assert(spec != null);
-            IAssociationSpec associationSpec = spec.Properties.Single(x => x.Id == field);
+            var associationSpec = spec.Properties.Single(x => x.Id == field);
             ResolveField(nakedObjectAdapter, associationSpec);
         }
 
@@ -100,27 +92,21 @@ namespace NakedObjects.Core.Component {
             var spec = nakedObjectAdapter.Spec as IObjectSpec;
             Trace.Assert(spec != null);
 
-            IAssociationSpec associationSpec = spec.Properties.Single(x => x.Id == field);
+            var associationSpec = spec.Properties.Single(x => x.Id == field);
 
             if (nakedObjectAdapter.Spec.IsViewModel) {
-                INakedObjectAdapter collection = associationSpec.GetNakedObject(nakedObjectAdapter);
+                var collection = associationSpec.GetNakedObject(nakedObjectAdapter);
                 return collection.GetCollectionFacetFromSpec().AsEnumerable(collection, nakedObjectManager).Count();
             }
 
             return objectStore.CountField(nakedObjectAdapter, associationSpec);
         }
 
-        public PropertyInfo[] GetKeys(Type type) {
-            return objectStore.GetKeys(type);
-        }
+        public PropertyInfo[] GetKeys(Type type) => objectStore.GetKeys(type);
 
-        public INakedObjectAdapter FindByKeys(Type type, object[] keys) {
-            return objectStore.FindByKeys(type, keys);
-        }
+        public INakedObjectAdapter FindByKeys(Type type, object[] keys) => objectStore.FindByKeys(type, keys);
 
-        public void Refresh(INakedObjectAdapter nakedObjectAdapter) {
-            objectStore.Refresh(nakedObjectAdapter);
-        }
+        public void Refresh(INakedObjectAdapter nakedObjectAdapter) => objectStore.Refresh(nakedObjectAdapter);
 
         public void ResolveImmediately(INakedObjectAdapter nakedObjectAdapter) {
             if (nakedObjectAdapter.ResolveState.IsResolvable()) {
@@ -143,8 +129,8 @@ namespace NakedObjects.Core.Component {
                     nakedObjectAdapter.Updated();
                 }
                 else {
-                    ITypeSpec spec = nakedObjectAdapter.Spec;
-                    if (spec.IsAlwaysImmutable() || (spec.IsImmutableOncePersisted() && nakedObjectAdapter.ResolveState.IsPersistent())) {
+                    var spec = nakedObjectAdapter.Spec;
+                    if (spec.IsAlwaysImmutable() || spec.IsImmutableOncePersisted() && nakedObjectAdapter.ResolveState.IsPersistent()) {
                         throw new NotPersistableException(Log.LogAndReturn("cannot change immutable object"));
                     }
 
@@ -170,7 +156,7 @@ namespace NakedObjects.Core.Component {
         }
 
         public object CreateObject(ITypeSpec spec) {
-            Type type = TypeUtils.GetType(spec.FullName);
+            var type = TypeUtils.GetType(spec.FullName);
             return objectStore.CreateInstance(type);
         }
 
@@ -181,8 +167,8 @@ namespace NakedObjects.Core.Component {
 
                     // ReSharper disable once LoopCanBeConvertedToQuery
                     // LINQ needs cast - need to be careful with EF - safest to leave as loop
-                    foreach (ITypeSpec subSpec in GetLeafNodes(spec)) {
-                        foreach (object instance in Instances((IObjectSpec) subSpec)) {
+                    foreach (var subSpec in GetLeafNodes(spec)) {
+                        foreach (var instance in Instances((IObjectSpec) subSpec)) {
                             instances.Add(instance);
                         }
                     }
@@ -196,23 +182,15 @@ namespace NakedObjects.Core.Component {
             return new object[] { };
         }
 
-        public void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost) {
-            objectStore.LoadComplexTypesIntoNakedObjectFramework(adapter, isGhost);
-        }
+        public void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost) => objectStore.LoadComplexTypesIntoNakedObjectFramework(adapter, isGhost);
 
         #endregion
 
-        private IQueryable<T> GetInstances<T>() where T : class {
-            return objectStore.GetInstances<T>();
-        }
+        private IQueryable<T> GetInstances<T>() where T : class => objectStore.GetInstances<T>();
 
-        private IQueryable GetInstances(Type type) {
-            return objectStore.GetInstances(type);
-        }
+        private IQueryable GetInstances(Type type) => objectStore.GetInstances(type);
 
-        private IQueryable GetInstances(IObjectSpec spec) {
-            return objectStore.GetInstances(spec);
-        }
+        private IQueryable GetInstances(IObjectSpec spec) => objectStore.GetInstances(spec);
 
         private static IEnumerable<ITypeSpec> GetLeafNodes(ITypeSpec spec) {
             if (spec.IsInterface || spec.IsAbstract) {

@@ -15,12 +15,10 @@ namespace NakedObjects.Core.Util {
     public class InvokeUtils {
         private static readonly ILog Log = LogManager.GetLogger(typeof(InvokeUtils));
 
-        public static object InvokeStatic(MethodInfo method, object[] parameters) {
-            return Invoke(method, null, parameters);
-        }
+        public static object InvokeStatic(MethodInfo method, object[] parameters) => Invoke(method, null, parameters);
 
         public static object Invoke(MethodInfo method, INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters) {
-            object[] parameterPocos = parameters == null ? new object[] { } : parameters.Select(p => p == null ? null : p.Object).ToArray();
+            var parameterPocos = parameters == null ? new object[] { } : parameters.Select(p => p == null ? null : p.Object).ToArray();
             return Invoke(method, nakedObjectAdapter.Object, parameterPocos);
         }
 
@@ -35,7 +33,7 @@ namespace NakedObjects.Core.Util {
         }
 
         public static void InvocationException(string error, Exception e) {
-            Exception innerException = e.InnerException;
+            var innerException = e.InnerException;
             if (innerException is DomainException) {
                 // a domain  exception from the domain code is re-thrown as an NO exception with same semantics
                 throw new NakedObjectDomainException(Log.LogAndReturn(innerException.Message), innerException);

@@ -14,13 +14,9 @@ namespace NakedObjects.Core.Interactions {
 
         #region IInteractionBuffer Members
 
-        public bool IsNotEmpty {
-            get { return !IsEmpty; }
-        }
+        public bool IsNotEmpty => !IsEmpty;
 
-        public bool IsEmpty {
-            get { return buf.Length == 0; }
-        }
+        public bool IsEmpty => buf.Length == 0;
 
         public void Append(string reason) {
             if (reason == null) {
@@ -34,9 +30,7 @@ namespace NakedObjects.Core.Interactions {
             buf.Append(reason);
         }
 
-        public override string ToString() {
-            return buf.ToString();
-        }
+        public override string ToString() => buf.ToString();
 
         #endregion
     }

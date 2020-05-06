@@ -16,60 +16,35 @@ namespace NakedObjects.Core.Adapter {
 
         #region IEncodedToStrings Members
 
-        public string[] ToEncodedStrings() {
-            return new string[0];
-        }
+        public string[] ToEncodedStrings() => new string[0];
 
-        public string[] ToShortEncodedStrings() {
-            return new string[0];
-        }
+        public string[] ToShortEncodedStrings() => new string[0];
 
         #endregion
 
         #region IVersion Members
 
-        public string User {
-            get { return ""; }
-        }
+        public string User => "";
 
-        public DateTime? Time {
-            get { return DateTime.Now; }
-        }
+        public DateTime? Time => DateTime.Now;
 
-        public string Digest {
-            get { return null; }
-        }
+        public string Digest => null;
 
-        public bool IsDifferent(IVersion version) {
-            return !Equals(version);
-        }
+        public bool IsDifferent(IVersion version) => !Equals(version);
 
-        public bool IsDifferent(string digest) {
-            return Digest != digest;
-        }
+        public bool IsDifferent(string digest) => Digest != digest;
 
-        public string AsSequence() {
-            return "";
-        }
+        public string AsSequence() => "";
 
-        public bool Equals(IVersion other) {
-            return other is NullVersion;
-        }
+        public bool Equals(IVersion other) => other is NullVersion;
 
         #endregion
 
-        public IVersion Next(string user, DateTime time) {
-            throw new UnexpectedCallException(Log.LogAndReturn("Unexpected call of 'Next'"));
-        }
+        public IVersion Next(string user, DateTime time) => throw new UnexpectedCallException(Log.LogAndReturn("Unexpected call of 'Next'"));
 
-        public override bool Equals(object other) {
-            var a = other as IVersion;
-            return a != null && Equals(a);
-        }
+        public override bool Equals(object other) => other is IVersion a && Equals(a);
 
-        public override int GetHashCode() {
-            return 0;
-        }
+        public override int GetHashCode() => 0;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

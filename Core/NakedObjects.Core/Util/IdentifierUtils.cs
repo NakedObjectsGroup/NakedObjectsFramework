@@ -13,20 +13,12 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Core.Util {
     public static class IdentifierUtils {
-        public static int ComputeMD5HashAsInt(this IIdentifier id, CheckType checkType) {
-            return Math.Abs(BitConverter.ToInt32(ComputeMD5HashFromIdentifier(id, checkType), 0));
-        }
+        public static int ComputeMD5HashAsInt(this IIdentifier id, CheckType checkType) => Math.Abs(BitConverter.ToInt32(ComputeMD5HashFromIdentifier(id, checkType), 0));
 
-        private static byte[] ComputeMD5HashFromIdentifier(IIdentifier id, CheckType checkType) {
-            return ComputeMD5HashFromString(id.ToIdentityStringWithCheckType(IdentifierDepth.ClassNameParams, checkType));
-        }
+        private static byte[] ComputeMD5HashFromIdentifier(IIdentifier id, CheckType checkType) => ComputeMD5HashFromString(id.ToIdentityStringWithCheckType(IdentifierDepth.ClassNameParams, checkType));
 
-        public static string ComputeMD5HashAsString(string s) {
-            return Math.Abs(BitConverter.ToInt64(ComputeMD5HashFromString(s), 0)).ToString(CultureInfo.InvariantCulture);
-        }
+        public static string ComputeMD5HashAsString(string s) => Math.Abs(BitConverter.ToInt64(ComputeMD5HashFromString(s), 0)).ToString(CultureInfo.InvariantCulture);
 
-        private static byte[] ComputeMD5HashFromString(string s) {
-            return new MD5CryptoServiceProvider().ComputeHash(Encoding.UTF8.GetBytes(s));
-        }
+        private static byte[] ComputeMD5HashFromString(string s) => new MD5CryptoServiceProvider().ComputeHash(Encoding.UTF8.GetBytes(s));
     }
 }

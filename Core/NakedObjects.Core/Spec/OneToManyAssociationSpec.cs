@@ -28,77 +28,53 @@ namespace NakedObjects.Core.Spec {
             ElementSpec = MetamodelManager.GetSpecification(association.ElementSpec);
         }
 
-        public override bool IsChoicesEnabled {
-            get { return false; }
-        }
+        public override bool IsChoicesEnabled => false;
 
-        public override bool IsAutoCompleteEnabled {
-            get { return false; }
-        }
+        public override bool IsAutoCompleteEnabled => false;
 
         #region IOneToManyAssociationSpec Members
 
-        public override INakedObjectAdapter GetNakedObject(INakedObjectAdapter inObjectAdapter) {
-            return GetCollection(inObjectAdapter);
-        }
+        public override INakedObjectAdapter GetNakedObject(INakedObjectAdapter inObjectAdapter) => GetCollection(inObjectAdapter);
 
         public override IObjectSpec ElementSpec { get; }
 
         public override bool IsASet { get; }
 
-        public override bool IsEmpty(INakedObjectAdapter inObjectAdapter) {
-            return Count(inObjectAdapter) == 0;
-        }
+        public override bool IsEmpty(INakedObjectAdapter inObjectAdapter) => Count(inObjectAdapter) == 0;
 
-        public int Count(INakedObjectAdapter inObjectAdapter) {
-            return persistor.CountField(inObjectAdapter, Id);
-        }
+        public int Count(INakedObjectAdapter inObjectAdapter) => persistor.CountField(inObjectAdapter, Id);
 
-        public override bool IsInline {
-            get { return false; }
-        }
+        public override bool IsInline => false;
 
-        public override bool IsMandatory {
-            get { return false; }
-        }
+        public override bool IsMandatory => false;
 
-        public override INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter) {
-            return null;
-        }
+        public override INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter) => null;
 
-        public override TypeOfDefaultValue GetDefaultType(INakedObjectAdapter nakedObjectAdapter) {
-            return TypeOfDefaultValue.Implicit;
-        }
+        public override TypeOfDefaultValue GetDefaultType(INakedObjectAdapter nakedObjectAdapter) => TypeOfDefaultValue.Implicit;
 
         public override void ToDefault(INakedObjectAdapter target) { }
 
         #endregion
 
-        public override INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
-            return new INakedObjectAdapter[0];
-        }
+        public override INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) => new INakedObjectAdapter[0];
 
-        public override Tuple<string, IObjectSpec>[] GetChoicesParameters() {
-            return new Tuple<string, IObjectSpec>[0];
-        }
+        public override Tuple<string, IObjectSpec>[] GetChoicesParameters() => new Tuple<string, IObjectSpec>[0];
 
-        public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) {
-            return new INakedObjectAdapter[0];
-        }
+        public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) => new INakedObjectAdapter[0];
 
         private INakedObjectAdapter GetCollection(INakedObjectAdapter inObjectAdapter) {
-            object collection = GetFacet<IPropertyAccessorFacet>().GetProperty(inObjectAdapter);
+            var collection = GetFacet<IPropertyAccessorFacet>().GetProperty(inObjectAdapter);
             if (collection == null) {
                 return null;
             }
 
-            INakedObjectAdapter adapterFor = Manager.CreateAggregatedAdapter(inObjectAdapter, ((IAssociationSpec) this).Id, collection);
+            var adapterFor = Manager.CreateAggregatedAdapter(inObjectAdapter, ((IAssociationSpec) this).Id, collection);
             SetResolveStateForDerivedCollections(adapterFor);
             return adapterFor;
         }
 
         private void SetResolveStateForDerivedCollections(INakedObjectAdapter adapterFor) {
-            bool isDerived = !IsPersisted;
+            var isDerived = !IsPersisted;
             if (isDerived && !adapterFor.ResolveState.IsResolved()) {
                 if (adapterFor.GetAsEnumerable(Manager).Any()) {
                     adapterFor.ResolveState.Handle(Events.StartResolvingEvent);

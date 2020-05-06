@@ -19,9 +19,7 @@ namespace NakedObjects.Core.Util {
             }
         }
 
-        private static string ExpectedMsg(string message, object expected, object actual) {
-            return $"{message}: expected {expected}; but was {actual}";
-        }
+        private static string ExpectedMsg(string message, object expected, object actual) => $"{message}: expected {expected}; but was {actual}";
 
         public static void AssertEquals(object expected, object actual) {
             AssertEquals("", expected, actual);

@@ -51,21 +51,13 @@ namespace NakedObjects.Core.Component {
 
         #region IServicesManager Members
 
-        public INakedObjectAdapter GetService(string id) {
-            return GetServices().FirstOrDefault(no => id.Equals(ServiceUtils.GetId(no.Object)));
-        }
+        public INakedObjectAdapter GetService(string id) => GetServices().FirstOrDefault(no => id.Equals(ServiceUtils.GetId(no.Object)));
 
-        public INakedObjectAdapter GetService(IServiceSpec spec) {
-            return GetServices().FirstOrDefault(s => Equals(s.Spec, spec));
-        }
+        public INakedObjectAdapter GetService(IServiceSpec spec) => GetServices().FirstOrDefault(s => Equals(s.Spec, spec));
 
-        public INakedObjectAdapter[] GetServices() {
-            return serviceAdapters ?? (serviceAdapters = Services.Select(service => manager.GetServiceAdapter(service)).ToArray());
-        }
+        public INakedObjectAdapter[] GetServices() => serviceAdapters ??= Services.Select(service => manager.GetServiceAdapter(service)).ToArray();
 
-        public INakedObjectAdapter[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager) {
-            return GetServices().Where(no => no.Spec.GetActions().Any(a => a.IsVisible(no))).ToArray();
-        }
+        public INakedObjectAdapter[] GetServicesWithVisibleActions(ILifecycleManager lifecycleManager) => GetServices().Where(no => no.Spec.GetActions().Any(a => a.IsVisible(no))).ToArray();
 
         #endregion
     }

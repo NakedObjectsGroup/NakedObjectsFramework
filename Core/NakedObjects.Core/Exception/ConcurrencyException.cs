@@ -11,19 +11,17 @@ using NakedObjects.Architecture.Adapter;
 namespace NakedObjects.Core {
     public class ConcurrencyException : ObjectPersistenceException {
         public ConcurrencyException(INakedObjectAdapter nakedObjectAdapter)
-            : this(Resources.NakedObjects.ConcurrencyMessage, nakedObjectAdapter.Oid) {
+            : this(Resources.NakedObjects.ConcurrencyMessage, nakedObjectAdapter.Oid) =>
             SourceNakedObjectAdapter = nakedObjectAdapter;
-        }
 
         public ConcurrencyException(string message, IOid source)
-            : base(message) {
+            : base(message) =>
             SourceOid = source;
-        }
 
         public ConcurrencyException(string message, Exception cause)
             : base(message, cause) { }
 
-        public IOid SourceOid { get; private set; }
+        public IOid SourceOid { get; }
         public INakedObjectAdapter SourceNakedObjectAdapter { get; set; }
     }
 

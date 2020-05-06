@@ -24,45 +24,27 @@ namespace NakedObjects.Core.Component {
 
         public string[] PeekWarnings => warnings.ToArray();
 
-        public string[] Messages {
-            get {
-                string[] messageArray = messages.ToArray();
-                return messageArray;
-            }
-        }
+        public string[] Messages => messages.ToArray();
 
-        public string[] Warnings {
-            get {
-                string[] warningArray = warnings.ToArray();
-                return warningArray;
-            }
-        }
+        public string[] Warnings => warnings.ToArray();
 
         public void EnsureEmpty() {
             if (warnings.Count > 0) {
-                throw new InvalidStateException(Log.LogAndReturn("Message broker still has warnings: " + warnings.Aggregate((s, t) => s + t + "; ")));
+                throw new InvalidStateException(Log.LogAndReturn($"Message broker still has warnings: {warnings.Aggregate((s, t) => s + t + "; ")}"));
             }
 
             if (messages.Count > 0) {
-                throw new InvalidStateException(Log.LogAndReturn("Message broker still has messages: " + messages.Aggregate((s, t) => s + t + "; ")));
+                throw new InvalidStateException(Log.LogAndReturn($"Message broker still has messages: {messages.Aggregate((s, t) => s + t + "; ")}"));
             }
         }
 
-        public void AddWarning(string message) {
-            warnings.Add(message);
-        }
+        public void AddWarning(string message) => warnings.Add(message);
 
-        public void AddMessage(string message) {
-            messages.Add(message);
-        }
+        public void AddMessage(string message) => messages.Add(message);
 
-        public void ClearMessages() {
-            messages.Clear();
-        }
+        public void ClearMessages() => messages.Clear();
 
-        public void ClearWarnings() {
-            warnings.Clear();
-        }
+        public void ClearWarnings() => warnings.Clear();
 
         #endregion
     }

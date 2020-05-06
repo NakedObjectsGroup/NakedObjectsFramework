@@ -14,13 +14,13 @@ namespace NakedObjects.Core.Util {
     public static class TypeNameUtils {
         public static string DecodeTypeName(string typeName, string separator = "-") {
             if (typeName.Contains("-")) {
-                string rootType = typeName.Substring(0, typeName.IndexOf('`') + 2);
-                string[] args = typeName.Substring(typeName.IndexOf('`') + 3).Split('-');
+                var rootType = typeName.Substring(0, typeName.IndexOf('`') + 2);
+                var args = typeName.Substring(typeName.IndexOf('`') + 3).Split('-');
 
-                Type genericType = TypeUtils.GetType(rootType);
-                Type[] argTypes = args.Select(TypeUtils.GetType).ToArray();
+                var genericType = TypeUtils.GetType(rootType);
+                var argTypes = args.Select(TypeUtils.GetType).ToArray();
 
-                Type newType = genericType.MakeGenericType(argTypes);
+                var newType = genericType.MakeGenericType(argTypes);
 
                 return newType.FullName;
             }
@@ -28,12 +28,10 @@ namespace NakedObjects.Core.Util {
             return typeName;
         }
 
-        public static string EncodeTypeName(this IObjectSpec spec, params IObjectSpec[] elements) {
-            return EncodeTypeName(spec.FullName, "-", elements);
-        }
+        public static string EncodeTypeName(this IObjectSpec spec, params IObjectSpec[] elements) => EncodeTypeName(spec.FullName, "-", elements);
 
         public static string EncodeTypeName(string typeName, string separator = "-", params IObjectSpec[] elements) {
-            Type type = TypeUtils.GetType(typeName);
+            var type = TypeUtils.GetType(typeName);
 
             if (type.IsGenericType) {
                 return EncodeGenericTypeName(type, separator, elements);
@@ -43,9 +41,9 @@ namespace NakedObjects.Core.Util {
         }
 
         public static string EncodeGenericTypeName(Type type, string separator = "-", params IObjectSpec[] elements) {
-            string rootType = type.GetGenericTypeDefinition().FullName;
+            var rootType = type.GetGenericTypeDefinition().FullName;
 
-            string[] args = type.GetGenericArguments().Where(t => !string.IsNullOrEmpty(t.FullName)).Select(t => t.FullName).ToArray();
+            var args = type.GetGenericArguments().Where(t => !string.IsNullOrEmpty(t.FullName)).Select(t => t.FullName).ToArray();
 
             args = args.Any() ? args : elements.Select(e => e.FullName).ToArray();
 

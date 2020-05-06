@@ -64,7 +64,7 @@ namespace NakedObjects.Core.Adapter {
                 Add(instanceType.FullName);
             }
             else {
-                object[] itemsAsArray = items.Cast<object>().ToArray();
+                var itemsAsArray = items.Cast<object>().ToArray();
                 Add(itemsAsArray.Length);
                 Add(instanceType.FullName);
                 itemsAsArray.ForEach(Add);
@@ -77,7 +77,7 @@ namespace NakedObjects.Core.Adapter {
                 Add(instanceType.FullName);
             }
             else {
-                IEncodedToStrings[] itemsAsArray = items.ToArray();
+                var itemsAsArray = items.ToArray();
                 Add(itemsAsArray.Length);
                 Add(instanceType.FullName);
                 itemsAsArray.ForEach(Add);
@@ -128,12 +128,8 @@ namespace NakedObjects.Core.Adapter {
             }
         }
 
-        public string[] ToArray() {
-            if (Encode) {
-                return strings.Select(HttpUtility.UrlEncode).ToArray();
-            }
-
-            return strings.ToArray();
-        }
+        public string[] ToArray() => Encode
+            ? strings.Select(HttpUtility.UrlEncode).ToArray()
+            : strings.ToArray();
     }
 }

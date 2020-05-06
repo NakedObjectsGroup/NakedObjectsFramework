@@ -24,37 +24,26 @@ namespace NakedObjects.Core.Spec {
 
         public int NoLines {
             get {
-                if (!noLines.HasValue) {
-                    noLines = GetFacet<IMultiLineFacet>().NumberOfLines;
-                }
-
+                noLines ??= GetFacet<IMultiLineFacet>().NumberOfLines;
                 return noLines.Value;
             }
         }
 
         public int MaximumLength {
             get {
-                if (!maximumLength.HasValue) {
-                    maximumLength = GetFacet<IMaxLengthFacet>().Value;
-                }
-
+                maximumLength ??= GetFacet<IMaxLengthFacet>().Value;
                 return maximumLength.Value;
             }
         }
 
         public int TypicalLineLength {
             get {
-                if (!typicalLineLength.HasValue) {
-                    typicalLineLength = GetFacet<ITypicalLengthFacet>().Value;
-                }
-
+                typicalLineLength ??= GetFacet<ITypicalLengthFacet>().Value;
                 return typicalLineLength.Value;
             }
         }
 
-        public bool IsFindMenuEnabled {
-            get { return false; }
-        }
+        public bool IsFindMenuEnabled => false;
 
         #endregion
     }

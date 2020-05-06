@@ -16,9 +16,7 @@ namespace NakedObjects.Core.Transaction {
         private readonly IObjectStore objectStore;
         private bool complete;
 
-        public NestedTransaction(IObjectStore objectStore) {
-            this.objectStore = objectStore;
-        }
+        public NestedTransaction(IObjectStore objectStore) => this.objectStore = objectStore;
 
         #region ITransaction Members
 
@@ -39,9 +37,7 @@ namespace NakedObjects.Core.Transaction {
             complete = true;
         }
 
-        public bool Flush() {
-            return false;
-        }
+        public bool Flush() => false;
 
         #endregion
 

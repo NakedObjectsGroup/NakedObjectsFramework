@@ -23,7 +23,7 @@ namespace NakedObjects.Core.Reflect {
         }
 
         protected internal ConsentAbstract(Exception exception) {
-            this.Exception = exception;
+            Exception = exception;
             reason = exception != null ? exception.Message : null;
         }
 
@@ -32,9 +32,7 @@ namespace NakedObjects.Core.Reflect {
         /// <summary>
         ///     Returns the permission's reason
         /// </summary>
-        public virtual string Reason {
-            get { return reason ?? ""; }
-        }
+        public virtual string Reason => reason ?? "";
 
         public virtual Exception Exception { get; }
 
@@ -53,25 +51,17 @@ namespace NakedObjects.Core.Reflect {
         /// <summary>
         ///     Returns an Allow (Allow.Default) object if true; Veto (Veto.Default) if false
         /// </summary>
-        public static IConsent GetAllow(bool allow) {
-            return allow ? (IConsent) Allow.Default : Veto.Default;
-        }
+        public static IConsent GetAllow(bool allow) => allow ? (IConsent) Allow.Default : Veto.Default;
 
         /// <summary>
         ///     Returns a new Allow object if <c>allow</c> is <c>true</c>; a new Veto if <c>false</c>. The respective reason
         ///     is passed to the newly created object.
         /// </summary>
-        public static IConsent Create(bool allow, string reasonAllowed, string reasonVeteod) {
-            return allow ? (IConsent) new Allow(reasonAllowed) : new Veto(reasonVeteod);
-        }
+        public static IConsent Create(bool allow, string reasonAllowed, string reasonVeteod) => allow ? (IConsent) new Allow(reasonAllowed) : new Veto(reasonVeteod);
 
-        public static IConsent Create(string vetoReason) {
-            return vetoReason == null ? (IConsent) Allow.Default : new Veto(vetoReason);
-        }
+        public static IConsent Create(string vetoReason) => vetoReason == null ? (IConsent) Allow.Default : new Veto(vetoReason);
 
-        public override string ToString() {
-            return "Permission [type=" + (IsVetoed ? "VETOED" : "ALLOWED") + ", reason=" + reason + "]";
-        }
+        public override string ToString() => "Permission [type=" + (IsVetoed ? "VETOED" : "ALLOWED") + ", reason=" + reason + "]";
     }
 
     // Copyright (c) Naked Objects Group Ltd.

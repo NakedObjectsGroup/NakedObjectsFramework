@@ -23,23 +23,17 @@ namespace NakedObjects.Core.Spec {
             : base(association.Identifier.MemberName, association, session, lifecycleManager, metamodel) {
             Assert.AssertNotNull(manager);
 
-            this.Manager = manager;
+            Manager = manager;
             ReturnSpec = MetamodelManager.GetSpecification(association.ReturnSpec);
         }
 
-        public virtual bool IsChoicesEnabled {
-            get { return ContainsFacet(typeof(IPropertyChoicesFacet)); }
-        }
+        public virtual bool IsChoicesEnabled => ContainsFacet(typeof(IPropertyChoicesFacet));
 
-        public virtual bool IsAutoCompleteEnabled {
-            get { return ContainsFacet(typeof(IAutoCompleteFacet)); }
-        }
+        public virtual bool IsAutoCompleteEnabled => ContainsFacet(typeof(IAutoCompleteFacet));
 
         public INakedObjectManager Manager { get; }
 
-        public virtual bool IsASet {
-            get { return false; }
-        }
+        public virtual bool IsASet => false;
 
         #region IAssociationSpec Members
 
@@ -53,13 +47,9 @@ namespace NakedObjects.Core.Spec {
         /// <summary>
         ///     Returns true if this field is persisted, and not calculated from other data in the object or used transiently.
         /// </summary>
-        public virtual bool IsPersisted {
-            get { return !ContainsFacet(typeof(INotPersistedFacet)); }
-        }
+        public virtual bool IsPersisted => !ContainsFacet(typeof(INotPersistedFacet));
 
-        public virtual bool IsReadOnly {
-            get { return !ContainsFacet<IPropertySetterFacet>(); }
-        }
+        public virtual bool IsReadOnly => !ContainsFacet<IPropertySetterFacet>();
 
         public abstract bool IsMandatory { get; }
         public abstract INakedObjectAdapter GetNakedObject(INakedObjectAdapter fromObjectAdapter);
@@ -70,8 +60,8 @@ namespace NakedObjects.Core.Spec {
         public abstract void ToDefault(INakedObjectAdapter nakedObjectAdapter);
 
         public override IConsent IsUsable(INakedObjectAdapter target) {
-            bool isPersistent = target.ResolveState.IsPersistent();
-            IConsent disabledConsent = IsUsableDeclaratively(isPersistent);
+            var isPersistent = target.ResolveState.IsPersistent();
+            var disabledConsent = IsUsableDeclaratively(isPersistent);
             if (disabledConsent != null) {
                 return disabledConsent;
             }
@@ -87,7 +77,7 @@ namespace NakedObjects.Core.Spec {
 
             var immutableFacet = GetFacet<IImmutableFacet>();
             if (immutableFacet != null) {
-                WhenTo when = immutableFacet.Value;
+                var when = immutableFacet.Value;
                 if (when == WhenTo.UntilPersisted && !isPersistent) {
                     return new Veto(Resources.NakedObjects.FieldDisabledUntil);
                 }
@@ -96,14 +86,14 @@ namespace NakedObjects.Core.Spec {
                     return new Veto(Resources.NakedObjects.FieldDisabledOnce);
                 }
 
-                ITypeSpec tgtSpec = target.Spec;
-                if (tgtSpec.IsAlwaysImmutable() || (tgtSpec.IsImmutableOncePersisted() && isPersistent)) {
+                var tgtSpec = target.Spec;
+                if (tgtSpec.IsAlwaysImmutable() || tgtSpec.IsImmutableOncePersisted() && isPersistent) {
                     return new Veto(Resources.NakedObjects.FieldDisabled);
                 }
             }
 
             var f = GetFacet<IDisableForContextFacet>();
-            string reason = f == null ? null : f.DisabledReason(target);
+            var reason = f?.DisabledReason(target);
 
             if (reason == null) {
                 var fs = GetFacet<IDisableForSessionFacet>();
@@ -122,7 +112,7 @@ namespace NakedObjects.Core.Spec {
         private IConsent IsUsableDeclaratively(bool isPersistent) {
             var facet = GetFacet<IDisabledFacet>();
             if (facet != null) {
-                WhenTo isProtected = facet.Value;
+                var isProtected = facet.Value;
                 if (isProtected == WhenTo.Always) {
                     return new Veto(Resources.NakedObjects.FieldNotEditable);
                 }

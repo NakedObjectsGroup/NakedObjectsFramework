@@ -24,17 +24,17 @@ namespace NakedObjects.Service {
                                      SpecFactory memberFactory,
                                      ITransactionManager transactionManager,
                                      IFrameworkResolver frameworkResolver) {
-            this.MessageBroker = messageBroker;
-            this.Session = session;
-            this.LifecycleManager = lifecycleManager;
-            this.ServicesManager = servicesManager;
-            this.NakedObjectManager = nakedObjectManager;
-            this.Persistor = persistor;
-            this.Reflector = reflector;
-            this.MetamodelManager = metamodelManagerManager;
-            this.DomainObjectInjector = domainObjectInjector;
-            this.TransactionManager = transactionManager;
-            this.FrameworkResolver = frameworkResolver;
+            MessageBroker = messageBroker;
+            Session = session;
+            LifecycleManager = lifecycleManager;
+            ServicesManager = servicesManager;
+            NakedObjectManager = nakedObjectManager;
+            Persistor = persistor;
+            Reflector = reflector;
+            MetamodelManager = metamodelManagerManager;
+            DomainObjectInjector = domainObjectInjector;
+            TransactionManager = transactionManager;
+            FrameworkResolver = frameworkResolver;
             domainObjectInjector.Framework = this;
             memberFactory.Initialize(this);
             nakedObjectFactory.Initialize(metamodelManagerManager, session, lifecycleManager, persistor, nakedObjectManager);

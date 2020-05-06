@@ -27,11 +27,11 @@ namespace NakedObjects.Core.Reflect {
             AssertArgNotNull(session);
             AssertArgNotNull(lifecycleManager);
 
-            this.Id = id;
+            Id = id;
             memberSpecImmutable = memberSpec;
-            this.Session = session;
-            this.LifecycleManager = lifecycleManager;
-            this.MetamodelManager = metamodelManager;
+            Session = session;
+            LifecycleManager = lifecycleManager;
+            MetamodelManager = metamodelManager;
         }
 
         public ISession Session { get; }
@@ -46,47 +46,29 @@ namespace NakedObjects.Core.Reflect {
 
         public virtual string Id { get; }
 
-        public virtual IIdentifier Identifier {
-            get { return memberSpecImmutable.Identifier; }
-        }
+        public virtual IIdentifier Identifier => memberSpecImmutable.Identifier;
 
-        public virtual Type[] FacetTypes {
-            get { return memberSpecImmutable.FacetTypes; }
-        }
+        public virtual Type[] FacetTypes => memberSpecImmutable.FacetTypes;
 
         /// <summary>
         ///     Return the default label for this member. This is based on the name of this member.
         /// </summary>
         /// <seealso cref="Id()" />
-        public virtual string Name {
-            get { return memberSpecImmutable.Name; }
-        }
+        public virtual string Name => memberSpecImmutable.Name;
 
-        public virtual string Description {
-            get { return memberSpecImmutable.Description; }
-        }
+        public virtual string Description => memberSpecImmutable.Description;
 
         public abstract IObjectSpec ReturnSpec { get; }
 
-        public virtual bool ContainsFacet(Type facetType) {
-            return memberSpecImmutable.ContainsFacet(facetType);
-        }
+        public virtual bool ContainsFacet(Type facetType) => memberSpecImmutable.ContainsFacet(facetType);
 
-        public virtual bool ContainsFacet<T>() where T : IFacet {
-            return memberSpecImmutable.ContainsFacet<T>();
-        }
+        public virtual bool ContainsFacet<T>() where T : IFacet => memberSpecImmutable.ContainsFacet<T>();
 
-        public virtual IFacet GetFacet(Type type) {
-            return memberSpecImmutable.GetFacet(type);
-        }
+        public virtual IFacet GetFacet(Type type) => memberSpecImmutable.GetFacet(type);
 
-        public virtual T GetFacet<T>() where T : IFacet {
-            return memberSpecImmutable.GetFacet<T>();
-        }
+        public virtual T GetFacet<T>() where T : IFacet => memberSpecImmutable.GetFacet<T>();
 
-        public virtual IEnumerable<IFacet> GetFacets() {
-            return memberSpecImmutable.GetFacets();
-        }
+        public virtual IEnumerable<IFacet> GetFacets() => memberSpecImmutable.GetFacets();
 
         /// <summary>
         ///     Loops over all <see cref="IHidingInteractionAdvisor" /> <see cref="IFacet" />s and
@@ -112,9 +94,7 @@ namespace NakedObjects.Core.Reflect {
             return InteractionUtils.IsUsable(this, ic);
         }
 
-        public bool IsNullable {
-            get { return memberSpecImmutable.ContainsFacet(typeof(INullableFacet)); }
-        }
+        public bool IsNullable => memberSpecImmutable.ContainsFacet(typeof(INullableFacet));
 
         #endregion
 
@@ -122,13 +102,9 @@ namespace NakedObjects.Core.Reflect {
             Assert.AssertNotNull(msg ?? "", arg);
         }
 
-        public override string ToString() {
-            return "id=" + Id + ",name='" + Name + "'";
-        }
+        public override string ToString() => "id=" + Id + ",name='" + Name + "'";
 
-        protected internal virtual IConsent GetConsent(string message) {
-            return message == null ? (IConsent) Allow.Default : new Veto(message);
-        }
+        protected internal virtual IConsent GetConsent(string message) => message == null ? (IConsent) Allow.Default : new Veto(message);
     }
 
     // Copyright (c) Naked Objects Group Ltd.
