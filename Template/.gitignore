@@ -1,0 +1,9 @@
+**/packages
+**/bin
+**/obj
+**/.vs
+**/nakedobjects_log*.*
+*.dll
+*.suo
+*.user
+
