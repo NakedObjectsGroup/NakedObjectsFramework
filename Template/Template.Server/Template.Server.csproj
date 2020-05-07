@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
+    <PackageReference Include="NakedObjects.Server" Version="11.0.0-beta02" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Template.Database\Template.Database.csproj" />
+    <ProjectReference Include="..\Template.Model\Template.Model.csproj" />
+    <ProjectReference Include="..\Template.SeedData\Template.SeedData.csproj" />
+  </ItemGroup>
+
+
+</Project>
