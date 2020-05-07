@@ -19,11 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Server", "Template
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Client", "Template.Client\Template.Client.csproj", "{9F3A372C-4F7F-4094-A399-BCB2E8397D2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Model", "Template.Model\Template.Model.csproj", "{5F87A0AD-C881-444D-9C87-084D8D74F00F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Model", "Template.Model\Template.Model.csproj", "{5F87A0AD-C881-444D-9C87-084D8D74F00F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Database", "Template.Database\Template.Database.csproj", "{81D5756D-FC52-44C0-8EF5-6A5739C22494}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Database", "Template.Database\Template.Database.csproj", "{81D5756D-FC52-44C0-8EF5-6A5739C22494}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.SeedData", "Template.SeedData\Template.SeedData.csproj", "{3B3DD38C-F7C2-4B93-8345-9A70A2200749}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.SeedData", "Template.SeedData\Template.SeedData.csproj", "{3B3DD38C-F7C2-4B93-8345-9A70A2200749}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
