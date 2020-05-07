@@ -31,13 +31,9 @@ namespace NakedObjects.Core.Test.Adapter {
         [Key]
         public virtual int Id { get; set; }
 
-        public ICollection<TestDomainObject> Action1() {
-            return Container.Instances<TestDomainObject>().ToList();
-        }
+        public ICollection<TestDomainObject> Action1() => Container.Instances<TestDomainObject>().ToList();
 
-        public ICollection<TestDomainObject> Action2(int filter) {
-            return Container.Instances<TestDomainObject>().Where(tdo => tdo.Id != filter).ToList();
-        }
+        public ICollection<TestDomainObject> Action2(int filter) => Container.Instances<TestDomainObject>().Where(tdo => tdo.Id != filter).ToList();
 
         public ICollection<TestDomainObject> Action3(TestDomainObject filter) {
             if (filter != null) {
@@ -49,12 +45,11 @@ namespace NakedObjects.Core.Test.Adapter {
 
         // ReSharper disable PossibleMultipleEnumeration
 
-        public IQueryable<TestDomainObject> Action4(IEnumerable<int> filter) {
-            return from tdo in Container.Instances<TestDomainObject>()
-                from ids in filter
-                where tdo.Id != ids
-                select tdo;
-        }
+        public IQueryable<TestDomainObject> Action4(IEnumerable<int> filter) =>
+            from tdo in Container.Instances<TestDomainObject>()
+            from ids in filter
+            where tdo.Id != ids
+            select tdo;
 
         // ReSharper restore PossibleMultipleEnumeration
 
@@ -98,21 +93,13 @@ namespace NakedObjects.Core.Test.Adapter {
 
     [TestFixture]
     public class CollectionMementoTest : AcceptanceTestCase {
-        protected override string[] Namespaces {
-            get { return new[] {typeof(TestDomainObject).Namespace}; }
-        }
+        protected override string[] Namespaces => new[] {typeof(TestDomainObject).Namespace};
 
-        protected override Type[] Types {
-            get { return new[] {typeof(TestDomainObject), typeof(TestDomainObject[]), typeof(List<TestDomainObject>), typeof(ObjectQuery<TestDomainObject>), typeof(List<Int32>)}; }
-        }
+        protected override Type[] Types => new[] {typeof(TestDomainObject), typeof(TestDomainObject[]), typeof(List<TestDomainObject>), typeof(ObjectQuery<TestDomainObject>), typeof(List<Int32>)};
 
-        protected override object[] Fixtures {
-            get { return new object[] {new TestDataFixture()}; }
-        }
+        protected override object[] Fixtures => new object[] {new TestDataFixture()};
 
-        protected override Type[] Services {
-            get { return new [] {typeof(SimpleRepository<TestDomainObject>)}; }
-        }
+        protected override Type[] Services => new [] {typeof(SimpleRepository<TestDomainObject>)};
 
         protected override EntityObjectStoreConfiguration Persistor {
             get {
@@ -142,14 +129,10 @@ namespace NakedObjects.Core.Test.Adapter {
         }
 
         [OneTimeSetUp]
-        public void SetupFixture() {
-            InitializeNakedObjectsFramework(this);
-        }
+        public void SetupFixture() => InitializeNakedObjectsFramework(this);
 
         [OneTimeTearDown]
-        public void TearDownFixture() {
-            CleanupNakedObjectsFramework(this);
-        }
+        public void TearDownFixture() => CleanupNakedObjectsFramework(this);
 
         private void RoundTrip(CollectionMemento memento) {
             string[] strings1 = memento.ToEncodedStrings();

@@ -52,7 +52,7 @@ namespace NakedObjects.Core.Test.Util {
             Assert.AreNotEqual(ao.ValueTwo, clone.ValueTwo);
             Assert.AreNotSame(ao.ReferenceOne, clone.ReferenceOne);
             Assert.AreNotSame(ao.CollectionOne, clone.CollectionOne);
-            Assert.AreNotEqual(ao.CollectionOne.Count(), clone.CollectionOne.Count());
+            Assert.AreNotEqual(ao.CollectionOne.Count, clone.CollectionOne.Count);
 
             CopyUtils.UpdateFromClone(ao, clone);
 
@@ -62,7 +62,7 @@ namespace NakedObjects.Core.Test.Util {
             Assert.AreSame(ao.ReferenceOne, clone.ReferenceOne);
             Assert.AreEqual(ao.ValueOne, clone.ValueOne);
             Assert.AreEqual(ao.ValueTwo, clone.ValueTwo);
-            Assert.AreEqual(ao.CollectionOne.Count(), clone.CollectionOne.Count());
+            Assert.AreEqual(ao.CollectionOne.Count, clone.CollectionOne.Count);
             Assert.AreSame(ao.CollectionOne.First(), clone.CollectionOne.First());
             Assert.AreSame(ao.CollectionOne.ElementAt(1), clone.CollectionOne.ElementAt(1));
         }
@@ -94,14 +94,14 @@ namespace NakedObjects.Core.Test.Util {
             Assert.AreNotSame(co, clone);
             Assert.AreSame(co.GetType(), clone.GetType());
             Assert.AreNotSame(co.CollectionOne, clone.CollectionOne);
-            Assert.AreNotEqual(co.CollectionOne.Count(), clone.CollectionOne.Count());
+            Assert.AreNotEqual(co.CollectionOne.Count, clone.CollectionOne.Count);
 
             CopyUtils.UpdateFromClone(co, clone);
 
             Assert.AreNotSame(co, clone);
             Assert.AreSame(co.GetType(), clone.GetType());
             Assert.AreNotSame(co.CollectionOne, clone.CollectionOne);
-            Assert.AreEqual(co.CollectionOne.Count(), clone.CollectionOne.Count());
+            Assert.AreEqual(co.CollectionOne.Count, clone.CollectionOne.Count);
             Assert.AreSame(co.CollectionOne.First(), clone.CollectionOne.First());
             Assert.AreSame(co.CollectionOne.ElementAt(1), clone.CollectionOne.ElementAt(1));
         }

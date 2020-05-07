@@ -14,9 +14,7 @@ namespace NakedObjects.Core.Async {
     [TestFixture]
     public class AsyncServiceTest {
         [Test]
-        public void TestAction() {
-            AsyncTest().Wait(1000);
-        }
+        public void TestAction() => AsyncTest().Wait(1000);
 
         private async Task AsyncTest() {
             var mockFramework = new Mock<INakedObjectsFramework>();
