@@ -10,7 +10,7 @@ using NakedObjects.Menu;
 
 namespace NakedObjects.Architecture.Menu {
     /// <summary>
-    /// Injected service that provides implementations of IMenu.
+    ///     Injected service that provides implementations of IMenu.
     /// </summary>
     public interface IMenuFactory {
         //Creates a new menu with the Type specified. If the optional name

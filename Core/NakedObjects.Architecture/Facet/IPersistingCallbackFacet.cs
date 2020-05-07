@@ -7,7 +7,8 @@
 
 namespace NakedObjects.Architecture.Facet {
     /// <summary>
-    ///     Represents the mechanism to inform the object that it is about to be persisted to the object store for the first time
+    ///     Represents the mechanism to inform the object that it is about to be persisted to the object store for the first
+    ///     time
     /// </summary>
     /// <para>
     ///     In the standard Naked Objects Programming Model, this is represented

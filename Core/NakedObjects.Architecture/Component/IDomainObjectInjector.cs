@@ -7,8 +7,8 @@
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    /// Service that will inject an implementation of IDomainObjectContainer and/or INakedObjectsFramework into
-    /// domain objects and services when they are instantiated.
+    ///     Service that will inject an implementation of IDomainObjectContainer and/or INakedObjectsFramework into
+    ///     domain objects and services when they are instantiated.
     /// </summary>
     public interface IDomainObjectInjector {
         INakedObjectsFramework Framework { set; }

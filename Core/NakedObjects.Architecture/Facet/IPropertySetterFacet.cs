@@ -16,7 +16,6 @@ namespace NakedObjects.Architecture.Facet {
     ///     In the standard Naked Objects Programming Model, corresponds to invoking the mutator method for a property.
     /// </para>
     /// <seealso cref="IPropertyAccessorFacet" />
-    /// <seealso cref="IPropertyClearFacet" />
     /// <seealso cref="IPropertyInitializationFacet" />
     public interface IPropertySetterFacet : IFacet {
         string PropertyName { get; }

@@ -25,7 +25,7 @@ namespace NakedObjects.Architecture.Facet {
         MethodInfo GetMethod();
 
         /// <summary>
-        /// Delegate around method. Much faster than invoking method via reflective Invoke call
+        ///     Delegate around method. Much faster than invoking method via reflective Invoke call
         /// </summary>
         /// <returns></returns>
         Func<object, object[], object> GetMethodDelegate();

@@ -8,7 +8,7 @@
 namespace NakedObjects.Architecture.Component {
     public interface ITransactionManager {
         /// <summary>
-        /// Number of nested transaction levels; 0 indicates that no transaction is running
+        ///     Number of nested transaction levels; 0 indicates that no transaction is running
         /// </summary>
         int TransactionLevel { get; }
 

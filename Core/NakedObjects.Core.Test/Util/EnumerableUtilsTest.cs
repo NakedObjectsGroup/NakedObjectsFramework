@@ -39,7 +39,7 @@ namespace NakedObjects.Core.Test.Util {
             list.AddRange(Enumerable.Range(0, 100));
 
             Assert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(((IEnumerable) list).Take(9).Cast<object>().ToArray()));
-            Assert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(((IEnumerable) list).Take(9).Cast<object>().ToList().Cast<object>()));
+            Assert.IsTrue(Enumerable.Range(0, 9).Cast<object>().SequenceEqual(((IEnumerable) list).Take(9).Cast<object>().ToList()));
         }
 
         [Test]

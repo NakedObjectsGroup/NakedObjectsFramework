@@ -12,8 +12,8 @@ using NakedObjects.Architecture.Facet;
 
 namespace NakedObjects.Architecture.Spec {
     /// <summary>
-    ///  The 'metamodel' is made up of various implementations of ISpecification, which, in turn, are largely
-    ///  made up of Facets.
+    ///     The 'metamodel' is made up of various implementations of ISpecification, which, in turn, are largely
+    ///     made up of Facets.
     /// </summary>
     public interface ISpecification {
         /// <summary>

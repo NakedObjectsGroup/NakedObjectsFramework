@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Adapter {
     /// <summary>
-    ///     An INakedObjectAdapter is an adapter to domain objects. The NOF alsways deals with domain objects via these
+    ///     An INakedObjectAdapter is an adapter to domain objects. The NOF always deals with domain objects via these
     ///     adapters. The adapter gives access to the MetamodelManager (INakedObjectSpecification) for the domain object type,
     ///     provides a unique identifier for the object (Oid), and its current 'lifecycle' state.
     /// </summary>
@@ -62,7 +62,7 @@ namespace NakedObjects.Architecture.Adapter {
         string TitleString();
 
         /// <summary>
-        ///     Returns a local independent string for this object 
+        ///     Returns a local independent string for this object
         /// </summary>
         string InvariantString();
 
@@ -80,13 +80,14 @@ namespace NakedObjects.Architecture.Adapter {
         void ReplacePoco(object poco);
 
         /// <summary>
-        ///     Checks that a transient object is in a valid state to be persisted. Returns reason that it cannot be persisted, or null if it can be persisted.
+        ///     Checks that a transient object is in a valid state to be persisted. Returns reason that it cannot be persisted, or
+        ///     null if it can be persisted.
         /// </summary>
         string ValidToPersist();
 
         /// <summary>
         ///     Sets the oid if the oid is currently null and new new oid is transient. Used to make the oid a place
-        ///     holder for custom mmechanisms to recover the object.
+        ///     holder for custom mechanisms to recover the object.
         /// </summary>
         /// <param name="oid"></param>
         void SetATransientOid(IOid oid);

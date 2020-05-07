@@ -17,7 +17,7 @@ using NUnit.Framework;
 
 namespace NakedObjects.Core.Test.Component {
     /// <summary>
-    /// Summary description for DefaultPersistAlgorithmTest
+    ///     Summary description for DefaultPersistAlgorithmTest
     /// </summary>
     [TestFixture]
     public class DefaultPersistAlgorithmTest {
@@ -45,7 +45,7 @@ namespace NakedObjects.Core.Test.Component {
         [Test]
         public void TestMakePersistent() {
             var mockAdapter = new Mock<INakedObjectAdapter>();
-            INakedObjectAdapter testAdapter = mockAdapter.Object;
+            var testAdapter = mockAdapter.Object;
 
             var mockSpec = new Mock<IObjectSpec>();
             var mockState = new Mock<IResolveStateMachine>();
@@ -72,7 +72,7 @@ namespace NakedObjects.Core.Test.Component {
         [Test]
         public void TestMakePersistentFailsIfObjectAlreadyPersistent() {
             var mockAdapter = new Mock<INakedObjectAdapter>();
-            INakedObjectAdapter testAdapter = mockAdapter.Object;
+            var testAdapter = mockAdapter.Object;
 
             var mockSpec = new Mock<IObjectSpec>();
             var mockState = new Mock<IResolveStateMachine>();
@@ -92,7 +92,7 @@ namespace NakedObjects.Core.Test.Component {
         [Test]
         public void TestMakePersistentFailsIfObjectMustBeTransient() {
             var mockAdapter = new Mock<INakedObjectAdapter>();
-            INakedObjectAdapter testAdapter = mockAdapter.Object;
+            var testAdapter = mockAdapter.Object;
 
             var mockSpec = new Mock<IObjectSpec>();
             var mockState = new Mock<IResolveStateMachine>();
@@ -113,7 +113,7 @@ namespace NakedObjects.Core.Test.Component {
         [Test]
         public void TestMakePersistentSkipsAggregatedObjects() {
             var mockAdapter = new Mock<INakedObjectAdapter>();
-            INakedObjectAdapter testAdapter = mockAdapter.Object;
+            var testAdapter = mockAdapter.Object;
 
             var mockSpec = new Mock<IObjectSpec>();
             var mockState = new Mock<IResolveStateMachine>();
@@ -140,7 +140,7 @@ namespace NakedObjects.Core.Test.Component {
         [Test]
         public void TestMakePersistentSkipsAlreadyPersistedObjects() {
             var mockAdapter = new Mock<INakedObjectAdapter>();
-            INakedObjectAdapter testAdapter = mockAdapter.Object;
+            var testAdapter = mockAdapter.Object;
 
             var mockSpec = new Mock<IObjectSpec>();
             var mockState = new Mock<IResolveStateMachine>();

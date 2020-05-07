@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    /// Service for mapping between POCO domain objects and their (INakedObjectAdapter) adaptors
+    ///     Service for mapping between POCO domain objects and their (INakedObjectAdapter) adaptors
     /// </summary>
     public interface INakedObjectAdapterMap : IEnumerable<INakedObjectAdapter> {
         void Add(object obj, INakedObjectAdapter adapter);

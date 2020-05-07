@@ -21,7 +21,6 @@ namespace NakedObjects.Architecture.Facet {
     /// </para>
     /// <seealso cref="IPropertyAccessorFacet" />
     /// <seealso cref="IPropertySetterFacet" />
-    /// <seealso cref="IPropertyClearFacet" />
     public interface IPropertyInitializationFacet : IFacet {
         /// <summary>
         ///     Sets the value of this property

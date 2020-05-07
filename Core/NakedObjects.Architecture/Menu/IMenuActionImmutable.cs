@@ -9,8 +9,8 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Menu {
     /// <summary>
-    /// Run-time metamodel of a menu action, which provides access to the
-    /// action spec.
+    ///     Run-time metamodel of a menu action, which provides access to the
+    ///     action spec.
     /// </summary>
     public interface IMenuActionImmutable : IMenuItemImmutable {
         IActionSpecImmutable Action { get; }

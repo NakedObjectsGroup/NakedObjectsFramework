@@ -7,8 +7,8 @@
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    /// Service that provides mechanism for passing on various types of messages to the user,
-    /// in a UI-independent form. 
+    ///     Service that provides mechanism for passing on various types of messages to the user,
+    ///     in a UI-independent form.
     /// </summary>
     public interface IMessageBroker {
         string[] PeekMessages { get; }

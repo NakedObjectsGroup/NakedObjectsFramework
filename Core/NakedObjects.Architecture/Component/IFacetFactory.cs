@@ -17,7 +17,7 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Architecture.Component {
     public interface IFacetFactory : IComparable<IFacetFactory> {
         /// <summary>
-        /// To order the factory
+        ///     To order the factory
         /// </summary>
         int NumericOrder { get; }
 

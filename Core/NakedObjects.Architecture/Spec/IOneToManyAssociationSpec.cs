@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Adapter;
 namespace NakedObjects.Architecture.Spec {
     public interface IOneToManyAssociationSpec : IAssociationSpec, IOneToManyFeatureSpec {
         /// <summary>
-        ///   The collection has set semantics
+        ///     The collection has set semantics
         /// </summary>
         bool IsASet { get; }
 

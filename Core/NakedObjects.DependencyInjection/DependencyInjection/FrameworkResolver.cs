@@ -13,19 +13,13 @@ namespace NakedObjects.DependencyInjection {
     public class FrameworkResolver : IFrameworkResolver {
         private readonly IServiceScope scopeServiceProvider;
 
-        public FrameworkResolver(IServiceProvider serviceProvider) {
-            scopeServiceProvider = serviceProvider.CreateScope();
-        }
-
-        public void Dispose() {
-            scopeServiceProvider.Dispose();
-        }
+        public FrameworkResolver(IServiceProvider serviceProvider) => scopeServiceProvider = serviceProvider.CreateScope();
 
         #region IFrameworkResolver Members
 
-        public INakedObjectsFramework GetFramework() {
-            return scopeServiceProvider.ServiceProvider.GetService<INakedObjectsFramework>();
-        }
+        public void Dispose() => scopeServiceProvider.Dispose();
+
+        public INakedObjectsFramework GetFramework() => scopeServiceProvider.ServiceProvider.GetService<INakedObjectsFramework>();
 
         #endregion
     }

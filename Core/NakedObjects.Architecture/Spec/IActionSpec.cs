@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.Spec {
     /// <summary>
-    /// The specification for an action method on a domain object (or service).
+    ///     The specification for an action method on a domain object (or service).
     /// </summary>
     public interface IActionSpec : IMemberSpec {
         /// <summary>

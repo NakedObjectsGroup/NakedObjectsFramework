@@ -12,7 +12,8 @@ namespace NakedObjects.Architecture.Facet {
     ///     Mechanism for obtaining the name of the icon.
     /// </summary>
     /// <para>
-    ///     Typically an icon based on the class name is used for every instance of a class (for example, by placing an appropriately
+    ///     Typically an icon based on the class name is used for every instance of a class (for example, by placing an
+    ///     appropriately
     ///     named image file into a certain directory). This facet allows the icon to be changed for the class or on an
     ///     instance-by-instance basis. For example, the icon might be adapted with an overlay to represent its state
     ///     through some well-defined lifecycle (eg pending approval, approved, rejected). Alternatively a
