@@ -13,12 +13,11 @@ namespace NakedObjects.Architecture.Facet {
     ///     Mechanism for obtaining the action menu for a type.
     /// </summary>
     /// <para>
-    ///     
     /// </para>
     /// <para>
-    /// In the standard Naked Objects Programming Model, by default the action menu will
-    /// be generated from the object's actions, taking account of action ordering.  
-    /// However, this may be overridden by writing a method named <c>Menu</c>.
+    ///     In the standard Naked Objects Programming Model, by default the action menu will
+    ///     be generated from the object's actions, taking account of action ordering.
+    ///     However, this may be overridden by writing a method named <c>Menu</c>.
     /// </para>
     public interface IMenuFacet : IFacet {
         /// <summary>

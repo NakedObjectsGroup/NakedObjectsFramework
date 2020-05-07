@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    /// Oid factory
+    ///     Oid factory
     /// </summary>
     public interface IOidGenerator {
         void ConvertPersistentToTransientOid(IOid oid);

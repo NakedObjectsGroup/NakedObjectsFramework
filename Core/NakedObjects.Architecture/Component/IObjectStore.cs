@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    /// Provides a generic interface to a specific persistence mechanism
+    ///     Provides a generic interface to a specific persistence mechanism
     /// </summary>
     public interface IObjectStore {
         /// <summary>
@@ -54,7 +54,7 @@ namespace NakedObjects.Architecture.Component {
 
         /// <summary>
         ///     Persists the specified object's state. Essentially the data held by the persistence mechanism should be
-        ///     updated to reflect the state of the specified objects. 
+        ///     updated to reflect the state of the specified objects.
         /// </summary>
         void ExecuteSaveObjectCommand(INakedObjectAdapter nakedObjectAdapter);
 

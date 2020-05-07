@@ -7,13 +7,13 @@
 
 namespace NakedObjects.Architecture.Menu {
     /// <summary>
-    /// Runtime metamodel of a menu item, which might be an action or a sub-menu
+    ///     Runtime metamodel of a menu item, which might be an action or a sub-menu
     /// </summary>
     public interface IMenuItemImmutable {
         string Name { get; }
 
         /// <summary>
-        /// Id is optional
+        ///     Id is optional
         /// </summary>
         string Id { get; }
     }

@@ -16,8 +16,8 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Reflect {
     /// <summary>
-    /// Mechanism for applying actions to All/Any of the FacetFactories. The implementation
-    /// must be set up to know about all the FacetFactories.
+    ///     Mechanism for applying actions to All/Any of the FacetFactories. The implementation
+    ///     must be set up to know about all the FacetFactories.
     /// </summary>
     public interface IFacetFactorySet {
         IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy);
@@ -43,7 +43,10 @@ namespace NakedObjects.Architecture.Reflect {
         bool Filters(PropertyInfo property, IClassStrategy classStrategy);
 
         /// <summary>
-        ///     Delegates to <see cref="IFacetFactory.Process(NakedObjects.Architecture.Component.IReflector,System.Type,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" /> for each appropriate factory.
+        ///     Delegates to
+        ///     <see
+        ///         cref="IFacetFactory.Process(NakedObjects.Architecture.Component.IReflector,System.Type,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" />
+        ///     for each appropriate factory.
         /// </summary>
         /// <param name="reflector"></param>
         /// <param name="type">type to process</param>
@@ -52,7 +55,10 @@ namespace NakedObjects.Architecture.Reflect {
         void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification);
 
         /// <summary>
-        ///     Delegates to <see cref="IFacetFactory.Process(NakedObjects.Architecture.Component.IReflector,System.Reflection.MethodInfo,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" />for each appropriate factory.
+        ///     Delegates to
+        ///     <see
+        ///         cref="IFacetFactory.Process(NakedObjects.Architecture.Component.IReflector,System.Reflection.MethodInfo,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" />
+        ///     for each appropriate factory.
         /// </summary>
         /// <param name="reflector"></param>
         /// <param name="method">method to process</param>
@@ -62,7 +68,10 @@ namespace NakedObjects.Architecture.Reflect {
         void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType);
 
         /// <summary>
-        ///     Delegates to <see cref="IFacetFactory.Process(NakedObjects.Architecture.Component.IReflector,System.Reflection.PropertyInfo,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" />for each appropriate factory.
+        ///     Delegates to
+        ///     <see
+        ///         cref="IFacetFactory.Process(NakedObjects.Architecture.Component.IReflector,System.Reflection.PropertyInfo,NakedObjects.Architecture.FacetFactory.IMethodRemover,NakedObjects.Architecture.Spec.ISpecificationBuilder)" />
+        ///     for each appropriate factory.
         /// </summary>
         /// <param name="reflector"></param>
         /// <param name="property">property to process</param>

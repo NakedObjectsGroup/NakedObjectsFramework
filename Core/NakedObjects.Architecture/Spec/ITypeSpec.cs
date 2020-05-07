@@ -12,10 +12,10 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Spec {
     /// <summary>
-    /// Gives access to the full specification (metadata) for a specific domain object type 
-    /// (defined by the FullName property). This is the 'runtime specification', which can provide
-    /// services in relation to a specific object; where possible its responsibilities are delegated 
-    /// to the static version of the specification: IObjectSpecImmutable.
+    ///     Gives access to the full specification (metadata) for a specific domain object type
+    ///     (defined by the FullName property). This is the 'runtime specification', which can provide
+    ///     services in relation to a specific object; where possible its responsibilities are delegated
+    ///     to the static version of the specification: IObjectSpecImmutable.
     /// </summary>
     public interface ITypeSpec : ISpecification {
         /// <summary>

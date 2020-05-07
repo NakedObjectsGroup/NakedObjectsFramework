@@ -12,12 +12,12 @@ using NakedObjects.Architecture.Spec;
 namespace NakedObjects.Architecture.Component {
     public interface IFacetDecorator {
         /// <summary>
-        /// Return a list of facet types that this decorator will decorate
+        ///     Return a list of facet types that this decorator will decorate
         /// </summary>
         Type[] ForFacetTypes { get; }
 
         /// <summary>
-        /// Decorate a facet
+        ///     Decorate a facet
         /// </summary>
         /// <param name="facet">The facet to decorate</param>
         /// <param name="holder">The facet's holder</param>

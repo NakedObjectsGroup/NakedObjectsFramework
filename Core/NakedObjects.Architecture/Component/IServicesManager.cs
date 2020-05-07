@@ -10,7 +10,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    /// Provides access to the domain services that have been registered as part of the application. 
+    ///     Provides access to the domain services that have been registered as part of the application.
     /// </summary>
     public interface IServicesManager {
         INakedObjectAdapter GetService(string id);

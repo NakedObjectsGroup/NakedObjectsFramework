@@ -11,9 +11,9 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    /// Most of this type's responsibilities will be delegated to an injected INakedObjectManager and/or IObjectPersistor.
-    /// The primary purpose in having a separate interface ILifecycleManager is so that the caller need not
-    /// be concerned with whether the object already exists in memory, persistently, or both. 
+    ///     Most of this type's responsibilities will be delegated to an injected INakedObjectManager and/or IObjectPersistor.
+    ///     The primary purpose in having a separate interface ILifecycleManager is so that the caller need not
+    ///     be concerned with whether the object already exists in memory, persistently, or both.
     /// </summary>
     public interface ILifecycleManager {
         INakedObjectAdapter CreateInstance(IObjectSpec spec);

@@ -9,5 +9,5 @@ namespace NakedObjects.Architecture.FacetFactory {
     public enum MethodType {
         Object,
         Class
-    };
+    }
 }

@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Spec {
     /// <summary>
-    /// Base interface for specifications covering properties and actions.
+    ///     Base interface for specifications covering properties and actions.
     /// </summary>
     public interface IMemberSpec : IFeatureSpec {
         /// <summary>

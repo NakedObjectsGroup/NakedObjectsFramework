@@ -38,13 +38,13 @@ namespace NakedObjects.Core.Test.Resolve {
 
         private static IResolveStateMachine NewSm() {
             var mockAdapter = new Mock<INakedObjectAdapter>();
-            INakedObjectAdapter testAdapter = mockAdapter.Object;
+            var testAdapter = mockAdapter.Object;
 
             var mockSpecification = new Mock<IObjectSpec>();
-            IObjectSpec testSpecification = mockSpecification.Object;
+            var testSpecification = mockSpecification.Object;
 
             var mockFacet = new Mock<ITestCallbackFacet>();
-            ITestCallbackFacet testFacet = mockFacet.Object;
+            var testFacet = mockFacet.Object;
 
             mockFacet.Setup(f => f.Invoke(null, null, null, null));
 
@@ -58,61 +58,61 @@ namespace NakedObjects.Core.Test.Resolve {
         }
 
         private static IResolveStateMachine GhostSM() {
-            IResolveStateMachine sm = NewSm();
+            var sm = NewSm();
             sm.Handle(Events.InitializePersistentEvent);
             return sm;
         }
 
         private static IResolveStateMachine TransientSm() {
-            IResolveStateMachine sm = NewSm();
+            var sm = NewSm();
             sm.Handle(Events.InitializeTransientEvent);
             return sm;
         }
 
         private static IResolveStateMachine ResolvingPartSm() {
-            IResolveStateMachine sm = GhostSM();
+            var sm = GhostSM();
             sm.Handle(Events.StartPartResolvingEvent);
             return sm;
         }
 
         private static IResolveStateMachine ResolvedPartSm() {
-            IResolveStateMachine sm = ResolvingPartSm();
+            var sm = ResolvingPartSm();
             sm.Handle(Events.EndPartResolvingEvent);
             return sm;
         }
 
         private static IResolveStateMachine ResolvingSm() {
-            IResolveStateMachine sm = GhostSM();
+            var sm = GhostSM();
             sm.Handle(Events.StartResolvingEvent);
             return sm;
         }
 
         private static IResolveStateMachine ResolvedSm() {
-            IResolveStateMachine sm = ResolvingSm();
+            var sm = ResolvingSm();
             sm.Handle(Events.EndResolvingEvent);
             return sm;
         }
 
         private static IResolveStateMachine UpdatingSm() {
-            IResolveStateMachine sm = ResolvedSm();
+            var sm = ResolvedSm();
             sm.Handle(Events.StartUpdatingEvent);
             return sm;
         }
 
         private static IResolveStateMachine SerializingPartResolvedSm() {
-            IResolveStateMachine sm = ResolvedPartSm();
+            var sm = ResolvedPartSm();
             sm.Handle(Events.StartSerializingEvent);
             return sm;
         }
 
         private static IResolveStateMachine SerializingTransientSm() {
-            IResolveStateMachine sm = TransientSm();
+            var sm = TransientSm();
             sm.Handle(Events.StartSerializingEvent);
             return sm;
         }
 
         private static IResolveStateMachine SerializingResolvedSm() {
-            IResolveStateMachine sm = ResolvedSm();
+            var sm = ResolvedSm();
             sm.Handle(Events.StartSerializingEvent);
             return sm;
         }

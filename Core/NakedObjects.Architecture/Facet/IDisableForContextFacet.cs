@@ -10,7 +10,8 @@ using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facet {
     /// <summary>
-    ///     Disable a property, collection or action based on the state of the target <see cref="INakedObjectAdapter" /> object.
+    ///     Disable a property, collection or action based on the state of the target <see cref="INakedObjectAdapter" />
+    ///     object.
     /// </summary>
     /// <para>
     ///     In the standard Naked Objects Programming Model, corresponds to

@@ -11,7 +11,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    /// Provides access to the 'Immutable' object specifications.
+    ///     Provides access to the 'Immutable' object specifications.
     /// </summary>
     public interface IMetamodel {
         ITypeSpecImmutable[] AllSpecifications { get; }

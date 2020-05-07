@@ -56,7 +56,7 @@ namespace NakedObjects.DependencyInjection {
 
         public static void RegisterStandardFacetFactories(IServiceCollection services) {
             var factoryTypes = FacetFactories.StandardFacetFactories();
-            for (int i = 0; i < factoryTypes.Length; i++) {
+            for (var i = 0; i < factoryTypes.Length; i++) {
                 ConfigHelpers.RegisterFacetFactory(factoryTypes[i], services, i);
             }
         }

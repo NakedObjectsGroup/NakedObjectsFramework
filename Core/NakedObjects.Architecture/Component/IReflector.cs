@@ -14,11 +14,11 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    /// The Reflector is responsible for parsing the code of the domain model and creating the 
-    /// MetamodelManager (consisting of Specifications) from this. The Reflector is only run when the 
-    /// application is first started-up, and is not used once the application is running.  If the
-    /// application has been provided with a previously-generated-and-persisted MetamodelManager, then
-    /// the Reflector is not called at all.
+    ///     The Reflector is responsible for parsing the code of the domain model and creating the
+    ///     MetamodelManager (consisting of Specifications) from this. The Reflector is only run when the
+    ///     application is first started-up, and is not used once the application is running.  If the
+    ///     application has been provided with a previously-generated-and-persisted MetamodelManager, then
+    ///     the Reflector is not called at all.
     /// </summary>
     public interface IReflector {
         IClassStrategy ClassStrategy { get; }
@@ -30,7 +30,7 @@ namespace NakedObjects.Architecture.Component {
         ITypeSpecBuilder LoadSpecification(Type type);
 
         /// <summary>
-        /// For when you know the expected subclass of the Spec
+        ///     For when you know the expected subclass of the Spec
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="type"></param>

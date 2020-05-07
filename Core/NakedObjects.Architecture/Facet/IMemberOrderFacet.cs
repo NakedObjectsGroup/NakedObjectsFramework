@@ -12,7 +12,7 @@ namespace NakedObjects.Architecture.Facet {
     /// </summary>
     /// <para>
     ///     In the standard Naked Objects Programming Model, corresponds to annotating each of the
-    ///     member methods with the <see cref="MemberOrderAttribute" />. 
+    ///     member methods with the <see cref="MemberOrderAttribute" />.
     /// </para>
     /// <seealso cref="IMemberOrderFacet" />
     public interface IMemberOrderFacet : IFacet {
