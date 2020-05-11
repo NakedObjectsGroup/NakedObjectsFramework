@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Ide</id>
-    <version>9.0.2</version>
+    <version>10.0.0</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <license type="expression">Apache-2.0</license>
@@ -10,9 +10,8 @@
     <iconUrl>http://www.nakedobjects.net/images/nakedobjects.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-      Installs C# Code Snippets and Item Templates that are useful when
+      Installs C# Code Snippets that are useful when
       creating a domain object model that will be run with Naked Objects.
-      Also PowerShell scripts for building the framework from source.
     </description>
     <tags>naked objects nakedobjects ide visual studio</tags>
   </metadata>
