@@ -15,18 +15,14 @@ namespace NakedObjects.Facade.Impl.Utility {
     public class SimpleStringHasher : IStringHasher {
         #region IStringHasher Members
 
-        public string GetHash(string toHash) {
-            return ComputeSha256HashAsString(toHash);
-        }
+        public string GetHash(string toHash) => ComputeSha256HashAsString(toHash);
 
         #endregion
 
-        private static string ComputeSha256HashAsString(string s) {
-            return Math.Abs(BitConverter.ToInt64(ComputeSha256HashFromString(s), 0)).ToString(CultureInfo.InvariantCulture);
-        }
+        private static string ComputeSha256HashAsString(string s) => Math.Abs(BitConverter.ToInt64(ComputeSha256HashFromString(s), 0)).ToString(CultureInfo.InvariantCulture);
 
         private static byte[] ComputeSha256HashFromString(string s) {
-            byte[] idAsBytes = Encoding.UTF8.GetBytes(s);
+            var idAsBytes = Encoding.UTF8.GetBytes(s);
             return new SHA256Managed().ComputeHash(idAsBytes);
         }
     }

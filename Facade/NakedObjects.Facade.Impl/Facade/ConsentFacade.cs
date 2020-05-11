@@ -30,22 +30,14 @@ namespace NakedObjects.Facade.Impl {
 
         #endregion
 
-        public override bool Equals(object obj) {
-            var consentWrapper = obj as ConsentFacade;
-            if (consentWrapper != null) {
-                return Equals(consentWrapper);
-            }
-            return false;
-        }
+        public override bool Equals(object obj) => obj is ConsentFacade cf && Equals(cf);
 
         public bool Equals(ConsentFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
-            if (ReferenceEquals(this, other)) { return true; }
-            return Equals(other.consent, consent);
+
+            return ReferenceEquals(this, other) || Equals(other.consent, consent);
         }
 
-        public override int GetHashCode() {
-            return (consent != null ? consent.GetHashCode() : 0);
-        }
+        public override int GetHashCode() => consent != null ? consent.GetHashCode() : 0;
     }
 }

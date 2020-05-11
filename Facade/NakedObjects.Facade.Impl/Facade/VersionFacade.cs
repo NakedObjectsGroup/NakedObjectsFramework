@@ -15,7 +15,6 @@ namespace NakedObjects.Facade.Impl {
 
         public VersionFacade(IVersion version) {
             FacadeUtils.AssertNotNull(version, "Version is null");
-
             this.version = version;
         }
 
@@ -25,9 +24,7 @@ namespace NakedObjects.Facade.Impl {
 
         public string Digest => version.Digest;
 
-        public bool IsDifferent(string digest) {
-            return version.IsDifferent(digest);
-        }
+        public bool IsDifferent(string digest) => version.IsDifferent(digest);
 
         #endregion
     }

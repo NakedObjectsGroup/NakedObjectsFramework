@@ -11,9 +11,7 @@ namespace NakedObjects.Facade.Impl.Utility {
     public class ConstantStringHasher : IStringHasher {
         #region IStringHasher Members
 
-        public string GetHash(string toHash) {
-            return "";
-        }
+        public string GetHash(string toHash) => "";
 
         #endregion
     }

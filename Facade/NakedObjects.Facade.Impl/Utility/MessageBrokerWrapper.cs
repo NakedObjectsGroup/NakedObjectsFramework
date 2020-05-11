@@ -11,9 +11,7 @@ namespace NakedObjects.Facade.Impl.Utility {
     public class MessageBrokerWrapper : IMessageBrokerFacade {
         private readonly IMessageBroker messageBroker;
 
-        public MessageBrokerWrapper(IMessageBroker messageBroker) {
-            this.messageBroker = messageBroker;
-        }
+        public MessageBrokerWrapper(IMessageBroker messageBroker) => this.messageBroker = messageBroker;
 
         #region IMessageBrokerFacade Members
 
@@ -25,25 +23,15 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         public string[] Warnings => messageBroker.Warnings;
 
-        public void AddWarning(string message) {
-            messageBroker.AddWarning(message);
-        }
+        public void AddWarning(string message) => messageBroker.AddWarning(message);
 
-        public void AddMessage(string message) {
-            messageBroker.AddMessage(message);
-        }
+        public void AddMessage(string message) => messageBroker.AddMessage(message);
 
-        public void ClearWarnings() {
-            messageBroker.ClearWarnings();
-        }
+        public void ClearWarnings() => messageBroker.ClearWarnings();
 
-        public void ClearMessages() {
-            messageBroker.ClearMessages();
-        }
+        public void ClearMessages() => messageBroker.ClearMessages();
 
-        public void EnsureEmpty() {
-            messageBroker.EnsureEmpty();
-        }
+        public void EnsureEmpty() => messageBroker.EnsureEmpty();
 
         #endregion
     }

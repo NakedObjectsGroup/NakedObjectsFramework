@@ -14,21 +14,14 @@ namespace NakedObjects.Facade.Impl.Contexts {
         private ObjectContext result;
 
         public ObjectContext Result {
-            get { return result; }
+            get => result;
             set {
                 result = value;
                 hasResult = true;
             }
         }
 
-        public bool HasResult {
-            get {
-                if (hasResult && Specification.FullName == "System.Void") {
-                    return false;
-                }
-                return hasResult;
-            }
-        }
+        public bool HasResult => !IsVoid() && hasResult;
 
         public ActionContext ActionContext { get; set; }
 
@@ -38,9 +31,11 @@ namespace NakedObjects.Facade.Impl.Contexts {
 
         public string TransientSecurityHash { get; set; }
 
+        private bool IsVoid() => hasResult && Specification.FullName == "System.Void";
+
         public ActionResultContextFacade ToActionResultContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var ac = new ActionResultContextFacade {
-                Result = Result == null ? null : Result.ToObjectContextFacade(facade, framework),
+                Result = Result?.ToObjectContextFacade(facade, framework),
                 ActionContext = ActionContext.ToActionContextFacade(facade, framework),
                 HasResult = HasResult,
                 TransientSecurityHash = TransientSecurityHash

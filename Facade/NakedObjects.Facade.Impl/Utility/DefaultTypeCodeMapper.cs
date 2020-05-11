@@ -13,13 +13,9 @@ namespace NakedObjects.Facade.Impl.Utility {
     public class DefaultTypeCodeMapper : ITypeCodeMapper {
         #region ITypeCodeMapper Members
 
-        public Type TypeFromCode(string code) {
-            return Type.GetType(code) ?? TypeUtils.GetType(code);
-        }
+        public Type TypeFromCode(string code) => Type.GetType(code) ?? TypeUtils.GetType(code);
 
-        public string CodeFromType(Type type) {
-            return type.FullName;
-        }
+        public string CodeFromType(Type type) => type.FullName;
 
         #endregion
     }

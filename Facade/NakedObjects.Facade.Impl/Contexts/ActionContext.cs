@@ -22,13 +22,13 @@ namespace NakedObjects.Facade.Impl.Contexts {
         public override ITypeSpec Specification => Action.ReturnSpec;
 
         public ParameterContext[] VisibleParameters {
-            get { return parameters ?? new ParameterContext[] {}; }
-            set { parameters = value; }
+            get => parameters ?? new ParameterContext[] { };
+            set => parameters = value;
         }
 
         public PropertyContext[] VisibleProperties {
-            get { return properties ?? new PropertyContext[] {}; }
-            set { properties = value; }
+            get => properties ?? new PropertyContext[] { };
+            set => properties = value;
         }
 
         public string MenuPath { get; set; }
@@ -40,7 +40,7 @@ namespace NakedObjects.Facade.Impl.Contexts {
                 MenuPath = MenuPath,
                 Action = new ActionFacade(Action, facade, framework, OverloadedUniqueId ?? ""),
                 VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextFacade(facade, framework)).ToArray(),
-                VisibleProperties = VisibleProperties.Select(p => p.ToPropertyContextFacade(facade, framework)).ToArray(),
+                VisibleProperties = VisibleProperties.Select(p => p.ToPropertyContextFacade(facade, framework)).ToArray()
             };
             return ToContextFacade(ac, facade, framework);
         }

@@ -14,18 +14,11 @@ using NakedObjects.Redirect;
 
 namespace NakedObjects.Facade.Impl.Contexts {
     public class ObjectContext : Context {
-        public ObjectContext(INakedObjectAdapter target) {
-            Target = target;
-        }
+        public ObjectContext(INakedObjectAdapter target) => Target = target;
 
         public bool Mutated { get; set; }
 
-        public Tuple<string, string> Redirected {
-            get {
-                var rdo = Target.Object as IRedirectedObject;
-                return rdo != null ? new Tuple<string, string>(rdo.ServerName, rdo.Oid) : null;
-            }
-        }
+        public Tuple<string, string> Redirected => Target.Object is IRedirectedObject rdo ? new Tuple<string, string>(rdo.ServerName, rdo.Oid) : null;
 
         public override string Id => Target.Oid.ToString();
 
@@ -36,8 +29,8 @@ namespace NakedObjects.Facade.Impl.Contexts {
 
         public ObjectContextFacade ToObjectContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var oc = new ObjectContextFacade {
-                VisibleProperties = VisibleProperties == null ? null : VisibleProperties.Select(p => p.ToPropertyContextFacade(facade, framework)).ToArray(),
-                VisibleActions = VisibleActions == null ? null : VisibleActions.Select(p => p.ToActionContextFacade(facade, framework)).ToArray(),
+                VisibleProperties = VisibleProperties?.Select(p => p.ToPropertyContextFacade(facade, framework)).ToArray(),
+                VisibleActions = VisibleActions?.Select(p => p.ToActionContextFacade(facade, framework)).ToArray(),
                 Mutated = Mutated,
                 Redirected = Redirected
             };

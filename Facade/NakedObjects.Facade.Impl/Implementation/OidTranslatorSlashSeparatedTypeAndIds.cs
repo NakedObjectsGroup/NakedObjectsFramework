@@ -7,8 +7,6 @@
 
 using System;
 using System.Linq;
-using System.Reflection;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Translation;
@@ -19,9 +17,7 @@ namespace NakedObjects.Facade.Impl.Implementation {
     public class OidTranslatorSlashSeparatedTypeAndIds : IOidTranslator {
         private readonly INakedObjectsFramework framework;
 
-        public OidTranslatorSlashSeparatedTypeAndIds(INakedObjectsFramework framework) {
-            this.framework = framework;
-        }
+        public OidTranslatorSlashSeparatedTypeAndIds(INakedObjectsFramework framework) => this.framework = framework;
 
         #region IOidTranslator Members
 
@@ -29,6 +25,7 @@ namespace NakedObjects.Facade.Impl.Implementation {
             if (id.Length == 2) {
                 return new OidTranslationSlashSeparatedTypeAndIds(id.First(), id.Last());
             }
+
             if (id.Length == 1) {
                 return new OidTranslationSlashSeparatedTypeAndIds(id.First());
             }
@@ -42,59 +39,52 @@ namespace NakedObjects.Facade.Impl.Implementation {
                 framework.LifecycleManager.PopulateViewModelKeys(vm);
             }
 
-            Tuple<string, string> codeAndKey = GetCodeAndKeyAsTuple(objectFacade);
+            var codeAndKey = GetCodeAndKeyAsTuple(objectFacade);
             return new OidTranslationSlashSeparatedTypeAndIds(codeAndKey.Item1, codeAndKey.Item2);
         }
 
         #endregion
 
-        private string GetCode(ITypeFacade spec) {
-            return GetCode(TypeUtils.GetType(spec.FullName));
-        }
+        private string GetCode(ITypeFacade spec) => GetCode(TypeUtils.GetType(spec.FullName));
 
         protected Tuple<string, string> GetCodeAndKeyAsTuple(IObjectFacade nakedObject) {
-            string code = GetCode(nakedObject.Specification);
+            var code = GetCode(nakedObject.Specification);
             return new Tuple<string, string>(code, GetKeyValues(nakedObject));
         }
 
         private string KeyRepresentation(object obj) {
-            if (obj is DateTime) {
-                obj = ((DateTime) obj).Ticks;
-            }
-            if (obj is Guid)
-            {
-                obj = obj.ToString();
-            }
-            return (string) Convert.ChangeType(obj, typeof(string)); 
+            var key = obj switch {
+                DateTime time => time.Ticks,
+                Guid _ => obj.ToString(),
+                _ => obj
+            };
+
+            return (string) Convert.ChangeType(key, typeof(string));
         }
 
         protected string GetKeyValues(IObjectFacade nakedObjectForKey) {
             string[] keys;
-            INakedObjectAdapter wrappedNakedObject = ((ObjectFacade) nakedObjectForKey).WrappedNakedObject;
+            var wrappedNakedObject = ((ObjectFacade) nakedObjectForKey).WrappedNakedObject;
 
             if (wrappedNakedObject.Spec.IsViewModel) {
                 keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject, framework.NakedObjectManager, framework.DomainObjectInjector);
             }
             else {
-                PropertyInfo[] keyPropertyInfo = nakedObjectForKey.GetKeys();
+                var keyPropertyInfo = nakedObjectForKey.GetKeys();
                 keys = keyPropertyInfo.Select(pi => KeyRepresentation(pi.GetValue(nakedObjectForKey.Object, null))).ToArray();
             }
 
             return GetKeyCodeMapper().CodeFromKey(keys, nakedObjectForKey.Object.GetType());
         }
 
-        private ITypeCodeMapper GetTypeCodeMapper() {
-            return (ITypeCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
-                   ?? new DefaultTypeCodeMapper();
-        }
+        private ITypeCodeMapper GetTypeCodeMapper() =>
+            (ITypeCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
+            ?? new DefaultTypeCodeMapper();
 
-        private IKeyCodeMapper GetKeyCodeMapper() {
-            return (IKeyCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
-                   ?? new DefaultKeyCodeMapper();
-        }
+        private IKeyCodeMapper GetKeyCodeMapper() =>
+            (IKeyCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
+            ?? new DefaultKeyCodeMapper();
 
-        private string GetCode(Type type) {
-            return GetTypeCodeMapper().CodeFromType(type);
-        }
+        private string GetCode(Type type) => GetTypeCodeMapper().CodeFromType(type);
     }
 }

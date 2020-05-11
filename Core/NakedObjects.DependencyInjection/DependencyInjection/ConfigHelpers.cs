@@ -31,7 +31,7 @@ namespace NakedObjects.DependencyInjection {
             where TOriginal : IFacetFactory {
             var order = FacetFactories.StandardIndexOf(typeof(TOriginal));
 
-            // Register the original (standard NOF implementation). Note that although already registered by StandardUnityConfig.RegisterStandardFacetFactories
+            // Register the original (standard NOF implementation). Note that although already registered by StandardConfig.RegisterStandardFacetFactories
             // that will be as a named impl of IFacetFactory.  This will be the only one registered as the concrete type
             // PropertyMethodsFacetFactory so doesn't need to be named.
 
