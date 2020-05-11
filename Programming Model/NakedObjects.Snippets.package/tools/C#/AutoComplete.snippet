@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>AutoComplete</Title>
+      <Author>Naked Objects Group</Author>
+      <Description>Adds a method to provide auto-completion for a parameter of a corresponding action method.</Description>
+      <HelpUrl>www.nakedobjects.net</HelpUrl>
+      <SnippetTypes />
+      <Keywords />
+      <Shortcut>auto</Shortcut>
+    </Header>
+    <Snippet>
+      <References />
+      <Imports />
+      <Declarations>
+        <Literal Editable="true" xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+          <ID>ActionName</ID>
+          <Type></Type>
+          <ToolTip>Enter the name for thecorresponding action method</ToolTip>
+          <Default>ActionName</Default>
+          <Function></Function>
+        </Literal>
+        <Object Editable="true" xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+          <ID>Matches</ID>
+          <Type></Type>
+          <ToolTip></ToolTip>
+          <Default>Matches</Default>
+          <Function></Function>
+        </Object>
+        <Literal Editable="true" xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+          <ID>ParameterNumber</ID>
+          <Type></Type>
+          <ToolTip>Specify the parameter number on the corresponding action method (counting from zero)</ToolTip>
+          <Default>0</Default>
+          <Function></Function>
+        </Literal>
+        <Literal Editable="true" xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+          <ID>ParameterType</ID>
+          <Type></Type>
+          <ToolTip></ToolTip>
+          <Default>ParameterType</Default>
+          <Function></Function>
+        </Literal>
+      </Declarations>
+      <Code Language="CSharp" Kind="method decl" Delimiter="$"><![CDATA[[PageSize(10)]
+      public IQueryable<$ParameterType$> AutoComplete$ParameterNumber$$ActionName$([MinLength(2)] string matching)
+      {
+	      return $Matches$;
+      }
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
