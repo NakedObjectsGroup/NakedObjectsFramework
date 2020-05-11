@@ -12,5 +12,5 @@ namespace NakedObjects.Facade.Contexts {
         Immutable,
         WrongType,
         Other
-    };
+    }
 }

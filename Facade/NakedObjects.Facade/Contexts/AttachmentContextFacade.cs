@@ -16,8 +16,8 @@ namespace NakedObjects.Facade.Contexts {
         private string fileName;
 
         public Stream Content {
-            get { return content ?? new MemoryStream(); }
-            set { content = value; }
+            get => content ?? new MemoryStream();
+            set => content = value;
         }
 
         public string MimeType { get; set; }
@@ -25,8 +25,8 @@ namespace NakedObjects.Facade.Contexts {
         public string ContentDisposition { get; set; }
 
         public string FileName {
-            get { return string.IsNullOrWhiteSpace(fileName) ? DefaultFileName : fileName; }
-            set { fileName = value; }
+            get => string.IsNullOrWhiteSpace(fileName) ? DefaultFileName : fileName;
+            set => fileName = value;
         }
     }
 }

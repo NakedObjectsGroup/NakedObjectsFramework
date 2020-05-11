@@ -13,12 +13,6 @@ namespace NakedObjects.Facade {
 
         public override string Message => GetInnermostException(this).Message;
 
-        private static Exception GetInnermostException(Exception e) {
-            if (e.InnerException == null) {
-                return e;
-            }
-
-            return GetInnermostException(e.InnerException);
-        }
+        private static Exception GetInnermostException(Exception e) => e.InnerException == null ? e : GetInnermostException(e.InnerException);
     }
 }

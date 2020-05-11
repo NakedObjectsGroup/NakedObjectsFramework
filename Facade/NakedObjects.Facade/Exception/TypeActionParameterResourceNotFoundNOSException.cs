@@ -13,7 +13,7 @@ namespace NakedObjects.Facade {
         }
 
         public string DomainId { get; }
-        public string ParmId { get; private set; }
+        public string ParmId { get; }
 
         public override string Message => $"No such parameter name RId:{ResourceId} DId {DomainId} ";
     }

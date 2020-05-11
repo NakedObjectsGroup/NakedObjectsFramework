@@ -7,9 +7,7 @@
 
 namespace NakedObjects.Facade {
     public class TypeActionResourceNotFoundNOSException : ResourceNotFoundNOSException {
-        public TypeActionResourceNotFoundNOSException(string resourceId, string domainId) : base(resourceId) {
-            DomainId = domainId;
-        }
+        public TypeActionResourceNotFoundNOSException(string resourceId, string domainId) : base(resourceId) => DomainId = domainId;
 
         public string DomainId { get; }
 

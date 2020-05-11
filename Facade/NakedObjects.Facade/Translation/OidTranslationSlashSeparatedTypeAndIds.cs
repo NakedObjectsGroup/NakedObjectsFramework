@@ -9,10 +9,9 @@ using System.Linq;
 
 namespace NakedObjects.Facade.Translation {
     public class OidTranslationSlashSeparatedTypeAndIds : IOidTranslation {
-        static OidTranslationSlashSeparatedTypeAndIds() {
+        static OidTranslationSlashSeparatedTypeAndIds() =>
             // default 
             KeySeparator = "--";
-        }
 
         // when using this ctor be aware of encoded values that might include a "/"
         public OidTranslationSlashSeparatedTypeAndIds(string id) {
@@ -26,29 +25,21 @@ namespace NakedObjects.Facade.Translation {
             InstanceId = instanceId;
         }
 
-        public static string KeySeparator { get; private set; }
+        public static string KeySeparator { get; }
 
         #region IOidTranslation Members
 
         public string DomainType { get; set; }
         public string InstanceId { get; set; }
 
-        public IOidFacade GetOid(IOidStrategy oidStrategy) {
-            return oidStrategy.RestoreOid(this);
-        }
+        public IOidFacade GetOid(IOidStrategy oidStrategy) => oidStrategy.RestoreOid(this);
 
-        public IOidFacade GetSid(IOidStrategy oidStrategy) {
-            return oidStrategy.RestoreSid(this);
-        }
+        public IOidFacade GetSid(IOidStrategy oidStrategy) => oidStrategy.RestoreSid(this);
 
-        public string Encode() {
-            return DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : "/" + InstanceId);
-        }
+        public string Encode() => DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : "/" + InstanceId);
 
         #endregion
 
-        public override string ToString() {
-            return DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : "-" + InstanceId);
-        }
+        public override string ToString() => DomainType + (string.IsNullOrEmpty(InstanceId) ? "" : "-" + InstanceId);
     }
 }

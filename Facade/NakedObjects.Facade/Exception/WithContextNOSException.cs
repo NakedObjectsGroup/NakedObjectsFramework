@@ -33,7 +33,7 @@ namespace NakedObjects.Facade {
 
                 return contexts;
             }
-            private set { contexts = value; }
+            private set => contexts = value;
         }
 
         public ContextFacade ContextFacade { get; }

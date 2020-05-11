@@ -13,9 +13,7 @@ namespace NakedObjects.Facade {
         public PreconditionFailedNOSException(string message) : base(message) { }
         public PreconditionFailedNOSException(string message, Exception e) : base(message, e) { }
 
-        public PreconditionFailedNOSException(IObjectFacade sourceNakedObject) {
-            SourceNakedObject = sourceNakedObject;
-        }
+        public PreconditionFailedNOSException(IObjectFacade sourceNakedObject) => SourceNakedObject = sourceNakedObject;
 
         public IObjectFacade SourceNakedObject { get; set; }
 

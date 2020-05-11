@@ -11,42 +11,30 @@ namespace NakedObjects.Facade.Translation {
     public class OidTranslationSemiColonSeparatedList : IOidTranslation {
         private readonly string id;
 
-        public OidTranslationSemiColonSeparatedList(string id) {
-            this.id = id;
-        }
+        public OidTranslationSemiColonSeparatedList(string id) => this.id = id;
 
         #region IOidTranslation Members
 
         public string DomainType {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
         public string InstanceId {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
 
-        public IOidFacade GetOid(IOidStrategy oidStrategy) {
-            return oidStrategy.RestoreOid(this);
-        }
+        public IOidFacade GetOid(IOidStrategy oidStrategy) => oidStrategy.RestoreOid(this);
 
-        public IOidFacade GetSid(IOidStrategy oidStrategy) {
-            return oidStrategy.RestoreSid(this);
-        }
+        public IOidFacade GetSid(IOidStrategy oidStrategy) => oidStrategy.RestoreSid(this);
 
-        public string Encode() {
-            return id;
-        }
+        public string Encode() => id;
 
         #endregion
 
-        public override string ToString() {
-            return id;
-        }
+        public override string ToString() => id;
 
-        public string[] Tokenize() {
-            return id.Split(';');
-        }
+        public string[] Tokenize() => id.Split(';');
     }
 }

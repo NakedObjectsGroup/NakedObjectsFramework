@@ -15,8 +15,8 @@ namespace NakedObjects.Facade {
             Roles = roles.AsReadOnly();
         }
 
-        public string User { get; private set; }
-        public string Password { get; private set; }
-        public IList<string> Roles { get; private set; }
+        public string User { get; }
+        public string Password { get; }
+        public IList<string> Roles { get; }
     }
 }

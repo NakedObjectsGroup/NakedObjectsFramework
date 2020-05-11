@@ -9,6 +9,4 @@ namespace NakedObjects.Facade {
     public class NotAllowedNOSException : NakedObjectsFacadeException {
         public NotAllowedNOSException(string message) : base(message) { }
     }
-
-    public class NoContentNOSException : NakedObjectsFacadeException { }
 }

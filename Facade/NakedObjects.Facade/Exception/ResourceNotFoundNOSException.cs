@@ -9,13 +9,9 @@ using System;
 
 namespace NakedObjects.Facade {
     public abstract class ResourceNotFoundNOSException : NakedObjectsFacadeException {
-        protected ResourceNotFoundNOSException(string resourceId, Exception e) : base(e) {
-            ResourceId = resourceId;
-        }
+        protected ResourceNotFoundNOSException(string resourceId, Exception e) : base(e) => ResourceId = resourceId;
 
-        protected ResourceNotFoundNOSException(string resourceId) {
-            ResourceId = resourceId;
-        }
+        protected ResourceNotFoundNOSException(string resourceId) => ResourceId = resourceId;
 
         public string ResourceId { get; set; }
     }
