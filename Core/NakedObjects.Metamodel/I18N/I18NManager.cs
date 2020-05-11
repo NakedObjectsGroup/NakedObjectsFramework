@@ -30,15 +30,15 @@ namespace NakedObjects.Meta.I18N {
 
         // make resources testable 
         public ResourceManager Resources {
-            private get { return resources ?? Model.ResourceManager; }
-            set { resources = value; }
+            private get => resources ?? Model.ResourceManager;
+            set => resources = value;
         }
 
         #region IFacetDecorator Members
 
         public virtual IFacet Decorate(IFacet facet, ISpecification holder) {
-            IIdentifier identifier = holder.Identifier;
-            Type facetType = facet.FacetType;
+            var identifier = holder.Identifier;
+            var facetType = facet.FacetType;
 
             if (facetType == typeof(INamedFacet)) {
                 return GetNamedFacet(holder, facet as INamedFacet, identifier);
@@ -56,20 +56,18 @@ namespace NakedObjects.Meta.I18N {
         #endregion
 
         private IFacet GetDescriptionFacet(ISpecification holder, IDescribedAsFacet facet, IIdentifier identifier) {
-            var spec = holder as IActionParameterSpec;
-            string i18NDescription = spec == null ? GetDescription(identifier) : GetParameterDescription(identifier, spec.Number);
+            var i18NDescription = holder is IActionParameterSpec spec ? GetParameterDescription(identifier, spec.Number) : GetDescription(identifier);
             return i18NDescription == null ? null : new DescribedAsFacetI18N(i18NDescription, facet.Specification);
         }
 
         private IFacet GetNamedFacet(ISpecification holder, INamedFacet facet, IIdentifier identifier) {
-            var spec = holder as IActionParameterSpec;
-            string i18NName = spec == null ? GetName(identifier) : GetParameterName(identifier, spec.Number);
+            var i18NName = holder is IActionParameterSpec spec ? GetParameterName(identifier, spec.Number) : GetName(identifier);
             return i18NName == null ? null : new NamedFacetI18N(i18NName, facet.Specification);
         }
 
         private string GetText(IIdentifier identifier, string type) {
-            string form = identifier.IsField ? Property : Action;
-            string key = identifier.ToIdentityString(IdentifierDepth.ClassNameParams) + ":" + form + "/" + type;
+            var form = identifier.IsField ? Property : Action;
+            var key = $"{identifier.ToIdentityString(IdentifierDepth.ClassNameParams)}:{form}/{type}";
             return GetText(key);
         }
 
@@ -78,7 +76,7 @@ namespace NakedObjects.Meta.I18N {
                 return null;
             }
 
-            string keyWithUnderscore = CreateKey(key);
+            var keyWithUnderscore = CreateKey(key);
 
             try {
                 return Resources.GetString(keyWithUnderscore);
@@ -94,28 +92,24 @@ namespace NakedObjects.Meta.I18N {
                 return keyCache[key];
             }
 
-            string newKey = key.Replace('.', '_').Replace(':', '_').Replace('#', '_').Replace('/', '_').Replace('(', '_').Replace(')', '_').Replace(',', '_').Replace('?', '_');
+            var newKey = key.Replace('.', '_').Replace(':', '_').Replace('#', '_').Replace('/', '_').Replace('(', '_').Replace(')', '_').Replace(',', '_').Replace('?', '_');
 
             keyCache[key] = newKey;
 
             return newKey;
         }
 
-        private string GetName(IIdentifier identifier) {
-            return GetText(identifier, Name);
-        }
+        private string GetName(IIdentifier identifier) => GetText(identifier, Name);
 
-        private string GetDescription(IIdentifier identifier) {
-            return GetText(identifier, Description);
-        }
+        private string GetDescription(IIdentifier identifier) => GetText(identifier, Description);
 
         private string GetParameterName(IIdentifier identifier, int index) {
-            string key = identifier.ToIdentityString(IdentifierDepth.ClassNameParams) + Action + "/" + Parameter + (index + 1) + "/" + Name;
+            var key = $"{identifier.ToIdentityString(IdentifierDepth.ClassNameParams)}{Action}/{Parameter}{index + 1}/{Name}";
             return GetText(key);
         }
 
         private string GetParameterDescription(IIdentifier identifier, int index) {
-            string key = identifier.ToIdentityString(IdentifierDepth.ClassNameParams) + Action + "/" + Parameter + (index + 1) + "/" + Description;
+            var key = $"{identifier.ToIdentityString(IdentifierDepth.ClassNameParams)}{Action}/{Parameter}{index + 1}/{Description}";
             return GetText(key);
         }
     }

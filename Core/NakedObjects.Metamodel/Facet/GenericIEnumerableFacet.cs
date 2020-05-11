@@ -28,47 +28,31 @@ namespace NakedObjects.Meta.Facet {
         private static IEnumerable<T> AsGenericIEnumerable<T>(INakedObjectAdapter collection) {
             var objectType = collection.Object.GetType();
 
-            if (objectType.GenericTypeArguments.Count() == 1) {
+            if (objectType.GenericTypeArguments.Length == 1) {
                 return (IEnumerable<T>) collection.Object;
             }
 
             return new IteratorWrapper<T>((IEnumerable) collection.Object);
         }
 
-        public INakedObjectAdapter PageInternal<T>(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) {
-            return manager.CreateAdapter(AsGenericIEnumerable<T>(collection).Skip((page - 1) * size).Take(size).ToList(), null, null);
-        }
+        public INakedObjectAdapter PageInternal<T>(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => manager.CreateAdapter(AsGenericIEnumerable<T>(collection).Skip((page - 1) * size).Take(size).ToList(), null, null);
 
-        public IEnumerable<INakedObjectAdapter> AsEnumerableInternal<T>(INakedObjectAdapter collection, INakedObjectManager manager) {
-            return AsGenericIEnumerable<T>(collection).Select(arg => manager.CreateAdapter(arg, null, null));
-        }
+        public IEnumerable<INakedObjectAdapter> AsEnumerableInternal<T>(INakedObjectAdapter collection, INakedObjectManager manager) => AsGenericIEnumerable<T>(collection).Select(arg => manager.CreateAdapter(arg, null, null));
 
-        public IQueryable AsQueryableInternal<T>(INakedObjectAdapter collection) {
-            return AsGenericIEnumerable<T>(collection).AsQueryable();
-        }
+        public IQueryable AsQueryableInternal<T>(INakedObjectAdapter collection) => AsGenericIEnumerable<T>(collection).AsQueryable();
 
-        public bool ContainsInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter element) {
-            return AsGenericIEnumerable<T>(collection).Contains((T) element.Object);
-        }
+        public bool ContainsInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter element) => AsGenericIEnumerable<T>(collection).Contains((T) element.Object);
 
-        public override IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager) {
-            return (IEnumerable<INakedObjectAdapter>) Call("AsEnumerableInternal", collection, collection, manager);
-        }
+        public override IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager) => (IEnumerable<INakedObjectAdapter>) Call("AsEnumerableInternal", collection, collection, manager);
 
-        public override IQueryable AsQueryable(INakedObjectAdapter collection) {
-            return (IQueryable) Call("AsQueryableInternal", collection, collection);
-        }
+        public override IQueryable AsQueryable(INakedObjectAdapter collection) => (IQueryable) Call("AsQueryableInternal", collection, collection);
 
-        public override bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element) {
-            return (bool) Call("ContainsInternal", collection, collection, element);
-        }
+        public override bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element) => (bool) Call("ContainsInternal", collection, collection, element);
 
-        public override INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) {
-            return (INakedObjectAdapter) Call("PageInternal", collection, page, size, collection, manager, forceEnumerable);
-        }
+        public override INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => (INakedObjectAdapter) Call("PageInternal", collection, page, size, collection, manager, forceEnumerable);
 
         public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
-            IList newCollection = CollectionUtils.CloneCollectionAndPopulate(collection.Object, initData.Select(no => no.Object));
+            var newCollection = CollectionUtils.CloneCollectionAndPopulate(collection.Object, initData.Select(no => no.Object));
             collection.ReplacePoco(newCollection);
         }
 
@@ -77,9 +61,7 @@ namespace NakedObjects.Meta.Facet {
         public sealed class IteratorWrapper<T> : IEnumerable<T> {
             private readonly IEnumerable iterator;
 
-            public IteratorWrapper(IEnumerable iterator) {
-                this.iterator = iterator;
-            }
+            public IteratorWrapper(IEnumerable iterator) => this.iterator = iterator;
 
             #region IEnumerable<T> Members
 
@@ -91,9 +73,7 @@ namespace NakedObjects.Meta.Facet {
                 }
             }
 
-            IEnumerator IEnumerable.GetEnumerator() {
-                return GetEnumerator();
-            }
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
             #endregion
         }

@@ -31,15 +31,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region ISbyteValueFacet Members
 
-        public sbyte SByteValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<sbyte>();
-        }
+        public sbyte SByteValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<sbyte>();
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(sbyte);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(sbyte);
 
         protected override sbyte DoParse(string entry) {
             try {
@@ -53,28 +49,16 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override sbyte DoParseInvariant(string entry) {
-            return sbyte.Parse(entry, CultureInfo.InvariantCulture);
-        }
+        protected override sbyte DoParseInvariant(string entry) => sbyte.Parse(entry, CultureInfo.InvariantCulture);
 
-        protected override string GetInvariantString(sbyte obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(sbyte obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override string TitleStringWithMask(string mask, sbyte value) {
-            return value.ToString(mask);
-        }
+        protected override string TitleStringWithMask(string mask, sbyte value) => value.ToString(mask);
 
-        protected override string DoEncode(sbyte obj) {
-            return obj.ToString("G", CultureInfo.InvariantCulture);
-        }
+        protected override string DoEncode(sbyte obj) => obj.ToString("G", CultureInfo.InvariantCulture);
 
-        protected override sbyte DoRestore(string data) {
-            return sbyte.Parse(data, CultureInfo.InvariantCulture);
-        }
+        protected override sbyte DoRestore(string data) => sbyte.Parse(data, CultureInfo.InvariantCulture);
 
-        public override string ToString() {
-            return "SByteAdapter: ";
-        }
+        public override string ToString() => "SByteAdapter: ";
     }
 }

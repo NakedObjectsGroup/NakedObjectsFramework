@@ -49,24 +49,20 @@ namespace NakedObjects.Meta.Component {
         }
 
         public ITypeSpecImmutable GetSpecification(string name) {
-            Type type = TypeUtils.GetType(name);
+            var type = TypeUtils.GetType(name);
             return GetSpecification(type);
         }
 
-        public void Add(Type type, ITypeSpecBuilder spec) {
-            cache.Cache(classStrategy.GetKeyForType(type), spec);
-        }
+        public void Add(Type type, ITypeSpecBuilder spec) => cache.Cache(classStrategy.GetKeyForType(type), spec);
 
-        public void AddMainMenu(IMenuImmutable menu) {
-            cache.Cache(menu);
-        }
+        public void AddMainMenu(IMenuImmutable menu) => cache.Cache(menu);
 
         public IMenuImmutable[] MainMenus => cache.MainMenus();
 
         #endregion
 
         private ITypeSpecImmutable GetSpecificationFromCache(Type type) {
-            string key = classStrategy.GetKeyForType(type);
+            var key = classStrategy.GetKeyForType(type);
             TypeUtils.GetType(type.FullName); // This should ensure type is cached 
             return cache.GetSpecification(key);
         }

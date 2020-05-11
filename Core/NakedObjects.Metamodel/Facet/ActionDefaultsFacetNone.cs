@@ -17,9 +17,7 @@ namespace NakedObjects.Meta.Facet {
 
         public override bool IsNoOp => true;
 
-        public override Tuple<object, TypeOfDefaultValue> GetDefault(INakedObjectAdapter nakedObjectAdapter) {
-            return new Tuple<object, TypeOfDefaultValue>(null, TypeOfDefaultValue.Implicit);
-        }
+        public override Tuple<object, TypeOfDefaultValue> GetDefault(INakedObjectAdapter nakedObjectAdapter) => new Tuple<object, TypeOfDefaultValue>(null, TypeOfDefaultValue.Implicit);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

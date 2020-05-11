@@ -18,9 +18,9 @@ namespace NakedObjects.Meta {
 
         public InvalidRegExException(IInteractionContext ic, string format, string validation, bool caseSensitive, string message)
             : base(ic, message) {
-            this.FormatPattern = format;
-            this.ValidationPattern = validation;
-            this.IsCaseSensitive = caseSensitive;
+            FormatPattern = format;
+            ValidationPattern = validation;
+            IsCaseSensitive = caseSensitive;
         }
 
         public virtual string FormatPattern { get; }

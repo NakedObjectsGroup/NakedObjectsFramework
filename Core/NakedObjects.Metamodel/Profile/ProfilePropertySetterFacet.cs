@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Profile {
         }
 
         public override string PropertyName {
-            get { return underlyingFacet.PropertyName; }
+            get => underlyingFacet.PropertyName;
             protected set { }
         }
 

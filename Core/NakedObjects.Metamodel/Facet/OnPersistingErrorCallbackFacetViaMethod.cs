@@ -28,27 +28,17 @@ namespace NakedObjects.Meta.Facet {
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return method;
-        }
+        public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return methodDelegate;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
 
         #endregion
 
-        public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) {
-            return (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] {exception});
-        }
+        public override string Invoke(INakedObjectAdapter nakedObjectAdapter, Exception exception) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] {exception});
 
-        protected override string ToStringValues() {
-            return "method=" + method;
-        }
+        protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-            methodDelegate = DelegateUtils.CreateDelegate(method);
-        }
+        private void OnDeserialized(StreamingContext context) => methodDelegate = DelegateUtils.CreateDelegate(method);
     }
 }

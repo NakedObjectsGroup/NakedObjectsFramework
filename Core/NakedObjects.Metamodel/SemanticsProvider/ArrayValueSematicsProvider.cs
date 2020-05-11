@@ -35,9 +35,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IArrayValueFacet<T> Members
 
-        public T[] ArrayValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<T[]>();
-        }
+        public T[] ArrayValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<T[]>();
 
         #endregion
 
@@ -54,13 +52,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #endregion
 
-        public object GetDefault(INakedObjectAdapter inObjectAdapter) {
-            return DefaultValueConst;
-        }
+        public object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(T[]);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(T[]);
 
         protected override T[] DoParse(string entry) {
             try {
@@ -83,22 +77,15 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override T[] DoParseInvariant(string entry) {
-            return (from s in entry.Split(' ')
-                where s.Trim().Length > 0
-                select (T) Convert.ChangeType(s, typeof(T), CultureInfo.InvariantCulture)).ToArray();
-        }
+        protected override T[] DoParseInvariant(string entry) =>
+            entry.Split(' ').Where(s => s.Trim().Length > 0).Select(s => (T) Convert.ChangeType(s, typeof(T), CultureInfo.InvariantCulture)).ToArray();
 
-        protected override string GetInvariantString(T[] obj) {
-            return obj.Aggregate("", (s, t) => (string.IsNullOrEmpty(s) ? "" : s + " ") + t.ToString());
-        }
+        protected override string GetInvariantString(T[] obj) => obj.Aggregate("", (s, t) => (string.IsNullOrEmpty(s) ? "" : $"{s} ") + t);
 
-        protected override string TitleStringWithMask(string mask, T[] value) {
-            return TitleString(value);
-        }
+        protected override string TitleStringWithMask(string mask, T[] value) => TitleString(value);
 
         protected override string TitleString(T[] obj) {
-            return obj == null ? "" : obj.Aggregate("", (s, t) => (string.IsNullOrEmpty(s) ? "" : s + " ") + t.ToString());
+            return obj == null ? "" : obj.Aggregate("", (s, t) => (string.IsNullOrEmpty(s) ? "" : $"{s} ") + t);
         }
 
         protected override string DoEncode(T[] obj) {
@@ -119,8 +106,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return (T[]) serializer.ReadObject(stream);
         }
 
-        public override string ToString() {
-            return $"ArrayAdapter<{typeof(T)}>";
-        }
+        public override string ToString() => $"ArrayAdapter<{typeof(T)}>";
     }
 }

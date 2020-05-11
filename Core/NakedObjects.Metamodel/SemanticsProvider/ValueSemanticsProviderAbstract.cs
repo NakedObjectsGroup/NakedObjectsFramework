@@ -30,11 +30,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
                                                  IObjectSpecImmutable specImmutable)
             : base(adapterFacetType, holder) {
             this.adaptedType = adaptedType;
-            this.TypicalLength = typicalLength;
-            this.IsImmutable = immutable;
-            this.IsEqualByContent = equalByContent;
-            this.DefaultValue = defaultValue;
-            this.SpecImmutable = specImmutable;
+            TypicalLength = typicalLength;
+            IsImmutable = immutable;
+            IsEqualByContent = equalByContent;
+            DefaultValue = defaultValue;
+            SpecImmutable = specImmutable;
         }
 
         public IObjectSpecImmutable SpecImmutable { get; }
@@ -57,13 +57,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         public bool IsImmutable { get; }
 
-        public string ToEncodedString(T obj) {
-            return DoEncode(obj);
-        }
+        public string ToEncodedString(T obj) => DoEncode(obj);
 
-        public T FromEncodedString(string data) {
-            return DoRestore(data);
-        }
+        public T FromEncodedString(string data) => DoRestore(data);
 
         public virtual object ParseTextEntry(string entry) {
             if (entry == null) {
@@ -77,70 +73,52 @@ namespace NakedObjects.Meta.SemanticsProvider {
             return DoParse(entry);
         }
 
-        public object ParseInvariant(string entry) {
-            return DoParseInvariant(entry);
-        }
+        public object ParseInvariant(string entry) => DoParseInvariant(entry);
 
-        public string InvariantString(T obj) {
-            return GetInvariantString(obj);
-        }
+        public string InvariantString(T obj) => GetInvariantString(obj);
 
-        public string EditableTitleOf(T existing) {
-            return DisplayTitleOf(existing);
-        }
+        public string EditableTitleOf(T existing) => DisplayTitleOf(existing);
 
-        public string DisplayTitleOf(T obj) {
-            return TitleString(obj);
-        }
+        public string DisplayTitleOf(T obj) => TitleString(obj);
 
-        public string TitleWithMaskOf(string mask, T obj) {
-            return TitleStringWithMask(mask, obj);
-        }
+        public string TitleWithMaskOf(string mask, T obj) => TitleStringWithMask(mask, obj);
 
         #endregion
 
-        public Type GetAdaptedClass() {
-            return adaptedType;
-        }
+        public Type GetAdaptedClass() => adaptedType;
 
         protected abstract T DoParse(string entry);
         protected abstract T DoParseInvariant(string entry);
         protected abstract string GetInvariantString(T obj);
 
-        protected virtual string TitleString(T obj) {
-            return obj.ToString();
-        }
+        protected virtual string TitleString(T obj) => obj.ToString();
 
-        protected virtual string TitleStringWithMask(string mask, T obj) {
-            return obj.ToString();
-        }
+        protected virtual string TitleStringWithMask(string mask, T obj) => obj.ToString();
 
         protected abstract string DoEncode(T obj);
         protected abstract T DoRestore(string data);
 
-        protected string OutOfRangeMessage(string entry, T minValue, T maxValue) {
-            return string.Format(Resources.NakedObjects.OutOfRange, entry, minValue, maxValue);
-        }
+        protected string OutOfRangeMessage(string entry, T minValue, T maxValue) => string.Format(Resources.NakedObjects.OutOfRange, entry, minValue, maxValue);
 
-        protected static string FormatMessage(string entry) {
-            return string.Format(Resources.NakedObjects.CannotFormat, entry, typeof(T).Name);
-        }
+        protected static string FormatMessage(string entry) => string.Format(Resources.NakedObjects.CannotFormat, entry, typeof(T).Name);
 
         /// <summary>
-        /// http://jonskeet.uk/csharp/readbinary.html
-        /// Reads data into a complete array, throwing an EndOfStreamException
-        /// if the stream runs out of data first, or if an IOException
-        /// naturally occurs.
+        ///     http://jonskeet.uk/csharp/readbinary.html
+        ///     Reads data into a complete array, throwing an EndOfStreamException
+        ///     if the stream runs out of data first, or if an IOException
+        ///     naturally occurs.
         /// </summary>
         /// <param name="stream">The stream to read data from</param>
-        /// <param name="data">The array to read bytes into. The array
-        /// will be completely filled from the stream, so an appropriate
-        /// size must be given.</param>
+        /// <param name="data">
+        ///     The array to read bytes into. The array
+        ///     will be completely filled from the stream, so an appropriate
+        ///     size must be given.
+        /// </param>
         protected static void ReadWholeArray(Stream stream, byte[] data) {
-            int offset = 0;
-            int remaining = data.Length;
+            var offset = 0;
+            var remaining = data.Length;
             while (remaining > 0) {
-                int read = stream.Read(data, offset, remaining);
+                var read = stream.Read(data, offset, remaining);
                 if (read <= 0) {
                     throw new EndOfStreamException($"End of stream reached with {remaining} bytes left to read");
                 }

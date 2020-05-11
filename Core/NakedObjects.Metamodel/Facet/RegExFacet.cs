@@ -7,7 +7,6 @@
 
 using System;
 using System.Text.RegularExpressions;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
@@ -36,31 +35,24 @@ namespace NakedObjects.Meta.Facet {
 
         public Regex Pattern { get; private set; }
 
-        public string Format(string text) {
-            if (text == null) {
-                return Resources.NakedObjects.EmptyString;
-            }
+        public string Format(string text) =>
+            text == null
+                ? Resources.NakedObjects.EmptyString
+                : string.IsNullOrEmpty(FormatPattern)
+                    ? text
+                    : Pattern.Replace(text, FormatPattern);
 
-            return string.IsNullOrEmpty(FormatPattern) ? text : Pattern.Replace(text, FormatPattern);
-        }
-
-        public bool DoesNotMatch(string text) {
-            if (text == null) {
-                return true;
-            }
-
-            return !Pattern.IsMatch(text);
-        }
+        public bool DoesNotMatch(string text) => text == null || !Pattern.IsMatch(text);
 
         public string FailureMessage { get; }
 
         public string Invalidates(IInteractionContext ic) {
-            INakedObjectAdapter proposedArgument = ic.ProposedArgument;
+            var proposedArgument = ic.ProposedArgument;
             if (proposedArgument == null) {
                 return null;
             }
 
-            string titleString = proposedArgument.TitleString();
+            var titleString = proposedArgument.TitleString();
             if (!DoesNotMatch(titleString)) {
                 return null;
             }
@@ -68,15 +60,11 @@ namespace NakedObjects.Meta.Facet {
             return FailureMessage ?? Resources.NakedObjects.InvalidEntry;
         }
 
-        public Exception CreateExceptionFor(IInteractionContext ic) {
-            return new InvalidRegExException(ic, FormatPattern, ValidationPattern, IsCaseSensitive, Invalidates(ic));
-        }
+        public Exception CreateExceptionFor(IInteractionContext ic) => new InvalidRegExException(ic, FormatPattern, ValidationPattern, IsCaseSensitive, Invalidates(ic));
 
         #endregion
 
-        protected override string ToStringValues() {
-            return Pattern.ToString();
-        }
+        protected override string ToStringValues() => Pattern.ToString();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -17,11 +17,11 @@ namespace NakedObjects.Meta.Facet {
             : base(holder) { }
 
         public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
-            Array newCollection = Array.CreateInstance(collection.GetDomainObject().GetType().GetElementType(), initData.Length);
+            var newCollection = Array.CreateInstance(collection.GetDomainObject().GetType().GetElementType(), initData.Length);
             collection.ReplacePoco(newCollection);
 
-            int i = 0;
-            foreach (INakedObjectAdapter nakedObject in initData) {
+            var i = 0;
+            foreach (var nakedObject in initData) {
                 AsCollection(collection)[i++] = nakedObject.Object;
             }
         }

@@ -16,30 +16,14 @@ namespace NakedObjects.Meta.Facet {
         public DisabledFacetAnnotation(WhenTo value, ISpecification holder)
             : base(value, holder) { }
 
-        public override string DisabledReason(INakedObjectAdapter target) {
-            if (Value == WhenTo.Always) {
-                return Resources.NakedObjects.AlwaysDisabled;
-            }
-
-            if (Value == WhenTo.Never) {
-                return null;
-            }
-
-            // remaining tests depend upon the actual target in question
-            if (target == null) {
-                return null;
-            }
-
-            if (Value == WhenTo.UntilPersisted) {
-                return target.ResolveState.IsTransient() ? Resources.NakedObjects.DisabledUntilPersisted : null;
-            }
-
-            if (Value == WhenTo.OncePersisted) {
-                return target.ResolveState.IsPersistent() ? Resources.NakedObjects.DisabledOncePersisted : null;
-            }
-
-            return null;
-        }
+        public override string DisabledReason(INakedObjectAdapter target) =>
+            Value switch {
+                WhenTo.Always => Resources.NakedObjects.AlwaysDisabled,
+                WhenTo.Never => null,
+                WhenTo.UntilPersisted when target != null && target.ResolveState.IsTransient() => Resources.NakedObjects.DisabledUntilPersisted,
+                WhenTo.OncePersisted when target != null && target.ResolveState.IsPersistent() => Resources.NakedObjects.DisabledOncePersisted,
+                _ => null
+            };
     }
 
     // Copyright (c) Naked Objects Group Ltd.

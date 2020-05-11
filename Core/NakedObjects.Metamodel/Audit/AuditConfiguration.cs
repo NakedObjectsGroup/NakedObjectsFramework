@@ -20,12 +20,10 @@ namespace NakedObjects.Meta.Audit {
 
         #region IAuditConfiguration Members
 
-        public Type DefaultAuditor { get; private set; }
-        public Dictionary<string, Type> NamespaceAuditors { get; private set; }
+        public Type DefaultAuditor { get; }
+        public Dictionary<string, Type> NamespaceAuditors { get; }
 
-        public void AddNamespaceAuditor<T>(string namespaceCovered) where T : IAuditor {
-            NamespaceAuditors.Add(namespaceCovered, typeof(T));
-        }
+        public void AddNamespaceAuditor<T>(string namespaceCovered) where T : IAuditor => NamespaceAuditors.Add(namespaceCovered, typeof(T));
 
         #endregion
     }

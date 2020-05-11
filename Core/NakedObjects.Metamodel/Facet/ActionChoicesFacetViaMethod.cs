@@ -47,18 +47,14 @@ namespace NakedObjects.Meta.Facet {
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return choicesMethod;
-        }
+        public MethodInfo GetMethod() => choicesMethod;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return choicesDelegate;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => choicesDelegate;
 
         #endregion
 
         public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
-            INakedObjectAdapter[] parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
+            var parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
 
             try {
                 var options = choicesDelegate(nakedObjectAdapter.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray()) as IEnumerable;
@@ -73,14 +69,10 @@ namespace NakedObjects.Meta.Facet {
             }
         }
 
-        protected override string ToStringValues() {
-            return "method=" + choicesMethod + ",Type=" + choicesType;
-        }
+        protected override string ToStringValues() => $"method={choicesMethod},Type={choicesType}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-            choicesDelegate = DelegateUtils.CreateDelegate(choicesMethod);
-        }
+        private void OnDeserialized(StreamingContext context) => choicesDelegate = DelegateUtils.CreateDelegate(choicesMethod);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

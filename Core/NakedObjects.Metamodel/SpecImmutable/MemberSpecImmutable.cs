@@ -18,9 +18,7 @@ namespace NakedObjects.Meta.SpecImmutable {
     public abstract class MemberSpecImmutable : Specification, IMemberSpecImmutable {
         private readonly IIdentifier identifier;
 
-        protected MemberSpecImmutable(IIdentifier identifier) {
-            this.identifier = identifier;
-        }
+        protected MemberSpecImmutable(IIdentifier identifier) => this.identifier = identifier;
 
         public abstract IObjectSpecImmutable ElementSpec { get; }
 
@@ -39,9 +37,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         #region ISerializable
 
         // The special constructor is used to deserialize values. 
-        protected MemberSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
-            identifier = info.GetValue<IIdentifier>("identifier");
-        }
+        protected MemberSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) => identifier = info.GetValue<IIdentifier>("identifier");
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context) {
             info.AddValue<IIdentifier>("identifier", identifier);

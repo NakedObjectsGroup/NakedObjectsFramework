@@ -31,15 +31,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region ILongValueFacet Members
 
-        public long LongValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<long>();
-        }
+        public long LongValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<long>();
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(long);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(long);
 
         protected override long DoParse(string entry) {
             try {
@@ -53,28 +49,16 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override long DoParseInvariant(string entry) {
-            return long.Parse(entry, CultureInfo.InvariantCulture);
-        }
+        protected override long DoParseInvariant(string entry) => long.Parse(entry, CultureInfo.InvariantCulture);
 
-        protected override string GetInvariantString(long obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(long obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override string TitleStringWithMask(string mask, long value) {
-            return value.ToString(mask);
-        }
+        protected override string TitleStringWithMask(string mask, long value) => value.ToString(mask);
 
-        protected override string DoEncode(long obj) {
-            return obj.ToString("G", CultureInfo.InvariantCulture);
-        }
+        protected override string DoEncode(long obj) => obj.ToString("G", CultureInfo.InvariantCulture);
 
-        protected override long DoRestore(string data) {
-            return long.Parse(data, CultureInfo.InvariantCulture);
-        }
+        protected override long DoRestore(string data) => long.Parse(data, CultureInfo.InvariantCulture);
 
-        public override string ToString() {
-            return "LongAdapter: ";
-        }
+        public override string ToString() => "LongAdapter: ";
     }
 }

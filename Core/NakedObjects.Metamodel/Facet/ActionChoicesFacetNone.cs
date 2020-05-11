@@ -23,9 +23,7 @@ namespace NakedObjects.Meta.Facet {
 
         public override bool IsMultiple => false;
 
-        public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
-            return new object[0];
-        }
+        public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) => new object[0];
     }
 
     // Copyright (c) Naked Objects Group Ltd.

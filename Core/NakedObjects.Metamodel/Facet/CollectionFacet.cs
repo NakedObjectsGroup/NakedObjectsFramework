@@ -21,35 +21,27 @@ namespace NakedObjects.Meta.Facet {
 
         public override bool IsQueryable => false;
 
-        protected static IList AsCollection(INakedObjectAdapter collection) {
-            return (IList) collection.Object;
-        }
+        protected static IList AsCollection(INakedObjectAdapter collection) => (IList) collection.Object;
 
-        public override IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager) {
-            return AsCollection(collection).Cast<object>().Select(domainObject => manager.CreateAdapter(domainObject, null, null));
-        }
+        public override IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager) => AsCollection(collection).Cast<object>().Select(domainObject => manager.CreateAdapter(domainObject, null, null));
 
-        public override IQueryable AsQueryable(INakedObjectAdapter collection) {
-            return AsCollection(collection).AsQueryable();
-        }
+        public override IQueryable AsQueryable(INakedObjectAdapter collection) => AsCollection(collection).AsQueryable();
 
         public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
-            IList wrappedCollection = AsCollection(collection);
+            var wrappedCollection = AsCollection(collection);
 
-            List<object> toAdd = initData.Select(no => no.Object).Where(obj => !wrappedCollection.Contains(obj)).ToList();
+            var toAdd = initData.Select(no => no.Object).Where(obj => !wrappedCollection.Contains(obj)).ToList();
             toAdd.ForEach(obj => wrappedCollection.Add(obj));
 
-            List<object> toRemove = wrappedCollection.Cast<object>().Where(o => !initData.Select(x => x.Object).Contains(o)).ToList();
+            var toRemove = wrappedCollection.Cast<object>().Where(o => !initData.Select(x => x.Object).Contains(o)).ToList();
             toRemove.ForEach(wrappedCollection.Remove);
         }
 
-        public override bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element) {
-            return AsCollection(collection).Contains(element.Object);
-        }
+        public override bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element) => AsCollection(collection).Contains(element.Object);
 
         private IEnumerable PageInternal(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager) {
-            int firstIndex = (page - 1) * size;
-            for (int index = firstIndex; index < firstIndex + size; index++) {
+            var firstIndex = (page - 1) * size;
+            for (var index = firstIndex; index < firstIndex + size; index++) {
                 if (index >= AsEnumerable(collection, manager).Count()) {
                     yield break;
                 }
@@ -58,9 +50,7 @@ namespace NakedObjects.Meta.Facet {
             }
         }
 
-        public override INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) {
-            return manager.CreateAdapter(PageInternal(page, size, collection, manager), null, null);
-        }
+        public override INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => manager.CreateAdapter(PageInternal(page, size, collection, manager), null, null);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

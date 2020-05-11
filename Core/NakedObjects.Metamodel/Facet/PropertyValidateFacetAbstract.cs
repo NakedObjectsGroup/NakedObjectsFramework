@@ -22,13 +22,9 @@ namespace NakedObjects.Meta.Facet {
 
         #region IPropertyValidateFacet Members
 
-        public virtual string Invalidates(IInteractionContext ic) {
-            return InvalidReason(ic.Target, ic.ProposedArgument);
-        }
+        public virtual string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.ProposedArgument);
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
-            return new InvalidException(ic, Invalidates(ic));
-        }
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidException(ic, Invalidates(ic));
 
         public abstract string InvalidReason(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter nakedParm);
 

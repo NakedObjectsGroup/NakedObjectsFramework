@@ -11,13 +11,11 @@ using NakedObjects.Profile;
 
 namespace NakedObjects.Meta.Profile {
     public class ProfileConfiguration<T> : IProfileConfiguration where T : IProfiler {
-        public ProfileConfiguration() {
-            Profiler = typeof(T);
-        }
+        public ProfileConfiguration() => Profiler = typeof(T);
 
         #region IProfileConfiguration Members
 
-        public Type Profiler { get; private set; }
+        public Type Profiler { get; }
 
         public ISet<ProfileEvent> EventsToProfile { get; set; } = new HashSet<ProfileEvent>();
 

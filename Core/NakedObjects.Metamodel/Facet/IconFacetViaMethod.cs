@@ -27,18 +27,12 @@ namespace NakedObjects.Meta.Facet {
             methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
-        public override string GetIconName(INakedObjectAdapter nakedObjectAdapter) {
-            return (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { });
-        }
+        public override string GetIconName(INakedObjectAdapter nakedObjectAdapter) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { });
 
-        public override string GetIconName() {
-            return iconName;
-        }
+        public override string GetIconName() => iconName;
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-            methodDelegate = DelegateUtils.CreateDelegate(method);
-        }
+        private void OnDeserialized(StreamingContext context) => methodDelegate = DelegateUtils.CreateDelegate(method);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

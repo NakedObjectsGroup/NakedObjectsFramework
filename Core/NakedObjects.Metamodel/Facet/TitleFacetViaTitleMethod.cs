@@ -29,24 +29,16 @@ namespace NakedObjects.Meta.Facet {
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return method;
-        }
+        public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return methodDelegate;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
 
         #endregion
 
-        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) {
-            return methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { }) as string;
-        }
+        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) => methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { }) as string;
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-            methodDelegate = DelegateUtils.CreateDelegate(method);
-        }
+        private void OnDeserialized(StreamingContext context) => methodDelegate = DelegateUtils.CreateDelegate(method);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

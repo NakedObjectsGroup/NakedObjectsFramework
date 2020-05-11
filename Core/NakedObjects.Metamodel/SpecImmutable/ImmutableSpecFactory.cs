@@ -14,55 +14,43 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.SpecImmutable {
     public static class ImmutableSpecFactory {
-        private static readonly Dictionary<Type, ITypeSpecBuilder> specCache = new Dictionary<Type, ITypeSpecBuilder>();
+        private static readonly Dictionary<Type, ITypeSpecBuilder> SpecCache = new Dictionary<Type, ITypeSpecBuilder>();
 
-        public static IActionParameterSpecImmutable CreateActionParameterSpecImmutable(IObjectSpecImmutable spec, IIdentifier identifier) {
-            return new ActionParameterSpecImmutable(spec, identifier);
-        }
+        public static IActionParameterSpecImmutable CreateActionParameterSpecImmutable(IObjectSpecImmutable spec, IIdentifier identifier) => new ActionParameterSpecImmutable(spec, identifier);
 
-        public static IActionSpecImmutable CreateActionSpecImmutable(IIdentifier identifier, ITypeSpecImmutable ownerSpec, IActionParameterSpecImmutable[] parameters) {
-            return new ActionSpecImmutable(identifier, ownerSpec, parameters);
-        }
+        public static IActionSpecImmutable CreateActionSpecImmutable(IIdentifier identifier, ITypeSpecImmutable ownerSpec, IActionParameterSpecImmutable[] parameters) => new ActionSpecImmutable(identifier, ownerSpec, parameters);
 
-        public static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, IMetamodel metamodel) {
-            return new ObjectSpecImmutable(type);
-        }
+        public static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, IMetamodel metamodel) => new ObjectSpecImmutable(type);
 
-        public static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, IMetamodel metamodel) {
-            return new ServiceSpecImmutable(type);
-        }
+        public static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, IMetamodel metamodel) => new ServiceSpecImmutable(type);
 
-        public static IOneToManyAssociationSpecImmutable CreateOneToManyAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec) {
-            return new OneToManyAssociationSpecImmutable(identifier, ownerSpec, returnSpec, defaultElementSpec);
-        }
+        public static IOneToManyAssociationSpecImmutable CreateOneToManyAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec) => new OneToManyAssociationSpecImmutable(identifier, ownerSpec, returnSpec, defaultElementSpec);
 
-        public static IOneToOneAssociationSpecImmutable CreateOneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec) {
-            return new OneToOneAssociationSpecImmutable(identifier, ownerSpec, returnSpec);
-        }
+        public static IOneToOneAssociationSpecImmutable CreateOneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec) => new OneToOneAssociationSpecImmutable(identifier, ownerSpec, returnSpec);
 
         public static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            lock (specCache) {
-                if (!specCache.ContainsKey(type)) {
-                    specCache.Add(type, new ObjectSpecImmutable(type));
+            lock (SpecCache) {
+                if (!SpecCache.ContainsKey(type)) {
+                    SpecCache.Add(type, new ObjectSpecImmutable(type));
                 }
 
-                return specCache[type] as IObjectSpecBuilder;
+                return SpecCache[type] as IObjectSpecBuilder;
             }
         }
 
         public static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            lock (specCache) {
-                if (!specCache.ContainsKey(type)) {
-                    specCache.Add(type, new ServiceSpecImmutable(type));
+            lock (SpecCache) {
+                if (!SpecCache.ContainsKey(type)) {
+                    SpecCache.Add(type, new ServiceSpecImmutable(type));
                 }
 
-                return specCache[type] as IServiceSpecBuilder;
+                return SpecCache[type] as IServiceSpecBuilder;
             }
         }
 
         public static void ClearCache() {
-            lock (specCache) {
-                specCache.Clear();
+            lock (SpecCache) {
+                SpecCache.Clear();
             }
         }
     }

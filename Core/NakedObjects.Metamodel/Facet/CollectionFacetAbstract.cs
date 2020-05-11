@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -18,14 +17,12 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     public abstract class CollectionFacetAbstract : FacetAbstract, ICollectionFacet {
         protected CollectionFacetAbstract(ISpecification holder)
-            : base(typeof(ICollectionFacet), holder) {
+            : base(typeof(ICollectionFacet), holder) =>
             IsASet = false;
-        }
 
         protected CollectionFacetAbstract(ISpecification holder, bool isASet)
-            : this(holder) {
+            : this(holder) =>
             IsASet = isASet;
-        }
 
         #region ICollectionFacet Members
 
@@ -42,8 +39,8 @@ namespace NakedObjects.Meta.Facet {
         #endregion
 
         protected object Call(string name, INakedObjectAdapter collection, params object[] pp) {
-            MethodInfo m = GetType().GetMethod(name);
-            Type t = collection.Object.GetType().GenericTypeArguments.First();
+            var m = GetType().GetMethod(name);
+            var t = collection.Object.GetType().GenericTypeArguments.First();
 
             return m.MakeGenericMethod(t).Invoke(this, pp);
         }

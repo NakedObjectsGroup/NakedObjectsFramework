@@ -22,18 +22,21 @@ namespace NakedObjects.Meta.Facet {
         //Creates a menu based on the object's actions and their specified ordering
         //For backwards compatibility of UI only, it gives the menu an Id of the type name
         public override void CreateMenu(IMetamodelBuilder metamodel) {
-            if (TypeUtils.IsSystem(Spec.Type)) return; //Menu not relevant, and could cause error below
+            if (TypeUtils.IsSystem(Spec.Type)) {
+                return; //Menu not relevant, and could cause error below
+            }
+
             //The Id is specified as follows purely to facilitate backwards compatibility with existing UI
             //It is not needed for menus to function
-            string id = Spec is IServiceSpecImmutable ? UniqueShortName(Spec) : Spec.ShortName + "-Actions";
+            var id = Spec is IServiceSpecImmutable ? UniqueShortName(Spec) : $"{Spec.ShortName}-Actions";
             CreateDefaultMenu(metamodel, Spec.Type, GetMenuName(Spec), id);
         }
 
         private string UniqueShortName(ITypeSpecImmutable spec) {
-            string usn = spec.ShortName;
-            Type type = spec.Type;
+            var usn = spec.ShortName;
+            var type = spec.Type;
             if (type.IsGenericType) {
-                usn += "-" + type.GetGenericArguments().First().Name;
+                usn += $"-{type.GetGenericArguments().First().Name}";
             }
 
             return usn;

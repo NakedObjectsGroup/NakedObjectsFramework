@@ -33,8 +33,8 @@ namespace NakedObjects.Meta.Authorization {
         #region IAuthorizationManager Members
 
         public bool IsVisible(ISession session, ILifecycleManager lifecycleManager, INakedObjectAdapter target, IIdentifier identifier) {
-            object authorizer = GetAuthorizer(target, lifecycleManager);
-            Type authType = authorizer.GetType();
+            var authorizer = GetAuthorizer(target, lifecycleManager);
+            var authType = authorizer.GetType();
 
             if (typeof(INamespaceAuthorizer).IsAssignableFrom(authType)) {
                 var nameAuth = (INamespaceAuthorizer) authorizer;
@@ -46,8 +46,8 @@ namespace NakedObjects.Meta.Authorization {
         }
 
         public bool IsEditable(ISession session, ILifecycleManager lifecycleManager, INakedObjectAdapter target, IIdentifier identifier) {
-            object authorizer = GetAuthorizer(target, lifecycleManager);
-            Type authType = authorizer.GetType();
+            var authorizer = GetAuthorizer(target, lifecycleManager);
+            var authType = authorizer.GetType();
 
             if (typeof(INamespaceAuthorizer).IsAssignableFrom(authType)) {
                 var nameAuth = (INamespaceAuthorizer) authorizer;
@@ -59,19 +59,17 @@ namespace NakedObjects.Meta.Authorization {
 
         #endregion
 
-        private object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) {
-            return lifecycleManager.CreateNonAdaptedInjectedObject(type);
-        }
+        private object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(type);
 
         private object GetAuthorizer(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
             Assert.AssertNotNull(target);
 
             //Look for exact-fit TypeAuthorizer
-            // order here as ImmutableDictionarynot ordered
-            string fullyQualifiedOfTarget = target.Spec.FullName;
-            Type authorizer = typeAuthorizers.Where(ta => ta.Key == fullyQualifiedOfTarget).Select(ta => ta.Value).FirstOrDefault() ??
-                              namespaceAuthorizers.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault() ??
-                              defaultAuthorizer;
+            // order here as ImmutableDictionary not ordered
+            var fullyQualifiedOfTarget = target.Spec.FullName;
+            var authorizer = typeAuthorizers.Where(ta => ta.Key == fullyQualifiedOfTarget).Select(ta => ta.Value).FirstOrDefault() ??
+                             namespaceAuthorizers.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault() ??
+                             defaultAuthorizer;
 
             return CreateAuthorizer(authorizer, lifecycleManager);
         }
@@ -84,11 +82,11 @@ namespace NakedObjects.Meta.Authorization {
                 throw new InitialisationException(Log.LogAndReturn("Default Authorizer cannot be null"));
             }
 
-            var isVisibleDict = new Dictionary<Type, Func<object, IPrincipal, object, string, bool>>() {
+            var isVisibleDict = new Dictionary<Type, Func<object, IPrincipal, object, string, bool>> {
                 {defaultAuthorizer, DelegateUtils.CreateTypeAuthorizerDelegate(defaultAuthorizer.GetMethod("IsVisible"))}
             };
 
-            var isEditableDict = new Dictionary<Type, Func<object, IPrincipal, object, string, bool>>() {
+            var isEditableDict = new Dictionary<Type, Func<object, IPrincipal, object, string, bool>> {
                 {defaultAuthorizer, DelegateUtils.CreateTypeAuthorizerDelegate(defaultAuthorizer.GetMethod("IsEditable"))}
             };
 
@@ -113,9 +111,9 @@ namespace NakedObjects.Meta.Authorization {
         }
 
         public IFacet Decorate(IFacet facet, ISpecification holder) {
-            Type facetType = facet.FacetType;
-            ISpecification specification = facet.Specification;
-            IIdentifier identifier = holder.Identifier;
+            var facetType = facet.FacetType;
+            var specification = facet.Specification;
+            var identifier = holder.Identifier;
 
             if (facetType == typeof(IHideForSessionFacet)) {
                 return new AuthorizationHideForSessionFacet(identifier, this, specification);

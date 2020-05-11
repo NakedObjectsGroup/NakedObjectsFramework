@@ -31,24 +31,17 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IColorValueFacet Members
 
-        public int ColorValue(INakedObjectAdapter nakedObjectAdapter) {
-            if (nakedObjectAdapter == null) {
-                return 0;
-            }
-
-            var color = (Color) nakedObjectAdapter.Object;
-            return color.ToArgb();
-        }
+        public int ColorValue(INakedObjectAdapter nakedObjectAdapter) =>
+            nakedObjectAdapter switch {
+                null => 0,
+                _ => ((Color) nakedObjectAdapter.Object).ToArgb()
+            };
 
         #endregion
 
-        public object GetDefault(INakedObjectAdapter inObjectAdapter) {
-            return DefaultValueConst;
-        }
+        public object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(Color);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(Color);
 
         protected override Color DoParse(string entry) {
             try {
@@ -70,28 +63,16 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override Color DoParseInvariant(string entry) {
-            return Color.FromArgb(int.Parse(entry, CultureInfo.InvariantCulture));
-        }
+        protected override Color DoParseInvariant(string entry) => Color.FromArgb(int.Parse(entry, CultureInfo.InvariantCulture));
 
-        protected override string GetInvariantString(Color obj) {
-            return obj.ToArgb().ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(Color obj) => obj.ToArgb().ToString(CultureInfo.InvariantCulture);
 
-        protected override string TitleStringWithMask(string mask, Color value) {
-            return value.ToString();
-        }
+        protected override string TitleStringWithMask(string mask, Color value) => value.ToString();
 
-        protected override string DoEncode(Color obj) {
-            return obj.ToArgb().ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string DoEncode(Color obj) => obj.ToArgb().ToString(CultureInfo.InvariantCulture);
 
-        protected override Color DoRestore(string data) {
-            return Color.FromArgb(int.Parse(data, CultureInfo.InvariantCulture));
-        }
+        protected override Color DoRestore(string data) => Color.FromArgb(int.Parse(data, CultureInfo.InvariantCulture));
 
-        public override string ToString() {
-            return "ColorAdapter: ";
-        }
+        public override string ToString() => "ColorAdapter: ";
     }
 }

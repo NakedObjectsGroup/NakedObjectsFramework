@@ -31,15 +31,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IShortValueFacet Members
 
-        public short ShortValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<short>();
-        }
+        public short ShortValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<short>();
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(short);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(short);
 
         protected override short DoParse(string entry) {
             try {
@@ -53,28 +49,16 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override short DoParseInvariant(string entry) {
-            return short.Parse(entry, CultureInfo.InvariantCulture);
-        }
+        protected override short DoParseInvariant(string entry) => short.Parse(entry, CultureInfo.InvariantCulture);
 
-        protected override string GetInvariantString(short obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(short obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override string TitleStringWithMask(string mask, short value) {
-            return value.ToString(mask);
-        }
+        protected override string TitleStringWithMask(string mask, short value) => value.ToString(mask);
 
-        protected override string DoEncode(short obj) {
-            return obj.ToString("G", CultureInfo.InvariantCulture);
-        }
+        protected override string DoEncode(short obj) => obj.ToString("G", CultureInfo.InvariantCulture);
 
-        protected override short DoRestore(string data) {
-            return short.Parse(data, CultureInfo.InvariantCulture);
-        }
+        protected override short DoRestore(string data) => short.Parse(data, CultureInfo.InvariantCulture);
 
-        public override string ToString() {
-            return "ShortAdapter: ";
-        }
+        public override string ToString() => "ShortAdapter: ";
     }
 }

@@ -23,9 +23,8 @@ namespace NakedObjects.Meta.Facet {
         private readonly PropertyInfo property;
 
         public CollectionResetFacet(PropertyInfo property, ISpecification holder)
-            : base(Type, holder) {
+            : base(Type, holder) =>
             this.property = property;
-        }
 
         public static Type Type => typeof(ICollectionResetFacet);
 
@@ -44,9 +43,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        protected override string ToStringValues() {
-            return "property=" + property;
-        }
+        protected override string ToStringValues() => $"property={property}";
     }
 
     // Copyright (c) Naked Objects Group Ltd.

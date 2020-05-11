@@ -18,12 +18,11 @@ namespace NakedObjects.Meta.Facet {
         private readonly PropertyInfo property;
 
         public PropertySetterFacetViaSetterMethod(PropertyInfo property, ISpecification holder)
-            : base(holder) {
+            : base(holder) =>
             this.property = property;
-        }
 
         public override string PropertyName {
-            get { return property.Name; }
+            get => property.Name;
             protected set { }
         }
 
@@ -32,12 +31,10 @@ namespace NakedObjects.Meta.Facet {
                 property.SetValue(nakedObjectAdapter.GetDomainObject(), value.GetDomainObject(), null);
             }
             catch (TargetInvocationException e) {
-                InvokeUtils.InvocationException("Exception executing " + property, e);
+                InvokeUtils.InvocationException($"Exception executing {property}", e);
             }
         }
 
-        protected override string ToStringValues() {
-            return "property=" + property;
-        }
+        protected override string ToStringValues() => $"property={property}";
     }
 }

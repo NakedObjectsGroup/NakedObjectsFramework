@@ -15,9 +15,8 @@ namespace NakedObjects.Meta.Facet {
         private readonly string valueString;
 
         protected SingleStringValueFacetAbstract(Type facetType, ISpecification holder, string valueString)
-            : base(facetType, holder) {
+            : base(facetType, holder) =>
             this.valueString = valueString;
-        }
 
         #region ISingleStringValueFacet Members
 
@@ -25,8 +24,6 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        protected override string ToStringValues() {
-            return valueString == null ? "null" : "\"" + valueString + "\"";
-        }
+        protected override string ToStringValues() => valueString == null ? "null" : $"\"{valueString}\"";
     }
 }

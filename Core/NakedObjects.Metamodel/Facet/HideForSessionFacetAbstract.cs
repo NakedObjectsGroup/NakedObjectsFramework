@@ -21,7 +21,6 @@ namespace NakedObjects.Meta.Facet {
     ///     In the standard Naked Objects Programming Model, corresponds to
     ///     invoking the <c>HideXxx</c> support method for the member.
     /// </para>
-    /// 
     [Serializable]
     public abstract class HideForSessionFacetAbstract : FacetAbstract, IHideForSessionFacet {
         protected HideForSessionFacetAbstract(ISpecification holder)
@@ -31,13 +30,9 @@ namespace NakedObjects.Meta.Facet {
 
         #region IHideForSessionFacet Members
 
-        public virtual string Hides(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            return HiddenReason(ic.Session, ic.Target, lifecycleManager, manager);
-        }
+        public virtual string Hides(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) => HiddenReason(ic.Session, ic.Target, lifecycleManager, manager);
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            return new HiddenException(ic, Hides(ic, lifecycleManager, manager));
-        }
+        public virtual Exception CreateExceptionFor(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) => new HiddenException(ic, Hides(ic, lifecycleManager, manager));
 
         public abstract string HiddenReason(ISession session, INakedObjectAdapter target, ILifecycleManager lifecycleManager, IMetamodelManager manager);
 

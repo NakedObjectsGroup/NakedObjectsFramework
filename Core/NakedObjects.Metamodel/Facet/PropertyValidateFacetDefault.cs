@@ -19,17 +19,11 @@ namespace NakedObjects.Meta.Facet {
 
         #region IPropertyValidateFacet Members
 
-        public Exception CreateExceptionFor(IInteractionContext ic) {
-            return null;
-        }
+        public Exception CreateExceptionFor(IInteractionContext ic) => null;
 
-        public string Invalidates(IInteractionContext ic) {
-            return null;
-        }
+        public string Invalidates(IInteractionContext ic) => null;
 
-        public string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter proposedValue) {
-            return null;
-        }
+        public string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter proposedValue) => null;
 
         #endregion
     }

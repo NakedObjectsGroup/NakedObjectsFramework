@@ -31,15 +31,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IByteValueFacet Members
 
-        public byte ByteValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<byte>();
-        }
+        public byte ByteValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<byte>();
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(byte);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(byte);
 
         protected override byte DoParse(string entry) {
             try {
@@ -53,28 +49,16 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override byte DoParseInvariant(string entry) {
-            return byte.Parse(entry, CultureInfo.InvariantCulture);
-        }
+        protected override byte DoParseInvariant(string entry) => byte.Parse(entry, CultureInfo.InvariantCulture);
 
-        protected override string GetInvariantString(byte obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(byte obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override string TitleStringWithMask(string mask, byte value) {
-            return value.ToString(mask);
-        }
+        protected override string TitleStringWithMask(string mask, byte value) => value.ToString(mask);
 
-        protected override string DoEncode(byte obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string DoEncode(byte obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override byte DoRestore(string data) {
-            return byte.Parse(data, CultureInfo.InvariantCulture);
-        }
+        protected override byte DoRestore(string data) => byte.Parse(data, CultureInfo.InvariantCulture);
 
-        public override string ToString() {
-            return "ByteAdapter: ";
-        }
+        public override string ToString() => "ByteAdapter: ";
     }
 }

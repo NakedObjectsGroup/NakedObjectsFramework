@@ -32,23 +32,19 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IFromStream Members
 
-        public object ParseFromStream(Stream stream, string mimeType = null, string name = null) {
-            return new Image(stream, name, mimeType);
-        }
+        public object ParseFromStream(Stream stream, string mimeType = null, string name = null) => new Image(stream, name, mimeType);
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == AdaptedType;
-        }
+        public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
         protected override Image DoParse(string entry) {
-            Trace.Assert(false, "Image cannot parse: " + entry);
+            Trace.Assert(false, $"Image cannot parse: {entry}");
             return null;
         }
 
         protected override Image DoParseInvariant(string entry) {
-            Trace.Assert(false, "Image cannot parse invariant: " + entry);
+            Trace.Assert(false, $"Image cannot parse invariant: {entry}");
             return null;
         }
 
@@ -58,33 +54,29 @@ namespace NakedObjects.Meta.SemanticsProvider {
         }
 
         protected override string DoEncode(Image image) {
-            Stream stream = image.GetResourceAsStream();
+            var stream = image.GetResourceAsStream();
 
             if (stream.Length > int.MaxValue) {
                 throw new ModelException($"Image is too large size: {stream.Length} max: {int.MaxValue} name: {image.Name}");
             }
 
-            int len = Convert.ToInt32(stream.Length);
+            var len = Convert.ToInt32(stream.Length);
             var buffer = new byte[len];
             ReadWholeArray(stream, buffer);
-            string encoded = Convert.ToBase64String(buffer);
-            return image.MimeType + " " + encoded;
+            var encoded = Convert.ToBase64String(buffer);
+            return $"{image.MimeType} {encoded}";
         }
 
         protected override Image DoRestore(string data) {
-            int offset = data.IndexOf(' ');
-            string mime = data.Substring(0, offset);
-            byte[] buffer = Convert.FromBase64String(data.Substring(offset));
+            var offset = data.IndexOf(' ');
+            var mime = data.Substring(0, offset);
+            var buffer = Convert.FromBase64String(data.Substring(offset));
             var stream = new MemoryStream(buffer);
             return new Image(stream);
         }
 
-        protected override string TitleString(Image obj) {
-            return obj.Name;
-        }
+        protected override string TitleString(Image obj) => obj.Name;
 
-        protected override string TitleStringWithMask(string mask, Image obj) {
-            return obj.Name;
-        }
+        protected override string TitleStringWithMask(string mask, Image obj) => obj.Name;
     }
 }

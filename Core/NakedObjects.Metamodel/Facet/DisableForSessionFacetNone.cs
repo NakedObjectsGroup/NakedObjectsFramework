@@ -18,9 +18,7 @@ namespace NakedObjects.Meta.Facet {
 
         public override bool IsNoOp => true;
 
-        public override string DisabledReason(ISession session, INakedObjectAdapter target, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            return null;
-        }
+        public override string DisabledReason(ISession session, INakedObjectAdapter target, ILifecycleManager lifecycleManager, IMetamodelManager manager) => null;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

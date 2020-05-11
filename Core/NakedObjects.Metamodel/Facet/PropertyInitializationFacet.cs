@@ -18,9 +18,8 @@ namespace NakedObjects.Meta.Facet {
         private readonly PropertyInfo property;
 
         public PropertyInitializationFacet(PropertyInfo property, ISpecification holder)
-            : base(typeof(IPropertyInitializationFacet), holder) {
+            : base(typeof(IPropertyInitializationFacet), holder) =>
             this.property = property;
-        }
 
         #region IPropertyInitializationFacet Members
 
@@ -29,14 +28,12 @@ namespace NakedObjects.Meta.Facet {
                 property.SetValue(nakedObjectAdapter.GetDomainObject(), value.GetDomainObject(), null);
             }
             catch (TargetInvocationException e) {
-                InvokeUtils.InvocationException("Exception executing " + property, e);
+                InvokeUtils.InvocationException($"Exception executing {property}", e);
             }
         }
 
         #endregion
 
-        protected override string ToStringValues() {
-            return "property=" + property;
-        }
+        protected override string ToStringValues() => $"property={property}";
     }
 }

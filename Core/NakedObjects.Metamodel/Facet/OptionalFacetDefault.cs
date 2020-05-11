@@ -20,7 +20,7 @@ namespace NakedObjects.Meta.Facet {
     /// <para>
     ///     This is used in the alternative Naked Objects Programming Model, where
     ///     all properties and parameters are optional by default and need to be annotated
-    ///     as manadatory.
+    ///     as mandatory.
     /// </para>
     [Serializable]
     public sealed class OptionalFacetDefault : MandatoryFacetAbstract {

@@ -18,7 +18,7 @@ namespace NakedObjects.Meta.Facet {
         public static Type Type => typeof(ITypicalLengthFacet);
 
         protected override string ToStringValues() {
-            int val = Value;
+            var val = Value;
             return val == 0 ? "default" : Convert.ToString(val);
         }
     }

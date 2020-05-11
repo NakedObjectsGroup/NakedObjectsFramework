@@ -12,7 +12,6 @@ namespace NakedObjects.Meta.Facet {
     /// <summary>
     ///     Has a description of the empty string
     /// </summary>
-    /// 
     [Serializable]
     public sealed class DescribedAsFacetNone : DescribedAsFacetAbstract {
         public DescribedAsFacetNone(ISpecification holder)

@@ -21,9 +21,7 @@ namespace NakedObjects.Meta.Facet {
         /// <summary>
         ///     Always returns <c>null</c>
         /// </summary>
-        public override string HiddenReason(ISession session, INakedObjectAdapter target, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            return null;
-        }
+        public override string HiddenReason(ISession session, INakedObjectAdapter target, ILifecycleManager lifecycleManager, IMetamodelManager manager) => null;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

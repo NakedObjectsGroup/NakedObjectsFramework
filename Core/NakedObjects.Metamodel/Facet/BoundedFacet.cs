@@ -20,24 +20,16 @@ namespace NakedObjects.Meta.Facet {
 
         #region IBoundedFacet Members
 
-        public string Disables(IInteractionContext ic) {
-            if (!ic.TypeEquals(InteractionType.ObjectPersist)) {
-                return null;
-            }
+        public string Disables(IInteractionContext ic) =>
+            ic.TypeEquals(InteractionType.ObjectPersist)
+                ? DisabledReason(ic.Target)
+                : null;
 
-            INakedObjectAdapter target = ic.Target;
-            return DisabledReason(target);
-        }
-
-        public Exception CreateExceptionFor(IInteractionContext ic) {
-            return new DisabledException(ic, Disables(ic));
-        }
+        public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
         #endregion
 
-        public string DisabledReason(INakedObjectAdapter inObjectAdapter) {
-            return Resources.NakedObjects.Bounded;
-        }
+        public string DisabledReason(INakedObjectAdapter inObjectAdapter) => Resources.NakedObjects.Bounded;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -15,22 +15,17 @@ namespace NakedObjects.Meta.Facet {
         private readonly Where executedWhere;
 
         protected ExecutedFacetAbstract(Where where, ISpecification holder)
-            : base(Type, holder) {
+            : base(Type, holder) =>
             executedWhere = where;
-        }
 
         public static Type Type => typeof(IExecutedFacet);
 
         #region IExecutedFacet Members
 
-        public virtual Where ExecutedWhere() {
-            return executedWhere;
-        }
+        public virtual Where ExecutedWhere() => executedWhere;
 
         #endregion
 
-        protected override string ToStringValues() {
-            return "where=" + executedWhere;
-        }
+        protected override string ToStringValues() => $"where={executedWhere}";
     }
 }

@@ -18,26 +18,21 @@ namespace NakedObjects.Meta.Facet {
         private readonly IDictionary<MethodInfo, Where> methodToWhere = new Dictionary<MethodInfo, Where>();
 
         public ExecutedControlMethodFacet(MethodInfo method, Where where, ISpecification holder)
-            : base(typeof(IExecutedControlMethodFacet), holder) {
+            : base(typeof(IExecutedControlMethodFacet), holder) =>
             methodToWhere[method] = where;
-        }
 
         #region IExecutedControlMethodFacet Members
 
-        public Where ExecutedWhere(MethodInfo method) {
-            return methodToWhere.ContainsKey(method) ? methodToWhere[method] : Where.Default;
-        }
+        public Where ExecutedWhere(MethodInfo method) => methodToWhere.ContainsKey(method) ? methodToWhere[method] : Where.Default;
 
-        public void AddMethodExecutedWhere(MethodInfo method, Where where) {
-            methodToWhere[method] = where;
-        }
+        public void AddMethodExecutedWhere(MethodInfo method, Where where) => methodToWhere[method] = where;
 
         #endregion
 
         protected override string ToStringValues() {
             var sb = new StringBuilder();
-            foreach (KeyValuePair<MethodInfo, Where> pair in methodToWhere) {
-                sb.Append(pair.Key + " Executed = " + pair.Value).Append(Environment.NewLine);
+            foreach (var (key, value) in methodToWhere) {
+                sb.Append($"{key} Executed = {value}").Append(Environment.NewLine);
             }
 
             return sb.ToString();

@@ -16,17 +16,13 @@ namespace NakedObjects.Meta.Utils {
             info.AddValue(id, value, typeof(T));
         }
 
-        public static T GetValue<T>(this SerializationInfo info, string id) {
-            return (T) info.GetValue(id, typeof(T));
-        }
+        public static T GetValue<T>(this SerializationInfo info, string id) => (T) info.GetValue(id, typeof(T));
 
         public static void AddValue<TKey, TValue>(this SerializationInfo info, string id, IImmutableDictionary<TKey, TValue> immutableDict) {
-            Dictionary<TKey, TValue> dict = immutableDict.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            var dict = immutableDict.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             info.AddValue(id, dict, typeof(Dictionary<TKey, TValue>));
         }
 
-        public static Dictionary<TKey, TValue> GetValue<TKey, TValue>(this SerializationInfo info, string id) {
-            return (Dictionary<TKey, TValue>) info.GetValue(id, typeof(Dictionary<TKey, TValue>));
-        }
+        public static Dictionary<TKey, TValue> GetValue<TKey, TValue>(this SerializationInfo info, string id) => (Dictionary<TKey, TValue>) info.GetValue(id, typeof(Dictionary<TKey, TValue>));
     }
 }

@@ -16,9 +16,8 @@ namespace NakedObjects.Meta.Facet {
         private readonly IValueSemanticsProvider<T> parser;
 
         public TypicalLengthFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)
-            : base(typeof(ITypicalLengthFacet), holder) {
+            : base(typeof(ITypicalLengthFacet), holder) =>
             this.parser = parser;
-        }
 
         #region ITypicalLengthFacet Members
 
@@ -26,8 +25,6 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        protected override string ToStringValues() {
-            return parser.ToString();
-        }
+        protected override string ToStringValues() => parser.ToString();
     }
 }

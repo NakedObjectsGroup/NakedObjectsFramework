@@ -23,9 +23,8 @@ namespace NakedObjects.Meta.Facet {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ValidateObjectFacet));
 
         public ValidateObjectFacet(ISpecification holder, IList<NakedObjectValidationMethod> validateMethods)
-            : base(Type, holder) {
+            : base(Type, holder) =>
             ValidateMethods = validateMethods;
-        }
 
         public static Type Type => typeof(IValidateObjectFacet);
 
@@ -34,19 +33,21 @@ namespace NakedObjects.Meta.Facet {
         #region IValidateObjectFacet Members
 
         public string Validate(INakedObjectAdapter nakedObjectAdapter) {
-            foreach (NakedObjectValidationMethod validator in ValidateMethods) {
+            foreach (var validator in ValidateMethods) {
                 var objectSpec = nakedObjectAdapter.Spec as IObjectSpec;
                 Trace.Assert(objectSpec != null);
 
-                IAssociationSpec[] matches = validator.ParameterNames.Select(name => objectSpec.Properties.SingleOrDefault(p => p.Id.ToLower() == name)).Where(s => s != null).ToArray();
+                var matches = validator.ParameterNames.Select(name => objectSpec.Properties.SingleOrDefault(p => p.Id.ToLower() == name)).Where(s => s != null).ToArray();
 
-                if (matches.Count() == validator.ParameterNames.Count()) {
-                    INakedObjectAdapter[] parameters = matches.Select(s => s.GetNakedObject(nakedObjectAdapter)).ToArray();
-                    string result = validator.Execute(nakedObjectAdapter, parameters);
-                    if (result != null) return result;
+                if (matches.Length == validator.ParameterNames.Length) {
+                    var parameters = matches.Select(s => s.GetNakedObject(nakedObjectAdapter)).ToArray();
+                    var result = validator.Execute(nakedObjectAdapter, parameters);
+                    if (result != null) {
+                        return result;
+                    }
                 }
                 else {
-                    string actual = objectSpec.Properties.Select(s => s.Id).Aggregate((s, t) => s + " " + t);
+                    var actual = objectSpec.Properties.Select(s => s.Id).Aggregate((s, t) => $"{s} {t}");
                     LogNoMatch(validator, actual);
                 }
             }
@@ -55,16 +56,18 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public string ValidateParms(INakedObjectAdapter nakedObjectAdapter, Tuple<string, INakedObjectAdapter>[] parms) {
-            foreach (NakedObjectValidationMethod validator in ValidateMethods) {
-                Tuple<string, INakedObjectAdapter>[] matches = validator.ParameterNames.Select(name => parms.SingleOrDefault(p => p.Item1.ToLower() == name)).Where(p => p != null).ToArray();
+            foreach (var validator in ValidateMethods) {
+                var matches = validator.ParameterNames.Select(name => parms.SingleOrDefault(p => p.Item1.ToLower() == name)).Where(p => p != null).ToArray();
 
-                if (matches.Count() == validator.ParameterNames.Count()) {
-                    INakedObjectAdapter[] parameters = matches.Select(p => p.Item2).ToArray();
-                    string result = validator.Execute(nakedObjectAdapter, parameters);
-                    if (result != null) return result;
+                if (matches.Length == validator.ParameterNames.Length) {
+                    var parameters = matches.Select(p => p.Item2).ToArray();
+                    var result = validator.Execute(nakedObjectAdapter, parameters);
+                    if (result != null) {
+                        return result;
+                    }
                 }
                 else {
-                    string actual = parms.Select(s => s.Item1).Aggregate((s, t) => s + " " + t);
+                    var actual = parms.Select(s => s.Item1).Aggregate((s, t) => $"{s} {t}");
                     LogNoMatch(validator, actual);
                 }
             }
@@ -75,7 +78,7 @@ namespace NakedObjects.Meta.Facet {
         #endregion
 
         private void LogNoMatch(NakedObjectValidationMethod validator, string actual) {
-            string expects = validator.ParameterNames.Aggregate((s, t) => s + " " + t);
+            var expects = validator.ParameterNames.Aggregate((s, t) => $"{s} {t}");
             Log.WarnFormat("No Matching parms Validator: {0} Expects {1} Actual {2} ", validator.Name, expects, actual);
         }
 
@@ -94,18 +97,12 @@ namespace NakedObjects.Meta.Facet {
 
             public string Name => method.Name;
 
-            public string[] ParameterNames {
-                get { return method.GetParameters().Select(p => p.Name.ToLower()).ToArray(); }
-            }
+            public string[] ParameterNames => method.GetParameters().Select(p => p.Name.ToLower()).ToArray();
 
-            public string Execute(INakedObjectAdapter obj, INakedObjectAdapter[] parameters) {
-                return methodDelegate(obj.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray()) as string;
-            }
+            public string Execute(INakedObjectAdapter obj, INakedObjectAdapter[] parameters) => methodDelegate(obj.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray()) as string;
 
             [OnDeserialized]
-            private void OnDeserialized(StreamingContext context) {
-                methodDelegate = DelegateUtils.CreateDelegate(method);
-            }
+            private void OnDeserialized(StreamingContext context) => methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 
         #endregion

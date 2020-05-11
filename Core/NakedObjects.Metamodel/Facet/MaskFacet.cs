@@ -22,22 +22,14 @@ namespace NakedObjects.Meta.Facet {
         /// <summary>
         ///     Not yet implemented, so always returns <c>false</c>.
         /// </summary>
-        public bool DoesNotMatch(INakedObjectAdapter nakedObjectAdapter) {
-            return false;
-        }
+        public bool DoesNotMatch(INakedObjectAdapter nakedObjectAdapter) => false;
 
         public string Invalidates(IInteractionContext ic) {
-            INakedObjectAdapter proposedArgument = ic.ProposedArgument;
-            if (DoesNotMatch(proposedArgument)) {
-                return string.Format(Resources.NakedObjects.MaskMismatch, proposedArgument.TitleString(), Value);
-            }
-
-            return null;
+            var proposedArgument = ic.ProposedArgument;
+            return DoesNotMatch(proposedArgument) ? string.Format(Resources.NakedObjects.MaskMismatch, proposedArgument.TitleString(), Value) : null;
         }
 
-        public Exception CreateExceptionFor(IInteractionContext ic) {
-            return new InvalidMaskException(ic, Invalidates(ic));
-        }
+        public Exception CreateExceptionFor(IInteractionContext ic) => new InvalidMaskException(ic, Invalidates(ic));
 
         #endregion
     }

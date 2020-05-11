@@ -22,9 +22,7 @@ namespace NakedObjects.Meta.Facet {
         public abstract string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector);
         public abstract void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector);
 
-        public virtual bool IsEditView(INakedObjectAdapter nakedObjectAdapter) {
-            return false;
-        }
+        public virtual bool IsEditView(INakedObjectAdapter nakedObjectAdapter) => false;
 
         #endregion
     }

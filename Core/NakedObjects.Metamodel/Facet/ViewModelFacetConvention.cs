@@ -20,12 +20,8 @@ namespace NakedObjects.Meta.Facet {
 
         private static Type Type => typeof(IViewModelFacet);
 
-        public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector) {
-            return nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
-        }
+        public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector) => nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
 
-        public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector) {
-            nakedObjectAdapter.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);
-        }
+        public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector) => nakedObjectAdapter.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);
     }
 }

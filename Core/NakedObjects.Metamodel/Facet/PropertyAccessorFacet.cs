@@ -18,9 +18,8 @@ namespace NakedObjects.Meta.Facet {
         private readonly PropertyInfo propertyMethod;
 
         public PropertyAccessorFacet(PropertyInfo property, ISpecification holder)
-            : base(typeof(IPropertyAccessorFacet), holder) {
+            : base(typeof(IPropertyAccessorFacet), holder) =>
             propertyMethod = property;
-        }
 
         #region IPropertyAccessorFacet Members
 
@@ -29,15 +28,13 @@ namespace NakedObjects.Meta.Facet {
                 return propertyMethod.GetValue(nakedObjectAdapter.GetDomainObject(), null);
             }
             catch (TargetInvocationException e) {
-                InvokeUtils.InvocationException("Exception executing " + propertyMethod, e);
+                InvokeUtils.InvocationException($"Exception executing {propertyMethod}", e);
                 return null;
             }
         }
 
         #endregion
 
-        protected override string ToStringValues() {
-            return "propertyMethod=" + propertyMethod;
-        }
+        protected override string ToStringValues() => $"propertyMethod={propertyMethod}";
     }
 }

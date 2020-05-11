@@ -29,28 +29,24 @@ namespace NakedObjects.Meta.Component {
 
         // constructor to use when loading metadata from file
         public ImmutableInMemorySpecCache(string file) {
-            using (FileStream fs = File.Open(file, FileMode.Open)) {
-                IFormatter formatter = new BinaryFormatter();
-                var data = (SerializedData) formatter.Deserialize(fs);
-                specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
+            using var fs = File.Open(file, FileMode.Open);
+            IFormatter formatter = new BinaryFormatter();
+            var data = (SerializedData) formatter.Deserialize(fs);
+            specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
 
-                mainMenus = data.MenuValues.ToImmutableList();
-            }
+            mainMenus = data.MenuValues.ToImmutableList();
         }
 
         public ImmutableInMemorySpecCache(string file, IFormatter formatter) {
-            using (FileStream fs = File.Open(file, FileMode.Open)) {
-                var data = (SerializedData) formatter.Deserialize(fs);
-                specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
+            using var fs = File.Open(file, FileMode.Open);
+            var data = (SerializedData) formatter.Deserialize(fs);
+            specs = data.SpecKeys.Zip(data.SpecValues, (k, v) => new {k, v}).ToDictionary(a => a.k, a => a.v).ToImmutableDictionary();
 
-                mainMenus = data.MenuValues.ToImmutableList();
-            }
+            mainMenus = data.MenuValues.ToImmutableList();
         }
 
         // The special constructor is used to deserialize values. 
-        public ImmutableInMemorySpecCache(SerializationInfo info, StreamingContext context) {
-            tempData = info.GetValue<SerializedData>("data");
-        }
+        public ImmutableInMemorySpecCache(SerializationInfo info, StreamingContext context) => tempData = info.GetValue<SerializedData>("data");
 
         #region IDeserializationCallback Members
 
@@ -73,43 +69,29 @@ namespace NakedObjects.Meta.Component {
         #region ISpecificationCache Members
 
         public void Serialize(string file) {
-            using (FileStream fs = File.Open(file, FileMode.OpenOrCreate)) {
-                IFormatter formatter = new BinaryFormatter();
-                var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
-                formatter.Serialize(fs, data);
-            }
+            using var fs = File.Open(file, FileMode.OpenOrCreate);
+            IFormatter formatter = new BinaryFormatter();
+            var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
+            formatter.Serialize(fs, data);
         }
 
         public void Serialize(string file, IFormatter formatter) {
-            using (FileStream fs = File.Open(file, FileMode.OpenOrCreate)) {
-                var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
-                formatter.Serialize(fs, data);
-            }
+            using var fs = File.Open(file, FileMode.OpenOrCreate);
+            var data = new SerializedData {SpecKeys = specs.Keys.ToList(), SpecValues = specs.Values.ToList(), MenuValues = mainMenus.ToList()};
+            formatter.Serialize(fs, data);
         }
 
-        public ITypeSpecImmutable GetSpecification(string key) {
-            return specs.ContainsKey(key) ? specs[key] : null;
-        }
+        public ITypeSpecImmutable GetSpecification(string key) => specs.ContainsKey(key) ? specs[key] : null;
 
-        public void Cache(string key, ITypeSpecImmutable spec) {
-            specs = specs.Add(key, spec);
-        }
+        public void Cache(string key, ITypeSpecImmutable spec) => specs = specs.Add(key, spec);
 
-        public void Clear() {
-            specs = specs.Clear();
-        }
+        public void Clear() => specs = specs.Clear();
 
-        public ITypeSpecImmutable[] AllSpecifications() {
-            return specs.Values.ToArray();
-        }
+        public ITypeSpecImmutable[] AllSpecifications() => specs.Values.ToArray();
 
-        public void Cache(IMenuImmutable mainMenu) {
-            mainMenus = mainMenus.Add(mainMenu);
-        }
+        public void Cache(IMenuImmutable mainMenu) => mainMenus = mainMenus.Add(mainMenu);
 
-        public IMenuImmutable[] MainMenus() {
-            return mainMenus.ToArray();
-        }
+        public IMenuImmutable[] MainMenus() => mainMenus.ToArray();
 
         #endregion
     }

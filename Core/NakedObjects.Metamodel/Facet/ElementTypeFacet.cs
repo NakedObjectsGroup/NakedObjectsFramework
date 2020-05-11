@@ -14,8 +14,8 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ElementTypeFacet : FacetAbstract, IElementTypeFacet {
         public ElementTypeFacet(ISpecification holder, Type type, IObjectSpecImmutable spec) : base(Type, holder) {
-            this.Value = type;
-            this.ValueSpec = spec;
+            Value = type;
+            ValueSpec = spec;
         }
 
         public static Type Type => typeof(IElementTypeFacet);

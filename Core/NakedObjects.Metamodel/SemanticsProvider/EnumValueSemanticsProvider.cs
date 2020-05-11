@@ -31,7 +31,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         public string IntegralValue(INakedObjectAdapter nakedObjectAdapter) {
             if (nakedObjectAdapter.Object is T || TypeUtils.IsIntegralValueForEnum(nakedObjectAdapter.Object)) {
-                return Convert.ChangeType(nakedObjectAdapter.Object, Enum.GetUnderlyingType(typeof(T))).ToString();
+                return Convert.ChangeType(nakedObjectAdapter.Object, Enum.GetUnderlyingType(typeof(T)))?.ToString();
             }
 
             return null;
@@ -39,9 +39,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #endregion
 
-        private static bool IsEnumSubtype() {
-            return TypeUtils.IsEnum(AdaptedType) && !(AdaptedType == typeof(Enum));
-        }
+        private static bool IsEnumSubtype() => TypeUtils.IsEnum(AdaptedType) && !(AdaptedType == typeof(Enum));
 
         private static T GetDefault() {
             // default(T) for an enum just returns 0 - but that's 
@@ -55,12 +53,10 @@ namespace NakedObjects.Meta.SemanticsProvider {
                 }
             }
 
-            return default(T);
+            return default;
         }
 
-        public static bool IsAdaptedType(Type type) {
-            return type == AdaptedType;
-        }
+        public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
         protected override T DoParse(string entry) {
             try {
@@ -74,33 +70,21 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override T DoParseInvariant(string entry) {
-            return (T) Enum.Parse(typeof(T), entry);
-        }
+        protected override T DoParseInvariant(string entry) => (T) Enum.Parse(typeof(T), entry);
 
-        protected override string GetInvariantString(T obj) {
-            return obj.ToString();
-        }
+        protected override string GetInvariantString(T obj) => obj.ToString();
 
-        protected override string TitleString(T obj) {
-            return NameUtils.NaturalName(obj.ToString());
-        }
+        protected override string TitleString(T obj) => NameUtils.NaturalName(obj.ToString());
 
-        protected override string TitleStringWithMask(string mask, T value) {
-            return TitleString(value);
-        }
+        protected override string TitleStringWithMask(string mask, T value) => TitleString(value);
 
-        protected override string DoEncode(T obj) {
-            return obj.GetType().FullName + ":" + obj;
-        }
+        protected override string DoEncode(T obj) => $"{obj.GetType().FullName}:{obj}";
 
         protected override T DoRestore(string data) {
-            string[] typeAndValue = data.Split(':');
+            var typeAndValue = data.Split(':');
             return (T) Enum.Parse(TypeUtils.GetType(typeAndValue[0]), typeAndValue[1]);
         }
 
-        public override string ToString() {
-            return "EnumAdapter: ";
-        }
+        public override string ToString() => "EnumAdapter: ";
     }
 }

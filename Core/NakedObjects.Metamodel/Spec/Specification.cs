@@ -39,34 +39,22 @@ namespace NakedObjects.Meta.Spec {
 
         public virtual IIdentifier Identifier => null;
 
-        public bool ContainsFacet(Type facetType) {
-            return GetFacet(facetType) != null;
-        }
+        public bool ContainsFacet(Type facetType) => GetFacet(facetType) != null;
 
-        public bool ContainsFacet<T>() where T : IFacet {
-            return GetFacet(typeof(T)) != null;
-        }
+        public bool ContainsFacet<T>() where T : IFacet => GetFacet(typeof(T)) != null;
 
-        public virtual IFacet GetFacet(Type facetType) {
-            return facetsByClass.ContainsKey(facetType) ? facetsByClass[facetType] : null;
-        }
+        public virtual IFacet GetFacet(Type facetType) => facetsByClass.ContainsKey(facetType) ? facetsByClass[facetType] : null;
 
-        public T GetFacet<T>() where T : IFacet {
-            return (T) GetFacet(typeof(T));
-        }
+        public T GetFacet<T>() where T : IFacet => (T) GetFacet(typeof(T));
 
-        public IEnumerable<IFacet> GetFacets() {
-            return facetsByClass.Values;
-        }
+        public IEnumerable<IFacet> GetFacets() => facetsByClass.Values;
 
-        public void AddFacet(IFacet facet) {
-            AddFacet(facet.FacetType, facet);
-        }
+        public void AddFacet(IFacet facet) => AddFacet(facet.FacetType, facet);
 
         #endregion
 
         private void AddFacet(Type facetType, IFacet facet) {
-            IFacet existingFacet = GetFacet(facetType);
+            var existingFacet = GetFacet(facetType);
             if (existingFacet == null || existingFacet.IsNoOp || facet.CanAlwaysReplace) {
                 facetsByClass = facetsByClass.SetItem(facetType, facet);
             }
@@ -78,13 +66,9 @@ namespace NakedObjects.Meta.Spec {
         private readonly Dictionary<Type, IFacet> tempDict;
 
         // The special constructor is used to deserialize values. 
-        protected Specification(SerializationInfo info, StreamingContext context) {
-            tempDict = info.GetValue<Type, IFacet>("facetsByClass");
-        }
+        protected Specification(SerializationInfo info, StreamingContext context) => tempDict = info.GetValue<Type, IFacet>("facetsByClass");
 
-        public virtual void GetObjectData(SerializationInfo info, StreamingContext context) {
-            info.AddValue<Type, IFacet>("facetsByClass", facetsByClass);
-        }
+        public virtual void GetObjectData(SerializationInfo info, StreamingContext context) => info.AddValue<Type, IFacet>("facetsByClass", facetsByClass);
 
         #endregion
     }

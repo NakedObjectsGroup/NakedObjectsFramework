@@ -29,7 +29,7 @@ namespace NakedObjects.Meta.Utils {
                 return true;
             }
 
-            if (users.Any(user => session.Principal.Identity.Name == user)) {
+            if (users.Any(user => session.Principal.Identity?.Name == user)) {
                 return true;
             }
 
@@ -39,42 +39,22 @@ namespace NakedObjects.Meta.Utils {
         /// <summary>
         ///     Attaches the <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
         /// </summary>
-        /// <returns>
-        ///     <c>true</c> if a non-<c>null</c> facet was added, <c>false</c> otherwise.
-        /// </returns>
-        public static void AddFacet(IFacet facet) {
-            if (facet != null) {
-                ((ISpecificationBuilder) facet.Specification).AddFacet(facet);
-            }
-        }
+        public static void AddFacet(IFacet facet) => ((ISpecificationBuilder) facet?.Specification)?.AddFacet(facet);
 
         /// <summary>
         ///     Attaches each <see cref="IFacet" /> to its <see cref="IFacet.Specification" />
         /// </summary>
-        /// <returns>
-        ///     <c>true</c> if any facets were added, <c>false</c> otherwise.
-        /// </returns>
-        public static void AddFacets(IEnumerable<IFacet> facetList) {
-            facetList.ForEach(AddFacet);
-        }
+        public static void AddFacets(IEnumerable<IFacet> facetList) => facetList.ForEach(AddFacet);
 
         public static INakedObjectAdapter[] MatchParameters(string[] parameterNames, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
-            var parmValues = new List<INakedObjectAdapter>();
+            INakedObjectAdapter GetValue(string name) =>
+                parameterNameValues?.ContainsKey(name) == true
+                    ? parameterNameValues[name]
+                    : null;
 
-            foreach (string name in parameterNames) {
-                if (parameterNameValues != null && parameterNameValues.ContainsKey(name)) {
-                    parmValues.Add(parameterNameValues[name]);
-                }
-                else {
-                    parmValues.Add(null);
-                }
-            }
-
-            return parmValues.ToArray();
+            return parameterNames.Select(GetValue).ToArray();
         }
 
-        public static bool IsNotANoopFacet(IFacet facet) {
-            return facet != null && !facet.IsNoOp;
-        }
+        public static bool IsNotANoopFacet(IFacet facet) => facet != null && !facet.IsNoOp;
     }
 }

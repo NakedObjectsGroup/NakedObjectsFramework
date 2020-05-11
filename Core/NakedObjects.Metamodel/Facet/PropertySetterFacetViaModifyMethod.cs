@@ -32,28 +32,18 @@ namespace NakedObjects.Meta.Facet {
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return method;
-        }
+        public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return methodDelegate;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
 
         #endregion
 
-        public override void SetProperty(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter value, ITransactionManager transactionManager, ISession session, ILifecycleManager lifecycleManager) {
-            methodDelegate(inObjectAdapter.GetDomainObject(), new[] {value.GetDomainObject()});
-        }
+        public override void SetProperty(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter value, ITransactionManager transactionManager, ISession session, ILifecycleManager lifecycleManager) => methodDelegate(inObjectAdapter.GetDomainObject(), new[] {value.GetDomainObject()});
 
-        protected override string ToStringValues() {
-            return "method=" + method;
-        }
+        protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-            methodDelegate = DelegateUtils.CreateDelegate(method);
-        }
+        private void OnDeserialized(StreamingContext context) => methodDelegate = DelegateUtils.CreateDelegate(method);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

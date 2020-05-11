@@ -34,22 +34,16 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region ITimeValueFacet Members
 
-        public TimeSpan TimeValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<TimeSpan>();
-        }
+        public TimeSpan TimeValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<TimeSpan>();
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(TimeSpan);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(TimeSpan);
 
-        protected override string DoEncode(TimeSpan time) {
-            return time.ToString();
-        }
+        protected override string DoEncode(TimeSpan time) => time.ToString();
 
         protected override TimeSpan DoParse(string entry) {
-            string dateString = entry.Trim();
+            var dateString = entry.Trim();
             try {
                 return DateTime.Parse(dateString).TimeOfDay;
             }
@@ -58,25 +52,15 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override TimeSpan DoParseInvariant(string entry) {
-            return TimeSpan.Parse(entry, CultureInfo.InvariantCulture);
-        }
+        protected override TimeSpan DoParseInvariant(string entry) => TimeSpan.Parse(entry, CultureInfo.InvariantCulture);
 
-        protected override string GetInvariantString(TimeSpan obj) {
-            return obj.ToString(null, CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(TimeSpan obj) => obj.ToString(null, CultureInfo.InvariantCulture);
 
-        protected override TimeSpan DoRestore(string data) {
-            return TimeSpan.Parse(data);
-        }
+        protected override TimeSpan DoRestore(string data) => TimeSpan.Parse(data);
 
-        protected override string TitleString(TimeSpan obj) {
-            return DateTime.Today.Add(obj).ToShortTimeString();
-        }
+        protected override string TitleString(TimeSpan obj) => DateTime.Today.Add(obj).ToShortTimeString();
 
-        protected override string TitleStringWithMask(string mask, TimeSpan obj) {
-            return DateTime.Today.Add(obj).ToString(mask);
-        }
+        protected override string TitleStringWithMask(string mask, TimeSpan obj) => DateTime.Today.Add(obj).ToString(mask);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

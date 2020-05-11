@@ -27,9 +27,9 @@ namespace NakedObjects.Meta.Facet {
 
         private readonly MethodInfo method;
 
-        [field: NonSerialized] private Func<object, object[], object> methodDelegate;
-
         private readonly string[] parameterNames;
+
+        [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
         public PropertyChoicesFacet(MethodInfo optionsMethod, Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes, ISpecification holder)
             : base(typeof(IPropertyChoicesFacet), holder) {
@@ -42,13 +42,9 @@ namespace NakedObjects.Meta.Facet {
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return method;
-        }
+        public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return methodDelegate;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
 
         #endregion
 
@@ -57,11 +53,10 @@ namespace NakedObjects.Meta.Facet {
         public Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes { get; }
 
         public object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
-            INakedObjectAdapter[] parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
+            var parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);
             try {
-                object options = methodDelegate(inObjectAdapter.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray());
-                var enumerable = options as IEnumerable;
-                if (enumerable != null) {
+                var options = methodDelegate(inObjectAdapter.GetDomainObject(), parms.Select(p => p.GetDomainObject()).ToArray());
+                if (options is IEnumerable enumerable) {
                     return enumerable.Cast<object>().ToArray();
                 }
 
@@ -74,14 +69,10 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        protected override string ToStringValues() {
-            return "method=" + method;
-        }
+        protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-            methodDelegate = DelegateUtils.CreateDelegate(method);
-        }
+        private void OnDeserialized(StreamingContext context) => methodDelegate = DelegateUtils.CreateDelegate(method);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

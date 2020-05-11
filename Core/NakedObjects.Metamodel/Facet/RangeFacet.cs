@@ -71,30 +71,28 @@ namespace NakedObjects.Meta.Facet {
         }
 
         public virtual string Invalidates(IInteractionContext ic) {
-            INakedObjectAdapter proposedArgument = ic.ProposedArgument;
+            var proposedArgument = ic.ProposedArgument;
             if (OutOfRange(proposedArgument) == 0) {
                 return null;
             }
 
             if (IsDateTime(proposedArgument.Object)) {
-                string minDate = DateTime.Today.AddDays(Min.ToDouble(null)).ToShortDateString();
-                string maxDate = DateTime.Today.AddDays(Max.ToDouble(null)).ToShortDateString();
+                var minDate = DateTime.Today.AddDays(Min.ToDouble(null)).ToShortDateString();
+                var maxDate = DateTime.Today.AddDays(Max.ToDouble(null)).ToShortDateString();
                 return string.Format(Resources.NakedObjects.RangeMismatch, minDate, maxDate);
             }
 
             return string.Format(Resources.NakedObjects.RangeMismatch, Min, Max);
         }
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
-            return new InvalidRangeException(ic, Min, Max, Invalidates(ic));
-        }
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidRangeException(ic, Min, Max, Invalidates(ic));
 
         public IConvertible Min { get; private set; }
         public IConvertible Max { get; private set; }
 
         public virtual ISpecification Specification {
-            get { return holder; }
-            set { holder = value; }
+            get => holder;
+            set => holder = value;
         }
 
         /// <summary>
@@ -131,45 +129,36 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        protected int Compare<T>(T val, T min, T max) where T : struct, IComparable {
-            if (val.CompareTo(min) < 0) {
+        protected int Compare<T>(T val, T min, T max) where T : struct, IComparable =>
+            val.CompareTo(min) < 0 
+                ? -1 
+                : val.CompareTo(max) > 0 
+                    ? 1 
+                    : 0;
+
+        protected int DateCompare(DateTime date, double min, double max) {
+            var earliest = DateTime.Today.AddDays(min);
+            var latest = DateTime.Today.AddDays(max);
+            if (date < earliest) {
                 return -1;
             }
 
-            if (val.CompareTo(max) > 0) {
-                return 1;
+            if (date > latest) {
+                return +1;
             }
 
             return 0;
         }
 
-        protected int DateCompare(DateTime date, double min, double max) {
-            DateTime earliest = DateTime.Today.AddDays(min);
-            DateTime latest = DateTime.Today.AddDays(max);
-            if (date < earliest) return -1;
-            if (date > latest) return +1;
-            return 0;
-        }
+        private static bool IsSIntegral(object o) => o is sbyte || o is short || o is int || o is long;
 
-        private static bool IsSIntegral(object o) {
-            return o is sbyte || o is short || o is int || o is long;
-        }
+        private static bool IsUIntegral(object o) => o is byte || o is ushort || o is uint || o is ulong;
 
-        private static bool IsUIntegral(object o) {
-            return o is byte || o is ushort || o is uint || o is ulong;
-        }
+        private static bool IsFloat(object o) => o is float || o is double;
 
-        private static bool IsFloat(object o) {
-            return o is float || o is double;
-        }
+        private static bool IsDecimal(object o) => o is decimal;
 
-        private static bool IsDecimal(object o) {
-            return o is decimal;
-        }
-
-        private static bool IsDateTime(object o) {
-            return o is DateTime;
-        }
+        private static bool IsDateTime(object o) => o is DateTime;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -14,9 +14,8 @@ namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public sealed class OneToOneAssociationSpecImmutable : AssociationSpecImmutable, IOneToOneAssociationSpecImmutable {
         public OneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec)
-            : base(identifier, returnSpec) {
-            this.OwnerSpec = ownerSpec;
-        }
+            : base(identifier, returnSpec) =>
+            OwnerSpec = ownerSpec;
 
         #region ISerializable
 
@@ -33,9 +32,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #endregion
 
-        public override string ToString() {
-            return "Reference Association [name=\"" + Identifier + ", Type=" + ReturnSpec + " ]";
-        }
+        public override string ToString() => $"Reference Association [name=\"{Identifier}\", Type={ReturnSpec} ]";
     }
 
     // Copyright (c) Naked Objects Group Ltd.

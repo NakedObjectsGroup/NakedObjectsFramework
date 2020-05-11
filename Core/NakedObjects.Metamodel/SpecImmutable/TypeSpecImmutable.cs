@@ -90,33 +90,29 @@ namespace NakedObjects.Meta.SpecImmutable {
         public IList<ITypeSpecImmutable> Subclasses => subclasses;
 
         public override IFacet GetFacet(Type facetType) {
-            IFacet facet = base.GetFacet(facetType);
+            var facet = base.GetFacet(facetType);
             if (FacetUtils.IsNotANoopFacet(facet)) {
                 return facet;
             }
 
-            IFacet noopFacet = facet;
+            var noopFacet = facet;
 
             if (Superclass != null) {
-                IFacet superClassFacet = Superclass.GetFacet(facetType);
+                var superClassFacet = Superclass.GetFacet(facetType);
                 if (FacetUtils.IsNotANoopFacet(superClassFacet)) {
                     return superClassFacet;
                 }
 
-                if (noopFacet == null) {
-                    noopFacet = superClassFacet;
-                }
+                noopFacet ??= superClassFacet;
             }
 
             foreach (var interfaceSpec in Interfaces) {
-                IFacet interfaceFacet = interfaceSpec.GetFacet(facetType);
+                var interfaceFacet = interfaceSpec.GetFacet(facetType);
                 if (FacetUtils.IsNotANoopFacet(interfaceFacet)) {
                     return interfaceFacet;
                 }
 
-                if (noopFacet == null) {
-                    noopFacet = interfaceFacet;
-                }
+                noopFacet ??= interfaceFacet;
             }
 
             return noopFacet;
@@ -124,12 +120,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public virtual bool IsCollection => ContainsFacet(typeof(ICollectionFacet));
 
-        public bool IsQueryable {
-            get {
-                var facet = GetFacet<ICollectionFacet>();
-                return facet != null && facet.IsQueryable;
-            }
-        }
+        public bool IsQueryable => GetFacet<ICollectionFacet>()?.IsQueryable == true;
 
         public virtual bool IsParseable => ContainsFacet(typeof(IParseableFacet));
 
@@ -140,7 +131,7 @@ namespace NakedObjects.Meta.SpecImmutable {
                 return true;
             }
 
-            Type otherType = otherSpecification.Type;
+            var otherType = otherSpecification.Type;
 
             if (otherType.IsAssignableFrom(Type)) {
                 return true;
@@ -182,21 +173,15 @@ namespace NakedObjects.Meta.SpecImmutable {
                 return true;
             }
 
-            Type baseType = givenType.BaseType;
+            var baseType = givenType.BaseType;
             return baseType != null && IsAssignableToGenericType(baseType, genericType);
         }
 
-        public void AddContributedActions(IList<IActionSpecImmutable> contributedActions) {
-            ContributedActions = contributedActions.ToImmutableList();
-        }
+        public void AddContributedActions(IList<IActionSpecImmutable> contributedActions) => ContributedActions = contributedActions.ToImmutableList();
 
-        public void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionContributedActions) {
-            CollectionContributedActions = collectionContributedActions.ToImmutableList();
-        }
+        public void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionContributedActions) => CollectionContributedActions = collectionContributedActions.ToImmutableList();
 
-        public void AddFinderActions(IList<IActionSpecImmutable> finderActions) {
-            FinderActions = finderActions.ToImmutableList();
-        }
+        public void AddFinderActions(IList<IActionSpecImmutable> finderActions) => FinderActions = finderActions.ToImmutableList();
 
         private void DecorateAllFacets(IFacetDecoratorSet decorator) {
             decorator.DecorateAllHoldersFacets(this);
@@ -209,9 +194,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             action.Parameters.ForEach(decorator.DecorateAllHoldersFacets);
         }
 
-        public override string ToString() {
-            return $"{GetType().Name} for {Type.Name}";
-        }
+        public override string ToString() => $"{GetType().Name} for {Type.Name}";
 
         #region ISerializable
 

@@ -21,23 +21,22 @@ namespace NakedObjects.Meta.Authorization {
 
         #region IAuthorizationConfiguration Members
 
-        public Type DefaultAuthorizer { get; private set; }
-        public IDictionary<string, Type> NamespaceAuthorizers { get; private set; }
-        public IDictionary<string, Type> TypeAuthorizers { get; private set; }
+        public Type DefaultAuthorizer { get; }
+        public IDictionary<string, Type> NamespaceAuthorizers { get; }
+        public IDictionary<string, Type> TypeAuthorizers { get; }
 
         #endregion
 
         //The specified type authorizer will apply to the whole namespace specified
         public void AddNamespaceAuthorizer<TAuth>(string namespaceCovered)
-            where TAuth : INamespaceAuthorizer {
+            where TAuth : INamespaceAuthorizer =>
             NamespaceAuthorizers.Add(namespaceCovered, typeof(TAuth));
-        }
 
         //The specified type authorizer will apply only to the domain object type specified (not even sub-classes)
         public void AddTypeAuthorizer<TDomain, TAuth>()
             where TDomain : new()
             where TAuth : ITypeAuthorizer<TDomain> {
-            string fullyQualifiedName = typeof(TDomain).FullName;
+            var fullyQualifiedName = typeof(TDomain).FullName;
             TypeAuthorizers.Add(fullyQualifiedName, typeof(TAuth));
         }
     }

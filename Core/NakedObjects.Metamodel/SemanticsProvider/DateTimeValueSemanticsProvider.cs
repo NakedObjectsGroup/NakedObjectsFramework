@@ -33,23 +33,19 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IDateValueFacet Members
 
-        public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter == null ? Now() : (DateTime) nakedObjectAdapter.Object;
-        }
+        public DateTime DateValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter == null ? Now() : (DateTime) nakedObjectAdapter.Object;
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(DateTime);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(DateTime);
 
         protected override string DoEncode(DateTime obj) {
-            DateTime date = obj;
+            var date = obj;
             return date.ToString("s");
         }
 
         protected override DateTime DoParse(string entry) {
-            string dateString = entry.Trim();
+            var dateString = entry.Trim();
             try {
                 return DateTime.Parse(dateString);
             }
@@ -58,25 +54,15 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override DateTime DoParseInvariant(string entry) {
-            return DateTime.Parse(entry, CultureInfo.InvariantCulture);
-        }
+        protected override DateTime DoParseInvariant(string entry) => DateTime.Parse(entry, CultureInfo.InvariantCulture);
 
-        protected override string GetInvariantString(DateTime obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(DateTime obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override DateTime DoRestore(string data) {
-            return DateTime.Parse(data);
-        }
+        protected override DateTime DoRestore(string data) => DateTime.Parse(data);
 
-        protected override string TitleStringWithMask(string mask, DateTime value) {
-            return value.ToString(mask);
-        }
+        protected override string TitleStringWithMask(string mask, DateTime value) => value.ToString(mask);
 
-        private static DateTime Now() {
-            return TestDateTime ?? DateTime.Now;
-        }
+        private static DateTime Now() => TestDateTime ?? DateTime.Now;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

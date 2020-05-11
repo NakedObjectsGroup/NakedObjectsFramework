@@ -19,9 +19,8 @@ namespace NakedObjects.Meta.Facet {
         private readonly IValueSemanticsProvider<T> encoderDecoder;
 
         public EncodeableFacetUsingEncoderDecoder(IValueSemanticsProvider<T> encoderDecoder, ISpecification holder)
-            : base(typeof(IEncodeableFacet), holder) {
+            : base(typeof(IEncodeableFacet), holder) =>
             this.encoderDecoder = encoderDecoder;
-        }
 
         public static string EncodedNull => "NULL";
 
@@ -29,22 +28,12 @@ namespace NakedObjects.Meta.Facet {
 
         #region IEncodeableFacet Members
 
-        public INakedObjectAdapter FromEncodedString(string encodedData, INakedObjectManager manager) {
-            if (EncodedNull.Equals(encodedData)) {
-                return null;
-            }
+        public INakedObjectAdapter FromEncodedString(string encodedData, INakedObjectManager manager) => EncodedNull.Equals(encodedData) ? null : manager.CreateAdapter(encoderDecoder.FromEncodedString(encodedData), null, null);
 
-            return manager.CreateAdapter(encoderDecoder.FromEncodedString(encodedData), null, null);
-        }
-
-        public string ToEncodedString(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter == null ? EncodedNull : encoderDecoder.ToEncodedString(nakedObjectAdapter.GetDomainObject<T>());
-        }
+        public string ToEncodedString(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter == null ? EncodedNull : encoderDecoder.ToEncodedString(nakedObjectAdapter.GetDomainObject<T>());
 
         #endregion
 
-        protected override string ToStringValues() {
-            return encoderDecoder.ToString();
-        }
+        protected override string ToStringValues() => encoderDecoder.ToString();
     }
 }

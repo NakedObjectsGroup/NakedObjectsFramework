@@ -31,15 +31,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IUnsignedShortValueFacet Members
 
-        public ushort UnsignedShortValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<ushort>();
-        }
+        public ushort UnsignedShortValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<ushort>();
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(ushort);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(ushort);
 
         protected override ushort DoParse(string entry) {
             try {
@@ -53,28 +49,16 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override ushort DoParseInvariant(string entry) {
-            return ushort.Parse(entry, CultureInfo.InvariantCulture);
-        }
+        protected override ushort DoParseInvariant(string entry) => ushort.Parse(entry, CultureInfo.InvariantCulture);
 
-        protected override string GetInvariantString(ushort obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(ushort obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override string TitleStringWithMask(string mask, ushort value) {
-            return value.ToString(mask);
-        }
+        protected override string TitleStringWithMask(string mask, ushort value) => value.ToString(mask);
 
-        protected override string DoEncode(ushort obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string DoEncode(ushort obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override ushort DoRestore(string data) {
-            return ushort.Parse(data, CultureInfo.InvariantCulture);
-        }
+        protected override ushort DoRestore(string data) => ushort.Parse(data, CultureInfo.InvariantCulture);
 
-        public override string ToString() {
-            return "UShortAdapter: ";
-        }
+        public override string ToString() => "UShortAdapter: ";
     }
 }

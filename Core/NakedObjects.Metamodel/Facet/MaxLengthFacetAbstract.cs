@@ -27,32 +27,23 @@ namespace NakedObjects.Meta.Facet {
         ///     Whether the provided argument exceeds the <see cref="SingleIntValueFacetAbstract.Value" /> maximum length}.
         /// </summary>
         public virtual bool Exceeds(INakedObjectAdapter nakedObjectAdapter) {
-            var str = nakedObjectAdapter.GetDomainObject() as string;
-            if (str == null) {
-                return false;
+            if (nakedObjectAdapter.GetDomainObject() is string str) {
+                var maxLength = Value;
+                return maxLength != 0 && str.Length > maxLength;
             }
 
-            int maxLength = Value;
-            return maxLength != 0 && str.Length > maxLength;
+            return false;
         }
 
         public virtual string Invalidates(IInteractionContext ic) {
-            INakedObjectAdapter proposedArgument = ic.ProposedArgument;
-            if (!Exceeds(proposedArgument)) {
-                return null;
-            }
-
-            return string.Format(Resources.NakedObjects.MaximumLengthMismatch, Value);
+            var proposedArgument = ic.ProposedArgument;
+            return !Exceeds(proposedArgument) ? null : string.Format(Resources.NakedObjects.MaximumLengthMismatch, Value);
         }
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
-            return new InvalidMaxLengthException(ic, Value, Invalidates(ic));
-        }
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidMaxLengthException(ic, Value, Invalidates(ic));
 
         #endregion
 
-        protected override string ToStringValues() {
-            return Value == 0 ? "unlimited" : Value.ToString(Thread.CurrentThread.CurrentCulture);
-        }
+        protected override string ToStringValues() => Value == 0 ? "unlimited" : Value.ToString(Thread.CurrentThread.CurrentCulture);
     }
 }

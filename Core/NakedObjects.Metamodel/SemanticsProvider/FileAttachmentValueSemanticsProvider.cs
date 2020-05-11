@@ -32,23 +32,19 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IFromStream Members
 
-        public object ParseFromStream(Stream stream, string mimeType = null, string name = null) {
-            return new FileAttachment(stream, name, mimeType);
-        }
+        public object ParseFromStream(Stream stream, string mimeType = null, string name = null) => new FileAttachment(stream, name, mimeType);
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == AdaptedType;
-        }
+        public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
         protected override FileAttachment DoParse(string entry) {
-            Trace.Assert(false, "FileAttachment cannot parse: " + entry);
+            Trace.Assert(false, $"FileAttachment cannot parse: {entry}");
             return null;
         }
 
         protected override FileAttachment DoParseInvariant(string entry) {
-            Trace.Assert(false, "FileAttachment cannot parse invariant: " + entry);
+            Trace.Assert(false, $"FileAttachment cannot parse invariant: {entry}");
             return null;
         }
 
@@ -58,33 +54,29 @@ namespace NakedObjects.Meta.SemanticsProvider {
         }
 
         protected override string DoEncode(FileAttachment fileAttachment) {
-            Stream stream = fileAttachment.GetResourceAsStream();
+            var stream = fileAttachment.GetResourceAsStream();
 
             if (stream.Length > int.MaxValue) {
                 throw new ModelException($"Attachment is too large size: {stream.Length} max: {int.MaxValue} name: {fileAttachment.Name}");
             }
 
-            int len = Convert.ToInt32(stream.Length);
+            var len = Convert.ToInt32(stream.Length);
             var buffer = new byte[len];
             ReadWholeArray(stream, buffer);
-            string encoded = Convert.ToBase64String(buffer);
-            return fileAttachment.MimeType + " " + encoded;
+            var encoded = Convert.ToBase64String(buffer);
+            return $"{fileAttachment.MimeType} {encoded}";
         }
 
         protected override FileAttachment DoRestore(string data) {
-            int offset = data.IndexOf(' ');
-            string mime = data.Substring(0, offset);
-            byte[] buffer = Convert.FromBase64String(data.Substring(offset));
+            var offset = data.IndexOf(' ');
+            var mime = data.Substring(0, offset);
+            var buffer = Convert.FromBase64String(data.Substring(offset));
             var stream = new MemoryStream(buffer);
             return new FileAttachment(stream);
         }
 
-        protected override string TitleString(FileAttachment obj) {
-            return obj.Name;
-        }
+        protected override string TitleString(FileAttachment obj) => obj.Name;
 
-        protected override string TitleStringWithMask(string mask, FileAttachment obj) {
-            return obj.Name;
-        }
+        protected override string TitleStringWithMask(string mask, FileAttachment obj) => obj.Name;
     }
 }

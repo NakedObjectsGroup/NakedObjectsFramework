@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     /// <summary>
-    ///     This is only used at by the custom 'SdmNotCountedAttribute' 
+    ///     This is only used at by the custom 'SdmNotCountedAttribute'
     /// </summary>
     [Serializable]
     public sealed class NotCountedFacet : MarkerFacetAbstract, INotCountedFacet {

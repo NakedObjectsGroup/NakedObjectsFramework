@@ -22,38 +22,18 @@ namespace NakedObjects.Meta.Facet {
 
         #region IHiddenFacet Members
 
-        public string HiddenReason(INakedObjectAdapter target) {
-            if (Value == WhenTo.Always) {
-                return Resources.NakedObjects.AlwaysHidden;
-            }
+        public string HiddenReason(INakedObjectAdapter target) =>
+            Value switch {
+                WhenTo.Always => Resources.NakedObjects.AlwaysHidden,
+                WhenTo.Never => null,
+                WhenTo.UntilPersisted when target != null && target.ResolveState.IsTransient() => Resources.NakedObjects.HiddenUntilPersisted,
+                WhenTo.OncePersisted when target != null && target.ResolveState.IsPersistent() => Resources.NakedObjects.HiddenOncePersisted,
+                _ => null
+            };
 
-            if (Value == WhenTo.Never) {
-                return null;
-            }
+        public string Hides(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) => HiddenReason(ic.Target);
 
-            // remaining tests depend on target in question.
-            if (target == null) {
-                return null;
-            }
-
-            if (Value == WhenTo.UntilPersisted) {
-                return target.ResolveState.IsTransient() ? Resources.NakedObjects.HiddenUntilPersisted : null;
-            }
-
-            if (Value == WhenTo.OncePersisted) {
-                return target.ResolveState.IsPersistent() ? Resources.NakedObjects.HiddenOncePersisted : null;
-            }
-
-            return null;
-        }
-
-        public string Hides(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            return HiddenReason(ic.Target);
-        }
-
-        public Exception CreateExceptionFor(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
-            return new HiddenException(ic, Hides(ic, lifecycleManager, manager));
-        }
+        public Exception CreateExceptionFor(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) => new HiddenException(ic, Hides(ic, lifecycleManager, manager));
 
         #endregion
     }

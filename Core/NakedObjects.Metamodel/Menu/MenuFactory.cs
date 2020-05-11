@@ -19,19 +19,13 @@ namespace NakedObjects.Meta.Menu {
 
         #endregion
 
-        public MenuFactory(IMetamodelBuilder metamodel) {
-            this.metamodel = metamodel;
-        }
+        public MenuFactory(IMetamodelBuilder metamodel) => this.metamodel = metamodel;
 
         #region IMenuFactory Members
 
-        public IMenu NewMenu<T>(bool addAllActions = false, string name = null) {
-            return new MenuImpl(metamodel, typeof(T), addAllActions, name);
-        }
+        public IMenu NewMenu<T>(bool addAllActions = false, string name = null) => new MenuImpl(metamodel, typeof(T), addAllActions, name);
 
-        public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) {
-            return new MenuImpl(metamodel, type, addAllActions, name);
-        }
+        public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) => new MenuImpl(metamodel, type, addAllActions, name);
 
         #endregion
     }

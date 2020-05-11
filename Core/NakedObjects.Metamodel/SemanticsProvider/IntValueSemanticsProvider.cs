@@ -31,15 +31,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IIntegerValueFacet Members
 
-        public int IntegerValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<int>();
-        }
+        public int IntegerValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<int>();
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(int);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(int);
 
         protected override int DoParse(string entry) {
             try {
@@ -53,28 +49,16 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override int DoParseInvariant(string entry) {
-            return int.Parse(entry, CultureInfo.InvariantCulture);
-        }
+        protected override int DoParseInvariant(string entry) => int.Parse(entry, CultureInfo.InvariantCulture);
 
-        protected override string GetInvariantString(int obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(int obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override string TitleStringWithMask(string mask, int value) {
-            return value.ToString(mask);
-        }
+        protected override string TitleStringWithMask(string mask, int value) => value.ToString(mask);
 
-        protected override string DoEncode(int obj) {
-            return obj.ToString("G", CultureInfo.InvariantCulture);
-        }
+        protected override string DoEncode(int obj) => obj.ToString("G", CultureInfo.InvariantCulture);
 
-        protected override int DoRestore(string data) {
-            return int.Parse(data, CultureInfo.InvariantCulture);
-        }
+        protected override int DoRestore(string data) => int.Parse(data, CultureInfo.InvariantCulture);
 
-        public override string ToString() {
-            return "IntAdapter: ";
-        }
+        public override string ToString() => "IntAdapter: ";
     }
 }

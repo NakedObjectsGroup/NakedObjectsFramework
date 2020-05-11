@@ -13,9 +13,8 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     public abstract class SingleIntValueFacetAbstract : FacetAbstract, ISingleIntValueFacet {
         protected SingleIntValueFacetAbstract(Type facetType, ISpecification holder, int valueInt)
-            : base(facetType, holder) {
-            this.Value = valueInt;
-        }
+            : base(facetType, holder) =>
+            Value = valueInt;
 
         #region ISingleIntValueFacet Members
 

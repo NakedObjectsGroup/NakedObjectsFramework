@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -39,8 +38,8 @@ namespace NakedObjects.Meta.Adapter {
             this.className = className;
             name = fieldName;
             parameterTypes = parameterTypeNames;
-            this.MemberParameterNames = parameterNames;
-            this.IsField = isField;
+            MemberParameterNames = parameterNames;
+            IsField = isField;
         }
 
         #region IIdentifier Members
@@ -57,29 +56,19 @@ namespace NakedObjects.Meta.Adapter {
 
         public virtual string ToIdentityString(IdentifierDepth depth) {
             Assert.AssertTrue(depth >= IdentifierDepth.Class && depth <= IdentifierDepth.Parms);
-            switch (depth) {
-                case IdentifierDepth.Class:
-                    return ToClassIdentityString();
-                case IdentifierDepth.ClassName:
-                    return ToClassAndNameIdentityString();
-                case IdentifierDepth.ClassNameParams:
-                    return ToFullIdentityString();
-                case IdentifierDepth.Name:
-                    return ToNameIdentityString();
-                case IdentifierDepth.Parms:
-                    return ToParmsIdentityString();
-            }
-
-            return null;
+            return depth switch {
+                IdentifierDepth.Class => ToClassIdentityString(),
+                IdentifierDepth.ClassName => ToClassAndNameIdentityString(),
+                IdentifierDepth.ClassNameParams => ToFullIdentityString(),
+                IdentifierDepth.Name => ToNameIdentityString(),
+                IdentifierDepth.Parms => ToParmsIdentityString(),
+                _ => null
+            };
         }
 
-        public virtual string ToIdentityStringWithCheckType(IdentifierDepth depth, CheckType checkType) {
-            return ToIdentityString(depth) + ":" + checkType;
-        }
+        public virtual string ToIdentityStringWithCheckType(IdentifierDepth depth, CheckType checkType) => $"{ToIdentityString(depth)}:{checkType}";
 
-        public int CompareTo(object o2) {
-            return string.CompareOrdinal(ToString(), o2.ToString());
-        }
+        public int CompareTo(object o2) => string.CompareOrdinal(ToString(), o2.ToString());
 
         #endregion
 
@@ -90,18 +79,14 @@ namespace NakedObjects.Meta.Adapter {
                 }
 
                 if (type.Name.StartsWith("Nullable")) {
-                    return type.GetGenericArguments()[0].FullName + "?";
+                    return $"{type.GetGenericArguments()[0].FullName}?";
                 }
             }
 
             return type.FullName;
         }
 
-        private static string[] ToParameterStringArray(Type[] fromArray) {
-            var parameters = new List<string>();
-            fromArray.ForEach(x => parameters.Add(FullName(x)));
-            return parameters.ToArray();
-        }
+        private static string[] ToParameterStringArray(Type[] fromArray) => fromArray.Select(FullName).ToArray();
 
         private static bool Equals(string[] a, string[] b) {
             if (a == null && b == null) {
@@ -120,23 +105,17 @@ namespace NakedObjects.Meta.Adapter {
             return !b.Where((t, i) => !string.Equals(a[i], t)).Any();
         }
 
-        private string ToClassIdentityString() {
-            return className;
-        }
+        private string ToClassIdentityString() => className;
 
-        private string ToNameIdentityString() {
-            return name;
-        }
+        private string ToNameIdentityString() => name;
 
-        private string ToClassAndNameIdentityString() {
-            return ToClassIdentityString() + "#" + name;
-        }
+        private string ToClassAndNameIdentityString() => $"{ToClassIdentityString()}#{name}";
 
         private string ToParmsIdentityString() {
             var str = new StringBuilder();
             if (!IsField) {
                 str.Append('(');
-                for (int i = 0; i < parameterTypes.Length; i++) {
+                for (var i = 0; i < parameterTypes.Length; i++) {
                     if (i > 0) {
                         str.Append(",");
                     }
@@ -168,10 +147,10 @@ namespace NakedObjects.Meta.Adapter {
 
         public static IdentifierImpl FromIdentityString(IMetamodel metamodel, string asString) {
             Assert.AssertNotNull(asString);
-            int indexOfHash = asString.IndexOf("#", StringComparison.InvariantCulture);
-            int indexOfOpenBracket = asString.IndexOf("(", StringComparison.InvariantCulture);
-            int indexOfCloseBracket = asString.IndexOf(")", StringComparison.InvariantCulture);
-            string className = asString.Substring(0, (indexOfHash == -1 ? asString.Length : indexOfHash) - 0);
+            var indexOfHash = asString.IndexOf("#", StringComparison.InvariantCulture);
+            var indexOfOpenBracket = asString.IndexOf("(", StringComparison.InvariantCulture);
+            var indexOfCloseBracket = asString.IndexOf(")", StringComparison.InvariantCulture);
+            var className = asString.Substring(0, (indexOfHash == -1 ? asString.Length : indexOfHash) - 0);
             if (indexOfHash == -1 || indexOfHash == asString.Length - 1) {
                 return new IdentifierImpl(className);
             }
@@ -183,27 +162,29 @@ namespace NakedObjects.Meta.Adapter {
             }
 
             name = asString.Substring(indexOfHash + 1, indexOfOpenBracket - (indexOfHash + 1));
-            string allParms = asString.Substring(indexOfOpenBracket + 1, indexOfCloseBracket - (indexOfOpenBracket + 1)).Trim();
-            string[] parms = allParms.Length > 0 ? allParms.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries) : new string[] { };
+            var allParms = asString.Substring(indexOfOpenBracket + 1, indexOfCloseBracket - (indexOfOpenBracket + 1)).Trim();
+            var parms = allParms.Length > 0 ? allParms.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries) : new string[] { };
             return new IdentifierImpl(className, name, parms);
         }
 
-        #region Object overrides 
+        #region Object overrides
 
         public override bool Equals(object obj) {
             if (this == obj) {
                 return true;
             }
 
-            var other = obj as IdentifierImpl;
-            return other != null && string.Equals(other.className, className) && string.Equals(other.name, name) && Equals(other.parameterTypes, parameterTypes);
+            return obj is IdentifierImpl other &&
+                   string.Equals(other.className, className) &&
+                   string.Equals(other.name, name) &&
+                   Equals(other.parameterTypes, parameterTypes);
         }
 
         public override string ToString() {
             if (asString == null) {
                 var str = new StringBuilder();
                 str.Append(className).Append('#').Append(name).Append('(');
-                for (int i = 0; i < parameterTypes.Length; i++) {
+                for (var i = 0; i < parameterTypes.Length; i++) {
                     if (i > 0) {
                         str.Append(", ");
                     }
@@ -218,9 +199,7 @@ namespace NakedObjects.Meta.Adapter {
             return asString;
         }
 
-        public override int GetHashCode() {
-            return (className + name + parameterTypes.Aggregate("", (s, t) => s + t)).GetHashCode();
-        }
+        public override int GetHashCode() => (className + name + parameterTypes.Aggregate("", (s, t) => $"{s}{t}")).GetHashCode();
 
         #endregion
     }

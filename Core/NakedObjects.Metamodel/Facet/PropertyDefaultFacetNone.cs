@@ -20,9 +20,7 @@ namespace NakedObjects.Meta.Facet {
         /// <summary>
         ///     Provides a default of <c>null</c>
         /// </summary>
-        public override object GetDefault(INakedObjectAdapter inObjectAdapter) {
-            return null;
-        }
+        public override object GetDefault(INakedObjectAdapter inObjectAdapter) => null;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

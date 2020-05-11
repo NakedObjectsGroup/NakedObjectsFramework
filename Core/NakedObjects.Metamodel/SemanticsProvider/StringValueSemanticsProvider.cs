@@ -30,55 +30,27 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IStringValueFacet Members
 
-        public string StringValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<string>();
-        }
+        public string StringValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<string>();
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(string);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(string);
 
-        protected override string DoParse(string entry) {
-            if (entry.Trim().Equals("")) {
-                return null;
-            }
+        protected override string DoParse(string entry) => entry.Trim().Equals("") ? null : entry;
 
-            return entry;
-        }
+        protected override string DoParseInvariant(string entry) => entry;
 
-        protected override string DoParseInvariant(string entry) {
-            return entry;
-        }
-
-        protected override string GetInvariantString(string obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(string obj) => obj.ToString(CultureInfo.InvariantCulture);
 
         protected override string DoEncode(string obj) {
-            string text = obj;
-            if (text.Equals("NULL") || IsEscaped(text)) {
-                return EscapeText(text);
-            }
-
-            return text;
+            var text = obj;
+            return text.Equals("NULL") || IsEscaped(text) ? EscapeText(text) : text;
         }
 
-        protected override string DoRestore(string data) {
-            if (IsEscaped(data)) {
-                return data.Substring(1);
-            }
+        protected override string DoRestore(string data) => IsEscaped(data) ? data.Substring(1) : data;
 
-            return data;
-        }
+        private static bool IsEscaped(string text) => text.StartsWith("/");
 
-        private static bool IsEscaped(string text) {
-            return text.StartsWith("/");
-        }
-
-        private static string EscapeText(string text) {
-            return "/" + text;
-        }
+        private static string EscapeText(string text) => $"/{text}";
     }
 }

@@ -31,19 +31,13 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IUnsignedIntegerValueFacet Members
 
-        public uint UnsignedIntegerValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<uint>();
-        }
+        public uint UnsignedIntegerValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<uint>();
 
         #endregion
 
-        public object GetDefault(INakedObjectAdapter inObjectAdapter) {
-            return DefaultValueConst;
-        }
+        public object GetDefault(INakedObjectAdapter inObjectAdapter) => DefaultValueConst;
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(uint);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(uint);
 
         protected override uint DoParse(string entry) {
             try {
@@ -57,28 +51,16 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override uint DoParseInvariant(string entry) {
-            return uint.Parse(entry, CultureInfo.InvariantCulture);
-        }
+        protected override uint DoParseInvariant(string entry) => uint.Parse(entry, CultureInfo.InvariantCulture);
 
-        protected override string GetInvariantString(uint obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(uint obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override string TitleStringWithMask(string mask, uint value) {
-            return value.ToString(mask);
-        }
+        protected override string TitleStringWithMask(string mask, uint value) => value.ToString(mask);
 
-        protected override string DoEncode(uint obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string DoEncode(uint obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override uint DoRestore(string data) {
-            return uint.Parse(data, CultureInfo.InvariantCulture);
-        }
+        protected override uint DoRestore(string data) => uint.Parse(data, CultureInfo.InvariantCulture);
 
-        public override string ToString() {
-            return "UIntAdapter: ";
-        }
+        public override string ToString() => "UIntAdapter: ";
     }
 }

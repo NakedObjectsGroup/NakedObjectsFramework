@@ -13,9 +13,8 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class EagerlyFacet : FacetAbstract, IEagerlyFacet {
         public EagerlyFacet(EagerlyAttribute.Do what, ISpecification holder)
-            : base(Type, holder) {
+            : base(Type, holder) =>
             What = what;
-        }
 
         public static Type Type => typeof(IEagerlyFacet);
 

@@ -31,15 +31,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IDecimalValueFacet Members
 
-        public decimal DecimalValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<decimal>();
-        }
+        public decimal DecimalValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<decimal>();
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(decimal);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(decimal);
 
         protected override decimal DoParse(string entry) {
             try {
@@ -53,28 +49,16 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override decimal DoParseInvariant(string entry) {
-            return decimal.Parse(entry, CultureInfo.InvariantCulture);
-        }
+        protected override decimal DoParseInvariant(string entry) => decimal.Parse(entry, CultureInfo.InvariantCulture);
 
-        protected override string GetInvariantString(decimal obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(decimal obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override string TitleStringWithMask(string mask, decimal value) {
-            return value.ToString(mask);
-        }
+        protected override string TitleStringWithMask(string mask, decimal value) => value.ToString(mask);
 
-        protected override string DoEncode(decimal obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string DoEncode(decimal obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override decimal DoRestore(string data) {
-            return decimal.Parse(data, CultureInfo.InvariantCulture);
-        }
+        protected override decimal DoRestore(string data) => decimal.Parse(data, CultureInfo.InvariantCulture);
 
-        public override string ToString() {
-            return "DecimalAdapter: ";
-        }
+        public override string ToString() => "DecimalAdapter: ";
     }
 }

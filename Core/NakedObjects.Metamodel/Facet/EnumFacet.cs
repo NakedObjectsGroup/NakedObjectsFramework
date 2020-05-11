@@ -19,44 +19,31 @@ namespace NakedObjects.Meta.Facet {
         private readonly Type typeOfEnum;
 
         public EnumFacet(ISpecification holder, Type typeOfEnum)
-            : base(typeof(IEnumFacet), holder) {
+            : base(typeof(IEnumFacet), holder) =>
             this.typeOfEnum = typeOfEnum;
-        }
 
         #region IEnumFacet Members
 
-        public object[] GetChoices(INakedObjectAdapter inObjectAdapter) {
-            return Enum.GetNames(typeOfEnum).OrderBy(s => s, new EnumNameComparer(this)).Select(s => Enum.Parse(typeOfEnum, s)).ToArray();
-        }
+        public object[] GetChoices(INakedObjectAdapter inObjectAdapter) => Enum.GetNames(typeOfEnum).OrderBy(s => s, new EnumNameComparer(this)).Select(s => Enum.Parse(typeOfEnum, s)).ToArray();
 
-        public object[] GetChoices(INakedObjectAdapter inObjectAdapter, object[] choiceValues) {
-            return choiceValues.Select(o => Enum.Parse(typeOfEnum, o.ToString())).ToArray();
-        }
+        public object[] GetChoices(INakedObjectAdapter inObjectAdapter, object[] choiceValues) => choiceValues.Select(o => Enum.Parse(typeOfEnum, o.ToString())).ToArray();
 
-        public string GetTitle(INakedObjectAdapter inObjectAdapter) {
-            return ToDisplayName(inObjectAdapter.Object.ToString());
-        }
+        public string GetTitle(INakedObjectAdapter inObjectAdapter) => ToDisplayName(inObjectAdapter.Object.ToString());
 
         #endregion
 
-        private string ToDisplayName(string enumName) {
-            return NameUtils.NaturalName(Enum.Parse(typeOfEnum, enumName).ToString());
-        }
+        private string ToDisplayName(string enumName) => NameUtils.NaturalName(Enum.Parse(typeOfEnum, enumName).ToString());
 
         #region Nested type: EnumNameComparer
 
         private class EnumNameComparer : IComparer<string> {
             private readonly EnumFacet facet;
 
-            public EnumNameComparer(EnumFacet facet) {
-                this.facet = facet;
-            }
+            public EnumNameComparer(EnumFacet facet) => this.facet = facet;
 
             #region IComparer<string> Members
 
-            public int Compare(string x, string y) {
-                return string.Compare(facet.ToDisplayName(x), facet.ToDisplayName(y), StringComparison.CurrentCulture);
-            }
+            public int Compare(string x, string y) => string.Compare(facet.ToDisplayName(x), facet.ToDisplayName(y), StringComparison.CurrentCulture);
 
             #endregion
         }

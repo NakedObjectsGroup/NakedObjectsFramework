@@ -15,19 +15,14 @@ namespace NakedObjects.Meta.Facet {
         private readonly object value;
 
         public PropertyDefaultFacetAnnotation(object value, ISpecification holder)
-            : base(holder) {
+            : base(holder) =>
             this.value = value;
-        }
 
         public override bool CanAlwaysReplace => false;
 
-        public override object GetDefault(INakedObjectAdapter inObjectAdapter) {
-            return value;
-        }
+        public override object GetDefault(INakedObjectAdapter inObjectAdapter) => value;
 
-        protected override string ToStringValues() {
-            return "Value=" + value;
-        }
+        protected override string ToStringValues() => $"Value={value}";
     }
 
     // Copyright (c) Naked Objects Group Ltd.

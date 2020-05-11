@@ -32,13 +32,9 @@ namespace NakedObjects.Meta.Facet {
 
         #region IDataTypeFacet Members
 
-        public DataType DataType() {
-            return dataType;
-        }
+        public DataType DataType() => dataType;
 
-        public string CustomDataType() {
-            return customDataType;
-        }
+        public string CustomDataType() => customDataType;
 
         #endregion
     }

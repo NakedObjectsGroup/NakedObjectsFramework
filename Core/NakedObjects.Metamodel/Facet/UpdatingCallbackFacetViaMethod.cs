@@ -29,31 +29,22 @@ namespace NakedObjects.Meta.Facet {
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return method;
-        }
+        public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return (tgt, p) => {
+        public Func<object, object[], object> GetMethodDelegate() =>
+            (tgt, p) => {
                 updatingDelegate(tgt);
                 return null;
             };
-        }
 
         #endregion
 
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
-            updatingDelegate(nakedObjectAdapter.GetDomainObject());
-        }
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) => updatingDelegate(nakedObjectAdapter.GetDomainObject());
 
-        protected override string ToStringValues() {
-            return "method=" + method;
-        }
+        protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-            updatingDelegate = DelegateUtils.CreateCallbackDelegate(method);
-        }
+        private void OnDeserialized(StreamingContext context) => updatingDelegate = DelegateUtils.CreateCallbackDelegate(method);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

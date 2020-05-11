@@ -17,9 +17,8 @@ namespace NakedObjects.Meta.SpecImmutable {
         private readonly IObjectSpecImmutable returnSpec;
 
         protected AssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable returnSpec)
-            : base(identifier) {
+            : base(identifier) =>
             this.returnSpec = returnSpec;
-        }
 
         #region IAssociationSpecImmutable Members
 
@@ -32,9 +31,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         #region ISerializable
 
         // The special constructor is used to deserialize values. 
-        protected AssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) {
-            returnSpec = info.GetValue<IObjectSpecImmutable>("returnSpec");
-        }
+        protected AssociationSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) => returnSpec = info.GetValue<IObjectSpecImmutable>("returnSpec");
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context) {
             info.AddValue<IObjectSpecImmutable>("returnSpec", returnSpec);

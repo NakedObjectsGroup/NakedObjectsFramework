@@ -31,15 +31,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IUnsignedLongValueFacet Members
 
-        public ulong UnsignedLongValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<ulong>();
-        }
+        public ulong UnsignedLongValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<ulong>();
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(ulong);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(ulong);
 
         protected override ulong DoParse(string entry) {
             try {
@@ -53,28 +49,16 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override ulong DoParseInvariant(string entry) {
-            return ulong.Parse(entry, CultureInfo.InvariantCulture);
-        }
+        protected override ulong DoParseInvariant(string entry) => ulong.Parse(entry, CultureInfo.InvariantCulture);
 
-        protected override string GetInvariantString(ulong obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(ulong obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override string TitleStringWithMask(string mask, ulong value) {
-            return value.ToString(mask);
-        }
+        protected override string TitleStringWithMask(string mask, ulong value) => value.ToString(mask);
 
-        protected override string DoEncode(ulong obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string DoEncode(ulong obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override ulong DoRestore(string data) {
-            return ulong.Parse(data, CultureInfo.InvariantCulture);
-        }
+        protected override ulong DoRestore(string data) => ulong.Parse(data, CultureInfo.InvariantCulture);
 
-        public override string ToString() {
-            return "ULongAdapter: ";
-        }
+        public override string ToString() => "ULongAdapter: ";
     }
 }

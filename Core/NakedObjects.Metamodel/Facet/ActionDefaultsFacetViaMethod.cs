@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 
-[assembly:InternalsVisibleTo("NakedObjects.ParallelReflector.Test")]
+[assembly: InternalsVisibleTo("NakedObjects.ParallelReflector.Test")]
 [assembly: InternalsVisibleTo("NakedObjects.Reflector.Test")]
 
 namespace NakedObjects.Meta.Facet {
@@ -34,13 +34,9 @@ namespace NakedObjects.Meta.Facet {
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return method;
-        }
+        public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return MethodDelegate;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => MethodDelegate;
 
         #endregion
 
@@ -51,14 +47,10 @@ namespace NakedObjects.Meta.Facet {
             return new Tuple<object, TypeOfDefaultValue>(defaultValue, TypeOfDefaultValue.Explicit);
         }
 
-        protected override string ToStringValues() {
-            return "method=" + method;
-        }
+        protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-            MethodDelegate = DelegateUtils.CreateDelegate(method);
-        }
+        private void OnDeserialized(StreamingContext context) => MethodDelegate = DelegateUtils.CreateDelegate(method);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

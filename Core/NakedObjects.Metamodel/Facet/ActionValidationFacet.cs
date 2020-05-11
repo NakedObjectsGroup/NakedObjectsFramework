@@ -32,13 +32,9 @@ namespace NakedObjects.Meta.Facet {
 
         #region IActionValidationFacet Members
 
-        public string Invalidates(IInteractionContext ic) {
-            return InvalidReason(ic.Target, ic.ProposedArguments);
-        }
+        public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.ProposedArguments);
 
-        public Exception CreateExceptionFor(IInteractionContext ic) {
-            return new ActionArgumentsInvalidException(ic, Invalidates(ic));
-        }
+        public Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
 
         public string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter[] proposedArguments) {
             if (methodDelegate != null) {
@@ -54,24 +50,16 @@ namespace NakedObjects.Meta.Facet {
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return method;
-        }
+        public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return methodDelegate;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
 
         #endregion
 
-        protected override string ToStringValues() {
-            return "method=" + method;
-        }
+        protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-            methodDelegate = DelegateUtils.CreateDelegate(method);
-        }
+        private void OnDeserialized(StreamingContext context) => methodDelegate = DelegateUtils.CreateDelegate(method);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

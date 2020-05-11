@@ -32,27 +32,18 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region ICharValueFacet Members
 
-        public char CharValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<char>();
-        }
+        public char CharValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<char>();
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == AdaptedType;
-        }
+        public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
-        public override object ParseTextEntry(string entry) {
-            if (entry == null) {
-                throw new ArgumentException();
-            }
-
-            if (entry.Equals("")) {
-                return null;
-            }
-
-            return DoParse(entry);
-        }
+        public override object ParseTextEntry(string entry) =>
+            entry switch {
+                null => throw new ArgumentException(),
+                "" => null,
+                _ => DoParse(entry)
+            };
 
         protected override char DoParse(string entry) {
             try {
@@ -63,28 +54,16 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override char DoParseInvariant(string entry) {
-            return char.Parse(entry);
-        }
+        protected override char DoParseInvariant(string entry) => char.Parse(entry);
 
-        protected override string GetInvariantString(char obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(char obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override string TitleStringWithMask(string mask, char value) {
-            return value.ToString(Thread.CurrentThread.CurrentCulture);
-        }
+        protected override string TitleStringWithMask(string mask, char value) => value.ToString(Thread.CurrentThread.CurrentCulture);
 
-        protected override string DoEncode(char obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string DoEncode(char obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override char DoRestore(string data) {
-            return char.Parse(data);
-        }
+        protected override char DoRestore(string data) => char.Parse(data);
 
-        public override string ToString() {
-            return "CharAdapter: ";
-        }
+        public override string ToString() => "CharAdapter: ";
     }
 }

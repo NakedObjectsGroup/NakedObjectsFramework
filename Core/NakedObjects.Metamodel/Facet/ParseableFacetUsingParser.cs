@@ -22,9 +22,8 @@ namespace NakedObjects.Meta.Facet {
         private readonly IValueSemanticsProvider<T> parser;
 
         public ParseableFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)
-            : base(typeof(IParseableFacet), holder) {
+            : base(typeof(IParseableFacet), holder) =>
             this.parser = parser;
-        }
 
         #region IParseableFacet Members
 
@@ -33,12 +32,12 @@ namespace NakedObjects.Meta.Facet {
                 throw new ArgumentException(Log.LogAndReturn(Resources.NakedObjects.MissingEntryError));
             }
 
-            object parsed = parser.ParseTextEntry(entry);
+            var parsed = parser.ParseTextEntry(entry);
             return manager.CreateAdapter(parsed, null, null);
         }
 
         public INakedObjectAdapter ParseInvariant(string text, INakedObjectManager manager) {
-            object parsed = parser.ParseInvariant(text);
+            var parsed = parser.ParseInvariant(text);
             return manager.CreateAdapter(parsed, null, null);
         }
 
@@ -54,8 +53,6 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        protected override string ToStringValues() {
-            return parser.ToString();
-        }
+        protected override string ToStringValues() => parser.ToString();
     }
 }

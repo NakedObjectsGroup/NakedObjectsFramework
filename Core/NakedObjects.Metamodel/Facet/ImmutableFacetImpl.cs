@@ -16,30 +16,14 @@ namespace NakedObjects.Meta.Facet {
         protected ImmutableFacetImpl(WhenTo when, ISpecification holder)
             : base(when, holder) { }
 
-        public override string DisabledReason(INakedObjectAdapter target) {
-            if (Value == WhenTo.Always) {
-                return string.Format(Resources.NakedObjects.ImmutableMessage, target.Spec.SingularName);
-            }
-
-            if (Value == WhenTo.Never) {
-                return null;
-            }
-
-            // remaining tests depend on target in question.
-            if (target == null) {
-                return null;
-            }
-
-            if (Value == WhenTo.UntilPersisted) {
-                return target.ResolveState.IsTransient() ? string.Format(Resources.NakedObjects.ImmutableUntilPersistedMessage, target.Spec.SingularName) : null;
-            }
-
-            if (Value == WhenTo.OncePersisted) {
-                return target.ResolveState.IsPersistent() ? string.Format(Resources.NakedObjects.ImmutableOncePersistedMessage, target.Spec.SingularName) : null;
-            }
-
-            return null;
-        }
+        public override string DisabledReason(INakedObjectAdapter target) =>
+            Value switch {
+                WhenTo.Always => string.Format(Resources.NakedObjects.ImmutableMessage, target.Spec.SingularName),
+                WhenTo.Never => null,
+                WhenTo.UntilPersisted when target != null && target.ResolveState.IsTransient() => string.Format(Resources.NakedObjects.ImmutableUntilPersistedMessage, target.Spec.SingularName),
+                WhenTo.OncePersisted when target != null && target.ResolveState.IsPersistent() => string.Format(Resources.NakedObjects.ImmutableOncePersistedMessage, target.Spec.SingularName),
+                _ => null
+            };
     }
 
     // Copyright (c) Naked Objects Group Ltd.

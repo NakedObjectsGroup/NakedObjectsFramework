@@ -31,32 +31,20 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IBooleanValueFacet Members
 
-        public bool IsSet(INakedObjectAdapter nakedObjectAdapter) {
-            if (!nakedObjectAdapter.Exists()) {
-                return false;
-            }
+        public bool IsSet(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.Exists() && nakedObjectAdapter.GetDomainObject<bool>();
 
-            return nakedObjectAdapter.GetDomainObject<bool>();
-        }
+        public void Reset(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.ReplacePoco(false);
 
-        public void Reset(INakedObjectAdapter nakedObjectAdapter) {
-            nakedObjectAdapter.ReplacePoco(false);
-        }
-
-        public void Set(INakedObjectAdapter nakedObjectAdapter) {
-            nakedObjectAdapter.ReplacePoco(true);
-        }
+        public void Set(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.ReplacePoco(true);
 
         public void Toggle(INakedObjectAdapter nakedObjectAdapter) {
-            bool newValue = !(bool) nakedObjectAdapter.Object;
+            var newValue = !(bool) nakedObjectAdapter.Object;
             nakedObjectAdapter.ReplacePoco(newValue);
         }
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == AdaptedType;
-        }
+        public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
         protected override bool DoParse(string entry) {
             if ("true".StartsWith(entry.ToLower())) {
@@ -70,31 +58,22 @@ namespace NakedObjects.Meta.SemanticsProvider {
             throw new InvalidEntryException(string.Format(Resources.NakedObjects.NotALogical, entry));
         }
 
-        protected override bool DoParseInvariant(string entry) {
-            return bool.Parse(entry);
-        }
+        protected override bool DoParseInvariant(string entry) => bool.Parse(entry);
 
-        protected override string GetInvariantString(bool obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(bool obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override string DoEncode(bool obj) {
-            return obj ? "T" : "F";
-        }
+        protected override string DoEncode(bool obj) => obj ? "T" : "F";
 
         protected override bool DoRestore(string data) {
             if (data.Length != 1) {
                 throw new InvalidDataException(string.Format(Resources.NakedObjects.InvalidLogicalLength, data.Length));
             }
 
-            switch (data[0]) {
-                case 'T':
-                    return true;
-                case 'F':
-                    return false;
-                default:
-                    throw new InvalidDataException(string.Format(Resources.NakedObjects.InvalidLogicalType, data[0]));
-            }
+            return data[0] switch {
+                'T' => true,
+                'F' => false,
+                _ => throw new InvalidDataException(string.Format(Resources.NakedObjects.InvalidLogicalType, data[0]))
+            };
         }
     }
 }

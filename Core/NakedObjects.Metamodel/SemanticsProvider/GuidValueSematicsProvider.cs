@@ -30,15 +30,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IGuidValueFacet Members
 
-        public Guid GuidValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<Guid>();
-        }
+        public Guid GuidValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<Guid>();
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(Guid);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(Guid);
 
         protected override Guid DoParse(string entry) {
             try {
@@ -52,28 +48,16 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override Guid DoParseInvariant(string entry) {
-            return Guid.Parse(entry);
-        }
+        protected override Guid DoParseInvariant(string entry) => Guid.Parse(entry);
 
-        protected override string GetInvariantString(Guid obj) {
-            return obj.ToString();
-        }
+        protected override string GetInvariantString(Guid obj) => obj.ToString();
 
-        protected override string TitleStringWithMask(string mask, Guid value) {
-            return value.ToString(mask);
-        }
+        protected override string TitleStringWithMask(string mask, Guid value) => value.ToString(mask);
 
-        protected override string DoEncode(Guid obj) {
-            return obj.ToString();
-        }
+        protected override string DoEncode(Guid obj) => obj.ToString();
 
-        protected override Guid DoRestore(string data) {
-            return new Guid(data);
-        }
+        protected override Guid DoRestore(string data) => new Guid(data);
 
-        public override string ToString() {
-            return "GuidAdapter: ";
-        }
+        public override string ToString() => "GuidAdapter: ";
     }
 }

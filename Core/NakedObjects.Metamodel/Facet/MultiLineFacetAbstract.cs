@@ -31,8 +31,6 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        protected override string ToStringValues() {
-            return $"lines={numberOfLines}, width={width}";
-        }
+        protected override string ToStringValues() => $"lines={numberOfLines}, width={width}";
     }
 }

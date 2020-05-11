@@ -18,9 +18,8 @@ namespace NakedObjects.Meta.Facet {
         private readonly MethodInfo method;
 
         public MenuFacetViaMethod(MethodInfo method, ISpecification holder)
-            : base(holder) {
+            : base(holder) =>
             this.method = method;
-        }
 
         //Creates a menu based on the definition in the object's Menu method
         public override void CreateMenu(IMetamodelBuilder metamodel) {

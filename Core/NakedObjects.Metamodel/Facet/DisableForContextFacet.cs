@@ -20,7 +20,7 @@ namespace NakedObjects.Meta.Facet {
     public sealed class DisableForContextFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
         private readonly MethodInfo method;
 
-        [field: NonSerialized] private Func<object, Object[], object> methodDelegate;
+        [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
         public DisableForContextFacet(MethodInfo method, ISpecification holder)
             : base(typeof(IDisableForContextFacet), holder) {
@@ -30,41 +30,26 @@ namespace NakedObjects.Meta.Facet {
 
         #region IDisableForContextFacet Members
 
-        public string Disables(IInteractionContext ic) {
-            INakedObjectAdapter target = ic.Target;
-            return DisabledReason(target);
-        }
+        public string Disables(IInteractionContext ic) => DisabledReason(ic.Target);
 
-        public Exception CreateExceptionFor(IInteractionContext ic) {
-            return new DisabledException(ic, Disables(ic));
-        }
+        public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
-        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter) {
-            return (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { });
-        }
+        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { });
 
         #endregion
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return method;
-        }
+        public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return methodDelegate;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
 
         #endregion
 
-        protected override string ToStringValues() {
-            return "method=" + method;
-        }
+        protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-            methodDelegate = DelegateUtils.CreateDelegate(method);
-        }
+        private void OnDeserialized(StreamingContext context) => methodDelegate = DelegateUtils.CreateDelegate(method);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

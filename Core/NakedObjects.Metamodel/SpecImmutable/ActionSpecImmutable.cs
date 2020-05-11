@@ -20,8 +20,8 @@ namespace NakedObjects.Meta.SpecImmutable {
         public ActionSpecImmutable(IIdentifier identifier, ITypeSpecImmutable ownerSpec,
                                    IActionParameterSpecImmutable[] parameters)
             : base(identifier) {
-            this.OwnerSpec = ownerSpec;
-            this.Parameters = parameters;
+            OwnerSpec = ownerSpec;
+            Parameters = parameters;
         }
 
         #region IActionSpecImmutable Members
@@ -34,17 +34,12 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public override IObjectSpecImmutable ElementSpec => GetFacet<IActionInvocationFacet>().ElementType;
 
-        public bool IsFinderMethod {
-            get {
-                return HasReturn() &&
-                       ContainsFacet(typeof(IFinderActionFacet)) &&
-                       Parameters.All(p => p.Specification.IsParseable || p.IsChoicesEnabled || p.IsMultipleChoicesEnabled);
-            }
-        }
+        public bool IsFinderMethod =>
+            HasReturn() &&
+            ContainsFacet(typeof(IFinderActionFacet)) &&
+            Parameters.All(p => p.Specification.IsParseable || p.IsChoicesEnabled || p.IsMultipleChoicesEnabled);
 
-        public bool IsFinderMethodFor(IObjectSpecImmutable spec) {
-            return IsFinderMethod && (ReturnSpec.IsOfType(spec) || (ReturnSpec.IsCollection && ElementSpec.IsOfType(spec)));
-        }
+        public bool IsFinderMethodFor(IObjectSpecImmutable spec) => IsFinderMethod && (ReturnSpec.IsOfType(spec) || ReturnSpec.IsCollection && ElementSpec.IsOfType(spec));
 
         public bool IsContributedMethod => OwnerSpec is IServiceSpecImmutable && Parameters.Any() &&
                                            ContainsFacet(typeof(IContributedActionFacet));
@@ -72,9 +67,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #endregion
 
-        private bool HasReturn() {
-            return ReturnSpec != null;
-        }
+        private bool HasReturn() => ReturnSpec != null;
 
         private bool IsContributedTo(IObjectSpecImmutable parmSpec, IObjectSpecImmutable contributeeSpec) {
             var facet = GetFacet<IContributedActionFacet>();

@@ -20,7 +20,7 @@ namespace NakedObjects.Meta.Facet {
         private ISpecification holder;
 
         protected FacetAbstract(Type facetType, ISpecification holder) {
-            this.FacetType = facetType;
+            FacetType = facetType;
             this.holder = holder;
         }
 
@@ -42,8 +42,8 @@ namespace NakedObjects.Meta.Facet {
         #region IFacet Members
 
         public virtual ISpecification Specification {
-            get { return holder; }
-            set { holder = value; }
+            get => holder;
+            set => holder = value;
         }
 
         /// <summary>
@@ -69,44 +69,42 @@ namespace NakedObjects.Meta.Facet {
         #endregion
 
         public override string ToString() {
-            string details = "";
+            var details = "";
             if (typeof(IValidatingInteractionAdvisor).IsAssignableFrom(GetType())) {
                 details += "Validating";
             }
 
             if (typeof(IDisablingInteractionAdvisor).IsAssignableFrom(GetType())) {
-                details += (details.Length > 0 ? ";" : "") + "Disabling";
+                details += $"{(details.Length > 0 ? ";" : "")}Disabling";
             }
 
             if (typeof(IHidingInteractionAdvisor).IsAssignableFrom(GetType())) {
-                details += (details.Length > 0 ? ";" : "") + "Hiding";
+                details += $"{(details.Length > 0 ? ";" : "")}Hiding";
             }
 
             if (!"".Equals(details)) {
-                details = "interaction=" + details + ",";
+                details = $"interaction={details},";
             }
 
             if (GetType() != FacetType) {
-                string sFacetType = FacetType.FullName;
-                details += "type=" + sFacetType.Substring(sFacetType.LastIndexOf('.') + 1);
+                var sFacetType = FacetType.FullName;
+                details += $"type={sFacetType.Substring(sFacetType.LastIndexOf('.') + 1)}";
             }
 
-            string stringValues = ToStringValues();
+            var stringValues = ToStringValues();
             if (!"".Equals(stringValues)) {
                 details += ",";
             }
 
-            string typeName = GetType().FullName;
-            int last = typeName.IndexOf('`');
+            var typeName = GetType().FullName;
+            var last = typeName.IndexOf('`');
             if (last == -1) {
                 last = typeName.Length - 1;
             }
 
-            return typeName.Substring(typeName.LastIndexOf('.', last) + 1) + "[" + details + stringValues + "]";
+            return $"{typeName.Substring(typeName.LastIndexOf('.', last) + 1)}[{details}{stringValues}]";
         }
 
-        protected virtual string ToStringValues() {
-            return "";
-        }
+        protected virtual string ToStringValues() => "";
     }
 }

@@ -22,7 +22,7 @@ namespace NakedObjects.Meta.SpecImmutable {
         public OneToManyAssociationSpecImmutable(IIdentifier name, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec)
             : base(name, returnSpec) {
             defaultElementType = defaultElementSpec.Type;
-            this.OwnerSpec = ownerSpec;
+            OwnerSpec = ownerSpec;
             this.defaultElementSpec = defaultElementSpec;
         }
 
@@ -42,9 +42,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #endregion
 
-        public override string ToString() {
-            return "OneToManyAssociation [name=\"" + Identifier + "\",Type=" + ReturnSpec + " ]";
-        }
+        public override string ToString() => $"OneToManyAssociation [name=\"{Identifier}\",Type={ReturnSpec} ]";
 
         #region ISerializable
 

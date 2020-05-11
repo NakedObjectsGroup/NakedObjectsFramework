@@ -24,55 +24,35 @@ namespace NakedObjects.Meta.Facet {
 
         public override bool IsQueryable => false;
 
-        private static ICollection<T> AsGenericCollection<T>(INakedObjectAdapter collection) {
-            return (ICollection<T>) collection.Object;
-        }
+        private static ICollection<T> AsGenericCollection<T>(INakedObjectAdapter collection) => (ICollection<T>) collection.Object;
 
-        public IEnumerable<INakedObjectAdapter> AsEnumerableInternal<T>(INakedObjectAdapter collection, INakedObjectManager manager) {
-            return AsGenericCollection<T>(collection).Select(arg => manager.CreateAdapter(arg, null, null));
-        }
+        public IEnumerable<INakedObjectAdapter> AsEnumerableInternal<T>(INakedObjectAdapter collection, INakedObjectManager manager) => AsGenericCollection<T>(collection).Select(arg => manager.CreateAdapter(arg, null, null));
 
-        public IQueryable AsQueryableInternal<T>(INakedObjectAdapter collection) {
-            return AsGenericCollection<T>(collection).AsQueryable();
-        }
+        public IQueryable AsQueryableInternal<T>(INakedObjectAdapter collection) => AsGenericCollection<T>(collection).AsQueryable();
 
-        public bool ContainsInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter element) {
-            return AsGenericCollection<T>(collection).Contains((T) element.Object);
-        }
+        public bool ContainsInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter element) => AsGenericCollection<T>(collection).Contains((T) element.Object);
 
-        public INakedObjectAdapter PageInternal<T>(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) {
-            return manager.CreateAdapter(AsGenericCollection<T>(collection).Skip((page - 1) * size).Take(size).ToList(), null, null);
-        }
+        public INakedObjectAdapter PageInternal<T>(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => manager.CreateAdapter(AsGenericCollection<T>(collection).Skip((page - 1) * size).Take(size).ToList(), null, null);
 
         public void InitInternal<T>(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
-            ICollection<T> wrappedCollection = AsGenericCollection<T>(collection);
+            var wrappedCollection = AsGenericCollection<T>(collection);
             IList<T> newData = initData.Select(x => x.GetDomainObject<T>()).ToList();
 
-            List<T> toAdd = newData.Where(obj => !wrappedCollection.Contains(obj)).ToList();
+            var toAdd = newData.Where(obj => !wrappedCollection.Contains(obj)).ToList();
             toAdd.ForEach(wrappedCollection.Add);
 
-            List<T> toRemove = wrappedCollection.Where(obj => !newData.Contains(obj)).ToList();
+            var toRemove = wrappedCollection.Where(obj => !newData.Contains(obj)).ToList();
             toRemove.ForEach(obj => wrappedCollection.Remove(obj));
         }
 
-        public override IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager) {
-            return (IEnumerable<INakedObjectAdapter>) Call("AsEnumerableInternal", collection, collection, manager);
-        }
+        public override IEnumerable<INakedObjectAdapter> AsEnumerable(INakedObjectAdapter collection, INakedObjectManager manager) => (IEnumerable<INakedObjectAdapter>) Call("AsEnumerableInternal", collection, collection, manager);
 
-        public override IQueryable AsQueryable(INakedObjectAdapter collection) {
-            return (IQueryable) Call("AsQueryableInternal", collection, collection);
-        }
+        public override IQueryable AsQueryable(INakedObjectAdapter collection) => (IQueryable) Call("AsQueryableInternal", collection, collection);
 
-        public override bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element) {
-            return (bool) Call("ContainsInternal", collection, collection, element);
-        }
+        public override bool Contains(INakedObjectAdapter collection, INakedObjectAdapter element) => (bool) Call("ContainsInternal", collection, collection, element);
 
-        public override INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) {
-            return (INakedObjectAdapter) Call("PageInternal", collection, page, size, collection, manager, forceEnumerable);
-        }
+        public override INakedObjectAdapter Page(int page, int size, INakedObjectAdapter collection, INakedObjectManager manager, bool forceEnumerable) => (INakedObjectAdapter) Call("PageInternal", collection, page, size, collection, manager, forceEnumerable);
 
-        public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) {
-            Call("InitInternal", collection, collection, initData);
-        }
+        public override void Init(INakedObjectAdapter collection, INakedObjectAdapter[] initData) => Call("InitInternal", collection, collection, initData);
     }
 }

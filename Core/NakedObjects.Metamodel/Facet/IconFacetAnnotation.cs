@@ -15,17 +15,12 @@ namespace NakedObjects.Meta.Facet {
         private readonly string iconName;
 
         public IconFacetAnnotation(string iconName, ISpecification holder)
-            : base(holder) {
+            : base(holder) =>
             this.iconName = iconName;
-        }
 
-        public override string GetIconName() {
-            return iconName;
-        }
+        public override string GetIconName() => iconName;
 
-        public override string GetIconName(INakedObjectAdapter nakedObjectAdapter) {
-            return iconName;
-        }
+        public override string GetIconName(INakedObjectAdapter nakedObjectAdapter) => iconName;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

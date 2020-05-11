@@ -15,19 +15,14 @@ namespace NakedObjects.Meta.Facet {
         private readonly object value;
 
         public ActionDefaultsFacetAnnotation(object value, ISpecification holder)
-            : base(holder) {
+            : base(holder) =>
             this.value = value;
-        }
 
         public override bool CanAlwaysReplace => false;
 
-        public override Tuple<object, TypeOfDefaultValue> GetDefault(INakedObjectAdapter nakedObjectAdapter) {
-            return new Tuple<object, TypeOfDefaultValue>(value, TypeOfDefaultValue.Explicit);
-        }
+        public override Tuple<object, TypeOfDefaultValue> GetDefault(INakedObjectAdapter nakedObjectAdapter) => new Tuple<object, TypeOfDefaultValue>(value, TypeOfDefaultValue.Explicit);
 
-        protected override string ToStringValues() {
-            return "Value=" + value;
-        }
+        protected override string ToStringValues() => $"Value={value}";
     }
 
     // Copyright (c) Naked Objects Group Ltd.

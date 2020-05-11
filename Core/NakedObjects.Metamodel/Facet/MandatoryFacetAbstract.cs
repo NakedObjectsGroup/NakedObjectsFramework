@@ -21,21 +21,15 @@ namespace NakedObjects.Meta.Facet {
 
         #region IMandatoryFacet Members
 
-        public virtual string Invalidates(IInteractionContext ic) {
-            return IsRequiredButNull(ic.ProposedArgument) ? Resources.NakedObjects.Mandatory : null;
-        }
+        public virtual string Invalidates(IInteractionContext ic) => IsRequiredButNull(ic.ProposedArgument) ? Resources.NakedObjects.Mandatory : null;
 
-        public virtual Exception CreateExceptionFor(IInteractionContext ic) {
-            return new InvalidMandatoryException(ic, Invalidates(ic));
-        }
+        public virtual Exception CreateExceptionFor(IInteractionContext ic) => new InvalidMandatoryException(ic, Invalidates(ic));
 
         public virtual bool IsOptional => !IsMandatory;
 
         public abstract bool IsMandatory { get; }
 
-        public virtual bool IsRequiredButNull(INakedObjectAdapter nakedObjectAdapter) {
-            return IsMandatory && nakedObjectAdapter == null;
-        }
+        public virtual bool IsRequiredButNull(INakedObjectAdapter nakedObjectAdapter) => IsMandatory && nakedObjectAdapter == null;
 
         #endregion
     }

@@ -28,47 +28,28 @@ namespace NakedObjects.Meta.Facet {
 
         #region IContributedActionFacet Members
 
-        public bool IsContributedTo(IObjectSpecImmutable spec) {
-            return objectContributees.Select(t => t.Item1).Any(spec.IsOfType);
-        }
+        public bool IsContributedTo(IObjectSpecImmutable spec) => objectContributees.Select(t => t.Item1).Any(spec.IsOfType);
 
-        public bool IsContributedToCollectionOf(IObjectSpecImmutable spec) {
-            return collectionContributees.Select(t => t.Item1).Any(spec.IsOfType);
-        }
+        public bool IsContributedToCollectionOf(IObjectSpecImmutable spec) => collectionContributees.Select(t => t.Item1).Any(spec.IsOfType);
 
-        public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable spec, string id) {
-            return localCollectionContributees.Where(t => t.Item2 == id.ToLower()).Select(t => t.Item1).Any(spec.IsOfType);
-        }
+        public bool IsContributedToLocalCollectionOf(IObjectSpecImmutable spec, string id) => localCollectionContributees.Where(t => t.Item2 == id.ToLower()).Select(t => t.Item1).Any(spec.IsOfType);
 
-        public string SubMenuWhenContributedTo(IObjectSpecImmutable spec) {
-            return FindContributee(spec).Item2;
-        }
+        public string SubMenuWhenContributedTo(IObjectSpecImmutable spec) => FindContributee(spec).Item2;
 
-        public string IdWhenContributedTo(IObjectSpecImmutable spec) {
-            return FindContributee(spec).Item3;
-        }
+        public string IdWhenContributedTo(IObjectSpecImmutable spec) => FindContributee(spec).Item3;
 
         #endregion
 
-        public void AddObjectContributee(IObjectSpecImmutable type, string subMenu, string id) {
-            objectContributees.Add(new Tuple<IObjectSpecImmutable, string, string>(type, subMenu, id));
-        }
+        public void AddObjectContributee(IObjectSpecImmutable type, string subMenu, string id) => objectContributees.Add(new Tuple<IObjectSpecImmutable, string, string>(type, subMenu, id));
 
         //Here the type is the ElementType of the collection, not the type of collection.
-        public void AddCollectionContributee(IObjectSpecImmutable type, string subMenu, string id) {
-            collectionContributees.Add(new Tuple<IObjectSpecImmutable, string, string>(type, subMenu, id));
-        }
+        public void AddCollectionContributee(IObjectSpecImmutable type, string subMenu, string id) => collectionContributees.Add(new Tuple<IObjectSpecImmutable, string, string>(type, subMenu, id));
 
-        public void AddLocalCollectionContributee(IObjectSpecImmutable type, string id) {
-            localCollectionContributees.Add(new Tuple<IObjectSpecImmutable, string>(type, id.ToLower()));
-        }
+        public void AddLocalCollectionContributee(IObjectSpecImmutable type, string id) => localCollectionContributees.Add(new Tuple<IObjectSpecImmutable, string>(type, id.ToLower()));
 
-        private Tuple<IObjectSpecImmutable, string, string> FindContributee(IObjectSpecImmutable spec) {
-            if (!IsContributedTo(spec)) {
-                throw new Exception(Log.LogAndReturn($"Action is not contributed to {spec.Type}"));
-            }
-
-            return objectContributees.First(t => spec.IsOfType(t.Item1));
-        }
+        private Tuple<IObjectSpecImmutable, string, string> FindContributee(IObjectSpecImmutable spec) =>
+            IsContributedTo(spec)
+                ? objectContributees.First(t => spec.IsOfType(t.Item1))
+                : throw new Exception(Log.LogAndReturn($"Action is not contributed to {spec.Type}"));
     }
 }

@@ -18,32 +18,17 @@ namespace NakedObjects.Meta.Facet {
         private readonly IValueSemanticsProvider<T> parser;
 
         public TitleFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)
-            : base(typeof(ITitleFacet), holder) {
+            : base(typeof(ITitleFacet), holder) =>
             this.parser = parser;
-        }
 
         #region ITitleFacet Members
 
-        public string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) {
-            if (nakedObjectAdapter == null || nakedObjectAdapter.Object == null) {
-                return null;
-            }
+        public string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) => nakedObjectAdapter?.Object == null ? null : parser.DisplayTitleOf((T) nakedObjectAdapter.Object);
 
-            return parser.DisplayTitleOf((T) nakedObjectAdapter.Object);
-        }
-
-        public string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) {
-            if (nakedObjectAdapter == null || nakedObjectAdapter.Object == null) {
-                return null;
-            }
-
-            return parser.TitleWithMaskOf(mask, (T) nakedObjectAdapter.Object);
-        }
+        public string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) => nakedObjectAdapter?.Object == null ? null : parser.TitleWithMaskOf(mask, (T) nakedObjectAdapter.Object);
 
         #endregion
 
-        protected override string ToStringValues() {
-            return parser.ToString();
-        }
+        protected override string ToStringValues() => parser.ToString();
     }
 }

@@ -31,15 +31,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IDoubleFloatingPointValueFacet Members
 
-        public Double DoubleValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<double>();
-        }
+        public double DoubleValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<double>();
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(double);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(double);
 
         protected override double DoParse(string entry) {
             try {
@@ -53,28 +49,16 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override double DoParseInvariant(string entry) {
-            return double.Parse(entry, CultureInfo.InvariantCulture);
-        }
+        protected override double DoParseInvariant(string entry) => double.Parse(entry, CultureInfo.InvariantCulture);
 
-        protected override string GetInvariantString(double obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(double obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override string TitleStringWithMask(string mask, double value) {
-            return value.ToString(mask);
-        }
+        protected override string TitleStringWithMask(string mask, double value) => value.ToString(mask);
 
-        protected override string DoEncode(double obj) {
-            return obj.ToString("G", CultureInfo.InvariantCulture);
-        }
+        protected override string DoEncode(double obj) => obj.ToString("G", CultureInfo.InvariantCulture);
 
-        protected override double DoRestore(string data) {
-            return double.Parse(data, CultureInfo.InvariantCulture);
-        }
+        protected override double DoRestore(string data) => double.Parse(data, CultureInfo.InvariantCulture);
 
-        public override string ToString() {
-            return "DoubleAdapter: ";
-        }
+        public override string ToString() => "DoubleAdapter: ";
     }
 }

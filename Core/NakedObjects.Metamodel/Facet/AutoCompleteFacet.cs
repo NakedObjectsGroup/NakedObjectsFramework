@@ -47,26 +47,13 @@ namespace NakedObjects.Meta.Facet {
 
         public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm) {
             try {
-                object autoComplete = methodDelegate(inObjectAdapter.GetDomainObject(), new object[] {autoCompleteParm});
-
-                //returning an IQueryable
-                var queryable = autoComplete as IQueryable;
-                if (queryable != null) {
-                    return queryable.Take(PageSize).ToArray();
-                }
-
-                //returning an IEnumerable (of string only)
-                var strings = autoComplete as IEnumerable<string>;
-                if (strings != null) {
-                    return strings.Cast<object>().ToArray();
-                }
-
-                //return type is a single object
-                if (!CollectionUtils.IsCollection(autoComplete.GetType())) {
-                    return new[] {autoComplete};
-                }
-
-                throw new NakedObjectDomainException(Log.LogAndReturn($"Must return IQueryable or a single object from autoComplete method: {method.Name}"));
+                var autoComplete = methodDelegate(inObjectAdapter.GetDomainObject(), new object[] {autoCompleteParm});
+                return autoComplete switch {
+                    IQueryable queryable => queryable.Take(PageSize).ToArray(),
+                    IEnumerable<string> strings => strings.Cast<object>().ToArray(),
+                    _ when !CollectionUtils.IsCollection(autoComplete.GetType()) => new[] {autoComplete},
+                    _ => throw new NakedObjectDomainException(Log.LogAndReturn($"Must return IQueryable or a single object from autoComplete method: {method.Name}"))
+                };
             }
             catch (ArgumentException ae) {
                 throw new InvokeException(Log.LogAndReturn($"autoComplete exception: {method.Name} has mismatched parameter type - must be string"), ae);
@@ -77,19 +64,13 @@ namespace NakedObjects.Meta.Facet {
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return method;
-        }
+        public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return methodDelegate;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => methodDelegate;
 
         #endregion
 
-        protected override string ToStringValues() {
-            return "method=" + method;
-        }
+        protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context) {

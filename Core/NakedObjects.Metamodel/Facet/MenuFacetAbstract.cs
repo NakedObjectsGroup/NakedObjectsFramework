@@ -18,9 +18,8 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     public abstract class MenuFacetAbstract : FacetAbstract, IMenuFacet {
         protected MenuFacetAbstract(ISpecification holder)
-            : base(typeof(IMenuFacet), holder) {
+            : base(typeof(IMenuFacet), holder) =>
             Menu = null;
-        }
 
         protected ITypeSpecImmutable Spec => (ITypeSpecImmutable) Specification;
 
@@ -28,20 +27,12 @@ namespace NakedObjects.Meta.Facet {
 
         #region IMenuFacet Members
 
-        public IMenuImmutable GetMenu() {
-            return Menu;
-        }
+        public IMenuImmutable GetMenu() => Menu;
 
         public abstract void CreateMenu(IMetamodelBuilder metamodel);
 
         #endregion
 
-        protected static string GetMenuName(ITypeSpecImmutable spec) {
-            if (spec is IServiceSpecImmutable) {
-                return spec.GetFacet<INamedFacet>().NaturalName;
-            }
-
-            return Model.ActionsMenuName;
-        }
+        protected static string GetMenuName(ITypeSpecImmutable spec) => spec is IServiceSpecImmutable ? spec.GetFacet<INamedFacet>().NaturalName : Model.ActionsMenuName;
     }
 }

@@ -18,9 +18,7 @@ namespace NakedObjects.Meta.Facet {
         /// <summary>
         ///     Always returns <i>Always disabled</i>
         /// </summary>
-        public override string DisabledReason(INakedObjectAdapter target) {
-            return Resources.NakedObjects.AlwaysDisabled;
-        }
+        public override string DisabledReason(INakedObjectAdapter target) => Resources.NakedObjects.AlwaysDisabled;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

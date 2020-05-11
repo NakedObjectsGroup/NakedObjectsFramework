@@ -47,7 +47,7 @@ namespace NakedObjects.Meta.Profile {
             {typeof(IPersistedCallbackFacet), (f, pm) => new ProfileCallbackFacet(ProfileEvent.Persisted, (ICallbackFacet) f, pm)},
             {typeof(IPersistingCallbackFacet), (f, pm) => new ProfileCallbackFacet(ProfileEvent.Persisting, (ICallbackFacet) f, pm)},
             {typeof(IUpdatedCallbackFacet), (f, pm) => new ProfileCallbackFacet(ProfileEvent.Updated, (ICallbackFacet) f, pm)},
-            {typeof(IUpdatingCallbackFacet), (f, pm) => new ProfileCallbackFacet(ProfileEvent.Updating, (ICallbackFacet) f, pm)},
+            {typeof(IUpdatingCallbackFacet), (f, pm) => new ProfileCallbackFacet(ProfileEvent.Updating, (ICallbackFacet) f, pm)}
         };
 
         private readonly Type profilerType;
@@ -64,9 +64,7 @@ namespace NakedObjects.Meta.Profile {
 
         #region IFacetDecorator Members
 
-        public IFacet Decorate(IFacet facet, ISpecification holder) {
-            return ForFacetTypes.Contains(facet.FacetType) ? FacetToConstructorMap[facet.FacetType](facet, this) : facet;
-        }
+        public IFacet Decorate(IFacet facet, ISpecification holder) => ForFacetTypes.Contains(facet.FacetType) ? FacetToConstructorMap[facet.FacetType](facet, this) : facet;
 
         public Type[] ForFacetTypes { get; }
 
@@ -74,18 +72,12 @@ namespace NakedObjects.Meta.Profile {
 
         #region IProfileManager Members
 
-        public void Begin(ISession session, ProfileEvent profileEvent, string member, INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) {
-            GetProfiler(lifecycleManager).Begin(session.Principal, profileEvent, nakedObjectAdapter.GetDomainObject().GetType(), member);
-        }
+        public void Begin(ISession session, ProfileEvent profileEvent, string member, INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) => GetProfiler(lifecycleManager).Begin(session.Principal, profileEvent, nakedObjectAdapter.GetDomainObject().GetType(), member);
 
-        public void End(ISession session, ProfileEvent profileEvent, string member, INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) {
-            GetProfiler(lifecycleManager).End(session.Principal, profileEvent, nakedObjectAdapter.GetDomainObject().GetType(), member);
-        }
+        public void End(ISession session, ProfileEvent profileEvent, string member, INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) => GetProfiler(lifecycleManager).End(session.Principal, profileEvent, nakedObjectAdapter.GetDomainObject().GetType(), member);
 
         #endregion
 
-        private IProfiler GetProfiler(ILifecycleManager lifecycleManager) {
-            return lifecycleManager.CreateNonAdaptedInjectedObject(profilerType) as IProfiler;
-        }
+        private IProfiler GetProfiler(ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(profilerType) as IProfiler;
     }
 }

@@ -16,9 +16,8 @@ namespace NakedObjects.Meta.Facet {
         private readonly IValueSemanticsProvider<T> defaultsProvider;
 
         public DefaultedFacetUsingDefaultsProvider(IValueSemanticsProvider<T> parser, ISpecification holder)
-            : base(typeof(IDefaultedFacet), holder) {
+            : base(typeof(IDefaultedFacet), holder) =>
             defaultsProvider = parser;
-        }
 
         #region IDefaultedFacet Members
 
@@ -26,8 +25,6 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        protected override string ToStringValues() {
-            return defaultsProvider.ToString();
-        }
+        protected override string ToStringValues() => defaultsProvider.ToString();
     }
 }

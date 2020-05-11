@@ -15,9 +15,8 @@ namespace NakedObjects.Meta.Facet {
         private readonly WhenTo when;
 
         protected SingleWhenValueFacetAbstract(Type facetType, ISpecification holder, WhenTo when)
-            : base(facetType, holder) {
+            : base(facetType, holder) =>
             this.when = when;
-        }
 
         #region ISingleWhenValueFacet Members
 
@@ -25,8 +24,6 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        protected override string ToStringValues() {
-            return "when=" + when;
-        }
+        protected override string ToStringValues() => $"when={when}";
     }
 }

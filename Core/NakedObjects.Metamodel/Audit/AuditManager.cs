@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.Principal;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -35,12 +34,12 @@ namespace NakedObjects.Meta.Audit {
         #region IAuditManager Members
 
         public void Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, bool queryOnly, IIdentifier identifier, ISession session, ILifecycleManager lifecycleManager) {
-            IAuditor auditor = GetAuditor(nakedObjectAdapter, lifecycleManager);
+            var auditor = GetAuditor(nakedObjectAdapter, lifecycleManager);
 
-            IPrincipal byPrincipal = session.Principal;
-            string memberName = identifier.MemberName;
+            var byPrincipal = session.Principal;
+            var memberName = identifier.MemberName;
             if (nakedObjectAdapter.Spec is IServiceSpec) {
-                string serviceName = nakedObjectAdapter.Spec.GetTitle(nakedObjectAdapter);
+                var serviceName = nakedObjectAdapter.Spec.GetTitle(nakedObjectAdapter);
                 auditor.ActionInvoked(byPrincipal, memberName, serviceName, queryOnly, parameters.Select(no => no.GetDomainObject()).ToArray());
             }
             else {
@@ -49,12 +48,12 @@ namespace NakedObjects.Meta.Audit {
         }
 
         public void Updated(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager) {
-            IAuditor auditor = GetAuditor(nakedObjectAdapter, lifecycleManager);
+            var auditor = GetAuditor(nakedObjectAdapter, lifecycleManager);
             auditor.ObjectUpdated(session.Principal, nakedObjectAdapter.GetDomainObject());
         }
 
         public void Persisted(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager) {
-            IAuditor auditor = GetAuditor(nakedObjectAdapter, lifecycleManager);
+            var auditor = GetAuditor(nakedObjectAdapter, lifecycleManager);
             auditor.ObjectPersisted(session.Principal, nakedObjectAdapter.GetDomainObject());
         }
 
@@ -95,26 +94,20 @@ namespace NakedObjects.Meta.Audit {
             }
         }
 
-        private IAuditor GetAuditor(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) {
-            return GetNamespaceAuditorFor(nakedObjectAdapter, lifecycleManager) ?? GetDefaultAuditor(lifecycleManager);
-        }
+        private IAuditor GetAuditor(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) => GetNamespaceAuditorFor(nakedObjectAdapter, lifecycleManager) ?? GetDefaultAuditor(lifecycleManager);
 
         private IAuditor GetNamespaceAuditorFor(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
             Assert.AssertNotNull(target);
-            string fullyQualifiedOfTarget = target.Spec.FullName;
+            var fullyQualifiedOfTarget = target.Spec.FullName;
 
             // order here as ImmutableDictionary not ordered
-            Type auditor = namespaceAuditors.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault();
+            var auditor = namespaceAuditors.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault();
 
             return auditor != null ? CreateAuditor(auditor, lifecycleManager) : null;
         }
 
-        private IAuditor CreateAuditor(Type auditor, ILifecycleManager lifecycleManager) {
-            return lifecycleManager.CreateNonAdaptedInjectedObject(auditor) as IAuditor;
-        }
+        private IAuditor CreateAuditor(Type auditor, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(auditor) as IAuditor;
 
-        private IAuditor GetDefaultAuditor(ILifecycleManager lifecycleManager) {
-            return CreateAuditor(defaultAuditor, lifecycleManager);
-        }
+        private IAuditor GetDefaultAuditor(ILifecycleManager lifecycleManager) => CreateAuditor(defaultAuditor, lifecycleManager);
     }
 }

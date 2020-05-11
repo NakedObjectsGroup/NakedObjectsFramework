@@ -29,19 +29,13 @@ namespace NakedObjects.Meta.Facet {
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return maskMethod;
-        }
+        public MethodInfo GetMethod() => maskMethod;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return maskDelegate;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => maskDelegate;
 
         #endregion
 
-        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) {
-            return nakedObjectAdapter.Object.ToString();
-        }
+        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) => nakedObjectAdapter.Object.ToString();
 
         public override string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) {
             if (maskDelegate != null) {
@@ -56,9 +50,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-            maskDelegate = maskMethod == null ? null : DelegateUtils.CreateDelegate(maskMethod);
-        }
+        private void OnDeserialized(StreamingContext context) => maskDelegate = maskMethod == null ? null : DelegateUtils.CreateDelegate(maskMethod);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

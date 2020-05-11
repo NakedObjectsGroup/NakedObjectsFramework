@@ -18,7 +18,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 
-[assembly:InternalsVisibleTo("NakedObjects.Metamodel.Test")]
+[assembly: InternalsVisibleTo("NakedObjects.Metamodel.Test")]
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
@@ -30,10 +30,10 @@ namespace NakedObjects.Meta.Facet {
             : base(holder) {
             ActionMethod = method;
             paramCount = method.GetParameters().Length;
-            this.OnType = onType;
-            this.ReturnType = returnType;
-            this.ElementType = elementType;
-            this.IsQueryOnly = isQueryOnly;
+            OnType = onType;
+            ReturnType = returnType;
+            ElementType = elementType;
+            IsQueryOnly = isQueryOnly;
 
             try {
                 ActionDelegate = DelegateUtils.CreateDelegate(ActionMethod);
@@ -62,19 +62,15 @@ namespace NakedObjects.Meta.Facet {
         /// <summary>
         ///     See <see cref="IImperativeFacet" />
         /// </summary>
-        public MethodInfo GetMethod() {
-            return ActionMethod;
-        }
+        public MethodInfo GetMethod() => ActionMethod;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return ActionDelegate;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => ActionDelegate;
 
         #endregion
 
         public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager) {
             if (parameters.Length != paramCount) {
-                Log.Error(ActionMethod + " requires " + paramCount + " parameters, not " + parameters.Length);
+                Log.Error($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
             }
 
             object result;
@@ -86,23 +82,15 @@ namespace NakedObjects.Meta.Facet {
                 result = InvokeUtils.Invoke(ActionMethod, inObjectAdapter, parameters);
             }
 
-            INakedObjectAdapter adaptedResult = nakedObjectManager.CreateAdapter(result, null, null);
-
-            return adaptedResult;
+            return nakedObjectManager.CreateAdapter(result, null, null);
         }
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager) {
-            return Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager, messageBroker, transactionManager);
-        }
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager) => Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager, messageBroker, transactionManager);
 
-        protected override string ToStringValues() {
-            return "method=" + ActionMethod;
-        }
+        protected override string ToStringValues() => $"method={ActionMethod}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-            ActionDelegate = DelegateUtils.CreateDelegate(ActionMethod);
-        }
+        private void OnDeserialized(StreamingContext context) => ActionDelegate = DelegateUtils.CreateDelegate(ActionMethod);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

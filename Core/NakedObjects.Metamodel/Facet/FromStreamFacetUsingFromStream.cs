@@ -19,21 +19,18 @@ namespace NakedObjects.Meta.Facet {
         private readonly IFromStream fromStream;
 
         public FromStreamFacetUsingFromStream(IFromStream fromStream, ISpecification holder)
-            : base(typeof(IFromStreamFacet), holder) {
+            : base(typeof(IFromStreamFacet), holder) =>
             this.fromStream = fromStream;
-        }
 
         #region IFromStreamFacet Members
 
         public INakedObjectAdapter ParseFromStream(Stream stream, string mimeType, string name, INakedObjectManager manager) {
-            object obj = fromStream.ParseFromStream(stream, mimeType, name);
+            var obj = fromStream.ParseFromStream(stream, mimeType, name);
             return manager.CreateAdapter(obj, null, null);
         }
 
         #endregion
 
-        protected override string ToStringValues() {
-            return fromStream.ToString();
-        }
+        protected override string ToStringValues() => fromStream.ToString();
     }
 }

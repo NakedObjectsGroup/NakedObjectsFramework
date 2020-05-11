@@ -16,8 +16,8 @@ namespace NakedObjects.Meta.Spec {
             : this(name, null) { }
 
         public NamedAndDescribedSpecification(string name, string description) {
-            this.Name = name;
-            this.Description = description;
+            Name = name;
+            Description = description;
         }
 
         #region INamedAndDescribed Members

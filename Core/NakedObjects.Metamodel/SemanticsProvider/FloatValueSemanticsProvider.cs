@@ -31,15 +31,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         #region IFloatingPointValueFacet Members
 
-        public float FloatValue(INakedObjectAdapter nakedObjectAdapter) {
-            return nakedObjectAdapter.GetDomainObject<float>();
-        }
+        public float FloatValue(INakedObjectAdapter nakedObjectAdapter) => nakedObjectAdapter.GetDomainObject<float>();
 
         #endregion
 
-        public static bool IsAdaptedType(Type type) {
-            return type == typeof(float);
-        }
+        public static bool IsAdaptedType(Type type) => type == typeof(float);
 
         protected override float DoParse(string entry) {
             try {
@@ -53,28 +49,16 @@ namespace NakedObjects.Meta.SemanticsProvider {
             }
         }
 
-        protected override float DoParseInvariant(string entry) {
-            return float.Parse(entry, CultureInfo.InvariantCulture);
-        }
+        protected override float DoParseInvariant(string entry) => float.Parse(entry, CultureInfo.InvariantCulture);
 
-        protected override string GetInvariantString(float obj) {
-            return obj.ToString(CultureInfo.InvariantCulture);
-        }
+        protected override string GetInvariantString(float obj) => obj.ToString(CultureInfo.InvariantCulture);
 
-        protected override string TitleStringWithMask(string mask, float value) {
-            return value.ToString(mask);
-        }
+        protected override string TitleStringWithMask(string mask, float value) => value.ToString(mask);
 
-        protected override string DoEncode(float obj) {
-            return obj.ToString("G", CultureInfo.InvariantCulture);
-        }
+        protected override string DoEncode(float obj) => obj.ToString("G", CultureInfo.InvariantCulture);
 
-        protected override float DoRestore(string data) {
-            return float.Parse(data, CultureInfo.InvariantCulture);
-        }
+        protected override float DoRestore(string data) => float.Parse(data, CultureInfo.InvariantCulture);
 
-        public override string ToString() {
-            return "FloatAdapter: ";
-        }
+        public override string ToString() => "FloatAdapter: ";
     }
 }

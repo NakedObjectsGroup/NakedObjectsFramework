@@ -17,9 +17,8 @@ namespace NakedObjects.Meta {
             : this(ic, maximumLength, Resources.NakedObjects.MaximumLengthMessage) { }
 
         public InvalidMaxLengthException(IInteractionContext ic, int maximumLength, string message)
-            : base(ic, message) {
-            this.MaximumLength = maximumLength;
-        }
+            : base(ic, message) =>
+            MaximumLength = maximumLength;
 
         public virtual int MaximumLength { get; }
     }
