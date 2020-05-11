@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>New Transient Instance</Title>
+      <Author>Naked Objects Group</Author>
+      <Description>Code to create a new transient instance of a specified class.</Description>
+      <HelpUrl>www.nakedobjects.net</HelpUrl>
+      <Shortcut>newt</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>Variable</ID>
+          <Default>value</Default>
+        </Literal>
+        <Object>
+          <ID>Class</ID>
+          <Default>Class</Default>
+        </Object>
+      </Declarations>
+      <Code Language="CSharp"><![CDATA[
+      var $Variable$= Container.NewTransientInstance<$Class$>();
+      
+      //Container.Persist(ref $Variable$);]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

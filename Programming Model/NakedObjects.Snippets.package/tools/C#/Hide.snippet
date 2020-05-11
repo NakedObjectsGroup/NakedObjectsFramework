@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Hide</Title>
+      <Author>Naked Objects Group</Author>
+      <Description>Adds a method to hide a corresponding property or action dynamically.
+</Description>
+      <HelpUrl>www.nakedobjects.net</HelpUrl>
+      <Shortcut>hide</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>PropertyOrActionName</ID>
+          <ToolTip>Enter the name of the property or action to be dynamically hidden.</ToolTip>
+          <Default>PropertyOrActionName</Default>
+        </Literal>
+        <Object>
+          <ID>Condition for hiding</ID>
+          <Type>boolean</Type>
+          <ToolTip>Condition (typically based on the state of the object) for hiding this property/action</ToolTip>
+          <Default>false</Default>
+        </Object>
+      </Declarations>
+      <Code Language="CSharp" Kind="method decl"><![CDATA[public bool Hide$PropertyOrActionName$()
+{
+	return $Condition for hiding$;
+}
+]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

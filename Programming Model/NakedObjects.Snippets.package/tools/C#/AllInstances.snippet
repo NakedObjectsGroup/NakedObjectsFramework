@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+      <Title>All Instances</Title>
+      <Author>Naked Objects Group</Author>
+      <Description>Adds a method that returns all instances of specified type.</Description>
+      <HelpUrl>www.nakedobjects.net</HelpUrl>
+      <Shortcut>alli</Shortcut>
+    </Header>
+    <Snippet>
+      <References>
+        <Reference>
+          <Assembly>System.Collections.Generic</Assembly>
+        </Reference>
+      </References>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>Name</ID>
+          <ToolTip>Enter the name for the factory method</ToolTip>
+          <Default>All</Default>
+          <Function>
+          </Function>
+        </Literal>
+        <Object Editable="true">
+          <ID>Type</ID>
+          <ToolTip>The type of object that is to be created and returned</ToolTip>
+          <Default>Type</Default>
+          <Function>
+          </Function>
+          <Type>
+          </Type>
+        </Object>
+      </Declarations>
+      <Code Language="csharp" Kind="method decl"><![CDATA[
+      public IQueryable<$Type$> $Name$$Type$s()
+      {
+        return Container.Instances<$Type$>();
+      }
+      ]]></Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
