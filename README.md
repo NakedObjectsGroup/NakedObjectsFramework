@@ -1,26 +1,36 @@
 Naked Objects Framework
 =======================
 
-NOF10  -  Released 11th April 2019
-===============================
+This branch contains source under development for the next release. These are the principal changes:
 
-The NOF may be used entirely as packages from the NuGet public gallery - there is no need to clone this repository.  Indeed, building the framework from source code is quite complex and not recommended for newcomers. 
+- All assemblies will now be compiled against .NET Core 3
+- Updating of framework source code to use C#8 capabilities
+- Removal of dependency on System.Dynamic, due to concerns that that might be cause of (very rare) runtime errors.
+- Removal of redundant code
+- Restructuring of packages
 
-The best way to explore NOF 10 initially is to download the Template project from here:
+Under the new package structure, we will be publishing just four NuGet packages:
 
-https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Template_NOF10/Template_NOF10.zip?raw=true
+- NakedObjects.Server (will be released as version 11.0.0)
+- NakedObjects.ProgrammingModel (will be released as 8.0.0.)	 
+	Note however that this is identical to 7.0.4 - the current release - except compiled against .NET Core 3,
+	so no changes to domain object model code are required. (Members obsoleted since 7.0 have now been removed).
+- NakedObjects.Client (will be released as version 9.0.6, but this is a new package name, not any new code)
+- NakedObjects.Snippets (replaces NakedObjects.IDE - contains only code snippets. Will be released as 1.0.0)
 
-and follow instructions at the start of the NOF 10 Development Manual, downloaded from here:
+The Client and Server communicate via  RESTful API, which remains at version 1.1.
 
-https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/NOF10DeveloperManual.docx?raw=true
+Building the Server
+===================
 
-NOF9  -  (Superseded)
-===============================
+Pending release of the packages, the server framework may be built from the command line using these four steps:
 
-NOF 9 Template project:
+dotnet build ProgrammingModel.sln
+dotnet pack "Programming Model\NakedObjects.ProgrammingModel.Package\NakedObjects.ProgrammingModel.Package.csproj"  --include-symbols --include-source
 
-https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Template_NOF9/Template_NOF9.zip?raw=true
+dotnet build Server.sln
+dotnet pack Server\NakedObjects.Server.Package\NakedObjects.Server.Package.csproj --include-symbols --include-source
 
-NOF 9 Development Manual:
+The built ProgrammingModel and Server packages may be found in the bin directories of their respective projects
 
-https://github.com/NakedObjectsGroup/NakedObjectsFramework/blob/master/Documentation/NOF9DeveloperManual.docx?raw=tru
+
