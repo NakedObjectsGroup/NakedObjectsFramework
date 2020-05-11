@@ -14,19 +14,13 @@ namespace NakedObjects.Facade.Impl.Utility {
     public class DefaultKeyCodeMapper : IKeyCodeMapper {
         private readonly string keySeparator;
 
-        public DefaultKeyCodeMapper() {
-            keySeparator = OidTranslationSlashSeparatedTypeAndIds.KeySeparator;
-        }
+        public DefaultKeyCodeMapper() => keySeparator = OidTranslationSlashSeparatedTypeAndIds.KeySeparator;
 
         #region IKeyCodeMapper Members
 
-        public string[] KeyFromCode(string code, Type type) {
-            return code.Split(new[] {keySeparator}, StringSplitOptions.None);
-        }
+        public string[] KeyFromCode(string code, Type type) => code.Split(new[] {keySeparator}, StringSplitOptions.None);
 
-        public string CodeFromKey(string[] key, Type type) {
-            return key.Length == 0 ? "" : key.Aggregate((s, t) => s + keySeparator + t);
-        }
+        public string CodeFromKey(string[] key, Type type) => key.Length == 0 ? "" : key.Aggregate((s, t) => $"{s}{keySeparator}{t}");
 
         #endregion
     }

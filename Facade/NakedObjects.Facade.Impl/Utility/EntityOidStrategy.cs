@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -23,9 +22,7 @@ namespace NakedObjects.Facade.Impl.Utility {
         private static readonly ILog Log = LogManager.GetLogger(typeof(EntityOidStrategy));
         private readonly INakedObjectsFramework framework;
 
-        public EntityOidStrategy(INakedObjectsFramework framework) {
-            this.framework = framework;
-        }
+        public EntityOidStrategy(INakedObjectsFramework framework) => this.framework = framework;
 
         #region IOidStrategy Members
 
@@ -47,14 +44,12 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         public ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType) {
-            Type type = GetType(linkDomainType);
-            ITypeSpec spec = framework.MetamodelManager.GetSpecification(type);
+            var type = GetType(linkDomainType);
+            var spec = framework.MetamodelManager.GetSpecification(type);
             return new TypeFacade(spec, FrameworkFacade, framework);
         }
 
-        public string GetLinkDomainTypeBySpecification(ITypeFacade spec) {
-            return GetCode(spec);
-        }
+        public string GetLinkDomainTypeBySpecification(ITypeFacade spec) => GetCode(spec);
 
         public IOidFacade RestoreOid(OidTranslationSemiColonSeparatedList id) {
             var oid = framework.LifecycleManager.RestoreOid(id.Tokenize());
@@ -67,19 +62,19 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         public IOidFacade RestoreOid(OidTranslationSlashSeparatedTypeAndIds id) {
-            Type type = ValidateObjectId(id);
-            string[] keys = GetKeys(id.InstanceId, type);
+            var type = ValidateObjectId(id);
+            var keys = GetKeys(id.InstanceId, type);
             var adapter = GetObject(keys, type);
 
             if (adapter == null) {
-                throw new ObjectResourceNotFoundNOSException(id + ": null adapter");
+                throw new ObjectResourceNotFoundNOSException($"{id}: null adapter");
             }
 
             return new OidFacade(adapter.Oid);
         }
 
         public IOidFacade RestoreSid(OidTranslationSlashSeparatedTypeAndIds id) {
-            Type type = ValidateServiceId(id);
+            var type = ValidateServiceId(id);
             IServiceSpec spec;
             try {
                 spec = (IServiceSpec) framework.MetamodelManager.GetSpecification(type);
@@ -87,10 +82,12 @@ namespace NakedObjects.Facade.Impl.Utility {
             catch (Exception e) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString(), e);
             }
+
             if (spec == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
             }
-            INakedObjectAdapter service = framework.ServicesManager.GetServicesWithVisibleActions(framework.LifecycleManager).SingleOrDefault(no => no.Spec.IsOfType(spec));
+
+            var service = framework.ServicesManager.GetServicesWithVisibleActions(framework.LifecycleManager).SingleOrDefault(no => no.Spec.IsOfType(spec));
 
             if (service == null) {
                 throw new ServiceResourceNotFoundNOSException(type.ToString());
@@ -110,134 +107,104 @@ namespace NakedObjects.Facade.Impl.Utility {
             return GetAdapterByOid(oid.Value as IOid);
         }
 
-        private static INakedObjectAdapter RestoreCollection(ICollectionMemento memento) {
-            return memento.RecoverCollection();
-        }
+        private static INakedObjectAdapter RestoreCollection(ICollectionMemento memento) => memento.RecoverCollection();
 
         private static INakedObjectAdapter RestoreInline(INakedObjectsFramework framework, IAggregateOid aggregateOid) {
-            IOid parentOid = aggregateOid.ParentOid;
-            INakedObjectAdapter parent = RestoreObject(framework, parentOid);
-            IAssociationSpec assoc = parent.GetObjectSpec().Properties.Where((p => p.Id == aggregateOid.FieldName)).Single();
+            var parentOid = aggregateOid.ParentOid;
+            var parent = RestoreObject(framework, parentOid);
+            var assoc = parent.GetObjectSpec().Properties.Single(p => p.Id == aggregateOid.FieldName);
 
             return assoc.GetNakedObject(parent);
         }
 
-        private static INakedObjectAdapter RestoreViewModel(INakedObjectsFramework framework, IViewModelOid viewModelOid) {
-            return framework.NakedObjectManager.GetAdapterFor(viewModelOid) ?? framework.LifecycleManager.GetViewModel(viewModelOid);
-        }
+        private static INakedObjectAdapter RestoreViewModel(INakedObjectsFramework framework, IViewModelOid viewModelOid) => framework.NakedObjectManager.GetAdapterFor(viewModelOid) ?? framework.LifecycleManager.GetViewModel(viewModelOid);
 
-        public static INakedObjectAdapter RestoreObject(INakedObjectsFramework framework, IOid oid) {
-            return oid.IsTransient ? framework.LifecycleManager.RecreateInstance(oid, oid.Spec) : framework.LifecycleManager.LoadObject(oid, oid.Spec);
-        }
+        public static INakedObjectAdapter RestoreObject(INakedObjectsFramework framework, IOid oid) => oid.IsTransient ? framework.LifecycleManager.RecreateInstance(oid, oid.Spec) : framework.LifecycleManager.LoadObject(oid, oid.Spec);
 
-        private INakedObjectAdapter GetAdapterByOid(IOid oid) {
-            if (oid == null) {
-                return null;
-            }
+        private INakedObjectAdapter GetAdapterByOid(IOid oid) =>
+            oid switch {
+                null => null,
+                ICollectionMemento memento => RestoreCollection(memento),
+                IAggregateOid aggregateOid => RestoreInline(framework, aggregateOid),
+                IViewModelOid modelOid => RestoreViewModel(framework, modelOid),
+                _ => RestoreObject(framework, oid)
+            };
 
-            if (oid is ICollectionMemento) {
-                return RestoreCollection(oid as ICollectionMemento);
-            }
-
-            if (oid is IAggregateOid) {
-                return RestoreInline(framework, oid as IAggregateOid);
-            }
-
-            if (oid is IViewModelOid) {
-                return RestoreViewModel(framework, oid as IViewModelOid);
-            }
-
-            return RestoreObject(framework, oid);
-        }
-
-        private string GetCode(ITypeFacade spec) {
-            return GetCode(TypeUtils.GetType(spec.FullName));
-        }
+        private string GetCode(ITypeFacade spec) => GetCode(TypeUtils.GetType(spec.FullName));
 
         private static object CoerceType(Type type, string value) {
             if (type == typeof(DateTime)) {
-                long ticks = long.Parse(value);
+                var ticks = long.Parse(value);
                 return new DateTime(ticks);
             }
-            if (type == typeof(Guid))
-            {
+
+            if (type == typeof(Guid)) {
                 return new Guid(value);
             }
+
             return Convert.ChangeType(value, type);
         }
 
         private IDictionary<string, object> CreateKeyDictionary(string[] keys, Type type) {
-            PropertyInfo[] keyProperties = framework.Persistor.GetKeys(type);
-            int index = 0;
+            var keyProperties = framework.Persistor.GetKeys(type);
+            var index = 0;
             return keyProperties.ToDictionary(kp => kp.Name, kp => CoerceType(kp.PropertyType, keys[index++]));
         }
 
         private INakedObjectAdapter GetObject(string[] keys, Type type) {
-            ITypeSpec spec = framework.MetamodelManager.GetSpecification(type);
+            var spec = framework.MetamodelManager.GetSpecification(type);
             return spec.IsViewModel ? GetViewModel(keys, (IObjectSpec) spec) : GetDomainObject(keys, type);
         }
 
         private INakedObjectAdapter GetDomainObject(string[] keys, Type type) {
             try {
-                IDictionary<string, object> keyDict = CreateKeyDictionary(keys, type);
+                var keyDict = CreateKeyDictionary(keys, type);
                 return framework.Persistor.FindByKeys(type, keyDict.Values.ToArray());
             }
             catch (Exception e) {
                 Log.Warn("Domain Object not found with exception", e);
-                Log.WarnFormat("Domain Object not found keys: {0} type: {1}", keys == null ? "null" : keys.Aggregate("", (s, t) => s + " " + t), type == null ? "null" : type.ToString());
+                Log.WarnFormat("Domain Object not found keys: {0} type: {1}", keys == null ? "null" : keys.Aggregate("", (s, t) => $"{s} {t}"), type == null ? "null" : type.ToString());
                 return null;
             }
         }
 
         private INakedObjectAdapter GetViewModel(string[] keys, IObjectSpec spec) {
             try {
-                INakedObjectAdapter viewModel = framework.LifecycleManager.CreateViewModel(spec);
+                var viewModel = framework.LifecycleManager.CreateViewModel(spec);
                 spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel, framework.NakedObjectManager, framework.DomainObjectInjector);
                 return viewModel;
             }
             catch (Exception e) {
                 Log.Warn("View Model not found with exception", e);
-                Log.WarnFormat("View Model not found keys: {0} type: {1}", keys == null ? "null" : keys.Aggregate("", (s, t) => s + " " + t), spec == null ? "null" : spec.FullName);
+                Log.WarnFormat("View Model not found keys: {0} type: {1}", keys == null ? "null" : keys.Aggregate("", (s, t) => $"{s} {t}"), spec == null ? "null" : spec.FullName);
                 return null;
             }
         }
 
-        private Type GetType(string typeName) {
-            return GetTypeCodeMapper().TypeFromCode(typeName);
-        }
+        private Type GetType(string typeName) => GetTypeCodeMapper().TypeFromCode(typeName);
 
-        private ITypeCodeMapper GetTypeCodeMapper() {
-            return (ITypeCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
-                   ?? new DefaultTypeCodeMapper();
-        }
+        private ITypeCodeMapper GetTypeCodeMapper() =>
+            (ITypeCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is ITypeCodeMapper).Select(s => s.Object).FirstOrDefault()
+            ?? new DefaultTypeCodeMapper();
 
-        private IKeyCodeMapper GetKeyCodeMapper() {
-            return (IKeyCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
-                   ?? new DefaultKeyCodeMapper();
-        }
+        private IKeyCodeMapper GetKeyCodeMapper() =>
+            (IKeyCodeMapper) framework.ServicesManager.GetServices().Where(s => s.Object is IKeyCodeMapper).Select(s => s.Object).FirstOrDefault()
+            ?? new DefaultKeyCodeMapper();
 
-        private string[] GetKeys(string instanceId, Type type) {
-            return GetKeyCodeMapper().KeyFromCode(instanceId, type);
-        }
+        private string[] GetKeys(string instanceId, Type type) => GetKeyCodeMapper().KeyFromCode(instanceId, type);
 
-        private string GetCode(Type type) {
-            return GetTypeCodeMapper().CodeFromType(type);
-        }
+        private string GetCode(Type type) => GetTypeCodeMapper().CodeFromType(type);
 
-        private Type ValidateServiceId(IOidTranslation objectId) {
-            return ValidateId(objectId, () => { throw new ServiceResourceNotFoundNOSException(objectId + ": Type not found"); });
-        }
+        private Type ValidateServiceId(IOidTranslation objectId) => ValidateId(objectId, () => throw new ServiceResourceNotFoundNOSException($"{objectId}: Type not found"));
 
-        private Type ValidateObjectId(IOidTranslation objectId) {
-            return ValidateId(objectId, () => { throw new ObjectResourceNotFoundNOSException(objectId + ": Type not found"); });
-        }
+        private Type ValidateObjectId(IOidTranslation objectId) => ValidateId(objectId, () => throw new ObjectResourceNotFoundNOSException($"{objectId}: Type not found"));
 
         private Type ValidateId(IOidTranslation objectId, Action onError) {
             if (string.IsNullOrEmpty(objectId.DomainType.Trim())) {
                 throw new BadRequestNOSException();
             }
 
-            Type type = GetType(objectId.DomainType);
+            var type = GetType(objectId.DomainType);
 
             if (type == null) {
                 onError();

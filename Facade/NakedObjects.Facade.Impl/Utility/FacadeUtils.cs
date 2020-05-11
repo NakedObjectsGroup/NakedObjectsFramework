@@ -16,88 +16,72 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Facade.Impl.Utility {
     public static class FacadeUtils {
-        public static INakedObjectAdapter WrappedAdapter(this IObjectFacade objectFacade) {
-            return objectFacade == null ? null : ((ObjectFacade) objectFacade).WrappedNakedObject;
-        }
+        public static INakedObjectAdapter WrappedAdapter(this IObjectFacade objectFacade) => objectFacade == null ? null : ((ObjectFacade) objectFacade).WrappedNakedObject;
 
-        public static IActionParameterSpec WrappedSpec(this IActionParameterFacade actionParameterFacade) {
-            return actionParameterFacade == null ? null : ((ActionParameterFacade) actionParameterFacade).WrappedSpec;
-        }
+        public static IActionParameterSpec WrappedSpec(this IActionParameterFacade actionParameterFacade) => actionParameterFacade == null ? null : ((ActionParameterFacade) actionParameterFacade).WrappedSpec;
 
-        public static NakedObjectsFacadeException Map(Exception e) {
-            // map to appropriate exception 
-
-            if (e is FindObjectException) {
-                return new ObjectResourceNotFoundNOSException(e.Message, e);
-            }
-
-            if (e is InvalidEntryException || e is ArgumentException) {
-                return new BadRequestNOSException(Resources.NakedObjects.InvalidArguments, e);
-            }
-
-            if (e is TargetParameterCountException) {
-                return new BadRequestNOSException("Missing arguments", e); // todo i18n
-            }
-
-            if (e is InvokeException && e.InnerException != null) {
-                // recurse on inner exception
-                return Map(e.InnerException);
-            }
-
-            return new GeneralErrorNOSException(e);
-        }
+        public static NakedObjectsFacadeException Map(Exception e) =>
+            e switch {
+                FindObjectException _ => new ObjectResourceNotFoundNOSException(e.Message, e),
+                InvalidEntryException _ => new BadRequestNOSException(Resources.NakedObjects.InvalidArguments, e),
+                ArgumentException _ => new BadRequestNOSException(Resources.NakedObjects.InvalidArguments, e),
+                TargetParameterCountException _ => new BadRequestNOSException("Missing arguments", e), // todo i18n
+                InvokeException _ when e.InnerException != null => Map(e.InnerException), // recurse on inner exception
+                _ => new GeneralErrorNOSException(e)
+            };
 
         private static string GetUniqueSuffix(IActionSpec action, IActionSpec[] actions) {
-            IActionSpec[] overloadedActions = actions.Where(a => a.Id == action.Id && actions.Count(ac => ac.Id == a.Id) > 1).ToArray();
+            var overloadedActions = actions.Where(a => a.Id == action.Id && actions.Count(ac => ac.Id == a.Id) > 1).ToArray();
 
             if (overloadedActions.Any()) {
                 var actionAndParms = overloadedActions.Select(a => new Tuple<IActionSpec, string>(a, ((Func<IActionSpec, string>) (act => act.Parameters.Aggregate("", (acc, p) => a + p.Id + p.Spec.FullName)))(a)));
 
-                int index = 0;
+                var index = 0;
                 var orderedActions = actionAndParms.OrderBy(ap => ap.Item2).Select(ap => ap.Item1).ToDictionary(a => a, a => index++);
 
                 var suffix = orderedActions[action].ToString(Thread.CurrentThread.CurrentCulture);
 
                 while (actions.Select(a => a.Id).Contains(action.Id + suffix)) {
-                    suffix = "0" + suffix;
+                    suffix = $"0{suffix}";
                 }
 
                 return suffix;
             }
+
             return "";
         }
 
         private static Tuple<IActionSpec, string>[] GetOverloadedActionsAndUIds(IActionSpec[] actions) {
-            IActionSpec[] overloadedActions = actions.Where(a => actions.Count(ac => ac.Id == a.Id) > 1).ToArray();
+            var overloadedActions = actions.Where(a => actions.Count(ac => ac.Id == a.Id) > 1).ToArray();
 
-            if (overloadedActions.Any()) {
-                return overloadedActions.Select(a => new Tuple<IActionSpec, string>(a, GetUniqueSuffix(a, actions))).ToArray();
-            }
-            return new Tuple<IActionSpec, string>[] {};
+            return overloadedActions.Any()
+                ? overloadedActions.Select(a => new Tuple<IActionSpec, string>(a, GetUniqueSuffix(a, actions))).ToArray()
+                : new Tuple<IActionSpec, string>[] { };
         }
 
         public static IActionSpec GetOverloadedAction(string actionName, ITypeSpec spec) {
             IActionSpec action = null;
-            IActionSpec[] actions = spec.GetActionLeafNodes();
-            Tuple<IActionSpec, string>[] overloadedActions = GetOverloadedActionsAndUIds(actions);
+            var actions = spec.GetActionLeafNodes();
+            var overloadedActions = GetOverloadedActionsAndUIds(actions);
 
             if (overloadedActions.Any()) {
-                Tuple<IActionSpec, string> matchingAction = overloadedActions.SingleOrDefault(oa => oa.Item1.Id + oa.Item2 == actionName);
+                var matchingAction = overloadedActions.SingleOrDefault(oa => oa.Item1.Id + oa.Item2 == actionName);
                 if (matchingAction != null) {
                     action = matchingAction.Item1;
                 }
             }
+
             return action;
         }
 
         public static string GetOverloadedUId(IActionSpec action, ITypeSpec spec) {
-            IActionSpec[] actions = spec.GetActionLeafNodes();
-            Tuple<IActionSpec, string>[] overloadedActions = GetOverloadedActionsAndUIds(actions);
+            var actions = spec.GetActionLeafNodes();
+            var overloadedActions = GetOverloadedActionsAndUIds(actions);
             return overloadedActions.Where(oa => oa.Item1 == action).Select(oa => oa.Item2).SingleOrDefault();
         }
 
         public static Tuple<IActionSpec, string>[] GetActionsandUidFromSpec(ITypeSpec spec) {
-            IActionSpec[] actions = spec.GetActionLeafNodes();
+            var actions = spec.GetActionLeafNodes();
             return actions.Select(action => new Tuple<IActionSpec, string>(action, GetOverloadedUId(action, spec))).ToArray();
         }
 

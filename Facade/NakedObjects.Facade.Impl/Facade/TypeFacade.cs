@@ -82,14 +82,14 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsAlwaysImmutable {
             get {
-                IImmutableFacet facet = WrappedValue.GetFacet<IImmutableFacet>();
+                var facet = WrappedValue.GetFacet<IImmutableFacet>();
                 return facet != null && facet.Value == WhenTo.Always;
             }
         }
 
         public bool IsImmutableOncePersisted {
             get {
-                IImmutableFacet facet = WrappedValue.GetFacet<IImmutableFacet>();
+                var facet = WrappedValue.GetFacet<IImmutableFacet>();
                 return facet != null && facet.Value == WhenTo.OncePersisted;
             }
         }
@@ -99,19 +99,15 @@ namespace NakedObjects.Facade.Impl {
         public IAssociationFacade[] Properties {
             get {
                 var objectSpec = WrappedValue as IObjectSpec;
-                return objectSpec == null ? new IAssociationFacade[] {} : objectSpec.Properties.Select(p => new AssociationFacade(p, FrameworkFacade, framework)).Cast<IAssociationFacade>().ToArray();
+                return objectSpec == null ? new IAssociationFacade[] { } : objectSpec.Properties.Select(p => new AssociationFacade(p, FrameworkFacade, framework)).Cast<IAssociationFacade>().ToArray();
             }
         }
 
         public IMenuFacade Menu => new MenuFacade(WrappedValue.Menu, FrameworkFacade, framework);
 
-        public bool IsImmutable(IObjectFacade objectFacade) {
-            return WrappedValue.IsAlwaysImmutable() || (WrappedValue.IsImmutableOncePersisted() && !objectFacade.IsTransient);
-        }
+        public bool IsImmutable(IObjectFacade objectFacade) => WrappedValue.IsAlwaysImmutable() || WrappedValue.IsImmutableOncePersisted() && !objectFacade.IsTransient;
 
-        public string GetIconName(IObjectFacade objectFacade) {
-            return WrappedValue.GetIconName(objectFacade == null ? null : ((ObjectFacade) objectFacade).WrappedNakedObject);
-        }
+        public string GetIconName(IObjectFacade objectFacade) => WrappedValue.GetIconName(objectFacade == null ? null : ((ObjectFacade) objectFacade).WrappedNakedObject);
 
         public IActionFacade[] GetActionLeafNodes() {
             var actionsAndUid = FacadeUtils.GetActionsandUidFromSpec(WrappedValue);
@@ -124,39 +120,35 @@ namespace NakedObjects.Facade.Impl {
                 var elementSpec = framework.MetamodelManager.GetSpecification(introspectableSpecification);
                 return new TypeFacade(elementSpec, FrameworkFacade, framework);
             }
+
             return null;
         }
 
-        public bool IsOfType(ITypeFacade otherSpec) {
-            return WrappedValue.IsOfType(((TypeFacade) otherSpec).WrappedValue);
-        }
+        public bool IsOfType(ITypeFacade otherSpec) => WrappedValue.IsOfType(((TypeFacade) otherSpec).WrappedValue);
 
-        public Type GetUnderlyingType() {
-            return TypeUtils.GetType(WrappedValue.FullName);
-        }
+        public Type GetUnderlyingType() => TypeUtils.GetType(WrappedValue.FullName);
 
         public IActionFacade[] GetCollectionContributedActions() {
             var objectSpec = WrappedValue as IObjectSpec;
             if (objectSpec != null) {
                 return objectSpec.GetCollectionContributedActions().Select(a => new ActionFacade(a, FrameworkFacade, framework, "")).Cast<IActionFacade>().ToArray();
             }
-            return new IActionFacade[] {};
+
+            return new IActionFacade[] { };
         }
 
         public IActionFacade[] GetLocallyContributedActions(ITypeFacade typeFacade, string id) {
             var objectSpec = WrappedValue as IObjectSpec;
             if (objectSpec != null) {
-                return objectSpec.GetLocallyContributedActions(((TypeFacade)typeFacade).WrappedValue, id).Select(a => new ActionFacade(a, FrameworkFacade, framework, "")).Cast<IActionFacade>().ToArray();
+                return objectSpec.GetLocallyContributedActions(((TypeFacade) typeFacade).WrappedValue, id).Select(a => new ActionFacade(a, FrameworkFacade, framework, "")).Cast<IActionFacade>().ToArray();
             }
+
             return new IActionFacade[] { };
         }
 
-
         public IFrameworkFacade FrameworkFacade { get; set; }
 
-        public bool Equals(ITypeFacade other) {
-            return Equals((object) other);
-        }
+        public bool Equals(ITypeFacade other) => Equals((object) other);
 
         public string PresentationHint {
             get {
@@ -169,22 +161,14 @@ namespace NakedObjects.Facade.Impl {
 
         #endregion
 
-        public override bool Equals(object obj) {
-            var nakedObjectSpecificationWrapper = obj as TypeFacade;
-            if (nakedObjectSpecificationWrapper != null) {
-                return Equals(nakedObjectSpecificationWrapper);
-            }
-            return false;
-        }
+        public override bool Equals(object obj) => obj is TypeFacade tf && Equals(tf);
 
         public bool Equals(TypeFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
-            if (ReferenceEquals(this, other)) { return true; }
-            return Equals(other.WrappedValue, WrappedValue);
+
+            return ReferenceEquals(this, other) || Equals(other.WrappedValue, WrappedValue);
         }
 
-        public override int GetHashCode() {
-            return (WrappedValue != null ? WrappedValue.GetHashCode() : 0);
-        }
+        public override int GetHashCode() => WrappedValue != null ? WrappedValue.GetHashCode() : 0;
     }
 }

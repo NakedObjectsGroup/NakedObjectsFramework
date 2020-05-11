@@ -14,21 +14,18 @@ namespace NakedObjects.Facade.Impl.Implementation {
     public class OidTranslatorSemiColonSeparatedList : IOidTranslator {
         private readonly ILifecycleManager lifecycleManager;
 
-        public OidTranslatorSemiColonSeparatedList(ILifecycleManager lifecycleManager) {
-            this.lifecycleManager = lifecycleManager;
-        }
+        public OidTranslatorSemiColonSeparatedList(ILifecycleManager lifecycleManager) => this.lifecycleManager = lifecycleManager;
 
         #region IOidTranslator Members
 
         public IOidTranslation GetOidTranslation(params string[] id) {
             if (id.Length != 1) {
-                throw new ObjectResourceNotFoundNOSException(id.Aggregate((s, t) => s + " " + t) + ": Parsing Id error");
-            }
-            if (string.IsNullOrEmpty(id.First())) {
-                return null;
+                throw new ObjectResourceNotFoundNOSException($"{id.Aggregate((s, t) => $"{s} {t}")}: Parsing Id error");
             }
 
-            return new OidTranslationSemiColonSeparatedList(id.First());
+            return string.IsNullOrEmpty(id.First())
+                ? null
+                : new OidTranslationSemiColonSeparatedList(id.First());
         }
 
         public IOidTranslation GetOidTranslation(IObjectFacade objectFacade) {
@@ -44,12 +41,8 @@ namespace NakedObjects.Facade.Impl.Implementation {
 
         #endregion
 
-        private string Encode(IEncodedToStrings encoder) {
-            return encoder.ToShortEncodedStrings().Aggregate((a, b) => a + ";" + b);
-        }
+        private string Encode(IEncodedToStrings encoder) => encoder.ToShortEncodedStrings().Aggregate((a, b) => $"{a};{b}");
 
-        private string GetObjectId(IOidFacade oid) {
-            return Encode(((IEncodedToStrings) oid.Value));
-        }
+        private string GetObjectId(IOidFacade oid) => Encode((IEncodedToStrings) oid.Value);
     }
 }

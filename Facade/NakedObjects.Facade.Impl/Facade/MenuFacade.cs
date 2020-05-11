@@ -27,14 +27,11 @@ namespace NakedObjects.Facade.Impl {
 
         #endregion
 
-        private static IMenuItemFacade Wrap(IMenuItemImmutable menu, IFrameworkFacade facade, INakedObjectsFramework framework) {
-            var immutable = menu as IMenuActionImmutable;
-            if (immutable != null) {
-                return new MenuActionFacade(immutable, facade, framework);
-            }
-
-            var menuImmutable = menu as IMenuImmutable;
-            return menuImmutable != null ? (IMenuItemFacade) new MenuFacade(menuImmutable, facade, framework) : new MenuItemFacade(menu);
-        }
+        private static IMenuItemFacade Wrap(IMenuItemImmutable menu, IFrameworkFacade facade, INakedObjectsFramework framework) =>
+            menu switch {
+                IMenuActionImmutable immutable => new MenuActionFacade(immutable, facade, framework),
+                IMenuImmutable menuImmutable => new MenuFacade(menuImmutable, facade, framework),
+                _ => new MenuItemFacade(menu)
+            };
     }
 }

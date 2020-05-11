@@ -61,17 +61,11 @@ namespace NakedObjects.Facade.Impl {
 
         public int ParameterCount => WrappedSpec.ParameterCount;
 
-        public IActionParameterFacade[] Parameters {
-            get { return WrappedSpec.Parameters.Select(p => new ActionParameterFacade(p, FrameworkFacade, framework, overloadedUniqueId)).Cast<IActionParameterFacade>().ToArray(); }
-        }
+        public IActionParameterFacade[] Parameters => WrappedSpec.Parameters.Select(p => new ActionParameterFacade(p, FrameworkFacade, framework, overloadedUniqueId)).Cast<IActionParameterFacade>().ToArray();
 
-        public bool IsVisible(IObjectFacade objectFacade) {
-            return WrappedSpec.IsVisible(((ObjectFacade) objectFacade).WrappedNakedObject);
-        }
+        public bool IsVisible(IObjectFacade objectFacade) => WrappedSpec.IsVisible(((ObjectFacade) objectFacade).WrappedNakedObject);
 
-        public IConsentFacade IsUsable(IObjectFacade objectFacade) {
-            return new ConsentFacade(WrappedSpec.IsUsable(((ObjectFacade) objectFacade).WrappedNakedObject));
-        }
+        public IConsentFacade IsUsable(IObjectFacade objectFacade) => new ConsentFacade(WrappedSpec.IsUsable(((ObjectFacade) objectFacade).WrappedNakedObject));
 
         public ITypeFacade OnType => new TypeFacade(WrappedSpec.OnSpec, FrameworkFacade, framework);
 
@@ -89,22 +83,14 @@ namespace NakedObjects.Facade.Impl {
 
         #endregion
 
-        public override bool Equals(object obj) {
-            var nakedObjectActionWrapper = obj as ActionFacade;
-            if (nakedObjectActionWrapper != null) {
-                return Equals(nakedObjectActionWrapper);
-            }
-            return false;
-        }
+        public override bool Equals(object obj) => obj is ActionFacade af && Equals(af);
 
         public bool Equals(ActionFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
-            if (ReferenceEquals(this, other)) { return true; }
-            return Equals(other.WrappedSpec, WrappedSpec);
+
+            return ReferenceEquals(this, other) || Equals(other.WrappedSpec, WrappedSpec);
         }
 
-        public override int GetHashCode() {
-            return (WrappedSpec != null ? WrappedSpec.GetHashCode() : 0);
-        }
+        public override int GetHashCode() => WrappedSpec != null ? WrappedSpec.GetHashCode() : 0;
     }
 }

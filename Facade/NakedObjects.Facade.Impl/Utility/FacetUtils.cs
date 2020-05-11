@@ -17,6 +17,7 @@ namespace NakedObjects.Facade.Impl.Utility {
             if (objectFacade == null) {
                 return null;
             }
+
             var mask = spec.GetFacet<IMaskFacet>();
             var no = ((ObjectFacade) objectFacade).WrappedNakedObject;
             return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, nakedObjectManager) : no.TitleString();
@@ -25,8 +26,7 @@ namespace NakedObjects.Facade.Impl.Utility {
         public static int GetMemberOrder(this ISpecification spec) {
             var facet = spec.GetFacet<IMemberOrderFacet>();
 
-            int result;
-            if (facet != null && int.TryParse(facet.Sequence, out result)) {
+            if (facet != null && int.TryParse(facet.Sequence, out var result)) {
                 return result;
             }
 
@@ -59,7 +59,7 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         public static bool GetRenderEagerly(this ISpecification spec) {
-            IEagerlyFacet eagerlyFacet = spec.GetFacet<IEagerlyFacet>();
+            var eagerlyFacet = spec.GetFacet<IEagerlyFacet>();
             return eagerlyFacet?.What == EagerlyAttribute.Do.Rendering;
         }
 

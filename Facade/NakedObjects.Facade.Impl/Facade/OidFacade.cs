@@ -14,7 +14,6 @@ namespace NakedObjects.Facade.Impl {
 
         public OidFacade(IOid oid) {
             FacadeUtils.AssertNotNull(oid, "Oid is null");
-
             this.oid = oid;
         }
 
@@ -24,26 +23,16 @@ namespace NakedObjects.Facade.Impl {
 
         #endregion
 
-        public override bool Equals(object obj) {
-            var oidWrapper = obj as OidFacade;
-            if (oidWrapper != null) {
-                return Equals(oidWrapper);
-            }
-            return false;
-        }
+        public override bool Equals(object obj) => obj is OidFacade of && Equals(of);
 
         public bool Equals(OidFacade other) {
             if (ReferenceEquals(null, other)) { return false; }
-            if (ReferenceEquals(this, other)) { return true; }
-            return Equals(other.oid, oid);
+
+            return ReferenceEquals(this, other) || Equals(other.oid, oid);
         }
 
-        public override int GetHashCode() {
-            return oid != null ? oid.GetHashCode() : 0;
-        }
+        public override int GetHashCode() => oid != null ? oid.GetHashCode() : 0;
 
-        public override string ToString() {
-            return oid.ToString();
-        }
+        public override string ToString() => oid.ToString();
     }
 }
