@@ -17,7 +17,7 @@ using NakedObjects.Meta.SemanticsProvider;
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestClass]
     public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<char> {
-        private Char character;
+        private char character;
         private ISpecification holder;
         private CharValueSemanticsProvider value;
 
@@ -35,7 +35,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public override void TestParseEmptyString() {
             try {
-                object newValue = value.ParseTextEntry("");
+                var newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
             }
             catch (Exception) {
@@ -46,8 +46,8 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestParseInvariant() {
             const char c1 = 'z';
-            string s1 = c1.ToString(CultureInfo.InvariantCulture);
-            object c2 = value.ParseInvariant(s1);
+            var s1 = c1.ToString(CultureInfo.InvariantCulture);
+            var c2 = value.ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
         }
 
@@ -69,7 +69,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestValidParse() {
-            object parse = value.ParseTextEntry("t");
+            var parse = value.ParseTextEntry("t");
             Assert.AreEqual('t', parse);
         }
 
@@ -95,7 +95,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.SetUp();
             character = 'r';
             holder = new Mock<ISpecification>().Object;
-            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
+            var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new CharValueSemanticsProvider(spec, holder));
         }
 

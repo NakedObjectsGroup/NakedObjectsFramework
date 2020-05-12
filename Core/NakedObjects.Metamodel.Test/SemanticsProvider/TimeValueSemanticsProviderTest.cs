@@ -23,8 +23,8 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestParseInvariant() {
             var d1 = new TimeSpan(1, 5, 1, 25);
-            string s1 = d1.ToString(null, CultureInfo.InvariantCulture);
-            object d2 = adapter.ParseInvariant(s1);
+            var s1 = d1.ToString(null, CultureInfo.InvariantCulture);
+            var d2 = adapter.ParseInvariant(s1);
             Assert.AreEqual(d1, d2);
         }
 
@@ -73,10 +73,9 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            SetupSpecification(typeof(TimeSpan));
             time = new TimeSpan(8, 13, 0);
             holder = new Mock<ISpecification>().Object;
-            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
+            var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(adapter = new TimeValueSemanticsProvider(spec, holder));
         }
 
@@ -89,9 +88,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
     }
 
     public class TestClock {
-        public static long GetTicks() {
-            return new DateTime(2003, 8, 17, 21, 30, 25).Ticks;
-        }
+        public static long GetTicks() => new DateTime(2003, 8, 17, 21, 30, 25).Ticks;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

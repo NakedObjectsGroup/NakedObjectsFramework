@@ -36,8 +36,7 @@ namespace NakedObjects.Meta.Test.Profile {
         }
 
         private static void TestDecorated<TFacet, TResult>(ProfileManager manager) where TFacet : class, IFacet {
-            Mock<ISpecification> testHolder;
-            var testSpec = SetupMocks(out testHolder);
+            var testSpec = SetupMocks(out var testHolder);
             var testFacet = new Mock<TFacet>();
 
             testFacet.Setup(n => n.FacetType).Returns(typeof(TFacet));
@@ -49,8 +48,7 @@ namespace NakedObjects.Meta.Test.Profile {
         }
 
         private static void TestNotDecorated<TFacet, TResult>(ProfileManager manager) where TFacet : class, IFacet {
-            Mock<ISpecification> testHolder;
-            var testSpec = SetupMocks(out testHolder);
+            var testSpec = SetupMocks(out var testHolder);
             var testFacet = new Mock<TFacet>();
 
             testFacet.Setup(n => n.FacetType).Returns(typeof(TFacet));
@@ -74,7 +72,7 @@ namespace NakedObjects.Meta.Test.Profile {
             TestDecorated<TFacet, TResult>(manager);
         }
 
-        private void TestDecorateCallbackFacet<T>(ProfileEvent eventToTest) where T : class, ICallbackFacet {
+        private static void TestDecorateCallbackFacet<T>(ProfileEvent eventToTest) where T : class, ICallbackFacet {
             TestDecorateFacet<T, ProfileCallbackFacet>(eventToTest);
         }
 
@@ -199,7 +197,7 @@ namespace NakedObjects.Meta.Test.Profile {
             var auditor = new Mock<IProfiler>();
 
             config.Setup(c => c.Profiler).Returns(auditor.Object.GetType());
-            config.Setup(c => c.EventsToProfile).Returns(new HashSet<ProfileEvent> { });
+            config.Setup(c => c.EventsToProfile).Returns(new HashSet<ProfileEvent>());
 
             var manager = new ProfileManager(config.Object);
 

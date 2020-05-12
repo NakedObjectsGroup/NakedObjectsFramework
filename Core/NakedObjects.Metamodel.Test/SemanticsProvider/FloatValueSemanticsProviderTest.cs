@@ -17,18 +17,18 @@ using NakedObjects.Meta.SemanticsProvider;
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestClass]
     public class FloatValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<float> {
-        private Single floatObj;
+        private float floatObj;
         private ISpecification holder;
 
         [TestMethod]
         public void TestDecode() {
-            float decoded = GetValue().FromEncodedString("3.042112234E6");
+            var decoded = GetValue().FromEncodedString("3.042112234E6");
             Assert.AreEqual(3042112.234f, decoded);
         }
 
         [TestMethod]
         public void TestEncode() {
-            string encoded = GetValue().ToEncodedString(0.0000454566f);
+            var encoded = GetValue().ToEncodedString(0.0000454566f);
             Assert.AreEqual("4.54566E-05", encoded);
         }
 
@@ -45,20 +45,20 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestParse() {
-            object newValue = GetValue().ParseTextEntry("120.56");
+            var newValue = GetValue().ParseTextEntry("120.56");
             Assert.AreEqual(120.56F, newValue);
         }
 
         [TestMethod]
         public void TestParse2() {
-            object newValue = GetValue().ParseTextEntry("1,20.0");
+            var newValue = GetValue().ParseTextEntry("1,20.0");
             Assert.AreEqual(120F, newValue);
         }
 
         [TestMethod]
         public override void TestParseEmptyString() {
             try {
-                object newValue = GetValue().ParseTextEntry("");
+                var newValue = GetValue().ParseTextEntry("");
                 Assert.IsNull(newValue);
             }
             catch (Exception) {
@@ -69,8 +69,8 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestParseInvariant() {
             const float c1 = 123.456F;
-            string s1 = c1.ToString(CultureInfo.InvariantCulture);
-            object c2 = GetValue().ParseInvariant(s1);
+            var s1 = c1.ToString(CultureInfo.InvariantCulture);
+            var c2 = GetValue().ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
         }
 
@@ -106,7 +106,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.SetUp();
 
             holder = new Mock<ISpecification>().Object;
-            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
+            var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(new FloatValueSemanticsProvider(spec, holder));
 
             floatObj = 32.5F;

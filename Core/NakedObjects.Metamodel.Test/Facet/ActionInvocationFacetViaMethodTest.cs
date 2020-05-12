@@ -20,7 +20,7 @@ namespace NakedObjects.Meta.Test.Facet {
 
         #endregion
 
-        private void DelegateActionTest(MethodInfo method) {
+        private static void DelegateActionTest(MethodInfo method) {
             var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false);
             var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();
             Assert.IsNotNull(facet.ActionDelegate, method.Name);
@@ -29,14 +29,14 @@ namespace NakedObjects.Meta.Test.Facet {
             Assert.AreEqual(method.Name, testObject.ActionCalled);
         }
 
-        private void DelegateFuncTest(MethodInfo method) {
+        private static void DelegateFuncTest(MethodInfo method) {
             var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false);
             Assert.IsNotNull(facet.ActionDelegate, method.Name);
             var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();
             Assert.AreEqual(method.Name, facet.ActionDelegate(new TestDelegateClass(), parms));
         }
 
-        private void InvokeActionTest(MethodInfo method) {
+        private static void InvokeActionTest(MethodInfo method) {
             var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false);
             Assert.IsNull(facet.ActionDelegate);
             var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();
@@ -46,7 +46,7 @@ namespace NakedObjects.Meta.Test.Facet {
             Assert.AreEqual(method.Name, testObject.ActionCalled);
         }
 
-        private void InvokeFuncTest(MethodInfo method) {
+        private static void InvokeFuncTest(MethodInfo method) {
             var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false);
             Assert.IsNull(facet.ActionDelegate);
             Assert.IsNotNull(facet.GetMethod());
@@ -81,10 +81,13 @@ namespace NakedObjects.Meta.Test.Facet {
 
         #region Nested type: TestDelegateClass
 
+        // ReSharper disable UnusedMember.Global
         public class TestDelegateClass {
             public string ActionCalled { get; set; }
 
+            
             public void Action0() {
+                
                 ActionCalled = "Action0";
             }
 
@@ -116,38 +119,23 @@ namespace NakedObjects.Meta.Test.Facet {
                 ActionCalled = "Action7";
             }
 
-            public string Func0() {
-                return "Func0";
-            }
+            public string Func0() => "Func0";
 
-            public string Func1(string p1) {
-                return "Func1";
-            }
+            public string Func1(string p1) => "Func1";
 
-            public string Func2(string p1, string p2) {
-                return "Func2";
-            }
+            public string Func2(string p1, string p2) => "Func2";
 
-            public string Func3(string p1, string p2, string p3) {
-                return "Func3";
-            }
+            public string Func3(string p1, string p2, string p3) => "Func3";
 
-            public string Func4(string p1, string p2, string p3, string p4) {
-                return "Func4";
-            }
+            public string Func4(string p1, string p2, string p3, string p4) => "Func4";
 
-            public string Func5(string p1, string p2, string p3, string p4, string p5) {
-                return "Func5";
-            }
+            public string Func5(string p1, string p2, string p3, string p4, string p5) => "Func5";
 
-            public string Func6(string p1, string p2, string p3, string p4, string p5, string p6) {
-                return "Func6";
-            }
+            public string Func6(string p1, string p2, string p3, string p4, string p5, string p6) => "Func6";
 
-            public string Func7(string p1, string p2, string p3, string p4, string p5, string p6, string p7) {
-                return "Func7";
-            }
+            public string Func7(string p1, string p2, string p3, string p4, string p5, string p6, string p7) => "Func7";
         }
+        // ReSharper restore UnusedMember.Global
 
         #endregion
     }

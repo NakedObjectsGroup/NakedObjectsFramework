@@ -23,9 +23,9 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         private ArrayValueSemanticsProvider<byte> value;
 
         public void RunTestEncodeDecode(byte[] toTest) {
-            byte[] originalValue = toTest;
-            string encodedValue = value.ToEncodedString(originalValue);
-            byte[] decodedValue = value.FromEncodedString(encodedValue);
+            var originalValue = toTest;
+            var encodedValue = value.ToEncodedString(originalValue);
+            var decodedValue = value.FromEncodedString(encodedValue);
 
             if (originalValue == null) {
                 Assert.IsNull(decodedValue);
@@ -53,7 +53,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public override void TestParseEmptyString() {
             try {
-                object newValue = value.ParseTextEntry("");
+                var newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
             }
             catch (Exception) {
@@ -75,8 +75,8 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestParseInvariant() {
             var b1 = new byte[] {1, 2, 3, 4};
-            string s1 = b1.Aggregate("", (s, t) => s + ' ' + t.ToString(CultureInfo.InvariantCulture));
-            object b2 = value.ParseInvariant(s1);
+            var s1 = b1.Aggregate("", (s, t) => s + ' ' + t.ToString(CultureInfo.InvariantCulture));
+            var b2 = value.ParseInvariant(s1);
 
             Assert.IsTrue(b1.SequenceEqual((byte[]) b2));
         }
@@ -131,7 +131,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             byteArray = new byte[0];
             CreateAdapter(byteArray);
             specification = new Mock<ISpecification>().Object;
-            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
+            var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new ArrayValueSemanticsProvider<byte>(spec, specification));
         }
 

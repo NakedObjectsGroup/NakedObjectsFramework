@@ -21,11 +21,13 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         private ISpecification holder;
         private SbyteValueSemanticsProvider value;
 
+        [TestMethod]
         public void TestParseValidString() {
-            Object parsed = value.ParseTextEntry("21");
+            var parsed = value.ParseTextEntry("21");
             Assert.AreEqual((sbyte) 21, parsed);
         }
 
+        [TestMethod]
         public void TestParseInvalidString() {
             try {
                 value.ParseTextEntry("xs21z4xxx23");
@@ -36,23 +38,26 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             }
         }
 
+        [TestMethod]
         public void TestTitleOf() {
             Assert.AreEqual("102", value.DisplayTitleOf(byteObj));
         }
 
+        [TestMethod]
         public void TestEncode() {
             Assert.AreEqual("102", value.ToEncodedString(byteObj));
         }
 
+        [TestMethod]
         public void TestDecode() {
-            Object parsed = value.FromEncodedString("-91");
+            object parsed = value.FromEncodedString("-91");
             Assert.AreEqual((sbyte) -91, parsed);
         }
 
         [TestMethod]
         public override void TestParseEmptyString() {
             try {
-                object newValue = value.ParseTextEntry("");
+                var newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
             }
             catch (Exception) {
@@ -63,8 +68,8 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestParseInvariant() {
             const sbyte c1 = (sbyte) 11;
-            string s1 = c1.ToString(CultureInfo.InvariantCulture);
-            object c2 = GetValue().ParseInvariant(s1);
+            var s1 = c1.ToString(CultureInfo.InvariantCulture);
+            var c2 = GetValue().ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
         }
 
@@ -90,7 +95,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.SetUp();
             byteObj = 102;
             holder = new Mock<ISpecification>().Object;
-            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
+            var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new SbyteValueSemanticsProvider(spec, holder));
         }
 

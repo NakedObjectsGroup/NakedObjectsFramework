@@ -14,13 +14,15 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Meta.SemanticsProvider;
+// ReSharper disable UnusedMember.Global
+
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     public enum TestEnum {
         London,
         Paris,
         NewYork
-    };
+    }
 
     [TestClass]
     public class EnumValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<TestEnum> {
@@ -115,7 +117,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestDecode() {
-            TestEnum decoded = GetValue().FromEncodedString("NakedObjects.Meta.Test.SemanticsProvider.TestEnum:Paris");
+            var decoded = GetValue().FromEncodedString("NakedObjects.Meta.Test.SemanticsProvider.TestEnum:Paris");
             Assert.AreEqual(TestEnum.Paris, decoded);
         }
 
@@ -127,7 +129,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestEncode() {
-            string encoded = GetValue().ToEncodedString(TestEnum.Paris);
+            var encoded = GetValue().ToEncodedString(TestEnum.Paris);
             Assert.AreEqual("NakedObjects.Meta.Test.SemanticsProvider.TestEnum:Paris", encoded);
         }
 
@@ -183,14 +185,14 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestParse() {
-            object newValue = value.ParseTextEntry("0");
+            var newValue = value.ParseTextEntry("0");
             Assert.AreEqual(TestEnum.London, newValue);
         }
 
         [TestMethod]
         public override void TestParseEmptyString() {
             try {
-                object newValue = value.ParseTextEntry("");
+                var newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
             }
             catch (Exception) {
@@ -201,8 +203,8 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestParseInvariant() {
             const TestEnum c1 = TestEnum.London;
-            string s1 = c1.ToString();
-            object c2 = value.ParseInvariant(s1);
+            var s1 = c1.ToString();
+            var c2 = value.ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
         }
 
@@ -210,7 +212,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public void TestParseOverflow() {
             try {
                 // ReSharper disable once UnusedVariable
-                object newValue = value.ParseTextEntry(long.MaxValue.ToString(CultureInfo.InvariantCulture));
+                var newValue = value.ParseTextEntry(long.MaxValue.ToString(CultureInfo.InvariantCulture));
                 Assert.Fail("Expect Exception");
             }
             catch (InvalidEntryException e) {
@@ -244,7 +246,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public override void SetUp() {
             base.SetUp();
             holder = new Mock<ISpecification>().Object;
-            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
+            var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new EnumValueSemanticsProvider<TestEnum>(spec, holder));
         }
 

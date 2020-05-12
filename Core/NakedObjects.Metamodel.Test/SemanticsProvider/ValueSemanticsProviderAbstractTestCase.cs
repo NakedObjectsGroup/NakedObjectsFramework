@@ -10,7 +10,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SemanticsProvider;
@@ -21,7 +20,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         protected ILifecycleManager LifecycleManager = new Mock<ILifecycleManager>().Object;
         protected INakedObjectManager Manager = new Mock<INakedObjectManager>().Object;
         protected IMetamodelManager Metamodel = new Mock<IMetamodelManager>().Object;
-        private ParseableFacetUsingParser<T> parseableFacet;
         protected IObjectPersistor Persistor = new Mock<IObjectPersistor>().Object;
         protected IReflector Reflector = new Mock<IReflector>().Object;
         private IValueSemanticsProvider<T> value;
@@ -29,37 +27,19 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         protected void SetValue(IValueSemanticsProvider<T> newValue) {
             value = newValue;
             encodeableFacet = new EncodeableFacetUsingEncoderDecoder<T>(newValue, null);
-            parseableFacet = new ParseableFacetUsingParser<T>(newValue, null);
         }
 
-        protected IValueSemanticsProvider<T> GetValue() {
-            return value;
-        }
-
-        protected IEncodeableFacet GetEncodeableFacet() {
-            return encodeableFacet;
-        }
-
-        protected IParseableFacet GetParseableFacet() {
-            return parseableFacet;
-        }
+        protected IValueSemanticsProvider<T> GetValue() => value;
 
         public virtual void SetUp() { }
 
         public virtual void TearDown() {
             value = null;
             encodeableFacet = null;
-            parseableFacet = null;
-        }
-
-        protected void SetupSpecification(Type type) {
-            //TestProxySpecification specification = system.GetSpecification(type);
-            //specification.SetupHasNoIdentity(true);
         }
 
         protected INakedObjectAdapter CreateAdapter(object obj) {
-            ISession session = new Mock<ISession>().Object;
-
+            var session = new Mock<ISession>().Object;
             return new NakedObjectAdapter(Metamodel, session, Persistor, LifecycleManager, Manager, obj, null);
         }
 
@@ -72,7 +52,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         }
 
         public virtual void TestParseEmptyString() {
-            object newValue = value.ParseTextEntry("");
+            var newValue = value.ParseTextEntry("");
             Assert.IsNull(newValue);
         }
 

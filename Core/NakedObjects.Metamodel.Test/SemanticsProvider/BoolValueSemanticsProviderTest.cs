@@ -60,7 +60,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public override void TestParseEmptyString() {
             try {
-                object newValue = value.ParseTextEntry("");
+                var newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
             }
             catch (Exception) {
@@ -70,7 +70,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestParseFalseString() {
-            object parsed = value.ParseTextEntry("faLSe");
+            var parsed = value.ParseTextEntry("faLSe");
             Assert.AreEqual(false, parsed);
         }
 
@@ -88,15 +88,15 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestParseInvariant() {
             new[] {true, false}.ForEach(b => {
-                string b1 = b.ToString(CultureInfo.InvariantCulture);
-                object b2 = value.ParseInvariant(b1);
+                var b1 = b.ToString(CultureInfo.InvariantCulture);
+                var b2 = value.ParseInvariant(b1);
                 Assert.AreEqual(b, b2);
             });
         }
 
         [TestMethod]
         public void TestParseTrueString() {
-            object parsed = value.ParseTextEntry("TRue");
+            var parsed = value.ParseTextEntry("TRue");
             Assert.AreEqual(true, parsed);
         }
 
@@ -133,7 +133,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             booleanObj = true;
             booleanNO = CreateAdapter(booleanObj);
             specification = new Mock<ISpecification>().Object;
-            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
+            var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new BooleanValueSemanticsProvider(spec, specification));
         }
 

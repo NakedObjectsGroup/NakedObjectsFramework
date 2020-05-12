@@ -122,13 +122,9 @@ namespace NakedObjects.Meta.Test.Authorization {
         public class TestDefaultAuthorizer : ITypeAuthorizer<object> {
             #region ITypeAuthorizer<object> Members
 
-            public bool IsEditable(IPrincipal principal, object target, string memberName) {
-                return true;
-            }
+            public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
 
-            public bool IsVisible(IPrincipal principal, object target, string memberName) {
-                return true;
-            }
+            public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
 
             #endregion
         }
@@ -140,13 +136,9 @@ namespace NakedObjects.Meta.Test.Authorization {
         public class TestNamespaceAuthorizer : INamespaceAuthorizer {
             #region INamespaceAuthorizer Members
 
-            public bool IsEditable(IPrincipal principal, object target, string memberName) {
-                return true;
-            }
+            public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
 
-            public bool IsVisible(IPrincipal principal, object target, string memberName) {
-                return true;
-            }
+            public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
 
             #endregion
         }

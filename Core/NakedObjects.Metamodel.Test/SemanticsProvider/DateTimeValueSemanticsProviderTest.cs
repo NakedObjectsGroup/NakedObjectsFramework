@@ -20,13 +20,13 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         private ISpecification holder;
 
         private void AssertEntry(string entry, int year, int month, int day, int hour, int minute, int second) {
-            object obj = adapter.ParseTextEntry(entry);
+            var obj = adapter.ParseTextEntry(entry);
             Assert.AreEqual(new DateTime(year, month, day, hour, minute, second), obj);
         }
 
         [TestMethod]
         public void TestDecode() {
-            DateTime decoded = adapter.FromEncodedString("2003-08-17T21:30:25");
+            var decoded = adapter.FromEncodedString("2003-08-17T21:30:25");
             Assert.AreEqual(new DateTime(TestClock.GetTicks()), decoded);
         }
 
@@ -37,7 +37,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestEncode() {
-            string encoded = adapter.ToEncodedString(new DateTime(TestClock.GetTicks()));
+            var encoded = adapter.ToEncodedString(new DateTime(TestClock.GetTicks()));
             Assert.AreEqual("2003-08-17T21:30:25", encoded);
         }
 
@@ -45,14 +45,14 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public void TestEntryWithLongISOFormat() {
             var dt = new DateTime(2007, 5, 21, 10, 30, 0);
             dt = dt.ToUniversalTime();
-            string entry = dt.ToString("u");
+            var entry = dt.ToString("u");
             AssertEntry(entry, 2007, 5, 21, 10, 30, 0);
         }
 
         [TestMethod]
         public void TestEntryWithMediumFormat() {
             var dt = new DateTime(2007, 5, 21, 10, 30, 0);
-            string entry = dt.ToString("f");
+            var entry = dt.ToString("f");
             // "21-May-2007 10:30"
             AssertEntry(entry, 2007, 5, 21, 10, 30, 0);
         }
@@ -60,7 +60,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestEntryWithShortFormat() {
             var dt = new DateTime(2007, 5, 21, 10, 30, 0);
-            string entry = dt.ToString("g");
+            var entry = dt.ToString("g");
             const int year = 2007;
             const int month = 5;
             const int day = 21;
@@ -72,8 +72,8 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestParseInvariant() {
             var d1 = new DateTime(2014, 7, 10, 14, 52, 0, DateTimeKind.Utc);
-            string s1 = d1.ToString(CultureInfo.InvariantCulture);
-            object d2 = adapter.ParseInvariant(s1);
+            var s1 = d1.ToString(CultureInfo.InvariantCulture);
+            var d2 = adapter.ParseInvariant(s1);
             Assert.AreEqual(d1, d2);
         }
 
@@ -102,9 +102,8 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            SetupSpecification(typeof(DateTime));
             holder = new Mock<ISpecification>().Object;
-            IObjectSpecImmutable spec = new Mock<IObjectSpecImmutable>().Object;
+            var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(adapter = new DateTimeValueSemanticsProvider(spec, holder));
         }
 
