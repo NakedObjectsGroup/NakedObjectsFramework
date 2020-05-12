@@ -31,7 +31,7 @@ namespace NakedObjects.Meta.Facet {
 
         [field: NonSerialized] private Func<object, object[], object> choicesDelegate;
 
-        public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes, Type choicesType, ISpecification holder, bool isMultiple = false)
+        public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, (string, IObjectSpecImmutable)[] parameterNamesAndTypes, Type choicesType, ISpecification holder, bool isMultiple = false)
             : base(holder) {
             this.choicesMethod = choicesMethod;
             this.choicesType = choicesType;
@@ -41,7 +41,7 @@ namespace NakedObjects.Meta.Facet {
             choicesDelegate = DelegateUtils.CreateDelegate(choicesMethod);
         }
 
-        public override Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes { get; }
+        public override (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
 
         public override bool IsMultiple { get; }
 

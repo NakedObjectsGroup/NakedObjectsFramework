@@ -34,17 +34,15 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public PropertyMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Properties) { }
 
-        public override string[] Prefixes {
-            get { return FixedPrefixes; }
-        }
+        public override string[] Prefixes => FixedPrefixes;
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            string capitalizedName = property.Name;
+            var capitalizedName = property.Name;
             var paramTypes = new[] {property.PropertyType};
 
             var facets = new List<IFacet> {new PropertyAccessorFacet(property, specification)};
 
-            if (property.PropertyType.IsGenericType && (property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))) {
+            if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
                 facets.Add(new NullableFacetAlways(specification));
             }
 
@@ -88,7 +86,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                                                string capitalizedName,
                                                Type[] parms,
                                                ISpecification property) {
-            MethodInfo method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ModifyPrefix + capitalizedName, typeof(void), parms);
+            var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ModifyPrefix + capitalizedName, typeof(void), parms);
             RemoveMethod(methodRemover, method);
             if (method != null) {
                 propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, capitalizedName, property));
@@ -96,7 +94,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         private void FindAndRemoveValidateMethod(IReflector reflector, ICollection<IFacet> propertyFacets, IMethodRemover methodRemover, Type type, Type[] parms, string capitalizedName, ISpecification property) {
-            MethodInfo method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
+            var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
             RemoveMethod(methodRemover, method);
             if (method != null) {
                 propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property));
@@ -114,7 +112,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                                                 string capitalizedName,
                                                 Type returnType,
                                                 ISpecification property) {
-            MethodInfo method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes);
+            var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes);
             RemoveMethod(methodRemover, method);
             if (method != null) {
                 propertyFacets.Add(new PropertyDefaultFacetViaMethod(method, property));
@@ -130,7 +128,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                                                                                           Type returnType,
                                                                                           ISpecification property,
                                                                                           IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            MethodInfo[] methods = FindMethods(reflector,
+            var methods = FindMethods(reflector,
                 type,
                 MethodType.Object,
                 RecognisedMethodsAndPrefixes.ChoicesPrefix + capitalizedName,
@@ -143,18 +141,16 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     m.GetParameters().Select(p => p.Name).Aggregate("", (s, t) => s + " " + t)));
             }
 
-            MethodInfo method = methods.FirstOrDefault();
+            var method = methods.FirstOrDefault();
             RemoveMethod(methodRemover, method);
             if (method != null) {
-                var parameterNamesAndTypes = new List<Tuple<string, IObjectSpecImmutable>>();
-                //method.GetParameters().
-                //    Select(p => new Tuple<string, IObjectSpecImmutable>(p.Name.ToLower(), reflector.LoadSpecification<IObjectSpecImmutable>(p.ParameterType, metamodel))).ToArray();
+                var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
 
                 foreach (var p in method.GetParameters()) {
                     var result = reflector.LoadSpecification(p.ParameterType, metamodel);
                     metamodel = result.Item2;
                     var spec = result.Item1 as IObjectSpecImmutable;
-                    parameterNamesAndTypes.Add(new Tuple<string, IObjectSpecImmutable>(p.Name.ToLower(), spec));
+                    parameterNamesAndTypes.Add((p.Name.ToLower(), spec));
                 }
 
                 propertyFacets.Add(new PropertyChoicesFacet(method, parameterNamesAndTypes.ToArray(), property));
@@ -173,7 +169,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                                                      ISpecification property) {
             // only support if property is string or domain type
             if (returnType.IsClass || returnType.IsInterface) {
-                MethodInfo method = FindAutoCompleteMethod(reflector, type, capitalizedName,
+                var method = FindAutoCompleteMethod(reflector, type, capitalizedName,
                     typeof(IQueryable<>).MakeGenericType(returnType));
 
                 //.. or returning a single object
@@ -190,8 +186,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
                     var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
 
-                    int pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default
-                    int minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
+                    var pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default
+                    var minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
 
                     RemoveMethod(methodRemover, method);
                     propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property));
@@ -201,7 +197,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         private MethodInfo FindAutoCompleteMethod(IReflector reflector, Type type, string capitalizedName, Type returnType) {
-            MethodInfo method = FindMethod(reflector,
+            var method = FindMethod(reflector,
                 type,
                 MethodType.Object,
                 RecognisedMethodsAndPrefixes.AutoCompletePrefix + capitalizedName,

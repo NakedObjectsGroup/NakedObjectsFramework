@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.ParallelReflect.Component {
     public static class FasterTypeUtils {
@@ -15,36 +17,26 @@ namespace NakedObjects.ParallelReflect.Component {
         private const string EntityProxyPrefix = "System.Data.Entity.DynamicProxies.";
         private const string CastleProxyPrefix = "Castle.Proxies.";
 
-        public static bool IsNakedObjectsProxy(string typeName) {
-            return typeName.StartsWith(NakedObjectsProxyPrefix, StringComparison.Ordinal);
-        }
+        public static bool IsNakedObjectsProxy(string typeName) => typeName.StartsWith(NakedObjectsProxyPrefix, StringComparison.Ordinal);
 
-        public static bool IsCastleProxy(string typeName) {
-            return typeName.StartsWith(CastleProxyPrefix, StringComparison.Ordinal);
-        }
+        public static bool IsCastleProxy(string typeName) => typeName.StartsWith(CastleProxyPrefix, StringComparison.Ordinal);
 
-        public static bool IsEntityProxy(string typeName) {
-            return typeName.StartsWith(EntityProxyPrefix, StringComparison.Ordinal);
-        }
+        public static bool IsEntityProxy(string typeName) => typeName.StartsWith(EntityProxyPrefix, StringComparison.Ordinal);
 
-        public static bool IsProxy(Type type) {
-            return IsProxy(type.FullName ?? "");
-        }
+        public static bool IsProxy(Type type) => IsProxy(type.FullName ?? "");
 
-        public static bool IsProxy(string typeName) {
-            return IsEntityProxy(typeName) || IsNakedObjectsProxy(typeName) || IsCastleProxy(typeName);
-        }
+        public static bool IsProxy(string typeName) => IsEntityProxy(typeName) || IsNakedObjectsProxy(typeName) || IsCastleProxy(typeName);
 
-        public static bool IsSystem(string typeName) {
-            return typeName.StartsWith(SystemTypePrefix, StringComparison.Ordinal) && !IsEntityProxy(typeName);
-        }
+        public static bool IsSystem(string typeName) => typeName.StartsWith(SystemTypePrefix, StringComparison.Ordinal) && !IsEntityProxy(typeName);
 
-        public static bool IsNakedObjects(string typeName) {
-            return typeName.StartsWith(NakedObjectsTypePrefix, StringComparison.Ordinal);
-        }
+        public static bool IsNakedObjects(string typeName) => typeName.StartsWith(NakedObjectsTypePrefix, StringComparison.Ordinal);
 
-        public static bool IsSystem(Type type) {
-            return IsSystem(type.FullName ?? "");
-        }
+        public static bool IsSystem(Type type) => IsSystem(type.FullName ?? "");
+
+        public static bool IsObjectArray(Type type) => type.IsArray && !(type.GetElementType()?.IsValueType == true || type.GetElementType() == typeof(string));
+
+        public static bool IsGenericCollection(Type type) =>
+            CollectionUtils.IsGenericType(type, typeof(IEnumerable<>)) ||
+            CollectionUtils.IsGenericType(type, typeof(ISet<>));
     }
 }

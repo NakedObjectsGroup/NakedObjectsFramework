@@ -40,8 +40,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IExecutedFacet Create(ExecutedAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new ExecutedFacetAnnotation(attribute.Value, holder);
-        }
+        private static IExecutedFacet Create(ExecutedAttribute attribute, ISpecification holder) => attribute == null ? null : new ExecutedFacetAnnotation(attribute.Value, holder);
     }
 }

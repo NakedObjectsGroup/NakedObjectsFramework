@@ -29,12 +29,10 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static void Process(MemberInfo member, ISpecification holder) {
-            Process(member.GetCustomAttribute<HiddenAttribute>, member.GetCustomAttribute<ScaffoldColumnAttribute>, holder);
-        }
+        private static void Process(MemberInfo member, ISpecification holder) => Process(member.GetCustomAttribute<HiddenAttribute>, member.GetCustomAttribute<ScaffoldColumnAttribute>, holder);
 
         private static void Process(Func<Attribute> getHidden, Func<Attribute> getScaffold, ISpecification specification) {
-            Attribute attribute = getHidden();
+            var attribute = getHidden();
             FacetUtils.AddFacet(attribute != null ? Create((HiddenAttribute) attribute, specification) : Create((ScaffoldColumnAttribute) getScaffold(), specification));
         }
 
@@ -48,12 +46,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new HiddenFacet(attribute.Value, holder);
-        }
+        private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) => attribute == null ? null : new HiddenFacet(attribute.Value, holder);
 
-        private static IHiddenFacet Create(ScaffoldColumnAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new HiddenFacet(attribute.Scaffold ? WhenTo.Never : WhenTo.Always, holder);
-        }
+        private static IHiddenFacet Create(ScaffoldColumnAttribute attribute, ISpecification holder) => attribute == null ? null : new HiddenFacet(attribute.Scaffold ? WhenTo.Never : WhenTo.Always, holder);
     }
 }

@@ -25,13 +25,13 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
             FacetUtils.AddFacet(new AggregatedFacetAlways(holder));
 
             // ImmutableFacet, if appropriate
-            bool immutable = semanticsProvider == null || semanticsProvider.IsImmutable;
+            var immutable = semanticsProvider == null || semanticsProvider.IsImmutable;
             if (immutable) {
                 FacetUtils.AddFacet(new ImmutableFacetViaValueSemantics(holder));
             }
 
             // EqualByContentFacet, if appropriate
-            bool equalByContent = semanticsProvider == null || semanticsProvider.IsEqualByContent;
+            var equalByContent = semanticsProvider == null || semanticsProvider.IsEqualByContent;
             if (equalByContent) {
                 FacetUtils.AddFacet(new EqualByContentFacet(holder));
             }
@@ -42,8 +42,7 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
                 FacetUtils.AddFacet(new TitleFacetUsingParser<T>(semanticsProvider, holder));
                 FacetUtils.AddFacet(new TypicalLengthFacetUsingParser<T>(semanticsProvider, holder));
 
-                var fromStream = semanticsProvider as IFromStream;
-                if (fromStream != null) {
+                if (semanticsProvider is IFromStream fromStream) {
                     FacetUtils.AddFacet(new FromStreamFacetUsingFromStream(fromStream, holder));
                 }
 

@@ -35,8 +35,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IPageSizeFacet Create(PageSizeAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new PageSizeFacetAnnotation(attribute.Value, holder);
-        }
+        private static IPageSizeFacet Create(PageSizeAttribute attribute, ISpecification holder) => attribute == null ? null : new PageSizeFacetAnnotation(attribute.Value, holder);
     }
 }

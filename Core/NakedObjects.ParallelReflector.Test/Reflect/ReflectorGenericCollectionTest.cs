@@ -17,7 +17,7 @@ using NakedObjects.ParallelReflect.Component;
 namespace NakedObjects.ParallelReflect.Test {
     [TestClass]
     public class ReflectorGenericCollectionTest : AbstractReflectorTest {
-        protected override Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(ParallelReflector reflector) {
+        protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(ParallelReflector reflector) {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             metamodel = reflector.LoadSpecification(typeof(List<TestPoco>), metamodel).Item2;

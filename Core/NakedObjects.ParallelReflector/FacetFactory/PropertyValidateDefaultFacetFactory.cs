@@ -36,8 +36,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IPropertyValidateFacet Create(ISpecification holder) {
-            return new PropertyValidateFacetDefault(holder);
-        }
+        private static IPropertyValidateFacet Create(ISpecification holder) => new PropertyValidateFacetDefault(holder);
     }
 }

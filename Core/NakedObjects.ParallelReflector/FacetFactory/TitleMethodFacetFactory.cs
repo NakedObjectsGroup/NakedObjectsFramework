@@ -32,9 +32,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public TitleMethodFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
-        public override string[] Prefixes {
-            get { return FixedPrefixes; }
-        }
+        public override string[] Prefixes => FixedPrefixes;
 
         /// <summary>
         ///     If no title or ToString can be used then will use Facets provided by
@@ -42,10 +40,10 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         /// </summary>
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             IList<MethodInfo> attributedMethods = new List<MethodInfo>();
-            foreach (PropertyInfo propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)) {
+            foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)) {
                 if (propertyInfo.GetCustomAttribute<TitleAttribute>() != null) {
                     if (attributedMethods.Count > 0) {
-                        Log.Warn("Title annotation is used more than once in " + type.Name + ", this time on property " + propertyInfo.Name + "; this will be ignored");
+                        Log.Warn($"Title annotation is used more than once in {type.Name}, this time on property {propertyInfo.Name}; this will be ignored");
                     }
 
                     attributedMethods.Add(propertyInfo.GetGetMethod());
@@ -59,7 +57,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
 
             try {
-                MethodInfo titleMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.TitleMethod, typeof(string), Type.EmptyTypes);
+                var titleMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.TitleMethod, typeof(string), Type.EmptyTypes);
                 IFacet titleFacet = null;
 
                 if (titleMethod != null) {
@@ -67,7 +65,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     titleFacet = new TitleFacetViaTitleMethod(titleMethod, specification);
                 }
 
-                MethodInfo toStringMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes);
+                var toStringMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes);
                 if (toStringMethod != null && !(toStringMethod.DeclaringType == typeof(object))) {
                     methodRemover.RemoveMethod(toStringMethod);
                 }
@@ -76,7 +74,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     toStringMethod = null;
                 }
 
-                MethodInfo maskMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] {typeof(string)});
+                var maskMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] {typeof(string)});
 
                 if (maskMethod != null) {
                     methodRemover.RemoveMethod(maskMethod);

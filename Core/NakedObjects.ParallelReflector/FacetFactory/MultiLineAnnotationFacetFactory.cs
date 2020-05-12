@@ -48,7 +48,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             if (TypeUtils.IsString(parameter.ParameterType)) {
                 var attribute = parameter.GetCustomAttribute<MultiLineAttribute>();
                 FacetUtils.AddFacet(Create(attribute, holder));
@@ -57,8 +57,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IMultiLineFacet Create(MultiLineAttribute attribute, ISpecification holder) {
-            return attribute != null ? new MultiLineFacetAnnotation(attribute.NumberOfLines, attribute.Width, holder) : null;
-        }
+        private static IMultiLineFacet Create(MultiLineAttribute attribute, ISpecification holder) => attribute != null ? new MultiLineFacetAnnotation(attribute.NumberOfLines, attribute.Width, holder) : null;
     }
 }

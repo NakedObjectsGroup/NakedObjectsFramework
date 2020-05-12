@@ -28,8 +28,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IPluralFacet Create(PluralAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new PluralFacetAnnotation(attribute.Value, holder);
-        }
+        private static IPluralFacet Create(PluralAttribute attribute, ISpecification holder) => attribute == null ? null : new PluralFacetAnnotation(attribute.Value, holder);
     }
 }

@@ -19,18 +19,13 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         protected PropertyOrCollectionIdentifyingFacetFactoryAbstract(int numericOrder, FeatureType featureTypes)
             : base(numericOrder, featureTypes) { }
 
-        protected static bool IsCollectionOrArray(Type type) {
-            return CollectionUtils.IsCollection(type);
-        }
+        protected static bool IsCollectionOrArray(Type type) => CollectionUtils.IsCollection(type);
 
-        protected bool IsPropertyIncluded(PropertyInfo property) {
-            return property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null;
-        }
+        protected bool IsPropertyIncluded(PropertyInfo property) => property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null;
 
-        protected IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-            return candidates.Where(property => property.GetGetMethod() != null &&
-                                                classStrategy.IsTypeToBeIntrospected(property.PropertyType) &&
-                                                IsPropertyIncluded(property)).ToList();
-        }
+        protected IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
+            candidates.Where(property => property.GetGetMethod() != null &&
+                                         classStrategy.IsTypeToBeIntrospected(property.PropertyType) &&
+                                         IsPropertyIncluded(property)).ToList();
     }
 }

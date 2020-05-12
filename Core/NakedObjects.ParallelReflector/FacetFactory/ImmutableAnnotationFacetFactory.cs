@@ -28,8 +28,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IImmutableFacet Create(ImmutableAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new ImmutableFacetAnnotation(attribute.Value, holder);
-        }
+        private static IImmutableFacet Create(ImmutableAttribute attribute, ISpecification holder) => attribute == null ? null : new ImmutableFacetAnnotation(attribute.Value, holder);
     }
 }

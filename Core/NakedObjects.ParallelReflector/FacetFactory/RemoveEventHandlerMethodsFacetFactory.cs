@@ -32,14 +32,14 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private void RemoveIfNotNull(IMethodRemover methodRemover, MethodInfo mi) {
+        private static void RemoveIfNotNull(IMethodRemover methodRemover, MethodInfo mi) {
             if (mi != null) {
                 RemoveMethod(methodRemover, mi);
             }
         }
 
         private void FindAndRemoveEventHandlerMethods(Type type, IMethodRemover methodRemover) {
-            foreach (EventInfo eInfo in type.GetEvents()) {
+            foreach (var eInfo in type.GetEvents()) {
                 RemoveIfNotNull(methodRemover, eInfo.GetAddMethod());
                 RemoveIfNotNull(methodRemover, eInfo.GetRaiseMethod());
                 RemoveIfNotNull(methodRemover, eInfo.GetRemoveMethod());

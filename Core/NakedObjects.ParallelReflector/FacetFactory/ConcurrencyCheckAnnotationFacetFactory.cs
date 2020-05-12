@@ -29,8 +29,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IConcurrencyCheckFacet Create(IReflector reflector, Attribute attribute, ISpecification holder) {
-            return attribute == null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet(holder);
-        }
+        private static IConcurrencyCheckFacet Create(IReflector reflector, Attribute attribute, ISpecification holder) => attribute == null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet(holder);
     }
 }

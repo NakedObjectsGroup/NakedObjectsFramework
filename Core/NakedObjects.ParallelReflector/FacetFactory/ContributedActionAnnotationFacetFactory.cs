@@ -31,31 +31,30 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public ContributedActionAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Actions) { }
 
-        private bool IsParseable(Type type) {
-            return type.IsValueType;
-        }
+        private static bool IsParseable(Type type) => type.IsValueType;
 
-        private static bool IsCollection(Type type) {
-            return type != null && (
-                       CollectionUtils.IsGenericEnumerable(type) ||
-                       type.IsArray ||
-                       CollectionUtils.IsCollectionButNotArray(type) ||
-                       IsCollection(type.BaseType) ||
-                       type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
-        }
+        private static bool IsCollection(Type type) =>
+            type != null && (
+                CollectionUtils.IsGenericEnumerable(type) ||
+                type.IsArray ||
+                CollectionUtils.IsCollectionButNotArray(type) ||
+                IsCollection(type.BaseType) ||
+                type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
 
-        private bool IsQueryable(Type type) {
-            return CollectionUtils.IsGenericEnumerable(type) ||
-                   type.IsArray ||
-                   CollectionUtils.IsCollectionButNotArray(type);
-        }
+        private bool IsQueryable(Type type) =>
+            CollectionUtils.IsGenericEnumerable(type) ||
+            type.IsArray ||
+            CollectionUtils.IsCollectionButNotArray(type);
 
         private IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo member, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var allParams = member.GetParameters();
             var paramsWithAttribute = allParams.Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null).ToArray();
-            if (!paramsWithAttribute.Any()) return metamodel; //Nothing to do
+            if (!paramsWithAttribute.Any()) {
+                return metamodel; //Nothing to do
+            }
+
             var facet = new ContributedActionFacet(holder);
-            foreach (ParameterInfo p in paramsWithAttribute) {
+            foreach (var p in paramsWithAttribute) {
                 var attribute = p.GetCustomAttribute<ContributedActionAttribute>();
                 var parameterType = p.ParameterType;
                 var result = reflector.LoadSpecification(p.ParameterType, metamodel);
@@ -63,7 +62,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
                 var type = result.Item1 as IObjectSpecImmutable;
                 if (type != null) {
-                    //if (type.IsParseable) {
                     if (IsParseable(parameterType)) {
                         Log.WarnFormat("ContributedAction attribute added to a value parameter type: {0}", member.Name);
                     }
@@ -91,19 +89,17 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         private static IImmutableDictionary<string, ITypeSpecBuilder> AddCollectionContributedAction(IReflector reflector, MethodInfo member, Type parameterType, ParameterInfo p, ContributedActionFacet facet, ContributedActionAttribute attribute, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!CollectionUtils.IsGenericQueryable(parameterType)) {
-                //if (!type.IsQueryable) {
                 Log.WarnFormat("ContributedAction attribute added to a collection parameter type other than IQueryable: {0}", member.Name);
             }
             else {
                 var returnType = member.ReturnType;
                 var result = reflector.LoadSpecification(returnType, metamodel);
                 metamodel = result.Item2;
-                //var returnType = result.Item1 as IObjectSpecImmutable;
                 if (IsCollection(returnType)) {
                     Log.WarnFormat("ContributedAction attribute added to an action that returns a collection: {0}", member.Name);
                 }
                 else {
-                    Type elementType = p.ParameterType.GetGenericArguments()[0];
+                    var elementType = p.ParameterType.GetGenericArguments()[0];
                     result = reflector.LoadSpecification(elementType, metamodel);
                     metamodel = result.Item2;
                     var type = result.Item1 as IObjectSpecImmutable;
@@ -115,7 +111,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         private static IImmutableDictionary<string, ITypeSpecBuilder> AddLocalCollectionContributedAction(IReflector reflector, ParameterInfo p, ContributedActionFacet facet, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Type elementType = p.ParameterType.GetGenericArguments()[0];
+            var elementType = p.ParameterType.GetGenericArguments()[0];
             var result = reflector.LoadSpecification(elementType, metamodel);
             metamodel = result.Item2;
             var type = result.Item1 as IObjectSpecImmutable;
@@ -123,8 +119,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            return Process(reflector, method, specification, metamodel);
-        }
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => Process(reflector, method, specification, metamodel);
     }
 }

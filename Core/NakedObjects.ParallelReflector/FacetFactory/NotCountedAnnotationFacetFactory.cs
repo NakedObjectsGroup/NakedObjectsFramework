@@ -31,8 +31,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static INotCountedFacet Create(NotCountedAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new NotCountedFacet(holder);
-        }
+        private static INotCountedFacet Create(NotCountedAttribute attribute, ISpecification holder) => attribute == null ? null : new NotCountedFacet(holder);
     }
 }

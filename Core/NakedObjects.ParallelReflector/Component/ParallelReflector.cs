@@ -42,8 +42,8 @@ namespace NakedObjects.ParallelReflect.Component {
             Assert.AssertNotNull(config);
             Assert.AssertNotNull(menuFactory);
 
-            this.ClassStrategy = classStrategy;
-            this.initialMetamodel = metamodel;
+            ClassStrategy = classStrategy;
+            initialMetamodel = metamodel;
             this.config = config;
             this.menuFactory = menuFactory;
             facetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
@@ -65,21 +65,15 @@ namespace NakedObjects.ParallelReflect.Component {
 
         public IMetamodel Metamodel => null;
 
-        public ITypeSpecBuilder LoadSpecification(Type type) {
-            throw new NotImplementedException();
-        }
+        public ITypeSpecBuilder LoadSpecification(Type type) => throw new NotImplementedException();
 
-        public T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable {
-            throw new NotImplementedException();
-        }
+        public T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable => throw new NotImplementedException();
 
-        public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore) {
-            throw new NotImplementedException();
-        }
+        public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore) => throw new NotImplementedException();
 
         public ITypeSpecBuilder[] AllObjectSpecImmutables => initialMetamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
 
-        public Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Assert.AssertNotNull(type);
 
             var actualType = ClassStrategy.GetType(type) ?? type;
@@ -88,13 +82,13 @@ namespace NakedObjects.ParallelReflect.Component {
                 return LoadPlaceholder(actualType, metamodel);
             }
 
-            return new Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>>(metamodel[typeKey], metamodel);
+            return (metamodel[typeKey], metamodel);
         }
 
         public void Reflect() {
-            Type[] s1 = config.Services;
-            Type[] services = s1;
-            Type[] nonServices = GetTypesToIntrospect();
+            var s1 = config.Services;
+            var services = s1;
+            var nonServices = GetTypesToIntrospect();
 
             services.ForEach(t => serviceTypes.Add(t));
 
@@ -111,7 +105,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         #endregion
 
-        public Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> IntrospectSpecification(Type actualType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) IntrospectSpecification(Type actualType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Assert.AssertNotNull(actualType);
 
             var typeKey = ClassStrategy.GetKeyForType(actualType);
@@ -120,10 +114,10 @@ namespace NakedObjects.ParallelReflect.Component {
                 return LoadSpecificationAndCache(actualType, metamodel);
             }
 
-            return new Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>>(metamodel[typeKey], metamodel);
+            return (metamodel[typeKey], metamodel);
         }
 
-        private Type EnsureGenericTypeIsComplete(Type type) {
+        private static Type EnsureGenericTypeIsComplete(Type type) {
             if (type.IsGenericType && !type.IsConstructedGenericType) {
                 var genericType = type.GetGenericTypeDefinition();
                 var genericParms = genericType.GetGenericArguments().Select(a => typeof(object)).ToArray();
@@ -168,7 +162,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         private void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services, IMetamodelBuilder metamodel) {
             if (string.IsNullOrWhiteSpace(spec.FullName)) {
-                string id = (spec.Identifier != null ? spec.Identifier.ClassName : "unknown") ?? "unknown";
+                var id = (spec.Identifier != null ? spec.Identifier.ClassName : "unknown") ?? "unknown";
                 Log.WarnFormat("Specification with id : {0} as has null or empty name", id);
             }
 
@@ -193,21 +187,21 @@ namespace NakedObjects.ParallelReflect.Component {
                     throw new ReflectionException(Log.LogAndReturn("No MainMenus specified."));
                 }
 
-                foreach (IMenuImmutable menu in menus.OfType<IMenuImmutable>()) {
+                foreach (var menu in menus.OfType<IMenuImmutable>()) {
                     metamodel.AddMainMenu(menu);
                 }
             }
         }
 
-        private void InstallObjectMenus(IMetamodelBuilder metamodel) {
-            IEnumerable<IMenuFacet> menuFacets = metamodel.AllSpecifications.Where(s => s.ContainsFacet<IMenuFacet>()).Select(s => s.GetFacet<IMenuFacet>());
+        private static void InstallObjectMenus(IMetamodelBuilder metamodel) {
+            var menuFacets = metamodel.AllSpecifications.Where(s => s.ContainsFacet<IMenuFacet>()).Select(s => s.GetFacet<IMenuFacet>());
             menuFacets.ForEach(mf => mf.CreateMenu(metamodel));
         }
 
-        private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services, IMetamodel metamodel) {
+        private static void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services, IMetamodel metamodel) {
             var result = services.AsParallel().Select(serviceType => {
                 var serviceSpecification = (IServiceSpecImmutable) metamodel.GetSpecification(serviceType);
-                IActionSpecImmutable[] serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
+                var serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
 
                 var matchingActionsForObject = new List<IActionSpecImmutable>();
                 var matchingActionsForCollection = new List<IActionSpecImmutable>();
@@ -229,8 +223,8 @@ namespace NakedObjects.ParallelReflect.Component {
                     }
                 }
 
-                return new Tuple<List<IActionSpecImmutable>, List<IActionSpecImmutable>, List<IActionSpecImmutable>>(matchingActionsForObject, matchingActionsForCollection, finderActions.OrderBy(a => a, new MemberOrderComparator<IActionSpecImmutable>()).ToList());
-            }).Aggregate(new Tuple<List<IActionSpecImmutable>, List<IActionSpecImmutable>, List<IActionSpecImmutable>>(new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>()),
+                return (matchingActionsForObject, matchingActionsForCollection, finderActions.OrderBy(a => a, new MemberOrderComparator<IActionSpecImmutable>()).ToList());
+            }).Aggregate((new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>()),
                 (a, t) => {
                     a.Item1.AddRange(t.Item1);
                     a.Item2.AddRange(t.Item2);
@@ -253,7 +247,7 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         private ITypeSpecBuilder GetPlaceholder(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ITypeSpecBuilder specification = CreateSpecification(type, metamodel);
+            var specification = CreateSpecification(type, metamodel);
 
             if (specification == null) {
                 throw new ReflectionException(Log.LogAndReturn($"unrecognised type {type.FullName}"));
@@ -262,8 +256,8 @@ namespace NakedObjects.ParallelReflect.Component {
             return specification;
         }
 
-        private Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadPlaceholder(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ITypeSpecBuilder specification = CreateSpecification(type, metamodel);
+        private (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadPlaceholder(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var specification = CreateSpecification(type, metamodel);
 
             if (specification == null) {
                 throw new ReflectionException(Log.LogAndReturn($"unrecognised type {type.FullName}"));
@@ -271,15 +265,13 @@ namespace NakedObjects.ParallelReflect.Component {
 
             metamodel = metamodel.Add(ClassStrategy.GetKeyForType(type), specification);
 
-            return new Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>>(specification, metamodel);
+            return (specification, metamodel);
         }
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> GetPlaceholders(Type[] types) {
-            return types.Select(t => ClassStrategy.GetType(t)).Where(t => t != null).Distinct(new TypeKeyComparer(ClassStrategy)).ToDictionary(t => ClassStrategy.GetKeyForType(t), t => GetPlaceholder(t, null)).ToImmutableDictionary();
-        }
+        private IImmutableDictionary<string, ITypeSpecBuilder> GetPlaceholders(Type[] types) => types.Select(t => ClassStrategy.GetType(t)).Where(t => t != null).Distinct(new TypeKeyComparer(ClassStrategy)).ToDictionary(t => ClassStrategy.GetKeyForType(t), t => GetPlaceholder(t, null)).ToImmutableDictionary();
 
-        private Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecificationAndCache(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ITypeSpecBuilder specification = metamodel[ClassStrategy.GetKeyForType(type)];
+        private (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecificationAndCache(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var specification = metamodel[ClassStrategy.GetKeyForType(type)];
 
             if (specification == null) {
                 throw new ReflectionException(Log.LogAndReturn($"unrecognised type {type.FullName}"));
@@ -287,7 +279,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
             metamodel = specification.Introspect(facetDecoratorSet, new Introspector(this), metamodel);
 
-            return new Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>>(specification, metamodel);
+            return (specification, metamodel);
         }
 
         private ITypeSpecBuilder CreateSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -296,28 +288,20 @@ namespace NakedObjects.ParallelReflect.Component {
             return IsService(type) ? (ITypeSpecBuilder) ImmutableSpecFactory.CreateServiceSpecImmutable(type, metamodel) : ImmutableSpecFactory.CreateObjectSpecImmutable(type, metamodel);
         }
 
-        private bool IsService(Type type) {
-            return serviceTypes.Contains(type);
-        }
+        private bool IsService(Type type) => serviceTypes.Contains(type);
 
         #region Nested type: TypeKeyComparer
 
         private class TypeKeyComparer : IEqualityComparer<Type> {
             private readonly IClassStrategy classStrategy;
 
-            public TypeKeyComparer(IClassStrategy classStrategy) {
-                this.classStrategy = classStrategy;
-            }
+            public TypeKeyComparer(IClassStrategy classStrategy) => this.classStrategy = classStrategy;
 
             #region IEqualityComparer<Type> Members
 
-            public bool Equals(Type x, Type y) {
-                return classStrategy.GetKeyForType(x).Equals(classStrategy.GetKeyForType(y), StringComparison.Ordinal);
-            }
+            public bool Equals(Type x, Type y) => classStrategy.GetKeyForType(x).Equals(classStrategy.GetKeyForType(y), StringComparison.Ordinal);
 
-            public int GetHashCode(Type obj) {
-                return classStrategy.GetKeyForType(obj).GetHashCode();
-            }
+            public int GetHashCode(Type obj) => classStrategy.GetKeyForType(obj).GetHashCode();
 
             #endregion
         }
@@ -329,13 +313,9 @@ namespace NakedObjects.ParallelReflect.Component {
         private class TypeSpecKeyComparer : IEqualityComparer<KeyValuePair<string, ITypeSpecBuilder>> {
             #region IEqualityComparer<KeyValuePair<string,ITypeSpecBuilder>> Members
 
-            public bool Equals(KeyValuePair<string, ITypeSpecBuilder> x, KeyValuePair<string, ITypeSpecBuilder> y) {
-                return x.Key.Equals(y.Key, StringComparison.Ordinal);
-            }
+            public bool Equals(KeyValuePair<string, ITypeSpecBuilder> x, KeyValuePair<string, ITypeSpecBuilder> y) => x.Key.Equals(y.Key, StringComparison.Ordinal);
 
-            public int GetHashCode(KeyValuePair<string, ITypeSpecBuilder> obj) {
-                return obj.Key.GetHashCode();
-            }
+            public int GetHashCode(KeyValuePair<string, ITypeSpecBuilder> obj) => obj.Key.GetHashCode();
 
             #endregion
         }

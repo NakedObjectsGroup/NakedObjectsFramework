@@ -37,18 +37,17 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             var dataTypeAttribute = parameter.GetCustomAttribute<DataTypeAttribute>();
             FacetUtils.AddFacet(Create(dataTypeAttribute, holder));
             return metamodel;
         }
 
-        private static IDataTypeFacet Create(DataTypeAttribute attribute, ISpecification holder) {
-            if (attribute == null) {
-                return null;
-            }
-
-            return attribute.DataType == DataType.Custom ? new DataTypeFacetAnnotation(attribute.CustomDataType, holder) : new DataTypeFacetAnnotation(attribute.DataType, holder);
-        }
+        private static IDataTypeFacet Create(DataTypeAttribute attribute, ISpecification holder) =>
+            attribute == null
+                ? null
+                : attribute.DataType == DataType.Custom
+                    ? new DataTypeFacetAnnotation(attribute.CustomDataType, holder)
+                    : new DataTypeFacetAnnotation(attribute.DataType, holder);
     }
 }

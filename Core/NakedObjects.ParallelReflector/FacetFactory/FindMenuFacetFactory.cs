@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Immutable;
 using System.Reflection;
 using Common.Logging;
@@ -41,7 +40,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Type pType = property.PropertyType;
+            var pType = property.PropertyType;
             if ((pType.IsPrimitive || pType == typeof(string) || TypeUtils.IsEnum(pType)) && property.GetCustomAttribute<FindMenuAttribute>() != null) {
                 Log.Warn("Ignoring FindMenu annotation on primitive or un-readable parameter on " + property.ReflectedType + "." + property.Name);
                 return metamodel;
@@ -55,8 +54,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
-            Type pType = parameter.ParameterType;
+            var parameter = method.GetParameters()[paramNum];
+            var pType = parameter.ParameterType;
             if (pType.IsPrimitive || pType == typeof(string) || TypeUtils.IsEnum(pType)) {
                 if (method.GetCustomAttribute<FindMenuAttribute>() != null) {
                     Log.Warn("Ignoring FindMenu annotation on primitive parameter " + paramNum + " on " + method.ReflectedType + "." + method.Name);
@@ -70,8 +69,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IFacet Create(FindMenuAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new FindMenuFacet(holder);
-        }
+        private static IFacet Create(FindMenuAttribute attribute, ISpecification holder) => attribute == null ? null : new FindMenuFacet(holder);
     }
 }

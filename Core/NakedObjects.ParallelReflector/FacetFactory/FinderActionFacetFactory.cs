@@ -27,7 +27,10 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         private static void Process(MethodInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<FinderActionAttribute>();
-            if (attribute == null) return;
+            if (attribute == null) {
+                return;
+            }
+
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
@@ -36,8 +39,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IFacet Create(FinderActionAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new FinderActionFacet(holder);
-        }
+        private static IFacet Create(FinderActionAttribute attribute, ISpecification holder) => attribute == null ? null : new FinderActionFacet(holder);
     }
 }

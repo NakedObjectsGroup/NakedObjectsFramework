@@ -20,14 +20,14 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (typeof(Enum).IsAssignableFrom(type)) {
-                Type semanticsProviderType = typeof(EnumValueSemanticsProvider<>).MakeGenericType(type);
-                var result = reflector.LoadSpecification(type, metamodel);
+                var semanticsProviderType = typeof(EnumValueSemanticsProvider<>).MakeGenericType(type);
+                var (oSpec, mm) = reflector.LoadSpecification(type, metamodel);
 
-                metamodel = result.Item2;
-                var spec = result.Item1 as IObjectSpecImmutable;
-                object semanticsProvider = Activator.CreateInstance(semanticsProviderType, spec, specification);
+                metamodel = mm;
+                var spec = oSpec as IObjectSpecImmutable;
+                var semanticsProvider = Activator.CreateInstance(semanticsProviderType, spec, specification);
 
-                MethodInfo method = typeof(ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);
+                var method = typeof(ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);
                 method.Invoke(null, new[] {semanticsProvider, specification});
             }
 

@@ -44,14 +44,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttribute<PresentationHintAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
             return metamodel;
         }
 
-        private static IPresentationHintFacet Create(PresentationHintAttribute attribute, ISpecification holder) {
-            return attribute != null ? new PresentationHintFacet(attribute.Value, holder) : null;
-        }
+        private static IPresentationHintFacet Create(PresentationHintAttribute attribute, ISpecification holder) => attribute != null ? new PresentationHintFacet(attribute.Value, holder) : null;
     }
 }

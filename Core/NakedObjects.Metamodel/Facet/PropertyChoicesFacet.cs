@@ -31,7 +31,7 @@ namespace NakedObjects.Meta.Facet {
 
         [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-        public PropertyChoicesFacet(MethodInfo optionsMethod, Tuple<string, IObjectSpecImmutable>[] parameterNamesAndTypes, ISpecification holder)
+        public PropertyChoicesFacet(MethodInfo optionsMethod, (string, IObjectSpecImmutable)[] parameterNamesAndTypes, ISpecification holder)
             : base(typeof(IPropertyChoicesFacet), holder) {
             method = optionsMethod;
 
@@ -50,7 +50,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IPropertyChoicesFacet Members
 
-        public Tuple<string, IObjectSpecImmutable>[] ParameterNamesAndTypes { get; }
+        public (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
 
         public object[] GetChoices(INakedObjectAdapter inObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
             var parms = FacetUtils.MatchParameters(parameterNames, parameterNameValues);

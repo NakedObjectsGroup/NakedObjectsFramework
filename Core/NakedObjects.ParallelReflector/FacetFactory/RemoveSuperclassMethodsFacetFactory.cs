@@ -27,7 +27,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public RemoveSuperclassMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) { }
 
-        private void InitForType(Type type, IDictionary<Type, MethodInfo[]> typeToMethods) {
+        private static void InitForType(Type type, IDictionary<Type, MethodInfo[]> typeToMethods) {
             if (!typeToMethods.ContainsKey(type)) {
                 typeToMethods.Add(type, type.GetMethods());
             }
@@ -36,7 +36,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public void ProcessSystemType(Type type, IMethodRemover methodRemover, ISpecification holder) {
             var typeToMethods = new Dictionary<Type, MethodInfo[]>();
             InitForType(type, typeToMethods);
-            foreach (MethodInfo method in typeToMethods[type]) {
+            foreach (var method in typeToMethods[type]) {
                 if (methodRemover != null && method != null) {
                     methodRemover.RemoveMethod(method);
                 }
@@ -44,7 +44,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Type currentType = type;
+            var currentType = type;
             while (currentType != null) {
                 if (FasterTypeUtils.IsSystem(currentType)) {
                     ProcessSystemType(currentType, methodRemover, specification);

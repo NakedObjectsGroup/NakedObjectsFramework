@@ -30,11 +30,7 @@ namespace NakedObjects.ParallelReflect.Component {
         public bool IsTypeToBeIntrospected(Type type) {
             lock (Cache) {
                 var flags = Setup(type);
-
-                if (!flags.IsTypeToBeIntrospected.HasValue) {
-                    flags.IsTypeToBeIntrospected = classStrategy.IsTypeToBeIntrospected(type);
-                }
-
+                flags.IsTypeToBeIntrospected ??= classStrategy.IsTypeToBeIntrospected(type);
                 return flags.IsTypeToBeIntrospected.Value;
             }
         }
@@ -42,11 +38,7 @@ namespace NakedObjects.ParallelReflect.Component {
         public Type GetType(Type type) {
             lock (Cache) {
                 var flags = Setup(type);
-
-                if (flags.Type == null) {
-                    flags.Type = classStrategy.GetType(type);
-                }
-
+                flags.Type ??= classStrategy.GetType(type);
                 return flags.Type;
             }
         }
@@ -54,11 +46,7 @@ namespace NakedObjects.ParallelReflect.Component {
         public Type FilterNullableAndProxies(Type type) {
             lock (Cache) {
                 var flags = Setup(type);
-
-                if (flags.FilterNullableAndProxies == null) {
-                    flags.FilterNullableAndProxies = classStrategy.FilterNullableAndProxies(type);
-                }
-
+                flags.FilterNullableAndProxies ??= classStrategy.FilterNullableAndProxies(type);
                 return flags.FilterNullableAndProxies;
             }
         }
@@ -66,11 +54,7 @@ namespace NakedObjects.ParallelReflect.Component {
         public bool IsSystemClass(Type introspectedType) {
             lock (Cache) {
                 var flags = Setup(introspectedType);
-
-                if (!flags.IsSystemClass.HasValue) {
-                    flags.IsSystemClass = classStrategy.IsSystemClass(introspectedType);
-                }
-
+                flags.IsSystemClass ??= classStrategy.IsSystemClass(introspectedType);
                 return flags.IsSystemClass.Value;
             }
         }
@@ -78,11 +62,7 @@ namespace NakedObjects.ParallelReflect.Component {
         public string GetKeyForType(Type type) {
             lock (Cache) {
                 var flags = Setup(type);
-
-                if (flags.KeyForType == null) {
-                    flags.KeyForType = classStrategy.GetKeyForType(type);
-                }
-
+                flags.KeyForType ??= classStrategy.GetKeyForType(type);
                 return flags.KeyForType;
             }
         }

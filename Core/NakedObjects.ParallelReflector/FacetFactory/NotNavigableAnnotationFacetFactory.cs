@@ -27,8 +27,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static INotNavigableFacet Create(NotNavigableAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new NotNavigableFacet(holder);
-        }
+        private static INotNavigableFacet Create(NotNavigableAttribute attribute, ISpecification holder) => attribute == null ? null : new NotNavigableFacet(holder);
     }
 }

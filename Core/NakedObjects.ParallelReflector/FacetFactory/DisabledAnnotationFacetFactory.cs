@@ -36,8 +36,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IDisabledFacet Create(DisabledAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new DisabledFacetAnnotation(attribute.Value, holder);
-        }
+        private static IDisabledFacet Create(DisabledAttribute attribute, ISpecification holder) => attribute == null ? null : new DisabledFacetAnnotation(attribute.Value, holder);
     }
 }

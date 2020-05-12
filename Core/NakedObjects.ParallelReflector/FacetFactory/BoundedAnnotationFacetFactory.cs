@@ -28,8 +28,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IBoundedFacet Create(BoundedAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new BoundedFacet(holder);
-        }
+        private static IBoundedFacet Create(BoundedAttribute attribute, ISpecification holder) => attribute == null ? null : new BoundedFacet(holder);
     }
 }

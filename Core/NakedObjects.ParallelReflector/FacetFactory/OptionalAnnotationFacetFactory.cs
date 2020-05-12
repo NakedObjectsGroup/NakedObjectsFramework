@@ -54,7 +54,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             if (parameter.ParameterType.IsPrimitive || TypeUtils.IsEnum(parameter.ParameterType)) {
                 if (method.GetCustomAttribute<OptionallyAttribute>() != null) {
                     Log.Warn("Ignoring Optionally annotation on primitive parameter " + paramNum + " on " + method.ReflectedType + "." + method.Name);
@@ -68,8 +68,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IMandatoryFacet Create(OptionallyAttribute attribute, ISpecification holder) {
-            return attribute != null ? new OptionalFacet(holder) : null;
-        }
+        private static IMandatoryFacet Create(OptionallyAttribute attribute, ISpecification holder) => attribute != null ? new OptionalFacet(holder) : null;
     }
 }

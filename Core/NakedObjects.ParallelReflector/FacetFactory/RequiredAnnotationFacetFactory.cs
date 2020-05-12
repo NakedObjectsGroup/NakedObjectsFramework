@@ -41,14 +41,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttribute<RequiredAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
             return metamodel;
         }
 
-        private static IMandatoryFacet Create(RequiredAttribute attribute, ISpecification holder) {
-            return attribute != null ? new MandatoryFacet(holder) : null;
-        }
+        private static IMandatoryFacet Create(RequiredAttribute attribute, ISpecification holder) => attribute != null ? new MandatoryFacet(holder) : null;
     }
 }

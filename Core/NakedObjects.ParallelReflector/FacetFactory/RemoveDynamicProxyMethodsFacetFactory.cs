@@ -24,13 +24,11 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public RemoveDynamicProxyMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsInterfacesAndProperties) { }
 
-        private static bool IsDynamicProxyType(Type type) {
-            return type.FullName.StartsWith("System.Data.Entity.DynamicProxies", StringComparison.Ordinal);
-        }
+        private static bool IsDynamicProxyType(Type type) => type.FullName?.StartsWith("System.Data.Entity.DynamicProxies", StringComparison.Ordinal) == true;
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (IsDynamicProxyType(type)) {
-                foreach (MethodInfo method in type.GetMethods().Join(MethodsToRemove, mi => mi.Name, s => s, (mi, s) => mi)) {
+                foreach (var method in type.GetMethods().Join(MethodsToRemove, mi => mi.Name, s => s, (mi, s) => mi)) {
                     if (methodRemover != null && method != null) {
                         methodRemover.RemoveMethod(method);
                     }

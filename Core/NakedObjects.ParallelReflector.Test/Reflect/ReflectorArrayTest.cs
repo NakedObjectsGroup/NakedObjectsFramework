@@ -19,7 +19,7 @@ namespace NakedObjects.ParallelReflect.Test {
 
     [TestClass]
     public class ReflectorArrayTest : AbstractReflectorTest {
-        protected override Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(ParallelReflector reflector) {
+        protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(ParallelReflector reflector) {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             metamodel = reflector.LoadSpecification(typeof(TestPoco[]), metamodel).Item2;

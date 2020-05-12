@@ -27,7 +27,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public TableViewAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.CollectionsAndActions) { }
 
-        private void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
+        private static void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
             if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {
                 var attribute = member.GetCustomAttribute<TableViewAttribute>();
                 FacetUtils.AddFacet(Create(attribute, specification));
@@ -40,7 +40,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
             if (columns.Length != distinctColumns.Length) {
                 // we had duplicates - log
-                var duplicates = columns.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).Aggregate("", (s, t) => s != "" ? s + ", " + t : t);
+                var duplicates = columns.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).Aggregate("", (s, t) => s != "" ? $"{s}, {t}" : t);
                 var name = holder.Identifier == null ? "Unknown" : holder.Identifier.ToString();
                 Log.WarnFormat("Table View on {0} had duplicate columns {1}", name, duplicates);
                 columns = distinctColumns;
@@ -49,9 +49,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return new TableViewFacet(attribute.Title, columns, holder);
         }
 
-        private static ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : CreateTableViewFacet(attribute, holder);
-        }
+        private static ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) => attribute == null ? null : CreateTableViewFacet(attribute, holder);
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(method, method.ReturnType, specification);

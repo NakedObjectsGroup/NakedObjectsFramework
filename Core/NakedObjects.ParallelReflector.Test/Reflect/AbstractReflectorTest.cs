@@ -128,7 +128,7 @@ namespace NakedObjects.ParallelReflect.Test {
             Metamodel = result.Item2;
         }
 
-        protected abstract Tuple<ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>> LoadSpecification(ParallelReflector reflector);
+        protected abstract (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(ParallelReflector reflector);
 
         public static void AssertSpec(Type type, ITypeSpecBuilder spec) {
             Assert.IsNotNull(spec, type.FullName);

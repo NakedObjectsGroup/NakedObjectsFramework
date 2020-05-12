@@ -22,14 +22,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             : base(numericOrder, FeatureType.ActionParameters) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttribute<DefaultValueAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
             return metamodel;
         }
 
-        private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, holder);
-        }
+        private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, ISpecification holder) => attribute == null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, holder);
     }
 }

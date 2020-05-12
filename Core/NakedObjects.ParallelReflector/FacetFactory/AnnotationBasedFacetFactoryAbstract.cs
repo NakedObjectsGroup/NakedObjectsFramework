@@ -19,8 +19,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         ///     Always returns <c>false</c> as <see cref="IFacetFactory" />s that look for annotations
         ///     won't recognize methods with prefixes.
         /// </summary>
-        public bool Recognizes(MethodInfo method) {
-            return false;
-        }
+        public bool Recognizes(MethodInfo method) => false;
     }
 }

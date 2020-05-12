@@ -24,7 +24,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         #region IFacetFactory Members
 
-        public int NumericOrder { get; private set; }
+        public int NumericOrder { get; }
 
         public virtual FeatureType FeatureTypes { get; }
 
@@ -36,34 +36,20 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         public void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) { }
 
-        public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            return metamodel;
-        }
+        public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
 
-        public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            return metamodel;
-        }
+        public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
 
-        public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            return metamodel;
-        }
+        public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
 
-        public virtual IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            return metamodel;
-        }
+        public virtual IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
 
-        public int CompareTo(IFacetFactory other) {
-            return NumericOrder.CompareTo(other.NumericOrder);
-        }
+        public int CompareTo(IFacetFactory other) => NumericOrder.CompareTo(other.NumericOrder);
 
         #endregion
 
-        public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-            return new PropertyInfo[] { };
-        }
+        public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => new PropertyInfo[] { };
 
-        public virtual IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-            return new PropertyInfo[] { };
-        }
+        public virtual IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => new PropertyInfo[] { };
     }
 }

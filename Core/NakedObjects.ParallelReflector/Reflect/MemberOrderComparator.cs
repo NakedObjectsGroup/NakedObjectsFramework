@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-[assembly:InternalsVisibleTo("NakedObjects.ParallelReflector.Test")]
+[assembly: InternalsVisibleTo("NakedObjects.ParallelReflector.Test")]
 
 namespace NakedObjects.ParallelReflect {
     /// <summary>
@@ -27,8 +27,8 @@ namespace NakedObjects.ParallelReflect {
         #region IComparer<T> Members
 
         public int Compare(T o1, T o2) {
-            IMemberOrderFacet m1 = GetMemberOrder(o1);
-            IMemberOrderFacet m2 = GetMemberOrder(o2);
+            var m1 = GetMemberOrder(o1);
+            var m2 = GetMemberOrder(o2);
 
             if (m1 == null && m2 == null) {
                 return fallbackComparator.Compare(o1, o2);
@@ -42,11 +42,11 @@ namespace NakedObjects.ParallelReflect {
                 return -1; // annotated before non-annotated
             }
 
-            string[] components1 = m1.Sequence.Split('.');
-            string[] components2 = m2.Sequence.Split('.');
+            var components1 = m1.Sequence.Split('.');
+            var components2 = m2.Sequence.Split('.');
 
-            int length1 = components1.Length;
-            int length2 = components2.Length;
+            var length1 = components1.Length;
+            var length2 = components2.Length;
 
             // shouldn't happen but just in case.
             if (length1 == 0 && length2 == 0) {
@@ -54,9 +54,9 @@ namespace NakedObjects.ParallelReflect {
             }
 
             // continue to loop until we run out of components.
-            int n = 0;
+            var n = 0;
             while (true) {
-                int length = n + 1;
+                var length = n + 1;
                 // check if run out of components in either side
                 if (length1 < length && length2 >= length) {
                     return -1; // o1 before o2
@@ -72,10 +72,8 @@ namespace NakedObjects.ParallelReflect {
                 }
 
                 // we have this component on each side
-                int c1;
-                int c2;
                 int componentCompare;
-                if (int.TryParse(components1[n], out c1) && int.TryParse(components2[n], out c2)) {
+                if (int.TryParse(components1[n], out var c1) && int.TryParse(components2[n], out var c2)) {
                     componentCompare = c1.CompareTo(c2);
                 }
                 else {
@@ -93,8 +91,6 @@ namespace NakedObjects.ParallelReflect {
 
         #endregion
 
-        private static IMemberOrderFacet GetMemberOrder(ISpecification specification) {
-            return specification.GetFacet<IMemberOrderFacet>();
-        }
+        private static IMemberOrderFacet GetMemberOrder(ISpecification specification) => specification.GetFacet<IMemberOrderFacet>();
     }
 }

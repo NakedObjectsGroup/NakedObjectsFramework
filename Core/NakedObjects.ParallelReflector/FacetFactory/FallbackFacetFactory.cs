@@ -20,15 +20,14 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     /// <summary>
-    ///     Central point for providing some kind of default for any  <see cref="IFacet" />s required by the Naked Objects Framework itself.
+    ///     Central point for providing some kind of default for any  <see cref="IFacet" />s required by the Naked Objects
+    ///     Framework itself.
     /// </summary>
     public sealed class FallbackFacetFactory : FacetFactoryAbstract {
         public FallbackFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Everything) { }
 
-        public bool Recognizes(MethodInfo method) {
-            return false;
-        }
+        public bool Recognizes(MethodInfo method) => false;
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FacetUtils.AddFacets(
@@ -43,8 +42,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         private static void Process(ISpecification holder) {
             var facets = new List<IFacet>();
 
-            var specImmutable = holder as IMemberSpecImmutable;
-            if (specImmutable != null) {
+            if (holder is IMemberSpecImmutable specImmutable) {
                 facets.Add(new NamedFacetInferred(specImmutable.Identifier.MemberName, holder));
                 facets.Add(new DescribedAsFacetNone(holder));
             }
@@ -55,8 +53,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 facets.Add(new PropertyValidateFacetNone(holder));
             }
 
-            var immutable = holder as IOneToOneAssociationSpecImmutable;
-            if (immutable != null) {
+            if (holder is IOneToOneAssociationSpecImmutable immutable) {
                 facets.Add(new MaxLengthFacetZero(holder));
                 DefaultTypicalLength(facets, immutable.ReturnSpec, immutable);
                 facets.Add(new MultiLineFacetNone(holder));
@@ -85,9 +82,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var facets = new List<IFacet>();
 
-            var param = holder as IActionParameterSpecImmutable;
-            if (param != null) {
-                string name = method.GetParameters()[paramNum].Name ?? method.GetParameters()[paramNum].ParameterType.FullName;
+            if (holder is IActionParameterSpecImmutable param) {
+                var name = method.GetParameters()[paramNum].Name ?? method.GetParameters()[paramNum].ParameterType.FullName;
                 INamedFacet namedFacet = new NamedFacetInferred(name, holder);
                 facets.Add(namedFacet);
                 facets.Add(new DescribedAsFacetNone(holder));

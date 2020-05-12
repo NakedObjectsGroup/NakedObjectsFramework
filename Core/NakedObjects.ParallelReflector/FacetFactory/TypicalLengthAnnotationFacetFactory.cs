@@ -44,14 +44,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttribute<TypicalLengthAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
             return metamodel;
         }
 
-        private static ITypicalLengthFacet Create(TypicalLengthAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new TypicalLengthFacetAnnotation(attribute.Value, holder);
-        }
+        private static ITypicalLengthFacet Create(TypicalLengthAttribute attribute, ISpecification holder) => attribute == null ? null : new TypicalLengthFacetAnnotation(attribute.Value, holder);
     }
 }

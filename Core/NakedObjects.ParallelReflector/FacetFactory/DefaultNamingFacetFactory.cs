@@ -36,7 +36,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
             var pluralFacet = specification.GetFacet<IPluralFacet>();
             if (pluralFacet == null) {
-                string pluralName = NameUtils.PluralName(namedFacet.NaturalName);
+                var pluralName = NameUtils.PluralName(namedFacet.NaturalName);
                 pluralFacet = new PluralFacetInferred(pluralName, specification);
                 facets.Add(pluralFacet);
             }

@@ -39,27 +39,25 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 return;
             }
 
-            Type typeOrNulledType = TypeUtils.GetNulledType(typeOfEnum);
+            var typeOrNulledType = TypeUtils.GetNulledType(typeOfEnum);
             if (TypeUtils.IsEnum(typeOrNulledType)) {
                 FacetUtils.AddFacet(new EnumFacet(holder, typeOrNulledType));
                 return;
             }
 
             if (CollectionUtils.IsGenericOfEnum(typeOfEnum)) {
-                Type enumInstanceType = typeOfEnum.GetGenericArguments().First();
+                var enumInstanceType = typeOfEnum.GetGenericArguments().First();
                 FacetUtils.AddFacet(new EnumFacet(holder, enumInstanceType));
             }
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttribute<EnumDataTypeAttribute>();
             AddEnumFacet(attribute, holder, parameter.ParameterType);
             return metamodel;
         }
 
-        private static IEnumFacet Create(EnumDataTypeAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new EnumFacet(holder, attribute.EnumType);
-        }
+        private static IEnumFacet Create(EnumDataTypeAttribute attribute, ISpecification holder) => attribute == null ? null : new EnumFacet(holder, attribute.EnumType);
     }
 }

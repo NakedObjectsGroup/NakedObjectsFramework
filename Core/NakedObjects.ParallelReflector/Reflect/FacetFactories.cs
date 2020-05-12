@@ -11,16 +11,16 @@ using NakedObjects.ParallelReflect.TypeFacetFactory;
 
 namespace NakedObjects.ParallelReflect {
     /// <summary>
-    /// Provides access to the standard set of Facet Factories maintained by the framework
+    ///     Provides access to the standard set of Facet Factories maintained by the framework
     /// </summary>
     public static class FacetFactories {
         /// <summary>
-        /// Returns an array of all the types of FacetFactory actively maintained by the framework,
-        /// in the order in which they should be registered for injection.
+        ///     Returns an array of all the types of FacetFactory actively maintained by the framework,
+        ///     in the order in which they should be registered for injection.
         /// </summary>
         /// <returns></returns>
-        public static Type[] StandardFacetFactories() {
-            return new[] {
+        public static Type[] StandardFacetFactories() =>
+            new[] {
                 typeof(FallbackFacetFactory),
                 typeof(IteratorFilteringFacetFactory),
                 typeof(SystemClassMethodFilteringFactory),
@@ -111,10 +111,7 @@ namespace NakedObjects.ParallelReflect {
                 typeof(CollectionFacetFactory),
                 typeof(MenuFacetFactory)
             };
-        }
 
-        public static int StandardIndexOf(Type factory) {
-            return Array.FindIndex(StandardFacetFactories(), x => x == factory);
-        }
+        public static int StandardIndexOf(Type factory) => Array.FindIndex(StandardFacetFactories(), x => x == factory);
     }
 }

@@ -16,9 +16,7 @@ namespace NakedObjects.ParallelReflect {
     internal class MemberIdentifierComparator<T> : IComparer<T> where T : IMemberSpecImmutable {
         #region IComparer<T> Members
 
-        public int Compare(T o1, T o2) {
-            return o1.Identifier.CompareTo(o2.Identifier);
-        }
+        public int Compare(T o1, T o2) => o1.Identifier.CompareTo(o2.Identifier);
 
         #endregion
     }

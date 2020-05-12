@@ -29,9 +29,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             FacetUtils.AddFacet(Create(dataTypeAttribute, concurrencyCheckAttribute, holder));
         }
 
-        private static bool IsDatetimeOrNullableDateTime(Type type) {
-            return type == typeof(DateTime) || type == typeof(DateTime?);
-        }
+        private static bool IsDatetimeOrNullableDateTime(Type type) => type == typeof(DateTime) || type == typeof(DateTime?);
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (IsDatetimeOrNullableDateTime(property.PropertyType)) {
@@ -42,7 +40,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
 
             if (IsDatetimeOrNullableDateTime(parameter.ParameterType)) {
                 var dataTypeAttribute = parameter.GetCustomAttribute<DataTypeAttribute>();
@@ -53,16 +51,13 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IDateOnlyFacet Create(DataTypeAttribute attribute, ConcurrencyCheckAttribute concurrencyCheckAttribute, ISpecification holder) {
-            if (attribute?.DataType == DataType.Date) {
-                return new DateOnlyFacet(holder);
-            }
-
-            if (concurrencyCheckAttribute != null) {
-                return null;
-            }
-
-            return attribute?.DataType == DataType.DateTime ? null : new DateOnlyFacet(holder);
-        }
+        private static IDateOnlyFacet Create(DataTypeAttribute attribute, ConcurrencyCheckAttribute concurrencyCheckAttribute, ISpecification holder) =>
+            attribute?.DataType == DataType.Date
+                ? new DateOnlyFacet(holder)
+                : concurrencyCheckAttribute != null
+                    ? null
+                    : attribute?.DataType == DataType.DateTime
+                        ? null
+                        : new DateOnlyFacet(holder);
     }
 }

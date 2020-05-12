@@ -54,20 +54,18 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Type type = method.ReturnType;
+            var type = method.ReturnType;
             AddFacetDerivedFromTypeIfPresent(specification, type, reflector.ClassStrategy);
             return metamodel;
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             AddFacetDerivedFromTypeIfPresent(holder, parameter.ParameterType, reflector.ClassStrategy);
             return metamodel;
         }
 
-        private void AddFacetDerivedFromTypeIfPresent(ISpecification holder, Type type, IClassStrategy classStrategy) {
-            FacetUtils.AddFacet(GetTypicalLengthFacet(type, holder, classStrategy));
-        }
+        private void AddFacetDerivedFromTypeIfPresent(ISpecification holder, Type type, IClassStrategy classStrategy) => FacetUtils.AddFacet(GetTypicalLengthFacet(type, holder, classStrategy));
 
         private ITypicalLengthFacet GetTypicalLengthFacet(Type type, ISpecification holder, IClassStrategy classStrategy) {
             var attribute = type.GetCustomAttribute<TypicalLengthAttribute>();
@@ -77,14 +75,10 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
 
             var length = GetValueTypeTypicalLength(type, classStrategy);
-            if (length != null) {
-                return new TypicalLengthFacetDerivedFromType(length.Value, holder);
-            }
-
-            return null;
+            return length != null ? new TypicalLengthFacetDerivedFromType(length.Value, holder) : null;
         }
 
-        private int? GetValueTypeTypicalLength(Type type, IClassStrategy classStrategy) {
+        private static int? GetValueTypeTypicalLength(Type type, IClassStrategy classStrategy) {
             var actualType = classStrategy.GetType(type);
 
             if (actualType != null) {

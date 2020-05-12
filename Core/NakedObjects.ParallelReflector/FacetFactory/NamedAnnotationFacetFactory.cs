@@ -28,76 +28,50 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             : base(numericOrder, FeatureType.Everything) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Attribute attribute = type.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) type.GetCustomAttribute<NamedAttribute>();
+            var attribute = type.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) type.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
             return metamodel;
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Attribute attribute = method.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) method.GetCustomAttribute<NamedAttribute>();
+            var attribute = method.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) method.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
             return metamodel;
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Attribute attribute = property.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) property.GetCustomAttribute<NamedAttribute>();
+            var attribute = property.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) property.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(CreateProperty(attribute, specification));
             return metamodel;
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
-            Attribute attribute = parameter.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) parameter.GetCustomAttribute<NamedAttribute>();
+            var parameter = method.GetParameters()[paramNum];
+            var attribute = parameter.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) parameter.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
             return metamodel;
         }
 
-        private INamedFacet Create(Attribute attribute, ISpecification holder) {
-            if (attribute == null) {
-                return null;
-            }
+        private static INamedFacet Create(Attribute attribute, ISpecification holder) =>
+            attribute switch {
+                null => null,
+                NamedAttribute namedAttribute => new NamedFacetAnnotation(namedAttribute.Value, holder),
+                DisplayNameAttribute nameAttribute => new NamedFacetAnnotation(nameAttribute.DisplayName, holder),
+                _ => throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
+            };
 
-            var namedAttribute = attribute as NamedAttribute;
-            if (namedAttribute != null) {
-                return new NamedFacetAnnotation(namedAttribute.Value, holder);
-            }
+        private INamedFacet CreateProperty(Attribute attribute, ISpecification holder) =>
+            attribute switch {
+                null => null,
+                NamedAttribute namedAttribute => Create(namedAttribute, holder),
+                DisplayNameAttribute nameAttribute => Create(nameAttribute, holder),
+                _ => throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
+            };
 
-            var nameAttribute = attribute as DisplayNameAttribute;
-            if (nameAttribute != null) {
-                return new NamedFacetAnnotation(nameAttribute.DisplayName, holder);
-            }
+        private INamedFacet Create(NamedAttribute attribute, ISpecification holder) => CreateAnnotation(attribute.Value, holder);
 
-            throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"));
-        }
+        private INamedFacet Create(DisplayNameAttribute attribute, ISpecification holder) => CreateAnnotation(attribute.DisplayName, holder);
 
-        private INamedFacet CreateProperty(Attribute attribute, ISpecification holder) {
-            if (attribute == null) {
-                return null;
-            }
-
-            var namedAttribute = attribute as NamedAttribute;
-            if (namedAttribute != null) {
-                return Create(namedAttribute, holder);
-            }
-
-            var nameAttribute = attribute as DisplayNameAttribute;
-            if (nameAttribute != null) {
-                return Create(nameAttribute, holder);
-            }
-
-            throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"));
-        }
-
-        private INamedFacet Create(NamedAttribute attribute, ISpecification holder) {
-            return CreateAnnotation(attribute.Value, holder);
-        }
-
-        private INamedFacet Create(DisplayNameAttribute attribute, ISpecification holder) {
-            return CreateAnnotation(attribute.DisplayName, holder);
-        }
-
-        private INamedFacet CreateAnnotation(string name, ISpecification holder) {
-            return new NamedFacetAnnotation(name, holder);
-        }
+        private static INamedFacet CreateAnnotation(string name, ISpecification holder) => new NamedFacetAnnotation(name, holder);
     }
 }

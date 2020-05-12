@@ -19,10 +19,10 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (DoubleValueSemanticsProvider.IsAdaptedType(type)) {
-                var result = reflector.LoadSpecification(DoubleValueSemanticsProvider.AdaptedType, metamodel);
+                var (oSpec, mm) = reflector.LoadSpecification(DoubleValueSemanticsProvider.AdaptedType, metamodel);
 
-                metamodel = result.Item2;
-                var spec = result.Item1 as IObjectSpecImmutable;
+                metamodel = mm;
+                var spec = oSpec as IObjectSpecImmutable;
                 AddValueFacets(new DoubleValueSemanticsProvider(spec, specification), specification);
             }
 

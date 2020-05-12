@@ -23,7 +23,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public CollectionFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> ProcessArray(IReflector reflector, Type type, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessArray(IReflector reflector, Type type, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FacetUtils.AddFacet(new ArrayFacet(holder));
             FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
 
@@ -31,10 +31,10 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return reflector.LoadSpecification(elementType, metamodel).Item2;
         }
 
-        private void ProcessGenericEnumerable(Type type, ISpecification holder) {
-            bool isCollection = CollectionUtils.IsGenericCollection(type); // as opposed to IEnumerable
-            bool isQueryable = CollectionUtils.IsGenericQueryable(type);
-            bool isSet = CollectionUtils.IsSet(type);
+        private static void ProcessGenericEnumerable(Type type, ISpecification holder) {
+            var isCollection = CollectionUtils.IsGenericCollection(type); // as opposed to IEnumerable
+            var isQueryable = CollectionUtils.IsGenericQueryable(type);
+            var isSet = CollectionUtils.IsSet(type);
 
             FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
 
@@ -52,8 +52,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             FacetUtils.AddFacet(facet);
         }
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> ProcessCollection(IReflector reflector, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Type collectionElementType = typeof(object);
+        private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessCollection(IReflector reflector, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var collectionElementType = typeof(object);
             var result = reflector.LoadSpecification(collectionElementType, metamodel);
             metamodel = result.Item2;
             var spec = result.Item1 as IObjectSpecImmutable;

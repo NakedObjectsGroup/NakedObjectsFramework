@@ -40,8 +40,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IEagerlyFacet Create(EagerlyAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new EagerlyFacet(EagerlyAttribute.Do.Rendering, holder);
-        }
+        private static IEagerlyFacet Create(EagerlyAttribute attribute, ISpecification holder) => attribute == null ? null : new EagerlyFacet(EagerlyAttribute.Do.Rendering, holder);
     }
 }

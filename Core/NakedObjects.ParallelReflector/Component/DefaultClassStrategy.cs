@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
@@ -22,22 +21,20 @@ namespace NakedObjects.ParallelReflect.Component {
     public class DefaultClassStrategy : IClassStrategy {
         private readonly IReflectorConfiguration config;
 
-        public DefaultClassStrategy(IReflectorConfiguration config) {
-            this.config = config;
-        }
+        public DefaultClassStrategy(IReflectorConfiguration config) => this.config = config;
 
         #region IClassStrategy Members
 
         public virtual bool IsTypeToBeIntrospected(Type type) {
-            Type returnType = FilterNullableAndProxies(type);
+            var returnType = FilterNullableAndProxies(type);
             return !IsTypeIgnored(returnType) &&
                    !IsTypeUnsupportedByReflector(returnType) &&
                    IsTypeWhiteListed(returnType) &&
-                   (!IsGenericCollection(type) || type.GetGenericArguments().All(IsTypeToBeIntrospected));
+                   (!FasterTypeUtils.IsGenericCollection(type) || type.GetGenericArguments().All(IsTypeToBeIntrospected));
         }
 
         public virtual Type GetType(Type type) {
-            Type returnType = FilterNullableAndProxies(type);
+            var returnType = FilterNullableAndProxies(type);
             return IsTypeToBeIntrospected(returnType) ? returnType : null;
         }
 
@@ -47,70 +44,46 @@ namespace NakedObjects.ParallelReflect.Component {
                 return type.GetGenericArguments()[0];
             }
 
-            if (FasterTypeUtils.IsProxy(type)) {
-                return type.BaseType;
-            }
-
-            return type;
+            return FasterTypeUtils.IsProxy(type) ? type.BaseType : type;
         }
 
-        public virtual bool IsSystemClass(Type introspectedType) {
-            return introspectedType.FullName.StartsWith("System.", StringComparison.Ordinal);
-        }
+        public virtual bool IsSystemClass(Type introspectedType) => introspectedType.FullName?.StartsWith("System.", StringComparison.Ordinal) == true;
 
-        public virtual string GetKeyForType(Type type) {
-            if (IsGenericCollection(type)) {
-                return type.Namespace + "." + type.Name;
-            }
-
-            if (type.IsArray && !(type.GetElementType().IsValueType || type.GetElementType() == typeof(string))) {
-                return "System.Array";
-            }
-
-            return type.GetProxiedTypeFullName();
-        }
+        public virtual string GetKeyForType(Type type) =>
+            FasterTypeUtils.IsGenericCollection(type)
+                ? $"{type.Namespace}.{type.Name}"
+                : FasterTypeUtils.IsObjectArray(type)
+                    ? "System.Array"
+                    : type.GetProxiedTypeFullName();
 
         #endregion
 
-        private bool IsTypeIgnored(Type type) {
-            return type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
-        }
+        private bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
 
         private bool IsNamespaceMatch(Type type) {
             var ns = type.Namespace ?? "";
             return config.ModelNamespaces.Any(sn => ns.StartsWith(sn, StringComparison.Ordinal));
         }
 
-        private bool IsTypeWhiteListed(Type type) {
-            return IsTypeSupportedSystemType(type) || IsNamespaceMatch(type) || IsTypeExplicitlyRequested(type);
-        }
+        private bool IsTypeWhiteListed(Type type) => IsTypeSupportedSystemType(type) || IsNamespaceMatch(type) || IsTypeExplicitlyRequested(type);
 
-        private bool IsTypeExplicitlyRequested(Type type) {
-            var services = config.Services;
-            return config.TypesToIntrospect.Any(t => t == type) || services.Any(t => t == type) || type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
-        }
+        private bool IsTypeExplicitlyRequested(Type type) =>
+            config.TypesToIntrospect.Any(t => t == type) ||
+            config.Services.Any(t => t == type) ||
+            type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
 
-        private Type ToMatch(Type type) {
-            return type.IsGenericType ? type.GetGenericTypeDefinition() : type;
-        }
+        private Type ToMatch(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() : type;
 
-        private bool IsTypeSupportedSystemType(Type type) {
-            return config.SupportedSystemTypes.Any(t => t == ToMatch(type));
-        }
+        private bool IsTypeSupportedSystemType(Type type) => config.SupportedSystemTypes.Any(t => t == ToMatch(type));
 
-        private bool IsTypeUnsupportedByReflector(Type type) {
-            return type.IsPointer ||
-                   type.IsByRef ||
-                   CollectionUtils.IsDictionary(type) ||
-                   type.IsGenericParameter ||
-                   type.ContainsGenericParameters;
-        }
+        private bool IsTypeUnsupportedByReflector(Type type) =>
+            type.IsPointer ||
+            type.IsByRef ||
+            CollectionUtils.IsDictionary(type) ||
+            type.IsGenericParameter ||
+            type.ContainsGenericParameters;
 
         // because Sets don't implement IEnumerable<>
-        private static bool IsGenericCollection(Type type) {
-            return CollectionUtils.IsGenericType(type, typeof(IEnumerable<>)) ||
-                   CollectionUtils.IsGenericType(type, typeof(ISet<>));
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

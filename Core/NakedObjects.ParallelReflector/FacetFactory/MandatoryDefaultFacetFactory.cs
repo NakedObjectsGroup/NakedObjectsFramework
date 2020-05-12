@@ -45,8 +45,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IMandatoryFacet Create(ISpecification holder) {
-            return new MandatoryFacetDefault(holder);
-        }
+        private static IMandatoryFacet Create(ISpecification holder) => new MandatoryFacetDefault(holder);
     }
 }

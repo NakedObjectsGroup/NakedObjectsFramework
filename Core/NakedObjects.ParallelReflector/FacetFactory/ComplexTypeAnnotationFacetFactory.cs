@@ -29,8 +29,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IComplexTypeFacet Create(Attribute attribute, ISpecification holder) {
-            return attribute == null ? null : new ComplexTypeFacetAnnotation(holder);
-        }
+        private static IComplexTypeFacet Create(Attribute attribute, ISpecification holder) => attribute == null ? null : new ComplexTypeFacetAnnotation(holder);
     }
 }

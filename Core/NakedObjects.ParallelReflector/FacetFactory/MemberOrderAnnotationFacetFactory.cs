@@ -36,10 +36,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) {
-
-            return attribute == null ? null : new MemberOrderFacet(attribute.Name, attribute.Sequence, holder);
-#pragma warning restore 618
-        }
+        private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) => attribute == null ? null : new MemberOrderFacet(attribute.Name, attribute.Sequence, holder);
     }
 }

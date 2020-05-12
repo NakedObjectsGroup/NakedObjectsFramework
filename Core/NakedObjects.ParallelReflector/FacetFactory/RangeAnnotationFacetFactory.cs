@@ -32,14 +32,14 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            bool isDate = property.PropertyType.IsAssignableFrom(typeof(DateTime));
+            var isDate = property.PropertyType.IsAssignableFrom(typeof(DateTime));
             Process(property, isDate, specification);
             return metamodel;
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
-            bool isDate = parameter.ParameterType.IsAssignableFrom(typeof(DateTime));
+            var parameter = method.GetParameters()[paramNum];
+            var isDate = parameter.ParameterType.IsAssignableFrom(typeof(DateTime));
             var range = parameter.GetCustomAttribute<RangeAttribute>();
             FacetUtils.AddFacet(Create(range, isDate, holder));
             return metamodel;
