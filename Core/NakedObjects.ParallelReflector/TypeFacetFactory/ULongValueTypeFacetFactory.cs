@@ -18,15 +18,13 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
         public ULongValueTypeFacetFactory(int numericOrder) : base(numericOrder) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (ULongValueSemanticsProvider.IsAdaptedType(type)) {
-                var (oSpec, mm) = reflector.LoadSpecification(ULongValueSemanticsProvider.AdaptedType, metamodel);
-
-                metamodel = mm;
-                var spec = oSpec as IObjectSpecImmutable;
-                AddValueFacets(new ULongValueSemanticsProvider(spec, specification), specification);
+            if (!ULongValueSemanticsProvider.IsAdaptedType(type)) {
+                return metamodel;
             }
 
-            return metamodel;
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(ULongValueSemanticsProvider.AdaptedType, metamodel);
+            AddValueFacets(new ULongValueSemanticsProvider(oSpec, specification), specification);
+            return mm;
         }
     }
 }

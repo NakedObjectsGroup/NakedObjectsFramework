@@ -18,15 +18,13 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
         public DateTimeValueTypeFacetFactory(int numericOrder) : base(numericOrder) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (DateTimeValueSemanticsProvider.IsAdaptedType(type)) {
-                var (oSpec, mm) = reflector.LoadSpecification(DateTimeValueSemanticsProvider.AdaptedType, metamodel);
-
-                metamodel = mm;
-                var spec = oSpec as IObjectSpecImmutable;
-                AddValueFacets(new DateTimeValueSemanticsProvider(spec, specification), specification);
+            if (!DateTimeValueSemanticsProvider.IsAdaptedType(type)) {
+                return metamodel;
             }
 
-            return metamodel;
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(DateTimeValueSemanticsProvider.AdaptedType, metamodel);
+            AddValueFacets(new DateTimeValueSemanticsProvider(oSpec, specification), specification);
+            return mm;
         }
     }
 }

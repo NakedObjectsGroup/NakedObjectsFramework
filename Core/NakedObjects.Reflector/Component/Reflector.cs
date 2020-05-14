@@ -114,6 +114,8 @@ namespace NakedObjects.Reflect.Component {
             throw new NotImplementedException();
         }
 
+        public (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) where T : class, ITypeSpecImmutable => throw new NotImplementedException();
+
         #endregion
 
         private Type EnsureGenericTypeIsComplete(Type type) {

@@ -18,15 +18,13 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
         public DecimalValueTypeFacetFactory(int numericOrder) : base(numericOrder) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (DecimalValueSemanticsProvider.IsAdaptedType(type)) {
-                var (oSpec, mm) = reflector.LoadSpecification(DecimalValueSemanticsProvider.AdaptedType, metamodel);
-
-                metamodel = mm;
-                var spec = oSpec as IObjectSpecImmutable;
-                AddValueFacets(new DecimalValueSemanticsProvider(spec, specification), specification);
+            if (!DecimalValueSemanticsProvider.IsAdaptedType(type)) {
+                return metamodel;
             }
 
-            return metamodel;
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(DecimalValueSemanticsProvider.AdaptedType, metamodel);
+            AddValueFacets(new DecimalValueSemanticsProvider(oSpec, specification), specification);
+            return mm;
         }
     }
 }

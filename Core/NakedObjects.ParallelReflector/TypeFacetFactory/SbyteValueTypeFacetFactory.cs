@@ -18,15 +18,13 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
         public SbyteValueTypeFacetFactory(int numericOrder) : base(numericOrder) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (SbyteValueSemanticsProvider.IsAdaptedType(type)) {
-                var (oSpec, mm) = reflector.LoadSpecification(SbyteValueSemanticsProvider.AdaptedType, metamodel);
-
-                metamodel = mm;
-                var spec = oSpec as IObjectSpecImmutable;
-                AddValueFacets(new SbyteValueSemanticsProvider(spec, specification), specification);
+            if (!SbyteValueSemanticsProvider.IsAdaptedType(type)) {
+                return metamodel;
             }
 
-            return metamodel;
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(SbyteValueSemanticsProvider.AdaptedType, metamodel);
+            AddValueFacets(new SbyteValueSemanticsProvider(oSpec, specification), specification);
+            return mm;
         }
     }
 }

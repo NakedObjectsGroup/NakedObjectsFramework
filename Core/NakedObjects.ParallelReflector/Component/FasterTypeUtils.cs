@@ -38,5 +38,9 @@ namespace NakedObjects.ParallelReflect.Component {
         public static bool IsGenericCollection(Type type) =>
             CollectionUtils.IsGenericType(type, typeof(IEnumerable<>)) ||
             CollectionUtils.IsGenericType(type, typeof(ISet<>));
+
+
+
+
     }
 }

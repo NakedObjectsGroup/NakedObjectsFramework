@@ -30,10 +30,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
             if (methodReturnType.IsArray) {
                 var elementType = methodReturnType.GetElementType();
-                var result = reflector.LoadSpecification(elementType, metamodel);
-                metamodel = result.Item2;
-                var elementSpec = result.Item1 as IObjectSpecImmutable;
-
+                IObjectSpecBuilder elementSpec;
+                (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
                 FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
                 FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
             }
@@ -41,11 +39,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 var actualTypeArguments = methodReturnType.GetGenericArguments();
                 if (actualTypeArguments.Any()) {
                     var elementType = actualTypeArguments.First();
-                    var result = reflector.LoadSpecification(elementType, metamodel);
-
-                    metamodel = result.Item2;
-                    var elementSpec = result.Item1 as IObjectSpecImmutable;
-
+                    IObjectSpecBuilder elementSpec;
+                    (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
                     FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
                     FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
                 }
@@ -54,14 +49,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => Process(reflector, method.ReturnType, specification, metamodel);
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
+            Process(reflector, method.ReturnType, specification, metamodel);
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (property.GetGetMethod() != null) {
-                return Process(reflector, property.PropertyType, specification, metamodel);
-            }
-
-            return metamodel;
-        }
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
+            property.GetGetMethod() != null 
+                ? Process(reflector, property.PropertyType, specification, metamodel) 
+                : metamodel;
     }
 }

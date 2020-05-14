@@ -46,7 +46,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             type.IsArray ||
             CollectionUtils.IsCollectionButNotArray(type);
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo member, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo member, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var allParams = member.GetParameters();
             var paramsWithAttribute = allParams.Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null).ToArray();
             if (!paramsWithAttribute.Any()) {
@@ -57,25 +57,19 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             foreach (var p in paramsWithAttribute) {
                 var attribute = p.GetCustomAttribute<ContributedActionAttribute>();
                 var parameterType = p.ParameterType;
-                var result = reflector.LoadSpecification(p.ParameterType, metamodel);
-                metamodel = result.Item2;
-
-                var type = result.Item1 as IObjectSpecImmutable;
+                IObjectSpecBuilder type;
+                (type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, metamodel);
+               
                 if (type != null) {
                     if (IsParseable(parameterType)) {
                         Log.WarnFormat("ContributedAction attribute added to a value parameter type: {0}", member.Name);
                     }
                     else if (IsCollection(parameterType)) {
-                        result = reflector.LoadSpecification(member.DeclaringType, metamodel);
-                        metamodel = result.Item2;
-                        var parent = result.Item1 as IObjectSpecImmutable;
-
-                        if (parent is IObjectSpecBuilder) {
-                            metamodel = AddLocalCollectionContributedAction(reflector, p, facet, metamodel);
-                        }
-                        else {
-                            metamodel = AddCollectionContributedAction(reflector, member, parameterType, p, facet, attribute, metamodel);
-                        }
+                        IObjectSpecImmutable parent;
+                        (parent, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(member.DeclaringType, metamodel);
+                        metamodel = parent is IObjectSpecBuilder 
+                            ? AddLocalCollectionContributedAction(reflector, p, facet, metamodel) 
+                            : AddCollectionContributedAction(reflector, member, parameterType, p, facet, attribute, metamodel);
                     }
                     else {
                         facet.AddObjectContributee(type, attribute.SubMenu, attribute.Id);
@@ -93,16 +87,14 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
             else {
                 var returnType = member.ReturnType;
-                var result = reflector.LoadSpecification(returnType, metamodel);
-                metamodel = result.Item2;
+                (_ , metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(returnType, metamodel);
                 if (IsCollection(returnType)) {
                     Log.WarnFormat("ContributedAction attribute added to an action that returns a collection: {0}", member.Name);
                 }
                 else {
                     var elementType = p.ParameterType.GetGenericArguments()[0];
-                    result = reflector.LoadSpecification(elementType, metamodel);
-                    metamodel = result.Item2;
-                    var type = result.Item1 as IObjectSpecImmutable;
+                    IObjectSpecBuilder type;
+                    (type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
                     facet.AddCollectionContributee(type, attribute.SubMenu, attribute.Id);
                 }
             }
@@ -112,9 +104,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         private static IImmutableDictionary<string, ITypeSpecBuilder> AddLocalCollectionContributedAction(IReflector reflector, ParameterInfo p, ContributedActionFacet facet, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var elementType = p.ParameterType.GetGenericArguments()[0];
-            var result = reflector.LoadSpecification(elementType, metamodel);
-            metamodel = result.Item2;
-            var type = result.Item1 as IObjectSpecImmutable;
+            IObjectSpecBuilder type;
+            (type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
             facet.AddLocalCollectionContributee(type, p.Name);
             return metamodel;
         }

@@ -38,7 +38,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
         }
 
-        private void FindAndRemoveEventHandlerMethods(Type type, IMethodRemover methodRemover) {
+        private static void FindAndRemoveEventHandlerMethods(Type type, IMethodRemover methodRemover) {
             foreach (var eInfo in type.GetEvents()) {
                 RemoveIfNotNull(methodRemover, eInfo.GetAddMethod());
                 RemoveIfNotNull(methodRemover, eInfo.GetRaiseMethod());

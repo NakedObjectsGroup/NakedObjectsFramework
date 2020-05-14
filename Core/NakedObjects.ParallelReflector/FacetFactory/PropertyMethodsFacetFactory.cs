@@ -147,10 +147,9 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
 
                 foreach (var p in method.GetParameters()) {
-                    var result = reflector.LoadSpecification(p.ParameterType, metamodel);
-                    metamodel = result.Item2;
-                    var spec = result.Item1 as IObjectSpecImmutable;
-                    parameterNamesAndTypes.Add((p.Name.ToLower(), spec));
+                    IObjectSpecBuilder oSpec;
+                    (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, metamodel);
+                    parameterNamesAndTypes.Add((p.Name.ToLower(), oSpec));
                 }
 
                 propertyFacets.Add(new PropertyChoicesFacet(method, parameterNamesAndTypes.ToArray(), property));

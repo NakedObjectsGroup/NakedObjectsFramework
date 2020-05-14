@@ -46,6 +46,12 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             mockReflector.Setup(reflector =>
                 reflector.LoadSpecification(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
+
+            mockReflector.Setup(reflector =>
+                reflector.LoadSpecification<ITypeSpecBuilder>(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
+
+            mockReflector.Setup(reflector =>
+                reflector.LoadSpecification<IObjectSpecBuilder>(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
         }
 
         public virtual void TearDown() {

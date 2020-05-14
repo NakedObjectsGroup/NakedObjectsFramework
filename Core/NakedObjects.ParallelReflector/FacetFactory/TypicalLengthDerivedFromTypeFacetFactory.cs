@@ -65,9 +65,9 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private void AddFacetDerivedFromTypeIfPresent(ISpecification holder, Type type, IClassStrategy classStrategy) => FacetUtils.AddFacet(GetTypicalLengthFacet(type, holder, classStrategy));
+        private static void AddFacetDerivedFromTypeIfPresent(ISpecification holder, Type type, IClassStrategy classStrategy) => FacetUtils.AddFacet(GetTypicalLengthFacet(type, holder, classStrategy));
 
-        private ITypicalLengthFacet GetTypicalLengthFacet(Type type, ISpecification holder, IClassStrategy classStrategy) {
+        private static ITypicalLengthFacet GetTypicalLengthFacet(Type type, ISpecification holder, IClassStrategy classStrategy) {
             var attribute = type.GetCustomAttribute<TypicalLengthAttribute>();
 
             if (attribute != null) {

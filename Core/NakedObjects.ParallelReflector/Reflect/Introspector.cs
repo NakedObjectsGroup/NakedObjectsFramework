@@ -88,9 +88,7 @@ namespace NakedObjects.ParallelReflect {
             metamodel = FacetFactorySet.Process(reflector, IntrospectedType, methodRemover, spec, metamodel);
 
             if (SuperclassType != null && ClassStrategy.IsTypeToBeIntrospected(SuperclassType)) {
-                var (typeSpec, mm) = reflector.LoadSpecification(SuperclassType, metamodel);
-                metamodel = mm;
-                Superclass = typeSpec;
+                (Superclass, metamodel) = reflector.LoadSpecification(SuperclassType, metamodel);
             }
 
             AddAsSubclass(spec);
@@ -98,8 +96,8 @@ namespace NakedObjects.ParallelReflect {
             var interfaces = new List<ITypeSpecBuilder>();
             foreach (var interfaceType in InterfacesTypes) {
                 if (interfaceType != null && ClassStrategy.IsTypeToBeIntrospected(interfaceType)) {
-                    var (interfaceSpec, mm) = reflector.LoadSpecification(interfaceType, metamodel);
-                    metamodel = mm;
+                    ITypeSpecBuilder interfaceSpec;
+                    (interfaceSpec, metamodel) = reflector.LoadSpecification(interfaceType, metamodel);
                     interfaceSpec.AddSubclass(spec);
                     interfaces.Add(interfaceSpec);
                 }
@@ -180,15 +178,13 @@ namespace NakedObjects.ParallelReflect {
 
                 // create a collection property spec
                 var returnType = property.PropertyType;
+                IObjectSpecImmutable returnSpec;
+                (returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(returnType, metamodel);
+
                 var defaultType = typeof(object);
-                var result = reflector.LoadSpecification(returnType, metamodel);
-
-                metamodel = result.Item2;
-                var returnSpec = result.Item1 as IObjectSpecImmutable;
-                result = reflector.LoadSpecification(defaultType, metamodel);
-                metamodel = result.Item2;
-                var defaultSpec = result.Item1 as IObjectSpecImmutable;
-
+                IObjectSpecImmutable defaultSpec;
+                (defaultSpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(defaultType, metamodel);
+                
                 var collection = ImmutableSpecFactory.CreateOneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
 
                 metamodel = FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections, metamodel);
@@ -208,13 +204,14 @@ namespace NakedObjects.ParallelReflect {
                 // create a reference property spec
                 var identifier = new IdentifierImpl(FullName, property.Name);
                 var propertyType = property.PropertyType;
-                var (propertySpec, mm) = reflector.LoadSpecification(propertyType, metamodel);
-                metamodel = mm;
-                if (propertySpec is IServiceSpecImmutable) {
+                IObjectSpecImmutable propertySpec;
+                (propertySpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(propertyType, metamodel);
+               
+                if (propertySpec == null) {
                     throw new ReflectionException(Log.LogAndReturn($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}. If the property is intended to be an injected service it should have a protected get."));
                 }
 
-                var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec as IObjectSpecImmutable);
+                var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec);
 
                 // Process facets for the property
                 metamodel = FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), referenceProperty, FeatureType.Properties, metamodel);
@@ -243,7 +240,7 @@ namespace NakedObjects.ParallelReflect {
                     // build action & its parameters
 
                     if (actionMethod.ReturnType != typeof(void)) {
-                        metamodel = reflector.LoadSpecification(actionMethod.ReturnType, metamodel).Item2;
+                        (_, metamodel) = reflector.LoadSpecification(actionMethod.ReturnType, metamodel);
                     }
 
                     IIdentifier identifier = new IdentifierImpl(FullName, fullMethodName, actionMethod.GetParameters().ToArray());
@@ -251,10 +248,9 @@ namespace NakedObjects.ParallelReflect {
                     var actionParams = new List<IActionParameterSpecImmutable>();
 
                     foreach (var pt in parameterTypes) {
-                        var result = reflector.LoadSpecification(pt, metamodel);
-                        metamodel = result.Item2;
-                        var ospec = result.Item1 as IObjectSpecImmutable;
-                        var actionSpec = ImmutableSpecFactory.CreateActionParameterSpecImmutable(ospec, identifier);
+                        IObjectSpecBuilder oSpec; 
+                        (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(pt, metamodel);
+                        var actionSpec = ImmutableSpecFactory.CreateActionParameterSpecImmutable(oSpec, identifier);
                         actionParams.Add(actionSpec);
                     }
 

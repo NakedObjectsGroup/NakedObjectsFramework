@@ -19,19 +19,16 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
         public EnumValueTypeFacetFactory(int numericOrder) : base(numericOrder) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (typeof(Enum).IsAssignableFrom(type)) {
-                var semanticsProviderType = typeof(EnumValueSemanticsProvider<>).MakeGenericType(type);
-                var (oSpec, mm) = reflector.LoadSpecification(type, metamodel);
-
-                metamodel = mm;
-                var spec = oSpec as IObjectSpecImmutable;
-                var semanticsProvider = Activator.CreateInstance(semanticsProviderType, spec, specification);
-
-                var method = typeof(ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);
-                method.Invoke(null, new[] {semanticsProvider, specification});
+            if (!typeof(Enum).IsAssignableFrom(type)) {
+                return metamodel;
             }
 
-            return metamodel;
+            var semanticsProviderType = typeof(EnumValueSemanticsProvider<>).MakeGenericType(type);
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);
+            var semanticsProvider = Activator.CreateInstance(semanticsProviderType, oSpec, specification);
+            var method = typeof(ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);
+            method.Invoke(null, new[] {semanticsProvider, specification});
+            return mm;
         }
     }
 }

@@ -18,14 +18,13 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
         public BooleanValueTypeFacetFactory(int numericOrder) : base(numericOrder) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (BooleanValueSemanticsProvider.IsAdaptedType(type)) {
-                var (oSpec, mm) = reflector.LoadSpecification(BooleanValueSemanticsProvider.AdaptedType, metamodel);
-                metamodel = mm;
-                var spec = oSpec as IObjectSpecImmutable;
-                AddValueFacets(new BooleanValueSemanticsProvider(spec, specification), specification);
+            if (!BooleanValueSemanticsProvider.IsAdaptedType(type)) {
+                return metamodel;
             }
 
-            return metamodel;
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(BooleanValueSemanticsProvider.AdaptedType, metamodel);
+            AddValueFacets(new BooleanValueSemanticsProvider(oSpec, specification), specification);
+            return mm;
         }
     }
 }

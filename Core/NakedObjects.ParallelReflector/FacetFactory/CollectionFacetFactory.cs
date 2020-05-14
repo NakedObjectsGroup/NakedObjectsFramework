@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -28,7 +29,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
 
             var elementType = type.GetElementType();
-            return reflector.LoadSpecification(elementType, metamodel).Item2;
+            (_, metamodel) = reflector.LoadSpecification(elementType, metamodel);
+            return metamodel;
         }
 
         private static void ProcessGenericEnumerable(Type type, ISpecification holder) {
@@ -54,10 +56,9 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessCollection(IReflector reflector, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var collectionElementType = typeof(object);
-            var result = reflector.LoadSpecification(collectionElementType, metamodel);
-            metamodel = result.Item2;
-            var spec = result.Item1 as IObjectSpecImmutable;
-            FacetUtils.AddFacet(new TypeOfFacetDefaultToType(holder, collectionElementType, spec));
+            IObjectSpecBuilder oSpec;
+            (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(collectionElementType, metamodel);
+            FacetUtils.AddFacet(new TypeOfFacetDefaultToType(holder, collectionElementType, oSpec));
             FacetUtils.AddFacet(new CollectionFacet(holder));
             return metamodel;
         }
@@ -72,11 +73,9 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 return ProcessArray(reflector, type, specification, metamodel);
             }
 
-            if (CollectionUtils.IsCollectionButNotArray(type)) {
-                return ProcessCollection(reflector, specification, metamodel);
-            }
-
-            return metamodel;
+            return CollectionUtils.IsCollectionButNotArray(type) 
+                ? ProcessCollection(reflector, specification, metamodel) 
+                : metamodel;
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

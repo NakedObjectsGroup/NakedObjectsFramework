@@ -52,20 +52,18 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
             var type = actionMethod.DeclaringType;
             var facets = new List<IFacet>();
-            var result = reflector.LoadSpecification(type, metamodel);
-            metamodel = result.Item2;
-            var onType = result.Item1;
-            result = reflector.LoadSpecification(actionMethod.ReturnType, metamodel);
-            metamodel = result.Item2;
-            var returnSpec = result.Item1 as IObjectSpecBuilder;
+            
+            ITypeSpecBuilder onType;
+            (onType, metamodel) = reflector.LoadSpecification(type, metamodel);
 
-            IObjectSpecImmutable elementSpec = null;
+            IObjectSpecBuilder returnSpec;
+            (returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(actionMethod.ReturnType, metamodel);
+
+            IObjectSpecBuilder elementSpec = null;
             var isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(actionMethod.ReturnType);
             if (returnSpec != null && IsCollection(actionMethod.ReturnType)) {
                 var elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
-                result = reflector.LoadSpecification(elementType, metamodel);
-                metamodel = result.Item2;
-                elementSpec = result.Item1 as IObjectSpecImmutable;
+                (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
             }
 
             RemoveMethod(methodRemover, actionMethod);
@@ -112,15 +110,13 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 facets.Add(new NullableFacetAlways(holder));
             }
 
-            var result = reflector.LoadSpecification(parameter.ParameterType, metamodel);
-            metamodel = result.Item2;
-            var returnSpec = result.Item1 as IObjectSpecBuilder;
+            IObjectSpecBuilder returnSpec;
+            (returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(parameter.ParameterType, metamodel);
 
             if (returnSpec != null && IsParameterCollection(parameter.ParameterType)) {
                 var elementType = CollectionUtils.ElementType(parameter.ParameterType);
-                result = reflector.LoadSpecification(elementType, metamodel);
-                metamodel = result.Item2;
-                var elementSpec = result.Item1 as IObjectSpecImmutable;
+                IObjectSpecImmutable elementSpec;
+                (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(elementType, metamodel);
                 facets.Add(new ElementTypeFacet(holder, elementType, elementSpec));
             }
 
@@ -279,11 +275,10 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
                     
                     foreach (var p in methodToUse.GetParameters()) {
-                        var result = reflector.LoadSpecification(p.ParameterType, metamodel);
-                        metamodel = result.Item2;
-                        var spec = result.Item1 as IObjectSpecImmutable;
+                        IObjectSpecBuilder oSpec;
+                        (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, metamodel);
                         var name = p.Name.ToLower();
-                        parameterNamesAndTypes.Add((name, spec));
+                        parameterNamesAndTypes.Add((name, oSpec));
                     }
 
                     FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes.ToArray(), returnType, parameters[i], isMultiple));

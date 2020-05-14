@@ -60,7 +60,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 _ => throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
             };
 
-        private INamedFacet CreateProperty(Attribute attribute, ISpecification holder) =>
+        private static INamedFacet CreateProperty(Attribute attribute, ISpecification holder) =>
             attribute switch {
                 null => null,
                 NamedAttribute namedAttribute => Create(namedAttribute, holder),
@@ -68,9 +68,9 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 _ => throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
             };
 
-        private INamedFacet Create(NamedAttribute attribute, ISpecification holder) => CreateAnnotation(attribute.Value, holder);
+        private static INamedFacet Create(NamedAttribute attribute, ISpecification holder) => CreateAnnotation(attribute.Value, holder);
 
-        private INamedFacet Create(DisplayNameAttribute attribute, ISpecification holder) => CreateAnnotation(attribute.DisplayName, holder);
+        private static INamedFacet Create(DisplayNameAttribute attribute, ISpecification holder) => CreateAnnotation(attribute.DisplayName, holder);
 
         private static INamedFacet CreateAnnotation(string name, ISpecification holder) => new NamedFacetAnnotation(name, holder);
     }
