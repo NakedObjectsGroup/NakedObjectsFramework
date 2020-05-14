@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Reflection;
-using System.Runtime.InteropServices.ComTypes;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
