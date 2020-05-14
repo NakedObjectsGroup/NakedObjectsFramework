@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -22,9 +21,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class FinderActionAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private FinderActionFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IFinderActionFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(IFinderActionFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -32,9 +29,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestFinderActionFacetNullByDefault() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof(Customer), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer), "SomeAction");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IExecutedFacet));
+            var facet = Specification.GetFacet(typeof(IExecutedFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -44,9 +41,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestFinderActionAnnotationPickedUp() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof(Customer1), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IFinderActionFacet));
+            var facet = Specification.GetFacet(typeof(IFinderActionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is FinderActionFacet);
             AssertNoMethodsRemoved();
@@ -55,7 +52,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));

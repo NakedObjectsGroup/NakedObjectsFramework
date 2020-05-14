@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -27,14 +26,14 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void TestCollectionFacet() {
-            IFacet facet = Specification.GetFacet(typeof(ICollectionFacet));
+            var facet = Specification.GetFacet(typeof(ICollectionFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<CollectionFacet>(facet);
         }
 
         [TestMethod]
         public void TestDescriptionFaced() {
-            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
+            var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<DescribedAsFacetNone>(facet);
         }
@@ -57,14 +56,14 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void TestNamedFaced() {
-            IFacet facet = Specification.GetFacet(typeof(INamedFacet));
+            var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<NamedFacetInferred>(facet);
         }
 
         [TestMethod]
         public void TestPluralFaced() {
-            IFacet facet = Specification.GetFacet(typeof(IPluralFacet));
+            var facet = Specification.GetFacet(typeof(IPluralFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<PluralFacetInferred>(facet);
         }

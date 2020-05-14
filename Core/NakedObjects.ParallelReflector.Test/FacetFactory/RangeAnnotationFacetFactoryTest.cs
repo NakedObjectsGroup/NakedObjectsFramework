@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -23,15 +22,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class RangeAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private RangeAnnotationFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IRangeFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(IRangeFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -43,9 +40,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestRangeAnnotationPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
+            var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IRangeFacet));
+            var facet = Specification.GetFacet(typeof(IRangeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RangeFacet);
             var rangeFacetAnnotation = (RangeFacet) facet;
@@ -58,9 +55,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestRangeAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer1), "Prop");
+            var property = FindProperty(typeof(Customer1), "Prop");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IRangeFacet));
+            var facet = Specification.GetFacet(typeof(IRangeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is RangeFacet);
             var rangeFacetAnnotation = (RangeFacet) facet;

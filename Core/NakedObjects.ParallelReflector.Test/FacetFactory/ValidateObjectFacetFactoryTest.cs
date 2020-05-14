@@ -18,15 +18,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class ValidateObjectFacetFactoryTest : AbstractFacetFactoryTest {
         private ValidateObjectFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IValidateObjectFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(IValidateObjectFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));

@@ -23,20 +23,17 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class SystemClassMethodFilteringFactoryTest : AbstractFacetFactoryTest {
         private SystemClassMethodFilteringFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get {
-                return new[] {
-                    typeof(INamedFacet),
-                    typeof(IExecutedFacet),
-                    typeof(IActionValidationFacet),
-                    typeof(IActionInvocationFacet),
-                    typeof(IActionDefaultsFacet),
-                    typeof(IActionChoicesFacet),
-                    typeof(IDescribedAsFacet),
-                    typeof(IMandatoryFacet)
-                };
-            }
-        }
+        protected override Type[] SupportedTypes =>
+            new[] {
+                typeof(INamedFacet),
+                typeof(IExecutedFacet),
+                typeof(IActionValidationFacet),
+                typeof(IActionInvocationFacet),
+                typeof(IActionDefaultsFacet),
+                typeof(IActionChoicesFacet),
+                typeof(IDescribedAsFacet),
+                typeof(IMandatoryFacet)
+            };
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -56,7 +53,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
                 "ToString",
                 "Equals",
                 "GetHashCode",
-                "GetType",
+                "GetType"
             };
 
             var notFilteredNames = new List<string> {
@@ -79,7 +76,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));

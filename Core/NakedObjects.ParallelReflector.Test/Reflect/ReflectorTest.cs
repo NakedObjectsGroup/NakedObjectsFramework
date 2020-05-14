@@ -32,19 +32,13 @@ namespace NakedObjects.ParallelReflect.Test {
     public class NullMenuFactory : IMenuFactory {
         #region IMenuFactory Members
 
-        public IMenu NewMenu<T>(bool addAllActions, string name = null) {
-            return null;
-        }
+        public IMenu NewMenu<T>(bool addAllActions, string name = null) => null;
 
-        public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) {
-            return null;
-        }
+        public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) => null;
 
         #endregion
 
-        public IMenu NewMenu(string name) {
-            return null;
-        }
+        public IMenu NewMenu(string name) => null;
     }
 
     [TestClass]
@@ -77,7 +71,7 @@ namespace NakedObjects.ParallelReflect.Test {
         }
 
         protected virtual void RegisterFacetFactories(IServiceCollection services) {
-            int order = 0;
+            var order = 0;
             RegisterFacetFactory<FallbackFacetFactory>("FallbackFacetFactory", services, order++);
             RegisterFacetFactory<IteratorFilteringFacetFactory>("IteratorFilteringFacetFactory", services, order++);
             RegisterFacetFactory<SystemClassMethodFilteringFactory>("UnsupportedParameterTypesMethodFilteringFactory", services, order++);
@@ -173,7 +167,7 @@ namespace NakedObjects.ParallelReflect.Test {
             services.AddSingleton<IMetamodelBuilder, Metamodel>();
             services.AddSingleton<IMenuFactory, NullMenuFactory>();
 
-            services.AddSingleton<IReflectorConfiguration>(rc);
+            services.AddSingleton(rc);
         }
 
         [TestMethod]
@@ -245,8 +239,8 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void ReflectQueryableTypes() {
-            IQueryable<object> qo = new List<object>().AsQueryable();
-            IQueryable<int> qi = new List<int>().AsQueryable();
+            var qo = new List<object>().AsQueryable();
+            var qi = new List<int>().AsQueryable();
             ReflectorConfiguration.NoValidate = true;
 
             var rc = new ReflectorConfiguration(new[] {qo.GetType(), qi.GetType(), typeof(int), typeof(object)}, new Type[] { }, new string[] { });
@@ -266,10 +260,10 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void ReflectWhereIterator() {
-            IEnumerable<int> it = new List<int> {1, 2, 3}.Where(i => i == 2);
+            var it = new List<int> {1, 2, 3}.Where(i => i == 2);
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {it.GetType().GetGenericTypeDefinition(), typeof(Object)}, new Type[] { }, new string[] { });
+            var rc = new ReflectorConfiguration(new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(rc);
@@ -285,10 +279,10 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void ReflectWhereSelectIterator() {
-            IEnumerable<int> it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
+            var it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
             ReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {it.GetType().GetGenericTypeDefinition(), typeof(Object)}, new Type[] { }, new string[] { });
+            var rc = new ReflectorConfiguration(new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(rc);
@@ -409,79 +403,79 @@ namespace NakedObjects.ParallelReflect.Test {
             var specs = reflector.AllObjectSpecImmutables;
             Assert.AreEqual(74, specs.Length);
 
-            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<Decimal>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(Int16), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<decimal>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(short), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IList), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(UInt32), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<String>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<Int64>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<Int32>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(Decimal), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(Int32), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<Byte>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(uint), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<string>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<long>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<int>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(decimal), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(int), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<byte>), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IConvertible), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<Byte>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(Object), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<byte>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(object), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<DateTime>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<Single>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<Boolean>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<Char>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<Single>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<Boolean>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(Byte[]), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<float>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<bool>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<char>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<float>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<bool>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(byte[]), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(DateTimeKind), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(Array), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(Char), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(char), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(ValueType), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<TimeSpan>), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(DayOfWeek), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<UInt16>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<Int64>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(Int64), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<ushort>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<long>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(long), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(DateTime), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IStructuralComparable), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<DateTime>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(UInt64), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(ulong), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(Enum), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(SByte[]), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<SByte>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(sbyte[]), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<sbyte>), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(WithScalars), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IComparable), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(ICollection), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(Boolean), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<Double>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<Decimal>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<UInt16>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<UInt32>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(bool), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<double>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<decimal>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<ushort>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<uint>), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(ICloneable), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<Int16>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<short>), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(TimeSpan), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<String>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<string>), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IList<>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(Byte), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<Char>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(Char[]), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<UInt32>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(Single), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(byte), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<char>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(char[]), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<uint>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(float), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IFormattable), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(ISerializable), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<Int32>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(SByte), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<SByte>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(String), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<int>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(sbyte), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<sbyte>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(string), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IReadOnlyList<>), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IReadOnlyCollection<>), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IStructuralEquatable), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(ICollection<>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<UInt64>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<ulong>), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<TimeSpan>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(UInt16), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<UInt64>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(ushort), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<ulong>), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IEnumerable<>), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<Int16>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<short>), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IDeserializationCallback), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(IEnumerable), specs);
-            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<Double>), specs);
+            AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<double>), specs);
         }
 
         [TestMethod]
@@ -524,48 +518,30 @@ namespace NakedObjects.ParallelReflect.Test {
         public class SetWrapper<T> : ISet<T> {
             private readonly ICollection<T> wrapped;
 
-            public SetWrapper(ICollection<T> wrapped) {
-                this.wrapped = wrapped;
-            }
+            public SetWrapper(ICollection<T> wrapped) => this.wrapped = wrapped;
 
             #region ISet<T> Members
 
-            public IEnumerator<T> GetEnumerator() {
-                return wrapped.GetEnumerator();
-            }
+            public IEnumerator<T> GetEnumerator() => wrapped.GetEnumerator();
 
-            IEnumerator IEnumerable.GetEnumerator() {
-                return GetEnumerator();
-            }
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
             public void UnionWith(IEnumerable<T> other) { }
             public void IntersectWith(IEnumerable<T> other) { }
             public void ExceptWith(IEnumerable<T> other) { }
             public void SymmetricExceptWith(IEnumerable<T> other) { }
 
-            public bool IsSubsetOf(IEnumerable<T> other) {
-                return false;
-            }
+            public bool IsSubsetOf(IEnumerable<T> other) => false;
 
-            public bool IsSupersetOf(IEnumerable<T> other) {
-                return false;
-            }
+            public bool IsSupersetOf(IEnumerable<T> other) => false;
 
-            public bool IsProperSupersetOf(IEnumerable<T> other) {
-                return false;
-            }
+            public bool IsProperSupersetOf(IEnumerable<T> other) => false;
 
-            public bool IsProperSubsetOf(IEnumerable<T> other) {
-                return false;
-            }
+            public bool IsProperSubsetOf(IEnumerable<T> other) => false;
 
-            public bool Overlaps(IEnumerable<T> other) {
-                return false;
-            }
+            public bool Overlaps(IEnumerable<T> other) => false;
 
-            public bool SetEquals(IEnumerable<T> other) {
-                return false;
-            }
+            public bool SetEquals(IEnumerable<T> other) => false;
 
             public bool Add(T item) {
                 wrapped.Add(item);
@@ -580,15 +556,11 @@ namespace NakedObjects.ParallelReflect.Test {
                 wrapped.Clear();
             }
 
-            public bool Contains(T item) {
-                return false;
-            }
+            public bool Contains(T item) => false;
 
             public void CopyTo(T[] array, int arrayIndex) { }
 
-            public bool Remove(T item) {
-                return false;
-            }
+            public bool Remove(T item) => false;
 
             public int Count => wrapped.Count;
 
@@ -602,14 +574,14 @@ namespace NakedObjects.ParallelReflect.Test {
         #region Nested type: SimpleDomainObject
 
         public class SimpleDomainObject {
-            [Key, Title, ConcurrencyCheck]
+            [Key]
+            [Title]
+            [ConcurrencyCheck]
             public virtual int Id { get; set; }
 
             public virtual void Action() { }
 
-            public virtual string HideAction() {
-                return null;
-            }
+            public virtual string HideAction() => null;
         }
 
         #endregion
@@ -637,7 +609,9 @@ namespace NakedObjects.ParallelReflect.Test {
                 Init();
             }
 
-            [Key, Title, ConcurrencyCheck]
+            [Key]
+            [Title]
+            [ConcurrencyCheck]
             public virtual int Id { get; set; }
 
             [NotMapped]

@@ -15,16 +15,12 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private MemberPeerStub m1;
         private MemberPeerStub m2;
 
-        public MemberOrderComparatorTest() {
-            Reset();
-        }
+        public MemberOrderComparatorTest() => Reset();
 
         #region Setup/Teardown
 
         [TestInitialize]
-        public virtual void SetUp() {
-            comparator = new MemberOrderComparator<MemberPeerStub>();
-        }
+        public virtual void SetUp() => comparator = new MemberOrderComparator<MemberPeerStub>();
 
         #endregion
 

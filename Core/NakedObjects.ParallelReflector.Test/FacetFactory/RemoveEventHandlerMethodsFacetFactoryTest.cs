@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -24,20 +23,17 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class RemoveEventHandlerMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         private RemoveEventHandlerMethodsFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get {
-                return new[] {
-                    typeof(INamedFacet),
-                    typeof(IExecutedFacet),
-                    typeof(IActionValidationFacet),
-                    typeof(IActionInvocationFacet),
-                    typeof(IActionDefaultsFacet),
-                    typeof(IActionChoicesFacet),
-                    typeof(IDescribedAsFacet),
-                    typeof(IMandatoryFacet)
-                };
-            }
-        }
+        protected override Type[] SupportedTypes =>
+            new[] {
+                typeof(INamedFacet),
+                typeof(IExecutedFacet),
+                typeof(IActionValidationFacet),
+                typeof(IActionInvocationFacet),
+                typeof(IActionDefaultsFacet),
+                typeof(IActionChoicesFacet),
+                typeof(IDescribedAsFacet),
+                typeof(IMandatoryFacet)
+            };
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -49,11 +45,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             AssertRemovedCalled(2);
 
-            EventInfo eInfo = typeof(Customer).GetEvent("AnEventHandler");
+            var eInfo = typeof(Customer).GetEvent("AnEventHandler");
 
             var eventMethods = new[] {eInfo.GetAddMethod(), eInfo.GetRemoveMethod()};
 
-            foreach (MethodInfo removedMethod in eventMethods) {
+            foreach (var removedMethod in eventMethods) {
                 AssertMethodRemoved(removedMethod);
             }
 
@@ -62,7 +58,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));

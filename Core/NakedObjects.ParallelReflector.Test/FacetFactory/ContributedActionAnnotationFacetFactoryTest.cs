@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -19,8 +18,8 @@ using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     /// <summary>
-    /// Note: This is a limited test;  it does not test collection-contributed actions
-    /// due to dependency on other facets.  That is done in system tests
+    ///     Note: This is a limited test;  it does not test collection-contributed actions
+    ///     due to dependency on other facets.  That is done in system tests
     /// </summary>
     [TestClass]
     public class ContributedActionAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
@@ -34,7 +33,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -48,7 +47,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestContributedAnnotationNullByDefault1() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof(Service), "Action1");
+            var actionMethod = FindMethod(typeof(Service), "Action1");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNull(facet);
@@ -60,7 +59,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestContributedAnnotationNullByDefault2() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethodIgnoreParms(typeof(Service), "Action2");
+            var actionMethod = FindMethodIgnoreParms(typeof(Service), "Action2");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             IFacet facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNull(facet);
@@ -72,7 +71,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestContributedAnnotationPickedUp3() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethodIgnoreParms(typeof(Service), "Action3");
+            var actionMethod = FindMethodIgnoreParms(typeof(Service), "Action3");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNotNull(facet);
@@ -85,7 +84,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestContributedAnnotationPickedUp4() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethodIgnoreParms(typeof(Service), "Action4");
+            var actionMethod = FindMethodIgnoreParms(typeof(Service), "Action4");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNotNull(facet);

@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -32,7 +31,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -43,9 +42,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestMethod]
         public void TestPropertyDefaultAnnotationPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
+            var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IActionDefaultsFacet));
+            var facet = Specification.GetFacet(typeof(IActionDefaultsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionDefaultsFacetAnnotation);
             var actionDefaultFacetAnnotation = (ActionDefaultsFacetAnnotation) facet;

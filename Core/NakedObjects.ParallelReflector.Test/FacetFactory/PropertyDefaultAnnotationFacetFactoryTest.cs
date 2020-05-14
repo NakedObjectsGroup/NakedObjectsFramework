@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -23,15 +22,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class PropertyDefaultAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private PropertyDefaultAnnotationFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IPropertyDefaultFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(IPropertyDefaultFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -43,9 +40,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestPropertyDefaultAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer1), "Prop");
+            var property = FindProperty(typeof(Customer1), "Prop");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IPropertyDefaultFacet));
+            var facet = Specification.GetFacet(typeof(IPropertyDefaultFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyDefaultFacetAnnotation);
             var propertyDefaultFacetAnnotation = (PropertyDefaultFacetAnnotation) facet;

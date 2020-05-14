@@ -9,7 +9,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -23,15 +22,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class NotPersistedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private NotPersistedAnnotationFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(INotPersistedFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(INotPersistedFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
@@ -43,9 +40,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestNotPersistedAnnotationPickedUpOnCollection() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
+            var property = FindProperty(typeof(Customer1), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(INotPersistedFacet));
+            var facet = Specification.GetFacet(typeof(INotPersistedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotPersistedFacet);
             AssertNoMethodsRemoved();
@@ -56,9 +53,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestNotPersistedAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer), "FirstName");
+            var property = FindProperty(typeof(Customer), "FirstName");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(INotPersistedFacet));
+            var facet = Specification.GetFacet(typeof(INotPersistedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotPersistedFacet);
             AssertNoMethodsRemoved();

@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -22,15 +21,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class TitleMethodFacetFactoryTest : AbstractFacetFactoryTest {
         private TitleMethodFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(ITitleFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(ITitleFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -52,9 +49,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTitleMethodPickedUpOnClassAndMethodRemoved() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo titleMethod = FindMethod(typeof(Customer), "Title");
+            var titleMethod = FindMethod(typeof(Customer), "Title");
             metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(ITitleFacet));
+            var facet = Specification.GetFacet(typeof(ITitleFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TitleFacetViaTitleMethod);
             var titleFacetViaTitleMethod = (TitleFacetViaTitleMethod) facet;
@@ -67,9 +64,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestToStringMethodPickedUpOnClassAndMethodRemoved() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo toStringMethod = FindMethod(typeof(Customer1), "ToString", new[] {typeof(string)});
+            var toStringMethod = FindMethod(typeof(Customer1), "ToString", new[] {typeof(string)});
             metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(ITitleFacet));
+            var facet = Specification.GetFacet(typeof(ITitleFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TitleFacetViaToStringMethod);
             var titleFacetViaTitleMethod = (TitleFacetViaToStringMethod) facet;
@@ -82,9 +79,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer {
 // ReSharper disable once UnusedMember.Local
-            public string Title() {
-                return "Some title";
-            }
+            public string Title() => "Some title";
         }
 
         #endregion
@@ -92,15 +87,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer1
 
         private class Customer1 {
-            public override string ToString() {
-                return "Some title via ToString";
-            }
+            public override string ToString() => "Some title via ToString";
 
             // ReSharper disable once UnusedParameter.Local
             // ReSharper disable once UnusedMember.Local
-            public string ToString(string mask) {
-                return "Some title via ToString";
-            }
+            public string ToString(string mask) => "Some title via ToString";
         }
 
         #endregion

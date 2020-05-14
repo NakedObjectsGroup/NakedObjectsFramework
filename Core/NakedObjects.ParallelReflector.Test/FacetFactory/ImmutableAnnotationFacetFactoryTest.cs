@@ -21,9 +21,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class ImmutableAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private ImmutableAnnotationFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IImmutableFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(IImmutableFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -32,7 +30,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IImmutableFacet));
+            var facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -46,7 +44,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IImmutableFacet));
+            var facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -60,7 +58,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             metamodel = facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IImmutableFacet));
+            var facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -71,7 +69,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -84,7 +82,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             metamodel = facetFactory.Process(Reflector, typeof(Customer3), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IImmutableFacet));
+            var facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -98,7 +96,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             metamodel = facetFactory.Process(Reflector, typeof(Customer4), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IImmutableFacet));
+            var facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;

@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -25,23 +24,21 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class IconMethodFacetFactoryTest : AbstractFacetFactoryTest {
         private IconMethodFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IIconFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(IIconFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
         private INakedObjectAdapter AdapterFor(object obj) {
-            ILifecycleManager lifecycleManager = new Mock<ILifecycleManager>().Object;
-            IObjectPersistor persistor = new Mock<IObjectPersistor>().Object;
-            ISession session = new Mock<ISession>().Object;
-            INakedObjectManager manager = new Mock<INakedObjectManager>().Object;
+            var lifecycleManager = new Mock<ILifecycleManager>().Object;
+            var persistor = new Mock<IObjectPersistor>().Object;
+            var session = new Mock<ISession>().Object;
+            var manager = new Mock<INakedObjectManager>().Object;
             return new NakedObjectAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null);
         }
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -58,7 +55,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetAnnotation);
             Assert.AreEqual("AttributeName", facet.GetIconName());
-            INakedObjectAdapter no = AdapterFor(new Customer1());
+            var no = AdapterFor(new Customer1());
             Assert.AreEqual("AttributeName", facet.GetIconName(no));
             Assert.IsNotNull(metamodel);
         }
@@ -72,7 +69,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
             Assert.IsNull(facet.GetIconName());
-            INakedObjectAdapter no = AdapterFor(new Customer());
+            var no = AdapterFor(new Customer());
             Assert.AreEqual("TestName", facet.GetIconName(no));
             Assert.IsNotNull(metamodel);
         }
@@ -81,7 +78,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestIconNameMethodPickedUpOnClassAndMethodRemoved() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo iconNameMethod = FindMethod(typeof(Customer), "IconName");
+            var iconNameMethod = FindMethod(typeof(Customer), "IconName");
             metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
@@ -99,7 +96,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
             Assert.AreEqual("AttributeName", facet.GetIconName());
-            INakedObjectAdapter no = AdapterFor(new Customer2());
+            var no = AdapterFor(new Customer2());
             Assert.AreEqual("TestName", facet.GetIconName(no));
             Assert.IsNotNull(metamodel);
         }
@@ -108,9 +105,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer {
 // ReSharper disable once UnusedMember.Local
-            public string IconName() {
-                return "TestName";
-            }
+            public string IconName() => "TestName";
         }
 
         #endregion
@@ -127,9 +122,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [IconName("AttributeName")]
         private class Customer2 {
 // ReSharper disable once UnusedMember.Local
-            public string IconName() {
-                return "TestName";
-            }
+            public string IconName() => "TestName";
         }
 
         #endregion

@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -23,15 +22,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class RequiredAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private RequiredAnnotationFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IMandatoryFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(IMandatoryFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -43,9 +40,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestRequiredAnnotationOnPrimitiveOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
+            var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
+            var facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacet);
             Assert.IsNotNull(metamodel);
@@ -55,9 +52,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestRequiredAnnotationOnPrimitiveOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer3), "NumberOfOrders");
+            var property = FindProperty(typeof(Customer3), "NumberOfOrders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
+            var facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacet);
             Assert.IsNotNull(metamodel);
@@ -67,9 +64,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestRequiredAnnotationPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
+            var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
+            var facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacet);
             Assert.IsNotNull(metamodel);
@@ -79,9 +76,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestRequiredAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
+            var property = FindProperty(typeof(Customer1), "FirstName");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
+            var facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacet);
             Assert.IsNotNull(metamodel);

@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -24,15 +23,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class TableViewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private TableViewAnnotationFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(ITableViewFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(ITableViewFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
@@ -44,9 +41,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTableViewFacetNotPickedUpOnArray() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer2), "Orders");
+            var property = FindProperty(typeof(Customer2), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
         }
@@ -55,9 +52,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTableViewFacetNotPickedUpOnArrayAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer2), "OrdersAction");
+            var method = FindMethod(typeof(Customer2), "OrdersAction");
             metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
         }
@@ -66,9 +63,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTableViewFacetNotPickedUpOnCollection() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer2), "Orders1");
+            var property = FindProperty(typeof(Customer2), "Orders1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
         }
@@ -77,9 +74,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTableViewFacetNotPickedUpOnCollectionAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer2), "OrdersAction1");
+            var method = FindMethod(typeof(Customer2), "OrdersAction1");
             metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
         }
@@ -88,9 +85,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTableViewFacetPickedUpOnArray() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
+            var property = FindProperty(typeof(Customer1), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -106,9 +103,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTableViewFacetPickedUpOnArrayAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction");
+            var method = FindMethod(typeof(Customer1), "OrdersAction");
             metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -124,9 +121,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTableViewFacetPickedUpOnCollection() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer1), "Orders1");
+            var property = FindProperty(typeof(Customer1), "Orders1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -142,9 +139,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTableViewFacetPickedUpOnCollectionAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction1");
+            var method = FindMethod(typeof(Customer1), "OrdersAction1");
             metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -160,9 +157,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTableViewFacetPickedUpOnCollectionActionNoColumns() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction2");
+            var method = FindMethod(typeof(Customer1), "OrdersAction2");
             metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -176,10 +173,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTableViewFacetPickedUpOnQueryableAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction3");
+            var method = FindMethod(typeof(Customer1), "OrdersAction3");
             metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
             Assert.IsNotNull(metamodel);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -195,9 +192,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTableViewFacetIgnoresDuplicatesOnAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction4");
+            var method = FindMethod(typeof(Customer1), "OrdersAction4");
             metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -213,9 +210,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTableViewFacetIgnoresDuplicatesOnCollection() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer1), "Orders2");
+            var property = FindProperty(typeof(Customer1), "Orders2");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -240,29 +237,19 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             public ICollection<Order> Orders2 { get; set; }
 
             [TableView(false, "col5", "col6")]
-            public Order[] OrdersAction() {
-                return null;
-            }
+            public Order[] OrdersAction() => null;
 
             [TableView(true, "col7", "col8")]
-            public ICollection<Order> OrdersAction1() {
-                return null;
-            }
+            public ICollection<Order> OrdersAction1() => null;
 
             [TableView(true)]
-            public ICollection<Order> OrdersAction2() {
-                return null;
-            }
+            public ICollection<Order> OrdersAction2() => null;
 
             [TableView(true, "col7", "col8")]
-            public IQueryable<Order> OrdersAction3() {
-                return null;
-            }
+            public IQueryable<Order> OrdersAction3() => null;
 
             [TableView(true, "col7", "col8", "col7", "col8")]
-            public IQueryable<Order> OrdersAction4() {
-                return null;
-            }
+            public IQueryable<Order> OrdersAction4() => null;
         }
 
         #endregion
@@ -273,13 +260,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             public Order[] Orders { get; set; }
             public ICollection<Order> Orders1 { get; set; }
 
-            public Order[] OrdersAction() {
-                return null;
-            }
+            public Order[] OrdersAction() => null;
 
-            public ICollection<Order> OrdersAction1() {
-                return null;
-            }
+            public ICollection<Order> OrdersAction1() => null;
         }
 
         #endregion

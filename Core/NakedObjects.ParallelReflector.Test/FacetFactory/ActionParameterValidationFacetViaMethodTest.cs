@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -21,7 +20,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestMethod]
         public void Test1() {
             var mock = new Mock<INakedObjectAdapter>();
-            INakedObjectAdapter value = mock.Object;
+            var value = mock.Object;
             mock.Setup(no => no.Object).Returns(10);
             Assert.IsNull(facet.InvalidReason(target, value));
         }
@@ -29,7 +28,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestMethod]
         public void Test2() {
             var mock = new Mock<INakedObjectAdapter>();
-            INakedObjectAdapter value = mock.Object;
+            var value = mock.Object;
             mock.Setup(no => no.Object).Returns(-7);
             Assert.AreEqual(facet.InvalidReason(target, value), "must be positive");
         }
@@ -38,7 +37,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestInitialize]
         public void SetUp() {
-            ISpecification holder = new Mock<ISpecification>().Object;
+            var holder = new Mock<ISpecification>().Object;
             var customer = new Customer17();
 
             var mock = new Mock<INakedObjectAdapter>();
@@ -46,7 +45,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             mock.Setup(no => no.Object).Returns(customer);
 
-            MethodInfo method = typeof(Customer17).GetMethod("Validate0SomeAction");
+            var method = typeof(Customer17).GetMethod("Validate0SomeAction");
             facet = new ActionParameterValidation(method, holder);
         }
 
@@ -59,12 +58,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     internal class Customer17 {
         public void SomeAction(int x, long y, long z) { }
 
-        public string Validate0SomeAction(int x) {
-            return x > 0 ? null : "must be positive";
-        }
+        public string Validate0SomeAction(int x) => x > 0 ? null : "must be positive";
 
-        public string Validate1SomeAction(long x) {
-            return null;
-        }
+        public string Validate1SomeAction(long x) => null;
     }
 }

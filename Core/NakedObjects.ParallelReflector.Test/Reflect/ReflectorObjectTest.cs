@@ -29,13 +29,13 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void TestCollectionFacet() {
-            IFacet facet = Specification.GetFacet(typeof(ICollectionFacet));
+            var facet = Specification.GetFacet(typeof(ICollectionFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestDescriptionFaced() {
-            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
+            var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
         }
 
@@ -51,13 +51,13 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void TestNamedFaced() {
-            IFacet facet = Specification.GetFacet(typeof(INamedFacet));
+            var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
         }
 
         [TestMethod]
         public void TestNoCollectionFacet() {
-            IFacet facet = Specification.GetFacet(typeof(ICollectionFacet));
+            var facet = Specification.GetFacet(typeof(ICollectionFacet));
             Assert.IsNull(facet);
         }
 
@@ -69,7 +69,7 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void TestPluralFaced() {
-            IFacet facet = Specification.GetFacet(typeof(IPluralFacet));
+            var facet = Specification.GetFacet(typeof(IPluralFacet));
             Assert.IsNotNull(facet);
         }
 

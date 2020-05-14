@@ -21,15 +21,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class ProgramPersistableOnlyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private ProgramPersistableOnlyAnnotationFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IProgramPersistableOnlyFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(IProgramPersistableOnlyFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -42,7 +40,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IProgramPersistableOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IProgramPersistableOnlyFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -53,7 +51,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IProgramPersistableOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IProgramPersistableOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ProgramPersistableOnly);
             AssertNoMethodsRemoved();

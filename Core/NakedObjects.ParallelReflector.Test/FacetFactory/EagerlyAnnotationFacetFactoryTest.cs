@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -22,9 +21,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class EagerlyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private EagerlyAnnotationFacetFactory annotationFacetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IEagerlyFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(IEagerlyFacet)};
 
         protected override IFacetFactory FacetFactory => annotationFacetFactory;
 
@@ -39,9 +36,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             public IList<Customer1> Coll { get; set; }
 
             [Eagerly(EagerlyAttribute.Do.Rendering)]
-            public IList<Customer1> Act() {
-                return new List<Customer1>();
-            }
+            public IList<Customer1> Act() => new List<Customer1>();
         }
 
         #endregion
@@ -67,9 +62,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             public int Prop { get; set; }
             public IList<Customer1> Coll { get; set; }
 
-            public IList<Customer1> Act() {
-                return new List<Customer1>();
-            }
+            public IList<Customer1> Act() => new List<Customer1>();
         }
 
         [TestMethod]
@@ -77,7 +70,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             metamodel = annotationFacetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
             var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
@@ -89,9 +82,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestEagerlyAnnotationPickedUpOnCollection() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer1), "Coll");
+            var property = FindProperty(typeof(Customer1), "Coll");
             metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
             var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
@@ -103,9 +96,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestEagerlyAnnotationPickedUpOnMethod() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer1), "Act");
+            var method = FindMethod(typeof(Customer1), "Act");
             metamodel = annotationFacetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
             var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
@@ -117,9 +110,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestEagerlyAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer1), "Prop");
+            var property = FindProperty(typeof(Customer1), "Prop");
             metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
             var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
@@ -132,7 +125,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             metamodel = annotationFacetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
         }
@@ -141,9 +134,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestEagerlyNotPickedUpOnCollection() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer2), "Coll");
+            var property = FindProperty(typeof(Customer2), "Coll");
             metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
         }
@@ -152,9 +145,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestEagerlyNotPickedUpOnMethod() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer2), "Act");
+            var method = FindMethod(typeof(Customer2), "Act");
             metamodel = annotationFacetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
         }
@@ -163,16 +156,16 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestEagerlyNotPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer2), "Prop");
+            var property = FindProperty(typeof(Customer2), "Prop");
             metamodel = annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
         }
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = annotationFacetFactory.FeatureTypes;
+            var featureTypes = annotationFacetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));

@@ -21,9 +21,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class ValidateProgrammaticUpdatesAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private ValidateProgrammaticUpdatesAnnotationFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IValidateProgrammaticUpdatesFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(IValidateProgrammaticUpdatesFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -32,7 +30,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
+            var facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
@@ -43,7 +41,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
+            var facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ValidateProgrammaticUpdatesFacetAnnotation);
             AssertNoMethodsRemoved();
@@ -52,7 +50,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));

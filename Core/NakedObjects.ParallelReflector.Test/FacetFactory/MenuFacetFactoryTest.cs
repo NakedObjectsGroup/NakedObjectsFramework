@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -22,15 +21,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class MenuFacetFactoryTest : AbstractFacetFactoryTest {
         private MenuFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IMenuFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(IMenuFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -43,7 +40,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             metamodel = facetFactory.Process(Reflector, typeof(Class1), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IMenuFacet));
+            var facet = Specification.GetFacet(typeof(IMenuFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MenuFacetDefault);
             Assert.IsNotNull(metamodel);
@@ -55,10 +52,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var class2Type = typeof(Class2);
             metamodel = facetFactory.Process(Reflector, class2Type, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IMenuFacet));
+            var facet = Specification.GetFacet(typeof(IMenuFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MenuFacetViaMethod);
-            MethodInfo m1 = class2Type.GetMethod("Menu");
+            var m1 = class2Type.GetMethod("Menu");
             AssertMethodRemoved(m1);
             Assert.IsNotNull(metamodel);
         }

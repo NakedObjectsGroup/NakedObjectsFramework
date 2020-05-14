@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -24,15 +23,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class ViewModelFacetFactoryTest : AbstractFacetFactoryTest {
         private ViewModelFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IViewModelFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(IViewModelFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -50,10 +47,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var testClass = new Class1 {Value1 = "testValue1", Value2 = "testValue2"};
             var mock = new Mock<INakedObjectAdapter>();
-            INakedObjectAdapter value = mock.Object;
+            var value = mock.Object;
             mock.Setup(no => no.Object).Returns(testClass);
 
-            string[] key = facet.Derive(value, null, null);
+            var key = facet.Derive(value, null, null);
 
             Assert.AreEqual(2, key.Length);
             Assert.AreEqual(testClass.Value1, key[0]);
@@ -66,7 +63,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             metamodel = facetFactory.Process(Reflector, typeof(Class2), MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
+            var facet = Specification.GetFacet(typeof(IViewModelFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
         }
@@ -77,12 +74,12 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var class1Type = typeof(Class1);
             metamodel = facetFactory.Process(Reflector, class1Type, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
+            var facet = Specification.GetFacet(typeof(IViewModelFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ViewModelFacetConvention);
 
-            MethodInfo m1 = class1Type.GetMethod("DeriveKeys");
-            MethodInfo m2 = class1Type.GetMethod("PopulateUsingKeys");
+            var m1 = class1Type.GetMethod("DeriveKeys");
+            var m2 = class1Type.GetMethod("PopulateUsingKeys");
 
             AssertMethodsRemoved(new[] {m1, m2});
             Assert.IsNotNull(metamodel);
@@ -94,12 +91,12 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var class3Type = typeof(Class3);
             metamodel = facetFactory.Process(Reflector, class3Type, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
+            var facet = Specification.GetFacet(typeof(IViewModelFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ViewModelEditFacetConvention);
 
-            MethodInfo m1 = class3Type.GetMethod("DeriveKeys");
-            MethodInfo m2 = class3Type.GetMethod("PopulateUsingKeys");
+            var m1 = class3Type.GetMethod("DeriveKeys");
+            var m2 = class3Type.GetMethod("PopulateUsingKeys");
 
             AssertMethodsRemoved(new[] {m1, m2});
             Assert.IsNotNull(metamodel);
@@ -111,13 +108,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var class4Type = typeof(Class4);
             metamodel = facetFactory.Process(Reflector, class4Type, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
+            var facet = Specification.GetFacet(typeof(IViewModelFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ViewModelSwitchableFacetConvention);
 
-            MethodInfo m1 = class4Type.GetMethod("DeriveKeys");
-            MethodInfo m2 = class4Type.GetMethod("PopulateUsingKeys");
-            MethodInfo m3 = class4Type.GetMethod("IsEditView");
+            var m1 = class4Type.GetMethod("DeriveKeys");
+            var m2 = class4Type.GetMethod("PopulateUsingKeys");
+            var m3 = class4Type.GetMethod("IsEditView");
 
             AssertMethodsRemoved(new[] {m1, m2, m3});
             Assert.IsNotNull(metamodel);
@@ -134,7 +131,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var testClass = new Class1();
             var keys = new[] {"testValue1", "testValue2"};
             var mock = new Mock<INakedObjectAdapter>();
-            INakedObjectAdapter value = mock.Object;
+            var value = mock.Object;
             mock.Setup(no => no.Object).Returns(testClass);
 
             facet.Populate(keys, value, null, null);
@@ -170,9 +167,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Class2 {
             // ReSharper disable once UnusedMember.Local
-            public string[] DeriveKeys() {
-                return null;
-            }
+            public string[] DeriveKeys() => null;
 
             // ReSharper disable once UnusedMember.Local
             // ReSharper disable once UnusedParameter.Local
@@ -220,9 +215,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
                 Value2 = instanceId[1];
             }
 
-            public bool IsEditView() {
-                return false;
-            }
+            public bool IsEditView() => false;
 
             #endregion
         }

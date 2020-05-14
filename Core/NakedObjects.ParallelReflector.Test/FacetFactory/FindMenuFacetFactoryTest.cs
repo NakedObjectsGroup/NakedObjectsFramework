@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -21,9 +20,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class FindMenuFacetFactoryTest : AbstractFacetFactoryTest {
         private FindMenuFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IFindMenuFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(IFindMenuFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -31,9 +28,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestFindMenuFacetNotAddedToParameterByDefault() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
+            var method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IFindMenuFacet));
+            var facet = Specification.GetFacet(typeof(IFindMenuFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
         }
@@ -42,7 +39,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestFindMenuAnnotationOnParameterPickedUp() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
+            var method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 1, Specification, metamodel);
             Assert.IsNotNull(Specification.GetFacet(typeof(IFindMenuFacet)));
             Assert.IsNotNull(metamodel);
@@ -52,7 +49,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestFindMenuAnnotationIgnoredForPrimitiveParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer), "Action2", new[] {typeof(string)});
+            var method = FindMethod(typeof(Customer), "Action2", new[] {typeof(string)});
             metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
             Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
             Assert.IsNotNull(metamodel);
@@ -62,7 +59,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestFindMenuFacetNotAddedToPropertyByDefault() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer), "Property1");
+            var property = FindProperty(typeof(Customer), "Property1");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
             Assert.IsNotNull(metamodel);
@@ -72,7 +69,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestFindMenuAnnotationOnPropertyPickedUp() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer), "Property2");
+            var property = FindProperty(typeof(Customer), "Property2");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             Assert.IsNotNull(Specification.GetFacet(typeof(IFindMenuFacet)));
             Assert.IsNotNull(metamodel);
@@ -82,7 +79,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestFindMenuAnnotationIgnoredForPrimitiveProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer), "Property3");
+            var property = FindProperty(typeof(Customer), "Property3");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
             Assert.IsNotNull(metamodel);
@@ -90,7 +87,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));

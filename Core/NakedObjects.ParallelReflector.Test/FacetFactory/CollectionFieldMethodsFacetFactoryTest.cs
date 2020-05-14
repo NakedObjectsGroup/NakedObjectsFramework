@@ -9,7 +9,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Reflection;
 using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
@@ -27,14 +26,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class CollectionFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         private CollectionFieldMethodsFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get {
-                return new[] {
-                    typeof(IPropertyAccessorFacet),
-                    typeof(ITypeOfFacet)
-                };
-            }
-        }
+        protected override Type[] SupportedTypes =>
+            new[] {
+                typeof(IPropertyAccessorFacet),
+                typeof(ITypeOfFacet)
+            };
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -42,7 +38,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestCannotInferTypeOfFacetIfNoExplicitAddToOrRemoveFromMethods() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer6), "Orders");
+            var property = FindProperty(typeof(Customer6), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
             Assert.IsNull(Specification.GetFacet(typeof(ITypeOfFacet)));
             Assert.IsNotNull(metamodel);
@@ -50,7 +46,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
@@ -62,9 +58,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestInstallsDisabledAlways() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(CustomerStatic), "Orders");
+            var property = FindProperty(typeof(CustomerStatic), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
+            var facet = Specification.GetFacet(typeof(IDisabledFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisabledFacetAlways);
             Assert.IsNotNull(metamodel);
@@ -74,9 +70,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestInstallsHiddenForSessionFacetAndRemovesMethod() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(CustomerStatic), "Orders");
+            var property = FindProperty(typeof(CustomerStatic), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IHideForSessionFacet));
+            var facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForSessionFacetNone);
             Assert.IsNotNull(metamodel);
@@ -86,9 +82,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestPropertyAccessorFacetIsInstalledForArrayListAndMethodRemoved() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
+            var property = FindProperty(typeof(Customer1), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
+            var facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
             Assert.IsNotNull(metamodel);
@@ -98,9 +94,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestPropertyAccessorFacetIsInstalledForIListAndMethodRemoved() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer), "Orders");
+            var property = FindProperty(typeof(Customer), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
+            var facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
             Assert.IsNotNull(metamodel);
@@ -110,9 +106,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestPropertyAccessorFacetIsInstalledForObjectArrayAndMethodRemoved() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer3), "Orders");
+            var property = FindProperty(typeof(Customer3), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
+            var facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
             Assert.IsNotNull(metamodel);
@@ -122,9 +118,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestPropertyAccessorFacetIsInstalledForOrderArrayAndMethodRemoved() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer4), "Orders");
+            var property = FindProperty(typeof(Customer4), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
+            var facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
             Assert.IsNotNull(metamodel);
@@ -134,9 +130,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestPropertyAccessorFacetIsInstalledForSetAndMethodRemoved() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer2), "Orders");
+            var property = FindProperty(typeof(Customer2), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
+            var facet = Specification.GetFacet(typeof(IPropertyAccessorFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyAccessorFacet);
             Assert.IsNotNull(metamodel);
@@ -146,10 +142,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestSetFacetAddedToSet() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            Type type = typeof(Customer18);
-            PropertyInfo property = FindProperty(type, "Orders");
+            var type = typeof(Customer18);
+            var property = FindProperty(type, "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IIsASetFacet));
+            var facet = Specification.GetFacet(typeof(IIsASetFacet));
             Assert.IsNotNull(facet);
             Assert.IsInstanceOfType(facet, typeof(IsASetFacet));
             Assert.IsNotNull(metamodel);
@@ -159,10 +155,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestSetFacetNoAddedToList() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            Type type = typeof(Customer17);
-            PropertyInfo property = FindProperty(type, "Orders");
+            var type = typeof(Customer17);
+            var property = FindProperty(type, "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IIsASetFacet));
+            var facet = Specification.GetFacet(typeof(IIsASetFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
         }
@@ -228,9 +224,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             public void AddToOrders(Order o) { }
 
-            public string ValidateAddToOrders(Order o) {
-                return null;
-            }
+            public string ValidateAddToOrders(Order o) => null;
         }
 
         #endregion
@@ -242,9 +236,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             public void RemoveFromOrders(Order o) { }
 
-            public string ValidateRemoveFromOrders(Order o) {
-                return null;
-            }
+            public string ValidateRemoveFromOrders(Order o) => null;
         }
 
         #endregion
@@ -354,39 +346,23 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public class CustomerStatic {
             public IList Orders => null;
 
-            public static string NameOrders() {
-                return "Most Recent Orders";
-            }
+            public static string NameOrders() => "Most Recent Orders";
 
-            public static string DescriptionOrders() {
-                return "Some old description";
-            }
+            public static string DescriptionOrders() => "Some old description";
 
-            public static bool AlwaysHideOrders() {
-                return true;
-            }
+            public static bool AlwaysHideOrders() => true;
 
-            public static bool ProtectOrders() {
-                return true;
-            }
+            public static bool ProtectOrders() => true;
 
-            public static bool HideOrders(IPrincipal principal) {
-                return true;
-            }
+            public static bool HideOrders(IPrincipal principal) => true;
 
-            public static string DisableOrders(IPrincipal principal) {
-                return "disabled for this user";
-            }
+            public static string DisableOrders(IPrincipal principal) => "disabled for this user";
 
             public static void OtherOrders() { }
 
-            public static bool AlwaysHideOtherOrders() {
-                return false;
-            }
+            public static bool AlwaysHideOtherOrders() => false;
 
-            public static bool ProtectOtherOrders() {
-                return false;
-            }
+            public static bool ProtectOtherOrders() => false;
         }
 
         #endregion

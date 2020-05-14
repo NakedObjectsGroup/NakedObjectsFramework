@@ -9,7 +9,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -23,9 +22,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class MemberOrderAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private MemberOrderAnnotationFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(IMemberOrderFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(IMemberOrderFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -73,7 +70,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
@@ -85,9 +82,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestMemberOrderAnnotationPickedUpOnAction() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction");
+            var method = FindMethod(typeof(Customer2), "SomeAction");
             metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
+            var facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
@@ -100,9 +97,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestMemberOrderAnnotationPickedUpOnCollection() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
+            var property = FindProperty(typeof(Customer1), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
+            var facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
@@ -115,9 +112,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestMemberOrderAnnotationPickedUpOnProperty() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer), "FirstName");
+            var property = FindProperty(typeof(Customer), "FirstName");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
+            var facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;

@@ -23,20 +23,17 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class RemoveIgnoredMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         private RemoveIgnoredMethodsFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get {
-                return new[] {
-                    typeof(INamedFacet),
-                    typeof(IExecutedFacet),
-                    typeof(IActionValidationFacet),
-                    typeof(IActionInvocationFacet),
-                    typeof(IActionDefaultsFacet),
-                    typeof(IActionChoicesFacet),
-                    typeof(IDescribedAsFacet),
-                    typeof(IMandatoryFacet)
-                };
-            }
-        }
+        protected override Type[] SupportedTypes =>
+            new[] {
+                typeof(INamedFacet),
+                typeof(IExecutedFacet),
+                typeof(IActionValidationFacet),
+                typeof(IActionInvocationFacet),
+                typeof(IActionDefaultsFacet),
+                typeof(IActionChoicesFacet),
+                typeof(IDescribedAsFacet),
+                typeof(IMandatoryFacet)
+            };
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -51,7 +48,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));

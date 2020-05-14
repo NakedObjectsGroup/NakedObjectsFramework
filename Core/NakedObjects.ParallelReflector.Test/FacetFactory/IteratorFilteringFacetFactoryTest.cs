@@ -9,7 +9,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
@@ -21,15 +20,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class IteratorFilteringFacetFactoryTest : AbstractFacetFactoryTest {
         private IteratorFilteringFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new Type[] { }; }
-        }
+        protected override Type[] SupportedTypes => new Type[] { };
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -41,7 +38,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestRequestsRemoverToRemoveIteratorMethods() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo enumeratorMethod = FindMethod(typeof(Customer), "GetEnumerator");
+            var enumeratorMethod = FindMethod(typeof(Customer), "GetEnumerator");
             metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
             AssertMethodRemoved(enumeratorMethod);
             Assert.IsNotNull(metamodel);
@@ -69,9 +66,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private class Customer : IEnumerable {
             #region IEnumerable Members
 
-            public IEnumerator GetEnumerator() {
-                return null;
-            }
+            public IEnumerator GetEnumerator() => null;
 
             #endregion
 

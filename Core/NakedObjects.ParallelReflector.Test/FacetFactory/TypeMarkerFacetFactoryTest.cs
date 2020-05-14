@@ -18,15 +18,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class TypeMarkerFacetFactoryTest : AbstractFacetFactoryTest {
         private TypeMarkerFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(ITypeIsAbstractFacet), typeof(ITypeIsVoidFacet), typeof(ITypeIsInterfaceFacet), typeof(ITypeIsSealedFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(ITypeIsAbstractFacet), typeof(ITypeIsVoidFacet), typeof(ITypeIsInterfaceFacet), typeof(ITypeIsSealedFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));

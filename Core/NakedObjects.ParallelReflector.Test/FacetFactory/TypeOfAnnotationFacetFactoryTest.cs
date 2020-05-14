@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -22,15 +21,13 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public class TypeOfAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private TypeOfAnnotationFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new[] {typeof(ITypeOfFacet)}; }
-        }
+        protected override Type[] SupportedTypes => new[] {typeof(ITypeOfFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
@@ -42,9 +39,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTypeOfFacetInferredForActionWithArrayReturnType() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof(Customer9), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer9), "SomeAction");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
+            var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);
 
@@ -60,9 +57,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTypeOfFacetInferredForActionWithGenericCollectionReturnType() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            MethodInfo actionMethod = FindMethod(typeof(Customer3), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
-            IFacet typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
+            var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
 
@@ -77,9 +74,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTypeOfFacetInferredForCollectionWithGenericCollectionReturnType() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer4), "Orders");
+            var property = FindProperty(typeof(Customer4), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
+            var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
 
@@ -94,9 +91,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestTypeOfFacetIsInferredForCollectionFromOrderArray() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            PropertyInfo property = FindProperty(typeof(Customer10), "Orders");
+            var property = FindProperty(typeof(Customer10), "Orders");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
-            IFacet typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
+            var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);
 
@@ -120,9 +117,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer3 {
 // ReSharper disable once UnusedMember.Local
-            public IList<Order> SomeAction() {
-                return null;
-            }
+            public IList<Order> SomeAction() => null;
         }
 
         #endregion
@@ -140,9 +135,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer9 {
 // ReSharper disable once UnusedMember.Local
-            public Order[] SomeAction() {
-                return null;
-            }
+            public Order[] SomeAction() => null;
         }
 
         #endregion
