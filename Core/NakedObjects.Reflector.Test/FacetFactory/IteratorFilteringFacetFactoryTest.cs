@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
@@ -22,13 +21,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new Type[] { }; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -38,7 +35,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestRequestsRemoverToRemoveIteratorMethods() {
-            MethodInfo enumeratorMethod = FindMethod(typeof(Customer), "GetEnumerator");
+            var enumeratorMethod = FindMethod(typeof(Customer), "GetEnumerator");
             facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
             AssertMethodRemoved(enumeratorMethod);
         }
@@ -65,9 +62,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private class Customer : IEnumerable {
             #region IEnumerable Members
 
-            public IEnumerator GetEnumerator() {
-                return null;
-            }
+            public IEnumerator GetEnumerator() => null;
 
             #endregion
 

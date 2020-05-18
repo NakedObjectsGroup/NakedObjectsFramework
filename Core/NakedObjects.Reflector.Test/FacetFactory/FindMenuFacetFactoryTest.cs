@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -22,56 +21,54 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IFindMenuFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public void TestFindMenuFacetNotAddedToParameterByDefault() {
-            MethodInfo method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
+            var method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IFindMenuFacet));
+            var facet = Specification.GetFacet(typeof(IFindMenuFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestFindMenuAnnotationOnParameterPickedUp() {
-            MethodInfo method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
+            var method = FindMethod(typeof(Customer), "Action1", new[] {typeof(Foo), typeof(Foo)});
             facetFactory.ProcessParams(Reflector, method, 1, Specification);
             Assert.IsNotNull(Specification.GetFacet(typeof(IFindMenuFacet)));
         }
 
         [TestMethod]
         public void TestFindMenuAnnotationIgnoredForPrimitiveParameter() {
-            MethodInfo method = FindMethod(typeof(Customer), "Action2", new[] {typeof(string)});
+            var method = FindMethod(typeof(Customer), "Action2", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
             Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
         }
 
         [TestMethod]
         public void TestFindMenuFacetNotAddedToPropertyByDefault() {
-            PropertyInfo property = FindProperty(typeof(Customer), "Property1");
+            var property = FindProperty(typeof(Customer), "Property1");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
         }
 
         [TestMethod]
         public void TestFindMenuAnnotationOnPropertyPickedUp() {
-            PropertyInfo property = FindProperty(typeof(Customer), "Property2");
+            var property = FindProperty(typeof(Customer), "Property2");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             Assert.IsNotNull(Specification.GetFacet(typeof(IFindMenuFacet)));
         }
 
         [TestMethod]
         public void TestFindMenuAnnotationIgnoredForPrimitiveProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer), "Property3");
+            var property = FindProperty(typeof(Customer), "Property3");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
             Assert.IsNull(Specification.GetFacet(typeof(IFindMenuFacet)));
         }
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));

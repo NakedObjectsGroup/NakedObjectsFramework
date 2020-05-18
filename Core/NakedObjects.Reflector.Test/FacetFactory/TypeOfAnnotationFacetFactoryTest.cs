@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -24,13 +23,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(ITypeOfFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
@@ -40,9 +37,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTypeOfFacetInferredForActionWithArrayReturnType() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer9), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer9), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
+            var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);
 
@@ -55,9 +52,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTypeOfFacetInferredForActionWithGenericCollectionReturnType() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer3), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
+            var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
 
@@ -69,9 +66,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTypeOfFacetInferredForCollectionWithGenericCollectionReturnType() {
-            PropertyInfo property = FindProperty(typeof(Customer4), "Orders");
+            var property = FindProperty(typeof(Customer4), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
+            var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromGenerics);
 
@@ -83,9 +80,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTypeOfFacetIsInferredForCollectionFromOrderArray() {
-            PropertyInfo property = FindProperty(typeof(Customer10), "Orders");
+            var property = FindProperty(typeof(Customer10), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
+            var typeOfFacet = Specification.GetFacet(typeof(ITypeOfFacet));
             Assert.IsNotNull(typeOfFacet);
             Assert.IsTrue(typeOfFacet is TypeOfFacetInferredFromArray);
 
@@ -99,9 +96,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer10 {
 // ReSharper disable once UnusedMember.Local
-            public Order[] Orders {
-                get { return null; }
-            }
+            public Order[] Orders => null;
         }
 
         #endregion
@@ -110,9 +105,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer3 {
 // ReSharper disable once UnusedMember.Local
-            public IList<Order> SomeAction() {
-                return null;
-            }
+            public IList<Order> SomeAction() => null;
         }
 
         #endregion
@@ -121,9 +114,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer4 {
 // ReSharper disable once UnusedMember.Local
-            public IList<Order> Orders {
-                get { return null; }
-            }
+            public IList<Order> Orders => null;
         }
 
         #endregion
@@ -132,9 +123,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer9 {
 // ReSharper disable once UnusedMember.Local
-            public Order[] SomeAction() {
-                return null;
-            }
+            public Order[] SomeAction() => null;
         }
 
         #endregion

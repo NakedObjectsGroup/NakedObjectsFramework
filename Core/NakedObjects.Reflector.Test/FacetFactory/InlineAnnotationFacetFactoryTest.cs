@@ -23,13 +23,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(INamedFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -40,7 +38,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestImmutableAnnotationPickedUpOnClassAndDefaultsToAlways() {
             facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IComplexTypeFacet));
+            var facet = Specification.GetFacet(typeof(IComplexTypeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ComplexTypeFacetAnnotation);
             AssertNoMethodsRemoved();

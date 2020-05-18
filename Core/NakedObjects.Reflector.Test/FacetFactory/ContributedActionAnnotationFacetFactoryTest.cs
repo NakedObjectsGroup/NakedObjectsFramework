@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -16,8 +15,8 @@ using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     /// <summary>
-    /// Note: This is a limited test;  it does not test collection-contributed actions
-    /// due to dependency on other facets.  That is done in system tests
+    ///     Note: This is a limited test;  it does not test collection-contributed actions
+    ///     due to dependency on other facets.  That is done in system tests
     /// </summary>
     [TestClass]
     public class ContributedActionAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
@@ -27,13 +26,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IContributedActionFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -45,7 +42,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         //but the facet is applied to the Action (if any of its params have that annotation)
         [TestMethod]
         public void TestContributedAnnotationNullByDefault1() {
-            MethodInfo actionMethod = FindMethod(typeof(Service), "Action1");
+            var actionMethod = FindMethod(typeof(Service), "Action1");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNull(facet);
@@ -54,7 +51,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestContributedAnnotationNullByDefault2() {
-            MethodInfo actionMethod = FindMethodIgnoreParms(typeof(Service), "Action2");
+            var actionMethod = FindMethodIgnoreParms(typeof(Service), "Action2");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             IFacet facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNull(facet);
@@ -63,7 +60,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestContributedAnnotationPickedUp3() {
-            MethodInfo actionMethod = FindMethodIgnoreParms(typeof(Service), "Action3");
+            var actionMethod = FindMethodIgnoreParms(typeof(Service), "Action3");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNotNull(facet);
@@ -73,7 +70,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestContributedAnnotationPickedUp4() {
-            MethodInfo actionMethod = FindMethodIgnoreParms(typeof(Service), "Action4");
+            var actionMethod = FindMethodIgnoreParms(typeof(Service), "Action4");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet<IContributedActionFacet>();
             Assert.IsNotNull(facet);

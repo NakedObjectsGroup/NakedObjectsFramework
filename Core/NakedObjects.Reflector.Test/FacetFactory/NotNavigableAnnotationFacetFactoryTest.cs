@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -24,13 +23,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(INotNavigableFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -40,9 +37,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNotNavigableAnnotationPickedUpOnCollection() {
-            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
+            var property = FindProperty(typeof(Customer1), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(INotNavigableFacet));
+            var facet = Specification.GetFacet(typeof(INotNavigableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotNavigableFacet);
             AssertNoMethodsRemoved();
@@ -50,9 +47,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNotNavigableAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer), "FirstName");
+            var property = FindProperty(typeof(Customer), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(INotNavigableFacet));
+            var facet = Specification.GetFacet(typeof(INotNavigableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotNavigableFacet);
             AssertNoMethodsRemoved();
@@ -60,9 +57,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNotNavigableAnnotationPickedUpOnType() {
-            PropertyInfo property = FindProperty(typeof(Customer2), "FirstName");
+            var property = FindProperty(typeof(Customer2), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(INotNavigableFacet));
+            var facet = Specification.GetFacet(typeof(INotNavigableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotNavigableFacet);
             AssertNoMethodsRemoved();
@@ -73,9 +70,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private class Customer {
             [NotNavigable]
 // ReSharper disable once UnusedMember.Local
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
         }
 
         #endregion
@@ -85,9 +80,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private class Customer1 {
             [NotNavigable]
 // ReSharper disable once UnusedMember.Local
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
         }
 
         #endregion
@@ -95,9 +88,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         #region Nested type: Customer2
 
         private class Customer2 {
-            public NotNavigable FirstName {
-                get { return null; }
-            }
+            public NotNavigable FirstName => null;
         }
 
         #endregion

@@ -7,7 +7,6 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -24,13 +23,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IMandatoryFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -40,36 +37,36 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestRequiredAnnotationOnPrimitiveOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
+            var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
+            var facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacet);
         }
 
         [TestMethod]
         public void TestRequiredAnnotationOnPrimitiveOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer3), "NumberOfOrders");
+            var property = FindProperty(typeof(Customer3), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
+            var facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacet);
         }
 
         [TestMethod]
         public void TestRequiredAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
+            var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
+            var facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacet);
         }
 
         [TestMethod]
         public void TestRequiredAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
+            var property = FindProperty(typeof(Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IMandatoryFacet));
+            var facet = Specification.GetFacet(typeof(IMandatoryFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MandatoryFacet);
         }
@@ -79,9 +76,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private class Customer1 {
             [Required]
 // ReSharper disable once UnusedMember.Local
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
         }
 
         #endregion
@@ -101,9 +96,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private class Customer3 {
             [Required]
 // ReSharper disable once UnusedMember.Local
-            public int NumberOfOrders {
-                get { return 0; }
-            }
+            public int NumberOfOrders => 0;
         }
 
         #endregion

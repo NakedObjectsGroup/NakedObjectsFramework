@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -26,21 +25,19 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IIconFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         private INakedObjectAdapter AdapterFor(object obj) {
-            ILifecycleManager lifecycleManager = new Mock<ILifecycleManager>().Object;
-            IObjectPersistor persistor = new Mock<IObjectPersistor>().Object;
-            ISession session = new Mock<ISession>().Object;
-            INakedObjectManager manager = new Mock<INakedObjectManager>().Object;
+            var lifecycleManager = new Mock<ILifecycleManager>().Object;
+            var persistor = new Mock<IObjectPersistor>().Object;
+            var session = new Mock<ISession>().Object;
+            var manager = new Mock<INakedObjectManager>().Object;
             return new NakedObjectAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null);
         }
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -55,7 +52,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetAnnotation);
             Assert.AreEqual("AttributeName", facet.GetIconName());
-            INakedObjectAdapter no = AdapterFor(new Customer1());
+            var no = AdapterFor(new Customer1());
             Assert.AreEqual("AttributeName", facet.GetIconName(no));
         }
 
@@ -66,13 +63,13 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
             Assert.IsNull(facet.GetIconName());
-            INakedObjectAdapter no = AdapterFor(new Customer());
+            var no = AdapterFor(new Customer());
             Assert.AreEqual("TestName", facet.GetIconName(no));
         }
 
         [TestMethod]
         public void TestIconNameMethodPickedUpOnClassAndMethodRemoved() {
-            MethodInfo iconNameMethod = FindMethod(typeof(Customer), "IconName");
+            var iconNameMethod = FindMethod(typeof(Customer), "IconName");
             facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
@@ -87,7 +84,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
             Assert.AreEqual("AttributeName", facet.GetIconName());
-            INakedObjectAdapter no = AdapterFor(new Customer2());
+            var no = AdapterFor(new Customer2());
             Assert.AreEqual("TestName", facet.GetIconName(no));
         }
 
@@ -95,9 +92,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer {
 // ReSharper disable once UnusedMember.Local
-            public string IconName() {
-                return "TestName";
-            }
+            public string IconName() => "TestName";
         }
 
         #endregion
@@ -114,9 +109,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [IconName("AttributeName")]
         private class Customer2 {
 // ReSharper disable once UnusedMember.Local
-            public string IconName() {
-                return "TestName";
-            }
+            public string IconName() => "TestName";
         }
 
         #endregion

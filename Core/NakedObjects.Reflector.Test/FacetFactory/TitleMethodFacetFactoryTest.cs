@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -23,13 +22,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(ITitleFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -46,9 +43,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTitleMethodPickedUpOnClassAndMethodRemoved() {
-            MethodInfo titleMethod = FindMethod(typeof(Customer), "Title");
+            var titleMethod = FindMethod(typeof(Customer), "Title");
             facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITitleFacet));
+            var facet = Specification.GetFacet(typeof(ITitleFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TitleFacetViaTitleMethod);
             var titleFacetViaTitleMethod = (TitleFacetViaTitleMethod) facet;
@@ -58,9 +55,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestToStringMethodPickedUpOnClassAndMethodRemoved() {
-            MethodInfo toStringMethod = FindMethod(typeof(Customer1), "ToString", new[] {typeof(string)});
+            var toStringMethod = FindMethod(typeof(Customer1), "ToString", new[] {typeof(string)});
             facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITitleFacet));
+            var facet = Specification.GetFacet(typeof(ITitleFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TitleFacetViaToStringMethod);
             var titleFacetViaTitleMethod = (TitleFacetViaToStringMethod) facet;
@@ -72,9 +69,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer {
 // ReSharper disable once UnusedMember.Local
-            public string Title() {
-                return "Some title";
-            }
+            public string Title() => "Some title";
         }
 
         #endregion
@@ -82,15 +77,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         #region Nested type: Customer1
 
         private class Customer1 {
-            public override string ToString() {
-                return "Some title via ToString";
-            }
+            public override string ToString() => "Some title via ToString";
 
             // ReSharper disable once UnusedParameter.Local
             // ReSharper disable once UnusedMember.Local
-            public string ToString(string mask) {
-                return "Some title via ToString";
-            }
+            public string ToString(string mask) => "Some title via ToString";
         }
 
         #endregion

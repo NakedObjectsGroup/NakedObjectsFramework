@@ -7,7 +7,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -25,13 +24,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IActionDefaultsFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -41,9 +38,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPropertyDefaultAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
+            var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IActionDefaultsFacet));
+            var facet = Specification.GetFacet(typeof(IActionDefaultsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionDefaultsFacetAnnotation);
             var actionDefaultFacetAnnotation = (ActionDefaultsFacetAnnotation) facet;

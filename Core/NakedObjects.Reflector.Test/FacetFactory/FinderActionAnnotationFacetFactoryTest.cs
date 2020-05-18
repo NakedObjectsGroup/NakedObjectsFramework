@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -23,24 +22,22 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IFinderActionFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public void TestFinderActionFacetNullByDefault() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IExecutedFacet));
+            var facet = Specification.GetFacet(typeof(IExecutedFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
 
         [TestMethod]
         public void TestFinderActionAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer1), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IFinderActionFacet));
+            var facet = Specification.GetFacet(typeof(IFinderActionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is FinderActionFacet);
             AssertNoMethodsRemoved();
@@ -48,7 +45,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));

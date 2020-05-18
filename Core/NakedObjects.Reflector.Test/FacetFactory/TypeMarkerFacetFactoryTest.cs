@@ -22,13 +22,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(ITypeIsAbstractFacet), typeof(ITypeIsVoidFacet), typeof(ITypeIsInterfaceFacet), typeof(ITypeIsSealedFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));

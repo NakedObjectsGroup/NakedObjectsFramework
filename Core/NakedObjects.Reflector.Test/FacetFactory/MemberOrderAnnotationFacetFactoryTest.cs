@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -24,18 +23,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IMemberOrderFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         #region Nested type: Customer
 
         private class Customer {
             [MemberOrder(Sequence = "1")]
 // ReSharper disable UnusedMember.Local
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
         }
 
         #endregion
@@ -58,11 +53,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [MemberOrder(Sequence = "2")]
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
 
-// ReSharper disable once UnusedParameter.Local
+            // ReSharper disable once UnusedParameter.Local
             public void AddToOrders(Order o) { }
         }
 
@@ -76,7 +69,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
@@ -86,9 +79,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMemberOrderAnnotationPickedUpOnAction() {
-            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction");
+            var method = FindMethod(typeof(Customer2), "SomeAction");
             facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
+            var facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
@@ -98,9 +91,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMemberOrderAnnotationPickedUpOnCollection() {
-            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
+            var property = FindProperty(typeof(Customer1), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
+            var facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;
@@ -110,9 +103,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestMemberOrderAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer), "FirstName");
+            var property = FindProperty(typeof(Customer), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IMemberOrderFacet));
+            var facet = Specification.GetFacet(typeof(IMemberOrderFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MemberOrderFacet);
             var memberOrderFacetAnnotation = (MemberOrderFacet) facet;

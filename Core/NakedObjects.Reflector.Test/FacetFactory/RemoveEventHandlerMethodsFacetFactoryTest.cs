@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -36,9 +35,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public void TestActionWithNoParameters() {
@@ -46,18 +43,18 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             AssertRemovedCalled(2);
 
-            EventInfo eInfo = typeof(Customer).GetEvent("AnEventHandler");
+            var eInfo = typeof(Customer).GetEvent("AnEventHandler");
 
             var eventMethods = new[] {eInfo.GetAddMethod(), eInfo.GetRemoveMethod()};
 
-            foreach (MethodInfo removedMethod in eventMethods) {
+            foreach (var removedMethod in eventMethods) {
                 AssertMethodRemoved(removedMethod);
             }
         }
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));

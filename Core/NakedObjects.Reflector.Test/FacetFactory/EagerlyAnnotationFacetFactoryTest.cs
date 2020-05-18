@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -24,9 +23,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IEagerlyFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return annotationFacetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => annotationFacetFactory;
 
         #region Nested type: Customer1
 
@@ -39,9 +36,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public IList<Customer1> Coll { get; set; }
 
             [Eagerly(EagerlyAttribute.Do.Rendering)]
-            public IList<Customer1> Act() {
-                return new List<Customer1>();
-            }
+            public IList<Customer1> Act() => new List<Customer1>();
         }
 
         #endregion
@@ -67,15 +62,13 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public int Prop { get; set; }
             public IList<Customer1> Coll { get; set; }
 
-            public IList<Customer1> Act() {
-                return new List<Customer1>();
-            }
+            public IList<Customer1> Act() => new List<Customer1>();
         }
 
         [TestMethod]
         public void TestEagerlyAnnotationPickedUpOnClass() {
             annotationFacetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
             var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
@@ -84,9 +77,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestEagerlyAnnotationPickedUpOnCollection() {
-            PropertyInfo property = FindProperty(typeof(Customer1), "Coll");
+            var property = FindProperty(typeof(Customer1), "Coll");
             annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
             var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
@@ -95,9 +88,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestEagerlyAnnotationPickedUpOnMethod() {
-            MethodInfo method = FindMethod(typeof(Customer1), "Act");
+            var method = FindMethod(typeof(Customer1), "Act");
             annotationFacetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
             var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
@@ -106,9 +99,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestEagerlyAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer1), "Prop");
+            var property = FindProperty(typeof(Customer1), "Prop");
             annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
             var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
@@ -118,37 +111,37 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestEagerlyNotPickedUpOnClass() {
             annotationFacetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestEagerlyNotPickedUpOnCollection() {
-            PropertyInfo property = FindProperty(typeof(Customer2), "Coll");
+            var property = FindProperty(typeof(Customer2), "Coll");
             annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestEagerlyNotPickedUpOnMethod() {
-            MethodInfo method = FindMethod(typeof(Customer2), "Act");
+            var method = FindMethod(typeof(Customer2), "Act");
             annotationFacetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestEagerlyNotPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer2), "Prop");
+            var property = FindProperty(typeof(Customer2), "Prop");
             annotationFacetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IEagerlyFacet));
+            var facet = Specification.GetFacet(typeof(IEagerlyFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = annotationFacetFactory.FeatureTypes;
+            var featureTypes = annotationFacetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));

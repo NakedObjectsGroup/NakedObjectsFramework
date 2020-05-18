@@ -7,7 +7,6 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -26,9 +25,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IEnumFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         private static void CheckChoices(IFacet facet) {
             var facetAsEnumFacet = facet as IEnumFacet;
@@ -42,7 +39,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual(Cities.NewYork, facetAsEnumFacet.GetChoices(null, new object[] {Cities.NewYork})[0]);
 
             var mock = new Mock<INakedObjectAdapter>();
-            INakedObjectAdapter nakedObjectAdapter = mock.Object;
+            var nakedObjectAdapter = mock.Object;
             mock.Setup(no => no.Object).Returns(Cities.NewYork);
 
             Assert.AreEqual("New York", facetAsEnumFacet.GetTitle(nakedObjectAdapter));
@@ -85,7 +82,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         #endregion
 
         private class Customer2 {
-// ReSharper disable UnusedParameter.Local
+            // ReSharper disable UnusedParameter.Local
             public void SomeAction([EnumDataType(typeof(Cities))] int city) { }
         }
 
@@ -107,9 +104,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestEnumAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
+            var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IEnumFacet));
+            var facet = Specification.GetFacet(typeof(IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
@@ -117,9 +114,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestEnumAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer1), "City");
+            var property = FindProperty(typeof(Customer1), "City");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IEnumFacet));
+            var facet = Specification.GetFacet(typeof(IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
@@ -127,9 +124,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestEnumTypePickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(Cities)});
+            var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(Cities)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IEnumFacet));
+            var facet = Specification.GetFacet(typeof(IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
@@ -137,9 +134,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestEnumTypePickedUpOnNullableActionParameter() {
-            MethodInfo method = FindMethod(typeof(Customer6), "SomeAction", new[] {typeof(Cities?)});
+            var method = FindMethod(typeof(Customer6), "SomeAction", new[] {typeof(Cities?)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IEnumFacet));
+            var facet = Specification.GetFacet(typeof(IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
@@ -147,9 +144,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestEnumTypePickedUpOnNullableProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer5), "City");
+            var property = FindProperty(typeof(Customer5), "City");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IEnumFacet));
+            var facet = Specification.GetFacet(typeof(IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
@@ -157,9 +154,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestEnumTypePickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer3), "City");
+            var property = FindProperty(typeof(Customer3), "City");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IEnumFacet));
+            var facet = Specification.GetFacet(typeof(IEnumFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EnumFacet);
             CheckChoices(facet);
@@ -167,7 +164,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));

@@ -20,27 +20,19 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             : this(name, null) { }
 
         public MemberPeerStub(string name, string description) {
-            this.Name = name;
-            this.Description = description;
+            Name = name;
+            Description = description;
         }
 
-        public MemberPeerStub Spec {
-            get { return this; }
-        }
+        public MemberPeerStub Spec => this;
 
-        public IList<MemberPeerStub> Set {
-            get { return null; }
-        }
+        public IList<MemberPeerStub> Set => null;
 
-        public string GroupFullName {
-            get { return ""; }
-        }
+        public string GroupFullName => "";
 
         #region IMemberSpecImmutable Members
 
-        public override IIdentifier Identifier {
-            get { return new IdentifierNull(this); }
-        }
+        public override IIdentifier Identifier => new IdentifierNull(this);
 
         public string Name { get; }
 
@@ -48,37 +40,21 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
-        public string GetHelp() {
-            return null;
-        }
+        public string GetHelp() => null;
 
-        public IConsent IsUsableDeclaratively() {
-            return Allow.Default;
-        }
+        public IConsent IsUsableDeclaratively() => Allow.Default;
 
-        public IConsent IsUsableForSession(ISession session) {
-            return Allow.Default;
-        }
+        public IConsent IsUsableForSession(ISession session) => Allow.Default;
 
-        public IConsent IsUsable(INakedObjectAdapter target) {
-            return null;
-        }
+        public IConsent IsUsable(INakedObjectAdapter target) => null;
 
-        public bool IsVisibleDeclaratively() {
-            return false;
-        }
+        public bool IsVisibleDeclaratively() => false;
 
-        public bool IsVisibleForSession(ISession session) {
-            return false;
-        }
+        public bool IsVisibleForSession(ISession session) => false;
 
-        public bool IsVisible(INakedObjectAdapter target) {
-            return false;
-        }
+        public bool IsVisible(INakedObjectAdapter target) => false;
 
-        public override string ToString() {
-            return Name;
-        }
+        public override string ToString() => Name;
 
         #region Nested type: IdentifierNull
 
@@ -88,14 +64,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             private readonly MemberPeerStub owner;
 
             public IdentifierNull(MemberPeerStub owner)
-                : base("", "") {
+                : base("", "") =>
                 this.owner = owner;
-            }
 
-            public override string ToString() {
-                return owner.Name;
-            }
-        };
+            public override string ToString() => owner.Name;
+        }
 
         #endregion
 

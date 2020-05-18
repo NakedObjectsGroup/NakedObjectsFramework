@@ -22,13 +22,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IPluralFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -39,7 +37,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestPluralAnnotationMethodPickedUpOnClass() {
             facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IPluralFacet));
+            var facet = Specification.GetFacet(typeof(IPluralFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PluralFacetAnnotation);
             var pluralFacet = (PluralFacetAnnotation) facet;

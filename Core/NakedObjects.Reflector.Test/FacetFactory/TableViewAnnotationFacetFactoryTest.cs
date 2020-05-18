@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -26,13 +25,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(ITableViewFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));
@@ -42,41 +39,41 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTableViewFacetNotPickedUpOnArray() {
-            PropertyInfo property = FindProperty(typeof(Customer2), "Orders");
+            var property = FindProperty(typeof(Customer2), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestTableViewFacetNotPickedUpOnArrayAction() {
-            MethodInfo method = FindMethod(typeof(Customer2), "OrdersAction");
+            var method = FindMethod(typeof(Customer2), "OrdersAction");
             facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestTableViewFacetNotPickedUpOnCollection() {
-            PropertyInfo property = FindProperty(typeof(Customer2), "Orders1");
+            var property = FindProperty(typeof(Customer2), "Orders1");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestTableViewFacetNotPickedUpOnCollectionAction() {
-            MethodInfo method = FindMethod(typeof(Customer2), "OrdersAction1");
+            var method = FindMethod(typeof(Customer2), "OrdersAction1");
             facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestTableViewFacetPickedUpOnArray() {
-            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
+            var property = FindProperty(typeof(Customer1), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -89,9 +86,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTableViewFacetPickedUpOnArrayAction() {
-            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction");
+            var method = FindMethod(typeof(Customer1), "OrdersAction");
             facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -104,9 +101,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTableViewFacetPickedUpOnCollection() {
-            PropertyInfo property = FindProperty(typeof(Customer1), "Orders1");
+            var property = FindProperty(typeof(Customer1), "Orders1");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -119,9 +116,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTableViewFacetPickedUpOnCollectionAction() {
-            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction1");
+            var method = FindMethod(typeof(Customer1), "OrdersAction1");
             facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -134,9 +131,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTableViewFacetPickedUpOnCollectionActionNoColumns() {
-            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction2");
+            var method = FindMethod(typeof(Customer1), "OrdersAction2");
             facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -147,9 +144,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTableViewFacetPickedUpOnQueryableAction() {
-            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction3");
+            var method = FindMethod(typeof(Customer1), "OrdersAction3");
             facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -162,9 +159,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTableViewFacetIgnoresDuplicatesOnAction() {
-            MethodInfo method = FindMethod(typeof(Customer1), "OrdersAction4");
+            var method = FindMethod(typeof(Customer1), "OrdersAction4");
             facetFactory.Process(Reflector, method, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -177,9 +174,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestTableViewFacetIgnoresDuplicatesOnCollection() {
-            PropertyInfo property = FindProperty(typeof(Customer1), "Orders2");
+            var property = FindProperty(typeof(Customer1), "Orders2");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ITableViewFacet));
+            var facet = Specification.GetFacet(typeof(ITableViewFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TableViewFacet);
             var tableViewFacetFromAnnotation = (TableViewFacet) facet;
@@ -203,29 +200,19 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public ICollection<Order> Orders2 { get; set; }
 
             [TableView(false, "col5", "col6")]
-            public Order[] OrdersAction() {
-                return null;
-            }
+            public Order[] OrdersAction() => null;
 
             [TableView(true, "col7", "col8")]
-            public ICollection<Order> OrdersAction1() {
-                return null;
-            }
+            public ICollection<Order> OrdersAction1() => null;
 
             [TableView(true)]
-            public ICollection<Order> OrdersAction2() {
-                return null;
-            }
+            public ICollection<Order> OrdersAction2() => null;
 
             [TableView(true, "col7", "col8")]
-            public IQueryable<Order> OrdersAction3() {
-                return null;
-            }
+            public IQueryable<Order> OrdersAction3() => null;
 
             [TableView(true, "col7", "col8", "col7", "col8")]
-            public IQueryable<Order> OrdersAction4() {
-                return null;
-            }
+            public IQueryable<Order> OrdersAction4() => null;
         }
 
         #endregion
@@ -236,13 +223,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public Order[] Orders { get; set; }
             public ICollection<Order> Orders1 { get; set; }
 
-            public Order[] OrdersAction() {
-                return null;
-            }
+            public Order[] OrdersAction() => null;
 
-            public ICollection<Order> OrdersAction1() {
-                return null;
-            }
+            public ICollection<Order> OrdersAction1() => null;
         }
 
         #endregion

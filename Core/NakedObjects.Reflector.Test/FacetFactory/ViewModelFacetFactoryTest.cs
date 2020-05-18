@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -25,13 +24,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IViewModelFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -47,10 +44,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             var testClass = new Class1 {Value1 = "testValue1", Value2 = "testValue2"};
             var mock = new Mock<INakedObjectAdapter>();
-            INakedObjectAdapter value = mock.Object;
+            var value = mock.Object;
             mock.Setup(no => no.Object).Returns(testClass);
 
-            string[] key = facet.Derive(value, null, null);
+            var key = facet.Derive(value, null, null);
 
             Assert.AreEqual(2, key.Length);
             Assert.AreEqual(testClass.Value1, key[0]);
@@ -60,7 +57,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestViewModelNotPickedUp() {
             facetFactory.Process(Reflector, typeof(Class2), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
+            var facet = Specification.GetFacet(typeof(IViewModelFacet));
             Assert.IsNull(facet);
         }
 
@@ -68,12 +65,12 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public void TestViewModelPickedUp() {
             var class1Type = typeof(Class1);
             facetFactory.Process(Reflector, class1Type, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
+            var facet = Specification.GetFacet(typeof(IViewModelFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ViewModelFacetConvention);
 
-            MethodInfo m1 = class1Type.GetMethod("DeriveKeys");
-            MethodInfo m2 = class1Type.GetMethod("PopulateUsingKeys");
+            var m1 = class1Type.GetMethod("DeriveKeys");
+            var m2 = class1Type.GetMethod("PopulateUsingKeys");
 
             AssertMethodsRemoved(new[] {m1, m2});
         }
@@ -82,12 +79,12 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public void TestViewModelEditPickedUp() {
             var class3Type = typeof(Class3);
             facetFactory.Process(Reflector, class3Type, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
+            var facet = Specification.GetFacet(typeof(IViewModelFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ViewModelEditFacetConvention);
 
-            MethodInfo m1 = class3Type.GetMethod("DeriveKeys");
-            MethodInfo m2 = class3Type.GetMethod("PopulateUsingKeys");
+            var m1 = class3Type.GetMethod("DeriveKeys");
+            var m2 = class3Type.GetMethod("PopulateUsingKeys");
 
             AssertMethodsRemoved(new[] {m1, m2});
         }
@@ -96,13 +93,13 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public void TestViewModelSwitchablePickedUp() {
             var class4Type = typeof(Class4);
             facetFactory.Process(Reflector, class4Type, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IViewModelFacet));
+            var facet = Specification.GetFacet(typeof(IViewModelFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ViewModelSwitchableFacetConvention);
 
-            MethodInfo m1 = class4Type.GetMethod("DeriveKeys");
-            MethodInfo m2 = class4Type.GetMethod("PopulateUsingKeys");
-            MethodInfo m3 = class4Type.GetMethod("IsEditView");
+            var m1 = class4Type.GetMethod("DeriveKeys");
+            var m2 = class4Type.GetMethod("PopulateUsingKeys");
+            var m3 = class4Type.GetMethod("IsEditView");
 
             AssertMethodsRemoved(new[] {m1, m2, m3});
         }
@@ -116,7 +113,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var testClass = new Class1();
             var keys = new[] {"testValue1", "testValue2"};
             var mock = new Mock<INakedObjectAdapter>();
-            INakedObjectAdapter value = mock.Object;
+            var value = mock.Object;
             mock.Setup(no => no.Object).Returns(testClass);
 
             facet.Populate(keys, value, null, null);
@@ -151,9 +148,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Class2 {
             // ReSharper disable once UnusedMember.Local
-            public string[] DeriveKeys() {
-                return null;
-            }
+            public string[] DeriveKeys() => null;
 
             // ReSharper disable once UnusedMember.Local
             // ReSharper disable once UnusedParameter.Local
@@ -201,9 +196,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 Value2 = instanceId[1];
             }
 
-            public bool IsEditView() {
-                return false;
-            }
+            public bool IsEditView() => false;
 
             #endregion
         }

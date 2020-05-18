@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -23,9 +22,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IQueryOnlyFacet), typeof(IIdempotentFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         #region Nested type: Customer
 
@@ -63,13 +60,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer3 {
-            [QueryOnly, Idempotent]
+            [QueryOnly]
+            [Idempotent]
             public void SomeAction() { }
         }
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -79,9 +77,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestIdempotentAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer1), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IIdempotentFacet));
+            var facet = Specification.GetFacet(typeof(IIdempotentFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IdempotentFacet);
             AssertNoMethodsRemoved();
@@ -89,9 +87,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestIdempotentPriorityAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer1), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IIdempotentFacet));
+            var facet = Specification.GetFacet(typeof(IIdempotentFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IdempotentFacet);
             facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
@@ -101,9 +99,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestNoAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer2), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer2), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof(IIdempotentFacet));
             Assert.IsNull(facet);
@@ -113,9 +111,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestQueryOnlyAnnotationPickedUp() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is QueryOnlyFacet);
             AssertNoMethodsRemoved();

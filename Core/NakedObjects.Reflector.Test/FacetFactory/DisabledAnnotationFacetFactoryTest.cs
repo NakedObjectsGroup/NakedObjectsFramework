@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -24,18 +23,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IDisabledFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         #region Nested type: Customer
 
         private class Customer {
             [Disabled]
 // ReSharper disable UnusedMember.Local
-            public int NumberOfOrders {
-                get { return 0; }
-            }
+            public int NumberOfOrders => 0;
         }
 
         #endregion
@@ -58,9 +53,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [Disabled]
-            public IList Orders {
-                get { return null; }
-            }
+            public IList Orders => null;
         }
 
         private class Customer2 {
@@ -90,9 +83,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDisabledAnnotationPickedUpOnAction() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer2), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer2), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
+            var facet = Specification.GetFacet(typeof(IDisabledFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisabledFacetAbstract);
             AssertNoMethodsRemoved();
@@ -100,9 +93,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDisabledAnnotationPickedUpOnCollection() {
-            PropertyInfo property = FindProperty(typeof(Customer1), "Orders");
+            var property = FindProperty(typeof(Customer1), "Orders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
+            var facet = Specification.GetFacet(typeof(IDisabledFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisabledFacetAbstract);
             AssertNoMethodsRemoved();
@@ -110,9 +103,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDisabledAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer), "NumberOfOrders");
+            var property = FindProperty(typeof(Customer), "NumberOfOrders");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
+            var facet = Specification.GetFacet(typeof(IDisabledFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisabledFacetAbstract);
             AssertNoMethodsRemoved();
@@ -120,43 +113,43 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDisabledWhenAlwaysAnnotationPickedUpOn() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer3), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
+            var facet = Specification.GetFacet(typeof(IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
             Assert.AreEqual(WhenTo.Always, disabledFacetAbstract.Value);
         }
 
         [TestMethod]
         public void TestDisabledWhenNeverAnnotationPickedUpOn() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer4), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer4), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
+            var facet = Specification.GetFacet(typeof(IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
             Assert.AreEqual(WhenTo.Never, disabledFacetAbstract.Value);
         }
 
         [TestMethod]
         public void TestDisabledWhenOncePersistedAnnotationPickedUpOn() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer5), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer5), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
+            var facet = Specification.GetFacet(typeof(IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
             Assert.AreEqual(WhenTo.OncePersisted, disabledFacetAbstract.Value);
         }
 
         [TestMethod]
         public void TestDisabledWhenUntilPersistedAnnotationPickedUpOn() {
-            MethodInfo actionMethod = FindMethod(typeof(Customer6), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer6), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDisabledFacet));
+            var facet = Specification.GetFacet(typeof(IDisabledFacet));
             var disabledFacetAbstract = (DisabledFacetAbstract) facet;
             Assert.AreEqual(WhenTo.UntilPersisted, disabledFacetAbstract.Value);
         }
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Collections));

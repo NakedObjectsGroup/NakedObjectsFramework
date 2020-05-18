@@ -31,19 +31,13 @@ namespace NakedObjects.Reflect.Test {
     public class NullMenuFactory : IMenuFactory {
         #region IMenuFactory Members
 
-        public IMenu NewMenu<T>(bool addAllActions, string name = null) {
-            return null;
-        }
+        public IMenu NewMenu<T>(bool addAllActions, string name = null) => null;
 
-        public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) {
-            return null;
-        }
+        public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) => null;
 
         #endregion
 
-        public IMenu NewMenu(string name) {
-            return null;
-        }
+        public IMenu NewMenu(string name) => null;
     }
 
     [TestClass]
@@ -74,7 +68,7 @@ namespace NakedObjects.Reflect.Test {
         }
 
         protected virtual void RegisterFacetFactories(IServiceCollection services) {
-            int order = 0;
+            var order = 0;
             RegisterFacetFactory<FallbackFacetFactory>("FallbackFacetFactory", services, order++);
             RegisterFacetFactory<IteratorFilteringFacetFactory>("IteratorFilteringFacetFactory", services, order++);
             RegisterFacetFactory<SystemClassMethodFilteringFactory>("UnsupportedParameterTypesMethodFilteringFactory", services, order++);
@@ -170,7 +164,7 @@ namespace NakedObjects.Reflect.Test {
             services.AddSingleton<IMetamodelBuilder, Metamodel>();
             services.AddSingleton<IMenuFactory, NullMenuFactory>();
 
-            services.AddSingleton<IReflectorConfiguration>(rc);
+            services.AddSingleton(rc);
         }
 
         [TestMethod]
@@ -242,8 +236,8 @@ namespace NakedObjects.Reflect.Test {
 
         [TestMethod]
         public void ReflectQueryableTypes() {
-            IQueryable<object> qo = new List<object>().AsQueryable();
-            IQueryable<int> qi = new List<int>().AsQueryable();
+            var qo = new List<object>().AsQueryable();
+            var qi = new List<int>().AsQueryable();
             ReflectorConfiguration.NoValidate = true;
 
             var rc = new ReflectorConfiguration(new[] {qo.GetType(), qi.GetType(), typeof(int), typeof(object)}, new Type[] { }, new string[] { });
@@ -263,7 +257,7 @@ namespace NakedObjects.Reflect.Test {
 
         [TestMethod]
         public void ReflectWhereIterator() {
-            IEnumerable<int> it = new List<int> {1, 2, 3}.Where(i => i == 2);
+            var it = new List<int> {1, 2, 3}.Where(i => i == 2);
             ReflectorConfiguration.NoValidate = true;
 
             var rc = new ReflectorConfiguration(new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)}, new Type[] { }, new string[] { });
@@ -282,7 +276,7 @@ namespace NakedObjects.Reflect.Test {
 
         [TestMethod]
         public void ReflectWhereSelectIterator() {
-            IEnumerable<int> it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
+            var it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
             ReflectorConfiguration.NoValidate = true;
 
             var rc = new ReflectorConfiguration(new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)}, new Type[] { }, new string[] { });
@@ -491,48 +485,30 @@ namespace NakedObjects.Reflect.Test {
         public class SetWrapper<T> : ISet<T> {
             private readonly ICollection<T> wrapped;
 
-            public SetWrapper(ICollection<T> wrapped) {
-                this.wrapped = wrapped;
-            }
+            public SetWrapper(ICollection<T> wrapped) => this.wrapped = wrapped;
 
             #region ISet<T> Members
 
-            public IEnumerator<T> GetEnumerator() {
-                return wrapped.GetEnumerator();
-            }
+            public IEnumerator<T> GetEnumerator() => wrapped.GetEnumerator();
 
-            IEnumerator IEnumerable.GetEnumerator() {
-                return GetEnumerator();
-            }
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
             public void UnionWith(IEnumerable<T> other) { }
             public void IntersectWith(IEnumerable<T> other) { }
             public void ExceptWith(IEnumerable<T> other) { }
             public void SymmetricExceptWith(IEnumerable<T> other) { }
 
-            public bool IsSubsetOf(IEnumerable<T> other) {
-                return false;
-            }
+            public bool IsSubsetOf(IEnumerable<T> other) => false;
 
-            public bool IsSupersetOf(IEnumerable<T> other) {
-                return false;
-            }
+            public bool IsSupersetOf(IEnumerable<T> other) => false;
 
-            public bool IsProperSupersetOf(IEnumerable<T> other) {
-                return false;
-            }
+            public bool IsProperSupersetOf(IEnumerable<T> other) => false;
 
-            public bool IsProperSubsetOf(IEnumerable<T> other) {
-                return false;
-            }
+            public bool IsProperSubsetOf(IEnumerable<T> other) => false;
 
-            public bool Overlaps(IEnumerable<T> other) {
-                return false;
-            }
+            public bool Overlaps(IEnumerable<T> other) => false;
 
-            public bool SetEquals(IEnumerable<T> other) {
-                return false;
-            }
+            public bool SetEquals(IEnumerable<T> other) => false;
 
             public bool Add(T item) {
                 wrapped.Add(item);
@@ -547,23 +523,15 @@ namespace NakedObjects.Reflect.Test {
                 wrapped.Clear();
             }
 
-            public bool Contains(T item) {
-                return false;
-            }
+            public bool Contains(T item) => false;
 
             public void CopyTo(T[] array, int arrayIndex) { }
 
-            public bool Remove(T item) {
-                return false;
-            }
+            public bool Remove(T item) => false;
 
-            public int Count {
-                get { return wrapped.Count; }
-            }
+            public int Count => wrapped.Count;
 
-            public bool IsReadOnly {
-                get { return wrapped.IsReadOnly; }
-            }
+            public bool IsReadOnly => wrapped.IsReadOnly;
 
             #endregion
         }
@@ -573,14 +541,14 @@ namespace NakedObjects.Reflect.Test {
         #region Nested type: SimpleDomainObject
 
         public class SimpleDomainObject {
-            [Key, Title, ConcurrencyCheck]
+            [Key]
+            [Title]
+            [ConcurrencyCheck]
             public virtual int Id { get; set; }
 
             public virtual void Action() { }
 
-            public virtual string HideAction() {
-                return null;
-            }
+            public virtual string HideAction() => null;
         }
 
         #endregion
@@ -608,7 +576,9 @@ namespace NakedObjects.Reflect.Test {
                 Init();
             }
 
-            [Key, Title, ConcurrencyCheck]
+            [Key]
+            [Title]
+            [ConcurrencyCheck]
             public virtual int Id { get; set; }
 
             [NotMapped]
@@ -631,8 +601,8 @@ namespace NakedObjects.Reflect.Test {
             public virtual ulong ULong { get; set; }
 
             public virtual char Char {
-                get { return '3'; }
-// ReSharper disable once ValueParameterNotUsed
+                get => '3';
+                // ReSharper disable once ValueParameterNotUsed
                 set { }
             }
 

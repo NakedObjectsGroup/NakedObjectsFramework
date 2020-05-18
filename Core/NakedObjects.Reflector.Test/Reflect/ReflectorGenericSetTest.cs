@@ -15,20 +15,18 @@ using NakedObjects.Reflect.Component;
 namespace NakedObjects.Reflect.Test {
     [TestClass]
     public class ReflectorGenericSetTest : AbstractReflectorTest {
-        protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) {
-            return reflector.LoadSpecification<IObjectSpecImmutable>(typeof(ISet<TestPoco>));
-        }
+        protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) => reflector.LoadSpecification<IObjectSpecImmutable>(typeof(ISet<TestPoco>));
 
         [TestMethod]
         public void TestCollectionFacet() {
-            IFacet facet = Specification.GetFacet(typeof(ICollectionFacet));
+            var facet = Specification.GetFacet(typeof(ICollectionFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<GenericCollectionFacet>(facet);
         }
 
         [TestMethod]
         public void TestDescriptionFaced() {
-            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
+            var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<DescribedAsFacetNone>(facet);
         }
@@ -58,14 +56,14 @@ namespace NakedObjects.Reflect.Test {
 
         [TestMethod]
         public void TestNamedFaced() {
-            IFacet facet = Specification.GetFacet(typeof(INamedFacet));
+            var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<NamedFacetInferred>(facet);
         }
 
         [TestMethod]
         public void TestPluralFaced() {
-            IFacet facet = Specification.GetFacet(typeof(IPluralFacet));
+            var facet = Specification.GetFacet(typeof(IPluralFacet));
             Assert.IsNotNull(facet);
             AssertIsInstanceOfType<PluralFacetInferred>(facet);
         }

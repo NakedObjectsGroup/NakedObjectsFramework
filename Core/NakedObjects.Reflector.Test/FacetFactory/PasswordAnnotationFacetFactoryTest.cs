@@ -7,7 +7,6 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -24,18 +23,14 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IPasswordFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         #region Nested type: Customer1
 
         private class Customer1 {
             [DataType(DataType.Password)]
 // ReSharper disable UnusedMember.Local
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
         }
 
         #endregion
@@ -63,9 +58,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer3 {
             [DataType(DataType.PhoneNumber)]
-            public string FirstName {
-                get { return null; }
-            }
+            public string FirstName => null;
         }
 
         private class Customer4 {
@@ -75,7 +68,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -85,34 +78,34 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPasswordAnnotationNotPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(string)});
+            var method = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
+            var facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestPasswordAnnotationNotPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer3), "FirstName");
+            var property = FindProperty(typeof(Customer3), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
+            var facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestPasswordAnnotationPickedUpOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
+            var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
+            var facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PasswordFacet);
         }
 
         [TestMethod]
         public void TestPasswordAnnotationPickedUpOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Customer1), "FirstName");
+            var property = FindProperty(typeof(Customer1), "FirstName");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IPasswordFacet));
+            var facet = Specification.GetFacet(typeof(IPasswordFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PasswordFacet);
         }

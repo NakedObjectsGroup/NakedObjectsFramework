@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -23,13 +22,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IMenuFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -40,7 +37,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestDefaultMenuPickedUp() {
             facetFactory.Process(Reflector, typeof(Class1), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IMenuFacet));
+            var facet = Specification.GetFacet(typeof(IMenuFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MenuFacetDefault);
         }
@@ -49,10 +46,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public void TestMethodMenuPickedUp() {
             var class2Type = typeof(Class2);
             facetFactory.Process(Reflector, class2Type, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IMenuFacet));
+            var facet = Specification.GetFacet(typeof(IMenuFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MenuFacetViaMethod);
-            MethodInfo m1 = class2Type.GetMethod("Menu");
+            var m1 = class2Type.GetMethod("Menu");
             AssertMethodRemoved(m1);
         }
 

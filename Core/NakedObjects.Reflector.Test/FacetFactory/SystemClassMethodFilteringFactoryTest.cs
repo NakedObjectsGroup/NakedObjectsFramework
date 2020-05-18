@@ -38,9 +38,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public void TestFilterActions() {
@@ -58,7 +56,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 "ToString",
                 "Equals",
                 "GetHashCode",
-                "GetType",
+                "GetType"
             };
 
             var notFilteredNames = new List<string> {
@@ -81,7 +79,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));

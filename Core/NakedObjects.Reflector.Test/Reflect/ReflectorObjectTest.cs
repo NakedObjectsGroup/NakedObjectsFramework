@@ -18,19 +18,17 @@ namespace NakedObjects.Reflect.Test {
 
     [TestClass]
     public class ReflectorObjectTest : AbstractReflectorTest {
-        protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) {
-            return reflector.LoadSpecification<IObjectSpecImmutable>(typeof(TestDomainObject));
-        }
+        protected override IObjectSpecImmutable LoadSpecification(Reflector reflector) => reflector.LoadSpecification<IObjectSpecImmutable>(typeof(TestDomainObject));
 
         [TestMethod]
         public void TestCollectionFacet() {
-            IFacet facet = Specification.GetFacet(typeof(ICollectionFacet));
+            var facet = Specification.GetFacet(typeof(ICollectionFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestDescriptionFaced() {
-            IFacet facet = Specification.GetFacet(typeof(IDescribedAsFacet));
+            var facet = Specification.GetFacet(typeof(IDescribedAsFacet));
             Assert.IsNotNull(facet);
         }
 
@@ -46,13 +44,13 @@ namespace NakedObjects.Reflect.Test {
 
         [TestMethod]
         public void TestNamedFaced() {
-            IFacet facet = Specification.GetFacet(typeof(INamedFacet));
+            var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
         }
 
         [TestMethod]
         public void TestNoCollectionFacet() {
-            IFacet facet = Specification.GetFacet(typeof(ICollectionFacet));
+            var facet = Specification.GetFacet(typeof(ICollectionFacet));
             Assert.IsNull(facet);
         }
 
@@ -64,7 +62,7 @@ namespace NakedObjects.Reflect.Test {
 
         [TestMethod]
         public void TestPluralFaced() {
-            IFacet facet = Specification.GetFacet(typeof(IPluralFacet));
+            var facet = Specification.GetFacet(typeof(IPluralFacet));
             Assert.IsNotNull(facet);
         }
 

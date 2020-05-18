@@ -7,7 +7,6 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -24,13 +23,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IDateOnlyFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -40,112 +37,112 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDefaultDateOnlyOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), "ADate1");
+            var property = FindProperty(typeof(Test), "ADate1");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
         }
 
         [TestMethod]
         public void TestDefaultDateOnlyOnNullableProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), "ADate6");
+            var property = FindProperty(typeof(Test), "ADate6");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
         }
 
         [TestMethod]
         public void TestNoFacetOnNonDateProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), "NotADate");
+            var property = FindProperty(typeof(Test), "NotADate");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestAnnotatedDateOnlyOnProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), "ADate2");
+            var property = FindProperty(typeof(Test), "ADate2");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
         }
 
         [TestMethod]
         public void TestAnnotatedDateOnlyOnNullableProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), "ADate7");
+            var property = FindProperty(typeof(Test), "ADate7");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
         }
 
         [TestMethod]
         public void TestNoFacetOnDateTimeProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), "ADate3");
+            var property = FindProperty(typeof(Test), "ADate3");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestNoFacetOnDateTimeNullableProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), "ADate8");
+            var property = FindProperty(typeof(Test), "ADate8");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestNoFacetOnConcurrencyProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), "ADate4");
+            var property = FindProperty(typeof(Test), "ADate4");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestAnnotatedDateOnlyOnConcurrencyProperty() {
-            PropertyInfo property = FindProperty(typeof(Test), "ADate5");
+            var property = FindProperty(typeof(Test), "ADate5");
             facetFactory.Process(Reflector, property, MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
         }
 
         [TestMethod]
         public void TestDefaultDateOnlyOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Test), "ADateMethod1", new[] {typeof(DateTime)});
+            var method = FindMethod(typeof(Test), "ADateMethod1", new[] {typeof(DateTime)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
         }
 
         [TestMethod]
         public void TestAnnotatedDateOnlyOnActionParameter() {
-            MethodInfo method = FindMethod(typeof(Test), "ADateMethod2", new[] {typeof(DateTime)});
+            var method = FindMethod(typeof(Test), "ADateMethod2", new[] {typeof(DateTime)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DateOnlyFacet);
         }
 
         [TestMethod]
         public void TestNoFacetOnDateTimeActionParameter() {
-            MethodInfo method = FindMethod(typeof(Test), "ADateMethod3", new[] {typeof(DateTime)});
+            var method = FindMethod(typeof(Test), "ADateMethod3", new[] {typeof(DateTime)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
         }
 
         [TestMethod]
         public void TestNoFacetOnNotDateActionParameter() {
-            MethodInfo method = FindMethod(typeof(Test), "NotADateMethod", new[] {typeof(TimeSpan)});
+            var method = FindMethod(typeof(Test), "NotADateMethod", new[] {typeof(TimeSpan)});
             facetFactory.ProcessParams(Reflector, method, 0, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDateOnlyFacet));
+            var facet = Specification.GetFacet(typeof(IDateOnlyFacet));
             Assert.IsNull(facet);
         }
 

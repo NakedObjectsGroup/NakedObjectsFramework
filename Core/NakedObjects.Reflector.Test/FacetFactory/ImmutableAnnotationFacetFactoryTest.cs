@@ -22,13 +22,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IImmutableFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         public void TestImmutableAnnotationPickedUpOnClassAndDefaultsToAlways() {
             facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IImmutableFacet));
+            var facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -38,7 +36,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         public void TestImmutableAnnotationAlwaysPickedUpOnClass() {
             facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IImmutableFacet));
+            var facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -48,7 +46,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         public void TestImmutableAnnotationNeverPickedUpOnClass() {
             facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IImmutableFacet));
+            var facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -58,7 +56,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -69,7 +67,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestImmutableAnnotationOncePersistedPickedUpOnClass() {
             facetFactory.Process(Reflector, typeof(Customer3), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IImmutableFacet));
+            var facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;
@@ -80,7 +78,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestImmutableAnnotationUntilPersistedPickedUpOnClass() {
             facetFactory.Process(Reflector, typeof(Customer4), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IImmutableFacet));
+            var facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
             var immutableFacetAnnotation = (ImmutableFacetAnnotation) facet;

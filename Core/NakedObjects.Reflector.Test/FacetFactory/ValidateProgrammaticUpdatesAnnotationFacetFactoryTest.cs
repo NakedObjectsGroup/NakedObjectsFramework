@@ -22,14 +22,12 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             get { return new[] {typeof(IValidateProgrammaticUpdatesFacet)}; }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         [TestMethod]
         public void TestApplyValidationNotPickup() {
             facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
+            var facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
             Assert.IsNull(facet);
             AssertNoMethodsRemoved();
         }
@@ -37,7 +35,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestApplyValidationPickup() {
             facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
+            var facet = Specification.GetFacet(typeof(IValidateProgrammaticUpdatesFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ValidateProgrammaticUpdatesFacetAnnotation);
             AssertNoMethodsRemoved();
@@ -45,7 +43,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));

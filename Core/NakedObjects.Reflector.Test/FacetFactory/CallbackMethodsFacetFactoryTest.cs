@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -38,23 +37,21 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             }
         }
 
-        protected override IFacetFactory FacetFactory {
-            get { return facetFactory; }
-        }
+        protected override IFacetFactory FacetFactory => facetFactory;
 
         private INakedObjectAdapter AdapterFor(object obj) {
-            ISession session = new Mock<ISession>().Object;
-            ILifecycleManager lifecycleManager = new Mock<ILifecycleManager>().Object;
-            IObjectPersistor persistor = new Mock<IObjectPersistor>().Object;
-            INakedObjectManager manager = new Mock<INakedObjectManager>().Object;
+            var session = new Mock<ISession>().Object;
+            var lifecycleManager = new Mock<ILifecycleManager>().Object;
+            var persistor = new Mock<IObjectPersistor>().Object;
+            var manager = new Mock<INakedObjectManager>().Object;
             return new NakedObjectAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null);
         }
 
         [TestMethod]
         public void TestCreatedLifecycleMethodPickedUpOn() {
-            MethodInfo method = FindMethod(typeof(Customer), "Created");
+            var method = FindMethod(typeof(Customer), "Created");
             facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ICreatedCallbackFacet));
+            var facet = Specification.GetFacet(typeof(ICreatedCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is CreatedCallbackFacetViaMethod);
             var createdCallbackFacetViaMethod = (CreatedCallbackFacetViaMethod) facet;
@@ -64,9 +61,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDeletedLifecycleMethodPickedUpOn() {
-            MethodInfo method = FindMethod(typeof(Customer8), "Deleted");
+            var method = FindMethod(typeof(Customer8), "Deleted");
             facetFactory.Process(Reflector, typeof(Customer8), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDeletedCallbackFacet));
+            var facet = Specification.GetFacet(typeof(IDeletedCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DeletedCallbackFacetViaMethod);
             var deletedCallbackFacetViaMethod = (DeletedCallbackFacetViaMethod) facet;
@@ -76,9 +73,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestDeletingLifecycleMethodPickedUpOn() {
-            MethodInfo method = FindMethod(typeof(Customer7), "Deleting");
+            var method = FindMethod(typeof(Customer7), "Deleting");
             facetFactory.Process(Reflector, typeof(Customer7), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IDeletingCallbackFacet));
+            var facet = Specification.GetFacet(typeof(IDeletingCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DeletingCallbackFacetViaMethod);
             var deletingCallbackFacetViaMethod = (DeletingCallbackFacetViaMethod) facet;
@@ -88,7 +85,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public override void TestFeatureTypes() {
-            FeatureType featureTypes = facetFactory.FeatureTypes;
+            var featureTypes = facetFactory.FeatureTypes;
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Objects));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Properties));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.Collections));
@@ -98,9 +95,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestLoadedLifecycleMethodPickedUpOn() {
-            MethodInfo method = FindMethod(typeof(Customer6), "Loaded");
+            var method = FindMethod(typeof(Customer6), "Loaded");
             facetFactory.Process(Reflector, typeof(Customer6), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ILoadedCallbackFacet));
+            var facet = Specification.GetFacet(typeof(ILoadedCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is LoadedCallbackFacetViaMethod);
             var loadedCallbackFacetViaMethod = (LoadedCallbackFacetViaMethod) facet;
@@ -110,9 +107,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestLoadingLifecycleMethodPickedUpOn() {
-            MethodInfo method = FindMethod(typeof(Customer5), "Loading");
+            var method = FindMethod(typeof(Customer5), "Loading");
             facetFactory.Process(Reflector, typeof(Customer5), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(ILoadingCallbackFacet));
+            var facet = Specification.GetFacet(typeof(ILoadingCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is LoadingCallbackFacetViaMethod);
             var loadingCallbackFacetViaMethod = (LoadingCallbackFacetViaMethod) facet;
@@ -122,61 +119,61 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestOnPersistingErrorLifecycleMethodNullFacet() {
-            MethodInfo method = FindMethod(typeof(Customer10), "OnPersistingError", new[] {typeof(Exception)});
+            var method = FindMethod(typeof(Customer10), "OnPersistingError", new[] {typeof(Exception)});
             Assert.IsNull(method);
             facetFactory.Process(Reflector, typeof(Customer10), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IOnPersistingErrorCallbackFacet));
+            var facet = Specification.GetFacet(typeof(IOnPersistingErrorCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OnPersistingErrorCallbackFacetNull);
         }
 
         [TestMethod]
         public void TestOnPersistingErrorLifecycleMethodPickedUpOn() {
-            MethodInfo method1 = FindMethod(typeof(Customer11), "OnUpdatingError", new[] {typeof(Exception)});
-            MethodInfo method2 = FindMethod(typeof(Customer11), "OnPersistingError", new[] {typeof(Exception)});
+            var method1 = FindMethod(typeof(Customer11), "OnUpdatingError", new[] {typeof(Exception)});
+            var method2 = FindMethod(typeof(Customer11), "OnPersistingError", new[] {typeof(Exception)});
             facetFactory.Process(Reflector, typeof(Customer11), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IOnPersistingErrorCallbackFacet));
+            var facet = Specification.GetFacet(typeof(IOnPersistingErrorCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OnPersistingErrorCallbackFacetViaMethod);
             var onPersistingErrorCallbackFacetViaMethod = (OnPersistingErrorCallbackFacetViaMethod) facet;
             Assert.AreEqual(method2, onPersistingErrorCallbackFacetViaMethod.GetMethod());
             AssertMethodsRemoved(new[] {method1, method2});
             // and test exception is passed through (assert in Customer11)
-            INakedObjectAdapter adapter = AdapterFor(new Customer11());
+            var adapter = AdapterFor(new Customer11());
             onPersistingErrorCallbackFacetViaMethod.Invoke(adapter, new Exception());
         }
 
         [TestMethod]
         public void TestOnUpdatingErrorLifecycleMethodPickedUpOn() {
-            MethodInfo method1 = FindMethod(typeof(Customer11), "OnUpdatingError", new[] {typeof(Exception)});
-            MethodInfo method2 = FindMethod(typeof(Customer11), "OnPersistingError", new[] {typeof(Exception)});
+            var method1 = FindMethod(typeof(Customer11), "OnUpdatingError", new[] {typeof(Exception)});
+            var method2 = FindMethod(typeof(Customer11), "OnPersistingError", new[] {typeof(Exception)});
             facetFactory.Process(Reflector, typeof(Customer11), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IOnUpdatingErrorCallbackFacet));
+            var facet = Specification.GetFacet(typeof(IOnUpdatingErrorCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OnUpdatingErrorCallbackFacetViaMethod);
             var onUpdatingErrorCallbackFacetViaMethod = (OnUpdatingErrorCallbackFacetViaMethod) facet;
             Assert.AreEqual(method1, onUpdatingErrorCallbackFacetViaMethod.GetMethod());
             AssertMethodsRemoved(new[] {method1, method2});
             // and test exception is passed through (assert in Customer11)
-            INakedObjectAdapter adapter = AdapterFor(new Customer11());
+            var adapter = AdapterFor(new Customer11());
             onUpdatingErrorCallbackFacetViaMethod.Invoke(adapter, new Exception());
         }
 
         [TestMethod]
         public void TestOnUpdatingErrorLifecycleNullFacet() {
-            MethodInfo method = FindMethod(typeof(Customer10), "OnUpdatingError", new[] {typeof(Exception)});
+            var method = FindMethod(typeof(Customer10), "OnUpdatingError", new[] {typeof(Exception)});
             Assert.IsNull(method);
             facetFactory.Process(Reflector, typeof(Customer10), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IOnUpdatingErrorCallbackFacet));
+            var facet = Specification.GetFacet(typeof(IOnUpdatingErrorCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OnUpdatingErrorCallbackFacetNull);
         }
 
         [TestMethod]
         public void TestPersistedLifecycleMethodPickedUpOn() {
-            MethodInfo method = FindMethod(typeof(Customer2), "Persisted");
+            var method = FindMethod(typeof(Customer2), "Persisted");
             facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IPersistedCallbackFacet));
+            var facet = Specification.GetFacet(typeof(IPersistedCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PersistedCallbackFacetViaMethod);
             var persistedCallbackFacetViaMethod = (PersistedCallbackFacetViaMethod) facet;
@@ -186,9 +183,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestPersistingLifecycleMethodPickedUpOn() {
-            MethodInfo method = FindMethod(typeof(Customer1), "Persisting");
+            var method = FindMethod(typeof(Customer1), "Persisting");
             facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IPersistingCallbackFacet));
+            var facet = Specification.GetFacet(typeof(IPersistingCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PersistingCallbackFacetViaMethod);
             var persistingCallbackFacetViaMethod = (PersistingCallbackFacetViaMethod) facet;
@@ -199,7 +196,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestSavedLifecycleMethodNotPickedUpOn() {
             facetFactory.Process(Reflector, typeof(Customer10), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IPersistedCallbackFacet));
+            var facet = Specification.GetFacet(typeof(IPersistedCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PersistedCallbackFacetNull);
         }
@@ -207,16 +204,16 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestMethod]
         public void TestSavingLifecycleMethodNotPickedUpOn() {
             facetFactory.Process(Reflector, typeof(Customer9), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IPersistingCallbackFacet));
+            var facet = Specification.GetFacet(typeof(IPersistingCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PersistingCallbackFacetNull);
         }
 
         [TestMethod]
         public void TestUpdatedLifecycleMethodPickedUpOn() {
-            MethodInfo method = FindMethod(typeof(Customer4), "Updated");
+            var method = FindMethod(typeof(Customer4), "Updated");
             facetFactory.Process(Reflector, typeof(Customer4), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IUpdatedCallbackFacet));
+            var facet = Specification.GetFacet(typeof(IUpdatedCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is UpdatedCallbackFacetViaMethod);
             var updatedCallbackFacetViaMethod = (UpdatedCallbackFacetViaMethod) facet;
@@ -226,9 +223,9 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestUpdatingLifecycleMethodPickedUpOn() {
-            MethodInfo method = FindMethod(typeof(Customer3), "Updating");
+            var method = FindMethod(typeof(Customer3), "Updating");
             facetFactory.Process(Reflector, typeof(Customer3), MethodRemover, Specification);
-            IFacet facet = Specification.GetFacet(typeof(IUpdatingCallbackFacet));
+            var facet = Specification.GetFacet(typeof(IUpdatingCallbackFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is UpdatingCallbackFacetViaMethod);
             var updatingCallbackFacetViaMethod = (UpdatingCallbackFacetViaMethod) facet;
