@@ -108,7 +108,7 @@ namespace NakedObjects.Persistor.Entity.Adapter {
 
         private void ThrowErrorIfNotTransient(object[] newKey = null) {
             if (!IsTransient) {
-                var newKeyString = newKey != null ? newKey.Aggregate("New Key", (s, t) => $"{s} : {t}") : "";
+                var newKeyString = newKey?.Aggregate("New Key", (s, t) => $"{s} : {t}") ?? "";
                 var error = $"Attempting to make persistent an already persisted object. Type {TypeName}  Existing Key: {cachedToString} {newKeyString}";
                 throw new NotPersistableException(Log.LogAndReturn(error));
             }

@@ -407,23 +407,17 @@ namespace NakedObjects.Persistor.Entity.Component {
             var newMessage = exception.Message;
 
             foreach (var context in contexts.Values) {
-                if (context.CurrentSaveRootObjectAdapter != null) {
+                if (context.CurrentSaveRootObjectAdapter?.Spec != null) {
                     var target = context.CurrentSaveRootObjectAdapter;
-                    if (target.Spec != null) {
-                        // can be null in tests
-                        newMessage = target.Spec.GetFacet<IOnPersistingErrorCallbackFacet>().Invoke(target, exception);
-                    }
-
+                    // can be null in tests
+                    newMessage = target.Spec.GetFacet<IOnPersistingErrorCallbackFacet>().Invoke(target, exception);
                     break;
                 }
 
-                if (context.CurrentUpdateRootObjectAdapter != null) {
+                if (context.CurrentUpdateRootObjectAdapter?.Spec != null) {
                     var target = context.CurrentUpdateRootObjectAdapter;
-                    if (target.Spec != null) {
-                        // can be null in tests 
-                        newMessage = target.Spec.GetFacet<IOnUpdatingErrorCallbackFacet>().Invoke(target, exception);
-                    }
-
+                    // can be null in tests 
+                    newMessage = target.Spec.GetFacet<IOnUpdatingErrorCallbackFacet>().Invoke(target, exception);
                     break;
                 }
             }
@@ -460,7 +454,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         private void PreSave() => contexts.Values.ForEach(c => c.PreSave());
 
-        private INakedObjectAdapter GetSourceNakedObject(OptimisticConcurrencyException oce) {
+        private INakedObjectAdapter GetSourceNakedObject(UpdateException oce) {
             var trigger = oce.StateEntries.Where(e => !e.IsRelationship).Select(e => e.Entity).SingleOrDefault();
             return createAdapter(null, trigger);
         }
@@ -486,8 +480,8 @@ namespace NakedObjects.Persistor.Entity.Component {
 
             if (nakedObjectAdapter.Spec is IObjectSpec spec) {
                 // testing check 
-                foreach (var assoc in spec.Properties.OfType<IOneToManyAssociationSpec>().Where(a => a.IsPersisted)) {
-                    var adapter = assoc.GetNakedObject(nakedObjectAdapter);
+                var adapters = spec.Properties.OfType<IOneToManyAssociationSpec>().Where(a => a.IsPersisted).Select(a => a.GetNakedObject(nakedObjectAdapter));
+                foreach (var adapter in adapters) {
                     if (adapter.ResolveState.IsGhost()) {
                         Resolve(adapter, GetContext(adapter));
                     }
@@ -522,7 +516,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             return MemberValueMap(idmembers, keyValues);
         }
 
-        private static IDictionary<string, object> MemberValueMap(IList<PropertyInfo> idmembers, IList<object> keyValues) {
+        private static IDictionary<string, object> MemberValueMap(ICollection<PropertyInfo> idmembers, ICollection<object> keyValues) {
             Assert.AssertEquals("Member and value counts must match", idmembers.Count, keyValues.Count);
             return idmembers.Zip(keyValues, (k, v) => new {Key = k, Value = v})
                 .ToDictionary(x => x.Key.Name, x => x.Value);
