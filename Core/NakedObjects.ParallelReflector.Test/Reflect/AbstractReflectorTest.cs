@@ -109,9 +109,7 @@ namespace NakedObjects.ParallelReflect.Test {
         protected IImmutableDictionary<string, ITypeSpecBuilder> Metamodel;
         protected IObjectSpecImmutable Specification;
 
-        protected void AssertIsInstanceOfType<T>(object o) {
-            Assert.IsInstanceOfType(o, typeof(T));
-        }
+        protected void AssertIsInstanceOfType<T>(object o) => Assert.IsInstanceOfType(o, typeof(T));
 
         [TestInitialize]
         public virtual void SetUp() {
@@ -149,13 +147,9 @@ namespace NakedObjects.ParallelReflect.Test {
             Assert.Fail("Spec missing: " + type.FullName);
         }
 
-        private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs) {
-            return specs.SingleOrDefault(s => s.FullName == type.FullName);
-        }
+        private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs) => specs.SingleOrDefault(s => s.FullName == type.FullName);
 
-        public static void AssertSpec(Type type, ITypeSpecBuilder[] specs) {
-            AssertSpec(type, GetSpec(type, specs));
-        }
+        public static void AssertSpec(Type type, ITypeSpecBuilder[] specs) => AssertSpec(type, GetSpec(type, specs));
     }
 
     // Copyright (c) Naked Objects Group Ltd.

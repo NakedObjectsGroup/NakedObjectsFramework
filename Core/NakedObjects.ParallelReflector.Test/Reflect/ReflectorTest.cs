@@ -62,7 +62,6 @@ namespace NakedObjects.ParallelReflect.Test {
             // TODO THIS IS A SMELL !!
             ImmutableSpecFactory.ClearCache();
             var hostBuilder = CreateHostBuilder(new string[] { }, rc).Build();
-
             return hostBuilder.Services;
         }
 
