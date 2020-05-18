@@ -21,28 +21,26 @@ namespace NakedObjects.Reflect.FacetFactory {
         public TypicalLengthDerivedFromTypeFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.PropertiesAndActionParameters) { }
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            AddFacetDerivedFromTypeIfPresent(reflector, specification, property.PropertyType);
-        }
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) => AddFacetDerivedFromTypeIfPresent(reflector, specification, property.PropertyType);
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Type type = method.ReturnType;
+            var type = method.ReturnType;
             AddFacetDerivedFromTypeIfPresent(reflector, specification, type);
         }
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             AddFacetDerivedFromTypeIfPresent(reflector, holder, parameter.ParameterType);
         }
 
-        private void AddFacetDerivedFromTypeIfPresent(IReflector reflector, ISpecification holder, Type type) {
-            ITypicalLengthFacet facet = GetTypicalLengthFacet(reflector, type);
+        private static void AddFacetDerivedFromTypeIfPresent(IReflector reflector, ISpecification holder, Type type) {
+            var facet = GetTypicalLengthFacet(reflector, type);
             if (facet != null) {
                 FacetUtils.AddFacet(new TypicalLengthFacetDerivedFromType(facet, holder));
             }
         }
 
-        private ITypicalLengthFacet GetTypicalLengthFacet(IReflector reflector, Type type) {
+        private static ITypicalLengthFacet GetTypicalLengthFacet(IReflector reflector, Type type) {
             var paramTypeSpec = reflector.LoadSpecification<IObjectSpecImmutable>(type);
             return paramTypeSpec.GetFacet<ITypicalLengthFacet>();
         }

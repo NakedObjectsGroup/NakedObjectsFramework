@@ -25,18 +25,14 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(property, specification);
-        }
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(property, specification);
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttribute<DataTypeAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        private static IPasswordFacet Create(DataTypeAttribute attribute, ISpecification holder) {
-            return attribute != null && attribute.DataType == DataType.Password ? new PasswordFacet(holder) : null;
-        }
+        private static IPasswordFacet Create(DataTypeAttribute attribute, ISpecification holder) => attribute != null && attribute.DataType == DataType.Password ? new PasswordFacet(holder) : null;
     }
 }

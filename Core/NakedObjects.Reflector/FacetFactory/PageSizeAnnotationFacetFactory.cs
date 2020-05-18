@@ -28,12 +28,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(method, specification);
-        }
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(method, specification);
 
-        private static IPageSizeFacet Create(PageSizeAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new PageSizeFacetAnnotation(attribute.Value, holder);
-        }
+        private static IPageSizeFacet Create(PageSizeAttribute attribute, ISpecification holder) => attribute == null ? null : new PageSizeFacetAnnotation(attribute.Value, holder);
     }
 }

@@ -22,12 +22,10 @@ namespace NakedObjects.Reflect.FacetFactory {
         public IconMethodFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
-        public override string[] Prefixes {
-            get { return FixedPrefixes; }
-        }
+        public override string[] Prefixes => FixedPrefixes;
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            MethodInfo method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.IconNameMethod, typeof(string), Type.EmptyTypes);
+            var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.IconNameMethod, typeof(string), Type.EmptyTypes);
             var attribute = type.GetCustomAttribute<IconNameAttribute>();
             if (method != null) {
                 RemoveMethod(methodRemover, method);
@@ -38,8 +36,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
         }
 
-        private static IIconFacet Create(IconNameAttribute attribute, ISpecification holder) {
-            return attribute != null ? new IconFacetAnnotation(attribute.Value, holder) : null;
-        }
+        private static IIconFacet Create(IconNameAttribute attribute, ISpecification holder) => attribute != null ? new IconFacetAnnotation(attribute.Value, holder) : null;
     }
 }

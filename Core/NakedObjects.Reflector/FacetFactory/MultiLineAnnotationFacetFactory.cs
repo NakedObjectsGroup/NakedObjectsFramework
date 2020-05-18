@@ -31,9 +31,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(method, specification);
-        }
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(method, specification);
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (property.GetGetMethod() != null && TypeUtils.IsString(property.PropertyType)) {
@@ -42,15 +40,13 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             if (TypeUtils.IsString(parameter.ParameterType)) {
                 var attribute = parameter.GetCustomAttribute<MultiLineAttribute>();
                 FacetUtils.AddFacet(Create(attribute, holder));
             }
         }
 
-        private static IMultiLineFacet Create(MultiLineAttribute attribute, ISpecification holder) {
-            return attribute != null ? new MultiLineFacetAnnotation(attribute.NumberOfLines, attribute.Width, holder) : null;
-        }
+        private static IMultiLineFacet Create(MultiLineAttribute attribute, ISpecification holder) => attribute != null ? new MultiLineFacetAnnotation(attribute.NumberOfLines, attribute.Width, holder) : null;
     }
 }

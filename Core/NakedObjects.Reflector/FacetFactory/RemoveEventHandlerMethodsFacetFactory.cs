@@ -21,22 +21,18 @@ namespace NakedObjects.Reflect.FacetFactory {
         public RemoveEventHandlerMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
-        public override string[] Prefixes {
-            get { return new string[] { }; }
-        }
+        public override string[] Prefixes => new string[] { };
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            FindAndRemoveEventHandlerMethods(type, methodRemover);
-        }
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) => FindAndRemoveEventHandlerMethods(type, methodRemover);
 
-        private void RemoveIfNotNull(IMethodRemover methodRemover, MethodInfo mi) {
+        private static void RemoveIfNotNull(IMethodRemover methodRemover, MethodInfo mi) {
             if (mi != null) {
                 RemoveMethod(methodRemover, mi);
             }
         }
 
-        private void FindAndRemoveEventHandlerMethods(Type type, IMethodRemover methodRemover) {
-            foreach (EventInfo eInfo in type.GetEvents()) {
+        private static void FindAndRemoveEventHandlerMethods(Type type, IMethodRemover methodRemover) {
+            foreach (var eInfo in type.GetEvents()) {
                 RemoveIfNotNull(methodRemover, eInfo.GetAddMethod());
                 RemoveIfNotNull(methodRemover, eInfo.GetRaiseMethod());
                 RemoveIfNotNull(methodRemover, eInfo.GetRemoveMethod());

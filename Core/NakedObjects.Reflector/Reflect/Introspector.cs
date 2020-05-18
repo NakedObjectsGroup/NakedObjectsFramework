@@ -31,17 +31,13 @@ namespace NakedObjects.Reflect {
         private List<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
 
-        public Introspector(IReflector reflector) {
-            this.reflector = reflector;
-        }
+        public Introspector(IReflector reflector) => this.reflector = reflector;
 
         private IClassStrategy ClassStrategy => reflector.ClassStrategy;
 
         private IFacetFactorySet FacetFactorySet => reflector.FacetFactorySet;
 
-        private Type[] InterfacesTypes {
-            get { return IntrospectedType.GetInterfaces().Where(i => i.IsPublic).ToArray(); }
-        }
+        private Type[] InterfacesTypes => IntrospectedType.GetInterfaces().Where(i => i.IsPublic).ToArray();
 
         private Type SuperclassType => IntrospectedType.BaseType;
 
@@ -93,7 +89,7 @@ namespace NakedObjects.Reflect {
             AddAsSubclass(spec);
 
             var interfaces = new List<ITypeSpecBuilder>();
-            foreach (Type interfaceType in InterfacesTypes) {
+            foreach (var interfaceType in InterfacesTypes) {
                 if (interfaceType != null && ClassStrategy.IsTypeToBeIntrospected(interfaceType)) {
                     var interfaceSpec = reflector.LoadSpecification(interfaceType);
                     interfaceSpec.AddSubclass(spec);
@@ -106,16 +102,13 @@ namespace NakedObjects.Reflect {
             IntrospectActions(spec);
         }
 
-        public IImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            throw new NotImplementedException();
-        }
+        public IImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => throw new NotImplementedException();
 
         #endregion
 
-        private static bool IsGenericEnumerableOrSet(Type type) {
-            return CollectionUtils.IsGenericType(type, typeof(IEnumerable<>)) ||
-                   CollectionUtils.IsGenericType(type, typeof(ISet<>));
-        }
+        private static bool IsGenericEnumerableOrSet(Type type) =>
+            CollectionUtils.IsGenericType(type, typeof(IEnumerable<>)) ||
+            CollectionUtils.IsGenericType(type, typeof(ISet<>));
 
         private Type GetSpecificationType(Type type) {
             var actualType = ClassStrategy.GetType(type);
@@ -131,9 +124,7 @@ namespace NakedObjects.Reflect {
             return actualType;
         }
 
-        private void AddAsSubclass(ITypeSpecImmutable spec) {
-            Superclass?.AddSubclass(spec);
-        }
+        private void AddAsSubclass(ITypeSpecImmutable spec) => Superclass?.AddSubclass(spec);
 
         public void IntrospectPropertiesAndCollections(ITypeSpecImmutable spec) {
             var objectSpec = spec as IObjectSpecImmutable;
@@ -142,14 +133,14 @@ namespace NakedObjects.Reflect {
 
         public void IntrospectActions(ITypeSpecImmutable spec) {
             // find the actions ...
-            IActionSpecImmutable[] findObjectActionMethods = FindActionMethods(spec);
+            var findObjectActionMethods = FindActionMethods(spec);
             orderedObjectActions = CreateSortedListOfMembers(findObjectActionMethods);
         }
 
         private MethodInfo[] GetNonPropertyMethods() {
             // no better way to do this (ie no flag that indicates getter/setter)
             var allMethods = new List<MethodInfo>(IntrospectedType.GetMethods());
-            foreach (PropertyInfo pInfo in properties) {
+            foreach (var pInfo in properties) {
                 allMethods.Remove(pInfo.GetGetMethod());
                 allMethods.Remove(pInfo.GetSetMethod());
             }
@@ -160,12 +151,12 @@ namespace NakedObjects.Reflect {
         private IAssociationSpecImmutable[] FindAndCreateFieldSpecs(IObjectSpecImmutable spec) {
             // now create fieldSpecs for value properties, for collections and for reference properties        
             IList<PropertyInfo> collectionProperties = FacetFactorySet.FindCollectionProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToList();
-            IEnumerable<IAssociationSpecImmutable> collectionSpecs = CreateCollectionSpecs(collectionProperties, spec);
+            var collectionSpecs = CreateCollectionSpecs(collectionProperties, spec);
 
             // every other accessor is assumed to be a reference property.
             IList<PropertyInfo> allProperties = FacetFactorySet.FindProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToList();
-            IEnumerable<PropertyInfo> refProperties = allProperties.Except(collectionProperties);
-            IEnumerable<IAssociationSpecImmutable> refSpecs = CreateRefPropertySpecs(refProperties, spec);
+            var refProperties = allProperties.Except(collectionProperties);
+            var refSpecs = CreateRefPropertySpecs(refProperties, spec);
 
             return collectionSpecs.Union(refSpecs).ToArray();
         }
@@ -173,13 +164,13 @@ namespace NakedObjects.Reflect {
         private IEnumerable<IAssociationSpecImmutable> CreateCollectionSpecs(IEnumerable<PropertyInfo> collectionProperties, IObjectSpecImmutable spec) {
             var specs = new List<IAssociationSpecImmutable>();
 
-            foreach (PropertyInfo property in collectionProperties) {
+            foreach (var property in collectionProperties) {
                 IIdentifier identifier = new IdentifierImpl(FullName, property.Name);
 
                 // create a collection property spec
-                Type returnType = property.PropertyType;
+                var returnType = property.PropertyType;
                 var returnSpec = reflector.LoadSpecification<IObjectSpecImmutable>(returnType);
-                Type defaultType = typeof(object);
+                var defaultType = typeof(object);
                 var defaultSpec = reflector.LoadSpecification<IObjectSpecImmutable>(defaultType);
 
                 var collection = ImmutableSpecFactory.CreateOneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
@@ -197,10 +188,10 @@ namespace NakedObjects.Reflect {
         private IEnumerable<IAssociationSpecImmutable> CreateRefPropertySpecs(IEnumerable<PropertyInfo> foundProperties, IObjectSpecImmutable spec) {
             var specs = new List<IAssociationSpecImmutable>();
 
-            foreach (PropertyInfo property in foundProperties) {
+            foreach (var property in foundProperties) {
                 // create a reference property spec
                 var identifier = new IdentifierImpl(FullName, property.Name);
-                Type propertyType = property.PropertyType;
+                var propertyType = property.PropertyType;
                 var propertySpec = reflector.LoadSpecification(propertyType);
                 if (propertySpec is IServiceSpecImmutable) {
                     throw new ReflectionException(Log.LogAndReturn($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}. If the property is intended to be an injected service it should have a protected get."));
@@ -222,15 +213,15 @@ namespace NakedObjects.Reflect {
             methods = methods.Except(actions).ToArray();
 
             // ReSharper disable once ForCanBeConvertedToForeach
-            // kepp for look as actions are nulled out within loop
-            for (int i = 0; i < actions.Length; i++) {
-                MethodInfo actionMethod = actions[i];
+            // keep for loop as actions are nulled out within loop
+            for (var i = 0; i < actions.Length; i++) {
+                var actionMethod = actions[i];
 
                 // actions are potentially being nulled within this loop
                 if (actionMethod != null) {
-                    string fullMethodName = actionMethod.Name;
+                    var fullMethodName = actionMethod.Name;
 
-                    Type[] parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
+                    var parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
 
                     // build action & its parameters   
 
@@ -239,13 +230,13 @@ namespace NakedObjects.Reflect {
                     }
 
                     IIdentifier identifier = new IdentifierImpl(FullName, fullMethodName, actionMethod.GetParameters().ToArray());
-                    IActionParameterSpecImmutable[] actionParams = parameterTypes.Select(pt => ImmutableSpecFactory.CreateActionParameterSpecImmutable(reflector.LoadSpecification<IObjectSpecImmutable>(pt), identifier)).ToArray();
+                    var actionParams = parameterTypes.Select(pt => ImmutableSpecFactory.CreateActionParameterSpecImmutable(reflector.LoadSpecification<IObjectSpecImmutable>(pt), identifier)).ToArray();
 
                     var action = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, spec, actionParams);
 
                     // Process facets on the action & parameters
                     FacetFactorySet.Process(reflector, actionMethod, new IntrospectorMethodRemover(actions), action, FeatureType.Actions);
-                    for (int l = 0; l < actionParams.Length; l++) {
+                    for (var l = 0; l < actionParams.Length; l++) {
                         FacetFactorySet.ProcessParams(reflector, actionMethod, l, actionParams[l]);
                     }
 
@@ -256,9 +247,7 @@ namespace NakedObjects.Reflect {
             return actionSpecs.ToArray();
         }
 
-        private static List<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable {
-            return members.OrderBy(m => m, new MemberOrderComparator<T>()).ToList();
-        }
+        private static List<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable => members.OrderBy(m => m, new MemberOrderComparator<T>()).ToList();
 
         #region Nested type: IntrospectorMethodRemover
 
@@ -267,14 +256,12 @@ namespace NakedObjects.Reflect {
         private class IntrospectorMethodRemover : IMethodRemover {
             private readonly MethodInfo[] methods;
 
-            public IntrospectorMethodRemover(MethodInfo[] methods) {
-                this.methods = methods;
-            }
+            public IntrospectorMethodRemover(MethodInfo[] methods) => this.methods = methods;
 
             #region IMethodRemover Members
 
             public void RemoveMethod(MethodInfo methodToRemove) {
-                for (int i = 0; i < methods.Length; i++) {
+                for (var i = 0; i < methods.Length; i++) {
                     if (methods[i] != null) {
                         if (methods[i].MemberInfoEquals(methodToRemove)) {
                             methods[i] = null;
@@ -284,7 +271,7 @@ namespace NakedObjects.Reflect {
             }
 
             public void RemoveMethods(IList<MethodInfo> methodList) {
-                for (int i = 0; i < methods.Length; i++) {
+                for (var i = 0; i < methods.Length; i++) {
                     if (methods[i] != null) {
                         if (methodList.Any(methodToRemove => methods[i].MemberInfoEquals(methodToRemove))) {
                             methods[i] = null;
@@ -305,15 +292,13 @@ namespace NakedObjects.Reflect {
         private class SortActionsFirst : IComparer<MethodInfo> {
             private readonly IFacetFactorySet factories;
 
-            public SortActionsFirst(IFacetFactorySet factories) {
-                this.factories = factories;
-            }
+            public SortActionsFirst(IFacetFactorySet factories) => this.factories = factories;
 
             #region IComparer<MethodInfo> Members
 
             public int Compare(MethodInfo x, MethodInfo y) {
-                bool xIsRecognised = x != null && factories.Recognizes(x);
-                bool yIsRecognised = y != null && factories.Recognizes(y);
+                var xIsRecognised = x != null && factories.Recognizes(x);
+                var yIsRecognised = y != null && factories.Recognizes(y);
 
                 if (xIsRecognised == yIsRecognised) {
                     return 0;

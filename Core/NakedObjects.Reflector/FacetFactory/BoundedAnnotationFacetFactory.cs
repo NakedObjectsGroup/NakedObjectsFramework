@@ -25,8 +25,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static IBoundedFacet Create(BoundedAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new BoundedFacet(holder);
-        }
+        private static IBoundedFacet Create(BoundedAttribute attribute, ISpecification holder) => attribute == null ? null : new BoundedFacet(holder);
     }
 }

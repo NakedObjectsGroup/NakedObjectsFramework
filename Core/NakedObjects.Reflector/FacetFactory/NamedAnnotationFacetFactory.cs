@@ -26,42 +26,32 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.Everything) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Attribute attribute = type.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) type.GetCustomAttribute<NamedAttribute>();
+            var attribute = type.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) type.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Attribute attribute = method.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) method.GetCustomAttribute<NamedAttribute>();
+            var attribute = method.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) method.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Attribute attribute = property.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) property.GetCustomAttribute<NamedAttribute>();
+            var attribute = property.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) property.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
-            Attribute attribute = parameter.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) parameter.GetCustomAttribute<NamedAttribute>();
+            var parameter = method.GetParameters()[paramNum];
+            var attribute = parameter.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) parameter.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        private INamedFacet Create(Attribute attribute, ISpecification holder) {
-            if (attribute == null) {
-                return null;
-            }
-
-            var namedAttribute = attribute as NamedAttribute;
-            if (namedAttribute != null) {
-                return new NamedFacetAnnotation(namedAttribute.Value, holder);
-            }
-
-            var nameAttribute = attribute as DisplayNameAttribute;
-            if (nameAttribute != null) {
-                return new NamedFacetAnnotation(nameAttribute.DisplayName, holder);
-            }
-
-            throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"));
-        }
+        private static INamedFacet Create(Attribute attribute, ISpecification holder) =>
+            attribute switch {
+                null => null,
+                NamedAttribute namedAttribute => new NamedFacetAnnotation(namedAttribute.Value, holder),
+                DisplayNameAttribute nameAttribute => new NamedFacetAnnotation(nameAttribute.DisplayName, holder),
+                _ => throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
+            };
     }
 }

@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
@@ -20,22 +19,16 @@ namespace NakedObjects.Reflect {
     public sealed class FacetDecoratorSet : IFacetDecoratorSet {
         private readonly IDictionary<Type, IList<IFacetDecorator>> facetDecorators = new Dictionary<Type, IList<IFacetDecorator>>();
 
-        public FacetDecoratorSet(IFacetDecorator[] decorators) {
-            if (decorators != null) {
-                decorators.ForEach(Add);
-            }
-        }
+        public FacetDecoratorSet(IFacetDecorator[] decorators) => decorators?.ForEach(Add);
 
         // for testing
-        public IImmutableDictionary<Type, IList<IFacetDecorator>> FacetDecorators {
-            get { return facetDecorators.ToImmutableDictionary(); }
-        }
+        public IImmutableDictionary<Type, IList<IFacetDecorator>> FacetDecorators => facetDecorators.ToImmutableDictionary();
 
         #region IFacetDecoratorSet Members
 
         public void DecorateAllHoldersFacets(ISpecification holder) {
             if (facetDecorators.Any()) {
-                foreach (Type facetType in holder.FacetTypes) {
+                foreach (var facetType in holder.FacetTypes) {
                     DecorateFacet(facetType, holder);
                 }
             }
@@ -44,7 +37,7 @@ namespace NakedObjects.Reflect {
         #endregion
 
         private void Add(IFacetDecorator decorator) {
-            foreach (Type type in decorator.ForFacetTypes) {
+            foreach (var type in decorator.ForFacetTypes) {
                 if (!facetDecorators.ContainsKey(type)) {
                     facetDecorators[type] = new List<IFacetDecorator>();
                 }
@@ -55,9 +48,9 @@ namespace NakedObjects.Reflect {
 
         private void DecorateFacet(Type facetType, ISpecification holder) {
             if (facetDecorators.ContainsKey(facetType)) {
-                foreach (IFacetDecorator decorator in facetDecorators[facetType]) {
-                    IFacet previousFacet = holder.GetFacet(facetType);
-                    IFacet decoratedFacet = decorator.Decorate(previousFacet, holder);
+                foreach (var decorator in facetDecorators[facetType]) {
+                    var previousFacet = holder.GetFacet(facetType);
+                    var decoratedFacet = decorator.Decorate(previousFacet, holder);
                     if (decoratedFacet != null && decoratedFacet != previousFacet) {
                         FacetUtils.AddFacet(decoratedFacet);
                     }

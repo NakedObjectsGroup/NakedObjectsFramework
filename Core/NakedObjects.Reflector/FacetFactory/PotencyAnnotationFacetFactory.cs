@@ -33,8 +33,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
         }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(method, specification);
-        }
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(method, specification);
     }
 }

@@ -22,21 +22,21 @@ namespace NakedObjects.Reflect.FacetFactory {
         public TypeOfAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.CollectionsAndActions) { }
 
-        private void Process(IReflector reflector, Type methodReturnType, ISpecification holder) {
+        private static void Process(IReflector reflector, Type methodReturnType, ISpecification holder) {
             if (!CollectionUtils.IsCollection(methodReturnType)) {
                 return;
             }
 
             if (methodReturnType.IsArray) {
-                Type elementType = methodReturnType.GetElementType();
+                var elementType = methodReturnType.GetElementType();
                 var elementSpec = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
                 FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
                 FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
             }
             else if (methodReturnType.IsGenericType) {
-                Type[] actualTypeArguments = methodReturnType.GetGenericArguments();
+                var actualTypeArguments = methodReturnType.GetGenericArguments();
                 if (actualTypeArguments.Any()) {
-                    Type elementType = actualTypeArguments.First();
+                    var elementType = actualTypeArguments.First();
                     var elementSpec = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
                     FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
                     FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
@@ -44,9 +44,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
         }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(reflector, method.ReturnType, specification);
-        }
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(reflector, method.ReturnType, specification);
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (property.GetGetMethod() != null) {

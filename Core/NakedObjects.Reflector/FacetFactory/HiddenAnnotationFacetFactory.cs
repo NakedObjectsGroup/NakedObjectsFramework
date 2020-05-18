@@ -21,34 +21,23 @@ namespace NakedObjects.Reflect.FacetFactory {
         public HiddenAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.PropertiesCollectionsAndActions) { }
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) =>
             Process(type.GetCustomAttribute<HiddenAttribute>,
                 type.GetCustomAttribute<ScaffoldColumnAttribute>, specification);
-        }
 
-        private static void Process(MemberInfo member, ISpecification holder) {
-            Process(member.GetCustomAttribute<HiddenAttribute>, member.GetCustomAttribute<ScaffoldColumnAttribute>, holder);
-        }
+        private static void Process(MemberInfo member, ISpecification holder) => Process(member.GetCustomAttribute<HiddenAttribute>, member.GetCustomAttribute<ScaffoldColumnAttribute>, holder);
 
         private static void Process(Func<Attribute> getHidden, Func<Attribute> getScaffold, ISpecification specification) {
-            Attribute attribute = getHidden();
+            var attribute = getHidden();
             FacetUtils.AddFacet(attribute != null ? Create((HiddenAttribute) attribute, specification) : Create((ScaffoldColumnAttribute) getScaffold(), specification));
         }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(method, specification);
-        }
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(method, specification);
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(property, specification);
-        }
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(property, specification);
 
-        private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new HiddenFacet(attribute.Value, holder);
-        }
+        private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) => attribute == null ? null : new HiddenFacet(attribute.Value, holder);
 
-        private static IHiddenFacet Create(ScaffoldColumnAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new HiddenFacet(attribute.Scaffold ? WhenTo.Never : WhenTo.Always, holder);
-        }
+        private static IHiddenFacet Create(ScaffoldColumnAttribute attribute, ISpecification holder) => attribute == null ? null : new HiddenFacet(attribute.Scaffold ? WhenTo.Never : WhenTo.Always, holder);
     }
 }

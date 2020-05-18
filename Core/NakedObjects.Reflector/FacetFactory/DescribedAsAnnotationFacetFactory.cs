@@ -26,12 +26,12 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.Everything) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Attribute attribute = type.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute) type.GetCustomAttribute<DescribedAsAttribute>();
+            var attribute = type.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute) type.GetCustomAttribute<DescribedAsAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            Attribute attribute = member.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute) member.GetCustomAttribute<DescribedAsAttribute>();
+            var attribute = member.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute) member.GetCustomAttribute<DescribedAsAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
@@ -44,35 +44,21 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
-            Attribute attribute = parameter.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute) parameter.GetCustomAttribute<DescribedAsAttribute>();
+            var parameter = method.GetParameters()[paramNum];
+            var attribute = parameter.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute) parameter.GetCustomAttribute<DescribedAsAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        private static IDescribedAsFacet Create(Attribute attribute, ISpecification holder) {
-            if (attribute == null) {
-                return null;
-            }
+        private static IDescribedAsFacet Create(Attribute attribute, ISpecification holder) =>
+            attribute switch {
+                null => null,
+                DescribedAsAttribute asAttribute => Create(asAttribute, holder),
+                DescriptionAttribute descriptionAttribute => Create(descriptionAttribute, holder),
+                _ => throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
+            };
 
-            var asAttribute = attribute as DescribedAsAttribute;
-            if (asAttribute != null) {
-                return Create(asAttribute, holder);
-            }
+        private static IDescribedAsFacet Create(DescribedAsAttribute attribute, ISpecification holder) => new DescribedAsFacetAnnotation(attribute.Value, holder);
 
-            var descriptionAttribute = attribute as DescriptionAttribute;
-            if (descriptionAttribute != null) {
-                return Create(descriptionAttribute, holder);
-            }
-
-            throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"));
-        }
-
-        private static IDescribedAsFacet Create(DescribedAsAttribute attribute, ISpecification holder) {
-            return new DescribedAsFacetAnnotation(attribute.Value, holder);
-        }
-
-        private static IDescribedAsFacet Create(DescriptionAttribute attribute, ISpecification holder) {
-            return new DescribedAsFacetAnnotation(attribute.Description, holder);
-        }
+        private static IDescribedAsFacet Create(DescriptionAttribute attribute, ISpecification holder) => new DescribedAsFacetAnnotation(attribute.Description, holder);
     }
 }

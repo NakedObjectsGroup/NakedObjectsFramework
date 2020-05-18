@@ -19,20 +19,12 @@ namespace NakedObjects.Reflect.FacetFactory {
         public PropertyValidateDefaultFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Properties) { }
 
-        public override void Process(IReflector reflector, PropertyInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            FacetUtils.AddFacet(Create(specification));
-        }
+        public override void Process(IReflector reflector, PropertyInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => FacetUtils.AddFacet(Create(specification));
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            FacetUtils.AddFacet(Create(specification));
-        }
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => FacetUtils.AddFacet(Create(specification));
 
-        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            FacetUtils.AddFacet(Create(holder));
-        }
+        public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) => FacetUtils.AddFacet(Create(holder));
 
-        private static IPropertyValidateFacet Create(ISpecification holder) {
-            return new PropertyValidateFacetDefault(holder);
-        }
+        private static IPropertyValidateFacet Create(ISpecification holder) => new PropertyValidateFacetDefault(holder);
     }
 }

@@ -28,16 +28,10 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(method, specification);
-        }
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(method, specification);
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(property, specification);
-        }
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(property, specification);
 
-        private static IExecutedFacet Create(ExecutedAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new ExecutedFacetAnnotation(attribute.Value, holder);
-        }
+        private static IExecutedFacet Create(ExecutedAttribute attribute, ISpecification holder) => attribute == null ? null : new ExecutedFacetAnnotation(attribute.Value, holder);
     }
 }

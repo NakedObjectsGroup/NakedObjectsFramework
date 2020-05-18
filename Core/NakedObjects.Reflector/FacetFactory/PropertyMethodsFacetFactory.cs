@@ -33,17 +33,15 @@ namespace NakedObjects.Reflect.FacetFactory {
         public PropertyMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Properties) { }
 
-        public override string[] Prefixes {
-            get { return FixedPrefixes; }
-        }
+        public override string[] Prefixes => FixedPrefixes;
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            string capitalizedName = property.Name;
+            var capitalizedName = property.Name;
             var paramTypes = new[] {property.PropertyType};
 
             var facets = new List<IFacet> {new PropertyAccessorFacet(property, specification)};
 
-            if (property.PropertyType.IsGenericType && (property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))) {
+            if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
                 facets.Add(new NullableFacetAlways(specification));
             }
 
@@ -86,7 +84,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                                                string capitalizedName,
                                                Type[] parms,
                                                ISpecification property) {
-            MethodInfo method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ModifyPrefix + capitalizedName, typeof(void), parms);
+            var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ModifyPrefix + capitalizedName, typeof(void), parms);
             RemoveMethod(methodRemover, method);
             if (method != null) {
                 propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, capitalizedName, property));
@@ -94,7 +92,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private void FindAndRemoveValidateMethod(IReflector reflector, ICollection<IFacet> propertyFacets, IMethodRemover methodRemover, Type type, Type[] parms, string capitalizedName, ISpecification property) {
-            MethodInfo method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
+            var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
             RemoveMethod(methodRemover, method);
             if (method != null) {
                 propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property));
@@ -112,7 +110,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                                                 string capitalizedName,
                                                 Type returnType,
                                                 ISpecification property) {
-            MethodInfo method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes);
+            var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes);
             RemoveMethod(methodRemover, method);
             if (method != null) {
                 propertyFacets.Add(new PropertyDefaultFacetViaMethod(method, property));
@@ -127,7 +125,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                                                 string capitalizedName,
                                                 Type returnType,
                                                 ISpecification property) {
-            MethodInfo[] methods = FindMethods(reflector,
+            var methods = FindMethods(reflector,
                 type,
                 MethodType.Object,
                 RecognisedMethodsAndPrefixes.ChoicesPrefix + capitalizedName,
@@ -140,7 +138,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     m.GetParameters().Select(p => p.Name).Aggregate("", (s, t) => s + " " + t)));
             }
 
-            MethodInfo method = methods.FirstOrDefault();
+            var method = methods.FirstOrDefault();
             RemoveMethod(methodRemover, method);
             if (method != null) {
                 var parameterNamesAndTypes = method.GetParameters().Select(p => (p.Name.ToLower(), reflector.LoadSpecification<IObjectSpecImmutable>(p.ParameterType))).ToArray();
@@ -158,7 +156,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                                                      ISpecification property) {
             // only support if property is string or domain type
             if (returnType.IsClass || returnType.IsInterface) {
-                MethodInfo method = FindAutoCompleteMethod(reflector, type, capitalizedName,
+                var method = FindAutoCompleteMethod(reflector, type, capitalizedName,
                     typeof(IQueryable<>).MakeGenericType(returnType));
 
                 //.. or returning a single object
@@ -175,8 +173,8 @@ namespace NakedObjects.Reflect.FacetFactory {
                     var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
                     var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
 
-                    int pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default
-                    int minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
+                    var pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default
+                    var minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
 
                     RemoveMethod(methodRemover, method);
                     propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property));
@@ -186,7 +184,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private MethodInfo FindAutoCompleteMethod(IReflector reflector, Type type, string capitalizedName, Type returnType) {
-            MethodInfo method = FindMethod(reflector,
+            var method = FindMethod(reflector,
                 type,
                 MethodType.Object,
                 RecognisedMethodsAndPrefixes.AutoCompletePrefix + capitalizedName,

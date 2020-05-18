@@ -28,14 +28,12 @@ namespace NakedObjects.Reflect.Component {
         // only intended for use during initial reflection
         [NonSerialized] private IImmutableDictionary<Type, bool> namespaceScratchPad = ImmutableDictionary<Type, bool>.Empty;
 
-        public DefaultClassStrategy(IReflectorConfiguration config) {
-            this.config = config;
-        }
+        public DefaultClassStrategy(IReflectorConfiguration config) => this.config = config;
 
         #region IClassStrategy Members
 
         public bool IsTypeToBeIntrospected(Type type) {
-            Type returnType = FilterNullableAndProxies(type);
+            var returnType = FilterNullableAndProxies(type);
             return !IsTypeMarkedUpToBeIgnored(returnType) &&
                    !IsTypeUnsupportedByReflector(returnType) &&
                    IsTypeWhiteListed(returnType) &&
@@ -43,7 +41,7 @@ namespace NakedObjects.Reflect.Component {
         }
 
         public Type GetType(Type type) {
-            Type returnType = FilterNullableAndProxies(type);
+            var returnType = FilterNullableAndProxies(type);
             return IsTypeToBeIntrospected(returnType) ? returnType : null;
         }
 
@@ -53,16 +51,10 @@ namespace NakedObjects.Reflect.Component {
                 return type.GetGenericArguments()[0];
             }
 
-            if (TypeUtils.IsProxy(type)) {
-                return type.BaseType;
-            }
-
-            return type;
+            return TypeUtils.IsProxy(type) ? type.BaseType : type;
         }
 
-        public bool IsSystemClass(Type introspectedType) {
-            return introspectedType.FullName.StartsWith("System.");
-        }
+        public bool IsSystemClass(Type introspectedType) => introspectedType.FullName.StartsWith("System.");
 
         public string GetKeyForType(Type type) {
             if (IsGenericCollection(type)) {
@@ -78,12 +70,10 @@ namespace NakedObjects.Reflect.Component {
 
         #endregion
 
-        private bool IsTypeMarkedUpToBeIgnored(Type type) {
-            return false;
-            //var attr = type.GetCustomAttribute<NakedObjectsTypeAttribute>();
-            //return attr != null && attr.ReflectionScope == ReflectOver.None;
-        }
+        private bool IsTypeMarkedUpToBeIgnored(Type type) => false;
 
+        //var attr = type.GetCustomAttribute<NakedObjectsTypeAttribute>();
+        //return attr != null && attr.ReflectionScope == ReflectOver.None;
         private bool IsNamespaceMatch(Type type) {
             if (!namespaceScratchPad.ContainsKey(type)) {
                 var ns = type.Namespace ?? "";
@@ -94,36 +84,30 @@ namespace NakedObjects.Reflect.Component {
             return namespaceScratchPad[type];
         }
 
-        private bool IsTypeWhiteListed(Type type) {
-            return IsTypeSupportedSystemType(type) || IsNamespaceMatch(type) || IsTypeExplicitlyRequested(type);
-        }
+        private bool IsTypeWhiteListed(Type type) => IsTypeSupportedSystemType(type) || IsNamespaceMatch(type) || IsTypeExplicitlyRequested(type);
 
         private bool IsTypeExplicitlyRequested(Type type) {
             IEnumerable<Type> services = config.Services;
             return config.TypesToIntrospect.Any(t => t == type) || services.Any(t => t == type) || type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
         }
 
-        private Type ToMatch(Type type) {
-            return type.IsGenericType ? type.GetGenericTypeDefinition() : type;
-        }
+        private Type ToMatch(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() : type;
 
         private bool IsTypeSupportedSystemType(Type type) {
             return config.SupportedSystemTypes.Any(t => t == ToMatch(type));
         }
 
-        private bool IsTypeUnsupportedByReflector(Type type) {
-            return type.IsPointer ||
-                   type.IsByRef ||
-                   CollectionUtils.IsDictionary(type) ||
-                   type.IsGenericParameter ||
-                   type.ContainsGenericParameters;
-        }
+        private bool IsTypeUnsupportedByReflector(Type type) =>
+            type.IsPointer ||
+            type.IsByRef ||
+            CollectionUtils.IsDictionary(type) ||
+            type.IsGenericParameter ||
+            type.ContainsGenericParameters;
 
         // because Sets don't implement IEnumerable<>
-        private static bool IsGenericCollection(Type type) {
-            return CollectionUtils.IsGenericType(type, typeof(IEnumerable<>)) ||
-                   CollectionUtils.IsGenericType(type, typeof(ISet<>));
-        }
+        private static bool IsGenericCollection(Type type) =>
+            CollectionUtils.IsGenericType(type, typeof(IEnumerable<>)) ||
+            CollectionUtils.IsGenericType(type, typeof(ISet<>));
     }
 
     // Copyright (c) Naked Objects Group Ltd.

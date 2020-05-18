@@ -30,22 +30,16 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(method, specification);
-        }
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(method, specification);
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(property, specification);
-        }
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(property, specification);
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttribute<TypicalLengthAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        private static ITypicalLengthFacet Create(TypicalLengthAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new TypicalLengthFacetAnnotation(attribute.Value, holder);
-        }
+        private static ITypicalLengthFacet Create(TypicalLengthAttribute attribute, ISpecification holder) => attribute == null ? null : new TypicalLengthFacetAnnotation(attribute.Value, holder);
     }
 }

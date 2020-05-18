@@ -27,25 +27,17 @@ namespace NakedObjects.Reflect.FacetFactory {
         public OptionalDefaultFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.PropertiesAndActionParameters) { }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            FacetUtils.AddFacet(method.ReturnType.IsPrimitive ? CreateMandatory(specification) : CreateOptional(specification));
-        }
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => FacetUtils.AddFacet(method.ReturnType.IsPrimitive ? CreateMandatory(specification) : CreateOptional(specification));
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            FacetUtils.AddFacet(property.PropertyType.IsPrimitive || property.GetGetMethod() == null ? CreateMandatory(specification) : CreateOptional(specification));
-        }
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) => FacetUtils.AddFacet(property.PropertyType.IsPrimitive || property.GetGetMethod() == null ? CreateMandatory(specification) : CreateOptional(specification));
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             FacetUtils.AddFacet(parameter.ParameterType.IsPrimitive ? CreateMandatory(holder) : CreateOptional(holder));
         }
 
-        private static IMandatoryFacet CreateOptional(ISpecification holder) {
-            return new OptionalFacetDefault(holder);
-        }
+        private static IMandatoryFacet CreateOptional(ISpecification holder) => new OptionalFacetDefault(holder);
 
-        private static IMandatoryFacet CreateMandatory(ISpecification holder) {
-            return new MandatoryFacetDefault(holder);
-        }
+        private static IMandatoryFacet CreateMandatory(ISpecification holder) => new MandatoryFacetDefault(holder);
     }
 }

@@ -49,7 +49,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             if (parameter.ParameterType.IsPrimitive || TypeUtils.IsEnum(parameter.ParameterType)) {
                 if (method.GetCustomAttribute<OptionallyAttribute>() != null) {
                     Log.Warn("Ignoring Optionally annotation on primitive parameter " + paramNum + " on " + method.ReflectedType + "." + method.Name);
@@ -62,8 +62,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        private static IMandatoryFacet Create(OptionallyAttribute attribute, ISpecification holder) {
-            return attribute != null ? new OptionalFacet(holder) : null;
-        }
+        private static IMandatoryFacet Create(OptionallyAttribute attribute, ISpecification holder) => attribute != null ? new OptionalFacet(holder) : null;
     }
 }

@@ -26,55 +26,36 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Attribute attribute = type.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) type.GetCustomAttribute<MaxLengthAttribute>();
+            var attribute = type.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) type.GetCustomAttribute<MaxLengthAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            Attribute attribute = member.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) member.GetCustomAttribute<MaxLengthAttribute>();
-
+            var attribute = member.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) member.GetCustomAttribute<MaxLengthAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(method, specification);
-        }
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(method, specification);
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(property, specification);
-        }
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(property, specification);
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
-            Attribute attribute = parameter.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) parameter.GetCustomAttribute<MaxLengthAttribute>();
+            var parameter = method.GetParameters()[paramNum];
+            var attribute = parameter.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) parameter.GetCustomAttribute<MaxLengthAttribute>();
 
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        private static IMaxLengthFacet Create(Attribute attribute, ISpecification holder) {
-            if (attribute == null) {
-                return null;
-            }
+        private static IMaxLengthFacet Create(Attribute attribute, ISpecification holder) =>
+            attribute switch {
+                null => null,
+                StringLengthAttribute lengthAttribute => Create(lengthAttribute, holder),
+                MaxLengthAttribute maxLengthAttribute => Create(maxLengthAttribute, holder),
+                _ => throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
+            };
 
-            var lengthAttribute = attribute as StringLengthAttribute;
-            if (lengthAttribute != null) {
-                return Create(lengthAttribute, holder);
-            }
+        private static IMaxLengthFacet Create(MaxLengthAttribute attribute, ISpecification holder) => attribute == null ? null : new MaxLengthFacetAnnotation(attribute.Length, holder);
 
-            var maxLengthAttribute = attribute as MaxLengthAttribute;
-            if (maxLengthAttribute != null) {
-                return Create(maxLengthAttribute, holder);
-            }
-
-            throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"));
-        }
-
-        private static IMaxLengthFacet Create(MaxLengthAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new MaxLengthFacetAnnotation(attribute.Length, holder);
-        }
-
-        private static IMaxLengthFacet Create(StringLengthAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new MaxLengthFacetAnnotation(attribute.MaximumLength, holder);
-        }
+        private static IMaxLengthFacet Create(StringLengthAttribute attribute, ISpecification holder) => attribute == null ? null : new MaxLengthFacetAnnotation(attribute.MaximumLength, holder);
     }
 }

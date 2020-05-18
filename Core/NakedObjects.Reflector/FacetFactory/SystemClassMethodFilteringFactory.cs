@@ -14,7 +14,8 @@ using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
-    /// This factory filters out actions on system types. So for example 'GetHashCode' will not show up when displaying a string.
+    ///     This factory filters out actions on system types. So for example 'GetHashCode' will not show up when displaying a
+    ///     string.
     /// </summary>
     public sealed class SystemClassMethodFilteringFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof(SystemClassMethodFilteringFactory));
@@ -24,15 +25,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         #region IMethodFilteringFacetFactory Members
 
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
-            string typeName = method.DeclaringType == null ? "Unknown" : method.DeclaringType.FullName;
-
-            if (classStrategy.IsSystemClass(method.DeclaringType)) {
-                return true;
-            }
-
-            return false;
-        }
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => classStrategy.IsSystemClass(method.DeclaringType);
 
         #endregion
     }

@@ -22,13 +22,11 @@ namespace NakedObjects.Reflect.FacetFactory {
         public RemoveDynamicProxyMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsInterfacesAndProperties) { }
 
-        private static bool IsDynamicProxyType(Type type) {
-            return type.FullName.StartsWith("System.Data.Entity.DynamicProxies");
-        }
+        private static bool IsDynamicProxyType(Type type) => type.FullName.StartsWith("System.Data.Entity.DynamicProxies");
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (IsDynamicProxyType(type)) {
-                foreach (MethodInfo method in type.GetMethods().Join(MethodsToRemove, mi => mi.Name, s => s, (mi, s) => mi)) {
+                foreach (var method in type.GetMethods().Join(MethodsToRemove, mi => mi.Name, s => s, (mi, s) => mi)) {
                     if (methodRemover != null && method != null) {
                         methodRemover.RemoveMethod(method);
                     }

@@ -22,7 +22,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public CollectionFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
 
-        private void ProcessArray(IReflector reflector, Type type, ISpecification holder) {
+        private static void ProcessArray(IReflector reflector, Type type, ISpecification holder) {
             FacetUtils.AddFacet(new ArrayFacet(holder));
             FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
 
@@ -30,10 +30,10 @@ namespace NakedObjects.Reflect.FacetFactory {
             reflector.LoadSpecification(elementType);
         }
 
-        private void ProcessGenericEnumerable(Type type, ISpecification holder) {
-            bool isCollection = CollectionUtils.IsGenericCollection(type); // as opposed to IEnumerable 
-            bool isQueryable = CollectionUtils.IsGenericQueryable(type);
-            bool isSet = CollectionUtils.IsSet(type);
+        private static void ProcessGenericEnumerable(Type type, ISpecification holder) {
+            var isCollection = CollectionUtils.IsGenericCollection(type); // as opposed to IEnumerable 
+            var isQueryable = CollectionUtils.IsGenericQueryable(type);
+            var isSet = CollectionUtils.IsSet(type);
 
             FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
 
@@ -51,8 +51,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(facet);
         }
 
-        private void ProcessCollection(IReflector reflector, ISpecification holder) {
-            Type collectionElementType = typeof(object);
+        private static void ProcessCollection(IReflector reflector, ISpecification holder) {
+            var collectionElementType = typeof(object);
             var spec = reflector.LoadSpecification<IObjectSpecImmutable>(collectionElementType);
             FacetUtils.AddFacet(new TypeOfFacetDefaultToType(holder, collectionElementType, spec));
             FacetUtils.AddFacet(new CollectionFacet(holder));

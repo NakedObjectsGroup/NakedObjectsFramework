@@ -20,13 +20,11 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.ActionParameters) { }
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttribute<DefaultValueAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, holder);
-        }
+        private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, ISpecification holder) => attribute == null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, holder);
     }
 }

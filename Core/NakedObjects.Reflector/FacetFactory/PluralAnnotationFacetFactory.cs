@@ -25,8 +25,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static IPluralFacet Create(PluralAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new PluralFacetAnnotation(attribute.Value, holder);
-        }
+        private static IPluralFacet Create(PluralAttribute attribute, ISpecification holder) => attribute == null ? null : new PluralFacetAnnotation(attribute.Value, holder);
     }
 }

@@ -34,7 +34,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             var dataTypeAttribute = parameter.GetCustomAttribute<DataTypeAttribute>();
             FacetUtils.AddFacet(Create(dataTypeAttribute, holder));
         }

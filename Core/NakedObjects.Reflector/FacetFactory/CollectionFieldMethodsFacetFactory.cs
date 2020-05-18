@@ -27,13 +27,11 @@ namespace NakedObjects.Reflect.FacetFactory {
         public CollectionFieldMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Collections) { }
 
-        public override string[] Prefixes {
-            get { return FixedPrefixes; }
-        }
+        public override string[] Prefixes => FixedPrefixes;
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection) {
-            string capitalizedName = property.Name;
-            Type type = property.DeclaringType;
+            var capitalizedName = property.Name;
+            var type = property.DeclaringType;
 
             var facets = new List<IFacet> {new PropertyAccessorFacet(property, collection)};
 
@@ -53,7 +51,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public bool IsCollectionAccessor(MethodInfo method) {
-            Type methodReturnType = method.ReturnType;
+            var methodReturnType = method.ReturnType;
             return CollectionUtils.IsCollection(methodReturnType);
         }
 
@@ -66,7 +64,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-            IList<Type> collectionTypes = BuildCollectionTypes(candidates);
+            var collectionTypes = BuildCollectionTypes(candidates);
             candidates = candidates.Where(property => collectionTypes.Contains(property.PropertyType)).ToList();
             return PropertiesToBeIntrospected(candidates, classStrategy);
         }

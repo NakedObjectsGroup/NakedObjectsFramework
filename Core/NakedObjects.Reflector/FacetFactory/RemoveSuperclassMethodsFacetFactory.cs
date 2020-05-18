@@ -36,7 +36,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         public void ProcessSystemType(Type type, IMethodRemover methodRemover, ISpecification holder) {
             InitForType(type);
-            foreach (MethodInfo method in typeToMethods[type]) {
+            foreach (var method in typeToMethods[type]) {
                 if (methodRemover != null && method != null) {
                     methodRemover.RemoveMethod(method);
                 }
@@ -44,7 +44,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Type currentType = type;
+            var currentType = type;
             while (currentType != null) {
                 if (TypeUtils.IsSystem(currentType)) {
                     ProcessSystemType(currentType, methodRemover, specification);

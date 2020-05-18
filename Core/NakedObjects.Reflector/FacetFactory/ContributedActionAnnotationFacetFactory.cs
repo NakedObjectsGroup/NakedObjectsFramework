@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
@@ -29,12 +28,15 @@ namespace NakedObjects.Reflect.FacetFactory {
         public ContributedActionAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Actions) { }
 
-        private void Process(IReflector reflector, MethodInfo member, ISpecification holder) {
+        private static void Process(IReflector reflector, MethodInfo member, ISpecification holder) {
             var allParams = member.GetParameters();
             var paramsWithAttribute = allParams.Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null).ToArray();
-            if (!paramsWithAttribute.Any()) return; //Nothing to do
+            if (!paramsWithAttribute.Any()) {
+                return; //Nothing to do
+            }
+
             var facet = new ContributedActionFacet(holder);
-            foreach (ParameterInfo p in paramsWithAttribute) {
+            foreach (var p in paramsWithAttribute) {
                 var attribute = p.GetCustomAttribute<ContributedActionAttribute>();
                 var type = reflector.LoadSpecification<IObjectSpecImmutable>(p.ParameterType);
                 if (type != null) {
@@ -70,7 +72,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     Log.WarnFormat("ContributedAction attribute added to an action that returns a collection: {0}", member.Name);
                 }
                 else {
-                    Type elementType = p.ParameterType.GetGenericArguments()[0];
+                    var elementType = p.ParameterType.GetGenericArguments()[0];
                     type = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
                     facet.AddCollectionContributee(type, attribute.SubMenu, attribute.Id);
                 }
@@ -78,7 +80,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private static void AddLocalCollectionContributedAction(IReflector reflector, ParameterInfo p, ContributedActionFacet facet) {
-            Type elementType = p.ParameterType.GetGenericArguments()[0];
+            var elementType = p.ParameterType.GetGenericArguments()[0];
             var type = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
             facet.AddLocalCollectionContributee(type, p.Name);
         }

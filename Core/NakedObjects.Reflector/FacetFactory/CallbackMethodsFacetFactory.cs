@@ -35,15 +35,13 @@ namespace NakedObjects.Reflect.FacetFactory {
         public CallbackMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Objects) { }
 
-        public override string[] Prefixes {
-            get { return FixedPrefixes; }
-        }
+        public override string[] Prefixes => FixedPrefixes;
 
         public override void Process(IReflector reflector, Type type, IMethodRemover remover, ISpecificationBuilder specification) {
             var facets = new List<IFacet>();
             var methods = new List<MethodInfo>();
 
-            MethodInfo method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.CreatedMethod, typeof(void), Type.EmptyTypes);
+            var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.CreatedMethod, typeof(void), Type.EmptyTypes);
             if (method != null) {
                 methods.Add(method);
                 facets.Add(new CreatedCallbackFacetViaMethod(method, specification));

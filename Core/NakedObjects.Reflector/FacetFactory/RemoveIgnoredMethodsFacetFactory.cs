@@ -15,19 +15,17 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
-    /// Does not add any facets, but removes members that should be ignored - before they are introspected upon
-    /// by other factories.  This factory thus needs to be registered earlier than most other factories.
+    ///     Does not add any facets, but removes members that should be ignored - before they are introspected upon
+    ///     by other factories.  This factory thus needs to be registered earlier than most other factories.
     /// </summary>
     public class RemoveIgnoredMethodsFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public RemoveIgnoredMethodsFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
-        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder spec) {
-            RemoveExplicitlyIgnoredMembers(type, methodRemover);
-        }
+        public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder spec) => RemoveExplicitlyIgnoredMembers(type, methodRemover);
 
         private static void RemoveExplicitlyIgnoredMembers(Type type, IMethodRemover methodRemover) {
-            foreach (MethodInfo method in type.GetMethods().Where(m => m.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null)) {
+            foreach (var method in type.GetMethods().Where(m => m.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null)) {
                 methodRemover.RemoveMethod(method);
             }
         }

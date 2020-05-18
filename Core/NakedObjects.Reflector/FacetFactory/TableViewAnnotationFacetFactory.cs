@@ -25,7 +25,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public TableViewAnnotationFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.CollectionsAndActions) { }
 
-        private void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
+        private static void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
             if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {
                 var attribute = member.GetCustomAttribute<TableViewAttribute>();
                 FacetUtils.AddFacet(Create(attribute, specification));
@@ -47,13 +47,9 @@ namespace NakedObjects.Reflect.FacetFactory {
             return new TableViewFacet(attribute.Title, columns, holder);
         }
 
-        private static ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : CreateTableViewFacet(attribute, holder);
-        }
+        private static ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) => attribute == null ? null : CreateTableViewFacet(attribute, holder);
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(method, method.ReturnType, specification);
-        }
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(method, method.ReturnType, specification);
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (property.GetGetMethod() != null) {

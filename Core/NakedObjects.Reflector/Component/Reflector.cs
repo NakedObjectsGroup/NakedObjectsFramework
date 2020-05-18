@@ -37,14 +37,13 @@ namespace NakedObjects.Reflect.Component {
                          IReflectorConfiguration config,
                          IMenuFactory menuFactory,
                          IEnumerable<IFacetDecorator> facetDecorators,
-                         IEnumerable<IFacetFactory> facetFactories)
-        {
+                         IEnumerable<IFacetFactory> facetFactories) {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(config);
             Assert.AssertNotNull(menuFactory);
 
-            this.ClassStrategy = classStrategy;
+            ClassStrategy = classStrategy;
             this.metamodel = metamodel;
             this.config = config;
             this.menuFactory = menuFactory;
@@ -70,7 +69,7 @@ namespace NakedObjects.Reflect.Component {
         public ITypeSpecBuilder[] AllObjectSpecImmutables => metamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
 
         public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore) {
-            foreach (PropertyInfo property in properties) {
+            foreach (var property in properties) {
                 if (property.GetGetMethod() != null && property.PropertyType != classToIgnore) {
                     LoadSpecification(property.PropertyType);
                 }
@@ -93,9 +92,9 @@ namespace NakedObjects.Reflect.Component {
         }
 
         public void Reflect() {
-            Type[] s1 = config.Services;
-            Type[] services = s1.ToArray();
-            Type[] nonServices = GetTypesToIntrospect();
+            var s1 = config.Services;
+            var services = s1.ToArray();
+            var nonServices = GetTypesToIntrospect();
 
             services.ForEach(t => serviceTypes.Add(t));
 
@@ -110,18 +109,16 @@ namespace NakedObjects.Reflect.Component {
             InstallObjectMenus();
         }
 
-        public (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            throw new NotImplementedException();
-        }
+        public (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> mm) => throw new NotImplementedException();
 
-        public (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) where T : class, ITypeSpecImmutable => throw new NotImplementedException();
+        public (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type, IImmutableDictionary<string, ITypeSpecBuilder> mm) where T : class, ITypeSpecImmutable => throw new NotImplementedException();
 
         #endregion
 
-        private Type EnsureGenericTypeIsComplete(Type type) {
+        private static Type EnsureGenericTypeIsComplete(Type type) {
             if (type.IsGenericType && !type.IsConstructedGenericType) {
                 var genericType = type.GetGenericTypeDefinition();
-                var genericParms = genericType.GetGenericArguments().Select(a => typeof(Object)).ToArray();
+                var genericParms = genericType.GetGenericArguments().Select(a => typeof(object)).ToArray();
 
                 return type.GetGenericTypeDefinition().MakeGenericType(genericParms);
             }
@@ -135,18 +132,16 @@ namespace NakedObjects.Reflect.Component {
             return types.Union(systemTypes).ToArray();
         }
 
-        private void InstallSpecifications(Type[] types) {
-            types.ForEach(type => LoadSpecification(type));
-        }
+        private void InstallSpecifications(Type[] types) => types.ForEach(type => LoadSpecification(type));
 
         private void PopulateAssociatedActions(Type[] services) {
-            IEnumerable<IObjectSpecBuilder> nonServiceSpecs = AllObjectSpecImmutables.OfType<IObjectSpecBuilder>();
+            var nonServiceSpecs = AllObjectSpecImmutables.OfType<IObjectSpecBuilder>();
             nonServiceSpecs.ForEach(s => PopulateAssociatedActions(s, services));
         }
 
         private void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services) {
             if (string.IsNullOrWhiteSpace(spec.FullName)) {
-                string id = (spec.Identifier != null ? spec.Identifier.ClassName : "unknown") ?? "unknown";
+                var id = (spec.Identifier != null ? spec.Identifier.ClassName : "unknown") ?? "unknown";
                 Log.WarnFormat("Specification with id : {0} as has null or empty name", id);
             }
 
@@ -172,31 +167,31 @@ namespace NakedObjects.Reflect.Component {
                     throw new ReflectionException(Log.LogAndReturn("No MainMenus specified."));
                 }
 
-                foreach (IMenuImmutable menu in menus.OfType<IMenuImmutable>()) {
+                foreach (var menu in menus.OfType<IMenuImmutable>()) {
                     metamodel.AddMainMenu(menu);
                 }
             }
         }
 
         private void InstallObjectMenus() {
-            IEnumerable<IMenuFacet> menuFacets = metamodel.AllSpecifications.Where(s => s.ContainsFacet<IMenuFacet>()).Select(s => s.GetFacet<IMenuFacet>());
+            var menuFacets = metamodel.AllSpecifications.Where(s => s.ContainsFacet<IMenuFacet>()).Select(s => s.GetFacet<IMenuFacet>());
             menuFacets.ForEach(mf => mf.CreateMenu(metamodel));
         }
 
         private void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services) {
             IList<IActionSpecImmutable> contributedActions = new List<IActionSpecImmutable>();
             IList<IActionSpecImmutable> collectionContribActions = new List<IActionSpecImmutable>();
-            foreach (Type serviceType in services) {
+            foreach (var serviceType in services) {
                 if (serviceType != spec.Type) {
                     var serviceSpecification = (IServiceSpecImmutable) metamodel.GetSpecification(serviceType);
-                    IActionSpecImmutable[] serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
-                    List<IActionSpecImmutable> matchingActionsForObject = serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList();
-                    foreach (IActionSpecImmutable action in matchingActionsForObject) {
+                    var serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
+                    var matchingActionsForObject = serviceActions.Where(sa => sa.IsContributedTo(spec)).ToList();
+                    foreach (var action in matchingActionsForObject) {
                         contributedActions.Add(action);
                     }
 
-                    List<IActionSpecImmutable> matchingActionsForCollection = serviceActions.Where(sa => sa.IsContributedToCollectionOf(spec)).ToList();
-                    foreach (IActionSpecImmutable action in matchingActionsForCollection) {
+                    var matchingActionsForCollection = serviceActions.Where(sa => sa.IsContributedToCollectionOf(spec)).ToList();
+                    foreach (var action in matchingActionsForCollection) {
                         collectionContribActions.Add(action);
                     }
                 }
@@ -208,14 +203,14 @@ namespace NakedObjects.Reflect.Component {
 
         private void PopulateFinderActions(IObjectSpecBuilder spec, Type[] services) {
             IList<IActionSpecImmutable> finderActions = new List<IActionSpecImmutable>();
-            foreach (Type serviceType in services) {
+            foreach (var serviceType in services) {
                 var serviceSpecification = (IServiceSpecImmutable) metamodel.GetSpecification(serviceType);
-                List<IActionSpecImmutable> matchingActions =
+                var matchingActions =
                     serviceSpecification.ObjectActions.Where(serviceAction => serviceAction.IsFinderMethodFor(spec)).ToList();
 
                 if (matchingActions.Any()) {
                     var orderedActions = matchingActions.OrderBy(a => a, new MemberOrderComparator<IActionSpecImmutable>());
-                    foreach (IActionSpecImmutable action in orderedActions) {
+                    foreach (var action in orderedActions) {
                         finderActions.Add(action);
                     }
                 }
@@ -225,13 +220,13 @@ namespace NakedObjects.Reflect.Component {
         }
 
         private ITypeSpecBuilder LoadSpecificationAndCache(Type type) {
-            Type actualType = ClassStrategy.GetType(type);
+            var actualType = ClassStrategy.GetType(type);
 
             if (actualType == null) {
                 throw new ReflectionException(Log.LogAndReturn($"Attempting to introspect a non-introspectable type {type.FullName} "));
             }
 
-            ITypeSpecBuilder specification = CreateSpecification(actualType);
+            var specification = CreateSpecification(actualType);
 
             if (specification == null) {
                 throw new ReflectionException(Log.LogAndReturn($"unrecognised type {actualType.FullName}"));
@@ -251,9 +246,7 @@ namespace NakedObjects.Reflect.Component {
             return IsService(type) ? (ITypeSpecBuilder) ImmutableSpecFactory.CreateServiceSpecImmutable(type, metamodel) : ImmutableSpecFactory.CreateObjectSpecImmutable(type, metamodel);
         }
 
-        private bool IsService(Type type) {
-            return serviceTypes.Contains(type);
-        }
+        private bool IsService(Type type) => serviceTypes.Contains(type);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

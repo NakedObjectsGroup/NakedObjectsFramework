@@ -35,8 +35,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static IEagerlyFacet Create(EagerlyAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new EagerlyFacet(EagerlyAttribute.Do.Rendering, holder);
-        }
+        private static IEagerlyFacet Create(EagerlyAttribute attribute, ISpecification holder) => attribute == null ? null : new EagerlyFacet(EagerlyAttribute.Do.Rendering, holder);
     }
 }

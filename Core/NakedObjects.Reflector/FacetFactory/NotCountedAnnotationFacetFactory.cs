@@ -24,12 +24,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(property, specification);
-        }
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(property, specification);
 
-        private static INotCountedFacet Create(NotCountedAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new NotCountedFacet(holder);
-        }
+        private static INotCountedFacet Create(NotCountedAttribute attribute, ISpecification holder) => attribute == null ? null : new NotCountedFacet(holder);
     }
 }

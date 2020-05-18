@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections;
-using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -25,20 +24,16 @@ namespace NakedObjects.Reflect.FacetFactory {
     public sealed class IteratorFilteringFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly string[] FixedPrefixes;
 
-        static IteratorFilteringFacetFactory() {
-            FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.GetEnumeratorMethod};
-        }
+        static IteratorFilteringFacetFactory() => FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.GetEnumeratorMethod};
 
         public IteratorFilteringFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
-        public override string[] Prefixes {
-            get { return FixedPrefixes; }
-        }
+        public override string[] Prefixes => FixedPrefixes;
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (typeof(IEnumerable).IsAssignableFrom(type) && !TypeUtils.IsSystem(type)) {
-                MethodInfo method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.GetEnumeratorMethod, null, Type.EmptyTypes);
+                var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.GetEnumeratorMethod, null, Type.EmptyTypes);
                 if (method != null) {
                     methodRemover.RemoveMethod(method);
                 }

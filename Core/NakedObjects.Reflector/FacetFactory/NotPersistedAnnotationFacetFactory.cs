@@ -30,12 +30,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(property, specification);
-        }
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(property, specification);
 
-        private static INotPersistedFacet Create(NotPersistedAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new NotPersistedFacet(holder);
-        }
+        private static INotPersistedFacet Create(NotPersistedAttribute attribute, ISpecification holder) => attribute == null ? null : new NotPersistedFacet(holder);
     }
 }

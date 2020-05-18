@@ -25,16 +25,13 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         private static void Process(MethodInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<FinderActionAttribute>();
-            if (attribute == null) return;
-            FacetUtils.AddFacet(Create(attribute, holder));
+            if (attribute != null) {
+                FacetUtils.AddFacet(Create(attribute, holder));
+            }
         }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(method, specification);
-        }
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(method, specification);
 
-        private static IFacet Create(FinderActionAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new FinderActionFacet(holder);
-        }
+        private static IFacet Create(FinderActionAttribute attribute, ISpecification holder) => attribute == null ? null : new FinderActionFacet(holder);
     }
 }

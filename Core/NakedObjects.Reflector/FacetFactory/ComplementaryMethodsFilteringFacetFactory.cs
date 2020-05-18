@@ -55,9 +55,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         #region IMethodFilteringFacetFactory Members
 
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
-            return IsComplementaryMethod(method);
-        }
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => IsComplementaryMethod(method);
 
         #endregion
 
@@ -68,11 +66,10 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private static bool IsComplementaryPropertyMethod(MethodInfo actionMethod, string prefix) {
-            string propertyName;
-            if (MatchesPrefix(actionMethod, prefix, out propertyName)) {
-                Type declaringType = actionMethod.DeclaringType;
+            if (MatchesPrefix(actionMethod, prefix, out var propertyName)) {
+                var declaringType = actionMethod.DeclaringType;
                 Trace.Assert(declaringType != null, "declaringType != null");
-                Type baseType = declaringType.BaseType;
+                var baseType = declaringType.BaseType;
 
                 if (InheritsProperty(baseType, propertyName)) {
                     Log.WarnFormat("Filtering method {0} because of property {1} on {2}", actionMethod.Name, propertyName, baseType?.FullName);
@@ -84,12 +81,11 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private static bool IsComplementaryActionMethod(MethodInfo actionMethod, string prefix) {
-            string propertyName;
-            if (MatchesPrefix(actionMethod, prefix, out propertyName)) {
-                Type declaringType = actionMethod.DeclaringType;
+            if (MatchesPrefix(actionMethod, prefix, out var propertyName)) {
+                var declaringType = actionMethod.DeclaringType;
                 Debug.Assert(declaringType != null, "declaringType != null");
                 if (InheritsMethod(declaringType.BaseType, propertyName)) {
-                    string baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
+                    var baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
                     Log.WarnFormat("Filtering method {0} because of action {1} on {2}", actionMethod.Name, propertyName, baseTypeName);
                     return true;
                 }
@@ -99,13 +95,12 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private static bool IsComplementaryParameterMethod(MethodInfo actionMethod, string prefix) {
-            string propertyName;
-            if (MatchesPrefix(actionMethod, prefix, out propertyName)) {
+            if (MatchesPrefix(actionMethod, prefix, out var propertyName)) {
                 propertyName = TrimDigits(propertyName);
-                Type declaringType = actionMethod.DeclaringType;
+                var declaringType = actionMethod.DeclaringType;
                 Debug.Assert(declaringType != null, "declaringType != null");
                 if (InheritsMethod(declaringType.BaseType, propertyName)) {
-                    string baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
+                    var baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
                     Log.WarnFormat("Filtering method {0} because of action {1} on {2}", actionMethod.Name, propertyName, baseTypeName);
                     return true;
                 }
@@ -132,9 +127,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             return false;
         }
 
-        private static bool InheritsProperty(Type typeToCheck, string name) {
-            return typeToCheck != null && (typeToCheck.GetProperty(name) != null || InheritsProperty(typeToCheck.BaseType, name));
-        }
+        private static bool InheritsProperty(Type typeToCheck, string name) => typeToCheck != null && (typeToCheck.GetProperty(name) != null || InheritsProperty(typeToCheck.BaseType, name));
 
         private static bool InheritsMethod(Type typeToCheck, string name) {
             return typeToCheck != null && (typeToCheck.GetMethods().Any(m => m.Name == name) || InheritsMethod(typeToCheck.BaseType, name));

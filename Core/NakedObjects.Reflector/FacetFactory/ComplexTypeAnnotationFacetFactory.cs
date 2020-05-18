@@ -26,8 +26,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(ctAttribute, specification));
         }
 
-        private static IComplexTypeFacet Create(Attribute attribute, ISpecification holder) {
-            return attribute == null ? null : new ComplexTypeFacetAnnotation(holder);
-        }
+        private static IComplexTypeFacet Create(Attribute attribute, ISpecification holder) => attribute == null ? null : new ComplexTypeFacetAnnotation(holder);
     }
 }

@@ -30,22 +30,16 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(method, specification);
-        }
+        public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(method, specification);
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(property, specification);
-        }
+        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(property, specification);
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             var attribute = parameter.GetCustomAttribute<PresentationHintAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        private static IPresentationHintFacet Create(PresentationHintAttribute attribute, ISpecification holder) {
-            return attribute != null ? new PresentationHintFacet(attribute.Value, holder) : null;
-        }
+        private static IPresentationHintFacet Create(PresentationHintAttribute attribute, ISpecification holder) => attribute != null ? new PresentationHintFacet(attribute.Value, holder) : null;
     }
 }

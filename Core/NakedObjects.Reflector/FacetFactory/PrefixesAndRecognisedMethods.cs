@@ -9,9 +9,9 @@ using System;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
-    /// This class is not referenced and should not be used directly. It has been added back in
-    /// for backwards-compatibility only. Each constant delegates to the newer implementation 
-    /// in NakedObjects.Types
+    ///     This class is not referenced and should not be used directly. It has been added back in
+    ///     for backwards-compatibility only. Each constant delegates to the newer implementation
+    ///     in NakedObjects.Types
     /// </summary>
     [Obsolete("Use NakedObjects.RecognisedMethodsAndPrefixes")]
     public static class PrefixesAndRecognisedMethods {

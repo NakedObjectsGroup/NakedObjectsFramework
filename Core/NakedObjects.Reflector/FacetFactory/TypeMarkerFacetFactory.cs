@@ -31,20 +31,12 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacets(facets);
         }
 
-        private static bool IsVoid(Type type) {
-            return type == typeof(void);
-        }
+        private static bool IsVoid(Type type) => type == typeof(void);
 
-        private static bool IsSealed(Type type) {
-            return type.IsSealed;
-        }
+        private static bool IsSealed(Type type) => type.IsSealed;
 
-        private static bool IsInterface(Type type) {
-            return type.IsInterface;
-        }
+        private static bool IsInterface(Type type) => type.IsInterface;
 
-        private static bool IsAbstract(Type type) {
-            return type.IsAbstract;
-        }
+        private static bool IsAbstract(Type type) => type.IsAbstract;
     }
 }

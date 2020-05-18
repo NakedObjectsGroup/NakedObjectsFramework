@@ -26,12 +26,12 @@ namespace NakedObjects.Reflect.FacetFactory {
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) { }
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Type declaringType = method.DeclaringType;
-            var classAttribute = declaringType.GetCustomAttribute<AuthorizeActionAttribute>();
+            var declaringType = method.DeclaringType;
+            var classAttribute = declaringType?.GetCustomAttribute<AuthorizeActionAttribute>();
             var methodAttribute = method.GetCustomAttribute<AuthorizeActionAttribute>();
 
             if (classAttribute != null && methodAttribute != null) {
-                string declaringTypeName = declaringType == null ? "Unknown Type" : declaringType.FullName;
+                var declaringTypeName = declaringType.FullName;
                 Log.WarnFormat("Class and method level AuthorizeAttributes applied to class {0} - ignoring attribute on method {1}", declaringTypeName, method.Name);
             }
 
@@ -39,13 +39,12 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Type declaringType = property.DeclaringType;
-            var classAttribute = declaringType.GetCustomAttribute<AuthorizePropertyAttribute>();
+            var declaringType = property.DeclaringType;
+            var classAttribute = declaringType?.GetCustomAttribute<AuthorizePropertyAttribute>();
             var propertyAttribute = property.GetCustomAttribute<AuthorizePropertyAttribute>();
 
             if (classAttribute != null && propertyAttribute != null) {
-                string declaringTypeName = declaringType == null ? "Unknown Type" : declaringType.FullName;
-
+                var declaringTypeName = declaringType.FullName;
                 Log.WarnFormat("Class and property level AuthorizeAttributes applied to class {0} - ignoring attribute on property {1}", declaringTypeName, property.Name);
             }
 

@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -25,19 +24,9 @@ namespace NakedObjects.Reflect.FacetFactory {
             : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            var facets = new List<IFacet>();
-            var namedFacet = specification.GetFacet<INamedFacet>();
-            if (namedFacet == null) {
-                namedFacet = new NamedFacetInferred(type.Name, specification);
-                facets.Add(namedFacet);
-            }
-
-            var pluralFacet = specification.GetFacet<IPluralFacet>();
-            if (pluralFacet == null) {
-                string pluralName = NameUtils.PluralName(namedFacet.NaturalName);
-                pluralFacet = new PluralFacetInferred(pluralName, specification);
-                facets.Add(pluralFacet);
-            }
+            var namedFacet = specification.GetFacet<INamedFacet>() ?? new NamedFacetInferred(type.Name, specification);
+            IFacet pluralFacet = specification.GetFacet<IPluralFacet>() ?? new PluralFacetInferred(NameUtils.PluralName(namedFacet.NaturalName), specification);
+            var facets = new[] {namedFacet, pluralFacet};
 
             FacetUtils.AddFacets(facets);
         }

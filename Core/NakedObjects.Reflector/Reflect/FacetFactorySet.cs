@@ -51,7 +51,7 @@ namespace NakedObjects.Reflect {
         private readonly IList<IPropertyOrCollectionIdentifyingFacetFactory> propertyOrCollectionIdentifyingFactories;
 
         public FacetFactorySet(IFacetFactory[] factories) {
-            List<IFacetFactory> allFactories = factories.ToList();
+            var allFactories = factories.ToList();
             allFactories.Sort();
 
             Prefixes = allFactories.OfType<IMethodPrefixBasedFacetFactory>().SelectMany(prefixfactory => prefixfactory.Prefixes).ToArray();
@@ -66,21 +66,15 @@ namespace NakedObjects.Reflect {
             actionIdentifyingFactories = allFactories.OfType<IMethodIdentifyingFacetFactory>().ToList();
         }
 
-        private string[] Prefixes { get; set; }
+        private string[] Prefixes { get; }
 
         #region IFacetFactorySet Members
 
-        public IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-            return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindCollectionProperties(candidates, classStrategy)).ToList();
-        }
+        public IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindCollectionProperties(candidates, classStrategy)).ToList();
 
-        public IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-            return propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindProperties(candidates, classStrategy)).ToList();
-        }
+        public IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => propertyOrCollectionIdentifyingFactories.SelectMany(fact => fact.FindProperties(candidates, classStrategy)).ToList();
 
-        public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
-            return actionIdentifyingFactories.SelectMany(fact => fact.FindActions(candidates, classStrategy)).ToList();
-        }
+        public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) => actionIdentifyingFactories.SelectMany(fact => fact.FindActions(candidates, classStrategy)).ToList();
 
         /// <summary>
         ///     Whether this method is recognized (and should be ignored) by
@@ -103,69 +97,53 @@ namespace NakedObjects.Reflect {
         ///     for when there are multiple facet factories that search for the
         ///     same prefix.
         /// </para>
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
-            return methodFilteringFactories.Any(factory => factory.Filters(method, classStrategy));
-        }
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => methodFilteringFactories.Any(factory => factory.Filters(method, classStrategy));
 
-        public bool Filters(PropertyInfo property, IClassStrategy classStrategy) {
-            return propertyFilteringFactories.Any(factory => factory.Filters(property, classStrategy));
-        }
+        public bool Filters(PropertyInfo property, IClassStrategy classStrategy) => propertyFilteringFactories.Any(factory => factory.Filters(property, classStrategy));
 
-        public bool Recognizes(MethodInfo method) {
-            return Prefixes.Any(prefix => method.Name.StartsWith(prefix));
-        }
+        public bool Recognizes(MethodInfo method) => Prefixes.Any(prefix => method.Name.StartsWith(prefix));
 
         public void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (type.IsInterface) {
-                foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.Interfaces)) {
+                foreach (var facetFactory in GetFactoryByFeatureType(FeatureType.Interfaces)) {
                     facetFactory.Process(reflector, type, methodRemover, specification);
                 }
             }
             else {
-                foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.Objects)) {
+                foreach (var facetFactory in GetFactoryByFeatureType(FeatureType.Objects)) {
                     facetFactory.Process(reflector, type, methodRemover, specification);
                 }
             }
         }
 
         public void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) {
-            foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
+            foreach (var facetFactory in GetFactoryByFeatureType(featureType)) {
                 facetFactory.Process(reflector, method, methodRemover, specification);
             }
         }
 
         public void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) {
-            foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(featureType)) {
+            foreach (var facetFactory in GetFactoryByFeatureType(featureType)) {
                 facetFactory.Process(reflector, property, methodRemover, specification);
             }
         }
 
         public void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification) {
-            foreach (IFacetFactory facetFactory in GetFactoryByFeatureType(FeatureType.ActionParameters)) {
+            foreach (var facetFactory in GetFactoryByFeatureType(FeatureType.ActionParameters)) {
                 facetFactory.ProcessParams(reflector, method, paramNum, specification);
             }
         }
 
-        public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            throw new NotImplementedException();
-        }
+        public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => throw new NotImplementedException();
 
-        public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            throw new NotImplementedException();
-        }
+        public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => throw new NotImplementedException();
 
-        public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            throw new NotImplementedException();
-        }
+        public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => throw new NotImplementedException();
 
-        public IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            throw new NotImplementedException();
-        }
+        public IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => throw new NotImplementedException();
 
         #endregion
 
-        private IList<IFacetFactory> GetFactoryByFeatureType(FeatureType featureType) {
-            return factoriesByFeatureType[featureType];
-        }
+        private IList<IFacetFactory> GetFactoryByFeatureType(FeatureType featureType) => factoriesByFeatureType[featureType];
     }
 }

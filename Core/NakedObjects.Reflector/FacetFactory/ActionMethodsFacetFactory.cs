@@ -47,25 +47,25 @@ namespace NakedObjects.Reflect.FacetFactory {
         #region IMethodIdentifyingFacetFactory Members
 
         public override void Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action) {
-            string capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
+            var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
-            Type type = actionMethod.DeclaringType;
+            var type = actionMethod.DeclaringType;
             var facets = new List<IFacet>();
-            ITypeSpecBuilder onType = reflector.LoadSpecification(type);
+            var onType = reflector.LoadSpecification(type);
             var returnSpec = reflector.LoadSpecification<IObjectSpecBuilder>(actionMethod.ReturnType);
 
             IObjectSpecImmutable elementSpec = null;
-            bool isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(actionMethod.ReturnType);
+            var isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(actionMethod.ReturnType);
             if (returnSpec != null && returnSpec.IsCollection) {
-                Type elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
+                var elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
                 elementSpec = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
             }
 
             RemoveMethod(methodRemover, actionMethod);
             facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, isQueryable));
 
-            MethodType methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
-            Type[] paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
+            var methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
+            var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
             FindAndRemoveValidMethod(reflector, facets, methodRemover, type, methodType, capitalizedName, paramTypes, action);
 
             DefaultNamedFacet(facets, actionMethod.Name, action); // must be called after the checkForXxxPrefix methods
@@ -83,8 +83,8 @@ namespace NakedObjects.Reflect.FacetFactory {
                 // an alternative design would be to have another facet factory processing just ActionParameter, and have it remove these
                 // supporting methods.  However, the FacetFactory API doesn't allow for methods of the class to be removed while processing
                 // action parameters, only while processing Methods (ie actions)
-                IActionParameterSpecImmutable[] actionParameters = actionSpecImmutable.Parameters;
-                string[] paramNames = actionMethod.GetParameters().Select(p => p.Name).ToArray();
+                var actionParameters = actionSpecImmutable.Parameters;
+                var paramNames = actionMethod.GetParameters().Select(p => p.Name).ToArray();
 
                 FindAndRemoveParametersAutoCompleteMethod(reflector, methodRemover, type, capitalizedName, paramTypes, actionParameters);
                 FindAndRemoveParametersChoicesMethod(reflector, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters);
@@ -96,17 +96,17 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             var facets = new List<IFacet>();
 
-            if (parameter.ParameterType.IsGenericType && (parameter.ParameterType.GetGenericTypeDefinition() == typeof(Nullable<>))) {
+            if (parameter.ParameterType.IsGenericType && parameter.ParameterType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
                 facets.Add(new NullableFacetAlways(holder));
             }
 
             var returnSpec = reflector.LoadSpecification<IObjectSpecBuilder>(parameter.ParameterType);
 
             if (returnSpec != null && returnSpec.IsCollection) {
-                Type elementType = CollectionUtils.ElementType(parameter.ParameterType);
+                var elementType = CollectionUtils.ElementType(parameter.ParameterType);
                 var elementSpec = reflector.LoadSpecification<IObjectSpecImmutable>(elementType);
                 facets.Add(new ElementTypeFacet(holder, elementType, elementSpec));
             }
@@ -124,13 +124,12 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         #endregion
 
-        private bool IsQueryOnly(MethodInfo method) {
-            return (method.GetCustomAttribute<IdempotentAttribute>() == null) &&
-                   (method.GetCustomAttribute<QueryOnlyAttribute>() != null);
-        }
+        private static bool IsQueryOnly(MethodInfo method) =>
+            method.GetCustomAttribute<IdempotentAttribute>() == null &&
+            method.GetCustomAttribute<QueryOnlyAttribute>() != null;
 
-        private bool ParametersAreSupported(MethodInfo method, IClassStrategy classStrategy) {
-            foreach (ParameterInfo parameterInfo in method.GetParameters()) {
+        private static bool ParametersAreSupported(MethodInfo method, IClassStrategy classStrategy) {
+            foreach (var parameterInfo in method.GetParameters()) {
                 if (!classStrategy.IsTypeToBeIntrospected(parameterInfo.ParameterType)) {
                     // log if not a System or NOF type 
                     if (!TypeUtils.IsSystem(method.DeclaringType) && !TypeUtils.IsNakedObjects(method.DeclaringType)) {
@@ -152,7 +151,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private void FindAndRemoveValidMethod(IReflector reflector, ICollection<IFacet> actionFacets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] parms, ISpecification action) {
-            MethodInfo method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
+            var method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
             if (method != null) {
                 RemoveMethod(methodRemover, method);
                 actionFacets.Add(new ActionValidationFacet(method, action));
@@ -160,18 +159,18 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private void FindAndRemoveParametersDefaultsMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters) {
-            for (int i = 0; i < paramTypes.Length; i++) {
-                Type paramType = paramTypes[i];
-                string paramName = paramNames[i];
+            for (var i = 0; i < paramTypes.Length; i++) {
+                var paramType = paramTypes[i];
+                var paramName = paramNames[i];
 
-                MethodInfo methodUsingIndex = FindMethodWithOrWithoutParameters(reflector,
+                var methodUsingIndex = FindMethodWithOrWithoutParameters(reflector,
                     type,
                     MethodType.Object,
                     RecognisedMethodsAndPrefixes.ParameterDefaultPrefix + i + capitalizedName,
                     paramType,
                     paramTypes);
 
-                MethodInfo methodUsingName = FindMethod(
+                var methodUsingName = FindMethod(
                     reflector,
                     type,
                     MethodType.Object,
@@ -184,7 +183,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     Log.WarnFormat("Duplicate defaults parameter methods {0} and {1} using {1}", methodUsingIndex.Name, methodUsingName.Name);
                 }
 
-                MethodInfo methodToUse = methodUsingName ?? methodUsingIndex;
+                var methodToUse = methodUsingName ?? methodUsingIndex;
 
                 if (methodToUse != null) {
                     // deliberately not removing both if duplicate to show that method  is duplicate
@@ -198,20 +197,20 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private void FindAndRemoveParametersChoicesMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters) {
-            for (int i = 0; i < paramTypes.Length; i++) {
-                Type paramType = paramTypes[i];
-                string paramName = paramNames[i];
-                bool isMultiple = false;
+            for (var i = 0; i < paramTypes.Length; i++) {
+                var paramType = paramTypes[i];
+                var paramName = paramNames[i];
+                var isMultiple = false;
 
                 if (CollectionUtils.IsGenericEnumerable(paramType)) {
                     paramType = paramType.GetGenericArguments().First();
                     isMultiple = true;
                 }
 
-                Type returnType = typeof(IEnumerable<>).MakeGenericType(paramType);
-                string methodName = RecognisedMethodsAndPrefixes.ParameterChoicesPrefix + i + capitalizedName;
+                var returnType = typeof(IEnumerable<>).MakeGenericType(paramType);
+                var methodName = RecognisedMethodsAndPrefixes.ParameterChoicesPrefix + i + capitalizedName;
 
-                MethodInfo[] methods = FindMethods(
+                var methods = FindMethods(
                     reflector,
                     type,
                     MethodType.Object,
@@ -225,9 +224,9 @@ namespace NakedObjects.Reflect.FacetFactory {
                         m.GetParameters().Select(p => p.Name).Aggregate("", (s, t) => s + " " + t)));
                 }
 
-                MethodInfo methodUsingIndex = methods.FirstOrDefault();
+                var methodUsingIndex = methods.FirstOrDefault();
 
-                MethodInfo methodUsingName = FindMethod(
+                var methodUsingName = FindMethod(
                     reflector,
                     type,
                     MethodType.Object,
@@ -240,7 +239,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     Log.WarnFormat("Duplicate choices parameter methods {0} and {1} using {1}", methodUsingIndex.Name, methodUsingName.Name);
                 }
 
-                MethodInfo methodToUse = methodUsingName ?? methodUsingIndex;
+                var methodToUse = methodUsingName ?? methodUsingIndex;
 
                 if (methodToUse != null) {
                     // deliberately not removing both if duplicate to show that method  is duplicate
@@ -255,14 +254,14 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private void FindAndRemoveParametersAutoCompleteMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters) {
-            for (int i = 0; i < paramTypes.Length; i++) {
+            for (var i = 0; i < paramTypes.Length; i++) {
                 // only support on strings and reference types 
-                Type paramType = paramTypes[i];
+                var paramType = paramTypes[i];
                 if (paramType.IsClass || paramType.IsInterface) {
                     //returning an IQueryable ...
                     //.. or returning a single object
-                    MethodInfo method = FindAutoCompleteMethod(reflector, type, capitalizedName, i, typeof(IQueryable<>).MakeGenericType(paramType)) ??
-                                        FindAutoCompleteMethod(reflector, type, capitalizedName, i, paramType);
+                    var method = FindAutoCompleteMethod(reflector, type, capitalizedName, i, typeof(IQueryable<>).MakeGenericType(paramType)) ??
+                                 FindAutoCompleteMethod(reflector, type, capitalizedName, i, paramType);
 
                     //... or returning an enumerable of string
                     if (method == null && TypeUtils.IsString(paramType)) {
@@ -273,8 +272,8 @@ namespace NakedObjects.Reflect.FacetFactory {
                         var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
                         var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
 
-                        int pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default
-                        int minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
+                        var pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default
+                        var minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
 
                         // deliberately not removing both if duplicate to show that method  is duplicate
                         RemoveMethod(methodRemover, method);
@@ -288,7 +287,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private MethodInfo FindAutoCompleteMethod(IReflector reflector, Type type, string capitalizedName, int i, Type returnType) {
-            MethodInfo method = FindMethod(reflector,
+            var method = FindMethod(reflector,
                 type,
                 MethodType.Object,
                 RecognisedMethodsAndPrefixes.AutoCompletePrefix + i + capitalizedName,
@@ -298,15 +297,15 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         private void FindAndRemoveParametersValidateMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters) {
-            for (int i = 0; i < paramTypes.Length; i++) {
-                MethodInfo methodUsingIndex = FindMethod(reflector,
+            for (var i = 0; i < paramTypes.Length; i++) {
+                var methodUsingIndex = FindMethod(reflector,
                     type,
                     MethodType.Object,
                     RecognisedMethodsAndPrefixes.ValidatePrefix + i + capitalizedName,
                     typeof(string),
                     new[] {paramTypes[i]});
 
-                MethodInfo methodUsingName = FindMethod(reflector,
+                var methodUsingName = FindMethod(reflector,
                     type,
                     MethodType.Object,
                     RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName,
@@ -318,7 +317,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     Log.WarnFormat("Duplicate validate parameter methods {0} and {1} using {1}", methodUsingIndex.Name, methodUsingName.Name);
                 }
 
-                MethodInfo methodToUse = methodUsingName ?? methodUsingIndex;
+                var methodToUse = methodUsingName ?? methodUsingIndex;
 
                 if (methodToUse != null) {
                     // deliberately not removing both if duplicate to show that method  is duplicate

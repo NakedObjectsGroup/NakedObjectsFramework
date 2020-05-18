@@ -25,8 +25,6 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static IProgramPersistableOnlyFacet Create(ProgramPersistableOnlyAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new ProgramPersistableOnly(holder);
-        }
+        private static IProgramPersistableOnlyFacet Create(ProgramPersistableOnlyAttribute attribute, ISpecification holder) => attribute == null ? null : new ProgramPersistableOnly(holder);
     }
 }

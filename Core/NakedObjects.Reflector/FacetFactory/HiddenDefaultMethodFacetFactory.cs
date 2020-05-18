@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Reflection;
 using Common.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
@@ -15,30 +14,28 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
-    ///     Note - this factory simply removes the class level attribute from the list of methods.  The action and properties look up this attribute directly
+    ///     Note - this factory simply removes the class level attribute from the list of methods.  The action and properties
+    ///     look up this attribute directly
     /// </summary>
     public sealed class HiddenDefaultMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly string[] FixedPrefixes;
         private static readonly ILog Log = LogManager.GetLogger(typeof(HiddenDefaultMethodFacetFactory));
 
-        static HiddenDefaultMethodFacetFactory() {
+        static HiddenDefaultMethodFacetFactory() =>
             FixedPrefixes = new[] {
                 RecognisedMethodsAndPrefixes.HidePrefix + "Action" + RecognisedMethodsAndPrefixes.DefaultPrefix,
                 RecognisedMethodsAndPrefixes.HidePrefix + "Property" + RecognisedMethodsAndPrefixes.DefaultPrefix
             };
-        }
 
         public HiddenDefaultMethodFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
 
-        public override string[] Prefixes {
-            get { return FixedPrefixes; }
-        }
+        public override string[] Prefixes => FixedPrefixes;
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             try {
-                foreach (string methodName in FixedPrefixes) {
-                    MethodInfo methodInfo = FindMethod(reflector, type, MethodType.Object, methodName, typeof(bool), Type.EmptyTypes);
+                foreach (var methodName in FixedPrefixes) {
+                    var methodInfo = FindMethod(reflector, type, MethodType.Object, methodName, typeof(bool), Type.EmptyTypes);
                     if (methodInfo != null) {
                         methodRemover.RemoveMethod(methodInfo);
                     }

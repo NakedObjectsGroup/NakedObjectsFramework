@@ -14,7 +14,8 @@ using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Reflect.FacetFactory {
     /// <summary>
-    /// This factory filters out properties on system types. So for example 'Length' will not show up when displaying a string.
+    ///     This factory filters out properties on system types. So for example 'Length' will not show up when displaying a
+    ///     string.
     /// </summary>
     public sealed class SystemClassPropertyFilteringFactory : FacetFactoryAbstract, IPropertyFilteringFacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof(SystemClassPropertyFilteringFactory));
@@ -24,15 +25,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         #region IPropertyFilteringFacetFactory Members
 
-        public bool Filters(PropertyInfo property, IClassStrategy classStrategy) {
-            string typeName = property.DeclaringType == null ? "Unknown" : property.DeclaringType.FullName;
-
-            if (classStrategy.IsSystemClass(property.DeclaringType)) {
-                return true;
-            }
-
-            return false;
-        }
+        public bool Filters(PropertyInfo property, IClassStrategy classStrategy) => classStrategy.IsSystemClass(property.DeclaringType);
 
         #endregion
     }

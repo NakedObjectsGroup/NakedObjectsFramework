@@ -30,13 +30,13 @@ namespace NakedObjects.Reflect.FacetFactory {
         }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            bool isDate = property.PropertyType.IsAssignableFrom(typeof(DateTime));
+            var isDate = property.PropertyType.IsAssignableFrom(typeof(DateTime));
             Process(property, isDate, specification);
         }
 
         public override void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
-            bool isDate = parameter.ParameterType.IsAssignableFrom(typeof(DateTime));
+            var parameter = method.GetParameters()[paramNum];
+            var isDate = parameter.ParameterType.IsAssignableFrom(typeof(DateTime));
             var range = parameter.GetCustomAttribute<RangeAttribute>();
             FacetUtils.AddFacet(Create(range, isDate, holder));
         }

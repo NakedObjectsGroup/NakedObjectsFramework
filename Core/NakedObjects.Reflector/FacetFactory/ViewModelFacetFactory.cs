@@ -24,8 +24,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             IFacet facet = null;
 
             if (!type.IsInterface && typeof(IViewModel).IsAssignableFrom(type)) {
-                MethodInfo deriveMethod = type.GetMethod("DeriveKeys", new Type[] { });
-                MethodInfo populateMethod = type.GetMethod("PopulateUsingKeys", new[] {typeof(string[])});
+                var deriveMethod = type.GetMethod("DeriveKeys", new Type[] { });
+                var populateMethod = type.GetMethod("PopulateUsingKeys", new[] {typeof(string[])});
 
                 var toRemove = new List<MethodInfo> {deriveMethod, populateMethod};
 
@@ -33,7 +33,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     facet = new ViewModelEditFacetConvention(specification);
                 }
                 else if (typeof(IViewModelSwitchable).IsAssignableFrom(type)) {
-                    MethodInfo isEditViewMethod = type.GetMethod("IsEditView");
+                    var isEditViewMethod = type.GetMethod("IsEditView");
                     toRemove.Add(isEditViewMethod);
                     facet = new ViewModelSwitchableFacetConvention(specification);
                 }
