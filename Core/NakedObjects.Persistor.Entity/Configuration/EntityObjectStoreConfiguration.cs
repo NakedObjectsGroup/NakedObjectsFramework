@@ -41,7 +41,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         public IEnumerable<CodeFirstEntityContextConfiguration> ContextConfiguration {
             get {
-                IEnumerable<CodeFirstEntityContextConfiguration> cfConfigs = DbContextConstructors.Select(f => new CodeFirstEntityContextConfiguration {
+                var cfConfigs = DbContextConstructors.Select(f => new CodeFirstEntityContextConfiguration {
                     DbContext = f.Item1,
                     PreCachedTypes = f.Item2,
                     NotPersistedTypes = NotPersistedTypes,
@@ -61,7 +61,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         [Obsolete("No longer used as always code first")]
         public bool CodeFirst {
-            get { return true; }
+            get => true;
             set { }
         }
 
@@ -120,9 +120,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         }
 
         [Obsolete("Use Code First")]
-        public EntityContextConfigurator UsingEdmxContext(string name) {
-            throw new NotImplementedException(Log.LogAndReturn("edmx configuration of EF no longer supported - use code first"));
-        }
+        public EntityContextConfigurator UsingEdmxContext(string name) => throw new NotImplementedException(Log.LogAndReturn("edmx configuration of EF no longer supported - use code first"));
 
         // for testing
         public void ForceContextSet() {
@@ -130,22 +128,20 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         }
 
         [Obsolete("No longer used")]
-        public IEnumerable<EntityContextConfiguration> PocoConfiguration() {
-            throw new NotImplementedException(Log.LogAndReturn("edmx configuration of EF no longer supported - use code first"));
-        }
+        public IEnumerable<EntityContextConfiguration> PocoConfiguration() => throw new NotImplementedException(Log.LogAndReturn("edmx configuration of EF no longer supported - use code first"));
 
         public void FlagConnectionStringMismatches(string[] connectionStringNames) {
-            ICollection<string> configuredContextNames = NamedContextTypes.Keys;
+            var configuredContextNames = NamedContextTypes.Keys;
 
-            IEnumerable<string> configuredButNotUsed = configuredContextNames.Where(s => !connectionStringNames.Contains(s));
-            IEnumerable<string> usedButNotConfigured = connectionStringNames.Where(s => !configuredContextNames.Contains(s));
+            var configuredButNotUsed = configuredContextNames.Where(s => !connectionStringNames.Contains(s));
+            var usedButNotConfigured = connectionStringNames.Where(s => !configuredContextNames.Contains(s));
 
             configuredButNotUsed.ForEach(s => Log.WarnFormat(Model.ContextNameMismatch1, s));
             usedButNotConfigured.ForEach(s => Log.WarnFormat(Model.ContextNameMismatch2, s));
         }
 
         public string[] GetConnectionStringNamesFromConfig() {
-            ConnectionStringSettings[] connectionStrings = ConfigurationManager.ConnectionStrings.Cast<ConnectionStringSettings>().Where(x => x.ProviderName == "System.Data.EntityClient").ToArray();
+            var connectionStrings = ConfigurationManager.ConnectionStrings.Cast<ConnectionStringSettings>().Where(x => x.ProviderName == "System.Data.EntityClient").ToArray();
 
             return connectionStrings.Select(cs => cs.Name).ToArray();
         }
@@ -165,14 +161,12 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             private readonly string contextName;
             private readonly EntityObjectStoreConfiguration entityObjectStoreConfiguration;
 
-            private EntityContextConfigurator(EntityObjectStoreConfiguration entityObjectStoreConfiguration) {
-                this.entityObjectStoreConfiguration = entityObjectStoreConfiguration;
-            }
+            private EntityContextConfigurator(EntityObjectStoreConfiguration entityObjectStoreConfiguration) => this.entityObjectStoreConfiguration = entityObjectStoreConfiguration;
 
             public EntityContextConfigurator(EntityObjectStoreConfiguration entityObjectStoreConfiguration, Func<DbContext> f)
                 : this(entityObjectStoreConfiguration) {
                 entityObjectStoreConfiguration.DbContextConstructors.Add(new Tuple<Func<DbContext>, Func<Type[]>>(f, () => new Type[] { }));
-                contextIndex = entityObjectStoreConfiguration.DbContextConstructors.Count() - 1;
+                contextIndex = entityObjectStoreConfiguration.DbContextConstructors.Count - 1;
             }
 
             public EntityContextConfigurator(EntityObjectStoreConfiguration entityObjectStoreConfiguration, string contextName)
@@ -193,7 +187,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             /// <returns>The ContextInstaller on which it was called, allowing further configration.</returns>
             public EntityContextConfigurator AssociateTypes(Func<Type[]> types) {
                 if (string.IsNullOrEmpty(contextName)) {
-                    Tuple<Func<DbContext>, Func<Type[]>> entry = entityObjectStoreConfiguration.DbContextConstructors[contextIndex];
+                    var entry = entityObjectStoreConfiguration.DbContextConstructors[contextIndex];
                     entityObjectStoreConfiguration.DbContextConstructors[contextIndex] = new Tuple<Func<DbContext>, Func<Type[]>>(entry.Item1, types);
                 }
                 else {

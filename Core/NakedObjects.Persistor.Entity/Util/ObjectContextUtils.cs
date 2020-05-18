@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
@@ -28,21 +27,19 @@ namespace NakedObjects.Persistor.Entity.Util {
 
         internal static void Invoke(this object onObject, string name, params object[] parms) => onObject.GetType().GetMethod(name)?.Invoke(onObject, parms);
 
-        internal static T GetProperty<T>(this object onObject, string name) => (T)onObject.GetType().GetProperty(name)?.GetValue(onObject);
+        internal static T GetProperty<T>(this object onObject, string name) => (T) onObject.GetType().GetProperty(name)?.GetValue(onObject);
 
         private static string GetNamespaceForType(this ObjectContext context, Type type) {
             return context.MetadataWorkspace.GetItems(DataSpace.CSpace).Where(x => x.BuiltInTypeKind == BuiltInTypeKind.EntityType || x.BuiltInTypeKind == BuiltInTypeKind.ComplexType).OfType<EdmType>().Where(et => et.Name == type.Name).Select(et => et.NamespaceName).SingleOrDefault();
         }
 
         internal static StructuralType GetStructuralType(ObjectContext context, Type type) {
-            string name = type.Name;
-            string ns = context.GetNamespaceForType(type);
+            var name = type.Name;
+            var ns = context.GetNamespaceForType(type);
             return ns == null ? null : context.MetadataWorkspace.GetType(name, ns, false, DataSpace.CSpace) as StructuralType;
         }
 
-        private static EntityType GetEntityType(this EntityObjectStore.LocalContext context, Type type) {
-            return context.GetStructuralType(type) as EntityType;
-        }
+        private static EntityType GetEntityType(this EntityObjectStore.LocalContext context, Type type) => context.GetStructuralType(type) as EntityType;
 
         private static bool IsTypeInOSpace(this ObjectContext context, Type type) {
             return context.MetadataWorkspace.GetItems(DataSpace.OSpace).Where(x => x.BuiltInTypeKind == BuiltInTypeKind.EntityType || x.BuiltInTypeKind == BuiltInTypeKind.ComplexType).OfType<EdmType>().Any(et => et.FullName == type.FullName);
@@ -81,9 +78,9 @@ namespace NakedObjects.Persistor.Entity.Util {
         }
 
         public static bool IdMembersAreIdentity(this EntityObjectStore.LocalContext context, Type type) {
-            EntityType et = GetEntityType(context, type);
+            var et = GetEntityType(context, type);
             if (et != null) {
-                MetadataProperty[] mp = et.KeyMembers.SelectMany(m => m.MetadataProperties).Where(p => p.Name.Contains("StoreGeneratedPattern")).ToArray();
+                var mp = et.KeyMembers.SelectMany(m => m.MetadataProperties).Where(p => p.Name.Contains("StoreGeneratedPattern")).ToArray();
                 return mp.Any() && mp.All(p => p.Value.Equals("Identity"));
             }
 
@@ -91,7 +88,7 @@ namespace NakedObjects.Persistor.Entity.Util {
         }
 
         private static PropertyInfo[] SafeGetMembers(this EntityObjectStore.LocalContext context, Type type, Func<EntityType, IEnumerable<EdmMember>> getMembers) {
-            EntityType et = GetEntityType(context, type);
+            var et = GetEntityType(context, type);
             if (et != null) {
                 return type.GetProperties().Join(getMembers(et), pi => pi.Name, em => em.Name, (pi, em) => pi).ToArray();
             }
@@ -112,9 +109,9 @@ namespace NakedObjects.Persistor.Entity.Util {
         }
 
         public static PropertyInfo[] GetComplexMembers(this EntityObjectStore.LocalContext context, Type type) {
-            StructuralType st = context.GetStructuralType(type);
+            var st = context.GetStructuralType(type);
             if (st != null) {
-                IEnumerable<EdmMember> cm = st.Members.Where(m => m.TypeUsage.EdmType is ComplexType);
+                var cm = st.Members.Where(m => m.TypeUsage.EdmType is ComplexType);
                 return type.GetProperties().Join(cm, pi => pi.Name, em => em.Name, (pi, em) => pi).ToArray();
             }
 
@@ -129,9 +126,7 @@ namespace NakedObjects.Persistor.Entity.Util {
             return context.GetNavigationMembers(type).Where(x => CollectionUtils.IsCollection(x.PropertyType)).ToArray();
         }
 
-        public static PropertyInfo[] GetAllMembers(this EntityObjectStore.LocalContext context, Type type) {
-            return context.GetMembers(type).Union(context.GetNavigationMembers(type)).ToArray();
-        }
+        public static PropertyInfo[] GetAllMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetMembers(type).Union(context.GetNavigationMembers(type)).ToArray();
 
         public static PropertyInfo[] GetAllNonIdMembers(this EntityObjectStore.LocalContext context, Type type) {
             return context.GetAllMembers(type).Where(x => !context.GetIdMembers(type).Contains(x)).ToArray();
@@ -142,14 +137,14 @@ namespace NakedObjects.Persistor.Entity.Util {
         }
 
         public static object CreateQuery(this EntityObjectStore.LocalContext context, Type type, string queryString, params ObjectParameter[] parameters) {
-            Type mostBaseType = context.GetMostBaseType(type);
-            MethodInfo mi = context.WrappedObjectContext.GetType().GetMethod("CreateQuery").MakeGenericMethod(mostBaseType);
+            var mostBaseType = context.GetMostBaseType(type);
+            var mi = context.WrappedObjectContext.GetType().GetMethod("CreateQuery").MakeGenericMethod(mostBaseType);
             var parms = new List<object> {queryString, new ObjectParameter[] { }};
 
-            object os = mi.Invoke(context.WrappedObjectContext, parms.ToArray());
+            var os = mi.Invoke(context.WrappedObjectContext, parms.ToArray());
 
             if (type != mostBaseType) {
-                MethodInfo ot = os.GetType().GetMethod("OfType").MakeGenericMethod(type);
+                var ot = os.GetType().GetMethod("OfType").MakeGenericMethod(type);
                 os = ot.Invoke(os, null);
             }
 
@@ -158,14 +153,14 @@ namespace NakedObjects.Persistor.Entity.Util {
 
         public static bool CanCreateObjectSet(this EntityObjectStore.LocalContext context, Type type) {
             try {
-                MethodInfo mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(type);
+                var mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(type);
                 mi.Invoke(context.WrappedObjectContext, null);
                 return true;
             }
             catch (Exception) {
                 // expected (but ugly)
                 if (EntityObjectStore.RequireExplicitAssociationOfTypes) {
-                    string msg = $"{type} is not explicitly associated with any DbContext, but 'RequireExplicitAssociationOfTypes' has been set on the PersistorInstaller";
+                    var msg = $"{type} is not explicitly associated with any DbContext, but 'RequireExplicitAssociationOfTypes' has been set on the PersistorInstaller";
                     throw new InitialisationException(Log.LogAndReturn(msg));
                 }
             }
@@ -174,34 +169,32 @@ namespace NakedObjects.Persistor.Entity.Util {
         }
 
         public static ObjectQuery GetObjectSet(this EntityObjectStore.LocalContext context, Type type) {
-            Type mostBaseType = context.GetMostBaseType(type);
-            MethodInfo mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(mostBaseType);
-            ObjectQuery os = (ObjectQuery) mi.Invoke(context.WrappedObjectContext, null);
+            var mostBaseType = context.GetMostBaseType(type);
+            var mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(mostBaseType);
+            var os = (ObjectQuery) mi.Invoke(context.WrappedObjectContext, null);
             os.MergeOption = context.DefaultMergeOption;
             return os;
         }
 
         public static IQueryable<TDerived> GetObjectSetOfType<TDerived, TBase>(this EntityObjectStore.LocalContext context) where TDerived : TBase {
-            MethodInfo mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(typeof(TBase));
+            var mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(typeof(TBase));
             var os = (IQueryable<TBase>) InvokeUtils.Invoke(mi, context.WrappedObjectContext, null);
             ((ObjectQuery) os).MergeOption = context.DefaultMergeOption;
             return os.OfType<TDerived>();
         }
 
-        public static object GetQueryableOfDerivedType<T>(this EntityObjectStore.LocalContext context) {
-            return context.GetQueryableOfDerivedType(typeof(T));
-        }
+        public static object GetQueryableOfDerivedType<T>(this EntityObjectStore.LocalContext context) => context.GetQueryableOfDerivedType(typeof(T));
 
         public static object GetQueryableOfDerivedType(this EntityObjectStore.LocalContext context, Type type) {
-            Type mostBaseType = context.GetMostBaseType(type);
-            MethodInfo mi = typeof(ObjectContextUtils).GetMethod("GetObjectSetOfType").MakeGenericMethod(type, mostBaseType);
+            var mostBaseType = context.GetMostBaseType(type);
+            var mi = typeof(ObjectContextUtils).GetMethod("GetObjectSetOfType").MakeGenericMethod(type, mostBaseType);
             return InvokeUtils.InvokeStatic(mi, new object[] {context});
         }
 
         public static object CreateObject(this EntityObjectStore.LocalContext context, Type type) {
             object objectSet = context.GetObjectSet(type);
-            MethodInfo[] methods = objectSet.GetType().GetMethods();
-            MethodInfo mi = methods.Single(m => m.Name == "CreateObject" && m.IsGenericMethod).MakeGenericMethod(type);
+            var methods = objectSet.GetType().GetMethods();
+            var mi = methods.Single(m => m.Name == "CreateObject" && m.IsGenericMethod).MakeGenericMethod(type);
             return InvokeUtils.Invoke(mi, objectSet, null);
         }
 
@@ -210,9 +203,9 @@ namespace NakedObjects.Persistor.Entity.Util {
                 return objectToProxy;
             }
 
-            object newObject = context.GetObjectSet(objectToProxy.GetType()).Invoke<object>( "CreateObject");
+            var newObject = context.GetObjectSet(objectToProxy.GetType()).Invoke<object>("CreateObject");
 
-            PropertyInfo[] idMembers = context.GetIdMembers(objectToProxy.GetType());
+            var idMembers = context.GetIdMembers(objectToProxy.GetType());
 
             idMembers.ForEach(pi => newObject.GetType().GetProperty(pi.Name).SetValue(newObject, pi.GetValue(objectToProxy, null), null));
 

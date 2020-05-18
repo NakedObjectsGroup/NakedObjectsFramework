@@ -17,26 +17,18 @@ namespace NakedObjects.Persistor.Entity.Util {
         private static readonly ILog Log = LogManager.GetLogger(typeof(EntityUtils));
 
         public static void UpdateVersion(this INakedObjectAdapter nakedObjectAdapter, ISession session, INakedObjectManager manager) {
-            object versionObject = nakedObjectAdapter == null ? null : nakedObjectAdapter.GetVersion(manager);
+            var versionObject = nakedObjectAdapter == null ? null : nakedObjectAdapter.GetVersion(manager);
             if (versionObject != null) {
                 nakedObjectAdapter.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
             }
         }
 
-        public static bool IsEntityProxy(Type type) {
-            return IsEntityProxy(type.FullName ?? "");
-        }
+        public static bool IsEntityProxy(Type type) => IsEntityProxy(type.FullName ?? "");
 
-        public static bool IsEntityProxy(string typeName) {
-            return typeName.StartsWith("System.Data.Entity.DynamicProxies.");
-        }
+        public static bool IsEntityProxy(string typeName) => typeName.StartsWith("System.Data.Entity.DynamicProxies.");
 
-        public static string GetEntityProxiedTypeName(object domainObject) {
-            return domainObject.GetEntityProxiedType().FullName;
-        }
+        public static string GetEntityProxiedTypeName(object domainObject) => domainObject.GetEntityProxiedType().FullName;
 
-        public static Type GetEntityProxiedType(this object domainObject) {
-            return IsEntityProxy(domainObject.GetType()) ? domainObject.GetType().BaseType : domainObject.GetType();
-        }
+        public static Type GetEntityProxiedType(this object domainObject) => IsEntityProxy(domainObject.GetType()) ? domainObject.GetType().BaseType : domainObject.GetType();
     }
 }

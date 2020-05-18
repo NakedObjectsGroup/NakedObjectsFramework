@@ -37,7 +37,7 @@ namespace NakedObjects.Persistor.Entity.Adapter {
             helper.AddSerializable(EntityKey);
             helper.Add(HasPrevious);
             if (HasPrevious) {
-                helper.Add(previous as IEncodedToStrings);
+                helper.Add(previous);
             }
 
             return helper.ToArray();
@@ -101,15 +101,15 @@ namespace NakedObjects.Persistor.Entity.Adapter {
             cachedHashCode = HashCodeUtils.Hash(cachedHashCode, TypeName);
             cachedHashCode = HashCodeUtils.Hash(cachedHashCode, Key);
 
-            object keys = Key.Aggregate((s, t) => s + ":" + t);
+            var keys = Key.Aggregate((s, t) => $"{s}:{t}");
 
             cachedToString = $"{(IsTransient ? "T" : "")}EOID#{keys}{(previous == null ? "" : "+")}";
         }
 
         private void ThrowErrorIfNotTransient(object[] newKey = null) {
             if (!IsTransient) {
-                string newKeyString = newKey != null ? newKey.Aggregate("New Key", (s, t) => s + " : " + t.ToString()) : "";
-                string error = $"Attempting to make persistent an already persisted object. Type {TypeName}  Existing Key: {cachedToString} {newKeyString}";
+                var newKeyString = newKey != null ? newKey.Aggregate("New Key", (s, t) => $"{s} : {t}") : "";
+                var error = $"Attempting to make persistent an already persisted object. Type {TypeName}  Existing Key: {cachedToString} {newKeyString}";
                 throw new NotPersistableException(Log.LogAndReturn(error));
             }
         }
@@ -146,7 +146,7 @@ namespace NakedObjects.Persistor.Entity.Adapter {
             EntityKey = (EntityKey) helper.GetNextSerializable();
 
             if (helper.HasNext) {
-                bool hasPrevious = helper.GetNextBool();
+                var hasPrevious = helper.GetNextBool();
                 if (hasPrevious) {
                     previous = (EntityOid) helper.GetNextEncodedToStrings();
                 }
@@ -159,27 +159,16 @@ namespace NakedObjects.Persistor.Entity.Adapter {
 
         #region Object Overrides
 
-        public override bool Equals(object obj) {
-            if (obj == this) {
-                return true;
-            }
-
-            var oid = obj as EntityOid;
-            if (oid != null) {
-                return TypeName.Equals(oid.TypeName) && Key.SequenceEqual(oid.Key);
-            }
-
-            return false;
-        }
+        public override bool Equals(object obj) => 
+            obj == this ||
+            obj is EntityOid oid &&
+            TypeName.Equals(oid.TypeName) &&
+            Key.SequenceEqual(oid.Key);
 
         // ReSharper disable once NonReadonlyFieldInGetHashCode
-        public override int GetHashCode() {
-            return cachedHashCode;
-        }
+        public override int GetHashCode() => cachedHashCode;
 
-        public override string ToString() {
-            return cachedToString;
-        }
+        public override string ToString() => cachedToString;
 
         #endregion
     }

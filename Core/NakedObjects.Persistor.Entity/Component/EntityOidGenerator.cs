@@ -37,13 +37,9 @@ namespace NakedObjects.Persistor.Entity.Component {
             return new EntityOid(metamodel, obj.GetType(), new object[] {++transientId}, true);
         }
 
-        public IOid RestoreOid(string[] encodedData) {
-            return new EntityOid(metamodel, encodedData);
-        }
+        public IOid RestoreOid(string[] encodedData) => new EntityOid(metamodel, encodedData);
 
-        public IOid CreateOid(string typeName, object[] keys) {
-            return new EntityOid(metamodel, typeName, keys);
-        }
+        public IOid CreateOid(string typeName, object[] keys) => new EntityOid(metamodel, typeName, keys);
 
         #endregion
     }
