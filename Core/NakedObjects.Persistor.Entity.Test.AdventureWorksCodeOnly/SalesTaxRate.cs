@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.SalesTaxRate")]
-    public partial class SalesTaxRate {
+    public class SalesTaxRate {
         public int SalesTaxRateID { get; set; }
 
         public int StateProvinceID { get; set; }

@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("AWBuildVersion")]
-    public partial class AWBuildVersion {
+    public class AWBuildVersion {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public byte SystemInformationID { get; set; }

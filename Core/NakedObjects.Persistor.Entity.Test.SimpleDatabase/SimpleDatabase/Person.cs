@@ -68,9 +68,7 @@ namespace SimpleDatabase {
         }
 
         [NakedObjectsIgnore]
-        public IDictionary<string, int> GetCallbackStatus() {
-            return callbackStatus;
-        }
+        public IDictionary<string, int> GetCallbackStatus() => callbackStatus;
 
         #endregion
     }
@@ -101,9 +99,7 @@ namespace SimpleDatabase {
 
         private readonly List<Food> _food = new List<Food>();
 
-        public virtual ICollection<Food> Food {
-            get { return _food; }
-        }
+        public virtual ICollection<Food> Food => _food;
 
         #endregion
 

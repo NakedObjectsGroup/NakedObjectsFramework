@@ -15,7 +15,8 @@ namespace TestData {
         [Key]
         public virtual int OrderId { get; set; }
 
-        [Title, Optionally]
+        [Title]
+        [Optionally]
         public virtual string Name { get; set; }
 
         public virtual int ParentOrderId { get; set; }

@@ -12,9 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Purchasing.ShipMethod")]
-    public partial class ShipMethod {
-        public ShipMethod() { }
-
+    public class ShipMethod {
         public int ShipMethodID { get; set; }
 
         [Required]

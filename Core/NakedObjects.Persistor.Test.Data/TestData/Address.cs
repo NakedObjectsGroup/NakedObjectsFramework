@@ -21,13 +21,9 @@ namespace TestData {
 
         #region test code
 
-        public bool HasParent {
-            get { return Parent != null; }
-        }
+        public bool HasParent => Parent != null;
 
-        public bool ParentIsType(Type type) {
-            return type.IsInstanceOfType(Parent);
-        }
+        public bool ParentIsType(Type type) => type.IsInstanceOfType(Parent);
 
         #endregion
     }

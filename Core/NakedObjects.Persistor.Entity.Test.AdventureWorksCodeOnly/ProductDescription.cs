@@ -12,9 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Production.ProductDescription")]
-    public partial class ProductDescription {
-        public ProductDescription() { }
-
+    public class ProductDescription {
         public int ProductDescriptionID { get; set; }
 
         [Required]

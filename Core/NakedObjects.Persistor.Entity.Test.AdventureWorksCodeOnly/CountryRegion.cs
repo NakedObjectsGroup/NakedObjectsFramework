@@ -12,9 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Person.CountryRegion")]
-    public partial class CountryRegion {
-        public CountryRegion() { }
-
+    public class CountryRegion {
         [Key]
         [StringLength(3)]
         public string CountryRegionCode { get; set; }

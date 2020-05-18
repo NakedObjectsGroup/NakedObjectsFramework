@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("ErrorLog")]
-    public partial class ErrorLog {
+    public class ErrorLog {
         public int ErrorLogID { get; set; }
 
         public DateTime ErrorTime { get; set; }

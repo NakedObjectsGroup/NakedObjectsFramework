@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.SpecialOfferProduct")]
-    public partial class SpecialOfferProduct {
+    public class SpecialOfferProduct {
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]

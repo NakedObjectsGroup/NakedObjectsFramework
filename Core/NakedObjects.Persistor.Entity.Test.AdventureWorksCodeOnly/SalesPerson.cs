@@ -11,9 +11,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.SalesPerson")]
-    public partial class SalesPerson {
-        public SalesPerson() { }
-
+    public class SalesPerson {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int SalesPersonID { get; set; }
 

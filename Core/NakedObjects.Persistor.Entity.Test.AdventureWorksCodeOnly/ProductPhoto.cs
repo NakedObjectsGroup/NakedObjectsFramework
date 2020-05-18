@@ -12,9 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Production.ProductPhoto")]
-    public partial class ProductPhoto {
-        public ProductPhoto() { }
-
+    public class ProductPhoto {
         public int ProductPhotoID { get; set; }
 
         public byte[] ThumbNailPhoto { get; set; }

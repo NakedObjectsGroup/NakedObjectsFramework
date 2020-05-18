@@ -12,9 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Purchasing.Vendor")]
-    public partial class Vendor {
-        public Vendor() { }
-
+    public class Vendor {
         public int VendorID { get; set; }
 
         [Required]

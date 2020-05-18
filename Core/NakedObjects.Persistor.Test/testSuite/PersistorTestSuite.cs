@@ -18,36 +18,24 @@ using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.Persistor.TestSuite {
     /// <summary>
-    /// Prerequisite - TestData Fixture run and nakedobjects framework setup
+    ///     Prerequisite - TestData Fixture run and nakedobjects framework setup
     /// </summary>
     public class PersistorTestSuite {
         private readonly INakedObjectsFramework framework;
 
-        public PersistorTestSuite(INakedObjectsFramework framework) {
-            this.framework = framework;
-        }
+        public PersistorTestSuite(INakedObjectsFramework framework) => this.framework = framework;
 
         #region helpers
 
-        private ILifecycleManager LifecycleManager {
-            get { return framework.LifecycleManager; }
-        }
+        private ILifecycleManager LifecycleManager => framework.LifecycleManager;
 
-        private IObjectPersistor Persistor {
-            get { return framework.Persistor; }
-        }
+        private IObjectPersistor Persistor => framework.Persistor;
 
-        private ITransactionManager TransactionManager {
-            get { return framework.TransactionManager; }
-        }
+        private ITransactionManager TransactionManager => framework.TransactionManager;
 
-        private IMetamodelManager Metamodel {
-            get { return framework.MetamodelManager; }
-        }
+        private IMetamodelManager Metamodel => framework.MetamodelManager;
 
-        private INakedObjectAdapter AdapterFor(object domainObject) {
-            return framework.NakedObjectManager.CreateAdapter(domainObject, null, null);
-        }
+        private INakedObjectAdapter AdapterFor(object domainObject) => framework.NakedObjectManager.CreateAdapter(domainObject, null, null);
 
         private Person GetPerson(int id) {
             return framework.Persistor.Instances<Person>().Single(p => p.PersonId == id);

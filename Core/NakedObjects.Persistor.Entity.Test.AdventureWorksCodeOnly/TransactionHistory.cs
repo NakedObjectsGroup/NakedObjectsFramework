@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Production.TransactionHistory")]
-    public partial class TransactionHistory {
+    public class TransactionHistory {
         [Key]
         public int TransactionID { get; set; }
 

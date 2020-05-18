@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.SalesOrderHeaderSalesReason")]
-    public partial class SalesOrderHeaderSalesReason {
+    public class SalesOrderHeaderSalesReason {
         [Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]

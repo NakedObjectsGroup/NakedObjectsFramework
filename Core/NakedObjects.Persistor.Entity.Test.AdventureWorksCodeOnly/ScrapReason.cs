@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Production.ScrapReason")]
-    public partial class ScrapReason {
+    public class ScrapReason {
         public virtual short ScrapReasonID { get; set; }
 
         [Required]

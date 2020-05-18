@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.CountryRegionCurrency")]
-    public partial class CountryRegionCurrency {
+    public class CountryRegionCurrency {
         [Key]
         [Column(Order = 0)]
         [StringLength(3)]

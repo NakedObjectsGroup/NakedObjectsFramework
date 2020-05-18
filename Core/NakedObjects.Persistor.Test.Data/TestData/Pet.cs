@@ -11,10 +11,12 @@ using NakedObjects;
 
 namespace TestData {
     public class Pet : TestHelper {
-        [Key, ForeignKey("Owner")]
+        [Key]
+        [ForeignKey("Owner")]
         public virtual int PetId { get; set; }
 
-        [Title, Optionally]
+        [Title]
+        [Optionally]
         public virtual string Name { get; set; }
 
         public virtual Person Owner { get; set; }

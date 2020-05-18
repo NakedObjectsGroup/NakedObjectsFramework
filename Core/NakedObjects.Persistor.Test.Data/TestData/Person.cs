@@ -23,8 +23,8 @@ namespace TestData {
         [Title]
         [Optionally]
         public virtual string Name {
-            get { return name; }
-            set { name = value; }
+            get => name;
+            set => name = value;
         }
 
         [Optionally]
@@ -62,27 +62,21 @@ namespace TestData {
             return null;
         }
 
-        public IQueryable<Person> FindRelativesByName(IQueryable<Person> persons, string newName) {
-            return (from r in persons
+        public IQueryable<Person> FindRelativesByName(IQueryable<Person> persons, string newName) =>
+            (from r in persons
                 where r.Name == newName
                 select r).AsQueryable();
-        }
 
         [Executed(Where.Remotely)]
-        public string DisableFindRelativesByName(IQueryable<Person> persons, string newName) {
-            return "disabled";
-        }
+        public string DisableFindRelativesByName(IQueryable<Person> persons, string newName) => "disabled";
 
-        public IEnumerable<Person> FindRelativesById(IQueryable<Person> persons, int id) {
-            return from r in persons
-                where r.PersonId == id
-                select r;
-        }
+        public IEnumerable<Person> FindRelativesById(IQueryable<Person> persons, int id) =>
+            from r in persons
+            where r.PersonId == id
+            select r;
 
         [Executed(Where.Remotely)]
-        public bool HideFindRelativesById() {
-            return true;
-        }
+        public bool HideFindRelativesById() => true;
 
         public void UpdateInPersisting() {
             updateInPersisting = true;

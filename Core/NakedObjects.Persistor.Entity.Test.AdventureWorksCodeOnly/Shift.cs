@@ -12,9 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("HumanResources.Shift")]
-    public partial class Shift {
-        public Shift() { }
-
+    public class Shift {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public byte ShiftID { get; set; }
 

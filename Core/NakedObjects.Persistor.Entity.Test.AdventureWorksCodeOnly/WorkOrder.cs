@@ -11,11 +11,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Production.WorkOrder")]
-    public partial class WorkOrder {
-        public WorkOrder() {
-            //WorkOrderRoutings = new HashSet<WorkOrderRouting>();
-        }
-
+    public class WorkOrder {
         public virtual int WorkOrderID { get; set; }
 
         public virtual int ProductID { get; set; }

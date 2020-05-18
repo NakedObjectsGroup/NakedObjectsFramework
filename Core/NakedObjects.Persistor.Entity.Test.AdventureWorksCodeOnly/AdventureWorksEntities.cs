@@ -8,7 +8,7 @@
 using System.Data.Entity;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
-    public partial class AdventureWorksEntities : DbContext {
+    public class AdventureWorksEntities : DbContext {
         public AdventureWorksEntities(string name)
             : base(name) { }
 

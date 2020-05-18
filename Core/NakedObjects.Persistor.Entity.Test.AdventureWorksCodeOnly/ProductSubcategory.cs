@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Production.ProductSubcategory")]
-    public partial class ProductSubcategory {
+    public class ProductSubcategory {
         public virtual int ProductSubcategoryID { get; set; }
         public virtual int ProductCategoryID { get; set; }
 

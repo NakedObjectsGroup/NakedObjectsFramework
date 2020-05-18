@@ -12,9 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.CurrencyRate")]
-    public partial class CurrencyRate {
-        public CurrencyRate() { }
-
+    public class CurrencyRate {
         public int CurrencyRateID { get; set; }
 
         public DateTime CurrencyRateDate { get; set; }

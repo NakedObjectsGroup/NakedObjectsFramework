@@ -27,7 +27,7 @@ namespace TestData {
 
         public override void Persisted() {
             base.Persisted();
-            if (this.Id == 0) {
+            if (Id == 0) {
                 throw new UnexpectedCallException("Id must not be null");
             }
         }

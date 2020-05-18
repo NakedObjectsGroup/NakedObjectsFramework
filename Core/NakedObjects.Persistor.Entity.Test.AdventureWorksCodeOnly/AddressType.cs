@@ -12,9 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Person.AddressType")]
-    public partial class AddressType {
-        public AddressType() { }
-
+    public class AddressType {
         public int AddressTypeID { get; set; }
 
         [Required]

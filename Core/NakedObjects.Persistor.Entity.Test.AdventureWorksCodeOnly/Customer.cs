@@ -12,9 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.Customer")]
-    public partial class Customer {
-        public Customer() { }
-
+    public class Customer {
         public int CustomerID { get; set; }
 
         public int? TerritoryID { get; set; }

@@ -29,29 +29,19 @@ namespace TestData {
         public SimpleRepository<Address> SystemService { protected get; set; }
 
         [NotMapped]
-        public bool HasContainer {
-            get { return Container != null; }
-        }
+        public bool HasContainer => Container != null;
 
         [NotMapped]
-        public bool HasMenuService {
-            get { return MenuService != null; }
-        }
+        public bool HasMenuService => MenuService != null;
 
         [NotMapped]
-        public bool HasContributedActions {
-            get { return ContributedActions != null; }
-        }
+        public bool HasContributedActions => ContributedActions != null;
 
         [NotMapped]
-        public bool HasSystemService {
-            get { return SystemService != null; }
-        }
+        public bool HasSystemService => SystemService != null;
 
         [NakedObjectsIgnore]
-        public IDictionary<string, int> GetEvents() {
-            return events;
-        }
+        public IDictionary<string, int> GetEvents() => events;
 
         public void ResetEvents() {
             events = null;

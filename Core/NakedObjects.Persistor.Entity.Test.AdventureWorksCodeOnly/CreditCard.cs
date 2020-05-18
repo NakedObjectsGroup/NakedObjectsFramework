@@ -12,9 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.CreditCard")]
-    public partial class CreditCard {
-        public CreditCard() { }
-
+    public class CreditCard {
         public int CreditCardID { get; set; }
 
         [Required]

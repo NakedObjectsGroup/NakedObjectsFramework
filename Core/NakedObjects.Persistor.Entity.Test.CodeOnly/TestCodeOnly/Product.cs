@@ -70,9 +70,7 @@ namespace TestCodeOnly {
         }
 
         [NakedObjectsIgnore]
-        public IDictionary<string, int> GetCallbackStatus() {
-            return callbackStatus;
-        }
+        public IDictionary<string, int> GetCallbackStatus() => callbackStatus;
 
         #endregion
     }

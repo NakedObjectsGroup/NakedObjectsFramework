@@ -11,9 +11,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Production.Illustration")]
-    public partial class Illustration {
-        public Illustration() { }
-
+    public class Illustration {
         public int IllustrationID { get; set; }
 
         [Column(TypeName = "xml")]

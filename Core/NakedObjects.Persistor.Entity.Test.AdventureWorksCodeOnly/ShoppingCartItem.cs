@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Sales.ShoppingCartItem")]
-    public partial class ShoppingCartItem {
+    public class ShoppingCartItem {
         public int ShoppingCartItemID { get; set; }
 
         [Required]

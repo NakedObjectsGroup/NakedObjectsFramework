@@ -12,9 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Production.Culture")]
-    public partial class Culture {
-        public Culture() { }
-
+    public class Culture {
         [StringLength(6)]
         public string CultureID { get; set; }
 

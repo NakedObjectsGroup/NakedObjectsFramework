@@ -12,9 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Production.UnitMeasure")]
-    public partial class UnitMeasure {
-        public UnitMeasure() { }
-
+    public class UnitMeasure {
         [Key]
         [StringLength(3)]
         public string UnitMeasureCode { get; set; }

@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("HumanResources.JobCandidate")]
-    public partial class JobCandidate {
+    public class JobCandidate {
         public int JobCandidateID { get; set; }
 
         public int? EmployeeID { get; set; }

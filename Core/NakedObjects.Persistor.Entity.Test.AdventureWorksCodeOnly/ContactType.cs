@@ -12,9 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly {
     [Table("Person.ContactType")]
-    public partial class ContactType {
-        public ContactType() { }
-
+    public class ContactType {
         public int ContactTypeID { get; set; }
 
         [Required]

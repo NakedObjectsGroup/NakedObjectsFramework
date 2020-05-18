@@ -11,7 +11,6 @@ namespace TestData {
     public class TestDataContext : DbContext {
         public TestDataContext(string cs) : base(cs) { }
 
-        //public DbSet<Address> Addresses { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Pet> Pets { get; set; }
         public DbSet<Product> Products { get; set; }
