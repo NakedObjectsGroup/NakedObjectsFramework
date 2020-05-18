@@ -29,9 +29,7 @@ namespace NakedObjects.Persistor.Entity.Util {
 
         internal static T GetProperty<T>(this object onObject, string name) => (T) onObject.GetType().GetProperty(name)?.GetValue(onObject);
 
-        private static string GetNamespaceForType(this ObjectContext context, Type type) {
-            return context.MetadataWorkspace.GetItems(DataSpace.CSpace).Where(x => x.BuiltInTypeKind == BuiltInTypeKind.EntityType || x.BuiltInTypeKind == BuiltInTypeKind.ComplexType).OfType<EdmType>().Where(et => et.Name == type.Name).Select(et => et.NamespaceName).SingleOrDefault();
-        }
+        private static string GetNamespaceForType(this ObjectContext context, Type type) => context.MetadataWorkspace.GetItems(DataSpace.CSpace).Where(x => x.BuiltInTypeKind == BuiltInTypeKind.EntityType || x.BuiltInTypeKind == BuiltInTypeKind.ComplexType).OfType<EdmType>().Where(et => et.Name == type.Name).Select(et => et.NamespaceName).SingleOrDefault();
 
         internal static StructuralType GetStructuralType(ObjectContext context, Type type) {
             var name = type.Name;
@@ -41,26 +39,15 @@ namespace NakedObjects.Persistor.Entity.Util {
 
         private static EntityType GetEntityType(this EntityObjectStore.LocalContext context, Type type) => context.GetStructuralType(type) as EntityType;
 
-        private static bool IsTypeInOSpace(this ObjectContext context, Type type) {
-            return context.MetadataWorkspace.GetItems(DataSpace.OSpace).Where(x => x.BuiltInTypeKind == BuiltInTypeKind.EntityType || x.BuiltInTypeKind == BuiltInTypeKind.ComplexType).OfType<EdmType>().Any(et => et.FullName == type.FullName);
-        }
+        private static bool IsTypeInOSpace(this ObjectContext context, Type type) => context.MetadataWorkspace.GetItems(DataSpace.OSpace).Where(x => x.BuiltInTypeKind == BuiltInTypeKind.EntityType || x.BuiltInTypeKind == BuiltInTypeKind.ComplexType).OfType<EdmType>().Any(et => et.FullName == type.FullName);
 
-        public static bool ContextKnowsType(this EntityObjectStore.LocalContext context, Type type) {
-            // problem is that OSpace is not populated until an object set is created. 
-            // and there seems to be no way of navigating to the OSpace type from the CSpace. 
-            // for the moment then workaround by attempting to create an object set.
+        // problem is that OSpace is not populated until an object set is created. 
+        // and there seems to be no way of navigating to the OSpace type from the CSpace. 
+        // for the moment then workaround by attempting to create an object set.
 
-            // For complex types this will only work if the parent is queried first 
-            if (context.WrappedObjectContext.IsTypeInOSpace(type)) {
-                return true;
-            }
-
-            if (context.CanCreateObjectSet(type)) {
-                return true;
-            }
-
-            return false;
-        }
+        // For complex types this will only work if the parent is queried first
+        public static bool ContextKnowsType(this EntityObjectStore.LocalContext context, Type type) =>
+            context.WrappedObjectContext.IsTypeInOSpace(type) || context.CanCreateObjectSet(type);
 
         private static object GetNextKey(Type type, int key) {
             if (!GeneratedKeys.ContainsKey(type)) {
@@ -89,24 +76,16 @@ namespace NakedObjects.Persistor.Entity.Util {
 
         private static PropertyInfo[] SafeGetMembers(this EntityObjectStore.LocalContext context, Type type, Func<EntityType, IEnumerable<EdmMember>> getMembers) {
             var et = GetEntityType(context, type);
-            if (et != null) {
-                return type.GetProperties().Join(getMembers(et), pi => pi.Name, em => em.Name, (pi, em) => pi).ToArray();
-            }
-
-            return new PropertyInfo[] { };
+            return et != null 
+                ? type.GetProperties().Join(getMembers(et), pi => pi.Name, em => em.Name, (pi, em) => pi).ToArray() 
+                : new PropertyInfo[] { };
         }
 
-        public static PropertyInfo[] GetIdMembers(this EntityObjectStore.LocalContext context, Type type) {
-            return context.SafeGetMembers(type, et => et.KeyMembers);
-        }
+        public static PropertyInfo[] GetIdMembers(this EntityObjectStore.LocalContext context, Type type) => context.SafeGetMembers(type, et => et.KeyMembers);
 
-        public static PropertyInfo[] GetNavigationMembers(this EntityObjectStore.LocalContext context, Type type) {
-            return context.SafeGetMembers(type, et => et.NavigationProperties);
-        }
+        public static PropertyInfo[] GetNavigationMembers(this EntityObjectStore.LocalContext context, Type type) => context.SafeGetMembers(type, et => et.NavigationProperties);
 
-        public static PropertyInfo[] GetMembers(this EntityObjectStore.LocalContext context, Type type) {
-            return context.SafeGetMembers(type, et => et.Properties);
-        }
+        public static PropertyInfo[] GetMembers(this EntityObjectStore.LocalContext context, Type type) => context.SafeGetMembers(type, et => et.Properties);
 
         public static PropertyInfo[] GetComplexMembers(this EntityObjectStore.LocalContext context, Type type) {
             var st = context.GetStructuralType(type);
@@ -118,23 +97,15 @@ namespace NakedObjects.Persistor.Entity.Util {
             return new PropertyInfo[] { };
         }
 
-        public static PropertyInfo[] GetReferenceMembers(this EntityObjectStore.LocalContext context, Type type) {
-            return context.GetNavigationMembers(type).Where(x => !CollectionUtils.IsCollection(x.PropertyType)).ToArray();
-        }
+        public static PropertyInfo[] GetReferenceMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetNavigationMembers(type).Where(x => !CollectionUtils.IsCollection(x.PropertyType)).ToArray();
 
-        public static PropertyInfo[] GetCollectionMembers(this EntityObjectStore.LocalContext context, Type type) {
-            return context.GetNavigationMembers(type).Where(x => CollectionUtils.IsCollection(x.PropertyType)).ToArray();
-        }
+        public static PropertyInfo[] GetCollectionMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetNavigationMembers(type).Where(x => CollectionUtils.IsCollection(x.PropertyType)).ToArray();
 
         public static PropertyInfo[] GetAllMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetMembers(type).Union(context.GetNavigationMembers(type)).ToArray();
 
-        public static PropertyInfo[] GetAllNonIdMembers(this EntityObjectStore.LocalContext context, Type type) {
-            return context.GetAllMembers(type).Where(x => !context.GetIdMembers(type).Contains(x)).ToArray();
-        }
+        public static PropertyInfo[] GetAllNonIdMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetAllMembers(type).Where(x => !context.GetIdMembers(type).Contains(x)).ToArray();
 
-        public static PropertyInfo[] GetNonIdMembers(this EntityObjectStore.LocalContext context, Type type) {
-            return context.GetMembers(type).Where(x => !context.GetIdMembers(type).Contains(x)).ToArray();
-        }
+        public static PropertyInfo[] GetNonIdMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetMembers(type).Where(x => !context.GetIdMembers(type).Contains(x)).ToArray();
 
         public static object CreateQuery(this EntityObjectStore.LocalContext context, Type type, string queryString, params ObjectParameter[] parameters) {
             var mostBaseType = context.GetMostBaseType(type);
@@ -212,12 +183,8 @@ namespace NakedObjects.Persistor.Entity.Util {
             return context.GetObjectSet(objectToProxy.GetType()).Invoke<object>("ApplyCurrentValues", newObject);
         }
 
-        public static object[] GetKey(this EntityObjectStore.LocalContext context, object domainObject) {
-            return context.GetIdMembers(domainObject.GetEntityProxiedType()).Select(x => x.GetValue(domainObject, null)).ToArray();
-        }
+        public static object[] GetKey(this EntityObjectStore.LocalContext context, object domainObject) => context.GetIdMembers(domainObject.GetEntityProxiedType()).Select(x => x.GetValue(domainObject, null)).ToArray();
 
-        public static object[] GetKey(this EntityObjectStore.LocalContext context, INakedObjectAdapter nakedObjectAdapter) {
-            return context.GetIdMembers(nakedObjectAdapter.GetDomainObject().GetEntityProxiedType()).Select(x => x.GetValue(nakedObjectAdapter.GetDomainObject(), null)).ToArray();
-        }
+        public static object[] GetKey(this EntityObjectStore.LocalContext context, INakedObjectAdapter nakedObjectAdapter) => context.GetIdMembers(nakedObjectAdapter.GetDomainObject().GetEntityProxiedType()).Select(x => x.GetValue(nakedObjectAdapter.GetDomainObject(), null)).ToArray();
     }
 }

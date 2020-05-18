@@ -334,11 +334,9 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return objectType.GetElementType();
             }
 
-            if (CollectionUtils.IsCollection(objectType)) {
-                return GetTypeToUse(((IEnumerable) domainObject).Cast<object>().FirstOrDefault());
-            }
-
-            return objectType;
+            return CollectionUtils.IsCollection(objectType) 
+                ? GetTypeToUse(((IEnumerable) domainObject).Cast<object>().FirstOrDefault()) 
+                : objectType;
         }
 
         private LocalContext GetContext(INakedObjectAdapter nakedObjectAdapter) => GetContext(nakedObjectAdapter.Object);
@@ -504,12 +502,11 @@ namespace NakedObjects.Persistor.Entity.Component {
         public object GetObjectByKey(IEntityOid eoid, Type type) {
             var context = GetContext(type);
             var memberValueMap = GetMemberValueMap(type, eoid, out var entitySetName);
-
             var oq = context.CreateQuery(type, entitySetName);
 
-            foreach (var kvp in memberValueMap) {
-                var query = string.Format("it.{0}=@{0}", kvp.Key);
-                oq = oq.Invoke<object>("Where", query, new[] {new ObjectParameter(kvp.Key, kvp.Value)});
+            foreach (var (key, value) in memberValueMap) {
+                var query = string.Format("it.{0}=@{0}", key);
+                oq = oq.Invoke<object>("Where", query, new[] {new ObjectParameter(key, value)});
             }
 
             context.GetNavigationMembers(type).Where(m => !CollectionUtils.IsCollection(m.PropertyType)).ForEach(pi => oq = oq.Invoke<object>("Include", pi.Name));
@@ -531,10 +528,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 .ToDictionary(x => x.Key.Name, x => x.Value);
         }
 
-        public object GetObjectByKey(IEntityOid eoid, IObjectSpec hint) {
-            var type = TypeUtils.GetType(hint.FullName);
-            return GetObjectByKey(eoid, type);
-        }
+        public object GetObjectByKey(IEntityOid eoid, IObjectSpec hint) => GetObjectByKey(eoid, TypeUtils.GetType(hint.FullName));
 
         private static object First(IEnumerable enumerable) {
             // ReSharper disable once LoopCanBeConvertedToQuery
@@ -573,12 +567,10 @@ namespace NakedObjects.Persistor.Entity.Component {
             return msg.ToString();
         }
 
-        private static void InjectParentIntoChild(object parent, object child) {
-            var property = child.GetType().GetProperties().SingleOrDefault(p => p.CanWrite &&
-                                                                                p.PropertyType.IsInstanceOfType(parent) &&
-                                                                                p.GetCustomAttribute<RootAttribute>() != null);
-            property?.SetValue(child, parent, null);
-        }
+        private static void InjectParentIntoChild(object parent, object child) =>
+            child.GetType().GetProperties().SingleOrDefault(p => p.CanWrite &&
+                                                                 p.PropertyType.IsInstanceOfType(parent) &&
+                                                                 p.GetCustomAttribute<RootAttribute>() != null)?.SetValue(child, parent, null);
 
         private void CheckProxies(object objectToCheck) {
             var objectType = objectToCheck.GetType();
@@ -651,14 +643,12 @@ namespace NakedObjects.Persistor.Entity.Component {
             return references.Select(x => x.GetProperty<object>("Value"));
         }
 
-        private static IEnumerable<object> GetChangedComplexObjectsInContext(LocalContext context) {
-            var changedOses = context.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Modified);
-            var changedEntities = changedOses.Select(x => x.Entity).ToList();
-
-            var complexObjects = changedEntities.Select(o => new {Obj = o, Prop = context.GetComplexMembers(o.GetEntityProxiedType())}).SelectMany(a => a.Prop.Select(p => p.GetValue(a.Obj, null))).ToList();
-
-            return complexObjects.Where(x => x != null).Distinct();
-        }
+        private static IEnumerable<object> GetChangedComplexObjectsInContext(LocalContext context) =>
+            context.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).
+                Select(ose => new {Obj = ose.Entity, Prop = context.GetComplexMembers(ose.Entity.GetEntityProxiedType())}).
+                SelectMany(a => a.Prop.Select(p => p.GetValue(a.Obj, null))).
+                Where(x => x != null).
+                Distinct();
 
         private static void ValidateIfRequired(INakedObjectAdapter adapter) {
             if (adapter.ResolveState.IsPersistent()) {

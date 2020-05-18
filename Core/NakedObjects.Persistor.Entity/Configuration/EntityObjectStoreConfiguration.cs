@@ -39,31 +39,19 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         #region IEntityObjectStoreConfiguration Members
 
-        public IEnumerable<CodeFirstEntityContextConfiguration> ContextConfiguration {
-            get {
-                var cfConfigs = DbContextConstructors.Select(f => new CodeFirstEntityContextConfiguration {
-                    DbContext = f.Item1,
-                    PreCachedTypes = f.Item2,
-                    NotPersistedTypes = NotPersistedTypes,
-                    CustomConfig = CustomConfig,
-                    DefaultMergeOption = DefaultMergeOption
-                });
-                return cfConfigs;
-            }
-            set {
-                // leave for moment for compiling
-            }
-        }
+        public IEnumerable<CodeFirstEntityContextConfiguration> ContextConfiguration =>
+            DbContextConstructors.Select(f => new CodeFirstEntityContextConfiguration {
+                DbContext = f.Item1,
+                PreCachedTypes = f.Item2,
+                NotPersistedTypes = NotPersistedTypes,
+                CustomConfig = CustomConfig,
+                DefaultMergeOption = DefaultMergeOption
+            });
 
         public IList<Tuple<Func<DbContext>, Func<Type[]>>> DbContextConstructors { get; set; }
         public IDictionary<string, Func<Type[]>> NamedContextTypes { get; set; }
         public Func<Type[]> NotPersistedTypes { get; set; }
 
-        [Obsolete("No longer used as always code first")]
-        public bool CodeFirst {
-            get => true;
-            set { }
-        }
 
         /// <summary>
         ///     If set the persistor will throw an exception if any type is seen that cannot be fully proxied.
@@ -104,9 +92,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         ///     to one or more entity types.
         /// </summary>
         /// <param name="types">A lambda or delegate that returns an array of Types</param>
-        public void SpecifyTypesNotAssociatedWithAnyContext(Func<Type[]> types) {
-            NotPersistedTypes = types;
-        }
+        public void SpecifyTypesNotAssociatedWithAnyContext(Func<Type[]> types) => NotPersistedTypes = types;
 
         /// <summary>
         ///     Call for each code first context in solution.
@@ -119,16 +105,8 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             return new EntityContextConfigurator(this, f);
         }
 
-        [Obsolete("Use Code First")]
-        public EntityContextConfigurator UsingEdmxContext(string name) => throw new NotImplementedException(Log.LogAndReturn("edmx configuration of EF no longer supported - use code first"));
-
         // for testing
-        public void ForceContextSet() {
-            isContextSet = true;
-        }
-
-        [Obsolete("No longer used")]
-        public IEnumerable<EntityContextConfiguration> PocoConfiguration() => throw new NotImplementedException(Log.LogAndReturn("edmx configuration of EF no longer supported - use code first"));
+        public void ForceContextSet() => isContextSet = true;
 
         public void FlagConnectionStringMismatches(string[] connectionStringNames) {
             var configuredContextNames = NamedContextTypes.Keys;
@@ -142,7 +120,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         public string[] GetConnectionStringNamesFromConfig() {
             var connectionStrings = ConfigurationManager.ConnectionStrings.Cast<ConnectionStringSettings>().Where(x => x.ProviderName == "System.Data.EntityClient").ToArray();
-
             return connectionStrings.Select(cs => cs.Name).ToArray();
         }
 
@@ -184,7 +161,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             ///     about a given type.
             /// </summary>
             /// <param name="types">A lambda or delegate that returns an array of Types</param>
-            /// <returns>The ContextInstaller on which it was called, allowing further configration.</returns>
+            /// <returns>The ContextInstaller on which it was called, allowing further configuration.</returns>
             public EntityContextConfigurator AssociateTypes(Func<Type[]> types) {
                 if (string.IsNullOrEmpty(contextName)) {
                     var entry = entityObjectStoreConfiguration.DbContextConstructors[contextIndex];

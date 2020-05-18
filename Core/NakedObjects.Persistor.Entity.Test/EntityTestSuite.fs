@@ -35,7 +35,7 @@ let db =
     EntityObjectStoreConfiguration.NoValidate <- true
     let c = new EntityObjectStoreConfiguration()
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
-    c.ContextConfiguration <- [| Config  |]
+    //c.ContextConfiguration <- [| Config  |]
     let p = getEntityObjectStore c
     p
 

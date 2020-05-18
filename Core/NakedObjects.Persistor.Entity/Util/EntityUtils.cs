@@ -17,7 +17,7 @@ namespace NakedObjects.Persistor.Entity.Util {
         private static readonly ILog Log = LogManager.GetLogger(typeof(EntityUtils));
 
         public static void UpdateVersion(this INakedObjectAdapter nakedObjectAdapter, ISession session, INakedObjectManager manager) {
-            var versionObject = nakedObjectAdapter == null ? null : nakedObjectAdapter.GetVersion(manager);
+            var versionObject = nakedObjectAdapter?.GetVersion(manager);
             if (versionObject != null) {
                 nakedObjectAdapter.OptimisticLock = new ConcurrencyCheckVersion(session.UserName, DateTime.Now, versionObject);
             }

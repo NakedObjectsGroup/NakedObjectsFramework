@@ -12,13 +12,10 @@ using System.Data.Entity.Core.Objects;
 
 namespace NakedObjects.Persistor.Entity.Configuration {
     public interface IEntityObjectStoreConfiguration {
-        IEnumerable<CodeFirstEntityContextConfiguration> ContextConfiguration { get; set; }
+        IEnumerable<CodeFirstEntityContextConfiguration> ContextConfiguration { get; }
         IList<Tuple<Func<DbContext>, Func<Type[]>>> DbContextConstructors { get; set; }
         IDictionary<string, Func<Type[]>> NamedContextTypes { get; set; }
         Func<Type[]> NotPersistedTypes { get; set; }
-
-        [Obsolete("No longer used as always code first")]
-        bool CodeFirst { get; set; }
 
         /// <summary>
         ///     If set the persistor will throw an exception if any type is seen that cannot be fully proxied.
@@ -69,13 +66,8 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         /// <example>UsingCodeFirstContext( () => new MyDbContext())</example>
         EntityObjectStoreConfiguration.EntityContextConfigurator UsingCodeFirstContext(Func<DbContext> f);
 
-        [Obsolete("Use Code First")]
-        EntityObjectStoreConfiguration.EntityContextConfigurator UsingEdmxContext(string name);
-
         void ForceContextSet();
 
-        [Obsolete("No longer used")]
-        IEnumerable<EntityContextConfiguration> PocoConfiguration();
 
         void FlagConnectionStringMismatches(string[] connectionStringNames);
         string[] GetConnectionStringNamesFromConfig();
