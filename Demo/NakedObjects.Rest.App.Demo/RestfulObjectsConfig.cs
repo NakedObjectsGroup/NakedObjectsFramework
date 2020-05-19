@@ -15,7 +15,7 @@ namespace NakedObjects.Rest.App.Demo {
 
         public static void RegisterRestfulObjectsRoutes(IRouteBuilder routes) {
             if (RestRoot != null) {
-                RestfulObjectsControllerBase.AddRestRoutes(routes, RestRoot);
+                RestfulObjectRouting.AddRestRoutes(routes, RestRoot);
             }
         }
 
