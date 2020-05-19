@@ -5,9 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using Microsoft.AspNetCore.Http.Headers;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Net.Http.Headers;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
+using NakedObjects.Rest.Model;
+using NakedObjects.Rest.Snapshot.Representations;
 using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest.API {
@@ -197,5 +206,143 @@ namespace NakedObjects.Rest.API {
             var context = frameworkFacade.ExecuteServiceAction(link, actionName, argsContext);
             return ValidateActionResult(context);
         }
+
+        public static RestSnapshot SnapshotOrNoContent((Func<RestSnapshot> ss, bool validateOnly) t) => t.validateOnly ? throw new NoContentNOSException() : t.ss();
+
+        public static MethodType GetExpectedMethodType(HttpMethod method) =>
+            method switch {
+                _ when method == HttpMethod.Get => MethodType.QueryOnly,
+                _ when method == HttpMethod.Put => MethodType.Idempotent,
+                _ => MethodType.NonIdempotent
+            };
+
+        public static void SetCaching(ResponseHeaders responseHeaders, RestSnapshot ss, (int, int, int) cacheSettings) {
+            var (transactional, userInfo, nonExpiring) = cacheSettings;
+            var cacheTime = ss.Representation.GetCaching() switch {
+                CacheType.Transactional => transactional,
+                CacheType.UserInfo => userInfo,
+                CacheType.NonExpiring => nonExpiring,
+                _ => 0
+            };
+
+            if (cacheTime == 0) {
+                responseHeaders.CacheControl = new CacheControlHeaderValue {NoCache = true};
+                responseHeaders.Append(HeaderNames.Pragma, "no-cache");
+            }
+            else {
+                responseHeaders.CacheControl = new CacheControlHeaderValue {MaxAge = new TimeSpan(0, 0, 0, cacheTime)};
+            }
+
+            var now = DateTime.UtcNow;
+
+            responseHeaders.Date = new DateTimeOffset(now);
+            responseHeaders.Expires = new DateTimeOffset(now).Add(new TimeSpan(0, 0, 0, cacheTime));
+        }
+
+        public static void AppendWarningHeader(ResponseHeaders responseHeaders, string warning) {
+            if (!string.IsNullOrWhiteSpace(warning)) {
+                responseHeaders.Append(HeaderNames.Warning, warning);
+            }
+        }
+
+        public static IDictionary<string, string> GetOptionalCapabilities() =>
+            new Dictionary<string, string> {
+                {"protoPersistentObjects", "yes"},
+                {"deleteObjects", "no"},
+                {"validateOnly", "yes"},
+                {"domainModel", "simple"},
+                {"blobsClobs", "attachments"},
+                {"inlinedMemberRepresentations", "yes"}
+            };
+
+        public static T HandleMalformed<T>(Func<T> f) {
+            try {
+                return f();
+            }
+            catch (BadRequestNOSException) {
+                throw;
+            }
+            catch (ResourceNotFoundNOSException) {
+                throw;
+            }
+            catch (Exception) {
+                throw new BadRequestNOSException("Malformed arguments");
+            }
+        }
+
+        public static void ValidateDomainModel(string domainModel) {
+            if (domainModel != null && domainModel != RestControlFlags.DomainModelType.Simple.ToString().ToLower() && domainModel != RestControlFlags.DomainModelType.Formal.ToString().ToLower()) {
+                var msg = $"Invalid domainModel: {domainModel}";
+                throw new ValidationException((int) HttpStatusCode.BadRequest, msg);
+            }
+        }
+
+        public static void ValidateBinding(ModelStateDictionary modelState) {
+            if (modelState.ErrorCount > 0) {
+                throw new BadRequestNOSException("Malformed arguments");
+            }
+        }
+
+        public static void RejectRequestIfReadOnly() {
+            if (RestfulObjectsControllerBase.IsReadOnly) {
+                var msg = RestSnapshot.DebugWarnings ? "In readonly mode" : "";
+                throw new ValidationException((int) HttpStatusCode.Forbidden, msg);
+            }
+        }
+
+        public static void ValidateArguments(ArgumentMap arguments, bool errorIfNone = true) {
+            if (arguments.IsMalformed) {
+                var msg = $"Malformed arguments{(RestSnapshot.DebugWarnings ? " : " + arguments.MalformedReason : "")}";
+                throw new BadRequestNOSException(msg); // todo i18n
+            }
+
+            if (!arguments.HasValue && errorIfNone) {
+                throw new BadRequestNOSException("Missing arguments"); // todo i18n
+            }
+        }
+
+        public static void ValidateArguments(SingleValueArgument arguments, bool errorIfNone = true) {
+            if (arguments.IsMalformed) {
+                var msg = $"Malformed arguments{(RestSnapshot.DebugWarnings ? " : " + arguments.MalformedReason : "")}";
+                throw new BadRequestNOSException(msg); // todo i18n
+            }
+
+            if (!arguments.HasValue && errorIfNone) {
+                throw new BadRequestNOSException("Missing arguments"); // todo i18n
+            }
+        }
+
+        public static RestControlFlags GetFlags(RestfulObjectsControllerBase controller) =>
+            RestControlFlags.FlagsFromArguments(controller.ValidateOnly,
+                controller.Page,
+                controller.PageSize,
+                controller.DomainModel,
+                RestfulObjectsControllerBase.InlineDetailsInActionMemberRepresentations,
+                RestfulObjectsControllerBase.InlineDetailsInCollectionMemberRepresentations,
+                controller.InlinePropertyDetails ?? RestfulObjectsControllerBase.InlineDetailsInPropertyMemberRepresentations,
+                controller.InlineCollectionItems.HasValue && controller.InlineCollectionItems.Value,
+                RestfulObjectsControllerBase.AllowMutatingActionOnImmutableObject);
+
+        public static RestControlFlags GetFlags(Arguments arguments) {
+            if (arguments.IsMalformed || arguments.ReservedArguments == null) {
+                var errorMsg = arguments.IsMalformed ? arguments.MalformedReason : "Reserved args = null";
+                var msg = $"Malformed arguments{(RestSnapshot.DebugWarnings ? " : " + errorMsg : "")}";
+
+                throw new BadRequestNOSException(msg); // todo i18n
+            }
+
+            return GetFlagsFromArguments(arguments.ReservedArguments);
+        }
+
+        public static RestControlFlags GetFlagsFromArguments(ReservedArguments reservedArguments) =>
+            RestControlFlags.FlagsFromArguments(reservedArguments.ValidateOnly,
+                reservedArguments.Page,
+                reservedArguments.PageSize,
+                reservedArguments.DomainModel,
+                RestfulObjectsControllerBase.InlineDetailsInActionMemberRepresentations,
+                RestfulObjectsControllerBase.InlineDetailsInCollectionMemberRepresentations,
+                reservedArguments.InlinePropertyDetails ?? RestfulObjectsControllerBase.InlineDetailsInPropertyMemberRepresentations,
+                reservedArguments.InlineCollectionItems.HasValue && reservedArguments.InlineCollectionItems.Value,
+                RestfulObjectsControllerBase.AllowMutatingActionOnImmutableObject);
     }
 }

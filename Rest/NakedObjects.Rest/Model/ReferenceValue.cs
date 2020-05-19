@@ -33,7 +33,7 @@ namespace NakedObjects.Rest.Model {
             }
         }
 
-        private object GetObjectByHref(string href, IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
+        private static object GetObjectByHref(string href, IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
             var oids = helper.GetObjectId(href);
             if (oids != null) {
                 var oid = facade.OidTranslator.GetOidTranslation(oids[0] + "/" + oids[1]);

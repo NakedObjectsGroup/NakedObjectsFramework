@@ -12,11 +12,10 @@ namespace NakedObjects.Rest.Model {
     public class PromptArgumentMapBinder : IModelBinder {
         #region IModelBinder Members
 
-        public Task BindModelAsync(ModelBindingContext bindingContext) {
-            return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
+        public Task BindModelAsync(ModelBindingContext bindingContext) =>
+            ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
                 async () => ModelBinderUtils.CreatePromptArgMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext), true),
                 ModelBinderUtils.CreateMalformedArguments<PromptArgumentMap>);
-        }
 
         #endregion
     }

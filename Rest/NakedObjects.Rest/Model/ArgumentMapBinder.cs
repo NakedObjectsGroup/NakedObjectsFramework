@@ -19,17 +19,15 @@ namespace NakedObjects.Rest.Model {
 
         #endregion
 
-        private static Task BindFromBody(ModelBindingContext bindingContext) {
-            return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
+        private static Task BindFromBody(ModelBindingContext bindingContext) =>
+            ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
                 async () => ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext), true),
                 ModelBinderUtils.CreateMalformedArguments<ArgumentMap>);
-        }
 
-        private static Task BindFromQuery(ModelBindingContext bindingContext) {
-            return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
+        private static Task BindFromQuery(ModelBindingContext bindingContext) =>
+            ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
                 async () => ModelBinderUtils.CreateSimpleArgumentMap(bindingContext.HttpContext.Request.QueryString.ToString()) ??
                             ModelBinderUtils.CreateArgumentMap(await ModelBinderUtils.DeserializeQueryString(bindingContext), true),
                 ModelBinderUtils.CreateMalformedArguments<ArgumentMap>);
-        }
     }
 }

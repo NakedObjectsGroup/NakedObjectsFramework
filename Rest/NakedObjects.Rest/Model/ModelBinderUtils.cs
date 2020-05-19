@@ -26,7 +26,7 @@ namespace NakedObjects.Rest.Model {
     public static class ModelBinderUtils {
         private static readonly ILog Logger = LogManager.GetLogger(typeof(ModelBinderUtils));
 
-        private static string ExceptionWarning(Exception e) => RestSnapshot.DebugWarnings ? $"{e.Message} {e.StackTrace.Replace("\r", " ").Replace("\n", " ")}" : "";
+        private static string ExceptionWarning(Exception e) => RestSnapshot.DebugWarnings ? $"{e.Message} {e.StackTrace?.Replace("\r", " ").Replace("\n", " ")}" : "";
 
         private static bool IsReservedName(string name) => name.StartsWith(RestControlFlags.ReservedPrefix);
 
@@ -56,7 +56,7 @@ namespace NakedObjects.Rest.Model {
             return stream;
         }
 
-        // name parm is just to improve logging 
+        // name parameter is just to improve logging 
         private static IValue GetValue(JObject jObject, string name) {
             if (GetNonReservedProperties(jObject).Count() > 1) {
                 Logger.ErrorFormat("Malformed json name: {0)  arguments: {1}", name, jObject.ToString());
@@ -120,9 +120,7 @@ namespace NakedObjects.Rest.Model {
 
         private static IEnumerable<JProperty> FilterProperties(JToken jToken, Func<JProperty, bool> filter) => jToken.Children().Cast<JProperty>().Where(filter);
 
-        private static IEnumerable<JProperty> GetNonReservedProperties(JToken jToken) {
-            return FilterProperties(jToken, c => !IsReservedName(c.Name));
-        }
+        private static IEnumerable<JProperty> GetNonReservedProperties(JToken jToken) => FilterProperties(jToken, c => !IsReservedName(c.Name));
 
         public static SingleValueArgument CreateSingleValueArgument(object obj, bool includeReservedArgs) {
             var arg = new SingleValueArgument();
@@ -191,13 +189,9 @@ namespace NakedObjects.Rest.Model {
             return arg;
         }
 
-        private static IDictionary<string, IValue> ExtractProperties(JToken jObject) {
-            return GetNonReservedProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
-        }
+        private static IDictionary<string, IValue> ExtractProperties(JToken jObject) => GetNonReservedProperties(jObject).ToDictionary(jt => jt.Name, jt => GetValue((JObject) jt.Value, jt.Name));
 
-        private static void PopulateArgumentMap(JToken jObject, ArgumentMap arg) {
-            arg.Map = ExtractProperties(jObject);
-        }
+        private static void PopulateArgumentMap(JToken jObject, ArgumentMap arg) => arg.Map = ExtractProperties(jObject);
 
         private static void PopulatePersistArgumentMap(JToken jObject, PersistArgumentMap arg) {
             var members = jObject[JsonPropertyNames.Members];
@@ -218,9 +212,7 @@ namespace NakedObjects.Rest.Model {
 
         public static T CreateMalformedArguments<T>(string msg) where T : Arguments, new() => new T {IsMalformed = true, MalformedReason = RestSnapshot.DebugWarnings ? msg : ""};
 
-        private static void PopulateSimpleArgumentMap(NameValueCollection collection, ArgumentMap args) {
-            args.Map = collection.AllKeys.Where(k => !IsReservedName(k)).ToDictionary(s => s, s => (IValue) new ScalarValue(collection[s]));
-        }
+        private static void PopulateSimpleArgumentMap(NameValueCollection collection, ArgumentMap args) => args.Map = collection.AllKeys.Where(k => !IsReservedName(k)).ToDictionary(s => s, s => (IValue) new ScalarValue(collection[s]));
 
         public static ArgumentMap CreateSimpleArgumentMap(string query) {
             var collection = HttpUtility.ParseQueryString(query);

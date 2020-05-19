@@ -27,18 +27,18 @@ namespace NakedObjects.Rest.Model {
         public object GetValue(IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
             var items = internalValue.Select(iv => iv.GetValue(facade, helper, oidStrategy)).ToArray();
 
-            if (items.Any()) {
-                var types = items.Select(i => GetProxiedType(i.GetType())).ToArray();
-                var type = GetCommonBaseType(types, types.First());
-
-                var collType = typeof(List<>).MakeGenericType(type);
-                var coll = (IList) Activator.CreateInstance(collType);
-
-                Array.ForEach(items, i => coll.Add(i));
-                return coll;
+            if (!items.Any()) {
+                return null;
             }
 
-            return null;
+            var types = items.Select(i => GetProxiedType(i.GetType())).ToArray();
+            var type = GetCommonBaseType(types, types.First());
+
+            var collType = typeof(List<>).MakeGenericType(type);
+            var coll = (IList) Activator.CreateInstance(collType);
+
+            Array.ForEach(items, i => coll.Add(i));
+            return coll;
         }
 
         #endregion
@@ -57,8 +57,6 @@ namespace NakedObjects.Rest.Model {
 
         // end clone 
 
-        private static Type GetCommonBaseType(Type[] types, Type baseType) {
-            return types.Any(type => !type.IsAssignableFrom(baseType)) ? GetCommonBaseType(types, baseType.BaseType) : baseType;
-        }
+        private static Type GetCommonBaseType(Type[] types, Type baseType) => types.Any(type => !type.IsAssignableFrom(baseType)) ? GetCommonBaseType(types, baseType.BaseType) : baseType;
     }
 }

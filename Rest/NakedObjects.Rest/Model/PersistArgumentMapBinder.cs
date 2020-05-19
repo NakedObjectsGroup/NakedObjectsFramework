@@ -12,11 +12,10 @@ namespace NakedObjects.Rest.Model {
     public class PersistArgumentMapBinder : IModelBinder {
         #region IModelBinder Members
 
-        public Task BindModelAsync(ModelBindingContext bindingContext) {
-            return ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
+        public Task BindModelAsync(ModelBindingContext bindingContext) =>
+            ModelBinderUtils.BindModelOnSuccessOrFail(bindingContext,
                 async () => ModelBinderUtils.CreatePersistArgMap(await ModelBinderUtils.DeserializeJsonContent(bindingContext), true),
                 ModelBinderUtils.CreateMalformedArguments<PersistArgumentMap>);
-        }
 
         #endregion
     }
