@@ -22,7 +22,7 @@ namespace NakedObjects.Meta.Facet {
 
         public string Validate(INakedObjectAdapter nakedObjectAdapter) => null;
 
-        public string ValidateParms(INakedObjectAdapter nakedObjectAdapter, Tuple<string, INakedObjectAdapter>[] parms) => null;
+        public string ValidateParms(INakedObjectAdapter nakedObjectAdapter, (string, INakedObjectAdapter)[] parms) => null;
 
         #endregion
     }

@@ -8,6 +8,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure.Design;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -207,6 +208,16 @@ namespace NakedObjects.Core.Spec {
 
         #endregion
 
+        private static IFacet GetOpFacet<T>(ISpecification s) where T : class, IFacet {
+            var facet = s.GetFacet<T>();
+            return facet == null
+                ? null
+                : facet.IsNoOp
+                    ? null
+                    : facet;
+        }
+
+
         private (INakedObjectAdapter, TypeOfDefaultValue) GetDefaultValueAndType(INakedObjectAdapter nakedObjectAdapter) {
             if (parentAction.IsContributedMethod && nakedObjectAdapter != null) {
                 var matchingParms = parentAction.Parameters.Where(p => nakedObjectAdapter.Spec.IsOfType(p.Spec)).ToArray();
@@ -216,13 +227,12 @@ namespace NakedObjects.Core.Spec {
                 }
             }
 
-            var facet = (IFacet) GetFacet<IActionDefaultsFacet>() ?? Spec.GetFacet<IDefaultedFacet>();
+            var facet = GetOpFacet<IActionDefaultsFacet>(this) ?? GetOpFacet<IDefaultedFacet>(Spec);
 
             var (domainObject, typeOfDefaultValue) = facet switch {
-                IActionDefaultsFacet adf when !adf.IsNoOp => adf.GetDefault(parentAction.RealTarget(nakedObjectAdapter)),
-                IDefaultedFacet df when !df.IsNoOp => (df.Default, TypeOfDefaultValue.Implicit),
-                _ when nakedObjectAdapter == null => (null, TypeOfDefaultValue.Implicit),
-                _ when nakedObjectAdapter.Object.GetType().IsValueType => (0, TypeOfDefaultValue.Implicit),
+                IActionDefaultsFacet adf => adf.GetDefault(parentAction.RealTarget(nakedObjectAdapter)),
+                IDefaultedFacet df  => (df.Default, TypeOfDefaultValue.Implicit),
+                _ when nakedObjectAdapter?.Object?.GetType().IsValueType == true => (0, TypeOfDefaultValue.Implicit),
                 _ => (null, TypeOfDefaultValue.Implicit)
             };
 

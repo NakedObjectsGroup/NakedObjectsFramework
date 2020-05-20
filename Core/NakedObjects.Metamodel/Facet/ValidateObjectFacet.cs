@@ -55,9 +55,9 @@ namespace NakedObjects.Meta.Facet {
             return null;
         }
 
-        public string ValidateParms(INakedObjectAdapter nakedObjectAdapter, Tuple<string, INakedObjectAdapter>[] parms) {
+        public string ValidateParms(INakedObjectAdapter nakedObjectAdapter, (string, INakedObjectAdapter)[] parms) {
             foreach (var validator in ValidateMethods) {
-                var matches = validator.ParameterNames.Select(name => parms.SingleOrDefault(p => p.Item1.ToLower() == name)).Where(p => p != null).ToArray();
+                var matches = validator.ParameterNames.Select(name => parms.SingleOrDefault(p => p.Item1.ToLower() == name)).Where(p => p != default).ToArray();
 
                 if (matches.Length == validator.ParameterNames.Length) {
                     var parameters = matches.Select(p => p.Item2).ToArray();

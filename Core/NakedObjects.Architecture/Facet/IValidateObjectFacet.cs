@@ -11,6 +11,6 @@ using NakedObjects.Architecture.Adapter;
 namespace NakedObjects.Architecture.Facet {
     public interface IValidateObjectFacet : IFacet {
         string Validate(INakedObjectAdapter nakedObjectAdapter);
-        string ValidateParms(INakedObjectAdapter nakedObjectAdapter, Tuple<string, INakedObjectAdapter>[] parms);
+        string ValidateParms(INakedObjectAdapter nakedObjectAdapter, (string, INakedObjectAdapter)[] parms);
     }
 }

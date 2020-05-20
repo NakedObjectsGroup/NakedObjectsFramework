@@ -271,7 +271,7 @@ namespace NakedObjects.Facade.Impl {
             var validateFacet = context.Specification.GetFacet<IValidateObjectFacet>();
 
             if (validateFacet != null) {
-                var allParms = context.VisibleProperties.Select(pc => new Tuple<string, INakedObjectAdapter>(pc.Id.ToLower(), pc.ProposedNakedObject)).ToArray();
+                var allParms = context.VisibleProperties.Select(pc => (pc.Id.ToLower(), pc.ProposedNakedObject)).ToArray();
 
                 var result = validateFacet.ValidateParms(context.Target, allParms);
                 if (!string.IsNullOrEmpty(result)) {
