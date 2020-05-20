@@ -42,6 +42,38 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         protected RelType SelfRelType { get; set; }
 
+        #region IRepresentation Members
+
+        public virtual MediaTypeHeaderValue GetContentType() => SelfRelType?.GetMediaType(Flags);
+
+        public EntityTagHeaderValue GetEtag() => Etag != null ? new EntityTagHeaderValue($"\"{Etag}\"") : null;
+
+        public CacheType GetCaching() => Caching;
+
+        public string[] GetWarnings() {
+            var allWarnings = new List<string>(Warnings);
+
+            try {
+                var properties = GetType().GetProperties();
+
+                var repProperties = properties.Where(p => typeof(IRepresentation).IsAssignableFrom(p.PropertyType)).Select(p => (IRepresentation) p.GetValue(this, null));
+                var repProperties1 = properties.Where(p => typeof(IRepresentation[]).IsAssignableFrom(p.PropertyType)).SelectMany(p => (IRepresentation[]) p.GetValue(this, null));
+
+                allWarnings.AddRange(repProperties.Where(p => p != null).SelectMany(p => p.GetWarnings()));
+                allWarnings.AddRange(repProperties1.Where(p => p != null).SelectMany(p => p.GetWarnings()));
+            }
+            catch (Exception e) {
+                Log.ErrorFormat("Error on getting warnings - is a Representation null?", e);
+                throw;
+            }
+
+            return allWarnings.ToArray();
+        }
+
+        public Uri GetLocation() => SelfRelType?.GetUri();
+
+        #endregion
+
         protected void SetEtag(string digest) {
             if (digest != null) {
                 Etag = digest;
@@ -193,37 +225,5 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
             return LinkRepresentation.Create(oidStrategy, new ValueRelType(property, helper), flags, optionals.ToArray());
         }
-
-        #region IRepresentation Members
-
-        public virtual MediaTypeHeaderValue GetContentType() => SelfRelType?.GetMediaType(Flags);
-
-        public EntityTagHeaderValue GetEtag() => Etag != null ? new EntityTagHeaderValue($"\"{Etag}\"") : null;
-
-        public CacheType GetCaching() => Caching;
-
-        public string[] GetWarnings() {
-            var allWarnings = new List<string>(Warnings);
-
-            try {
-                var properties = GetType().GetProperties();
-
-                var repProperties = properties.Where(p => typeof(IRepresentation).IsAssignableFrom(p.PropertyType)).Select(p => (IRepresentation) p.GetValue(this, null));
-                var repProperties1 = properties.Where(p => typeof(IRepresentation[]).IsAssignableFrom(p.PropertyType)).SelectMany(p => (IRepresentation[]) p.GetValue(this, null));
-
-                allWarnings.AddRange(repProperties.Where(p => p != null).SelectMany(p => p.GetWarnings()));
-                allWarnings.AddRange(repProperties1.Where(p => p != null).SelectMany(p => p.GetWarnings()));
-            }
-            catch (Exception e) {
-                Log.ErrorFormat("Error on getting warnings - is a Representation null?", e);
-                throw;
-            }
-
-            return allWarnings.ToArray();
-        }
-
-        public Uri GetLocation() => SelfRelType?.GetUri();
-
-        #endregion
     }
 }

@@ -223,11 +223,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
             var incomingMediaTypes = headers.Accept;
 
-            if (!incomingMediaTypes.Any() || incomingMediaTypes.Any(mt => RestUtils.IsJsonMediaType(mt.MediaType.ToString()))) {
-                return false;
-            }
-
-            return true;
+            return incomingMediaTypes.Any() &&
+                   !incomingMediaTypes.Any(mt => RestUtils.IsJsonMediaType(mt.MediaType.ToString()));
         }
 
         public void ValidateIncomingMediaTypeAsJson() {
@@ -292,38 +289,20 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             }
         }
 
-        private void MapToRepresentation(Exception e, HttpRequest req) {
-            if (e is WithContextNOSException contextNosException) {
-                var format = e is BadPersistArgumentsException ? ArgumentsRepresentation.Format.Full : ArgumentsRepresentation.Format.MembersOnly;
-                var flags = e is BadPersistArgumentsException bpe ? bpe.Flags : RestControlFlags.DefaultFlags();
-
-                if (contextNosException.Contexts.Any(c => c.ErrorCause == Cause.Disabled || c.ErrorCause == Cause.Immutable)) {
-                    Representation = NullRepresentation.Create();
-                }
-                else if (e is BadPersistArgumentsException && contextNosException.ContextFacade != null && contextNosException.Contexts.Any()) {
-                    Representation = ArgumentsRepresentation.Create(oidStrategy, req, contextNosException.ContextFacade, contextNosException.Contexts, format, flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments));
-                }
-                else if (contextNosException.ContextFacade != null) {
-                    Representation = ArgumentsRepresentation.Create(oidStrategy, req, contextNosException.ContextFacade, format, flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments));
-                }
-                else if (contextNosException.Contexts.Any()) {
-                    Representation = ArgumentsRepresentation.Create(oidStrategy, req, contextNosException.Contexts, format, flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments));
-                }
-                else {
-                    Representation = NullRepresentation.Create();
-                }
-            }
-            else if (e is ResourceNotFoundNOSException ||
-                     e is NotAllowedNOSException ||
-                     e is PreconditionFailedNOSException ||
-                     e is PreconditionMissingNOSException ||
-                     e is NoContentNOSException) {
-                Representation = NullRepresentation.Create();
-            }
-            else {
-                Representation = ErrorRepresentation.Create(oidStrategy, e);
-            }
-        }
+        private void MapToRepresentation(Exception e, HttpRequest req) =>
+            Representation = e switch {
+                WithContextNOSException wce when wce.Contexts.Any(c => c.ErrorCause == Cause.Disabled || c.ErrorCause == Cause.Immutable) => NullRepresentation.Create(),
+                BadPersistArgumentsException bpe when bpe.ContextFacade != null && bpe.Contexts.Any() => ArgumentsRepresentation.Create(oidStrategy, req, bpe.ContextFacade, bpe.Contexts, ArgumentsRepresentation.Format.Full, bpe.Flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments)),
+                WithContextNOSException wce when wce.ContextFacade != null => ArgumentsRepresentation.Create(oidStrategy, req, wce.ContextFacade, ArgumentsRepresentation.Format.MembersOnly, RestControlFlags.DefaultFlags(), UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments)),
+                WithContextNOSException wce when wce.Contexts.Any() => ArgumentsRepresentation.Create(oidStrategy, req, wce.Contexts, ArgumentsRepresentation.Format.MembersOnly, RestControlFlags.DefaultFlags(), UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments)),
+                WithContextNOSException _ => NullRepresentation.Create(),
+                ResourceNotFoundNOSException _ => NullRepresentation.Create(),
+                NotAllowedNOSException _ => NullRepresentation.Create(),
+                PreconditionFailedNOSException _ => NullRepresentation.Create(),
+                PreconditionMissingNOSException _ => NullRepresentation.Create(),
+                NoContentNOSException _ => NullRepresentation.Create(),
+                _ => ErrorRepresentation.Create(oidStrategy, e)
+            };
 
         private void SetHeaders() {
             if (Representation != null) {
@@ -343,66 +322,36 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             const HttpStatusCode unprocessableEntity = (HttpStatusCode) 422;
             const HttpStatusCode preconditionHeaderMissing = (HttpStatusCode) 428;
 
-            if (e is ResourceNotFoundNOSException) {
-                HttpStatusCode = HttpStatusCode.NotFound;
-            }
-            else if (e is BadArgumentsNOSException bre) {
-                if (bre.Contexts.Any(c => c.ErrorCause == Cause.Immutable)) {
-                    HttpStatusCode = HttpStatusCode.MethodNotAllowed;
-                }
-                else if (bre.Contexts.Any(c => c.ErrorCause == Cause.Disabled)) {
-                    HttpStatusCode = HttpStatusCode.Forbidden;
-                }
-                else {
-                    HttpStatusCode = unprocessableEntity;
-                }
-            }
-            else if (e is BadRequestNOSException) {
-                HttpStatusCode = HttpStatusCode.BadRequest;
-            }
-            else if (e is NotAllowedNOSException) {
-                HttpStatusCode = HttpStatusCode.MethodNotAllowed;
-            }
-            else if (e is NoContentNOSException) {
-                HttpStatusCode = HttpStatusCode.NoContent;
-            }
-            else if (e is PreconditionFailedNOSException) {
-                HttpStatusCode = HttpStatusCode.PreconditionFailed;
-            }
-            else if (e is PreconditionMissingNOSException) {
-                HttpStatusCode = preconditionHeaderMissing;
-            }
-            else {
-                HttpStatusCode = HttpStatusCode.InternalServerError;
-            }
+            HttpStatusCode = e switch {
+                ResourceNotFoundNOSException _ => HttpStatusCode.NotFound,
+                BadArgumentsNOSException bre when bre.Contexts.Any(c => c.ErrorCause == Cause.Immutable) => HttpStatusCode.MethodNotAllowed,
+                BadArgumentsNOSException bre when bre.Contexts.Any(c => c.ErrorCause == Cause.Disabled) => HttpStatusCode.Forbidden,
+                BadArgumentsNOSException _ => unprocessableEntity,
+                BadRequestNOSException _ => HttpStatusCode.BadRequest,
+                NotAllowedNOSException _ => HttpStatusCode.MethodNotAllowed,
+                NoContentNOSException _ => HttpStatusCode.NoContent,
+                PreconditionFailedNOSException _ => HttpStatusCode.PreconditionFailed,
+                PreconditionMissingNOSException _ => preconditionHeaderMissing,
+                _ => HttpStatusCode.InternalServerError
+            };
         }
 
         private void MapToWarningHeader(Exception e) {
-            IList<string> warnings = new List<string>();
 
-            if (e is ResourceNotFoundNOSException) {
-                warnings.Add(e.Message);
+            IList<string> ImmutableWarning() {
+                allowHeaders.Add("GET");
+                return new List<string> { "object is immutable" };
             }
-            else if (e is WithContextNOSException bae) {
-                if (bae.Contexts.Any(c => c.ErrorCause == Cause.Immutable)) {
-                    warnings.Add("object is immutable");
-                    allowHeaders.Add("GET");
-                }
-                else if (bae.Contexts.Any(c => !string.IsNullOrEmpty(c.Reason))) {
-                    foreach (var w in bae.Contexts.Where(c => !string.IsNullOrEmpty(c.Reason)).Select(c => c.Reason)) {
-                        warnings.Add(w);
-                    }
-                }
-                else if (!string.IsNullOrWhiteSpace(bae.Message)) {
-                    warnings.Add(bae.Message);
-                }
-            }
-            else if (e is NoContentNOSException) {
-                // do nothing 
-            }
-            else {
-                warnings.Add(e.Message);
-            }
+
+            var warnings = e switch {
+                ResourceNotFoundNOSException _ => new List<string> { e.Message },
+                WithContextNOSException bae when bae.Contexts.Any(c => c.ErrorCause == Cause.Immutable) => ImmutableWarning(),
+                WithContextNOSException bae when bae.Contexts.Any(c => !string.IsNullOrEmpty(c.Reason)) => bae.Contexts.Where(c => !string.IsNullOrEmpty(c.Reason)).Select(c => c.Reason).ToList(),
+                WithContextNOSException bae when string.IsNullOrWhiteSpace(bae.Message) =>  new List<string>(),
+                WithContextNOSException bae => new List<string> { bae.Message },
+                NoContentNOSException _=> new List<string>(),
+                _ => new List<string> {e.Message}
+            };
 
             foreach (var w in warnings) {
                 warningHeaders.Add(RestUtils.ToWarningHeaderValue(199, w));

@@ -39,11 +39,9 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.HasChoices, strategy.GetHasChoices()));
             }
 
-            if (optionals.Any()) {
-                return CreateWithOptionals<InlinePropertyRepresentation>(new object[] {oidStrategy, strategy}, optionals);
-            }
-
-            return new InlinePropertyRepresentation(oidStrategy, strategy);
+            return optionals.Any() 
+                ? CreateWithOptionals<InlinePropertyRepresentation>(new object[] {oidStrategy, strategy}, optionals) 
+                : new InlinePropertyRepresentation(oidStrategy, strategy);
         }
     }
 }

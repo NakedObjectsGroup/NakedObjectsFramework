@@ -11,7 +11,6 @@ using System.Net;
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class RedirectionException : Exception {
         public RedirectionException(Uri redirectAddress) => RedirectAddress = redirectAddress;
-
         public int StatusCode => (int) HttpStatusCode.MovedPermanently;
         public Uri RedirectAddress { get; }
     }

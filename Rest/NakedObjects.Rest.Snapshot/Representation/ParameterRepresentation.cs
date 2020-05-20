@@ -161,11 +161,9 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 }
             }
 
-            if (optionals.Count == 0) {
-                return new ParameterRepresentation(oidStrategy, req, objectFacade, adapter, flags);
-            }
-
-            return CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy, req, objectFacade, adapter, flags}, optionals);
+            return optionals.Any() 
+                ? CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy, req, objectFacade, adapter, flags}, optionals) 
+                : new ParameterRepresentation(oidStrategy, req, objectFacade, adapter, flags);
         }
 
         public static ParameterRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade objectFacade, IAssociationFacade assoc, ActionContextFacade actionContext, RestControlFlags flags) {
@@ -189,11 +187,9 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Default, defaultValue));
             }
 
-            if (optionals.Count == 0) {
-                return new ParameterRepresentation(oidStrategy, req, objectFacade, adapter, flags);
-            }
-
-            return CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy, req, objectFacade, adapter, flags}, optionals);
+            return optionals.Any() 
+                ? CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy, req, objectFacade, adapter, flags}, optionals) 
+                : new ParameterRepresentation(oidStrategy, req, objectFacade, adapter, flags);
         }
     }
 }

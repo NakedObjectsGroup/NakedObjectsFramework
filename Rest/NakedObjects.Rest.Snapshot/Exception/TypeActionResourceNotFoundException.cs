@@ -10,7 +10,6 @@ using NakedObjects.Facade;
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class TypeActionResourceNotFoundException : ResourceNotFoundNOSException {
         public TypeActionResourceNotFoundException(string resourceId, string domainId) : base(resourceId) => DomainId = domainId;
-
         public string DomainId { get; }
         public override string Message => $"No such domain type action {ResourceId} in domain type {DomainId}";
     }

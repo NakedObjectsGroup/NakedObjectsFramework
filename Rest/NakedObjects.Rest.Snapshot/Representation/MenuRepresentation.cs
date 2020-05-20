@@ -67,19 +67,16 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             };
 
         private Tuple<string, ActionContextFacade>[] GetMenuItem(IMenuItemFacade item, string parent = "") {
-            if (item is IMenuActionFacade menuActionFacade) {
-                return new[] {new Tuple<string, ActionContextFacade>(item.Name, ActionContext(menuActionFacade, parent))};
-            }
+            string Divider() => string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider;
 
-            if (item is IMenuFacade menuFacade) {
-                parent = parent + (string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider) + menuFacade.Name;
-                return menuFacade.MenuItems.SelectMany(i => GetMenuItem(i, parent)).ToArray();
-            }
-
-            return new Tuple<string, ActionContextFacade>[] { };
+            return item switch {
+                IMenuActionFacade menuActionFacade => new[] {new Tuple<string, ActionContextFacade>(item.Name, ActionContext(menuActionFacade, parent))},
+                IMenuFacade menuFacade => menuFacade.MenuItems.SelectMany(i => GetMenuItem(i, $"{parent}{Divider()}{menuFacade.Name}")).ToArray(),
+                _ => new Tuple<string, ActionContextFacade>[] { }
+            };
         }
 
-        private bool IsVisibleAndUsable(ActionContextFacade actionContextFacade) =>
+        private static bool IsVisibleAndUsable(ActionContextFacade actionContextFacade) =>
             actionContextFacade.Action.IsVisible(actionContextFacade.Target) &&
             actionContextFacade.Action.IsUsable(actionContextFacade.Target).IsAllowed;
 

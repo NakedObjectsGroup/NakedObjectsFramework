@@ -31,16 +31,14 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
             var actions = collectionRepresentationStrategy.GetActions();
 
-            if (actions.Length > 0) {
+            if (actions.Any()) {
                 var members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Members, members));
             }
 
-            if (optionals.Count == 0) {
-                return new CollectionRepresentation(oidStrategy, collectionRepresentationStrategy);
-            }
-
-            return CreateWithOptionals<CollectionRepresentation>(new object[] {oidStrategy, collectionRepresentationStrategy}, optionals);
+            return optionals.Any()
+                ? CreateWithOptionals<CollectionRepresentation>(new object[] {oidStrategy, collectionRepresentationStrategy}, optionals) 
+                : new CollectionRepresentation(oidStrategy, collectionRepresentationStrategy);
         }
     }
 }

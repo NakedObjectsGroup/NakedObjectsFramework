@@ -19,8 +19,8 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             : base(oidStrategy, req, propertyContext, flags) { }
 
         public override LinkRepresentation[] GetValue() {
-            Func<IObjectFacade, LinkRepresentation> createLink = no => Flags.InlineCollectionItems ? CreateTableRowValueLink(no) : CreateValueLink(no);
-            return Collection.ToEnumerable().Select(createLink).ToArray();
+            LinkRepresentation CreateLink(IObjectFacade no) => Flags.InlineCollectionItems ? CreateTableRowValueLink(no) : CreateValueLink(no);
+            return Collection.ToEnumerable().Select(CreateLink).ToArray();
         }
 
         public override int? GetSize() => PropertyContext.Property.Count(PropertyContext.Target);

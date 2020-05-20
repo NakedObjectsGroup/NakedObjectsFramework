@@ -514,7 +514,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public string GetMenuMediaType() => RepresentationTypes.Menu;
 
-        private string GetParameterValue(RestControlFlags flags, string parameterValue) => parameterValue;
+        private static string GetParameterValue(RestControlFlags flags, string parameterValue) => parameterValue;
 
         private string GetParameterValue(RestControlFlags flags, ITypeFacade parameterValueSpec) => RestUtils.SpecToPredefinedTypeString(parameterValueSpec, oidStrategy);
 

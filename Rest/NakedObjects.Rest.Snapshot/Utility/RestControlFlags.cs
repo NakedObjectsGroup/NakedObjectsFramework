@@ -54,25 +54,21 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public bool InlineCollectionItems { get; set; }
         public bool AllowMutatingActionsOnImmutableObject { get; set; }
 
-        private static bool GetBool(object value) {
-            if (value == null) { return false; }
+        private static bool GetBool(object value) =>
+            value switch {
+                null => false,
+                string s => bool.Parse(s),
+                bool b => b,
+                _ => false
+            };
 
-            if (value is string s) { return bool.Parse(s); }
-
-            if (value is bool b) { return b; }
-
-            return false;
-        }
-
-        private static int GetInt(object value) {
-            if (value == null) { return 0; }
-
-            if (value is string s) { return int.Parse(s); }
-
-            if (value is int i) { return i; }
-
-            return 0;
-        }
+        private static int GetInt(object value) =>
+            value switch {
+                null => 0,
+                string s => int.Parse(s),
+                int i => i,
+                _ => 0
+            };
 
         private static int DefaultPageSize(int pageSize) => pageSize == 0 ? ConfiguredPageSize : pageSize;
 
@@ -98,15 +94,15 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public static RestControlFlags DefaultFlags() => GetFlags(s => null);
 
         public static RestControlFlags FlagsFromArguments(bool validateOnly,
-                                                            int page,
-                                                            int pageSize,
-                                                            string domainModel,
-                                                            bool inlineDetailsInActionMemberRepresentations,
-                                                            bool inlineDetailsInCollectionMemberRepresentations,
-                                                            bool inlineDetailsInPropertyMemberRepresentations,
-                                                            bool inlineCollectionItems,
-                                                            bool allowMutatingActionsOnImmutableObjects) =>
-                                                            new RestControlFlags {
+                                                          int page,
+                                                          int pageSize,
+                                                          string domainModel,
+                                                          bool inlineDetailsInActionMemberRepresentations,
+                                                          bool inlineDetailsInCollectionMemberRepresentations,
+                                                          bool inlineDetailsInPropertyMemberRepresentations,
+                                                          bool inlineCollectionItems,
+                                                          bool allowMutatingActionsOnImmutableObjects) =>
+            new RestControlFlags {
                 ValidateOnly = validateOnly,
                 FollowLinks = false,
                 SortBy = false,

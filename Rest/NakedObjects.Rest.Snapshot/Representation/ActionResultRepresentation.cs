@@ -93,7 +93,10 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 }
                 else if (visibleParamContext.Specification.IsCollection) {
                     if (visibleParamContext.ElementSpecification.IsParseable) {
-                        var proposedEnumerable = (visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade?.Object) as IEnumerable;
+                        var proposedEnumerable = (visibleParamContext.ProposedObjectFacade == null 
+                            ? visibleParamContext.ProposedValue 
+                            : visibleParamContext.ProposedObjectFacade?.Object) as IEnumerable;
+                        
                         var proposedCollection = proposedEnumerable == null ? new object[] { } : proposedEnumerable.Cast<object>();
 
                         var valueObjs = proposedCollection.Select(i => RestUtils.ObjectToPredefinedType(i)).ToArray();
@@ -122,26 +125,18 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         public static ActionResultRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ActionResultContextFacade actionResult, RestControlFlags flags) {
-            if (actionResult.HasResult) {
-                IRepresentation result;
-
-                if (actionResult.Result == null) {
-                    result = null;
-                }
-                else if (actionResult.Specification.IsParseable) {
-                    result = ScalarRepresentation.Create(oidStrategy, actionResult.Result, req, flags);
-                }
-                else if (actionResult.Specification.IsObject) {
-                    result = ObjectRepresentation.Create(oidStrategy, actionResult.Result, req, flags);
-                }
-                else {
-                    result = PagedListRepresentation.Create(oidStrategy, actionResult, req, flags);
-                }
-
-                return CreateWithOptionals<ActionResultRepresentation>(new object[] {oidStrategy, req, actionResult, flags}, new[] {new OptionalProperty(JsonPropertyNames.Result, result)});
+            if (!actionResult.HasResult) {
+                return new ActionResultRepresentation(oidStrategy, req, actionResult, flags);
             }
 
-            return new ActionResultRepresentation(oidStrategy, req, actionResult, flags);
+            IRepresentation result = actionResult switch {
+                _ when actionResult.Result == null => null,
+                _ when actionResult.Specification.IsParseable => ScalarRepresentation.Create(oidStrategy, actionResult.Result, req, flags),
+                _ when actionResult.Specification.IsObject => ObjectRepresentation.Create(oidStrategy, actionResult.Result, req, flags),
+                _ => PagedListRepresentation.Create(oidStrategy, actionResult, req, flags)
+            };
+
+            return CreateWithOptionals<ActionResultRepresentation>(new object[] {oidStrategy, req, actionResult, flags}, new[] {new OptionalProperty(JsonPropertyNames.Result, result)});
         }
     }
 }

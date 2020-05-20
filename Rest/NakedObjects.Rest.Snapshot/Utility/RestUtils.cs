@@ -59,22 +59,22 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         };
 
         public static MapRepresentation GetExtensions(string friendlyname,
-            string description,
-            string pluralName,
-            string domainType,
-            bool? isService,
-            bool? hasParams,
-            bool? optional,
-            int? maxLength,
-            string pattern,
-            int? memberOrder,
-            DataType? dataType,
-            string presentationHint,
-            IDictionary<string, object> customExtensions,
-            ITypeFacade returnType,
-            ITypeFacade elementType,
-            IOidStrategy oidStrategy,
-            bool useDateOverDateTime) {
+                                                      string description,
+                                                      string pluralName,
+                                                      string domainType,
+                                                      bool? isService,
+                                                      bool? hasParams,
+                                                      bool? optional,
+                                                      int? maxLength,
+                                                      string pattern,
+                                                      int? memberOrder,
+                                                      DataType? dataType,
+                                                      string presentationHint,
+                                                      IDictionary<string, object> customExtensions,
+                                                      ITypeFacade returnType,
+                                                      ITypeFacade elementType,
+                                                      IOidStrategy oidStrategy,
+                                                      bool useDateOverDateTime) {
             var exts = new Dictionary<string, object> {
                 {JsonPropertyNames.FriendlyName, friendlyname},
                 {JsonPropertyNames.Description, description}
@@ -390,11 +390,11 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         }
 
         private static LinkRepresentation CreateTableRowValueLink(IObjectFacade no,
-            string[] columns,
-            RelType rt,
-            IOidStrategy oidStrategy,
-            HttpRequest req,
-            RestControlFlags flags) {
+                                                                  string[] columns,
+                                                                  RelType rt,
+                                                                  IOidStrategy oidStrategy,
+                                                                  HttpRequest req,
+                                                                  RestControlFlags flags) {
             var optionals = new List<OptionalProperty> {new OptionalProperty(JsonPropertyNames.Title, SafeGetTitle(no))};
 
             columns ??= no.Specification.Properties.Select(p => p.Id).ToArray();
@@ -413,20 +413,20 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         }
 
         public static LinkRepresentation CreateTableRowValueLink(IObjectFacade no,
-            PropertyContextFacade propertyContext,
-            IOidStrategy oidStrategy,
-            HttpRequest req,
-            RestControlFlags flags) {
+                                                                 PropertyContextFacade propertyContext,
+                                                                 IOidStrategy oidStrategy,
+                                                                 HttpRequest req,
+                                                                 RestControlFlags flags) {
             var columns = propertyContext.Property.TableViewData?.Item2;
             var rt = new ValueRelType(propertyContext.Property, new UriMtHelper(oidStrategy, req, no));
             return CreateTableRowValueLink(no, columns, rt, oidStrategy, req, flags);
         }
 
         public static LinkRepresentation CreateTableRowValueLink(IObjectFacade no,
-            ActionContextFacade actionContext,
-            IOidStrategy oidStrategy,
-            HttpRequest req,
-            RestControlFlags flags) {
+                                                                 ActionContextFacade actionContext,
+                                                                 IOidStrategy oidStrategy,
+                                                                 HttpRequest req,
+                                                                 RestControlFlags flags) {
             var columns = actionContext?.Action?.TableViewData?.Item2;
             var helper = new UriMtHelper(oidStrategy, req, no);
             var rt = no.Specification.IsService ? new ServiceRelType(helper) : new ObjectRelType(RelValues.Element, helper);

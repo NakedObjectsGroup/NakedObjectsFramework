@@ -39,7 +39,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         [DataMember(Name = JsonPropertyNames.Members)]
         public MapRepresentation Members { get; set; }
 
-        private UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequest req, ObjectContextFacade objectContext) => new UriMtHelper(oidStrategy, req, objectContext.Target);
+        private static UriMtHelper GetHelper(IOidStrategy oidStrategy, HttpRequest req, ObjectContextFacade objectContext) => new UriMtHelper(oidStrategy, req, objectContext.Target);
 
         private static bool IsProtoPersistent(IObjectFacade objectFacade) => objectFacade.IsTransient;
 
@@ -138,12 +138,12 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Members = RestUtils.CreateMap(allMembers.ToDictionary(m => m.Id, m => (object) m));
         }
 
-        private ActionContextFacade[] FilterLocallyContributedActions(ActionContextFacade[] actions, PropertyContextFacade[] collections) {
+        private static ActionContextFacade[] FilterLocallyContributedActions(ActionContextFacade[] actions, PropertyContextFacade[] collections) {
             var lcas = collections.SelectMany(c => c.Target.Specification.GetLocallyContributedActions(c.Property.ElementSpecification, c.Property.Id));
             return actions.Where(a => !lcas.Select(lca => lca.Id).Contains(a.Id)).ToArray();
         }
 
-        private IDictionary<string, object> GetCustomExtensions(IObjectFacade objectFacade) {
+        private static IDictionary<string, object> GetCustomExtensions(IObjectFacade objectFacade) {
             InteractionMode mode;
 
             if (objectFacade.IsNotPersistent && !objectFacade.IsViewModel) {

@@ -66,7 +66,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         private static bool InlineDetails(PropertyContextFacade propertyContext, RestControlFlags flags) => flags.InlineDetailsInCollectionMemberRepresentations || propertyContext.Property.RenderEagerly;
 
-        private static bool DoNotCount(PropertyContextFacade propertyContext) => propertyContext.Property.DoNotCount && !propertyContext.Property.RenderEagerly;
+        private static bool DoNotCountAndNotEager(PropertyContextFacade propertyContext) => propertyContext.Property.DoNotCount && !propertyContext.Property.RenderEagerly;
 
         public static AbstractCollectionRepresentationStrategy GetStrategy(bool asTableColumn, bool inline, IOidStrategy oidStrategy, HttpRequest req, PropertyContextFacade propertyContext, RestControlFlags flags) {
             if (asTableColumn) {
@@ -77,7 +77,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 return new CollectionMemberRepresentationStrategy(oidStrategy, req, propertyContext, flags);
             }
 
-            if (inline && DoNotCount(propertyContext)) {
+            if (inline && DoNotCountAndNotEager(propertyContext)) {
                 return new CollectionMemberNotCountedRepresentationStrategy(oidStrategy, req, propertyContext, flags);
             }
 
@@ -88,7 +88,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             return new CollectionWithDetailsRepresentationStrategy(oidStrategy, req, propertyContext, flags);
         }
 
-        private ActionContextFacade ActionContext(IActionFacade actionFacade, IObjectFacade target) =>
+        private static ActionContextFacade ActionContext(IActionFacade actionFacade, IObjectFacade target) =>
             new ActionContextFacade {
                 MenuPath = "",
                 Target = target,
@@ -100,7 +100,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             if (!PropertyContext.Target.IsTransient) {
                 var lcas = PropertyContext.Target.Specification.GetLocallyContributedActions(PropertyContext.Property.ElementSpecification, PropertyContext.Property.Id);
 
-                if (lcas.Length > 0) {
+                if (lcas.Any()) {
                     return lcas.Select(a => InlineActionRepresentation.Create(OidStrategy, Req, ActionContext(a, PropertyContext.Target), Flags)).ToArray();
                 }
             }
