@@ -40,7 +40,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public DataType? DataType => parameter?.DataType ?? association?.DataType;
         public string PresentationHint => parameter?.PresentationHint ?? association?.PresentationHint;
 
-        public Tuple<string, ITypeFacade>[] GetChoicesParameters() => parameter?.GetChoicesParameters() ?? association?.GetChoicesParameters();
+        public (string, ITypeFacade)[] GetChoicesParameters() => parameter?.GetChoicesParameters() ?? association?.GetChoicesParameters();
 
         public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) => parameter?.GetChoicesAndTitles(objectFacade, parameterNameValues) ?? association?.GetChoicesAndTitles(objectFacade, parameterNameValues);
 

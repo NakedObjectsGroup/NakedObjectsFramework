@@ -40,7 +40,7 @@ namespace NakedObjects.Facade {
 
         IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
         Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
-        Tuple<string, ITypeFacade>[] GetChoicesParameters();
+        (string, ITypeFacade)[] GetChoicesParameters();
         IObjectFacade[] GetCompletions(IObjectFacade objectFacade, string autoCompleteParm);
 
         string GetMaskedValue(IObjectFacade objectFacade);

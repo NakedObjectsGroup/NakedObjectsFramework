@@ -66,7 +66,7 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Get set of options for the parameter - either coded choices or bounded set
         /// </summary>
-        Tuple<string, IObjectSpec>[] GetChoicesParameters();
+        (string, IObjectSpec)[] GetChoicesParameters();
 
         /// <summary>
         ///     Get set of autocompletions for the parameter

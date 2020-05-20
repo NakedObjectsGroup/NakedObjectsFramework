@@ -39,6 +39,6 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Returns a parameter names and types if the field supports conditional choices
         /// </summary>
-        Tuple<string, IObjectSpec>[] GetChoicesParameters();
+        (string, IObjectSpec)[] GetChoicesParameters();
     }
 }

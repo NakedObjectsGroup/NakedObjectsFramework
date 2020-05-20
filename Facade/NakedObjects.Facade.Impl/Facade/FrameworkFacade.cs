@@ -966,7 +966,7 @@ namespace NakedObjects.Facade.Impl {
 
             public IObjectSpec Specification => prop == null ? parm.Spec : prop.ReturnSpec;
 
-            private Func<Tuple<string, IObjectSpec>[]> GetChoicesParameters => prop == null ? (Func<Tuple<string, IObjectSpec>[]>) parm.GetChoicesParameters : prop.GetChoicesParameters;
+            private Func<(string, IObjectSpec)[]> GetChoicesParameters => prop == null ? (Func<(string, IObjectSpec)[]>) parm.GetChoicesParameters : prop.GetChoicesParameters;
 
             private Func<INakedObjectAdapter, IDictionary<string, INakedObjectAdapter>, INakedObjectAdapter[]> GetChoices => prop == null ? (Func<INakedObjectAdapter, IDictionary<string, INakedObjectAdapter>, INakedObjectAdapter[]>) parm.GetChoices : prop.GetChoices;
 
@@ -997,10 +997,10 @@ namespace NakedObjects.Facade.Impl {
                     throw new BadRequestNOSException("Unrecognised conditional argument(s)");
                 }
 
-                object GetValue(Tuple<string, IObjectSpec> ep) => 
-                    actualParms.ContainsKey(ep.Item1) 
-                        ? actualParms[ep.Item1] 
-                        : ep.Item2.IsParseable 
+                object GetValue((string name, IObjectSpec spec) ep) => 
+                    actualParms.ContainsKey(ep.name) 
+                        ? actualParms[ep.name] 
+                        : ep.spec.IsParseable 
                             ? "" 
                             : null;
 

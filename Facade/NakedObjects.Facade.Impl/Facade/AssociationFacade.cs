@@ -116,9 +116,9 @@ namespace NakedObjects.Facade.Impl {
             return oneToOneFeature?.GetChoices(((ObjectFacade) target).WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
         }
 
-        public Tuple<string, ITypeFacade>[] GetChoicesParameters() {
+        public (string, ITypeFacade)[] GetChoicesParameters() {
             var oneToOneFeature = WrappedSpec as IOneToOneFeatureSpec;
-            return oneToOneFeature != null ? oneToOneFeature.GetChoicesParameters().Select(WrapChoiceParm).ToArray() : new Tuple<string, ITypeFacade>[0];
+            return oneToOneFeature != null ? oneToOneFeature.GetChoicesParameters().Select(WrapChoiceParm).ToArray() : new (string, ITypeFacade)[]{};
         }
 
         public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues) {
@@ -204,7 +204,7 @@ namespace NakedObjects.Facade.Impl {
 
         #endregion
 
-        private Tuple<string, ITypeFacade> WrapChoiceParm(Tuple<string, IObjectSpec> parm) => new Tuple<string, ITypeFacade>(parm.Item1, new TypeFacade(parm.Item2, FrameworkFacade, framework));
+        private (string, ITypeFacade) WrapChoiceParm((string name, IObjectSpec spec) parm) => (parm.name, new TypeFacade(parm.spec, FrameworkFacade, framework));
 
         public override bool Equals(object obj) => obj is AssociationFacade af && Equals(af);
 

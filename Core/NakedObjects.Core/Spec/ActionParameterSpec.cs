@@ -33,7 +33,7 @@ namespace NakedObjects.Core.Spec {
 
         // cache 
         private bool checkedForElementSpec;
-        private Tuple<string, IObjectSpec>[] choicesParameters;
+        private (string, IObjectSpec)[] choicesParameters;
         private string description;
         private IObjectSpec elementSpec;
         private bool? isAutoCompleteEnabled;
@@ -151,15 +151,17 @@ namespace NakedObjects.Core.Spec {
         public bool IsNullable {
             get {
                 isNullable ??= ContainsFacet(typeof(INullableFacet));
-
                 return isNullable.Value;
             }
         }
 
-        public Tuple<string, IObjectSpec>[] GetChoicesParameters() {
+        public (string, IObjectSpec)[] GetChoicesParameters() {
             if (choicesParameters == null) {
                 var choicesFacet = GetFacet<IActionChoicesFacet>();
-                choicesParameters = choicesFacet == null ? new Tuple<string, IObjectSpec>[] { } : choicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, metamodel.GetSpecification(t.Item2))).ToArray();
+                choicesParameters = choicesFacet == null ? new (string, IObjectSpec)[] { } : choicesFacet.ParameterNamesAndTypes.Select(t => {
+                    var (pName, pSpec) = t;
+                    return (pName, metamodel.GetSpecification(pSpec));
+                }).ToArray();
             }
 
             return choicesParameters;
@@ -208,16 +210,6 @@ namespace NakedObjects.Core.Spec {
 
         #endregion
 
-        private static IFacet GetOpFacet<T>(ISpecification s) where T : class, IFacet {
-            var facet = s.GetFacet<T>();
-            return facet == null
-                ? null
-                : facet.IsNoOp
-                    ? null
-                    : facet;
-        }
-
-
         private (INakedObjectAdapter, TypeOfDefaultValue) GetDefaultValueAndType(INakedObjectAdapter nakedObjectAdapter) {
             if (parentAction.IsContributedMethod && nakedObjectAdapter != null) {
                 var matchingParms = parentAction.Parameters.Where(p => nakedObjectAdapter.Spec.IsOfType(p.Spec)).ToArray();
@@ -227,12 +219,13 @@ namespace NakedObjects.Core.Spec {
                 }
             }
 
-            var facet = GetOpFacet<IActionDefaultsFacet>(this) ?? GetOpFacet<IDefaultedFacet>(Spec);
+            var facet = this.GetOpFacet<IActionDefaultsFacet>() ?? Spec.GetOpFacet<IDefaultedFacet>();
 
             var (domainObject, typeOfDefaultValue) = facet switch {
                 IActionDefaultsFacet adf => adf.GetDefault(parentAction.RealTarget(nakedObjectAdapter)),
                 IDefaultedFacet df  => (df.Default, TypeOfDefaultValue.Implicit),
-                _ when nakedObjectAdapter?.Object?.GetType().IsValueType == true => (0, TypeOfDefaultValue.Implicit),
+                _ when nakedObjectAdapter == null => (null, TypeOfDefaultValue.Implicit),
+                _ when nakedObjectAdapter.Object.GetType().IsValueType => (0, TypeOfDefaultValue.Implicit),
                 _ => (null, TypeOfDefaultValue.Implicit)
             };
 

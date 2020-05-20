@@ -54,9 +54,12 @@ namespace NakedObjects.Core.Spec {
 
         public override INakedObjectAdapter GetNakedObject(INakedObjectAdapter fromObjectAdapter) => GetAssociation(fromObjectAdapter);
 
-        public override Tuple<string, IObjectSpec>[] GetChoicesParameters() {
+        public override (string, IObjectSpec)[] GetChoicesParameters() {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
-            return propertyChoicesFacet == null ? new Tuple<string, IObjectSpec>[] { } : propertyChoicesFacet.ParameterNamesAndTypes.Select(t => new Tuple<string, IObjectSpec>(t.Item1, MetamodelManager.GetSpecification(t.Item2))).ToArray();
+            return propertyChoicesFacet == null ? new (string, IObjectSpec)[] { } : propertyChoicesFacet.ParameterNamesAndTypes.Select(t => {
+                var (pName, pSpec) = t;
+                return (pName, MetamodelManager.GetSpecification(pSpec));
+            }).ToArray();
         }
 
         public override INakedObjectAdapter[] GetChoices(INakedObjectAdapter target, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
@@ -153,31 +156,56 @@ namespace NakedObjects.Core.Spec {
             return Manager.CreateAdapter(obj, null, null);
         }
 
-        private Tuple<INakedObjectAdapter, TypeOfDefaultValue> GetDefaultObject(INakedObjectAdapter fromObjectAdapter) {
-            Tuple<object, TypeOfDefaultValue> defaultValue = null;
+        private (INakedObjectAdapter, TypeOfDefaultValue) GetDefaultObject(INakedObjectAdapter fromObjectAdapter)
+        {
+            var facet = this.GetOpFacet<IPropertyDefaultFacet>() ?? ReturnSpec.GetOpFacet<IDefaultedFacet>();
 
-            // Check Facet on property, then facet on type finally fall back on type; 
+            var (domainObject, typeOfDefaultValue) = facet switch
+            {
+                IPropertyDefaultFacet pdf => (pdf.GetDefault(fromObjectAdapter), TypeOfDefaultValue.Explicit),
+                IDefaultedFacet df when !IsNullable => (df.Default, TypeOfDefaultValue.Implicit),
+                _ when fromObjectAdapter == null => (null, TypeOfDefaultValue.Implicit),
+                _ when fromObjectAdapter.Object.GetType().IsValueType => (0, TypeOfDefaultValue.Implicit),
+                _ => (null, TypeOfDefaultValue.Implicit)
+            };
 
-            var defaultsFacet = GetFacet<IPropertyDefaultFacet>();
-            if (defaultsFacet != null && !defaultsFacet.IsNoOp) {
-                defaultValue = new Tuple<object, TypeOfDefaultValue>(defaultsFacet.GetDefault(fromObjectAdapter), TypeOfDefaultValue.Explicit);
-            }
-
-            // only use the default from the DefaultedFacet if not nullable
-            if (defaultValue == null && !IsNullable) {
-                var defaultFacet = ReturnSpec.GetFacet<IDefaultedFacet>();
-                if (defaultFacet != null && !defaultFacet.IsNoOp) {
-                    defaultValue = new Tuple<object, TypeOfDefaultValue>(defaultFacet.Default, TypeOfDefaultValue.Implicit);
-                }
-            }
-
-            if (defaultValue == null) {
-                var rawValue = fromObjectAdapter == null ? null : fromObjectAdapter.Object.GetType().IsValueType ? (object) 0 : null;
-                defaultValue = new Tuple<object, TypeOfDefaultValue>(rawValue, TypeOfDefaultValue.Implicit);
-            }
-
-            return new Tuple<INakedObjectAdapter, TypeOfDefaultValue>(Manager.CreateAdapter(defaultValue.Item1, null, null), defaultValue.Item2);
+            return (Manager.CreateAdapter(domainObject, null, null), typeOfDefaultValue);
         }
+
+        //private Tuple<INakedObjectAdapter, TypeOfDefaultValue> GetDefaultObject(INakedObjectAdapter fromObjectAdapter)
+        //{
+        //    Tuple<object, TypeOfDefaultValue> defaultValue = null;
+
+        //    // Check Facet on property, then facet on type finally fall back on type; 
+
+        //    var defaultsFacet = GetFacet<IPropertyDefaultFacet>();
+        //    if (defaultsFacet != null && !defaultsFacet.IsNoOp)
+        //    {
+        //        defaultValue = new Tuple<object, TypeOfDefaultValue>(defaultsFacet.GetDefault(fromObjectAdapter), TypeOfDefaultValue.Explicit);
+        //    }
+
+        //    // only use the default from the DefaultedFacet if not nullable
+        //    if (defaultValue == null && !IsNullable)
+        //    {
+        //        var defaultFacet = ReturnSpec.GetFacet<IDefaultedFacet>();
+        //        if (defaultFacet != null && !defaultFacet.IsNoOp)
+        //        {
+        //            defaultValue = new Tuple<object, TypeOfDefaultValue>(defaultFacet.Default, TypeOfDefaultValue.Implicit);
+        //        }
+        //    }
+
+        //    if (defaultValue == null)
+        //    {
+        //        var rawValue = fromObjectAdapter == null ? null : fromObjectAdapter.Object.GetType().IsValueType ? (object)0 : null;
+        //        defaultValue = new Tuple<object, TypeOfDefaultValue>(rawValue, TypeOfDefaultValue.Implicit);
+        //    }
+
+        //    return new Tuple<INakedObjectAdapter, TypeOfDefaultValue>(Manager.CreateAdapter(defaultValue.Item1, null, null), defaultValue.Item2);
+        //}
+
+
+
+
 
         public override string ToString() {
             var str = new AsString(this);

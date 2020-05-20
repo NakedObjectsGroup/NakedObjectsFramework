@@ -323,8 +323,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             mediaType == "application/*" ||
             mediaType == "application/json";
 
-        public static OptionalProperty CreateArgumentProperty(IOidStrategy oidStrategy, HttpRequest req, Tuple<string, ITypeFacade> pnt, RestControlFlags flags) {
-            return new OptionalProperty(pnt.Item1, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)),
+        public static OptionalProperty CreateArgumentProperty(IOidStrategy oidStrategy, HttpRequest req, (string name, ITypeFacade type) pnt, RestControlFlags flags) {
+            return new OptionalProperty(pnt.name, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)),
                 new OptionalProperty(JsonPropertyNames.Links, new LinkRepresentation[] { })));
         }
 

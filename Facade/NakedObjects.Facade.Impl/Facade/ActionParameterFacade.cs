@@ -91,7 +91,7 @@ namespace NakedObjects.Facade.Impl {
             return WrappedSpec.GetChoices(((ObjectFacade) objectFacade).WrappedNakedObject, pnv).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
         }
 
-        public Tuple<string, ITypeFacade>[] GetChoicesParameters() => WrappedSpec.GetChoicesParameters().Select(WrapChoiceParm).ToArray();
+        public (string, ITypeFacade)[] GetChoicesParameters() => WrappedSpec.GetChoicesParameters().Select(WrapChoiceParm).ToArray();
 
         public string GetMaskedValue(IObjectFacade objectFacade) => WrappedSpec.GetMaskedValue(objectFacade, framework.NakedObjectManager);
 
@@ -192,7 +192,7 @@ namespace NakedObjects.Facade.Impl {
             return framework.GetNakedObject(rawValue);
         }
 
-        private Tuple<string, ITypeFacade> WrapChoiceParm(Tuple<string, IObjectSpec> parm) => new Tuple<string, ITypeFacade>(parm.Item1, new TypeFacade(parm.Item2, FrameworkFacade, framework));
+        private (string, ITypeFacade) WrapChoiceParm((string name, IObjectSpec spec) parm) => (parm.name, new TypeFacade(parm.spec, FrameworkFacade, framework));
 
         public override bool Equals(object obj) => obj is ActionParameterFacade apf && Equals(apf);
 

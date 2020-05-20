@@ -46,6 +46,16 @@ namespace NakedObjects.Core.Util {
         public static bool IsCollectionOfBoundedSet(this IObjectSpecImmutable specification, IObjectSpecImmutable elementSpec) => specification.IsCollection && elementSpec.IsBoundedSet();
 
         public static bool IsCollectionOfEnum(this IObjectSpecImmutable specification, IObjectSpecImmutable elementSpec) => specification.IsCollection && elementSpec.ContainsFacet<IEnumFacet>();
+
+        public static IFacet GetOpFacet<T>(this ISpecification s) where T : class, IFacet
+        {
+            var facet = s.GetFacet<T>();
+            return facet == null
+                ? null
+                : facet.IsNoOp
+                    ? null
+                    : facet;
+        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

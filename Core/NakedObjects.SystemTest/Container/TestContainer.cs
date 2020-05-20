@@ -35,6 +35,8 @@ namespace NakedObjects.SystemTest.Container {
             ContainerDbContext.Delete();
         }
 
+        protected override string[] Namespaces => new[] { typeof(Object1).Namespace };
+
         protected override Type[] Types => new[] {typeof(Object1), typeof(Object2), typeof(ViewModel2)};
 
         protected override Type[] Services =>
@@ -49,15 +51,15 @@ namespace NakedObjects.SystemTest.Container {
 
             var o2 = testObject.Container.NewTransientInstance<Object2>();
 
-            Assert.AreEqual(o2.TestDateTime, new DateTime());
+            Assert.AreEqual(new DateTime(), o2.TestDateTime);
             Assert.IsNull(o2.TestNullableDateTime);
-            Assert.AreEqual(o2.TestInt, 0);
+            Assert.AreEqual(0, o2.TestInt);
             Assert.IsNull(o2.TestNullableInt);
 
-            Assert.AreEqual(o2.TestEnum, TestEnum.Value1);
+            Assert.AreEqual(TestEnum.Value1, o2.TestEnum);
             Assert.IsNull(o2.TestNullableEnum);
 
-            Assert.AreEqual(o2.TestEnumDt, 0);
+            Assert.AreEqual(0, o2.TestEnumDt);
             Assert.IsNull(o2.TestNullableEnumDt);
         }
 
@@ -68,15 +70,15 @@ namespace NakedObjects.SystemTest.Container {
 
             var vm = testObject.NewViewModel();
 
-            Assert.AreEqual(vm.TestDateTime, new DateTime());
+            Assert.AreEqual(new DateTime(), vm.TestDateTime);
             Assert.IsNull(vm.TestNullableDateTime);
-            Assert.AreEqual(vm.TestInt, 0);
+            Assert.AreEqual(0, vm.TestInt);
             Assert.IsNull(vm.TestNullableInt);
 
-            Assert.AreEqual(vm.TestEnum, TestEnum.Value1);
+            Assert.AreEqual(TestEnum.Value1, vm.TestEnum);
             Assert.IsNull(vm.TestNullableEnum);
 
-            Assert.AreEqual(vm.TestEnumDt, 0);
+            Assert.AreEqual(0, vm.TestEnumDt);
             Assert.IsNull(vm.TestNullableEnumDt);
         }
     }

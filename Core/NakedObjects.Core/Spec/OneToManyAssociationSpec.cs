@@ -58,7 +58,7 @@ namespace NakedObjects.Core.Spec {
 
         public override INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) => new INakedObjectAdapter[0];
 
-        public override Tuple<string, IObjectSpec>[] GetChoicesParameters() => new Tuple<string, IObjectSpec>[0];
+        public override (string, IObjectSpec)[] GetChoicesParameters() => new (string, IObjectSpec)[]{};
 
         public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) => new INakedObjectAdapter[0];
 
