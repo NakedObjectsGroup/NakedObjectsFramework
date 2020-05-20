@@ -145,8 +145,8 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
             var newRep = CreateInstanceOfDynamicType<T>(ctorParms, properties, typeName);
 
-            foreach (var w in properties) {
-                newRep.GetType().GetProperty(w.Name).SetValue(newRep, w.Value, null);
+            foreach (var p in properties) {
+                newRep.GetType().GetProperty(p.Name)?.SetValue(newRep, p.Value, null);
             }
 
             return (T) newRep;

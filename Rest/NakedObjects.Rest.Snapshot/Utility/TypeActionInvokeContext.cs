@@ -23,15 +23,11 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public TypeActionInvokeContext(string actionName, string typeName) {
             TypeName = typeName;
-            if (actionName == WellKnownIds.IsSupertypeOf) {
-                aType = ActionType.IsSupertypeOf;
-            }
-            else if (actionName == WellKnownIds.IsSubtypeOf) {
-                aType = ActionType.IsSubtypeOf;
-            }
-            else {
-                throw new TypeActionResourceNotFoundException(actionName, typeName);
-            }
+            aType = actionName switch {
+                WellKnownIds.IsSupertypeOf => ActionType.IsSupertypeOf,
+                WellKnownIds.IsSubtypeOf => ActionType.IsSubtypeOf,
+                _ => throw new TypeActionResourceNotFoundException(actionName, typeName)
+            };
         }
 
         public string TypeName { get; }

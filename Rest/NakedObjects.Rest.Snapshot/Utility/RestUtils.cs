@@ -113,27 +113,27 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             }
 
             if (returnType != null && !returnType.IsVoid) {
-                var jsonDataType = SpecToTypeAndFormatString(returnType, oidStrategy, useDateOverDateTime);
-                exts.Add(JsonPropertyNames.ReturnType, jsonDataType.Item1);
+                var (typeString, formatString) = SpecToTypeAndFormatString(returnType, oidStrategy, useDateOverDateTime);
+                exts.Add(JsonPropertyNames.ReturnType, typeString);
 
-                if (jsonDataType.Item2 != null) {
-                    exts.Add(JsonPropertyNames.Format, jsonDataType.Item2);
+                if (formatString != null) {
+                    exts.Add(JsonPropertyNames.Format, formatString);
                 }
 
-                if (jsonDataType.Item1 == PredefinedJsonType.String.ToRoString()) {
+                if (typeString == PredefinedJsonType.String.ToRoString()) {
                     exts.Add(JsonPropertyNames.MaxLength, maxLength ?? 0);
                     exts.Add(JsonPropertyNames.Pattern, pattern ?? "");
                 }
                 // blob and clobs are arrays hence additional checks
-                else if (returnType.IsCollection && (jsonDataType.Item1 == PredefinedJsonType.List.ToRoString() || jsonDataType.Item1 == PredefinedJsonType.Set.ToRoString())) {
+                else if (returnType.IsCollection && (typeString == PredefinedJsonType.List.ToRoString() || typeString == PredefinedJsonType.Set.ToRoString())) {
                     exts.Add(JsonPropertyNames.ElementType, SpecToTypeAndFormatString(elementType, oidStrategy, useDateOverDateTime).Item1);
                     exts.Add(JsonPropertyNames.PluralName, elementType.PluralName);
                 }
             }
 
             if (customExtensions != null) {
-                foreach (var kvp in customExtensions) {
-                    exts.Add(kvp.Key, kvp.Value);
+                foreach (var (key, value) in customExtensions) {
+                    exts.Add(key, value);
                 }
             }
 
@@ -251,26 +251,17 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public static string ToTimeFormatString(TimeSpan time) => time.ToString(@"hh\:mm\:ss");
 
         public static object ObjectToPredefinedType(object toMap, bool useDateOverDateTime = false) {
+            static object ToUniversalTime(DateTime dt) => dt.Kind == DateTimeKind.Unspecified 
+                ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime() 
+                : dt.ToUniversalTime();
+
             var predefinedFormatType = TypeToPredefinedFormatType(toMap.GetType(), useDateOverDateTime);
-            if (predefinedFormatType == PredefinedFormatType.Date_time) {
-                var dt = (DateTime) toMap;
-                if (dt.Kind == DateTimeKind.Unspecified) {
-                    // default datetimes to utc
-                    dt = new DateTime(dt.Ticks, DateTimeKind.Utc);
-                }
-
-                return dt.ToUniversalTime();
-            }
-
-            if (predefinedFormatType == PredefinedFormatType.Date) {
-                return ToDateFormatString((DateTime) toMap);
-            }
-
-            if (predefinedFormatType == PredefinedFormatType.Time) {
-                return ToTimeFormatString((TimeSpan) toMap);
-            }
-
-            return predefinedFormatType == PredefinedFormatType.String ? toMap.ToString() : toMap;
+            return predefinedFormatType switch {
+                PredefinedFormatType.Date_time => ToUniversalTime((DateTime) toMap),
+                PredefinedFormatType.Date => ToDateFormatString((DateTime) toMap),
+                PredefinedFormatType.Time => ToTimeFormatString((TimeSpan) toMap),
+                _ => predefinedFormatType == PredefinedFormatType.String ? toMap.ToString() : toMap
+            };
         }
 
         public static Tuple<PredefinedJsonType, PredefinedFormatType?> SpecToPredefinedTypes(ITypeFacade spec, bool useDateOverDateTime = false) {

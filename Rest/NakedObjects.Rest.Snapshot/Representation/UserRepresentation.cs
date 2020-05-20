@@ -37,7 +37,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         public string[] Roles { get; set; }
 
         private void SetScalars(IPrincipal user) {
-            UserName = user.Identity.Name ?? "";
+            UserName = user.Identity?.Name ?? "";
             Roles = new string[] { };
         }
 

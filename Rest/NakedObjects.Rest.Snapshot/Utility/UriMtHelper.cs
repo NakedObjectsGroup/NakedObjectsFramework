@@ -559,17 +559,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public string GetServiceRelParameter() => FormatParameter(RelParamValues.ServiceId, CachedType);
 
-        public string GetRelParametersFor(IMemberFacade memberFacade) {
-            if (memberFacade is IActionFacade) {
-                return FormatParameter(RelParamValues.Action, memberFacade.Id) + (param == null ? "" : FormatParameter(RelParamValues.Param, param.Id));
-            }
-
-            if (memberFacade is IAssociationFacade associationFacade) {
-                return FormatParameter(associationFacade.IsCollection ? RelParamValues.Collection : RelParamValues.Property, associationFacade.Id);
-            }
-
-            throw new ArgumentException("Unexpected type:" + memberFacade.GetType());
-        }
+        public string GetRelParametersFor(IMemberFacade memberFacade) =>
+            memberFacade switch {
+                IActionFacade _ => FormatParameter(RelParamValues.Action, memberFacade.Id) + (param == null ? "" : FormatParameter(RelParamValues.Param, param.Id)),
+                IAssociationFacade associationFacade => FormatParameter(associationFacade.IsCollection ? RelParamValues.Collection : RelParamValues.Property, associationFacade.Id),
+                _ => throw new ArgumentException("Unexpected type:" + memberFacade.GetType())
+            };
 
         public string GetRelParametersFor(string actionId, string parmId) => FormatParameter(RelParamValues.Action, actionId) + FormatParameter(RelParamValues.Param, parmId);
 
