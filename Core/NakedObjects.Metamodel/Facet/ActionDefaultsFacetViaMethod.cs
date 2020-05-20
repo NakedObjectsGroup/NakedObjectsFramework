@@ -40,11 +40,11 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override Tuple<object, TypeOfDefaultValue> GetDefault(INakedObjectAdapter nakedObjectAdapter) {
+        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter) {
             // type safety is given by the reflector only identifying methods that match the 
             // parameter type
             var defaultValue = MethodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { });
-            return new Tuple<object, TypeOfDefaultValue>(defaultValue, TypeOfDefaultValue.Explicit);
+            return (defaultValue, TypeOfDefaultValue.Explicit);
         }
 
         protected override string ToStringValues() => $"method={method}";

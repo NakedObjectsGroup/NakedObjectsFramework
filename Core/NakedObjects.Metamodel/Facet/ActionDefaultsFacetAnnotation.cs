@@ -20,7 +20,7 @@ namespace NakedObjects.Meta.Facet {
 
         public override bool CanAlwaysReplace => false;
 
-        public override Tuple<object, TypeOfDefaultValue> GetDefault(INakedObjectAdapter nakedObjectAdapter) => new Tuple<object, TypeOfDefaultValue>(value, TypeOfDefaultValue.Explicit);
+        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter) => (value, TypeOfDefaultValue.Explicit);
 
         protected override string ToStringValues() => $"Value={value}";
     }

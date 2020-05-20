@@ -207,37 +207,26 @@ namespace NakedObjects.Core.Spec {
 
         #endregion
 
-        private Tuple<INakedObjectAdapter, TypeOfDefaultValue> GetDefaultValueAndType(INakedObjectAdapter nakedObjectAdapter) {
+        private (INakedObjectAdapter, TypeOfDefaultValue) GetDefaultValueAndType(INakedObjectAdapter nakedObjectAdapter) {
             if (parentAction.IsContributedMethod && nakedObjectAdapter != null) {
                 var matchingParms = parentAction.Parameters.Where(p => nakedObjectAdapter.Spec.IsOfType(p.Spec)).ToArray();
 
                 if (matchingParms.Any() && matchingParms.First() == this) {
-                    return new Tuple<INakedObjectAdapter, TypeOfDefaultValue>(nakedObjectAdapter, TypeOfDefaultValue.Explicit);
+                    return (nakedObjectAdapter, TypeOfDefaultValue.Explicit);
                 }
             }
 
-            Tuple<object, TypeOfDefaultValue> defaultValue = null;
+            var facet = (IFacet) GetFacet<IActionDefaultsFacet>() ?? Spec.GetFacet<IDefaultedFacet>();
 
-            // Check Facet on parm, then facet on type finally fall back on type; 
+            var (domainObject, typeOfDefaultValue) = facet switch {
+                IActionDefaultsFacet adf when !adf.IsNoOp => adf.GetDefault(parentAction.RealTarget(nakedObjectAdapter)),
+                IDefaultedFacet df when !df.IsNoOp => (df.Default, TypeOfDefaultValue.Implicit),
+                _ when nakedObjectAdapter == null => (null, TypeOfDefaultValue.Implicit),
+                _ when nakedObjectAdapter.Object.GetType().IsValueType => (0, TypeOfDefaultValue.Implicit),
+                _ => (null, TypeOfDefaultValue.Implicit)
+            };
 
-            var defaultsFacet = GetFacet<IActionDefaultsFacet>();
-            if (defaultsFacet != null && !defaultsFacet.IsNoOp) {
-                defaultValue = defaultsFacet.GetDefault(parentAction.RealTarget(nakedObjectAdapter));
-            }
-
-            if (defaultValue == null) {
-                var defaultFacet = Spec.GetFacet<IDefaultedFacet>();
-                if (defaultFacet != null && !defaultFacet.IsNoOp) {
-                    defaultValue = new Tuple<object, TypeOfDefaultValue>(defaultFacet.Default, TypeOfDefaultValue.Implicit);
-                }
-            }
-
-            if (defaultValue == null) {
-                var rawValue = nakedObjectAdapter == null ? null : nakedObjectAdapter.Object.GetType().IsValueType ? (object) 0 : null;
-                defaultValue = new Tuple<object, TypeOfDefaultValue>(rawValue, TypeOfDefaultValue.Implicit);
-            }
-
-            return new Tuple<INakedObjectAdapter, TypeOfDefaultValue>(manager.CreateAdapter(defaultValue.Item1, null, null), defaultValue.Item2);
+            return (manager.CreateAdapter(domainObject, null, null), typeOfDefaultValue);
         }
 
         private IConsent GetConsent(string message) => message == null ? (IConsent) Allow.Default : new Veto(message);
