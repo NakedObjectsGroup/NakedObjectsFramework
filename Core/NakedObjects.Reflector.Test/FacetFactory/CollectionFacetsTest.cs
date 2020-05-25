@@ -52,8 +52,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private void ValidateCollection(ICollectionFacet collectionFacet, INakedObjectAdapter collection, IEnumerable<object> objects) {
             var collectionAsEnumerable = collectionFacet.AsEnumerable(collection, manager).ToArray();
             Assert.AreEqual(collectionAsEnumerable.Count(), objects.Count());
-            var zippedCollections = collectionAsEnumerable.Zip(objects, (no, o1) => new Tuple<object, object>(no.Object, o1));
-            zippedCollections.ForEach(t => Assert.AreSame(t.Item1, t.Item2));
+            IEnumerable<(object adaptedObject, object obj)> zippedCollections = collectionAsEnumerable.Zip(objects, (no, o1) => (no.Object, o1));
+            zippedCollections.ForEach(t => Assert.AreSame(t.adaptedObject, t.obj));
         }
 
         // ReSharper restore PossibleMultipleEnumeration

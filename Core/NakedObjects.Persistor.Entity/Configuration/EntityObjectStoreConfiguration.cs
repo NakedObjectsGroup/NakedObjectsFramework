@@ -25,7 +25,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             EnforceProxies = true;
             RollBackOnError = false;
             DefaultMergeOption = MergeOption.AppendOnly;
-            DbContextConstructors = new List<Tuple<Func<DbContext>, Func<Type[]>>>();
+            DbContextConstructors = new List<(Func<DbContext>, Func<Type[]>)>();
             NamedContextTypes = new Dictionary<string, Func<Type[]>>();
             NotPersistedTypes = () => new Type[] { };
             MaximumCommitCycles = 10;
@@ -41,14 +41,14 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         public IEnumerable<CodeFirstEntityContextConfiguration> ContextConfiguration =>
             DbContextConstructors.Select(f => new CodeFirstEntityContextConfiguration {
-                DbContext = f.Item1,
-                PreCachedTypes = f.Item2,
+                DbContext = f.getContexts,
+                PreCachedTypes = f.getTypes,
                 NotPersistedTypes = NotPersistedTypes,
                 CustomConfig = CustomConfig,
                 DefaultMergeOption = DefaultMergeOption
             });
 
-        public IList<Tuple<Func<DbContext>, Func<Type[]>>> DbContextConstructors { get; set; }
+        public IList<(Func<DbContext> getContexts, Func<Type[]> getTypes)> DbContextConstructors { get; set; }
         public IDictionary<string, Func<Type[]>> NamedContextTypes { get; set; }
         public Func<Type[]> NotPersistedTypes { get; set; }
 
@@ -142,7 +142,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
             public EntityContextConfigurator(EntityObjectStoreConfiguration entityObjectStoreConfiguration, Func<DbContext> f)
                 : this(entityObjectStoreConfiguration) {
-                entityObjectStoreConfiguration.DbContextConstructors.Add(new Tuple<Func<DbContext>, Func<Type[]>>(f, () => new Type[] { }));
+                entityObjectStoreConfiguration.DbContextConstructors.Add((f, () => new Type[] { }));
                 contextIndex = entityObjectStoreConfiguration.DbContextConstructors.Count - 1;
             }
 
@@ -165,7 +165,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             public EntityContextConfigurator AssociateTypes(Func<Type[]> types) {
                 if (string.IsNullOrEmpty(contextName)) {
                     var entry = entityObjectStoreConfiguration.DbContextConstructors[contextIndex];
-                    entityObjectStoreConfiguration.DbContextConstructors[contextIndex] = new Tuple<Func<DbContext>, Func<Type[]>>(entry.Item1, types);
+                    entityObjectStoreConfiguration.DbContextConstructors[contextIndex] = (entry.getContexts, types);
                 }
                 else {
                     entityObjectStoreConfiguration.NamedContextTypes[contextName] = types;

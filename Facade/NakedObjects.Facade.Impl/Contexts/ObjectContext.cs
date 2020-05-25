@@ -18,7 +18,7 @@ namespace NakedObjects.Facade.Impl.Contexts {
 
         public bool Mutated { get; set; }
 
-        public Tuple<string, string> Redirected => Target.Object is IRedirectedObject rdo ? new Tuple<string, string>(rdo.ServerName, rdo.Oid) : null;
+        public (string serverName, string oid)? Redirected => Target.Object is IRedirectedObject rdo ? (rdo.ServerName, rdo.Oid) : ((string ServerName, string Oid)?) null;
 
         public override string Id => Target.Oid.ToString();
 
