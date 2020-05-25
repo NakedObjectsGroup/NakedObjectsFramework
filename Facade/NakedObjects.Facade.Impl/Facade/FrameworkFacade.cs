@@ -732,7 +732,7 @@ namespace NakedObjects.Facade.Impl {
             }).ToArray();
         }
 
-        private (IActionSpec, string) GetActionInternal(string actionName, INakedObjectAdapter nakedObject) {
+        private (IActionSpec spec, string uid) GetActionInternal(string actionName, INakedObjectAdapter nakedObject) {
             if (string.IsNullOrWhiteSpace(actionName)) {
                 throw new BadRequestNOSException();
             }
@@ -769,16 +769,16 @@ namespace NakedObjects.Facade.Impl {
         private static IActionSpec GetAction(string actionName, INakedObjectAdapter nakedObject, IActionSpec[] actions) => actions.SingleOrDefault(p => p.Id == actionName) ?? FacadeUtils.GetOverloadedAction(actionName, nakedObject.Spec);
 
         private IActionParameterSpec GetParameterInternal(string actionName, string parmName, INakedObjectAdapter nakedObject) {
-            var actionAndUid = GetActionInternal(actionName, nakedObject);
-            return GetParameterInternal(actionAndUid, parmName);
+            var (action, _) = GetActionInternal(actionName, nakedObject);
+            return GetParameterInternal(action, parmName);
         }
 
-        private IActionParameterSpec GetParameterInternal((IActionSpec action, string) actionAndUid, string parmName) {
+        private IActionParameterSpec GetParameterInternal(IActionSpec action, string parmName) {
             if (string.IsNullOrWhiteSpace(parmName) || string.IsNullOrWhiteSpace(parmName)) {
                 throw new BadRequestNOSException();
             }
 
-            var parm = actionAndUid.action.Parameters.SingleOrDefault(p => p.Id == parmName);
+            var parm = action.Parameters.SingleOrDefault(p => p.Id == parmName);
 
             if (parm == null) {
                 // throw something;
@@ -788,25 +788,25 @@ namespace NakedObjects.Facade.Impl {
         }
 
         private ActionContext GetAction(string actionName, INakedObjectAdapter nakedObject) {
-            var actionAndUid = GetActionInternal(actionName, nakedObject);
+            var (actionSpec, uid) = GetActionInternal(actionName, nakedObject);
             return new ActionContext {
                 Target = nakedObject,
-                Action = actionAndUid.Item1,
-                VisibleParameters = FilterParmsForContributedActions(actionAndUid.Item1, nakedObject.Spec, actionAndUid.Item2),
-                OverloadedUniqueId = actionAndUid.Item2
+                Action = actionSpec,
+                VisibleParameters = FilterParmsForContributedActions(actionSpec, nakedObject.Spec, uid),
+                OverloadedUniqueId = uid
             };
         }
 
         private ActionContext GetActionWithCompletions(string actionName, INakedObjectAdapter nakedObject, string parmName, ArgumentsContextFacade arguments) {
-            var actionAndUid = GetActionInternal(actionName, nakedObject);
-            var parm = GetParameterInternal(actionAndUid, parmName);
+            var (actionSpec, uid) = GetActionInternal(actionName, nakedObject);
+            var parm = GetParameterInternal(actionSpec, parmName);
             var completions = GetCompletions(new PropParmAdapter(parm, this, Framework), nakedObject, arguments);
 
             var ac = new ActionContext {
                 Target = nakedObject,
-                Action = actionAndUid.Item1,
-                VisibleParameters = FilterParmsForContributedActions(actionAndUid.Item1, nakedObject.Spec, actionAndUid.Item2),
-                OverloadedUniqueId = actionAndUid.Item2
+                Action = actionSpec,
+                VisibleParameters = FilterParmsForContributedActions(actionSpec, nakedObject.Spec, uid),
+                OverloadedUniqueId = uid
             };
 
             var pc = ac.VisibleParameters.SingleOrDefault(p => p.Id == parmName);
@@ -836,30 +836,33 @@ namespace NakedObjects.Facade.Impl {
                                                            sa.Parameters.Select(p => p.Spec).SequenceEqual(actionToMatch.Parameters.Select(p => p.Spec)));
         }
 
-        private Tuple<string, IActionSpecImmutable>[] GetMenuItem(IMenuItemImmutable item, string parent = "") {
+        private static (string parent, IActionSpecImmutable action)[] GetMenuItem(IMenuItemImmutable item, string parent = "") {
             string MenuItemDivider() => string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider;
 
             return item switch {
-                IMenuActionImmutable menuAction => new[] {new Tuple<string, IActionSpecImmutable>(parent, menuAction.Action)},
+                IMenuActionImmutable menuAction => new[] {(parent, menuAction.Action)},
                 IMenuImmutable menu => menu.MenuItems.SelectMany(i => GetMenuItem(i, $"{parent}{MenuItemDivider()}{menu.Name}")).ToArray(),
-                _ => new Tuple<string, IActionSpecImmutable>[] { }
+                _ => new (string, IActionSpecImmutable)[] { }
             };
         }
 
         private static bool IsVisible(IMemberSpec actionSpec, INakedObjectAdapter nakedObject, bool isPersisted) => isPersisted ? actionSpec.IsVisibleWhenPersistent(nakedObject) : actionSpec.IsVisible(nakedObject);
 
         private ObjectContext GetObjectContext(INakedObjectAdapter nakedObject, bool isPersisted = false) {
+
             if (nakedObject == null) {
                 return null;
             }
 
             var actionLeafs = nakedObject.Spec.GetActionLeafNodes().Where(p => IsVisible(p, nakedObject, isPersisted)).ToArray();
 
+            IActionSpec GetLeaf(ISpecification action) => actionLeafs.SingleOrDefault(a => a.Identifier.Equals(action.Identifier));
+
             var menuItems = nakedObject.Spec.Menu?.MenuItems ?? new List<IMenuItemImmutable>();
 
             var menuActions = menuItems.SelectMany(m => GetMenuItem(m));
 
-            var actions = menuActions.Select(m => new Tuple<string, IActionSpec>(m.Item1, actionLeafs.SingleOrDefault(a => a.Identifier.Equals(m.Item2.Identifier)))).Where(t => t.Item2 != null);
+            var actions = menuActions.Select(m => new {m.parent, action = GetLeaf(m.action)}).Where(a => a.action != null);
 
             var objectSpec = nakedObject.Spec as IObjectSpec;
             var properties = objectSpec?.Properties.Where(p => IsVisible(p, nakedObject, isPersisted)).ToArray() ?? new IAssociationSpec[] { };
@@ -884,7 +887,7 @@ namespace NakedObjects.Facade.Impl {
                 }).ToArray();
             }
 
-            var actionContexts = actions.Select(a => new {action = a.Item2, uid = FacadeUtils.GetOverloadedUId(a.Item2, nakedObject.Spec), mp = a.Item1}).Select(a => new ActionContext {
+            var actionContexts = actions.Select(a => new {a.action, uid = FacadeUtils.GetOverloadedUId(a.action, nakedObject.Spec), mp = a.parent}).Select(a => new ActionContext {
                 Action = a.action,
                 Target = nakedObject,
                 VisibleParameters = FilterParmsForContributedActions(a.action, nakedObject.Spec, a.uid),
