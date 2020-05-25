@@ -21,17 +21,12 @@ namespace NakedObjects.Facade.Impl.Implementation {
 
         #region IOidTranslator Members
 
-        public IOidTranslation GetOidTranslation(params string[] id) {
-            if (id.Length == 2) {
-                return new OidTranslationSlashSeparatedTypeAndIds(id.First(), id.Last());
-            }
-
-            if (id.Length == 1) {
-                return new OidTranslationSlashSeparatedTypeAndIds(id.First());
-            }
-
-            return null;
-        }
+        public IOidTranslation GetOidTranslation(params string[] id) =>
+            id.Length switch {
+                2 => new OidTranslationSlashSeparatedTypeAndIds(id.First(), id.Last()),
+                1 => new OidTranslationSlashSeparatedTypeAndIds(id.First()),
+                _ => null
+            };
 
         public IOidTranslation GetOidTranslation(IObjectFacade objectFacade) {
             if (objectFacade.IsViewModel) {
@@ -39,17 +34,17 @@ namespace NakedObjects.Facade.Impl.Implementation {
                 framework.LifecycleManager.PopulateViewModelKeys(vm);
             }
 
-            var codeAndKey = GetCodeAndKeyAsTuple(objectFacade);
-            return new OidTranslationSlashSeparatedTypeAndIds(codeAndKey.Item1, codeAndKey.Item2);
+            var (code, key) = GetCodeAndKeyAsTuple(objectFacade);
+            return new OidTranslationSlashSeparatedTypeAndIds(code, key);
         }
 
         #endregion
 
         private string GetCode(ITypeFacade spec) => GetCode(TypeUtils.GetType(spec.FullName));
 
-        protected Tuple<string, string> GetCodeAndKeyAsTuple(IObjectFacade nakedObject) {
+        protected (string code, string key) GetCodeAndKeyAsTuple(IObjectFacade nakedObject) {
             var code = GetCode(nakedObject.Specification);
-            return new Tuple<string, string>(code, GetKeyValues(nakedObject));
+            return (code, GetKeyValues(nakedObject));
         }
 
         private string KeyRepresentation(object obj) {

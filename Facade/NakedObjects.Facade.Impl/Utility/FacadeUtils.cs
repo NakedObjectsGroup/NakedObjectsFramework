@@ -34,14 +34,16 @@ namespace NakedObjects.Facade.Impl.Utility {
             var overloadedActions = actions.Where(a => a.Id == action.Id && actions.Count(ac => ac.Id == a.Id) > 1).ToArray();
 
             if (overloadedActions.Any()) {
-                var actionAndParms = overloadedActions.Select(a => new Tuple<IActionSpec, string>(a, ((Func<IActionSpec, string>) (act => act.Parameters.Aggregate("", (acc, p) => a + p.Id + p.Spec.FullName)))(a)));
+                static string GetParmsString(IActionSpec spec) => spec.Parameters.Aggregate("", (acc, p) => $"{acc}{p.Id}{p.Spec.FullName}");
 
-                var index = 0;
-                var orderedActions = actionAndParms.OrderBy(ap => ap.Item2).Select(ap => ap.Item1).ToDictionary(a => a, a => index++);
+                var orderedActions = overloadedActions.Select(act => new { act, parmId = GetParmsString(act)}).
+                    OrderBy(ap => ap.parmId).
+                    Select(ap => ap.act).
+                    ToList();
 
-                var suffix = orderedActions[action].ToString(Thread.CurrentThread.CurrentCulture);
+                var suffix = orderedActions.IndexOf(action).ToString(Thread.CurrentThread.CurrentCulture);
 
-                while (actions.Select(a => a.Id).Contains(action.Id + suffix)) {
+                while (actions.Select(a => a.Id).Contains($"{action.Id}{suffix}")) {
                     suffix = $"0{suffix}";
                 }
 
