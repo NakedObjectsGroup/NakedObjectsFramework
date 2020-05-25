@@ -149,11 +149,9 @@ namespace NakedObjects.Core.Spec {
             }
 
             var spec = (IObjectSpec) MetamodelManager.GetSpecification(obj.GetType());
-            if (spec.ContainsFacet(typeof(IComplexTypeFacet))) {
-                return Manager.CreateAggregatedAdapter(fromObjectAdapter, ((IAssociationSpec) this).Id, obj);
-            }
-
-            return Manager.CreateAdapter(obj, null, null);
+            return spec.ContainsFacet(typeof(IComplexTypeFacet)) 
+                ? Manager.CreateAggregatedAdapter(fromObjectAdapter, Id, obj) 
+                : Manager.CreateAdapter(obj, null, null);
         }
 
         private (INakedObjectAdapter, TypeOfDefaultValue) GetDefaultObject(INakedObjectAdapter fromObjectAdapter) {

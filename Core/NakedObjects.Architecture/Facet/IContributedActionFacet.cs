@@ -10,7 +10,7 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Architecture.Facet {
     public interface IContributedActionFacet : IFacet {
         bool IsContributedTo(IObjectSpecImmutable spec);
-        bool IsContributedToCollectionOf(IObjectSpecImmutable spec);
+        bool IsContributedToCollectionOf(IObjectSpecImmutable objectSpec);
 
         bool IsContributedToLocalCollectionOf(IObjectSpecImmutable spec, string id);
 
