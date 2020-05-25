@@ -74,10 +74,11 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             if (IsUnconditionalChoices(parameter)) {
                 custom = new Dictionary<string, object>();
 
-                var choices = parameter.GetChoicesAndTitles(objectFacade, null);
-                var choicesArray = choices.Select(tuple => new Tuple<object, string>(parameter.GetChoiceValue(OidStrategy, req, tuple.Item1, flags), tuple.Item2)).ToArray();
+                (object value, string title)[] choicesArray = parameter.GetChoicesAndTitles(objectFacade, null).
+                    Select(choice => (parameter.GetChoiceValue(OidStrategy, req, choice.obj, flags), choice.title)).
+                    ToArray();
 
-                var op = choicesArray.Select(tuple => new OptionalProperty(tuple.Item2, tuple.Item1)).ToArray();
+                var op = choicesArray.Select(choice => new OptionalProperty(choice.title, choice.value)).ToArray();
                 var map = MapRepresentation.Create(op);
                 custom[JsonPropertyNames.CustomChoices] = map;
             }

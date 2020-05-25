@@ -17,8 +17,8 @@ namespace NakedObjects.Facade {
         Choices IsChoicesEnabled { get; }
         bool IsAutoCompleteEnabled { get; }
         string PresentationHint { get; }
-        Tuple<Regex, string> RegEx { get; }
-        Tuple<IConvertible, IConvertible, bool> Range { get; }
+        (Regex, string)? RegEx { get; }
+        (IConvertible min, IConvertible max, bool isDateRange)? Range { get; }
         int NumberOfLines { get; }
         int Width { get; }
         int TypicalLength { get; }
@@ -39,7 +39,7 @@ namespace NakedObjects.Facade {
         bool IsFindMenuEnabled { get; }
 
         IObjectFacade[] GetChoices(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
-        Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
+        (IObjectFacade obj, string title)[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues);
         (string, ITypeFacade)[] GetChoicesParameters();
         IObjectFacade[] GetCompletions(IObjectFacade objectFacade, string autoCompleteParm);
 

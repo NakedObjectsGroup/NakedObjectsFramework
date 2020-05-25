@@ -42,7 +42,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public (string, ITypeFacade)[] GetChoicesParameters() => parameter?.GetChoicesParameters() ?? association?.GetChoicesParameters();
 
-        public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) => parameter?.GetChoicesAndTitles(objectFacade, parameterNameValues) ?? association?.GetChoicesAndTitles(objectFacade, parameterNameValues);
+        public (IObjectFacade obj, string title)[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) => parameter?.GetChoicesAndTitles(objectFacade, parameterNameValues) ?? association?.GetChoicesAndTitles(objectFacade, parameterNameValues);
 
         public object GetChoiceValue(IOidStrategy oidStrategy, HttpRequest req, IObjectFacade item, RestControlFlags flags) => association != null ? RestUtils.GetChoiceValue(oidStrategy, req, item, association, flags) : RestUtils.GetChoiceValue(oidStrategy, req, item, parameter, flags);
 

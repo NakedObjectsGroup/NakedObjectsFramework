@@ -93,14 +93,14 @@ namespace NakedObjects.Facade.Impl.Utility {
             return hintFacet?.Value;
         }
 
-        public static Tuple<Regex, string> GetRegEx(this ISpecification spec) {
+        public static (Regex, string)? GetRegEx(this ISpecification spec) {
             var regEx = spec.GetFacet<IRegExFacet>();
-            return regEx == null ? null : new Tuple<Regex, string>(regEx.Pattern, regEx.FailureMessage);
+            return regEx == null ? ((Regex Pattern, string FailureMessage)?) null : (regEx.Pattern, regEx.FailureMessage);
         }
 
-        public static Tuple<IConvertible, IConvertible, bool> GetRange(this ISpecification spec) {
+        public static (IConvertible, IConvertible, bool)? GetRange(this ISpecification spec) {
             var rangeFacet = spec.GetFacet<IRangeFacet>();
-            return rangeFacet == null ? null : new Tuple<IConvertible, IConvertible, bool>(rangeFacet.Min, rangeFacet.Max, rangeFacet.IsDateRange);
+            return rangeFacet == null ? ((IConvertible Min, IConvertible Max, bool IsDateRange)?) null : (rangeFacet.Min, rangeFacet.Max, rangeFacet.IsDateRange);
         }
     }
 }

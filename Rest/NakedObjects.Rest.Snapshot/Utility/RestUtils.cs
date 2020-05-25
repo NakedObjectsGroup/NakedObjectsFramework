@@ -350,6 +350,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             var range = field.Range;
 
             if (range != null) {
+                var (minRange, maxRange, _) = range.Value;
                 customExtensions ??= new Dictionary<string, object>();
 
                 var propertyType = field.Specification.GetUnderlyingType();
@@ -358,8 +359,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 object max;
 
                 if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?)) {
-                    var minDays = (double) range.Item1.ToType(typeof(double), null);
-                    var maxDays = (double) range.Item2.ToType(typeof(double), null);
+                    var minDays = (double)minRange.ToType(typeof(double), null);
+                    var maxDays = (double)maxRange.ToType(typeof(double), null);
 
                     var earliest = DateTime.Today.AddDays(minDays);
                     var latest = DateTime.Today.AddDays(maxDays);
@@ -368,8 +369,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                     max = ToDateFormatString(latest);
                 }
                 else {
-                    min = range.Item1.ToType(propertyType, null);
-                    max = range.Item2.ToType(propertyType, null);
+                    min = minRange.ToType(propertyType, null);
+                    max = maxRange.ToType(propertyType, null);
                 }
 
                 OptionalProperty[] op = {new OptionalProperty("min", min), new OptionalProperty("max", max)};

@@ -732,7 +732,7 @@ namespace NakedObjects.Facade.Impl {
             }).ToArray();
         }
 
-        private Tuple<IActionSpec, string> GetActionInternal(string actionName, INakedObjectAdapter nakedObject) {
+        private (IActionSpec, string) GetActionInternal(string actionName, INakedObjectAdapter nakedObject) {
             if (string.IsNullOrWhiteSpace(actionName)) {
                 throw new BadRequestNOSException();
             }
@@ -746,7 +746,7 @@ namespace NakedObjects.Facade.Impl {
                 throw new ActionResourceNotFoundNOSException(actionName);
             }
 
-            return new Tuple<IActionSpec, string>(action, FacadeUtils.GetOverloadedUId(action, nakedObject.Spec));
+            return (action, FacadeUtils.GetOverloadedUId(action, nakedObject.Spec));
         }
 
         private IActionSpec GetActionFromElementSpec(string actionName, INakedObjectAdapter nakedObject) {
@@ -773,12 +773,12 @@ namespace NakedObjects.Facade.Impl {
             return GetParameterInternal(actionAndUid, parmName);
         }
 
-        private IActionParameterSpec GetParameterInternal(Tuple<IActionSpec, string> actionAndUid, string parmName) {
+        private IActionParameterSpec GetParameterInternal((IActionSpec action, string) actionAndUid, string parmName) {
             if (string.IsNullOrWhiteSpace(parmName) || string.IsNullOrWhiteSpace(parmName)) {
                 throw new BadRequestNOSException();
             }
 
-            var parm = actionAndUid.Item1.Parameters.SingleOrDefault(p => p.Id == parmName);
+            var parm = actionAndUid.action.Parameters.SingleOrDefault(p => p.Id == parmName);
 
             if (parm == null) {
                 // throw something;

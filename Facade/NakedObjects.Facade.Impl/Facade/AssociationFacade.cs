@@ -121,10 +121,8 @@ namespace NakedObjects.Facade.Impl {
             return oneToOneFeature != null ? oneToOneFeature.GetChoicesParameters().Select(WrapChoiceParm).ToArray() : new (string, ITypeFacade)[]{};
         }
 
-        public Tuple<IObjectFacade, string>[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues) {
-            var choices = GetChoices(target, parameterNameValues);
-            return choices.Select(c => new Tuple<IObjectFacade, string>(c, c.TitleString)).ToArray();
-        }
+        public (IObjectFacade, string)[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues) => 
+            GetChoices(target, parameterNameValues).Select(c => (c, c.TitleString)).ToArray();
 
         public IObjectFacade[] GetCompletions(IObjectFacade target, string autoCompleteParm) {
             var oneToOneFeature = WrappedSpec as IOneToOneFeatureSpec;
@@ -171,9 +169,9 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsFindMenuEnabled => WrappedSpec is IOneToOneAssociationSpec ws && ws.IsFindMenuEnabled;
 
-        public Tuple<Regex, string> RegEx => WrappedSpec.GetRegEx();
+        public (Regex, string)? RegEx => WrappedSpec.GetRegEx();
 
-        public Tuple<IConvertible, IConvertible, bool> Range => WrappedSpec.GetRange();
+        public (IConvertible, IConvertible, bool)? Range => WrappedSpec.GetRange();
 
         public bool IsAjax => !WrappedSpec.ContainsFacet<IAjaxFacet>();
 
