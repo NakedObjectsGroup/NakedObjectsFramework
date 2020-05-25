@@ -22,7 +22,7 @@ namespace NakedObjects.Facade {
         bool IsIdempotent { get; }
         bool IsContributed { get; }
         int MemberOrder { get; }
-        Tuple<bool, string[]> TableViewData { get; }
+        (bool title, string[] columns)? TableViewData { get; }
         bool RenderEagerly { get; }
         int? NumberOfLines { get; }
         string MemberOrderName { get; }

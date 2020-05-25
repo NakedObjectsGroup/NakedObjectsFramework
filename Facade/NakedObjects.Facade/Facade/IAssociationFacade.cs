@@ -28,7 +28,7 @@ namespace NakedObjects.Facade {
 
         bool NotNavigable { get; }
 
-        Tuple<bool, string[]> TableViewData { get; }
+        (bool title, string[] columns)? TableViewData { get; }
         IConsentFacade IsUsable(IObjectFacade target);
         IObjectFacade GetValue(IObjectFacade target);
         bool IsVisible(IObjectFacade objectFacade);

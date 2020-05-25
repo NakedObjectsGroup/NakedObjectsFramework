@@ -24,14 +24,16 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         public MapRepresentation GetExtensions() => GetExtensionsForSimple();
 
-        protected IDictionary<string, object> GetTableViewCustomExtensions(Tuple<bool, string[]> tableViewData) {
+        protected IDictionary<string, object> GetTableViewCustomExtensions((bool, string[])? tableViewData) {
             if (tableViewData == null) {
                 return null;
             }
 
+            var (title, columns) = tableViewData.Value;
+
             return new Dictionary<string, object> {
-                [JsonPropertyNames.CustomTableViewTitle] = tableViewData.Item1,
-                [JsonPropertyNames.CustomTableViewColumns] = tableViewData.Item2
+                [JsonPropertyNames.CustomTableViewTitle] = title,
+                [JsonPropertyNames.CustomTableViewColumns] = columns
             };
         }
 

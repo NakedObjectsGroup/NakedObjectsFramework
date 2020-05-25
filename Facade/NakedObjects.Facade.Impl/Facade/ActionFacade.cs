@@ -73,7 +73,7 @@ namespace NakedObjects.Facade.Impl {
 
         public bool RenderEagerly => WrappedSpec.GetRenderEagerly();
 
-        public Tuple<bool, string[]> TableViewData => WrappedSpec.GetTableViewData();
+        public (bool, string[])? TableViewData => WrappedSpec.GetTableViewData();
 
         public int PageSize => WrappedSpec.GetFacet<IPageSizeFacet>().Value;
 

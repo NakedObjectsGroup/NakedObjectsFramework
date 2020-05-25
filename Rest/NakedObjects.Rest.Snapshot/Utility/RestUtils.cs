@@ -408,7 +408,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                                                                  IOidStrategy oidStrategy,
                                                                  HttpRequest req,
                                                                  RestControlFlags flags) {
-            var columns = propertyContext.Property.TableViewData?.Item2;
+            var columns = propertyContext.Property.TableViewData?.columns;
             var rt = new ValueRelType(propertyContext.Property, new UriMtHelper(oidStrategy, req, no));
             return CreateTableRowValueLink(no, columns, rt, oidStrategy, req, flags);
         }
@@ -418,7 +418,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                                                                  IOidStrategy oidStrategy,
                                                                  HttpRequest req,
                                                                  RestControlFlags flags) {
-            var columns = actionContext?.Action?.TableViewData?.Item2;
+            var columns = actionContext?.Action?.TableViewData?.columns;
             var helper = new UriMtHelper(oidStrategy, req, no);
             var rt = no.Specification.IsService ? new ServiceRelType(helper) : new ObjectRelType(RelValues.Element, helper);
             return CreateTableRowValueLink(no, columns, rt, oidStrategy, req, flags);

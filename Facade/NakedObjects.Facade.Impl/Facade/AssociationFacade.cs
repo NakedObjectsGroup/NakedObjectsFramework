@@ -194,7 +194,7 @@ namespace NakedObjects.Facade.Impl {
 
         public int NumberOfLines => WrappedSpec.GetNumberOfLinesWithDefault();
 
-        public Tuple<bool, string[]> TableViewData => WrappedSpec.GetTableViewData();
+        public (bool, string[])? TableViewData => WrappedSpec.GetTableViewData();
 
         public bool RenderEagerly => WrappedSpec.GetRenderEagerly();
 

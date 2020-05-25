@@ -63,9 +63,9 @@ namespace NakedObjects.Facade.Impl.Utility {
             return eagerlyFacet?.What == EagerlyAttribute.Do.Rendering;
         }
 
-        public static Tuple<bool, string[]> GetTableViewData(this ISpecification spec) {
+        public static (bool title, string[] columns)? GetTableViewData(this ISpecification spec) {
             var facet = spec.GetFacet<ITableViewFacet>();
-            return facet == null ? null : new Tuple<bool, string[]>(facet.Title, facet.Columns);
+            return facet == null ? ((bool Title, string[] Columns)?) null : (facet.Title, facet.Columns);
         }
 
         public static int GetNumberOfLinesWithDefault(this ISpecification spec) {
