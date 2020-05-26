@@ -62,13 +62,13 @@ namespace NakedObjects.Xat {
 
         public ITestAction GetAction(string friendlyName, string subMenu, params Type[] parameterTypes) {
             var action = GetAction(friendlyName, subMenu);
-            Assert.IsTrue(action.MatchParameters(parameterTypes), "Parameter Types do not match for action: " + friendlyName);
+            Assert.IsTrue(action.MatchParameters(parameterTypes), $"Parameter Types do not match for action: {friendlyName}");
             return action;
         }
 
         public ITestAction GetActionById(string methodName, string subMenu, params Type[] parameterTypes) {
             var action = GetActionById(methodName, subMenu);
-            Assert.IsTrue(action.MatchParameters(parameterTypes), "Parameter Types do not match for action with method name: " + methodName);
+            Assert.IsTrue(action.MatchParameters(parameterTypes), $"Parameter Types do not match for action with method name: {methodName}");
             return action;
         }
 
@@ -118,7 +118,7 @@ namespace NakedObjects.Xat {
 
         public ITestObject AssertIsDescribedAs(string expected) {
             var description = NakedObject.Spec.Description;
-            Assert.IsTrue(expected.Equals(description), "Description expected: '" + expected + "' actual: '" + description + "'");
+            Assert.IsTrue(expected.Equals(description), $"Description expected: '{expected}' actual: '{description}'");
             return (ITestObject) this;
         }
 
@@ -134,13 +134,13 @@ namespace NakedObjects.Xat {
 
         public override string ToString() {
             if (NakedObject == null) {
-                return base.ToString() + " " + "null";
+                return $"{base.ToString()} null";
             }
 
-            return base.ToString() + " " + NakedObject.Spec.ShortName + "/" + NakedObject;
+            return $"{base.ToString()} {NakedObject.Spec.ShortName}/{NakedObject}";
         }
 
-        private string AppendActions(IActionSpec[] actionsSpec) {
+        private static string AppendActions(IActionSpec[] actionsSpec) {
             var order = new StringBuilder();
             for (var i = 0; i < actionsSpec.Length; i++) {
                 var actionSpec = actionsSpec[i];

@@ -68,6 +68,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer2), "FirstName");
             metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+            Assert.IsNotNull(metamodel);
             var facet = Specification.GetFacet(typeof(INotNavigableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotNavigableFacet);

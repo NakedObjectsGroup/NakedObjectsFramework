@@ -136,13 +136,9 @@ namespace NakedObjects.Core.Util {
 
         #region private
 
-        private static bool IsGenericOfKeyValuePair(Type type) {
-            return type.GetGenericArguments().Any(t => t != null && IsGenericType(t, typeof(KeyValuePair<,>)));
-        }
+        private static bool IsGenericOfKeyValuePair(Type type) => type.GetGenericArguments().Any(t => IsGenericType(t, typeof(KeyValuePair<,>)));
 
-        private static bool IsGenericOfRefType(Type type) {
-            return type.GetGenericArguments().Length == 1 && type.GetGenericArguments().All(t => !t.IsValueType);
-        }
+        private static bool IsGenericOfRefType(Type type) => type.GetGenericArguments().Length == 1 && type.GetGenericArguments().All(t => !t.IsValueType);
 
         private static bool IsNonGenericCollection(Type type) => typeof(ICollection).IsAssignableFrom(type);
 

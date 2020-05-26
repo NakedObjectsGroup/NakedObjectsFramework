@@ -68,11 +68,7 @@ namespace NakedObjects.Core.Container {
 
         public IViewModel NewViewModel(Type type) {
             var spec = (IObjectSpec) framework.MetamodelManager.GetSpecification(type);
-            if (spec.IsViewModel) {
-                return framework.LifecycleManager.CreateViewModel(spec).GetDomainObject<IViewModel>();
-            }
-
-            return null;
+            return spec.IsViewModel ? framework.LifecycleManager.CreateViewModel(spec).GetDomainObject<IViewModel>() : null;
         }
 
         public object NewTransientInstance(Type type) {
@@ -123,7 +119,7 @@ namespace NakedObjects.Core.Container {
 
         #endregion
 
-        private void Validate(INakedObjectAdapter adapter) {
+        private static void Validate(INakedObjectAdapter adapter) {
             if (adapter.Spec.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
                 var state = adapter.ValidToPersist();
                 if (state != null) {
@@ -144,11 +140,7 @@ namespace NakedObjects.Core.Container {
 
         public string TitleOf(object obj, string format = null) {
             var adapter = AdapterFor(obj);
-            if (format == null) {
-                return adapter.TitleString();
-            }
-
-            return adapter.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(format, adapter, framework.NakedObjectManager);
+            return format == null ? adapter.TitleString() : adapter.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(format, adapter, framework.NakedObjectManager);
         }
 
         #endregion

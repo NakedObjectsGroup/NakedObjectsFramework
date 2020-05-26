@@ -62,7 +62,7 @@ namespace NakedObjects.SystemTest.Menus.Service2 {
         public virtual void TestAddAllActions() {
             var foo = GetMainMenu("Foo Service");
             foo.AssertItemCountIs(3);
-            Assert.AreEqual(3, foo.AllItems().OfType<ITestMenuItem>().Count());
+            Assert.AreEqual(3, foo.AllItems().Count(i => i != null));
 
             foo.AllItems()[0].AssertNameEquals("Foo Action0");
             foo.AllItems()[1].AssertNameEquals("Foo Action1");
@@ -109,7 +109,7 @@ namespace NakedObjects.SystemTest.Menus.Service2 {
         [Test]
         public virtual void TestAllMainMenus() {
             var menus = AllMainMenus();
-            Assert.AreEqual(menus.Count(), menus.OfType<ITestMenu>().Count());
+            Assert.AreEqual(menus.Count(), menus.Count(i => i != null));
         }
 
         [Test]

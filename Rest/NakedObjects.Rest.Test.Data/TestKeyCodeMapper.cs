@@ -38,7 +38,7 @@ namespace RestfulObjects.Test.Data {
 
         public string CodeFromKeyString(string key) => Encrypt(key);
 
-        private string Encrypt(string toEncrypt) {
+        private static string Encrypt(string toEncrypt) {
             var valueBytes = Encoding.UTF8.GetBytes(toEncrypt);
 
             using var encrypter = Provider.CreateEncryptor(Key, Iv);
@@ -46,7 +46,7 @@ namespace RestfulObjects.Test.Data {
             return Convert.ToBase64String(encryptedBytes);
         }
 
-        private string Decrypt(string toDecrypt) {
+        private static string Decrypt(string toDecrypt) {
             var valueBytes = Convert.FromBase64String(toDecrypt);
 
             using var decrypter = Provider.CreateDecryptor(Key, Iv);

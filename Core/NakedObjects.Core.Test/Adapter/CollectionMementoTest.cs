@@ -145,7 +145,7 @@ namespace NakedObjects.Core.Test.Adapter {
             Assert.IsTrue(strings1.SequenceEqual(strings3), "memento failed copy");
         }
 
-        private void RecoverCollection(IEnumerable<TestDomainObject> originalCollection, CollectionMemento memento, INakedObjectManager manager) {
+        private static void RecoverCollection(IEnumerable<TestDomainObject> originalCollection, CollectionMemento memento, INakedObjectManager manager) {
             var recoveredCollection = memento.RecoverCollection().GetAsEnumerable(manager).Select(AdapterUtils.GetDomainObject<TestDomainObject>);
             var oc = originalCollection.ToList();
             var rc = recoveredCollection.ToList();

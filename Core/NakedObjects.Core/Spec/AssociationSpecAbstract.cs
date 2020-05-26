@@ -77,12 +77,11 @@ namespace NakedObjects.Core.Spec {
             var immutableFacet = GetFacet<IImmutableFacet>();
             if (immutableFacet != null) {
                 var when = immutableFacet.Value;
-                if (when == WhenTo.UntilPersisted && !isPersistent) {
-                    return new Veto(Resources.NakedObjects.FieldDisabledUntil);
-                }
-
-                if (when == WhenTo.OncePersisted && isPersistent) {
-                    return new Veto(Resources.NakedObjects.FieldDisabledOnce);
+                switch (when) {
+                    case WhenTo.UntilPersisted when !isPersistent:
+                        return new Veto(Resources.NakedObjects.FieldDisabledUntil);
+                    case WhenTo.OncePersisted when isPersistent:
+                        return new Veto(Resources.NakedObjects.FieldDisabledOnce);
                 }
 
                 var tgtSpec = target.Spec;
@@ -112,16 +111,13 @@ namespace NakedObjects.Core.Spec {
             var facet = GetFacet<IDisabledFacet>();
             if (facet != null) {
                 var isProtected = facet.Value;
-                if (isProtected == WhenTo.Always) {
-                    return new Veto(Resources.NakedObjects.FieldNotEditable);
-                }
-
-                if (isProtected == WhenTo.OncePersisted && isPersistent) {
-                    return new Veto(Resources.NakedObjects.FieldNotEditableNow);
-                }
-
-                if (isProtected == WhenTo.UntilPersisted && !isPersistent) {
-                    return new Veto(Resources.NakedObjects.FieldNotEditableUntil);
+                switch (isProtected) {
+                    case WhenTo.Always:
+                        return new Veto(Resources.NakedObjects.FieldNotEditable);
+                    case WhenTo.OncePersisted when isPersistent:
+                        return new Veto(Resources.NakedObjects.FieldNotEditableNow);
+                    case WhenTo.UntilPersisted when !isPersistent:
+                        return new Veto(Resources.NakedObjects.FieldNotEditableUntil);
                 }
             }
 

@@ -197,16 +197,11 @@ namespace NakedObjects.Core.Adapter {
 
         #endregion
 
-        private INakedObjectAdapter RestoreObject(IOid oid) {
-            if (oid.IsTransient) {
-                return lifecycleManager.RecreateInstance(oid, oid.Spec);
-            }
-
-            if (oid is IViewModelOid) {
-                return lifecycleManager.GetViewModel(oid);
-            }
-
-            return lifecycleManager.LoadObject(oid, oid.Spec);
-        }
+        private INakedObjectAdapter RestoreObject(IOid oid) =>
+            oid switch {
+                _ when oid.IsTransient => lifecycleManager.RecreateInstance(oid, oid.Spec),
+                IViewModelOid _ => lifecycleManager.GetViewModel(oid),
+                _ => lifecycleManager.LoadObject(oid, oid.Spec)
+            };
     }
 }

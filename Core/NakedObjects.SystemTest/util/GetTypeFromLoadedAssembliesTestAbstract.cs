@@ -27,7 +27,7 @@ namespace NakedObjects.SystemTest.Util {
             //AssemblyBuilder assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName {Name = name}, AssemblyBuilderAccess.Run);
             var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName {Name = name}, AssemblyBuilderAccess.Run);
 
-            return assemblyBuilder.DefineDynamicModule(name + "Module");
+            return assemblyBuilder.DefineDynamicModule($"{name}Module");
         }
 
         private static void AddClass(ModuleBuilder moduleBuilder, string name) {
@@ -35,7 +35,7 @@ namespace NakedObjects.SystemTest.Util {
             var constructorBuilder = typeBuilder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard, null);
             var ilGenerator = constructorBuilder.GetILGenerator();
 
-            ilGenerator.EmitWriteLine(name + " instantiated!");
+            ilGenerator.EmitWriteLine($"{name} instantiated!");
             ilGenerator.Emit(OpCodes.Ret);
 
             typeBuilder.CreateType();
@@ -71,10 +71,10 @@ namespace NakedObjects.SystemTest.Util {
 
         public static void SetupTypeData() {
             for (var i = 0; i < 100; i++) {
-                var mb = CreateModuleBuilder("Assembly" + i);
+                var mb = CreateModuleBuilder($"Assembly{i}");
 
                 for (var j = 0; j < 100; j++) {
-                    var classname = "Class" + i.ToString(CultureInfo.InvariantCulture) + j;
+                    var classname = $"Class{i.ToString(CultureInfo.InvariantCulture)}{j}";
 
                     AddClass(mb, classname);
 
@@ -98,7 +98,7 @@ namespace NakedObjects.SystemTest.Util {
             var fileName = name + DateTime.Now.Ticks;
 
             const string dir = @"C:\LoadAssemblyTestRuns";
-            var filePath = dir + @"\" + fileName + ".csv";
+            var filePath = $@"{dir}\{fileName}.csv";
 
             Directory.CreateDirectory(dir);
             using (var fs = File.Create(filePath)) {
@@ -129,7 +129,7 @@ namespace NakedObjects.SystemTest.Util {
         private static void CollateResults(string testName, Runs[] runs) {
             lock (Results) {
                 for (var i = 0; i < runs.Count(); i++) {
-                    var name = testName + "x" + i;
+                    var name = $"{testName}x{i}";
                     Results[name] = runs[i];
                 }
             }
@@ -137,7 +137,7 @@ namespace NakedObjects.SystemTest.Util {
             DisplayResults();
         }
 
-        private long FindTypeFromLoadedAssemblies(Func<string, Type> funcUnderTest, IList<string> typeList) {
+        private static long FindTypeFromLoadedAssemblies(Func<string, Type> funcUnderTest, IList<string> typeList) {
             var sw = new Stopwatch();
 
             foreach (var s in typeList) {
@@ -151,7 +151,7 @@ namespace NakedObjects.SystemTest.Util {
             return sw.ElapsedMilliseconds;
         }
 
-        private string GetCurrentMethod() {
+        private static string GetCurrentMethod() {
             var st = new StackTrace();
             var sf = st.GetFrame(1);
             return sf.GetMethod().Name;

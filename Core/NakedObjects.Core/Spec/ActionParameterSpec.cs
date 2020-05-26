@@ -233,6 +233,6 @@ namespace NakedObjects.Core.Spec {
             return (manager.CreateAdapter(domainObject, null, null), typeOfDefaultValue);
         }
 
-        private IConsent GetConsent(string message) => message == null ? (IConsent) Allow.Default : new Veto(message);
+        private static IConsent GetConsent(string message) => message == null ? (IConsent) Allow.Default : new Veto(message);
     }
 }

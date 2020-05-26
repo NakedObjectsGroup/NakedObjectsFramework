@@ -26,35 +26,21 @@ namespace NakedObjects.Core.Spec {
         public IActionParameterSpec CreateParameter(IActionParameterSpecImmutable parameterSpecImmutable, IActionSpec actionSpec, int index) {
             Assert.AssertNotNull(framework);
             var specification = parameterSpecImmutable.Specification;
-
-            if (specification.IsParseable) {
-                return new ActionParseableParameterSpec(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor);
-            }
-
-            if (specification.IsObject) {
-                return new OneToOneActionParameter(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor);
-            }
-
-            if (specification.IsCollection) {
-                return new OneToManyActionParameter(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor);
-            }
-
-            throw new UnknownTypeException(Log.LogAndReturn($"{specification}"));
+            return specification switch {
+                _ when specification.IsParseable => new ActionParseableParameterSpec(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor),
+                _ when specification.IsObject => new OneToOneActionParameter(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor),
+                _ when specification.IsCollection => new OneToManyActionParameter(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor),
+                _ => throw new UnknownTypeException(Log.LogAndReturn($"{specification}"))
+            };
         }
 
         public IAssociationSpec CreateAssociation(IAssociationSpecImmutable specImmutable) {
             Assert.AssertNotNull(framework);
-            var oneToOneAssociationSpecImmutable = specImmutable as IOneToOneAssociationSpecImmutable;
-            if (oneToOneAssociationSpecImmutable != null) {
-                return new OneToOneAssociationSpec(framework.MetamodelManager, oneToOneAssociationSpecImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor, framework.TransactionManager);
-            }
-
-            var oneToManyAssociationSpecImmutable = specImmutable as IOneToManyAssociationSpecImmutable;
-            if (oneToManyAssociationSpecImmutable != null) {
-                return new OneToManyAssociationSpec(framework.MetamodelManager, oneToManyAssociationSpecImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor);
-            }
-
-            throw new ReflectionException(Log.LogAndReturn($"Unknown spec type: {specImmutable}"));
+            return specImmutable switch {
+                IOneToOneAssociationSpecImmutable oneToOneAssociationSpecImmutable => new OneToOneAssociationSpec(framework.MetamodelManager, oneToOneAssociationSpecImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor, framework.TransactionManager),
+                IOneToManyAssociationSpecImmutable oneToManyAssociationSpecImmutable => new OneToManyAssociationSpec(framework.MetamodelManager, oneToManyAssociationSpecImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor),
+                _ => throw new ReflectionException(Log.LogAndReturn($"Unknown spec type: {specImmutable}"))
+            };
         }
 
         public IActionSpec[] CreateActionSpecs(IList<IActionSpecImmutable> specImmutables) => specImmutables.Select(CreateActionSpec).ToArray();
@@ -69,19 +55,12 @@ namespace NakedObjects.Core.Spec {
             return CreateAssociation(specImmutable);
         }
 
-        public ITypeSpec CreateTypeSpec(ITypeSpecImmutable specImmutable) {
-            var osi = specImmutable as IObjectSpecImmutable;
-            if (osi != null) {
-                return CreateObjectSpec(osi);
-            }
-
-            var ssi = specImmutable as IServiceSpecImmutable;
-            if (ssi != null) {
-                return CreateServiceSpec(ssi);
-            }
-
-            throw new InitialisationException(Log.LogAndReturn($"Unexpected Spec Type {specImmutable.Type}"));
-        }
+        public ITypeSpec CreateTypeSpec(ITypeSpecImmutable specImmutable) =>
+            specImmutable switch {
+                IObjectSpecImmutable osi => CreateObjectSpec(osi),
+                IServiceSpecImmutable ssi => CreateServiceSpec(ssi),
+                _ => throw new InitialisationException(Log.LogAndReturn($"Unexpected Spec Type {specImmutable.Type}"))
+            };
 
         private IServiceSpec CreateServiceSpec(IServiceSpecImmutable specImmutable) {
             Assert.AssertNotNull(framework);

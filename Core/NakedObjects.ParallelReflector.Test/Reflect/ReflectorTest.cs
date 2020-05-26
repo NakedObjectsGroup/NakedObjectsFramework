@@ -65,7 +65,7 @@ namespace NakedObjects.ParallelReflect.Test {
             return hostBuilder.Services;
         }
 
-        private void RegisterFacetFactory<T>(string name, IServiceCollection services, int order) {
+        private static void RegisterFacetFactory<T>(string name, IServiceCollection services, int order) {
             ConfigHelpers.RegisterFacetFactory(typeof(T), services, order);
         }
 

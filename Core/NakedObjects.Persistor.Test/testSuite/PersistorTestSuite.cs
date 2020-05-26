@@ -41,7 +41,7 @@ namespace NakedObjects.Persistor.TestSuite {
             return framework.Persistor.Instances<Person>().Single(p => p.PersonId == id);
         }
 
-        private void AssertIsPerson(Person person, int id) {
+        private static void AssertIsPerson(Person person, int id) {
             Assert.IsNotNull(person, "Failed to get instance");
             Assert.AreEqual(id, person.PersonId);
         }

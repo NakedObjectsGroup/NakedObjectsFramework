@@ -41,7 +41,7 @@ namespace NakedObjects.Facade.Impl.Implementation {
 
         #endregion
 
-        private string Encode(IEncodedToStrings encoder) => encoder.ToShortEncodedStrings().Aggregate((a, b) => $"{a};{b}");
+        private static string Encode(IEncodedToStrings encoder) => encoder.ToShortEncodedStrings().Aggregate((a, b) => $"{a};{b}");
 
         private string GetObjectId(IOidFacade oid) => Encode((IEncodedToStrings) oid.Value);
     }

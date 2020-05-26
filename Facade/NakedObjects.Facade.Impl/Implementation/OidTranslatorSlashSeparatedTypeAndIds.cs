@@ -47,7 +47,7 @@ namespace NakedObjects.Facade.Impl.Implementation {
             return (code, GetKeyValues(nakedObject));
         }
 
-        private string KeyRepresentation(object obj) {
+        private static string KeyRepresentation(object obj) {
             var key = obj switch {
                 DateTime time => time.Ticks,
                 Guid _ => obj.ToString(),

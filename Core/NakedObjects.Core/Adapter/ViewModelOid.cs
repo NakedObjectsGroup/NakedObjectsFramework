@@ -86,7 +86,7 @@ namespace NakedObjects.Core.Adapter {
             cachedHashCode = HashCodeUtils.Hash(cachedHashCode, TypeName);
             cachedHashCode = HashCodeUtils.Hash(cachedHashCode, Keys);
 
-            var keys = Keys.Aggregate((s, t) => s + ":" + t);
+            var keys = Keys.Aggregate((s, t) => $"{s}:{t}");
 
             cachedToString = $"{(IsTransient ? "T" : "")}VMOID#{keys}{(previous == null ? "" : "+")}";
         }

@@ -60,7 +60,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
 
             var foo = menus[0];
             foo.AssertItemCountIs(3);
-            Assert.AreEqual(3, foo.AllItems().OfType<ITestMenuItem>().Count());
+            Assert.AreEqual(3, foo.AllItems().Count(i => i != null));
 
             foo.AllItems()[0].AssertNameEquals("Foo Action0");
             foo.AllItems()[1].AssertNameEquals("Foo Action1");

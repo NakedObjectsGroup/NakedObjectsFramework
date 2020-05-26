@@ -142,7 +142,7 @@ namespace NakedObjects.Facade.Impl {
 
         #region Helpers
 
-        private IAssociationSpec GetPropertyInternal(INakedObjectAdapter nakedObject, string propertyName, bool onlyVisible = true) {
+        private static IAssociationSpec GetPropertyInternal(INakedObjectAdapter nakedObject, string propertyName, bool onlyVisible = true) {
             if (string.IsNullOrWhiteSpace(propertyName)) {
                 throw new BadRequestNOSException();
             }
@@ -178,7 +178,7 @@ namespace NakedObjects.Facade.Impl {
             };
         }
 
-        private IMenuActionImmutable[] GetMenuActions(IMenuItemImmutable item) =>
+        private static IMenuActionImmutable[] GetMenuActions(IMenuItemImmutable item) =>
             item switch {
                 IMenuActionImmutable actionImmutable => new[] {actionImmutable},
                 IMenuImmutable menu => menu.MenuItems.SelectMany(GetMenuActions).ToArray(),
@@ -211,7 +211,7 @@ namespace NakedObjects.Facade.Impl {
             };
         }
 
-        private ListContext GetCompletions(PropParmAdapter propParm, INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments) {
+        private static ListContext GetCompletions(PropParmAdapter propParm, INakedObjectAdapter nakedObject, ArgumentsContextFacade arguments) {
             var list = propParm.GetList(nakedObject, arguments);
 
             return new ListContext {
@@ -267,7 +267,7 @@ namespace NakedObjects.Facade.Impl {
             return context;
         }
 
-        private IConsent CrossValidate(ObjectContext context) {
+        private static IConsent CrossValidate(ObjectContext context) {
             var validateFacet = context.Specification.GetFacet<IValidateObjectFacet>();
 
             if (validateFacet != null) {
@@ -321,7 +321,7 @@ namespace NakedObjects.Facade.Impl {
             return context.ToPropertyContextFacade(this, Framework);
         }
 
-        private void SetProperty(PropertyContext context) => ((IOneToOneAssociationSpec) context.Property).SetAssociation(context.Target, context.ProposedValue == null ? null : context.ProposedNakedObject);
+        private static void SetProperty(PropertyContext context) => ((IOneToOneAssociationSpec) context.Property).SetAssociation(context.Target, context.ProposedValue == null ? null : context.ProposedNakedObject);
 
         private static void ValidateConcurrency(INakedObjectAdapter nakedObject, string digest) {
             if (!string.IsNullOrEmpty(nakedObject.Version.Digest) && string.IsNullOrEmpty(digest)) {
@@ -538,7 +538,7 @@ namespace NakedObjects.Facade.Impl {
             return isValid;
         }
 
-        private bool ConsentHandler(IConsent consent, Context context, Cause cause) {
+        private static bool ConsentHandler(IConsent consent, Context context, Cause cause) {
             if (consent.IsVetoed) {
                 context.Reason = consent.Reason;
                 context.ErrorCause = cause;
@@ -548,13 +548,12 @@ namespace NakedObjects.Facade.Impl {
             return true;
         }
 
-        private void VerifyActionType(IActionSpec action, MethodType methodType) {
-            if (methodType == MethodType.Idempotent && !(action.IsQueryOnly() || action.IsIdempotent())) {
-                throw new NotAllowedNOSException("action is not idempotent"); // i18n 
-            }
-
-            if (methodType == MethodType.QueryOnly && !action.IsQueryOnly()) {
-                throw new NotAllowedNOSException("action is not side-effect free"); // i18n 
+        private static void VerifyActionType(IActionSpec action, MethodType methodType) {
+            switch (methodType) {
+                case MethodType.Idempotent when !(action.IsQueryOnly() || action.IsIdempotent()):
+                    throw new NotAllowedNOSException("action is not idempotent"); // i18n 
+                case MethodType.QueryOnly when !action.IsQueryOnly():
+                    throw new NotAllowedNOSException("action is not side-effect free"); // i18n 
             }
         }
 
@@ -703,7 +702,7 @@ namespace NakedObjects.Facade.Impl {
             return Framework.NakedObjectManager.GetAdapterFor(obj);
         }
 
-        private ParameterContext[] FilterParmsForContributedActions(IActionSpec action, ITypeSpec targetSpec, string uid) {
+        private static ParameterContext[] FilterParmsForContributedActions(IActionSpec action, ITypeSpec targetSpec, string uid) {
             IActionParameterSpec[] parms;
             if (action.IsContributedMethod && !action.OnSpec.Equals(targetSpec)) {
                 var tempParms = new List<IActionParameterSpec>();
@@ -773,7 +772,7 @@ namespace NakedObjects.Facade.Impl {
             return GetParameterInternal(action, parmName);
         }
 
-        private IActionParameterSpec GetParameterInternal(IActionSpec action, string parmName) {
+        private static IActionParameterSpec GetParameterInternal(IActionSpec action, string parmName) {
             if (string.IsNullOrWhiteSpace(parmName) || string.IsNullOrWhiteSpace(parmName)) {
                 throw new BadRequestNOSException();
             }

@@ -16,7 +16,7 @@ namespace NakedObjects.Core.Async {
         [Test]
         public void TestAction() => AsyncTest().Wait(1000);
 
-        private async Task AsyncTest() {
+        private static async Task AsyncTest() {
             var mockFramework = new Mock<INakedObjectsFramework>();
             var mockResolver = new Mock<IFrameworkResolver>();
             var mockTransactionManager = new Mock<ITransactionManager>();

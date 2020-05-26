@@ -112,10 +112,12 @@ namespace NakedObjects.SystemTest.XATs {
             var obj = NewTestObject<Object1>();
 
             var a1 = obj.GetAction("Action Number1");
+            Assert.IsNotNull(a1);
             var a2 = obj.GetAction("Action Two");
+            Assert.IsNotNull(a2);
 
             try {
-                a1 = obj.GetAction("ActionNumber1");
+                obj.GetAction("ActionNumber1");
                 Assert.Fail("Shouldn't get to here!");
             }
             catch (Exception e) {
@@ -124,10 +126,12 @@ namespace NakedObjects.SystemTest.XATs {
 
             //Now with params
             var a3 = obj.GetAction("Action Number3", typeof(string), typeof(int));
+            Assert.IsNotNull(a3);
             a3 = obj.GetAction("Action Number3"); //Params not necessary
+            Assert.IsNotNull(a3);
             //And with wrong param types
             try {
-                a3 = obj.GetAction("Action Number3", typeof(int), typeof(string)); //wrong way round!
+                obj.GetAction("Action Number3", typeof(int), typeof(string)); //wrong way round!
                 Assert.Fail("Shouldn't get to here!");
             }
             catch (Exception e) {
@@ -163,9 +167,11 @@ namespace NakedObjects.SystemTest.XATs {
             var obj = NewTestObject<Object1>();
 
             var a1 = obj.GetActionById("ActionNumber1");
+            Assert.IsNotNull(a1);
             var a2 = obj.GetActionById("ActionNumber2");
+            Assert.IsNotNull(a2);
             try {
-                a1 = obj.GetActionById("Action Number1");
+                obj.GetActionById("Action Number1");
                 Assert.Fail("Shouldn't get to here!");
             }
             catch (Exception e) {
@@ -174,11 +180,13 @@ namespace NakedObjects.SystemTest.XATs {
 
             //Now with params
             var a3 = obj.GetActionById("ActionNumber3", typeof(string), typeof(int));
+            Assert.IsNotNull(a3);
             a3 = obj.GetActionById("ActionNumber3"); //Params not necessary
+            Assert.IsNotNull(a3);
 
             //And with wrong param types
             try {
-                a3 = obj.GetActionById("ActionNumber3", typeof(int), typeof(string)); //wrong way round!
+                obj.GetActionById("ActionNumber3", typeof(int), typeof(string)); //wrong way round!
                 Assert.Fail("Shouldn't get to here!");
             }
             catch (Exception e) {
