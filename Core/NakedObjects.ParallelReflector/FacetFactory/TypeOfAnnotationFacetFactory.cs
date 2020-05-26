@@ -53,8 +53,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             Process(reflector, method.ReturnType, specification, metamodel);
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
-            property.GetGetMethod() != null 
-                ? Process(reflector, property.PropertyType, specification, metamodel) 
+            property.GetGetMethod() != null
+                ? Process(reflector, property.PropertyType, specification, metamodel)
                 : metamodel;
     }
 }

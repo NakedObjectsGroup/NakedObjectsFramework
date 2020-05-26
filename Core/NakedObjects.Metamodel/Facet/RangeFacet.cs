@@ -130,10 +130,10 @@ namespace NakedObjects.Meta.Facet {
         #endregion
 
         protected int Compare<T>(T val, T min, T max) where T : struct, IComparable =>
-            val.CompareTo(min) < 0 
-                ? -1 
-                : val.CompareTo(max) > 0 
-                    ? 1 
+            val.CompareTo(min) < 0
+                ? -1
+                : val.CompareTo(max) > 0
+                    ? 1
                     : 0;
 
         protected int DateCompare(DateTime date, double min, double max) {

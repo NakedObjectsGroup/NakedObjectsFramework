@@ -16,6 +16,16 @@ using TestObjectMenu;
 namespace NakedObjects.SystemTest.Menus.Service2 {
     [TestFixture]
     public class TestMainMenusConventional : AbstractSystemTest<MenusDbContext> {
+        protected override Type[] Services =>
+            new[] {
+                typeof(FooService),
+                typeof(ServiceWithSubMenus),
+                typeof(BarService),
+                typeof(QuxService)
+            };
+
+        protected override string[] Namespaces => Types.Select(t => t.Namespace).Distinct().ToArray();
+
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -38,16 +48,6 @@ namespace NakedObjects.SystemTest.Menus.Service2 {
         }
 
         protected override IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
-
-        protected override Type[] Services =>
-            new[] {
-                typeof(FooService),
-                typeof(ServiceWithSubMenus),
-                typeof(BarService),
-                typeof(QuxService)
-            };
-
-        protected override string[] Namespaces => Types.Select(t => t.Namespace).Distinct().ToArray();
 
         [Test]
         public virtual void TestActionVisibility() {

@@ -14,6 +14,15 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Container {
     [TestFixture]
     public class TestContainer : AbstractSystemTest<ContainerDbContext> {
+        protected override string[] Namespaces => new[] {typeof(Object1).Namespace};
+
+        protected override Type[] Types => new[] {typeof(Object1), typeof(Object2), typeof(ViewModel2)};
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(SimpleRepository<Object1>)
+            };
+
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -34,15 +43,6 @@ namespace NakedObjects.SystemTest.Container {
             CleanupNakedObjectsFramework(this);
             ContainerDbContext.Delete();
         }
-
-        protected override string[] Namespaces => new[] { typeof(Object1).Namespace };
-
-        protected override Type[] Types => new[] {typeof(Object1), typeof(Object2), typeof(ViewModel2)};
-
-        protected override Type[] Services =>
-            new[] {
-                typeof(SimpleRepository<Object1>)
-            };
 
         [Test]
         public void DefaultsTransient() {

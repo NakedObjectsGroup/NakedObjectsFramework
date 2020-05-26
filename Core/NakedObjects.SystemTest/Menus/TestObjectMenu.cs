@@ -19,6 +19,22 @@ using TestObjectMenu;
 namespace NakedObjects.SystemTest.Menus {
     [TestFixture]
     public class TestObjectMenu : AbstractSystemTest<MenusDbContext> {
+        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(SimpleRepository<Foo>),
+                typeof(SimpleRepository<Foo2>),
+                typeof(SimpleRepository<Bar>),
+                typeof(SimpleRepository<Bar2>),
+                typeof(SimpleRepository<Bar3>),
+                typeof(SimpleRepository<Bar4>),
+                typeof(SimpleRepository<Bar5>),
+                typeof(Contrib1),
+                typeof(Contrib2),
+                typeof(Contrib3)
+            };
+
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -39,22 +55,6 @@ namespace NakedObjects.SystemTest.Menus {
             CleanupNakedObjectsFramework(this);
             MenusDbContext.Delete();
         }
-
-        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
-
-        protected override Type[] Services =>
-            new[] {
-                typeof(SimpleRepository<Foo>),
-                typeof(SimpleRepository<Foo2>),
-                typeof(SimpleRepository<Bar>),
-                typeof(SimpleRepository<Bar2>),
-                typeof(SimpleRepository<Bar3>),
-                typeof(SimpleRepository<Bar4>),
-                typeof(SimpleRepository<Bar5>),
-                typeof(Contrib1),
-                typeof(Contrib2),
-                typeof(Contrib3)
-            };
 
         [Test]
         public void SubClassAddingNewSubMenuAboveSuperMenu() {

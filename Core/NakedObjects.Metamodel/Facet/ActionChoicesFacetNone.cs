@@ -19,7 +19,7 @@ namespace NakedObjects.Meta.Facet {
 
         public override bool IsNoOp => true;
 
-        public override (string, IObjectSpecImmutable)[] ParameterNamesAndTypes => new ValueTuple<string, IObjectSpecImmutable>[]{};
+        public override (string, IObjectSpecImmutable)[] ParameterNamesAndTypes => new ValueTuple<string, IObjectSpecImmutable>[] { };
 
         public override bool IsMultiple => false;
 

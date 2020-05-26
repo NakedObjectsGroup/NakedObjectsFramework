@@ -14,6 +14,22 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Injection {
     [TestFixture]
     public class TestInjection : AbstractSystemTest<InjectionDbContext> {
+        protected override Type[] Types => new[] {typeof(Object1), typeof(Object2), typeof(Object3), typeof(Object4), typeof(Object5), typeof(Service1), typeof(IService2), typeof(IService3)};
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(SimpleRepository<Object1>),
+                typeof(SimpleRepository<Object2>),
+                typeof(SimpleRepository<Object3>),
+                typeof(SimpleRepository<Object4>),
+                typeof(SimpleRepository<Object5>),
+                typeof(Service1),
+                typeof(ServiceImplementation),
+                typeof(Service4ImplA),
+                typeof(Service4ImplB),
+                typeof(Service4ImplC)
+            };
+
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -34,22 +50,6 @@ namespace NakedObjects.SystemTest.Injection {
             CleanupNakedObjectsFramework(this);
             InjectionDbContext.Delete();
         }
-
-        protected override Type[] Types => new[] {typeof(Object1), typeof(Object2), typeof(Object3), typeof(Object4), typeof(Object5), typeof(Service1), typeof(IService2), typeof(IService3)};
-
-        protected override Type[] Services =>
-            new[] {
-                typeof(SimpleRepository<Object1>),
-                typeof(SimpleRepository<Object2>),
-                typeof(SimpleRepository<Object3>),
-                typeof(SimpleRepository<Object4>),
-                typeof(SimpleRepository<Object5>),
-                typeof(Service1),
-                typeof(ServiceImplementation),
-                typeof(Service4ImplA),
-                typeof(Service4ImplB),
-                typeof(Service4ImplC)
-            };
 
         [Test]
         public void InjectArrayOfServicesDefinedByInterface() {

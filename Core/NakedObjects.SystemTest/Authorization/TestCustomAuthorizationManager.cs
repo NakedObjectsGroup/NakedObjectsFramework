@@ -21,6 +21,23 @@ using Assert = NUnit.Framework.Assert;
 namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     [TestFixture]
     public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
+        protected override Type[] Types => new[] {
+            typeof(QueryableList<Foo>)
+        };
+
+        protected override Type[] Services => new[] {
+            typeof(SimpleRepository<Foo>),
+            typeof(SimpleRepository<FooSub>),
+            typeof(SimpleRepository<SubTypeOfFoo>),
+            typeof(SimpleRepository<Bar>),
+            typeof(SimpleRepository<Qux>),
+            typeof(FooService),
+            typeof(BarService),
+            typeof(QuxService)
+        };
+
+        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
+
         [SetUp]
         public void SetUp() {
             StartTest();
@@ -44,23 +61,6 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
             CleanupNakedObjectsFramework(this);
             CustomAuthorizationManagerDbContext.Delete();
         }
-
-        protected override Type[] Types => new[] {
-            typeof(QueryableList<Foo>)
-        };
-
-        protected override Type[] Services => new[] {
-            typeof(SimpleRepository<Foo>),
-            typeof(SimpleRepository<FooSub>),
-            typeof(SimpleRepository<SubTypeOfFoo>),
-            typeof(SimpleRepository<Bar>),
-            typeof(SimpleRepository<Qux>),
-            typeof(FooService),
-            typeof(BarService),
-            typeof(QuxService)
-        };
-
-        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
 
         protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);
@@ -154,14 +154,6 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         public IDomainObjectContainer Container { protected get; set; }
         public SimpleRepository<Foo> Service { protected get; set; }
 
-        public void Init() {
-            throw new NotImplementedException();
-        }
-
-        public void Shutdown() {
-            //Does nothing
-        }
-
         #region ITypeAuthorizer<object> Members
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) {
@@ -177,19 +169,19 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         }
 
         #endregion
-    }
-
-    public class FooAuthorizer : ITypeAuthorizer<Foo> {
-        public IDomainObjectContainer Container { protected get; set; }
-        public SimpleRepository<Foo> Service { protected get; set; }
 
         public void Init() {
-            //Does nothing
+            throw new NotImplementedException();
         }
 
         public void Shutdown() {
             //Does nothing
         }
+    }
+
+    public class FooAuthorizer : ITypeAuthorizer<Foo> {
+        public IDomainObjectContainer Container { protected get; set; }
+        public SimpleRepository<Foo> Service { protected get; set; }
 
         #region ITypeAuthorizer<Foo> Members
 
@@ -206,11 +198,6 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         }
 
         #endregion
-    }
-
-    public class QuxAuthorizer : ITypeAuthorizer<Qux> {
-        public IDomainObjectContainer Container { protected get; set; }
-        public SimpleRepository<Foo> Service { protected get; set; }
 
         public void Init() {
             //Does nothing
@@ -219,6 +206,11 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         public void Shutdown() {
             //Does nothing
         }
+    }
+
+    public class QuxAuthorizer : ITypeAuthorizer<Qux> {
+        public IDomainObjectContainer Container { protected get; set; }
+        public SimpleRepository<Foo> Service { protected get; set; }
 
         #region ITypeAuthorizer<Qux> Members
 
@@ -236,6 +228,14 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         }
 
         #endregion
+
+        public void Init() {
+            //Does nothing
+        }
+
+        public void Shutdown() {
+            //Does nothing
+        }
     }
 
     public class Foo {

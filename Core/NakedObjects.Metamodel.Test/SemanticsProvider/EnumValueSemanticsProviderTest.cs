@@ -14,8 +14,8 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Meta.SemanticsProvider;
-// ReSharper disable UnusedMember.Global
 
+// ReSharper disable UnusedMember.Global
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     public enum TestEnum {

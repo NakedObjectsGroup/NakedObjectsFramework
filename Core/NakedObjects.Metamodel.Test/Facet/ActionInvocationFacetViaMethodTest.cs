@@ -85,9 +85,7 @@ namespace NakedObjects.Meta.Test.Facet {
         public class TestDelegateClass {
             public string ActionCalled { get; set; }
 
-            
             public void Action0() {
-                
                 ActionCalled = "Action0";
             }
 

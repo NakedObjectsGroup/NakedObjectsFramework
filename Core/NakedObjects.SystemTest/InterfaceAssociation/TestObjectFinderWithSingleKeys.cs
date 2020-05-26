@@ -15,6 +15,26 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
     [TestFixture]
     public class TestObjectFinderWithSingleKeys : AbstractSystemTest<PaymentContext> {
+        private ITestObject customer1;
+        private ITestObject customer2;
+        private ITestObject emp1;
+        private ITestObject emp2;
+        private ITestProperty key1;
+        private ITestProperty payee1;
+        private ITestObject payment1;
+        private ITestObject supplier1;
+
+        protected override string[] Namespaces => new[] {typeof(Payment).Namespace};
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(ObjectFinder),
+                typeof(SimpleRepository<Payment>),
+                typeof(SimpleRepository<Customer>),
+                typeof(SimpleRepository<Supplier>),
+                typeof(SimpleRepository<Employee>)
+            };
+
         [SetUp]
         public void SetUp() {
             StartTest();
@@ -50,26 +70,6 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
             CleanupNakedObjectsFramework(this);
             PaymentContext.Delete();
         }
-
-        private ITestObject customer1;
-        private ITestObject customer2;
-        private ITestObject emp1;
-        private ITestObject emp2;
-        private ITestProperty key1;
-        private ITestProperty payee1;
-        private ITestObject payment1;
-        private ITestObject supplier1;
-
-        protected override string[] Namespaces => new[] {typeof(Payment).Namespace};
-
-        protected override Type[] Services =>
-            new[] {
-                typeof(ObjectFinder),
-                typeof(SimpleRepository<Payment>),
-                typeof(SimpleRepository<Customer>),
-                typeof(SimpleRepository<Supplier>),
-                typeof(SimpleRepository<Employee>)
-            };
 
         [Test]
         public void ChangeAssociatedObjectType() {

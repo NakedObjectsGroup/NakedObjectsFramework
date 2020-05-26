@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
@@ -58,7 +57,7 @@ namespace NakedObjects.Core.Spec {
 
         public override INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) => new INakedObjectAdapter[0];
 
-        public override (string, IObjectSpec)[] GetChoicesParameters() => new (string, IObjectSpec)[]{};
+        public override (string, IObjectSpec)[] GetChoicesParameters() => new (string, IObjectSpec)[] { };
 
         public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) => new INakedObjectAdapter[0];
 

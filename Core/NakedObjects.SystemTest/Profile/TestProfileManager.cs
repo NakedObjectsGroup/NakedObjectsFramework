@@ -22,6 +22,15 @@ using Assert = NUnit.Framework.Assert;
 namespace NakedObjects.SystemTest.Profile {
     [TestFixture]
     public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
+        protected override Type[] Types => new[] {
+            typeof(Foo),
+            typeof(QueryableList<Foo>)
+        };
+
+        protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
+
+        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
+
         [SetUp]
         public void SetUp() {
             StartTest();
@@ -50,15 +59,6 @@ namespace NakedObjects.SystemTest.Profile {
             ProfileDbContext.Delete();
         }
 
-        protected override Type[] Types => new[] {
-            typeof(Foo),
-            typeof(QueryableList<Foo>)
-        };
-
-        protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
-
-        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
-
         protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);
             var config = new ProfileConfiguration<MyProfiler> {
@@ -79,20 +79,6 @@ namespace NakedObjects.SystemTest.Profile {
 
             services.AddSingleton<IProfileConfiguration>(config);
             services.AddSingleton<IFacetDecorator, ProfileManager>();
-        }
-
-        private class CallbackData {
-            public CallbackData(IPrincipal principal, ProfileEvent profileEvent, Type type, string member) {
-                Principal = principal;
-                ProfileEvent = profileEvent;
-                Type = type;
-                Member = member;
-            }
-
-            public IPrincipal Principal { get; }
-            public ProfileEvent ProfileEvent { get; }
-            public Type Type { get; }
-            public string Member { get; }
         }
 
         [Test]
@@ -355,6 +341,24 @@ namespace NakedObjects.SystemTest.Profile {
             testCallback2(callbackData[4]);
             testCallback2(callbackData[5]);
         }
+
+        #region Nested type: CallbackData
+
+        private class CallbackData {
+            public CallbackData(IPrincipal principal, ProfileEvent profileEvent, Type type, string member) {
+                Principal = principal;
+                ProfileEvent = profileEvent;
+                Type = type;
+                Member = member;
+            }
+
+            public IPrincipal Principal { get; }
+            public ProfileEvent ProfileEvent { get; }
+            public Type Type { get; }
+            public string Member { get; }
+        }
+
+        #endregion
     }
 
     #region Classes used by tests

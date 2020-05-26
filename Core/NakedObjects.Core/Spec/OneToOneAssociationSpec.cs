@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
@@ -56,10 +55,12 @@ namespace NakedObjects.Core.Spec {
 
         public override (string, IObjectSpec)[] GetChoicesParameters() {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
-            return propertyChoicesFacet == null ? new (string, IObjectSpec)[] { } : propertyChoicesFacet.ParameterNamesAndTypes.Select(t => {
-                var (pName, pSpec) = t;
-                return (pName, MetamodelManager.GetSpecification(pSpec));
-            }).ToArray();
+            return propertyChoicesFacet == null
+                ? new (string, IObjectSpec)[] { }
+                : propertyChoicesFacet.ParameterNamesAndTypes.Select(t => {
+                    var (pName, pSpec) = t;
+                    return (pName, MetamodelManager.GetSpecification(pSpec));
+                }).ToArray();
         }
 
         public override INakedObjectAdapter[] GetChoices(INakedObjectAdapter target, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
@@ -149,8 +150,8 @@ namespace NakedObjects.Core.Spec {
             }
 
             var spec = (IObjectSpec) MetamodelManager.GetSpecification(obj.GetType());
-            return spec.ContainsFacet(typeof(IComplexTypeFacet)) 
-                ? Manager.CreateAggregatedAdapter(fromObjectAdapter, Id, obj) 
+            return spec.ContainsFacet(typeof(IComplexTypeFacet))
+                ? Manager.CreateAggregatedAdapter(fromObjectAdapter, Id, obj)
                 : Manager.CreateAdapter(obj, null, null);
         }
 

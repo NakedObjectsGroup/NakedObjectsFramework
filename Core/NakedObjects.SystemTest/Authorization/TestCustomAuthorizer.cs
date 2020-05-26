@@ -264,14 +264,6 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
     }
 
     public class DefaultAuthorizer1 : ITypeAuthorizer<object> {
-        public void Init() {
-            //Does nothing
-        }
-
-        public void Shutdown() {
-            //Does nothing
-        }
-
         #region ITypeAuthorizer<object> Members
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
@@ -279,9 +271,25 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
 
         #endregion
+
+        public void Init() {
+            //Does nothing
+        }
+
+        public void Shutdown() {
+            //Does nothing
+        }
     }
 
     public class DefaultAuthorizer2 : ITypeAuthorizer<object> {
+        #region ITypeAuthorizer<object> Members
+
+        public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
+
+        public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
+
+        #endregion
+
         public void Init() {
             throw new NotImplementedException();
         }
@@ -289,25 +297,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         public void Shutdown() {
             //Does nothing
         }
-
-        #region ITypeAuthorizer<object> Members
-
-        public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
-
-        public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
-
-        #endregion
     }
 
     public class DefaultAuthorizer3 : ITypeAuthorizer<object> {
-        public void Init() {
-            //Does nothing
-        }
-
-        public void Shutdown() {
-            //Does nothing
-        }
-
         #region ITypeAuthorizer<object> Members
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
@@ -315,9 +307,7 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         public bool IsVisible(IPrincipal principal, object target, string memberName) => principal.Identity.Name == "Fred" || principal.IsInRole("sysAdmin");
 
         #endregion
-    }
 
-    public class FooAbstractAuthorizer : ITypeAuthorizer<BarAbstract> {
         public void Init() {
             //Does nothing
         }
@@ -325,7 +315,9 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         public void Shutdown() {
             //Does nothing
         }
+    }
 
+    public class FooAbstractAuthorizer : ITypeAuthorizer<BarAbstract> {
         #region ITypeAuthorizer<BarAbstract> Members
 
         public bool IsEditable(IPrincipal principal, BarAbstract target, string memberName) => throw new NotImplementedException();
@@ -333,6 +325,14 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         public bool IsVisible(IPrincipal principal, BarAbstract target, string memberName) => throw new NotImplementedException();
 
         #endregion
+
+        public void Init() {
+            //Does nothing
+        }
+
+        public void Shutdown() {
+            //Does nothing
+        }
     }
 
     public abstract class BarAbstract {

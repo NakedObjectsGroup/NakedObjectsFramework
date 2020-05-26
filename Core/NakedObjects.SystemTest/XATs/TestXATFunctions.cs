@@ -23,6 +23,19 @@ namespace NakedObjects.SystemTest.XATs {
     /// </summary>
     [TestFixture]
     public class TestXATFunctions : AbstractSystemTest<XatDbContext> {
+        #region TestEnum enum
+
+        public enum TestEnum {
+            Value1,
+            Value2
+        }
+
+        #endregion
+
+        protected override string[] Namespaces => new[] {typeof(Object1).Namespace};
+
+        protected override Type[] Services => new[] {typeof(SimpleRepository<Object1>), typeof(MyService1), typeof(MyService2)};
+
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -42,67 +55,6 @@ namespace NakedObjects.SystemTest.XATs {
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
             XatDbContext.Delete();
-        }
-
-        protected override string[] Namespaces => new[] {typeof(Object1).Namespace};
-
-        protected override Type[] Services => new[] {typeof(SimpleRepository<Object1>), typeof(MyService1), typeof(MyService2)};
-
-        public enum TestEnum {
-            Value1,
-            Value2
-        }
-
-        public class MyService1 { }
-
-        [DisplayName("Service Two")]
-        public class MyService2 { }
-
-        //Not registered as a service
-        public class MyService3 { }
-
-        public class Object1 {
-            [DefaultValue(8)]
-            public int Prop1 { get; set; }
-
-            [DisplayName("Foo")]
-            public string Prop2 { get; set; }
-
-            [Mask("d")]
-            public DateTime Prop3 { get; set; } = new DateTime(2013, 8, 16);
-
-            [DisplayName("Bar")]
-            public string Prop4 { get; set; }
-
-            [Hidden(WhenTo.Always)]
-            public string Foo { get; set; }
-
-            public IDomainObjectContainer Container { set; protected get; }
-
-            public static void Menu(IMenu menu) {
-                menu.CreateSubMenu("Sub1").AddAction("ActionNumber4");
-            }
-
-            public string Title() {
-                var t = Container.NewTitleBuilder();
-                t.Append("FooBar");
-                return t.ToString();
-            }
-
-            public Object1 DoSomething([DefaultValue(8)] int param0, [DefaultValue("Foo")] string param1) => null;
-
-            public Object1 DoSomethingElse([DefaultValue(TestEnum.Value2)] TestEnum param0, TestEnum param1) => null;
-
-            public string DoReturnString() => "a string";
-
-            public void ActionNumber1() { }
-
-            [DisplayName("Action Two")]
-            public void ActionNumber2() { }
-
-            public void ActionNumber3(string p1, int p2) { }
-
-            public void ActionNumber4(string p1, int p2) { }
         }
 
         [Test]
@@ -388,6 +340,74 @@ namespace NakedObjects.SystemTest.XATs {
                 Assert.AreEqual("Assert.Fail failed. More than one Property named 'Foo'", e.Message);
             }
         }
+
+        #region Nested type: MyService1
+
+        public class MyService1 { }
+
+        #endregion
+
+        #region Nested type: MyService2
+
+        [DisplayName("Service Two")]
+        public class MyService2 { }
+
+        #endregion
+
+        #region Nested type: MyService3
+
+        //Not registered as a service
+        public class MyService3 { }
+
+        #endregion
+
+        #region Nested type: Object1
+
+        public class Object1 {
+            [DefaultValue(8)]
+            public int Prop1 { get; set; }
+
+            [DisplayName("Foo")]
+            public string Prop2 { get; set; }
+
+            [Mask("d")]
+            public DateTime Prop3 { get; set; } = new DateTime(2013, 8, 16);
+
+            [DisplayName("Bar")]
+            public string Prop4 { get; set; }
+
+            [Hidden(WhenTo.Always)]
+            public string Foo { get; set; }
+
+            public IDomainObjectContainer Container { set; protected get; }
+
+            public static void Menu(IMenu menu) {
+                menu.CreateSubMenu("Sub1").AddAction("ActionNumber4");
+            }
+
+            public string Title() {
+                var t = Container.NewTitleBuilder();
+                t.Append("FooBar");
+                return t.ToString();
+            }
+
+            public Object1 DoSomething([DefaultValue(8)] int param0, [DefaultValue("Foo")] string param1) => null;
+
+            public Object1 DoSomethingElse([DefaultValue(TestEnum.Value2)] TestEnum param0, TestEnum param1) => null;
+
+            public string DoReturnString() => "a string";
+
+            public void ActionNumber1() { }
+
+            [DisplayName("Action Two")]
+            public void ActionNumber2() { }
+
+            public void ActionNumber3(string p1, int p2) { }
+
+            public void ActionNumber4(string p1, int p2) { }
+        }
+
+        #endregion
     }
 
     #region Classes used by tests

@@ -20,6 +20,20 @@ namespace RestfulObjects.Test.Data {
         private static readonly byte[] Iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         private static readonly byte[] Key = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+        #region IKeyCodeMapper Members
+
+        public string[] KeyFromCode(string code, Type type) {
+            var decryptedCode = string.IsNullOrEmpty(code) ? "" : Decrypt(code);
+            return decryptedCode.Split(new[] {KeySeparator}, StringSplitOptions.None);
+        }
+
+        public string CodeFromKey(string[] key, Type type) {
+            var instanceId = key.Aggregate("", (s, t) => s + (s == "" ? "" : KeySeparator) + t);
+            return string.IsNullOrEmpty(instanceId) ? instanceId : Encrypt(instanceId);
+        }
+
+        #endregion
+
         public string KeyStringFromCode(string code) => Decrypt(code);
 
         public string CodeFromKeyString(string key) => Encrypt(key);
@@ -39,19 +53,5 @@ namespace RestfulObjects.Test.Data {
             var decryptedBytes = decrypter.TransformFinalBlock(valueBytes, 0, valueBytes.Length);
             return Encoding.UTF8.GetString(decryptedBytes);
         }
-
-        #region IKeyCodeMapper Members
-
-        public string[] KeyFromCode(string code, Type type) {
-            var decryptedCode = string.IsNullOrEmpty(code) ? "" : Decrypt(code);
-            return decryptedCode.Split(new[] {KeySeparator}, StringSplitOptions.None);
-        }
-
-        public string CodeFromKey(string[] key, Type type) {
-            var instanceId = key.Aggregate("", (s, t) => s + (s == "" ? "" : KeySeparator) + t);
-            return string.IsNullOrEmpty(instanceId) ? instanceId : Encrypt(instanceId);
-        }
-
-        #endregion
     }
 }

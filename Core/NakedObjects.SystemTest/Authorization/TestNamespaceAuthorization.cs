@@ -23,6 +23,22 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
     [TestFixture]
     public class TestNamespaceAuthorization : AbstractSystemTest<NamespaceAuthorizationDbContext> {
+        protected override Type[] Types => new[] {
+            typeof(Bar1),
+            typeof(Bar2),
+            typeof(Foo1),
+            typeof(Foo2)
+        };
+
+        protected override Type[] Services => new[] {
+            typeof(SimpleRepository<Bar1>),
+            typeof(SimpleRepository<Bar2>),
+            typeof(SimpleRepository<Foo1>),
+            typeof(SimpleRepository<Foo2>)
+        };
+
+        protected override string[] Namespaces => Types.Select(t => t.Namespace).ToArray();
+
         [SetUp]
         public void SetUp() {
             StartTest();
@@ -46,22 +62,6 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
             CleanupNakedObjectsFramework(this);
             NamespaceAuthorizationDbContext.Delete();
         }
-
-        protected override Type[] Types => new[] {
-            typeof(Bar1),
-            typeof(Bar2),
-            typeof(Foo1),
-            typeof(Foo2)
-        };
-
-        protected override Type[] Services => new[] {
-            typeof(SimpleRepository<Bar1>),
-            typeof(SimpleRepository<Bar2>),
-            typeof(SimpleRepository<Foo1>),
-            typeof(SimpleRepository<Foo2>)
-        };
-
-        protected override string[] Namespaces => Types.Select(t => t.Namespace).ToArray();
 
         protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);
@@ -128,6 +128,14 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
     }
 
     public class MyDefaultAuthorizer : ITypeAuthorizer<object> {
+        #region ITypeAuthorizer<object> Members
+
+        public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
+
+        public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
+
+        #endregion
+
         public void Init() {
             //initialized = false;
             throw new NotImplementedException();
@@ -137,24 +145,10 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
             throw new NotImplementedException();
         }
 
-        #region ITypeAuthorizer<object> Members
-
-        public bool IsEditable(IPrincipal principal, object target, string memberName) => true;
-
-        public bool IsVisible(IPrincipal principal, object target, string memberName) => true;
-
-        #endregion
-
         //bool initialized = false;
     }
 
     public class MyAppAuthorizer : INamespaceAuthorizer {
-        public void Init() { }
-
-        public void Shutdown() {
-            throw new NotImplementedException();
-        }
-
         #region INamespaceAuthorizer Members
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) => throw new Exception(string.Format("MyAppAuthorizer#IsEditable, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target, memberName));
@@ -162,18 +156,16 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         public bool IsVisible(IPrincipal principal, object target, string memberName) => throw new Exception(string.Format("MyAppAuthorizer#IsVisible, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target, memberName));
 
         #endregion
-    }
 
-    public class MyCluster1Authorizer : INamespaceAuthorizer {
-        public string NamespaceToAuthorize => "MyApp.MyCluster1";
-
-        public void Init() {
-            throw new NotImplementedException();
-        }
+        public void Init() { }
 
         public void Shutdown() {
             throw new NotImplementedException();
         }
+    }
+
+    public class MyCluster1Authorizer : INamespaceAuthorizer {
+        public string NamespaceToAuthorize => "MyApp.MyCluster1";
 
         #region INamespaceAuthorizer Members
 
@@ -182,10 +174,6 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         public bool IsVisible(IPrincipal principal, object target, string memberName) => throw new Exception(string.Format("MyCluster1Authorizer#IsVisible, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target, memberName));
 
         #endregion
-    }
-
-    public class MyBar1Authorizer : INamespaceAuthorizer {
-        public string NamespaceToAuthorize => "MyApp.MyCluster1.Bar1";
 
         public void Init() {
             throw new NotImplementedException();
@@ -194,6 +182,10 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         public void Shutdown() {
             throw new NotImplementedException();
         }
+    }
+
+    public class MyBar1Authorizer : INamespaceAuthorizer {
+        public string NamespaceToAuthorize => "MyApp.MyCluster1.Bar1";
 
         #region INamespaceAuthorizer Members
 
@@ -202,6 +194,14 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
         public bool IsVisible(IPrincipal principal, object target, string memberName) => throw new Exception(string.Format("MyBar1Authorizer#IsVisible, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target, memberName));
 
         #endregion
+
+        public void Init() {
+            throw new NotImplementedException();
+        }
+
+        public void Shutdown() {
+            throw new NotImplementedException();
+        }
     }
 }
 

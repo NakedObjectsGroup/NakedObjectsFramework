@@ -134,18 +134,6 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         public void AbortTransaction() => RollBackContext();
 
-        private static void Execute(IPersistenceCommand cmd) {
-            try {
-                ExecuteCommand(cmd);
-            }
-            catch (OptimisticConcurrencyException oce) {
-                throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObjectAdapter = cmd.OnObject()};
-            }
-            catch (UpdateException ue) {
-                throw new DataUpdateException(ConcatenateMessages(ue), ue);
-            }
-        }
-
         public void ExecuteCreateObjectCommand(INakedObjectAdapter nakedObjectAdapter) =>
             Execute(new EntityCreateObjectCommand(nakedObjectAdapter, GetContext(nakedObjectAdapter), this));
 
@@ -305,7 +293,19 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         #endregion
 
-        private LocalContext FindContext(Type type) => 
+        private static void Execute(IPersistenceCommand cmd) {
+            try {
+                ExecuteCommand(cmd);
+            }
+            catch (OptimisticConcurrencyException oce) {
+                throw new ConcurrencyException(ConcatenateMessages(oce), oce) {SourceNakedObjectAdapter = cmd.OnObject()};
+            }
+            catch (UpdateException ue) {
+                throw new DataUpdateException(ConcatenateMessages(ue), ue);
+            }
+        }
+
+        private LocalContext FindContext(Type type) =>
             contexts.Values.SingleOrDefault(c => c.GetIsOwned(type)) ??
             contexts.Values.Single(c => c.GetIsKnown(type));
 
@@ -334,8 +334,8 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return objectType.GetElementType();
             }
 
-            return CollectionUtils.IsCollection(objectType) 
-                ? GetTypeToUse(((IEnumerable) domainObject).Cast<object>().FirstOrDefault()) 
+            return CollectionUtils.IsCollection(objectType)
+                ? GetTypeToUse(((IEnumerable) domainObject).Cast<object>().FirstOrDefault())
                 : objectType;
         }
 
@@ -638,11 +638,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         private static IEnumerable<object> GetChangedComplexObjectsInContext(LocalContext context) =>
-            context.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).
-                Select(ose => new {Obj = ose.Entity, Prop = context.GetComplexMembers(ose.Entity.GetEntityProxiedType())}).
-                SelectMany(a => a.Prop.Select(p => p.GetValue(a.Obj, null))).
-                Where(x => x != null).
-                Distinct();
+            context.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).Select(ose => new {Obj = ose.Entity, Prop = context.GetComplexMembers(ose.Entity.GetEntityProxiedType())}).SelectMany(a => a.Prop.Select(p => p.GetValue(a.Obj, null))).Where(x => x != null).Distinct();
 
         private static void ValidateIfRequired(INakedObjectAdapter adapter) {
             if (adapter.ResolveState.IsPersistent()) {
@@ -773,8 +769,8 @@ namespace NakedObjects.Persistor.Entity.Component {
 
                 var adapterForOriginalObjectAdapter = parent.createAdapter(null, originalObject);
 
-                return adapterForOriginalObjectAdapter.ResolveState.IsPersistent() 
-                    ? originalObject 
+                return adapterForOriginalObjectAdapter.ResolveState.IsPersistent()
+                    ? originalObject
                     : ProxyObject(originalObject, adapterForOriginalObjectAdapter);
             }
 
@@ -997,7 +993,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return typeToStructuralType[type];
             }
 
-            private bool IsAlwaysUnrecognised(Type type) => 
+            private bool IsAlwaysUnrecognised(Type type) =>
                 type == null ||
                 type == typeof(object) ||
                 type.IsGenericType ||

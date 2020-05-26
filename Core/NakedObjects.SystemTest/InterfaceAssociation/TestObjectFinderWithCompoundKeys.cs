@@ -16,6 +16,20 @@ using Assert = NUnit.Framework.Assert;
 namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
     [TestFixture]
     public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {
+        protected override string[] Namespaces => new[] {typeof(Payment).Namespace};
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(ObjectFinder),
+                typeof(SimpleRepository<Payment>),
+                typeof(SimpleRepository<CustomerOne>),
+                typeof(SimpleRepository<CustomerTwo>),
+                typeof(SimpleRepository<CustomerThree>),
+                typeof(SimpleRepository<CustomerFour>),
+                typeof(SimpleRepository<Supplier>),
+                typeof(SimpleRepository<Employee>)
+            };
+
         [SetUp]
         public void SetUp() => Initialize();
 
@@ -37,20 +51,6 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
             CleanupNakedObjectsFramework(this);
             PaymentContext.Delete();
         }
-
-        protected override string[] Namespaces => new[] {typeof(Payment).Namespace};
-
-        protected override Type[] Services =>
-            new[] {
-                typeof(ObjectFinder),
-                typeof(SimpleRepository<Payment>),
-                typeof(SimpleRepository<CustomerOne>),
-                typeof(SimpleRepository<CustomerTwo>),
-                typeof(SimpleRepository<CustomerThree>),
-                typeof(SimpleRepository<CustomerFour>),
-                typeof(SimpleRepository<Supplier>),
-                typeof(SimpleRepository<Employee>)
-            };
 
         [Test]
         public virtual void ChangeAssociatedObjectType() {

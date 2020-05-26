@@ -121,7 +121,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var metamodel = new Metamodel(classStrategy, cache);
             var reflector = new ParallelReflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, facetFactories);
 
-            ITypeSpecBuilder spec; 
+            ITypeSpecBuilder spec;
             (spec, Metamodel) = LoadSpecification(reflector);
             Specification = spec as IObjectSpecImmutable;
         }

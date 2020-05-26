@@ -53,19 +53,7 @@ namespace RestfulObjects.Test.Data {
         [AuthorizeProperty(EditUsers = "editUser")]
         public virtual int AUserDisabledValue { get; set; }
 
-        public virtual int[] ChoicesAChoicesValue() {
-            return new[] {1, 2, 3};
-        }
-
-        public virtual string Validate(int aValue, int aChoicesValue) {
-            if (aValue == 101 && aChoicesValue == 3) {
-                return "Cross validation failed";
-            }
-
-            return "";
-        }
-
-        #region IViewModel Members
+        #region IViewModelEdit Members
 
         [NakedObjectsIgnore]
         public string[] DeriveKeys() {
@@ -98,5 +86,17 @@ namespace RestfulObjects.Test.Data {
         }
 
         #endregion
+
+        public virtual int[] ChoicesAChoicesValue() {
+            return new[] {1, 2, 3};
+        }
+
+        public virtual string Validate(int aValue, int aChoicesValue) {
+            if (aValue == 101 && aChoicesValue == 3) {
+                return "Cross validation failed";
+            }
+
+            return "";
+        }
     }
 }

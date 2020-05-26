@@ -19,7 +19,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             : base(oidStrategy, RestControlFlags.DefaultFlags()) {
             var exception = GetInnermostException(e);
             Message = exception.Message;
-            StackTrace = exception.StackTrace?.Split('\n').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray() ?? new string[]{};
+            StackTrace = exception.StackTrace?.Split('\n').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray() ?? new string[] { };
 
             Links = new LinkRepresentation[] { };
             Extensions = new MapRepresentation();

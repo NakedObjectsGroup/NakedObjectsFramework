@@ -15,6 +15,15 @@ namespace NakedObjects.SystemTest.ParentChild {
     namespace ParentChild {
         [TestFixture]
         public class TestParentChildPersistence : AbstractSystemTest<ParentChildDbContext> {
+            protected override string[] Namespaces => new[] {typeof(Parent).Namespace};
+
+            protected override Type[] Services =>
+                new[] {
+                    typeof(SimpleRepository<Parent>),
+                    typeof(SimpleRepository<Parent2>),
+                    typeof(SimpleRepository<Child>)
+                };
+
             [SetUp]
             public void SetUp() => StartTest();
 
@@ -32,15 +41,6 @@ namespace NakedObjects.SystemTest.ParentChild {
                 CleanupNakedObjectsFramework(this);
                 ParentChildDbContext.Delete();
             }
-
-            protected override string[] Namespaces => new[] {typeof(Parent).Namespace};
-
-            protected override Type[] Services =>
-                new[] {
-                    typeof(SimpleRepository<Parent>),
-                    typeof(SimpleRepository<Parent2>),
-                    typeof(SimpleRepository<Child>)
-                };
 
             [Test]
             public virtual void CannotSaveParentIfChildHasMandatoryFieldsMissing() {

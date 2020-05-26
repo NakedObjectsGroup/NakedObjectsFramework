@@ -11,8 +11,8 @@ using NakedObjects.Architecture.Adapter;
 namespace NakedObjects.Snapshot.Xml.Utility {
     public class Place {
         public Place(INakedObjectAdapter nakedObjectAdapter, XElement element) {
-            this.NakedObjectAdapter = nakedObjectAdapter;
-            this.XmlElement = element;
+            NakedObjectAdapter = nakedObjectAdapter;
+            XmlElement = element;
         }
 
         public XElement XmlElement { get; }

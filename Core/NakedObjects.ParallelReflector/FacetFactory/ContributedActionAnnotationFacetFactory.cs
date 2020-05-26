@@ -59,7 +59,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 var parameterType = p.ParameterType;
                 IObjectSpecBuilder type;
                 (type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, metamodel);
-               
+
                 if (type != null) {
                     if (IsParseable(parameterType)) {
                         Log.WarnFormat("ContributedAction attribute added to a value parameter type: {0}", member.Name);
@@ -67,8 +67,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     else if (IsCollection(parameterType)) {
                         IObjectSpecImmutable parent;
                         (parent, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(member.DeclaringType, metamodel);
-                        metamodel = parent is IObjectSpecBuilder 
-                            ? AddLocalCollectionContributedAction(reflector, p, facet, metamodel) 
+                        metamodel = parent is IObjectSpecBuilder
+                            ? AddLocalCollectionContributedAction(reflector, p, facet, metamodel)
                             : AddCollectionContributedAction(reflector, member, parameterType, p, facet, attribute, metamodel);
                     }
                     else {
@@ -87,7 +87,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
             else {
                 var returnType = member.ReturnType;
-                (_ , metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(returnType, metamodel);
+                (_, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(returnType, metamodel);
                 if (IsCollection(returnType)) {
                     Log.WarnFormat("ContributedAction attribute added to an action that returns a collection: {0}", member.Name);
                 }

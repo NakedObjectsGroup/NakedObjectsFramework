@@ -28,7 +28,7 @@ namespace RestfulObjects.Test.Data {
 
         public virtual WithReferenceViewModel AViewModelReference { get; set; }
 
-        #region IViewModel Members
+        #region IViewModelEdit Members
 
         [NakedObjectsIgnore]
         public string[] DeriveKeys() {

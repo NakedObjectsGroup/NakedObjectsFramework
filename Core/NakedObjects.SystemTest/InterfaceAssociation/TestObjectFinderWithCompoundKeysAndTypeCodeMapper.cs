@@ -13,6 +13,23 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper {
     [TestFixture]
     public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinderWithCompoundKeysAbstract {
+        protected override string[] Namespaces => new[] {typeof(Payment).Namespace};
+
+        protected override Type[] Types => new[] {typeof(Payment), typeof(CustomerOne), typeof(CustomerTwo), typeof(CustomerThree), typeof(CustomerFour), typeof(Supplier), typeof(Employee)};
+
+        protected override Type[] Services =>
+            new[] {
+                typeof(ObjectFinderWithTypeCodeMapper),
+                typeof(SimpleRepository<Payment>),
+                typeof(SimpleRepository<CustomerOne>),
+                typeof(SimpleRepository<CustomerTwo>),
+                typeof(SimpleRepository<CustomerThree>),
+                typeof(SimpleRepository<CustomerFour>),
+                typeof(SimpleRepository<Supplier>),
+                typeof(SimpleRepository<Employee>),
+                typeof(SimpleTypeCodeMapper)
+            };
+
         [SetUp]
         public void SetUp() => Initialize();
 
@@ -34,23 +51,6 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
             CleanupNakedObjectsFramework(this);
             PaymentContext.Delete();
         }
-
-        protected override string[] Namespaces => new[] {typeof(Payment).Namespace};
-
-        protected override Type[] Types => new[] {typeof(Payment), typeof(CustomerOne), typeof(CustomerTwo), typeof(CustomerThree), typeof(CustomerFour), typeof(Supplier), typeof(Employee)};
-
-        protected override Type[] Services =>
-            new[] {
-                typeof(ObjectFinderWithTypeCodeMapper),
-                typeof(SimpleRepository<Payment>),
-                typeof(SimpleRepository<CustomerOne>),
-                typeof(SimpleRepository<CustomerTwo>),
-                typeof(SimpleRepository<CustomerThree>),
-                typeof(SimpleRepository<CustomerFour>),
-                typeof(SimpleRepository<Supplier>),
-                typeof(SimpleRepository<Employee>),
-                typeof(SimpleTypeCodeMapper)
-            };
 
         [Test]
         public void ChangeAssociatedObjectType() {

@@ -10,12 +10,12 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Util {
     [TestFixture]
     public class ReasonBuilderTest {
+        private ReasonBuilder builder;
+
         [SetUp]
         public void SetUp() {
             builder = new ReasonBuilder();
         }
-
-        private ReasonBuilder builder;
 
         private void AssertMessageIs(string expected) {
             Assert.AreEqual(expected, builder.Reason);

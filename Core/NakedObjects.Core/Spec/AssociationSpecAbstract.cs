@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -129,8 +128,7 @@ namespace NakedObjects.Core.Spec {
             return null;
         }
 
-        protected static IFacet GetOpFacet<T>(ISpecification s) where T : class, IFacet
-        {
+        protected static IFacet GetOpFacet<T>(ISpecification s) where T : class, IFacet {
             var facet = s.GetFacet<T>();
             return facet == null
                 ? null

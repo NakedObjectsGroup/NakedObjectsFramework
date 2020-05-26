@@ -176,9 +176,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             if (AddChoices()) {
                 CustomExtensions ??= new Dictionary<string, object>();
 
-                (object value, string title)[] choicesArray = PropertyContext.Property.GetChoicesAndTitles(PropertyContext.Target, null).
-                    Select(choice => (RestUtils.GetChoiceValue(OidStrategy, Req, choice.obj, PropertyContext.Property, Flags), choice.title)).
-                    ToArray();
+                (object value, string title)[] choicesArray = PropertyContext.Property.GetChoicesAndTitles(PropertyContext.Target, null).Select(choice => (RestUtils.GetChoiceValue(OidStrategy, Req, choice.obj, PropertyContext.Property, Flags), choice.title)).ToArray();
 
                 var op = choicesArray.Select(tuple => new OptionalProperty(tuple.title, tuple.value)).ToArray();
                 var map = MapRepresentation.Create(op);

@@ -15,6 +15,22 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Persistence {
     [TestFixture]
     public class TestPersistence : AbstractSystemTest<PersistenceDbContext> {
+        private static bool triggerFail;
+
+        protected override Type[] Types =>
+            new[] {
+                typeof(ObjectQuery<Qux1>),
+                typeof(Foo1)
+            };
+
+        protected override Type[] Services => new[] {
+            typeof(SimpleRepository<Foo1>),
+            typeof(SimpleRepository<Bar1>),
+            typeof(SimpleRepository<Qux1>)
+        };
+
+        protected override string[] Namespaces => new[] {typeof(Foo1).Namespace};
+
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -36,22 +52,6 @@ namespace NakedObjects.SystemTest.Persistence {
             CleanupNakedObjectsFramework(this);
             PersistenceDbContext.Delete();
         }
-
-        private static bool triggerFail;
-
-        protected override Type[] Types =>
-            new[] {
-                typeof(ObjectQuery<Qux1>),
-                typeof(Foo1)
-            };
-
-        protected override Type[] Services => new[] {
-            typeof(SimpleRepository<Foo1>),
-            typeof(SimpleRepository<Bar1>),
-            typeof(SimpleRepository<Qux1>)
-        };
-
-        protected override string[] Namespaces => new[] {typeof(Foo1).Namespace};
 
         internal static void FailAsRequired() {
             if (triggerFail) {

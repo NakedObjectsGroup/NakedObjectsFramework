@@ -12,6 +12,20 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
     [TestFixture]
     public class TestPolymorphicNavigator : TestPolymorphicNavigatorAbstract {
+        private const string DatabaseName = "TestPolymorphicNavigator";
+
+        protected override string[] Namespaces => new[] {typeof(PolymorphicPayment).Namespace};
+
+        protected override EntityObjectStoreConfiguration Persistor {
+            get {
+                var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+                config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(DatabaseName));
+                return config;
+            }
+        }
+
+        protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeName()};
+
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -28,20 +42,6 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         public void DeleteDatabase() {
             CleanupNakedObjectsFramework(this);
         }
-
-        private const string DatabaseName = "TestPolymorphicNavigator";
-
-        protected override string[] Namespaces => new[] {typeof(PolymorphicPayment).Namespace};
-
-        protected override EntityObjectStoreConfiguration Persistor {
-            get {
-                var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-                config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(DatabaseName));
-                return config;
-            }
-        }
-
-        protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeName()};
 
         [Test]
         public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {

@@ -76,8 +76,8 @@ namespace NakedObjects.Persistor.Entity.Util {
 
         private static PropertyInfo[] SafeGetMembers(this EntityObjectStore.LocalContext context, Type type, Func<EntityType, IEnumerable<EdmMember>> getMembers) {
             var et = GetEntityType(context, type);
-            return et != null 
-                ? type.GetProperties().Join(getMembers(et), pi => pi.Name, em => em.Name, (pi, em) => pi).ToArray() 
+            return et != null
+                ? type.GetProperties().Join(getMembers(et), pi => pi.Name, em => em.Name, (pi, em) => pi).ToArray()
                 : new PropertyInfo[] { };
         }
 

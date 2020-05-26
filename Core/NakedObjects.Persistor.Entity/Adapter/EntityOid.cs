@@ -159,7 +159,7 @@ namespace NakedObjects.Persistor.Entity.Adapter {
 
         #region Object Overrides
 
-        public override bool Equals(object obj) => 
+        public override bool Equals(object obj) =>
             obj == this ||
             obj is EntityOid oid &&
             TypeName.Equals(oid.TypeName) &&

@@ -26,26 +26,13 @@ using Assert = NUnit.Framework.Assert;
 namespace NakedObjects.SystemTest.Attributes {
     [TestFixture]
     public class TestAttributes : AbstractSystemTest<AttributesDbContext> {
-        [SetUp]
-        public void TestSetup() => StartTest();
-
-        [TearDown]
-        public void TearDown() => EndTest();
-
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            AttributesDbContext.Delete();
-            var context = Activator.CreateInstance<AttributesDbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-            AttributesDbContext.Delete();
-        }
+        private static readonly string todayMinus31 = DateTime.Today.AddDays(-31).ToShortDateString();
+        private static readonly string todayMinus30 = DateTime.Today.AddDays(-30).ToShortDateString();
+        private static readonly string todayMinus1 = DateTime.Today.AddDays(-1).ToShortDateString();
+        private static readonly string today = DateTime.Today.ToShortDateString();
+        private static readonly string todayPlus1 = DateTime.Today.AddDays(1).ToShortDateString();
+        private static readonly string todayPlus30 = DateTime.Today.AddDays(30).ToShortDateString();
+        private static readonly string todayPlus31 = DateTime.Today.AddDays(31).ToShortDateString();
 
         protected override string[] Namespaces => new[] {"NakedObjects.SystemTest.Attributes", "SystemTest.Attributes"};
 
@@ -107,15 +94,28 @@ namespace NakedObjects.SystemTest.Attributes {
             }
         }
 
-        private ITestObject NewTransientDisabled1() => GetTestService("Disabled1s").GetAction("New Instance").InvokeReturnObject();
+        [SetUp]
+        public void TestSetup() => StartTest();
 
-        private static readonly string todayMinus31 = DateTime.Today.AddDays(-31).ToShortDateString();
-        private static readonly string todayMinus30 = DateTime.Today.AddDays(-30).ToShortDateString();
-        private static readonly string todayMinus1 = DateTime.Today.AddDays(-1).ToShortDateString();
-        private static readonly string today = DateTime.Today.ToShortDateString();
-        private static readonly string todayPlus1 = DateTime.Today.AddDays(1).ToShortDateString();
-        private static readonly string todayPlus30 = DateTime.Today.AddDays(30).ToShortDateString();
-        private static readonly string todayPlus31 = DateTime.Today.AddDays(31).ToShortDateString();
+        [TearDown]
+        public void TearDown() => EndTest();
+
+        [OneTimeSetUp]
+        public void FixtureSetUp() {
+            AttributesDbContext.Delete();
+            var context = Activator.CreateInstance<AttributesDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown() {
+            CleanupNakedObjectsFramework(this);
+            AttributesDbContext.Delete();
+        }
+
+        private ITestObject NewTransientDisabled1() => GetTestService("Disabled1s").GetAction("New Instance").InvokeReturnObject();
 
         private void NumericPropertyRangeTest(string name) {
             var obj = NewTestObject<Range1>();
@@ -1071,7 +1071,7 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual string Prop2 { get; set; }
 
         public virtual void DoSomething([DefaultValue(8)] int param0,
-            [DefaultValue("Foo")] string param1) { }
+                                        [DefaultValue("Foo")] string param1) { }
     }
 
     #endregion
@@ -1109,7 +1109,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
         [System.ComponentModel.Description("Hex")]
         public void DoSomething([System.ComponentModel.Description("Yop")]
-            string param1) { }
+                                string param1) { }
     }
 
     public class Description2 {
@@ -1578,79 +1578,79 @@ namespace NakedObjects.SystemTest.Attributes {
         public virtual DateTime Prop26 { get; set; }
 
         public void Action1([System.ComponentModel.DataAnnotations.Range(5, 6)]
-            sbyte parm) { }
+                            sbyte parm) { }
 
         public void Action2([System.ComponentModel.DataAnnotations.Range(5, 6)]
-            short parm) { }
+                            short parm) { }
 
         public void Action3([System.ComponentModel.DataAnnotations.Range(5, 6)]
-            int parm) { }
+                            int parm) { }
 
         public void Action4([System.ComponentModel.DataAnnotations.Range(5, 6)]
-            long parm) { }
+                            long parm) { }
 
         public void Action5([System.ComponentModel.DataAnnotations.Range(5, 6)]
-            byte parm) { }
+                            byte parm) { }
 
         public void Action6([System.ComponentModel.DataAnnotations.Range(5, 6)]
-            ushort parm) { }
+                            ushort parm) { }
 
         public void Action7([System.ComponentModel.DataAnnotations.Range(5, 6)]
-            uint parm) { }
+                            uint parm) { }
 
         public void Action8([System.ComponentModel.DataAnnotations.Range(5, 6)]
-            ulong parm) { }
+                            ulong parm) { }
 
         public void Action9([System.ComponentModel.DataAnnotations.Range(5, 6)]
-            float parm) { }
+                            float parm) { }
 
         public void Action10([System.ComponentModel.DataAnnotations.Range(5, 6)]
-            double parm) { }
+                             double parm) { }
 
         public void Action11([System.ComponentModel.DataAnnotations.Range(5, 6)]
-            decimal parm) { }
+                             decimal parm) { }
 
         public void Action12([System.ComponentModel.DataAnnotations.Range(5d, 6d)]
-            sbyte parm) { }
+                             sbyte parm) { }
 
         public void Action13([System.ComponentModel.DataAnnotations.Range(5d, 6d)]
-            short parm) { }
+                             short parm) { }
 
         public void Action14([System.ComponentModel.DataAnnotations.Range(5d, 6d)]
-            int parm) { }
+                             int parm) { }
 
         public void Action15([System.ComponentModel.DataAnnotations.Range(5d, 6d)]
-            long parm) { }
+                             long parm) { }
 
         public void Action16([System.ComponentModel.DataAnnotations.Range(5d, 6d)]
-            byte parm) { }
+                             byte parm) { }
 
         public void Action17([System.ComponentModel.DataAnnotations.Range(5d, 6d)]
-            ushort parm) { }
+                             ushort parm) { }
 
         public void Action18([System.ComponentModel.DataAnnotations.Range(5d, 6d)]
-            uint parm) { }
+                             uint parm) { }
 
         public void Action19([System.ComponentModel.DataAnnotations.Range(5d, 6d)]
-            ulong parm) { }
+                             ulong parm) { }
 
         public void Action20([System.ComponentModel.DataAnnotations.Range(5d, 6d)]
-            float parm) { }
+                             float parm) { }
 
         public void Action21([System.ComponentModel.DataAnnotations.Range(5d, 6d)]
-            double parm) { }
+                             double parm) { }
 
         public void Action22([System.ComponentModel.DataAnnotations.Range(5d, 6d)]
-            decimal parm) { }
+                             decimal parm) { }
 
         public void Action23([System.ComponentModel.DataAnnotations.Range(typeof(string), "5", "6")]
-            int parm) { }
+                             int parm) { }
 
         public void Action24([System.ComponentModel.DataAnnotations.Range(-30, 0)]
-            DateTime parm) { }
+                             DateTime parm) { }
 
         public void Action25([System.ComponentModel.DataAnnotations.Range(1, 30)]
-            DateTime parm) { }
+                             DateTime parm) { }
     }
 
     #endregion
@@ -1858,7 +1858,7 @@ namespace SystemTest.Attributes {
         public IDomainObjectContainer Container { set; protected get; }
 
         public void ContributedAction([ContributedAction("Test Service Contributed Action")]
-            Contributee obj) { }
+                                      Contributee obj) { }
 
         public void NotContributedAction(Contributee obj) { }
 

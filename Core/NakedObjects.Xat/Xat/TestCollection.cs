@@ -19,7 +19,7 @@ namespace NakedObjects.Xat {
         private readonly IEnumerable<ITestObject> wrappedCollection;
 
         public TestCollection(INakedObjectAdapter collection, ITestObjectFactory factory, INakedObjectManager manager) {
-            this.NakedObject = collection;
+            NakedObject = collection;
             wrappedCollection = collection.GetAsEnumerable(manager).Select(factory.CreateTestObject);
         }
 

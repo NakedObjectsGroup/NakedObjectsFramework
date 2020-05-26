@@ -22,6 +22,22 @@ using Assert = NUnit.Framework.Assert;
 namespace NakedObjects.SystemTest.Audit {
     [TestFixture]
     public class TestAuditManager : AbstractSystemTest<AuditDbContext> {
+        protected override Type[] Types => new[] {
+            typeof(MyDefaultAuditor),
+            typeof(FooAuditor),
+            typeof(QuxAuditor),
+            typeof(QueryableList<Foo>)
+        };
+
+        protected override Type[] Services => new[] {
+            typeof(SimpleRepository<Foo>),
+            typeof(SimpleRepository<Bar>),
+            typeof(SimpleRepository<Qux>), typeof(FooService),
+            typeof(BarService), typeof(QuxService)
+        };
+
+        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
+
         [SetUp]
         public void SetUp() {
             StartTest();
@@ -45,22 +61,6 @@ namespace NakedObjects.SystemTest.Audit {
             CleanupNakedObjectsFramework(this);
             AuditDbContext.Delete();
         }
-
-        protected override Type[] Types => new[] {
-            typeof(MyDefaultAuditor),
-            typeof(FooAuditor),
-            typeof(QuxAuditor),
-            typeof(QueryableList<Foo>)
-        };
-
-        protected override Type[] Services => new[] {
-            typeof(SimpleRepository<Foo>),
-            typeof(SimpleRepository<Bar>),
-            typeof(SimpleRepository<Qux>), typeof(FooService),
-            typeof(BarService), typeof(QuxService)
-        };
-
-        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
 
         protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);
@@ -564,6 +564,26 @@ namespace NakedObjects.SystemTest.Audit {
 
         public string NamespaceToAudit { get; private set; }
 
+        #region IAuditor Members
+
+        public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
+            Auditor.actionInvokedCallback(byPrincipal, actionName, onObject, queryOnly, withParameters);
+        }
+
+        public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {
+            Auditor.serviceActionInvokedCallback(byPrincipal, actionName, serviceName, queryOnly, withParameters);
+        }
+
+        public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {
+            Auditor.objectUpdatedCallback(byPrincipal, updatedObject);
+        }
+
+        public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {
+            Auditor.objectPersistedCallback(byPrincipal, updatedObject);
+        }
+
+        #endregion
+
         public static void SetCallbacksExpected() {
             Auditor.actionInvokedCallback = (p, a, o, b, pp) => { };
             Auditor.serviceActionInvokedCallback = (p, a, s, b, pp) => { };
@@ -577,6 +597,14 @@ namespace NakedObjects.SystemTest.Audit {
             Auditor.objectUpdatedCallback = TestAuditManager.UnexpectedCallback("default");
             Auditor.objectPersistedCallback = TestAuditManager.UnexpectedCallback("default");
         }
+    }
+
+    public class FooAuditor : IAuditor {
+        public static readonly Auditor Auditor = new Auditor("foo");
+
+        public FooAuditor() => NamespaceToAudit = typeof(Foo).FullName;
+
+        public string NamespaceToAudit { get; }
 
         #region IAuditor Members
 
@@ -597,14 +625,6 @@ namespace NakedObjects.SystemTest.Audit {
         }
 
         #endregion
-    }
-
-    public class FooAuditor : IAuditor {
-        public static readonly Auditor Auditor = new Auditor("foo");
-
-        public FooAuditor() => NamespaceToAudit = typeof(Foo).FullName;
-
-        public string NamespaceToAudit { get; }
 
         public static void SetCallbacksExpected() {
             Auditor.actionInvokedCallback = (p, a, o, b, pp) => { };
@@ -619,6 +639,14 @@ namespace NakedObjects.SystemTest.Audit {
             Auditor.objectUpdatedCallback = TestAuditManager.UnexpectedCallback("foo");
             Auditor.objectPersistedCallback = TestAuditManager.UnexpectedCallback("foo");
         }
+    }
+
+    public class QuxAuditor : IAuditor {
+        public static readonly Auditor Auditor = new Auditor("qux");
+
+        public QuxAuditor() => NamespaceToAudit = typeof(Qux).FullName;
+
+        public string NamespaceToAudit { get; }
 
         #region IAuditor Members
 
@@ -639,14 +667,6 @@ namespace NakedObjects.SystemTest.Audit {
         }
 
         #endregion
-    }
-
-    public class QuxAuditor : IAuditor {
-        public static readonly Auditor Auditor = new Auditor("qux");
-
-        public QuxAuditor() => NamespaceToAudit = typeof(Qux).FullName;
-
-        public string NamespaceToAudit { get; }
 
         public static void SetCallbacksExpected() {
             Auditor.actionInvokedCallback = (p, a, o, b, pp) => { };
@@ -661,26 +681,6 @@ namespace NakedObjects.SystemTest.Audit {
             Auditor.objectUpdatedCallback = TestAuditManager.UnexpectedCallback("qux");
             Auditor.objectPersistedCallback = TestAuditManager.UnexpectedCallback("qux");
         }
-
-        #region IAuditor Members
-
-        public void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters) {
-            Auditor.actionInvokedCallback(byPrincipal, actionName, onObject, queryOnly, withParameters);
-        }
-
-        public void ActionInvoked(IPrincipal byPrincipal, string actionName, string serviceName, bool queryOnly, object[] withParameters) {
-            Auditor.serviceActionInvokedCallback(byPrincipal, actionName, serviceName, queryOnly, withParameters);
-        }
-
-        public void ObjectUpdated(IPrincipal byPrincipal, object updatedObject) {
-            Auditor.objectUpdatedCallback(byPrincipal, updatedObject);
-        }
-
-        public void ObjectPersisted(IPrincipal byPrincipal, object updatedObject) {
-            Auditor.objectPersistedCallback(byPrincipal, updatedObject);
-        }
-
-        #endregion
     }
 
     public class Foo {

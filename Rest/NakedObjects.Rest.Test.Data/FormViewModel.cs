@@ -26,13 +26,6 @@ namespace RestfulObjects.Test.Data {
         [Title]
         public virtual MostSimple MostSimple { get; set; }
 
-        public FormViewModel Step() {
-            var vm = Container.NewViewModel<FormViewModel>();
-            vm.Id = 2;
-            vm.MostSimple = MostSimple;
-            return vm;
-        }
-
         #region IViewModelEdit Members
 
         [NakedObjectsIgnore]
@@ -53,5 +46,12 @@ namespace RestfulObjects.Test.Data {
         }
 
         #endregion
+
+        public FormViewModel Step() {
+            var vm = Container.NewViewModel<FormViewModel>();
+            vm.Id = 2;
+            vm.MostSimple = MostSimple;
+            return vm;
+        }
     }
 }

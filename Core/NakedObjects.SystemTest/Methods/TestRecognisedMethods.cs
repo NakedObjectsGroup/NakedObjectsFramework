@@ -18,27 +18,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Method {
     [TestFixture]
     public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
-        [SetUp]
-        public void SetUp() => StartTest();
-
-        [TearDown]
-        public void TearDown() => EndTest();
-
-        [OneTimeSetUp]
-        public void FixtureSetUp() {
-            MethodsDbContext.Delete();
-            var context = Activator.CreateInstance<MethodsDbContext>();
-
-            context.Database.Create();
-            InitializeNakedObjectsFramework(this);
-        }
-
-        [OneTimeTearDown]
-        public void FixtureTearDown() {
-            CleanupNakedObjectsFramework(this);
-            MethodsDbContext.Delete();
-        }
-
         protected override string[] Namespaces => new[] {typeof(Auto1).Namespace};
 
         protected override Type[] Types => new[] {typeof(Sex)};
@@ -101,6 +80,27 @@ namespace NakedObjects.SystemTest.Method {
                 typeof(SimpleRepository<Validate4>),
                 typeof(SimpleRepository<Validate5>)
             };
+
+        [SetUp]
+        public void SetUp() => StartTest();
+
+        [TearDown]
+        public void TearDown() => EndTest();
+
+        [OneTimeSetUp]
+        public void FixtureSetUp() {
+            MethodsDbContext.Delete();
+            var context = Activator.CreateInstance<MethodsDbContext>();
+
+            context.Database.Create();
+            InitializeNakedObjectsFramework(this);
+        }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown() {
+            CleanupNakedObjectsFramework(this);
+            MethodsDbContext.Delete();
+        }
 
         private void CreateAuto2(string prop1) {
             var obj2 = NewTestObject<Auto2>();
@@ -1686,7 +1686,7 @@ namespace NakedObjects.SystemTest.Method {
         #region Do Something Else
 
         public void DoSomethingElse([DefaultValue(7)] int param0,
-            [DefaultValue("Bar")] string param1) { }
+                                    [DefaultValue("Bar")] string param1) { }
 
         public int Default0DoSomethingElse() => DefaultProp1();
 

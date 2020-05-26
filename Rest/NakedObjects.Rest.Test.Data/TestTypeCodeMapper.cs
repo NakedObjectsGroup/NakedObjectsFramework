@@ -16,6 +16,17 @@ namespace RestfulObjects.Test.Data {
         private const string DefaultPrefix = "RestfulObjects.Test.Data.";
         private static readonly IDictionary<string, string> PrefixDictionary = new Dictionary<string, string>();
 
+        #region ITypeCodeMapper Members
+
+        public Type TypeFromCode(string code) {
+            var fullCode = TypeStringFromCode(code);
+            return TypeUtils.GetType(fullCode);
+        }
+
+        public string CodeFromType(Type type) => CodeFromTypeString(type.FullName);
+
+        #endregion
+
         public string TypeStringFromCode(string code) {
             if (PrefixDictionary.ContainsKey(code)) {
                 return PrefixDictionary[code];
@@ -29,16 +40,5 @@ namespace RestfulObjects.Test.Data {
             PrefixDictionary[code] = typeString;
             return code;
         }
-
-        #region ITypeCodeMapper Members
-
-        public Type TypeFromCode(string code) {
-            var fullCode = TypeStringFromCode(code);
-            return TypeUtils.GetType(fullCode);
-        }
-
-        public string CodeFromType(Type type) => CodeFromTypeString(type.FullName);
-
-        #endregion
     }
 }

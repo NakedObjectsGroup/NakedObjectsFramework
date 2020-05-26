@@ -8,7 +8,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure.Design;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -158,10 +157,12 @@ namespace NakedObjects.Core.Spec {
         public (string, IObjectSpec)[] GetChoicesParameters() {
             if (choicesParameters == null) {
                 var choicesFacet = GetFacet<IActionChoicesFacet>();
-                choicesParameters = choicesFacet == null ? new (string, IObjectSpec)[] { } : choicesFacet.ParameterNamesAndTypes.Select(t => {
-                    var (pName, pSpec) = t;
-                    return (pName, metamodel.GetSpecification(pSpec));
-                }).ToArray();
+                choicesParameters = choicesFacet == null
+                    ? new (string, IObjectSpec)[] { }
+                    : choicesFacet.ParameterNamesAndTypes.Select(t => {
+                        var (pName, pSpec) = t;
+                        return (pName, metamodel.GetSpecification(pSpec));
+                    }).ToArray();
             }
 
             return choicesParameters;
@@ -223,7 +224,7 @@ namespace NakedObjects.Core.Spec {
 
             var (domainObject, typeOfDefaultValue) = facet switch {
                 IActionDefaultsFacet adf => adf.GetDefault(parentAction.RealTarget(nakedObjectAdapter)),
-                IDefaultedFacet df  => (df.Default, TypeOfDefaultValue.Implicit),
+                IDefaultedFacet df => (df.Default, TypeOfDefaultValue.Implicit),
                 _ when nakedObjectAdapter == null => (null, TypeOfDefaultValue.Implicit),
                 _ when nakedObjectAdapter.Object.GetType().IsValueType => (0, TypeOfDefaultValue.Implicit),
                 _ => (null, TypeOfDefaultValue.Implicit)

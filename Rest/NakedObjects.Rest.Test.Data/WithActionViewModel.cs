@@ -25,6 +25,25 @@ namespace RestfulObjects.Test.Data {
         [ConcurrencyCheck]
         public virtual int Id { get; set; }
 
+        #region IViewModel Members
+
+        [NakedObjectsIgnore]
+        public string[] DeriveKeys() {
+            return new[] {Id.ToString()};
+        }
+
+        [NakedObjectsIgnore]
+        public void PopulateUsingKeys(string[] keys) {
+            Id = int.Parse(keys.First());
+
+            ms1 = Container.Instances<MostSimple>().Single(x => x.Id == 1);
+            dt1 = Container.Instances<WithDateTimeKey>().FirstOrDefault();
+            vm1 = Container.NewViewModel<MostSimpleViewModel>();
+            vm1.Id = 1;
+        }
+
+        #endregion
+
         public override MostSimpleViewModel AnActionReturnsViewModel() => vm1;
 
         [QueryOnly]
@@ -38,7 +57,7 @@ namespace RestfulObjects.Test.Data {
         public override MostSimpleViewModel AnActionReturnsNullViewModel() => null;
 
         public override MostSimple AnActionWithOptionalParm([Optionally] [Named("Optional Parm")] [DescribedAs("an optional parm")] [MaxLength(101)] [RegEx(Validation = @"[A-Z]")]
-            string parm) => ms1;
+                                                            string parm) => ms1;
 
         [QueryOnly]
         public override MostSimple AnActionWithOptionalParmQueryOnly([Optionally] string parm) => ms1;
@@ -218,24 +237,5 @@ namespace RestfulObjects.Test.Data {
         public override IQueryable<MostSimple> AnErrorQuery() => throw new DomainException("An error exception");
 
         public override ICollection<MostSimple> AnErrorCollection() => throw new DomainException("An error exception");
-
-        #region IViewModel Members
-
-        [NakedObjectsIgnore]
-        public string[] DeriveKeys() {
-            return new[] {Id.ToString()};
-        }
-
-        [NakedObjectsIgnore]
-        public void PopulateUsingKeys(string[] keys) {
-            Id = int.Parse(keys.First());
-
-            ms1 = Container.Instances<MostSimple>().Single(x => x.Id == 1);
-            dt1 = Container.Instances<WithDateTimeKey>().FirstOrDefault();
-            vm1 = Container.NewViewModel<MostSimpleViewModel>();
-            vm1.Id = 1;
-        }
-
-        #endregion
     }
 }

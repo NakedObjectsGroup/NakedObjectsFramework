@@ -48,7 +48,7 @@ namespace RestfulObjects.Test.Data {
         public virtual MostSimpleViewModel AnActionReturnsNullViewModel() => null;
 
         public virtual MostSimple AnActionWithOptionalParm([Optionally] [Named("Optional Parm")] [DescribedAs("an optional parm")] [MaxLength(101)] [RegEx(Validation = @"[A-Z]")]
-            string parm) {
+                                                           string parm) {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }
 

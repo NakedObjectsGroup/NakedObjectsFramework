@@ -52,7 +52,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
             var type = actionMethod.DeclaringType;
             var facets = new List<IFacet>();
-            
+
             ITypeSpecBuilder onType;
             (onType, metamodel) = reflector.LoadSpecification(type, metamodel);
 
@@ -273,7 +273,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
                     // add facets directly to parameters, not to actions
                     var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
-                    
+
                     foreach (var p in methodToUse.GetParameters()) {
                         IObjectSpecBuilder oSpec;
                         (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, metamodel);

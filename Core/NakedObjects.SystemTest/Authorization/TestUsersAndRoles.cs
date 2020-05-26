@@ -19,6 +19,19 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
     [TestFixture]
     public class TestUsersAndRoles : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
+        protected override Type[] Types => new[] {typeof(MyDefaultAuthorizer)};
+
+        protected override Type[] Services {
+            get {
+                return new[] {
+                    typeof(SimpleRepository<Foo>),
+                    typeof(FooService)
+                };
+            }
+        }
+
+        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
+
         [SetUp]
         public void SetUp() {
             StartTest();
@@ -42,19 +55,6 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
             CleanupNakedObjectsFramework(this);
             CustomAuthorizationManagerDbContext.Delete();
         }
-
-        protected override Type[] Types => new[] {typeof(MyDefaultAuthorizer)};
-
-        protected override Type[] Services {
-            get {
-                return new[] {
-                    typeof(SimpleRepository<Foo>),
-                    typeof(FooService)
-                };
-            }
-        }
-
-        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
 
         protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);
@@ -111,14 +111,6 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
         public IDomainObjectContainer Container { protected get; set; }
         public SimpleRepository<Foo> Service { protected get; set; }
 
-        public void Init() {
-            throw new NotImplementedException();
-        }
-
-        public void Shutdown() {
-            //Does nothing
-        }
-
         #region ITypeAuthorizer<object> Members
 
         public bool IsEditable(IPrincipal principal, object target, string memberName) => throw new NotImplementedException();
@@ -126,6 +118,14 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
         public bool IsVisible(IPrincipal principal, object target, string memberName) => throw new Exception("User name: " + principal.Identity.Name + ", IsInRole Bar = " + principal.IsInRole("Bar"));
 
         #endregion
+
+        public void Init() {
+            throw new NotImplementedException();
+        }
+
+        public void Shutdown() {
+            //Does nothing
+        }
     }
 
     public class Foo {

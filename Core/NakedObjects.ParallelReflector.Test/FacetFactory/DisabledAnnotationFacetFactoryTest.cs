@@ -36,6 +36,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         #endregion
 
+        
         #region Setup/Teardown
 
         [TestInitialize]

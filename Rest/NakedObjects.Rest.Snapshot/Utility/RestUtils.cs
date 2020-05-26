@@ -251,8 +251,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public static string ToTimeFormatString(TimeSpan time) => time.ToString(@"hh\:mm\:ss");
 
         public static object ObjectToPredefinedType(object toMap, bool useDateOverDateTime = false) {
-            static object ToUniversalTime(DateTime dt) => dt.Kind == DateTimeKind.Unspecified 
-                ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime() 
+            static object ToUniversalTime(DateTime dt) => dt.Kind == DateTimeKind.Unspecified
+                ? new DateTime(dt.Ticks, DateTimeKind.Utc).ToUniversalTime()
                 : dt.ToUniversalTime();
 
             var predefinedFormatType = TypeToPredefinedFormatType(toMap.GetType(), useDateOverDateTime);
@@ -357,8 +357,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 object max;
 
                 if (propertyType == typeof(DateTime) || propertyType == typeof(DateTime?)) {
-                    var minDays = (double)minRange.ToType(typeof(double), null);
-                    var maxDays = (double)maxRange.ToType(typeof(double), null);
+                    var minDays = (double) minRange.ToType(typeof(double), null);
+                    var maxDays = (double) maxRange.ToType(typeof(double), null);
 
                     var earliest = DateTime.Today.AddDays(minDays);
                     var latest = DateTime.Today.AddDays(maxDays);

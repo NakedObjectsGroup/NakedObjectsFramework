@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -74,9 +73,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             if (IsUnconditionalChoices(parameter)) {
                 custom = new Dictionary<string, object>();
 
-                (object value, string title)[] choicesArray = parameter.GetChoicesAndTitles(objectFacade, null).
-                    Select(choice => (parameter.GetChoiceValue(OidStrategy, req, choice.obj, flags), choice.title)).
-                    ToArray();
+                (object value, string title)[] choicesArray = parameter.GetChoicesAndTitles(objectFacade, null).Select(choice => (parameter.GetChoiceValue(OidStrategy, req, choice.obj, flags), choice.title)).ToArray();
 
                 var op = choicesArray.Select(choice => new OptionalProperty(choice.title, choice.value)).ToArray();
                 var map = MapRepresentation.Create(op);
@@ -162,8 +159,8 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 }
             }
 
-            return optionals.Any() 
-                ? CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy, req, objectFacade, adapter, flags}, optionals) 
+            return optionals.Any()
+                ? CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy, req, objectFacade, adapter, flags}, optionals)
                 : new ParameterRepresentation(oidStrategy, req, objectFacade, adapter, flags);
         }
 
@@ -188,8 +185,8 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 optionals.Add(new OptionalProperty(JsonPropertyNames.Default, defaultValue));
             }
 
-            return optionals.Any() 
-                ? CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy, req, objectFacade, adapter, flags}, optionals) 
+            return optionals.Any()
+                ? CreateWithOptionals<ParameterRepresentation>(new object[] {oidStrategy, req, objectFacade, adapter, flags}, optionals)
                 : new ParameterRepresentation(oidStrategy, req, objectFacade, adapter, flags);
         }
     }

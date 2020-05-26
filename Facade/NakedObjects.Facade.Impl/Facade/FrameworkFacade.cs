@@ -849,7 +849,6 @@ namespace NakedObjects.Facade.Impl {
         private static bool IsVisible(IMemberSpec actionSpec, INakedObjectAdapter nakedObject, bool isPersisted) => isPersisted ? actionSpec.IsVisibleWhenPersistent(nakedObject) : actionSpec.IsVisible(nakedObject);
 
         private ObjectContext GetObjectContext(INakedObjectAdapter nakedObject, bool isPersisted = false) {
-
             if (nakedObject == null) {
                 return null;
             }
@@ -1000,11 +999,11 @@ namespace NakedObjects.Facade.Impl {
                     throw new BadRequestNOSException("Unrecognised conditional argument(s)");
                 }
 
-                object GetValue((string name, IObjectSpec spec) ep) => 
-                    actualParms.ContainsKey(ep.name) 
-                        ? actualParms[ep.name] 
-                        : ep.spec.IsParseable 
-                            ? "" 
+                object GetValue((string name, IObjectSpec spec) ep) =>
+                    actualParms.ContainsKey(ep.name)
+                        ? actualParms[ep.name]
+                        : ep.spec.IsParseable
+                            ? ""
                             : null;
 
                 var matchedParms = expectedParms.ToDictionary(ep => ep.name, ep => new {

@@ -50,7 +50,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             }
 
             return optionals.Any()
-                ? CreateWithOptionals<InlineCollectionRepresentation>(new object[] {oidStrategy, collectionRepresentationStrategy}, optionals) 
+                ? CreateWithOptionals<InlineCollectionRepresentation>(new object[] {oidStrategy, collectionRepresentationStrategy}, optionals)
                 : new InlineCollectionRepresentation(oidStrategy, collectionRepresentationStrategy);
         }
     }

@@ -184,7 +184,7 @@ namespace NakedObjects.ParallelReflect {
                 var defaultType = typeof(object);
                 IObjectSpecImmutable defaultSpec;
                 (defaultSpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(defaultType, metamodel);
-                
+
                 var collection = ImmutableSpecFactory.CreateOneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
 
                 metamodel = FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections, metamodel);
@@ -206,7 +206,7 @@ namespace NakedObjects.ParallelReflect {
                 var propertyType = property.PropertyType;
                 IObjectSpecImmutable propertySpec;
                 (propertySpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(propertyType, metamodel);
-               
+
                 if (propertySpec == null) {
                     throw new ReflectionException(Log.LogAndReturn($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}. If the property is intended to be an injected service it should have a protected get."));
                 }
@@ -248,7 +248,7 @@ namespace NakedObjects.ParallelReflect {
                     var actionParams = new List<IActionParameterSpecImmutable>();
 
                     foreach (var pt in parameterTypes) {
-                        IObjectSpecBuilder oSpec; 
+                        IObjectSpecBuilder oSpec;
                         (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(pt, metamodel);
                         var actionSpec = ImmutableSpecFactory.CreateActionParameterSpecImmutable(oSpec, identifier);
                         actionParams.Add(actionSpec);

@@ -16,7 +16,7 @@ using NakedObjects.Core.Resolve;
 
 namespace NakedObjects.Xat {
     internal abstract class TestHasActions : ITestHasActions {
-        protected TestHasActions(ITestObjectFactory factory) => this.Factory = factory;
+        protected TestHasActions(ITestObjectFactory factory) => Factory = factory;
 
         protected ITestObjectFactory Factory { get; }
 

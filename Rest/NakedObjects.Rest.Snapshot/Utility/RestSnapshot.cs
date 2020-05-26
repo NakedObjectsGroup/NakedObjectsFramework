@@ -338,19 +338,18 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         }
 
         private void MapToWarningHeader(Exception e) {
-
             IList<string> ImmutableWarning() {
                 allowHeaders.Add("GET");
-                return new List<string> { "object is immutable" };
+                return new List<string> {"object is immutable"};
             }
 
             var warnings = e switch {
-                ResourceNotFoundNOSException _ => new List<string> { e.Message },
+                ResourceNotFoundNOSException _ => new List<string> {e.Message},
                 WithContextNOSException bae when bae.Contexts.Any(c => c.ErrorCause == Cause.Immutable) => ImmutableWarning(),
                 WithContextNOSException bae when bae.Contexts.Any(c => !string.IsNullOrEmpty(c.Reason)) => bae.Contexts.Where(c => !string.IsNullOrEmpty(c.Reason)).Select(c => c.Reason).ToList(),
-                WithContextNOSException bae when string.IsNullOrWhiteSpace(bae.Message) =>  new List<string>(),
-                WithContextNOSException bae => new List<string> { bae.Message },
-                NoContentNOSException _=> new List<string>(),
+                WithContextNOSException bae when string.IsNullOrWhiteSpace(bae.Message) => new List<string>(),
+                WithContextNOSException bae => new List<string> {bae.Message},
+                NoContentNOSException _ => new List<string>(),
                 _ => new List<string> {e.Message}
             };
 

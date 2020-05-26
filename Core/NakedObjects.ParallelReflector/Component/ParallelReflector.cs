@@ -23,7 +23,6 @@ using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect.Component {
-
     public sealed class ParallelReflector : IReflector {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ParallelReflector));
         private readonly IReflectorConfiguration config;
@@ -113,8 +112,8 @@ namespace NakedObjects.ParallelReflect.Component {
 
             var typeKey = ClassStrategy.GetKeyForType(actualType);
 
-            return string.IsNullOrEmpty(metamodel[typeKey].FullName) 
-                ? LoadSpecificationAndCache(actualType, metamodel) 
+            return string.IsNullOrEmpty(metamodel[typeKey].FullName)
+                ? LoadSpecificationAndCache(actualType, metamodel)
                 : (metamodel[typeKey], metamodel);
         }
 
@@ -137,14 +136,10 @@ namespace NakedObjects.ParallelReflect.Component {
 
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var ph = metamodel.Where(i => string.IsNullOrEmpty(i.Value.FullName)).Select(i => i.Value.Type);
-            var mm = ph.AsParallel().
-                SelectMany(type => IntrospectSpecification(type, metamodel).metamodel).
-                Distinct(new TypeSpecKeyComparer()).
-                ToDictionary(kvp => kvp.Key, kvp => kvp.Value).
-                ToImmutableDictionary();
+            var mm = ph.AsParallel().SelectMany(type => IntrospectSpecification(type, metamodel).metamodel).Distinct(new TypeSpecKeyComparer()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value).ToImmutableDictionary();
 
-            return mm.Any(i => string.IsNullOrEmpty(i.Value.FullName)) 
-                ? IntrospectPlaceholders(mm) 
+            return mm.Any(i => string.IsNullOrEmpty(i.Value.FullName))
+                ? IntrospectPlaceholders(mm)
                 : mm;
         }
 

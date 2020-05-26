@@ -42,12 +42,6 @@ namespace RestfulObjects.Test.Data {
         [Eagerly(EagerlyAttribute.Do.Rendering)]
         public virtual IList<MostSimple> AnEagerCollection { get; set; }
 
-        private MostSimpleViewModel NewVM(int id) {
-            var vm = Container.NewViewModel<MostSimpleViewModel>();
-            vm.Id = id;
-            return vm;
-        }
-
         #region IViewModel Members
 
         [NakedObjectsIgnore]
@@ -76,5 +70,11 @@ namespace RestfulObjects.Test.Data {
         }
 
         #endregion
+
+        private MostSimpleViewModel NewVM(int id) {
+            var vm = Container.NewViewModel<MostSimpleViewModel>();
+            vm.Id = id;
+            return vm;
+        }
     }
 }

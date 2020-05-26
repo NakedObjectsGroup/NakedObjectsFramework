@@ -72,8 +72,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 return ProcessArray(reflector, type, specification, metamodel);
             }
 
-            return CollectionUtils.IsCollectionButNotArray(type) 
-                ? ProcessCollection(reflector, specification, metamodel) 
+            return CollectionUtils.IsCollectionButNotArray(type)
+                ? ProcessCollection(reflector, specification, metamodel)
                 : metamodel;
         }
 

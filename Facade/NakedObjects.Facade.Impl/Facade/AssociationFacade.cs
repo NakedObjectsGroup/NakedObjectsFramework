@@ -118,10 +118,10 @@ namespace NakedObjects.Facade.Impl {
 
         public (string, ITypeFacade)[] GetChoicesParameters() {
             var oneToOneFeature = WrappedSpec as IOneToOneFeatureSpec;
-            return oneToOneFeature != null ? oneToOneFeature.GetChoicesParameters().Select(WrapChoiceParm).ToArray() : new (string, ITypeFacade)[]{};
+            return oneToOneFeature != null ? oneToOneFeature.GetChoicesParameters().Select(WrapChoiceParm).ToArray() : new (string, ITypeFacade)[] { };
         }
 
-        public (IObjectFacade, string)[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues) => 
+        public (IObjectFacade, string)[] GetChoicesAndTitles(IObjectFacade target, IDictionary<string, object> parameterNameValues) =>
             GetChoices(target, parameterNameValues).Select(c => (c, c.TitleString)).ToArray();
 
         public IObjectFacade[] GetCompletions(IObjectFacade target, string autoCompleteParm) {

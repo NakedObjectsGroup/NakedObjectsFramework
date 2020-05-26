@@ -15,6 +15,22 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.PolymorphicNavigator {
     [TestFixture]
     public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract {
+        private const string DatabaseName = "TestPolymorphicNavigatorWithTypeCodeMapper";
+
+        protected override string[] Namespaces => new[] {typeof(PolymorphicPayment).Namespace};
+
+        protected override EntityObjectStoreConfiguration Persistor {
+            get {
+                var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+                config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(DatabaseName));
+                return config;
+            }
+        }
+
+        protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeCode()};
+
+        protected override Type[] Services => base.Services.Union(new[] {typeof(Services.PolymorphicNavigator), typeof(SimpleTypeCodeMapper)}).ToArray();
+
         [SetUp]
         public void SetUp() => StartTest();
 
@@ -31,22 +47,6 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
         }
-
-        protected override string[] Namespaces => new[] {typeof(PolymorphicPayment).Namespace};
-
-        private const string DatabaseName = "TestPolymorphicNavigatorWithTypeCodeMapper";
-
-        protected override EntityObjectStoreConfiguration Persistor {
-            get {
-                var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-                config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(DatabaseName));
-                return config;
-            }
-        }
-
-        protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeCode()};
-
-        protected override Type[] Services => base.Services.Union(new[] {typeof(Services.PolymorphicNavigator), typeof(SimpleTypeCodeMapper)}).ToArray();
 
         [Test]
         public override void AttemptSetPolymorphicPropertyWithATransientAssociatedObject() {

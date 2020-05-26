@@ -52,7 +52,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         public IDictionary<string, Func<Type[]>> NamedContextTypes { get; set; }
         public Func<Type[]> NotPersistedTypes { get; set; }
 
-
         /// <summary>
         ///     If set the persistor will throw an exception if any type is seen that cannot be fully proxied.
         ///     This is true by default.

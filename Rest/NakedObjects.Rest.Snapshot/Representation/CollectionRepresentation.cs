@@ -37,7 +37,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             }
 
             return optionals.Any()
-                ? CreateWithOptionals<CollectionRepresentation>(new object[] {oidStrategy, collectionRepresentationStrategy}, optionals) 
+                ? CreateWithOptionals<CollectionRepresentation>(new object[] {oidStrategy, collectionRepresentationStrategy}, optionals)
                 : new CollectionRepresentation(oidStrategy, collectionRepresentationStrategy);
         }
     }

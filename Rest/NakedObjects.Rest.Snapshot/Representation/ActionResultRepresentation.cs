@@ -93,10 +93,10 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 }
                 else if (visibleParamContext.Specification.IsCollection) {
                     if (visibleParamContext.ElementSpecification.IsParseable) {
-                        var proposedEnumerable = (visibleParamContext.ProposedObjectFacade == null 
-                            ? visibleParamContext.ProposedValue 
+                        var proposedEnumerable = (visibleParamContext.ProposedObjectFacade == null
+                            ? visibleParamContext.ProposedValue
                             : visibleParamContext.ProposedObjectFacade?.Object) as IEnumerable;
-                        
+
                         var proposedCollection = proposedEnumerable == null ? new object[] { } : proposedEnumerable.Cast<object>();
 
                         var valueObjs = proposedCollection.Select(i => RestUtils.ObjectToPredefinedType(i)).ToArray();

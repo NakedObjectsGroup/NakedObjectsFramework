@@ -29,19 +29,7 @@ namespace RestfulObjects.Test.Data {
         [Hidden(WhenTo.Always)]
         public virtual bool IsEdit { get; set; }
 
-        public SwitchableViewModel Step() {
-            var vm = Container.NewViewModel<SwitchableViewModel>();
-            vm.Id = 2;
-            vm.MostSimple = MostSimple;
-            return vm;
-        }
-
-        public SwitchableViewModel ToggleView() {
-            IsEdit = !IsEdit;
-            return this;
-        }
-
-        #region IViewModelEdit Members
+        #region IViewModelSwitchable Members
 
         [NakedObjectsIgnore]
         public string[] DeriveKeys() {
@@ -67,5 +55,17 @@ namespace RestfulObjects.Test.Data {
         public bool IsEditView() => IsEdit;
 
         #endregion
+
+        public SwitchableViewModel Step() {
+            var vm = Container.NewViewModel<SwitchableViewModel>();
+            vm.Id = 2;
+            vm.MostSimple = MostSimple;
+            return vm;
+        }
+
+        public SwitchableViewModel ToggleView() {
+            IsEdit = !IsEdit;
+            return this;
+        }
     }
 }

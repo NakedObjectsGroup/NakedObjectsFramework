@@ -20,7 +20,7 @@ namespace NakedObjects.Meta.Facet {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ContributedActionFacet));
         private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> collectionContributees = new List<(IObjectSpecImmutable, string, string)>();
         private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new List<(IObjectSpecImmutable, string)>();
-        private readonly List<(IObjectSpecImmutable spec, string subMenu , string id)> objectContributees = new List<(IObjectSpecImmutable, string, string)>();
+        private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> objectContributees = new List<(IObjectSpecImmutable, string, string)>();
 
         public ContributedActionFacet(ISpecification holder)
             : base(typeof(IContributedActionFacet), holder) { }

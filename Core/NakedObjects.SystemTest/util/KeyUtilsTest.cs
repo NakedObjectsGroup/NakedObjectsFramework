@@ -17,6 +17,64 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Util {
     [TestFixture]
     public class KeyUtilsTest {
+        [Test]
+        public void TestGetKeys() {
+            var container = new TestContainer();
+            var keys = container.GetKeys(typeof(TestKey));
+            Assert.AreEqual(1, keys.Count());
+            Assert.AreSame(typeof(TestKey).GetProperty("AName"), keys.Single());
+        }
+
+        [Test]
+        public void TestGetMultiKeys() {
+            var container = new TestContainer();
+            var keys = container.GetKeys(typeof(TestMultiKey));
+            Assert.AreEqual(2, keys.Count());
+            Assert.AreSame(typeof(TestMultiKey).GetProperty("AName"), keys.First());
+            Assert.AreSame(typeof(TestMultiKey).GetProperty("AName1"), keys.Last());
+        }
+
+        [Test]
+        public void TestGetNoKeys() {
+            var container = new TestContainer();
+            var keys = container.GetKeys(typeof(TestNoKey));
+            Assert.AreEqual(0, keys.Count());
+        }
+
+        [Test]
+        public void TestGetSingleKey() {
+            var container = new TestContainer();
+            var key = container.GetSingleKey(typeof(TestKey));
+            Assert.AreSame(typeof(TestKey).GetProperty("AName"), key);
+        }
+
+        [Test]
+        public void TestGetSingleMultiKey() {
+            var container = new TestContainer();
+            try {
+                var key = container.GetSingleKey(typeof(TestMultiKey));
+                Assert.Fail("Exception expected");
+            }
+            catch (DomainException) {
+                // expected
+            }
+        }
+
+        [Test]
+        public void TestGetSingleNoKey() {
+            var container = new TestContainer();
+
+            try {
+                var key = container.GetSingleKey(typeof(TestNoKey));
+                Assert.Fail("Exception expected");
+            }
+            catch (DomainException) {
+                // expected
+            }
+        }
+
+        #region Nested type: TestContainer
+
         public class TestContainer : IDomainObjectContainer, IInternalAccess {
             #region IDomainObjectContainer Members
 
@@ -123,10 +181,18 @@ namespace NakedObjects.SystemTest.Util {
             #endregion
         }
 
+        #endregion
+
+        #region Nested type: TestKey
+
         public class TestKey {
             [Key]
             public int AName { get; set; }
         }
+
+        #endregion
+
+        #region Nested type: TestMultiKey
 
         public class TestMultiKey {
             [Key]
@@ -136,69 +202,23 @@ namespace NakedObjects.SystemTest.Util {
             public int AName1 { get; set; }
         }
 
+        #endregion
+
+        #region Nested type: TestNoKey
+
         public class TestNoKey {
             public int AName { get; set; }
         }
+
+        #endregion
+
+        #region Nested type: TestStringKey
 
         public class TestStringKey {
             [Key]
             public string AName { get; set; }
         }
 
-        [Test]
-        public void TestGetKeys() {
-            var container = new TestContainer();
-            var keys = container.GetKeys(typeof(TestKey));
-            Assert.AreEqual(1, keys.Count());
-            Assert.AreSame(typeof(TestKey).GetProperty("AName"), keys.Single());
-        }
-
-        [Test]
-        public void TestGetMultiKeys() {
-            var container = new TestContainer();
-            var keys = container.GetKeys(typeof(TestMultiKey));
-            Assert.AreEqual(2, keys.Count());
-            Assert.AreSame(typeof(TestMultiKey).GetProperty("AName"), keys.First());
-            Assert.AreSame(typeof(TestMultiKey).GetProperty("AName1"), keys.Last());
-        }
-
-        [Test]
-        public void TestGetNoKeys() {
-            var container = new TestContainer();
-            var keys = container.GetKeys(typeof(TestNoKey));
-            Assert.AreEqual(0, keys.Count());
-        }
-
-        [Test]
-        public void TestGetSingleKey() {
-            var container = new TestContainer();
-            var key = container.GetSingleKey(typeof(TestKey));
-            Assert.AreSame(typeof(TestKey).GetProperty("AName"), key);
-        }
-
-        [Test]
-        public void TestGetSingleMultiKey() {
-            var container = new TestContainer();
-            try {
-                var key = container.GetSingleKey(typeof(TestMultiKey));
-                Assert.Fail("Exception expected");
-            }
-            catch (DomainException) {
-                // expected
-            }
-        }
-
-        [Test]
-        public void TestGetSingleNoKey() {
-            var container = new TestContainer();
-
-            try {
-                var key = container.GetSingleKey(typeof(TestNoKey));
-                Assert.Fail("Exception expected");
-            }
-            catch (DomainException) {
-                // expected
-            }
-        }
+        #endregion
     }
 }

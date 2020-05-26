@@ -41,19 +41,7 @@ namespace RestfulObjects.Test.Data {
         [Eagerly(EagerlyAttribute.Do.Rendering)]
         public virtual MostSimple AnEagerReference { get; set; }
 
-        public virtual MostSimple[] ChoicesAChoicesReference() {
-            return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToArray();
-        }
-
-        public virtual string Validate(MostSimple aReference, MostSimple aChoicesReference) {
-            if (aReference != null && aReference.Id == 1 && aChoicesReference.Id == 2) {
-                return "Cross validation failed";
-            }
-
-            return "";
-        }
-
-        #region IViewModel Members
+        #region IViewModelEdit Members
 
         [NakedObjectsIgnore]
         public string[] DeriveKeys() {
@@ -84,5 +72,17 @@ namespace RestfulObjects.Test.Data {
         }
 
         #endregion
+
+        public virtual MostSimple[] ChoicesAChoicesReference() {
+            return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2).ToArray();
+        }
+
+        public virtual string Validate(MostSimple aReference, MostSimple aChoicesReference) {
+            if (aReference != null && aReference.Id == 1 && aChoicesReference.Id == 2) {
+                return "Cross validation failed";
+            }
+
+            return "";
+        }
     }
 }

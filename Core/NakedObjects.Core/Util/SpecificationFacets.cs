@@ -47,8 +47,7 @@ namespace NakedObjects.Core.Util {
 
         public static bool IsCollectionOfEnum(this IObjectSpecImmutable specification, IObjectSpecImmutable elementSpec) => specification.IsCollection && elementSpec.ContainsFacet<IEnumFacet>();
 
-        public static IFacet GetOpFacet<T>(this ISpecification s) where T : class, IFacet
-        {
+        public static IFacet GetOpFacet<T>(this ISpecification s) where T : class, IFacet {
             var facet = s.GetFacet<T>();
             return facet == null
                 ? null
