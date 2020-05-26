@@ -10,20 +10,13 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     public class Place {
-        private readonly XElement element;
-        private readonly INakedObjectAdapter nakedObjectAdapter;
-
         public Place(INakedObjectAdapter nakedObjectAdapter, XElement element) {
-            this.nakedObjectAdapter = nakedObjectAdapter;
-            this.element = element;
+            this.NakedObjectAdapter = nakedObjectAdapter;
+            this.XmlElement = element;
         }
 
-        public XElement XmlElement {
-            get { return element; }
-        }
+        public XElement XmlElement { get; }
 
-        public INakedObjectAdapter NakedObjectAdapter {
-            get { return nakedObjectAdapter; }
-        }
+        public INakedObjectAdapter NakedObjectAdapter { get; }
     }
 }

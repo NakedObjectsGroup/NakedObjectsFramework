@@ -26,9 +26,7 @@ namespace NakedObjects.Xat {
         private readonly IObjectPersistor persistor;
         private readonly ITransactionManager transactionManager;
 
-        static TestObject() {
-            Log = LogManager.GetLogger(typeof (TestObject));
-        }
+        static TestObject() => Log = LogManager.GetLogger(typeof(TestObject));
 
         public TestObject(ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectAdapter nakedObjectAdapter, ITestObjectFactory factory, ITransactionManager transactionManager)
             : base(factory) {
@@ -44,9 +42,7 @@ namespace NakedObjects.Xat {
             get { return ((IObjectSpec) NakedObject.Spec).Properties.Select(x => Factory.CreateTestProperty(x, this)).ToArray(); }
         }
 
-        public object GetDomainObject() {
-            return NakedObject.GetDomainObject();
-        }
+        public object GetDomainObject() => NakedObject.GetDomainObject();
 
         public string IconName {
             get {
@@ -83,22 +79,31 @@ namespace NakedObjects.Xat {
         }
 
         public ITestObject AssertIsType(Type expected) {
-            Type actualType = NakedObject.GetDomainObject().GetType();
+            var actualType = NakedObject.GetDomainObject().GetType();
             actualType = TypeUtils.IsProxy(actualType) ? actualType.BaseType : actualType;
             Assert.IsTrue(actualType == expected, "Expected type " + expected + " but got " + actualType);
             return this;
         }
 
         public ITestProperty GetPropertyByName(string name) {
-            ITestProperty[] q = Properties.Where(x => x.Name == name).ToArray();
-            if (!q.Any()) Assert.Fail("No Property named '" + name + "'");
-            if (q.Count() > 1) Assert.Fail("More than one Property named '" + name + "'");
+            var q = Properties.Where(x => x.Name == name).ToArray();
+            if (!q.Any()) {
+                Assert.Fail("No Property named '" + name + "'");
+            }
+
+            if (q.Count() > 1) {
+                Assert.Fail("More than one Property named '" + name + "'");
+            }
+
             return q.Single();
         }
 
         public ITestProperty GetPropertyById(string id) {
-            ITestProperty[] q = Properties.Where(x => x.Id == id).ToArray();
-            if (q.Count() != 1) Assert.Fail("No Property with Id '" + id + "'");
+            var q = Properties.Where(x => x.Id == id).ToArray();
+            if (q.Count() != 1) {
+                Assert.Fail("No Property with Id '" + id + "'");
+            }
+
             return q.Single();
         }
 
@@ -110,7 +115,7 @@ namespace NakedObjects.Xat {
 
             var validatorFacet = NakedObject.Spec.GetFacet<IValidateObjectFacet>();
 
-            string result = validatorFacet.Validate(NakedObject);
+            var result = validatorFacet.Validate(NakedObject);
 
             if (!string.IsNullOrEmpty(result)) {
                 Assert.Fail(result);
@@ -127,6 +132,7 @@ namespace NakedObjects.Xat {
                 // expected 
                 return this;
             }
+
             Assert.Fail("Object should not be saveable");
             return this; // for compiler 
         }
@@ -142,12 +148,13 @@ namespace NakedObjects.Xat {
         }
 
         public virtual string GetPropertyOrder() {
-            ITestProperty[] props = Properties;
+            var props = Properties;
             var order = new StringBuilder();
-            for (int i = 0; i < props.Length; i++) {
+            for (var i = 0; i < props.Length; i++) {
                 order.Append(props[i].Name);
                 order.Append(i < props.Length - 1 ? ", " : "");
             }
+
             return order.ToString();
         }
 
@@ -158,18 +165,14 @@ namespace NakedObjects.Xat {
 
         #endregion
 
-        public override bool Equals(Object obj) {
+        public override bool Equals(object obj) {
             var testObject = obj as TestObject;
             return testObject != null && testObject.NakedObject == NakedObject;
         }
 
-        public override string ToString() {
-            return NakedObject == null ? "" : NakedObject.ToString();
-        }
+        public override string ToString() => NakedObject == null ? "" : NakedObject.ToString();
 
-        public override int GetHashCode() {
-            return NakedObject.GetHashCode();
-        }
+        public override int GetHashCode() => NakedObject.GetHashCode();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

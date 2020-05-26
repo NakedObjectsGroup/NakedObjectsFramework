@@ -17,11 +17,11 @@ namespace NakedObjects.Xat {
     public class TestObjectFactory : ITestObjectFactory {
         private readonly ILifecycleManager lifecycleManager;
         private readonly INakedObjectManager manager;
+        private readonly IMessageBroker messageBroker;
         private readonly IMetamodelManager metamodelManager;
         private readonly IObjectPersistor persistor;
         private readonly IServicesManager servicesManager;
         private readonly ITransactionManager transactionManager;
-        private readonly IMessageBroker messageBroker;
 
         public TestObjectFactory(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager manager, ITransactionManager transactionManager, IServicesManager servicesManager, IMessageBroker messageBroker) {
             this.metamodelManager = metamodelManager;
@@ -38,42 +38,35 @@ namespace NakedObjects.Xat {
 
         public ISession Session { get; set; }
 
-        public ITestService CreateTestService(Object service) {
-            INakedObjectAdapter no = manager.GetServiceAdapter(service);
+        public ITestService CreateTestService(object service) {
+            var no = manager.GetServiceAdapter(service);
             Assert.IsNotNull(no);
             return CreateTestService(no);
         }
 
-        public ITestMenu CreateTestMenuMain(IMenuImmutable menu) {
-            return new TestMenu(menu, this, null);
-        }
+        public ITestMenu CreateTestMenuMain(IMenuImmutable menu) => new TestMenu(menu, this, null);
 
-        public ITestMenu CreateTestMenuForObject(IMenuImmutable menu, ITestHasActions owningObject) {
-            return new TestMenu(menu, this, owningObject);
-        }
+        public ITestMenu CreateTestMenuForObject(IMenuImmutable menu, ITestHasActions owningObject) => new TestMenu(menu, this, owningObject);
 
-        public ITestMenuItem CreateTestMenuItem(IMenuItemImmutable item, ITestHasActions owningObject) {
-            return new TestMenuItem(item, this, owningObject);
-        }
+        public ITestMenuItem CreateTestMenuItem(IMenuItemImmutable item, ITestHasActions owningObject) => new TestMenuItem(item, this, owningObject);
 
-        public ITestCollection CreateTestCollection(INakedObjectAdapter instances) {
-            return new TestCollection(instances, this, manager);
-        }
+        public ITestCollection CreateTestCollection(INakedObjectAdapter instances) => new TestCollection(instances, this, manager);
 
-        public ITestObject CreateTestObject(INakedObjectAdapter nakedObjectAdapter) {
-            return new TestObject(lifecycleManager, persistor, nakedObjectAdapter, this, transactionManager);
-        }
+        public ITestObject CreateTestObject(INakedObjectAdapter nakedObjectAdapter) => new TestObject(lifecycleManager, persistor, nakedObjectAdapter, this, transactionManager);
 
         public ITestNaked CreateTestNaked(INakedObjectAdapter nakedObjectAdapter) {
             if (nakedObjectAdapter == null) {
                 return null;
             }
+
             if (nakedObjectAdapter.Spec.IsParseable) {
                 return CreateTestValue(nakedObjectAdapter);
             }
+
             if (nakedObjectAdapter.Spec.IsObject) {
                 return CreateTestObject(nakedObjectAdapter);
             }
+
             if (nakedObjectAdapter.Spec.IsCollection) {
                 return CreateTestCollection(nakedObjectAdapter);
             }
@@ -81,48 +74,37 @@ namespace NakedObjects.Xat {
             return null;
         }
 
-        public ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject) {
-            return new TestAction(metamodelManager, Session, lifecycleManager, transactionManager,  actionSpec, owningObject, this, manager, messageBroker);
-        }
+        public ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject) => new TestAction(metamodelManager, Session, lifecycleManager, transactionManager, actionSpec, owningObject, this, manager, messageBroker);
 
         public ITestAction CreateTestAction(IActionSpecImmutable actionSpecImm, ITestHasActions owningObject) {
-            IActionSpec actionSpec = metamodelManager.GetActionSpec(actionSpecImm);
+            var actionSpec = metamodelManager.GetActionSpec(actionSpecImm);
             return CreateTestAction(actionSpec, owningObject);
         }
 
         public ITestAction CreateTestActionOnService(IActionSpecImmutable actionSpecImm) {
-            ITypeSpecImmutable objectIm = actionSpecImm.OwnerSpec; //This is the spec for the service
+            var objectIm = actionSpecImm.OwnerSpec; //This is the spec for the service
 
             if (!(objectIm is IServiceSpecImmutable)) {
                 throw new Exception("Action is not on a known service");
             }
+
             var serviceSpec = (IServiceSpec) metamodelManager.GetSpecification(objectIm);
-            INakedObjectAdapter service = servicesManager.GetService(serviceSpec);
-            ITestService testService = CreateTestService(service);
+            var service = servicesManager.GetService(serviceSpec);
+            var testService = CreateTestService(service);
             return CreateTestAction(actionSpecImm, testService);
         }
 
-        public ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject) {
-            return new TestAction(metamodelManager, Session, lifecycleManager, transactionManager, contributor, actionSpec, owningObject, this, manager, messageBroker);
-        }
+        public ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject) => new TestAction(metamodelManager, Session, lifecycleManager, transactionManager, contributor, actionSpec, owningObject, this, manager, messageBroker);
 
-        public ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject) {
-            return new TestProperty(persistor, field, owningObject, this, manager);
-        }
+        public ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject) => new TestProperty(persistor, field, owningObject, this, manager);
 
-        public ITestParameter CreateTestParameter(IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject) {
-            return new TestParameter(parameterSpec, owningObject, this);
-        }
+        public ITestParameter CreateTestParameter(IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject) => new TestParameter(parameterSpec, owningObject, this);
 
         #endregion
 
-        public ITestService CreateTestService(INakedObjectAdapter service) {
-            return new TestService(service, this);
-        }
+        public ITestService CreateTestService(INakedObjectAdapter service) => new TestService(service, this);
 
-        private static ITestValue CreateTestValue(INakedObjectAdapter nakedObjectAdapter) {
-            return new TestValue(nakedObjectAdapter);
-        }
+        private static ITestValue CreateTestValue(INakedObjectAdapter nakedObjectAdapter) => new TestValue(nakedObjectAdapter);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

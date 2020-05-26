@@ -12,7 +12,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Xat {
@@ -20,15 +19,15 @@ namespace NakedObjects.Xat {
         private readonly IActionSpec actionSpec;
         private readonly ITestObjectFactory factory;
         private readonly ILifecycleManager lifecycleManager;
-        private readonly ITransactionManager transactionManager;
         private readonly INakedObjectManager manager;
-        private readonly IMetamodelManager metamodelManager;
         private readonly IMessageBroker messageBroker;
+        private readonly IMetamodelManager metamodelManager;
         private readonly ITestHasActions owningObject;
         private readonly ISession session;
+        private readonly ITransactionManager transactionManager;
 
         public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, ITransactionManager transactionManager, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager, IMessageBroker messageBroker)
-            : this(metamodelManager, session, lifecycleManager, transactionManager, string.Empty, actionSpec, owningObject, factory, manager, messageBroker) {}
+            : this(metamodelManager, session, lifecycleManager, transactionManager, string.Empty, actionSpec, owningObject, factory, manager, messageBroker) { }
 
         public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, ITransactionManager transactionManager, string contributor, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager, IMessageBroker messageBroker) {
             SubMenu = contributor;
@@ -45,11 +44,9 @@ namespace NakedObjects.Xat {
 
         #region ITestAction Members
 
-        public string Name {
-            get { return actionSpec.Name; }
-        }
+        public string Name => actionSpec.Name;
 
-        public string SubMenu { get; private set; }
+        public string SubMenu { get; }
         public string LastMessage { get; private set; }
 
         public ITestParameter[] Parameters {
@@ -58,9 +55,10 @@ namespace NakedObjects.Xat {
 
         public bool MatchParameters(Type[] typestoMatch) {
             if (actionSpec.Parameters.Count() == typestoMatch.Length) {
-                int i = 0;
+                var i = 0;
                 return actionSpec.Parameters.All(x => x.Spec.IsOfType(metamodelManager.GetSpecification(typestoMatch[i++])));
             }
+
             return false;
         }
 
@@ -109,25 +107,27 @@ namespace NakedObjects.Xat {
         private ITestNaked DoInvoke(int page, params object[] parameters) {
             ResetLastMessage();
             AssertIsValidWithParms(parameters);
-            INakedObjectAdapter[] parameterObjectsAdapter = parameters.AsTestNakedArray(manager).Select(x => x.NakedObject).ToArray();
+            var parameterObjectsAdapter = parameters.AsTestNakedArray(manager).Select(x => x.NakedObject).ToArray();
 
-            INakedObjectAdapter[] parms = actionSpec.RealParameters(owningObject.NakedObject, parameterObjectsAdapter);
-            INakedObjectAdapter target = actionSpec.RealTarget(owningObject.NakedObject);
-            INakedObjectAdapter result = actionSpec.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, lifecycleManager, metamodelManager, session, manager, messageBroker, transactionManager);
+            var parms = actionSpec.RealParameters(owningObject.NakedObject, parameterObjectsAdapter);
+            var target = actionSpec.RealTarget(owningObject.NakedObject);
+            var result = actionSpec.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, lifecycleManager, metamodelManager, session, manager, messageBroker, transactionManager);
 
             if (result == null) {
                 return null;
             }
+
             if (result.Spec.IsCollection) {
                 return factory.CreateTestCollection(result);
             }
+
             return factory.CreateTestObject(result);
         }
 
         private ITestNaked DoInvoke(params object[] parameters) {
             ResetLastMessage();
             AssertIsValidWithParms(parameters);
-            INakedObjectAdapter[] parameterObjectsAdapter = parameters.AsTestNakedArray(manager).Select(x => x.NakedObject).ToArray();
+            var parameterObjectsAdapter = parameters.AsTestNakedArray(manager).Select(x => x.NakedObject).ToArray();
             INakedObjectAdapter result = null;
             try {
                 result = actionSpec.Execute(owningObject.NakedObject, parameterObjectsAdapter);
@@ -142,9 +142,11 @@ namespace NakedObjects.Xat {
             if (result == null) {
                 return null;
             }
+
             if (result.Spec.IsCollection && !result.Spec.IsParseable) {
                 return factory.CreateTestCollection(result);
             }
+
             return factory.CreateTestObject(result);
         }
 
@@ -157,17 +159,18 @@ namespace NakedObjects.Xat {
         public ITestAction AssertIsDisabled() {
             ResetLastMessage();
             if (actionSpec.IsVisible(owningObject.NakedObject)) {
-                IConsent canUse = actionSpec.IsUsable(owningObject.NakedObject);
+                var canUse = actionSpec.IsUsable(owningObject.NakedObject);
                 LastMessage = canUse.Reason;
                 Assert.IsFalse(canUse.IsAllowed, "Action '" + Name + "' is usable: " + canUse.Reason);
             }
+
             return this;
         }
 
         public ITestAction AssertIsEnabled() {
             ResetLastMessage();
             AssertIsVisible();
-            IConsent canUse = actionSpec.IsUsable(owningObject.NakedObject);
+            var canUse = actionSpec.IsUsable(owningObject.NakedObject);
             LastMessage = canUse.Reason;
             Assert.IsTrue(canUse.IsAllowed, "Action '" + Name + "' is disabled: " + canUse.Reason);
             return this;
@@ -176,18 +179,19 @@ namespace NakedObjects.Xat {
         public ITestAction AssertIsInvalidWithParms(params object[] parameters) {
             ResetLastMessage();
 
-            object[] parsedParameters = ParsedParameters(parameters);
+            var parsedParameters = ParsedParameters(parameters);
 
             if (actionSpec.IsVisible(owningObject.NakedObject)) {
-                IConsent canUse = actionSpec.IsUsable(owningObject.NakedObject);
+                var canUse = actionSpec.IsUsable(owningObject.NakedObject);
                 LastMessage = canUse.Reason;
                 if (canUse.IsAllowed) {
-                    INakedObjectAdapter[] parameterObjectsAdapter = parsedParameters.AsTestNakedArray(manager).Select(x => x == null ? null : x.NakedObject).ToArray();
-                    IConsent canExecute = actionSpec.IsParameterSetValid(owningObject.NakedObject, parameterObjectsAdapter);
+                    var parameterObjectsAdapter = parsedParameters.AsTestNakedArray(manager).Select(x => x == null ? null : x.NakedObject).ToArray();
+                    var canExecute = actionSpec.IsParameterSetValid(owningObject.NakedObject, parameterObjectsAdapter);
                     LastMessage = canExecute.Reason;
                     Assert.IsFalse(canExecute.IsAllowed, "Action '" + Name + "' is usable and executable");
                 }
             }
+
             return this;
         }
 
@@ -196,10 +200,10 @@ namespace NakedObjects.Xat {
             AssertIsVisible();
             AssertIsEnabled();
 
-            object[] parsedParameters = ParsedParameters(parameters);
+            var parsedParameters = ParsedParameters(parameters);
 
-            INakedObjectAdapter[] parameterObjectsAdapter = parsedParameters.AsTestNakedArray(manager).Select(x => x == null ? null : x.NakedObject).ToArray();
-            IConsent canExecute = actionSpec.IsParameterSetValid(owningObject.NakedObject, parameterObjectsAdapter);
+            var parameterObjectsAdapter = parsedParameters.AsTestNakedArray(manager).Select(x => x == null ? null : x.NakedObject).ToArray();
+            var canExecute = actionSpec.IsParameterSetValid(owningObject.NakedObject, parameterObjectsAdapter);
             Assert.IsTrue(canExecute.IsAllowed, "Action '" + Name + "' is unusable: " + canExecute.Reason);
             return this;
         }
@@ -234,11 +238,11 @@ namespace NakedObjects.Xat {
         private object[] ParsedParameters(params object[] parameters) {
             var parsedParameters = new List<object>();
 
-            Assert.IsTrue(parameters.Count() == actionSpec.Parameters.Count(), String.Format("Action '{0}' is unusable: wrong number of parameters, got {1}, expect {2}", Name, parameters.Count(), actionSpec.Parameters.Count()));
+            Assert.IsTrue(parameters.Count() == actionSpec.Parameters.Count(), string.Format("Action '{0}' is unusable: wrong number of parameters, got {1}, expect {2}", Name, parameters.Count(), actionSpec.Parameters.Count()));
 
-            int i = 0;
-            foreach (IActionParameterSpec parm in actionSpec.Parameters) {
-                object value = parameters[i++];
+            var i = 0;
+            foreach (var parm in actionSpec.Parameters) {
+                var value = parameters[i++];
 
                 var valueAsString = value as string;
                 if (valueAsString != null && parm.Spec.IsParseable) {
@@ -253,7 +257,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestAction AssertHasFriendlyName(string friendlyName) {
-            Assert.AreEqual(friendlyName, this.Name);
+            Assert.AreEqual(friendlyName, Name);
             return this;
         }
 

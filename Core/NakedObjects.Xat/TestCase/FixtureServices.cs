@@ -10,9 +10,7 @@ using System.Threading;
 
 namespace NakedObjects.Core.Fixture {
     public class FixtureServices {
-        public FixtureServices() {
-            Clock = FixtureClock.Initialize();
-        }
+        public FixtureServices() => Clock = FixtureClock.Initialize();
 
         protected FixtureClock Clock { get; set; }
 
@@ -49,16 +47,12 @@ namespace NakedObjects.Core.Fixture {
         protected class FixtureClock {
             private DateTime time;
 
-            protected long Ticks {
-                get { return time.Ticks; }
-            }
+            protected long Ticks => time.Ticks;
 
             /// <summary>
             ///     Create a return new FixtureClock
             /// </summary>
-            public static FixtureClock Initialize() {
-                return new FixtureClock();
-            }
+            public static FixtureClock Initialize() => new FixtureClock();
 
             /// <summary>
             ///     Set time - leaving date unchanged
@@ -103,9 +97,7 @@ namespace NakedObjects.Core.Fixture {
                 time = DateTime.Now;
             }
 
-            public override string ToString() {
-                return time.ToString(Thread.CurrentThread.CurrentCulture);
-            }
+            public override string ToString() => time.ToString(Thread.CurrentThread.CurrentCulture);
         }
 
         #endregion

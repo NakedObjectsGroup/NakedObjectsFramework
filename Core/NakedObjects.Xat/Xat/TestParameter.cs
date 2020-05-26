@@ -25,17 +25,11 @@ namespace NakedObjects.Xat {
 
         #region ITestParameter Members
 
-        public string Name {
-            get { return parameterSpec.Name; }
-        }
+        public string Name => parameterSpec.Name;
 
-        public INakedObjectAdapter NakedObject {
-            get { return owningObject.NakedObject; }
-        }
+        public INakedObjectAdapter NakedObject => owningObject.NakedObject;
 
-        public string Title {
-            get { return ""; }
-        }
+        public string Title => "";
 
         public ITestNaked[] GetChoices() {
             return parameterSpec.GetChoices(NakedObject, null).Select(x => factory.CreateTestNaked(x)).ToArray();
@@ -46,8 +40,8 @@ namespace NakedObjects.Xat {
         }
 
         public ITestNaked GetDefault() {
-            INakedObjectAdapter defaultValue = parameterSpec.GetDefault(NakedObject);
-            TypeOfDefaultValue defaultType = parameterSpec.GetDefaultType(NakedObject);
+            var defaultValue = parameterSpec.GetDefault(NakedObject);
+            var defaultType = parameterSpec.GetDefaultType(NakedObject);
 
             if (defaultValue != null && defaultType == TypeOfDefaultValue.Implicit && defaultValue.Object is Enum) {
                 defaultValue = null;

@@ -9,15 +9,11 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Xat {
     internal class TestService : TestHasActions, ITestService {
-        public TestService(INakedObjectAdapter service, ITestObjectFactory factory) : base(factory) {
-            NakedObject = service;
-        }
+        public TestService(INakedObjectAdapter service, ITestObjectFactory factory) : base(factory) => NakedObject = service;
 
         #region ITestService Members
 
-        public override string Title {
-            get { return NakedObject.TitleString(); }
-        }
+        public override string Title => NakedObject.TitleString();
 
         #endregion
     }

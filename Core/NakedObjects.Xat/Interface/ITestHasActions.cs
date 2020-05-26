@@ -10,55 +10,56 @@ using System;
 namespace NakedObjects.Xat {
     public interface ITestHasActions : ITestNaked {
         ITestAction[] Actions { get; }
+
         /// <summary>
-        /// The friendlyName means the name as would be presented to the user, including
-        /// spaces and capitalisation. (See also: GetActionFor)
+        ///     The friendlyName means the name as would be presented to the user, including
+        ///     spaces and capitalisation. (See also: GetActionFor)
         /// </summary>
         ITestAction GetAction(string friendlyName);
 
         /// <summary>
-        /// Equivalent to GetAction but using the Id (methodName in code), rather than the friendly name of the action.
-        /// Designed to work with the nameof() operator in C# 6. 
+        ///     Equivalent to GetAction but using the Id (methodName in code), rather than the friendly name of the action.
+        ///     Designed to work with the nameof() operator in C# 6.
         /// </summary>
         ITestAction GetActionById(string methodName);
 
         /// <summary>
-        /// It is not necessary to specify the parameter types unless you need to disambiguate overloaded action methods
+        ///     It is not necessary to specify the parameter types unless you need to disambiguate overloaded action methods
         /// </summary>
         ITestAction GetAction(string friendlyName, params Type[] parameterTypes);
 
         /// <summary>
-        /// Equivalent to GetAction but using the Id (methodName in code), rather than the friendly name of the action.
-        /// Designed to work with the nameof() operator in C# 6. 
-        /// It is not necessary to specify the parameter types unless you need to disambiguate overloaded action methods
+        ///     Equivalent to GetAction but using the Id (methodName in code), rather than the friendly name of the action.
+        ///     Designed to work with the nameof() operator in C# 6.
+        ///     It is not necessary to specify the parameter types unless you need to disambiguate overloaded action methods
         /// </summary>
         ITestAction GetActionById(string methodName, params Type[] parameterTypes);
 
         ITestAction GetAction(string friendlyName, string subMenu);
 
         /// <summary>
-        /// Equivalent to GetAction but using the Id (methodName in code), rather than the friendly name of the action.
-        /// Designed to work with the nameof() operator in C# 6. 
+        ///     Equivalent to GetAction but using the Id (methodName in code), rather than the friendly name of the action.
+        ///     Designed to work with the nameof() operator in C# 6.
         /// </summary>
         ITestAction GetActionById(string methodName, string subMenu);
 
         /// <summary>
-        /// It is not necessary to specify the parameter types unless you need to disambiguate overloaded action methods
+        ///     It is not necessary to specify the parameter types unless you need to disambiguate overloaded action methods
         /// </summary>
         ITestAction GetAction(string friendlyName, string subMenu, params Type[] parameterTypes);
 
         /// <summary>
-        /// Equivalent to GetAction but using the Id (methodName in code), rather than the friendly name of the action.
-        /// Designed to work with the nameof() operator in C# 6. 
-        /// It is not necessary to specify the parameter types unless you need to disambiguate overloaded action methods
+        ///     Equivalent to GetAction but using the Id (methodName in code), rather than the friendly name of the action.
+        ///     Designed to work with the nameof() operator in C# 6.
+        ///     It is not necessary to specify the parameter types unless you need to disambiguate overloaded action methods
         /// </summary>
         ITestAction GetActionById(string methodName, string subMenu, params Type[] parameterTypes);
 
         string GetObjectActionOrder();
 
         /// <summary>
-        /// Test action order against string of form: "Action1, Action2"
-        /// or "Action1, (SubMenu1:Action1, Action2)"
+        ///     Test action order against string of form: "Action1, Action2"
+        ///     or "Action1, (SubMenu1:Action1, Action2)"
         /// </summary>
         /// <param name="order"></param>
         /// <returns>The current object</returns>

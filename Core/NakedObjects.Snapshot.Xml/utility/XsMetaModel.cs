@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
@@ -15,9 +14,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     public static class XsMetaModel {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(XsMetaModel));
-
-        #region xmlns 
+        #region xmlns
 
         // Namespace prefix for W3OrgXmlnsUri.
         // The NamespaceManager  will not allow any namespace to use this prefix.
@@ -25,6 +22,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         public const string W3OrgXmlnsPrefix = "xmlns";
 
         #endregion
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(XsMetaModel));
 
         // Creates an &lt;xs:schema&gt; element for the document
         // to the provided element, attaching to root of supplied Xsd doc.
@@ -38,14 +37,15 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             if (xsdDoc.Root != null) {
                 throw new ArgumentException(Log.LogAndReturn("XSD document already has content"));
             }
-            XElement xsSchemaElement = CreateXsElement(xsdDoc, "schema");
+
+            var xsSchemaElement = CreateXsElement(xsdDoc, "schema");
 
             xsSchemaElement.SetAttributeValue("elementFormDefault", "qualified");
 
             NofMetaModel.AddNamespace(xsSchemaElement);
 
             xsdDoc.Add(xsSchemaElement);
-            XElement xsImportElement = CreateXsElement(xsdDoc, "import");
+            var xsImportElement = CreateXsElement(xsdDoc, "import");
             xsImportElement.SetAttributeValue("namespace", NofMetaModel.Nof.NamespaceName);
             xsImportElement.SetAttributeValue("schemaLocation", NofMetaModel.DefaultNofSchemaLocation);
 
@@ -54,16 +54,15 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             return xsSchemaElement;
         }
 
-        public static XElement CreateXsElementElement(XDocument xsdDoc, String className) {
-            return CreateXsElementElement(xsdDoc, className, true);
-        }
+        public static XElement CreateXsElementElement(XDocument xsdDoc, string className) => CreateXsElementElement(xsdDoc, className, true);
 
-        public static XElement CreateXsElementElement(XDocument xsdDoc, String className, bool includeCardinality) {
-            XElement xsElementElement = CreateXsElement(xsdDoc, "element");
+        public static XElement CreateXsElementElement(XDocument xsdDoc, string className, bool includeCardinality) {
+            var xsElementElement = CreateXsElement(xsdDoc, "element");
             xsElementElement.SetAttributeValue("name", className);
             if (includeCardinality) {
                 SetXsCardinality(xsElementElement, 0, int.MaxValue);
             }
+
             return xsElementElement;
         }
 
@@ -89,16 +88,12 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         // Creates an xs:attribute ref="nof:xxx" element, and appends to specified owning element.
 
-        public static XElement AddXsNofAttribute(XElement parentXsElement, string nofAttributeRef) {
-            return AddXsNofAttribute(parentXsElement, nofAttributeRef, null);
-        }
+        public static XElement AddXsNofAttribute(XElement parentXsElement, string nofAttributeRef) => AddXsNofAttribute(parentXsElement, nofAttributeRef, null);
 
         // Adds <code>xs:attribute ref="nof:xxx" fixed="yyy"</code> element, and appends to
         // specified parent XSD element.
 
-        public static XElement AddXsNofAttribute(XElement parentXsElement, string nofAttributeRef, string fixedValue) {
-            return AddXsNofAttribute(parentXsElement, nofAttributeRef, fixedValue, true);
-        }
+        public static XElement AddXsNofAttribute(XElement parentXsElement, string nofAttributeRef, string fixedValue) => AddXsNofAttribute(parentXsElement, nofAttributeRef, fixedValue, true);
 
         // Adds <code>xs:attribute ref="nof:xxx" default="yyy"</code> element, and appends to
         // specified parent XSD element.
@@ -107,20 +102,21 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // <code>default="yyy"</code>.
 
         public static XElement AddXsNofAttribute(XElement parentXsElement, string nofAttributeRef, string value, bool useFixed) {
-            XElement xsNofAttributeElement = CreateXsElement(Helper.DocFor(parentXsElement), "attribute");
+            var xsNofAttributeElement = CreateXsElement(Helper.DocFor(parentXsElement), "attribute");
             xsNofAttributeElement.SetAttributeValue("ref", NofMetaModel.NofMetamodelNsPrefix + ":" + nofAttributeRef);
             parentXsElement.Add(xsNofAttributeElement);
             if (value != null) {
                 xsNofAttributeElement.SetAttributeValue(useFixed ? "fixed" : "default", value);
             }
+
             return parentXsElement;
         }
 
         // Adds <code>xs:attribute ref="nof:feature" fixed="(feature)"</code> element as child to
         // supplied XSD element, presumed to be an <xs:complexType</code>.
 
-        public static XElement AddXsNofFeatureAttributeElements(XElement parentXsElement, String feature) {
-            XElement xsNofFeatureAttributeElement = CreateXsElement(Helper.DocFor(parentXsElement), "attribute");
+        public static XElement AddXsNofFeatureAttributeElements(XElement parentXsElement, string feature) {
+            var xsNofFeatureAttributeElement = CreateXsElement(Helper.DocFor(parentXsElement), "attribute");
             xsNofFeatureAttributeElement.SetAttributeValue("ref", "nof:feature");
             xsNofFeatureAttributeElement.SetAttributeValue("fixed", feature);
             parentXsElement.Add(xsNofFeatureAttributeElement);
@@ -133,9 +129,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // The supplied element is presumed to be one for which <code>xs:complexType</code>
         // is valid as a child (eg <code>xs:element</code>).
 
-        public static XElement ComplexTypeFor(XElement parentXsElement) {
-            return ComplexTypeFor(parentXsElement, true);
-        }
+        public static XElement ComplexTypeFor(XElement parentXsElement) => ComplexTypeFor(parentXsElement, true);
 
         // returns child <code>xs:complexType</code> element, optionally allowing mixed
         // content, for supplied parent XSD element, creating and appending if necessary.
@@ -144,10 +138,11 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // is valid as a child (eg <code>xs:element</code>).
 
         public static XElement ComplexTypeFor(XElement parentXsElement, bool mixed) {
-            XElement el = ChildXsElement(parentXsElement, "complexType");
+            var el = ChildXsElement(parentXsElement, "complexType");
             if (mixed) {
                 el.SetAttributeValue("mixed", "true");
             }
+
             return el;
         }
 
@@ -157,9 +152,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // The supplied element is presumed to be one for which <code>xs:simpleContent</code>
         // is valid as a child (eg <code>xs:complexType</code>).
 
-        public static XElement SequenceFor(XElement parentXsElement) {
-            return ChildXsElement(parentXsElement, "sequence");
-        }
+        public static XElement SequenceFor(XElement parentXsElement) => ChildXsElement(parentXsElement, "sequence");
 
         // returns child <code>xs:choice</code> element for supplied parent XSD
         // element, creating and appending if necessary.
@@ -167,27 +160,22 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // The supplied element is presumed to be one for which <code>xs:simpleContent</code>
         // is valid as a child (eg <code>xs:complexType</code>).
 
-        public static XElement ChoiceFor(XElement parentXsElement) {
-            return ChildXsElement(parentXsElement, "choice");
-        }
+        public static XElement ChoiceFor(XElement parentXsElement) => ChildXsElement(parentXsElement, "choice");
 
-        public static XElement SequenceForComplexTypeFor(XElement parentXsElement) {
-            return SequenceFor(ComplexTypeFor(parentXsElement));
-        }
+        public static XElement SequenceForComplexTypeFor(XElement parentXsElement) => SequenceFor(ComplexTypeFor(parentXsElement));
 
-        public static XElement ChoiceForComplexTypeFor(XElement parentXsElement) {
-            return ChoiceFor(ComplexTypeFor(parentXsElement));
-        }
+        public static XElement ChoiceForComplexTypeFor(XElement parentXsElement) => ChoiceFor(ComplexTypeFor(parentXsElement));
 
         // Returns the <code>xs:choice</code> or <code>xs:sequence</code> element under
         // the supplied XSD element, or null if neither can be found.
         // ReSharper disable PossibleMultipleEnumeration
 
         public static XElement ChoiceOrSequenceFor(XElement parentXsElement) {
-            IEnumerable<XElement> choiceNodeList = parentXsElement.Descendants(Xs + "choice");
+            var choiceNodeList = parentXsElement.Descendants(Xs + "choice");
             if (choiceNodeList.Any()) {
                 return choiceNodeList.First();
             }
+
             return parentXsElement.Descendants(Xs + "sequence").FirstOrDefault();
         }
 
@@ -198,19 +186,17 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // The supplied element is presumed to be one for which <code>xs:simpleContent</code>
         // is valid as a child (eg <code>xs:complexType</code>).
 
-        public static XElement SimpleContentFor(XElement parentXsElement) {
-            return ChildXsElement(parentXsElement, "simpleContent");
-        }
+        public static XElement SimpleContentFor(XElement parentXsElement) => ChildXsElement(parentXsElement, "simpleContent");
 
         // ReSharper disable PossibleMultipleEnumeration
 
         public static XElement ChildXsElement(XElement parentXsElement, string localName) {
-            IEnumerable<XElement> nodeList = parentXsElement.Descendants(Xs + localName);
+            var nodeList = parentXsElement.Descendants(Xs + localName);
             if (nodeList.Any()) {
                 return nodeList.First();
             }
 
-            XElement childXsElement = CreateXsElement(Helper.DocFor(parentXsElement), localName);
+            var childXsElement = CreateXsElement(Helper.DocFor(parentXsElement), localName);
             parentXsElement.Add(childXsElement);
 
             return childXsElement;
@@ -232,6 +218,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             if (maxOccurs >= 0) {
                 xsElement.SetAttributeValue("minOccurs", "" + minOccurs);
             }
+
             if (maxOccurs >= 0) {
                 if (maxOccurs == int.MaxValue) {
                     xsElement.SetAttributeValue("maxOccurs", "unbounded");
@@ -240,6 +227,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     xsElement.SetAttributeValue("maxOccurs", "" + maxOccurs);
                 }
             }
+
             return xsElement;
         }
 

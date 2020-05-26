@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
@@ -14,12 +13,12 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Xat {
     /// <summary>
-    /// Creates test objects for XAT
-    /// This interface is not used by XAT2.
+    ///     Creates test objects for XAT
+    ///     This interface is not used by XAT2.
     /// </summary>
     public interface ITestObjectFactory {
         ISession Session { get; set; }
-        ITestService CreateTestService(Object service);
+        ITestService CreateTestService(object service);
         ITestMenu CreateTestMenuMain(IMenuImmutable menu);
         ITestMenu CreateTestMenuForObject(IMenuImmutable menu, ITestHasActions owningObject);
         ITestMenuItem CreateTestMenuItem(IMenuItemImmutable item, ITestHasActions owningObject);

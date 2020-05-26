@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.ComponentModel.DataAnnotations.Schema;
 using NakedObjects.Snapshot.Xml.Utility;
 
 namespace NakedObjects.Snapshot.Xml.Service {
@@ -15,9 +14,7 @@ namespace NakedObjects.Snapshot.Xml.Service {
 
         #region IXmlSnapshotService Members
 
-        public IXmlSnapshot GenerateSnapshot(object domainObject) {
-            return new XmlSnapshot(domainObject, Framework.NakedObjectManager, Framework.MetamodelManager);
-        }
+        public IXmlSnapshot GenerateSnapshot(object domainObject) => new XmlSnapshot(domainObject, Framework.NakedObjectManager, Framework.MetamodelManager);
 
         #endregion
     }

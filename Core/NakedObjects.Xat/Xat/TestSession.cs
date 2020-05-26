@@ -12,7 +12,7 @@ namespace NakedObjects.Xat {
     // Allow principal to be changed - only for test use 
 
     public class TestSession : WindowsSession {
-        public TestSession(IPrincipal principal) : base(principal) {}
+        public TestSession(IPrincipal principal) : base(principal) { }
 
         public void ReplacePrincipal(IPrincipal newPrincipal) {
             Principal = newPrincipal;

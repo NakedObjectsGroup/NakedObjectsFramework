@@ -17,28 +17,29 @@ using System.Xml.Xsl;
 using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     [NotMapped]
     public class XmlSnapshot : IXmlSnapshot {
-        private static readonly ILog Log = LogManager.GetLogger(typeof (XmlSnapshot));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(XmlSnapshot));
         private readonly IMetamodelManager metamodelManager;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly Place rootPlace;
+
         private bool topLevelElementWritten;
+
         //  Start a snapshot at the root object, using own namespace manager.
-        public XmlSnapshot(object obj, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) : this(obj, new XmlSchema(), nakedObjectManager, metamodelManager) {}
+        public XmlSnapshot(object obj, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) : this(obj, new XmlSchema(), nakedObjectManager, metamodelManager) { }
+
         // Start a snapshot at the root object, using supplied namespace manager.
         public XmlSnapshot(object obj, XmlSchema schema, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) {
             this.nakedObjectManager = nakedObjectManager;
             this.metamodelManager = metamodelManager;
 
-            INakedObjectAdapter rootObjectAdapter = nakedObjectManager.CreateAdapter(obj, null, null);
+            var rootObjectAdapter = nakedObjectManager.CreateAdapter(obj, null, null);
 
             Schema = schema;
 
@@ -60,6 +61,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         //  until the snapshot has actually been built.
 
         public XElement XmlElement { get; private set; }
+
         public XDocument XsdDocument { get; }
         //  The root element of GetXsdDocument(). Returns <code>null</code>
         //  until the snapshot has actually been built.
@@ -71,22 +73,24 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public string Xml {
             get {
-                XElement element = XmlElement;
+                var element = XmlElement;
                 var sb = new StringBuilder();
-                using (XmlWriter writer = XmlWriter.Create(sb)) {
+                using (var writer = XmlWriter.Create(sb)) {
                     element.WriteTo(writer);
                 }
+
                 return sb.ToString();
             }
         }
 
         public string Xsd {
             get {
-                XElement element = XsdElement;
+                var element = XsdElement;
                 var sb = new StringBuilder();
-                using (XmlWriter writer = XmlWriter.Create(sb)) {
+                using (var writer = XmlWriter.Create(sb)) {
                     element.WriteTo(writer);
                 }
+
                 return sb.ToString();
             }
         }
@@ -99,13 +103,9 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         //  Populated in AppendXml(nakedObjectAdapter).
         public string SchemaLocationFileName { get; private set; }
 
-        public string TransformedXml(string transform) {
-            return TransformXml(transform);
-        }
+        public string TransformedXml(string transform) => TransformXml(transform);
 
-        public string TransformedXsd(string transform) {
-            return TransformXsd(transform);
-        }
+        public string TransformedXsd(string transform) => TransformXsd(transform);
 
         public void Include(string path) {
             Include(path, null);
@@ -113,7 +113,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public void Include(string path, string annotation) {
             // tokenize into successive fields
-            List<string> fieldNames = path.Split('/').Select(tok => tok.ToLower()).ToList();        
+            var fieldNames = path.Split('/').Select(tok => tok.ToLower()).ToList();
             IncludeField(rootPlace, fieldNames, annotation);
         }
 
@@ -131,14 +131,13 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // schemaManager - see ToXml() or XmlSnapshot).
 
         private Place AppendXml(INakedObjectAdapter nakedObjectAdapter) {
-
-            string fullyQualifiedClassName = nakedObjectAdapter.Spec.FullName;
+            var fullyQualifiedClassName = nakedObjectAdapter.Spec.FullName;
 
             Schema.SetUri(fullyQualifiedClassName); // derive URI from fully qualified name
 
-            Place place = ObjectToElement(nakedObjectAdapter);
+            var place = ObjectToElement(nakedObjectAdapter);
 
-            XElement element = place.XmlElement;
+            var element = place.XmlElement;
             var xsElementElement = element.Annotation<XElement>();
 
             XmlDocument.Add(element);
@@ -147,7 +146,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
             Schema.SetTargetNamespace(XsdDocument, fullyQualifiedClassName);
 
-            string schemaLocationFileName = fullyQualifiedClassName + ".xsd";
+            var schemaLocationFileName = fullyQualifiedClassName + ".xsd";
             Schema.AssignSchema(XmlDocument, fullyQualifiedClassName, schemaLocationFileName);
 
             XmlElement = element;
@@ -172,16 +171,15 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // ToXml() or XmlSnapshot).
 
         private XElement AppendXml(Place parentPlace, INakedObjectAdapter childObjectAdapter) {
-
-            XElement parentElement = parentPlace.XmlElement;
+            var parentElement = parentPlace.XmlElement;
             var parentXsElement = parentElement.Annotation<XElement>();
 
             if (parentElement.Document != XmlDocument) {
                 throw new ArgumentException(Log.LogAndReturn("parent XML XElement must have snapshot's XML document as its owner"));
             }
 
-            Place childPlace = ObjectToElement(childObjectAdapter);
-            XElement childElement = childPlace.XmlElement;
+            var childPlace = ObjectToElement(childObjectAdapter);
+            var childElement = childPlace.XmlElement;
             var childXsElement = childElement.Annotation<XElement>();
 
             childElement = MergeTree(parentElement, childElement);
@@ -193,15 +191,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         private bool AppendXmlThenIncludeRemaining(Place parentPlace, INakedObjectAdapter referencedObjectAdapter, IList<string> fieldNames,
                                                    string annotation) {
-            
-
-
-            XElement referencedElement = AppendXml(parentPlace, referencedObjectAdapter);
+            var referencedElement = AppendXml(parentPlace, referencedObjectAdapter);
             var referencedPlace = new Place(referencedObjectAdapter, referencedElement);
 
-            bool includedField = IncludeField(referencedPlace, fieldNames, annotation);
-
-           
+            var includedField = IncludeField(referencedPlace, fieldNames, annotation);
 
             return includedField;
         }
@@ -210,18 +203,15 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             return parentElement.Descendants().Where(element => localName.Equals("*") || element.Name.LocalName.Equals(localName));
         }
 
-        public INakedObjectAdapter GetObject() {
-            return rootPlace.NakedObjectAdapter;
-        }
+        public INakedObjectAdapter GetObject() => rootPlace.NakedObjectAdapter;
 
         //  return true if able to navigate the complete vector of field names
         //                  successfully; false if a field could not be located or it turned
         //                  out to be a value.
 
         private bool IncludeField(Place place, IList<string> fieldNames, string annotation) {
-
-            INakedObjectAdapter nakedObjectAdapter = place.NakedObjectAdapter;
-            XElement xmlElement = place.XmlElement;
+            var nakedObjectAdapter = place.NakedObjectAdapter;
+            var xmlElement = place.XmlElement;
 
             // we use a copy of the path so that we can safely traverse collections
             // without side-effects
@@ -233,13 +223,12 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             }
 
             // take the first field name from the list, and remove
-            string fieldName = fieldNames.First();
+            var fieldName = fieldNames.First();
             fieldNames.Remove(fieldName);
-
 
             // locate the field in the object's class
             var nos = (IObjectSpec) nakedObjectAdapter.Spec;
-            IAssociationSpec field = nos.Properties.SingleOrDefault(p => p.Id.ToLower() == fieldName);
+            var field = nos.Properties.SingleOrDefault(p => p.Id.ToLower() == fieldName);
 
             if (field == null) {
                 return false;
@@ -248,12 +237,13 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             // locate the corresponding XML element
             // (the corresponding XSD element will later be attached to xmlElement
             // as its userData)
-            XElement[] xmlFieldElements = ElementsUnder(xmlElement, field.Id).ToArray();
-            int fieldCount = xmlFieldElements.Length;
+            var xmlFieldElements = ElementsUnder(xmlElement, field.Id).ToArray();
+            var fieldCount = xmlFieldElements.Length;
             if (fieldCount != 1) {
                 return false;
             }
-            XElement xmlFieldElement = xmlFieldElements.First();
+
+            var xmlFieldElement = xmlFieldElements.First();
 
             if (!fieldNames.Any() && annotation != null) {
                 // nothing left in the path, so we will apply the annotation now
@@ -265,32 +255,30 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             if (field.ReturnSpec.IsParseable) {
                 return false;
             }
+
             var oneToOneAssociation = field as IOneToOneAssociationSpec;
             if (oneToOneAssociation != null) {
-
-                INakedObjectAdapter referencedObjectAdapter = oneToOneAssociation.GetNakedObject(fieldPlace.NakedObjectAdapter);
+                var referencedObjectAdapter = oneToOneAssociation.GetNakedObject(fieldPlace.NakedObjectAdapter);
 
                 if (referencedObjectAdapter == null) {
                     return true; // not a failure if the reference was null
                 }
 
-                bool appendedXml = AppendXmlThenIncludeRemaining(fieldPlace, referencedObjectAdapter, fieldNames, annotation);
-
+                var appendedXml = AppendXmlThenIncludeRemaining(fieldPlace, referencedObjectAdapter, fieldNames, annotation);
 
                 return appendedXml;
             }
+
             var oneToManyAssociation = field as IOneToManyAssociationSpec;
             if (oneToManyAssociation != null) {
+                var collection = oneToManyAssociation.GetNakedObject(fieldPlace.NakedObjectAdapter);
 
-                INakedObjectAdapter collection = oneToManyAssociation.GetNakedObject(fieldPlace.NakedObjectAdapter);
+                var collectionAsEnumerable = collection.GetAsEnumerable(nakedObjectManager).ToArray();
 
-                INakedObjectAdapter[] collectionAsEnumerable = collection.GetAsEnumerable(nakedObjectManager).ToArray();
+                var allFieldsNavigated = true;
 
-                bool allFieldsNavigated = true;
-
-                foreach (INakedObjectAdapter referencedObject in collectionAsEnumerable) {
-                    bool appendedXml = AppendXmlThenIncludeRemaining(fieldPlace, referencedObject, fieldNames, annotation);
-
+                foreach (var referencedObject in collectionAsEnumerable) {
+                    var appendedXml = AppendXmlThenIncludeRemaining(fieldPlace, referencedObject, fieldNames, annotation);
 
                     allFieldsNavigated = allFieldsNavigated && appendedXml;
                 }
@@ -301,9 +289,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             return false; // fall through, shouldn't get here but just in case.
         }
 
-        private static string DoLog(string label, object obj) {
-            return (label ?? "?") + "='" + (obj == null ? "(null)" : obj.ToString()) + "'";
-        }
+        private static string DoLog(string label, object obj) => (label ?? "?") + "='" + (obj == null ? "(null)" : obj.ToString()) + "'";
 
         //  Merges the tree of Elements whose root is <code>childElement</code>
         //  underneath the <code>parentElement</code>.
@@ -317,30 +303,28 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         //  existed under <code>parentElement</code>.
 
         private static XElement MergeTree(XElement parentElement, XElement childElement) {
-
-            string childElementOid = NofMetaModel.GetAttribute(childElement, "oid");
+            var childElementOid = NofMetaModel.GetAttribute(childElement, "oid");
 
             if (childElementOid != null) {
                 // before we add the child element, check to see if it is already
                 // there
-                IEnumerable<XElement> existingChildElements = ElementsUnder(parentElement, childElement.Name.LocalName);
-                foreach (XElement possibleMatchingElement in existingChildElements) {
-                    string possibleMatchOid = NofMetaModel.GetAttribute(possibleMatchingElement, "oid");
+                var existingChildElements = ElementsUnder(parentElement, childElement.Name.LocalName);
+                foreach (var possibleMatchingElement in existingChildElements) {
+                    var possibleMatchOid = NofMetaModel.GetAttribute(possibleMatchingElement, "oid");
                     if (possibleMatchOid == null || !possibleMatchOid.Equals(childElementOid)) {
                         continue;
                     }
 
-
                     // match: transfer the children of the child (grandchildren) to the
                     // already existing matching child
-                    XElement existingChildElement = possibleMatchingElement;
-                    IEnumerable<XElement> grandchildrenElements = ElementsUnder(childElement, "*");
-                    foreach (XElement grandchildElement in grandchildrenElements) {
+                    var existingChildElement = possibleMatchingElement;
+                    var grandchildrenElements = ElementsUnder(childElement, "*");
+                    foreach (var grandchildElement in grandchildrenElements) {
                         grandchildElement.Remove();
-
 
                         MergeTree(existingChildElement, grandchildElement);
                     }
+
                     return existingChildElement;
                 }
             }
@@ -350,13 +334,12 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         }
 
         public Place ObjectToElement(INakedObjectAdapter nakedObjectAdapter) {
-
             var nos = (IObjectSpec) nakedObjectAdapter.Spec;
 
-            XElement element = Schema.CreateElement(XmlDocument, nos.ShortName, nos.FullName, nos.SingularName, nos.PluralName);
+            var element = Schema.CreateElement(XmlDocument, nos.ShortName, nos.FullName, nos.SingularName, nos.PluralName);
             NofMetaModel.AppendNofTitle(element, nakedObjectAdapter.TitleString());
 
-            XElement xsElement = Schema.CreateXsElementForNofClass(XsdDocument, element, topLevelElementWritten);
+            var xsElement = Schema.CreateXsElementForNofClass(XsdDocument, element, topLevelElementWritten);
 
             // hack: every element in the XSD schema apart from first needs minimum cardinality setting.
             topLevelElementWritten = true;
@@ -365,13 +348,12 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
             NofMetaModel.SetAttributesForClass(element, OidOrHashCode(nakedObjectAdapter));
 
-            IAssociationSpec[] fields = nos.Properties;
+            var fields = nos.Properties;
 
             var seenFields = new List<string>();
 
-            foreach (IAssociationSpec field in fields) {
-                string fieldName = field.Id;
-
+            foreach (var field in fields) {
+                var fieldName = field.Id;
 
                 // Skip field if we have seen the name already
                 // This is a workaround for getLastActivity(). This method exists
@@ -386,6 +368,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 if (seenFields.Contains(fieldName)) {
                     continue;
                 }
+
                 seenFields.Add(fieldName);
 
                 XNamespace ns = Schema.GetUri();
@@ -397,17 +380,16 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 var oneToManyAssociation = field as IOneToManyAssociationSpec;
 
                 if (field.ReturnSpec.IsParseable && oneToOneAssociation != null) {
-
-                    IObjectSpec fieldNos = field.ReturnSpec;
+                    var fieldNos = field.ReturnSpec;
                     // skip fields of type XmlValue
                     if (fieldNos?.FullName != null && fieldNos.FullName.EndsWith("XmlValue")) {
                         continue;
                     }
 
-                    XElement xmlValueElement = xmlFieldElement; // more meaningful locally scoped name
+                    var xmlValueElement = xmlFieldElement; // more meaningful locally scoped name
 
                     try {
-                        INakedObjectAdapter value = oneToOneAssociation.GetNakedObject(nakedObjectAdapter);
+                        var value = oneToOneAssociation.GetNakedObject(nakedObjectAdapter);
 
                         // a null value would be a programming error, but we protect
                         // against it anyway
@@ -415,14 +397,14 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                             continue;
                         }
 
-                        ITypeSpec valueNos = value.Spec;
+                        var valueNos = value.Spec;
 
                         // XML
                         NofMetaModel.SetAttributesForValue(xmlValueElement, valueNos.ShortName);
 
-                        bool notEmpty = value.TitleString().Length > 0;
+                        var notEmpty = value.TitleString().Length > 0;
                         if (notEmpty) {
-                            string valueStr = value.TitleString();
+                            var valueStr = value.TitleString();
                             xmlValueElement.Add(new XText(valueStr));
                         }
                         else {
@@ -437,12 +419,11 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     xsdFieldElement = Schema.CreateXsElementForNofValue(xsElement, xmlValueElement);
                 }
                 else if (oneToOneAssociation != null) {
-
-                    XElement xmlReferenceElement = xmlFieldElement; // more meaningful locally scoped name
+                    var xmlReferenceElement = xmlFieldElement; // more meaningful locally scoped name
 
                     try {
-                        INakedObjectAdapter referencedNakedObjectAdapter = oneToOneAssociation.GetNakedObject(nakedObjectAdapter);
-                        string fullyQualifiedClassName = field.ReturnSpec.FullName;
+                        var referencedNakedObjectAdapter = oneToOneAssociation.GetNakedObject(nakedObjectAdapter);
+                        var fullyQualifiedClassName = field.ReturnSpec.FullName;
 
                         // XML
                         NofMetaModel.SetAttributesForReference(xmlReferenceElement, Schema.Prefix, fullyQualifiedClassName);
@@ -462,15 +443,14 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                     xsdFieldElement = Schema.CreateXsElementForNofReference(xsElement, xmlReferenceElement, oneToOneAssociation.ReturnSpec.FullName);
                 }
                 else if (oneToManyAssociation != null) {
-
-                    XElement xmlCollectionElement = xmlFieldElement; // more meaningful locally scoped name
+                    var xmlCollectionElement = xmlFieldElement; // more meaningful locally scoped name
 
                     try {
-                        INakedObjectAdapter collection = oneToManyAssociation.GetNakedObject(nakedObjectAdapter);
-                        ITypeOfFacet facet = collection.GetTypeOfFacetFromSpec();
+                        var collection = oneToManyAssociation.GetNakedObject(nakedObjectAdapter);
+                        var facet = collection.GetTypeOfFacetFromSpec();
 
-                        IObjectSpecImmutable referencedTypeNos = facet.GetValueSpec(collection, metamodelManager.Metamodel);
-                        string fullyQualifiedClassName = referencedTypeNos.FullName;
+                        var referencedTypeNos = facet.GetValueSpec(collection, metamodelManager.Metamodel);
+                        var fullyQualifiedClassName = referencedTypeNos.FullName;
 
                         // XML
                         NofMetaModel.SetNofCollection(xmlCollectionElement, Schema.Prefix, fullyQualifiedClassName, collection, nakedObjectManager);
@@ -503,16 +483,17 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         }
 
         private static string OidOrHashCode(INakedObjectAdapter nakedObjectAdapter) {
-            IOid oid = nakedObjectAdapter.Oid;
+            var oid = nakedObjectAdapter.Oid;
             if (oid == null) {
                 return "" + nakedObjectAdapter.GetHashCode();
             }
+
             return oid.ToString();
         }
 
         private static string Transform(XDocument xDoc, string transform) {
             var sb = new StringBuilder();
-            using (XmlWriter writer = XmlWriter.Create(sb)) {
+            using (var writer = XmlWriter.Create(sb)) {
                 var compiledTransform = new XslCompiledTransform();
                 compiledTransform.Load(XmlReader.Create(new StringReader(transform)));
                 compiledTransform.Transform(xDoc.CreateReader(), writer);
@@ -521,12 +502,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             return sb.ToString();
         }
 
-        public string TransformXml(string transform) {
-            return Transform(XmlDocument, transform);
-        }
+        public string TransformXml(string transform) => Transform(XmlDocument, transform);
 
-        public string TransformXsd(string transform) {
-            return Transform(XsdDocument, transform);
-        }
+        public string TransformXsd(string transform) => Transform(XsdDocument, transform);
     }
 }

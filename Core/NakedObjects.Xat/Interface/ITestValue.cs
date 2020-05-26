@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 namespace NakedObjects.Xat {
-    public interface ITestValue : ITestNaked {}
+    public interface ITestValue : ITestNaked { }
 
     // Copyright (c) Naked Objects Group Ltd.
 }

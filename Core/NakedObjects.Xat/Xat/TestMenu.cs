@@ -33,16 +33,12 @@ namespace NakedObjects.Xat {
             return this;
         }
 
-        public ITestAction GetAction(string name) {
-            return GetItem(name).AsAction();
-        }
+        public ITestAction GetAction(string name) => GetItem(name).AsAction();
 
-        public ITestMenu GetSubMenu(string name) {
-            return GetItem(name).AsSubMenu();
-        }
+        public ITestMenu GetSubMenu(string name) => GetItem(name).AsSubMenu();
 
         public ITestMenuItem GetItem(string name) {
-            IMenuItemImmutable item = menu.MenuItems.FirstOrDefault(i => i.Name == name);
+            var item = menu.MenuItems.FirstOrDefault(i => i.Name == name);
             Assert.IsNotNull(item, "No menu item with name: " + name);
             return factory.CreateTestMenuItem(item, owningObject);
         }

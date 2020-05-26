@@ -16,23 +16,18 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Xat {
     internal class TestCollection : ITestCollection {
-        private readonly INakedObjectAdapter collection;
         private readonly IEnumerable<ITestObject> wrappedCollection;
 
         public TestCollection(INakedObjectAdapter collection, ITestObjectFactory factory, INakedObjectManager manager) {
-            this.collection = collection;
+            this.NakedObject = collection;
             wrappedCollection = collection.GetAsEnumerable(manager).Select(factory.CreateTestObject);
         }
 
         #region ITestCollection Members
 
-        public string Title {
-            get { return collection.TitleString(); }
-        }
+        public string Title => NakedObject.TitleString();
 
-        public INakedObjectAdapter NakedObject {
-            get { return collection; }
-        }
+        public INakedObjectAdapter NakedObject { get; }
 
         public ITestCollection AssertIsEmpty() {
             Assert.AreEqual(0, this.Count(), "Collection is not empty");
@@ -49,13 +44,9 @@ namespace NakedObjects.Xat {
             return this;
         }
 
-        public IEnumerator<ITestObject> GetEnumerator() {
-            return wrappedCollection.GetEnumerator();
-        }
+        public IEnumerator<ITestObject> GetEnumerator() => wrappedCollection.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public ITestCollection AssertIsTransient() {
             Assert.IsTrue(NakedObject.ResolveState.IsTransient(), "Collection is not transient");

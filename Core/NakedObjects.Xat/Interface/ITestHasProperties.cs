@@ -10,18 +10,21 @@ namespace NakedObjects.Xat {
         ITestProperty[] Properties { get; }
         ITestObject Save();
         ITestObject Refresh();
+
         /// <summary>
-        /// Given the 'friendly name' of a property (as would be rendered to the user)
-        /// returns the matching test property.
+        ///     Given the 'friendly name' of a property (as would be rendered to the user)
+        ///     returns the matching test property.
         /// </summary>
         /// <param name="friendlyName"></param>
         /// <returns></returns>
         ITestProperty GetPropertyByName(string friendlyName);
+
         /// <summary>
-        /// Given the Id (the actual member name in code), returns the matching test property (if any).
-        /// Designed to work with C# 6 nameof() operator.
+        ///     Given the Id (the actual member name in code), returns the matching test property (if any).
+        ///     Designed to work with C# 6 nameof() operator.
         /// </summary>
         ITestProperty GetPropertyById(string id);
+
         ITestObject AssertCanBeSaved();
         ITestObject AssertCannotBeSaved();
         ITestObject AssertIsTransient();

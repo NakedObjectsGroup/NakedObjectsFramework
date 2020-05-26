@@ -13,68 +13,41 @@ namespace NakedObjects.Xat {
     public class TestServiceDecorator : ITestService {
         private readonly ITestService wrappedObject;
 
-        protected TestServiceDecorator(ITestService wrappedObject) {
-            this.wrappedObject = wrappedObject;
-        }
+        protected TestServiceDecorator(ITestService wrappedObject) => this.wrappedObject = wrappedObject;
 
         #region ITestService Members
 
-        public INakedObjectAdapter NakedObject {
-            get { return wrappedObject.NakedObject; }
-        }
+        public INakedObjectAdapter NakedObject => wrappedObject.NakedObject;
 
-        public string Title {
-            get { return wrappedObject.Title; }
-        }
+        public string Title => wrappedObject.Title;
 
-        public ITestAction[] Actions {
-            get { return wrappedObject.Actions; }
-        }
+        public ITestAction[] Actions => wrappedObject.Actions;
 
-        public ITestAction GetAction(string friendlyName) {
-            return wrappedObject.GetAction(friendlyName);
-        }
+        public ITestAction GetAction(string friendlyName) => wrappedObject.GetAction(friendlyName);
 
-        public ITestAction GetActionById(string methodName) {
-            return wrappedObject.GetActionById(methodName);
-        }
+        public ITestAction GetActionById(string methodName) => wrappedObject.GetActionById(methodName);
 
-        public ITestAction GetAction(string friendlyName, params Type[] parameterTypes) {
-            return wrappedObject.GetAction(friendlyName, parameterTypes);
-        }
+        public ITestAction GetAction(string friendlyName, params Type[] parameterTypes) => wrappedObject.GetAction(friendlyName, parameterTypes);
 
-        public ITestAction GetActionById(string methodName, params Type[] parameterTypes) {
-            return wrappedObject.GetActionById(methodName, parameterTypes);
-        }
+        public ITestAction GetActionById(string methodName, params Type[] parameterTypes) => wrappedObject.GetActionById(methodName, parameterTypes);
 
-        public ITestAction GetAction(string friendlyName, string subMenu) {
-            return wrappedObject.GetAction(friendlyName, subMenu);
-        }
+        public ITestAction GetAction(string friendlyName, string subMenu) => wrappedObject.GetAction(friendlyName, subMenu);
 
-        public ITestAction GetActionById(string methodName, string subMenu) {
-            return wrappedObject.GetActionById(methodName, subMenu);
-        }
+        public ITestAction GetActionById(string methodName, string subMenu) => wrappedObject.GetActionById(methodName, subMenu);
 
-        public ITestAction GetAction(string friendlyName, string subMenu, params Type[] parameterTypes) {
-            return wrappedObject.GetAction(friendlyName, subMenu, parameterTypes);
-        }
+        public ITestAction GetAction(string friendlyName, string subMenu, params Type[] parameterTypes) => wrappedObject.GetAction(friendlyName, subMenu, parameterTypes);
 
-        public ITestAction GetActionById(string methodName, string subMenu, params Type[] parameterTypes) {
-            return wrappedObject.GetActionById(methodName, subMenu, parameterTypes);
-        }
+        public ITestAction GetActionById(string methodName, string subMenu, params Type[] parameterTypes) => wrappedObject.GetActionById(methodName, subMenu, parameterTypes);
 
-        public string GetObjectActionOrder() {
-            return wrappedObject.GetObjectActionOrder();
-        }
+        public string GetObjectActionOrder() => wrappedObject.GetObjectActionOrder();
 
         public ITestHasActions AssertActionOrderIs(string order) {
             Assert.AreEqual(order, GetObjectActionOrder());
             return this;
         }
 
-        public ITestMenu GetMenu() {
-            return wrappedObject.GetMenu();
-        }
+        public ITestMenu GetMenu() => wrappedObject.GetMenu();
+
         #endregion
     }
 }

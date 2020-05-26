@@ -7,7 +7,6 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Xat {
     public class TestMenuItem : ITestMenuItem {
@@ -29,21 +28,22 @@ namespace NakedObjects.Xat {
         }
 
         public ITestMenuItem AssertIsAction() {
-            Assert.IsInstanceOfType(item, typeof (IMenuActionImmutable));
+            Assert.IsInstanceOfType(item, typeof(IMenuActionImmutable));
             return this;
         }
 
         public ITestAction AsAction() {
             AssertIsAction();
-            IActionSpecImmutable actionSpecIm = ((IMenuActionImmutable) item).Action;
+            var actionSpecIm = ((IMenuActionImmutable) item).Action;
             if (owningObject == null) {
                 return factory.CreateTestActionOnService(actionSpecIm);
             }
+
             return factory.CreateTestAction(actionSpecIm, owningObject);
         }
 
         public ITestMenuItem AssertIsSubMenu() {
-            Assert.IsInstanceOfType(item, typeof (IMenuImmutable));
+            Assert.IsInstanceOfType(item, typeof(IMenuImmutable));
             return this;
         }
 

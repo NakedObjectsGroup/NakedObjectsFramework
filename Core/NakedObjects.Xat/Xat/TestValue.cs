@@ -9,17 +9,13 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Xat {
     internal class TestValue : ITestValue {
-        public TestValue(INakedObjectAdapter nakedObjectAdapter) {
-            NakedObject = nakedObjectAdapter;
-        }
+        public TestValue(INakedObjectAdapter nakedObjectAdapter) => NakedObject = nakedObjectAdapter;
 
         #region ITestValue Members
 
-        public string Title {
-            get { return NakedObject.TitleString(); }
-        }
+        public string Title => NakedObject.TitleString();
 
-        public INakedObjectAdapter NakedObject { get; private set; }
+        public INakedObjectAdapter NakedObject { get; }
 
         #endregion
     }

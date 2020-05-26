@@ -11,22 +11,14 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Resolve;
-using NakedObjects.Util;
 
 namespace NakedObjects.Xat {
     internal abstract class TestHasActions : ITestHasActions {
-        private readonly ITestObjectFactory factory;
+        protected TestHasActions(ITestObjectFactory factory) => this.Factory = factory;
 
-        protected TestHasActions(ITestObjectFactory factory) {
-            this.factory = factory;
-        }
-
-        protected ITestObjectFactory Factory {
-            get { return factory; }
-        }
+        protected ITestObjectFactory Factory { get; }
 
         #region ITestHasActions Members
 
@@ -34,16 +26,6 @@ namespace NakedObjects.Xat {
 
         public ITestAction[] Actions {
             get { return NakedObject.Spec.GetActions().Select(x => Factory.CreateTestAction(x, this)).ToArray(); }
-        }
-
-        private ITestAction[] ActionsWithFriendlyName(string friendlyName) {
-            return Actions.Where(x => x.Name == friendlyName).ToArray();
-        }
-
-        private ITestAction[] ActionsForMethodName(string methodName) {
-            return NakedObject.Spec.GetActions().Where(
-                a => a.GetFacet<IActionInvocationFacet>().ActionMethod.Name.Split('.').Last() == methodName)
-                .Select(x => Factory.CreateTestAction(x, this)).ToArray(); 
         }
 
         public ITestAction GetAction(string friendlyName) {
@@ -70,9 +52,7 @@ namespace NakedObjects.Xat {
             return actions.Single();
         }
 
-        public ITestAction GetAction(string actionName, string subMenu) {
-            return GetMenu().GetSubMenu(subMenu).GetAction(actionName);
-        }
+        public ITestAction GetAction(string actionName, string subMenu) => GetMenu().GetSubMenu(subMenu).GetAction(actionName);
 
         public ITestAction GetActionById(string methodName, string subMenu) {
             var action = GetActionById(methodName);
@@ -93,8 +73,8 @@ namespace NakedObjects.Xat {
         }
 
         public virtual string GetObjectActionOrder() {
-            ITypeSpec spec = NakedObject.Spec;
-            IActionSpec[] actionsSpec = spec.GetActions();
+            var spec = NakedObject.Spec;
+            var actionsSpec = spec.GetActions();
             var order = new StringBuilder();
             order.Append(AppendActions(actionsSpec));
             return order.ToString();
@@ -108,11 +88,21 @@ namespace NakedObjects.Xat {
         public abstract string Title { get; }
 
         public ITestMenu GetMenu() {
-            IMenuImmutable menu = NakedObject.Spec.Menu;
+            var menu = NakedObject.Spec.Menu;
             return new TestMenu(menu, Factory, this);
         }
 
         #endregion
+
+        private ITestAction[] ActionsWithFriendlyName(string friendlyName) {
+            return Actions.Where(x => x.Name == friendlyName).ToArray();
+        }
+
+        private ITestAction[] ActionsForMethodName(string methodName) {
+            return NakedObject.Spec.GetActions().Where(
+                    a => a.GetFacet<IActionInvocationFacet>().ActionMethod.Name.Split('.').Last() == methodName)
+                .Select(x => Factory.CreateTestAction(x, this)).ToArray();
+        }
 
         // ReSharper disable UnusedParameter.Local
         private static void AssertErrors(ITestAction[] actions, string actionName, string condition = "") {
@@ -120,22 +110,23 @@ namespace NakedObjects.Xat {
             if (!actions.Any()) {
                 Assert.Fail("No Action named '{0}'{1}", actionName, condition);
             }
+
             if (actions.Count() > 1) {
                 Assert.Fail("{0} Actions named '{1}' found{2}", actions.Count(), actionName, condition);
             }
         }
 
         public ITestObject AssertIsDescribedAs(string expected) {
-            string description = NakedObject.Spec.Description;
+            var description = NakedObject.Spec.Description;
             Assert.IsTrue(expected.Equals(description), "Description expected: '" + expected + "' actual: '" + description + "'");
             return (ITestObject) this;
         }
 
         public ITestObject AssertIsImmutable() {
-            ITypeSpec spec = NakedObject.Spec;
+            var spec = NakedObject.Spec;
             var facet = spec.GetFacet<IImmutableFacet>();
 
-            bool immutable = facet.Value == WhenTo.Always || facet.Value == WhenTo.OncePersisted && NakedObject.ResolveState.IsPersistent();
+            var immutable = facet.Value == WhenTo.Always || facet.Value == WhenTo.OncePersisted && NakedObject.ResolveState.IsPersistent();
 
             Assert.IsTrue(immutable, "Not immutable");
             return (ITestObject) this;
@@ -145,17 +136,19 @@ namespace NakedObjects.Xat {
             if (NakedObject == null) {
                 return base.ToString() + " " + "null";
             }
+
             return base.ToString() + " " + NakedObject.Spec.ShortName + "/" + NakedObject;
         }
 
         private string AppendActions(IActionSpec[] actionsSpec) {
             var order = new StringBuilder();
-            for (int i = 0; i < actionsSpec.Length; i++) {
-                IActionSpec actionSpec = actionsSpec[i];
-                string name = actionSpec.Name;
+            for (var i = 0; i < actionsSpec.Length; i++) {
+                var actionSpec = actionsSpec[i];
+                var name = actionSpec.Name;
                 order.Append(name);
                 order.Append(i < actionsSpec.Length - 1 ? ", " : "");
             }
+
             return order.ToString();
         }
     }

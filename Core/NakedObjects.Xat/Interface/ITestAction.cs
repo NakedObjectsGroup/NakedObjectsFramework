@@ -27,8 +27,9 @@ namespace NakedObjects.Xat {
         ITestAction AssertIsDescribedAs(string expected);
         ITestAction AssertLastMessageIs(string message);
         ITestAction AssertLastMessageContains(string message);
+
         /// <summary>
-        /// Test how the action will be rendered to the user.
+        ///     Test how the action will be rendered to the user.
         /// </summary>
         ITestAction AssertHasFriendlyName(string friendlyName);
     }

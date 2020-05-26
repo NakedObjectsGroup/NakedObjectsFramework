@@ -11,19 +11,13 @@ namespace NakedObjects.Xat {
     public class TestValueDecorator : ITestValue {
         private readonly ITestValue wrappedObject;
 
-        protected TestValueDecorator(ITestValue wrappedObject) {
-            this.wrappedObject = wrappedObject;
-        }
+        protected TestValueDecorator(ITestValue wrappedObject) => this.wrappedObject = wrappedObject;
 
         #region ITestValue Members
 
-        public INakedObjectAdapter NakedObject {
-            get { return wrappedObject.NakedObject; }
-        }
+        public INakedObjectAdapter NakedObject => wrappedObject.NakedObject;
 
-        public string Title {
-            get { return wrappedObject.Title; }
-        }
+        public string Title => wrappedObject.Title;
 
         #endregion
     }

@@ -21,13 +21,11 @@ namespace NakedObjects.Xat {
 
         #region ITestValue Members
 
-        public string Title {
-            get { return NakedObject.TitleString(); }
-        }
+        public string Title => NakedObject.TitleString();
 
         public INakedObjectAdapter NakedObject {
-            get { return manager.CreateAdapter(domainObject, null, null); }
-            set { throw new UnexpectedCallException(); }
+            get => manager.CreateAdapter(domainObject, null, null);
+            set => throw new UnexpectedCallException();
         }
 
         #endregion

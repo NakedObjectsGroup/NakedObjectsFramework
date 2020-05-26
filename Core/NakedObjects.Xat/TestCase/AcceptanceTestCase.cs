@@ -16,6 +16,7 @@ using System.Security.Principal;
 using Common.Logging;
 using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -26,101 +27,71 @@ using NakedObjects.Core.Fixture;
 using NakedObjects.Core.Util;
 using NakedObjects.DependencyInjection;
 using NakedObjects.Menu;
+using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Persistor.Entity.Configuration;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-using Microsoft.Extensions.Hosting;
-using NakedObjects.Meta.SpecImmutable;
 
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
         private static readonly ILog Log;
+        private FixtureServices fixtureServices;
 
         protected IServiceProvider RootServiceProvider;
         private IServiceProvider scopeServiceProvider;
-        private FixtureServices fixtureServices;
         private IDictionary<string, ITestService> servicesCache = new Dictionary<string, ITestService>();
         private ITestObjectFactory testObjectFactory;
         private IPrincipal testPrincipal;
-      
-        static AcceptanceTestCase() {
-            Log = LogManager.GetLogger(typeof (AcceptanceTestCase));
-        }
 
-        private IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((hostContext, configBuilder) => {
-                    var config = new MemoryConfigurationSource
-                    {
-                        InitialData = Configuration()
-                    };
-                    configBuilder.Add(config);
-                })
-                .ConfigureServices((hostContext, services) => {
-                    RegisterTypes(services);
-                });
-        
+        static AcceptanceTestCase() => Log = LogManager.GetLogger(typeof(AcceptanceTestCase));
 
-        protected AcceptanceTestCase(string name)
-        {
+        protected AcceptanceTestCase(string name) {
             Name = name;
             DbProviderFactories.RegisterFactory("System.Data.SqlClient", SqlClientFactory.Instance);
         }
 
-        /// <summary>
-        ///     Gets the configured servive provider
-        /// </summary>
-        protected virtual IServiceProvider GetConfiguredContainer()
-        {
-            return scopeServiceProvider;
-        }
+        protected AcceptanceTestCase() : this("Unnamed") { }
 
         protected virtual IServiceScope ServiceScope { set; get; }
-
-        protected AcceptanceTestCase() : this("Unnamed") {}
         protected string Name { set; get; }
 
-        protected virtual ITestObjectFactory TestObjectFactoryClass {
-            get { return testObjectFactory ?? (testObjectFactory = new TestObjectFactory(NakedObjectsFramework.MetamodelManager, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.TransactionManager, NakedObjectsFramework.ServicesManager, NakedObjectsFramework.MessageBroker)); }
-        }
+        protected virtual ITestObjectFactory TestObjectFactoryClass => testObjectFactory ?? (testObjectFactory = new TestObjectFactory(NakedObjectsFramework.MetamodelManager, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.TransactionManager, NakedObjectsFramework.ServicesManager, NakedObjectsFramework.MessageBroker));
 
         protected virtual IPrincipal TestPrincipal {
-            get { return testPrincipal ?? (testPrincipal = CreatePrincipal("Test", new string[] {})); }
-            set { testPrincipal = value; }
+            get { return testPrincipal ?? (testPrincipal = CreatePrincipal("Test", new string[] { })); }
+            set => testPrincipal = value;
         }
 
         protected INakedObjectsFramework NakedObjectsFramework { get; set; }
 
         protected virtual object[] Fixtures {
-            get { return new object[] {}; }
+            get { return new object[] { }; }
         }
 
         /// <summary>
-        /// By default this returns the union of the types specified in MenuServices, ContributedActions
-        /// & SystemServices. This is for backwards compatibility only. 
-        /// The property may be overridden to return a fresh list of types, in which case Menu Services etc
-        /// will be ignored.
+        ///     By default this returns the union of the types specified in MenuServices, ContributedActions
+        ///     & SystemServices. This is for backwards compatibility only.
+        ///     The property may be overridden to return a fresh list of types, in which case Menu Services etc
+        ///     will be ignored.
         /// </summary>
         protected virtual Type[] Services {
             get { return new Type[] { }; }
         }
 
         protected virtual Type[] Types {
-            get { return new Type[] {}; }
+            get { return new Type[] { }; }
         }
 
         protected virtual string[] Namespaces {
-            get { return new string[] {}; }
+            get { return new string[] { }; }
         }
 
-        protected virtual EntityObjectStoreConfiguration Persistor {
-            get { return new EntityObjectStoreConfiguration(); }
-        }
+        protected virtual EntityObjectStoreConfiguration Persistor => new EntityObjectStoreConfiguration();
 
         protected virtual ReflectorConfiguration Reflector {
             get {
                 var reflectorConfig = new ReflectorConfiguration(
                     Types ?? new Type[] { },
-                    this.Services,
+                    Services,
                     Namespaces ?? new string[] { },
                     MainMenus);
                 ReflectorConfiguration.NoValidate = true;
@@ -128,13 +99,28 @@ namespace NakedObjects.Xat {
             }
         }
 
-        protected virtual IMenu[] MainMenus(IMenuFactory factory) {
-            return null; //Allows tests not to define menus if not needed.
-        }
+        private IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((hostContext, configBuilder) => {
+                    var config = new MemoryConfigurationSource {
+                        InitialData = Configuration()
+                    };
+                    configBuilder.Add(config);
+                })
+                .ConfigureServices((hostContext, services) => {
+                    RegisterTypes(services);
+                });
+
+        /// <summary>
+        ///     Gets the configured servive provider
+        /// </summary>
+        protected virtual IServiceProvider GetConfiguredContainer() => scopeServiceProvider;
+
+        protected virtual IMenu[] MainMenus(IMenuFactory factory) => null; //Allows tests not to define menus if not needed.
 
         protected virtual void StartTest() {
             ServiceScope = RootServiceProvider.CreateScope();
-            scopeServiceProvider =  ServiceScope.ServiceProvider;
+            scopeServiceProvider = ServiceScope.ServiceProvider;
             NakedObjectsFramework = scopeServiceProvider.GetService<INakedObjectsFramework>();
         }
 
@@ -168,14 +154,13 @@ namespace NakedObjects.Xat {
             fixtureServices = new FixtureServices();
         }
 
-        private static MethodInfo GetInstallMethod(object fixture) {
-            return fixture.GetType().GetMethod("Install", new Type[0]) ??
-                   fixture.GetType().GetMethod("install", new Type[0]);
-        }
+        private static MethodInfo GetInstallMethod(object fixture) =>
+            fixture.GetType().GetMethod("Install", new Type[0]) ??
+            fixture.GetType().GetMethod("install", new Type[0]);
 
         protected virtual object[] GetFixtures(object fixture) {
-            var getFixturesMethod = fixture.GetType().GetMethod("GetFixtures", new Type[] {});
-            return getFixturesMethod == null ? new object[] {} : (object[]) getFixturesMethod.Invoke(fixture, new object[] {});
+            var getFixturesMethod = fixture.GetType().GetMethod("GetFixtures", new Type[] { });
+            return getFixturesMethod == null ? new object[] { } : (object[]) getFixturesMethod.Invoke(fixture, new object[] { });
         }
 
         protected virtual void InstallFixture(object fixture) {
@@ -212,6 +197,7 @@ namespace NakedObjects.Xat {
                 catch (Exception e2) {
                     Log.Error("failure during abort", e2);
                 }
+
                 throw;
             }
         }
@@ -223,18 +209,14 @@ namespace NakedObjects.Xat {
             NakedObjectsFramework = null;
         }
 
-        protected ITestService GetTestService<T>() {
-            return GetTestService(typeof(T));
-        }
+        protected ITestService GetTestService<T>() => GetTestService(typeof(T));
 
         protected virtual ITestService GetTestService(Type type) {
-            var testService = NakedObjectsFramework.ServicesManager.GetServices().
-                Where(no => type.IsInstanceOfType(no.Object)).
-                Select(no => TestObjectFactoryClass.CreateTestService(no.Object)).
-                FirstOrDefault();
+            var testService = NakedObjectsFramework.ServicesManager.GetServices().Where(no => type.IsInstanceOfType(no.Object)).Select(no => TestObjectFactoryClass.CreateTestService(no.Object)).FirstOrDefault();
             if (testService == null) {
                 Assert.Fail("No service of type " + type);
             }
+
             return testService;
         }
 
@@ -246,13 +228,16 @@ namespace NakedObjects.Xat {
                         if (testService == null) {
                             Assert.Fail("Invalid service name " + serviceName);
                         }
+
                         servicesCache[serviceName.ToLower()] = testService;
                         return testService;
                     }
                 }
+
                 Assert.Fail("No such service: " + serviceName);
                 return null;
             }
+
             return servicesCache[serviceName.ToLower()];
         }
 
@@ -263,6 +248,7 @@ namespace NakedObjects.Xat {
                 if (menu == null) {
                     Assert.Fail("No such main menu " + menuName);
                 }
+
                 return TestObjectFactoryClass.CreateTestMenuMain(menu);
             }
 
@@ -271,6 +257,7 @@ namespace NakedObjects.Xat {
             if (service == null) {
                 Assert.Fail("No such main menu, or Service, " + menuName);
             }
+
             return service.GetMenu();
         }
 
@@ -283,9 +270,7 @@ namespace NakedObjects.Xat {
             Assert.AreEqual(expected, actual);
         }
 
-        protected virtual ITestObject GetBoundedInstance<T>(string title) {
-            return GetBoundedInstance(typeof (T), title);
-        }
+        protected virtual ITestObject GetBoundedInstance<T>(string title) => GetBoundedInstance(typeof(T), title);
 
         protected virtual ITestObject GetBoundedInstance(Type type, string title) {
             var spec = (IObjectSpec) NakedObjectsFramework.MetamodelManager.GetSpecification(type);
@@ -301,6 +286,7 @@ namespace NakedObjects.Xat {
             if (spec.GetFacet<IBoundedFacet>() == null) {
                 Assert.Fail(spec.SingularName + " is not a Bounded type");
             }
+
             IEnumerable allInstances = NakedObjectsFramework.Persistor.Instances(spec);
             var inst = allInstances.Cast<object>().Single(o => NakedObjectsFramework.NakedObjectManager.CreateAdapter(o, null, null).TitleString() == title);
             return TestObjectFactoryClass.CreateTestObject(NakedObjectsFramework.NakedObjectManager.CreateAdapter(inst, null, null));
@@ -312,14 +298,14 @@ namespace NakedObjects.Xat {
 
         protected virtual void SetUser(string username, params string[] roles) {
             testPrincipal = CreatePrincipal(username, roles);
-            var ts =  NakedObjectsFramework == null ? null : NakedObjectsFramework.Session as TestSession;
+            var ts = NakedObjectsFramework == null ? null : NakedObjectsFramework.Session as TestSession;
             if (ts != null) {
                 ts.ReplacePrincipal(testPrincipal);
             }
         }
 
         protected virtual void SetUser(string username) {
-            SetUser(username, new string[] {});
+            SetUser(username, new string[] { });
         }
 
         protected static void InitializeNakedObjectsFramework(AcceptanceTestCase tc) {
@@ -351,16 +337,14 @@ namespace NakedObjects.Xat {
             services.AddSingleton<IEntityObjectStoreConfiguration>(Persistor);
 
             //Externals
-            services.AddScoped<IPrincipal>(p => TestPrincipal);
+            services.AddScoped(p => TestPrincipal);
             services.AddScoped<ISession, TestSession>();
         }
 
-        protected virtual IDictionary<string, string> Configuration() {
-            return new Dictionary<string, string> {
+        protected virtual IDictionary<string, string> Configuration() =>
+            new Dictionary<string, string> {
                 {"NakedObjects:HashMapCapacity", "10"}
             };
-        }
-
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml.Linq;
 using Common.Logging;
@@ -14,13 +13,13 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     public class XmlSchema {
+        public const string DefaultPrefix = "app";
         private static readonly ILog Log = LogManager.GetLogger(typeof(XmlSchema));
 
-        public const string DefaultPrefix = "app";
         private string uri;
         // The base part of the namespace prefix to use if none explicitly supplied in the constructor.
 
-        public XmlSchema() : this(NofMetaModel.DefaultUriBase, DefaultPrefix) {}
+        public XmlSchema() : this(NofMetaModel.DefaultUriBase, DefaultPrefix) { }
         // uriBase the prefix for the application namespace's URIs
         // prefix the prefix for the application namespace's prefix
 
@@ -29,27 +28,35 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             if (uriBase == XNamespace.Xmlns.NamespaceName) {
                 throw new ArgumentException(Log.LogAndReturn("Namespace URI reserved for w3.org XMLNS namespace"));
             }
+
             if (prefix == XsMetaModel.W3OrgXmlnsPrefix) {
                 throw new ArgumentException(Log.LogAndReturn("Namespace prefix reserved for w3.org XMLNS namespace."));
             }
+
             if (uriBase == XsMetaModel.Xs.NamespaceName) {
                 throw new ArgumentException(Log.LogAndReturn("Namespace URI reserved for w3.org XML schema namespace."));
             }
+
             if (prefix == XsMetaModel.W3OrgXsPrefix) {
                 throw new ArgumentException(Log.LogAndReturn("Namespace prefix reserved for w3.org XML schema namespace."));
             }
+
             if (uriBase == XsMetaModel.Xsi.NamespaceName) {
                 throw new ArgumentException(Log.LogAndReturn("Namespace URI reserved for w3.org XML schema-instance namespace."));
             }
+
             if (prefix == XsMetaModel.W3OrgXsiPrefix) {
                 throw new ArgumentException(Log.LogAndReturn("Namespace prefix reserved for w3.org XML schema-instance namespace."));
             }
+
             if (uriBase == NofMetaModel.Nof.NamespaceName) {
                 throw new ArgumentException(Log.LogAndReturn("Namespace URI reserved for NOF metamodel namespace."));
             }
+
             if (prefix == NofMetaModel.NofMetamodelNsPrefix) {
                 throw new ArgumentException(Log.LogAndReturn("Namespace prefix reserved for NOF metamodel namespace."));
             }
+
             UriBase = uriBase;
             Prefix = prefix;
         }
@@ -62,12 +69,15 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // If not specified in the constructor, then {@link #DEFAULT_URI_PREFIX} is used.
 
         public string UriBase { get; }
+
         public string Prefix { get; }
+
         // Returns the namespace URI for the class.
         public void SetUri(string fullyQualifiedClassName) {
             if (uri != null) {
                 throw new InvalidOperationException(Log.LogAndReturn("URI has already been specified."));
             }
+
             uri = UriBase + Helper.PackageNameFor(fullyQualifiedClassName) + "/" + Helper.ClassNameFor(fullyQualifiedClassName);
         }
 
@@ -78,6 +88,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             if (uri == null) {
                 throw new InvalidOperationException(Log.LogAndReturn("URI has not been specified."));
             }
+
             return uri;
         }
 
@@ -107,7 +118,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         //  fully qualified class name of the supplied object
 
         public void SetTargetNamespace(XDocument xsdDoc, string fullyQualifiedClassName) {
-            XElement xsSchemaElement = xsdDoc.Root;
+            var xsSchemaElement = xsdDoc.Root;
             if (xsSchemaElement == null) {
                 throw new ArgumentException(Log.LogAndReturn("XSD XDocument must have <xs:schema> element attached"));
             }
@@ -123,7 +134,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public XElement CreateXsElementForNofClass(XDocument xsdDoc, XElement element, bool addCardinality) {
             // gather details from XML element
-            string localName = element.Name.LocalName;
+            var localName = element.Name.LocalName;
 
             //	<xs:element name="AO11ConfirmAnimalRegistration">
             //		<xs:complexType>
@@ -141,15 +152,15 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
             // xs:element/@name="class name"
             // add to XML schema as a global attribute
-            XElement xsElementForNofClassElement = XsMetaModel.CreateXsElementElement(xsdDoc, localName, addCardinality);
+            var xsElementForNofClassElement = XsMetaModel.CreateXsElementElement(xsdDoc, localName, addCardinality);
 
             // xs:element/xs:complexType
             // xs:element/xs:complexType/xs:sequence
-            XElement xsComplexTypeElement = XsMetaModel.ComplexTypeFor(xsElementForNofClassElement);
-            XElement xsSequenceElement = XsMetaModel.SequenceFor(xsComplexTypeElement);
+            var xsComplexTypeElement = XsMetaModel.ComplexTypeFor(xsElementForNofClassElement);
+            var xsSequenceElement = XsMetaModel.SequenceFor(xsComplexTypeElement);
 
             // xs:element/xs:complexType/xs:sequence/xs:element ref="nof:title"
-            XElement xsTitleElement = XsMetaModel.CreateXsElement(Helper.DocFor(xsSequenceElement), "element");
+            var xsTitleElement = XsMetaModel.CreateXsElement(Helper.DocFor(xsSequenceElement), "element");
             xsTitleElement.SetAttributeValue("ref", NofMetaModel.NofMetamodelNsPrefix + ":" + "title");
             xsSequenceElement.Add(xsTitleElement);
             XsMetaModel.SetXsCardinality(xsTitleElement, 0, 1);
@@ -178,8 +189,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         public XElement CreateXsElementForNofValue(XElement parentXsElementElement, XElement xmlValueElement) {
             // gather details from XML element
 
-            XAttribute datatype = xmlValueElement.Attribute(NofMetaModel.Nof + "datatype");
-            string fieldName = xmlValueElement.Name.LocalName;
+            var datatype = xmlValueElement.Attribute(NofMetaModel.Nof + "datatype");
+            var fieldName = xmlValueElement.Name.LocalName;
 
             // <xs:element name="%owning object%">
             //		<xs:complexType>
@@ -209,15 +220,15 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             //	</xs:element>
 
             // xs:element/xs:complexType/xs:sequence
-            XElement parentXsComplexTypeElement = XsMetaModel.ComplexTypeFor(parentXsElementElement);
-            XElement parentXsSequenceElement = XsMetaModel.SequenceFor(parentXsComplexTypeElement);
+            var parentXsComplexTypeElement = XsMetaModel.ComplexTypeFor(parentXsElementElement);
+            var parentXsSequenceElement = XsMetaModel.SequenceFor(parentXsComplexTypeElement);
 
             // xs:element/xs:complexType/xs:sequence/xs:element name="%%field object%"
-            XElement xsFieldElementElement = XsMetaModel.CreateXsElementElement(Helper.DocFor(parentXsSequenceElement), fieldName);
+            var xsFieldElementElement = XsMetaModel.CreateXsElementElement(Helper.DocFor(parentXsSequenceElement), fieldName);
             parentXsSequenceElement.Add(xsFieldElementElement);
 
             // xs:element/xs:complexType/xs:sequence/xs:element/xs:complexType
-            XElement xsFieldComplexTypeElement = XsMetaModel.ComplexTypeFor(xsFieldElementElement);
+            var xsFieldComplexTypeElement = XsMetaModel.ComplexTypeFor(xsFieldElementElement);
 
             // NEW CODE TO SUPPORT EXTENSIONS;
             // uses a complexType/sequence
@@ -273,7 +284,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public XElement CreateXsElementForNofReference(XElement parentXsElementElement, XElement xmlReferenceElement, string referencedClassName) {
             // gather details from XML element
-            string fieldName = xmlReferenceElement.Name.LocalName;
+            var fieldName = xmlReferenceElement.Name.LocalName;
 
             // <xs:element name="%owning object%">
             //		<xs:complexType>
@@ -305,19 +316,19 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             //	</xs:element>
 
             // xs:element/xs:complexType/xs:sequence
-            XElement parentXsComplexTypeElement = XsMetaModel.ComplexTypeFor(parentXsElementElement);
-            XElement parentXsSequenceElement = XsMetaModel.SequenceFor(parentXsComplexTypeElement);
+            var parentXsComplexTypeElement = XsMetaModel.ComplexTypeFor(parentXsElementElement);
+            var parentXsSequenceElement = XsMetaModel.SequenceFor(parentXsComplexTypeElement);
 
             // xs:element/xs:complexType/xs:sequence/xs:element name="%%field object%"
-            XElement xsFieldElementElement = XsMetaModel.CreateXsElementElement(Helper.DocFor(parentXsSequenceElement), fieldName);
+            var xsFieldElementElement = XsMetaModel.CreateXsElementElement(Helper.DocFor(parentXsSequenceElement), fieldName);
             parentXsSequenceElement.Add(xsFieldElementElement);
 
             // xs:element/xs:complexType/xs:sequence/xs:element/xs:complexType/xs:sequence
-            XElement xsFieldComplexTypeElement = XsMetaModel.ComplexTypeFor(xsFieldElementElement);
-            XElement xsFieldSequenceElement = XsMetaModel.SequenceFor(xsFieldComplexTypeElement);
+            var xsFieldComplexTypeElement = XsMetaModel.ComplexTypeFor(xsFieldElementElement);
+            var xsFieldSequenceElement = XsMetaModel.SequenceFor(xsFieldComplexTypeElement);
 
             // xs:element/xs:complexType/xs:sequence/xs:element/xs:complexType/xs:sequence/xs:element ref="nof:title"
-            XElement xsFieldTitleElement = XsMetaModel.CreateXsElement(Helper.DocFor(xsFieldSequenceElement), "element");
+            var xsFieldTitleElement = XsMetaModel.CreateXsElement(Helper.DocFor(xsFieldSequenceElement), "element");
             xsFieldTitleElement.SetAttributeValue("ref", NofMetaModel.NofMetamodelNsPrefix + ":" + "title");
             xsFieldSequenceElement.Add(xsFieldTitleElement);
             XsMetaModel.SetXsCardinality(xsFieldTitleElement, 0, 1);
@@ -326,7 +337,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             //addXsElementForAppExtensions(xsFieldSequenceElement, extensions);
 
             // xs:element/xs:complexType/xs:sequence/xs:element/xs:complexType/xs:sequence/xs:sequence   // placeholder
-            XElement xsReferencedElementSequenceElement = XsMetaModel.SequenceFor(xsFieldSequenceElement);
+            var xsReferencedElementSequenceElement = XsMetaModel.SequenceFor(xsFieldSequenceElement);
             XsMetaModel.SetXsCardinality(xsReferencedElementSequenceElement, 0, 1);
 
             XsMetaModel.AddXsNofFeatureAttributeElements(xsFieldComplexTypeElement, "reference");
@@ -342,7 +353,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // */ 
         public XElement CreateXsElementForNofCollection(XElement parentXsElementElement, XElement xmlCollectionElement, string referencedClassName) {
             // gather details from XML element
-            string fieldName = xmlCollectionElement.Name.LocalName;
+            var fieldName = xmlCollectionElement.Name.LocalName;
 
             // <xs:element name="%owning object%">
             //		<xs:complexType>
@@ -364,20 +375,20 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             //	</xs:element>
 
             // xs:element/xs:complexType/xs:sequence
-            XElement parentXsComplexTypeElement = XsMetaModel.ComplexTypeFor(parentXsElementElement);
-            XElement parentXsSequenceElement = XsMetaModel.SequenceFor(parentXsComplexTypeElement);
+            var parentXsComplexTypeElement = XsMetaModel.ComplexTypeFor(parentXsElementElement);
+            var parentXsSequenceElement = XsMetaModel.SequenceFor(parentXsComplexTypeElement);
 
             // xs:element/xs:complexType/xs:sequence/xs:element name="%field object%%"
-            XElement xsFieldElementElement = XsMetaModel.CreateXsElementElement(Helper.DocFor(parentXsSequenceElement), fieldName);
+            var xsFieldElementElement = XsMetaModel.CreateXsElementElement(Helper.DocFor(parentXsSequenceElement), fieldName);
             parentXsSequenceElement.Add(xsFieldElementElement);
 
             // xs:element/xs:complexType/xs:sequence/xs:element/xs:complexType
-            XElement xsFieldComplexTypeElement = XsMetaModel.ComplexTypeFor(xsFieldElementElement);
+            var xsFieldComplexTypeElement = XsMetaModel.ComplexTypeFor(xsFieldElementElement);
             // xs:element/xs:complexType/xs:sequence/xs:element/xs:complexType/xs:sequence
-            XElement xsFieldSequenceElement = XsMetaModel.SequenceFor(xsFieldComplexTypeElement);
+            var xsFieldSequenceElement = XsMetaModel.SequenceFor(xsFieldComplexTypeElement);
 
             // xs:element/xs:complexType/xs:sequence/xs:element/xs:complexType/xs:sequence/xs:element ref="nof:oids"
-            XElement xsFieldOidsElement = XsMetaModel.CreateXsElement(Helper.DocFor(xsFieldSequenceElement), "element");
+            var xsFieldOidsElement = XsMetaModel.CreateXsElement(Helper.DocFor(xsFieldSequenceElement), "element");
             xsFieldOidsElement.SetAttributeValue("ref", NofMetaModel.NofMetamodelNsPrefix + ":" + "oids");
             xsFieldSequenceElement.Add(xsFieldOidsElement);
             XsMetaModel.SetXsCardinality(xsFieldOidsElement, 0, 1);
@@ -414,9 +425,9 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         //  schemaLocationFileName
 
         public void AssignSchema(XDocument xmlDoc, string fullyQualifiedClassName, string schemaLocationFileName) {
-            string xsiSchemaLocationAttrValue = GetUri() + " " + schemaLocationFileName;
+            var xsiSchemaLocationAttrValue = GetUri() + " " + schemaLocationFileName;
 
-            XElement rootElement = xmlDoc.Root;
+            var rootElement = xmlDoc.Root;
 
             // xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             AddNamespace(rootElement, XsMetaModel.W3OrgXsiPrefix, XsMetaModel.Xsi.NamespaceName);
@@ -434,7 +445,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             if (xsFieldElement == null) {
                 return;
             }
-            XElement sequenceElement = XsMetaModel.SequenceForComplexTypeFor(xsElement);
+
+            var sequenceElement = XsMetaModel.SequenceForComplexTypeFor(xsElement);
             sequenceElement.Add(xsFieldElement);
         }
 
@@ -445,9 +457,9 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         //  normally happen) overwrites with supplied URI.
 
         private static void AddNamespace(XElement element, string prefix, string nsUri) {
-            XElement rootElement = Helper.RootElementFor(element);
+            var rootElement = Helper.RootElementFor(element);
             // see if we have the NS prefix there already
-            XAttribute existingNsUri = rootElement.Attribute(XNamespace.Xmlns + prefix);
+            var existingNsUri = rootElement.Attribute(XNamespace.Xmlns + prefix);
             // if there is none (or it is different from what we want), then set the attribute
             if (existingNsUri == null || !existingNsUri.Value.Equals(nsUri)) {
                 rootElement.SetAttributeValue(XNamespace.Xmlns + prefix, nsUri);
@@ -455,20 +467,20 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         }
 
         public XElement AddXsElementIfNotPresent(XElement parentXsElement, XElement childXsElement) {
-            XElement parentChoiceOrSequenceElement = XsMetaModel.ChoiceOrSequenceFor(XsMetaModel.ComplexTypeFor(parentXsElement));
+            var parentChoiceOrSequenceElement = XsMetaModel.ChoiceOrSequenceFor(XsMetaModel.ComplexTypeFor(parentXsElement));
 
             if (parentChoiceOrSequenceElement == null) {
                 throw new ArgumentException(Log.LogAndReturn("Unable to locate complexType/sequence or complexType/choice under supplied parent XSD element"));
             }
 
-            XAttribute childXsElementAttr = childXsElement.Attribute("name");
-            string localName = childXsElementAttr.Value;
+            var childXsElementAttr = childXsElement.Attribute("name");
+            var localName = childXsElementAttr.Value;
 
             XNamespace ns = "*";
 
-            IEnumerable<XElement> existingElements = parentChoiceOrSequenceElement.Descendants(ns + childXsElement.Name.LocalName);
-            foreach (XElement xsElement in existingElements) {
-                XAttribute attr = xsElement.Attribute("name");
+            var existingElements = parentChoiceOrSequenceElement.Descendants(ns + childXsElement.Name.LocalName);
+            foreach (var xsElement in existingElements) {
+                var attr = xsElement.Attribute("name");
                 if (attr != null && attr.Value.Equals(localName)) {
                     return xsElement;
                 }

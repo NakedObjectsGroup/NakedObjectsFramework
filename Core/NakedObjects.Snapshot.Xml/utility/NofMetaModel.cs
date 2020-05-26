@@ -53,7 +53,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // string to the provided element.
 
         public static void AppendNofTitle(XElement element, string titleStr) {
-            XElement titleElement = AppendElement(element, "title");
+            var titleElement = AppendElement(element, "title");
             titleElement.Add(new XText(titleStr));
         }
 
@@ -61,7 +61,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // supplied element
 
         public static string GetAttribute(XElement element, string attributeName) {
-            XAttribute attribute = element.Attribute(Nof + attributeName);
+            var attribute = element.Attribute(Nof + attributeName);
             return attribute == null ? string.Empty : attribute.ToString();
         }
 
@@ -119,13 +119,13 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                                             string fullyQualifiedClassName,
                                             INakedObjectAdapter collection,
                                             INakedObjectManager manager
-            ) {
+        ) {
             SetAttribute(element, "feature", NofMetamodelFeatureCollection);
             SetAttribute(element, "type", prefix + ":" + fullyQualifiedClassName);
             SetAttribute(element, "size", "" + collection.GetAsEnumerable(manager).Count());
         }
 
-        #region nof 
+        #region nof
 
         // Namespace prefix for NofMetamodelNsUri.
         // The NamespaceManager will not allow any namespace to use this prefix.
