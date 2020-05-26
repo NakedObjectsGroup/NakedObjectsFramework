@@ -969,7 +969,7 @@ namespace NakedObjects.Facade.Impl {
 
             public IObjectSpec Specification => prop == null ? parm.Spec : prop.ReturnSpec;
 
-            private Func<(string, IObjectSpec)[]> GetChoicesParameters => prop == null ? (Func<(string, IObjectSpec)[]>) parm.GetChoicesParameters : prop.GetChoicesParameters;
+            private Func<(string name, IObjectSpec spec)[]> GetChoicesParameters => prop == null ? (Func<(string, IObjectSpec)[]>) parm.GetChoicesParameters : prop.GetChoicesParameters;
 
             private Func<INakedObjectAdapter, IDictionary<string, INakedObjectAdapter>, INakedObjectAdapter[]> GetChoices => prop == null ? (Func<INakedObjectAdapter, IDictionary<string, INakedObjectAdapter>, INakedObjectAdapter[]>) parm.GetChoices : prop.GetChoices;
 
@@ -989,7 +989,7 @@ namespace NakedObjects.Facade.Impl {
                 var expectedParms = GetChoicesParameters();
                 var actualParms = arguments.Values;
 
-                var expectedParmNames = expectedParms.Select(t => t.Item1).ToArray();
+                var expectedParmNames = expectedParms.Select(t => t.name).ToArray();
                 var actualParmNames = actualParms.Keys.ToArray();
 
                 if (expectedParmNames.Length < actualParmNames.Length) {
@@ -1007,8 +1007,8 @@ namespace NakedObjects.Facade.Impl {
                             ? "" 
                             : null;
 
-                var matchedParms = expectedParms.ToDictionary(ep => ep.Item1, ep => new {
-                    expectedType = ep.Item2,
+                var matchedParms = expectedParms.ToDictionary(ep => ep.name, ep => new {
+                    expectedType = ep.spec,
                     value = GetValue(ep),
                     actualType = GetValue(ep) == null ? null : framework.MetamodelManager.GetSpecification(GetValue(ep).GetType())
                 });
@@ -1018,7 +1018,7 @@ namespace NakedObjects.Facade.Impl {
                 var mappedArguments = new Dictionary<string, INakedObjectAdapter>();
 
                 foreach (var ep in expectedParms) {
-                    var key = ep.Item1;
+                    var key = ep.name;
                     var mp = matchedParms[key];
                     var value = mp.value;
                     var expectedType = mp.expectedType;
@@ -1044,7 +1044,7 @@ namespace NakedObjects.Facade.Impl {
                     else if (actualType != null && !actualType.IsOfType(expectedType)) {
                         errors.Add(new ChoiceContextFacade(key, GetSpecificationWrapper(expectedType)) {
                             Reason = $"Argument is of wrong type is {actualType.FullName} expect {expectedType.FullName}",
-                            ProposedValue = actualParms[ep.Item1]
+                            ProposedValue = actualParms[ep.name]
                         });
                     }
                     else {

@@ -53,39 +53,31 @@ namespace NakedObjects.Facade.Impl.Utility {
             return "";
         }
 
-        private static Tuple<IActionSpec, string>[] GetOverloadedActionsAndUIds(IActionSpec[] actions) {
-            var overloadedActions = actions.Where(a => actions.Count(ac => ac.Id == a.Id) > 1).ToArray();
-
-            return overloadedActions.Any()
-                ? overloadedActions.Select(a => new Tuple<IActionSpec, string>(a, GetUniqueSuffix(a, actions))).ToArray()
-                : new Tuple<IActionSpec, string>[] { };
-        }
+        private static (IActionSpec action, string uid)[] GetOverloadedActionsAndUIds(IActionSpec[] actions) =>
+            actions.Where(a => actions.Count(ac => ac.Id == a.Id) > 1).
+                Select(a => (a, GetUniqueSuffix(a, actions))).
+                ToArray();
 
         public static IActionSpec GetOverloadedAction(string actionName, ITypeSpec spec) {
-            IActionSpec action = null;
             var actions = spec.GetActionLeafNodes();
             var overloadedActions = GetOverloadedActionsAndUIds(actions);
 
-            if (overloadedActions.Any()) {
-                var matchingAction = overloadedActions.SingleOrDefault(oa => oa.Item1.Id + oa.Item2 == actionName);
-                if (matchingAction != null) {
-                    action = matchingAction.Item1;
-                }
-            }
-
-            return action;
+            return overloadedActions.
+                Where(oa => $"{oa.action.Id}{oa.uid}" == actionName).
+                Select(oa => oa.action).
+                SingleOrDefault();
         }
 
         public static string GetOverloadedUId(IActionSpec action, ITypeSpec spec) {
             var actions = spec.GetActionLeafNodes();
             var overloadedActions = GetOverloadedActionsAndUIds(actions);
-            return overloadedActions.Where(oa => oa.Item1 == action).Select(oa => oa.Item2).SingleOrDefault();
+            return overloadedActions.Where(oa => oa.action == action).Select(oa => oa.uid).SingleOrDefault();
         }
 
-        public static Tuple<IActionSpec, string>[] GetActionsandUidFromSpec(ITypeSpec spec) {
-            var actions = spec.GetActionLeafNodes();
-            return actions.Select(action => new Tuple<IActionSpec, string>(action, GetOverloadedUId(action, spec))).ToArray();
-        }
+        public static (IActionSpec spec, string uid)[] GetActionsandUidFromSpec(ITypeSpec spec) =>
+            spec.GetActionLeafNodes().
+                Select(action => (action, GetOverloadedUId(action, spec))).
+                ToArray();
 
         public static void AssertNotNull(object o, string msg) {
             if (o == null) {

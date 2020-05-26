@@ -20,7 +20,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IActionDefaultsFacet Members
 
-        public abstract (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter);
+        public abstract (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter);
 
         #endregion
     }

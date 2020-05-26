@@ -126,7 +126,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 }
                 // blob and clobs are arrays hence additional checks
                 else if (returnType.IsCollection && (typeString == PredefinedJsonType.List.ToRoString() || typeString == PredefinedJsonType.Set.ToRoString())) {
-                    exts.Add(JsonPropertyNames.ElementType, SpecToTypeAndFormatString(elementType, oidStrategy, useDateOverDateTime).Item1);
+                    exts.Add(JsonPropertyNames.ElementType, SpecToTypeAndFormatString(elementType, oidStrategy, useDateOverDateTime).typeString);
                     exts.Add(JsonPropertyNames.PluralName, elementType.PluralName);
                 }
             }
@@ -227,12 +227,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return null;
         }
 
-        public static Tuple<PredefinedJsonType, PredefinedFormatType?> TypeToPredefinedTypes(Type toMapType, bool useDateOverDateTime = false) {
+        public static (PredefinedJsonType, PredefinedFormatType?)? TypeToPredefinedTypes(Type toMapType, bool useDateOverDateTime = false) {
             var pst = TypeToPredefinedJsonType(toMapType);
 
             if (pst.HasValue) {
                 var pft = TypeToPredefinedFormatType(toMapType, useDateOverDateTime);
-                return new Tuple<PredefinedJsonType, PredefinedFormatType?>(pst.Value, pft);
+                return (pst.Value, pft);
             }
 
             return null;
@@ -264,9 +264,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public static Tuple<PredefinedJsonType, PredefinedFormatType?> SpecToPredefinedTypes(ITypeFacade spec, bool useDateOverDateTime = false) {
+        public static (PredefinedJsonType pdt, PredefinedFormatType? pft)? SpecToPredefinedTypes(ITypeFacade spec, bool useDateOverDateTime = false) {
             if (spec.IsFileAttachment || spec.IsImage) {
-                return new Tuple<PredefinedJsonType, PredefinedFormatType?>(PredefinedJsonType.String, PredefinedFormatType.Blob);
+                return (PredefinedJsonType.String, PredefinedFormatType.Blob);
             }
 
             if (spec.IsParseable || spec.IsCollection || spec.IsVoid) {
@@ -279,8 +279,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public static string SpecToPredefinedTypeString(ITypeFacade spec, IOidStrategy oidStrategy, bool useDateOverDateTime = false) {
             if (!spec.IsVoid) {
-                var pdt = SpecToPredefinedTypes(spec);
-                return pdt != null ? pdt.Item1.ToRoString() : spec.DomainTypeName(oidStrategy);
+                var types = SpecToPredefinedTypes(spec);
+                return types != null ? types.Value.pdt.ToRoString() : spec.DomainTypeName(oidStrategy);
             }
 
             return null;
@@ -291,17 +291,18 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return pdts != null;
         }
 
-        public static Tuple<string, string> SpecToTypeAndFormatString(ITypeFacade spec, IOidStrategy oidStrategy, bool useDateOverDateTime) {
+        public static (string typeString, string formatString) SpecToTypeAndFormatString(ITypeFacade spec, IOidStrategy oidStrategy, bool useDateOverDateTime) {
             var types = SpecToPredefinedTypes(spec, useDateOverDateTime);
 
             if (types != null) {
-                var pdtString = types.Item1.ToRoString();
-                var pftString = types.Item2?.ToRoString();
+                var (pdt, pft) = types.Value;
+                var pdtString = pdt.ToRoString();
+                var pftString = pft?.ToRoString();
 
-                return new Tuple<string, string>(pdtString, pftString);
+                return (pdtString, pftString);
             }
 
-            return new Tuple<string, string>(spec.DomainTypeName(oidStrategy), null);
+            return (spec.DomainTypeName(oidStrategy), null);
         }
 
         public static string DomainTypeName(this ITypeFacade spec, IOidStrategy oidStrategy) => oidStrategy.GetLinkDomainTypeBySpecification(spec);
@@ -333,15 +334,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
             var ext = (attachment == null ? "" : Path.GetExtension(attachment.FileName)) ?? "";
 
-            switch (ext) {
-                case ".jpg":
-                case ".jpeg":
-                    return MediaTypeNames.Image.Jpeg;
-                case ".gif":
-                    return MediaTypeNames.Image.Gif;
-                default:
-                    return AttachmentContextFacade.DefaultMimeType;
-            }
+            return ext switch {
+                ".jpg" => MediaTypeNames.Image.Jpeg,
+                ".jpeg" => MediaTypeNames.Image.Jpeg,
+                ".gif" => MediaTypeNames.Image.Gif,
+                _ => AttachmentContextFacade.DefaultMimeType
+            };
         }
 
         public static string GuidAsKey(this Guid guid) => guid.ToString("N");

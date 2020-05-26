@@ -111,7 +111,7 @@ namespace NakedObjects.Facade.Impl {
 
         public IActionFacade[] GetActionLeafNodes() {
             var actionsAndUid = FacadeUtils.GetActionsandUidFromSpec(WrappedValue);
-            return actionsAndUid.Select(a => new ActionFacade(a.Item1, FrameworkFacade, framework, a.Item2 ?? "")).Cast<IActionFacade>().ToArray();
+            return actionsAndUid.Select(a => new ActionFacade(a.spec, FrameworkFacade, framework, a.uid ?? "")).Cast<IActionFacade>().ToArray();
         }
 
         public ITypeFacade GetElementType(IObjectFacade objectFacade) {

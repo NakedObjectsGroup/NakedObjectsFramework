@@ -108,7 +108,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         #endregion
 
-        public (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) IntrospectSpecification(Type actualType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public (ITypeSpecBuilder tupeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) IntrospectSpecification(Type actualType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Assert.AssertNotNull(actualType);
 
             var typeKey = ClassStrategy.GetKeyForType(actualType);
@@ -138,7 +138,7 @@ namespace NakedObjects.ParallelReflect.Component {
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var ph = metamodel.Where(i => string.IsNullOrEmpty(i.Value.FullName)).Select(i => i.Value.Type);
             var mm = ph.AsParallel().
-                SelectMany(type => IntrospectSpecification(type, metamodel).Item2).
+                SelectMany(type => IntrospectSpecification(type, metamodel).metamodel).
                 Distinct(new TypeSpecKeyComparer()).
                 ToDictionary(kvp => kvp.Key, kvp => kvp.Value).
                 ToImmutableDictionary();
@@ -229,10 +229,11 @@ namespace NakedObjects.ParallelReflect.Component {
                 return (matchingActionsForObject, matchingActionsForCollection, matchingFinderActions.OrderBy(a => a, new MemberOrderComparator<IActionSpecImmutable>()).ToList());
             }).Aggregate((new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>()),
                 (a, t) => {
+                    var (contrib, collContrib, finder) = a;
                     var (ca, cca, fa) = t;
-                    a.Item1.AddRange(ca);
-                    a.Item2.AddRange(cca);
-                    a.Item3.AddRange(fa);
+                    contrib.AddRange(ca);
+                    collContrib.AddRange(cca);
+                    finder.AddRange(fa);
                     return a;
                 });
 

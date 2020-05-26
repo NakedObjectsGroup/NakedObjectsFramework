@@ -31,13 +31,13 @@ namespace NakedObjects.Meta.Facet {
 
         [field: NonSerialized] private Func<object, object[], object> choicesDelegate;
 
-        public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, (string, IObjectSpecImmutable)[] parameterNamesAndTypes, Type choicesType, ISpecification holder, bool isMultiple = false)
+        public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, (string name, IObjectSpecImmutable type)[] parameterNamesAndTypes, Type choicesType, ISpecification holder, bool isMultiple = false)
             : base(holder) {
             this.choicesMethod = choicesMethod;
             this.choicesType = choicesType;
             IsMultiple = isMultiple;
             ParameterNamesAndTypes = parameterNamesAndTypes;
-            parameterNames = parameterNamesAndTypes.Select(pnt => pnt.Item1).ToArray();
+            parameterNames = parameterNamesAndTypes.Select(pnt => pnt.name).ToArray();
             choicesDelegate = DelegateUtils.CreateDelegate(choicesMethod);
         }
 

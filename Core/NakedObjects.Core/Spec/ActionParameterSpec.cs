@@ -202,15 +202,15 @@ namespace NakedObjects.Core.Spec {
             return autoCompleteFacet == null ? null : manager.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObjectAdapter), autoCompleteParm)).ToArray();
         }
 
-        public INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter) => GetDefaultValueAndType(nakedObjectAdapter).Item1;
+        public INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter) => GetDefaultValueAndType(nakedObjectAdapter).value;
 
-        public TypeOfDefaultValue GetDefaultType(INakedObjectAdapter nakedObjectAdapter) => GetDefaultValueAndType(nakedObjectAdapter).Item2;
+        public TypeOfDefaultValue GetDefaultType(INakedObjectAdapter nakedObjectAdapter) => GetDefaultValueAndType(nakedObjectAdapter).type;
 
         public string Id => Identifier.MemberParameterNames[Number];
 
         #endregion
 
-        private (INakedObjectAdapter, TypeOfDefaultValue) GetDefaultValueAndType(INakedObjectAdapter nakedObjectAdapter) {
+        private (INakedObjectAdapter value, TypeOfDefaultValue type) GetDefaultValueAndType(INakedObjectAdapter nakedObjectAdapter) {
             if (parentAction.IsContributedMethod && nakedObjectAdapter != null) {
                 var matchingParms = parentAction.Parameters.Where(p => nakedObjectAdapter.Spec.IsOfType(p.Spec)).ToArray();
 

@@ -58,7 +58,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         private void SetExtensions(IOidStrategy oidStrategy, ActionContextFacade actionContext) {
             var exts = new Dictionary<string, object> {
                 {
-                    JsonPropertyNames.ElementType, RestUtils.SpecToTypeAndFormatString(actionContext.ElementSpecification, oidStrategy, false).Item1
+                    JsonPropertyNames.ElementType, RestUtils.SpecToTypeAndFormatString(actionContext.ElementSpecification, oidStrategy, false).typeString
                 }
             };
 

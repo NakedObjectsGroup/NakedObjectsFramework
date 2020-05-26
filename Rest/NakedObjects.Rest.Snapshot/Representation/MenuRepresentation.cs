@@ -66,13 +66,13 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 VisibleParameters = actionFacade.Action.Parameters.Select(p => new ParameterContextFacade {Parameter = p, Action = actionFacade.Action}).ToArray()
             };
 
-        private Tuple<string, ActionContextFacade>[] GetMenuItem(IMenuItemFacade item, string parent = "") {
+        private (string name, ActionContextFacade action)[] GetMenuItem(IMenuItemFacade item, string parent = "") {
             string Divider() => string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider;
 
             return item switch {
-                IMenuActionFacade menuActionFacade => new[] {new Tuple<string, ActionContextFacade>(item.Name, ActionContext(menuActionFacade, parent))},
-                IMenuFacade menuFacade => menuFacade.MenuItems.SelectMany(i => GetMenuItem(i, $"{parent}{Divider()}{menuFacade.Name}")).ToArray(),
-                _ => new Tuple<string, ActionContextFacade>[] { }
+                IMenuActionFacade menuActionFacade => new[] {(item.Name, ActionContext(menuActionFacade, parent))},
+                IMenuFacade menuFacade => menuFacade.MenuItems.SelectMany(mi => GetMenuItem(mi, $"{parent}{Divider()}{menuFacade.Name}")).ToArray(),
+                _ => new (string, ActionContextFacade)[] { }
             };
         }
 
@@ -81,9 +81,9 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             actionContextFacade.Action.IsUsable(actionContextFacade.Target).IsAllowed;
 
         private void SetMembers(IMenuFacade menu, HttpRequest req, List<LinkRepresentation> tempLinks) {
-            var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(i)).Where(af => IsVisibleAndUsable(af.Item2));
+            var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(i)).Where(af => IsVisibleAndUsable(af.action));
 
-            var actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a.Item2, Flags)).ToArray();
+            var actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a.action, Flags)).ToArray();
 
             var actionComparer = new ActionComparer();
             // todo fix distinct

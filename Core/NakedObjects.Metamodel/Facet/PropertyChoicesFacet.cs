@@ -31,12 +31,12 @@ namespace NakedObjects.Meta.Facet {
 
         [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-        public PropertyChoicesFacet(MethodInfo optionsMethod, (string, IObjectSpecImmutable)[] parameterNamesAndTypes, ISpecification holder)
+        public PropertyChoicesFacet(MethodInfo optionsMethod, (string name, IObjectSpecImmutable type)[] parameterNamesAndTypes, ISpecification holder)
             : base(typeof(IPropertyChoicesFacet), holder) {
             method = optionsMethod;
 
             ParameterNamesAndTypes = parameterNamesAndTypes;
-            parameterNames = parameterNamesAndTypes.Select(pnt => pnt.Item1).ToArray();
+            parameterNames = parameterNamesAndTypes.Select(pnt => pnt.name).ToArray();
             methodDelegate = DelegateUtils.CreateDelegate(method);
         }
 

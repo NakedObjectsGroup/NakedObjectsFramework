@@ -118,9 +118,9 @@ namespace NakedObjects.Core.Spec {
 
         public override bool IsInline => ReturnSpec.ContainsFacet(typeof(IComplexTypeFacet));
 
-        public override INakedObjectAdapter GetDefault(INakedObjectAdapter fromObjectAdapter) => GetDefaultObject(fromObjectAdapter).Item1;
+        public override INakedObjectAdapter GetDefault(INakedObjectAdapter fromObjectAdapter) => GetDefaultObject(fromObjectAdapter).value;
 
-        public override TypeOfDefaultValue GetDefaultType(INakedObjectAdapter fromObjectAdapter) => GetDefaultObject(fromObjectAdapter).Item2;
+        public override TypeOfDefaultValue GetDefaultType(INakedObjectAdapter fromObjectAdapter) => GetDefaultObject(fromObjectAdapter).type;
 
         public override void ToDefault(INakedObjectAdapter inObjectAdapter) {
             var defaultValue = GetDefault(inObjectAdapter);
@@ -154,7 +154,7 @@ namespace NakedObjects.Core.Spec {
                 : Manager.CreateAdapter(obj, null, null);
         }
 
-        private (INakedObjectAdapter, TypeOfDefaultValue) GetDefaultObject(INakedObjectAdapter fromObjectAdapter) {
+        private (INakedObjectAdapter value, TypeOfDefaultValue type) GetDefaultObject(INakedObjectAdapter fromObjectAdapter) {
             var facet = this.GetOpFacet<IPropertyDefaultFacet>() ?? ReturnSpec.GetOpFacet<IDefaultedFacet>();
 
             var (domainObject, typeOfDefaultValue) = facet switch {
