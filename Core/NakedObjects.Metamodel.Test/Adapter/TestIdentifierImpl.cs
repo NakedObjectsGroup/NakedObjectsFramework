@@ -66,17 +66,31 @@ namespace NakedObjects.Meta.Test.Adapter {
         }
 
         [TestMethod]
-        public void TestToClassNameParamsStringWithCheck() {
+        public void TestToClassNameParamsStringWithActionCheck() {
             var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
             var s = identifier.ToIdentityStringWithCheckType(IdentifierDepth.ClassNameParams, CheckType.Action);
             Assert.AreEqual("testclass#testmethod(testparam1,testparam2):Action", s);
         }
 
         [TestMethod]
+        public void TestToClassNameParamsStringWithViewCheck() {
+            var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
+            var s = identifier.ToIdentityStringWithCheckType(IdentifierDepth.ClassNameParams, CheckType.ViewField);
+            Assert.AreEqual("testclass#testmethod(testparam1,testparam2):ViewField", s);
+        }
+
+        [TestMethod]
+        public void TestToClassNameParamsStringWithEditCheck() {
+            var identifier = new IdentifierImpl("testclass", "testmethod", new[] {"testparam1", "testparam2"});
+            var s = identifier.ToIdentityStringWithCheckType(IdentifierDepth.ClassNameParams, CheckType.EditField);
+            Assert.AreEqual("testclass#testmethod(testparam1,testparam2):EditField", s);
+        }
+
+        [TestMethod]
         public void TestFromIdString() {
             var mockMetaModel = new Mock<IMetamodel>();
 
-            var id = IdentifierImpl.FromIdentityString(mockMetaModel.Object, "testclass#testmethod(testparam1,testparam2)");
+            IIdentifier id = IdentifierImpl.FromIdentityString(mockMetaModel.Object, "testclass#testmethod(testparam1,testparam2)");
 
             Assert.AreEqual("testclass", id.ClassName);
             Assert.AreEqual("testmethod", id.MemberName);
