@@ -36,7 +36,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer1 {
             [MultiLine(NumberOfLines = 12, Width = 36)]
-// ReSharper disable UnusedMember.Local
+
             public string FirstName => null;
         }
 

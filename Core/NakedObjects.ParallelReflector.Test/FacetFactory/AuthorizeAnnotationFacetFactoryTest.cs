@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflect.FacetFactory;
 using NakedObjects.Security;
+// ReSharper disable UnusedMember.Global
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     [TestClass]
@@ -985,7 +986,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         #endregion
 
-        // ReSharper disable UnusedMember.Local
+        
         private class Customer {
             public int Property1 => 0;
 

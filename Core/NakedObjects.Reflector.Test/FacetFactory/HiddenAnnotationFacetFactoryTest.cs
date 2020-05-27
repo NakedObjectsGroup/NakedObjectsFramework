@@ -30,7 +30,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer {
             [Hidden(WhenTo.Always)]
-// ReSharper disable UnusedMember.Local
+
             public int NumberOfOrders => 0;
         }
 

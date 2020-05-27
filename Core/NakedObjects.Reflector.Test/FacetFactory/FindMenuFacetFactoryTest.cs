@@ -80,7 +80,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer {
             // ReSharper disable UnusedParameter.Local
-            // ReSharper disable UnusedMember.Local
+            
             public void Action1(Foo param1, [FindMenu] Foo param2) { }
 
             public void Action2([FindMenu] string param1) { }

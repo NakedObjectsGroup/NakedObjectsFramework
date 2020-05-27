@@ -60,7 +60,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer1 {
             [EnumDataType(typeof(Cities))]
-// ReSharper disable UnusedMember.Local
+
             public int City { get; set; }
         }
 

@@ -41,7 +41,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         private class Customer {
-            // ReSharper disable UnusedMember.Local
+            
             public string FirstName => null;
         }
 

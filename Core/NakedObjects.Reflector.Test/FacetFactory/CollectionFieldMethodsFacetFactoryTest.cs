@@ -18,7 +18,7 @@ using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
-    // ReSharper disable UnusedMember.Local
+    
     // ReSharper disable UnusedParameter.Local
     // ReSharper disable ClassNeverInstantiated.Local
     public class CollectionFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {

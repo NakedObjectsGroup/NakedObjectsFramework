@@ -60,7 +60,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         #endregion
 
-        // ReSharper disable UnusedMember.Local
+        
         // ReSharper disable InconsistentNaming
         // ReSharper disable AssignNullToNotNullAttribute
         private class Customer : IEnumerable {

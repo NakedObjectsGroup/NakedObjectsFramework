@@ -28,7 +28,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer {
             [QueryOnly]
-// ReSharper disable UnusedMember.Local
+
             public void SomeAction() { }
         }
 

@@ -35,7 +35,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [Mask("###")]
-// ReSharper disable UnusedMember.Local
+
             public string FirstName => null;
         }
 

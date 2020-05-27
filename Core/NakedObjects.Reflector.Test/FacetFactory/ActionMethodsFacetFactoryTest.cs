@@ -753,7 +753,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
-        // ReSharper disable UnusedMember.Local
+        
         // ReSharper disable UnusedParameter.Local
 
         private class Customer {

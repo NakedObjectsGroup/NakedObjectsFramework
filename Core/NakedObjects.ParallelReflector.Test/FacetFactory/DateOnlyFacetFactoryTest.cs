@@ -17,6 +17,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
 
+
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     [TestClass]
     public class DateOnlyFacetFactoryTest : AbstractFacetFactoryTest {

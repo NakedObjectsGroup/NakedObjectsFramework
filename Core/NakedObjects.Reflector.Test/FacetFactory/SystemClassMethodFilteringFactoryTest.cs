@@ -19,7 +19,7 @@ using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
-    // ReSharper disable UnusedMember.Local
+    
     public class SystemClassMethodFilteringFactoryTest : AbstractFacetFactoryTest {
         private SystemClassMethodFilteringFactory facetFactory;
 

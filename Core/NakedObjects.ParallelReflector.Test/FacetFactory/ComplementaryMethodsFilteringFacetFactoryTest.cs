@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.ParallelReflect.FacetFactory;
+// ReSharper disable UnusedMember.Global
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     [TestClass]

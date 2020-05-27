@@ -36,7 +36,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [RegEx(Validation = "^A.*", Message = "Property message", CaseSensitive = false)]
-// ReSharper disable UnusedMember.Local
+
             public string FirstName => null;
         }
 

@@ -29,7 +29,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [Eagerly(EagerlyAttribute.Do.Rendering)]
-// ReSharper disable UnusedMember.Local
+
             public int Prop { get; set; }
 
             [Eagerly(EagerlyAttribute.Do.Rendering)]

@@ -17,10 +17,12 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
+// ReSharper disable UnusedType.Local
+// ReSharper disable UnusedMember.Global
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     [TestClass]
-    // ReSharper disable UnusedMember.Local
+    
     // ReSharper disable UnusedParameter.Local
     // ReSharper disable ClassNeverInstantiated.Local
     public class CollectionFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {

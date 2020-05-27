@@ -42,7 +42,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer1 {
             [Named("some name")]
-// ReSharper disable UnusedMember.Local
+
             public int NumberOfOrders => 0;
         }
 

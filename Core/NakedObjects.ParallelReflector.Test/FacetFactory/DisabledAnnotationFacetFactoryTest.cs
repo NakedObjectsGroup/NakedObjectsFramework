@@ -17,6 +17,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
 
+
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     [TestClass]
     public class DisabledAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
@@ -30,7 +31,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer {
             [Disabled]
-// ReSharper disable UnusedMember.Local
             public int NumberOfOrders => 0;
         }
 

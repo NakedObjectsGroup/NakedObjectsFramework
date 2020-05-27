@@ -17,7 +17,7 @@ using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
-    // ReSharper disable UnusedMember.Local
+    
     public class TableViewAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private TableViewAnnotationFacetFactory facetFactory;
 

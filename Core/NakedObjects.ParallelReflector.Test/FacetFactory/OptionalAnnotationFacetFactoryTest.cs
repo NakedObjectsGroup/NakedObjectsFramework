@@ -29,7 +29,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private class Customer1 {
             [Optionally]
-// ReSharper disable UnusedMember.Local
+
             public string FirstName => null;
         }
 

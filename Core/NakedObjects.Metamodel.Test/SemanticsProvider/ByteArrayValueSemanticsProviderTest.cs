@@ -11,6 +11,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
@@ -129,8 +130,9 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             var testArray = new byte[] {1, 2, 101};
             var mockNo = new Mock<INakedObjectAdapter>();
             mockNo.Setup(no => no.Object).Returns(testArray);
+            IArrayValueFacet<byte> valueFacet = value;
 
-            Assert.AreEqual(testArray, value.ArrayValue(mockNo.Object));
+            Assert.AreEqual(testArray, valueFacet.ArrayValue(mockNo.Object));
         }
 
         #region Setup/Teardown

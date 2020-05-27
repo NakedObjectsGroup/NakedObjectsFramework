@@ -36,7 +36,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [PresentationHint("ahint")]
-// ReSharper disable UnusedMember.Local
+
             public string FirstName => null;
 
             [PresentationHint("ahint")]

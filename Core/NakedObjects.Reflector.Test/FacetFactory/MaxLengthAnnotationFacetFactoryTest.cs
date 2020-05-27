@@ -29,7 +29,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer1 {
             [MaxLength(30)]
-// ReSharper disable UnusedMember.Local
+
             public string FirstName => null;
         }
 
