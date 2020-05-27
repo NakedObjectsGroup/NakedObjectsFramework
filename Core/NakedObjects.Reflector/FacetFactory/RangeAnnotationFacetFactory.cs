@@ -51,15 +51,12 @@ namespace NakedObjects.Reflect.FacetFactory {
                 return null;
             }
 
-            var min = attribute.Minimum as IConvertible;
-            var max = attribute.Maximum as IConvertible;
-
-            if (min == null || max == null) {
-                Log.WarnFormat("Min Max values must be IConvertible for Range on {0}", holder);
-                return null;
+            if (attribute.Minimum is IConvertible min && attribute.Maximum is IConvertible max) {
+                return new RangeFacet(min, max, isDate, holder);
             }
 
-            return new RangeFacet(min, max, isDate, holder);
+            Log.WarnFormat("Min Max values must be IConvertible for Range on {0}", holder);
+            return null;
         }
     }
 }

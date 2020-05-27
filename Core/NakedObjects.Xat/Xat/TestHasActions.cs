@@ -111,8 +111,8 @@ namespace NakedObjects.Xat {
                 Assert.Fail("No Action named '{0}'{1}", actionName, condition);
             }
 
-            if (actions.Count() > 1) {
-                Assert.Fail("{0} Actions named '{1}' found{2}", actions.Count(), actionName, condition);
+            if (actions.Length > 1) {
+                Assert.Fail("{0} Actions named '{1}' found{2}", actions.Length, actionName, condition);
             }
         }
 

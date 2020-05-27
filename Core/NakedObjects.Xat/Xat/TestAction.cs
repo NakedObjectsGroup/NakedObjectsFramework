@@ -54,7 +54,7 @@ namespace NakedObjects.Xat {
         }
 
         public bool MatchParameters(Type[] typestoMatch) {
-            if (actionSpec.Parameters.Count() == typestoMatch.Length) {
+            if (actionSpec.Parameters.Length == typestoMatch.Length) {
                 var i = 0;
                 return actionSpec.Parameters.All(x => x.Spec.IsOfType(metamodelManager.GetSpecification(typestoMatch[i++])));
             }
@@ -238,7 +238,7 @@ namespace NakedObjects.Xat {
         private object[] ParsedParameters(params object[] parameters) {
             var parsedParameters = new List<object>();
 
-            Assert.IsTrue(parameters.Count() == actionSpec.Parameters.Count(), string.Format("Action '{0}' is unusable: wrong number of parameters, got {1}, expect {2}", Name, parameters.Count(), actionSpec.Parameters.Count()));
+            Assert.IsTrue(parameters.Length == actionSpec.Parameters.Length, string.Format("Action '{0}' is unusable: wrong number of parameters, got {1}, expect {2}", Name, parameters.Length, actionSpec.Parameters.Length));
 
             var i = 0;
             foreach (var parm in actionSpec.Parameters) {

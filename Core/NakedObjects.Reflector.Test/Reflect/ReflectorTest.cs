@@ -192,7 +192,7 @@ namespace NakedObjects.Reflect.Test {
 
             var reflector = container.GetService<IReflector>();
             reflector.Reflect();
-            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Count());
+            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Length);
 
             AbstractReflectorTest.AssertSpec(typeof(object), reflector.AllObjectSpecImmutables.First());
         }

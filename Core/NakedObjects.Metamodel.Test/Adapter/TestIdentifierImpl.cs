@@ -94,10 +94,10 @@ namespace NakedObjects.Meta.Test.Adapter {
 
             Assert.AreEqual("testclass", id.ClassName);
             Assert.AreEqual("testmethod", id.MemberName);
-            Assert.AreEqual(2, id.MemberParameterTypeNames.Count());
+            Assert.AreEqual(2, id.MemberParameterTypeNames.Length);
             Assert.AreEqual("testparam1", id.MemberParameterTypeNames.First());
             Assert.AreEqual("testparam2", id.MemberParameterTypeNames.Last());
-            Assert.AreEqual(2, id.MemberParameterNames.Count());
+            Assert.AreEqual(2, id.MemberParameterNames.Length);
             Assert.AreEqual("", id.MemberParameterNames.First());
             Assert.AreEqual("", id.MemberParameterNames.Last());
         }

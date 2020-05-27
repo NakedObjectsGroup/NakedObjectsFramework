@@ -56,20 +56,20 @@ namespace NakedObjects.SystemTest.Injection {
             var testObject = (Object4) NewTestObject<Object4>().GetDomainObject();
             var arr = testObject.GetService4s();
             Assert.IsNotNull(arr);
-            Assert.AreEqual(3, arr.Count());
+            Assert.AreEqual(3, arr.Length);
             Assert.IsTrue(arr[0].GetType() == typeof(Service4ImplA));
             Assert.IsTrue(arr[1].GetType() == typeof(Service4ImplB));
             Assert.IsTrue(arr[2].GetType() == typeof(Service4ImplC));
 
             arr = testObject.GetService4ImplBs();
             Assert.IsNotNull(arr);
-            Assert.AreEqual(2, arr.Count());
+            Assert.AreEqual(2, arr.Length);
             Assert.IsTrue(arr[0].GetType() == typeof(Service4ImplB));
             Assert.IsTrue(arr[1].GetType() == typeof(Service4ImplC));
 
             arr = testObject.GetService4ImplAs();
             Assert.IsNotNull(arr);
-            Assert.AreEqual(1, arr.Count());
+            Assert.AreEqual(1, arr.Length);
             Assert.IsTrue(arr[0].GetType() == typeof(Service4ImplA));
 
             var value = testObject.GetService4ImplC();

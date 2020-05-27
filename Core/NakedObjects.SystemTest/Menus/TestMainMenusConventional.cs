@@ -108,7 +108,7 @@ namespace NakedObjects.SystemTest.Menus.Service2 {
         [Test]
         public virtual void TestAllMainMenus() {
             var menus = AllMainMenus();
-            Assert.AreEqual(menus.Count(), menus.Count(i => i != null));
+            Assert.AreEqual(menus.Length, menus.Count(i => i != null));
         }
 
         [Test]

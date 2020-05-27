@@ -45,7 +45,7 @@ namespace NakedObjects.SystemTest.Enum {
             var foo = NewTestObject<Foo>();
             var act1 = foo.GetAction("Action1");
             var values = act1.Parameters[0].GetChoices();
-            Assert.AreEqual(4, values.Count());
+            Assert.AreEqual(4, values.Length);
             Assert.AreEqual("Female", values.ElementAt(0).NakedObject.TitleString());
             Assert.AreEqual("Male", values.ElementAt(1).NakedObject.TitleString());
             Assert.AreEqual("Not Specified", values.ElementAt(2).NakedObject.TitleString());
@@ -68,7 +68,7 @@ namespace NakedObjects.SystemTest.Enum {
 
             var sex1 = foo.GetPropertyByName("Sex1");
             var values = sex1.GetChoices();
-            Assert.AreEqual(4, values.Count());
+            Assert.AreEqual(4, values.Length);
             Assert.AreEqual("Female", values.ElementAt(0).NakedObject.TitleString());
             Assert.AreEqual("Male", values.ElementAt(1).NakedObject.TitleString());
             Assert.AreEqual("Not Specified", values.ElementAt(2).NakedObject.TitleString());
@@ -84,7 +84,7 @@ namespace NakedObjects.SystemTest.Enum {
 
             var sex1 = foo.GetPropertyByName("Hair Colour1");
             var values = sex1.GetChoices();
-            Assert.AreEqual(5, values.Count());
+            Assert.AreEqual(5, values.Length);
             Assert.AreEqual("Black", values.ElementAt(0).NakedObject.TitleString());
             Assert.AreEqual("White", values.ElementAt(4).NakedObject.TitleString());
 
@@ -98,7 +98,7 @@ namespace NakedObjects.SystemTest.Enum {
 
             var sex1 = foo.GetPropertyByName("Sex3").AssertValueIsEqual("Male");
             var values = sex1.GetChoices();
-            Assert.AreEqual(2, values.Count());
+            Assert.AreEqual(2, values.Length);
             Assert.AreEqual("Male", values.ElementAt(0).NakedObject.TitleString());
             Assert.AreEqual("Female", values.ElementAt(1).NakedObject.TitleString());
         }
@@ -109,7 +109,7 @@ namespace NakedObjects.SystemTest.Enum {
 
             var sex1 = foo.GetPropertyByName("Sex4").AssertValueIsEqual("Male");
             var values = sex1.GetChoices();
-            Assert.AreEqual(2, values.Count());
+            Assert.AreEqual(2, values.Length);
         }
 
         [Test]
@@ -127,7 +127,7 @@ namespace NakedObjects.SystemTest.Enum {
 
             var sex1 = foo.GetPropertyByName("Sex5");
             var values = sex1.GetChoices();
-            Assert.AreEqual(4, values.Count());
+            Assert.AreEqual(4, values.Length);
             Assert.AreEqual("Female", values.ElementAt(0).NakedObject.TitleString());
             Assert.AreEqual("Male", values.ElementAt(1).NakedObject.TitleString());
             Assert.AreEqual("Not Specified", values.ElementAt(2).NakedObject.TitleString());

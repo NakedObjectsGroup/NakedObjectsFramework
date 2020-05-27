@@ -266,7 +266,7 @@ namespace NakedObjects.Xat {
         }
 
         protected virtual void AssertMainMenuCountIs(int expected) {
-            var actual = NakedObjectsFramework.MetamodelManager.MainMenus().Count();
+            var actual = NakedObjectsFramework.MetamodelManager.MainMenus().Length;
             Assert.AreEqual(expected, actual);
         }
 

@@ -70,10 +70,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
                 "ActionWithDictionaryParameter"
             };
 
-            Assert.AreEqual(notFilteredNames.Count, notFilteredActions.Count());
+            Assert.AreEqual(notFilteredNames.Count, notFilteredActions.Length);
             notFilteredNames.ForEach(n => Assert.IsTrue(notFilteredActions.Select(a => a.Name).Contains(n)));
 
-            Assert.AreEqual(filteredNames.Count, filteredActions.Count());
+            Assert.AreEqual(filteredNames.Count, filteredActions.Length);
             filteredNames.ForEach(n => Assert.IsTrue(filteredActions.Select(a => a.Name).Contains(n)));
         }
 

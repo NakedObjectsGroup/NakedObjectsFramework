@@ -50,7 +50,7 @@ namespace NakedObjects.Meta.Facet {
                 _ when IsFloat(origVal) => Compare(origVal.ToDouble(null), Min.ToDouble(null), Max.ToDouble(null)),
                 _ when IsDecimal(origVal) => Compare(origVal.ToDecimal(null), Min.ToDecimal(null), Max.ToDecimal(null)),
                 _ when IsDateTime(origVal) => DateCompare(origVal.ToDateTime(null), Min.ToDouble(null), Max.ToDouble(null)),
-                _ => 0,
+                _ => 0
             };
         }
 

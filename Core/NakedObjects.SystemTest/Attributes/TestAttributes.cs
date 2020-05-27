@@ -176,7 +176,7 @@ namespace NakedObjects.SystemTest.Attributes {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var finderActions = ((IObjectSpec) adapter.Spec).GetFinderActions();
 
-            Assert.AreEqual(3, finderActions.Count());
+            Assert.AreEqual(3, finderActions.Length);
             Assert.AreEqual("Finder Action1", finderActions[0].Name);
             Assert.AreEqual("Finder Action2", finderActions[1].Name);
             Assert.AreEqual("Finder Action3", finderActions[2].Name);
@@ -210,7 +210,7 @@ namespace NakedObjects.SystemTest.Attributes {
             var actions = (adapter.Spec as IObjectSpec).GetCollectionContributedActions();
             var testActions = testObj.Actions;
 
-            Assert.AreEqual(3, actions.Count());
+            Assert.AreEqual(3, actions.Length);
             Assert.IsTrue(actions[0] is IActionSpec);
             Assert.AreEqual("Collection Contributed Action", actions[0].Name);
             Assert.AreEqual("Collection Contributed Action1", actions[1].Name);
@@ -223,7 +223,7 @@ namespace NakedObjects.SystemTest.Attributes {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var actions = (adapter.Spec as IObjectSpec).GetCollectionContributedActions();
 
-            Assert.AreEqual(0, actions.Count());
+            Assert.AreEqual(0, actions.Length);
         }
 
         [Test]
@@ -232,7 +232,7 @@ namespace NakedObjects.SystemTest.Attributes {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var actions = (adapter.Spec as IObjectSpec).GetCollectionContributedActions();
 
-            Assert.AreEqual(3, actions.Count());
+            Assert.AreEqual(3, actions.Length);
             Assert.IsTrue(actions[0] is IActionSpec);
             Assert.AreEqual("Collection Contributed Action", actions[0].Name);
             Assert.AreEqual("Collection Contributed Action1", actions[1].Name);
@@ -264,13 +264,13 @@ namespace NakedObjects.SystemTest.Attributes {
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
             var actions = adapter.Spec.GetActions();
 
-            Assert.AreEqual(1, actions.Count());
+            Assert.AreEqual(1, actions.Length);
             Assert.IsTrue(actions[0] is IActionSpec);
             Assert.AreEqual("Contributed Action", actions[0].Name);
 
             //Test that the actions show up on the TestObject as test actions
             var testActions = NewTestObject<Contributee>().Actions;
-            Assert.AreEqual(1, testActions.Count());
+            Assert.AreEqual(1, testActions.Length);
             Assert.AreEqual("Contributed Action", testActions[0].Name);
         }
 
@@ -498,8 +498,8 @@ namespace NakedObjects.SystemTest.Attributes {
             var obj = NewTestObject<NakedObjectsIgnore1>();
             //Note: numbers will change to 3 & 1 when NakedObjectsType
             //is re-introduced and commented back in
-            Assert.AreEqual(5, obj.Properties.Count());
-            Assert.AreEqual(3, obj.Actions.Count());
+            Assert.AreEqual(5, obj.Properties.Length);
+            Assert.AreEqual(3, obj.Actions.Length);
         }
 
         [Test]

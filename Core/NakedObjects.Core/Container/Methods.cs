@@ -60,7 +60,7 @@ namespace NakedObjects.Core.Container {
             }
         }
 
-        private static object[] ServicesMatchingType(object[] services, Type type) => services.Where(s => type.IsInstanceOfType(s)).ToArray();
+        private static object[] ServicesMatchingType(object[] services, Type type) => services.Where(type.IsInstanceOfType).ToArray();
 
         private static void InjectContainer(object target, object container, string[] name) {
             var properties = target.GetType().GetProperties().Where(p => name.Contains(p.Name) &&

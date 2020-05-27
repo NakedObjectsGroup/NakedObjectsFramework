@@ -21,7 +21,7 @@ namespace NakedObjects.SystemTest.Util {
         public void TestGetKeys() {
             var container = new TestContainer();
             var keys = container.GetKeys(typeof(TestKey));
-            Assert.AreEqual(1, keys.Count());
+            Assert.AreEqual(1, keys.Length);
             Assert.AreSame(typeof(TestKey).GetProperty("AName"), keys.Single());
         }
 
@@ -29,7 +29,7 @@ namespace NakedObjects.SystemTest.Util {
         public void TestGetMultiKeys() {
             var container = new TestContainer();
             var keys = container.GetKeys(typeof(TestMultiKey));
-            Assert.AreEqual(2, keys.Count());
+            Assert.AreEqual(2, keys.Length);
             Assert.AreSame(typeof(TestMultiKey).GetProperty("AName"), keys.First());
             Assert.AreSame(typeof(TestMultiKey).GetProperty("AName1"), keys.Last());
         }
@@ -38,7 +38,7 @@ namespace NakedObjects.SystemTest.Util {
         public void TestGetNoKeys() {
             var container = new TestContainer();
             var keys = container.GetKeys(typeof(TestNoKey));
-            Assert.AreEqual(0, keys.Count());
+            Assert.AreEqual(0, keys.Length);
         }
 
         [Test]

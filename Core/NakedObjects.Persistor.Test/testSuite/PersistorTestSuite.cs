@@ -263,9 +263,9 @@ namespace NakedObjects.Persistor.TestSuite {
         public void AddToCollectionOnPersistent() {
             var person1 = GetPerson(1);
             var person4 = GetPerson(4);
-            var countbefore = person1.Relatives.Count();
+            var countbefore = person1.Relatives.Count;
             AddToCollectionOnPersonOne(person4);
-            Assert.AreEqual(countbefore + 1, person1.Relatives.Count());
+            Assert.AreEqual(countbefore + 1, person1.Relatives.Count);
         }
 
         public void AddToCollectionOnPersistentCallsUpdatingUpdated() {
@@ -278,9 +278,9 @@ namespace NakedObjects.Persistor.TestSuite {
         public void RemoveFromCollectionOnPersistent() {
             var person1 = GetPerson(1);
             var person2 = GetPerson(2);
-            var countbefore = person1.Relatives.Count();
+            var countbefore = person1.Relatives.Count;
             RemoveFromCollectionOnPersonOne(person2);
-            Assert.AreEqual(countbefore - 1, person1.Relatives.Count());
+            Assert.AreEqual(countbefore - 1, person1.Relatives.Count);
         }
 
         public void RemoveFromCollectionOnPersistentCallsUpdatingUpdated() {
@@ -853,7 +853,7 @@ namespace NakedObjects.Persistor.TestSuite {
             var person1 = GetPerson(1);
             var key = Persistor.GetKeys(person1.GetType());
 
-            Assert.AreEqual(1, key.Count());
+            Assert.AreEqual(1, key.Length);
             Assert.AreEqual(person1.GetType().GetProperty("PersonId").Name, key[0].Name);
         }
 
@@ -897,7 +897,7 @@ namespace NakedObjects.Persistor.TestSuite {
 
         public void CountCollectionOnPersistent() {
             var person1 = GetPerson(1);
-            var count1 = person1.Relatives.Count();
+            var count1 = person1.Relatives.Count;
             var adapter = AdapterFor(person1);
             var count2 = Persistor.CountField(adapter, "Relatives");
             Assert.AreEqual(count1, count2);
@@ -907,13 +907,13 @@ namespace NakedObjects.Persistor.TestSuite {
             var person1 = GetPerson(1);
             var adapter = AdapterFor(person1);
             var count1 = Persistor.CountField(adapter, "Relatives");
-            var count2 = person1.Relatives.Count();
+            var count2 = person1.Relatives.Count;
             Assert.AreEqual(count1, count2);
         }
 
         public void CountEmptyCollectionOnTransient() {
             var person1 = CreateNewTransientPerson();
-            var count1 = person1.Relatives.Count();
+            var count1 = person1.Relatives.Count;
             var adapter = AdapterFor(person1);
             var count2 = Persistor.CountField(adapter, "Relatives");
             Assert.AreEqual(count1, count2);
@@ -923,7 +923,7 @@ namespace NakedObjects.Persistor.TestSuite {
             var person1 = CreateNewTransientPerson();
             var person4 = GetPerson(4);
             AddToCollectionOnPersonOne(person4);
-            var count1 = person1.Relatives.Count();
+            var count1 = person1.Relatives.Count;
             var adapter = AdapterFor(person1);
             var count2 = Persistor.CountField(adapter, "Relatives");
             Assert.AreEqual(count1, count2);

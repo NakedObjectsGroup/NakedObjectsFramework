@@ -123,12 +123,12 @@ namespace NakedObjects.SystemTest.Method {
             var obj1 = NewTestObject<Auto1>();
             var action = obj1.GetAction("Do Something");
             var cho0 = action.Parameters[0].GetCompletions("any");
-            Assert.AreEqual(1, cho0.Count());
+            Assert.AreEqual(1, cho0.Length);
             var cho1 = action.Parameters[1].GetCompletions("any");
-            Assert.AreEqual(3, cho1.Count());
+            Assert.AreEqual(3, cho1.Length);
 
             var cho2 = action.Parameters[2].GetCompletions("bar");
-            Assert.AreEqual(2, cho2.Count());
+            Assert.AreEqual(2, cho2.Length);
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace NakedObjects.SystemTest.Method {
             var obj1 = NewTestObject<Auto1>();
             var prop = obj1.GetPropertyByName("Prop3");
             var cho = prop.GetCompletions("foo");
-            Assert.AreEqual(3, cho.Count());
+            Assert.AreEqual(3, cho.Length);
             Assert.AreEqual("Foo1", cho[0].Title);
         }
 
@@ -149,7 +149,7 @@ namespace NakedObjects.SystemTest.Method {
             var obj1 = NewTestObject<Auto1>();
             var prop = obj1.GetPropertyByName("Prop2");
             var cho = prop.GetCompletions("any");
-            Assert.AreEqual(3, cho.Count());
+            Assert.AreEqual(3, cho.Length);
             Assert.AreEqual("Fee", cho[0].Title);
         }
 
@@ -214,7 +214,7 @@ namespace NakedObjects.SystemTest.Method {
             var obj1 = NewTestObject<Choices1>();
             var prop = obj1.GetPropertyByName("Prop1");
             var cho = prop.GetChoices();
-            Assert.AreEqual(3, cho.Count());
+            Assert.AreEqual(3, cho.Length);
             Assert.AreEqual("4", cho[0].Title);
         }
 
@@ -227,15 +227,15 @@ namespace NakedObjects.SystemTest.Method {
             var obj1 = NewTestObject<Choices1>();
             var action = obj1.GetAction("Do Something");
             var cho0 = action.Parameters[0].GetChoices();
-            Assert.AreEqual(3, cho0.Count());
+            Assert.AreEqual(3, cho0.Length);
             Assert.AreEqual("4", cho0[0].Title);
 
             var cho1 = action.Parameters[1].GetChoices();
-            Assert.AreEqual(3, cho1.Count());
+            Assert.AreEqual(3, cho1.Length);
             Assert.AreEqual("Fee", cho1[0].Title);
 
             var cho2 = action.Parameters[2].GetChoices();
-            Assert.AreEqual(3, cho2.Count());
+            Assert.AreEqual(3, cho2.Length);
             Assert.AreEqual("Bar1", cho2[0].Title);
         }
 
@@ -248,7 +248,7 @@ namespace NakedObjects.SystemTest.Method {
             var obj1 = NewTestObject<Choices1>();
             var prop = obj1.GetPropertyByName("Prop3");
             var cho = prop.GetChoices();
-            Assert.AreEqual(3, cho.Count());
+            Assert.AreEqual(3, cho.Length);
             Assert.AreEqual("Bar1", cho[0].Title);
         }
 
@@ -257,7 +257,7 @@ namespace NakedObjects.SystemTest.Method {
             var obj1 = NewTestObject<Choices1>();
             var prop = obj1.GetPropertyByName("Prop2");
             var cho = prop.GetChoices();
-            Assert.AreEqual(3, cho.Count());
+            Assert.AreEqual(3, cho.Length);
             Assert.AreEqual("Fee", cho[0].Title);
         }
 
@@ -1103,7 +1103,7 @@ namespace NakedObjects.SystemTest.Method {
         public virtual void ValidateActionWithMoreThanSixParams() {
             var obj = NewTestObject<Validate1>();
             var action = obj.GetAction("Do Something With Many Params");
-            Assert.AreEqual(7, action.Parameters.Count());
+            Assert.AreEqual(7, action.Parameters.Length);
 
             action.AssertIsInvalidWithParms("y", "x", "x", "x", "x", "x", "x");
             action.AssertIsValidWithParms("x", "x", "x", "x", "x", "x", "x");

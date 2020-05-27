@@ -91,7 +91,7 @@ namespace NakedObjects.Xat {
                 Assert.Fail("No Property named '" + name + "'");
             }
 
-            if (q.Count() > 1) {
+            if (q.Length > 1) {
                 Assert.Fail("More than one Property named '" + name + "'");
             }
 
@@ -100,7 +100,7 @@ namespace NakedObjects.Xat {
 
         public ITestProperty GetPropertyById(string id) {
             var q = Properties.Where(x => x.Id == id).ToArray();
-            if (q.Count() != 1) {
+            if (q.Length != 1) {
                 Assert.Fail("No Property with Id '" + id + "'");
             }
 

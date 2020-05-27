@@ -44,7 +44,7 @@ namespace NakedObjects.SystemTest.Util {
         // randomizing code from stack overflow !
         private static IList<T> Shuffle<T>(IList<T> list) {
             var shuffled = list.Select(i => i).ToList();
-            var n = shuffled.Count();
+            var n = shuffled.Count;
             while (n > 1) {
                 n--;
                 var k = ThreadSafeRandom.ThisThreadsRandom.Next(n + 1);
@@ -58,7 +58,7 @@ namespace NakedObjects.SystemTest.Util {
 
         private static IList<T> RandomSelection<T>(IList<T> list) {
             var randomSelection = list.Select(i => i).ToList();
-            var n = randomSelection.Count();
+            var n = randomSelection.Count;
             while (n > 1) {
                 n--;
                 var k = ThreadSafeRandom.ThisThreadsRandom.Next(n + 1);
@@ -128,7 +128,7 @@ namespace NakedObjects.SystemTest.Util {
 
         private static void CollateResults(string testName, Runs[] runs) {
             lock (Results) {
-                for (var i = 0; i < runs.Count(); i++) {
+                for (var i = 0; i < runs.Length; i++) {
                     var name = $"{testName}x{i}";
                     Results[name] = runs[i];
                 }
@@ -180,7 +180,7 @@ namespace NakedObjects.SystemTest.Util {
             });
         }
 
-        private Runs FindTypeFromLoadedAssembliesInParallel(Func<string, Type> funcUnderTest, IList<string>[] typeLists) {
+        private static Runs FindTypeFromLoadedAssembliesInParallel(Func<string, Type> funcUnderTest, IList<string>[] typeLists) {
             var indRuns = new BlockingCollection<long>();
 
             var tasks = typeLists.Select(list => CreateTask(funcUnderTest, list, indRuns)).ToArray();
@@ -194,7 +194,7 @@ namespace NakedObjects.SystemTest.Util {
             return new Runs {IndividualRuns = indRuns.ToArray(), TotalRun = sw.ElapsedMilliseconds};
         }
 
-        private Runs[] FindTypeFromLoadedAssembliesInParallelTenTimes(Func<string, Type> funcUnderTest, IList<string>[] typeLists) {
+        private static Runs[] FindTypeFromLoadedAssembliesInParallelTenTimes(Func<string, Type> funcUnderTest, IList<string>[] typeLists) {
             var runsList = new List<Runs>();
             for (var i = 0; i < 10; i++) {
                 runsList.Add(FindTypeFromLoadedAssembliesInParallel(funcUnderTest, typeLists));
