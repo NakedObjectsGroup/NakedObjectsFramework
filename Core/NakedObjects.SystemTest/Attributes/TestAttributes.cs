@@ -191,7 +191,7 @@ namespace NakedObjects.SystemTest.Attributes {
                 var prop1 = mask1.GetPropertyByName("Prop1");
                 prop1.SetValue("32.70");
                 var dom = (Mask2) mask1.GetDomainObject();
-                Equals("32.7", dom.Prop1.ToString());
+                Equals("32.7", dom.Prop1.ToString(CultureInfo.CurrentCulture));
                 Equals("32.70", prop1.Content.Title);
                 Equals("¤32.70", prop1.Title);
                 prop1.AssertTitleIsEqual("¤32.70");
@@ -433,9 +433,9 @@ namespace NakedObjects.SystemTest.Attributes {
                 var prop2 = mask1.GetPropertyByName("Prop2");
                 prop2.SetValue("09/23/2009 11:34:50");
                 var dom = (Mask1) mask1.GetDomainObject();
-                Equals("09/23/2009 11:34:50", dom.Prop1.ToString());
+                Equals("09/23/2009 11:34:50", dom.Prop1.ToString(CultureInfo.CurrentCulture));
                 Equals("09/23/2009 11:34:50", prop1.Content.Title);
-                Equals("09/23/2009 11:34:50", dom.Prop2.ToString());
+                Equals("09/23/2009 11:34:50", dom.Prop2.ToString(CultureInfo.CurrentCulture));
                 Equals("09/23/2009", prop2.Content.Title);
                 prop1.AssertTitleIsEqual("09/23/2009 11:34:50");
                 prop1.AssertValueIsEqual("09/23/2009 11:34:50");
@@ -1147,13 +1147,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
         public virtual string Prop6 { get; set; }
 
-        public string DisableProp6() {
-            if (Prop4 == "Disable 6") {
-                return "Disabled Message";
-            }
-
-            return null;
-        }
+        public string DisableProp6() => Prop4 == "Disable 6" ? "Disabled Message" : null;
     }
 
     #endregion
@@ -1264,13 +1258,7 @@ namespace NakedObjects.SystemTest.Attributes {
 
         public virtual string Prop6 { get; set; }
 
-        public string DisableProp6() {
-            if (Prop4 == "Disable 6") {
-                return "Disabled Message";
-            }
-
-            return null;
-        }
+        public string DisableProp6() => Prop4 == "Disable 6" ? "Disabled Message" : null;
     }
 
     [Immutable]

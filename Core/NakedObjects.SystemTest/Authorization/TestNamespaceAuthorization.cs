@@ -151,9 +151,9 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
     public class MyAppAuthorizer : INamespaceAuthorizer {
         #region INamespaceAuthorizer Members
 
-        public bool IsEditable(IPrincipal principal, object target, string memberName) => throw new Exception(string.Format("MyAppAuthorizer#IsEditable, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target, memberName));
+        public bool IsEditable(IPrincipal principal, object target, string memberName) => throw new Exception($"MyAppAuthorizer#IsEditable, user: {principal.Identity.Name}, target: {target}, memberName: {memberName}");
 
-        public bool IsVisible(IPrincipal principal, object target, string memberName) => throw new Exception(string.Format("MyAppAuthorizer#IsVisible, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target, memberName));
+        public bool IsVisible(IPrincipal principal, object target, string memberName) => throw new Exception($"MyAppAuthorizer#IsVisible, user: {principal.Identity.Name}, target: {target}, memberName: {memberName}");
 
         #endregion
 
@@ -169,9 +169,9 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
 
         #region INamespaceAuthorizer Members
 
-        public bool IsEditable(IPrincipal principal, object target, string memberName) => throw new Exception(string.Format("MyCluster1Authorizer#IsEditable, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target, memberName));
+        public bool IsEditable(IPrincipal principal, object target, string memberName) => throw new Exception($"MyCluster1Authorizer#IsEditable, user: {principal.Identity.Name}, target: {target}, memberName: {memberName}");
 
-        public bool IsVisible(IPrincipal principal, object target, string memberName) => throw new Exception(string.Format("MyCluster1Authorizer#IsVisible, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target, memberName));
+        public bool IsVisible(IPrincipal principal, object target, string memberName) => throw new Exception($"MyCluster1Authorizer#IsVisible, user: {principal.Identity.Name}, target: {target}, memberName: {memberName}");
 
         #endregion
 
@@ -189,9 +189,9 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
 
         #region INamespaceAuthorizer Members
 
-        public bool IsEditable(IPrincipal principal, object target, string memberName) => throw new Exception(string.Format("MyBar1Authorizer#IsEditable, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target, memberName));
+        public bool IsEditable(IPrincipal principal, object target, string memberName) => throw new Exception($"MyBar1Authorizer#IsEditable, user: {principal.Identity.Name}, target: {target}, memberName: {memberName}");
 
-        public bool IsVisible(IPrincipal principal, object target, string memberName) => throw new Exception(string.Format("MyBar1Authorizer#IsVisible, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target, memberName));
+        public bool IsVisible(IPrincipal principal, object target, string memberName) => throw new Exception($"MyBar1Authorizer#IsVisible, user: {principal.Identity.Name}, target: {target}, memberName: {memberName}");
 
         #endregion
 

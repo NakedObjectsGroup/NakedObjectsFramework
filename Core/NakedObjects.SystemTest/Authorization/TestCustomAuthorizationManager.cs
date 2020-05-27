@@ -194,7 +194,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         public bool IsVisible(IPrincipal principal, Foo target, string memberName) {
             Assert.IsNotNull(Container);
             Assert.IsNotNull(Service);
-            throw new Exception(string.Format("FooAuthorizer#IsVisible, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target, memberName));
+            throw new Exception($"FooAuthorizer#IsVisible, user: {principal.Identity?.Name}, target: {target}, memberName: {memberName}");
         }
 
         #endregion
@@ -218,7 +218,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
         public bool IsEditable(IPrincipal principal, Qux target, string memberName) {
             Assert.IsNotNull(Container);
             Assert.IsNotNull(Service);
-            throw new Exception(string.Format("QuxAuthorizer#IsEditable, user: {0}, target: {1}, memberName: {2}", principal.Identity.Name, target, memberName));
+            throw new Exception($"QuxAuthorizer#IsEditable, user: {principal.Identity.Name}, target: {target}, memberName: {memberName}");
         }
 
         public bool IsVisible(IPrincipal principal, Qux target, string memberName) {

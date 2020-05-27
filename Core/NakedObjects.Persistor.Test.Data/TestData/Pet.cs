@@ -21,12 +21,6 @@ namespace TestData {
 
         public virtual Person Owner { get; set; }
 
-        public virtual string ValidateOwner(Person owner) {
-            if (owner.Name == "Cruella") {
-                return "Bad owner";
-            }
-
-            return null;
-        }
+        public virtual string ValidateOwner(Person owner) => owner.Name == "Cruella" ? "Bad owner" : null;
     }
 }

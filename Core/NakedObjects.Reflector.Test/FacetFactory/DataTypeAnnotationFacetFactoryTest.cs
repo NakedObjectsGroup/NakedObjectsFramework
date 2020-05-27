@@ -7,6 +7,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -101,10 +102,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public DateTime NoAnnotation => DateTime.Now;
 
             [DataType(DataType.PostalCode)]
-            public string DataTypeAnnotation => DateTime.Now.ToString();
+            public string DataTypeAnnotation => DateTime.Now.ToString(CultureInfo.CurrentCulture);
 
             [DataType("CustomDataType")]
-            public string CustomDataTypeAnnotation => DateTime.Now.ToString();
+            public string CustomDataTypeAnnotation => DateTime.Now.ToString(CultureInfo.CurrentCulture);
 
             public void NoAnnotationMethod(string aDate1) { }
 

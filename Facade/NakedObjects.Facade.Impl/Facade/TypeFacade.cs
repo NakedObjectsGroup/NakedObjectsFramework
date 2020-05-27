@@ -96,12 +96,10 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsComplexType => WrappedValue.ContainsFacet<IComplexTypeFacet>();
 
-        public IAssociationFacade[] Properties {
-            get {
-                var objectSpec = WrappedValue as IObjectSpec;
-                return objectSpec == null ? new IAssociationFacade[] { } : objectSpec.Properties.Select(p => new AssociationFacade(p, FrameworkFacade, framework)).Cast<IAssociationFacade>().ToArray();
-            }
-        }
+        public IAssociationFacade[] Properties =>
+            WrappedValue is IObjectSpec objectSpec 
+                ? objectSpec.Properties.Select(p => new AssociationFacade(p, FrameworkFacade, framework)).Cast<IAssociationFacade>().ToArray() 
+                : new IAssociationFacade[] { };
 
         public IMenuFacade Menu => new MenuFacade(WrappedValue.Menu, FrameworkFacade, framework);
 
@@ -129,8 +127,7 @@ namespace NakedObjects.Facade.Impl {
         public Type GetUnderlyingType() => TypeUtils.GetType(WrappedValue.FullName);
 
         public IActionFacade[] GetCollectionContributedActions() {
-            var objectSpec = WrappedValue as IObjectSpec;
-            if (objectSpec != null) {
+            if (WrappedValue is IObjectSpec objectSpec) {
                 return objectSpec.GetCollectionContributedActions().Select(a => new ActionFacade(a, FrameworkFacade, framework, "")).Cast<IActionFacade>().ToArray();
             }
 
@@ -138,8 +135,7 @@ namespace NakedObjects.Facade.Impl {
         }
 
         public IActionFacade[] GetLocallyContributedActions(ITypeFacade typeFacade, string id) {
-            var objectSpec = WrappedValue as IObjectSpec;
-            if (objectSpec != null) {
+            if (WrappedValue is IObjectSpec objectSpec) {
                 return objectSpec.GetLocallyContributedActions(((TypeFacade) typeFacade).WrappedValue, id).Select(a => new ActionFacade(a, FrameworkFacade, framework, "")).Cast<IActionFacade>().ToArray();
             }
 

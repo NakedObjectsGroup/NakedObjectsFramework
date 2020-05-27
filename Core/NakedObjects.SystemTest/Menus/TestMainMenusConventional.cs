@@ -9,7 +9,6 @@ using System;
 using System.Linq;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
-using NakedObjects.Xat;
 using NUnit.Framework;
 using TestObjectMenu;
 

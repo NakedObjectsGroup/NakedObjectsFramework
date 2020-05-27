@@ -111,7 +111,7 @@ namespace NakedObjects.SystemTest.Util {
                         var indRuns = result.Value.IndividualRuns.Select(ts => ts.ToString()).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ",") + t);
                         var shortName = result.Key.Replace("TestHarnessFindTypeFromLoadedAssemblies", "");
 
-                        var line = string.Format("{0}, {1}, {2}", shortName, result.Value.TotalRun, indRuns);
+                        var line = $"{shortName}, {result.Value.TotalRun}, {indRuns}";
                         sw.WriteLine(line);
                     }
                 }
@@ -157,9 +157,9 @@ namespace NakedObjects.SystemTest.Util {
             return sf.GetMethod().Name;
         }
 
-        private long FindTypeFromLoadedAssembliesOnce(Func<string, Type> funcUnderTest, IList<string> typeList) => FindTypeFromLoadedAssemblies(funcUnderTest, typeList);
+        private static long FindTypeFromLoadedAssembliesOnce(Func<string, Type> funcUnderTest, IList<string> typeList) => FindTypeFromLoadedAssemblies(funcUnderTest, typeList);
 
-        private Runs FindTypeFromLoadedAssembliesTenTimes(Func<string, Type> funcUnderTest, IList<string> typeList) {
+        private static Runs FindTypeFromLoadedAssembliesTenTimes(Func<string, Type> funcUnderTest, IList<string> typeList) {
             var totalElapsed = 0L;
             var indRuns = new BlockingCollection<long>();
 
@@ -172,7 +172,7 @@ namespace NakedObjects.SystemTest.Util {
             return new Runs {IndividualRuns = indRuns.ToArray(), TotalRun = totalElapsed};
         }
 
-        private Task<long> CreateTask(Func<string, Type> funcUnderTest, IList<string> typeList, BlockingCollection<long> indRuns) {
+        private static Task<long> CreateTask(Func<string, Type> funcUnderTest, IList<string> typeList, BlockingCollection<long> indRuns) {
             return Task<long>.Factory.StartNew(() => {
                 var elapsed = FindTypeFromLoadedAssemblies(funcUnderTest, typeList);
                 indRuns.Add(elapsed);

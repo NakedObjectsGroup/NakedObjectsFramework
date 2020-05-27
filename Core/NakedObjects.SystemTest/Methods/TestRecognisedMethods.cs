@@ -1662,7 +1662,7 @@ namespace NakedObjects.SystemTest.Method {
         public string DefaultProp2() => "Foo";
 
         public Default2 DefaultProp3() {
-            return Container.Instances<Default2>().Where(x => x.Prop1 == "Bar2").FirstOrDefault();
+            return Container.Instances<Default2>().FirstOrDefault(x => x.Prop1 == "Bar2");
         }
 
         public int DefaultProp4() => 8;
@@ -1678,7 +1678,7 @@ namespace NakedObjects.SystemTest.Method {
         public string Default1DoSomething() => DefaultProp2();
 
         public Default4 Default2DoSomething() {
-            return Container.Instances<Default4>().Where(x => x.Prop1 == "Bar2").FirstOrDefault();
+            return Container.Instances<Default4>().FirstOrDefault(x => x.Prop1 == "Bar2");
         }
 
         #endregion

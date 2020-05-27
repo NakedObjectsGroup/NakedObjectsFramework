@@ -47,21 +47,18 @@ namespace TestData {
             events = null;
         }
 
-        private void SetupEvents() {
-            if (events == null) {
-                events = new Dictionary<string, int> {
-                    {"Created", 0},
-                    {"Updating", 0},
-                    {"Updated", 0},
-                    {"Loading", 0},
-                    {"Loaded", 0},
-                    {"Persisting", 0},
-                    {"Persisted", 0},
-                    {"Deleting", 0},
-                    {"Deleted", 0}
-                };
-            }
-        }
+        private void SetupEvents() =>
+            events ??= new Dictionary<string, int> {
+                {"Created", 0},
+                {"Updating", 0},
+                {"Updated", 0},
+                {"Loading", 0},
+                {"Loaded", 0},
+                {"Persisting", 0},
+                {"Persisted", 0},
+                {"Deleting", 0},
+                {"Deleted", 0}
+            };
 
         #endregion
 

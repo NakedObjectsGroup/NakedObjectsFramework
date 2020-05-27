@@ -132,18 +132,12 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         private string GetCode(ITypeFacade spec) => GetCode(TypeUtils.GetType(spec.FullName));
 
-        private static object CoerceType(Type type, string value) {
-            if (type == typeof(DateTime)) {
-                var ticks = long.Parse(value);
-                return new DateTime(ticks);
-            }
-
-            if (type == typeof(Guid)) {
-                return new Guid(value);
-            }
-
-            return Convert.ChangeType(value, type);
-        }
+        private static object CoerceType(Type type, string value) =>
+            type switch {
+                _ when type == typeof(DateTime) => new DateTime(long.Parse(value)),
+                _ when type == typeof(Guid) => new Guid(value),
+                _ => Convert.ChangeType(value, type)
+            };
 
         private IDictionary<string, object> CreateKeyDictionary(string[] keys, Type type) {
             var keyProperties = framework.Persistor.GetKeys(type);

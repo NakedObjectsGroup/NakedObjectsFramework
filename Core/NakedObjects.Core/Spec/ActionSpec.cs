@@ -104,21 +104,13 @@ namespace NakedObjects.Core.Spec {
             return result;
         }
 
-        public INakedObjectAdapter RealTarget(INakedObjectAdapter target) {
-            if (target == null) {
-                return FindService();
-            }
-
-            if (target.Spec is IServiceSpec) {
-                return target;
-            }
-
-            if (IsContributedMethod) {
-                return FindService();
-            }
-
-            return target;
-        }
+        public INakedObjectAdapter RealTarget(INakedObjectAdapter target) =>
+            target switch {
+                null => FindService(),
+                _ when target.Spec is IServiceSpec => target,
+                _ when IsContributedMethod => FindService(),
+                _ => target
+            };
 
         public override bool ContainsFacet(Type facetType) => actionSpecImmutable.ContainsFacet(facetType);
 

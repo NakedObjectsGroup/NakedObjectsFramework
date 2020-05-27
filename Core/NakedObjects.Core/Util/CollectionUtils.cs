@@ -154,35 +154,21 @@ namespace NakedObjects.Core.Util {
         private static Type GetGenericEnumerableType(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() == typeof(IEnumerable<>) ? type : type.GetInterfaces().FirstOrDefault(IsGenericEnumerable) : null;
 
         private static string CollectionTitleStringKnownType(IObjectSpec elementSpec, int size) {
-            switch (size) {
-                case IncompleteCollection:
-                    return string.Format(Resources.NakedObjects.CollectionTitleUnloaded, elementSpec.PluralName);
-
-                case 0:
-                    return string.Format(Resources.NakedObjects.CollectionTitleEmpty, elementSpec.PluralName);
-
-                case 1:
-                    return string.Format(Resources.NakedObjects.CollectionTitleOne, elementSpec.SingularName);
-
-                default:
-                    return string.Format(Resources.NakedObjects.CollectionTitleMany, size, elementSpec.PluralName);
-            }
+            return size switch {
+                IncompleteCollection => string.Format(Resources.NakedObjects.CollectionTitleUnloaded, elementSpec.PluralName),
+                0 => string.Format(Resources.NakedObjects.CollectionTitleEmpty, elementSpec.PluralName),
+                1 => string.Format(Resources.NakedObjects.CollectionTitleOne, elementSpec.SingularName),
+                _ => string.Format(Resources.NakedObjects.CollectionTitleMany, size, elementSpec.PluralName)
+            };
         }
 
         private static string CollectionTitleStringUnknownType(int size) {
-            switch (size) {
-                case IncompleteCollection:
-                    return string.Format(Resources.NakedObjects.CollectionTitleUnloaded, "");
-
-                case 0:
-                    return string.Format(Resources.NakedObjects.CollectionTitleEmpty, Resources.NakedObjects.Objects);
-
-                case 1:
-                    return string.Format(Resources.NakedObjects.CollectionTitleOne, Resources.NakedObjects.Object);
-
-                default:
-                    return string.Format(Resources.NakedObjects.CollectionTitleMany, size, Resources.NakedObjects.Objects);
-            }
+            return size switch {
+                IncompleteCollection => string.Format(Resources.NakedObjects.CollectionTitleUnloaded, ""),
+                0 => string.Format(Resources.NakedObjects.CollectionTitleEmpty, Resources.NakedObjects.Objects),
+                1 => string.Format(Resources.NakedObjects.CollectionTitleOne, Resources.NakedObjects.Object),
+                _ => string.Format(Resources.NakedObjects.CollectionTitleMany, size, Resources.NakedObjects.Objects)
+            };
         }
 
         #endregion

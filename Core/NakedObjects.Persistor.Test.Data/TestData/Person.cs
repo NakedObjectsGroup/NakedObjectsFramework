@@ -54,13 +54,7 @@ namespace TestData {
         }
 
 // ReSharper disable once ParameterHidesMember
-        public string Validate(string name, Product favouriteProduct) {
-            if (name == "fail") {
-                return name;
-            }
-
-            return null;
-        }
+        public string Validate(string name, Product favouriteProduct) => name == "fail" ? name : null;
 
         public IQueryable<Person> FindRelativesByName(IQueryable<Person> persons, string newName) =>
             (from r in persons

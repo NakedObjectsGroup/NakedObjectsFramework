@@ -24,17 +24,9 @@ namespace NakedObjects.Meta.Utils {
             return toSplit.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
         }
 
-        public static bool IsAllowed(ISession session, string[] roles, string[] users) {
-            if (roles.Any(role => session.Principal.IsInRole(role))) {
-                return true;
-            }
-
-            if (users.Any(user => session.Principal.Identity?.Name == user)) {
-                return true;
-            }
-
-            return false;
-        }
+        public static bool IsAllowed(ISession session, string[] roles, string[] users) => 
+            roles.Any(role => session.Principal.IsInRole(role)) ||
+            users.Any(user => session.Principal.Identity?.Name == user);
 
         /// <summary>
         ///     Attaches the <see cref="IFacet" /> to its <see cref="IFacet.Specification" />

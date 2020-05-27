@@ -33,11 +33,7 @@ namespace NakedObjects.Core.Util {
         public static string EncodeTypeName(string typeName, string separator = "-", params IObjectSpec[] elements) {
             var type = TypeUtils.GetType(typeName);
 
-            if (type.IsGenericType) {
-                return EncodeGenericTypeName(type, separator, elements);
-            }
-
-            return type.FullName;
+            return type.IsGenericType ? EncodeGenericTypeName(type, separator, elements) : type.FullName;
         }
 
         public static string EncodeGenericTypeName(Type type, string separator = "-", params IObjectSpec[] elements) {

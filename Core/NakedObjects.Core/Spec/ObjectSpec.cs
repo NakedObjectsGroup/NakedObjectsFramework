@@ -72,17 +72,12 @@ namespace NakedObjects.Core.Spec {
 
         #endregion
 
-        protected override PersistableType GetPersistable() {
-            if (InnerSpec.ContainsFacet<INotPersistedFacet>()) {
-                return PersistableType.Transient;
-            }
-
-            if (InnerSpec.ContainsFacet<IProgramPersistableOnlyFacet>()) {
-                return PersistableType.ProgramPersistable;
-            }
-
-            return PersistableType.UserPersistable;
-        }
+        protected override PersistableType GetPersistable() =>
+            InnerSpec.ContainsFacet<INotPersistedFacet>()
+                ? PersistableType.Transient
+                : InnerSpec.ContainsFacet<IProgramPersistableOnlyFacet>()
+                    ? PersistableType.ProgramPersistable
+                    : PersistableType.UserPersistable;
     }
 }
 

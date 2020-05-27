@@ -162,7 +162,7 @@ namespace NakedObjects.Facade.Impl {
             return property;
         }
 
-        private PropertyContext GetProperty(INakedObjectAdapter nakedObject, string propertyName, bool onlyVisible = true) {
+        private static PropertyContext GetProperty(INakedObjectAdapter nakedObject, string propertyName, bool onlyVisible = true) {
             var property = GetPropertyInternal(nakedObject, propertyName, onlyVisible);
             return new PropertyContext {Target = nakedObject, Property = property};
         }
@@ -662,8 +662,7 @@ namespace NakedObjects.Facade.Impl {
             }
 
             if (specification.IsQueryable) {
-                var rawEnumerable = rawValue as IEnumerable;
-                rawValue = rawEnumerable == null ? rawValue : rawEnumerable.AsQueryable();
+                rawValue = rawValue is IEnumerable rawEnumerable ? rawEnumerable.AsQueryable() : rawValue;
             }
 
             return Framework.NakedObjectManager.CreateAdapter(rawValue, null, null);

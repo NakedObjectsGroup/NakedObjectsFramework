@@ -49,19 +49,16 @@ namespace SimpleDatabase {
             callbackStatus["Persisted"]++;
         }
 
-        private void SetupStatus() {
-            if (callbackStatus == null) {
-                callbackStatus = new Dictionary<string, int> {
-                    {"Created", 0},
-                    {"Updating", 0},
-                    {"Updated", 0},
-                    {"Loading", 0},
-                    {"Loaded", 0},
-                    {"Persisting", 0},
-                    {"Persisted", 0}
-                };
-            }
-        }
+        private void SetupStatus() =>
+            callbackStatus ??= new Dictionary<string, int> {
+                {"Created", 0},
+                {"Updating", 0},
+                {"Updated", 0},
+                {"Loading", 0},
+                {"Loaded", 0},
+                {"Persisting", 0},
+                {"Persisted", 0}
+            };
 
         public void ResetCallbackStatus() {
             callbackStatus = null;

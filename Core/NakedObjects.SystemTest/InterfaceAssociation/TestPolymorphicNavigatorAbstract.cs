@@ -245,6 +245,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
             links.AssertCountIs(1);
             items = payment.GetPropertyByName("Payable Items").ContentAsCollection;
             item = items.AssertCountIs(1).ElementAt(0);
+            Assert.IsNotNull(item);
         }
 
         public virtual void FindOwnersForObject() {

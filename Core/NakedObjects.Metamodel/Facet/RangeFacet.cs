@@ -42,32 +42,16 @@ namespace NakedObjects.Meta.Facet {
         public bool IsDateRange { get; set; }
 
         public virtual int OutOfRange(INakedObjectAdapter nakedObjectAdapter) {
-            if (nakedObjectAdapter == null) {
-                return 0; //Date fields can contain nulls
-            }
-
-            var origVal = (IConvertible) nakedObjectAdapter.Object;
-            if (IsSIntegral(origVal)) {
-                return Compare(origVal.ToInt64(null), Min.ToInt64(null), Max.ToInt64(null));
-            }
-
-            if (IsUIntegral(origVal)) {
-                return Compare(origVal.ToUInt64(null), Min.ToUInt64(null), Max.ToUInt64(null));
-            }
-
-            if (IsFloat(origVal)) {
-                return Compare(origVal.ToDouble(null), Min.ToDouble(null), Max.ToDouble(null));
-            }
-
-            if (IsDecimal(origVal)) {
-                return Compare(origVal.ToDecimal(null), Min.ToDecimal(null), Max.ToDecimal(null));
-            }
-
-            if (IsDateTime(origVal)) {
-                return DateCompare(origVal.ToDateTime(null), Min.ToDouble(null), Max.ToDouble(null));
-            }
-
-            return 0;
+            var origVal = (IConvertible)nakedObjectAdapter?.Object;
+            return origVal switch {
+                null => 0,
+                _ when IsSIntegral(origVal) => Compare(origVal.ToInt64(null), Min.ToInt64(null), Max.ToInt64(null)),
+                _ when IsUIntegral(origVal) => Compare(origVal.ToUInt64(null), Min.ToUInt64(null), Max.ToUInt64(null)),
+                _ when IsFloat(origVal) => Compare(origVal.ToDouble(null), Min.ToDouble(null), Max.ToDouble(null)),
+                _ when IsDecimal(origVal) => Compare(origVal.ToDecimal(null), Min.ToDecimal(null), Max.ToDecimal(null)),
+                _ when IsDateTime(origVal) => DateCompare(origVal.ToDateTime(null), Min.ToDouble(null), Max.ToDouble(null)),
+                _ => 0,
+            };
         }
 
         public virtual string Invalidates(IInteractionContext ic) {

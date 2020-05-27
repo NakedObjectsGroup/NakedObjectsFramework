@@ -46,7 +46,7 @@ namespace NakedObjects.SystemTest.ObjectFinderInstances {
 
         [Test]
         public void FindInstances() {
-            var namesp = "NakedObjects.SystemTest.ObjectFinderInstances.";
+            const string namesp = "NakedObjects.SystemTest.ObjectFinderInstances.";
             var payees = GetTestService("My Service").GetAction("Payees");
             var results = payees.InvokeReturnCollection(namesp + "Customer");
             results.AssertCountIs(2);
@@ -60,7 +60,7 @@ namespace NakedObjects.SystemTest.ObjectFinderInstances {
         //This tests that the results are coming back as a Queryable<T>
         [Test]
         public void FindInstancesFilteredByInterfaceProperty() {
-            var namesp = "NakedObjects.SystemTest.ObjectFinderInstances.";
+            const string namesp = "NakedObjects.SystemTest.ObjectFinderInstances.";
             var find = GetTestService("My Service").GetAction("Find Payee");
             var result = find.InvokeReturnObject(namesp + "Customer", 2);
             result.AssertIsType(typeof(Customer));
