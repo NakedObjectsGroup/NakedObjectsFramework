@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
@@ -121,6 +122,15 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public override void TestEmptyEncoding() {
             base.TestEmptyEncoding();
+        }
+
+        [TestMethod]
+        public void TestArrayValue() {
+            var testArray = new byte[] {1, 2, 101};
+            var mockNo = new Mock<INakedObjectAdapter>();
+            mockNo.Setup(no => no.Object).Returns(testArray);
+
+            Assert.AreEqual(testArray, value.ArrayValue(mockNo.Object));
         }
 
         #region Setup/Teardown

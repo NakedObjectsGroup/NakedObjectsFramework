@@ -361,8 +361,8 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 // by the dot-net reflector as a property. On the other hand it does
                 // exist as a field in the meta model (NakedObjectSpecification).
                 //
-                // Now, to re-expose the lastactivity field for .Net, a deriveLastActivity()
-                // has been added to BusinessObject. This caused another field ofthe
+                // Now, to re-expose the LastActivity field for .Net, a deriveLastActivity()
+                // has been added to BusinessObject. This caused another field of the
                 // same name, ultimately breaking the XSD.
 
                 if (seenFields.Contains(fieldName)) {

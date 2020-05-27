@@ -75,7 +75,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             AssertMethodRemoved(defaultMethod);
         }
 
-        private void CheckValidatePrameterFacet(MethodInfo method, IActionParameterSpecImmutable parameter) {
+        private void CheckValidateParameterFacet(MethodInfo method, IActionParameterSpecImmutable parameter) {
             var facet = parameter.GetFacet(typeof(IActionParameterValidationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionParameterValidation);
@@ -595,12 +595,12 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
-            CheckValidatePrameterFacet(validateParameter0Method, facetHolderWithParms.Parameters[0]);
+            CheckValidateParameterFacet(validateParameter0Method, facetHolderWithParms.Parameters[0]);
 
             var facetExecuted0 = facetHolderWithParms.Parameters[0].GetFacet(typeof(IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted0);
 
-            CheckValidatePrameterFacet(validateParameter1Method, facetHolderWithParms.Parameters[1]);
+            CheckValidateParameterFacet(validateParameter1Method, facetHolderWithParms.Parameters[1]);
 
             var facetExecuted1 = facetHolderWithParms.Parameters[1].GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNull(facetExecuted1);
@@ -619,12 +619,12 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
-            CheckValidatePrameterFacet(validateParameter0Method, facetHolderWithParms.Parameters[0]);
+            CheckValidateParameterFacet(validateParameter0Method, facetHolderWithParms.Parameters[0]);
 
             var facetExecuted0 = facetHolderWithParms.Parameters[0].GetFacet(typeof(IExecutedControlMethodFacet));
             Assert.IsNull(facetExecuted0);
 
-            CheckValidatePrameterFacet(validateParameter1Method, facetHolderWithParms.Parameters[1]);
+            CheckValidateParameterFacet(validateParameter1Method, facetHolderWithParms.Parameters[1]);
 
             var facetExecuted1 = facetHolderWithParms.Parameters[1].GetFacet<IExecutedControlMethodFacet>();
             Assert.IsNull(facetExecuted1);

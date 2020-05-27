@@ -18,26 +18,21 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestClass]
-    public class DoubleValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<double> {
-        private double doubleObj;
+    public class ByteValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<byte> {
+        private byte byteObj;
         private ISpecification holder;
+        private ByteValueSemanticsProvider value;
 
         [TestMethod]
-        public void TestDecode() {
-            var decoded = GetValue().FromEncodedString("3.042112234E6");
-            Assert.AreEqual(3042112.234, decoded);
+        public void TestParseValidString() {
+            var parsed = value.ParseTextEntry("21");
+            Assert.AreEqual((byte) 21, parsed);
         }
 
         [TestMethod]
-        public void TestEncode() {
-            var encoded = GetValue().ToEncodedString(0.0000454566);
-            Assert.AreEqual("4.54566E-05", encoded);
-        }
-
-        [TestMethod]
-        public void TestInvalidParse() {
+        public void TestParseInvalidString() {
             try {
-                GetValue().ParseTextEntry("one");
+                value.ParseTextEntry("xs21z4xxx23");
                 Assert.Fail();
             }
             catch (Exception e) {
@@ -46,21 +41,25 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         }
 
         [TestMethod]
-        public void TestParse() {
-            var newValue = GetValue().ParseTextEntry("120.56");
-            Assert.AreEqual(120.56, newValue);
+        public void TestTitleOf() {
+            Assert.AreEqual("102", value.DisplayTitleOf(byteObj));
         }
 
         [TestMethod]
-        public void TestParse2() {
-            var newValue = GetValue().ParseTextEntry("1,20.0");
-            Assert.AreEqual(120D, newValue);
+        public void TestEncode() {
+            Assert.AreEqual("102", value.ToEncodedString(byteObj));
+        }
+
+        [TestMethod]
+        public void TestDecode() {
+            object parsed = value.FromEncodedString("91");
+            Assert.AreEqual((byte) 91, parsed);
         }
 
         [TestMethod]
         public override void TestParseEmptyString() {
             try {
-                var newValue = GetValue().ParseTextEntry("");
+                var newValue = value.ParseTextEntry("");
                 Assert.IsNull(newValue);
             }
             catch (Exception) {
@@ -70,20 +69,10 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestParseInvariant() {
-            const double c1 = 123.456;
+            const byte c1 = (byte) 11;
             var s1 = c1.ToString(CultureInfo.InvariantCulture);
             var c2 = GetValue().ParseInvariant(s1);
             Assert.AreEqual(c1, c2);
-        }
-
-        [TestMethod]
-        public void TestTitleOf() {
-            Assert.AreEqual("35000000", GetValue().DisplayTitleOf(35000000.0));
-        }
-
-        [TestMethod]
-        public void TestTitleOfWithMantissa() {
-            Assert.AreEqual("32.5", GetValue().DisplayTitleOf(doubleObj));
         }
 
         [TestMethod]
@@ -103,11 +92,11 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestValue() {
-            var facet = (IDoubleFloatingPointValueFacet) GetValue();
-            var testValue = 100.100d;
+            IByteValueFacet facet = value;
+            var testValue = (byte) 101;
             var mockNo = new Mock<INakedObjectAdapter>();
             mockNo.Setup(no => no.Object).Returns(testValue);
-            Assert.AreEqual(testValue, facet.DoubleValue(mockNo.Object));
+            Assert.AreEqual(testValue, facet.ByteValue(mockNo.Object));
         }
 
         #region Setup/Teardown
@@ -115,12 +104,10 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-
+            byteObj = 102;
             holder = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(new DoubleValueSemanticsProvider(spec, holder));
-
-            doubleObj = 32.5;
+            SetValue(value = new ByteValueSemanticsProvider(spec, holder));
         }
 
         [TestCleanup]
@@ -130,6 +117,4 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         #endregion
     }
-
-    // Copyright (c) Naked Objects Group Ltd.
 }

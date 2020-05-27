@@ -9,6 +9,8 @@ using System;
 using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
@@ -86,6 +88,15 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public override void TestEmptyEncoding() {
             base.TestEmptyEncoding();
+        }
+
+        [TestMethod]
+        public void TestValue() {
+            ISbyteValueFacet facet = value;
+            var testValue = (sbyte) 101;
+            var mockNo = new Mock<INakedObjectAdapter>();
+            mockNo.Setup(no => no.Object).Returns(testValue);
+            Assert.AreEqual(testValue, facet.SByteValue(mockNo.Object));
         }
 
         #region Setup/Teardown

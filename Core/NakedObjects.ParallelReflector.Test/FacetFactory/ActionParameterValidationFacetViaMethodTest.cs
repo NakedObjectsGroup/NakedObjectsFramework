@@ -8,13 +8,14 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     [TestClass]
     public class ActionParameterValidationFacetViaMethodTest {
-        private ActionParameterValidation facet;
+        private IActionParameterValidationFacet facet;
         private INakedObjectAdapter target;
 
         [TestMethod]

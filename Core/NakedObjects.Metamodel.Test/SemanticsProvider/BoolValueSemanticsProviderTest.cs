@@ -10,6 +10,7 @@ using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
@@ -21,9 +22,11 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestClass]
     public class BoolValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<bool> {
         private INakedObjectAdapter booleanNO;
+        private INakedObjectAdapter booleanNO1;
         private object booleanObj;
         private ISpecification specification;
         private BooleanValueSemanticsProvider value;
+        private IBooleanValueFacet valueFacet;
 
         [TestMethod]
         public void TestDecodeFalse() {
@@ -49,12 +52,19 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestIsNotSet() {
-            Assert.AreEqual(false, value.IsSet(CreateAdapter(false)));
+            Assert.AreEqual(false, valueFacet.IsSet(CreateAdapter(false)));
         }
 
         [TestMethod]
         public void TestIsSet() {
-            Assert.AreEqual(true, value.IsSet(booleanNO));
+            Assert.AreEqual(true, valueFacet.IsSet(booleanNO));
+        }
+
+        [TestMethod]
+        public void TestToggle() {
+            Assert.IsTrue((bool) booleanNO1.Object);
+            valueFacet.Toggle(booleanNO1);
+            Assert.IsFalse((bool) booleanNO1.Object);
         }
 
         [TestMethod]
@@ -132,9 +142,11 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             base.SetUp();
             booleanObj = true;
             booleanNO = CreateAdapter(booleanObj);
+            booleanNO1 = CreateAdapter(true);
             specification = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
             SetValue(value = new BooleanValueSemanticsProvider(spec, specification));
+            valueFacet = value;
         }
 
         [TestCleanup]
