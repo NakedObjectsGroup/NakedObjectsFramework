@@ -13,7 +13,7 @@ namespace NakedObjects.Xat {
 
         /// <summary>
         ///     The friendlyName means the name as would be presented to the user, including
-        ///     spaces and capitalisation. (See also: GetActionFor)
+        ///     spaces and capitalization. (See also: GetActionFor)
         /// </summary>
         ITestAction GetAction(string friendlyName);
 

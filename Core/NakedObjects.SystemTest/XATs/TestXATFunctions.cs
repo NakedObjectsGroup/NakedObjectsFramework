@@ -255,7 +255,7 @@ namespace NakedObjects.SystemTest.XATs {
         public virtual void TestGetTestService() {
             GetTestService("My Service1");
             GetTestService("Service Two");
-            //Get non existant service
+            //Get nonexistent service
             try {
                 GetTestService("My Service3");
                 Assert.Fail("Should not get to here");
@@ -278,7 +278,7 @@ namespace NakedObjects.SystemTest.XATs {
             GetTestService(typeof(MyService1));
             GetTestService<MyService2>();
 
-            //Get non existant service
+            //Get nonexistent service
             try {
                 GetTestService<MyService3>();
                 Assert.Fail("Should not get to here");

@@ -16,9 +16,9 @@ namespace NakedObjects.Architecture.SpecImmutable {
     /// <summary>
     ///     This is the immutable or 'static' core of the IObjectSpec.  It is created by the reflector during start-up, but can
     ///     also be
-    ///     serialised/deserialised and hence persisted.  However, it needs to be wrapped as an IObjectSpec at run-time in
+    ///     serialized/deserialized and hence persisted.  However, it needs to be wrapped as an IObjectSpec at run-time in
     ///     order to
-    ///     provide various run-time behaviours required of the Spec, which depend upon the run-time framework services.
+    ///     provide various run-time behaviors required of the Spec, which depend upon the run-time framework services.
     /// </summary>
     public interface ITypeSpecImmutable : ISpecificationBuilder {
         Type Type { get; }

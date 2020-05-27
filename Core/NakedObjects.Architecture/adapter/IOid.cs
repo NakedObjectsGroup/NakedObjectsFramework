@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Adapter {
     /// <summary>
-    ///     A unique Object Identifier associated with an INakedObjectAdapter (adaptor), and hence, effectively
+    ///     A unique Object Identifier associated with an INakedObjectAdapter (adapter), and hence, effectively
     ///     with a domain object instance.
     /// </summary>
     public interface IOid {

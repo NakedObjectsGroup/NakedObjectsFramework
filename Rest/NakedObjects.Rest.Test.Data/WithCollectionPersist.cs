@@ -19,7 +19,7 @@ namespace RestfulObjects.Test.Data {
         public IDomainObjectContainer Container {
             set {
                 container = value;
-                // hack for testsing 
+                // hack for testing 
                 var vm1 = container.NewViewModel<MostSimpleViewModel>();
                 var vm2 = container.NewViewModel<MostSimpleViewModel>();
                 vm1.Id = 1;

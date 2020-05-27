@@ -13,7 +13,7 @@ namespace NakedObjects.Architecture.Spec {
     ///     Introduced for symmetry with <see cref="IOneToOneFeatureSpec" />;
     /// </para>
     /// <para>
-    ///     Is also the route upto the <see cref="IFeatureSpec" /> superinterface.
+    ///     Is also the route up to the <see cref="IFeatureSpec" /> superinterface.
     /// </para>
     public interface IOneToManyFeatureSpec : IFeatureSpec { }
 }

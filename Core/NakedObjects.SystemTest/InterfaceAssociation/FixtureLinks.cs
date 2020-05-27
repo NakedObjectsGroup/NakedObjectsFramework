@@ -40,7 +40,7 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations {
             link3.Owner = payment7;
             Container.Persist(ref link3);
 
-            //Fixtire for test FindOwnersForObject
+            //Fixture for test FindOwnersForObject
             var payment9 = FindById<PolymorphicPayment>(9);
             var payment10 = FindById<PolymorphicPayment>(10);
             var payment11 = FindById<PolymorphicPayment>(11);

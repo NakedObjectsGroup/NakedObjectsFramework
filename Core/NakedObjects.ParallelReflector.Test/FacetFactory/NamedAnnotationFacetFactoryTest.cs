@@ -315,7 +315,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.AreEqual("some name", namedFacetAbstract.Value);
             AssertNoMethodsRemoved();
 
-            // Assert.Contains("Duplicate name: some name found on type: NakedObjects.ParallelReflector.DotNet.Facets.Naming.Named.NamedAnnotationFacetFactoryTest+Customer11", NakedObjectsContext.InitialisationWarnings);
         }
 
         [TestMethod]

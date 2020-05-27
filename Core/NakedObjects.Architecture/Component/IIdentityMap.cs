@@ -10,8 +10,8 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    ///     Maintains a map between domain objects instances (POCOs) and their adaptors (INakedObjectAdapter).
-    ///     It also ensures that the same object only ever has one adaptor.
+    ///     Maintains a map between domain objects instances (POCOs) and their adapters (INakedObjectAdapter).
+    ///     It also ensures that the same object only ever has one adapter.
     /// </summary>
     /// <para>
     ///     Each POCO is given an adapter so that the NOF can work with the POCOs even though it does not understand

@@ -619,7 +619,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             addedOseRelationships.ForEach(x => changedEntities.AddRange(GetRelationshipEnds(context, x)));
             deletedOseRelationships.ForEach(x => changedEntities.AddRange(GetRelationshipEnds(context, x)));
 
-            // this is here just to catch a case (adding sales reason to sales order in adventureworks) 
+            // this is here just to catch a case (adding sales reason to sales order in AdventureWorks) 
             // which doesn't work but which should.
             changedEntities.AddRange(GetRelationshipEndsForEntity(addedOses));
             changedEntities.AddRange(GetRelationshipEndsForEntity(deletedOses));
@@ -695,7 +695,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                     return dbContext.Entry(nakedObjectAdapter.Object).Collection(field.Id).Query().Cast<T>().Count();
                 }
                 catch (ArgumentException) {
-                    // not an EF recognised collection 
+                    // not an EF recognized collection 
                     Log.Warn($"Attempting to 'Count' a non-EF collection: {field.Id}");
                 }
             }

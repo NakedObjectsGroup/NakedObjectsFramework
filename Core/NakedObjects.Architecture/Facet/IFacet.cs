@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Spec;
 namespace NakedObjects.Architecture.Facet {
     public interface IFacet {
         /// <summary>
-        ///     The <see cref="ISpecification" /> of this facet. Set allows reparenting of Facet.
+        ///     The <see cref="ISpecification" /> of this facet. Set allows re-parenting of Facet.
         /// </summary>
         /// <para>
         ///     Used by Facet decorators.

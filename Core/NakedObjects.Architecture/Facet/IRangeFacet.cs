@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facet {
     /// <summary>
-    ///     Whether the value of a property or paramter is outside a specified range
+    ///     Whether the value of a property or parameter is outside a specified range
     /// </summary>
     /// <para>
     ///     In the standard Naked Objects Programming Model, corresponds to

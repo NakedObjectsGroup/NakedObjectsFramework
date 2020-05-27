@@ -33,7 +33,7 @@ namespace NakedObjects.Architecture.Configuration {
         string[] ModelNamespaces { get; }
 
         /// <summary>
-        ///     Standard implementation of this contains system value and collection types recognised by the Framework.
+        ///     Standard implementation of this contains system value and collection types recognized by the Framework.
         ///     The list is exposed so that types can be added or removed before reflection. Generic collection types should be
         ///     specified
         ///     without type parameters.

@@ -14,6 +14,4 @@ namespace NakedObjects.Facade {
         public NakedObjectsFacadeException() { }
         public NakedObjectsFacadeException(string message) : base(message) { }
     }
-
-    // todo rename to be less coupled to httpstatus code
 }

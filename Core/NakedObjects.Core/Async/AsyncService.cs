@@ -14,7 +14,7 @@ using NakedObjects.Core.Container;
 namespace NakedObjects.Core.Async {
     /// <summary>
     ///     A service to be injected into domain code that allows multiple actions to be initiated
-    ///     asynchronously -  each running within its own separate NakedObjects contexct.
+    ///     asynchronously -  each running within its own separate NakedObjects context.
     /// </summary>
     public class AsyncService : IAsyncService {
         private static readonly ILog Log = LogManager.GetLogger(typeof(AsyncService));

@@ -16,7 +16,7 @@ namespace NakedObjects.Architecture.Spec {
         /// <summary>
         ///     Initialise this field in the specified object with the specified reference - this call should only
         ///     affect the specified object, and not any related objects. It should also not be distributed. This is
-        ///     strictly for re-initialising the object and not specifying an association, which is only done once.
+        ///     strictly for re-initializing the object and not specifying an association, which is only done once.
         /// </summary>
         void InitAssociation(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate);
 

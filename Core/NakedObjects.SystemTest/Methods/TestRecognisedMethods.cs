@@ -261,7 +261,7 @@ namespace NakedObjects.SystemTest.Method {
             Assert.AreEqual("Fee", cho[0].Title);
         }
 
-        // Note Clear Prefix has been removed as a recognised prefix for complementary actions 
+        // Note Clear Prefix has been removed as a recognized prefix for complementary actions 
         [Test]
         public void ClearMethodDoesShowUpAsAnAction() {
             var obj1 = NewTestObject<Clear1>();
@@ -2269,11 +2269,11 @@ namespace NakedObjects.SystemTest.Method {
             tb.Append(":", null, "d", null); //unchanged
             tb.Concat(":", null, "d", null); //unchanged
             tb.Append(":", null, "d", "no date"); //"x& y y t1 t2 t3$ t1ct1*t1: no date"
-            tb.Concat(":", null, "d", "no date"); //"x& y y t1 t2 t3$ t1ct1*t1: no dateno date"
+            tb.Concat(":", null, "d", "no date"); //"x& y y t1 t2 t3$ t1ct1*t1: no date no date"
 
-            tb.Append(new DateTime(2007, 4, 2), "d", null); //"x& y y t1 t2 t3$ t1ct1*t1: no dateno date 02/04/2007"
-            tb.Append(Sex.Female); //"x& y y t1 t2 t3$ t1ct1*t1: no dateno date 02/04/2007 Female"
-            tb.Append(Sex.NotSpecified); //"x& y y t1 t2 t3$ t1ct1*t1: no dateno date 02/04/2007 Female Not Specified"
+            tb.Append(new DateTime(2007, 4, 2), "d", null); //"x& y y t1 t2 t3$ t1ct1*t1: no date no date 02/04/2007"
+            tb.Append(Sex.Female); //"x& y y t1 t2 t3$ t1ct1*t1: no date no date 02/04/2007 Female"
+            tb.Append(Sex.NotSpecified); //"x& y y t1 t2 t3$ t1ct1*t1: no date no date 02/04/2007 Female Not Specified"
             return tb.ToString();
         }
     }

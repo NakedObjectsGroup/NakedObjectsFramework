@@ -18,7 +18,7 @@ using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.Persistor.TestSuite {
     /// <summary>
-    ///     Prerequisite - TestData Fixture run and nakedobjects framework setup
+    ///     Prerequisite - TestData Fixture run and NakedObjects framework setup
     /// </summary>
     public class PersistorTestSuite {
         private readonly INakedObjectsFramework framework;

@@ -12,7 +12,7 @@ namespace NakedObjects.Architecture.Adapter {
     /// <remarks>
     ///     <para>
     ///         The implementing class should also have a constructor that accepts an array of strings and
-    ///         initialises from them
+    ///         initializes from them
     ///     </para>
     /// </remarks>
     public interface IEncodedToStrings {

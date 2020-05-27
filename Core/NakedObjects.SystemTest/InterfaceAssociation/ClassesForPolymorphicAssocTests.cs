@@ -59,7 +59,7 @@ namespace NakedObjects.SystemTest.PolymorphicAssociations {
         public virtual ICollection<PolymorphicPaymentPayableItemLink> PayableItemLinks { get; set; } = new List<PolymorphicPaymentPayableItemLink>();
 
         /// <summary>
-        ///     This is an optional, derrived collection, which shows the associated objects directly.
+        ///     This is an optional, derived collection, which shows the associated objects directly.
         ///     It is more convenient for the user, but each element is resolved separately, so more
         ///     expensive in processing terms.  Use this pattern only on smaller collections.
         /// </summary>

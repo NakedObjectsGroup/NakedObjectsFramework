@@ -850,7 +850,7 @@ namespace NakedObjects.SystemTest.Attributes {
             prop6.AssertIsUnmodifiable();
         }
 
-        [Test] //Error caused by change to TitleFacetViaProperti in f86f40ac on 08/10/2014
+        [Test] //Error caused by change to TitleFacetViaProperty in f86f40ac on 08/10/2014
         public virtual void TitleAttributeOnReferencePropertyThatHasATitleAttribute() {
             var obj1 = NewTestObject<Title1>();
             obj1.GetPropertyByName("Prop1").SetValue("Foo");
@@ -864,7 +864,7 @@ namespace NakedObjects.SystemTest.Attributes {
             obj8.AssertTitleEquals("Foo");
         }
 
-        [Test] //Error caused by change to TitleFacetViaProperti in f86f40ac on 08/10/2014
+        [Test] //Error caused by change to TitleFacetViaProperty in f86f40ac on 08/10/2014
         public virtual void TitleAttributeOnReferencePropertyThatHasATitleMethod() {
             var obj4 = NewTestObject<Title4>();
             obj4.GetPropertyByName("Prop1").SetValue("Foo");

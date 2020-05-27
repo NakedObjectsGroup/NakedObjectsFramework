@@ -35,7 +35,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         private static MapRepresentation GetMap(IOidStrategy oidStrategy, HttpRequest req, ContextFacade context, RestControlFlags flags) {
             MapRepresentation value;
 
-            // All reasons why we cannot create a linkrep
+            // All reasons why we cannot create a link representation
             if (context.Specification.IsCollection && context.ElementSpecification != null && !context.ElementSpecification.IsParseable) {
                 var proposedObjectFacade = oidStrategy.FrameworkFacade.GetObject(context.ProposedValue);
                 var coll = proposedObjectFacade.ToEnumerable().Select(no => CreateObjectRef(oidStrategy, req, no, flags)).ToArray();

@@ -9,7 +9,7 @@ using System;
 
 namespace NakedObjects.Core {
     /// <summary>
-    ///     Indicates a problem initialising the naked objects system
+    ///     Indicates a problem initializing the naked objects system
     /// </summary>
     public class InitialisationException : NakedObjectApplicationException {
         public InitialisationException() { }

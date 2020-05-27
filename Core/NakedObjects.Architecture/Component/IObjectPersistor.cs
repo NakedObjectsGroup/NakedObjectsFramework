@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
-    ///     The non-store specific parts of the Object persistance mechanism. Implemented as a composite rather than with
+    ///     The non-store specific parts of the Object persistence mechanism. Implemented as a composite rather than with
     ///     inheritance.
     /// </summary>
     public interface IObjectPersistor {

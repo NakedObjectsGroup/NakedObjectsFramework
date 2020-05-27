@@ -11,7 +11,7 @@ using NakedObjects.Resources;
 namespace NakedObjects.Core {
     /// <summary>
     ///     Indicates that a value entry is not valid. The entry may still parse correctly,
-    ///     but it does not fulfil other other entry requirements
+    ///     but it does not fulfill other other entry requirements
     /// </summary>
     public class InvalidEntryException : NakedObjectApplicationException {
         public InvalidEntryException()

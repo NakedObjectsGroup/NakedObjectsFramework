@@ -23,7 +23,7 @@ namespace NakedObjects.Core.Component {
 
         private readonly List<object> services;
 
-        // cacahe the adapters 
+        // cache the adapters 
         private INakedObjectAdapter[] serviceAdapters;
         private bool servicesInit;
 

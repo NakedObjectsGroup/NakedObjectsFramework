@@ -30,7 +30,7 @@ namespace NakedObjects.Architecture.Spec {
 
         /// <summary>
         ///     Determines if this member is visible imperatively (ie <c>HideXxx(...)</c>).
-        ///     Ignores 'UntilPersisted' anotations
+        ///     Ignores 'UntilPersisted' annotations
         /// </summary>
         /// <param name="target">
         ///     may be <c>null</c> if just checking for authorization

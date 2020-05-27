@@ -116,10 +116,6 @@ namespace NakedObjects.SystemTest.Persistence {
         public DbSet<Qux1> Quxes { get; set; }
 
         public static void Delete() => Database.Delete(Cs);
-        //}
-        //    Database.SetInitializer(new MyDbInitialiser());
-
-        //protected override void OnModelCreating(DbModelBuilder modelBuilder) {
     }
 
     public class MyDbInitialiser {

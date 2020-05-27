@@ -19,7 +19,7 @@ namespace NakedObjects.Architecture.Spec {
         bool IsChoicesEnabled { get; }
 
         /// <summary>
-        ///     Whether there are any autocompletion provided (eg <c>AutoCompleteXxx</c> supporting method) for the association
+        ///     Whether there are any autocompletions provided (eg <c>AutoCompleteXxx</c> supporting method) for the association
         /// </summary>
         bool IsAutoCompleteEnabled { get; }
 

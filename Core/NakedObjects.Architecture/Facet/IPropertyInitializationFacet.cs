@@ -9,7 +9,7 @@ using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Architecture.Facet {
     /// <summary>
-    ///     The mechanism by which the value of the property can be initialised.
+    ///     The mechanism by which the value of the property can be initialized.
     /// </summary>
     /// <para>
     ///     This differs from the <see cref="IPropertySetterFacet" /> in that it is only called when

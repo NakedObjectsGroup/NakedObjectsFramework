@@ -30,7 +30,7 @@ namespace RestfulObjects.Test.Data {
             get => 0;
             set {
                 if (Container != null && ThrowErrors) {
-                    // initialised 
+                    // initialized 
                     throw new DomainException("An error exception");
                 }
             }
@@ -40,7 +40,7 @@ namespace RestfulObjects.Test.Data {
             get => aReference;
             set {
                 if (Container != null && ThrowErrors) {
-                    // initialised 
+                    // initialized 
                     throw new DomainException("An error exception");
                 }
 

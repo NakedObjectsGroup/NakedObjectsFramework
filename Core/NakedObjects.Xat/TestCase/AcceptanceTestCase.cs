@@ -112,7 +112,7 @@ namespace NakedObjects.Xat {
                 });
 
         /// <summary>
-        ///     Gets the configured servive provider
+        ///     Gets the configured service provider
         /// </summary>
         protected virtual IServiceProvider GetConfiguredContainer() => scopeServiceProvider;
 

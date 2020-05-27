@@ -34,7 +34,7 @@ namespace NakedObjects.Core.Util {
 
         /// <summary>
         ///     An initial value for a <c>HashCode</c>, to which is added
-        ///     contributions from fields. Using a non-zero value decreases collisons of
+        ///     contributions from fields. Using a non-zero value decreases collisions of
         ///     <c>HashCode</c> values.
         /// </summary>
         private const int SeedConst = 23;
