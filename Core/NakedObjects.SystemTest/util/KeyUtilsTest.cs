@@ -13,6 +13,8 @@ using System.Security.Principal;
 using NakedObjects.Util;
 using NakedObjects.UtilInternal;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.SystemTest.Util {
     [TestFixture]

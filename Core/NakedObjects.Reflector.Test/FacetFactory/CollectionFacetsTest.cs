@@ -18,6 +18,8 @@ using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]

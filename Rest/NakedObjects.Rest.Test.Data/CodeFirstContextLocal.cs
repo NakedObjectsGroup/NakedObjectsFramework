@@ -7,6 +7,8 @@
 
 using System;
 using System.Data.Entity;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace RestfulObjects.Test.Data {
     public class CodeFirstContextLocal : DbContext {

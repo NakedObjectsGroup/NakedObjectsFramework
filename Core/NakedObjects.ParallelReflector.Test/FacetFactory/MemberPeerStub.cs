@@ -13,6 +13,8 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Spec;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     internal class MemberPeerStub : Specification, IMemberSpecImmutable {

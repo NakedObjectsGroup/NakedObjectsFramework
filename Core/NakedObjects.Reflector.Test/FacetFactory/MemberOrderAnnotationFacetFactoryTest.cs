@@ -13,6 +13,8 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -55,7 +57,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             [MemberOrder(Sequence = "2")]
             public IList Orders => null;
 
-            // ReSharper disable once UnusedParameter.Local
             public void AddToOrders(Order o) { }
         }
 
@@ -64,7 +65,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public void SomeAction() { }
         }
 
-// ReSharper disable once ClassNeverInstantiated.Local
         private class Order { }
 
         [TestMethod]
@@ -115,5 +115,4 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
-    // ReSharper restore UnusedMember.Local
 }

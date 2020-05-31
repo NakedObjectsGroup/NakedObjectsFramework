@@ -18,6 +18,8 @@ using NakedObjects.Profile;
 using NakedObjects.Services;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.SystemTest.Profile {
     [TestFixture]

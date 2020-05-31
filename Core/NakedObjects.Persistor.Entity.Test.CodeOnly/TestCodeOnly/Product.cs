@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using NakedObjects;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace TestCodeOnly {
     public abstract class AbstractTestCode {

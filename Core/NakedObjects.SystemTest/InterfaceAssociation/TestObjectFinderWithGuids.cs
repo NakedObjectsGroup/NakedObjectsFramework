@@ -13,6 +13,8 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderCompoundKeys;
 using NakedObjects.Xat;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.SystemTest.ObjectFinderGuid {
     [TestFixture]

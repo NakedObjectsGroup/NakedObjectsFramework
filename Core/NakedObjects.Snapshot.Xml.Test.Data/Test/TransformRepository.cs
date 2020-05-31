@@ -8,6 +8,8 @@
 using NakedObjects.Services;
 using Snapshot.Xml.Test.Two;
 using TransformFull = Snapshot.Xml.Test.One.TransformFull;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace Snapshot.Xml.Test {
     public class TransformRepository : AbstractFactoryAndRepository {

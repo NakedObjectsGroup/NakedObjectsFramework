@@ -11,6 +11,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using NakedObjects;
 using NakedObjects.Security;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace RestfulObjects.Test.Data {
     [PresentationHint("class1 class2")]

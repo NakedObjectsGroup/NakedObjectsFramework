@@ -8,6 +8,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using NakedObjects;
 using NakedObjects.Services;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace SimpleDatabase {
     [ComplexType]

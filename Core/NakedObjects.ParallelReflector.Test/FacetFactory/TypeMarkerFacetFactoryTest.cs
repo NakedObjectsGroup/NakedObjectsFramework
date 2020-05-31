@@ -11,6 +11,8 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.ParallelReflect.FacetFactory;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     // Reflector place holder for type marker facet factory tests !!!

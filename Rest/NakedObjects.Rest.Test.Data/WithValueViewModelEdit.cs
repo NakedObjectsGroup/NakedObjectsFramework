@@ -9,6 +9,8 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 using NakedObjects.Security;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace RestfulObjects.Test.Data {
     public class WithValueViewModelEdit : IViewModelEdit {

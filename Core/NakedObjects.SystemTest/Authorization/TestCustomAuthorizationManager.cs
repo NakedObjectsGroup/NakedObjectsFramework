@@ -17,6 +17,8 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest.Audit;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     [TestFixture]

@@ -15,6 +15,8 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest;
 using NUnit.Framework;
 using TestObjectMenu;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.SystemTest.Menus {
     [TestFixture]

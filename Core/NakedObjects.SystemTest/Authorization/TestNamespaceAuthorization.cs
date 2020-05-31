@@ -19,6 +19,8 @@ using NakedObjects.Security;
 using NakedObjects.Services;
 using NotMyApp.MyCluster2;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
     [TestFixture]

@@ -13,6 +13,8 @@ using NakedObjects.Menu;
 using NakedObjects.Services;
 using NakedObjects.SystemTest;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.SystemTest.Menus {
     //This class is not testing menus, nor TestMenus, but simply backwards compatibility

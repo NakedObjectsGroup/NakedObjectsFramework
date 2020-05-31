@@ -15,6 +15,8 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Util;
 using NakedObjects.Xat;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.SystemTest {
     public static class Constants {

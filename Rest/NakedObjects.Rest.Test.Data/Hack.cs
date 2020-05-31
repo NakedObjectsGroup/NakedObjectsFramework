@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace Microsoft.VisualStudio.TestPlatform {
     // this is a hack to fix a bug in MS test sdk

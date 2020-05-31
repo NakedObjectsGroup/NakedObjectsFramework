@@ -11,8 +11,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Security;
-
-//using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace RestfulObjects.Test.Data {
     public class WithActionViewModel : WithAction, IViewModel {

@@ -17,6 +17,8 @@ using System.Reflection.Emit;
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.SystemTest.Util {
     public class GetTypeFromLoadedAssembliesTestAbstract {

@@ -7,6 +7,8 @@
 
 using System.Collections.Generic;
 using NakedObjects;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace SimpleDatabase {
     public abstract class AbstractTestCode {

@@ -8,6 +8,8 @@
 using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 using NakedObjects.Value;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace RestfulObjects.Test.Data {
     public class WithAttachments {

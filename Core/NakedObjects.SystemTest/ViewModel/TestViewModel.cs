@@ -12,6 +12,8 @@ using NakedObjects.Services;
 using NakedObjects.SystemTest;
 using NakedObjects.Xat;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.Helpers.Test.ViewModel {
     [TestFixture]

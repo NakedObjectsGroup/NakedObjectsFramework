@@ -7,6 +7,8 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Meta.Facet;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]

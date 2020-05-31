@@ -15,11 +15,12 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     
-    // ReSharper disable UnusedParameter.Local
     // ReSharper disable ClassNeverInstantiated.Local
     public class CollectionFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         private CollectionFieldMethodsFacetFactory facetFactory;
@@ -363,7 +364,4 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
-    // ReSharper restore UnusedMember.Local
-    // ReSharper restore UnusedParameter.Local
-    // ReSharper restore ClassNeverInstantiated.Local
 }

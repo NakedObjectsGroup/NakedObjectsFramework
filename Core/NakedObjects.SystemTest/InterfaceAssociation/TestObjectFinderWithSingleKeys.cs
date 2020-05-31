@@ -11,6 +11,8 @@ using System.Data.Entity;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
     [TestFixture]

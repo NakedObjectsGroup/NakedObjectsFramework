@@ -9,6 +9,8 @@ using System;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace RestfulObjects.Test.Data {
     //[DisplayName("")]

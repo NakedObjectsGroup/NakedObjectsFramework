@@ -7,6 +7,8 @@
 
 using NakedObjects.Core.Util;
 using TestData;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.Persistor.TestData {
     public class TestDataFixture {

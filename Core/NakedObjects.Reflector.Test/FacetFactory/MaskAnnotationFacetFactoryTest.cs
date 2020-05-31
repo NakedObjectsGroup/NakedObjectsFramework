@@ -12,6 +12,8 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
@@ -58,7 +60,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         #endregion
 
         private class Customer2 {
-// ReSharper disable once UnusedParameter.Local
             public void SomeAction([Mask("###")] string foo) { }
         }
 
@@ -68,7 +69,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         private class Customer4 {
-// ReSharper disable once UnusedParameter.Local
             public void SomeAction([Mask("###")] int foo) { }
         }
 
@@ -130,5 +130,4 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     }
 
     // Copyright (c) Naked Objects Group Ltd.
-    // ReSharper restore UnusedMember.Local
 }

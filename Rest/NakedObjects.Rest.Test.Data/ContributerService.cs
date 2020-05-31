@@ -7,6 +7,8 @@
 
 using System.Linq;
 using NakedObjects;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace RestfulObjects.Test.Data {
     public class ContributorService {

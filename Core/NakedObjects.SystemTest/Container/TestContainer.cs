@@ -10,6 +10,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using NakedObjects.Services;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.SystemTest.Container {
     [TestFixture]

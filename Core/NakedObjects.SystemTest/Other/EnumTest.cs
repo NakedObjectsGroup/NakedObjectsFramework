@@ -11,6 +11,8 @@ using System.Data.Entity;
 using System.Linq;
 using NakedObjects.Services;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.SystemTest.Enum {
     [TestFixture]

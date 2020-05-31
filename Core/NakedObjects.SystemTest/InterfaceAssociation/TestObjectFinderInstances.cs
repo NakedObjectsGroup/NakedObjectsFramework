@@ -12,6 +12,8 @@ using System.Linq;
 using NakedObjects.Services;
 using NakedObjects.Util;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.SystemTest.ObjectFinderInstances {
     [TestFixture]
