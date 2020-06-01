@@ -13,51 +13,78 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestClass]
-    public class TimeValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<TimeSpan> {
-        private TimeValueSemanticsProvider adapter;
+    public class UIntValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<uint> {
         private ISpecification holder;
-        private TimeSpan time;
+        private uint integer;
+        private UIntValueSemanticsProvider value;
+
+        [TestMethod]
+        public void TestDecode() {
+            var decoded = GetValue().FromEncodedString("304211223");
+            Assert.AreEqual(304211223u, decoded);
+        }
+
+        [TestMethod]
+        public void TestEncode() {
+            var encoded = GetValue().ToEncodedString(213434790u);
+            Assert.AreEqual("213434790", encoded);
+        }
+
+        [TestMethod]
+        public void TestInvalidParse() {
+            try {
+                value.ParseTextEntry("one");
+                Assert.Fail();
+            }
+            catch (Exception e) {
+                Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
+            }
+        }
+
+        [TestMethod]
+        public void TestParse() {
+            var newValue = value.ParseTextEntry("120");
+            Assert.AreEqual(120u, newValue);
+        }
+
+        [TestMethod]
+        public override void TestParseEmptyString() {
+            try {
+                var newValue = value.ParseTextEntry("");
+                Assert.IsNull(newValue);
+            }
+            catch (Exception) {
+                Assert.Fail();
+            }
+        }
 
         [TestMethod]
         public void TestParseInvariant() {
-            var d1 = new TimeSpan(1, 5, 1, 25);
-            var s1 = d1.ToString(null, CultureInfo.InvariantCulture);
-            var d2 = adapter.ParseInvariant(s1);
-            Assert.AreEqual(d1, d2);
+            const uint c1 = 123;
+            var s1 = c1.ToString(CultureInfo.InvariantCulture);
+            var c2 = GetValue().ParseInvariant(s1);
+            Assert.AreEqual(c1, c2);
         }
 
         [TestMethod]
-        public void TestRestoreOfInvalidDatal() {
-            try {
-                adapter.FromEncodedString("two ten");
-                Assert.Fail();
-            }
-            catch (FormatException /*expected*/) { }
+        public void TestParseOddlyFormedEntry() {
+            var newValue = value.ParseTextEntry("1,20.0");
+            Assert.AreEqual(120u, newValue);
         }
 
         [TestMethod]
-        public void TestRestoreTime() {
-            object parsed = adapter.FromEncodedString("21:30:00");
-            Assert.AreEqual(new TimeSpan(21, 30, 0), parsed);
-        }
-
-        [TestMethod]
-        public void TestTimeAsEncodedString() {
-            Assert.AreEqual("08:13:00", adapter.ToEncodedString(time));
+        public void TestTitleString() {
+            Assert.AreEqual("32", value.DisplayTitleOf(integer));
         }
 
         [TestMethod]
         public override void TestParseNull() {
             base.TestParseNull();
-        }
-
-        [TestMethod]
-        public override void TestParseEmptyString() {
-            base.TestParseEmptyString();
         }
 
         [TestMethod]
@@ -72,11 +99,11 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestValue() {
-            var facet = (ITimeValueFacet) GetValue();
-            var testValue = TimeSpan.FromHours(22);
+            var facet = (IUnsignedIntegerValueFacet) GetValue();
+            const uint testValue = 121;
             var mockNo = new Mock<INakedObjectAdapter>();
             mockNo.Setup(no => no.Object).Returns(testValue);
-            Assert.AreEqual(testValue, facet.TimeValue(mockNo.Object));
+            Assert.AreEqual(testValue, facet.UnsignedIntegerValue(mockNo.Object));
         }
 
         #region Setup/Teardown
@@ -84,10 +111,10 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            time = new TimeSpan(8, 13, 0);
+            integer = 32;
             holder = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(adapter = new TimeValueSemanticsProvider(spec, holder));
+            SetValue(value = new UIntValueSemanticsProvider(spec, holder));
         }
 
         [TestCleanup]
@@ -96,10 +123,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         }
 
         #endregion
-    }
-
-    public class TestClock {
-        public static long GetTicks() => new DateTime(2003, 8, 17, 21, 30, 25).Ticks;
     }
 
     // Copyright (c) Naked Objects Group Ltd.
