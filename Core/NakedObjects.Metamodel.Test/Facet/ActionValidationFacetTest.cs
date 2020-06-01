@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.Interactions;
+using NakedObjects.Core;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Metamodel.Test.Facet {
@@ -40,6 +42,28 @@ namespace NakedObjects.Metamodel.Test.Facet {
         [TestMethod]
         public void TestDelegateNonCreation() {
             InvokeFuncTest(typeof(TestDelegateClass).GetMethod("Func7"));
+        }
+
+        private static INakedObjectAdapter Mock(object obj) {
+            var mockParm = new Mock<INakedObjectAdapter>();
+            mockParm.Setup(p => p.Object).Returns(obj);
+            return mockParm.Object;
+        }
+
+        [TestMethod]
+        public void TestDisabledFacetAnnotationAsInteraction() {
+            var method = typeof(TestDelegateClass).GetMethod("Func2");
+            IValidatingInteractionAdvisor facet = new ActionValidationFacet(method, null);
+            var target = Mock(new TestDelegateClass());
+            var mockIc = new Mock<IInteractionContext>();
+            mockIc.Setup(ic => ic.Target).Returns(target);
+            var parms = new[] {"a", "b"}.Select(MockParm).ToArray();
+            mockIc.Setup(ic => ic.ProposedArguments).Returns(parms);
+
+            var e = facet.CreateExceptionFor(mockIc.Object);
+
+            Assert.IsInstanceOfType(e, typeof(InvalidException));
+            Assert.AreEqual("Validation2", e.Message);
         }
 
         #region Nested type: TestDelegateClass

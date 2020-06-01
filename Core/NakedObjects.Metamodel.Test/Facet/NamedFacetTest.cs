@@ -15,10 +15,8 @@ namespace NakedObjects.Metamodel.Test.Facet {
             Assert.AreEqual(testName, facet.NaturalName);
         }
 
-
         [TestMethod]
-        public void TestNamedFacetInferred()
-        {
+        public void TestNamedFacetInferred() {
             const string testName = "a nAme";
             INamedFacet facet = new NamedFacetInferred(testName, null);
             Assert.AreEqual("A nAme", facet.CapitalizedName);
@@ -26,6 +24,5 @@ namespace NakedObjects.Metamodel.Test.Facet {
             Assert.AreEqual("aname", facet.SimpleName);
             Assert.AreEqual("A n Ame", facet.NaturalName);
         }
-
     }
 }

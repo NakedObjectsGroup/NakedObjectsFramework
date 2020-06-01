@@ -16,7 +16,7 @@ namespace NakedObjects.Metamodel.Test.Facet {
             var parms = method.GetParameters().Select(p => "astring").Cast<object>().Select(MockParm).ToArray();
             var target = MockParm(new TestDelegateClass());
             var value = MockParm("astring");
-            Assert.AreEqual($"Validation", facet.InvalidReason(target, value));
+            Assert.AreEqual("Validation", facet.InvalidReason(target, value));
         }
 
         [TestMethod]

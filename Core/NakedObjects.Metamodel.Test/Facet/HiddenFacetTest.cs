@@ -5,8 +5,6 @@ using NakedObjects.Meta.Facet;
 namespace NakedObjects.Metamodel.Test.Facet {
     [TestClass]
     public class HiddenFacetTest {
-    
-
         [TestMethod]
         public void TestHiddenFacetAnnotationAlways() {
             IHiddenFacet facet = new HiddenFacet(WhenTo.Always, null);
