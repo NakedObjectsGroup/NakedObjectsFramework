@@ -100,7 +100,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestValue() {
             var facet = (IDecimalValueFacet) GetValue();
-            var testValue = 121M;
+            const decimal testValue = 121M;
             var mockNo = new Mock<INakedObjectAdapter>();
             mockNo.Setup(no => no.Object).Returns(testValue);
             Assert.AreEqual(testValue, facet.DecimalValue(mockNo.Object));

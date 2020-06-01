@@ -9,7 +9,6 @@ namespace NakedObjects.Architecture.Transaction {
     public interface ITransaction {
         void Abort();
         void Commit();
-        bool Flush();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

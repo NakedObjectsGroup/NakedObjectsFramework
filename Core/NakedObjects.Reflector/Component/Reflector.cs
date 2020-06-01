@@ -68,14 +68,6 @@ namespace NakedObjects.Reflect.Component {
 
         public ITypeSpecBuilder[] AllObjectSpecImmutables => metamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
 
-        public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore) {
-            foreach (var property in properties) {
-                if (property.GetGetMethod() != null && property.PropertyType != classToIgnore) {
-                    LoadSpecification(property.PropertyType);
-                }
-            }
-        }
-
         public ITypeSpecBuilder LoadSpecification(Type type) {
             Assert.AssertNotNull(type);
             return (ITypeSpecBuilder) metamodel.GetSpecification(type, true) ?? LoadSpecificationAndCache(type);

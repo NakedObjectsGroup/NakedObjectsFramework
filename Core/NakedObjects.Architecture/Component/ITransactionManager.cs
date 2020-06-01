@@ -13,7 +13,6 @@ namespace NakedObjects.Architecture.Component {
         int TransactionLevel { get; }
 
         void StartTransaction();
-        bool FlushTransaction();
         void AbortTransaction();
         void UserAbortTransaction();
         void EndTransaction();

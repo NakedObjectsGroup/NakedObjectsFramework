@@ -104,7 +104,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestValue() {
             var facet = (IFloatingPointValueFacet) GetValue();
-            var testValue = 100.100f;
+            const float testValue = 100.100f;
             var mockNo = new Mock<INakedObjectAdapter>();
             mockNo.Setup(no => no.Object).Returns(testValue);
             Assert.AreEqual(testValue, facet.FloatValue(mockNo.Object));

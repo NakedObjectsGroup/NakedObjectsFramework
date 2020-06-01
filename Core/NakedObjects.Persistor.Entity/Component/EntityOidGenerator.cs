@@ -26,8 +26,6 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         #region IOidGenerator Members
 
-        public void ConvertPersistentToTransientOid(IOid oid) { }
-
         public void ConvertTransientToPersistentOid(IOid oid) => (oid as IEntityOid)?.MakePersistent();
 
         public IOid CreateTransientOid(object obj) => new EntityOid(metamodel, obj.GetType(), new object[] {++transientId}, true);

@@ -214,10 +214,8 @@ namespace NakedObjects.SystemTest.Audit {
 
             var fooPersistedCount = 0;
 
-            var newValue = Guid.NewGuid().ToString();
-
             FooAuditor.Auditor.objectPersistedCallback = (p, o) => {
-                Assert.AreEqual("sven", p.Identity.Name);
+                Assert.AreEqual("sven", p.Identity?.Name);
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Foo", o.GetType().GetProxiedType().FullName);
                 Assert.IsNull(((Foo) o).Prop1);
@@ -237,10 +235,8 @@ namespace NakedObjects.SystemTest.Audit {
 
             var quxPersistedCount = 0;
 
-            var newValue = Guid.NewGuid().ToString();
-
             QuxAuditor.Auditor.objectPersistedCallback = (p, o) => {
-                Assert.AreEqual("sven", p.Identity.Name);
+                Assert.AreEqual("sven", p.Identity?.Name);
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Qux", o.GetType().GetProxiedType().FullName);
                 Assert.IsNull(((Qux) o).Prop1);
@@ -473,10 +469,8 @@ namespace NakedObjects.SystemTest.Audit {
 
             var defaultPersistedCount = 0;
 
-            var newValue = Guid.NewGuid().ToString();
-
             MyDefaultAuditor.Auditor.objectPersistedCallback = (p, o) => {
-                Assert.AreEqual("sven", p.Identity.Name);
+                Assert.AreEqual("sven", p.Identity?.Name);
                 Assert.IsNotNull(o);
                 Assert.AreEqual("NakedObjects.SystemTest.Audit.Bar", o.GetType().GetProxiedType().FullName);
                 Assert.IsNull(((Bar) o).Prop1);

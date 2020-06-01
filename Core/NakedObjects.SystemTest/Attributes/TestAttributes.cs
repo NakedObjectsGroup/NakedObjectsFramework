@@ -24,6 +24,7 @@ using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedVariable
 
 namespace NakedObjects.SystemTest.Attributes {
     [TestFixture]
@@ -209,10 +210,10 @@ namespace NakedObjects.SystemTest.Attributes {
             var testObj = NewTestObject<Contributee2>();
             var obj = testObj.GetDomainObject();
             var adapter = NakedObjectsFramework.NakedObjectManager.CreateAdapter(obj, null, null);
-            var actions = (adapter.Spec as IObjectSpec).GetCollectionContributedActions();
+            var actions = (adapter.Spec as IObjectSpec)?.GetCollectionContributedActions();
             var testActions = testObj.Actions;
 
-            Assert.AreEqual(3, actions.Length);
+            Assert.AreEqual(3, actions?.Length);
             Assert.IsTrue(actions[0] is IActionSpec);
             Assert.AreEqual("Collection Contributed Action", actions[0].Name);
             Assert.AreEqual("Collection Contributed Action1", actions[1].Name);

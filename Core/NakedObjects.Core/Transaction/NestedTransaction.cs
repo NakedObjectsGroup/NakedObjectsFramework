@@ -37,8 +37,6 @@ namespace NakedObjects.Core.Transaction {
             complete = true;
         }
 
-        public bool Flush() => false;
-
         #endregion
 
         public override string ToString() {

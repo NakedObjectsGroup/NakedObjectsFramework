@@ -12,7 +12,6 @@ namespace NakedObjects.Architecture.Component {
     ///     Oid factory
     /// </summary>
     public interface IOidGenerator {
-        void ConvertPersistentToTransientOid(IOid oid);
         void ConvertTransientToPersistentOid(IOid oid);
         IOid CreateTransientOid(object obj);
         IOid RestoreOid(string[] encodedData);

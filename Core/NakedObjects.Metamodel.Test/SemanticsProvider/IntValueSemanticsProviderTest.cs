@@ -100,7 +100,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestValue() {
             var facet = (IIntegerValueFacet) GetValue();
-            var testValue = 121;
+            const int testValue = 121;
             var mockNo = new Mock<INakedObjectAdapter>();
             mockNo.Setup(no => no.Object).Returns(testValue);
             Assert.AreEqual(testValue, facet.IntegerValue(mockNo.Object));

@@ -93,7 +93,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public void TestValue() {
             ISbyteValueFacet facet = value;
-            var testValue = (sbyte) 101;
+            const sbyte testValue = (sbyte) 101;
             var mockNo = new Mock<INakedObjectAdapter>();
             mockNo.Setup(no => no.Object).Returns(testValue);
             Assert.AreEqual(testValue, facet.SByteValue(mockNo.Object));

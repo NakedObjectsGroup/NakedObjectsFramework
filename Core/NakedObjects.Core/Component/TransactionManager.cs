@@ -38,8 +38,6 @@ namespace NakedObjects.Core.Component {
             TransactionLevel++;
         }
 
-        public bool FlushTransaction() => transaction != null && transaction.Flush();
-
         public void AbortTransaction() {
             if (transaction != null) {
                 transaction.Abort();

@@ -69,8 +69,6 @@ namespace NakedObjects.ParallelReflect.Component {
 
         public T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable => throw new NotImplementedException();
 
-        public void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore) => throw new NotImplementedException();
-
         public ITypeSpecBuilder[] AllObjectSpecImmutables => initialMetamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
 
         public (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Globalization;
+using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -18,20 +18,43 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestClass]
-    public class CharValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<char> {
-        private char character;
+    public class ColorValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<Color> {
+        private Color colorObj;
         private ISpecification holder;
-        private CharValueSemanticsProvider value;
+        private ColorValueSemanticsProvider value;
 
         [TestMethod]
-        public void TestDecode() {
-            object restore = value.FromEncodedString("Y");
-            Assert.AreEqual('Y', restore);
+        public void TestParseValidString() {
+            var str = Color.Beige.ToArgb().ToString();
+            var parsed = (Color) value.ParseTextEntry(str);
+            Assert.AreEqual(Color.Beige.ToArgb(), parsed.ToArgb());
+        }
+
+        [TestMethod]
+        public void TestParseInvalidString() {
+            try {
+                value.ParseTextEntry("xs21z4xxx23");
+                Assert.Fail();
+            }
+            catch (Exception e) {
+                Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
+            }
+        }
+
+        [TestMethod]
+        public void TestTitleOf() {
+            Assert.AreEqual("Color [White]", value.DisplayTitleOf(colorObj));
         }
 
         [TestMethod]
         public void TestEncode() {
-            Assert.AreEqual("r", value.ToEncodedString(character));
+            Assert.AreEqual("-983041", value.ToEncodedString(Color.Azure));
+        }
+
+        [TestMethod]
+        public void TestDecode() {
+            var parsed = value.FromEncodedString("-983041");
+            Assert.AreEqual(Color.Azure.ToArgb(), parsed.ToArgb());
         }
 
         [TestMethod]
@@ -43,36 +66,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             catch (Exception) {
                 Assert.Fail();
             }
-        }
-
-        [TestMethod]
-        public void TestParseInvariant() {
-            const char c1 = 'z';
-            var s1 = c1.ToString(CultureInfo.InvariantCulture);
-            var c2 = value.ParseInvariant(s1);
-            Assert.AreEqual(c1, c2);
-        }
-
-        [TestMethod]
-        public void TestParseLongString() {
-            try {
-                value.ParseTextEntry("one");
-                Assert.Fail();
-            }
-            catch (Exception e) {
-                Assert.IsInstanceOfType(e, typeof(InvalidEntryException));
-            }
-        }
-
-        [TestMethod]
-        public void TestTitleOf() {
-            Assert.AreEqual("r", value.DisplayTitleOf(character));
-        }
-
-        [TestMethod]
-        public void TestValidParse() {
-            var parse = value.ParseTextEntry("t");
-            Assert.AreEqual('t', parse);
         }
 
         [TestMethod]
@@ -92,11 +85,11 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         [TestMethod]
         public void TestValue() {
-            ICharValueFacet facet = value;
-            const char testValue = (char) 101;
+            IColorValueFacet facet = value;
+            var testValue = Color.Blue;
             var mockNo = new Mock<INakedObjectAdapter>();
             mockNo.Setup(no => no.Object).Returns(testValue);
-            Assert.AreEqual(testValue, facet.CharValue(mockNo.Object));
+            Assert.AreEqual(testValue.ToArgb(), facet.ColorValue(mockNo.Object));
         }
 
         #region Setup/Teardown
@@ -104,10 +97,10 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            character = 'r';
+            colorObj = Color.White;
             holder = new Mock<ISpecification>().Object;
             var spec = new Mock<IObjectSpecImmutable>().Object;
-            SetValue(value = new CharValueSemanticsProvider(spec, holder));
+            SetValue(value = new ColorValueSemanticsProvider(spec, holder));
         }
 
         [TestCleanup]

@@ -37,7 +37,6 @@ namespace NakedObjects.Architecture.Component {
         /// <returns></returns>
         T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable;
 
-        void LoadSpecificationForReturnTypes(IList<PropertyInfo> properties, Type classToIgnore);
         void Reflect();
 
         // new for ParallelReflector
