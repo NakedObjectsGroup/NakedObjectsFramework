@@ -15,8 +15,6 @@ using NUnit.Framework;
 namespace NakedObjects.Core.Test.Adapter {
     [TestFixture]
     public class ViewModelOidTest {
-        private readonly ILifecycleManager lifecycleManager = new Mock<ILifecycleManager>().Object;
-
         private readonly Mock<IMetamodelManager> mockMetamodel = new Mock<IMetamodelManager>();
         private readonly Mock<IObjectSpec> mockObjectSpec = new Mock<IObjectSpec>();
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Metamodel.Test.Facet {
@@ -6,7 +7,7 @@ namespace NakedObjects.Metamodel.Test.Facet {
     public class RegexFacetTest {
         [TestMethod]
         public void TestRegexFacet() {
-            var facet = new RegExFacet(@"\d", "", false, "", null);
+            IRegExFacet facet = new RegExFacet(@"\d", "", false, "", null);
 
             Assert.IsTrue(facet.DoesNotMatch("a"));
             Assert.IsFalse(facet.DoesNotMatch("1"));

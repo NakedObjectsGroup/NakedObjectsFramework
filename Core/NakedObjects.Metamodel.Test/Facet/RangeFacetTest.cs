@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Metamodel.Test.Facet {
@@ -10,7 +11,7 @@ namespace NakedObjects.Metamodel.Test.Facet {
         public void TestRangeFacet() {
             const int min = 1;
             const int max = 20;
-            var facet = new RangeFacet(min, max, false, null);
+            IRangeFacet facet = new RangeFacet(min, max, false, null);
 
             var inRangeMock = new Mock<INakedObjectAdapter>();
             var outRangeMock1 = new Mock<INakedObjectAdapter>();
