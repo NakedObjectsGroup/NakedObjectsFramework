@@ -10,13 +10,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     public abstract class ValueSemanticsProviderAbstractTestCase<T> {
-        private EncodeableFacetUsingEncoderDecoder<T> encodeableFacet;
+        private IEncodeableFacet encodeableFacet;
         protected ILifecycleManager LifecycleManager = new Mock<ILifecycleManager>().Object;
         protected INakedObjectManager Manager = new Mock<INakedObjectManager>().Object;
         protected IMetamodelManager Metamodel = new Mock<IMetamodelManager>().Object;

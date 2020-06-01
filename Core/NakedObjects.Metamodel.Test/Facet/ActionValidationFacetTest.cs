@@ -10,8 +10,8 @@ namespace NakedObjects.Metamodel.Test.Facet {
     [TestClass]
     public class ActionValidationFacetTest {
         private static void DelegateFuncTest(MethodInfo method) {
-            var actionValidationFacet = new ActionValidationFacet(method, null);
-            IActionValidationFacet facet = actionValidationFacet;
+            IImperativeFacet actionValidationFacet = new ActionValidationFacet(method, null);
+            var facet = (IActionValidationFacet) actionValidationFacet;
             Assert.IsNotNull(actionValidationFacet.GetMethodDelegate(), method.Name);
             var parms = method.GetParameters().Select(p => "astring").Cast<object>().Select(MockParm).ToArray();
             var target = MockParm(new TestDelegateClass());
@@ -19,8 +19,8 @@ namespace NakedObjects.Metamodel.Test.Facet {
         }
 
         private static void InvokeFuncTest(MethodInfo method) {
-            var actionValidationFacet = new ActionValidationFacet(method, null);
-            IActionValidationFacet facet = actionValidationFacet;
+            IImperativeFacet actionValidationFacet = new ActionValidationFacet(method, null);
+            var facet = (IActionValidationFacet) actionValidationFacet;
             Assert.IsNull(actionValidationFacet.GetMethodDelegate());
             Assert.IsNotNull(actionValidationFacet.GetMethod());
             var parms = method.GetParameters().Select(p => "astring").Cast<object>().Select(MockParm).ToArray();
