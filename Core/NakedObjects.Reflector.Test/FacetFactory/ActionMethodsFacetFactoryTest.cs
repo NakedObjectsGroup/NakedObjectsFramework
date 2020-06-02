@@ -848,18 +848,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public long[] Choices2SomeAction() => new long[0];
         }
 
-        private class Customer31 {
-            public void SomeAction(int x, long y, long z) { }
-
-            public int[] Choices0SomeAction(long y, long z) => new int[0];
-
-            [Executed(Where.Remotely)]
-            public long[] Choices0SomeAction(long z) => new long[0];
-
-            [Executed(Where.Locally)]
-            public long[] Choices0SomeAction() => new long[0];
-        }
-
         private class Customer21 {
             public void SomeAction(int x, long y, long z) { }
 

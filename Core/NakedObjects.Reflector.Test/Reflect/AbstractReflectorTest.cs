@@ -135,17 +135,6 @@ namespace NakedObjects.Reflect.Test {
             Assert.AreEqual(type, spec.Type);
         }
 
-        public static void AssertSpecsContain(Type type, ITypeSpecBuilder[] specs) {
-            foreach (var spec in specs) {
-                if (type.FullName == spec.FullName) {
-                    AssertSpec(type, spec);
-                    return;
-                }
-            }
-
-            Assert.Fail("Spec missing: " + type.FullName);
-        }
-
         private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs) {
             return specs.SingleOrDefault(s => s.FullName == type.FullName);
         }

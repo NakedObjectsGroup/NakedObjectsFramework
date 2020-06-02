@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
+using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SemanticsProvider;
 
 // ReSharper disable UnusedMember.Global
@@ -136,7 +137,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         private static IEnumValueFacet GetEnumFacet<T>() => new EnumValueSemanticsProvider<T>(null, null);
 
-
         [TestMethod]
         public void TestIntegralValue() {
             Assert.AreEqual(sbyte.MinValue.ToString(CultureInfo.InvariantCulture), GetEnumFacet<TestEnumSb>().IntegralValue(MockNakedObject(TestEnumSb.London)));
@@ -242,6 +242,20 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public override void TestEmptyEncoding() {
             base.TestEmptyEncoding();
+        }
+
+        [TestMethod]
+        public void TestAsParserInvariant() {
+            var mgr = MockNakedObjectManager();
+            IParseableFacet parser = new ParseableFacetUsingParser<TestEnum>(value, null);
+            Assert.AreEqual(TestEnum.Paris, parser.ParseInvariant("Paris", mgr.Object).Object);
+        }
+
+        [TestMethod]
+        public void TestAsParserTitle() {
+            IParseableFacet parser = new ParseableFacetUsingParser<TestEnum>(value, null);
+            var mockAdapter = MockAdapter(TestEnum.NewYork);
+            Assert.AreEqual("New York", parser.ParseableTitle(mockAdapter));
         }
 
         #region Setup/Teardown

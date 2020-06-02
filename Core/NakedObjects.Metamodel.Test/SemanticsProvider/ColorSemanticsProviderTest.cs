@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
+using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
@@ -90,6 +91,22 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             var mockNo = new Mock<INakedObjectAdapter>();
             mockNo.Setup(no => no.Object).Returns(testValue);
             Assert.AreEqual(testValue.ToArgb(), facet.ColorValue(mockNo.Object));
+        }
+
+        [TestMethod]
+        public void TestAsParserInvariant() {
+            var mgr = MockNakedObjectManager();
+            var str = Color.Beige.ToArgb().ToString();
+            IParseableFacet parser = new ParseableFacetUsingParser<Color>(value, null);
+            var parsed = (Color) parser.ParseInvariant(str, mgr.Object).Object;
+            Assert.AreEqual(Color.Beige.ToArgb(), parsed.ToArgb());
+        }
+
+        [TestMethod]
+        public void TestAsParserTitle() {
+            IParseableFacet parser = new ParseableFacetUsingParser<Color>(value, null);
+            var mockAdapter = MockAdapter(Color.Beige);
+            Assert.AreEqual("Color [Beige]", parser.ParseableTitle(mockAdapter));
         }
 
         #region Setup/Teardown

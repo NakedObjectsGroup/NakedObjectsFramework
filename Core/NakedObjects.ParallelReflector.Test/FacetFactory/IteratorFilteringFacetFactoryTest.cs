@@ -75,10 +75,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             public void someAction() { }
         }
 
-        private class Customer1 {
-            public void someAction() { }
-        }
-
         // ReSharper restore AssignNullToNotNullAttribute
         // ReSharper restore InconsistentNaming
         // ReSharper restore UnusedMember.Local

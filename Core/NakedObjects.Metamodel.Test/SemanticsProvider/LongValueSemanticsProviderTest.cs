@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
+using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
@@ -104,6 +105,20 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             var mockNo = new Mock<INakedObjectAdapter>();
             mockNo.Setup(no => no.Object).Returns(testValue);
             Assert.AreEqual(testValue, facet.LongValue(mockNo.Object));
+        }
+
+        [TestMethod]
+        public void TestAsParserInvariant() {
+            var mgr = MockNakedObjectManager();
+            IParseableFacet parser = new ParseableFacetUsingParser<long>(value, null);
+            Assert.AreEqual(91L, parser.ParseInvariant("91", mgr.Object).Object);
+        }
+
+        [TestMethod]
+        public void TestAsParserTitle() {
+            IParseableFacet parser = new ParseableFacetUsingParser<long>(value, null);
+            var mockAdapter = MockAdapter(101L);
+            Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
         }
 
         #region Setup/Teardown

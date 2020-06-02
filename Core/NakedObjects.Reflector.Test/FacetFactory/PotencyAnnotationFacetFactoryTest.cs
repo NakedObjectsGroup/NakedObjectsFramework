@@ -89,7 +89,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestIdempotentPriorityAnnotationPickedUp() {
-            var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
             facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification);
             var facet = Specification.GetFacet(typeof(IIdempotentFacet));
             Assert.IsNotNull(facet);

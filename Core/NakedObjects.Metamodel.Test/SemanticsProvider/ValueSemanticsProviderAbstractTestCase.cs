@@ -65,5 +65,17 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public virtual void TestEmptyEncoding() {
             Assert.AreEqual(EncodeableFacetUsingEncoderDecoder<object>.EncodedNull, encodeableFacet.ToEncodedString(null));
         }
+
+        protected static INakedObjectAdapter MockAdapter(object obj) {
+            var mockParm = new Mock<INakedObjectAdapter>();
+            mockParm.Setup(p => p.Object).Returns(obj);
+            return mockParm.Object;
+        }
+
+        protected static Mock<INakedObjectManager> MockNakedObjectManager() {
+            var mgr = new Mock<INakedObjectManager>();
+            mgr.Setup(mm => mm.CreateAdapter(It.IsAny<object>(), null, null)).Returns<object, IOid, IVersion>((obj, oid, ver) => MockAdapter(obj));
+            return mgr;
+        }
     }
 }

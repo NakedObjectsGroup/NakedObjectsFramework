@@ -26,6 +26,7 @@ using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
+// ReSharper disable UnusedMember.Global
 
 namespace NakedObjects.Reflect.Test {
     public class NullMenuFactory : IMenuFactory {

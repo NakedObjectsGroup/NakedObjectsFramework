@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
@@ -77,6 +78,21 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             var mockNo = new Mock<INakedObjectAdapter>();
             mockNo.Setup(no => no.Object).Returns(testValue);
             Assert.AreEqual(testValue, facet.TimeValue(mockNo.Object));
+        }
+
+        [TestMethod]
+        public void TestAsParserInvariant() {
+            var mgr = MockNakedObjectManager();
+            IParseableFacet parser = new ParseableFacetUsingParser<TimeSpan>(GetValue(), null);
+            var parsed = parser.ParseInvariant("08:13:00", mgr.Object).Object;
+            Assert.AreEqual(time, parsed);
+        }
+
+        [TestMethod]
+        public void TestAsParserTitle() {
+            IParseableFacet parser = new ParseableFacetUsingParser<TimeSpan>(GetValue(), null);
+            var mockAdapter = MockAdapter(time);
+            Assert.AreEqual("08:13", parser.ParseableTitle(mockAdapter));
         }
 
         #region Setup/Teardown

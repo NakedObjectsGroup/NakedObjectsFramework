@@ -14,13 +14,14 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
+using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     [TestClass]
     public class DecimalValueSemanticsProviderTest : ValueSemanticsProviderAbstractTestCase<decimal> {
-        private ISpecification holder;
         private decimal dec;
+        private ISpecification holder;
         private DecimalValueSemanticsProvider value;
 
         [TestMethod]
@@ -104,6 +105,20 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
             var mockNo = new Mock<INakedObjectAdapter>();
             mockNo.Setup(no => no.Object).Returns(testValue);
             Assert.AreEqual(testValue, facet.DecimalValue(mockNo.Object));
+        }
+
+        [TestMethod]
+        public void TestAsParserInvariant() {
+            var mgr = MockNakedObjectManager();
+            IParseableFacet parser = new ParseableFacetUsingParser<decimal>(value, null);
+            Assert.AreEqual(91M, parser.ParseInvariant("91", mgr.Object).Object);
+        }
+
+        [TestMethod]
+        public void TestAsParserTitle() {
+            IParseableFacet parser = new ParseableFacetUsingParser<decimal>(value, null);
+            var mockAdapter = MockAdapter(101M);
+            Assert.AreEqual("101", parser.ParseableTitle(mockAdapter));
         }
 
         #region Setup/Teardown

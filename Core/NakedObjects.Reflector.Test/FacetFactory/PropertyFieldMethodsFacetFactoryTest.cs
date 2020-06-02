@@ -227,19 +227,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             public void ModifyFirstName(string firstName) { }
         }
 
-        private class Customer8 {
-            public string FirstName => null;
-
-            public void ClearFirstName() { }
-        }
-
-        private class Customer9 {
-            public string FirstName {
-                get => null;
-                set { }
-            }
-        }
-
         public class CustomerStatic {
             public string FirstName {
                 get => null;

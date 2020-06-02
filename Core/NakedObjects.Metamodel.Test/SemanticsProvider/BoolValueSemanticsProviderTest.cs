@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
+using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SemanticsProvider;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
@@ -133,6 +134,21 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         [TestMethod]
         public override void TestEmptyEncoding() {
             base.TestEmptyEncoding();
+        }
+
+        [TestMethod]
+        public void TestAsParserInvariant() {
+            var mgr = MockNakedObjectManager();
+            IParseableFacet parser = new ParseableFacetUsingParser<bool>(value, null);
+            Assert.AreEqual(true, parser.ParseInvariant("true", mgr.Object).Object);
+            Assert.AreEqual(false, parser.ParseInvariant("false", mgr.Object).Object);
+        }
+
+        [TestMethod]
+        public void TestAsParserTitle() {
+            IParseableFacet parser = new ParseableFacetUsingParser<bool>(value, null);
+            var mockAdapter = MockAdapter(true);
+            Assert.AreEqual("True", parser.ParseableTitle(mockAdapter));
         }
 
         #region Setup/Teardown
