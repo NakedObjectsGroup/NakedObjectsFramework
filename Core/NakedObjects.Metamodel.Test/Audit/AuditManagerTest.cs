@@ -27,7 +27,7 @@ namespace NakedObjects.Meta.Test.Audit {
 
         [TestMethod]
         public void TestCreateOk() {
-            var config = new AuditConfiguration<IAuditor>();
+            IAuditConfiguration config = new AuditConfiguration<IAuditor>();
 
             config.AddNamespaceAuditor<IAuditor>("namespace");
 

@@ -13,9 +13,6 @@ namespace NakedObjects.Meta {
     ///     The interaction is invalid because the input value does not match the specified RegEx.
     /// </summary>
     public class InvalidRegExException : InvalidException {
-        public InvalidRegExException(IInteractionContext ic, string format, string validation, bool caseSensitive)
-            : this(ic, format, validation, caseSensitive, Resources.NakedObjects.PatternMessage) { }
-
         public InvalidRegExException(IInteractionContext ic, string format, string validation, bool caseSensitive, string message)
             : base(ic, message) {
             FormatPattern = format;

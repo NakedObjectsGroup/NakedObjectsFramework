@@ -14,9 +14,6 @@ namespace NakedObjects.Meta {
     ///     (eg not annotated with <see cref="OptionallyAttribute" />).
     /// </summary>
     public class InvalidMandatoryException : InvalidException {
-        public InvalidMandatoryException(IInteractionContext ic)
-            : this(ic, Resources.NakedObjects.Mandatory) { }
-
         public InvalidMandatoryException(IInteractionContext ic, string message)
             : base(ic, message) { }
     }

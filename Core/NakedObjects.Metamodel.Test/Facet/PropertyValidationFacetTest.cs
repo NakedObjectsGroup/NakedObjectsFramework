@@ -13,7 +13,6 @@ namespace NakedObjects.Metamodel.Test.Facet {
             IImperativeFacet validationFacet = new PropertyValidateFacetViaMethod(method, null);
             var facet = (IPropertyValidateFacet) validationFacet;
             Assert.IsNotNull(validationFacet.GetMethodDelegate(), method.Name);
-            var parms = method.GetParameters().Select(p => "astring").Cast<object>().Select(MockParm).ToArray();
             var target = MockParm(new TestDelegateClass());
             var value = MockParm("astring");
             Assert.AreEqual("Validation", facet.InvalidReason(target, value));

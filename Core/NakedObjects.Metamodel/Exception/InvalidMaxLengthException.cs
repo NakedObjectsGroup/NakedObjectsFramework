@@ -13,9 +13,6 @@ namespace NakedObjects.Meta {
     ///     The interaction is invalid because the input value has exceeded the specified maximum length.
     /// </summary>
     public class InvalidMaxLengthException : InvalidException {
-        public InvalidMaxLengthException(IInteractionContext ic, int maximumLength)
-            : this(ic, maximumLength, Resources.NakedObjects.MaximumLengthMessage) { }
-
         public InvalidMaxLengthException(IInteractionContext ic, int maximumLength, string message)
             : base(ic, message) =>
             MaximumLength = maximumLength;

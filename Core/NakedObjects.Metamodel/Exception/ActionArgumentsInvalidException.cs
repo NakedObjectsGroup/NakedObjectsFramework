@@ -10,9 +10,6 @@ using NakedObjects.Core;
 
 namespace NakedObjects.Meta {
     public class ActionArgumentsInvalidException : InvalidException {
-        public ActionArgumentsInvalidException(IInteractionContext ic)
-            : this(ic, Resources.NakedObjects.InvalidArguments) { }
-
         public ActionArgumentsInvalidException(IInteractionContext ic, string message)
             : base(ic, message) { }
     }

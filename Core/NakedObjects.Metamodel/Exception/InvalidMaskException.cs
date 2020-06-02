@@ -14,9 +14,6 @@ namespace NakedObjects.Meta {
     ///     (eg not annotated with <see cref="OptionallyAttribute" />).
     /// </summary>
     public class InvalidMaskException : InvalidException {
-        public InvalidMaskException(IInteractionContext ic)
-            : this(ic, Resources.NakedObjects.MaskError) { }
-
         public InvalidMaskException(IInteractionContext ic, string message)
             : base(ic, message) { }
     }
