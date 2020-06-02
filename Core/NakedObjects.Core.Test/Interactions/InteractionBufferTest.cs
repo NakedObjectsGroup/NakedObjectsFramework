@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Interactions;
 using NakedObjects.Core.Interactions;
 using NUnit.Framework;
 
@@ -13,7 +14,7 @@ namespace NakedObjects.Core.Test.Interactions {
     public class InteractionBufferTest {
         [Test]
         public void IsNotEmptyTest() {
-            var buffer = new InteractionBuffer();
+            IInteractionBuffer buffer = new InteractionBuffer();
             Assert.IsFalse(buffer.IsNotEmpty);
             buffer.Append("a reason");
             Assert.IsTrue(buffer.IsNotEmpty);

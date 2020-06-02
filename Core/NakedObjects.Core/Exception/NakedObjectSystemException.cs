@@ -12,7 +12,6 @@ namespace NakedObjects.Core {
     ///     A NakedObjectSystemException represents an exception that has occurred within the framework code.
     /// </summary>
     public class NakedObjectSystemException : NakedObjectException {
-        public NakedObjectSystemException() { }
         public NakedObjectSystemException(string messsage) : base(messsage) { }
         public NakedObjectSystemException(Exception cause) : base(cause) { }
         public NakedObjectSystemException(string messsage, Exception cause) : base(messsage, cause) { }

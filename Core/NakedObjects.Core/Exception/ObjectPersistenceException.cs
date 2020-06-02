@@ -9,16 +9,11 @@ using System;
 
 namespace NakedObjects.Core {
     public abstract class ObjectPersistenceException : NakedObjectApplicationException {
-        protected ObjectPersistenceException() { }
-
         protected ObjectPersistenceException(string message)
             : base(message) { }
 
         protected ObjectPersistenceException(string message, Exception cause)
             : base(message, cause) { }
-
-        protected ObjectPersistenceException(Exception cause)
-            : base(cause) { }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

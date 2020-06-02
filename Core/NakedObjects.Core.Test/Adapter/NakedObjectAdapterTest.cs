@@ -69,5 +69,18 @@ namespace NakedObjects.Core.Test.Adapter {
                 // expected 
             }
         }
+
+        [Test]
+        public void TestRoundTrip() {
+            var mockMetamodelManager = new Mock<IMetamodelManager>();
+
+            var testCcVersion = new ConcurrencyCheckVersion("", DateTime.Now, "avalue");
+
+            var encoded = testCcVersion.ToEncodedStrings();
+            var newVersion = new ConcurrencyCheckVersion(mockMetamodelManager.Object, encoded);
+
+            Assert.AreEqual(testCcVersion, newVersion);
+        }
+
     }
 }

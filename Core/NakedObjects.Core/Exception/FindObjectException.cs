@@ -7,11 +7,6 @@
 
 namespace NakedObjects.Core {
     public class FindObjectException : ObjectPersistenceException {
-        public FindObjectException() { }
-
-        public FindObjectException(object oid)
-            : base(string.Format(Resources.NakedObjects.FindObjectMessage, oid)) { }
-
         public FindObjectException(string s)
             : base(s) { }
     }

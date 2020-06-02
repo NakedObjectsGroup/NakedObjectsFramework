@@ -9,8 +9,6 @@ using System;
 
 namespace NakedObjects.Core {
     public class TitleException : NakedObjectApplicationException {
-        public TitleException() { }
-
         public TitleException(string msg, Exception cause)
             : base(msg, cause) { }
 

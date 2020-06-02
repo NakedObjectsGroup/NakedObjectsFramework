@@ -22,6 +22,8 @@ namespace NakedObjects.Core.Component {
 
         public IdentityAdapterHashMap() => adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
 
+        // used by DI
+        // ReSharper disable once UnusedMember.Global
         public IdentityAdapterHashMap(IConfiguration config) : this() {
             var capacityFromConfig = config.GetSection("NakedObjects")["HashMapCapacity"];
             if (capacityFromConfig == null) {

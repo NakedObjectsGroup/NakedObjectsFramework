@@ -20,6 +20,8 @@ namespace NakedObjects.Core.Component {
 
         public NakedObjectAdapterHashMap() => domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
 
+        // used by DI
+        // ReSharper disable once UnusedMember.Global
         public NakedObjectAdapterHashMap(IConfiguration config) : this() {
             var capacityFromConfig = config.GetSection("NakedObjects")["HashMapCapacity"];
             if (capacityFromConfig == null) {

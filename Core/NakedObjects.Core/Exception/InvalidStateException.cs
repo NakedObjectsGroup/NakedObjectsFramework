@@ -7,7 +7,6 @@
 
 namespace NakedObjects.Core {
     public class InvalidStateException : NakedObjectSystemException {
-        public InvalidStateException() { }
         public InvalidStateException(string messsage) : base(messsage) { }
     }
 }

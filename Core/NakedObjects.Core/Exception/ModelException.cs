@@ -13,7 +13,6 @@ namespace NakedObjects.Core {
     /// </summary>
     public class ModelException : NakedObjectApplicationException {
         public ModelException(string messsage) : base(messsage) { }
-        public ModelException(Exception cause) : base(cause) { }
         public ModelException(string messsage, Exception cause) : base(messsage, cause) { }
     }
 }

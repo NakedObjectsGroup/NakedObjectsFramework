@@ -12,9 +12,6 @@ namespace NakedObjects.Core {
     ///     Superclass of exceptions which indicate an attempt to interact with an object or member in a way that is invalid.
     /// </summary>
     public class InvalidException : InteractionException {
-        public InvalidException(IInteractionContext ic)
-            : this(ic, Resources.NakedObjects.Invalid) { }
-
         public InvalidException(IInteractionContext ic, string message)
             : base(ic, message) { }
     }

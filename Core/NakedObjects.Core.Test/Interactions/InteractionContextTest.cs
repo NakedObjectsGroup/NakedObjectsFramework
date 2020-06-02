@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedObjects.Architecture.Interactions;
 using NakedObjects.Core.Interactions;
 using NUnit.Framework;
 
@@ -13,13 +14,13 @@ namespace NakedObjects.Core.Test.Interactions {
     public class InteractionContextTest {
         [Test]
         public void IsProgramaticTest() {
-            var context = InteractionContext.InvokingAction(null, true, null, null, null);
+            IInteractionContext context = InteractionContext.InvokingAction(null, true, null, null, null);
             Assert.IsTrue(context.IsProgrammatic);
         }
 
         [Test]
         public void IsNotProgramaticTest() {
-            var context = InteractionContext.InvokingAction(null, false, null, null, null);
+            IInteractionContext context = InteractionContext.InvokingAction(null, false, null, null, null);
             Assert.IsFalse(context.IsProgrammatic);
         }
     }

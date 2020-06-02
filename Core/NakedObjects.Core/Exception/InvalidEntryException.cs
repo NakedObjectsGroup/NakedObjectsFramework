@@ -14,14 +14,8 @@ namespace NakedObjects.Core {
     ///     but it does not fulfill other other entry requirements
     /// </summary>
     public class InvalidEntryException : NakedObjectApplicationException {
-        public InvalidEntryException()
-            : this(ProgrammingModel.InvalidValue) { }
-
         public InvalidEntryException(string message)
             : base(message) { }
-
-        public InvalidEntryException(Exception cause)
-            : this(ProgrammingModel.InvalidValue, cause) { }
 
         public InvalidEntryException(string message, Exception cause)
             : base(message, cause) { }

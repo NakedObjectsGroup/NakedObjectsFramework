@@ -9,8 +9,6 @@ using System;
 
 namespace NakedObjects.Core {
     public class UnknownTypeException : NakedObjectSystemException {
-        public UnknownTypeException() { }
-
         public UnknownTypeException(string message)
             : base(message) { }
 

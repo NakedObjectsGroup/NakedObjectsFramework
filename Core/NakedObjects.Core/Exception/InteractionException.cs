@@ -11,9 +11,6 @@ using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Core {
     public abstract class InteractionException : Exception {
-        protected InteractionException(IInteractionContext ic)
-            : this(ic, null) { }
-
         protected InteractionException(IInteractionContext ic, string message)
             : base(message) {
             InteractionType = ic.InteractionType;

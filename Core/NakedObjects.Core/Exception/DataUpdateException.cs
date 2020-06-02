@@ -6,21 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Core {
     public class DataUpdateException : ObjectPersistenceException {
-        public DataUpdateException(INakedObjectAdapter nakedObjectAdapter, IVersion updated)
-            : this(string.Format(Resources.NakedObjects.DataUpdateMessage, nakedObjectAdapter.Version.User, nakedObjectAdapter.TitleString(), DateTime.Now.ToLongTimeString(), Environment.NewLine, Environment.NewLine, nakedObjectAdapter.Version, updated), nakedObjectAdapter.Oid) { }
-
-        public DataUpdateException(string message, IOid source)
-            : base(message) =>
-            SourceOid = source;
-
         public DataUpdateException(string message, Exception cause)
             : base(message, cause) { }
 
-        public virtual IOid SourceOid { get; }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

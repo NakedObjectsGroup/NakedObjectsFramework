@@ -12,14 +12,8 @@ namespace NakedObjects.Core {
     ///     Indicates a problem initializing the naked objects system
     /// </summary>
     public class InitialisationException : NakedObjectApplicationException {
-        public InitialisationException() { }
-
         public InitialisationException(string s)
             : base(s) { }
-
-        public InitialisationException(Exception cause)
-            : base(cause) { }
-
         public InitialisationException(string msg, Exception cause)
             : base(msg, cause) { }
     }
