@@ -38,9 +38,7 @@ namespace NakedObjects.ParallelReflect {
 
         private IFacetFactorySet FacetFactorySet => reflector.FacetFactorySet;
 
-        private Type[] InterfacesTypes {
-            get { return IntrospectedType.GetInterfaces().Where(i => i.IsPublic).ToArray(); }
-        }
+        private Type[] InterfacesTypes => IntrospectedType.GetInterfaces().Where(i => i.IsPublic).ToArray();
 
         private Type SuperclassType => IntrospectedType.BaseType;
 
@@ -123,8 +121,8 @@ namespace NakedObjects.ParallelReflect {
 
         public IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPropertiesAndCollections(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (spec is IObjectSpecImmutable objectSpec) {
-                var (fields, mm) = FindAndCreateFieldSpecs(objectSpec, metamodel);
-                metamodel = mm;
+                IAssociationSpecImmutable[] fields;
+                (fields, metamodel) = FindAndCreateFieldSpecs(objectSpec, metamodel);
                 orderedFields = CreateSortedListOfMembers(fields);
             }
             else {
@@ -136,8 +134,8 @@ namespace NakedObjects.ParallelReflect {
 
         public IImmutableDictionary<string, ITypeSpecBuilder> IntrospectActions(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // find the actions ...
-            var (findObjectActionMethods, mm) = FindActionMethods(spec, metamodel);
-            metamodel = mm;
+            IActionSpecImmutable[] findObjectActionMethods;
+            (findObjectActionMethods, metamodel) = FindActionMethods(spec, metamodel);
             orderedObjectActions = CreateSortedListOfMembers(findObjectActionMethods);
             return metamodel;
         }
@@ -156,16 +154,15 @@ namespace NakedObjects.ParallelReflect {
         private (IAssociationSpecImmutable[], IImmutableDictionary<string, ITypeSpecBuilder>) FindAndCreateFieldSpecs(IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // now create fieldSpecs for value properties, for collections and for reference properties
             var collectionProperties = FacetFactorySet.FindCollectionProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToArray();
-            var (collectionSpecs, mm) = CreateCollectionSpecs(collectionProperties, spec, metamodel);
-
-            metamodel = mm;
+            IEnumerable<IAssociationSpecImmutable> collectionSpecs;
+            (collectionSpecs, metamodel) = CreateCollectionSpecs(collectionProperties, spec, metamodel);
 
             // every other accessor is assumed to be a reference property.
             var allProperties = FacetFactorySet.FindProperties(properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToArray();
             var refProperties = allProperties.Except(collectionProperties);
 
-            var (refSpecs, mm1) = CreateRefPropertySpecs(refProperties, spec, metamodel);
-            metamodel = mm1;
+            IEnumerable<IAssociationSpecImmutable> refSpecs;
+            (refSpecs, metamodel) = CreateRefPropertySpecs(refProperties, spec, metamodel);
 
             return (collectionSpecs.Union(refSpecs).ToArray(), metamodel);
         }

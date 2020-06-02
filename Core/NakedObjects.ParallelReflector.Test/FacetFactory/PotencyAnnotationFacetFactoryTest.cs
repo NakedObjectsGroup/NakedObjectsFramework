@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -26,47 +27,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         protected override Type[] SupportedTypes => new[] {typeof(IQueryOnlyFacet), typeof(IIdempotentFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
-
-        #region Nested type: Customer
-
-        private class Customer {
-            [QueryOnly]
-
-            public void SomeAction() { }
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new PotencyAnnotationFacetFactory(0);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer1 {
-            [Idempotent]
-            public void SomeAction() { }
-        }
-
-        private class Customer2 {
-            public void SomeAction() { }
-        }
-
-        private class Customer3 {
-            [QueryOnly]
-            [Idempotent]
-            public void SomeAction() { }
-        }
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -95,7 +55,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestIdempotentPriorityAnnotationPickedUp() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
+            var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
             metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IIdempotentFacet));
             Assert.IsNotNull(facet);
@@ -133,6 +93,58 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
         }
+
+        #region Nested type: Customer
+
+        private class Customer {
+            [QueryOnly]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [Idempotent]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer3
+
+        private class Customer3 {
+            [QueryOnly]
+            [Idempotent]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new PotencyAnnotationFacetFactory(0);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

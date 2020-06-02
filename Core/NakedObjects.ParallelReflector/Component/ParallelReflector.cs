@@ -93,13 +93,13 @@ namespace NakedObjects.ParallelReflect.Component {
 
             var allTypes = services.Union(nonServices).ToArray();
 
-            var mm = InstallSpecificationsParallel(allTypes, initialMetamodel);
+            var metamodelBuilder = InstallSpecificationsParallel(allTypes, initialMetamodel);
 
-            PopulateAssociatedActions(s1, mm);
+            PopulateAssociatedActions(s1, metamodelBuilder);
 
             //Menus installed once rest of metamodel has been built:
-            InstallMainMenus(mm);
-            InstallObjectMenus(mm);
+            InstallMainMenus(metamodelBuilder);
+            InstallObjectMenus(metamodelBuilder);
         }
 
         #endregion
@@ -140,11 +140,11 @@ namespace NakedObjects.ParallelReflect.Component {
                 : mm;
         }
 
-        private IMetamodelBuilder InstallSpecificationsParallel(Type[] types, IMetamodelBuilder metamodel) {
-            var mm = GetPlaceholders(types);
-            mm = IntrospectPlaceholders(mm);
-            mm.ForEach(i => metamodel.Add(i.Value.Type, i.Value));
-            return metamodel;
+        private IMetamodelBuilder InstallSpecificationsParallel(Type[] types, IMetamodelBuilder metamodelBuilder) {
+            var metamodel = GetPlaceholders(types);
+            metamodel = IntrospectPlaceholders(metamodel);
+            metamodel.ForEach(i => metamodelBuilder.Add(i.Value.Type, i.Value));
+            return metamodelBuilder;
         }
 
         private void PopulateAssociatedActions(Type[] services, IMetamodelBuilder metamodel) {
