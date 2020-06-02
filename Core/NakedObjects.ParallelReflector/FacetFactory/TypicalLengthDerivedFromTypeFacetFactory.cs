@@ -82,8 +82,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             var actualType = classStrategy.GetType(type);
 
             if (actualType != null) {
-                var fn = actualType.FullName;
-
                 if (actualType.IsArray) {
                     var elementType = actualType.GetElementType();
 

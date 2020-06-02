@@ -8,11 +8,9 @@
 namespace NakedObjects.Rest.Snapshot.Constants {
     public class RelValues {
         // IANA values 
-        public const string DescribedBy = "describedby";
         public const string Help = "help";
         public const string Icon = "icon";
         public const string Next = "next"; // unused ?
-        public const string Previous = "previous"; // unused ?
         public const string Self = "self";
         public const string Up = "up";
 
@@ -32,7 +30,6 @@ namespace NakedObjects.Rest.Snapshot.Constants {
         public const string Delete = Prfx + "delete";
         public const string Details = Prfx + "details";
         public const string DomainType = Prfx + "domain-type";
-        public const string DomainTypes = Prfx + "domain-types";
         public const string Element = Prfx + "element";
         public const string ElementType = Prfx + "element-type";
         public const string Invoke = Prfx + "invoke";
@@ -40,7 +37,6 @@ namespace NakedObjects.Rest.Snapshot.Constants {
         public const string Persist = Prfx + "persist";
         public const string Property = Prfx + "property";
         public const string RemoveFrom = Prfx + "remove-from";
-        public const string ReturnType = Prfx + "return-type";
         public const string Service = Prfx + "service";
         public const string Services = Prfx + "services";
         public const string Update = Prfx + "update";

@@ -177,7 +177,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public static bool DebugWarnings { get; set; }
 
-        public Representation Representation { get; private set; }
+        public IRepresentation Representation { get; private set; }
 
         public Uri Location { get; set; }
 

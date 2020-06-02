@@ -56,13 +56,10 @@ namespace NakedObjects.Rest.Snapshot.Constants {
         public const string SuperType = "supertype";
         public const string Title = "title";
         public const string Type = "type";
-        public const string TypeActions = "typeActions";
         public const string UserName = "userName";
         public const string Value = "value";
         public const string XRoInvalidReason = "x-ro-invalidReason";
         public const string XRoSearchTerm = RestControlFlags.SearchTermReserved;
-
-        public const string XRoMembers = "x-ro-nof-members";
 
         // custom 
         public const string CustomMask = "x-ro-nof-mask";

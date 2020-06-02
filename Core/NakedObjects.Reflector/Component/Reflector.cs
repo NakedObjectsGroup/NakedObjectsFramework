@@ -50,9 +50,6 @@ namespace NakedObjects.Reflect.Component {
             FacetFactorySet = new FacetFactorySet(facetFactories.ToArray());
         }
 
-        // exposed for testing
-        public IFacetDecoratorSet FacetDecoratorSet => facetDecoratorSet;
-
         #region IReflector Members
 
         public bool ConcurrencyChecking => config.ConcurrencyChecking;

@@ -45,8 +45,6 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         public delegate INakedObjectAdapter GetAdapterForDelegate(object domainObject);
 
-        public delegate void NotifyUiDelegate(INakedObjectAdapter changedObjectAdapter);
-
         public delegate void RemoveAdapterDelegate(INakedObjectAdapter nakedObjectAdapter);
 
         public delegate void ReplacePocoDelegate(INakedObjectAdapter nakedObjectAdapter, object newDomainObject);

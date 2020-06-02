@@ -21,7 +21,6 @@ using NakedObjects.Util;
 namespace NakedObjects.Persistor.Entity.Util {
     public static class ObjectContextUtils {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectContextUtils));
-        private static readonly Dictionary<Type, IList<object>> GeneratedKeys = new Dictionary<Type, IList<object>>();
 
         internal static T Invoke<T>(this object onObject, string name, params object[] parms) => (T) onObject.GetType().GetMethod(name)?.Invoke(onObject, parms);
 
