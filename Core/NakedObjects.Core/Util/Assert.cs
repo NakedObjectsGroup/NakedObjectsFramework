@@ -28,13 +28,6 @@ namespace NakedObjects.Core.Util {
             }
         }
 
-        public static void AssertEquals(string message, object expected, object actual) {
-            if (expected != actual) {
-                var msg = SafeMsg(() => ExpectedMsg(message, expected, actual));
-                Trace.Fail(msg);
-            }
-        }
-
         public static void AssertFalse(bool flag) {
             AssertFalse("expected false", flag);
         }
@@ -65,13 +58,6 @@ namespace NakedObjects.Core.Util {
 
         public static void AssertNull(string message, object obj) {
             AssertTrue(message, obj == null);
-        }
-
-        public static void AssertSame(string message, object expected, object actual) {
-            if (expected != actual) {
-                var msg = SafeMsg(() => ExpectedMsg(message, expected, actual));
-                Trace.Fail(msg);
-            }
         }
 
         public static void AssertTrue(bool flag) {

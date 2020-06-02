@@ -16,11 +16,6 @@ namespace NakedObjects.Core.Util {
         private readonly IList<T> wrappedList;
         private readonly IQueryable<T> wrappedListAsQueryable;
 
-        public QueryableList(IList<T> wrappedList) {
-            this.wrappedList = wrappedList;
-            wrappedListAsQueryable = wrappedList.AsQueryable();
-        }
-
         public QueryableList() {
             wrappedList = new List<T>();
             wrappedListAsQueryable = wrappedList.AsQueryable();

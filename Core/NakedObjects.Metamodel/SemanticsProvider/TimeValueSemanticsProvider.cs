@@ -27,9 +27,6 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         public static Type Type => typeof(ITimeValueFacet);
 
-        // inject for testing 
-        public static DateTime? TestDateTime { get; set; }
-
         public static Type AdaptedType => typeof(TimeSpan);
 
         #region ITimeValueFacet Members

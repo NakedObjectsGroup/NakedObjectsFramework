@@ -34,7 +34,7 @@ namespace NakedObjects.Core.Spec {
 
         #region IOneToOneAssociationSpec Members
 
-        public override bool IsChoicesEnabled => ReturnSpec.IsBoundedSet() || ContainsFacet<IPropertyChoicesFacet>() || ContainsFacet<IEnumFacet>();
+        public bool IsChoicesEnabled => ReturnSpec.IsBoundedSet() || ContainsFacet<IPropertyChoicesFacet>() || ContainsFacet<IEnumFacet>();
 
         public override bool IsMandatory {
             get {
@@ -53,7 +53,7 @@ namespace NakedObjects.Core.Spec {
 
         public override INakedObjectAdapter GetNakedObject(INakedObjectAdapter fromObjectAdapter) => GetAssociation(fromObjectAdapter);
 
-        public override (string, IObjectSpec)[] GetChoicesParameters() {
+        public (string, IObjectSpec)[] GetChoicesParameters() {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
             return propertyChoicesFacet == null
                 ? new (string, IObjectSpec)[] { }
@@ -63,7 +63,7 @@ namespace NakedObjects.Core.Spec {
                 }).ToArray();
         }
 
-        public override INakedObjectAdapter[] GetChoices(INakedObjectAdapter target, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
+        public INakedObjectAdapter[] GetChoices(INakedObjectAdapter target, IDictionary<string, INakedObjectAdapter> parameterNameValues) {
             var propertyChoicesFacet = GetFacet<IPropertyChoicesFacet>();
             var enumFacet = GetFacet<IEnumFacet>();
 

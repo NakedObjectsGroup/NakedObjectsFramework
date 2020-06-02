@@ -24,8 +24,6 @@ namespace NakedObjects.Meta.Facet {
 
         public static string EncodedNull => "NULL";
 
-        public bool IsValid => encoderDecoder != null;
-
         #region IEncodeableFacet Members
 
         public INakedObjectAdapter FromEncodedString(string encodedData, INakedObjectManager manager) => EncodedNull.Equals(encodedData) ? null : manager.CreateAdapter(encoderDecoder.FromEncodedString(encodedData), null, null);

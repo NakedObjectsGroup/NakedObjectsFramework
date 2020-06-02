@@ -27,7 +27,7 @@ namespace NakedObjects.Core.Spec {
             ElementSpec = MetamodelManager.GetSpecification(association.ElementSpec);
         }
 
-        public override bool IsChoicesEnabled => false;
+        public bool IsChoicesEnabled => false;
 
         public override bool IsAutoCompleteEnabled => false;
 
@@ -37,7 +37,7 @@ namespace NakedObjects.Core.Spec {
 
         public override IObjectSpec ElementSpec { get; }
 
-        public override bool IsASet { get; }
+        public bool IsASet { get; }
 
         public override bool IsEmpty(INakedObjectAdapter inObjectAdapter) => Count(inObjectAdapter) == 0;
 
@@ -55,9 +55,9 @@ namespace NakedObjects.Core.Spec {
 
         #endregion
 
-        public override INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) => new INakedObjectAdapter[0];
+        public INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) => new INakedObjectAdapter[0];
 
-        public override (string, IObjectSpec)[] GetChoicesParameters() => new (string, IObjectSpec)[] { };
+        public (string, IObjectSpec)[] GetChoicesParameters() => new (string, IObjectSpec)[] { };
 
         public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) => new INakedObjectAdapter[0];
 

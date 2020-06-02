@@ -766,11 +766,6 @@ namespace NakedObjects.Facade.Impl {
 
         private static IActionSpec GetAction(string actionName, INakedObjectAdapter nakedObject, IActionSpec[] actions) => actions.SingleOrDefault(p => p.Id == actionName) ?? FacadeUtils.GetOverloadedAction(actionName, nakedObject.Spec);
 
-        private IActionParameterSpec GetParameterInternal(string actionName, string parmName, INakedObjectAdapter nakedObject) {
-            var (action, _) = GetActionInternal(actionName, nakedObject);
-            return GetParameterInternal(action, parmName);
-        }
-
         private static IActionParameterSpec GetParameterInternal(IActionSpec action, string parmName) {
             if (string.IsNullOrWhiteSpace(parmName) || string.IsNullOrWhiteSpace(parmName)) {
                 throw new BadRequestNOSException();

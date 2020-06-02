@@ -10,13 +10,8 @@ using System;
 namespace NakedObjects.Facade {
     public class PreconditionFailedNOSException : NakedObjectsFacadeException {
         public PreconditionFailedNOSException() { }
-        public PreconditionFailedNOSException(string message) : base(message) { }
         public PreconditionFailedNOSException(string message, Exception e) : base(message, e) { }
-
-        public PreconditionFailedNOSException(IObjectFacade sourceNakedObject) => SourceNakedObject = sourceNakedObject;
-
         public IObjectFacade SourceNakedObject { get; set; }
-
         public override string Message => "Object changed by another user";
     }
 }

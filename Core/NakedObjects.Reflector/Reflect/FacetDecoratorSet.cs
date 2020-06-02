@@ -21,9 +21,6 @@ namespace NakedObjects.Reflect {
 
         public FacetDecoratorSet(IFacetDecorator[] decorators) => decorators?.ForEach(Add);
 
-        // for testing
-        public IImmutableDictionary<Type, IList<IFacetDecorator>> FacetDecorators => facetDecorators.ToImmutableDictionary();
-
         #region IFacetDecoratorSet Members
 
         public void DecorateAllHoldersFacets(ISpecification holder) {

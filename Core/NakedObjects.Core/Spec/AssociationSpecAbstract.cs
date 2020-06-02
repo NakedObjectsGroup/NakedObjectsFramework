@@ -26,13 +26,9 @@ namespace NakedObjects.Core.Spec {
             ReturnSpec = MetamodelManager.GetSpecification(association.ReturnSpec);
         }
 
-        public virtual bool IsChoicesEnabled => ContainsFacet(typeof(IPropertyChoicesFacet));
-
         public virtual bool IsAutoCompleteEnabled => ContainsFacet(typeof(IAutoCompleteFacet));
 
         public INakedObjectManager Manager { get; }
-
-        public virtual bool IsASet => false;
 
         #region IAssociationSpec Members
 
@@ -103,8 +99,6 @@ namespace NakedObjects.Core.Spec {
 
         #endregion
 
-        public abstract INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues);
-        public abstract (string, IObjectSpec)[] GetChoicesParameters();
         public abstract INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm);
 
         private IConsent IsUsableDeclaratively(bool isPersistent) {
@@ -122,15 +116,6 @@ namespace NakedObjects.Core.Spec {
             }
 
             return null;
-        }
-
-        protected static IFacet GetOpFacet<T>(ISpecification s) where T : class, IFacet {
-            var facet = s.GetFacet<T>();
-            return facet == null
-                ? null
-                : facet.IsNoOp
-                    ? null
-                    : facet;
         }
     }
 

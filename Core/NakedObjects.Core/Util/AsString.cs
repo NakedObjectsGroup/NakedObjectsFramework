@@ -37,9 +37,6 @@ namespace NakedObjects.Core.Util {
             addComma = text.Length > 0;
         }
 
-        public bool UseLineBreaks {
-            set => useLineBreaks = value;
-        }
 
         public static string CreateName(object forObject) {
             var buffer = new StringBuilder();
@@ -59,15 +56,6 @@ namespace NakedObjects.Core.Util {
         }
 
         public static string Timestamp(DateTime? date) => date == null ? "" : date.GetValueOrDefault().ToLongTimeString();
-
-        public static AsString CreateWithIdentifier(object obj) => new AsString(obj);
-
-        public static AsString CreateAnonymous(object obj) {
-            var asString = new AsString();
-            asString.Append(Name(obj));
-            asString.Append("[");
-            return asString;
-        }
 
         public AsString Append(string text) {
             buffer.Append(text);
@@ -135,21 +123,6 @@ namespace NakedObjects.Core.Util {
         public AsString AppendAsHex(string name, long number) {
             Append(name, "#" + Convert.ToString(number, 16));
             return this;
-        }
-
-        public void AppendAsTimestamp(string name, ref DateTime date) {
-            var dateString = Timestamp(date);
-            Append(name, dateString);
-        }
-
-        public void AppendTruncated(string name, string stringValue, int maxLength) {
-            if (stringValue.Length > maxLength) {
-                Append(name, stringValue.Substring(0, maxLength - 0));
-                Append("...");
-            }
-            else {
-                Append(name, stringValue);
-            }
         }
 
         public void AddComma() {

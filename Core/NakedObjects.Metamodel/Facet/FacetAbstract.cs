@@ -24,13 +24,6 @@ namespace NakedObjects.Meta.Facet {
             this.holder = holder;
         }
 
-        /// <summary>
-        ///     Convenience for creating exceptions by those facets that implement
-        ///     <see cref="IValidatingInteractionAdvisor" />, <see cref="IHidingInteractionAdvisor" /> or
-        ///     <see cref="IDisablingInteractionAdvisor" />
-        /// </summary>
-        protected internal virtual string SpecificationId => Specification.Identifier.ToIdentityString(IdentifierDepth.Class);
-
         #region IDeserializationCallback Members
 
         public virtual void OnDeserialization(object sender) {

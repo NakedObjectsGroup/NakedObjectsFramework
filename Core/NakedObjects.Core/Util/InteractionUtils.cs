@@ -57,11 +57,6 @@ namespace NakedObjects.Core.Util {
 
         private static IConsent IsUsable(IInteractionBuffer buf) => GetConsent(buf.ToString());
 
-        public static IConsent IsValid(ISpecification specification, IInteractionContext ic) {
-            var buf = IsValid(specification, ic, new InteractionBuffer());
-            return IsValid(buf);
-        }
-
         public static IInteractionBuffer IsValid(ISpecification specification, IInteractionContext ic, IInteractionBuffer buf) {
             var facets = specification.GetFacets().Where(f => f is IValidatingInteractionAdvisor).Cast<IValidatingInteractionAdvisor>();
             foreach (var advisor in facets) {

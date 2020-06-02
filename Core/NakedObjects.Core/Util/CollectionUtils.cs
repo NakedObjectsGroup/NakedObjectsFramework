@@ -76,9 +76,6 @@ namespace NakedObjects.Core.Util {
             return type.GetGenericArguments().Length == 1 && type.GetGenericArguments().All(t => t.IsEnum);
         }
 
-        // ReSharper disable once CompareNonConstrainedGenericWithNull
-        public static List<T> InList<T>(this T item) => item != null ? new List<T> {item} : new List<T>();
-
         public static void ForEach<T>(this T[] toIterate, Action<T> action) {
             Array.ForEach(toIterate, action);
         }
@@ -96,10 +93,6 @@ namespace NakedObjects.Core.Util {
             }
         }
 
-        public static string ListOut(this IEnumerable<string> toIterate) {
-            return toIterate.Aggregate("", (s, t) => s + (string.IsNullOrWhiteSpace(s) ? "" : ", ") + t);
-        }
-
         public static IList CloneCollection(object toClone) {
             var collectionType = MakeCollectionType(toClone, typeof(List<>));
             return Activator.CreateInstance(collectionType) as IList;
@@ -112,10 +105,6 @@ namespace NakedObjects.Core.Util {
         }
 
         public static bool IsSet(Type type) => IsGenericType(type, typeof(ISet<>));
-
-        public static IEnumerable<T> ToEnumerable<T>(this IEnumerator<T> enumerator) => new EnumeratorWrapper<T>(enumerator);
-
-        public static IEnumerable ToEnumerable(this IEnumerator enumerator) => new EnumeratorWrapper(enumerator);
 
         public static IList ToTypedIList(IEnumerable<object> toWrap, Type instanceType) {
             var typedListType = typeof(List<>).MakeGenericType(instanceType);

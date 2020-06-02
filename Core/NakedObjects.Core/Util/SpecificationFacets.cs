@@ -33,19 +33,11 @@ namespace NakedObjects.Core.Util {
 
         public static bool IsBoundedSet(this ITypeSpec spec) => spec.ContainsFacet<IBoundedFacet>() || spec.ContainsFacet<IEnumValueFacet>();
 
-        public static bool IsBoundedSet(this ITypeSpecImmutable spec) => spec.ContainsFacet<IBoundedFacet>() || spec.ContainsFacet<IEnumValueFacet>();
-
         public static bool IsCollectionOfBoundedSet(this ITypeSpec spec, IObjectSpec elementSpec) => spec.IsCollection && elementSpec.IsBoundedSet();
-
-        public static bool IsCollectionOfBoundedSet(this ITypeSpecImmutable spec, IObjectSpecImmutable elementSpec) => spec.IsCollection && elementSpec.IsBoundedSet();
 
         public static bool IsCollectionOfEnum(this ITypeSpec spec, IObjectSpec elementSpec) => spec.IsCollection && elementSpec.ContainsFacet<IEnumFacet>();
 
         public static bool IsBoundedSet(this IObjectSpecImmutable specification) => specification.ContainsFacet<IBoundedFacet>() || specification.ContainsFacet<IEnumValueFacet>();
-
-        public static bool IsCollectionOfBoundedSet(this IObjectSpecImmutable specification, IObjectSpecImmutable elementSpec) => specification.IsCollection && elementSpec.IsBoundedSet();
-
-        public static bool IsCollectionOfEnum(this IObjectSpecImmutable specification, IObjectSpecImmutable elementSpec) => specification.IsCollection && elementSpec.ContainsFacet<IEnumFacet>();
 
         public static IFacet GetOpFacet<T>(this ISpecification s) where T : class, IFacet {
             var facet = s.GetFacet<T>();

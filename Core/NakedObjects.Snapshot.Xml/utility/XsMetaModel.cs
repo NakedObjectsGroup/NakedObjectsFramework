@@ -154,14 +154,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public static XElement SequenceFor(XElement parentXsElement) => ChildXsElement(parentXsElement, "sequence");
 
-        // returns child <code>xs:choice</code> element for supplied parent XSD
-        // element, creating and appending if necessary.
-        // 
-        // The supplied element is presumed to be one for which <code>xs:simpleContent</code>
-        // is valid as a child (eg <code>xs:complexType</code>).
-
-        public static XElement ChoiceFor(XElement parentXsElement) => ChildXsElement(parentXsElement, "choice");
-
         public static XElement SequenceForComplexTypeFor(XElement parentXsElement) => SequenceFor(ComplexTypeFor(parentXsElement));
 
         // Returns the <code>xs:choice</code> or <code>xs:sequence</code> element under
