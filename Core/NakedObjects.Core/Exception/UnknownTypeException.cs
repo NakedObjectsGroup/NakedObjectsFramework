@@ -12,12 +12,6 @@ namespace NakedObjects.Core {
         public UnknownTypeException(string message)
             : base(message) { }
 
-        public UnknownTypeException(Exception cause)
-            : base(cause) { }
-
-        public UnknownTypeException(string message, Exception cause)
-            : base(message, cause) { }
-
         public UnknownTypeException(object obj)
             : this(obj == null ? "null" : obj.ToString()) { }
     }

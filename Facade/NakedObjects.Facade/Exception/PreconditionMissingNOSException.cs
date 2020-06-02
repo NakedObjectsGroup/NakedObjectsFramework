@@ -9,11 +9,6 @@ using System;
 
 namespace NakedObjects.Facade {
     public class PreconditionMissingNOSException : NakedObjectsFacadeException {
-        public PreconditionMissingNOSException() { }
-        public PreconditionMissingNOSException(string message) : base(message) { }
-        public PreconditionMissingNOSException(string message, Exception e) : base(message, e) { }
-
-        public PreconditionMissingNOSException(IObjectFacade sourceNakedObject) => SourceNakedObject = sourceNakedObject;
 
         public IObjectFacade SourceNakedObject { get; set; }
 

@@ -14,9 +14,6 @@ namespace NakedObjects.Core {
     public class PersistFailedException : NakedObjectApplicationException {
         public PersistFailedException(string msg)
             : base(msg) { }
-
-        public PersistFailedException(string msg, Exception cause)
-            : base(msg, cause) { }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

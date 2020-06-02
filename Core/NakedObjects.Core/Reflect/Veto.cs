@@ -19,9 +19,6 @@ namespace NakedObjects.Core.Reflect {
         public Veto(string reason)
             : base(reason) { }
 
-        public Veto(Exception exception)
-            : base(exception) { }
-
         /// <summary>
         ///     Returns <c>false</c>
         /// </summary>

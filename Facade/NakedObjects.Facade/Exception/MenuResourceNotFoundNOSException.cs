@@ -9,7 +9,6 @@ using System;
 
 namespace NakedObjects.Facade {
     public class MenuResourceNotFoundNOSException : ResourceNotFoundNOSException {
-        public MenuResourceNotFoundNOSException(string resourceId, Exception e) : base(resourceId, e) { }
         public MenuResourceNotFoundNOSException(string resourceId) : base(resourceId) { }
 
         public override string Message => $"No such menu {ResourceId}";

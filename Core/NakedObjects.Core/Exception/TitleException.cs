@@ -11,12 +11,6 @@ namespace NakedObjects.Core {
     public class TitleException : NakedObjectApplicationException {
         public TitleException(string msg, Exception cause)
             : base(msg, cause) { }
-
-        public TitleException(string msg)
-            : base(msg) { }
-
-        public TitleException(Exception cause)
-            : base(cause) { }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

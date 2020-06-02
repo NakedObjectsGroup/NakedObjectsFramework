@@ -21,10 +21,6 @@ namespace NakedObjects.Core.Util {
 
         private static string ExpectedMsg(string message, object expected, object actual) => $"{message}: expected {expected}; but was {actual}";
 
-        public static void AssertEquals(object expected, object actual) {
-            AssertEquals("", expected, actual);
-        }
-
         public static void AssertEquals(string message, int expected, int intValue) {
             if (expected != intValue) {
                 var msg = SafeMsg(() => ExpectedMsg(message, expected, intValue));
@@ -69,10 +65,6 @@ namespace NakedObjects.Core.Util {
 
         public static void AssertNull(string message, object obj) {
             AssertTrue(message, obj == null);
-        }
-
-        public static void AssertSame(object expected, object actual) {
-            AssertSame("", expected, actual);
         }
 
         public static void AssertSame(string message, object expected, object actual) {

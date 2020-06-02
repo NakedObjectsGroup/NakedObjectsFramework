@@ -12,9 +12,6 @@ namespace NakedObjects.Core {
         public ReflectionException(string message)
             : base(message) { }
 
-        public ReflectionException(Exception cause)
-            : base(cause) { }
-
         public ReflectionException(string message, Exception cause)
             : base(message, cause) { }
     }

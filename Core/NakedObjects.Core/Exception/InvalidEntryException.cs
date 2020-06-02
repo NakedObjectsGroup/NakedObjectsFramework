@@ -16,8 +16,5 @@ namespace NakedObjects.Core {
     public class InvalidEntryException : NakedObjectApplicationException {
         public InvalidEntryException(string message)
             : base(message) { }
-
-        public InvalidEntryException(string message, Exception cause)
-            : base(message, cause) { }
     }
 }
