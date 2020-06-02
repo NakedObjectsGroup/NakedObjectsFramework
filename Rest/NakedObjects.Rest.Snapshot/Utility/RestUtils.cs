@@ -286,11 +286,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return null;
         }
 
-        public static bool IsPredefined(ITypeFacade spec) {
-            var pdts = SpecToPredefinedTypes(spec);
-            return pdts != null;
-        }
-
         public static (string typeString, string formatString) SpecToTypeAndFormatString(ITypeFacade spec, IOidStrategy oidStrategy, bool useDateOverDateTime) {
             var types = SpecToPredefinedTypes(spec, useDateOverDateTime);
 
@@ -341,8 +336,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 _ => AttachmentContextFacade.DefaultMimeType
             };
         }
-
-        public static string GuidAsKey(this Guid guid) => guid.ToString("N");
 
         public static IDictionary<string, object> AddRangeExtension(IFieldFacade field, IDictionary<string, object> customExtensions) {
             var range = field.Range;

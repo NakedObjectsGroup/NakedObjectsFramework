@@ -103,8 +103,6 @@ namespace NakedObjects.Persistor.Entity.Util {
 
         public static PropertyInfo[] GetAllMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetMembers(type).Union(context.GetNavigationMembers(type)).ToArray();
 
-        public static PropertyInfo[] GetAllNonIdMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetAllMembers(type).Where(x => !context.GetIdMembers(type).Contains(x)).ToArray();
-
         public static PropertyInfo[] GetNonIdMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetMembers(type).Where(x => !context.GetIdMembers(type).Contains(x)).ToArray();
 
         public static object CreateQuery(this EntityObjectStore.LocalContext context, Type type, string queryString, params ObjectParameter[] parameters) {

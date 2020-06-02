@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Common.Logging;
 using Microsoft.AspNetCore.Http;
@@ -172,22 +171,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             }
 
             return null;
-
-            //var template = new UriTemplate(SegmentValues.Objects + "/{objectType}/{objectKey}");
-            //UriTemplateMatch match = template.Match(prefix, uri);
-
-            //return match == null ? null : new[] {match.BoundVariables["objectType"], match.BoundVariables["objectKey"]};
         }
 
         public string GetTypeId(string value) {
             // todo this needs testing 
 
             var uri = new Uri(value);
-            //var template = new UriTemplate(SegmentValues.DomainTypes + "/{typeName}");
-            //UriTemplateMatch match = template.Match(prefix, uri);
-
-            //return match == null ? null : match.BoundVariables["typeName"];
-
             var path = uri.AbsolutePath;
             var pattern = $"/{SegmentValues.DomainTypes}/([^/]+)";
 
@@ -209,34 +198,15 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         private Uri BuildDomainTypeUri(string type) {
             CheckArgumentNotNull(type, "domain type");
-
-            //var template = new UriTemplate(SegmentValues.DomainTypes + "/{type}");
-            //return template.BindByPosition(prefix, type);
-
             return new Uri($"{prefix}{SegmentValues.DomainTypes}/{type}");
         }
 
         public Uri GetDomainTypeUri() => BuildDomainTypeUri(CachedType);
 
-        public Uri GetParamTypeUri() {
-            CheckArgumentNotNull(CachedType, "object type");
-            CheckArgumentNotNull(action.Id, "action id");
-            CheckArgumentNotNull(param.Id, "param id");
-
-            //var template = new UriTemplate(SegmentValues.DomainTypes + "/{id}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Params + "/{paramId}");
-            //return template.BindByPosition(prefix, CachedType, action.Id, param.Id);
-
-            return new Uri($"{prefix}{SegmentValues.DomainTypes}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
-        }
-
         public Uri GetObjectParamUri() {
             CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(action.Id, "action id");
             CheckArgumentNotNull(param.Id, "param id");
-
-            //var template = new UriTemplate(SegmentValues.Objects + "/{typeId}/{instanceId}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Params + "/{paramId}");
-            //return template.BindByPosition(prefix, CachedType, cachedId, action.Id, param.Id);
-
             return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
         }
 
@@ -244,10 +214,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(action.Id, "action id");
             CheckArgumentNotNull(param.Id, "param id");
-
-            //var template = new UriTemplate(SegmentValues.Services + "/{oid}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Params + "/{paramId}");
-            //return template.BindByPosition(prefix, CachedType, action.Id, param.Id);
-
             return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
         }
 
@@ -256,58 +222,25 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public Uri GetTypeActionInvokeUri() {
             CheckArgumentNotNull(CachedType, "domain type");
             CheckArgumentNotNull(typeAction, "type action");
-
-            //var template = new UriTemplate(SegmentValues.DomainTypes + "/{id}/" + SegmentValues.TypeActions + "/{action}/" + SegmentValues.Invoke);
-            //return template.BindByPosition(prefix, CachedType, typeAction);
-
             return new Uri($"{prefix}{SegmentValues.DomainTypes}/{CachedType}/{SegmentValues.TypeActions}/{typeAction}/{SegmentValues.Invoke}");
         }
 
         public Uri GetObjectUri() {
             CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(cachedId, "object key");
-
-            //var template = new UriTemplate(SegmentValues.Objects + "/{typeId}/{instanceId}");
-            //return template.BindByPosition(prefix, CachedType, cachedId);
-
             return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}");
         }
 
         public Uri GetServiceUri() {
             CheckArgumentNotNull(CachedType, "service type");
-
-            //var template = new UriTemplate(SegmentValues.Services + "/{oid}");
-            //return template.BindByPosition(prefix, CachedType);
-
             return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}");
         }
 
-        public Uri GetIconUri() {
-            //var template = new UriTemplate(SegmentValues.Images + "/{image}");
-            var name = spec.GetIconName(objectFacade);
-            var iconName = name.Contains(".") ? name : name + ".gif";
-            CheckArgumentNotNull(iconName, "icon name");
-            //return template.BindByPosition(prefix, iconName);
-
-            return new Uri($"{prefix}{SegmentValues.Images}/{iconName}");
-        }
-
-        //if (action.IsQueryOnly) {
-        //    return GetQueryInvokeUri();
-        //}
-        //if (action.IsIdempotent) {
-        //    return GetIdempotentUri();
-        //}
-        //return GetNonIdempotentUri();
         public Uri GetInvokeUri() => spec.IsService ? GetServiceInvokeUri() : GetObjectInvokeUri();
 
         private Uri GetServiceInvokeUri() {
             CheckArgumentNotNull(CachedType, "service type");
             CheckArgumentNotNull(action.Id, "action id");
-
-            //var template = new UriTemplate(SegmentValues.Services + "/{oid}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Invoke + queryString);
-            //return template.BindByPosition(prefix, CachedType, action.Id);
-
             return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Invoke}");
         }
 
@@ -315,54 +248,24 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(cachedId, "object key");
             CheckArgumentNotNull(action.Id, "action id");
-
-            //var template = new UriTemplate(SegmentValues.Objects + "/{objectType}/{objectKey}/" + SegmentValues.Actions + "/{action}/" + SegmentValues.Invoke + queryString);
-            //return template.BindByPosition(prefix, CachedType, cachedId, action.Id);
-
             return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Invoke}");
         }
-
-        //private Uri GetInvokeUri() {
-        //    return spec.IsService ? GetServiceInvokeUri() : GetObjectInvokeUri();
-        //}
-
-        //private Uri GetNonIdempotentUri() {
-        //    return GetInvokeUri();
-        //}
-
-        //private Uri GetIdempotentUri() {
-        //    return GetInvokeUri();
-        //}
-
-        //private Uri GetQueryInvokeUri() {
-        //    return GetInvokeUri();
-        //}
 
         public Uri GetHomeUri() => prefix;
 
         public Uri GetWellKnownUri(string name) {
             CheckArgumentNotNull(name, "well known name");
-
-            //var template = new UriTemplate("{fixed}");
-            //return template.BindByPosition(prefix, name);
             return new Uri($"{prefix}{name}");
         }
 
         public Uri GetObjectsPersistUri() {
             CheckArgumentNotNull(CachedType, "object type");
-
-            //var template = new UriTemplate(SegmentValues.Objects + "/{objectType}");
-            //return template.BindByPosition(prefix, CachedType);
-
             return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}");
         }
 
         public Uri GetRedirectUri(HttpRequest req, string server, string oid) {
             CheckArgumentNotNull(oid, "object oid");
             var redirectPrefix = new Uri("http://" + server);
-            //var template = new UriTemplate("objects/{oid}");
-            //return template.BindByPosition(redirectPrefix, oid);
-
             return new Uri($"{redirectPrefix}{SegmentValues.Objects}/{oid}");
         }
 
@@ -370,10 +273,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             CheckArgumentNotNull(CachedType, "service type");
             CheckArgumentNotNull(memberType, "member type");
             CheckArgumentNotNull(member.Id, "member id");
-
-            //var template = new UriTemplate(SegmentValues.Services + "/{id}/{memberType}/{memberId}");
-            //return template.BindByPosition(prefix, CachedType, memberType, member.Id);
-
             return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}/{memberType}/{member.Id}");
         }
 
@@ -381,10 +280,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             CheckArgumentNotNull(CachedType, "domain type");
             CheckArgumentNotNull(memberType, "member type");
             CheckArgumentNotNull(member.Id, "member id");
-
-            //var template = new UriTemplate(SegmentValues.DomainTypes + "/{objectType}/{memberType}/{memberId}");
-            //return template.BindByPosition(prefix, CachedType, memberType, member.Id);
-
             return new Uri($"{prefix}{SegmentValues.DomainTypes}/{CachedType}/{memberType}/{member.Id}");
         }
 
@@ -392,20 +287,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(memberType, "member type");
             CheckArgumentNotNull(member.Id, "member id");
-
-            //var template = new UriTemplate(SegmentValues.Objects + "/{objectType}/{objectId}/{memberType}/{memberId}");
-            //return template.BindByPosition(prefix, CachedType, cachedId, memberType, member.Id);
-
             return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{cachedId}/{memberType}/{member.Id}");
         }
 
         private Uri GetTransientObjectMemberUri(IMemberFacade member, string memberType) {
             CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(memberType, "member type");
-
-            //var template = new UriTemplate(SegmentValues.Objects + "/{objectType}/{memberType}/{memberId}");
-            //return template.BindByPosition(prefix, CachedType, memberType, member.Id);
-
             return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}/{memberType}/{member.Id}");
         }
 
@@ -443,8 +330,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public Uri GetDetailsUri() => ByMemberType(GetMemberUri);
 
-        public Uri GetTypeDetailsUri() => ByMemberType(GetTypeMemberUri);
-
         public string GetInvokeMediaType() => RepresentationTypes.ActionResult;
 
         public string GetActionResultMediaType() => RepresentationTypes.ActionResult;
@@ -461,31 +346,11 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return RepresentationTypes.ObjectProperty;
         }
 
-        public string GetTypeMemberMediaType() {
-            if (action != null) {
-                return RepresentationTypes.ActionDescription;
-            }
-
-            if (assoc != null && assoc.IsCollection) {
-                return RepresentationTypes.CollectionDescription;
-            }
-
-            return RepresentationTypes.PropertyDescription;
-        }
-
         public MediaTypeHeaderValue GetAttachmentMediaType() {
             var no = assoc.GetValue(objectFacade);
             var attachment = no?.GetAttachment();
             var mtv = string.IsNullOrWhiteSpace(attachment?.MimeType) ? "" : attachment.MimeType;
             return new MediaTypeHeaderValue(string.IsNullOrWhiteSpace(mtv) ? attachment.DefaultMimeType() : mtv);
-        }
-
-        public MediaTypeHeaderValue GetIconMediaType() {
-            var name = spec.GetIconName(objectFacade);
-            var mt = name.Contains(".") ? name.Split('.').Last() : "gif";
-            var mtv = $"image/{mt}";
-
-            return new MediaTypeHeaderValue(mtv);
         }
 
         public static MediaTypeHeaderValue GetJsonMediaType(string mt) {
@@ -503,9 +368,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public Uri GetTypeActionsUri(string actionName) {
             CheckArgumentNotNull(CachedType, "object type");
             CheckArgumentNotNull(actionName, "action name");
-
-            //var template = new UriTemplate(SegmentValues.DomainTypes + "/{class}/" + SegmentValues.TypeActions + "/{action}/" + SegmentValues.Invoke);
-            //return template.BindByPosition(prefix, CachedType, actionName);
 
             return new Uri($"{prefix}{SegmentValues.DomainTypes}/{CachedType}/{SegmentValues.TypeActions}/{actionName}/{SegmentValues.Invoke}");
         }
@@ -574,10 +436,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public Uri GetMenuUri() {
             CheckArgumentNotNull(CachedType, "service type");
-
-            //var template = new UriTemplate(SegmentValues.Menus + "/{oid}");
-            //return template.BindByPosition(prefix, CachedType);
-
             return new Uri($"{prefix}{SegmentValues.Menus}/{CachedType}");
         }
 

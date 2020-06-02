@@ -5,8 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Reflection;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 
@@ -15,10 +13,5 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         protected AnnotationBasedFacetFactoryAbstract(int numericOrder, FeatureType featureTypes)
             : base(numericOrder, featureTypes) { }
 
-        /// <summary>
-        ///     Always returns <c>false</c> as <see cref="IFacetFactory" />s that look for annotations
-        ///     won't recognize methods with prefixes.
-        /// </summary>
-        public bool Recognizes(MethodInfo method) => false;
     }
 }

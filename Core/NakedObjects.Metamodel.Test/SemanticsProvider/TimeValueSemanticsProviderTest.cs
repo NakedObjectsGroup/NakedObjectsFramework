@@ -92,7 +92,8 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         public void TestAsParserTitle() {
             IParseableFacet parser = new ParseableFacetUsingParser<TimeSpan>(GetValue(), null);
             var mockAdapter = MockAdapter(time);
-            Assert.AreEqual("08:13", parser.ParseableTitle(mockAdapter));
+            var str = DateTime.Today.Add(time).ToShortTimeString();
+            Assert.AreEqual(str, parser.ParseableTitle(mockAdapter));
         }
 
         #region Setup/Teardown

@@ -27,8 +27,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public FallbackFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Everything) { }
 
-        public bool Recognizes(MethodInfo method) => false;
-
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FacetUtils.AddFacets(
                 new IFacet[] {

@@ -126,10 +126,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
         }
 
-        protected static Type[] ParamTypesOrNull(Type type) {
-            return type == null ? Type.EmptyTypes : new[] {type};
-        }
-
         protected void FindDefaultDisableMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
             var method = FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.DisablePrefix + capitalizedName, typeof(string), Type.EmptyTypes);
             if (method != null) {

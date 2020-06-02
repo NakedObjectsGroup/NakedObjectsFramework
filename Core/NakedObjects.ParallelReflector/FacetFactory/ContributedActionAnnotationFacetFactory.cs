@@ -41,11 +41,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 IsCollection(type.BaseType) ||
                 type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
 
-        private bool IsQueryable(Type type) =>
-            CollectionUtils.IsGenericEnumerable(type) ||
-            type.IsArray ||
-            CollectionUtils.IsCollectionButNotArray(type);
-
         private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo member, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var allParams = member.GetParameters();
             var paramsWithAttribute = allParams.Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null).ToArray();

@@ -38,7 +38,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public const string InlinePropertyDetailsReserved = ReservedPrefix + "inline-property-details";
         public const string InlineCollectionItemsReserved = ReservedPrefix + "inline-collection-items";
 
-        public static readonly List<string> Reserved = new List<string> {ValidateOnlyReserved, DomainTypeReserved, ElementTypeReserved, DomainModelReserved, FollowLinksReserved, SortByReserved};
         protected RestControlFlags() { }
         public static int ConfiguredPageSize { get; set; }
 

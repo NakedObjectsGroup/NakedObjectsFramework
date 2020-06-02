@@ -53,11 +53,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
         }
 
-        public bool IsCollectionAccessor(MethodInfo method) {
-            var methodReturnType = method.ReturnType;
-            return CollectionUtils.IsCollection(methodReturnType);
-        }
-
         public IList<Type> BuildCollectionTypes(IEnumerable<PropertyInfo> properties) {
             return properties.Where(property => property.GetGetMethod() != null &&
                                                 CollectionUtils.IsCollection(property.PropertyType) &&
