@@ -49,21 +49,6 @@ namespace NakedObjects.Persistor.Entity.Util {
         public static bool ContextKnowsType(this EntityObjectStore.LocalContext context, Type type) =>
             context.WrappedObjectContext.IsTypeInOSpace(type) || context.CanCreateObjectSet(type);
 
-        private static object GetNextKey(Type type, int key) {
-            if (!GeneratedKeys.ContainsKey(type)) {
-                GeneratedKeys[type] = new List<object> {key};
-                return key;
-            }
-
-            while (GeneratedKeys[type].Contains(key)) {
-                ++key;
-            }
-
-            GeneratedKeys[type].Add(key);
-
-            return key;
-        }
-
         public static bool IdMembersAreIdentity(this EntityObjectStore.LocalContext context, Type type) {
             var et = GetEntityType(context, type);
             if (et != null) {
@@ -100,8 +85,6 @@ namespace NakedObjects.Persistor.Entity.Util {
         public static PropertyInfo[] GetReferenceMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetNavigationMembers(type).Where(x => !CollectionUtils.IsCollection(x.PropertyType)).ToArray();
 
         public static PropertyInfo[] GetCollectionMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetNavigationMembers(type).Where(x => CollectionUtils.IsCollection(x.PropertyType)).ToArray();
-
-        public static PropertyInfo[] GetAllMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetMembers(type).Union(context.GetNavigationMembers(type)).ToArray();
 
         public static PropertyInfo[] GetNonIdMembers(this EntityObjectStore.LocalContext context, Type type) => context.GetMembers(type).Where(x => !context.GetIdMembers(type).Contains(x)).ToArray();
 
@@ -145,6 +128,8 @@ namespace NakedObjects.Persistor.Entity.Util {
             return os;
         }
 
+        // used reflectively
+        // ReSharper disable once UnusedMember.Global
         public static IQueryable<TDerived> GetObjectSetOfType<TDerived, TBase>(this EntityObjectStore.LocalContext context) where TDerived : TBase {
             var mi = context.WrappedObjectContext.GetType().GetMethod("CreateObjectSet", Type.EmptyTypes).MakeGenericMethod(typeof(TBase));
             var os = (IQueryable<TBase>) InvokeUtils.Invoke(mi, context.WrappedObjectContext, null);
@@ -165,20 +150,6 @@ namespace NakedObjects.Persistor.Entity.Util {
             var methods = objectSet.GetType().GetMethods();
             var mi = methods.Single(m => m.Name == "CreateObject" && m.IsGenericMethod).MakeGenericMethod(type);
             return InvokeUtils.Invoke(mi, objectSet, null);
-        }
-
-        public static object ProxyObject(this EntityObjectStore.LocalContext context, object objectToProxy) {
-            if (TypeUtils.IsProxy(objectToProxy.GetType())) {
-                return objectToProxy;
-            }
-
-            var newObject = context.GetObjectSet(objectToProxy.GetType()).Invoke<object>("CreateObject");
-
-            var idMembers = context.GetIdMembers(objectToProxy.GetType());
-
-            idMembers.ForEach(pi => newObject.GetType().GetProperty(pi.Name).SetValue(newObject, pi.GetValue(objectToProxy, null), null));
-
-            return context.GetObjectSet(objectToProxy.GetType()).Invoke<object>("ApplyCurrentValues", newObject);
         }
 
         public static object[] GetKey(this EntityObjectStore.LocalContext context, object domainObject) => context.GetIdMembers(domainObject.GetEntityProxiedType()).Select(x => x.GetValue(domainObject, null)).ToArray();

@@ -26,8 +26,6 @@ namespace NakedObjects.Reflect.FacetFactory {
         public FallbackFacetFactory(int numericOrder)
             : base(numericOrder, FeatureType.Everything) { }
 
-        public bool Recognizes(MethodInfo method) => false;
-
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) =>
             FacetUtils.AddFacets(
                 new IFacet[] {

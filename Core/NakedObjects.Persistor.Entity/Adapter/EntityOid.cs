@@ -122,8 +122,6 @@ namespace NakedObjects.Persistor.Entity.Adapter {
             CacheState();
         }
 
-        public EntityOid(IMetamodelManager metamodel, Type type, object[] key) : this(metamodel, type.FullName, key) { }
-
         public EntityOid(IMetamodelManager metamodel, string typeName, object[] key) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
@@ -132,8 +130,6 @@ namespace NakedObjects.Persistor.Entity.Adapter {
             IsTransient = false;
             CacheState();
         }
-
-        public EntityOid(IMetamodelManager metamodel, object pojo, object[] key) : this(metamodel, pojo.GetType(), key) { }
 
         public EntityOid(IMetamodelManager metamodel, string[] strings) {
             Assert.AssertNotNull(metamodel);

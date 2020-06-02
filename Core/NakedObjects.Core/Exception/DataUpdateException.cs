@@ -11,7 +11,6 @@ namespace NakedObjects.Core {
     public class DataUpdateException : ObjectPersistenceException {
         public DataUpdateException(string message, Exception cause)
             : base(message, cause) { }
-
     }
 
     // Copyright (c) Naked Objects Group Ltd.

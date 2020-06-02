@@ -16,12 +16,9 @@ namespace NakedObjects.Rest.Snapshot.Constants {
         public const string ObjectCollection = "object-collection";
         public const string ObjectAction = "object-action";
         public const string ActionResult = "action-result";
-        public const string TypeList = "type-list";
         public const string DomainType = "domain-type";
-        public const string PropertyDescription = "property-description";
         public const string CollectionDescription = "collection-description";
         public const string ActionDescription = "action-description";
-        public const string ActionParamDescription = "action-param-description";
         public const string TypeActionResult = "type-action-result";
         public const string Error = "error";
         public const string Prompt = "prompt";

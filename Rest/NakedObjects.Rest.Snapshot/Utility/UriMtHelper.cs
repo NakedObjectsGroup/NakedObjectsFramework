@@ -190,6 +190,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return null;
         }
 
+        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
         private static void CheckArgumentNotNull(string argument, string name) {
             if (string.IsNullOrEmpty(argument)) {
                 throw new ArgumentException($"Cannot build URI : {name} is null or empty");
@@ -274,13 +275,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             CheckArgumentNotNull(memberType, "member type");
             CheckArgumentNotNull(member.Id, "member id");
             return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}/{memberType}/{member.Id}");
-        }
-
-        private Uri GetTypeMemberUri(IMemberFacade member, string memberType) {
-            CheckArgumentNotNull(CachedType, "domain type");
-            CheckArgumentNotNull(memberType, "member type");
-            CheckArgumentNotNull(member.Id, "member id");
-            return new Uri($"{prefix}{SegmentValues.DomainTypes}/{CachedType}/{memberType}/{member.Id}");
         }
 
         private Uri GetPersistentObjectMemberUri(IMemberFacade member, string memberType) {

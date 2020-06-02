@@ -949,7 +949,6 @@ namespace NakedObjects.Persistor.Entity.Component {
 
             public ISet<INakedObjectAdapter> DeletedNakedObjects { get; } = new HashSet<INakedObjectAdapter>();
 
-            public bool IsInitialized { get; set; }
             public MergeOption DefaultMergeOption { get; set; }
             public INakedObjectAdapter CurrentSaveRootObjectAdapter { get; set; }
             public INakedObjectAdapter CurrentUpdateRootObjectAdapter { get; set; }

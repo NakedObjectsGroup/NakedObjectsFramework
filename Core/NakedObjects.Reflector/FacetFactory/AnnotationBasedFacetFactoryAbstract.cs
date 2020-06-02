@@ -16,10 +16,5 @@ namespace NakedObjects.Reflect.FacetFactory {
         protected AnnotationBasedFacetFactoryAbstract(int numericOrder, FeatureType featureTypes)
             : base(numericOrder, featureTypes) { }
 
-        /// <summary>
-        ///     Always returns <c>false</c> as <see cref="IFacetFactory" />s that look for annotations
-        ///     won't recognize methods with prefixes.
-        /// </summary>
-        public bool Recognizes(MethodInfo method) => false;
     }
 }

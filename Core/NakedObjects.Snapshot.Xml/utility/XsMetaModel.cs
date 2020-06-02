@@ -164,8 +164,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public static XElement SequenceForComplexTypeFor(XElement parentXsElement) => SequenceFor(ComplexTypeFor(parentXsElement));
 
-        public static XElement ChoiceForComplexTypeFor(XElement parentXsElement) => ChoiceFor(ComplexTypeFor(parentXsElement));
-
         // Returns the <code>xs:choice</code> or <code>xs:sequence</code> element under
         // the supplied XSD element, or null if neither can be found.
         // ReSharper disable PossibleMultipleEnumeration
@@ -179,16 +177,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             return parentXsElement.Descendants(Xs + "sequence").FirstOrDefault();
         }
 
-        // ReSharper restore PossibleMultipleEnumeration
-        // returns child <code>xs:simpleContent</code> element for supplied parent XSD
-        // element, creating and appending if necessary.
-        // 
-        // The supplied element is presumed to be one for which <code>xs:simpleContent</code>
-        // is valid as a child (eg <code>xs:complexType</code>).
-
-        public static XElement SimpleContentFor(XElement parentXsElement) => ChildXsElement(parentXsElement, "simpleContent");
-
-        // ReSharper disable PossibleMultipleEnumeration
 
         public static XElement ChildXsElement(XElement parentXsElement, string localName) {
             var nodeList = parentXsElement.Descendants(Xs + localName);
@@ -203,12 +191,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         }
 
         // ReSharper restore PossibleMultipleEnumeration
-        // return the <code>xs:schema</code> element (the root element of the owning XSD Doc).
-
-        public static XElement SchemaFor(XElement xsElement) {
-            Debug.Assert(xsElement.Document != null, "xsElement.Document != null");
-            return xsElement.Document.Root;
-        }
 
         // Sets the <code>minOccurs</code> and <code>maxOccurs</code> attributes for
         // provided <code>element</code> (presumed to be an XSD element for which these

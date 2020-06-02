@@ -5,11 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
 namespace NakedObjects.Facade {
     public class PreconditionMissingNOSException : NakedObjectsFacadeException {
-
         public IObjectFacade SourceNakedObject { get; set; }
 
         public override string Message => "If-Match header required with last-known value of ETag for the resource in order to modify its state";

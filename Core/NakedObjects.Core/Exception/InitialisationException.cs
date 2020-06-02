@@ -14,6 +14,7 @@ namespace NakedObjects.Core {
     public class InitialisationException : NakedObjectApplicationException {
         public InitialisationException(string s)
             : base(s) { }
+
         public InitialisationException(string msg, Exception cause)
             : base(msg, cause) { }
     }

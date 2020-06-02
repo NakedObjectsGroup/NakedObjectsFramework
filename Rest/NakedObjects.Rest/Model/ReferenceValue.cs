@@ -26,6 +26,7 @@ namespace NakedObjects.Rest.Model {
 
         #endregion
 
+        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
         private static void Validate(string internalValue, string name) {
             if (string.IsNullOrWhiteSpace(internalValue)) {
                 Logger.ErrorFormat("Malformed json name: {0} arguments: href = null or empty", name);
