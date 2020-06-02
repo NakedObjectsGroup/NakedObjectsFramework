@@ -14,6 +14,7 @@ using NakedObjects.Xat;
 using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedVariable
 
 namespace NakedObjects.Helpers.Test.ViewModel {
     [TestFixture]

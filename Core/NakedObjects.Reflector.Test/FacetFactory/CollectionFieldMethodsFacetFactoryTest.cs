@@ -25,14 +25,11 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     public class CollectionFieldMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         private CollectionFieldMethodsFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get {
-                return new[] {
-                    typeof(IPropertyAccessorFacet),
-                    typeof(ITypeOfFacet)
-                };
-            }
-        }
+        protected override Type[] SupportedTypes =>
+            new[] {
+                typeof(IPropertyAccessorFacet),
+                typeof(ITypeOfFacet)
+            };
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -151,78 +148,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
-        #region Nested type: Customer10
-
-        private class Customer10 {
-            public IList Orders => null;
-
-            public void RemoveFromOrders(Order o) { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer11
-
-        private class Customer11 {
-            public IList Orders => null;
-
-            public void RemoveFromOrders(Order o) { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer12
-
-        private class Customer12 {
-            public IList Orders => null;
-
-            public void ClearOrders() { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer13
-
-        private class Customer13 {
-            public IList Orders => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer14
-
-        private class Customer14 {
-            public IList Orders => null;
-
-            public void AddToOrders(Order o) { }
-
-            public string ValidateAddToOrders(Order o) => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer15
-
-        private class Customer15 {
-            public IList Orders => null;
-
-            public void RemoveFromOrders(Order o) { }
-
-            public string ValidateRemoveFromOrders(Order o) => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer16
-
-        private class Customer16 {
-            public IList<Order> Orders => null;
-
-            public void AddToOrders(Order o) { }
-        }
-
-        #endregion
-
         #region Nested type: Customer17
 
         private class Customer17 {
@@ -269,46 +194,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
-        #region Nested type: Customer5
-
-        private class Customer5 {
-            public IList Orders => null;
-        }
-
-        #endregion
-
         #region Nested type: Customer6
 
         private class Customer6 {
             public IList Orders => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer7
-
-        private class Customer7 {
-            public IList Orders => null;
-        }
-
-        #endregion
-
-        #region Nested type: Customer8
-
-        private class Customer8 {
-            public IList Orders => null;
-
-            public void AddToOrders(Order o) { }
-        }
-
-        #endregion
-
-        #region Nested type: Customer9
-
-        private class Customer9 {
-            public IList Orders => null;
-
-            public void AddToOrders(Order o) { }
         }
 
         #endregion

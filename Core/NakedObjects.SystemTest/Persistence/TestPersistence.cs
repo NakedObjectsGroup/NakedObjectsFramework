@@ -13,6 +13,7 @@ using NakedObjects.Services;
 using NUnit.Framework;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedVariable
 
 namespace NakedObjects.SystemTest.Persistence {
     [TestFixture]

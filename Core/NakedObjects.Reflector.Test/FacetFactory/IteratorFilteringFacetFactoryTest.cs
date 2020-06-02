@@ -19,9 +19,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     public class IteratorFilteringFacetFactoryTest : AbstractFacetFactoryTest {
         private IteratorFilteringFacetFactory facetFactory;
 
-        protected override Type[] SupportedTypes {
-            get { return new Type[] { }; }
-        }
+        protected override Type[] SupportedTypes => new Type[] { };
 
         protected override IFacetFactory FacetFactory => facetFactory;
 
@@ -68,10 +66,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             #endregion
 
-            public void someAction() { }
-        }
-
-        private class Customer1 {
             public void someAction() { }
         }
 

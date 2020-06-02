@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
+// ReSharper disable UnusedMember.Global
 
 namespace NakedObjects.SystemTest.Component {
     [TestFixture]

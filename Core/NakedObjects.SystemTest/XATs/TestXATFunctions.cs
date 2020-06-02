@@ -18,6 +18,7 @@ using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedVariable
 
 namespace NakedObjects.SystemTest.XATs {
     /// <summary>

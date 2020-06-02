@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
+// ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 
 namespace NakedObjects.SystemTest.Audit {
     [TestFixture]
