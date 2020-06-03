@@ -204,12 +204,7 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
             }
             set {
                 myPayee = value;
-                if (value == null) {
-                    PayeeCompoundKey = null;
-                }
-                else {
-                    PayeeCompoundKey = ObjectFinder.GetCompoundKey(value);
-                }
+                PayeeCompoundKey = value == null ? null : ObjectFinder.GetCompoundKey(value);
             }
         }
 

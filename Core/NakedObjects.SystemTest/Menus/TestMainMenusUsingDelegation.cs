@@ -73,10 +73,11 @@ namespace NakedObjects.SystemTest.Menus.Service {
 
     public class LocalMainMenus {
         public static IMenu[] MainMenus(IMenuFactory factory) {
-            var menuDefs = new Dictionary<Type, Action<IMenu>>();
-            menuDefs.Add(typeof(FooService), FooService.Menu);
-            menuDefs.Add(typeof(BarService), BarService.Menu);
-            menuDefs.Add(typeof(ServiceWithSubMenus), ServiceWithSubMenus.Menu);
+            var menuDefs = new Dictionary<Type, Action<IMenu>> {
+                {typeof(FooService), FooService.Menu},
+                {typeof(BarService), BarService.Menu},
+                {typeof(ServiceWithSubMenus), ServiceWithSubMenus.Menu}
+            };
 
             var menus = new List<IMenu>();
             foreach (var menuDef in menuDefs) {

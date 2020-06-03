@@ -14,7 +14,6 @@ namespace NakedObjects.Core {
     /// </summary>
     public abstract class NakedObjectApplicationException : NakedObjectException {
         protected NakedObjectApplicationException(string messsage) : base(messsage) { }
-        protected NakedObjectApplicationException(Exception cause) : base(cause) { }
         protected NakedObjectApplicationException(string messsage, Exception cause) : base(messsage, cause) { }
     }
 }

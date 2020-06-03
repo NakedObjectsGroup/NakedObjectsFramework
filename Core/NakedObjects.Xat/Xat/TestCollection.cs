@@ -40,7 +40,7 @@ namespace NakedObjects.Xat {
         }
 
         public ITestCollection AssertCountIs(int count) {
-            Assert.IsTrue(this.Count() == count, string.Format("Collection Size is: {0} expected: {1}", this.Count(), count));
+            Assert.IsTrue(this.Count() == count, $"Collection Size is: {this.Count()} expected: {count}");
             return this;
         }
 

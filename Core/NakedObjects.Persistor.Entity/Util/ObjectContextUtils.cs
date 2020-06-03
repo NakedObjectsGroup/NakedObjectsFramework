@@ -16,7 +16,6 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Component;
-using NakedObjects.Util;
 
 namespace NakedObjects.Persistor.Entity.Util {
     public static class ObjectContextUtils {

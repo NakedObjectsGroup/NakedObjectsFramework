@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -26,8 +25,6 @@ namespace NakedObjects.Core.Spec {
 
             ElementSpec = MetamodelManager.GetSpecification(association.ElementSpec);
         }
-
-        public bool IsChoicesEnabled => false;
 
         public override bool IsAutoCompleteEnabled => false;
 
@@ -54,10 +51,6 @@ namespace NakedObjects.Core.Spec {
         public override void ToDefault(INakedObjectAdapter target) { }
 
         #endregion
-
-        public INakedObjectAdapter[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues) => new INakedObjectAdapter[0];
-
-        public (string, IObjectSpec)[] GetChoicesParameters() => new (string, IObjectSpec)[] { };
 
         public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) => new INakedObjectAdapter[0];
 

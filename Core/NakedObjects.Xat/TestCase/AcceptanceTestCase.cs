@@ -54,10 +54,10 @@ namespace NakedObjects.Xat {
         protected virtual IServiceScope ServiceScope { set; get; }
         protected string Name { set; get; }
 
-        protected virtual ITestObjectFactory TestObjectFactoryClass => testObjectFactory ?? (testObjectFactory = new TestObjectFactory(NakedObjectsFramework.MetamodelManager, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.TransactionManager, NakedObjectsFramework.ServicesManager, NakedObjectsFramework.MessageBroker));
+        protected virtual ITestObjectFactory TestObjectFactoryClass => testObjectFactory ??= new TestObjectFactory(NakedObjectsFramework.MetamodelManager, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.TransactionManager, NakedObjectsFramework.ServicesManager, NakedObjectsFramework.MessageBroker);
 
         protected virtual IPrincipal TestPrincipal {
-            get { return testPrincipal ?? (testPrincipal = CreatePrincipal("Test", new string[] { })); }
+            get { return testPrincipal ??= CreatePrincipal("Test", new string[] { }); }
             set => testPrincipal = value;
         }
 
@@ -299,9 +299,7 @@ namespace NakedObjects.Xat {
         protected virtual void SetUser(string username, params string[] roles) {
             testPrincipal = CreatePrincipal(username, roles);
             var ts = NakedObjectsFramework == null ? null : NakedObjectsFramework.Session as TestSession;
-            if (ts != null) {
-                ts.ReplacePrincipal(testPrincipal);
-            }
+            ts?.ReplacePrincipal(testPrincipal);
         }
 
         protected virtual void SetUser(string username) {

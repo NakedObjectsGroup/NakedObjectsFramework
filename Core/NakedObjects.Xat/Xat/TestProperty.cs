@@ -80,29 +80,21 @@ namespace NakedObjects.Xat {
 
             var testNakedObjectAdapter = testObject.NakedObject;
 
-            Assert.IsTrue(testNakedObjectAdapter.Spec.IsOfType(field.ReturnSpec), string.Format("Can't drop a {0} on to the {1} field (which accepts {2})", testObject.NakedObject.Spec.ShortName, Name, field.ReturnSpec));
+            Assert.IsTrue(testNakedObjectAdapter.Spec.IsOfType(field.ReturnSpec), $"Can't drop a {testObject.NakedObject.Spec.ShortName} on to the {Name} field (which accepts {field.ReturnSpec})");
 
             var nakedObjectAdapter = owningObject.NakedObject;
 
-            IConsent valid;
-            var associationSpec = field as IOneToOneAssociationSpec;
-            if (associationSpec != null) {
-                valid = associationSpec.IsAssociationValid(nakedObjectAdapter, testNakedObjectAdapter);
-            }
-            else if (field is IOneToManyAssociationSpec) {
-                valid = new Veto("Always disabled");
-            }
-            else {
-                throw new UnknownTypeException(field);
-            }
+            IConsent valid = field switch {
+                IOneToOneAssociationSpec associationSpec => associationSpec.IsAssociationValid(nakedObjectAdapter, testNakedObjectAdapter),
+                IOneToManyAssociationSpec _ => new Veto("Always disabled"),
+                _ => throw new UnknownTypeException(field)
+            };
 
             LastMessage = valid.Reason;
-            Assert.IsFalse(valid.IsVetoed, string.Format("Cannot SetObject {0} in the field {1} within {2}: {3}", testNakedObjectAdapter, field, nakedObjectAdapter, valid.Reason));
+            Assert.IsFalse(valid.IsVetoed, $"Cannot SetObject {testNakedObjectAdapter} in the field {field} within {nakedObjectAdapter}: {valid.Reason}");
 
             var spec = field as IOneToOneAssociationSpec;
-            if (spec != null) {
-                spec.SetAssociation(nakedObjectAdapter, testNakedObjectAdapter);
-            }
+            spec?.SetAssociation(nakedObjectAdapter, testNakedObjectAdapter);
 
             return this;
         }
@@ -117,7 +109,7 @@ namespace NakedObjects.Xat {
             var testNakedObjectAdapter = testObject.NakedObject;
 
             Assert.IsTrue(testNakedObjectAdapter.Spec.IsOfType(field.ReturnSpec),
-                string.Format("Can't clear a {0} from the {1} field (which accepts {2})", testObject.NakedObject.Spec.ShortName, Name, field.ReturnSpec));
+                $"Can't clear a {testObject.NakedObject.Spec.ShortName} from the {Name} field (which accepts {field.ReturnSpec})");
 
             var nakedObjectAdapter = owningObject.NakedObject;
 
@@ -127,7 +119,7 @@ namespace NakedObjects.Xat {
 
             IConsent valid = new Veto("Always disabled");
 
-            Assert.IsFalse(valid.IsVetoed, string.Format("Can't remove {0} from the field {1} within {2}: {3}", testNakedObjectAdapter, field, nakedObjectAdapter, valid.Reason));
+            Assert.IsFalse(valid.IsVetoed, $"Can't remove {testNakedObjectAdapter} from the field {field} within {nakedObjectAdapter}: {valid.Reason}");
             return this;
         }
 
@@ -174,7 +166,7 @@ namespace NakedObjects.Xat {
                 var consent = ((IOneToOneAssociationSpec) field).IsAssociationValid(nakedObjectAdapter, newValue);
                 LastMessage = consent.Reason;
 
-                Assert.IsFalse(consent.IsVetoed, string.Format("Content: '{0}' is not valid. Reason: {1}", textEntry, consent.Reason));
+                Assert.IsFalse(consent.IsVetoed, $"Content: '{textEntry}' is not valid. Reason: {consent.Reason}");
 
                 ((IOneToOneAssociationSpec) field).SetAssociation(nakedObjectAdapter, textEntry.Trim().Equals("") ? null : newValue);
             }
@@ -194,7 +186,7 @@ namespace NakedObjects.Xat {
             try {
                 var consent = ((IOneToOneAssociationSpec) field).IsAssociationValid(nakedObjectAdapter, null);
                 LastMessage = consent.Reason;
-                Assert.IsFalse(consent.IsVetoed, string.Format("Content: 'null' is not valid. Reason: {0}", consent.Reason));
+                Assert.IsFalse(consent.IsVetoed, $"Content: 'null' is not valid. Reason: {consent.Reason}");
                 ((IOneToOneAssociationSpec) field).SetAssociation(nakedObjectAdapter, null);
             }
             catch (InvalidEntryException) {
@@ -269,23 +261,17 @@ namespace NakedObjects.Xat {
 
             Assert.IsFalse(field.ReturnSpec.IsParseable, "Drop(..) not allowed on value target field; use SetValue(..) instead");
             var testNakedObjectAdapter = testObject.NakedObject;
-            Assert.IsTrue(testNakedObjectAdapter.Spec.IsOfType(field.ReturnSpec), string.Format("Can't drop a {0} on to the {1} field (which accepts {2})", testObject.NakedObject.Spec.ShortName, Name, field.ReturnSpec));
+            Assert.IsTrue(testNakedObjectAdapter.Spec.IsOfType(field.ReturnSpec), $"Can't drop a {testObject.NakedObject.Spec.ShortName} on to the {Name} field (which accepts {field.ReturnSpec})");
             var nakedObjectAdapter = owningObject.NakedObject;
-            IConsent valid;
-            var spec = field as IOneToOneAssociationSpec;
-            if (spec != null) {
-                valid = spec.IsAssociationValid(nakedObjectAdapter, testNakedObjectAdapter);
-            }
-            else if (field is IOneToManyAssociationSpec) {
-                valid = new Veto("Always disabled");
-            }
-            else {
-                throw new UnknownTypeException(field);
-            }
+            IConsent valid = field switch {
+                IOneToOneAssociationSpec spec => spec.IsAssociationValid(nakedObjectAdapter, testNakedObjectAdapter),
+                IOneToManyAssociationSpec _ => new Veto("Always disabled"),
+                _ => throw new UnknownTypeException(field)
+            };
 
             LastMessage = valid.Reason;
 
-            Assert.IsFalse(valid.IsVetoed, string.Format("Cannot SetObject {0} in the field {1} within {2}: {3}", testNakedObjectAdapter, field, nakedObjectAdapter, valid.Reason));
+            Assert.IsFalse(valid.IsVetoed, $"Cannot SetObject {testNakedObjectAdapter} in the field {field} within {nakedObjectAdapter}: {valid.Reason}");
             return this;
         }
 

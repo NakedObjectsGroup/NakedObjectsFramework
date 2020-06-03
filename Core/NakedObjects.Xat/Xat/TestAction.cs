@@ -238,7 +238,7 @@ namespace NakedObjects.Xat {
         private object[] ParsedParameters(params object[] parameters) {
             var parsedParameters = new List<object>();
 
-            Assert.IsTrue(parameters.Length == actionSpec.Parameters.Length, string.Format("Action '{0}' is unusable: wrong number of parameters, got {1}, expect {2}", Name, parameters.Length, actionSpec.Parameters.Length));
+            Assert.IsTrue(parameters.Length == actionSpec.Parameters.Length, $"Action '{Name}' is unusable: wrong number of parameters, got {parameters.Length}, expect {actionSpec.Parameters.Length}");
 
             var i = 0;
             foreach (var parm in actionSpec.Parameters) {

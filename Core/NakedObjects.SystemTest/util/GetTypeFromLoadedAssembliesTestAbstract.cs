@@ -88,11 +88,11 @@ namespace NakedObjects.SystemTest.Util {
         }
 
         private static void DisplayResults() {
-            foreach (var result in Results) {
-                var indRuns = result.Value.IndividualRuns.Select(ts => ts.ToString()).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "\t" : "\r\n\t\t") + t);
-                var shortName = result.Key.Replace("TestHarnessFindTypeFromLoadedAssemblies", "");
+            foreach (var (key, value) in Results) {
+                var indRuns = value.IndividualRuns.Select(ts => ts.ToString()).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "\t" : "\r\n\t\t") + t);
+                var shortName = key.Replace("TestHarnessFindTypeFromLoadedAssemblies", "");
 
-                Console.WriteLine("Name: {0}\t\tTotal : {1}\r\n\tRuns :{2}", shortName, result.Value.TotalRun, indRuns);
+                Console.WriteLine("Name: {0}\t\tTotal : {1}\r\n\tRuns :{2}", shortName, value.TotalRun, indRuns);
             }
         }
 
@@ -103,20 +103,18 @@ namespace NakedObjects.SystemTest.Util {
             var filePath = $@"{dir}\{fileName}.csv";
 
             Directory.CreateDirectory(dir);
-            using (var fs = File.Create(filePath)) {
-                using (var sw = new StreamWriter(fs)) {
-                    const string header = "Test, Total Time, Time Run 1,Time Run 2,Time Run 3,Time Run 4,Time Run 5,Time Run 6,Time Run 7,Time Run 8,Time Run 9,Time Run 10";
+            using var fs = File.Create(filePath);
+            using var sw = new StreamWriter(fs);
+            const string header = "Test, Total Time, Time Run 1,Time Run 2,Time Run 3,Time Run 4,Time Run 5,Time Run 6,Time Run 7,Time Run 8,Time Run 9,Time Run 10";
 
-                    sw.WriteLine(header);
+            sw.WriteLine(header);
 
-                    foreach (var result in Results) {
-                        var indRuns = result.Value.IndividualRuns.Select(ts => ts.ToString()).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ",") + t);
-                        var shortName = result.Key.Replace("TestHarnessFindTypeFromLoadedAssemblies", "");
+            foreach (var result in Results) {
+                var indRuns = result.Value.IndividualRuns.Select(ts => ts.ToString()).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ",") + t);
+                var shortName = result.Key.Replace("TestHarnessFindTypeFromLoadedAssemblies", "");
 
-                        var line = $"{shortName}, {result.Value.TotalRun}, {indRuns}";
-                        sw.WriteLine(line);
-                    }
-                }
+                var line = $"{shortName}, {result.Value.TotalRun}, {indRuns}";
+                sw.WriteLine(line);
             }
         }
 
@@ -219,7 +217,7 @@ namespace NakedObjects.SystemTest.Util {
         private static class ThreadSafeRandom {
             [ThreadStatic] private static Random local;
 
-            public static Random ThisThreadsRandom => local ?? (local = new Random(unchecked(Environment.TickCount * 31 + Thread.CurrentThread.ManagedThreadId)));
+            public static Random ThisThreadsRandom => local ??= new Random(unchecked(Environment.TickCount * 31 + Thread.CurrentThread.ManagedThreadId));
         }
 
         #endregion

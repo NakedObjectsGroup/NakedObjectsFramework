@@ -13,35 +13,6 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Core.Util {
     public static class CollectionUtils {
-        #region Nested type: EnumeratorWrapper
-
-        private class EnumeratorWrapper<T> : IEnumerable<T> {
-            private readonly IEnumerator<T> enumerator;
-
-            public EnumeratorWrapper(IEnumerator<T> enumerator) => this.enumerator = enumerator;
-
-            #region IEnumerable<T> Members
-
-            public IEnumerator<T> GetEnumerator() => enumerator;
-
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-            #endregion
-        }
-
-        private class EnumeratorWrapper : IEnumerable {
-            private readonly IEnumerator enumerator;
-
-            public EnumeratorWrapper(IEnumerator enumerator) => this.enumerator = enumerator;
-
-            #region IEnumerable Members
-
-            IEnumerator IEnumerable.GetEnumerator() => enumerator;
-
-            #endregion
-        }
-
-        #endregion
 
         #region public
 

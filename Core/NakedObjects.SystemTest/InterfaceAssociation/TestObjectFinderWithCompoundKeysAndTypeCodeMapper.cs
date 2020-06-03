@@ -185,17 +185,14 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
     public class SimpleTypeCodeMapper : ITypeCodeMapper {
         #region ITypeCodeMapper Members
 
-        public Type TypeFromCode(string code) {
-            if (code == "CU1") { return typeof(CustomerOne); }
-
-            if (code == "CU2") { return typeof(CustomerTwo); }
-
-            if (code == "CU3") { return typeof(CustomerThree); }
-
-            if (code == "SUP") { return typeof(Supplier); }
-
-            throw new DomainException("Code not recognised: " + code);
-        }
+        public Type TypeFromCode(string code) =>
+            code switch {
+                "CU1" => typeof(CustomerOne),
+                "CU2" => typeof(CustomerTwo),
+                "CU3" => typeof(CustomerThree),
+                "SUP" => typeof(Supplier),
+                _ => throw new DomainException("Code not recognised: " + code)
+            };
 
         public string CodeFromType(Type type) {
             if (type == typeof(CustomerOne)) { return "CU1"; }

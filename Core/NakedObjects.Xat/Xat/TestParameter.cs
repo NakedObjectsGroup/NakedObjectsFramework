@@ -51,22 +51,22 @@ namespace NakedObjects.Xat {
         }
 
         public ITestParameter AssertIsOptional() {
-            Assert.IsTrue(!parameterSpec.IsMandatory, string.Format("Parameter: {0} is mandatory", Name));
+            Assert.IsTrue(!parameterSpec.IsMandatory, $"Parameter: {Name} is mandatory");
             return this;
         }
 
         public ITestParameter AssertIsMandatory() {
-            Assert.IsTrue(parameterSpec.IsMandatory, string.Format("Parameter: {0} is optional", Name));
+            Assert.IsTrue(parameterSpec.IsMandatory, $"Parameter: {Name} is optional");
             return this;
         }
 
         public ITestParameter AssertIsDescribedAs(string description) {
-            Assert.IsTrue(parameterSpec.Description == description, string.Format("Parameter: {0} description: {1} expected: {2}", Name, parameterSpec.Description, description));
+            Assert.IsTrue(parameterSpec.Description == description, $"Parameter: {Name} description: {parameterSpec.Description} expected: {description}");
             return this;
         }
 
         public ITestParameter AssertIsNamed(string name) {
-            Assert.IsTrue(Name == name, string.Format("Parameter name : {0} expected {1}", Name, name));
+            Assert.IsTrue(Name == name, $"Parameter name : {Name} expected {name}");
             return this;
         }
 

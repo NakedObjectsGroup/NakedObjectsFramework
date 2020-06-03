@@ -13,9 +13,6 @@ namespace NakedObjects.Core.Util {
     public sealed class AsString {
         private readonly StringBuilder buffer;
         private bool addComma;
-        private bool useLineBreaks;
-
-        private AsString() => buffer = new StringBuilder();
 
         public AsString(object forObject) {
             buffer = new StringBuilder();
@@ -37,7 +34,6 @@ namespace NakedObjects.Core.Util {
             addComma = text.Length > 0;
         }
 
-
         public static string CreateName(object forObject) {
             var buffer = new StringBuilder();
             CreateName(forObject, buffer);
@@ -54,8 +50,6 @@ namespace NakedObjects.Core.Util {
             var name = forObject.GetType().FullName;
             return name.Substring(name.LastIndexOf('.') + 1);
         }
-
-        public static string Timestamp(DateTime? date) => date == null ? "" : date.GetValueOrDefault().ToLongTimeString();
 
         public AsString Append(string text) {
             buffer.Append(text);
@@ -105,9 +99,6 @@ namespace NakedObjects.Core.Util {
         public AsString Append(string name, string stringValue) {
             if (addComma) {
                 buffer.Append(',');
-                if (useLineBreaks) {
-                    buffer.Append(Environment.NewLine).Append('\t');
-                }
             }
             else {
                 addComma = true;

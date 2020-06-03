@@ -107,17 +107,14 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
     public class SimpleTypeCodeMapper : ITypeCodeMapper {
         #region ITypeCodeMapper Members
 
-        public Type TypeFromCode(string code) {
-            if (code == "CUS") { return typeof(CustomerAsPayee); }
-
-            if (code == "SUP") { return typeof(SupplierAsPayee); }
-
-            if (code == "INV") { return typeof(InvoiceAsPayableItem); }
-
-            if (code == "EXP") { return typeof(ExpenseClaimAsPayableItem); }
-
-            throw new DomainException("Code not recognised: " + code);
-        }
+        public Type TypeFromCode(string code) =>
+            code switch {
+                "CUS" => typeof(CustomerAsPayee),
+                "SUP" => typeof(SupplierAsPayee),
+                "INV" => typeof(InvoiceAsPayableItem),
+                "EXP" => typeof(ExpenseClaimAsPayableItem),
+                _ => throw new DomainException("Code not recognised: " + code)
+            };
 
         public string CodeFromType(Type type) {
             if (type == typeof(CustomerAsPayee)) { return "CUS"; }

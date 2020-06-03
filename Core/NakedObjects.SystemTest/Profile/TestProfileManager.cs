@@ -90,21 +90,21 @@ namespace NakedObjects.SystemTest.Profile {
             var beginCalled = false;
             var endCalled = false;
 
-            Action<IPrincipal, ProfileEvent, Type, string> testCallback = (p, e, t, s) => {
+            void TestCallback(IPrincipal p, ProfileEvent e, Type t, string s) {
                 Assert.AreEqual("sven", p.Identity.Name);
                 Assert.AreEqual(ProfileEvent.ActionInvocation, e);
                 Assert.AreEqual(typeof(Foo), t);
                 Assert.AreEqual("TestAction", s);
-            };
+            }
 
             MyProfiler.BeginCallback = (p, e, t, s) => {
                 beginCalled = true;
-                testCallback(p, e, t, s);
+                TestCallback(p, e, t, s);
             };
 
             MyProfiler.EndCallback = (p, e, t, s) => {
                 endCalled = true;
-                testCallback(p, e, t, s);
+                TestCallback(p, e, t, s);
             };
 
             foo.Actions.First().Invoke();
@@ -249,14 +249,14 @@ namespace NakedObjects.SystemTest.Profile {
                 ""
             };
 
-            Func<int, Action<CallbackData>> createTestFunc = i => {
+            Action<CallbackData> CreateTestFunc(int i) {
                 return cbd => {
                     Assert.AreEqual("sven", cbd.Principal.Identity.Name, i.ToString());
                     Assert.AreEqual(events[i], cbd.ProfileEvent, i.ToString());
                     Assert.AreEqual(types[i], cbd.Type, i.ToString());
                     Assert.AreEqual(members[i], cbd.Member, i.ToString());
                 };
-            };
+            }
 
             MyProfiler.BeginCallback = (p, e, t, s) => {
                 beginCalledCount++;
@@ -287,7 +287,7 @@ namespace NakedObjects.SystemTest.Profile {
             Assert.AreEqual(20, endCalledCount);
 
             for (var i = 0; i < 40; i++) {
-                createTestFunc(i)(callbackData[i]);
+                CreateTestFunc(i)(callbackData[i]);
             }
         }
 
@@ -300,26 +300,26 @@ namespace NakedObjects.SystemTest.Profile {
 
             var callbackData = new List<CallbackData>();
 
-            Action<CallbackData> testCallback0 = cbd => {
+            void TestCallback0(CallbackData cbd) {
                 Assert.AreEqual("sven", cbd.Principal.Identity.Name);
                 Assert.AreEqual(ProfileEvent.Loading, cbd.ProfileEvent);
                 Assert.AreEqual(typeof(string), cbd.Type);
                 Assert.AreEqual("", cbd.Member);
-            };
+            }
 
-            Action<CallbackData> testCallback1 = cbd => {
+            void TestCallback1(CallbackData cbd) {
                 Assert.AreEqual("sven", cbd.Principal.Identity.Name);
                 Assert.AreEqual(ProfileEvent.Loaded, cbd.ProfileEvent);
                 Assert.AreEqual(typeof(string), cbd.Type);
                 Assert.AreEqual("", cbd.Member);
-            };
+            }
 
-            Action<CallbackData> testCallback2 = cbd => {
+            void TestCallback2(CallbackData cbd) {
                 Assert.AreEqual("sven", cbd.Principal.Identity.Name);
                 Assert.AreEqual(ProfileEvent.PropertySet, cbd.ProfileEvent);
                 Assert.AreEqual(typeof(Foo), cbd.Type);
                 Assert.AreEqual("TestProperty", cbd.Member);
-            };
+            }
 
             MyProfiler.BeginCallback = (p, e, t, s) => {
                 beginCalledCount++;
@@ -336,12 +336,12 @@ namespace NakedObjects.SystemTest.Profile {
             Assert.AreEqual(3, beginCalledCount);
             Assert.AreEqual(3, endCalledCount);
 
-            testCallback0(callbackData[0]);
-            testCallback0(callbackData[1]);
-            testCallback1(callbackData[2]);
-            testCallback1(callbackData[3]);
-            testCallback2(callbackData[4]);
-            testCallback2(callbackData[5]);
+            TestCallback0(callbackData[0]);
+            TestCallback0(callbackData[1]);
+            TestCallback1(callbackData[2]);
+            TestCallback1(callbackData[3]);
+            TestCallback2(callbackData[4]);
+            TestCallback2(callbackData[5]);
         }
 
         #region Nested type: CallbackData

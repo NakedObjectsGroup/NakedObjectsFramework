@@ -16,12 +16,6 @@ namespace NakedObjects.Core.Resolve {
 
         public static bool IsGhost(this IResolveStateMachine stateMachine) => stateMachine.CurrentState is ResolveStateMachine.GhostState;
 
-        public static bool IsNew(this IResolveStateMachine stateMachine) => stateMachine.CurrentState is ResolveStateMachine.NewState;
-
-        public static bool IsUpdating(this IResolveStateMachine stateMachine) => stateMachine.CurrentState is ResolveStateMachine.UpdatingState;
-
-        public static bool IsPartlyResolved(this IResolveStateMachine stateMachine) => stateMachine.CurrentState is ResolveStateMachine.PartResolvedState;
-
         public static bool IsPersistent(this IResolveStateMachine stateMachine) =>
             stateMachine.CurrentState is ResolveStateMachine.GhostState ||
             stateMachine.CurrentState is ResolveStateMachine.PartResolvedState ||
@@ -42,15 +36,7 @@ namespace NakedObjects.Core.Resolve {
 
         public static bool IsAggregated(this IResolveStateMachine stateMachine) => stateMachine.CurrentState is ResolveStateMachine.AggregatedState;
 
-        public static bool IsResolving(this IResolveStateMachine stateMachine) => stateMachine.CurrentState is ResolveStateMachine.ResolvingState || stateMachine.CurrentState is ResolveStateMachine.ResolvingPartState;
-
         public static bool IsPartResolving(this IResolveStateMachine stateMachine) => stateMachine.CurrentState is ResolveStateMachine.ResolvingPartState;
-
-        public static bool IsSerializing(this IResolveStateMachine stateMachine) =>
-            stateMachine.CurrentState is ResolveStateMachine.SerializingGhostState ||
-            stateMachine.CurrentState is ResolveStateMachine.SerializingPartResolvedState ||
-            stateMachine.CurrentState is ResolveStateMachine.SerializingResolvedState ||
-            stateMachine.CurrentState is ResolveStateMachine.SerializingTransientState;
 
         public static bool IsTransient(this IResolveStateMachine stateMachine) =>
             stateMachine.CurrentState is ResolveStateMachine.TransientState ||
@@ -66,12 +52,6 @@ namespace NakedObjects.Core.Resolve {
         public static bool IsResolvable(this IResolveStateMachine stateMachine) =>
             stateMachine.CurrentState is ResolveStateMachine.GhostState ||
             stateMachine.CurrentState is ResolveStateMachine.PartResolvedState;
-
-        public static bool IsDeserializable(this IResolveStateMachine stateMachine) =>
-            stateMachine.CurrentState is ResolveStateMachine.TransientState ||
-            stateMachine.CurrentState is ResolveStateMachine.GhostState ||
-            stateMachine.CurrentState is ResolveStateMachine.PartResolvedState ||
-            stateMachine.CurrentState is ResolveStateMachine.ResolvedState;
 
         public static void CheckCanAssociate(this IResolveStateMachine stateMachine, INakedObjectAdapter associate) {
             if (stateMachine.IsPersistent() && associate != null && associate.ResolveState.IsTransient()) {
