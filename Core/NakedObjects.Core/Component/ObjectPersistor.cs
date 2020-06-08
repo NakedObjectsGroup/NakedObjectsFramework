@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -27,17 +28,19 @@ namespace NakedObjects.Core.Component {
     ///     the store specific portion of the logic.
     /// </summary>
     public sealed class ObjectPersistor : IObjectPersistor {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectPersistor));
+        private readonly ILogger<ObjectPersistor> logger;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IObjectStore objectStore;
 
         public ObjectPersistor(IObjectStore objectStore,
-                               INakedObjectManager nakedObjectManager) {
+                               INakedObjectManager nakedObjectManager,
+                               ILogger<ObjectPersistor> logger) {
             Assert.AssertNotNull(objectStore);
             Assert.AssertNotNull(nakedObjectManager);
 
             this.objectStore = objectStore;
             this.nakedObjectManager = nakedObjectManager;
+            this.logger = logger;
         }
 
         #region IObjectPersistor Members
@@ -131,7 +134,7 @@ namespace NakedObjects.Core.Component {
                 else {
                     var spec = nakedObjectAdapter.Spec;
                     if (spec.IsAlwaysImmutable() || spec.IsImmutableOncePersisted() && nakedObjectAdapter.ResolveState.IsPersistent()) {
-                        throw new NotPersistableException(Log.LogAndReturn("cannot change immutable object"));
+                        throw new NotPersistableException(logger.LogAndReturn("cannot change immutable object"));
                     }
 
                     nakedObjectAdapter.Updating();

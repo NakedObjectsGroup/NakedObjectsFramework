@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -20,7 +21,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class NakedObjectManager : INakedObjectManager {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(NakedObjectManager));
+        private readonly ILogger<NakedObjectManager> logger;
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
         private readonly IIdentityMap identityMap;
         private readonly IMetamodelManager metamodel;
@@ -28,7 +29,12 @@ namespace NakedObjects.Core.Component {
         private readonly IOidGenerator oidGenerator;
         private readonly ISession session;
 
-        public NakedObjectManager(IMetamodelManager metamodel, ISession session, IIdentityMap identityMap, IOidGenerator oidGenerator, NakedObjectFactory nakedObjectFactory) {
+        public NakedObjectManager(IMetamodelManager metamodel, 
+                                  ISession session,
+                                  IIdentityMap identityMap,
+                                  IOidGenerator oidGenerator,
+                                  NakedObjectFactory nakedObjectFactory,
+                                  ILogger<NakedObjectManager> logger) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(session);
             Assert.AssertNotNull(identityMap);
@@ -40,6 +46,7 @@ namespace NakedObjects.Core.Component {
             this.identityMap = identityMap;
             this.oidGenerator = oidGenerator;
             this.nakedObjectFactory = nakedObjectFactory;
+            this.logger = logger;
         }
 
         #region INakedObjectManager Members
@@ -50,7 +57,7 @@ namespace NakedObjects.Core.Component {
             Assert.AssertNotNull("must have a domain object", obj);
             var nakedObjectAdapter = identityMap.GetAdapterFor(obj);
             if (nakedObjectAdapter != null && nakedObjectAdapter.Object != obj) {
-                throw new AdapterException(Log.LogAndReturn($"Mapped adapter is for different domain object: {obj}; {nakedObjectAdapter}"));
+                throw new AdapterException(logger.LogAndReturn($"Mapped adapter is for different domain object: {obj}; {nakedObjectAdapter}"));
             }
 
             return nakedObjectAdapter;

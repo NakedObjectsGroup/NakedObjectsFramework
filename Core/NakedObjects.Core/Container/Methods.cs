@@ -10,6 +10,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Container {
     internal static class Methods {
@@ -57,6 +59,21 @@ namespace NakedObjects.Core.Container {
                         throw new DomainException(msg.ToString());
                     }
                 }
+            }
+        }
+
+        private static readonly MethodInfo CreateMethod = typeof(LoggerFactoryExtensions).GetMethods().Single(m => m.Name == "CreateLogger" && m.ContainsGenericParameters);
+
+        public static void InjectLogger(object target, ILoggerFactory loggerFactory) {
+            var targetType = target.GetType();
+            var targetProperties = targetType.GetProperties().Where(p => p.CanWrite).ToList();
+            targetProperties.Where(p => p.PropertyType == typeof(ILoggerFactory)).ForEach(tf => tf.SetValue(target, loggerFactory));
+            var loggerType = typeof(ILogger<>).MakeGenericType(targetType);
+            var targetLoggers = targetProperties.Where(p => p.PropertyType == loggerType).ToList();
+            if (targetLoggers.Any()) {
+                var createLoggerType = CreateMethod.MakeGenericMethod(targetType);
+                var logger = createLoggerType.Invoke(null, new object[] {loggerFactory});
+                targetLoggers.ForEach(l => l.SetValue(target, logger));
             }
         }
 

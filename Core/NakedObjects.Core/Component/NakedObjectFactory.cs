@@ -38,7 +38,6 @@ namespace NakedObjects.Core.Component {
 
         public INakedObjectAdapter CreateAdapter(object obj, IOid oid) {
             Assert.AssertTrue(isInitialized);
-
             return new NakedObjectAdapter(metamodelManager, session, persistor, lifecycleManager, nakedObjectManager, obj, oid);
         }
     }

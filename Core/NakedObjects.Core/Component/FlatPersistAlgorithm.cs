@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
@@ -19,13 +20,16 @@ namespace NakedObjects.Core.Component {
     ///     object in the collection to the store.
     /// </summary>
     public sealed class FlatPersistAlgorithm : IPersistAlgorithm {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(FlatPersistAlgorithm));
+        private readonly ILogger<FlatPersistAlgorithm> logger;
         private readonly INakedObjectManager manager;
         private readonly IObjectPersistor persistor;
 
-        public FlatPersistAlgorithm(IObjectPersistor persistor, INakedObjectManager manager) {
+        public FlatPersistAlgorithm(IObjectPersistor persistor,
+                                    INakedObjectManager manager,
+                                    ILogger<FlatPersistAlgorithm> logger) {
             this.persistor = persistor;
             this.manager = manager;
+            this.logger = logger;
         }
 
         #region IPersistAlgorithm Members

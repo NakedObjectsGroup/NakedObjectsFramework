@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -19,10 +20,14 @@ using NakedObjects.UtilInternal;
 
 namespace NakedObjects.Core.Container {
     public sealed class DomainObjectContainer : IDomainObjectContainer, IInternalAccess {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(DomainObjectContainer));
+        private readonly ILogger<DomainObjectContainer> logger;
         private readonly INakedObjectsFramework framework;
 
-        public DomainObjectContainer(INakedObjectsFramework framework) => this.framework = framework;
+        public DomainObjectContainer(INakedObjectsFramework framework,
+                                     ILogger<DomainObjectContainer> logger) {
+            this.framework = framework;
+            this.logger = logger;
+        }
 
         #region IDomainObjectContainer Members
 
@@ -32,12 +37,12 @@ namespace NakedObjects.Core.Container {
 
         public void DisposeInstance(object persistentObject) {
             if (persistentObject == null) {
-                throw new ArgumentException(Log.LogAndReturn(Resources.NakedObjects.DisposeReferenceError));
+                throw new ArgumentException(logger.LogAndReturn(Resources.NakedObjects.DisposeReferenceError));
             }
 
             var adapter = framework.NakedObjectManager.GetAdapterFor(persistentObject);
             if (!IsPersistent(persistentObject)) {
-                throw new DisposeFailedException(Log.LogAndReturn(string.Format(Resources.NakedObjects.NotPersistentMessage, adapter)));
+                throw new DisposeFailedException(logger.LogAndReturn(string.Format(Resources.NakedObjects.NotPersistentMessage, adapter)));
             }
 
             framework.Persistor.DestroyObject(adapter);
@@ -54,7 +59,7 @@ namespace NakedObjects.Core.Container {
         public void Persist<T>(ref T transientObject) {
             var adapter = framework.NakedObjectManager.GetAdapterFor(transientObject);
             if (IsPersistent(transientObject)) {
-                throw new PersistFailedException(Log.LogAndReturn(string.Format(Resources.NakedObjects.AlreadyPersistentMessage, adapter)));
+                throw new PersistFailedException(logger.LogAndReturn(string.Format(Resources.NakedObjects.AlreadyPersistentMessage, adapter)));
             }
 
             Validate(adapter);
@@ -84,7 +89,7 @@ namespace NakedObjects.Core.Container {
             }
         }
 
-        public void RaiseError(string message) => throw new DomainException(Log.LogAndReturn(message));
+        public void RaiseError(string message) => throw new DomainException(logger.LogAndReturn(message));
 
         public void Refresh(object obj) {
             var nakedObjectAdapter = AdapterFor(obj);
@@ -119,11 +124,11 @@ namespace NakedObjects.Core.Container {
 
         #endregion
 
-        private static void Validate(INakedObjectAdapter adapter) {
+        private void Validate(INakedObjectAdapter adapter) {
             if (adapter.Spec.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
                 var state = adapter.ValidToPersist();
                 if (state != null) {
-                    throw new PersistFailedException(Log.LogAndReturn(string.Format(Resources.NakedObjects.PersistStateError, adapter.Spec.ShortName, adapter.TitleString(), state)));
+                    throw new PersistFailedException(logger.LogAndReturn(string.Format(Resources.NakedObjects.PersistStateError, adapter.Spec.ShortName, adapter.TitleString(), state)));
                 }
             }
         }

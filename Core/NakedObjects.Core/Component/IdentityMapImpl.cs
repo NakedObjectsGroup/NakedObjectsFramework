@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Adapter;
@@ -16,13 +17,16 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class IdentityMapImpl : IIdentityMap {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(IdentityMapImpl));
+        private ILogger<IdentityMapImpl> logger;
         private readonly IIdentityAdapterMap identityAdapterMap;
         private readonly INakedObjectAdapterMap nakedObjectAdapterMap;
         private readonly IOidGenerator oidGenerator;
         private readonly IDictionary<object, object> unloadedObjects = new Dictionary<object, object>();
 
-        public IdentityMapImpl(IOidGenerator oidGenerator, IIdentityAdapterMap identityAdapterMap, INakedObjectAdapterMap nakedObjectAdapterMap) {
+        public IdentityMapImpl(IOidGenerator oidGenerator,
+                               IIdentityAdapterMap identityAdapterMap,
+                               INakedObjectAdapterMap nakedObjectAdapterMap,
+                               ILogger<IdentityMapImpl> logger) {
             Assert.AssertNotNull(oidGenerator);
             Assert.AssertNotNull(identityAdapterMap);
             Assert.AssertNotNull(nakedObjectAdapterMap);
@@ -30,6 +34,7 @@ namespace NakedObjects.Core.Component {
             this.oidGenerator = oidGenerator;
             this.identityAdapterMap = identityAdapterMap;
             this.nakedObjectAdapterMap = nakedObjectAdapterMap;
+            this.logger = logger;
         }
 
         #region IIdentityMap Members
@@ -49,7 +54,7 @@ namespace NakedObjects.Core.Component {
 
             if (unloadedObjects.ContainsKey(obj)) {
                 var msg = string.Format(Resources.NakedObjects.TransientReferenceMessage, obj);
-                throw new TransientReferenceException(Log.LogAndReturn(msg));
+                throw new TransientReferenceException(logger.LogAndReturn(msg));
             }
 
             if (nakedObjectAdapter.Spec.IsObject) {

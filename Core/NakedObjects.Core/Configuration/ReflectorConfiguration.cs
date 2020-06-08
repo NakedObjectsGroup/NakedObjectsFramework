@@ -12,6 +12,7 @@ using System.Data.Entity.Core.Objects.DataClasses;
 using System.Drawing;
 using System.Linq;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Util;
@@ -21,7 +22,6 @@ using NakedObjects.Value;
 namespace NakedObjects.Core.Configuration {
     [Serializable]
     public class ReflectorConfiguration : IReflectorConfiguration {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ReflectorConfiguration));
 
         private readonly Type[] defaultSystemTypes = {
             typeof(bool),
@@ -133,7 +133,7 @@ namespace NakedObjects.Core.Configuration {
             }
 
             if (configError) {
-                throw new InitialisationException(Log.LogAndReturn(msg));
+                throw new InitialisationException(msg);
             }
         }
     }

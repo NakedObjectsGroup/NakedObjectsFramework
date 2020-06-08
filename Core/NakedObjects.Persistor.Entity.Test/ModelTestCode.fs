@@ -19,6 +19,7 @@ open System
 open System.Data.Entity.Core.Objects
 open TestCode
 open TestTypes
+open Microsoft.Extensions.Logging
 
 let ModelConfig = 
     let pc = new CodeFirstEntityContextConfiguration()
@@ -29,7 +30,10 @@ let ModelConfig =
 
 ReflectorConfiguration.NoValidate <- true
 let config = new ReflectorConfiguration([||], [| typeof<NakedObjects.Services.SimpleRepository<Person>> |], [||]  )
-let injector = new DomainObjectContainerInjector(config)
+
+let mockLoggerFactory = new Mock<ILoggerFactory>();
+let mockLogger = new Mock<ILogger<DomainObjectContainerInjector>>();
+let injector = new DomainObjectContainerInjector(config, mockLoggerFactory.Object, mockLogger.Object);
 
 injector.set_Framework (new Mock<INakedObjectsFramework>()).Object
 

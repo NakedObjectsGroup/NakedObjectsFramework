@@ -6,11 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace NakedObjects.Core.Util {
     public static class LogUtils {
         public static string LogAndReturn(this ILog log, string msg) {
             log.Error(msg);
+            return msg;
+        }
+
+        public static string LogAndReturn(this ILogger log, string msg) {
+            log.LogError(msg);
             return msg;
         }
     }

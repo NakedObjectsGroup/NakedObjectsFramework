@@ -9,12 +9,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Common.Logging;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.Component {
     public sealed class NakedObjectAdapterHashMap : INakedObjectAdapterMap {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(NakedObjectAdapterHashMap));
+        private readonly ILogger<NakedObjectAdapterHashMap> logger;
         private readonly int capacity = 10;
         private readonly IDictionary<object, INakedObjectAdapter> domainObjects;
 
@@ -22,10 +23,12 @@ namespace NakedObjects.Core.Component {
 
         // used by DI
         // ReSharper disable once UnusedMember.Global
-        public NakedObjectAdapterHashMap(IConfiguration config) : this() {
+        public NakedObjectAdapterHashMap(IConfiguration config,
+                                        ILogger<NakedObjectAdapterHashMap> logger) : this() {
+            this.logger = logger;
             var capacityFromConfig = config.GetSection("NakedObjects")["HashMapCapacity"];
             if (capacityFromConfig == null) {
-                Log.Warn($"NakedObjects:HashMapCapacity not set defaulting to {capacity}");
+                logger.LogWarning($"NakedObjects:HashMapCapacity not set defaulting to {capacity}");
             }
             else {
                 capacity = int.Parse(capacityFromConfig);

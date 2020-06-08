@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Transaction;
 using NakedObjects.Core.Transaction;
@@ -13,14 +14,15 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class TransactionManager : ITransactionManager {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(TransactionManager));
+        private readonly ILogger<TransactionManager> logger;
         private readonly IObjectStore objectStore;
         private ITransaction transaction;
         private bool userAborted;
 
-        public TransactionManager(IObjectStore objectStore) {
+        public TransactionManager(IObjectStore objectStore, ILogger<TransactionManager> logger) {
             Assert.AssertNotNull(objectStore);
             this.objectStore = objectStore;
+            this.logger = logger;
         }
 
         private ITransaction Transaction => transaction ?? new NestedTransaction(objectStore);
@@ -61,7 +63,7 @@ namespace NakedObjects.Core.Component {
             else if (TransactionLevel < 0) {
                 TransactionLevel = 0;
                 if (!userAborted) {
-                    throw new TransactionException(Log.LogAndReturn("No transaction running to end"));
+                    throw new TransactionException(logger.LogAndReturn("No transaction running to end"));
                 }
             }
         }

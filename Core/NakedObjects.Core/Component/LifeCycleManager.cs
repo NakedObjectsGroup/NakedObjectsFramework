@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -22,7 +22,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class LifeCycleManager : ILifecycleManager {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(LifeCycleManager));
+        private readonly ILogger<LifeCycleManager> logger;
         private readonly IDomainObjectInjector injector;
         private readonly IMetamodelManager metamodel;
         private readonly INakedObjectManager nakedObjectManager;
@@ -37,7 +37,8 @@ namespace NakedObjects.Core.Component {
             IOidGenerator oidGenerator,
             IDomainObjectInjector injector,
             IObjectPersistor objectPersistor,
-            INakedObjectManager nakedObjectManager
+            INakedObjectManager nakedObjectManager,
+            ILogger<LifeCycleManager> logger
         ) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(persistAlgorithm);
@@ -52,6 +53,7 @@ namespace NakedObjects.Core.Component {
             this.injector = injector;
             this.objectPersistor = objectPersistor;
             this.nakedObjectManager = nakedObjectManager;
+            this.logger = logger;
         }
 
         #region ILifecycleManager Members
@@ -67,7 +69,7 @@ namespace NakedObjects.Core.Component {
         /// </summary>
         public INakedObjectAdapter CreateInstance(IObjectSpec spec) {
             if (spec.ContainsFacet(typeof(IComplexTypeFacet))) {
-                throw new TransientReferenceException(Log.LogAndReturn(Resources.NakedObjects.NoTransientInline));
+                throw new TransientReferenceException(logger.LogAndReturn(Resources.NakedObjects.NoTransientInline));
             }
 
             var obj = CreateObject(spec);
@@ -87,7 +89,7 @@ namespace NakedObjects.Core.Component {
             var adapter = nakedObjectManager.GetAdapterFor(oid);
             if (adapter != null) {
                 if (!adapter.Spec.Equals(spec)) {
-                    throw new AdapterException(Log.LogAndReturn($"Mapped adapter is for a different type of object: {spec.FullName}; {adapter}"));
+                    throw new AdapterException(logger.LogAndReturn($"Mapped adapter is for a different type of object: {spec.FullName}; {adapter}"));
                 }
 
                 return adapter;
@@ -116,16 +118,16 @@ namespace NakedObjects.Core.Component {
         /// </para>
         public void MakePersistent(INakedObjectAdapter nakedObjectAdapter) {
             if (IsPersistent(nakedObjectAdapter)) {
-                throw new NotPersistableException(Log.LogAndReturn($"Object already persistent: {nakedObjectAdapter}"));
+                throw new NotPersistableException(logger.LogAndReturn($"Object already persistent: {nakedObjectAdapter}"));
             }
 
             if (nakedObjectAdapter.Spec.Persistable == PersistableType.Transient) {
-                throw new NotPersistableException(Log.LogAndReturn($"Object must be kept transient: {nakedObjectAdapter}"));
+                throw new NotPersistableException(logger.LogAndReturn($"Object must be kept transient: {nakedObjectAdapter}"));
             }
 
             var spec = nakedObjectAdapter.Spec;
             if (spec is IServiceSpec) {
-                throw new NotPersistableException(Log.LogAndReturn($"Cannot persist services: {nakedObjectAdapter}"));
+                throw new NotPersistableException(logger.LogAndReturn($"Cannot persist services: {nakedObjectAdapter}"));
             }
 
             persistAlgorithm.MakePersistent(nakedObjectAdapter);
@@ -135,7 +137,7 @@ namespace NakedObjects.Core.Component {
             var vmoid = nakedObjectAdapter.Oid as ViewModelOid;
 
             if (vmoid == null) {
-                throw new UnknownTypeException(Log.LogAndReturn($"Expect ViewModelOid got {(nakedObjectAdapter.Oid == null ? "null" : nakedObjectAdapter.Oid.GetType().ToString())}"));
+                throw new UnknownTypeException(logger.LogAndReturn($"Expect ViewModelOid got {(nakedObjectAdapter.Oid == null ? "null" : nakedObjectAdapter.Oid.GetType().ToString())}"));
             }
 
             // todo fix - temp hack

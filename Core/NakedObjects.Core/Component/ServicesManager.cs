@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -17,7 +18,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class ServicesManager : IServicesManager {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ServicesManager));
+        private readonly ILogger<ServicesManager> logger;
         private readonly IDomainObjectInjector injector;
         private readonly INakedObjectManager manager;
 
@@ -27,13 +28,17 @@ namespace NakedObjects.Core.Component {
         private INakedObjectAdapter[] serviceAdapters;
         private bool servicesInit;
 
-        public ServicesManager(IDomainObjectInjector injector, INakedObjectManager manager, IReflectorConfiguration config) {
+        public ServicesManager(IDomainObjectInjector injector,
+                               INakedObjectManager manager,
+                               IReflectorConfiguration config,
+                               ILogger<ServicesManager> logger) {
             Assert.AssertNotNull(injector);
             Assert.AssertNotNull(manager);
             Assert.AssertNotNull(config);
 
             this.injector = injector;
             this.manager = manager;
+            this.logger = logger;
 
             services = config.Services.Select(Activator.CreateInstance).ToList();
         }

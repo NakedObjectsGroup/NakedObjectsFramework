@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -7,8 +7,10 @@
 
 using System;
 using System.Data.Entity;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Services;
 using NUnit.Framework;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedVariable
@@ -16,7 +18,19 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Injection {
     [TestFixture]
     public class TestInjection : AbstractSystemTest<InjectionDbContext> {
-        protected override Type[] Types => new[] {typeof(Object1), typeof(Object2), typeof(Object3), typeof(Object4), typeof(Object5), typeof(Service1), typeof(IService2), typeof(IService3)};
+        protected override string[] Namespaces => new[] { typeof(Object1).Namespace };
+
+        protected override Type[] Types => new[] {
+            typeof(Object1),
+            typeof(Object2),
+            typeof(Object3),
+            typeof(Object4),
+            typeof(Object5),
+            typeof(Object6),
+            typeof(Service1),
+            typeof(IService2),
+            typeof(IService3)
+        };
 
         protected override Type[] Services =>
             new[] {
@@ -25,6 +39,7 @@ namespace NakedObjects.SystemTest.Injection {
                 typeof(SimpleRepository<Object3>),
                 typeof(SimpleRepository<Object4>),
                 typeof(SimpleRepository<Object5>),
+                typeof(SimpleRepository<Object6>),
                 typeof(Service1),
                 typeof(ServiceImplementation),
                 typeof(Service4ImplA),
@@ -131,6 +146,15 @@ namespace NakedObjects.SystemTest.Injection {
                 Assert.AreEqual("Cannot inject service into property Service4 on target NakedObjects.SystemTest.Injection.Object5 because multiple services implement type NakedObjects.SystemTest.Injection.IService4: NakedObjects.SystemTest.Injection.Service4ImplA; NakedObjects.SystemTest.Injection.Service4ImplB; NakedObjects.SystemTest.Injection.Service4ImplC; ", e.Message);
             }
         }
+
+        [Test]
+        public void InjectLogger() {
+            var testObject = (Object6) NewTestObject<Object6>().GetDomainObject();
+            Assert.IsNotNull(testObject.LoggerFactory);
+            Assert.IsNotNull(testObject.Logger);
+            IsInstanceOfType(testObject.LoggerFactory, typeof(ILoggerFactory));
+            IsInstanceOfType(testObject.Logger, typeof(ILogger<Object6>));
+        }
     }
 
     #region Domain classes used by tests
@@ -145,6 +169,7 @@ namespace NakedObjects.SystemTest.Injection {
         public DbSet<Object3> Object3 { get; set; }
         public DbSet<Object4> Object4 { get; set; }
         public DbSet<Object5> Object5 { get; set; }
+        public DbSet<Object6> Object6 { get; set; }
 
         public static void Delete() => Database.Delete(Cs);
     }
@@ -209,6 +234,14 @@ namespace NakedObjects.SystemTest.Injection {
     public class Object5 {
         //Should cause runtime exception as there is more than one implementation
         public IService4 Service4 { protected get; set; }
+
+        public virtual int Id { get; set; }
+    }
+
+    public class Object6 {
+        public ILoggerFactory LoggerFactory { get; set; }
+
+        public ILogger<Object6> Logger { get; set; }
 
         public virtual int Id { get; set; }
     }

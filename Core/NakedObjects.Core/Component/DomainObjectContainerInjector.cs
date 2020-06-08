@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Container;
@@ -15,12 +16,16 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class DomainObjectContainerInjector : IDomainObjectInjector {
+        private readonly ILoggerFactory loggerFactory;
         private readonly List<Type> serviceTypes;
         private IDomainObjectContainer container;
         private bool initialized;
         private List<object> services;
 
-        public DomainObjectContainerInjector(IReflectorConfiguration config) {
+        public DomainObjectContainerInjector(IReflectorConfiguration config, 
+                                             ILoggerFactory loggerFactory, 
+                                             ILogger<DomainObjectContainerInjector> logger) {
+            this.loggerFactory = loggerFactory;
             Assert.AssertNotNull(config);
 
             serviceTypes = config.Services.ToList();
@@ -38,6 +43,7 @@ namespace NakedObjects.Core.Component {
             Assert.AssertNotNull("no services", Services);
             Methods.InjectContainer(obj, container);
             Methods.InjectServices(obj, Services.ToArray());
+            Methods.InjectLogger(obj, loggerFactory);
         }
 
         public void InjectIntoInline(object root, object inlineObject) {
@@ -58,7 +64,7 @@ namespace NakedObjects.Core.Component {
         private void Initialize() {
             if (!initialized) {
                 Assert.AssertNotNull(Framework);
-                container = new DomainObjectContainer(Framework);
+                container = new DomainObjectContainer(Framework, loggerFactory.CreateLogger<DomainObjectContainer>());
                 initialized = true;
             }
         }

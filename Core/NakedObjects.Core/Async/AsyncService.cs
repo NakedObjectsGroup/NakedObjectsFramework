@@ -8,6 +8,7 @@
 using System;
 using System.Threading.Tasks;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Async;
 using NakedObjects.Core.Container;
 
@@ -17,8 +18,9 @@ namespace NakedObjects.Core.Async {
     ///     asynchronously -  each running within its own separate NakedObjects context.
     /// </summary>
     public class AsyncService : IAsyncService {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(AsyncService));
         public INakedObjectsFramework Framework { set; protected get; }
+        public ILoggerFactory LoggerFactory { set; protected get; }
+        public ILogger<AsyncService> Logger { set; protected get; }
 
         #region IAsyncService Members
 
@@ -40,11 +42,11 @@ namespace NakedObjects.Core.Async {
             return () => {
                 try {
                     fw.TransactionManager.StartTransaction();
-                    action(new DomainObjectContainer(fw));
+                    action(new DomainObjectContainer(fw, LoggerFactory.CreateLogger<DomainObjectContainer>()));
                     fw.TransactionManager.EndTransaction();
                 }
                 catch (Exception e) {
-                    Log.ErrorFormat("Action threw exception {0}", e.Message);
+                    Logger.LogError($"Action threw exception {e.Message}");
                     fw.TransactionManager.AbortTransaction();
                     throw;
                 }

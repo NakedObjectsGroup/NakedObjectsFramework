@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -18,16 +19,19 @@ namespace NakedObjects.Core.Component {
     ///     Recursively walk the object's fields and collections persisting them.
     /// </summary>
     public sealed class RecursivePersistAlgorithm : IPersistAlgorithm {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(RecursivePersistAlgorithm));
+        private readonly ILogger<RecursivePersistAlgorithm> logger;
         private readonly INakedObjectManager manager;
         private readonly IObjectPersistor persistor;
 
-        public RecursivePersistAlgorithm(IObjectPersistor persistor, INakedObjectManager manager) {
+        public RecursivePersistAlgorithm(IObjectPersistor persistor,
+                                         INakedObjectManager manager,
+                                         ILogger<RecursivePersistAlgorithm> logger) {
             Assert.AssertNotNull(persistor);
             Assert.AssertNotNull(manager);
 
             this.persistor = persistor;
             this.manager = manager;
+            this.logger = logger;
         }
 
         #region IPersistAlgorithm Members
@@ -43,11 +47,11 @@ namespace NakedObjects.Core.Component {
             }
             else {
                 if (nakedObjectAdapter.ResolveState.IsPersistent()) {
-                    throw new NotPersistableException(Log.LogAndReturn($"Can't make object persistent as it is already persistent: {nakedObjectAdapter}"));
+                    throw new NotPersistableException(logger.LogAndReturn($"Can't make object persistent as it is already persistent: {nakedObjectAdapter}"));
                 }
 
                 if (nakedObjectAdapter.Spec.Persistable == PersistableType.Transient) {
-                    throw new NotPersistableException(Log.LogAndReturn($"Can't make object persistent as it is not persistable: {nakedObjectAdapter}"));
+                    throw new NotPersistableException(logger.LogAndReturn($"Can't make object persistent as it is not persistable: {nakedObjectAdapter}"));
                 }
 
                 Persist(nakedObjectAdapter);
@@ -75,7 +79,7 @@ namespace NakedObjects.Core.Component {
                         if (field is IOneToManyAssociationSpec) {
                             var collection = field.GetNakedObject(nakedObjectAdapter);
                             if (collection == null) {
-                                throw new NotPersistableException(Log.LogAndReturn($"Collection {field.Name} does not exist in {nakedObjectAdapter.Spec.FullName}"));
+                                throw new NotPersistableException(logger.LogAndReturn($"Collection {field.Name} does not exist in {nakedObjectAdapter.Spec.FullName}"));
                             }
 
                             MakePersistent(collection);

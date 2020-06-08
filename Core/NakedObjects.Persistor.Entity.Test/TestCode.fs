@@ -21,6 +21,7 @@ open System.Collections.Generic
 open System.Collections
 open System.Security.Principal
 open TestTypes
+open Microsoft.Extensions.Logging
 
 let resetPersistor (p : EntityObjectStore) = 
     p.SetupContexts()
@@ -30,7 +31,9 @@ let getEntityObjectStore (config) =
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     ReflectorConfiguration.NoValidate <- true
     let c = new ReflectorConfiguration( [||], [||],[||])
-    let i = new DomainObjectContainerInjector(c)
+    let mlf = new Mock<ILoggerFactory>();
+    let ml = new Mock<ILogger<DomainObjectContainerInjector>>();
+    let i = new DomainObjectContainerInjector(c, mlf.Object, ml.Object)
     let m = mockMetamodelManager.Object
     let nom = (new Mock<INakedObjectManager>()).Object
     new EntityObjectStore(s, config, new EntityOidGenerator(m), m, i, nom)

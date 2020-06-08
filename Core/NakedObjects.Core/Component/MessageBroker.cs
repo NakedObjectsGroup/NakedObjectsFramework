@@ -8,15 +8,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class MessageBroker : IMessageBroker {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(MessageBroker));
+        private readonly ILogger<MessageBroker> logger;
 
         private readonly List<string> messages = new List<string>();
         private readonly List<string> warnings = new List<string>();
+
+        public MessageBroker(ILogger<MessageBroker> logger) => this.logger = logger;
 
         #region IMessageBroker Members
 
@@ -30,11 +33,11 @@ namespace NakedObjects.Core.Component {
 
         public void EnsureEmpty() {
             if (warnings.Count > 0) {
-                throw new InvalidStateException(Log.LogAndReturn($"Message broker still has warnings: {warnings.Aggregate((s, t) => s + t + "; ")}"));
+                throw new InvalidStateException(logger.LogAndReturn($"Message broker still has warnings: {warnings.Aggregate((s, t) => s + t + "; ")}"));
             }
 
             if (messages.Count > 0) {
-                throw new InvalidStateException(Log.LogAndReturn($"Message broker still has messages: {messages.Aggregate((s, t) => s + t + "; ")}"));
+                throw new InvalidStateException(logger.LogAndReturn($"Message broker still has messages: {messages.Aggregate((s, t) => s + t + "; ")}"));
             }
         }
 

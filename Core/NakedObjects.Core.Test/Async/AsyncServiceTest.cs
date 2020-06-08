@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NakedObjects.Architecture.Component;
 using NUnit.Framework;
@@ -20,12 +21,18 @@ namespace NakedObjects.Core.Async {
             var mockFramework = new Mock<INakedObjectsFramework>();
             var mockResolver = new Mock<IFrameworkResolver>();
             var mockTransactionManager = new Mock<ITransactionManager>();
+            var mockLoggerFactory = new Mock<ILoggerFactory>();
+            var mockLogger = new Mock<ILogger<AsyncService>>();
 
             mockFramework.Setup(f => f.FrameworkResolver).Returns(mockResolver.Object);
             mockResolver.Setup(r => r.GetFramework()).Returns(mockFramework.Object);
             mockFramework.Setup(f => f.TransactionManager).Returns(mockTransactionManager.Object);
 
-            var testService = new AsyncService {Framework = mockFramework.Object};
+            var testService = new AsyncService {
+                Framework = mockFramework.Object,
+                LoggerFactory = mockLoggerFactory.Object,
+                Logger = mockLogger.Object
+            };
 
             var run = 0;
 

@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using Microsoft.Extensions.Logging;
 using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -36,8 +37,9 @@ namespace NakedObjects.Core.Test.Component {
 
             mockManager = new Mock<INakedObjectManager>();
             manager = mockManager.Object;
+            var mockLogger = new Mock<ILogger<RecursivePersistAlgorithm>>();
 
-            algorithm = new RecursivePersistAlgorithm(persistor, manager);
+            algorithm = new RecursivePersistAlgorithm(persistor, manager, mockLogger.Object);
         }
 
         #endregion
