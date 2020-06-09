@@ -7,6 +7,7 @@
 
 using System;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -27,8 +28,8 @@ namespace NakedObjects.Reflect.FacetFactory {
                 RecognisedMethodsAndPrefixes.DisablePrefix + "Property" + RecognisedMethodsAndPrefixes.DefaultPrefix
             };
 
-        public DisableDefaultMethodFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
+        public DisableDefaultMethodFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
         public override string[] Prefixes => FixedPrefixes;
 

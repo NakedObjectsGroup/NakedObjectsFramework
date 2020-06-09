@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Immutable;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
@@ -15,7 +16,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class DateTimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public DateTimeValueTypeFacetFactory(int numericOrder) : base(numericOrder) { }
+        public DateTimeValueTypeFacetFactory(int numericOrder, ILoggerFactory loggerFactory) : base(numericOrder, loggerFactory) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!DateTimeValueSemanticsProvider.IsAdaptedType(type)) {

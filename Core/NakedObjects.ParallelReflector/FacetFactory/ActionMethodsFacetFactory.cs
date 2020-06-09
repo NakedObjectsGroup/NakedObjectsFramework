@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -40,8 +41,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(ActionMethodsFacetFactory));
 
-        public ActionMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ActionsAndActionParameters) { }
+        public ActionMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.ActionsAndActionParameters) { }
 
         public override string[] Prefixes => FixedPrefixes;
 
@@ -67,7 +68,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
 
             RemoveMethod(methodRemover, actionMethod);
-            facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, isQueryable));
+            facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, isQueryable, LoggerFactory.CreateLogger<ActionInvocationFacetViaMethod>()));
 
             var methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
             var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();

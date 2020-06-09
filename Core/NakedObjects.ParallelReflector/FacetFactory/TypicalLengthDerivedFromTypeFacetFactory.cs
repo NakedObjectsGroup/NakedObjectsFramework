@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Drawing;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -45,8 +46,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             {typeof(ushort), 5}
         };
 
-        public TypicalLengthDerivedFromTypeFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.PropertiesAndActionParameters) { }
+        public TypicalLengthDerivedFromTypeFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             AddFacetDerivedFromTypeIfPresent(specification, property.PropertyType, reflector.ClassStrategy);

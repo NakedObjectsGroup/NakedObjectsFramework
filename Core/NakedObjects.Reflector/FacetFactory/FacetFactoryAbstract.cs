@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -17,14 +18,16 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Meta.Facet {
     public abstract class FacetFactoryAbstract : IFacetFactory {
-        protected FacetFactoryAbstract(int numericOrder, FeatureType featureTypes) {
+        protected FacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes) {
             NumericOrder = numericOrder;
+            LoggerFactory = loggerFactory;
             FeatureTypes = featureTypes;
         }
 
         #region IFacetFactory Members
 
         public int NumericOrder { get; }
+        protected ILoggerFactory LoggerFactory { get; }
 
         public virtual FeatureType FeatureTypes { get; }
 

@@ -7,6 +7,7 @@
 
 using System.Collections.Immutable;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -22,8 +23,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     <see cref="ExecutedAttribute" /> annotation
     /// </summary>
     public sealed class ExecutedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ExecutedAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Actions) { }
+        public ExecutedAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Actions) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<ExecutedAttribute>();

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -24,8 +25,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     Implementation - .Net fails to find methods properly for root class, so we used the saved set.
     /// </para>
     public sealed class RemoveSuperclassMethodsFacetFactory : FacetFactoryAbstract {
-        public RemoveSuperclassMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Objects) { }
+        public RemoveSuperclassMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Objects) { }
 
         private static void InitForType(Type type, IDictionary<Type, MethodInfo[]> typeToMethods) {
             if (!typeToMethods.ContainsKey(type)) {

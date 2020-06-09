@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -49,8 +50,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         ///     The <see cref="IFacet" />s registered are the generic ones from no-architecture (where they exist)
         /// </summary>
         /// <param name="numericOrder"></param>
-        public ComplementaryMethodsFilteringFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Actions) { }
+        public ComplementaryMethodsFilteringFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Actions) { }
 
         #region IMethodFilteringFacetFactory Members
 

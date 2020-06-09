@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -25,8 +26,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     property or parameter is annotated or otherwise indicated as being optional.
     /// </para>
     public sealed class MandatoryDefaultFacetFactory : FacetFactoryAbstract {
-        public MandatoryDefaultFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.PropertiesAndActionParameters) { }
+        public MandatoryDefaultFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => FacetUtils.AddFacet(Create(specification));
 

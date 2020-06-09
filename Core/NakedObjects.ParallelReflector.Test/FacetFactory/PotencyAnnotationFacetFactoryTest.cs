@@ -135,7 +135,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PotencyAnnotationFacetFactory(0);
+            facetFactory = new PotencyAnnotationFacetFactory(0, null);
         }
 
         [TestCleanup]

@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -20,8 +21,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class CollectionFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public CollectionFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
+        public CollectionFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
 
         private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessArray(IReflector reflector, Type type, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FacetUtils.AddFacet(new ArrayFacet(holder));

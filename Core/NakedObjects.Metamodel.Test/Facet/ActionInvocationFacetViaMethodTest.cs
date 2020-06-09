@@ -21,7 +21,7 @@ namespace NakedObjects.Meta.Test.Facet {
         #endregion
 
         private static void DelegateActionTest(MethodInfo method) {
-            var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false);
+            var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false, null);
             var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();
             Assert.IsNotNull(facet.ActionDelegate, method.Name);
             var testObject = new TestDelegateClass();
@@ -30,14 +30,14 @@ namespace NakedObjects.Meta.Test.Facet {
         }
 
         private static void DelegateFuncTest(MethodInfo method) {
-            var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false);
+            var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false, null);
             Assert.IsNotNull(facet.ActionDelegate, method.Name);
             var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();
             Assert.AreEqual(method.Name, facet.ActionDelegate(new TestDelegateClass(), parms));
         }
 
         private static void InvokeActionTest(MethodInfo method) {
-            var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false);
+            var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false, null);
             Assert.IsNull(facet.ActionDelegate);
             var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();
             Assert.IsNotNull(facet.GetMethod());
@@ -47,7 +47,7 @@ namespace NakedObjects.Meta.Test.Facet {
         }
 
         private static void InvokeFuncTest(MethodInfo method) {
-            var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false);
+            var facet = new ActionInvocationFacetViaMethod(method, null, null, null, null, false, null);
             Assert.IsNull(facet.ActionDelegate);
             Assert.IsNotNull(facet.GetMethod());
             var parms = method.GetParameters().Select(p => "astring").Cast<object>().ToArray();

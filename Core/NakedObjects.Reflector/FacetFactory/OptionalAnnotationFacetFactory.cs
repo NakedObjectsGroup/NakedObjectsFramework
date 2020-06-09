@@ -7,6 +7,7 @@
 
 using System.Reflection;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -20,8 +21,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public sealed class OptionalAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof(OptionalAnnotationFacetFactory));
 
-        public OptionalAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.PropertiesAndActionParameters) { }
+        public OptionalAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<OptionallyAttribute>();

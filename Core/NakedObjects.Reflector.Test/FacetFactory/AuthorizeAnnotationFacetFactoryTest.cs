@@ -803,7 +803,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new AuthorizeAnnotationFacetFactory(0);
+            facetFactory = new AuthorizeAnnotationFacetFactory(0, null);
 
             mockPersistor = new Mock<ILifecycleManager>();
             lifecycleManager = mockPersistor.Object;

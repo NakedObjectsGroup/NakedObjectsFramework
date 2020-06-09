@@ -7,12 +7,13 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.ParallelReflect;
 
 namespace NakedObjects.DependencyInjection {
     public class ConfigHelpers {
-        public static void RegisterFacetFactory(Type factory, IServiceCollection services, int order) => services.AddSingleton(typeof(IFacetFactory), p => Activator.CreateInstance(factory, order));
+        public static void RegisterFacetFactory(Type factory, IServiceCollection services, int order) => services.AddSingleton(typeof(IFacetFactory), p => Activator.CreateInstance(factory, order, p.GetService<ILoggerFactory>()));
 
         // TODO write tests for these
 

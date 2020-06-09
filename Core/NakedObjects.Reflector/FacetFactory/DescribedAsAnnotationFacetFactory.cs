@@ -9,6 +9,7 @@ using System;
 using System.ComponentModel;
 using System.Reflection;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -22,8 +23,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public sealed class DescribedAsAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof(DescribedAsAnnotationFacetFactory));
 
-        public DescribedAsAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Everything) { }
+        public DescribedAsAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Everything) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute) type.GetCustomAttribute<DescribedAsAttribute>();

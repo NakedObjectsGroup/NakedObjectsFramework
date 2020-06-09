@@ -85,10 +85,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             ReflectorConfiguration.NoValidate = true;
 
             var reflectorConfiguration = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { });
-            facetFactory = new RemoveIgnoredMethodsFacetFactory(0);
+            facetFactory = new RemoveIgnoredMethodsFacetFactory(0, null);
             var menuFactory = new NullMenuFactory();
             var classStrategy = new DefaultClassStrategy(reflectorConfiguration);
-            var metamodel = new Metamodel(classStrategy, cache);
+            var metamodel = new Metamodel(classStrategy, cache, null);
 
             Reflector = new ParallelReflector(classStrategy, metamodel, reflectorConfiguration, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory});
         }

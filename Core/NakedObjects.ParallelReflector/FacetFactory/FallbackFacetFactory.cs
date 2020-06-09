@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -24,8 +25,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     Framework itself.
     /// </summary>
     public sealed class FallbackFacetFactory : FacetFactoryAbstract {
-        public FallbackFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Everything) { }
+        public FallbackFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Everything) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FacetUtils.AddFacets(

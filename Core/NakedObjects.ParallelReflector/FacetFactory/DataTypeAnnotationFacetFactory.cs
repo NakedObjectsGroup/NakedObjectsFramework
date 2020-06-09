@@ -8,6 +8,7 @@
 using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -23,8 +24,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     <see cref="DataTypeAttribute" /> annotation
     /// </summary>
     public sealed class DataTypeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public DataTypeAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.PropertiesAndActionParameters) { }
+        public DataTypeAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var dataTypeAttribute = member.GetCustomAttribute<DataTypeAttribute>();

@@ -744,7 +744,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ActionMethodsFacetFactory(0);
+            facetFactory = new ActionMethodsFacetFactory(0, LoggerFactory);
         }
 
         [TestCleanup]
@@ -755,7 +755,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
-        
         // ReSharper disable UnusedParameter.Local
 
         private class Customer {

@@ -7,6 +7,7 @@
 
 using System;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
@@ -17,13 +18,14 @@ using NakedObjects.Util;
 namespace NakedObjects.Meta.Component {
     [Serializable]
     public sealed class Metamodel : IMetamodelBuilder {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Metamodel));
         private readonly ISpecificationCache cache;
+        private readonly ILogger<Metamodel> logger;
         private readonly IClassStrategy classStrategy;
 
-        public Metamodel(IClassStrategy classStrategy, ISpecificationCache cache) {
+        public Metamodel(IClassStrategy classStrategy, ISpecificationCache cache, ILogger<Metamodel> logger) {
             this.classStrategy = classStrategy;
             this.cache = cache;
+            this.logger = logger;
         }
 
         #region IMetamodelBuilder Members
@@ -34,17 +36,17 @@ namespace NakedObjects.Meta.Component {
             try {
                 var spec = GetSpecificationFromCache(classStrategy.FilterNullableAndProxies(type));
                 if (spec == null && !allowNull) {
-                    throw new NakedObjectSystemException(Log.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: unexpected null"));
+                    throw new NakedObjectSystemException(logger.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: unexpected null"));
                 }
 
                 return spec;
             }
             catch (NakedObjectSystemException e) {
-                Log.Error($"Failed to Load Specification for: {(type == null ? "null" : type.FullName)} error: {e}");
+                logger.LogError($"Failed to Load Specification for: {(type == null ? "null" : type.FullName)} error: {e}");
                 throw;
             }
             catch (Exception e) {
-                throw new NakedObjectSystemException(Log.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: {e}"));
+                throw new NakedObjectSystemException(logger.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: {e}"));
             }
         }
 

@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -20,8 +21,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class MultiLineAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public MultiLineAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.EverythingButCollections) { }
+        public MultiLineAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.EverythingButCollections) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var attribute = type.GetCustomAttribute<MultiLineAttribute>();

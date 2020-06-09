@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -20,8 +21,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     Removes any methods on a type that handle events.
     /// </summary>
     public sealed class RemoveEventHandlerMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-        public RemoveEventHandlerMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
+        public RemoveEventHandlerMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
         public override string[] Prefixes {
             get { return new string[] { }; }

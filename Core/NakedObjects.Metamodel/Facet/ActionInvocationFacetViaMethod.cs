@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -23,24 +24,19 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ActionInvocationFacetViaMethod : ActionInvocationFacetAbstract, IImperativeFacet {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ActionInvocationFacetViaMethod));
+        private readonly ILogger<ActionInvocationFacetViaMethod> logger;
         private readonly int paramCount;
 
-        public ActionInvocationFacetViaMethod(MethodInfo method, ITypeSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, ISpecification holder, bool isQueryOnly)
+        public ActionInvocationFacetViaMethod(MethodInfo method, ITypeSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, ISpecification holder, bool isQueryOnly, ILogger<ActionInvocationFacetViaMethod> logger)
             : base(holder) {
+            this.logger = logger;
             ActionMethod = method;
             paramCount = method.GetParameters().Length;
             OnType = onType;
             ReturnType = returnType;
             ElementType = elementType;
             IsQueryOnly = isQueryOnly;
-
-            try {
-                ActionDelegate = LogNull(DelegateUtils.CreateDelegate(ActionMethod));
-            }
-            catch (Exception e) {
-                Log.ErrorFormat("Failed to get Delegate for {0}:{1} reason {2}", onType, method, e.Message);
-            }
+            ActionDelegate = LogNull(DelegateUtils.CreateDelegate(ActionMethod));
         }
 
         // for testing only 
@@ -70,7 +66,7 @@ namespace NakedObjects.Meta.Facet {
 
         public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager) {
             if (parameters.Length != paramCount) {
-                Log.Error($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
+                logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
             }
 
             object result;
@@ -78,7 +74,7 @@ namespace NakedObjects.Meta.Facet {
                 result = ActionDelegate(inObjectAdapter.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray());
             }
             else {
-                Log.WarnFormat("Invoking action via reflection as no delegate {0}.{1}", OnType, ActionMethod);
+                logger.LogWarning($"Invoking action via reflection as no delegate {OnType}.{ActionMethod}");
                 result = InvokeUtils.Invoke(ActionMethod, inObjectAdapter, parameters);
             }
 

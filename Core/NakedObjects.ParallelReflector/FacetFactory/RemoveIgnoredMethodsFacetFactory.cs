@@ -9,6 +9,7 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -21,8 +22,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     by other factories.  This factory thus needs to be registered earlier than most other factories.
     /// </summary>
     public class RemoveIgnoredMethodsFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public RemoveIgnoredMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsAndInterfaces) { }
+        public RemoveIgnoredMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             RemoveExplicitlyIgnoredMembers(type, methodRemover);

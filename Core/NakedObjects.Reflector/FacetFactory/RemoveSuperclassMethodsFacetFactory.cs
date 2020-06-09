@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -25,8 +26,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public sealed class RemoveSuperclassMethodsFacetFactory : FacetFactoryAbstract {
         private readonly IDictionary<Type, MethodInfo[]> typeToMethods = new Dictionary<Type, MethodInfo[]>();
 
-        public RemoveSuperclassMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Objects) { }
+        public RemoveSuperclassMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Objects) { }
 
         private void InitForType(Type type) {
             if (!typeToMethods.ContainsKey(type)) {

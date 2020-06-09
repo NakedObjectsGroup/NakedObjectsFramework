@@ -5,13 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public abstract class AnnotationBasedFacetFactoryAbstract : FacetFactoryAbstract, IAnnotationBasedFacetFactory {
-        protected AnnotationBasedFacetFactoryAbstract(int numericOrder, FeatureType featureTypes)
-            : base(numericOrder, featureTypes) { }
+        protected AnnotationBasedFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes)
+            : base(numericOrder, loggerFactory, featureTypes) { }
 
     }
 }

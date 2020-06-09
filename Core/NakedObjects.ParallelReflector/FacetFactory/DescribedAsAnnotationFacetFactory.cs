@@ -10,6 +10,7 @@ using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Reflection;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -24,8 +25,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class DescribedAsAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof(DescribedAsAnnotationFacetFactory));
 
-        public DescribedAsAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Everything) { }
+        public DescribedAsAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Everything) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute) member.GetCustomAttribute<DescribedAsAttribute>();

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -24,8 +25,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     public abstract class MethodPrefixBasedFacetFactoryAbstract : FacetFactoryAbstract, IMethodPrefixBasedFacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof(MethodPrefixBasedFacetFactoryAbstract));
 
-        protected MethodPrefixBasedFacetFactoryAbstract(int numericOrder, FeatureType featureTypes)
-            : base(numericOrder, featureTypes) { }
+        protected MethodPrefixBasedFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes)
+            : base(numericOrder, loggerFactory, featureTypes) { }
 
         #region IMethodPrefixBasedFacetFactory Members
 

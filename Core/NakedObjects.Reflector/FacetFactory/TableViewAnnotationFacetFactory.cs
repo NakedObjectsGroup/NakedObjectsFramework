@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -22,8 +23,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public sealed class TableViewAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private static readonly ILog Log = LogManager.GetLogger(typeof(TableViewAnnotationFacetFactory));
 
-        public TableViewAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.CollectionsAndActions) { }
+        public TableViewAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.CollectionsAndActions) { }
 
         private static void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
             if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {

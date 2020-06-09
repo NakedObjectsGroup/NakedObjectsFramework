@@ -7,6 +7,7 @@
 
 using System.Collections.Immutable;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -22,8 +23,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     <see cref="FinderActionAttribute" /> annotation
     /// </summary>
     public sealed class FinderActionFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public FinderActionFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Actions) { }
+        public FinderActionFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Actions) { }
 
         private static void Process(MethodInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<FinderActionAttribute>();

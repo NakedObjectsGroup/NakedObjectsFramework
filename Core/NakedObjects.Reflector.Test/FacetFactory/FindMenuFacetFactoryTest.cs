@@ -112,7 +112,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new FindMenuFacetFactory(0);
+            facetFactory = new FindMenuFacetFactory(0, null);
         }
 
         [TestCleanup]

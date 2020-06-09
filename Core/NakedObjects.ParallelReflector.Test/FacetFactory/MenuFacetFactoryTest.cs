@@ -83,7 +83,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new MenuFacetFactory(0);
+            facetFactory = new MenuFacetFactory(0, null);
         }
 
         [TestCleanup]

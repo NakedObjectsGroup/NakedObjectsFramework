@@ -41,7 +41,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new OptionalAnnotationFacetFactory(0);
+            facetFactory = new OptionalAnnotationFacetFactory(0, null);
         }
 
         [TestCleanup]

@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -32,8 +33,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             RecognisedMethodsAndPrefixes.OnUpdatingErrorMethod
         };
 
-        public CallbackMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Objects) { }
+        public CallbackMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Objects) { }
 
         public override string[] Prefixes => FixedPrefixes;
 

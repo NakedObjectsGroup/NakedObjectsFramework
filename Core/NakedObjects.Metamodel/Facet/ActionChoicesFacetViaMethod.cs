@@ -23,15 +23,11 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ActionChoicesFacetViaMethod : ActionChoicesFacetAbstract, IImperativeFacet {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ActionChoicesFacetViaMethod));
-
         private readonly MethodInfo choicesMethod;
         private readonly Type choicesType;
         private readonly string[] parameterNames;
 
         [field: NonSerialized] private Func<object, object[], object> choicesDelegate;
-
-        
 
         public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, (string name, IObjectSpecImmutable type)[] parameterNamesAndTypes, Type choicesType, ISpecification holder, bool isMultiple = false)
             : base(holder) {
@@ -64,10 +60,10 @@ namespace NakedObjects.Meta.Facet {
                     return options.Cast<object>().ToArray();
                 }
 
-                throw new NakedObjectDomainException(Log.LogAndReturn($"Must return IEnumerable from choices method: {choicesMethod.Name}"));
+                throw new NakedObjectDomainException($"Must return IEnumerable from choices method: {choicesMethod.Name}");
             }
             catch (ArgumentException ae) {
-                throw new InvokeException(Log.LogAndReturn($"Choices exception: {choicesMethod.Name} has mismatched (ie type of choices parameter does not match type of action parameter) parameter types"), ae);
+                throw new InvokeException($"Choices exception: {choicesMethod.Name} has mismatched (ie type of choices parameter does not match type of action parameter) parameter types", ae);
             }
         }
 

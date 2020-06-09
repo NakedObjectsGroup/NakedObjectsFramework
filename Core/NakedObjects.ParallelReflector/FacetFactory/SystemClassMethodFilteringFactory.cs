@@ -7,6 +7,7 @@
 
 using System.Reflection;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -19,8 +20,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class SystemClassMethodFilteringFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
         private static readonly ILog Log = LogManager.GetLogger(typeof(SystemClassMethodFilteringFactory));
 
-        public SystemClassMethodFilteringFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Actions) { }
+        public SystemClassMethodFilteringFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Actions) { }
 
         #region IMethodFilteringFacetFactory Members
 

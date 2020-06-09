@@ -9,6 +9,7 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -21,8 +22,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class RemoveDynamicProxyMethodsFacetFactory : FacetFactoryAbstract {
         private static readonly string[] MethodsToRemove = {"GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker"};
 
-        public RemoveDynamicProxyMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.ObjectsInterfacesAndProperties) { }
+        public RemoveDynamicProxyMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesAndProperties) { }
 
         private static bool IsDynamicProxyType(Type type) => type.FullName?.StartsWith("System.Data.Entity.DynamicProxies", StringComparison.Ordinal) == true;
 

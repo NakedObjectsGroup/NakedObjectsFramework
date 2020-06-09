@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -24,8 +25,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             RecognisedMethodsAndPrefixes.ModifyPrefix
         };
 
-        public CollectionFieldMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Collections) { }
+        public CollectionFieldMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Collections) { }
 
         public override string[] Prefixes => FixedPrefixes;
 

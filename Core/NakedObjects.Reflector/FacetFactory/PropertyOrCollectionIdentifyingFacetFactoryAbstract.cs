@@ -8,14 +8,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public abstract class PropertyOrCollectionIdentifyingFacetFactoryAbstract : MethodPrefixBasedFacetFactoryAbstract, IPropertyOrCollectionIdentifyingFacetFactory {
-        protected PropertyOrCollectionIdentifyingFacetFactoryAbstract(int numericOrder, FeatureType featureTypes)
-            : base(numericOrder, featureTypes) { }
+        protected PropertyOrCollectionIdentifyingFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes)
+            : base(numericOrder, loggerFactory, featureTypes) { }
 
         protected bool IsPropertyIncluded(PropertyInfo property) => property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null;
 

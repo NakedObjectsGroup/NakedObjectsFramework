@@ -240,7 +240,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new CollectionFieldMethodsFacetFactory(0);
+            facetFactory = new CollectionFieldMethodsFacetFactory(0, null);
         }
 
         [TestCleanup]

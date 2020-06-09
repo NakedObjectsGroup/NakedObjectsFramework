@@ -8,6 +8,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -18,8 +19,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class ConcurrencyCheckAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ConcurrencyCheckAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Properties) { }
+        public ConcurrencyCheckAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Properties) { }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = property.GetCustomAttribute<ConcurrencyCheckAttribute>();

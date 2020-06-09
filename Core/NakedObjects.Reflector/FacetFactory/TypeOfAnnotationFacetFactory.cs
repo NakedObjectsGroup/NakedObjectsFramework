@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -19,8 +20,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class TypeOfAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public TypeOfAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.CollectionsAndActions) { }
+        public TypeOfAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.CollectionsAndActions) { }
 
         private static void Process(IReflector reflector, Type methodReturnType, ISpecification holder) {
             if (!CollectionUtils.IsCollection(methodReturnType)) {

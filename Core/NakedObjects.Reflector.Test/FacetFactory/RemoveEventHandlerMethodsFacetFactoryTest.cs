@@ -90,10 +90,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             ReflectorConfiguration.NoValidate = true;
 
             var reflectorConfiguration = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { });
-            facetFactory = new RemoveEventHandlerMethodsFacetFactory(0);
+            facetFactory = new RemoveEventHandlerMethodsFacetFactory(0, null);
             var menuFactory = new NullMenuFactory();
             var classStrategy = new DefaultClassStrategy(reflectorConfiguration);
-            var metamodel = new Metamodel(classStrategy, cache);
+            var metamodel = new Metamodel(classStrategy, cache, null);
 
             Reflector = new Reflector(classStrategy, metamodel, reflectorConfiguration, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory});
         }

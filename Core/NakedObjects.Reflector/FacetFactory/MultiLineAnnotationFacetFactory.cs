@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -18,8 +19,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class MultiLineAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public MultiLineAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.EverythingButCollections) { }
+        public MultiLineAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.EverythingButCollections) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttribute<MultiLineAttribute>();

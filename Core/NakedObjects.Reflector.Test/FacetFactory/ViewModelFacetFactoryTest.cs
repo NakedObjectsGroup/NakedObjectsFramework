@@ -211,7 +211,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new ViewModelFacetFactory(0);
+            facetFactory = new ViewModelFacetFactory(0, null);
         }
 
         [TestCleanup]

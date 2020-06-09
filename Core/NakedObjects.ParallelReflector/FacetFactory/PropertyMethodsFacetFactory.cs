@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -31,8 +32,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             RecognisedMethodsAndPrefixes.ModifyPrefix
         };
 
-        public PropertyMethodsFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Properties) { }
+        public PropertyMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Properties) { }
 
         public override string[] Prefixes => FixedPrefixes;
 

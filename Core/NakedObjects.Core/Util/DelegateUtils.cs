@@ -23,33 +23,38 @@ namespace NakedObjects.Core.Util {
                 : $"Not creating delegate for {reason} method {method.DeclaringType}.{method}";
 
         public static (Func<object, object[], object>, string) CreateDelegate(MethodInfo method) {
-            if (method.IsSecurityTransparent) {
-                // don't seem to be able to bind delegates to these just return null
-                return (null, CreationFailed("IsSecurityTransparent", method));
+            try {
+                if (method.IsSecurityTransparent) {
+                    // don't seem to be able to bind delegates to these just return null
+                    return (null, CreationFailed("IsSecurityTransparent", method));
+                }
+
+                if (method.ContainsGenericParameters) {
+                    // don't seem to be able to bind delegates to these just return null
+                    return (null, CreationFailed("ContainsGenericParameters", method));
+                }
+
+                if (method.DeclaringType != null && !method.DeclaringType.IsClass) {
+                    // don't seem to be able to bind delegates to these just return null
+                    return (null, CreationFailed("non class", method));
+                }
+
+                if (method.GetParameters().Length > 6) {
+                    // only support 6 parameters via delegates - return null and default to reflection
+                    return (null, CreationFailed("too many parameters", method));
+                }
+
+                var delegateHelper = MakeDelegateHelper(method.DeclaringType, method);
+
+                // Now call it. The null argument is because it’s a static method.
+                // Cast the result to the right kind of delegate
+                var ret = (Func<object, object[], object>) delegateHelper.Invoke(null, new object[] {method});
+
+                return (ret, "");
             }
-
-            if (method.ContainsGenericParameters) {
-                // don't seem to be able to bind delegates to these just return null
-                return (null, CreationFailed("ContainsGenericParameters", method));
+            catch (Exception e) {
+                return (null, e.Message);
             }
-
-            if (method.DeclaringType != null && !method.DeclaringType.IsClass) {
-                // don't seem to be able to bind delegates to these just return null
-                return (null, CreationFailed("non class", method));
-            }
-
-            if (method.GetParameters().Length > 6) {
-                // only support 6 parameters via delegates - return null and default to reflection
-                return (null, CreationFailed("too many parameters", method));
-            }
-
-            var delegateHelper = MakeDelegateHelper(method.DeclaringType, method);
-
-            // Now call it. The null argument is because it’s a static method.
-            // Cast the result to the right kind of delegate
-            var ret = (Func<object, object[], object>) delegateHelper.Invoke(null, new object[] {method});
-
-            return (ret, "");
         }
 
         public static Action<object> CreateCallbackDelegate(MethodInfo method) {

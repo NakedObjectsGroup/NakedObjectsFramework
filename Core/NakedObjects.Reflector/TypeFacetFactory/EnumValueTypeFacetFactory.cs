@@ -7,6 +7,7 @@
 
 using System;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
@@ -15,7 +16,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public sealed class EnumValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public EnumValueTypeFacetFactory(int numericOrder) : base(numericOrder) { }
+        public EnumValueTypeFacetFactory(int numericOrder, ILoggerFactory loggerFactory) : base(numericOrder, loggerFactory) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (typeof(Enum).IsAssignableFrom(type)) {
