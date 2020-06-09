@@ -8,6 +8,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -32,6 +33,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private readonly IObjectPersistor persistor;
         private readonly ISession session = new Mock<ISession>().Object;
         private readonly ISpecification specification = new Mock<ISpecification>().Object;
+        private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
+        private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
+
 
         public CollectionFacetsTest() {
             lifecycleManager = mockLifecycleManager.Object;
@@ -40,7 +44,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             mockManager.Setup(mm => mm.CreateAdapter(It.IsAny<object>(), null, null)).Returns<object, IOid, IVersion>((obj, oid, ver) => AdapterFor(obj));
         }
 
-        private INakedObjectAdapter AdapterFor(object obj) => new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, manager, obj, oid);
+        private INakedObjectAdapter AdapterFor(object obj) => new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, manager, obj, oid, loggerFactory, logger);
 
         private void Size(ICollectionFacet collectionFacet, INakedObjectAdapter collection) {
             Assert.AreEqual(2, collectionFacet.AsEnumerable(collection, manager).Count());

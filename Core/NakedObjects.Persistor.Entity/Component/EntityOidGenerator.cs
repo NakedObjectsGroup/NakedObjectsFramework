@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
@@ -16,10 +17,12 @@ namespace NakedObjects.Persistor.Entity.Component {
         private static readonly ILog Log = LogManager.GetLogger(typeof(EntityOidGenerator));
         private static long transientId;
         private readonly IMetamodelManager metamodel;
+        private readonly ILoggerFactory loggerFactory;
 
-        public EntityOidGenerator(IMetamodelManager metamodel) {
+        public EntityOidGenerator(IMetamodelManager metamodel, ILoggerFactory loggerFactory) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
+            this.loggerFactory = loggerFactory;
         }
 
         public string Name => "Entity Oids";
@@ -30,7 +33,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         public IOid CreateTransientOid(object obj) => new EntityOid(metamodel, obj.GetType(), new object[] {++transientId}, true);
 
-        public IOid RestoreOid(string[] encodedData) => new EntityOid(metamodel, encodedData);
+        public IOid RestoreOid(string[] encodedData) => new EntityOid(metamodel, loggerFactory, encodedData);
 
         public IOid CreateOid(string typeName, object[] keys) => new EntityOid(metamodel, typeName, keys);
 

@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
@@ -17,10 +18,12 @@ namespace NakedObjects.Core.Spec {
         private static readonly ILog Log = LogManager.GetLogger(typeof(SpecFactory));
 
         private INakedObjectsFramework framework;
+        private ILoggerFactory loggerFactory;
 
-        public void Initialize(INakedObjectsFramework newFramework) {
+        public void Initialize(INakedObjectsFramework newFramework, ILoggerFactory newLoggerFactory) {
             Assert.AssertNotNull(newFramework);
             framework = newFramework;
+            loggerFactory = newLoggerFactory;
         }
 
         public IActionParameterSpec CreateParameter(IActionParameterSpecImmutable parameterSpecImmutable, IActionSpec actionSpec, int index) {
@@ -47,7 +50,7 @@ namespace NakedObjects.Core.Spec {
 
         public IActionSpec CreateActionSpec(IActionSpecImmutable specImmutable) {
             Assert.AssertNotNull(framework);
-            return new ActionSpec(this, framework.MetamodelManager, framework.LifecycleManager, framework.Session, framework.ServicesManager, framework.NakedObjectManager, specImmutable, framework.MessageBroker, framework.TransactionManager);
+            return new ActionSpec(this, framework.MetamodelManager, framework.LifecycleManager, framework.Session, framework.ServicesManager, framework.NakedObjectManager, specImmutable, framework.MessageBroker, framework.TransactionManager, loggerFactory);
         }
 
         public IAssociationSpec CreateAssociationSpec(IAssociationSpecImmutable specImmutable) {

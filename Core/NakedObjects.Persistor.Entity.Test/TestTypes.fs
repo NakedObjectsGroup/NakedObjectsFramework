@@ -16,6 +16,7 @@ open NakedObjects.Persistor.Entity.Component
 open System
 open System.Collections.Generic
 open System.Reflection
+open Microsoft.Extensions.Logging
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer = @"Data Source=.\SQLEXPRESS;"
@@ -49,6 +50,7 @@ mockNakedObjectSpecification.Setup(fun x -> x.ContainsFacet(null)).Returns(false
 
 let mockMetamodelManager = new Mock<IMetamodelManager>()
 let objects = new Dictionary<Object, INakedObjectAdapter>()
+let mockLogger = new Mock<ILogger<ResolveStateMachine>>();
 
 let mutable updatedCount = 0
 let mutable updatingCount = 0

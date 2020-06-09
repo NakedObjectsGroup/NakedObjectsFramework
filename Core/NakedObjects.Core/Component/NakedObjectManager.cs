@@ -9,7 +9,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -26,6 +25,7 @@ namespace NakedObjects.Core.Component {
         private readonly IIdentityMap identityMap;
         private readonly IMetamodelManager metamodel;
         private readonly NakedObjectFactory nakedObjectFactory;
+        private readonly ILoggerFactory loggerFactory;
         private readonly IOidGenerator oidGenerator;
         private readonly ISession session;
 
@@ -34,6 +34,7 @@ namespace NakedObjects.Core.Component {
                                   IIdentityMap identityMap,
                                   IOidGenerator oidGenerator,
                                   NakedObjectFactory nakedObjectFactory,
+                                  ILoggerFactory loggerFactory,
                                   ILogger<NakedObjectManager> logger) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(session);
@@ -46,6 +47,7 @@ namespace NakedObjects.Core.Component {
             this.identityMap = identityMap;
             this.oidGenerator = oidGenerator;
             this.nakedObjectFactory = nakedObjectFactory;
+            this.loggerFactory = loggerFactory;
             this.logger = logger;
         }
 
@@ -111,7 +113,7 @@ namespace NakedObjects.Core.Component {
                 }
 
                 adapterFor = CreateAdapter(obj, oid, null);
-                adapterFor.OptimisticLock = new NullVersion();
+                adapterFor.OptimisticLock = new NullVersion(loggerFactory.CreateLogger<NullVersion>());
             }
 
             Assert.AssertNotNull(adapterFor);

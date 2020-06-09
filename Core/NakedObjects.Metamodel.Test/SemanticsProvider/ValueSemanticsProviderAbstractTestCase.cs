@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -24,6 +25,9 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         protected IObjectPersistor Persistor = new Mock<IObjectPersistor>().Object;
         protected IReflector Reflector = new Mock<IReflector>().Object;
         private IValueSemanticsProvider<T> value;
+        private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
+        private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
+
 
         protected void SetValue(IValueSemanticsProvider<T> newValue) {
             value = newValue;
@@ -41,7 +45,7 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
 
         protected INakedObjectAdapter CreateAdapter(object obj) {
             var session = new Mock<ISession>().Object;
-            return new NakedObjectAdapter(Metamodel, session, Persistor, LifecycleManager, Manager, obj, null);
+            return new NakedObjectAdapter(Metamodel, session, Persistor, LifecycleManager, Manager, obj, null, loggerFactory, logger);
         }
 
         public virtual void TestParseNull() {

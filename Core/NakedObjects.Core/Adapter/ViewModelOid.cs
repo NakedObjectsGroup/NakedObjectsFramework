@@ -7,6 +7,7 @@
 
 using System;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
@@ -28,10 +29,10 @@ namespace NakedObjects.Core.Adapter {
             CacheState();
         }
 
-        public ViewModelOid(IMetamodelManager metamodel, string[] strings) {
+        public ViewModelOid(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
-            var helper = new StringDecoderHelper(metamodel, strings);
+            var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
             TypeName = helper.GetNextString();
 
             Keys = helper.HasNext ? helper.GetNextArray() : new[] {Guid.NewGuid().ToString()};

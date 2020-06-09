@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Component;
 using NakedObjects.Core.Spec;
@@ -23,7 +24,8 @@ namespace NakedObjects.Service {
                                      NakedObjectFactory nakedObjectFactory,
                                      SpecFactory memberFactory,
                                      ITransactionManager transactionManager,
-                                     IFrameworkResolver frameworkResolver) {
+                                     IFrameworkResolver frameworkResolver, 
+                                     ILoggerFactory loggerFactory) {
             MessageBroker = messageBroker;
             Session = session;
             LifecycleManager = lifecycleManager;
@@ -36,8 +38,8 @@ namespace NakedObjects.Service {
             TransactionManager = transactionManager;
             FrameworkResolver = frameworkResolver;
             domainObjectInjector.Framework = this;
-            memberFactory.Initialize(this);
-            nakedObjectFactory.Initialize(metamodelManagerManager, session, lifecycleManager, persistor, nakedObjectManager);
+            memberFactory.Initialize(this, loggerFactory);
+            nakedObjectFactory.Initialize(metamodelManagerManager, session, lifecycleManager, persistor, nakedObjectManager, loggerFactory);
         }
 
         #region INakedObjectsFramework Members

@@ -36,7 +36,7 @@ let getEntityObjectStore (config) =
     let i = new DomainObjectContainerInjector(c, mlf.Object, ml.Object)
     let m = mockMetamodelManager.Object
     let nom = (new Mock<INakedObjectManager>()).Object
-    new EntityObjectStore(s, config, new EntityOidGenerator(m), m, i, nom)
+    new EntityObjectStore(s, config, new EntityOidGenerator(m, mlf.Object), m, i, nom)
 
 let CreateAndSetup<'t when 't : not struct> (p : EntityObjectStore) setter = 
     let inst = p.CreateInstance<'t>(null)

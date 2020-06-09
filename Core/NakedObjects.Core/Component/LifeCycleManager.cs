@@ -26,6 +26,7 @@ namespace NakedObjects.Core.Component {
         private readonly IDomainObjectInjector injector;
         private readonly IMetamodelManager metamodel;
         private readonly INakedObjectManager nakedObjectManager;
+        private readonly ILoggerFactory loggerFactory;
         private readonly IDictionary<Type, object> nonPersistedObjectCache = new Dictionary<Type, object>();
         private readonly IObjectPersistor objectPersistor;
         private readonly IOidGenerator oidGenerator;
@@ -38,6 +39,7 @@ namespace NakedObjects.Core.Component {
             IDomainObjectInjector injector,
             IObjectPersistor objectPersistor,
             INakedObjectManager nakedObjectManager,
+            ILoggerFactory loggerFactory, 
             ILogger<LifeCycleManager> logger
         ) {
             Assert.AssertNotNull(metamodel);
@@ -53,6 +55,7 @@ namespace NakedObjects.Core.Component {
             this.injector = injector;
             this.objectPersistor = objectPersistor;
             this.nakedObjectManager = nakedObjectManager;
+            this.loggerFactory = loggerFactory;
             this.logger = logger;
         }
 
@@ -173,14 +176,14 @@ namespace NakedObjects.Core.Component {
             var spec = metamodel.GetSpecification(typeName);
 
             if (spec.IsCollection) {
-                return new CollectionMemento(this, nakedObjectManager, metamodel, encodedData);
+                return new CollectionMemento(this, nakedObjectManager, metamodel, loggerFactory, loggerFactory.CreateLogger<CollectionMemento>(), encodedData);
             }
 
             if (spec.ContainsFacet<IViewModelFacet>()) {
-                return new ViewModelOid(metamodel, encodedData);
+                return new ViewModelOid(metamodel, loggerFactory, encodedData);
             }
 
-            return spec.ContainsFacet<IComplexTypeFacet>() ? new AggregateOid(metamodel, encodedData) : null;
+            return spec.ContainsFacet<IComplexTypeFacet>() ? new AggregateOid(metamodel, loggerFactory, encodedData) : null;
         }
 
         private object InitDomainObject(object obj) {

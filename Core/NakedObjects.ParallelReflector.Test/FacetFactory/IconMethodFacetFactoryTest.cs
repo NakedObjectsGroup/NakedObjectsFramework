@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -35,7 +36,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var persistor = new Mock<IObjectPersistor>().Object;
             var session = new Mock<ISession>().Object;
             var manager = new Mock<INakedObjectManager>().Object;
-            return new NakedObjectAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null);
+            var loggerFactory = new Mock<ILoggerFactory>().Object;
+            var logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
+
+            return new NakedObjectAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null, loggerFactory, logger);
         }
 
         [TestMethod]

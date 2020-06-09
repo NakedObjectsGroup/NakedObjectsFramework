@@ -17,6 +17,7 @@ using Common.Logging;
 using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -62,6 +63,8 @@ namespace NakedObjects.Xat {
         }
 
         protected INakedObjectsFramework NakedObjectsFramework { get; set; }
+
+        protected ILoggerFactory LoggerFactory { get; set; }
 
         protected virtual object[] Fixtures {
             get { return new object[] { }; }
@@ -122,6 +125,7 @@ namespace NakedObjects.Xat {
             ServiceScope = RootServiceProvider.CreateScope();
             scopeServiceProvider = ServiceScope.ServiceProvider;
             NakedObjectsFramework = scopeServiceProvider.GetService<INakedObjectsFramework>();
+            LoggerFactory = scopeServiceProvider.GetService<ILoggerFactory>();
         }
 
         protected virtual void EndTest() {

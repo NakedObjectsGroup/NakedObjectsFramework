@@ -9,7 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -30,22 +30,23 @@ namespace NakedObjects.Core.Adapter {
 
         #endregion
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(CollectionMemento));
         private readonly ILifecycleManager lifecycleManager;
         private readonly IMetamodelManager metamodel;
+        private readonly ILogger<CollectionMemento> logger;
         private readonly INakedObjectManager nakedObjectManager;
         private object[] selectedObjects;
 
-        private CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel) {
+        private CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, ILogger<CollectionMemento> logger) {
             Assert.AssertNotNull(lifecycleManager);
             Assert.AssertNotNull(nakedObjectManager);
             this.lifecycleManager = lifecycleManager;
             this.nakedObjectManager = nakedObjectManager;
             this.metamodel = metamodel;
+            this.logger = logger;
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, CollectionMemento otherMemento, object[] selectedObjects)
-            : this(lifecycleManager, nakedObjectManager, metamodel) {
+        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, ILogger<CollectionMemento> logger, CollectionMemento otherMemento, object[] selectedObjects)
+            : this(lifecycleManager, nakedObjectManager, metamodel, logger) {
             Assert.AssertNotNull(otherMemento);
 
             IsPaged = otherMemento.IsPaged;
@@ -56,8 +57,8 @@ namespace NakedObjects.Core.Adapter {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, INakedObjectAdapter target, IActionSpec actionSpec, INakedObjectAdapter[] parameters)
-            : this(lifecycleManager, nakedObjectManager, metamodel) {
+        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, ILogger<CollectionMemento> logger,  INakedObjectAdapter target, IActionSpec actionSpec, INakedObjectAdapter[] parameters)
+            : this(lifecycleManager, nakedObjectManager, metamodel, logger) {
             Target = target;
             Action = actionSpec;
             Parameters = parameters;
@@ -67,9 +68,9 @@ namespace NakedObjects.Core.Adapter {
             }
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, string[] strings)
-            : this(lifecycleManager, nakedObjectManager, metamodel) {
-            var helper = new StringDecoderHelper(metamodel, strings, true);
+        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, ILoggerFactory loggerFactory, ILogger<CollectionMemento> logger, string[] strings)
+            : this(lifecycleManager, nakedObjectManager, metamodel, logger) {
+            var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings, true);
             // ReSharper disable once UnusedVariable
             var specName = helper.GetNextString();
             var actionId = helper.GetNextString();
@@ -104,7 +105,7 @@ namespace NakedObjects.Core.Adapter {
                         parameters.Add(nakedObjectManager.CreateAdapter(typedOColl, null, null));
                         break;
                     default:
-                        throw new ArgumentException(Log.LogAndReturn($"Unexpected parameter type value: {parmType}"));
+                        throw new ArgumentException(logger.LogAndReturn($"Unexpected parameter type value: {parmType}"));
                 }
             }
 
@@ -137,7 +138,7 @@ namespace NakedObjects.Core.Adapter {
 
         public ITypeSpec Spec => Target.Spec;
 
-        public ICollectionMemento NewSelectionMemento(object[] objects, bool isPaged) => new CollectionMemento(lifecycleManager, nakedObjectManager, metamodel, this, objects) {IsPaged = isPaged};
+        public ICollectionMemento NewSelectionMemento(object[] objects, bool isPaged) => new CollectionMemento(lifecycleManager, nakedObjectManager, metamodel, logger, this, objects) {IsPaged = isPaged};
 
         public INakedObjectAdapter RecoverCollection() {
             var nakedObjectAdapter = Action.Execute(Target, Parameters);

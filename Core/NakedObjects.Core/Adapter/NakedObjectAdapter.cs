@@ -8,7 +8,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -20,32 +20,41 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Core.Adapter {
     public sealed class NakedObjectAdapter : INakedObjectAdapter {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(NakedObjectAdapter));
         private readonly ILifecycleManager lifecycleManager;
         private readonly IMetamodelManager metamodel;
         private readonly INakedObjectManager nakedObjectManager;
+        private readonly ILogger<NakedObjectAdapter> logger;
         private readonly IObjectPersistor persistor;
         private readonly ISession session;
         private ITypeSpec spec;
 
-        public NakedObjectAdapter(IMetamodelManager metamodel, ISession session, IObjectPersistor persistor, ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, object poco, IOid oid) {
+        public NakedObjectAdapter(IMetamodelManager metamodel,
+                                  ISession session,
+                                  IObjectPersistor persistor,
+                                  ILifecycleManager lifecycleManager,
+                                  INakedObjectManager nakedObjectManager,
+                                  object poco,
+                                  IOid oid, 
+                                  ILoggerFactory loggerFactory,
+                                  ILogger<NakedObjectAdapter> logger) {
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(session);
 
             if (poco is INakedObjectAdapter) {
-                throw new AdapterException(Log.LogAndReturn($"Adapter can't be used to adapt an adapter: {poco}"));
+                throw new AdapterException(logger.LogAndReturn($"Adapter can't be used to adapt an adapter: {poco}"));
             }
 
             this.metamodel = metamodel;
             this.session = session;
             this.persistor = persistor;
             this.nakedObjectManager = nakedObjectManager;
+            this.logger = logger;
             this.lifecycleManager = lifecycleManager;
 
             Object = poco;
             Oid = oid;
             ResolveState = new ResolveStateMachine(this, session);
-            Version = new NullVersion();
+            Version = new NullVersion(loggerFactory.CreateLogger<NullVersion>());
         }
 
         private string DefaultTitle { get; set; }
@@ -90,7 +99,7 @@ namespace NakedObjects.Core.Adapter {
                 return Spec.GetTitle(this) ?? DefaultTitle;
             }
             catch (Exception e) {
-                throw new TitleException(Log.LogAndReturn("Exception on ToString POCO: " + (Object == null ? "unknown" : Object.GetType().FullName)), e);
+                throw new TitleException(logger.LogAndReturn("Exception on ToString POCO: " + (Object == null ? "unknown" : Object.GetType().FullName)), e);
             }
         }
 
@@ -115,8 +124,7 @@ namespace NakedObjects.Core.Adapter {
                         return string.Format(Resources.NakedObjects.PropertyMandatory, objectSpec.ShortName, property.Name);
                     }
 
-                    var associationSpec = property as IOneToOneAssociationSpec;
-                    if (associationSpec != null) {
+                    if (property is IOneToOneAssociationSpec associationSpec) {
                         var valid = associationSpec.IsAssociationValid(this, referencedObjectAdapter);
                         if (valid.IsVetoed) {
                             return string.Format(Resources.NakedObjects.PropertyInvalid, objectSpec.ShortName, associationSpec.Name, valid.Reason);
@@ -134,8 +142,7 @@ namespace NakedObjects.Core.Adapter {
                 }
             }
 
-            var validateFacet = objectSpec.GetFacet<IValidateObjectFacet>();
-            return validateFacet == null ? null : validateFacet.Validate(this);
+            return objectSpec.GetFacet<IValidateObjectFacet>()?.Validate(this);
         }
 
         public void SetATransientOid(IOid newOid) {
@@ -237,7 +244,7 @@ namespace NakedObjects.Core.Adapter {
                 str.Append("proxy", "None");
             }
 
-            str.Append("version", Version == null ? null : Version.AsSequence());
+            str.Append("version", Version?.AsSequence());
         }
 
         private void CallCallback<T>() where T : ICallbackFacet => Spec.GetFacet<T>().Invoke(this, session, lifecycleManager, metamodel);

@@ -11,11 +11,8 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Drawing;
 using System.Linq;
-using Common.Logging;
-using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Core.Util;
 using NakedObjects.Menu;
 using NakedObjects.Value;
 

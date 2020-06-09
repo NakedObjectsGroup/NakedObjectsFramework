@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -30,6 +31,7 @@ namespace NakedObjects.Core.Spec {
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IServicesManager servicesManager;
         private readonly ITransactionManager transactionManager;
+        private readonly ILoggerFactory loggerFactory;
         private IObjectSpec elementSpec;
         private Where? executedWhere;
         private bool? hasReturn;
@@ -40,7 +42,16 @@ namespace NakedObjects.Core.Spec {
         // cached values     
         private IObjectSpec returnSpec;
 
-        public ActionSpec(SpecFactory memberFactory, IMetamodelManager metamodel, ILifecycleManager lifecycleManager, ISession session, IServicesManager servicesManager, INakedObjectManager nakedObjectManager, IActionSpecImmutable actionSpecImmutable, IMessageBroker messageBroker, ITransactionManager transactionManager)
+        public ActionSpec(SpecFactory memberFactory,
+                          IMetamodelManager metamodel,
+                          ILifecycleManager lifecycleManager,
+                          ISession session, 
+                          IServicesManager servicesManager,
+                          INakedObjectManager nakedObjectManager,
+                          IActionSpecImmutable actionSpecImmutable,
+                          IMessageBroker messageBroker,
+                          ITransactionManager transactionManager,
+                          ILoggerFactory loggerFactory)
             : base(actionSpecImmutable.Identifier.MemberName, actionSpecImmutable, session, lifecycleManager, metamodel) {
             Assert.AssertNotNull(memberFactory);
             Assert.AssertNotNull(servicesManager);
@@ -52,6 +63,7 @@ namespace NakedObjects.Core.Spec {
             this.actionSpecImmutable = actionSpecImmutable;
             this.messageBroker = messageBroker;
             this.transactionManager = transactionManager;
+            this.loggerFactory = loggerFactory;
             var index = 0;
             Parameters = this.actionSpecImmutable.Parameters.Select(pp => memberFactory.CreateParameter(pp, this, index++)).ToArray();
         }
@@ -98,7 +110,7 @@ namespace NakedObjects.Core.Spec {
             var result = ActionInvocationFacet.Invoke(target, parms, LifecycleManager, MetamodelManager, Session, nakedObjectManager, messageBroker, transactionManager);
 
             if (result != null && result.Oid == null) {
-                result.SetATransientOid(new CollectionMemento(LifecycleManager, nakedObjectManager, MetamodelManager, nakedObjectAdapter, this, parameterSet));
+                result.SetATransientOid(new CollectionMemento(LifecycleManager, nakedObjectManager, MetamodelManager, loggerFactory.CreateLogger<CollectionMemento>(), nakedObjectAdapter, this, parameterSet));
             }
 
             return result;

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -22,17 +23,21 @@ namespace NakedObjects.Core.Test.Adapter {
         private readonly IObjectPersistor persistor = new Mock<IObjectPersistor>().Object;
         private readonly object poco = new object();
         private readonly ISession session = new Mock<ISession>().Object;
+        private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
+        private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
+        private readonly ILogger<NullVersion> vLogger = new Mock<ILogger<NullVersion>>().Object;
+
 
         [Test]
         public void TestCheckLockDefaultOk() {
-            INakedObjectAdapter testAdapter = new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, nakedObjectManager, poco, oid);
-            var testNullVersion = new NullVersion();
+            INakedObjectAdapter testAdapter = new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, nakedObjectManager, poco, oid, loggerFactory, logger);
+            var testNullVersion = new NullVersion(vLogger);
             testAdapter.CheckLock(testNullVersion);
         }
 
         [Test]
         public void TestCheckLockDefaultFail() {
-            INakedObjectAdapter testAdapter = new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, nakedObjectManager, poco, oid);
+            INakedObjectAdapter testAdapter = new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, nakedObjectManager, poco, oid, loggerFactory, logger);
             var testCcVersionVersion = new ConcurrencyCheckVersion("", DateTime.Now, new object());
 
             try {
@@ -46,7 +51,7 @@ namespace NakedObjects.Core.Test.Adapter {
 
         [Test]
         public void TestCheckLockNewVersionOk() {
-            INakedObjectAdapter testAdapter = new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, nakedObjectManager, poco, oid);
+            INakedObjectAdapter testAdapter = new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, nakedObjectManager, poco, oid, loggerFactory, logger);
             var testCcVersion = new ConcurrencyCheckVersion("", DateTime.Now, new object());
 
             testAdapter.OptimisticLock = testCcVersion;
@@ -56,13 +61,13 @@ namespace NakedObjects.Core.Test.Adapter {
 
         [Test]
         public void TestCheckLockNewVersionFail() {
-            INakedObjectAdapter testAdapter = new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, nakedObjectManager, poco, oid);
+            INakedObjectAdapter testAdapter = new NakedObjectAdapter(metamodel, session, persistor, lifecycleManager, nakedObjectManager, poco, oid, loggerFactory, logger);
             var testCcVersion = new ConcurrencyCheckVersion("", DateTime.Now, new object());
 
             testAdapter.OptimisticLock = testCcVersion;
 
             try {
-                testAdapter.CheckLock(new NullVersion());
+                testAdapter.CheckLock(new NullVersion(vLogger));
                 Assert.Fail("exception expected");
             }
             catch (ConcurrencyException) {
@@ -73,11 +78,12 @@ namespace NakedObjects.Core.Test.Adapter {
         [Test]
         public void TestRoundTrip() {
             var mockMetamodelManager = new Mock<IMetamodelManager>();
+            var mockLoggerFactory = new Mock<ILoggerFactory>();
 
             var testCcVersion = new ConcurrencyCheckVersion("", DateTime.Now, "avalue");
 
             var encoded = testCcVersion.ToEncodedStrings();
-            var newVersion = new ConcurrencyCheckVersion(mockMetamodelManager.Object, encoded);
+            var newVersion = new ConcurrencyCheckVersion(mockMetamodelManager.Object, mockLoggerFactory.Object, encoded);
 
             Assert.AreEqual(testCcVersion, newVersion);
         }

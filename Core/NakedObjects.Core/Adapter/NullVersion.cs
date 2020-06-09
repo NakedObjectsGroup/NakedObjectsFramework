@@ -6,13 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter {
     public sealed class NullVersion : IVersion, IEncodedToStrings {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(NullVersion));
+        private readonly ILogger<NullVersion> logger;
+
+        public NullVersion(ILogger<NullVersion> logger) => this.logger = logger;
 
         #region IEncodedToStrings Members
 
@@ -40,7 +42,7 @@ namespace NakedObjects.Core.Adapter {
 
         #endregion
 
-        public IVersion Next(string user, DateTime time) => throw new UnexpectedCallException(Log.LogAndReturn("Unexpected call of 'Next'"));
+        public IVersion Next(string user, DateTime time) => throw new UnexpectedCallException(logger.LogAndReturn("Unexpected call of 'Next'"));
 
         public override bool Equals(object other) => other is IVersion a && Equals(a);
 

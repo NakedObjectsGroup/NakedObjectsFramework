@@ -9,6 +9,7 @@ using System;
 using System.Data.Entity.Core;
 using System.Linq;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
@@ -131,10 +132,10 @@ namespace NakedObjects.Persistor.Entity.Adapter {
             CacheState();
         }
 
-        public EntityOid(IMetamodelManager metamodel, string[] strings) {
+        public EntityOid(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
-            var helper = new StringDecoderHelper(metamodel, strings);
+            var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
 
             TypeName = helper.GetNextString();
             Key = helper.GetNextObjectArray();

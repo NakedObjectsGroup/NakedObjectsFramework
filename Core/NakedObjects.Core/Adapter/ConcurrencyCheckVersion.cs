@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
@@ -22,9 +23,9 @@ namespace NakedObjects.Core.Adapter {
             this.version = version;
         }
 
-        public ConcurrencyCheckVersion(IMetamodelManager metamodel, string[] strings) {
+        public ConcurrencyCheckVersion(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
             Assert.AssertNotNull(metamodel);
-            var helper = new StringDecoderHelper(metamodel, strings);
+            var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(),  strings);
 
             User = helper.GetNextString();
             time = new DateTime(helper.GetNextLong());

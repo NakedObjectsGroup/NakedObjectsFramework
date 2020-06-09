@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -45,6 +46,9 @@ namespace NakedObjects.Core.Test.Resolve {
 
             var mockFacet = new Mock<ITestCallbackFacet>();
             var testFacet = mockFacet.Object;
+
+            var mockLogger = new Mock<ILogger<ResolveStateMachine>>();
+            var testLogger = mockLogger.Object;
 
             mockFacet.Setup(f => f.Invoke(null, null, null, null));
 

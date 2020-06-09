@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
@@ -28,10 +29,10 @@ namespace NakedObjects.Core.Adapter {
             this.typeName = typeName;
         }
 
-        public AggregateOid(IMetamodelManager metamodel, string[] strings) {
+        public AggregateOid(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
-            var helper = new StringDecoderHelper(metamodel, strings);
+            var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(),  strings);
             typeName = helper.GetNextString();
             FieldName = helper.GetNextString();
             if (helper.HasNext) {

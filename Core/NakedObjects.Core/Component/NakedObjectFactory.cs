@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Adapter;
@@ -18,9 +19,10 @@ namespace NakedObjects.Core.Component {
         private INakedObjectManager nakedObjectManager;
         private IObjectPersistor persistor;
         private ISession session;
+        private ILoggerFactory loggerFactory;
 
         // ReSharper disable ParameterHidesMember
-        public void Initialize(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager nakedObjectManager) {
+        public void Initialize(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager nakedObjectManager, ILoggerFactory loggerFactory) {
             // ReSharper restore ParameterHidesMember
             Assert.AssertNotNull(metamodelManager);
             Assert.AssertNotNull(session);
@@ -33,12 +35,13 @@ namespace NakedObjects.Core.Component {
             this.lifecycleManager = lifecycleManager;
             this.persistor = persistor;
             this.nakedObjectManager = nakedObjectManager;
+            this.loggerFactory = loggerFactory;
             isInitialized = true;
         }
 
         public INakedObjectAdapter CreateAdapter(object obj, IOid oid) {
             Assert.AssertTrue(isInitialized);
-            return new NakedObjectAdapter(metamodelManager, session, persistor, lifecycleManager, nakedObjectManager, obj, oid);
+            return new NakedObjectAdapter(metamodelManager, session, persistor, lifecycleManager, nakedObjectManager, obj, oid, loggerFactory, loggerFactory.CreateLogger<NakedObjectAdapter>());
         }
     }
 }

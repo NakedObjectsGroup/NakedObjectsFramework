@@ -12,6 +12,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
@@ -23,15 +24,17 @@ namespace NakedObjects.Core.Adapter {
     /// </summary>
     /// <seealso cref="StringEncoderHelper" />
     public class StringDecoderHelper {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(StringDecoderHelper));
-
         private readonly IMetamodelManager metamodel;
+        private readonly ILoggerFactory loggerFactory;
+        private readonly ILogger<StringDecoderHelper> logger;
         private readonly string[] strings;
         private int index;
 
-        public StringDecoderHelper(IMetamodelManager metamodel, string[] strings, bool decode = false) {
+        public StringDecoderHelper(IMetamodelManager metamodel,  ILoggerFactory loggerFactory, ILogger<StringDecoderHelper> logger, string[] strings, bool decode = false) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
+            this.loggerFactory = loggerFactory;
+            this.logger = logger;
             this.strings = decode ? strings.Select(HttpUtility.UrlDecode).ToArray() : strings;
         }
 
@@ -115,7 +118,7 @@ namespace NakedObjects.Core.Adapter {
 
             var objectType = TypeUtils.GetType(type);
             if (objectType == null) {
-                throw new Exception(Log.LogAndReturn($"Cannot find type for name: {type}"));
+                throw new Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
             }
 
             if (objectType == typeof(string)) {
@@ -128,12 +131,12 @@ namespace NakedObjects.Core.Adapter {
 
             var parseMethod = objectType.GetMethod("Parse", new[] {typeof(string)});
             if (parseMethod == null) {
-                throw new Exception(Log.LogAndReturn($"Cannot find Parse method on type: {objectType}"));
+                throw new Exception(logger.LogAndReturn($"Cannot find Parse method on type: {objectType}"));
             }
 
             var result = parseMethod.Invoke(null, new object[] {value});
             if (result == null) {
-                throw new Exception(Log.LogAndReturn($"Failed to Parse value: {value} on type: {objectType}"));
+                throw new Exception(logger.LogAndReturn($"Failed to Parse value: {value} on type: {objectType}"));
             }
 
             return result;
@@ -160,7 +163,7 @@ namespace NakedObjects.Core.Adapter {
 
             var objectType = TypeUtils.GetType(type);
             if (objectType == null) {
-                throw new Exception(Log.LogAndReturn($"Cannot find type for name: {type}"));
+                throw new Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
             }
 
             var stream = new MemoryStream();
@@ -183,19 +186,19 @@ namespace NakedObjects.Core.Adapter {
 
             var objectType = TypeUtils.GetType(type);
             if (objectType == null) {
-                throw new Exception(Log.LogAndReturn($"Cannot find type for name: {type}"));
+                throw new Exception(logger.LogAndReturn($"Cannot find type for name: {type}"));
             }
 
             if (!typeof(IEncodedToStrings).IsAssignableFrom(objectType)) {
-                throw new Exception(Log.LogAndReturn($"Type: {objectType} needs to be: {typeof(IEncodedToStrings)}"));
+                throw new Exception(logger.LogAndReturn($"Type: {objectType} needs to be: {typeof(IEncodedToStrings)}"));
             }
 
-            return (IEncodedToStrings) Activator.CreateInstance(objectType, metamodel, encodedData);
+            return (IEncodedToStrings) Activator.CreateInstance(objectType, metamodel, loggerFactory, encodedData);
         }
 
         private void CheckCurrentIndex() {
             if (index >= strings.Length) {
-                throw new IndexOutOfRangeException(Log.LogAndReturn($"String decode fail index: {index} length: {strings.Length}"));
+                throw new IndexOutOfRangeException(logger.LogAndReturn($"String decode fail index: {index} length: {strings.Length}"));
             }
         }
     }

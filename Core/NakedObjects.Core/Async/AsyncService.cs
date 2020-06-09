@@ -7,7 +7,6 @@
 
 using System;
 using System.Threading.Tasks;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Async;
 using NakedObjects.Core.Container;

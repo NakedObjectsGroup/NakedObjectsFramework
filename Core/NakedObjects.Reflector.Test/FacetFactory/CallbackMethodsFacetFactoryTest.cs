@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -47,7 +48,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var lifecycleManager = new Mock<ILifecycleManager>().Object;
             var persistor = new Mock<IObjectPersistor>().Object;
             var manager = new Mock<INakedObjectManager>().Object;
-            return new NakedObjectAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null);
+            var loggerFactory = new Mock<ILoggerFactory>().Object;
+            var logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
+
+            return new NakedObjectAdapter(Metamodel, session, persistor, lifecycleManager, manager, obj, null, loggerFactory, logger);
         }
 
         [TestMethod]
