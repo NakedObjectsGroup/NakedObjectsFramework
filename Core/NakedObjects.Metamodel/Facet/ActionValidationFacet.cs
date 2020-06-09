@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
@@ -19,14 +19,15 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ActionValidationFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ActionValidationFacet));
         private readonly MethodInfo method;
+        private readonly ILogger<ActionValidationFacet> logger;
 
         [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-        public ActionValidationFacet(MethodInfo method, ISpecification holder)
+        public ActionValidationFacet(MethodInfo method, ISpecification holder, ILogger<ActionValidationFacet> logger)
             : base(typeof(IActionValidationFacet), holder) {
             this.method = method;
+            this.logger = logger;
             methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
         }
 
@@ -42,7 +43,7 @@ namespace NakedObjects.Meta.Facet {
             }
 
             //Fall back (e.g. if method has > 6 params) on reflection...
-            Log.WarnFormat("Invoking validate method via reflection as no delegate {0}.{1}", target, method);
+            logger.LogWarning($"Invoking validate method via reflection as no delegate {target}.{method}");
             return (string) InvokeUtils.Invoke(method, target, proposedArguments);
         }
 
@@ -59,7 +60,7 @@ namespace NakedObjects.Meta.Facet {
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -155,7 +155,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             var method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
             if (method != null) {
                 RemoveMethod(methodRemover, method);
-                actionFacets.Add(new ActionValidationFacet(method, action));
+                actionFacets.Add(new ActionValidationFacet(method, action, Logger<ActionValidationFacet>()));
             }
         }
 

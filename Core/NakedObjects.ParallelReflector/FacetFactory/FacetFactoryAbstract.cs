@@ -24,6 +24,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             FeatureTypes = featureTypes;
         }
 
+        protected ILogger<T> Logger<T>() => LoggerFactory.CreateLogger<T>();
+
         #region IFacetFactory Members
 
         public int NumericOrder { get; }

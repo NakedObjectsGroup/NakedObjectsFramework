@@ -68,7 +68,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
 
             RemoveMethod(methodRemover, actionMethod);
-            facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, isQueryable, LoggerFactory.CreateLogger<ActionInvocationFacetViaMethod>()));
+            facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, isQueryable, Logger<ActionInvocationFacetViaMethod>()));
 
             var methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
             var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
@@ -181,7 +181,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             var method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
             if (method != null) {
                 RemoveMethod(methodRemover, method);
-                actionFacets.Add(new ActionValidationFacet(method, action));
+                actionFacets.Add(new ActionValidationFacet(method, action, LoggerFactory.CreateLogger<ActionValidationFacet>()));
             }
         }
 

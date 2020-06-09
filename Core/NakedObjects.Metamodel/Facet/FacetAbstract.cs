@@ -8,6 +8,7 @@
 using System;
 using System.Runtime.Serialization;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
@@ -64,6 +65,15 @@ namespace NakedObjects.Meta.Facet {
             var (delFunc, warning) = pair;
             if (delFunc == null && !string.IsNullOrWhiteSpace(warning)) {
                 Log.Warn(warning);
+            }
+
+            return delFunc;
+        }
+
+        protected static Func<object, object[], object> LogNull((Func<object, object[], object>, string) pair, ILogger logger) {
+            var (delFunc, warning) = pair;
+            if (delFunc == null && !string.IsNullOrWhiteSpace(warning)) {
+                logger.LogWarning(warning);
             }
 
             return delFunc;

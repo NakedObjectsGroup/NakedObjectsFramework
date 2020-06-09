@@ -7,6 +7,7 @@
 
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -18,8 +19,12 @@ using NakedObjects.Meta.Facet;
 namespace NakedObjects.Metamodel.Test.Facet {
     [TestClass]
     public class ActionValidationFacetTest {
+
+        private static ILogger<ActionValidationFacet> mockLogger = new Mock<ILogger<ActionValidationFacet>>().Object;
+
         private static void DelegateFuncTest(MethodInfo method) {
-            IImperativeFacet actionValidationFacet = new ActionValidationFacet(method, null);
+
+            IImperativeFacet actionValidationFacet = new ActionValidationFacet(method, null, mockLogger);
             var facet = (IActionValidationFacet) actionValidationFacet;
             Assert.IsNotNull(actionValidationFacet.GetMethodDelegate(), method.Name);
             var parms = method.GetParameters().Select(p => "astring").Cast<object>().Select(MockParm).ToArray();
@@ -28,7 +33,7 @@ namespace NakedObjects.Metamodel.Test.Facet {
         }
 
         private static void InvokeFuncTest(MethodInfo method) {
-            IImperativeFacet actionValidationFacet = new ActionValidationFacet(method, null);
+            IImperativeFacet actionValidationFacet = new ActionValidationFacet(method, null, mockLogger);
             var facet = (IActionValidationFacet) actionValidationFacet;
             Assert.IsNull(actionValidationFacet.GetMethodDelegate());
             Assert.IsNotNull(actionValidationFacet.GetMethod());
@@ -60,7 +65,7 @@ namespace NakedObjects.Metamodel.Test.Facet {
         [TestMethod]
         public void TestDisabledFacetAnnotationAsInteraction() {
             var method = typeof(TestDelegateClass).GetMethod("Func2");
-            IValidatingInteractionAdvisor facet = new ActionValidationFacet(method, null);
+            IValidatingInteractionAdvisor facet = new ActionValidationFacet(method, null, mockLogger);
             var target = Mock(new TestDelegateClass());
             var mockIc = new Mock<IInteractionContext>();
             mockIc.Setup(ic => ic.Target).Returns(target);

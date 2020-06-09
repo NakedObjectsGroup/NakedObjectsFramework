@@ -26,6 +26,8 @@ namespace NakedObjects.Meta.Facet {
 
         #region IFacetFactory Members
 
+        protected ILogger<T> Logger<T>() => LoggerFactory.CreateLogger<T>();
+
         public int NumericOrder { get; }
         protected ILoggerFactory LoggerFactory { get; }
 
