@@ -25,7 +25,7 @@ namespace NakedObjects.Core.Adapter {
 
         public ConcurrencyCheckVersion(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
             Assert.AssertNotNull(metamodel);
-            var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(),  strings);
+            var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
 
             User = helper.GetNextString();
             time = new DateTime(helper.GetNextLong());

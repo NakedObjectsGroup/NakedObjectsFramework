@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -18,8 +17,8 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class ServicesManager : IServicesManager {
-        private readonly ILogger<ServicesManager> logger;
         private readonly IDomainObjectInjector injector;
+        private readonly ILogger<ServicesManager> logger;
         private readonly INakedObjectManager manager;
 
         private readonly List<object> services;

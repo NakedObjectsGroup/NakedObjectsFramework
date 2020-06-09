@@ -32,7 +32,7 @@ namespace NakedObjects.Core.Adapter {
         public AggregateOid(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
-            var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(),  strings);
+            var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
             typeName = helper.GetNextString();
             FieldName = helper.GetNextString();
             if (helper.HasNext) {

@@ -21,9 +21,9 @@ using NakedObjects.Util;
 namespace NakedObjects.Core.Adapter {
     public sealed class NakedObjectAdapter : INakedObjectAdapter {
         private readonly ILifecycleManager lifecycleManager;
+        private readonly ILogger<NakedObjectAdapter> logger;
         private readonly IMetamodelManager metamodel;
         private readonly INakedObjectManager nakedObjectManager;
-        private readonly ILogger<NakedObjectAdapter> logger;
         private readonly IObjectPersistor persistor;
         private readonly ISession session;
         private ITypeSpec spec;
@@ -34,7 +34,7 @@ namespace NakedObjects.Core.Adapter {
                                   ILifecycleManager lifecycleManager,
                                   INakedObjectManager nakedObjectManager,
                                   object poco,
-                                  IOid oid, 
+                                  IOid oid,
                                   ILoggerFactory loggerFactory,
                                   ILogger<NakedObjectAdapter> logger) {
             Assert.AssertNotNull(metamodel);

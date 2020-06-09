@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
-using Common.Logging;
 using NakedObjects.Util;
 
 namespace NakedObjects.Core.Util {
@@ -19,8 +18,8 @@ namespace NakedObjects.Core.Util {
 
         private static string CreationFailed(string reason, MethodInfo method) =>
             // don't log system or NOF types
-            TypeUtils.IsSystem(method.DeclaringType) || TypeUtils.IsNakedObjects(method.DeclaringType) 
-                ? "" 
+            TypeUtils.IsSystem(method.DeclaringType) || TypeUtils.IsNakedObjects(method.DeclaringType)
+                ? ""
                 : $"Not creating delegate for {reason} method {method.DeclaringType}.{method}";
 
         public static (Func<object, object[], object>, string) CreateDelegate(MethodInfo method) {
@@ -72,8 +71,8 @@ namespace NakedObjects.Core.Util {
                 return null;
             }
 
-            return type.Name.StartsWith("ITypeAuthorizer") 
-                ? type 
+            return type.Name.StartsWith("ITypeAuthorizer")
+                ? type
                 : type.GetInterfaces().FirstOrDefault(i => GetTypeAuthorizerType(i) != null);
         }
 

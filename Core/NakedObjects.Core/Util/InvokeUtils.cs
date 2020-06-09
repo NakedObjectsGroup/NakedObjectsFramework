@@ -8,13 +8,10 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Core.Util {
     public static class InvokeUtils {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(InvokeUtils));
-
         public static object InvokeStatic(MethodInfo method, object[] parameters) => Invoke(method, null, parameters);
 
         public static object Invoke(MethodInfo method, INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters) {
@@ -36,14 +33,14 @@ namespace NakedObjects.Core.Util {
             var innerException = e.InnerException;
             if (innerException is DomainException) {
                 // a domain  exception from the domain code is re-thrown as an NO exception with same semantics
-                throw new NakedObjectDomainException(Log.LogAndReturn(innerException.Message), innerException);
+                throw new NakedObjectDomainException(innerException.Message, innerException);
             }
 
             if (e is TargetInvocationException) {
-                throw new InvokeException(Log.LogAndReturn(innerException.Message), innerException);
+                throw new InvokeException(innerException.Message, innerException);
             }
 
-            throw new ReflectionException(Log.LogAndReturn(e.Message), e);
+            throw new ReflectionException(e.Message, e);
         }
     }
 }

@@ -7,7 +7,6 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using Common.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
@@ -15,16 +14,16 @@ using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.Component {
     public sealed class NakedObjectAdapterHashMap : INakedObjectAdapterMap {
-        private readonly ILogger<NakedObjectAdapterHashMap> logger;
         private readonly int capacity = 10;
         private readonly IDictionary<object, INakedObjectAdapter> domainObjects;
+        private readonly ILogger<NakedObjectAdapterHashMap> logger;
 
         public NakedObjectAdapterHashMap() => domainObjects = new Dictionary<object, INakedObjectAdapter>(capacity);
 
         // used by DI
         // ReSharper disable once UnusedMember.Global
         public NakedObjectAdapterHashMap(IConfiguration config,
-                                        ILogger<NakedObjectAdapterHashMap> logger) : this() {
+                                         ILogger<NakedObjectAdapterHashMap> logger) : this() {
             this.logger = logger;
             var capacityFromConfig = config.GetSection("NakedObjects")["HashMapCapacity"];
             if (capacityFromConfig == null) {

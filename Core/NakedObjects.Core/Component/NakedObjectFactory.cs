@@ -15,11 +15,11 @@ namespace NakedObjects.Core.Component {
     public sealed class NakedObjectFactory {
         private bool isInitialized;
         private ILifecycleManager lifecycleManager;
+        private ILoggerFactory loggerFactory;
         private IMetamodelManager metamodelManager;
         private INakedObjectManager nakedObjectManager;
         private IObjectPersistor persistor;
         private ISession session;
-        private ILoggerFactory loggerFactory;
 
         // ReSharper disable ParameterHidesMember
         public void Initialize(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager nakedObjectManager, ILoggerFactory loggerFactory) {

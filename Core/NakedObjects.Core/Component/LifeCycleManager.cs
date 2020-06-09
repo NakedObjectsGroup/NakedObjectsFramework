@@ -22,11 +22,11 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class LifeCycleManager : ILifecycleManager {
-        private readonly ILogger<LifeCycleManager> logger;
         private readonly IDomainObjectInjector injector;
+        private readonly ILogger<LifeCycleManager> logger;
+        private readonly ILoggerFactory loggerFactory;
         private readonly IMetamodelManager metamodel;
         private readonly INakedObjectManager nakedObjectManager;
-        private readonly ILoggerFactory loggerFactory;
         private readonly IDictionary<Type, object> nonPersistedObjectCache = new Dictionary<Type, object>();
         private readonly IObjectPersistor objectPersistor;
         private readonly IOidGenerator oidGenerator;
@@ -39,7 +39,7 @@ namespace NakedObjects.Core.Component {
             IDomainObjectInjector injector,
             IObjectPersistor objectPersistor,
             INakedObjectManager nakedObjectManager,
-            ILoggerFactory loggerFactory, 
+            ILoggerFactory loggerFactory,
             ILogger<LifeCycleManager> logger
         ) {
             Assert.AssertNotNull(metamodel);

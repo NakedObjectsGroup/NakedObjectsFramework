@@ -11,7 +11,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Web;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -24,13 +23,13 @@ namespace NakedObjects.Core.Adapter {
     /// </summary>
     /// <seealso cref="StringEncoderHelper" />
     public class StringDecoderHelper {
-        private readonly IMetamodelManager metamodel;
-        private readonly ILoggerFactory loggerFactory;
         private readonly ILogger<StringDecoderHelper> logger;
+        private readonly ILoggerFactory loggerFactory;
+        private readonly IMetamodelManager metamodel;
         private readonly string[] strings;
         private int index;
 
-        public StringDecoderHelper(IMetamodelManager metamodel,  ILoggerFactory loggerFactory, ILogger<StringDecoderHelper> logger, string[] strings, bool decode = false) {
+        public StringDecoderHelper(IMetamodelManager metamodel, ILoggerFactory loggerFactory, ILogger<StringDecoderHelper> logger, string[] strings, bool decode = false) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
             this.loggerFactory = loggerFactory;

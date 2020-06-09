@@ -24,7 +24,7 @@ namespace NakedObjects.Service {
                                      NakedObjectFactory nakedObjectFactory,
                                      SpecFactory memberFactory,
                                      ITransactionManager transactionManager,
-                                     IFrameworkResolver frameworkResolver, 
+                                     IFrameworkResolver frameworkResolver,
                                      ILoggerFactory loggerFactory) {
             MessageBroker = messageBroker;
             Session = session;

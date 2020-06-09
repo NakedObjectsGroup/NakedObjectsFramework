@@ -13,7 +13,6 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Core.Util {
     public static class CollectionUtils {
-
         #region public
 
         public const int IncompleteCollection = -1;

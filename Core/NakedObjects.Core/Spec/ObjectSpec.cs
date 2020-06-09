@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -19,20 +18,20 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public sealed class ObjectSpec : TypeSpec, IObjectSpec {
-        private readonly ILogger<ObjectSpec> logger;
         private readonly IDictionary<string, IActionSpec[]> locallyContributedActions = new Dictionary<string, IActionSpec[]>();
+        private readonly ILogger<ObjectSpec> logger;
         private IActionSpec[] collectionContributedActions;
         private IActionSpec[] combinedActions;
         private IActionSpec[] contributedActions;
         private IActionSpec[] finderActions;
         private IAssociationSpec[] objectFields;
 
-        public ObjectSpec(SpecFactory memberFactory, 
+        public ObjectSpec(SpecFactory memberFactory,
                           IMetamodelManager metamodelManager,
-                          INakedObjectManager nakedObjectManager, 
-                          IObjectSpecImmutable innerSpec, 
+                          INakedObjectManager nakedObjectManager,
+                          IObjectSpecImmutable innerSpec,
                           ILogger<ObjectSpec> logger) :
-            base(memberFactory, metamodelManager, nakedObjectManager, innerSpec) =>   this.logger = logger;
+            base(memberFactory, metamodelManager, nakedObjectManager, innerSpec) => this.logger = logger;
 
         private IActionSpec[] ContributedActions => contributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions);
 

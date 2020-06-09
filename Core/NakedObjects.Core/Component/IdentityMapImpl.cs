@@ -7,7 +7,6 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -17,11 +16,11 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class IdentityMapImpl : IIdentityMap {
-        private ILogger<IdentityMapImpl> logger;
         private readonly IIdentityAdapterMap identityAdapterMap;
         private readonly INakedObjectAdapterMap nakedObjectAdapterMap;
         private readonly IOidGenerator oidGenerator;
         private readonly IDictionary<object, object> unloadedObjects = new Dictionary<object, object>();
+        private readonly ILogger<IdentityMapImpl> logger;
 
         public IdentityMapImpl(IOidGenerator oidGenerator,
                                IIdentityAdapterMap identityAdapterMap,

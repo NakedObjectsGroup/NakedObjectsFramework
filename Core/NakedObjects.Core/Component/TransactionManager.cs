@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Transaction;
@@ -15,12 +14,12 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Core.Component {
     public sealed class TransactionManager : ITransactionManager {
         private readonly ILogger<TransactionManager> logger;
-        private readonly IObjectStore objectStore;
         private readonly ILoggerFactory loggerFactory;
+        private readonly IObjectStore objectStore;
         private ITransaction transaction;
         private bool userAborted;
 
-        public TransactionManager(IObjectStore objectStore, ILoggerFactory loggerFactory,  ILogger<TransactionManager> logger) {
+        public TransactionManager(IObjectStore objectStore, ILoggerFactory loggerFactory, ILogger<TransactionManager> logger) {
             Assert.AssertNotNull(objectStore);
             this.objectStore = objectStore;
             this.loggerFactory = loggerFactory;

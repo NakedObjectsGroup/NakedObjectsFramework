@@ -19,8 +19,8 @@ using NakedObjects.UtilInternal;
 
 namespace NakedObjects.Core.Container {
     public sealed class DomainObjectContainer : IDomainObjectContainer, IInternalAccess {
-        private readonly ILogger<DomainObjectContainer> logger;
         private readonly INakedObjectsFramework framework;
+        private readonly ILogger<DomainObjectContainer> logger;
 
         public DomainObjectContainer(INakedObjectsFramework framework,
                                      ILogger<DomainObjectContainer> logger) {

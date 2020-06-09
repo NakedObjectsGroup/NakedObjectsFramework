@@ -14,6 +14,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Container {
     internal static class Methods {
+        private static readonly MethodInfo CreateMethod = typeof(LoggerFactoryExtensions).GetMethods().Single(m => m.Name == "CreateLogger" && m.ContainsGenericParameters);
         public static void InjectContainer(object target, object container) => InjectContainer(target, container, new[] {"Container", "DomainObjectContainer", "ProxyContainer"});
 
         public static void InjectRoot(object root, object inlineObject) {
@@ -58,8 +59,6 @@ namespace NakedObjects.Core.Container {
                 }
             }
         }
-
-        private static readonly MethodInfo CreateMethod = typeof(LoggerFactoryExtensions).GetMethods().Single(m => m.Name == "CreateLogger" && m.ContainsGenericParameters);
 
         public static void InjectLogger(object target, ILoggerFactory loggerFactory) {
             var targetType = target.GetType();

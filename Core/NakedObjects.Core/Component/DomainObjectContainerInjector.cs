@@ -22,8 +22,8 @@ namespace NakedObjects.Core.Component {
         private bool initialized;
         private List<object> services;
 
-        public DomainObjectContainerInjector(IReflectorConfiguration config, 
-                                             ILoggerFactory loggerFactory, 
+        public DomainObjectContainerInjector(IReflectorConfiguration config,
+                                             ILoggerFactory loggerFactory,
                                              ILogger<DomainObjectContainerInjector> logger) {
             this.loggerFactory = loggerFactory;
             Assert.AssertNotNull(config);

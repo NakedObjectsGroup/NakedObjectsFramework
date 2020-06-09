@@ -7,7 +7,6 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using Common.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
@@ -15,15 +14,15 @@ using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.Component {
     public sealed class IdentityAdapterHashMap : IIdentityAdapterMap {
-        private readonly ILogger<FlatPersistAlgorithm> logger;
         private readonly IDictionary<IOid, INakedObjectAdapter> adapters;
         private readonly int capacity = 10;
+        private readonly ILogger<FlatPersistAlgorithm> logger;
 
         public IdentityAdapterHashMap() => adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
 
         // used by DI
         // ReSharper disable once UnusedMember.Global
-        public IdentityAdapterHashMap(IConfiguration config, 
+        public IdentityAdapterHashMap(IConfiguration config,
                                       ILogger<FlatPersistAlgorithm> logger) : this() {
             this.logger = logger;
             var capacityFromConfig = config.GetSection("NakedObjects")["HashMapCapacity"];

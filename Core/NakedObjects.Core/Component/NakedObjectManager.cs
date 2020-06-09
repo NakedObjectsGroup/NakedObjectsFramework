@@ -20,16 +20,16 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class NakedObjectManager : INakedObjectManager {
-        private readonly ILogger<NakedObjectManager> logger;
         private readonly INoIdentityAdapterCache adapterCache = new NoIdentityAdapterCache();
         private readonly IIdentityMap identityMap;
+        private readonly ILogger<NakedObjectManager> logger;
+        private readonly ILoggerFactory loggerFactory;
         private readonly IMetamodelManager metamodel;
         private readonly NakedObjectFactory nakedObjectFactory;
-        private readonly ILoggerFactory loggerFactory;
         private readonly IOidGenerator oidGenerator;
         private readonly ISession session;
 
-        public NakedObjectManager(IMetamodelManager metamodel, 
+        public NakedObjectManager(IMetamodelManager metamodel,
                                   ISession session,
                                   IIdentityMap identityMap,
                                   IOidGenerator oidGenerator,

@@ -31,8 +31,8 @@ namespace NakedObjects.Core.Adapter {
         #endregion
 
         private readonly ILifecycleManager lifecycleManager;
-        private readonly IMetamodelManager metamodel;
         private readonly ILogger<CollectionMemento> logger;
+        private readonly IMetamodelManager metamodel;
         private readonly INakedObjectManager nakedObjectManager;
         private object[] selectedObjects;
 
@@ -57,7 +57,7 @@ namespace NakedObjects.Core.Adapter {
             SelectedObjects = selectedObjects;
         }
 
-        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, ILogger<CollectionMemento> logger,  INakedObjectAdapter target, IActionSpec actionSpec, INakedObjectAdapter[] parameters)
+        public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, ILogger<CollectionMemento> logger, INakedObjectAdapter target, IActionSpec actionSpec, INakedObjectAdapter[] parameters)
             : this(lifecycleManager, nakedObjectManager, metamodel, logger) {
             Target = target;
             Action = actionSpec;

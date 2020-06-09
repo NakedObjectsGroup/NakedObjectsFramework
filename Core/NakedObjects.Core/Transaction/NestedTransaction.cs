@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Transaction;
@@ -13,8 +12,8 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Transaction {
     public sealed class NestedTransaction : ITransaction {
-        private readonly IObjectStore objectStore;
         private readonly ILogger<NestedTransaction> logger;
+        private readonly IObjectStore objectStore;
         private bool complete;
 
         public NestedTransaction(IObjectStore objectStore, ILogger<NestedTransaction> logger) {

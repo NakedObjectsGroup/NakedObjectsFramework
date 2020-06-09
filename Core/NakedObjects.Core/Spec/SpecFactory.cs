@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
@@ -15,11 +14,9 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public class SpecFactory {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(SpecFactory));
-
         private INakedObjectsFramework framework;
-        private ILoggerFactory loggerFactory;
         private ILogger<SpecFactory> logger;
+        private ILoggerFactory loggerFactory;
 
         public void Initialize(INakedObjectsFramework newFramework, ILoggerFactory newLoggerFactory, ILogger<SpecFactory> newLogger) {
             Assert.AssertNotNull(newFramework);
@@ -85,7 +82,7 @@ namespace NakedObjects.Core.Spec {
         private IObjectSpec CreateObjectSpec(IObjectSpecImmutable specImmutable) {
             Assert.AssertNotNull(framework);
             return new ObjectSpec(this,
-                framework.MetamodelManager, 
+                framework.MetamodelManager,
                 framework.NakedObjectManager,
                 specImmutable,
                 loggerFactory.CreateLogger<ObjectSpec>());

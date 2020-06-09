@@ -19,7 +19,6 @@ using NakedObjects.Value;
 namespace NakedObjects.Core.Configuration {
     [Serializable]
     public class ReflectorConfiguration : IReflectorConfiguration {
-
         private readonly Type[] defaultSystemTypes = {
             typeof(bool),
             typeof(byte),

@@ -25,12 +25,12 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Core.Spec {
     public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
         private readonly IActionSpecImmutable actionSpecImmutable;
+        private readonly ILogger<ActionSpec> logger;
+        private readonly ILoggerFactory loggerFactory;
         private readonly IMessageBroker messageBroker;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IServicesManager servicesManager;
         private readonly ITransactionManager transactionManager;
-        private readonly ILoggerFactory loggerFactory;
-        private readonly ILogger<ActionSpec> logger;
         private IObjectSpec elementSpec;
         private Where? executedWhere;
         private bool? hasReturn;
@@ -44,7 +44,7 @@ namespace NakedObjects.Core.Spec {
         public ActionSpec(SpecFactory memberFactory,
                           IMetamodelManager metamodel,
                           ILifecycleManager lifecycleManager,
-                          ISession session, 
+                          ISession session,
                           IServicesManager servicesManager,
                           INakedObjectManager nakedObjectManager,
                           IActionSpecImmutable actionSpecImmutable,
