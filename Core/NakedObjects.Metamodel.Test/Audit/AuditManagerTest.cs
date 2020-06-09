@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -25,6 +26,8 @@ namespace NakedObjects.Meta.Test.Audit {
 
         #endregion
 
+        private ILogger<AuditManager> mockLogger = new Mock<ILogger<AuditManager>>().Object;
+
         [TestMethod]
         public void TestCreateOk() {
             IAuditConfiguration config = new AuditConfiguration<IAuditor>();
@@ -32,7 +35,7 @@ namespace NakedObjects.Meta.Test.Audit {
             config.AddNamespaceAuditor<IAuditor>("namespace");
 
             // ReSharper disable once UnusedVariable
-            var sink = new AuditManager(config);
+            var sink = new AuditManager(config, mockLogger);
         }
 
         [TestMethod]
@@ -44,7 +47,7 @@ namespace NakedObjects.Meta.Test.Audit {
 
             try {
                 // ReSharper disable once UnusedVariable
-                var sink = new AuditManager(config.Object);
+                var sink = new AuditManager(config.Object, mockLogger);
                 Assert.Fail("Expect exception");
             }
             catch (Exception expected) {
@@ -63,7 +66,7 @@ namespace NakedObjects.Meta.Test.Audit {
 
             try {
                 // ReSharper disable once UnusedVariable
-                var sink = new AuditManager(config.Object);
+                var sink = new AuditManager(config.Object, mockLogger);
                 Assert.Fail("Expect exception");
             }
             catch (Exception expected) {
@@ -80,7 +83,7 @@ namespace NakedObjects.Meta.Test.Audit {
             config.Setup(c => c.DefaultAuditor).Returns(auditor.Object.GetType());
             config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> {{"", auditor.Object.GetType()}});
 
-            var manager = new AuditManager(config.Object);
+            var manager = new AuditManager(config.Object, mockLogger);
 
             var testSpec = new Mock<ISpecification>();
             var testHolder = new Mock<ISpecification>();
@@ -108,7 +111,7 @@ namespace NakedObjects.Meta.Test.Audit {
             config.Setup(c => c.DefaultAuditor).Returns(auditor.Object.GetType());
             config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> {{"", auditor.Object.GetType()}});
 
-            var manager = new AuditManager(config.Object);
+            var manager = new AuditManager(config.Object, mockLogger);
 
             var testSpec = new Mock<ISpecification>();
             var testHolder = new Mock<ISpecification>();
@@ -136,7 +139,7 @@ namespace NakedObjects.Meta.Test.Audit {
             config.Setup(c => c.DefaultAuditor).Returns(auditor.Object.GetType());
             config.Setup(c => c.NamespaceAuditors).Returns(new Dictionary<string, Type> {{"", auditor.Object.GetType()}});
 
-            var manager = new AuditManager(config.Object);
+            var manager = new AuditManager(config.Object, mockLogger);
 
             var testSpec = new Mock<ISpecification>();
             var testHolder = new Mock<ISpecification>();

@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -26,6 +27,8 @@ namespace NakedObjects.Meta.Test.Authorization {
 
         #endregion
 
+        private ILogger<AuthorizationManager> mockLogger = new Mock<ILogger<AuthorizationManager>>().Object;
+
         [TestMethod]
         public void TestCreateOk() {
             var config = new AuthorizationConfiguration<ITypeAuthorizer<object>>();
@@ -34,7 +37,7 @@ namespace NakedObjects.Meta.Test.Authorization {
             config.AddTypeAuthorizer<TestClass, ITypeAuthorizer<TestClass>>();
 
             // ReSharper disable once UnusedVariable
-            var sink = new AuthorizationManager(config);
+            var sink = new AuthorizationManager(config, mockLogger);
         }
 
         [TestMethod]
@@ -46,7 +49,7 @@ namespace NakedObjects.Meta.Test.Authorization {
 
             try {
                 // ReSharper disable once UnusedVariable
-                var sink = new AuthorizationManager(config.Object);
+                var sink = new AuthorizationManager(config.Object, mockLogger);
                 Assert.Fail("Expect exception");
             }
             catch (Exception expected) {
@@ -63,7 +66,7 @@ namespace NakedObjects.Meta.Test.Authorization {
             config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof(TestNamespaceAuthorizer)}});
             config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
 
-            var manager = new AuthorizationManager(config.Object);
+            var manager = new AuthorizationManager(config.Object, mockLogger);
 
             var testSpec = new Mock<ISpecification>();
             var testHolder = new Mock<ISpecification>();
@@ -91,7 +94,7 @@ namespace NakedObjects.Meta.Test.Authorization {
             config.Setup(c => c.NamespaceAuthorizers).Returns(new Dictionary<string, Type> {{"1", typeof(TestNamespaceAuthorizer)}});
             config.Setup(c => c.TypeAuthorizers).Returns(new Dictionary<string, Type>());
 
-            var manager = new AuthorizationManager(config.Object);
+            var manager = new AuthorizationManager(config.Object, mockLogger);
 
             var testSpec = new Mock<ISpecification>();
             var testHolder = new Mock<ISpecification>();

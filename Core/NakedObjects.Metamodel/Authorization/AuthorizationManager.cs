@@ -11,6 +11,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Principal;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -22,8 +23,6 @@ using NakedObjects.Security;
 namespace NakedObjects.Meta.Authorization {
     [Serializable]
     public sealed class AuthorizationManager : IAuthorizationManager, IFacetDecorator {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(AuthorizationManager));
-
         private readonly Type defaultAuthorizer;
         private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isEditableDelegates;
         private readonly ImmutableDictionary<Type, Func<object, IPrincipal, object, string, bool>> isVisibleDelegates;
@@ -76,10 +75,10 @@ namespace NakedObjects.Meta.Authorization {
 
         #region Constructors
 
-        public AuthorizationManager(IAuthorizationConfiguration authorizationConfiguration) {
+        public AuthorizationManager(IAuthorizationConfiguration authorizationConfiguration, ILogger<AuthorizationManager> logger) {
             defaultAuthorizer = authorizationConfiguration.DefaultAuthorizer;
             if (defaultAuthorizer == null) {
-                throw new InitialisationException(Log.LogAndReturn("Default Authorizer cannot be null"));
+                throw new InitialisationException(logger.LogAndReturn("Default Authorizer cannot be null"));
             }
 
             var isVisibleDict = new Dictionary<Type, Func<object, IPrincipal, object, string, bool>> {
@@ -96,7 +95,7 @@ namespace NakedObjects.Meta.Authorization {
 
             if (authorizationConfiguration.TypeAuthorizers.Any()) {
                 if (authorizationConfiguration.TypeAuthorizers.Values.Any(t => typeof(ITypeAuthorizer<object>).IsAssignableFrom(t))) {
-                    throw new InitialisationException(Log.LogAndReturn("Only Default Authorizer can be ITypeAuthorizer<object>"));
+                    throw new InitialisationException(logger.LogAndReturn("Only Default Authorizer can be ITypeAuthorizer<object>"));
                 }
 
                 typeAuthorizers = authorizationConfiguration.TypeAuthorizers.ToImmutableDictionary();

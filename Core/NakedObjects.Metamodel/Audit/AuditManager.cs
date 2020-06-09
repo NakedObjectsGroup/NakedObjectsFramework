@@ -9,6 +9,7 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -20,12 +21,13 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Audit {
     [Serializable]
     public sealed class AuditManager : IFacetDecorator, IAuditManager {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(AuditManager));
+        private readonly ILogger<AuditManager> logger;
 
         private readonly Type defaultAuditor;
         private readonly ImmutableDictionary<string, Type> namespaceAuditors;
 
-        public AuditManager(IAuditConfiguration config) {
+        public AuditManager(IAuditConfiguration config, ILogger<AuditManager> logger) {
+            this.logger = logger;
             defaultAuditor = config.DefaultAuditor;
             namespaceAuditors = config.NamespaceAuditors.ToImmutableDictionary();
             Validate();
@@ -83,7 +85,7 @@ namespace NakedObjects.Meta.Audit {
 
         private void ValidateType(Type toValidate) {
             if (!typeof(IAuditor).IsAssignableFrom(toValidate)) {
-                throw new InitialisationException(Log.LogAndReturn($"{toValidate.FullName} is not an IAuditor"));
+                throw new InitialisationException(logger.LogAndReturn($"{toValidate.FullName} is not an IAuditor"));
             }
         }
 
