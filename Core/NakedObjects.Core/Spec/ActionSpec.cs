@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -25,13 +24,13 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ActionSpec));
         private readonly IActionSpecImmutable actionSpecImmutable;
         private readonly IMessageBroker messageBroker;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly IServicesManager servicesManager;
         private readonly ITransactionManager transactionManager;
         private readonly ILoggerFactory loggerFactory;
+        private readonly ILogger<ActionSpec> logger;
         private IObjectSpec elementSpec;
         private Where? executedWhere;
         private bool? hasReturn;
@@ -51,7 +50,8 @@ namespace NakedObjects.Core.Spec {
                           IActionSpecImmutable actionSpecImmutable,
                           IMessageBroker messageBroker,
                           ITransactionManager transactionManager,
-                          ILoggerFactory loggerFactory)
+                          ILoggerFactory loggerFactory,
+                          ILogger<ActionSpec> logger)
             : base(actionSpecImmutable.Identifier.MemberName, actionSpecImmutable, session, lifecycleManager, metamodel) {
             Assert.AssertNotNull(memberFactory);
             Assert.AssertNotNull(servicesManager);
@@ -64,6 +64,7 @@ namespace NakedObjects.Core.Spec {
             this.messageBroker = messageBroker;
             this.transactionManager = transactionManager;
             this.loggerFactory = loggerFactory;
+            this.logger = logger;
             var index = 0;
             Parameters = this.actionSpecImmutable.Parameters.Select(pp => memberFactory.CreateParameter(pp, this, index++)).ToArray();
         }
@@ -192,12 +193,12 @@ namespace NakedObjects.Core.Spec {
                 }
             }
 
-            throw new FindObjectException(Log.LogAndReturn($"failed to find service for action {Name}"));
+            throw new FindObjectException(logger.LogAndReturn($"failed to find service for action {Name}"));
         }
 
         private IActionParameterSpec GetParameter(int position) {
             if (position >= Parameters.Length) {
-                throw new ArgumentException(Log.LogAndReturn($"GetParameter(int): only {Parameters.Length} parameters, position={position}"));
+                throw new ArgumentException(logger.LogAndReturn($"GetParameter(int): only {Parameters.Length} parameters, position={position}"));
             }
 
             return Parameters[position];

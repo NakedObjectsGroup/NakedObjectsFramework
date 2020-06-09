@@ -36,7 +36,7 @@ namespace NakedObjects.Meta.Facet {
             IsQueryOnly = isQueryOnly;
 
             try {
-                ActionDelegate = DelegateUtils.CreateDelegate(ActionMethod);
+                ActionDelegate = LogNull(DelegateUtils.CreateDelegate(ActionMethod));
             }
             catch (Exception e) {
                 Log.ErrorFormat("Failed to get Delegate for {0}:{1} reason {2}", onType, method, e.Message);
@@ -90,7 +90,7 @@ namespace NakedObjects.Meta.Facet {
         protected override string ToStringValues() => $"method={ActionMethod}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => ActionDelegate = DelegateUtils.CreateDelegate(ActionMethod);
+        private void OnDeserialized(StreamingContext context) => ActionDelegate = LogNull(DelegateUtils.CreateDelegate(ActionMethod));
     }
 
     // Copyright (c) Naked Objects Group Ltd.

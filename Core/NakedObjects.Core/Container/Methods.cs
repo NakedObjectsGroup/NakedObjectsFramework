@@ -9,14 +9,11 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Container {
     internal static class Methods {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Methods));
-
         public static void InjectContainer(object target, object container) => InjectContainer(target, container, new[] {"Container", "DomainObjectContainer", "ProxyContainer"});
 
         public static void InjectRoot(object root, object inlineObject) {

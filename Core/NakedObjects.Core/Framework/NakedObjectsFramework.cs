@@ -38,7 +38,7 @@ namespace NakedObjects.Service {
             TransactionManager = transactionManager;
             FrameworkResolver = frameworkResolver;
             domainObjectInjector.Framework = this;
-            memberFactory.Initialize(this, loggerFactory);
+            memberFactory.Initialize(this, loggerFactory, loggerFactory.CreateLogger<SpecFactory>());
             nakedObjectFactory.Initialize(metamodelManagerManager, session, lifecycleManager, persistor, nakedObjectManager, loggerFactory);
         }
 

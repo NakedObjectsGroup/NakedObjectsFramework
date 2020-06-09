@@ -10,11 +10,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Resolve;
-using NakedObjects.Core.Util;
 
 [assembly: InternalsVisibleTo("NakedObjects.Core.Test")]
 
@@ -25,8 +23,6 @@ namespace NakedObjects.Core.Resolve {
         public delegate IResolveState EventHandler(INakedObjectAdapter no, IResolveStateMachine rsm, ISession s);
 
         #endregion
-
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ResolveStateMachine));
 
         private readonly List<HistoryEvent> history = new List<HistoryEvent>();
 
@@ -353,7 +349,7 @@ namespace NakedObjects.Core.Resolve {
                     return EventMap[rEvent](owner, rsm, s);
                 }
 
-                throw new ResolveException(Log.LogAndReturn($"Unknown event {rEvent} in state {this}"));
+                throw new ResolveException($"Unknown event {rEvent} in state {this}");
             }
         }
 

@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Facet {
         public TitleFacetViaToStringMethod(MethodInfo maskMethod, ISpecification holder)
             : base(holder) {
             this.maskMethod = maskMethod;
-            maskDelegate = maskMethod == null ? null : DelegateUtils.CreateDelegate(maskMethod);
+            maskDelegate = maskMethod == null ? null : LogNull(DelegateUtils.CreateDelegate(maskMethod));
         }
 
         #region IImperativeFacet Members
@@ -50,7 +50,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => maskDelegate = maskMethod == null ? null : DelegateUtils.CreateDelegate(maskMethod);
+        private void OnDeserialized(StreamingContext context) => maskDelegate = maskMethod == null ? null : LogNull(DelegateUtils.CreateDelegate(maskMethod));
     }
 
     // Copyright (c) Naked Objects Group Ltd.

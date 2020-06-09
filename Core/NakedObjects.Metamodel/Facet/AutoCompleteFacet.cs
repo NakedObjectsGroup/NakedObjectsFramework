@@ -34,7 +34,7 @@ namespace NakedObjects.Meta.Facet {
             method = autoCompleteMethod;
             PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
             MinLength = minLength;
-            methodDelegate = DelegateUtils.CreateDelegate(method);
+            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
         }
 
         public static Type Type => typeof(IAutoCompleteFacet);
@@ -73,9 +73,7 @@ namespace NakedObjects.Meta.Facet {
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-            methodDelegate = DelegateUtils.CreateDelegate(method);
-        }
+        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
     }
 
     // Copyright (c) Naked Objects Group Ltd.

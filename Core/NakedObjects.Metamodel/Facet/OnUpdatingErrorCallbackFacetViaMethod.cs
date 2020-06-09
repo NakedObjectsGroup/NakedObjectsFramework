@@ -23,7 +23,7 @@ namespace NakedObjects.Meta.Facet {
         public OnUpdatingErrorCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
-            methodDelegate = DelegateUtils.CreateDelegate(method);
+            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
         }
 
         #region IImperativeFacet Members
@@ -39,6 +39,6 @@ namespace NakedObjects.Meta.Facet {
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = DelegateUtils.CreateDelegate(method);
+        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
     }
 }

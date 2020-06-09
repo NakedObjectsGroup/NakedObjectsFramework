@@ -12,7 +12,7 @@ using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 
 namespace NakedObjects.Core.Util {
-    public class InvokeUtils {
+    public static class InvokeUtils {
         private static readonly ILog Log = LogManager.GetLogger(typeof(InvokeUtils));
 
         public static object InvokeStatic(MethodInfo method, object[] parameters) => Invoke(method, null, parameters);

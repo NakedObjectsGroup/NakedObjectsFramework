@@ -60,6 +60,15 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
+        protected static Func<object, object[], object> LogNull((Func<object, object[], object>, string) pair) {
+            var (delFunc, warning) = pair;
+            if (delFunc == null && !string.IsNullOrWhiteSpace(warning)) {
+                Log.Warn(warning);
+            }
+
+            return delFunc;
+        }
+
         public override string ToString() {
             var details = "";
             if (typeof(IValidatingInteractionAdvisor).IsAssignableFrom(GetType())) {

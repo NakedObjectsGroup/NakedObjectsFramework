@@ -31,6 +31,8 @@ namespace NakedObjects.Meta.Facet {
 
         [field: NonSerialized] private Func<object, object[], object> choicesDelegate;
 
+        
+
         public ActionChoicesFacetViaMethod(MethodInfo choicesMethod, (string name, IObjectSpecImmutable type)[] parameterNamesAndTypes, Type choicesType, ISpecification holder, bool isMultiple = false)
             : base(holder) {
             this.choicesMethod = choicesMethod;
@@ -38,7 +40,7 @@ namespace NakedObjects.Meta.Facet {
             IsMultiple = isMultiple;
             ParameterNamesAndTypes = parameterNamesAndTypes;
             parameterNames = parameterNamesAndTypes.Select(pnt => pnt.name).ToArray();
-            choicesDelegate = DelegateUtils.CreateDelegate(choicesMethod);
+            choicesDelegate = LogNull(DelegateUtils.CreateDelegate(choicesMethod));
         }
 
         public override (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
@@ -72,7 +74,7 @@ namespace NakedObjects.Meta.Facet {
         protected override string ToStringValues() => $"method={choicesMethod},Type={choicesType}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => choicesDelegate = DelegateUtils.CreateDelegate(choicesMethod);
+        private void OnDeserialized(StreamingContext context) => choicesDelegate = LogNull(DelegateUtils.CreateDelegate(choicesMethod));
     }
 
     // Copyright (c) Naked Objects Group Ltd.

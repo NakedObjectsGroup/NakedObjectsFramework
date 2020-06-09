@@ -6,23 +6,27 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Transaction;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Transaction {
     public sealed class NestedTransaction : ITransaction {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(NestedTransaction));
         private readonly IObjectStore objectStore;
+        private readonly ILogger<NestedTransaction> logger;
         private bool complete;
 
-        public NestedTransaction(IObjectStore objectStore) => this.objectStore = objectStore;
+        public NestedTransaction(IObjectStore objectStore, ILogger<NestedTransaction> logger) {
+            this.objectStore = objectStore;
+            this.logger = logger;
+        }
 
         #region ITransaction Members
 
         public void Abort() {
             if (complete) {
-                throw new TransactionException(Log.LogAndReturn("Transaction already complete; cannot abort"));
+                throw new TransactionException(logger.LogAndReturn("Transaction already complete; cannot abort"));
             }
 
             complete = true;
@@ -30,7 +34,7 @@ namespace NakedObjects.Core.Transaction {
 
         public void Commit() {
             if (complete) {
-                throw new TransactionException(Log.LogAndReturn("Transaction already complete; cannot commit"));
+                throw new TransactionException(logger.LogAndReturn("Transaction already complete; cannot commit"));
             }
 
             objectStore.EndTransaction();

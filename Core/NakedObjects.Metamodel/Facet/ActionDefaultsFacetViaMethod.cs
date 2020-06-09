@@ -25,7 +25,7 @@ namespace NakedObjects.Meta.Facet {
         public ActionDefaultsFacetViaMethod(MethodInfo method, ISpecification holder)
             : base(holder) {
             this.method = method;
-            MethodDelegate = DelegateUtils.CreateDelegate(method);
+            MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
         }
 
         // for testing only 
@@ -50,7 +50,7 @@ namespace NakedObjects.Meta.Facet {
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => MethodDelegate = DelegateUtils.CreateDelegate(method);
+        private void OnDeserialized(StreamingContext context) => MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
     }
 
     // Copyright (c) Naked Objects Group Ltd.

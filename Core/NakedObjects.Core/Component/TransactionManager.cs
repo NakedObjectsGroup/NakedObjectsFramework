@@ -16,22 +16,24 @@ namespace NakedObjects.Core.Component {
     public sealed class TransactionManager : ITransactionManager {
         private readonly ILogger<TransactionManager> logger;
         private readonly IObjectStore objectStore;
+        private readonly ILoggerFactory loggerFactory;
         private ITransaction transaction;
         private bool userAborted;
 
-        public TransactionManager(IObjectStore objectStore, ILogger<TransactionManager> logger) {
+        public TransactionManager(IObjectStore objectStore, ILoggerFactory loggerFactory,  ILogger<TransactionManager> logger) {
             Assert.AssertNotNull(objectStore);
             this.objectStore = objectStore;
+            this.loggerFactory = loggerFactory;
             this.logger = logger;
         }
 
-        private ITransaction Transaction => transaction ?? new NestedTransaction(objectStore);
+        private ITransaction Transaction => transaction ?? new NestedTransaction(objectStore, loggerFactory.CreateLogger<NestedTransaction>());
 
         #region ITransactionManager Members
 
         public void StartTransaction() {
             if (transaction == null) {
-                transaction = new NestedTransaction(objectStore);
+                transaction = new NestedTransaction(objectStore, loggerFactory.CreateLogger<NestedTransaction>());
                 TransactionLevel = 0;
                 userAborted = false;
                 objectStore.StartTransaction();

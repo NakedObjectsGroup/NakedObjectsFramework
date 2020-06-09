@@ -92,7 +92,7 @@ namespace NakedObjects.Meta.Facet {
 
             public NakedObjectValidationMethod(MethodInfo method) {
                 this.method = method;
-                methodDelegate = DelegateUtils.CreateDelegate(method);
+                methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
             }
 
             public string Name => method.Name;
@@ -102,7 +102,7 @@ namespace NakedObjects.Meta.Facet {
             public string Execute(INakedObjectAdapter obj, INakedObjectAdapter[] parameters) => methodDelegate(obj.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray()) as string;
 
             [OnDeserialized]
-            private void OnDeserialized(StreamingContext context) => methodDelegate = DelegateUtils.CreateDelegate(method);
+            private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
         }
 
         #endregion

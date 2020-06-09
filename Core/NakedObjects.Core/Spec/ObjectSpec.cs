@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -18,8 +19,7 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public sealed class ObjectSpec : TypeSpec, IObjectSpec {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectSpec));
-
+        private readonly ILogger<ObjectSpec> logger;
         private readonly IDictionary<string, IActionSpec[]> locallyContributedActions = new Dictionary<string, IActionSpec[]>();
         private IActionSpec[] collectionContributedActions;
         private IActionSpec[] combinedActions;
@@ -27,8 +27,12 @@ namespace NakedObjects.Core.Spec {
         private IActionSpec[] finderActions;
         private IAssociationSpec[] objectFields;
 
-        public ObjectSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, IObjectSpecImmutable innerSpec) :
-            base(memberFactory, metamodelManager, nakedObjectManager, innerSpec) { }
+        public ObjectSpec(SpecFactory memberFactory, 
+                          IMetamodelManager metamodelManager,
+                          INakedObjectManager nakedObjectManager, 
+                          IObjectSpecImmutable innerSpec, 
+                          ILogger<ObjectSpec> logger) :
+            base(memberFactory, metamodelManager, nakedObjectManager, innerSpec) =>   this.logger = logger;
 
         private IActionSpec[] ContributedActions => contributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions);
 
@@ -43,7 +47,7 @@ namespace NakedObjects.Core.Spec {
                 return Properties.First(f => f.Id.Equals(id));
             }
             catch (InvalidOperationException) {
-                throw new ReflectionException(Log.LogAndReturn($"No field called '{id}' in '{SingularName}'"));
+                throw new ReflectionException(logger.LogAndReturn($"No field called '{id}' in '{SingularName}'"));
             }
         }
 

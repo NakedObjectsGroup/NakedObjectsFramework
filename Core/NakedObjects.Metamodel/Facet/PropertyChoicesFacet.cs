@@ -37,7 +37,7 @@ namespace NakedObjects.Meta.Facet {
 
             ParameterNamesAndTypes = parameterNamesAndTypes;
             parameterNames = parameterNamesAndTypes.Select(pnt => pnt.name).ToArray();
-            methodDelegate = DelegateUtils.CreateDelegate(method);
+            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
         }
 
         #region IImperativeFacet Members
@@ -72,7 +72,7 @@ namespace NakedObjects.Meta.Facet {
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = DelegateUtils.CreateDelegate(method);
+        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
     }
 
     // Copyright (c) Naked Objects Group Ltd.

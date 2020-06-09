@@ -19,11 +19,13 @@ namespace NakedObjects.Core.Spec {
 
         private INakedObjectsFramework framework;
         private ILoggerFactory loggerFactory;
+        private ILogger<SpecFactory> logger;
 
-        public void Initialize(INakedObjectsFramework newFramework, ILoggerFactory newLoggerFactory) {
+        public void Initialize(INakedObjectsFramework newFramework, ILoggerFactory newLoggerFactory, ILogger<SpecFactory> newLogger) {
             Assert.AssertNotNull(newFramework);
             framework = newFramework;
             loggerFactory = newLoggerFactory;
+            logger = newLogger;
         }
 
         public IActionParameterSpec CreateParameter(IActionParameterSpecImmutable parameterSpecImmutable, IActionSpec actionSpec, int index) {
@@ -33,7 +35,7 @@ namespace NakedObjects.Core.Spec {
                 _ when specification.IsParseable => new ActionParseableParameterSpec(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor),
                 _ when specification.IsObject => new OneToOneActionParameter(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor),
                 _ when specification.IsCollection => new OneToManyActionParameter(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor),
-                _ => throw new UnknownTypeException(Log.LogAndReturn($"{specification}"))
+                _ => throw new UnknownTypeException(logger.LogAndReturn($"{specification}"))
             };
         }
 
@@ -42,7 +44,7 @@ namespace NakedObjects.Core.Spec {
             return specImmutable switch {
                 IOneToOneAssociationSpecImmutable oneToOneAssociationSpecImmutable => new OneToOneAssociationSpec(framework.MetamodelManager, oneToOneAssociationSpecImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor, framework.TransactionManager),
                 IOneToManyAssociationSpecImmutable oneToManyAssociationSpecImmutable => new OneToManyAssociationSpec(framework.MetamodelManager, oneToManyAssociationSpecImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor),
-                _ => throw new ReflectionException(Log.LogAndReturn($"Unknown spec type: {specImmutable}"))
+                _ => throw new ReflectionException(logger.LogAndReturn($"Unknown spec type: {specImmutable}"))
             };
         }
 
@@ -50,7 +52,17 @@ namespace NakedObjects.Core.Spec {
 
         public IActionSpec CreateActionSpec(IActionSpecImmutable specImmutable) {
             Assert.AssertNotNull(framework);
-            return new ActionSpec(this, framework.MetamodelManager, framework.LifecycleManager, framework.Session, framework.ServicesManager, framework.NakedObjectManager, specImmutable, framework.MessageBroker, framework.TransactionManager, loggerFactory);
+            return new ActionSpec(this,
+                framework.MetamodelManager,
+                framework.LifecycleManager,
+                framework.Session,
+                framework.ServicesManager,
+                framework.NakedObjectManager,
+                specImmutable,
+                framework.MessageBroker,
+                framework.TransactionManager,
+                loggerFactory,
+                loggerFactory.CreateLogger<ActionSpec>());
         }
 
         public IAssociationSpec CreateAssociationSpec(IAssociationSpecImmutable specImmutable) {
@@ -62,7 +74,7 @@ namespace NakedObjects.Core.Spec {
             specImmutable switch {
                 IObjectSpecImmutable osi => CreateObjectSpec(osi),
                 IServiceSpecImmutable ssi => CreateServiceSpec(ssi),
-                _ => throw new InitialisationException(Log.LogAndReturn($"Unexpected Spec Type {specImmutable.Type}"))
+                _ => throw new InitialisationException(logger.LogAndReturn($"Unexpected Spec Type {specImmutable.Type}"))
             };
 
         private IServiceSpec CreateServiceSpec(IServiceSpecImmutable specImmutable) {
@@ -72,7 +84,11 @@ namespace NakedObjects.Core.Spec {
 
         private IObjectSpec CreateObjectSpec(IObjectSpecImmutable specImmutable) {
             Assert.AssertNotNull(framework);
-            return new ObjectSpec(this, framework.MetamodelManager, framework.NakedObjectManager, specImmutable);
+            return new ObjectSpec(this,
+                framework.MetamodelManager, 
+                framework.NakedObjectManager,
+                specImmutable,
+                loggerFactory.CreateLogger<ObjectSpec>());
         }
     }
 }

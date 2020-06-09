@@ -14,54 +14,43 @@ using Common.Logging;
 using NakedObjects.Util;
 
 namespace NakedObjects.Core.Util {
-    public class DelegateUtils {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(DelegateUtils));
+    public static class DelegateUtils {
         // This is all based on http://codeblog.jonskeet.uk/2008/08/09/making-reflection-fly-and-exploring-delegates/comment-page-1/
 
-        public static Func<object, object[], object> CreateDelegate(MethodInfo method) {
+        private static string CreationFailed(string reason, MethodInfo method) =>
+            // don't log system or NOF types
+            TypeUtils.IsSystem(method.DeclaringType) || TypeUtils.IsNakedObjects(method.DeclaringType) 
+                ? "" 
+                : $"Not creating delegate for {reason} method {method.DeclaringType}.{method}";
+
+        public static (Func<object, object[], object>, string) CreateDelegate(MethodInfo method) {
             if (method.IsSecurityTransparent) {
                 // don't seem to be able to bind delegates to these just return null
-                // don't log system or NOF types
-                if (!TypeUtils.IsSystem(method.DeclaringType) && !TypeUtils.IsNakedObjects(method.DeclaringType)) {
-                    Log.WarnFormat("Not creating delegate for IsSecurityTransparent method {0}.{1}", method.DeclaringType, method);
-                }
-
-                return null;
+                return (null, CreationFailed("IsSecurityTransparent", method));
             }
 
             if (method.ContainsGenericParameters) {
                 // don't seem to be able to bind delegates to these just return null
-                // don't log system or NOF types
-                if (!TypeUtils.IsSystem(method.DeclaringType) && !TypeUtils.IsNakedObjects(method.DeclaringType)) {
-                    Log.WarnFormat("Not creating delegate for ContainsGenericParameters method {0}.{1}", method.DeclaringType, method);
-                }
-
-                return null;
+                return (null, CreationFailed("ContainsGenericParameters", method));
             }
 
             if (method.DeclaringType != null && !method.DeclaringType.IsClass) {
                 // don't seem to be able to bind delegates to these just return null
-                // don't log system or NOF types
-                if (!TypeUtils.IsSystem(method.DeclaringType) && !TypeUtils.IsNakedObjects(method.DeclaringType)) {
-                    Log.WarnFormat("Not creating delegate for non class method {0}.{1}", method.DeclaringType, method);
-                }
-
-                return null;
+                return (null, CreationFailed("non class", method));
             }
 
             if (method.GetParameters().Length > 6) {
                 // only support 6 parameters via delegates - return null and default to reflection
-                Log.WarnFormat("Not creating delegate for method {0}.{1} as has too many parameters", method.DeclaringType, method);
-                return null;
+                return (null, CreationFailed("too many parameters", method));
             }
 
             var delegateHelper = MakeDelegateHelper(method.DeclaringType, method);
 
             // Now call it. The null argument is because it’s a static method.
-            var ret = delegateHelper.Invoke(null, new object[] {method});
+            // Cast the result to the right kind of delegate
+            var ret = (Func<object, object[], object>) delegateHelper.Invoke(null, new object[] {method});
 
-            // Cast the result to the right kind of delegate and return it
-            return (Func<object, object[], object>) ret;
+            return (ret, "");
         }
 
         public static Action<object> CreateCallbackDelegate(MethodInfo method) {
@@ -83,7 +72,9 @@ namespace NakedObjects.Core.Util {
                 return null;
             }
 
-            return type.Name.StartsWith("ITypeAuthorizer") ? type : type.GetInterfaces().FirstOrDefault(i => GetTypeAuthorizerType(i) != null);
+            return type.Name.StartsWith("ITypeAuthorizer") 
+                ? type 
+                : type.GetInterfaces().FirstOrDefault(i => GetTypeAuthorizerType(i) != null);
         }
 
         public static Func<object, IPrincipal, object, string, bool> CreateTypeAuthorizerDelegate(MethodInfo method) {
@@ -132,7 +123,7 @@ namespace NakedObjects.Core.Util {
                 }
                 catch (DomainException e) {
                     // wrap this for compatibility with calls via invoke
-                    throw new NakedObjectDomainException(Log.LogAndReturn(e.Message), e);
+                    throw new NakedObjectDomainException(e.Message, e);
                 }
             };
         }
