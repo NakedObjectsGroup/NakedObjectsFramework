@@ -17,7 +17,6 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ViewModelSwitchableFacetConvention : ViewModelFacetAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ViewModelSwitchableFacetConvention));
 
         public ViewModelSwitchableFacetConvention(ISpecification holder) : base(Type, holder) { }
 
@@ -34,7 +33,7 @@ namespace NakedObjects.Meta.Facet {
                 return target.IsEditView();
             }
 
-            throw new NakedObjectSystemException(Log.LogAndReturn(nakedObjectAdapter.Object == null ? "Null domain object" : $"Wrong type of domain object: {nakedObjectAdapter.Object.GetType().FullName}"));
+            throw new NakedObjectSystemException(nakedObjectAdapter.Object == null ? "Null domain object" : $"Wrong type of domain object: {nakedObjectAdapter.Object.GetType().FullName}");
         }
     }
 }

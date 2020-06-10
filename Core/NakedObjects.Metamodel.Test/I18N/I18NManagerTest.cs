@@ -5,8 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Linq;
 using System.Resources;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -17,6 +19,9 @@ using NakedObjects.Meta.I18N;
 namespace NakedObjects.Meta.Test.I18N {
     [TestClass]
     public class I18NManagerTest {
+        private static ILogger<I18NManager> mockLogger = new Mock<ILogger<I18NManager>>().Object;
+
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -26,7 +31,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
         [TestMethod]
         public void TestDecoratePropertyName() {
-            var manager = new I18NManager();
+            var manager = new I18NManager(mockLogger);
 
             var testName = new Mock<INamedFacet>();
             testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
@@ -52,7 +57,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
         [TestMethod]
         public void TestDecorateActionName() {
-            var manager = new I18NManager();
+            var manager = new I18NManager(mockLogger);
 
             var testName = new Mock<INamedFacet>();
             testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
@@ -78,7 +83,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
         [TestMethod]
         public void TestDecorateParameterName() {
-            var manager = new I18NManager();
+            var manager = new I18NManager(mockLogger);
 
             var testName = new Mock<INamedFacet>();
             testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
@@ -101,7 +106,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
         [TestMethod]
         public void TestDecoratePropertyDescription() {
-            var manager = new I18NManager();
+            var manager = new I18NManager(mockLogger);
 
             var testDescribed = new Mock<IDescribedAsFacet>();
             testDescribed.Setup(n => n.FacetType).Returns(typeof(IDescribedAsFacet));
@@ -127,7 +132,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
         [TestMethod]
         public void TestDecorateActionDescription() {
-            var manager = new I18NManager();
+            var manager = new I18NManager(mockLogger);
 
             var testDescribed = new Mock<IDescribedAsFacet>();
             testDescribed.Setup(n => n.FacetType).Returns(typeof(IDescribedAsFacet));
@@ -153,7 +158,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
         [TestMethod]
         public void TestDecorateParameterDescription() {
-            var manager = new I18NManager();
+            var manager = new I18NManager(mockLogger);
 
             var testDescribed = new Mock<IDescribedAsFacet>();
             testDescribed.Setup(n => n.FacetType).Returns(typeof(IDescribedAsFacet));
@@ -176,7 +181,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
         [TestMethod]
         public void TestMissingResource() {
-            var manager = new I18NManager();
+            var manager = new I18NManager(mockLogger);
 
             var testName = new Mock<INamedFacet>();
             testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
@@ -199,7 +204,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
         [TestMethod]
         public void TestSystemOrNakedObjectsResource() {
-            var manager = new I18NManager();
+            var manager = new I18NManager(mockLogger);
 
             var testName = new Mock<INamedFacet>();
             testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
@@ -229,7 +234,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
         [TestMethod]
         public void TestMissingResourceException() {
-            var manager = new I18NManager();
+            var manager = new I18NManager(mockLogger);
 
             var testName = new Mock<INamedFacet>();
             testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));
@@ -254,7 +259,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
         [TestMethod]
         public void TestFacetTypes() {
-            var manager = new I18NManager();
+            var manager = new I18NManager(mockLogger);
 
             var facets = manager.ForFacetTypes;
 
@@ -263,7 +268,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
         [TestMethod]
         public void TestUndecoratedFacet() {
-            var manager = new I18NManager();
+            var manager = new I18NManager(mockLogger);
 
             var testTitle = new Mock<ITitleFacet>();
             testTitle.Setup(n => n.FacetType).Returns(typeof(ITitleFacet));
@@ -278,7 +283,7 @@ namespace NakedObjects.Meta.Test.I18N {
 
         [TestMethod]
         public void TestCaching() {
-            var manager = new I18NManager();
+            var manager = new I18NManager(mockLogger);
 
             var testName = new Mock<INamedFacet>();
             testName.Setup(n => n.FacetType).Returns(typeof(INamedFacet));

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Resources;
 using System.Threading;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -18,15 +19,17 @@ using NakedObjects.Resources;
 
 namespace NakedObjects.Meta.I18N {
     public class I18NManager : II18NManager, IFacetDecorator {
+        private readonly ILogger<I18NManager> logger;
         private const string Action = "action";
         private const string Description = "description";
         private const string Name = "name";
         private const string Parameter = "parameter";
         private const string Property = "property";
-        private static readonly ILog Log = LogManager.GetLogger(typeof(I18NManager));
         private readonly IDictionary<string, string> keyCache = new Dictionary<string, string>();
 
         private ResourceManager resources;
+
+        public I18NManager(ILogger<I18NManager> logger) => this.logger = logger;
 
         // make resources testable 
         public ResourceManager Resources {
@@ -82,7 +85,7 @@ namespace NakedObjects.Meta.I18N {
                 return Resources.GetString(keyWithUnderscore);
             }
             catch (MissingManifestResourceException e) {
-                Log.WarnFormat("Missing manifest resource (culture {0}) for the key {1} ({2}) ->  {3}", Thread.CurrentThread.CurrentUICulture, key, keyWithUnderscore, e.Message);
+                logger.LogWarning($"Missing manifest resource (culture {Thread.CurrentThread.CurrentUICulture}) for the key {key} ({keyWithUnderscore}) ->  {e.Message}");
                 return null;
             }
         }

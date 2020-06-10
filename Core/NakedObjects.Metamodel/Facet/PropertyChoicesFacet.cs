@@ -23,7 +23,6 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class PropertyChoicesFacet : FacetAbstract, IPropertyChoicesFacet, IImperativeFacet {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PropertyChoicesFacet));
 
         private readonly MethodInfo method;
 
@@ -60,10 +59,10 @@ namespace NakedObjects.Meta.Facet {
                     return enumerable.Cast<object>().ToArray();
                 }
 
-                throw new NakedObjectDomainException(Log.LogAndReturn($"Must return IEnumerable from choices method: {method.Name}"));
+                throw new NakedObjectDomainException($"Must return IEnumerable from choices method: {method.Name}");
             }
             catch (ArgumentException ae) {
-                throw new InvokeException(Log.LogAndReturn($"Choices exception: {method.Name} has mismatched (ie type of parameter does not match type of property) parameter types"), ae);
+                throw new InvokeException($"Choices exception: {method.Name} has mismatched (ie type of parameter does not match type of property) parameter types", ae);
             }
         }
 

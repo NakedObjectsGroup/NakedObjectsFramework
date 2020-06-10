@@ -17,7 +17,6 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ContributedActionFacet : FacetAbstract, IContributedActionFacet {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ContributedActionFacet));
         private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> collectionContributees = new List<(IObjectSpecImmutable, string, string)>();
         private readonly List<(IObjectSpecImmutable spec, string id)> localCollectionContributees = new List<(IObjectSpecImmutable, string)>();
         private readonly List<(IObjectSpecImmutable spec, string subMenu, string id)> objectContributees = new List<(IObjectSpecImmutable, string, string)>();
@@ -49,6 +48,6 @@ namespace NakedObjects.Meta.Facet {
         private (IObjectSpecImmutable spec, string subMenu, string id) FindContributee(IObjectSpecImmutable objectSpec) =>
             IsContributedTo(objectSpec)
                 ? objectContributees.First(t => objectSpec.IsOfType(t.spec))
-                : throw new Exception(Log.LogAndReturn($"Action is not contributed to {objectSpec.Type}"));
+                : throw new Exception($"Action is not contributed to {objectSpec.Type}");
     }
 }

@@ -23,8 +23,6 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Meta.Menu {
     [Serializable]
     public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCallback {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(MenuImpl));
-
         public MenuImpl(IMetamodel metamodel, Type type, bool addAllActions, string name) {
             Metamodel = metamodel;
             Type = type;
@@ -57,7 +55,7 @@ namespace NakedObjects.Meta.Menu {
         public IMenu AddAction(string actionName) {
             var actionSpec = ActionsForObject.FirstOrDefault(a => a.Identifier.MemberName == actionName);
             if (actionSpec == null) {
-                throw new ReflectionException(Log.LogAndReturn($"No such action: {actionName} on {Type}"));
+                throw new ReflectionException($"No such action: {actionName} on {Type}");
             }
 
             AddMenuItem(new MenuAction(actionSpec));
@@ -69,7 +67,7 @@ namespace NakedObjects.Meta.Menu {
         public IMenu GetSubMenu(string menuName) {
             var menu = GetSubMenuIfExists(menuName);
             if (menu == null) {
-                throw new Exception(Log.LogAndReturn($"No sub-menu named {menuName}"));
+                throw new Exception($"No sub-menu named {menuName}");
             }
 
             return menu;

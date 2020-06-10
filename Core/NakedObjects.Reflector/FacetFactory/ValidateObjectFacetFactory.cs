@@ -58,7 +58,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 }
             }
 
-            var validateFacet = methodPeers.Any() ? (IValidateObjectFacet) new ValidateObjectFacet(specification, methodPeers) : new ValidateObjectFacetNull(specification);
+            var validateFacet = methodPeers.Any() ? (IValidateObjectFacet) new ValidateObjectFacet(specification, methodPeers, LoggerFactory.CreateLogger<ValidateObjectFacet>()) : new ValidateObjectFacetNull(specification);
             FacetUtils.AddFacet(validateFacet);
         }
     }

@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -20,11 +21,13 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ValidateObjectFacet : FacetAbstract, IValidateObjectFacet {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ValidateObjectFacet));
+        private readonly ILogger<ValidateObjectFacet> logger;
 
-        public ValidateObjectFacet(ISpecification holder, IList<NakedObjectValidationMethod> validateMethods)
-            : base(Type, holder) =>
+        public ValidateObjectFacet(ISpecification holder, IList<NakedObjectValidationMethod> validateMethods, ILogger<ValidateObjectFacet> logger)
+            : base(Type, holder) {
+            this.logger = logger;
             ValidateMethods = validateMethods;
+        }
 
         public static Type Type => typeof(IValidateObjectFacet);
 
@@ -79,7 +82,7 @@ namespace NakedObjects.Meta.Facet {
 
         private void LogNoMatch(NakedObjectValidationMethod validator, string actual) {
             var expects = validator.ParameterNames.Aggregate((s, t) => $"{s} {t}");
-            Log.WarnFormat("No Matching parms Validator: {0} Expects {1} Actual {2} ", validator.Name, expects, actual);
+            logger.LogWarning($"No Matching parms Validator: {validator.Name} Expects {expects} Actual {actual} ");
         }
 
         #region Nested type: NakedObjectValidationMethod

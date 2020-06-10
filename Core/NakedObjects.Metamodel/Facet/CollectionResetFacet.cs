@@ -18,8 +18,6 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class CollectionResetFacet : FacetAbstract, ICollectionResetFacet {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(CollectionResetFacet));
-
         private readonly PropertyInfo property;
 
         public CollectionResetFacet(PropertyInfo property, ISpecification holder)
@@ -37,7 +35,7 @@ namespace NakedObjects.Meta.Facet {
                 property.SetValue(inObjectAdapter.GetDomainObject(), collection, null);
             }
             catch (Exception e) {
-                throw new ReflectionException(Log.LogAndReturn($"Failed to get/set property {property.Name} in {inObjectAdapter.Spec.FullName}"), e);
+                throw new ReflectionException($"Failed to get/set property {property.Name} in {inObjectAdapter.Spec.FullName}", e);
             }
         }
 

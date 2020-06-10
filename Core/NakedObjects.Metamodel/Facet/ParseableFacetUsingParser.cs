@@ -17,7 +17,6 @@ using NakedObjects.Meta.SemanticsProvider;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFacet {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ParseableFacetUsingParser<T>));
 
         private readonly IValueSemanticsProvider<T> parser;
 
@@ -29,7 +28,7 @@ namespace NakedObjects.Meta.Facet {
 
         public INakedObjectAdapter ParseTextEntry(string entry, INakedObjectManager manager) {
             if (entry == null) {
-                throw new ArgumentException(Log.LogAndReturn(Resources.NakedObjects.MissingEntryError));
+                throw new ArgumentException(Resources.NakedObjects.MissingEntryError);
             }
 
             var parsed = parser.ParseTextEntry(entry);

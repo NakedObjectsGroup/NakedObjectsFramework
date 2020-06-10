@@ -22,7 +22,6 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
         private const int DefaultPageSize = 50;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(AutoCompleteFacet));
         private readonly MethodInfo method;
         [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
@@ -52,11 +51,11 @@ namespace NakedObjects.Meta.Facet {
                     IQueryable queryable => queryable.Take(PageSize).ToArray(),
                     IEnumerable<string> strings => strings.Cast<object>().ToArray(),
                     _ when !CollectionUtils.IsCollection(autoComplete.GetType()) => new[] {autoComplete},
-                    _ => throw new NakedObjectDomainException(Log.LogAndReturn($"Must return IQueryable or a single object from autoComplete method: {method.Name}"))
+                    _ => throw new NakedObjectDomainException($"Must return IQueryable or a single object from autoComplete method: {method.Name}")
                 };
             }
             catch (ArgumentException ae) {
-                throw new InvokeException(Log.LogAndReturn($"autoComplete exception: {method.Name} has mismatched parameter type - must be string"), ae);
+                throw new InvokeException($"autoComplete exception: {method.Name} has mismatched parameter type - must be string", ae);
             }
         }
 

@@ -20,7 +20,6 @@ using NakedObjects.Profile;
 namespace NakedObjects.Meta.Profile {
     [Serializable]
     public sealed class ProfileManager : IFacetDecorator, IProfileManager {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ProfileManager));
 
         private static readonly IDictionary<ProfileEvent, Type> EventToFacetMap = new Dictionary<ProfileEvent, Type> {
             {ProfileEvent.ActionInvocation, typeof(IActionInvocationFacet)},
@@ -56,7 +55,7 @@ namespace NakedObjects.Meta.Profile {
             profilerType = config.Profiler;
 
             if (!typeof(IProfiler).IsAssignableFrom(profilerType)) {
-                throw new InitialisationException(Log.LogAndReturn($"{profilerType.FullName} is not an IProfiler"));
+                throw new InitialisationException($"{profilerType.FullName} is not an IProfiler");
             }
 
             ForFacetTypes = config.EventsToProfile.Select(e => EventToFacetMap[e]).ToArray();
