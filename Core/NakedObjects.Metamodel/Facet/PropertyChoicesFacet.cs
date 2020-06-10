@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -23,6 +23,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class PropertyChoicesFacet : FacetAbstract, IPropertyChoicesFacet, IImperativeFacet {
+        private readonly ILogger<PropertyChoicesFacet> logger;
 
         private readonly MethodInfo method;
 
@@ -30,13 +31,14 @@ namespace NakedObjects.Meta.Facet {
 
         [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-        public PropertyChoicesFacet(MethodInfo optionsMethod, (string name, IObjectSpecImmutable type)[] parameterNamesAndTypes, ISpecification holder)
+        public PropertyChoicesFacet(MethodInfo optionsMethod, (string name, IObjectSpecImmutable type)[] parameterNamesAndTypes, ISpecification holder, ILogger<PropertyChoicesFacet> logger)
             : base(typeof(IPropertyChoicesFacet), holder) {
             method = optionsMethod;
+            this.logger = logger;
 
             ParameterNamesAndTypes = parameterNamesAndTypes;
             parameterNames = parameterNamesAndTypes.Select(pnt => pnt.name).ToArray();
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
         #region IImperativeFacet Members
@@ -71,7 +73,7 @@ namespace NakedObjects.Meta.Facet {
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

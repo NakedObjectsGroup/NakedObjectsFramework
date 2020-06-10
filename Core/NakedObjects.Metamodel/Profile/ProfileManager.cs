@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -20,7 +19,6 @@ using NakedObjects.Profile;
 namespace NakedObjects.Meta.Profile {
     [Serializable]
     public sealed class ProfileManager : IFacetDecorator, IProfileManager {
-
         private static readonly IDictionary<ProfileEvent, Type> EventToFacetMap = new Dictionary<ProfileEvent, Type> {
             {ProfileEvent.ActionInvocation, typeof(IActionInvocationFacet)},
             {ProfileEvent.PropertySet, typeof(IPropertySetterFacet)},

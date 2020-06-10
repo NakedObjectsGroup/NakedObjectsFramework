@@ -24,7 +24,7 @@ namespace NakedObjects.Meta.Utils {
             return toSplit.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
         }
 
-        public static bool IsAllowed(ISession session, string[] roles, string[] users) => 
+        public static bool IsAllowed(ISession session, string[] roles, string[] users) =>
             roles.Any(role => session.Principal.IsInRole(role)) ||
             users.Any(user => session.Principal.Identity?.Name == user);
 

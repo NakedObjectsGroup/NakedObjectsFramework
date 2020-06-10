@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -17,7 +16,6 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ViewModelSwitchableFacetConvention : ViewModelFacetAbstract {
-
         public ViewModelSwitchableFacetConvention(ISpecification holder) : base(Type, holder) { }
 
         private static Type Type => typeof(IViewModelFacet);

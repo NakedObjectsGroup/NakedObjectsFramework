@@ -32,7 +32,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             var attribute = type.GetCustomAttribute<IconNameAttribute>();
             if (method != null) {
                 RemoveMethod(methodRemover, method);
-                FacetUtils.AddFacet(new IconFacetViaMethod(method, specification, attribute == null ? null : attribute.Value));
+                FacetUtils.AddFacet(new IconFacetViaMethod(method, specification, attribute?.Value, Logger<IconFacetViaMethod>()));
             }
             else {
                 FacetUtils.AddFacet(Create(attribute, specification));

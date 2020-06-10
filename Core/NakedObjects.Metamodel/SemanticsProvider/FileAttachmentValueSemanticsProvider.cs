@@ -8,7 +8,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using Common.Logging;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;

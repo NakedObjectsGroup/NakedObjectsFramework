@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -15,8 +16,10 @@ using NakedObjects.Meta.Facet;
 namespace NakedObjects.Metamodel.Test.Facet {
     [TestClass]
     public class PropertyValidationFacetTest {
+        private static readonly ILogger<PropertyValidateFacetViaMethod> mockLogger = new Mock<ILogger<PropertyValidateFacetViaMethod>>().Object;
+
         private static void DelegateFuncTest(MethodInfo method) {
-            IImperativeFacet validationFacet = new PropertyValidateFacetViaMethod(method, null);
+            IImperativeFacet validationFacet = new PropertyValidateFacetViaMethod(method, null, mockLogger);
             var facet = (IPropertyValidateFacet) validationFacet;
             Assert.IsNotNull(validationFacet.GetMethodDelegate(), method.Name);
             var target = MockParm(new TestDelegateClass());

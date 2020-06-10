@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -17,7 +16,6 @@ using NakedObjects.Meta.SemanticsProvider;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ParseableFacetUsingParser<T> : FacetAbstract, IParseableFacet {
-
         private readonly IValueSemanticsProvider<T> parser;
 
         public ParseableFacetUsingParser(IValueSemanticsProvider<T> parser, ISpecification holder)

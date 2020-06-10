@@ -53,14 +53,14 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     if (parameters.Length >= 2) {
                         var parametersMatch = parameters.Select(parameter => parameter.Name).Select(name => name[0].ToString(Thread.CurrentThread.CurrentCulture).ToUpper() + name.Substring(1)).All(p => ContainsField(p, type));
                         if (parametersMatch) {
-                            methodPeers.Add(new ValidateObjectFacet.NakedObjectValidationMethod(method));
+                            methodPeers.Add(new ValidateObjectFacet.NakedObjectValidationMethod(method, Logger<ValidateObjectFacet.NakedObjectValidationMethod>()));
                             methodRemover.RemoveMethod(method);
                         }
                     }
                 }
             }
 
-            var validateFacet = methodPeers.Any() ? (IValidateObjectFacet) new ValidateObjectFacet(specification, methodPeers, LoggerFactory.CreateLogger<ValidateObjectFacet>()) : new ValidateObjectFacetNull(specification);
+            var validateFacet = methodPeers.Any() ? (IValidateObjectFacet) new ValidateObjectFacet(specification, methodPeers, Logger<ValidateObjectFacet>()) : new ValidateObjectFacetNull(specification);
             FacetUtils.AddFacet(validateFacet);
             return metamodel;
         }

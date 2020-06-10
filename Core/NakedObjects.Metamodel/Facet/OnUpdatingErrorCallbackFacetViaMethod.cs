@@ -8,6 +8,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -16,14 +17,16 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class OnUpdatingErrorCallbackFacetViaMethod : OnUpdatingErrorCallbackFacetAbstract, IImperativeFacet {
+        private readonly ILogger<OnUpdatingErrorCallbackFacetViaMethod> logger;
         private readonly MethodInfo method;
 
         [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-        public OnUpdatingErrorCallbackFacetViaMethod(MethodInfo method, ISpecification holder)
+        public OnUpdatingErrorCallbackFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<OnUpdatingErrorCallbackFacetViaMethod> logger)
             : base(holder) {
             this.method = method;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+            this.logger = logger;
+            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
         #region IImperativeFacet Members
@@ -39,6 +42,6 @@ namespace NakedObjects.Meta.Facet {
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 }

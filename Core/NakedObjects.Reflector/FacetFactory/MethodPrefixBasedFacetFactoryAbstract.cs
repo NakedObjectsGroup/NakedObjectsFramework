@@ -130,7 +130,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         protected void FindDefaultDisableMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
             var method = FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.DisablePrefix + capitalizedName, typeof(string), Type.EmptyTypes);
             if (method != null) {
-                facets.Add(new DisableForContextFacet(method, specification));
+                facets.Add(new DisableForContextFacet(method, specification, Logger<DisableForContextFacet>()));
             }
         }
 
@@ -138,14 +138,14 @@ namespace NakedObjects.Reflect.FacetFactory {
             var method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.DisablePrefix + capitalizedName, typeof(string), Type.EmptyTypes);
             if (method != null) {
                 methodRemover.RemoveMethod(method);
-                facets.Add(new DisableForContextFacet(method, specification));
+                facets.Add(new DisableForContextFacet(method, specification, Logger<DisableForContextFacet>()));
             }
         }
 
         protected void FindDefaultHideMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
             var method = FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
             if (method != null) {
-                facets.Add(new HideForContextFacet(method, specification));
+                facets.Add(new HideForContextFacet(method, specification, Logger<HideForContextFacet>()));
                 AddOrAddToExecutedWhereFacet(method, specification);
             }
         }
@@ -154,7 +154,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             var method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
             if (method != null) {
                 methodRemover.RemoveMethod(method);
-                facets.Add(new HideForContextFacet(method, specification));
+                facets.Add(new HideForContextFacet(method, specification, Logger<HideForContextFacet>()));
                 AddOrAddToExecutedWhereFacet(method, specification);
             }
         }

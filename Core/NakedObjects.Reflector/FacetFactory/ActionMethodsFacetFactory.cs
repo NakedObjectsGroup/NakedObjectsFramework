@@ -191,7 +191,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     RemoveMethod(methodRemover, methodToUse);
 
                     // add facets directly to parameters, not to actions 
-                    FacetUtils.AddFacet(new ActionDefaultsFacetViaMethod(methodToUse, parameters[i]));
+                    FacetUtils.AddFacet(new ActionDefaultsFacetViaMethod(methodToUse, parameters[i], Logger<ActionDefaultsFacetViaMethod>()));
                     AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                 }
             }
@@ -248,7 +248,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
                     // add facets directly to parameters, not to actions 
                     var parameterNamesAndTypes = methodToUse.GetParameters().Select(p => (p.Name.ToLower(), reflector.LoadSpecification<IObjectSpecImmutable>(p.ParameterType))).ToArray();
-                    FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes, returnType, parameters[i], isMultiple));
+                    FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes, returnType, parameters[i], Logger<ActionChoicesFacetViaMethod>(), isMultiple));
                     AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                 }
             }
@@ -280,7 +280,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                         RemoveMethod(methodRemover, method);
 
                         // add facets directly to parameters, not to actions 
-                        FacetUtils.AddFacet(new AutoCompleteFacet(method, pageSize, minLength, parameters[i]));
+                        FacetUtils.AddFacet(new AutoCompleteFacet(method, pageSize, minLength, parameters[i], Logger<AutoCompleteFacet>()));
                         AddOrAddToExecutedWhereFacet(method, parameters[i]);
                     }
                 }
@@ -325,7 +325,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     RemoveMethod(methodRemover, methodToUse);
 
                     // add facets directly to parameters, not to actions 
-                    FacetUtils.AddFacet(new ActionParameterValidation(methodToUse, parameters[i]));
+                    FacetUtils.AddFacet(new ActionParameterValidation(methodToUse, parameters[i], Logger<ActionParameterValidation>()));
                     AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                     AddAjaxFacet(methodToUse, parameters[i]);
                 }

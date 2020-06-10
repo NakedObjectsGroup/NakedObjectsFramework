@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -21,9 +20,8 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Audit {
     [Serializable]
     public sealed class AuditManager : IFacetDecorator, IAuditManager {
-        private readonly ILogger<AuditManager> logger;
-
         private readonly Type defaultAuditor;
+        private readonly ILogger<AuditManager> logger;
         private readonly ImmutableDictionary<string, Type> namespaceAuditors;
 
         public AuditManager(IAuditConfiguration config, ILogger<AuditManager> logger) {

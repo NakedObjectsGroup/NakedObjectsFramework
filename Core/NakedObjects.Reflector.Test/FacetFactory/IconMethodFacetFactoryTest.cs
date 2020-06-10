@@ -125,7 +125,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new IconMethodFacetFactory(0, null);
+            var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
+            facetFactory = new IconMethodFacetFactory(0, mockLoggerFactory);
         }
 
         [TestCleanup]

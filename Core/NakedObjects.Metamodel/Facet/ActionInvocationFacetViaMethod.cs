@@ -10,7 +10,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -36,7 +35,7 @@ namespace NakedObjects.Meta.Facet {
             ReturnType = returnType;
             ElementType = elementType;
             IsQueryOnly = isQueryOnly;
-            ActionDelegate = LogNull(DelegateUtils.CreateDelegate(ActionMethod));
+            ActionDelegate = LogNull(DelegateUtils.CreateDelegate(ActionMethod), logger);
         }
 
         // for testing only 
@@ -86,7 +85,7 @@ namespace NakedObjects.Meta.Facet {
         protected override string ToStringValues() => $"method={ActionMethod}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => ActionDelegate = LogNull(DelegateUtils.CreateDelegate(ActionMethod));
+        private void OnDeserialized(StreamingContext context) => ActionDelegate = LogNull(DelegateUtils.CreateDelegate(ActionMethod), logger);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

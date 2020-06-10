@@ -8,7 +8,6 @@
 using System;
 using System.Collections;
 using System.Reflection;
-using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;

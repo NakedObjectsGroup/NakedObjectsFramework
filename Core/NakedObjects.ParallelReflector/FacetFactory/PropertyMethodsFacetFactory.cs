@@ -90,7 +90,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ModifyPrefix + capitalizedName, typeof(void), parms);
             RemoveMethod(methodRemover, method);
             if (method != null) {
-                propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, capitalizedName, property));
+                propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, capitalizedName, property, Logger<PropertySetterFacetViaModifyMethod>()));
             }
         }
 
@@ -98,7 +98,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
             RemoveMethod(methodRemover, method);
             if (method != null) {
-                propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property));
+                propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property, Logger<PropertyValidateFacetViaMethod>()));
                 AddAjaxFacet(method, property);
             }
             else {
@@ -116,7 +116,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes);
             RemoveMethod(methodRemover, method);
             if (method != null) {
-                propertyFacets.Add(new PropertyDefaultFacetViaMethod(method, property));
+                propertyFacets.Add(new PropertyDefaultFacetViaMethod(method, property, Logger<PropertyDefaultFacetViaMethod>()));
                 AddOrAddToExecutedWhereFacet(method, property);
             }
         }
@@ -153,7 +153,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     parameterNamesAndTypes.Add((p.Name.ToLower(), oSpec));
                 }
 
-                propertyFacets.Add(new PropertyChoicesFacet(method, parameterNamesAndTypes.ToArray(), property));
+                propertyFacets.Add(new PropertyChoicesFacet(method, parameterNamesAndTypes.ToArray(), property, Logger<PropertyChoicesFacet>()));
                 AddOrAddToExecutedWhereFacet(method, property);
             }
 
@@ -190,7 +190,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     var minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
 
                     RemoveMethod(methodRemover, method);
-                    propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property));
+                    propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property, Logger<AutoCompleteFacet>()));
                     AddOrAddToExecutedWhereFacet(method, property);
                 }
             }

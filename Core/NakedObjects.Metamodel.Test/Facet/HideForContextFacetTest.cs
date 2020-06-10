@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -17,8 +18,11 @@ using NakedObjects.Meta.Facet;
 namespace NakedObjects.Metamodel.Test.Facet {
     [TestClass]
     public class HideForContextFacetTest {
+        private static ILogger<HideForContextFacet> mockLogger = new Mock<ILogger<HideForContextFacet>>().Object;
+
+
         private static void DelegateFuncTest(MethodInfo method, bool isHidden) {
-            var hideForContextFacet = new HideForContextFacet(method, null);
+            var hideForContextFacet = new HideForContextFacet(method, null, mockLogger);
             IHideForContextFacet facet = hideForContextFacet;
             Assert.IsNotNull(hideForContextFacet.GetMethodDelegate(), method.Name);
             var target = MockParm(new TestDelegateClass());
@@ -41,7 +45,7 @@ namespace NakedObjects.Metamodel.Test.Facet {
         [TestMethod]
         public void TestDisabledFacetAnnotationAsInteraction() {
             var method = typeof(TestDelegateClass).GetMethod("FuncTrue");
-            IHidingInteractionAdvisor facet = new HideForContextFacet(method, null);
+            IHidingInteractionAdvisor facet = new HideForContextFacet(method, null, mockLogger);
             var target = Mock(new TestDelegateClass());
             var mockIc = new Mock<IInteractionContext>();
             mockIc.Setup(ic => ic.Target).Returns(target);

@@ -8,6 +8,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -17,14 +18,16 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class TitleFacetViaProperty : TitleFacetAbstract, IImperativeFacet {
+        private readonly ILogger<TitleFacetViaProperty> logger;
         private readonly MethodInfo method;
 
         [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-        public TitleFacetViaProperty(MethodInfo method, ISpecification holder)
+        public TitleFacetViaProperty(MethodInfo method, ISpecification holder, ILogger<TitleFacetViaProperty> logger)
             : base(holder) {
             this.method = method;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+            this.logger = logger;
+            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
         #region IImperativeFacet Members
@@ -41,7 +44,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

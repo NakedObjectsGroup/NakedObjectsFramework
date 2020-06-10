@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Resources;
 using System.Threading;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -19,13 +18,13 @@ using NakedObjects.Resources;
 
 namespace NakedObjects.Meta.I18N {
     public class I18NManager : II18NManager, IFacetDecorator {
-        private readonly ILogger<I18NManager> logger;
         private const string Action = "action";
         private const string Description = "description";
         private const string Name = "name";
         private const string Parameter = "parameter";
         private const string Property = "property";
         private readonly IDictionary<string, string> keyCache = new Dictionary<string, string>();
+        private readonly ILogger<I18NManager> logger;
 
         private ResourceManager resources;
 

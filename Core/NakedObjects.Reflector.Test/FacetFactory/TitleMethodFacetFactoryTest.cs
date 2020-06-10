@@ -6,7 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
@@ -99,7 +101,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new TitleMethodFacetFactory(0, null);
+            var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
+            facetFactory = new TitleMethodFacetFactory(0, mockLoggerFactory);
         }
 
         [TestCleanup]

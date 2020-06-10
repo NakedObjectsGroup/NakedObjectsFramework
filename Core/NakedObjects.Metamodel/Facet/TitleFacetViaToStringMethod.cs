@@ -8,6 +8,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -17,14 +18,16 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class TitleFacetViaToStringMethod : TitleFacetAbstract, IImperativeFacet {
+        private readonly ILogger<TitleFacetViaToStringMethod> logger;
         private readonly MethodInfo maskMethod;
 
         [field: NonSerialized] private Func<object, object[], object> maskDelegate;
 
-        public TitleFacetViaToStringMethod(MethodInfo maskMethod, ISpecification holder)
+        public TitleFacetViaToStringMethod(MethodInfo maskMethod, ISpecification holder, ILogger<TitleFacetViaToStringMethod> logger)
             : base(holder) {
             this.maskMethod = maskMethod;
-            maskDelegate = maskMethod == null ? null : LogNull(DelegateUtils.CreateDelegate(maskMethod));
+            this.logger = logger;
+            maskDelegate = maskMethod == null ? null : LogNull(DelegateUtils.CreateDelegate(maskMethod), logger);
         }
 
         #region IImperativeFacet Members
@@ -50,7 +53,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => maskDelegate = maskMethod == null ? null : LogNull(DelegateUtils.CreateDelegate(maskMethod));
+        private void OnDeserialized(StreamingContext context) => maskDelegate = maskMethod == null ? null : LogNull(DelegateUtils.CreateDelegate(maskMethod), logger);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

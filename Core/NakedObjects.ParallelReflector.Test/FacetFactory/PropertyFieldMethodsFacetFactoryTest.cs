@@ -11,7 +11,9 @@ using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Principal;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
@@ -54,7 +56,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PropertyMethodsFacetFactory(0, null);
+            var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
+            facetFactory = new PropertyMethodsFacetFactory(0, mockLoggerFactory);
         }
 
         [TestCleanup]

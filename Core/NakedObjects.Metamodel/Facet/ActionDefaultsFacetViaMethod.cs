@@ -9,6 +9,7 @@ using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -20,12 +21,14 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ActionDefaultsFacetViaMethod : ActionDefaultsFacetAbstract, IImperativeFacet {
+        private readonly ILogger<ActionDefaultsFacetViaMethod> logger;
         private readonly MethodInfo method;
 
-        public ActionDefaultsFacetViaMethod(MethodInfo method, ISpecification holder)
+        public ActionDefaultsFacetViaMethod(MethodInfo method, ISpecification holder, ILogger<ActionDefaultsFacetViaMethod> logger)
             : base(holder) {
             this.method = method;
-            MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+            this.logger = logger;
+            MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
         // for testing only 
@@ -50,7 +53,7 @@ namespace NakedObjects.Meta.Facet {
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+        private void OnDeserialized(StreamingContext context) => MethodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -11,7 +11,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
@@ -89,13 +88,15 @@ namespace NakedObjects.Meta.Facet {
 
         [Serializable]
         public class NakedObjectValidationMethod {
+            private readonly ILogger<NakedObjectValidationMethod> logger;
             private readonly MethodInfo method;
 
             [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-            public NakedObjectValidationMethod(MethodInfo method) {
+            public NakedObjectValidationMethod(MethodInfo method, ILogger<NakedObjectValidationMethod> logger) {
                 this.method = method;
-                methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+                this.logger = logger;
+                methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
             }
 
             public string Name => method.Name;
@@ -105,7 +106,7 @@ namespace NakedObjects.Meta.Facet {
             public string Execute(INakedObjectAdapter obj, INakedObjectAdapter[] parameters) => methodDelegate(obj.GetDomainObject(), parameters.Select(no => no.GetDomainObject()).ToArray()) as string;
 
             [OnDeserialized]
-            private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+            private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
         #endregion

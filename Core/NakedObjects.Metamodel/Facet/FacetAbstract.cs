@@ -7,7 +7,6 @@
 
 using System;
 using System.Runtime.Serialization;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
@@ -16,7 +15,6 @@ using NakedObjects.Architecture.Spec;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public abstract class FacetAbstract : IFacet, IDeserializationCallback {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(FacetAbstract));
         private ISpecification holder;
 
         protected FacetAbstract(Type facetType, ISpecification holder) {
@@ -61,14 +59,14 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        protected static Func<object, object[], object> LogNull((Func<object, object[], object>, string) pair) {
-            var (delFunc, warning) = pair;
-            if (delFunc == null && !string.IsNullOrWhiteSpace(warning)) {
-                Log.Warn(warning);
-            }
+        //protected static Func<object, object[], object> LogNull((Func<object, object[], object>, string) pair) {
+        //    var (delFunc, warning) = pair;
+        //    if (delFunc == null && !string.IsNullOrWhiteSpace(warning)) {
+        //        Log.Warn(warning);
+        //    }
 
-            return delFunc;
-        }
+        //    return delFunc;
+        //}
 
         protected static Func<object, object[], object> LogNull((Func<object, object[], object>, string) pair, ILogger logger) {
             var (delFunc, warning) = pair;

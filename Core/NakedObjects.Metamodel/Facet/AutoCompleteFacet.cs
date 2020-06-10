@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -22,18 +22,20 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class AutoCompleteFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
         private const int DefaultPageSize = 50;
+        private readonly ILogger<AutoCompleteFacet> logger;
         private readonly MethodInfo method;
         [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
         private AutoCompleteFacet(ISpecification holder)
             : base(Type, holder) { }
 
-        public AutoCompleteFacet(MethodInfo autoCompleteMethod, int pageSize, int minLength, ISpecification holder)
+        public AutoCompleteFacet(MethodInfo autoCompleteMethod, int pageSize, int minLength, ISpecification holder, ILogger<AutoCompleteFacet> logger)
             : this(holder) {
             method = autoCompleteMethod;
+            this.logger = logger;
             PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
             MinLength = minLength;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
         public static Type Type => typeof(IAutoCompleteFacet);
@@ -72,7 +74,7 @@ namespace NakedObjects.Meta.Facet {
         protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

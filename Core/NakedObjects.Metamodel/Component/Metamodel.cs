@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
@@ -19,8 +18,8 @@ namespace NakedObjects.Meta.Component {
     [Serializable]
     public sealed class Metamodel : IMetamodelBuilder {
         private readonly ISpecificationCache cache;
-        private readonly ILogger<Metamodel> logger;
         private readonly IClassStrategy classStrategy;
+        private readonly ILogger<Metamodel> logger;
 
         public Metamodel(IClassStrategy classStrategy, ISpecificationCache cache, ILogger<Metamodel> logger) {
             this.classStrategy = classStrategy;

@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedObjects.Architecture.Adapter;
@@ -46,9 +47,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             target = mock.Object;
 
             mock.Setup(no => no.Object).Returns(customer);
+            var mockLogger = new Mock<ILogger<ActionParameterValidation>>().Object;
 
             var method = typeof(Customer17).GetMethod("Validate0SomeAction");
-            facet = new ActionParameterValidation(method, holder);
+            facet = new ActionParameterValidation(method, holder, mockLogger);
         }
 
         [TestCleanup]

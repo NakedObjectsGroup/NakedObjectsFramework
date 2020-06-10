@@ -130,7 +130,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.OnUpdatingErrorMethod, typeof(string), new[] {typeof(Exception)});
             if (method != null) {
                 methods.Add(method);
-                facets.Add(new OnUpdatingErrorCallbackFacetViaMethod(method, specification));
+                facets.Add(new OnUpdatingErrorCallbackFacetViaMethod(method, specification, Logger<OnUpdatingErrorCallbackFacetViaMethod>()));
             }
             else {
                 facets.Add(new OnUpdatingErrorCallbackFacetNull(specification));
@@ -139,7 +139,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.OnPersistingErrorMethod, typeof(string), new[] {typeof(Exception)});
             if (method != null) {
                 methods.Add(method);
-                facets.Add(new OnPersistingErrorCallbackFacetViaMethod(method, specification));
+                facets.Add(new OnPersistingErrorCallbackFacetViaMethod(method, specification, Logger<OnPersistingErrorCallbackFacetViaMethod>()));
             }
             else {
                 facets.Add(new OnPersistingErrorCallbackFacetNull(specification));

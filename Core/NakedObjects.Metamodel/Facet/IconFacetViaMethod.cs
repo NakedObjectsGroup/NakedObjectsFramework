@@ -8,6 +8,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
@@ -16,15 +17,17 @@ namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class IconFacetViaMethod : IconFacetAbstract {
         private readonly string iconName; // iconName from attribute
+        private readonly ILogger<IconFacetViaMethod> logger;
         private readonly MethodInfo method;
 
         [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
-        public IconFacetViaMethod(MethodInfo method, ISpecification holder, string iconName)
+        public IconFacetViaMethod(MethodInfo method, ISpecification holder, string iconName, ILogger<IconFacetViaMethod> logger)
             : base(holder) {
             this.method = method;
             this.iconName = iconName;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+            this.logger = logger;
+            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
         public override string GetIconName(INakedObjectAdapter nakedObjectAdapter) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { });
@@ -32,7 +35,7 @@ namespace NakedObjects.Meta.Facet {
         public override string GetIconName() => iconName;
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+        private void OnDeserialized(StreamingContext context) => methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

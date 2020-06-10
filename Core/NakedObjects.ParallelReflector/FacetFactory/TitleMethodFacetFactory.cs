@@ -53,7 +53,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
             if (attributedMethods.Count > 0) {
                 // attributes takes priority
-                FacetUtils.AddFacet(new TitleFacetViaProperty(attributedMethods.First(), specification));
+                FacetUtils.AddFacet(new TitleFacetViaProperty(attributedMethods.First(), specification, Logger<TitleFacetViaProperty>()));
                 return metamodel;
             }
 
@@ -63,7 +63,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
                 if (titleMethod != null) {
                     methodRemover.RemoveMethod(titleMethod);
-                    titleFacet = new TitleFacetViaTitleMethod(titleMethod, specification);
+                    titleFacet = new TitleFacetViaTitleMethod(titleMethod, specification, Logger<TitleFacetViaTitleMethod>());
                 }
 
                 var toStringMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes);
@@ -82,7 +82,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 }
 
                 if (titleFacet == null && toStringMethod != null) {
-                    titleFacet = new TitleFacetViaToStringMethod(maskMethod, specification);
+                    titleFacet = new TitleFacetViaToStringMethod(maskMethod, specification, Logger<TitleFacetViaToStringMethod>());
                 }
 
                 FacetUtils.AddFacet(titleFacet);

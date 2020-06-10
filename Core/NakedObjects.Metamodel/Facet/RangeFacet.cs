@@ -42,7 +42,7 @@ namespace NakedObjects.Meta.Facet {
         public bool IsDateRange { get; set; }
 
         public virtual int OutOfRange(INakedObjectAdapter nakedObjectAdapter) {
-            var origVal = (IConvertible)nakedObjectAdapter?.Object;
+            var origVal = (IConvertible) nakedObjectAdapter?.Object;
             return origVal switch {
                 null => 0,
                 _ when IsSIntegral(origVal) => Compare(origVal.ToInt64(null), Min.ToInt64(null), Max.ToInt64(null)),

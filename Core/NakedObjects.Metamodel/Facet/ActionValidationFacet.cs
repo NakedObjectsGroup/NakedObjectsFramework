@@ -19,8 +19,8 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ActionValidationFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
-        private readonly MethodInfo method;
         private readonly ILogger<ActionValidationFacet> logger;
+        private readonly MethodInfo method;
 
         [field: NonSerialized] private Func<object, object[], object> methodDelegate;
 
@@ -28,7 +28,7 @@ namespace NakedObjects.Meta.Facet {
             : base(typeof(IActionValidationFacet), holder) {
             this.method = method;
             this.logger = logger;
-            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method));
+            methodDelegate = LogNull(DelegateUtils.CreateDelegate(method), logger);
         }
 
         #region IActionValidationFacet Members

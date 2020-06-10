@@ -88,7 +88,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ModifyPrefix + capitalizedName, typeof(void), parms);
             RemoveMethod(methodRemover, method);
             if (method != null) {
-                propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, capitalizedName, property));
+                propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, capitalizedName, property, Logger<PropertySetterFacetViaModifyMethod>()));
             }
         }
 
@@ -96,7 +96,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
             RemoveMethod(methodRemover, method);
             if (method != null) {
-                propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property));
+                propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property, Logger< PropertyValidateFacetViaMethod>()));
                 AddAjaxFacet(method, property);
             }
             else {
@@ -114,7 +114,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes);
             RemoveMethod(methodRemover, method);
             if (method != null) {
-                propertyFacets.Add(new PropertyDefaultFacetViaMethod(method, property));
+                propertyFacets.Add(new PropertyDefaultFacetViaMethod(method, property, Logger<PropertyDefaultFacetViaMethod>()));
                 AddOrAddToExecutedWhereFacet(method, property);
             }
         }
@@ -143,7 +143,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             RemoveMethod(methodRemover, method);
             if (method != null) {
                 var parameterNamesAndTypes = method.GetParameters().Select(p => (p.Name.ToLower(), reflector.LoadSpecification<IObjectSpecImmutable>(p.ParameterType))).ToArray();
-                propertyFacets.Add(new PropertyChoicesFacet(method, parameterNamesAndTypes, property));
+                propertyFacets.Add(new PropertyChoicesFacet(method, parameterNamesAndTypes, property, Logger<PropertyChoicesFacet>()));
                 AddOrAddToExecutedWhereFacet(method, property);
             }
         }
@@ -178,7 +178,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     var minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
 
                     RemoveMethod(methodRemover, method);
-                    propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property));
+                    propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property, Logger<AutoCompleteFacet>()));
                     AddOrAddToExecutedWhereFacet(method, property);
                 }
             }
