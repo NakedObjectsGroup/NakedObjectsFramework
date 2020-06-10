@@ -8,6 +8,7 @@
 using System.Collections.Immutable;
 using System.Reflection;
 using AdventureWorksModel;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -18,8 +19,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Rest.App.Demo.AWCustom {
     public sealed class AWNotNavigableFacetFactory : FacetFactoryAbstract {
-        public AWNotNavigableFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Properties) { }
+        public AWNotNavigableFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Properties) { }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (property.PropertyType.IsAssignableFrom(typeof(ContactType))) {
@@ -61,8 +62,8 @@ namespace NakedObjects.Rest.App.Demo.AWCustom {
     }
 
     public sealed class AWNotNavigableFacetFactoryParallel : ParallelReflect.FacetFactory.FacetFactoryAbstract {
-        public AWNotNavigableFacetFactoryParallel(int numericOrder)
-            : base(numericOrder, FeatureType.Properties) { }
+        public AWNotNavigableFacetFactoryParallel(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Properties) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (property.PropertyType.IsAssignableFrom(typeof(ContactType))) {

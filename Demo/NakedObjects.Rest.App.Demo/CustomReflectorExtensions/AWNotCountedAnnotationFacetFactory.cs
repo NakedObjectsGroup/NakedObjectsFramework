@@ -8,6 +8,7 @@
 using System.Collections.Immutable;
 using System.Reflection;
 using AdventureWorksModel;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -20,8 +21,8 @@ using NakedObjects.Reflect.FacetFactory;
 
 namespace NakedObjects.Rest.App.Demo.AWCustom {
     public sealed class AWNotCountedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public AWNotCountedAnnotationFacetFactory(int numericOrder)
-            : base(numericOrder, FeatureType.Collections) { }
+        public AWNotCountedAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Collections) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<AWNotCountedAttribute>();
@@ -38,8 +39,8 @@ namespace NakedObjects.Rest.App.Demo.AWCustom {
     }
 
     public sealed class AWNotCountedAnnotationFacetFactoryParallel : ParallelReflect.FacetFactory.AnnotationBasedFacetFactoryAbstract {
-        public AWNotCountedAnnotationFacetFactoryParallel(int numericOrder)
-            : base(numericOrder, FeatureType.Collections) { }
+        public AWNotCountedAnnotationFacetFactoryParallel(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Collections) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<AWNotCountedAttribute>();
