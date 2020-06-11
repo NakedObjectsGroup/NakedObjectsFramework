@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -23,11 +24,11 @@ using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect.Component {
     public sealed class ParallelReflector : IReflector {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ParallelReflector));
         private readonly IReflectorConfiguration config;
         private readonly FacetDecoratorSet facetDecoratorSet;
         private readonly IMetamodelBuilder initialMetamodel;
         private readonly IMenuFactory menuFactory;
+        private readonly ILogger<ParallelReflector> logger;
         private readonly ISet<Type> serviceTypes = new HashSet<Type>();
 
         public ParallelReflector(IClassStrategy classStrategy,
@@ -35,7 +36,8 @@ namespace NakedObjects.ParallelReflect.Component {
                                  IReflectorConfiguration config,
                                  IMenuFactory menuFactory,
                                  IEnumerable<IFacetDecorator> facetDecorators,
-                                 IEnumerable<IFacetFactory> facetFactories) {
+                                 IEnumerable<IFacetFactory> facetFactories,
+                                 ILogger<ParallelReflector> logger) {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(config);
@@ -45,6 +47,7 @@ namespace NakedObjects.ParallelReflect.Component {
             initialMetamodel = metamodel;
             this.config = config;
             this.menuFactory = menuFactory;
+            this.logger = logger;
             facetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
             FacetFactorySet = new FacetFactorySet(facetFactories.ToArray());
         }
@@ -152,10 +155,10 @@ namespace NakedObjects.ParallelReflect.Component {
             }
         }
 
-        private static void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services, IMetamodelBuilder metamodel) {
+        private void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services, IMetamodelBuilder metamodel) {
             if (string.IsNullOrWhiteSpace(spec.FullName)) {
-                var id = (spec.Identifier != null ? spec.Identifier.ClassName : "unknown") ?? "unknown";
-                Log.WarnFormat("Specification with id : {0} as has null or empty name", id);
+                var id = spec.Identifier?.ClassName ?? "unknown";
+                logger.LogWarning($"Specification with id : {id} has null or empty name");
             }
 
             if (FasterTypeUtils.IsSystem(spec.FullName) && !spec.IsCollection) {
@@ -176,7 +179,7 @@ namespace NakedObjects.ParallelReflect.Component {
             if (menus != null) {
                 if (!menus.Any()) {
                     //Catches accidental non-specification of menus
-                    throw new ReflectionException(Log.LogAndReturn("No MainMenus specified."));
+                    throw new ReflectionException(logger.LogAndReturn("No MainMenus specified."));
                 }
 
                 foreach (var menu in menus.OfType<IMenuImmutable>()) {
@@ -244,7 +247,7 @@ namespace NakedObjects.ParallelReflect.Component {
             var specification = CreateSpecification(type, metamodel);
 
             if (specification == null) {
-                throw new ReflectionException(Log.LogAndReturn($"unrecognised type {type.FullName}"));
+                throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
             }
 
             return specification;
@@ -254,7 +257,7 @@ namespace NakedObjects.ParallelReflect.Component {
             var specification = CreateSpecification(type, metamodel);
 
             if (specification == null) {
-                throw new ReflectionException(Log.LogAndReturn($"unrecognised type {type.FullName}"));
+                throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
             }
 
             metamodel = metamodel.Add(ClassStrategy.GetKeyForType(type), specification);
@@ -268,7 +271,7 @@ namespace NakedObjects.ParallelReflect.Component {
             var specification = metamodel[ClassStrategy.GetKeyForType(type)];
 
             if (specification == null) {
-                throw new ReflectionException(Log.LogAndReturn($"unrecognised type {type.FullName}"));
+                throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
             }
 
             metamodel = specification.Introspect(facetDecoratorSet, new Introspector(this), metamodel);

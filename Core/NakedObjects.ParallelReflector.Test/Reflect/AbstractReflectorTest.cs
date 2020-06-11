@@ -125,8 +125,10 @@ namespace NakedObjects.ParallelReflect.Test {
             var classStrategy = new DefaultClassStrategy(config);
             var mockLogger = new Mock<ILogger<Metamodel>>().Object;
 
-            var metamodel = new Metamodel(classStrategy, cache, mockLogger);
-            var reflector = new ParallelReflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, facetFactories);
+            var metamodel = new Metamodel(classStrategy, cache, mockLogger); 
+            var mockLogger1 = new Mock<ILogger<ParallelReflector>>().Object;
+
+            var reflector = new ParallelReflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, facetFactories, mockLogger1);
 
             ITypeSpecBuilder spec;
             (spec, Metamodel) = LoadSpecification(reflector);
