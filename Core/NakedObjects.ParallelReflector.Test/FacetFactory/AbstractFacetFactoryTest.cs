@@ -27,7 +27,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private Mock<IMetamodelManager> mockMetadata;
         private Mock<IMethodRemover> mockMethodRemover;
         private Mock<IReflector> mockReflector;
-        private Mock<ILoggerFactory> mockLoggerFactory;
         protected IReflector Reflector;
         protected ISpecificationBuilder Specification;
         protected abstract Type[] SupportedTypes { get; }
@@ -39,12 +38,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             mockMethodRemover = new Mock<IMethodRemover>();
             mockReflector = new Mock<IReflector>();
             mockMetadata = new Mock<IMetamodelManager>();
-            mockLoggerFactory = new Mock<ILoggerFactory>();
+            LoggerFactory = new LoggerFactory();
 
             MethodRemover = mockMethodRemover.Object;
             Reflector = mockReflector.Object;
             Metamodel = mockMetadata.Object;
-            LoggerFactory = mockLoggerFactory.Object;
 
             mockMethodRemover.Setup(remover => remover.RemoveMethod(It.IsAny<MethodInfo>()));
             mockMethodRemover.Setup(remover => remover.RemoveMethods(It.IsAny<IList<MethodInfo>>()));

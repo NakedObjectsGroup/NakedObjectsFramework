@@ -39,10 +39,11 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             RecognisedMethodsAndPrefixes.DisablePrefix
         };
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ActionMethodsFacetFactory));
+        private readonly ILogger<ActionMethodsFacetFactory> logger;
 
         public ActionMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ActionsAndActionParameters) { }
+            : base(numericOrder, loggerFactory, FeatureType.ActionsAndActionParameters) =>
+            logger = loggerFactory.CreateLogger<ActionMethodsFacetFactory>();
 
         public override string[] Prefixes => FixedPrefixes;
 
@@ -83,8 +84,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             FindDefaultDisableMethod(reflector, facets, methodRemover, type, methodType, "ActionDefault", action);
             FindAndRemoveDisableMethod(reflector, facets, methodRemover, type, methodType, capitalizedName, action);
 
-            var actionSpecImmutable = action as IActionSpecImmutable;
-            if (actionSpecImmutable != null) {
+            if (action is IActionSpecImmutable actionSpecImmutable) {
                 // Process the action's parameters names, descriptions and optional
                 // an alternative design would be to have another facet factory processing just ActionParameter, and have it remove these
                 // supporting methods.  However, the FacetFactory API doesn't allow for methods of the class to be removed while processing
@@ -157,12 +157,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
         }
 
-        private static bool ParametersAreSupported(MethodInfo method, IClassStrategy classStrategy) {
+        private bool ParametersAreSupported(MethodInfo method, IClassStrategy classStrategy) {
             foreach (var parameterInfo in method.GetParameters()) {
                 if (!classStrategy.IsTypeToBeIntrospected(parameterInfo.ParameterType)) {
                     // log if not a System or NOF type
                     if (!TypeUtils.IsSystem(method.DeclaringType) && !TypeUtils.IsNakedObjects(method.DeclaringType)) {
-                        Log.WarnFormat("Ignoring method: {0}.{1} because parameter '{2}' is of type {3}", method.DeclaringType, method.Name, parameterInfo.Name, parameterInfo.ParameterType);
+                        logger.LogWarning($"Ignoring method: {method.DeclaringType}.{method.Name} because parameter '{parameterInfo.Name}' is of type {parameterInfo.ParameterType}");
                     }
 
                     return false;
@@ -207,7 +207,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     new[] {paramName});
 
                 if (methodUsingIndex != null && methodUsingName != null) {
-                    Log.WarnFormat("Duplicate defaults parameter methods {0} and {1} using {1}", methodUsingIndex.Name, methodUsingName.Name);
+                    logger.LogWarning($"Duplicate defaults parameter methods {methodUsingIndex.Name} and {methodUsingName.Name} using {methodUsingName.Name}");
                 }
 
                 var methodToUse = methodUsingName ?? methodUsingIndex;
@@ -245,10 +245,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     returnType);
 
                 if (methods.Length > 1) {
-                    methods.Skip(1).ForEach(m => Log.WarnFormat("Found multiple action choices methods: {0} in type: {1} ignoring method(s) with params: {2}",
-                        methodName,
-                        type,
-                        m.GetParameters().Select(p => p.Name).Aggregate("", (s, t) => s + " " + t)));
+                    methods.Skip(1).ForEach(m => logger.LogWarning($"Found multiple action choices methods: {methodName} in type: {type} ignoring method(s) with params: {m.GetParameters().Select(p => p.Name).Aggregate("", (s, t) => s + " " + t)}"));
                 }
 
                 var methodUsingIndex = methods.FirstOrDefault();
@@ -263,7 +260,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     new[] {paramName});
 
                 if (methodUsingIndex != null && methodUsingName != null) {
-                    Log.WarnFormat("Duplicate choices parameter methods {0} and {1} using {1}", methodUsingIndex.Name, methodUsingName.Name);
+                    logger.LogWarning("Duplicate choices parameter methods {methodUsingIndex.Name} and {methodUsingName.Name} using {methodUsingName.Name}");
                 }
 
                 var methodToUse = methodUsingName ?? methodUsingIndex;
@@ -351,7 +348,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     new[] {paramNames[i]});
 
                 if (methodUsingIndex != null && methodUsingName != null) {
-                    Log.WarnFormat("Duplicate validate parameter methods {0} and {1} using {1}", methodUsingIndex.Name, methodUsingName.Name);
+                    logger.LogWarning($"Duplicate validate parameter methods {methodUsingIndex.Name} and {methodUsingName.Name} using {methodUsingName.Name}");
                 }
 
                 var methodToUse = methodUsingName ?? methodUsingIndex;

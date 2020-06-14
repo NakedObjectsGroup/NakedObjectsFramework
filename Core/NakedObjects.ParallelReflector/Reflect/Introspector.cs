@@ -11,6 +11,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
@@ -25,14 +26,17 @@ using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect {
     public sealed class Introspector : IIntrospector {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Introspector));
         private readonly IReflector reflector;
+        private readonly ILogger<Introspector> logger;
         private MethodInfo[] methods;
         private IList<IAssociationSpecImmutable> orderedFields;
         private IList<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
 
-        public Introspector(IReflector reflector) => this.reflector = reflector;
+        public Introspector(IReflector reflector, ILogger<Introspector> logger) {
+            this.reflector = reflector;
+            this.logger = logger;
+        }
 
         private IClassStrategy ClassStrategy => reflector.ClassStrategy;
 
@@ -70,7 +74,7 @@ namespace NakedObjects.ParallelReflect {
 
         public IImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!TypeUtils.IsPublic(typeToIntrospect)) {
-                throw new ReflectionException(Log.LogAndReturn(string.Format(Resources.NakedObjects.DomainClassReflectionError, typeToIntrospect)));
+                throw new ReflectionException(logger.LogAndReturn(string.Format(Resources.NakedObjects.DomainClassReflectionError, typeToIntrospect)));
             }
 
             IntrospectedType = typeToIntrospect;
@@ -205,7 +209,7 @@ namespace NakedObjects.ParallelReflect {
                 (propertySpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(propertyType, metamodel);
 
                 if (propertySpec == null) {
-                    throw new ReflectionException(Log.LogAndReturn($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}. If the property is intended to be an injected service it should have a protected get."));
+                    throw new ReflectionException(logger.LogAndReturn($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}. If the property is intended to be an injected service it should have a protected get."));
                 }
 
                 var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec);

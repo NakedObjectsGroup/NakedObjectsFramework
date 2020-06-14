@@ -78,7 +78,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ProgramPersistableOnlyAnnotationFacetFactory(0, null);
+            facetFactory = new ProgramPersistableOnlyAnnotationFacetFactory(0, LoggerFactory);
         }
 
         [TestCleanup]

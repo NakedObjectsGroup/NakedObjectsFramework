@@ -25,14 +25,16 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class ValidateObjectFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ValidateObjectFacetFactory));
 
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ValidatePrefix
         };
 
+        private ILogger<ValidateObjectFacetFactory> logger;
+
         public ValidateObjectFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
+            logger = loggerFactory.CreateLogger<ValidateObjectFacetFactory>();
 
         public override string[] Prefixes => FixedPrefixes;
 

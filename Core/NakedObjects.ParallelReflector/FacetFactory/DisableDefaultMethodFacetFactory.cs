@@ -22,7 +22,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     /// </summary>
     public sealed class DisableDefaultMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly string[] FixedPrefixes;
-        private static readonly ILog Log = LogManager.GetLogger(typeof(DisableDefaultMethodFacetFactory));
+        private ILogger<DisableDefaultMethodFacetFactory> logger;
 
         static DisableDefaultMethodFacetFactory() =>
             FixedPrefixes = new[] {
@@ -31,7 +31,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             };
 
         public DisableDefaultMethodFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
+            logger = loggerFactory.CreateLogger<DisableDefaultMethodFacetFactory>();
 
         public override string[] Prefixes => FixedPrefixes;
 
@@ -45,7 +46,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 }
             }
             catch (Exception e) {
-                Log.Error("Unexpected exception", e);
+                logger.LogError(e, "Unexpected exception");
             }
 
             return metamodel;

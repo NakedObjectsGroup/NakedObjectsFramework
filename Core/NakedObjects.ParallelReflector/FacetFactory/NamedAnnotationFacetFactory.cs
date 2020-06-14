@@ -23,10 +23,11 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class NamedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(NamedAnnotationFacetFactory));
+        private ILogger<NamedAnnotationFacetFactory> logger;
 
         public NamedAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Everything) { }
+            : base(numericOrder, loggerFactory, FeatureType.Everything) =>
+            logger = loggerFactory.CreateLogger<NamedAnnotationFacetFactory>();
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var attribute = type.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) type.GetCustomAttribute<NamedAttribute>();
@@ -53,20 +54,20 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static INamedFacet Create(Attribute attribute, ISpecification holder) =>
+        private INamedFacet Create(Attribute attribute, ISpecification holder) =>
             attribute switch {
                 null => null,
                 NamedAttribute namedAttribute => new NamedFacetAnnotation(namedAttribute.Value, holder),
                 DisplayNameAttribute nameAttribute => new NamedFacetAnnotation(nameAttribute.DisplayName, holder),
-                _ => throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
+                _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
             };
 
-        private static INamedFacet CreateProperty(Attribute attribute, ISpecification holder) =>
+        private INamedFacet CreateProperty(Attribute attribute, ISpecification holder) =>
             attribute switch {
                 null => null,
                 NamedAttribute namedAttribute => Create(namedAttribute, holder),
                 DisplayNameAttribute nameAttribute => Create(nameAttribute, holder),
-                _ => throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
+                _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
             };
 
         private static INamedFacet Create(NamedAttribute attribute, ISpecification holder) => CreateAnnotation(attribute.Value, holder);

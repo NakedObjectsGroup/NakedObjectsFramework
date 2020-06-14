@@ -28,6 +28,7 @@ namespace NakedObjects.ParallelReflect.Component {
         private readonly FacetDecoratorSet facetDecoratorSet;
         private readonly IMetamodelBuilder initialMetamodel;
         private readonly IMenuFactory menuFactory;
+        private readonly ILoggerFactory loggerFactory;
         private readonly ILogger<ParallelReflector> logger;
         private readonly ISet<Type> serviceTypes = new HashSet<Type>();
 
@@ -37,6 +38,7 @@ namespace NakedObjects.ParallelReflect.Component {
                                  IMenuFactory menuFactory,
                                  IEnumerable<IFacetDecorator> facetDecorators,
                                  IEnumerable<IFacetFactory> facetFactories,
+                                 ILoggerFactory loggerFactory,
                                  ILogger<ParallelReflector> logger) {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(metamodel);
@@ -47,6 +49,7 @@ namespace NakedObjects.ParallelReflect.Component {
             initialMetamodel = metamodel;
             this.config = config;
             this.menuFactory = menuFactory;
+            this.loggerFactory = loggerFactory;
             this.logger = logger;
             facetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
             FacetFactorySet = new FacetFactorySet(facetFactories.ToArray());
@@ -274,7 +277,7 @@ namespace NakedObjects.ParallelReflect.Component {
                 throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
             }
 
-            metamodel = specification.Introspect(facetDecoratorSet, new Introspector(this), metamodel);
+            metamodel = specification.Introspect(facetDecoratorSet, new Introspector(this, loggerFactory.CreateLogger<Introspector>()), metamodel);
 
             return (specification, metamodel);
         }

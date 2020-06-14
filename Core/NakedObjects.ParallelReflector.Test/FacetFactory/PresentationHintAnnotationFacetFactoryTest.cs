@@ -52,7 +52,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PresentationHintAnnotationFacetFactory(0, null);
+            facetFactory = new PresentationHintAnnotationFacetFactory(0, LoggerFactory);
         }
 
         [TestCleanup]

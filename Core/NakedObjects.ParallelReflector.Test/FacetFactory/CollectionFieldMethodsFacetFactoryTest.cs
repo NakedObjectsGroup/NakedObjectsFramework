@@ -382,7 +382,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new CollectionFieldMethodsFacetFactory(0, null);
+            facetFactory = new CollectionFieldMethodsFacetFactory(0, LoggerFactory);
         }
 
         [TestCleanup]

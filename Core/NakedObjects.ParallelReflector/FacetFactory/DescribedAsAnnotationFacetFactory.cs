@@ -23,12 +23,13 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class DescribedAsAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(DescribedAsAnnotationFacetFactory));
+        private ILogger<DescribedAsAnnotationFacetFactory> logger;
 
         public DescribedAsAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Everything) { }
+            : base(numericOrder, loggerFactory, FeatureType.Everything) =>
+            logger = loggerFactory.CreateLogger<DescribedAsAnnotationFacetFactory>();
 
-        private static void Process(MemberInfo member, ISpecification holder) {
+        private void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<DescriptionAttribute>() ?? (Attribute) member.GetCustomAttribute<DescribedAsAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
@@ -56,12 +57,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IDescribedAsFacet Create(Attribute attribute, ISpecification holder) =>
+        private IDescribedAsFacet Create(Attribute attribute, ISpecification holder) =>
             attribute switch {
                 null => null,
                 DescribedAsAttribute asAttribute => Create(asAttribute, holder),
                 DescriptionAttribute descriptionAttribute => Create(descriptionAttribute, holder),
-                _ => throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
+                _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
             };
 
         private static IDescribedAsFacet Create(DescribedAsAttribute attribute, ISpecification holder) => new DescribedAsFacetAnnotation(attribute.Value, holder);

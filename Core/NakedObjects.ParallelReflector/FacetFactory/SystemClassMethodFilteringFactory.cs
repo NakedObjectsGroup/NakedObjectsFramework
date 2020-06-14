@@ -18,10 +18,11 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     string.
     /// </summary>
     public sealed class SystemClassMethodFilteringFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(SystemClassMethodFilteringFactory));
+        private ILogger<SystemClassMethodFilteringFactory> logger;
 
         public SystemClassMethodFilteringFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions) { }
+            : base(numericOrder, loggerFactory, FeatureType.Actions) =>
+            logger = loggerFactory.CreateLogger<SystemClassMethodFilteringFactory>();
 
         #region IMethodFilteringFacetFactory Members
 

@@ -27,10 +27,11 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     <see cref="ContributedActionAttribute" /> annotation
     /// </summary>
     public sealed class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ContributedActionAnnotationFacetFactory));
+        private ILogger<ContributedActionAnnotationFacetFactory> logger;
 
         public ContributedActionAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions) { }
+            : base(numericOrder, loggerFactory, FeatureType.Actions) =>
+            logger = loggerFactory.CreateLogger<ContributedActionAnnotationFacetFactory>();
 
         private static bool IsParseable(Type type) => type.IsValueType;
 
@@ -42,7 +43,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 IsCollection(type.BaseType) ||
                 type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
 
-        private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo member, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo member, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var allParams = member.GetParameters();
             var paramsWithAttribute = allParams.Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null).ToArray();
             if (!paramsWithAttribute.Any()) {
@@ -58,7 +59,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
                 if (type != null) {
                     if (IsParseable(parameterType)) {
-                        Log.WarnFormat("ContributedAction attribute added to a value parameter type: {0}", member.Name);
+                        logger.LogWarning($"ContributedAction attribute added to a value parameter type: {member.Name}");
                     }
                     else if (IsCollection(parameterType)) {
                         IObjectSpecImmutable parent;
@@ -77,15 +78,15 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IImmutableDictionary<string, ITypeSpecBuilder> AddCollectionContributedAction(IReflector reflector, MethodInfo member, Type parameterType, ParameterInfo p, ContributedActionFacet facet, ContributedActionAttribute attribute, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> AddCollectionContributedAction(IReflector reflector, MethodInfo member, Type parameterType, ParameterInfo p, ContributedActionFacet facet, ContributedActionAttribute attribute, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!CollectionUtils.IsGenericQueryable(parameterType)) {
-                Log.WarnFormat("ContributedAction attribute added to a collection parameter type other than IQueryable: {0}", member.Name);
+                logger.LogWarning($"ContributedAction attribute added to a collection parameter type other than IQueryable: {member.Name}");
             }
             else {
                 var returnType = member.ReturnType;
                 (_, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(returnType, metamodel);
                 if (IsCollection(returnType)) {
-                    Log.WarnFormat("ContributedAction attribute added to an action that returns a collection: {0}", member.Name);
+                    logger.LogWarning($"ContributedAction attribute added to an action that returns a collection: {member.Name}");
                 }
                 else {
                     var elementType = p.ParameterType.GetGenericArguments()[0];

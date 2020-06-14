@@ -22,12 +22,13 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class RangeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(RangeAnnotationFacetFactory));
+        private ILogger<RangeAnnotationFacetFactory> logger;
 
         public RangeAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
+            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
+            logger = loggerFactory.CreateLogger<RangeAnnotationFacetFactory>();
 
-        private static void Process(MemberInfo member, bool isDate, ISpecification specification) {
+        private void Process(MemberInfo member, bool isDate, ISpecification specification) {
             var attribute = member.GetCustomAttribute<RangeAttribute>();
             FacetUtils.AddFacet(Create(attribute, isDate, specification));
         }
@@ -46,13 +47,13 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static IRangeFacet Create(RangeAttribute attribute, bool isDate, ISpecification holder) {
+        private IRangeFacet Create(RangeAttribute attribute, bool isDate, ISpecification holder) {
             if (attribute == null) {
                 return null;
             }
 
             if (attribute.OperandType != typeof(int) && attribute.OperandType != typeof(double)) {
-                Log.WarnFormat("Unsupported use of range attribute with explicit type on {0}", holder);
+                logger.LogWarning($"Unsupported use of range attribute with explicit type on {holder}");
                 return null;
             }
 
@@ -60,7 +61,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 return new RangeFacet(min, max, isDate, holder);
             }
 
-            Log.WarnFormat("Min Max values must be IConvertible for Range on {0}", holder);
+            logger.LogWarning($"Min Max values must be IConvertible for Range on {holder}");
             return null;
         }
     }

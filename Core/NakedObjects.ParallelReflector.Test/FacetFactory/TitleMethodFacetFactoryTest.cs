@@ -111,8 +111,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
-            facetFactory = new TitleMethodFacetFactory(0, mockLoggerFactory);
+            facetFactory = new TitleMethodFacetFactory(0, LoggerFactory);
         }
 
         [TestCleanup]

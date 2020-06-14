@@ -230,7 +230,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new ViewModelFacetFactory(0, null);
+            facetFactory = new ViewModelFacetFactory(0, LoggerFactory);
         }
 
         [TestCleanup]

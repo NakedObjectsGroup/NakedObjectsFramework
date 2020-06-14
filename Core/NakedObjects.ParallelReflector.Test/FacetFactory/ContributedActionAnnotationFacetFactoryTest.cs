@@ -128,7 +128,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ContributedActionAnnotationFacetFactory(0, null);
+            facetFactory = new ContributedActionAnnotationFacetFactory(0, LoggerFactory);
         }
 
         [TestCleanup]

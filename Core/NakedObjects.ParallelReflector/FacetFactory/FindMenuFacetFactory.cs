@@ -25,10 +25,11 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     <see cref="FindMenuAttribute" /> annotation
     /// </summary>
     public sealed class FindMenuFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(FindMenuFacetFactory));
+        private ILogger<FindMenuFacetFactory> logger;
 
         public FindMenuFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
+            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
+            logger = loggerFactory.CreateLogger<FindMenuFacetFactory>();
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<FindMenuAttribute>();
@@ -43,7 +44,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var pType = property.PropertyType;
             if ((pType.IsPrimitive || pType == typeof(string) || TypeUtils.IsEnum(pType)) && property.GetCustomAttribute<FindMenuAttribute>() != null) {
-                Log.Warn("Ignoring FindMenu annotation on primitive or un-readable parameter on " + property.ReflectedType + "." + property.Name);
+                logger.LogWarning($"Ignoring FindMenu annotation on primitive or un-readable parameter on {property.ReflectedType}.{property.Name}");
                 return metamodel;
             }
 
@@ -59,7 +60,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             var pType = parameter.ParameterType;
             if (pType.IsPrimitive || pType == typeof(string) || TypeUtils.IsEnum(pType)) {
                 if (method.GetCustomAttribute<FindMenuAttribute>() != null) {
-                    Log.Warn("Ignoring FindMenu annotation on primitive parameter " + paramNum + " on " + method.ReflectedType + "." + method.Name);
+                    logger.LogWarning($"Ignoring FindMenu annotation on primitive parameter {paramNum} on {method.ReflectedType}.{method.Name}");
                 }
 
                 return metamodel;

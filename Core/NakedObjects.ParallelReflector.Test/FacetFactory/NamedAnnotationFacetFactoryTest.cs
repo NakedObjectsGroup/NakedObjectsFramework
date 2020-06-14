@@ -55,8 +55,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new NamedAnnotationFacetFactory(0, null);
-            //BasicConfigurator.Configure(new WarningAppender());
+            facetFactory = new NamedAnnotationFacetFactory(0, LoggerFactory);
         }
 
         [TestCleanup]

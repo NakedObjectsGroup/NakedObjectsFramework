@@ -21,7 +21,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
     public sealed class ComplementaryMethodsFilteringFacetFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ComplementaryMethodsFilteringFacetFactory));
 
         private static readonly string[] PropertyPrefixes = {
             RecognisedMethodsAndPrefixes.AutoCompletePrefix,
@@ -46,12 +45,16 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             RecognisedMethodsAndPrefixes.ValidatePrefix
         };
 
+        private ILogger<ComplementaryMethodsFilteringFacetFactory> logger;
+
         /// <summary>
         ///     The <see cref="IFacet" />s registered are the generic ones from no-architecture (where they exist)
         /// </summary>
         /// <param name="numericOrder"></param>
+        /// <param name="loggerFactory"></param>
         public ComplementaryMethodsFilteringFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions) { }
+            : base(numericOrder, loggerFactory, FeatureType.Actions) =>
+            logger = loggerFactory.CreateLogger<ComplementaryMethodsFilteringFacetFactory>();
 
         #region IMethodFilteringFacetFactory Members
 
@@ -59,19 +62,19 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         #endregion
 
-        private static bool IsComplementaryMethod(MethodInfo actionMethod) =>
+        private bool IsComplementaryMethod(MethodInfo actionMethod) =>
             PropertyPrefixes.Any(prefix => IsComplementaryPropertyMethod(actionMethod, prefix)) ||
             ActionPrefixes.Any(prefix => IsComplementaryActionMethod(actionMethod, prefix)) ||
             ParameterPrefixes.Any(prefix => IsComplementaryParameterMethod(actionMethod, prefix));
 
-        private static bool IsComplementaryPropertyMethod(MethodInfo actionMethod, string prefix) {
+        private bool IsComplementaryPropertyMethod(MethodInfo actionMethod, string prefix) {
             if (MatchesPrefix(actionMethod, prefix, out var propertyName)) {
                 var declaringType = actionMethod.DeclaringType;
                 Trace.Assert(declaringType != null, "declaringType != null");
                 var baseType = declaringType.BaseType;
 
                 if (InheritsProperty(baseType, propertyName)) {
-                    Log.WarnFormat("Filtering method {0} because of property {1} on {2}", actionMethod.Name, propertyName, baseType?.FullName);
+                    logger.LogWarning($"Filtering method {actionMethod.Name} because of property {propertyName} on {baseType?.FullName}");
                     return true;
                 }
             }
@@ -79,13 +82,13 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return false;
         }
 
-        private static bool IsComplementaryActionMethod(MethodInfo actionMethod, string prefix) {
+        private bool IsComplementaryActionMethod(MethodInfo actionMethod, string prefix) {
             if (MatchesPrefix(actionMethod, prefix, out var propertyName)) {
                 var declaringType = actionMethod.DeclaringType;
                 Debug.Assert(declaringType != null, "declaringType != null");
                 if (InheritsMethod(declaringType.BaseType, propertyName)) {
                     var baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
-                    Log.WarnFormat("Filtering method {0} because of action {1} on {2}", actionMethod.Name, propertyName, baseTypeName);
+                    logger.LogWarning($"Filtering method {actionMethod.Name} because of action {propertyName} on {baseTypeName}");
                     return true;
                 }
             }
@@ -93,14 +96,14 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return false;
         }
 
-        private static bool IsComplementaryParameterMethod(MethodInfo actionMethod, string prefix) {
+        private bool IsComplementaryParameterMethod(MethodInfo actionMethod, string prefix) {
             if (MatchesPrefix(actionMethod, prefix, out var propertyName)) {
                 propertyName = TrimDigits(propertyName);
                 var declaringType = actionMethod.DeclaringType;
                 Debug.Assert(declaringType != null, "declaringType != null");
                 if (InheritsMethod(declaringType.BaseType, propertyName)) {
                     var baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
-                    Log.WarnFormat("Filtering method {0} because of action {1} on {2}", actionMethod.Name, propertyName, baseTypeName);
+                    logger.LogWarning($"Filtering method {actionMethod.Name} because of action {propertyName} on {baseTypeName}");
                     return true;
                 }
             }
