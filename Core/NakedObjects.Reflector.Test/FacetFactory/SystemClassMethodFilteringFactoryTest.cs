@@ -8,7 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
@@ -126,8 +128,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             facetFactory = new SystemClassMethodFilteringFactory(0, LoggerFactory);
             var classStrategy = new DefaultClassStrategy(config);
             var metamodel = new Metamodel(classStrategy, cache, null);
+            var mockLogger = new Mock<ILogger<Reflector>>().Object;
+            var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
-            Reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory});
+            Reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory}, mockLoggerFactory, mockLogger);
         }
 
         [TestCleanup]

@@ -21,7 +21,6 @@ namespace NakedObjects.Reflect.Component {
     /// </summary>
     [Serializable]
     public sealed class DefaultClassStrategy : IClassStrategy {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(DefaultClassStrategy));
 
         private readonly IReflectorConfiguration config;
 

@@ -20,7 +20,6 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public abstract class AbstractFacetFactoryTest {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(AbstractFacetFactoryTest));
         protected IMetamodelManager Metamodel;
         protected IMethodRemover MethodRemover;
         protected ILoggerFactory LoggerFactory;
@@ -29,6 +28,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private Mock<IReflector> mockReflector;
         protected IReflector Reflector;
         protected ISpecificationBuilder Specification;
+        private ILogger<AbstractFacetFactoryTest> logger;
         protected abstract Type[] SupportedTypes { get; }
         protected abstract IFacetFactory FacetFactory { get; }
 
@@ -39,6 +39,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             mockReflector = new Mock<IReflector>();
             mockMetadata = new Mock<IMetamodelManager>();
             LoggerFactory = new LoggerFactory();
+            logger = LoggerFactory.CreateLogger<AbstractFacetFactoryTest>();
 
             MethodRemover = mockMethodRemover.Object;
             Reflector = mockReflector.Object;
@@ -65,56 +66,56 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         protected static bool Contains<T>(T[] array, T val) => array.Contains(val);
 
-        protected static MethodInfo FindMethod(Type type, string methodName, Type[] parameterTypes) {
+        protected MethodInfo FindMethod(Type type, string methodName, Type[] parameterTypes) {
             try {
                 return type.GetMethod(methodName, parameterTypes);
             }
             catch (AmbiguousMatchException) {
-                Log.Warn($"Failed to find method {methodName} on type {type.FullName}");
+                logger.LogWarning($"Failed to find method {methodName} on type {type.FullName}");
                 return null;
             }
             catch (ArgumentNullException) {
-                Log.Warn($"Failed to find method {methodName} on type {type.FullName}");
+                logger.LogWarning($"Failed to find method {methodName} on type {type.FullName}");
                 return null;
             }
             catch (ArgumentException) {
-                Log.Warn($"Failed to find method {methodName} on type {type.FullName}");
+                logger.LogWarning($"Failed to find method {methodName} on type {type.FullName}");
                 return null;
             }
         }
 
-        protected static MethodInfo FindMethodIgnoreParms(Type type, string methodName) {
+        protected  MethodInfo FindMethodIgnoreParms(Type type, string methodName) {
             try {
                 return type.GetMethod(methodName);
             }
             catch (AmbiguousMatchException) {
-                Log.Warn($"Failed to find method {methodName} on type {type.FullName}");
+                logger.LogWarning($"Failed to find method {methodName} on type {type.FullName}");
                 return null;
             }
             catch (ArgumentNullException) {
-                Log.Warn($"Failed to find method {methodName} on type {type.FullName}");
+                logger.LogWarning($"Failed to find method {methodName} on type {type.FullName}");
                 return null;
             }
             catch (ArgumentException) {
-                Log.Warn($"Failed to find method {methodName} on type {type.FullName}");
+                logger.LogWarning($"Failed to find method {methodName} on type {type.FullName}");
                 return null;
             }
         }
 
-        protected static PropertyInfo FindProperty(Type type, string propertyName) {
+        protected  PropertyInfo FindProperty(Type type, string propertyName) {
             try {
                 return type.GetProperty(propertyName);
             }
             catch (AmbiguousMatchException) {
-                Log.Warn($"Failed to find property {propertyName} on type {type.FullName}");
+                logger.LogWarning($"Failed to find property {propertyName} on type {type.FullName}");
                 return null;
             }
             catch (ArgumentNullException) {
-                Log.Warn($"Failed to find property {propertyName} on type {type.FullName}");
+                logger.LogWarning($"Failed to find property {propertyName} on type {type.FullName}");
                 return null;
             }
             catch (ArgumentException) {
-                Log.Warn($"Failed to find property {propertyName} on type {type.FullName}");
+                logger.LogWarning($"Failed to find property {propertyName} on type {type.FullName}");
                 return null;
             }
         }

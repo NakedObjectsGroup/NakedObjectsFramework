@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -24,10 +25,11 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflect.Component {
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
     public sealed class Reflector : IReflector {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(Reflector));
         private readonly IReflectorConfiguration config;
         private readonly FacetDecoratorSet facetDecoratorSet;
         private readonly IMenuFactory menuFactory;
+        private readonly ILoggerFactory loggerFactory;
+        private readonly ILogger<Reflector> logger;
         private readonly IMetamodelBuilder metamodel;
         private readonly ISet<Type> serviceTypes = new HashSet<Type>();
 
@@ -36,7 +38,9 @@ namespace NakedObjects.Reflect.Component {
                          IReflectorConfiguration config,
                          IMenuFactory menuFactory,
                          IEnumerable<IFacetDecorator> facetDecorators,
-                         IEnumerable<IFacetFactory> facetFactories) {
+                         IEnumerable<IFacetFactory> facetFactories,
+                         ILoggerFactory loggerFactory,
+                         ILogger<Reflector> logger) {
             Assert.AssertNotNull(classStrategy);
             Assert.AssertNotNull(metamodel);
             Assert.AssertNotNull(config);
@@ -46,6 +50,8 @@ namespace NakedObjects.Reflect.Component {
             this.metamodel = metamodel;
             this.config = config;
             this.menuFactory = menuFactory;
+            this.loggerFactory = loggerFactory;
+            this.logger = logger;
             facetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
             FacetFactorySet = new FacetFactorySet(facetFactories.ToArray());
         }
@@ -75,7 +81,7 @@ namespace NakedObjects.Reflect.Component {
                 return (T) spec;
             }
             catch (Exception) {
-                throw new ReflectionException(Log.LogAndReturn($"Specification for type {type.Name} is {spec.GetType().Name}: cannot be cast to {typeof(T).Name}"));
+                throw new ReflectionException(logger.LogAndReturn($"Specification for type {type.Name} is {spec.GetType().Name}: cannot be cast to {typeof(T).Name}"));
             }
         }
 
@@ -130,7 +136,7 @@ namespace NakedObjects.Reflect.Component {
         private void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services) {
             if (string.IsNullOrWhiteSpace(spec.FullName)) {
                 var id = (spec.Identifier != null ? spec.Identifier.ClassName : "unknown") ?? "unknown";
-                Log.WarnFormat("Specification with id : {0} as has null or empty name", id);
+                logger.LogWarning($"Specification with id : {id} as has null or empty name");
             }
 
             if (TypeUtils.IsSystem(spec.FullName) && !spec.IsCollection) {
@@ -152,7 +158,7 @@ namespace NakedObjects.Reflect.Component {
             if (menus != null) {
                 if (!menus.Any()) {
                     //Catches accidental non-specification of menus
-                    throw new ReflectionException(Log.LogAndReturn("No MainMenus specified."));
+                    throw new ReflectionException(logger.LogAndReturn("No MainMenus specified."));
                 }
 
                 foreach (var menu in menus.OfType<IMenuImmutable>()) {
@@ -211,19 +217,19 @@ namespace NakedObjects.Reflect.Component {
             var actualType = ClassStrategy.GetType(type);
 
             if (actualType == null) {
-                throw new ReflectionException(Log.LogAndReturn($"Attempting to introspect a non-introspectable type {type.FullName} "));
+                throw new ReflectionException(logger.LogAndReturn($"Attempting to introspect a non-introspectable type {type.FullName} "));
             }
 
             var specification = CreateSpecification(actualType);
 
             if (specification == null) {
-                throw new ReflectionException(Log.LogAndReturn($"unrecognised type {actualType.FullName}"));
+                throw new ReflectionException(logger.LogAndReturn($"unrecognised type {actualType.FullName}"));
             }
 
             // We need the specification available in cache even though not yet fully introspected 
             metamodel.Add(actualType, specification);
 
-            specification.Introspect(facetDecoratorSet, new Introspector(this));
+            specification.Introspect(facetDecoratorSet, new Introspector(this, loggerFactory.CreateLogger<Introspector>()));
 
             return specification;
         }

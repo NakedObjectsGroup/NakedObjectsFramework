@@ -125,7 +125,10 @@ namespace NakedObjects.Reflect.Test {
             var classStrategy = new DefaultClassStrategy(config);
             var mockLogger = new Mock<ILogger<Metamodel>>().Object;
             var metamodel = new Metamodel(classStrategy, cache, mockLogger);
-            var reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, facetFactories);
+            var mockLogger1 = new Mock<ILogger<Reflector>>().Object;
+            var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
+
+            var reflector = new Reflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, facetFactories, mockLoggerFactory, mockLogger1);
 
             Specification = LoadSpecification(reflector);
             Metamodel = metamodel;
