@@ -6,13 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using Common.Logging;
 using NakedObjects.Facade;
 using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest.Model {
     public class ReferenceValue : IValue {
-        private static readonly ILog Logger = LogManager.GetLogger<ReferenceValue>();
         private readonly string internalValue;
 
         public ReferenceValue(object value, string name) {
@@ -29,8 +27,8 @@ namespace NakedObjects.Rest.Model {
         // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
         private static void Validate(string internalValue, string name) {
             if (string.IsNullOrWhiteSpace(internalValue)) {
-                Logger.ErrorFormat("Malformed json name: {0} arguments: href = null or empty", name);
-                throw new ArgumentException("malformed arguments");
+                var msg = $"Malformed json name: {name} arguments: href = null or empty";
+                throw new ArgumentException($"malformed arguments : {msg}");
             }
         }
 

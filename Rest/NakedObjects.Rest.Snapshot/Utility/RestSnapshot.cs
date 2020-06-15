@@ -11,7 +11,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Principal;
-using Common.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.Extensions.Primitives;
@@ -24,7 +23,6 @@ using EntityTagHeaderValue = Microsoft.Net.Http.Headers.EntityTagHeaderValue;
 namespace NakedObjects.Rest.Snapshot.Utility {
     public class RestSnapshot {
         private readonly IList<string> allowHeaders = new List<string>();
-        private readonly ILog logger = LogManager.GetLogger<RestSnapshot>();
         private readonly IOidStrategy oidStrategy;
         private readonly Action populator;
         private readonly HttpRequest requestMessage;

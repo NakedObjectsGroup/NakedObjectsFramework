@@ -7,7 +7,6 @@
 
 using System;
 using System.Text.RegularExpressions;
-using Common.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 using NakedObjects.Facade;
@@ -18,7 +17,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
     public class UriMtHelper {
         public static Func<HttpRequest, string> GetAuthority;
         public static Func<HttpRequest, string> GetApplicationPath;
-        private static readonly ILog Logger = LogManager.GetLogger<UriMtHelper>();
         private readonly IActionFacade action;
         private readonly IAssociationFacade assoc;
         private readonly string cachedId; // cache because may not be available at writing time 

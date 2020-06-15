@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Component;
-using NakedObjects.ParallelReflect.Component;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Reflect.FacetFactory;
 using DefaultClassStrategy = NakedObjects.Reflect.Component.DefaultClassStrategy;

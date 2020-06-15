@@ -7,7 +7,6 @@
 
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Common.Logging;
 using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -16,7 +15,6 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class HomePageRepresentation : Representation {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(HomePageRepresentation));
 
         protected HomePageRepresentation(IOidStrategy oidStrategy, HttpRequest req, RestControlFlags flags)
             : base(oidStrategy, flags) {

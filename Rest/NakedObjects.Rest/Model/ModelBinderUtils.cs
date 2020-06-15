@@ -14,7 +14,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Common.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -24,8 +23,6 @@ using Newtonsoft.Json.Linq;
 
 namespace NakedObjects.Rest.Model {
     public static class ModelBinderUtils {
-        private static readonly ILog Logger = LogManager.GetLogger(typeof(ModelBinderUtils));
-
         private static string ExceptionWarning(Exception e) => RestSnapshot.DebugWarnings ? $"{e.Message} {e.StackTrace?.Replace("\r", " ").Replace("\n", " ")}" : "";
 
         private static bool IsReservedName(string name) => name.StartsWith(RestControlFlags.ReservedPrefix);
@@ -59,8 +56,7 @@ namespace NakedObjects.Rest.Model {
         // name parameter is just to improve logging 
         private static IValue GetValue(JObject jObject, string name) {
             if (GetNonReservedProperties(jObject).Count() > 1) {
-                Logger.ErrorFormat("Malformed json name: {0)  arguments: {1}", name, jObject.ToString());
-                throw new ArgumentException("malformed arguments");
+                throw new ArgumentException($"malformed arguments: Malformed json name: {name}  arguments: {jObject}");
             }
 
             var value = jObject[JsonPropertyNames.Value];
@@ -141,9 +137,8 @@ namespace NakedObjects.Rest.Model {
                     }
                 }
                 catch (Exception e) {
-                    Logger.ErrorFormat("Malformed single value argument: {0}", e.Message);
                     arg.IsMalformed = true;
-                    arg.MalformedReason = ExceptionWarning(e);
+                    arg.MalformedReason = $"Malformed single value argument: {ExceptionWarning(e)}";
                 }
             }
 
@@ -177,9 +172,8 @@ namespace NakedObjects.Rest.Model {
                     }
                 }
                 catch (Exception e) {
-                    Logger.ErrorFormat("Malformed argument map: {0}", e.Message);
                     arg.IsMalformed = true;
-                    arg.MalformedReason = ExceptionWarning(e);
+                    arg.MalformedReason = $"Malformed argument map: {ExceptionWarning(e)}";
                 }
             }
             else {
@@ -248,8 +242,8 @@ namespace NakedObjects.Rest.Model {
                     bindingContext.Result = ModelBindingResult.Success(await parseFunc());
                 }
                 catch (Exception e) {
-                    LogManager.GetLogger<ArgumentMapBinder>().ErrorFormat("Parsing of request arguments failed: {0}", e.Message);
-                    bindingContext.Result = ModelBindingResult.Success(failFunc(ExceptionWarning(e)));
+                    var msg = $"Parsing of request arguments failed: {ExceptionWarning(e)}";
+                    bindingContext.Result = ModelBindingResult.Success(failFunc(msg));
                 }
             }
             catch (Exception) {
@@ -286,9 +280,8 @@ namespace NakedObjects.Rest.Model {
                 reservedArgs.InlineCollectionItems = inlineItemsFlag != null ? bool.Parse(inlineItemsFlag) : (bool?) null;
             }
             catch (Exception e) {
-                Logger.ErrorFormat("Malformed reserved arguments: {0}", e.Message);
                 args.IsMalformed = true;
-                args.MalformedReason = ExceptionWarning(e);
+                args.MalformedReason = $"Malformed reserved arguments: {ExceptionWarning(e)}";
             }
         }
 

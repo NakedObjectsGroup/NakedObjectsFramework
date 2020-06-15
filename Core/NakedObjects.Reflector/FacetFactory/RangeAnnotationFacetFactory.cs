@@ -8,7 +8,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;

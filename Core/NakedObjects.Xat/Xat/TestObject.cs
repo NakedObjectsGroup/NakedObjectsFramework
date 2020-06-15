@@ -8,7 +8,6 @@
 using System;
 using System.Linq;
 using System.Text;
-using Common.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;

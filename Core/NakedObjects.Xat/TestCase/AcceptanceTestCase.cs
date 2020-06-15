@@ -13,7 +13,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
-using Common.Logging;
 using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

@@ -10,10 +10,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using Common.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
@@ -25,14 +25,15 @@ using static NakedObjects.Rest.API.ControllerHelpers;
 
 namespace NakedObjects.Rest {
     public class RestfulObjectsControllerBase : ControllerBase {
+        private readonly ILogger<RestfulObjectsControllerBase> logger;
+
         #region constructor and properties
 
-        protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade) {
+        protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade, ILogger<RestfulObjectsControllerBase> logger) {
+            this.logger = logger;
             FrameworkFacade = frameworkFacade;
             OidStrategy = frameworkFacade.OidStrategy;
         }
-
-        private static readonly ILog Logger = LogManager.GetLogger<RestfulObjectsControllerBase>();
 
         static RestfulObjectsControllerBase() {
             // defaults 
@@ -358,7 +359,7 @@ namespace NakedObjects.Rest {
                 return ErrorResult(e);
             }
             catch (Exception e) {
-                Logger.ErrorFormat("Unhandled exception from frameworkFacade {0} {1}", e.GetType(), e.Message);
+                logger.LogError(e, $"Unhandled exception from frameworkFacade {e.GetType()} {e.Message}");
                 return ErrorResult(e);
             }
             finally {
@@ -387,7 +388,7 @@ namespace NakedObjects.Rest {
                 return ErrorResult(e);
             }
             catch (Exception e) {
-                Logger.ErrorFormat("Unhandled exception while configuring message {0} {1}", e.GetType(), e.Message);
+                logger.LogError(e, $"Unhandled exception while configuring message {e.GetType()} {e.Message}");
                 return ErrorResult(e);
             }
         }

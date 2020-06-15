@@ -8,7 +8,6 @@
 using System;
 using System.Diagnostics;
 using System.Xml.Linq;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Core.Util;
 

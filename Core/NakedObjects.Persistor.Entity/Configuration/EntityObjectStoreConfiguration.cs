@@ -11,10 +11,7 @@ using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
-using Common.Logging;
 using NakedObjects.Core;
-using NakedObjects.Core.Util;
-using NakedObjects.Resources;
 
 namespace NakedObjects.Persistor.Entity.Configuration {
     public class EntityObjectStoreConfiguration : IEntityObjectStoreConfiguration {

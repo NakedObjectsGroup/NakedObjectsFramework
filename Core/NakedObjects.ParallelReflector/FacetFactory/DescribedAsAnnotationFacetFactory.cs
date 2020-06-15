@@ -9,7 +9,6 @@ using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Reflection;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;

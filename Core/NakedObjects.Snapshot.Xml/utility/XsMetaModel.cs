@@ -8,8 +8,6 @@
 using System;
 using System.Linq;
 using System.Xml.Linq;
-using Common.Logging;
-using NakedObjects.Core.Util;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     public static class XsMetaModel {

@@ -8,7 +8,6 @@
 using System;
 using System.Data.Entity.Core;
 using System.Linq;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;

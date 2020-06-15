@@ -14,7 +14,6 @@ using System.Reflection.Emit;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
-using Common.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 using NakedObjects.Facade;
@@ -25,7 +24,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class Representation : IRepresentation {
         private static readonly object ModuleBuilderLock = new object();
-        private static readonly ILog Log = LogManager.GetLogger<Representation>();
         protected CacheType Caching;
         protected string Etag;
         protected List<string> Warnings = new List<string>();
@@ -53,19 +51,13 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         public string[] GetWarnings() {
             var allWarnings = new List<string>(Warnings);
 
-            try {
-                var properties = GetType().GetProperties();
+            var properties = GetType().GetProperties();
 
-                var repProperties = properties.Where(p => typeof(IRepresentation).IsAssignableFrom(p.PropertyType)).Select(p => (IRepresentation) p.GetValue(this, null));
-                var repProperties1 = properties.Where(p => typeof(IRepresentation[]).IsAssignableFrom(p.PropertyType)).SelectMany(p => (IRepresentation[]) p.GetValue(this, null));
+            var repProperties = properties.Where(p => typeof(IRepresentation).IsAssignableFrom(p.PropertyType)).Select(p => (IRepresentation) p.GetValue(this, null));
+            var repProperties1 = properties.Where(p => typeof(IRepresentation[]).IsAssignableFrom(p.PropertyType)).SelectMany(p => (IRepresentation[]) p.GetValue(this, null));
 
-                allWarnings.AddRange(repProperties.Where(p => p != null).SelectMany(p => p.GetWarnings()));
-                allWarnings.AddRange(repProperties1.Where(p => p != null).SelectMany(p => p.GetWarnings()));
-            }
-            catch (Exception e) {
-                Log.ErrorFormat("Error on getting warnings - is a Representation null?", e);
-                throw;
-            }
+            allWarnings.AddRange(repProperties.Where(p => p != null).SelectMany(p => p.GetWarnings()));
+            allWarnings.AddRange(repProperties1.Where(p => p != null).SelectMany(p => p.GetWarnings()));
 
             return allWarnings.ToArray();
         }

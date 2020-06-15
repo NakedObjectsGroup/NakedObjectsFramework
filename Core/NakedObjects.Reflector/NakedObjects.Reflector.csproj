@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Common.Logging.Core" Version="3.4.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj" />
     <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj" />
     <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj" />
