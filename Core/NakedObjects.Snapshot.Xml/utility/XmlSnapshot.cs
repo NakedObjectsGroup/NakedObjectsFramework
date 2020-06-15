@@ -15,6 +15,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
@@ -24,20 +25,28 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Snapshot.Xml.Utility {
     [NotMapped]
     public class XmlSnapshot : IXmlSnapshot {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(XmlSnapshot));
         private readonly IMetamodelManager metamodelManager;
+        private readonly ILogger<XmlSnapshot> logger;
         private readonly INakedObjectManager nakedObjectManager;
         private readonly Place rootPlace;
 
         private bool topLevelElementWritten;
 
         //  Start a snapshot at the root object, using own namespace manager.
-        public XmlSnapshot(object obj, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) : this(obj, new XmlSchema(), nakedObjectManager, metamodelManager) { }
+        public XmlSnapshot(object obj,
+                           INakedObjectManager nakedObjectManager,
+                           IMetamodelManager metamodelManager,
+                           ILoggerFactory loggerFactory) : this(obj,
+            new XmlSchema(loggerFactory.CreateLogger<XmlSchema>()),
+            nakedObjectManager,
+            metamodelManager,
+            loggerFactory.CreateLogger<XmlSnapshot>()) { }
 
         // Start a snapshot at the root object, using supplied namespace manager.
-        public XmlSnapshot(object obj, XmlSchema schema, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager) {
+        public XmlSnapshot(object obj, XmlSchema schema, INakedObjectManager nakedObjectManager, IMetamodelManager metamodelManager, ILogger<XmlSnapshot> logger) {
             this.nakedObjectManager = nakedObjectManager;
             this.metamodelManager = metamodelManager;
+            this.logger = logger;
 
             var rootObjectAdapter = nakedObjectManager.CreateAdapter(obj, null, null);
 
@@ -52,7 +61,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                 rootPlace = AppendXml(rootObjectAdapter);
             }
             catch (ArgumentException e) {
-                throw new NakedObjectSystemException(Log.LogAndReturn("Unable to build snapshot"), e);
+                throw new NakedObjectSystemException(logger.LogAndReturn("Unable to build snapshot"), e);
             }
         }
 
@@ -175,7 +184,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             var parentXsElement = parentElement.Annotation<XElement>();
 
             if (parentElement.Document != XmlDocument) {
-                throw new ArgumentException(Log.LogAndReturn("parent XML XElement must have snapshot's XML document as its owner"));
+                throw new ArgumentException(logger.LogAndReturn("parent XML XElement must have snapshot's XML document as its owner"));
             }
 
             var childPlace = ObjectToElement(childObjectAdapter);
@@ -412,7 +421,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                         }
                     }
                     catch (Exception) {
-                        Log.Warn("objectToElement(NO): " + DoLog("field", fieldName) + ": getField() threw exception - skipping XML generation");
+                        logger.LogWarning($"objectToElement(NO): {DoLog("field", fieldName)}: getField() threw exception - skipping XML generation");
                     }
 
                     // XSD
@@ -436,7 +445,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                         }
                     }
                     catch (Exception) {
-                        Log.Warn("objectToElement(NO): " + DoLog("field", fieldName) + ": getAssociation() threw exception - skipping XML generation");
+                        logger.LogWarning($"objectToElement(NO): {DoLog("field", fieldName)}: getAssociation() threw exception - skipping XML generation");
                     }
 
                     // XSD
@@ -456,7 +465,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
                         NofMetaModel.SetNofCollection(xmlCollectionElement, Schema.Prefix, fullyQualifiedClassName, collection, nakedObjectManager);
                     }
                     catch (Exception) {
-                        Log.Warn("objectToElement(NO): " + DoLog("field", fieldName) + ": get(obj) threw exception - skipping XML generation");
+                        logger.LogWarning($"objectToElement(NO): {DoLog("field", fieldName)}: get(obj) threw exception - skipping XML generation");
                     }
 
                     // XSD

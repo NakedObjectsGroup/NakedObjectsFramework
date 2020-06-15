@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Principal;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -34,11 +35,12 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Facade.Impl {
     public class FrameworkFacade : IFrameworkFacade {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(FrameworkFacade));
         private readonly IStringHasher stringHasher;
+        private readonly ILogger<FrameworkFacade> logger;
 
-        public FrameworkFacade(IOidStrategy oidStrategy, IOidTranslator oidTranslator, INakedObjectsFramework framework, IStringHasher stringHasher) {
+        public FrameworkFacade(IOidStrategy oidStrategy, IOidTranslator oidTranslator, INakedObjectsFramework framework, IStringHasher stringHasher, ILogger<FrameworkFacade> logger) {
             this.stringHasher = stringHasher;
+            this.logger = logger;
             oidStrategy.FrameworkFacade = this;
             OidStrategy = oidStrategy;
             OidTranslator = oidTranslator;
@@ -371,7 +373,7 @@ namespace NakedObjects.Facade.Impl {
             var transientHash = GetTransientSecurityHash(nakedObject, out var rawValue);
 
             if (transientHash != digest) {
-                Log.Error($"Transient Integrity failed for: {nakedObject.Id} bad values: {rawValue} old hash: {digest} new hash {transientHash}");
+                logger.LogError($"Transient Integrity failed for: {nakedObject.Id} bad values: {rawValue} old hash: {digest} new hash {transientHash}");
                 throw new BadRequestNOSException("Values provided may not be persisted as an object (ensure any derived properties are annotated NotPersisted");
             }
         }
@@ -601,7 +603,7 @@ namespace NakedObjects.Facade.Impl {
                         if (result != null && result.ResolveState.IsTransient()) {
                             var securityHash = GetTransientSecurityHash(oc, out var rawValue);
                             actionResultContext.TransientSecurityHash = securityHash;
-                            Log.Info($"Creating hash for: {oc.Id} raw values: {rawValue} hash: {securityHash}");
+                            logger.LogInformation($"Creating hash for: {oc.Id} raw values: {rawValue} hash: {securityHash}");
                         }
 
                         actionResultContext.Result = oc;

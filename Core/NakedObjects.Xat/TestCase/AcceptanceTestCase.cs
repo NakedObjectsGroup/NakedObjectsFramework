@@ -23,6 +23,7 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Fixture;
 using NakedObjects.Core.Util;
@@ -34,7 +35,6 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
-        private static readonly ILog Log;
         private FixtureServices fixtureServices;
 
         protected IServiceProvider RootServiceProvider;
@@ -42,8 +42,6 @@ namespace NakedObjects.Xat {
         private IDictionary<string, ITestService> servicesCache = new Dictionary<string, ITestService>();
         private ITestObjectFactory testObjectFactory;
         private IPrincipal testPrincipal;
-
-        static AcceptanceTestCase() => Log = LogManager.GetLogger(typeof(AcceptanceTestCase));
 
         protected AcceptanceTestCase(string name) {
             Name = name;
@@ -194,15 +192,15 @@ namespace NakedObjects.Xat {
                 transactionManager.EndTransaction();
             }
             catch (Exception e) {
-                Log.Error("installing fixture " + fixture.GetType().FullName + " failed (" + e.Message + "); aborting fixture ", e);
+                var msg = $"installing fixture {fixture.GetType().FullName} failed ({e.Message}); aborting fixture ";
                 try {
                     transactionManager.AbortTransaction();
                 }
                 catch (Exception e2) {
-                    Log.Error("failure during abort", e2);
+                    msg = $"{msg} - {e2.Message} failure during abort";
                 }
 
-                throw;
+                throw new NakedObjectSystemException(msg, e);
             }
         }
 

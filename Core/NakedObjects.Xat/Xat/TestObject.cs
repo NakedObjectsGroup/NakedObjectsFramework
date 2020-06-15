@@ -21,12 +21,9 @@ using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Xat {
     internal class TestObject : TestHasActions, ITestObject {
-        private static readonly ILog Log;
         private readonly ILifecycleManager lifecycleManager;
         private readonly IObjectPersistor persistor;
         private readonly ITransactionManager transactionManager;
-
-        static TestObject() => Log = LogManager.GetLogger(typeof(TestObject));
 
         public TestObject(ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectAdapter nakedObjectAdapter, ITestObjectFactory factory, ITransactionManager transactionManager)
             : base(factory) {

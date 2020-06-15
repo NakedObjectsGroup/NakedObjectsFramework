@@ -9,52 +9,55 @@ using System;
 using System.Diagnostics;
 using System.Xml.Linq;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Snapshot.Xml.Utility {
     public class XmlSchema {
+        private readonly ILogger<XmlSchema> logger;
         public const string DefaultPrefix = "app";
-        private static readonly ILog Log = LogManager.GetLogger(typeof(XmlSchema));
 
         private string uri;
         // The base part of the namespace prefix to use if none explicitly supplied in the constructor.
 
-        public XmlSchema() : this(NofMetaModel.DefaultUriBase, DefaultPrefix) { }
+        public XmlSchema(ILogger<XmlSchema> logger) : this(NofMetaModel.DefaultUriBase, DefaultPrefix) {
+            this.logger = logger;
+        }
         // uriBase the prefix for the application namespace's URIs
         // prefix the prefix for the application namespace's prefix
 
         public XmlSchema(string uriBase, string prefix) {
             uriBase = Helper.TrailingSlash(uriBase);
             if (uriBase == XNamespace.Xmlns.NamespaceName) {
-                throw new ArgumentException(Log.LogAndReturn("Namespace URI reserved for w3.org XMLNS namespace"));
+                throw new ArgumentException(logger.LogAndReturn("Namespace URI reserved for w3.org XMLNS namespace"));
             }
 
             if (prefix == XsMetaModel.W3OrgXmlnsPrefix) {
-                throw new ArgumentException(Log.LogAndReturn("Namespace prefix reserved for w3.org XMLNS namespace."));
+                throw new ArgumentException(logger.LogAndReturn("Namespace prefix reserved for w3.org XMLNS namespace."));
             }
 
             if (uriBase == XsMetaModel.Xs.NamespaceName) {
-                throw new ArgumentException(Log.LogAndReturn("Namespace URI reserved for w3.org XML schema namespace."));
+                throw new ArgumentException(logger.LogAndReturn("Namespace URI reserved for w3.org XML schema namespace."));
             }
 
             if (prefix == XsMetaModel.W3OrgXsPrefix) {
-                throw new ArgumentException(Log.LogAndReturn("Namespace prefix reserved for w3.org XML schema namespace."));
+                throw new ArgumentException(logger.LogAndReturn("Namespace prefix reserved for w3.org XML schema namespace."));
             }
 
             if (uriBase == XsMetaModel.Xsi.NamespaceName) {
-                throw new ArgumentException(Log.LogAndReturn("Namespace URI reserved for w3.org XML schema-instance namespace."));
+                throw new ArgumentException(logger.LogAndReturn("Namespace URI reserved for w3.org XML schema-instance namespace."));
             }
 
             if (prefix == XsMetaModel.W3OrgXsiPrefix) {
-                throw new ArgumentException(Log.LogAndReturn("Namespace prefix reserved for w3.org XML schema-instance namespace."));
+                throw new ArgumentException(logger.LogAndReturn("Namespace prefix reserved for w3.org XML schema-instance namespace."));
             }
 
             if (uriBase == NofMetaModel.Nof.NamespaceName) {
-                throw new ArgumentException(Log.LogAndReturn("Namespace URI reserved for NOF metamodel namespace."));
+                throw new ArgumentException(logger.LogAndReturn("Namespace URI reserved for NOF metamodel namespace."));
             }
 
             if (prefix == NofMetaModel.NofMetamodelNsPrefix) {
-                throw new ArgumentException(Log.LogAndReturn("Namespace prefix reserved for NOF metamodel namespace."));
+                throw new ArgumentException(logger.LogAndReturn("Namespace prefix reserved for NOF metamodel namespace."));
             }
 
             UriBase = uriBase;
@@ -75,7 +78,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // Returns the namespace URI for the class.
         public void SetUri(string fullyQualifiedClassName) {
             if (uri != null) {
-                throw new InvalidOperationException(Log.LogAndReturn("URI has already been specified."));
+                throw new InvalidOperationException(logger.LogAndReturn("URI has already been specified."));
             }
 
             uri = UriBase + Helper.PackageNameFor(fullyQualifiedClassName) + "/" + Helper.ClassNameFor(fullyQualifiedClassName);
@@ -86,7 +89,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         // The value returned will be <code>null</code> until a Snapshot}is created.
         public string GetUri() {
             if (uri == null) {
-                throw new InvalidOperationException(Log.LogAndReturn("URI has not been specified."));
+                throw new InvalidOperationException(logger.LogAndReturn("URI has not been specified."));
             }
 
             return uri;
@@ -120,7 +123,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         public void SetTargetNamespace(XDocument xsdDoc, string fullyQualifiedClassName) {
             var xsSchemaElement = xsdDoc.Root;
             if (xsSchemaElement == null) {
-                throw new ArgumentException(Log.LogAndReturn("XSD XDocument must have <xs:schema> element attached"));
+                throw new ArgumentException(logger.LogAndReturn("XSD XDocument must have <xs:schema> element attached"));
             }
 
             //	targetNamespace="http://www.nakedobjects.org/ns/app/<fully qualified class name>"
@@ -470,7 +473,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             var parentChoiceOrSequenceElement = XsMetaModel.ChoiceOrSequenceFor(XsMetaModel.ComplexTypeFor(parentXsElement));
 
             if (parentChoiceOrSequenceElement == null) {
-                throw new ArgumentException(Log.LogAndReturn("Unable to locate complexType/sequence or complexType/choice under supplied parent XSD element"));
+                throw new ArgumentException(logger.LogAndReturn("Unable to locate complexType/sequence or complexType/choice under supplied parent XSD element"));
             }
 
             var childXsElementAttr = childXsElement.Attribute("name");

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -19,10 +20,13 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Facade.Impl.Utility {
     public class EntityOidStrategy : IOidStrategy {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(EntityOidStrategy));
         private readonly INakedObjectsFramework framework;
+        private readonly ILogger<EntityOidStrategy> logger;
 
-        public EntityOidStrategy(INakedObjectsFramework framework) => this.framework = framework;
+        public EntityOidStrategy(INakedObjectsFramework framework, ILogger<EntityOidStrategy> logger) {
+            this.framework = framework;
+            this.logger = logger;
+        }
 
         #region IOidStrategy Members
 
@@ -156,8 +160,10 @@ namespace NakedObjects.Facade.Impl.Utility {
                 return framework.Persistor.FindByKeys(type, keyDict.Values.ToArray());
             }
             catch (Exception e) {
-                Log.Warn("Domain Object not found with exception", e);
-                Log.WarnFormat("Domain Object not found keys: {0} type: {1}", keys == null ? "null" : keys.Aggregate("", (s, t) => $"{s} {t}"), type == null ? "null" : type.ToString());
+                logger.LogWarning(e, "Domain Object not found with exception");
+                var keysvalue = keys == null ? "null" : keys.Aggregate("", (s, t) => $"{s} {t}");
+                var typevalue = type == null ? "null" : type.ToString();
+                logger.LogWarning($"Domain Object not found keys: {keysvalue} type: {typevalue}");
                 return null;
             }
         }
@@ -169,8 +175,10 @@ namespace NakedObjects.Facade.Impl.Utility {
                 return viewModel;
             }
             catch (Exception e) {
-                Log.Warn("View Model not found with exception", e);
-                Log.WarnFormat("View Model not found keys: {0} type: {1}", keys == null ? "null" : keys.Aggregate("", (s, t) => $"{s} {t}"), spec == null ? "null" : spec.FullName);
+                logger.LogWarning(e, "View Model not found with exception");
+                var aggregate = keys == null ? "null" : keys.Aggregate("", (s, t) => $"{s} {t}");
+                var specFullName = spec == null ? "null" : spec.FullName;
+                logger.LogWarning($"View Model not found keys: {aggregate} type: {specFullName}");
                 return null;
             }
         }

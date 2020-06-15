@@ -22,8 +22,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         #endregion
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(XsMetaModel));
-
         // Creates an &lt;xs:schema&gt; element for the document
         // to the provided element, attaching to root of supplied Xsd doc.
         // 
@@ -34,7 +32,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public static XElement CreateXsSchemaElement(XDocument xsdDoc) {
             if (xsdDoc.Root != null) {
-                throw new ArgumentException(Log.LogAndReturn("XSD document already has content"));
+                throw new ArgumentException("XSD document already has content");
             }
 
             var xsSchemaElement = CreateXsElement(xsdDoc, "schema");
