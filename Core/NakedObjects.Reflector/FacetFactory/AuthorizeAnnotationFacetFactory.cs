@@ -19,10 +19,12 @@ using NakedObjects.Security;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class AuthorizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(AuthorizeAnnotationFacetFactory));
+        private ILogger<AuthorizeAnnotationFacetFactory> logger;
 
         public AuthorizeAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
+            : base(numericOrder, loggerFactory, FeatureType.PropertiesCollectionsAndActions) {
+            logger = loggerFactory.CreateLogger<AuthorizeAnnotationFacetFactory>();
+        }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) { }
 
@@ -33,7 +35,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             if (classAttribute != null && methodAttribute != null) {
                 var declaringTypeName = declaringType.FullName;
-                Log.WarnFormat("Class and method level AuthorizeAttributes applied to class {0} - ignoring attribute on method {1}", declaringTypeName, method.Name);
+                logger.LogWarning($"Class and method level AuthorizeAttributes applied to class {declaringTypeName} - ignoring attribute on method {method.Name}");
             }
 
             Create(classAttribute ?? methodAttribute, specification);
@@ -46,7 +48,7 @@ namespace NakedObjects.Reflect.FacetFactory {
 
             if (classAttribute != null && propertyAttribute != null) {
                 var declaringTypeName = declaringType.FullName;
-                Log.WarnFormat("Class and property level AuthorizeAttributes applied to class {0} - ignoring attribute on property {1}", declaringTypeName, property.Name);
+                logger.LogWarning($"Class and property level AuthorizeAttributes applied to class {declaringTypeName} - ignoring attribute on property {property.Name}");
             }
 
             Create(classAttribute ?? propertyAttribute, specification);

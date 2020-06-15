@@ -19,10 +19,12 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     string.
     /// </summary>
     public sealed class SystemClassPropertyFilteringFactory : FacetFactoryAbstract, IPropertyFilteringFacetFactory {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(SystemClassPropertyFilteringFactory));
+        private ILogger<SystemClassPropertyFilteringFactory> logger;
 
         public SystemClassPropertyFilteringFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Properties) { }
+            : base(numericOrder, loggerFactory, FeatureType.Properties) {
+            logger = loggerFactory.CreateLogger<SystemClassPropertyFilteringFactory>();
+        }
 
         #region IPropertyFilteringFacetFactory Members
 

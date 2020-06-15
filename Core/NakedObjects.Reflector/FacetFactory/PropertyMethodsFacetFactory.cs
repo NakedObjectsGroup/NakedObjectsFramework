@@ -25,14 +25,17 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class PropertyMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(PropertyMethodsFacetFactory));
 
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ModifyPrefix
         };
 
+        private ILogger<PropertyMethodsFacetFactory> logger;
+
         public PropertyMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Properties) { }
+            : base(numericOrder, loggerFactory, FeatureType.Properties) {
+            logger = loggerFactory.CreateLogger<PropertyMethodsFacetFactory>();
+        }
 
         public override string[] Prefixes => FixedPrefixes;
 
@@ -133,10 +136,8 @@ namespace NakedObjects.Reflect.FacetFactory {
                 typeof(IEnumerable<>).MakeGenericType(returnType));
 
             if (methods.Length > 1) {
-                methods.Skip(1).ForEach(m => Log.WarnFormat("Found multiple choices methods: {0} in type: {1} ignoring method(s) with params: {2}",
-                    RecognisedMethodsAndPrefixes.ChoicesPrefix + capitalizedName,
-                    type,
-                    m.GetParameters().Select(p => p.Name).Aggregate("", (s, t) => s + " " + t)));
+                var name = RecognisedMethodsAndPrefixes.ChoicesPrefix + capitalizedName;
+                methods.Skip(1).ForEach(m => logger.LogWarning($"Found multiple choices methods: {name} in type: {type} ignoring method(s) with params: {m.GetParameters().Select(p => p.Name).Aggregate("", (s, t) => s + " " + t)}"));
             }
 
             var method = methods.FirstOrDefault();

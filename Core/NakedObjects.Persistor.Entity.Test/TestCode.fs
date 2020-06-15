@@ -36,7 +36,8 @@ let getEntityObjectStore (config) =
     let i = new DomainObjectContainerInjector(c, mlf.Object, ml.Object)
     let m = mockMetamodelManager.Object
     let nom = (new Mock<INakedObjectManager>()).Object
-    new EntityObjectStore(s, config, new EntityOidGenerator(m, mlf.Object), m, i, nom)
+    let log = (new Mock<ILogger<EntityObjectStore>>()).Object;
+    new EntityObjectStore(s, config, new EntityOidGenerator(m, mlf.Object), m, i, nom, log)
 
 let CreateAndSetup<'t when 't : not struct> (p : EntityObjectStore) setter = 
     let inst = p.CreateInstance<'t>(null)
@@ -99,7 +100,7 @@ let GetMaxID<'t when 't : not struct> (p : EntityObjectStore) fGetID =
 let GetNextID<'t when 't : not struct> (p : EntityObjectStore) fGetID = (GetMaxID<'t> p fGetID) + 1
 
 let CanGetObjectByKey<'t when 't : not struct> (p : EntityObjectStore) keys = 
-    let key = new EntityOid(mockMetamodelManager.Object, typeof<'t>, keys, false)
+    let key = new EntityOid(mockMetamodelManager.Object, typeof<'t>, keys, false, null)
     let obj = p.GetObjectByKey(key, typeof<'t>)
     Assert.IsNotNull(obj)
 

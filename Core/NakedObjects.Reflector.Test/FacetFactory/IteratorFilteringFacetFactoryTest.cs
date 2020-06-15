@@ -45,7 +45,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new IteratorFilteringFacetFactory(0, null);
+            facetFactory = new IteratorFilteringFacetFactory(0, LoggerFactory);
         }
 
         [TestCleanup]

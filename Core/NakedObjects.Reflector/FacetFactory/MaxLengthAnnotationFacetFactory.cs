@@ -21,17 +21,19 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class MaxLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(MaxLengthAnnotationFacetFactory));
+        private ILogger<MaxLengthAnnotationFacetFactory> logger;
 
         public MaxLengthAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) { }
+            : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) {
+            logger = loggerFactory.CreateLogger<MaxLengthAnnotationFacetFactory>();
+        }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) type.GetCustomAttribute<MaxLengthAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static void Process(MemberInfo member, ISpecification holder) {
+        private void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) member.GetCustomAttribute<MaxLengthAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
@@ -47,12 +49,12 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        private static IMaxLengthFacet Create(Attribute attribute, ISpecification holder) =>
+        private IMaxLengthFacet Create(Attribute attribute, ISpecification holder) =>
             attribute switch {
                 null => null,
                 StringLengthAttribute lengthAttribute => Create(lengthAttribute, holder),
                 MaxLengthAttribute maxLengthAttribute => Create(maxLengthAttribute, holder),
-                _ => throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
+                _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
             };
 
         private static IMaxLengthFacet Create(MaxLengthAttribute attribute, ISpecification holder) => attribute == null ? null : new MaxLengthFacetAnnotation(attribute.Length, holder);

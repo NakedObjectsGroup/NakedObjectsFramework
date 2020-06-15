@@ -63,7 +63,7 @@ let AddAdapter (ob : obj) oid =
     let dobj = ob
     
     let eoid : IOid = 
-        if oid = null then ((box (new EntityOid(mockMetamodelManager.Object, ob.GetType(), [| box 0 |], true))) :?> IOid)
+        if oid = null then ((box (new EntityOid(mockMetamodelManager.Object, ob.GetType(), [| box 0 |], true, null))) :?> IOid)
         else oid
     
     let rsm = new ResolveStateMachine(testNakedObject, null)

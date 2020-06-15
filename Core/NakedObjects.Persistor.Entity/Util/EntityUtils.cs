@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Adapter;
@@ -14,8 +13,6 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Persistor.Entity.Util {
     public static class EntityUtils {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(EntityUtils));
-
         public static void UpdateVersion(this INakedObjectAdapter nakedObjectAdapter, ISession session, INakedObjectManager manager) {
             var versionObject = nakedObjectAdapter?.GetVersion(manager);
             if (versionObject != null) {

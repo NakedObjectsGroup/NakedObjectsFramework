@@ -23,10 +23,12 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="FindMenuAttribute" /> annotation
     /// </summary>
     public sealed class FindMenuFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(FindMenuFacetFactory));
+        private ILogger<FindMenuFacetFactory> logger;
 
         public FindMenuFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
+            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) {
+            logger = loggerFactory.CreateLogger<FindMenuFacetFactory>();
+        }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<FindMenuAttribute>();
@@ -38,7 +40,7 @@ namespace NakedObjects.Reflect.FacetFactory {
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var pType = property.PropertyType;
             if ((pType.IsPrimitive || pType == typeof(string) || TypeUtils.IsEnum(pType)) && property.GetCustomAttribute<FindMenuAttribute>() != null) {
-                Log.Warn("Ignoring FindMenu annotation on primitive or un-readable parameter on " + property.ReflectedType + "." + property.Name);
+                logger.LogWarning($"Ignoring FindMenu annotation on primitive or un-readable parameter on {property.ReflectedType}.{property.Name}");
                 return;
             }
 
@@ -52,7 +54,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             var pType = parameter.ParameterType;
             if (pType.IsPrimitive || pType == typeof(string) || TypeUtils.IsEnum(pType)) {
                 if (method.GetCustomAttribute<FindMenuAttribute>() != null) {
-                    Log.Warn("Ignoring FindMenu annotation on primitive parameter " + paramNum + " on " + method.ReflectedType + "." + method.Name);
+                    logger.LogWarning($"Ignoring FindMenu annotation on primitive parameter {paramNum} on {method.ReflectedType}.{method.Name}");
                 }
 
                 return;

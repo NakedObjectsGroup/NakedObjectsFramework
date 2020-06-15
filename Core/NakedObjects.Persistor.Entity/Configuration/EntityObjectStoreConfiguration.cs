@@ -18,7 +18,6 @@ using NakedObjects.Resources;
 
 namespace NakedObjects.Persistor.Entity.Configuration {
     public class EntityObjectStoreConfiguration : IEntityObjectStoreConfiguration {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(EntityObjectStoreConfiguration));
         private bool isContextSet;
 
         public EntityObjectStoreConfiguration() {
@@ -107,15 +106,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         // for testing
         public void ForceContextSet() => isContextSet = true;
 
-        public void FlagConnectionStringMismatches(string[] connectionStringNames) {
-            var configuredContextNames = NamedContextTypes.Keys;
-
-            var configuredButNotUsed = configuredContextNames.Where(s => !connectionStringNames.Contains(s));
-            var usedButNotConfigured = connectionStringNames.Where(s => !configuredContextNames.Contains(s));
-
-            configuredButNotUsed.ForEach(s => Log.WarnFormat(Model.ContextNameMismatch1, s));
-            usedButNotConfigured.ForEach(s => Log.WarnFormat(Model.ContextNameMismatch2, s));
-        }
 
         public string[] GetConnectionStringNamesFromConfig() {
             var connectionStrings = ConfigurationManager.ConnectionStrings.Cast<ConnectionStringSettings>().Where(x => x.ProviderName == "System.Data.EntityClient").ToArray();
@@ -124,7 +114,7 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         public void AssertSetup() {
             if (!NoValidate && !isContextSet) {
-                throw new InitialisationException(Log.LogAndReturn(@"No context set on EntityObjectStoreConfiguration, must call ""UsingCodeFirstContext"""));
+                throw new InitialisationException(@"No context set on EntityObjectStoreConfiguration, must call ""UsingCodeFirstContext""");
             }
         }
 

@@ -21,6 +21,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Transactions;
 using Common.Logging;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -51,10 +52,10 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         #endregion
 
-        private static readonly ILog Log = LogManager.GetLogger(typeof(EntityObjectStore));
         private readonly GetAdapterForDelegate getAdapterFor;
         private readonly IMetamodelManager metamodelManager;
         private readonly INakedObjectManager nakedObjectManager;
+        private readonly ILogger<EntityObjectStore> logger;
         private readonly EntityOidGenerator oidGenerator;
         private readonly ISession session;
         private IDictionary<CodeFirstEntityContextConfiguration, LocalContext> contexts = new Dictionary<CodeFirstEntityContextConfiguration, LocalContext>();
@@ -67,11 +68,12 @@ namespace NakedObjects.Persistor.Entity.Component {
         private ReplacePocoDelegate replacePoco;
         private EventHandler savingChangesHandlerDelegate;
 
-        internal EntityObjectStore(IMetamodelManager metamodelManager, ISession session, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager) {
+        internal EntityObjectStore(IMetamodelManager metamodelManager, ISession session, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager, ILogger<EntityObjectStore> logger) {
             this.metamodelManager = metamodelManager;
             this.session = session;
             this.injector = injector;
             this.nakedObjectManager = nakedObjectManager;
+            this.logger = logger;
 
             getAdapterFor = domainObject => this.nakedObjectManager.GetAdapterFor(domainObject);
             createAdapter = (oid, domainObject) => this.nakedObjectManager.CreateAdapter(domainObject, oid, null);
@@ -84,8 +86,8 @@ namespace NakedObjects.Persistor.Entity.Component {
             loadSpecification = metamodelManager.GetSpecification;
         }
 
-        public EntityObjectStore(ISession session, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetamodelManager metamodel, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager)
-            : this(metamodel, session, injector, nakedObjectManager) {
+        public EntityObjectStore(ISession session, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetamodelManager metamodel, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager, ILogger<EntityObjectStore> logger)
+            : this(metamodel, session, injector, nakedObjectManager, logger) {
             config.AssertSetup();
             this.oidGenerator = oidGenerator;
             contexts = config.ContextConfiguration.ToDictionary<CodeFirstEntityContextConfiguration, CodeFirstEntityContextConfiguration, LocalContext>(c => c, c => null);
@@ -157,7 +159,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 InvokeErrorFacet(new DataUpdateException(ConcatenateMessages(ue), ue));
             }
             catch (Exception e) {
-                Log.Error($"Unexpected exception while applying changes {e.Message}");
+                logger.LogError($"Unexpected exception while applying changes {e.Message}");
                 RollBackContext();
                 throw;
             }
@@ -189,7 +191,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                     return adapter;
                 }
                 default:
-                    throw new NakedObjectSystemException(Log.LogAndReturn($"Unexpected oid type: {oid.GetType()}"));
+                    throw new NakedObjectSystemException(logger.LogAndReturn($"Unexpected oid type: {oid.GetType()}"));
             }
         }
 
@@ -258,7 +260,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
 
             if (type.IsAbstract) {
-                throw new ModelException(Log.LogAndReturn(string.Format(Resources.NakedObjects.CannotCreateAbstract, type)));
+                throw new ModelException(logger.LogAndReturn(string.Format(Resources.NakedObjects.CannotCreateAbstract, type)));
             }
 
             var domainObject = Activator.CreateInstance(type);
@@ -312,15 +314,15 @@ namespace NakedObjects.Persistor.Entity.Component {
                 return contexts.Count == 1 ? contexts.Values.Single() : FindContext(type);
             }
             catch (Exception e) {
-                throw new NakedObjectDomainException(Log.LogAndReturn(string.Format(Resources.NakedObjects.EntityContextError, type.FullName)), e);
+                throw new NakedObjectDomainException(logger.LogAndReturn(string.Format(Resources.NakedObjects.EntityContextError, type.FullName)), e);
             }
         }
 
         private LocalContext GetContext(object domainObject) => GetContext(GetTypeToUse(domainObject));
 
-        private static Type GetTypeToUse(object domainObject) {
+        private Type GetTypeToUse(object domainObject) {
             if (domainObject == null) {
-                throw new NakedObjectSystemException(Log.LogAndReturn("Could not find Entity Framework context for null object"));
+                throw new NakedObjectSystemException(logger.LogAndReturn("Could not find Entity Framework context for null object"));
             }
 
             var objectType = domainObject.GetType();
@@ -430,7 +432,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                     throw new DataUpdateException(newMessage, exception);
                 default:
                     // should never get here - just rethrow 
-                    Log.Error($"Unexpected exception {exception}");
+                    logger.LogError($"Unexpected exception {exception}");
                     throw exception;
             }
         }
@@ -463,7 +465,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
             catch (Exception e) {
                 var originalMsg = e.Message;
-                throw new InitialisationException(Log.LogAndReturn($"{Resources.NakedObjects.StartPersistorErrorCodeFirst}: {originalMsg}"), e);
+                throw new InitialisationException(logger.LogAndReturn($"{Resources.NakedObjects.StartPersistorErrorCodeFirst}: {originalMsg}"), e);
             }
         }
 
@@ -541,7 +543,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             }
             catch (Exception e) {
                 // ignore all 
-                Log.WarnFormat("Ignoring exception {0}", e.Message);
+                logger.LogWarning($"Ignoring exception {e.Message}");
             }
 
             return false;
@@ -638,12 +640,12 @@ namespace NakedObjects.Persistor.Entity.Component {
         private static IEnumerable<object> GetChangedComplexObjectsInContext(LocalContext context) =>
             context.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).Select(ose => new {Obj = ose.Entity, Prop = context.GetComplexMembers(ose.Entity.GetEntityProxiedType())}).SelectMany(a => a.Prop.Select(p => p.GetValue(a.Obj, null))).Where(x => x != null).Distinct();
 
-        private static void ValidateIfRequired(INakedObjectAdapter adapter) {
+        private void ValidateIfRequired(INakedObjectAdapter adapter) {
             if (adapter.ResolveState.IsPersistent()) {
                 if (adapter.Spec.ContainsFacet<IValidateProgrammaticUpdatesFacet>()) {
                     var state = adapter.ValidToPersist();
                     if (state != null) {
-                        throw new PersistFailedException(Log.LogAndReturn(string.Format(Resources.NakedObjects.PersistStateError, adapter.Spec.ShortName, adapter.TitleString(), state)));
+                        throw new PersistFailedException(logger.LogAndReturn(string.Format(Resources.NakedObjects.PersistStateError, adapter.Spec.ShortName, adapter.TitleString(), state)));
                     }
                 }
             }
@@ -674,7 +676,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             if (depth > MaximumCommitCycles) {
                 var typeNames = contexts.Values.SelectMany(c => c.WrappedObjectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Modified).Where(o => o.Entity != null).Select(o => o.Entity.GetEntityProxiedType().FullName)).Aggregate("", (s, t) => s + (string.IsNullOrEmpty(s) ? "" : ", ") + t);
 
-                throw new NakedObjectDomainException(Log.LogAndReturn(string.Format(Resources.NakedObjects.EntityCommitError, typeNames)));
+                throw new NakedObjectDomainException(logger.LogAndReturn(string.Format(Resources.NakedObjects.EntityCommitError, typeNames)));
             }
 
             PreSave();
@@ -694,7 +696,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 }
                 catch (ArgumentException) {
                     // not an EF recognized collection 
-                    Log.Warn($"Attempting to 'Count' a non-EF collection: {field.Id}");
+                    logger.LogWarning($"Attempting to 'Count' a non-EF collection: {field.Id}");
                 }
             }
 
@@ -724,7 +726,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                     ProxyObjectIfAppropriate(nakedObjectAdapter.Object);
                 }
                 catch (Exception e) {
-                    Log.Warn($"Error in EntityCreateObjectCommand.Execute: {e.Message}");
+                    parent.logger.LogWarning($"Error in EntityCreateObjectCommand.Execute: {e.Message}");
                     throw;
                 }
             }
@@ -960,7 +962,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                     baseTypeMap.Clear();
                 }
                 catch (Exception e) {
-                    Log.ErrorFormat("Exception disposing context: {0}", e, Name);
+                    parent.logger.LogError(e, $"Exception disposing context: {Name}");
                 }
             }
 

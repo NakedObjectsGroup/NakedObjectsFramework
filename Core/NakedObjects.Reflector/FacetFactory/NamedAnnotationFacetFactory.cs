@@ -21,10 +21,12 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class NamedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(NamedAnnotationFacetFactory));
+        private ILogger<NamedAnnotationFacetFactory> logger;
 
         public NamedAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Everything) { }
+            : base(numericOrder, loggerFactory, FeatureType.Everything) {
+            logger = loggerFactory.CreateLogger<NamedAnnotationFacetFactory>();
+        }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) type.GetCustomAttribute<NamedAttribute>();
@@ -47,12 +49,12 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        private static INamedFacet Create(Attribute attribute, ISpecification holder) =>
+        private INamedFacet Create(Attribute attribute, ISpecification holder) =>
             attribute switch {
                 null => null,
                 NamedAttribute namedAttribute => new NamedFacetAnnotation(namedAttribute.Value, holder),
                 DisplayNameAttribute nameAttribute => new NamedFacetAnnotation(nameAttribute.DisplayName, holder),
-                _ => throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
+                _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
             };
     }
 }

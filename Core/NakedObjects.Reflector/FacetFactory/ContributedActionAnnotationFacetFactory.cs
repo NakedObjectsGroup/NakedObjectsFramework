@@ -24,12 +24,14 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="ContributedActionAttribute" /> annotation
     /// </summary>
     public sealed class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ContributedActionAnnotationFacetFactory));
+        private ILogger<ContributedActionAnnotationFacetFactory> logger;
 
         public ContributedActionAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions) { }
+            : base(numericOrder, loggerFactory, FeatureType.Actions) {
+            logger = loggerFactory.CreateLogger<ContributedActionAnnotationFacetFactory>();
+        }
 
-        private static void Process(IReflector reflector, MethodInfo member, ISpecification holder) {
+        private void Process(IReflector reflector, MethodInfo member, ISpecification holder) {
             var allParams = member.GetParameters();
             var paramsWithAttribute = allParams.Where(p => p.GetCustomAttribute<ContributedActionAttribute>() != null).ToArray();
             if (!paramsWithAttribute.Any()) {
@@ -42,7 +44,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 var type = reflector.LoadSpecification<IObjectSpecImmutable>(p.ParameterType);
                 if (type != null) {
                     if (type.IsParseable) {
-                        Log.WarnFormat("ContributedAction attribute added to a value parameter type: {0}", member.Name);
+                      logger.LogWarning($"ContributedAction attribute added to a value parameter type: {member.Name}");
                     }
                     else if (type.IsCollection) {
                         var parent = reflector.LoadSpecification(member.DeclaringType);
@@ -63,14 +65,14 @@ namespace NakedObjects.Reflect.FacetFactory {
             FacetUtils.AddFacet(facet);
         }
 
-        private static void AddCollectionContributedAction(IReflector reflector, MethodInfo member, IObjectSpecImmutable type, ParameterInfo p, ContributedActionFacet facet, ContributedActionAttribute attribute) {
+        private void AddCollectionContributedAction(IReflector reflector, MethodInfo member, IObjectSpecImmutable type, ParameterInfo p, ContributedActionFacet facet, ContributedActionAttribute attribute) {
             if (!type.IsQueryable) {
-                Log.WarnFormat("ContributedAction attribute added to a collection parameter type other than IQueryable: {0}", member.Name);
+                logger.LogWarning($"ContributedAction attribute added to a collection parameter type other than IQueryable: {member.Name}");
             }
             else {
                 var returnType = reflector.LoadSpecification<IObjectSpecImmutable>(member.ReturnType);
                 if (returnType.IsCollection) {
-                    Log.WarnFormat("ContributedAction attribute added to an action that returns a collection: {0}", member.Name);
+                    logger.LogWarning($"ContributedAction attribute added to an action that returns a collection: {member.Name}");
                 }
                 else {
                     var elementType = p.ParameterType.GetGenericArguments()[0];

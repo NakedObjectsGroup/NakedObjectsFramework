@@ -68,7 +68,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         void ForceContextSet();
 
-        void FlagConnectionStringMismatches(string[] connectionStringNames);
         string[] GetConnectionStringNamesFromConfig();
         void AssertSetup();
     }

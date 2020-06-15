@@ -23,10 +23,12 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public abstract class MethodPrefixBasedFacetFactoryAbstract : FacetFactoryAbstract, IMethodPrefixBasedFacetFactory {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(MethodPrefixBasedFacetFactoryAbstract));
+        private ILogger<MethodPrefixBasedFacetFactoryAbstract> logger;
 
         protected MethodPrefixBasedFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes)
-            : base(numericOrder, loggerFactory, featureTypes) { }
+            : base(numericOrder, loggerFactory, featureTypes) {
+            logger = loggerFactory.CreateLogger<MethodPrefixBasedFacetFactoryAbstract>();
+        }
 
         #region IMethodPrefixBasedFacetFactory Members
 
@@ -112,7 +114,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 return method;
             }
             catch (AmbiguousMatchException e) {
-                throw new ModelException(Log.LogAndReturn(string.Format(Resources.NakedObjects.AmbiguousMethodError, name, type.FullName)), e);
+                throw new ModelException(logger.LogAndReturn(string.Format(Resources.NakedObjects.AmbiguousMethodError, name, type.FullName)), e);
             }
         }
 

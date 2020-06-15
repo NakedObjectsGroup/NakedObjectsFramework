@@ -11,7 +11,6 @@ using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Reflection;
-using Common.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
@@ -19,8 +18,6 @@ using NakedObjects.Persistor.Entity.Component;
 
 namespace NakedObjects.Persistor.Entity.Util {
     public static class ObjectContextUtils {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ObjectContextUtils));
-
         internal static T Invoke<T>(this object onObject, string name, params object[] parms) => (T) onObject.GetType().GetMethod(name)?.Invoke(onObject, parms);
 
         internal static void Invoke(this object onObject, string name, params object[] parms) => onObject.GetType().GetMethod(name)?.Invoke(onObject, parms);
@@ -111,7 +108,7 @@ namespace NakedObjects.Persistor.Entity.Util {
                 // expected (but ugly)
                 if (EntityObjectStore.RequireExplicitAssociationOfTypes) {
                     var msg = $"{type} is not explicitly associated with any DbContext, but 'RequireExplicitAssociationOfTypes' has been set on the PersistorInstaller";
-                    throw new InitialisationException(Log.LogAndReturn(msg));
+                    throw new InitialisationException(msg);
                 }
             }
 

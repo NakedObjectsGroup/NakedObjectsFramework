@@ -76,7 +76,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new MenuFacetFactory(0, null);
+            facetFactory = new MenuFacetFactory(0, LoggerFactory);
         }
 
         [TestCleanup]

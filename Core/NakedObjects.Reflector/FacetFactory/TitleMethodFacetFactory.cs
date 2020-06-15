@@ -21,15 +21,18 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class TitleMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(TitleMethodFacetFactory));
 
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ToStringMethod,
             RecognisedMethodsAndPrefixes.TitleMethod
         };
 
+        private ILogger<TitleMethodFacetFactory> logger;
+
         public TitleMethodFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) {
+            logger = loggerFactory.CreateLogger<TitleMethodFacetFactory>();
+        }
 
         public override string[] Prefixes => FixedPrefixes;
 
@@ -42,7 +45,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)) {
                 if (propertyInfo.GetCustomAttribute<TitleAttribute>() != null) {
                     if (attributedMethods.Count > 0) {
-                        Log.Warn("Title annotation is used more than once in " + type.Name + ", this time on property " + propertyInfo.Name + "; this will be ignored");
+                        logger.LogWarning($"Title annotation is used more than once in {type.Name}, this time on property {propertyInfo.Name}; this will be ignored");
                     }
 
                     attributedMethods.Add(propertyInfo.GetGetMethod());
@@ -86,7 +89,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 FacetUtils.AddFacet(titleFacet);
             }
             catch (Exception e) {
-                Log.Error("Unexpected Exception", e);
+                logger.LogError(e, "Unexpected Exception");
             }
         }
     }

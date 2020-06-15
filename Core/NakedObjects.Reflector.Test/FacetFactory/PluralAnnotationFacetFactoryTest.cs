@@ -59,7 +59,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PluralAnnotationFacetFactory(0, null);
+            facetFactory = new PluralAnnotationFacetFactory(0, LoggerFactory);
         }
 
         [TestCleanup]

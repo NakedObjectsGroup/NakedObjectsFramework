@@ -260,7 +260,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     new[] {paramName});
 
                 if (methodUsingIndex != null && methodUsingName != null) {
-                    logger.LogWarning("Duplicate choices parameter methods {methodUsingIndex.Name} and {methodUsingName.Name} using {methodUsingName.Name}");
+                    logger.LogWarning($"Duplicate choices parameter methods {methodUsingIndex.Name} and {methodUsingName.Name} using {methodUsingName.Name}");
                 }
 
                 var methodToUse = methodUsingName ?? methodUsingIndex;

@@ -19,9 +19,8 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Persistor.Entity.Adapter {
     public sealed class EntityOid : IEncodedToStrings, IEntityOid {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(EntityOid));
-
         private readonly IMetamodelManager metamodel;
+        private readonly ILogger<EntityOid> logger;
         private int cachedHashCode;
         private string cachedToString;
         private EntityOid previous;
@@ -82,14 +81,14 @@ namespace NakedObjects.Persistor.Entity.Adapter {
 
         public void MakePersistent() {
             ThrowErrorIfNotTransient();
-            previous = new EntityOid(metamodel, TypeName, Key) {IsTransient = IsTransient};
+            previous = new EntityOid(metamodel, TypeName, Key, logger) {IsTransient = IsTransient};
             IsTransient = false;
             CacheState();
         }
 
         public void MakePersistentAndUpdateKey(object[] newKey) {
             ThrowErrorIfNotTransient(newKey);
-            previous = new EntityOid(metamodel, TypeName, Key) {IsTransient = IsTransient};
+            previous = new EntityOid(metamodel, TypeName, Key, logger) {IsTransient = IsTransient};
             Key = newKey; // after old key is saved ! 
             IsTransient = false;
             CacheState();
@@ -111,21 +110,22 @@ namespace NakedObjects.Persistor.Entity.Adapter {
             if (!IsTransient) {
                 var newKeyString = newKey?.Aggregate("New Key", (s, t) => $"{s} : {t}") ?? "";
                 var error = $"Attempting to make persistent an already persisted object. Type {TypeName}  Existing Key: {cachedToString} {newKeyString}";
-                throw new NotPersistableException(Log.LogAndReturn(error));
+                throw new NotPersistableException(logger.LogAndReturn(error));
             }
         }
 
         #region Constructors
 
-        public EntityOid(IMetamodelManager metamodel, Type type, object[] key, bool isTransient)
-            : this(metamodel, type.FullName, key) {
+        public EntityOid(IMetamodelManager metamodel, Type type, object[] key, bool isTransient, ILogger<EntityOid> logger)
+            : this(metamodel, type.FullName, key, logger) {
             IsTransient = isTransient;
             CacheState();
         }
 
-        public EntityOid(IMetamodelManager metamodel, string typeName, object[] key) {
+        public EntityOid(IMetamodelManager metamodel, string typeName, object[] key, ILogger<EntityOid> logger) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
+            this.logger = logger;
             TypeName = TypeNameUtils.EncodeTypeName(typeName);
             Key = key;
             IsTransient = false;
@@ -135,6 +135,7 @@ namespace NakedObjects.Persistor.Entity.Adapter {
         public EntityOid(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
             Assert.AssertNotNull(metamodel);
             this.metamodel = metamodel;
+            logger = loggerFactory.CreateLogger<EntityOid>();
             var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
 
             TypeName = helper.GetNextString();

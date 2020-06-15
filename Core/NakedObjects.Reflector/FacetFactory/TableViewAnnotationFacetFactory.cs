@@ -21,19 +21,21 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class TableViewAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(TableViewAnnotationFacetFactory));
+        private ILogger<TableViewAnnotationFacetFactory> logger;
 
         public TableViewAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.CollectionsAndActions) { }
+            : base(numericOrder, loggerFactory, FeatureType.CollectionsAndActions) {
+            logger = loggerFactory.CreateLogger<TableViewAnnotationFacetFactory>();
+        }
 
-        private static void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
+        private void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
             if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {
                 var attribute = member.GetCustomAttribute<TableViewAttribute>();
                 FacetUtils.AddFacet(Create(attribute, specification));
             }
         }
 
-        private static ITableViewFacet CreateTableViewFacet(TableViewAttribute attribute, ISpecification holder) {
+        private ITableViewFacet CreateTableViewFacet(TableViewAttribute attribute, ISpecification holder) {
             var columns = attribute.Columns == null ? new string[] { } : attribute.Columns;
             var distinctColumns = columns.Distinct().ToArray();
 
@@ -41,14 +43,14 @@ namespace NakedObjects.Reflect.FacetFactory {
                 // we had duplicates - log 
                 var duplicates = columns.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).Aggregate("", (s, t) => s != "" ? s + ", " + t : t);
                 var name = holder.Identifier == null ? "Unknown" : holder.Identifier.ToString();
-                Log.WarnFormat("Table View on {0} had duplicate columns {1}", name, duplicates);
+                logger.LogWarning($"Table View on {name} had duplicate columns {duplicates}");
                 columns = distinctColumns;
             }
 
             return new TableViewFacet(attribute.Title, columns, holder);
         }
 
-        private static ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) => attribute == null ? null : CreateTableViewFacet(attribute, holder);
+        private ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) => attribute == null ? null : CreateTableViewFacet(attribute, holder);
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => Process(method, method.ReturnType, specification);
 

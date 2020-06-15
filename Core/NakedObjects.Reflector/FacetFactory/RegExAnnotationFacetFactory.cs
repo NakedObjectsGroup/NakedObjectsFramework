@@ -22,17 +22,19 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class RegExAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(RegExAnnotationFacetFactory));
+        private ILogger<RegExAnnotationFacetFactory> logger;
 
         public RegExAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) { }
+            : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) {
+            logger = loggerFactory.CreateLogger<RegExAnnotationFacetFactory>();
+        }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute) type.GetCustomAttribute<RegExAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
         }
 
-        private static void Process(MemberInfo member, ISpecification holder) {
+        private void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute) member.GetCustomAttribute<RegExAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
@@ -57,12 +59,12 @@ namespace NakedObjects.Reflect.FacetFactory {
             }
         }
 
-        private static IRegExFacet Create(Attribute attribute, ISpecification holder) =>
+        private IRegExFacet Create(Attribute attribute, ISpecification holder) =>
             attribute switch {
                 null => null,
                 RegularExpressionAttribute expressionAttribute => Create(expressionAttribute, holder),
                 RegExAttribute exAttribute => Create(exAttribute, holder),
-                _ => throw new ArgumentException(Log.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
+                _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
             };
 
         private static IRegExFacet Create(RegExAttribute attribute, ISpecification holder) => new RegExFacet(attribute.Validation, attribute.Format, attribute.CaseSensitive, attribute.Message, holder);

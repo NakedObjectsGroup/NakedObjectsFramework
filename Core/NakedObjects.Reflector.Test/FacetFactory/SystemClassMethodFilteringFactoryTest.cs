@@ -123,7 +123,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var config = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {typeof(Customer).Namespace});
             var menuFactory = new NullMenuFactory();
 
-            facetFactory = new SystemClassMethodFilteringFactory(0, null);
+            facetFactory = new SystemClassMethodFilteringFactory(0, LoggerFactory);
             var classStrategy = new DefaultClassStrategy(config);
             var metamodel = new Metamodel(classStrategy, cache, null);
 
