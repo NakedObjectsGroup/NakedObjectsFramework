@@ -25,11 +25,11 @@ using static NakedObjects.Rest.API.ControllerHelpers;
 
 namespace NakedObjects.Rest {
     public class RestfulObjectsControllerBase : ControllerBase {
-        private readonly ILogger<RestfulObjectsControllerBase> logger;
+        private readonly ILogger logger;
 
         #region constructor and properties
 
-        protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade, ILogger<RestfulObjectsControllerBase> logger) {
+        protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade, ILogger logger) {
             this.logger = logger;
             FrameworkFacade = frameworkFacade;
             OidStrategy = frameworkFacade.OidStrategy;
