@@ -6,12 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Facade;
 using NakedObjects.Rest.Model;
 
 namespace NakedObjects.Rest.Test.App.Controllers {
     public class RestfulObjectsController : RestfulObjectsControllerBase {
-        public RestfulObjectsController(IFrameworkFacade frameworkFacade) : base(frameworkFacade) { }
+        public RestfulObjectsController(IFrameworkFacade frameworkFacade, ILogger<RestfulObjectsController> logger) : base(frameworkFacade, logger) { }
 
         [HttpGet]
         public override ActionResult GetHome() => base.GetHome();

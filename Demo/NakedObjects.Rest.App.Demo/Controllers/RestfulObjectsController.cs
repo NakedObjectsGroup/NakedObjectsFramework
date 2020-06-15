@@ -7,6 +7,7 @@
 
 using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Facade;
 using NakedObjects.Rest;
 using NakedObjects.Rest.Model;
@@ -16,7 +17,7 @@ namespace NakedObjects.Rest.App.Demo
 
     //[Authorize]
     public class RestfulObjectsController : RestfulObjectsControllerBase {
-        public RestfulObjectsController(IFrameworkFacade frameworkFacade) : base(frameworkFacade) {}
+        public RestfulObjectsController(IFrameworkFacade frameworkFacade, ILogger<RestfulObjectsController> logger) : base(frameworkFacade, logger) {}
 
         [HttpGet]
         public override ActionResult GetHome() {
