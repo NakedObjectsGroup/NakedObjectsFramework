@@ -19,7 +19,7 @@ namespace NakedObjects.Reflect.FacetFactory {
     /// </summary>
     public sealed class HiddenDefaultMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly string[] FixedPrefixes;
-        private ILogger<HiddenDefaultMethodFacetFactory> logger;
+        private readonly ILogger<HiddenDefaultMethodFacetFactory> logger;
 
         static HiddenDefaultMethodFacetFactory() =>
             FixedPrefixes = new[] {
@@ -28,9 +28,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             };
 
         public HiddenDefaultMethodFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) {
+            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
             logger = loggerFactory.CreateLogger<HiddenDefaultMethodFacetFactory>();
-        }
 
         public override string[] Prefixes => FixedPrefixes;
 

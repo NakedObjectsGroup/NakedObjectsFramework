@@ -18,12 +18,11 @@ using NakedObjects.Security;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class AuthorizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private ILogger<AuthorizeAnnotationFacetFactory> logger;
+        private readonly ILogger<AuthorizeAnnotationFacetFactory> logger;
 
         public AuthorizeAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesCollectionsAndActions) {
+            : base(numericOrder, loggerFactory, FeatureType.PropertiesCollectionsAndActions) =>
             logger = loggerFactory.CreateLogger<AuthorizeAnnotationFacetFactory>();
-        }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) { }
 

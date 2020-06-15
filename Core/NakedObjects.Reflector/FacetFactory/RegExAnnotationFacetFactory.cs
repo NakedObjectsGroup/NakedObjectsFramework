@@ -21,12 +21,11 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class RegExAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private ILogger<RegExAnnotationFacetFactory> logger;
+        private readonly ILogger<RegExAnnotationFacetFactory> logger;
 
         public RegExAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) {
+            : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) =>
             logger = loggerFactory.CreateLogger<RegExAnnotationFacetFactory>();
-        }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttribute<RegularExpressionAttribute>() ?? (Attribute) type.GetCustomAttribute<RegExAttribute>();

@@ -19,12 +19,11 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class RangeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private ILogger<RangeAnnotationFacetFactory> logger;
+        private readonly ILogger<RangeAnnotationFacetFactory> logger;
 
         public RangeAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) {
+            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
             logger = loggerFactory.CreateLogger<RangeAnnotationFacetFactory>();
-        }
 
         private void Process(MemberInfo member, bool isDate, ISpecification specification) {
             var attribute = member.GetCustomAttribute<RangeAttribute>();

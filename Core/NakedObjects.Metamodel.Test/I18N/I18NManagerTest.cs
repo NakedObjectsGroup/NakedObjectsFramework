@@ -18,7 +18,7 @@ using NakedObjects.Meta.I18N;
 namespace NakedObjects.Meta.Test.I18N {
     [TestClass]
     public class I18NManagerTest {
-        private static ILogger<I18NManager> mockLogger = new Mock<ILogger<I18NManager>>().Object;
+        private static readonly ILogger<I18NManager> mockLogger = new Mock<ILogger<I18NManager>>().Object;
 
 
         #region Setup/Teardown

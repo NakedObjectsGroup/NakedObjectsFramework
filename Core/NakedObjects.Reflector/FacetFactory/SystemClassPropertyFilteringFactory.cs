@@ -21,9 +21,8 @@ namespace NakedObjects.Reflect.FacetFactory {
         private ILogger<SystemClassPropertyFilteringFactory> logger;
 
         public SystemClassPropertyFilteringFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Properties) {
+            : base(numericOrder, loggerFactory, FeatureType.Properties) =>
             logger = loggerFactory.CreateLogger<SystemClassPropertyFilteringFactory>();
-        }
 
         #region IPropertyFilteringFacetFactory Members
 

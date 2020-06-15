@@ -29,9 +29,8 @@ namespace NakedObjects.Reflect.FacetFactory {
         private ILogger<TitleMethodFacetFactory> logger;
 
         public TitleMethodFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) {
+            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
             logger = loggerFactory.CreateLogger<TitleMethodFacetFactory>();
-        }
 
         public override string[] Prefixes => FixedPrefixes;
 

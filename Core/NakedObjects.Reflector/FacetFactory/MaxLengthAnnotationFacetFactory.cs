@@ -20,12 +20,11 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class MaxLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private ILogger<MaxLengthAnnotationFacetFactory> logger;
+        private readonly ILogger<MaxLengthAnnotationFacetFactory> logger;
 
         public MaxLengthAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) {
+            : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) =>
             logger = loggerFactory.CreateLogger<MaxLengthAnnotationFacetFactory>();
-        }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttribute<StringLengthAttribute>() ?? (Attribute) type.GetCustomAttribute<MaxLengthAttribute>();

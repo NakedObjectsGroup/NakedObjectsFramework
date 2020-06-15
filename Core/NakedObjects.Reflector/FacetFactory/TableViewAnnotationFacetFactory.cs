@@ -20,12 +20,11 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class TableViewAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private ILogger<TableViewAnnotationFacetFactory> logger;
+        private readonly ILogger<TableViewAnnotationFacetFactory> logger;
 
         public TableViewAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.CollectionsAndActions) {
+            : base(numericOrder, loggerFactory, FeatureType.CollectionsAndActions) =>
             logger = loggerFactory.CreateLogger<TableViewAnnotationFacetFactory>();
-        }
 
         private void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
             if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {

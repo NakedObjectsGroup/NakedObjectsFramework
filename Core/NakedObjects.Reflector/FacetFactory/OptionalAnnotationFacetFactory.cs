@@ -18,12 +18,11 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class OptionalAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private ILogger<OptionalAnnotationFacetFactory> logger;
+        private readonly ILogger<OptionalAnnotationFacetFactory> logger;
 
         public OptionalAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) {
+            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
             logger = loggerFactory.CreateLogger<OptionalAnnotationFacetFactory>();
-        }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<OptionallyAttribute>();

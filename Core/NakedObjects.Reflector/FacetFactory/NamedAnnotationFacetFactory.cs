@@ -20,12 +20,11 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class NamedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private ILogger<NamedAnnotationFacetFactory> logger;
+        private readonly ILogger<NamedAnnotationFacetFactory> logger;
 
         public NamedAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Everything) {
+            : base(numericOrder, loggerFactory, FeatureType.Everything) =>
             logger = loggerFactory.CreateLogger<NamedAnnotationFacetFactory>();
-        }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) type.GetCustomAttribute<NamedAttribute>();

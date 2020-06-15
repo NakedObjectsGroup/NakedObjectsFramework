@@ -22,12 +22,11 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="FindMenuAttribute" /> annotation
     /// </summary>
     public sealed class FindMenuFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private ILogger<FindMenuFacetFactory> logger;
+        private readonly ILogger<FindMenuFacetFactory> logger;
 
         public FindMenuFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) {
+            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
             logger = loggerFactory.CreateLogger<FindMenuFacetFactory>();
-        }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<FindMenuAttribute>();

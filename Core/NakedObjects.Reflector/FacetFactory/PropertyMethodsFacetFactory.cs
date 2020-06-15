@@ -29,12 +29,11 @@ namespace NakedObjects.Reflect.FacetFactory {
             RecognisedMethodsAndPrefixes.ModifyPrefix
         };
 
-        private ILogger<PropertyMethodsFacetFactory> logger;
+        private readonly ILogger<PropertyMethodsFacetFactory> logger;
 
         public PropertyMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Properties) {
+            : base(numericOrder, loggerFactory, FeatureType.Properties) =>
             logger = loggerFactory.CreateLogger<PropertyMethodsFacetFactory>();
-        }
 
         public override string[] Prefixes => FixedPrefixes;
 

@@ -23,12 +23,11 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="ContributedActionAttribute" /> annotation
     /// </summary>
     public sealed class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private ILogger<ContributedActionAnnotationFacetFactory> logger;
+        private readonly ILogger<ContributedActionAnnotationFacetFactory> logger;
 
         public ContributedActionAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions) {
+            : base(numericOrder, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<ContributedActionAnnotationFacetFactory>();
-        }
 
         private void Process(IReflector reflector, MethodInfo member, ISpecification holder) {
             var allParams = member.GetParameters();

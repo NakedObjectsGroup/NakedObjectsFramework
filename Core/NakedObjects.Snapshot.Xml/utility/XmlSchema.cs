@@ -19,9 +19,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
         private string uri;
         // The base part of the namespace prefix to use if none explicitly supplied in the constructor.
 
-        public XmlSchema(ILogger<XmlSchema> logger) : this(NofMetaModel.DefaultUriBase, DefaultPrefix) {
-            this.logger = logger;
-        }
+        public XmlSchema(ILogger<XmlSchema> logger) : this(NofMetaModel.DefaultUriBase, DefaultPrefix) => this.logger = logger;
         // uriBase the prefix for the application namespace's URIs
         // prefix the prefix for the application namespace's prefix
 

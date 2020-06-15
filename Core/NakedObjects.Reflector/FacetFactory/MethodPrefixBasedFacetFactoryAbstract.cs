@@ -22,12 +22,11 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public abstract class MethodPrefixBasedFacetFactoryAbstract : FacetFactoryAbstract, IMethodPrefixBasedFacetFactory {
-        private ILogger<MethodPrefixBasedFacetFactoryAbstract> logger;
+        private readonly ILogger<MethodPrefixBasedFacetFactoryAbstract> logger;
 
         protected MethodPrefixBasedFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes)
-            : base(numericOrder, loggerFactory, featureTypes) {
+            : base(numericOrder, loggerFactory, featureTypes) =>
             logger = loggerFactory.CreateLogger<MethodPrefixBasedFacetFactoryAbstract>();
-        }
 
         #region IMethodPrefixBasedFacetFactory Members
 

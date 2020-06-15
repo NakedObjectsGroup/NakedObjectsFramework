@@ -44,16 +44,15 @@ namespace NakedObjects.Reflect.FacetFactory {
             RecognisedMethodsAndPrefixes.ValidatePrefix
         };
 
-        private ILogger<ComplementaryMethodsFilteringFacetFactory> logger;
+        private readonly ILogger<ComplementaryMethodsFilteringFacetFactory> logger;
 
         /// <summary>
         ///     The <see cref="IFacet" />s registered are the generic ones from no-architecture (where they exist)
         /// </summary>
         /// <param name="numericOrder"></param>
         public ComplementaryMethodsFilteringFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions) {
+            : base(numericOrder, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<ComplementaryMethodsFilteringFacetFactory>();
-        }
 
         #region IMethodFilteringFacetFactory Members
 
