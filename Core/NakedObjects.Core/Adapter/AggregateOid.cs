@@ -50,7 +50,7 @@ namespace NakedObjects.Core.Adapter {
 
         public bool IsTransient => ParentOid.IsTransient;
 
-        public void CopyFrom(IOid oid) => Trace.Assert(false, "CopyFRom not supported on Aggregate oid");
+        public void CopyFrom(IOid oid) => Trace.Assert(false, "CopyFrom not supported on Aggregate oid");
 
         public ITypeSpec Spec => metamodel.GetSpecification(typeName);
 

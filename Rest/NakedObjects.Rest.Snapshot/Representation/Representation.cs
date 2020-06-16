@@ -33,7 +33,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             Flags = flags;
         }
 
-        protected IOidStrategy OidStrategy { get; set; }
+        protected IOidStrategy OidStrategy { get; }
         protected RestControlFlags Flags { get; }
 
         private static ModuleBuilder ModuleBuilder { get; set; }

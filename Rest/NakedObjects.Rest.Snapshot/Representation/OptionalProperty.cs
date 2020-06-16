@@ -17,8 +17,8 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             PropertyType = propertyType;
         }
 
-        public string Name { get; set; }
-        public object Value { get; set; }
-        public Type PropertyType { get; set; }
+        public string Name { get; }
+        public object Value { get; }
+        public Type PropertyType { get; }
     }
 }

@@ -15,7 +15,7 @@ namespace NakedObjects.Core.Util {
                 return f();
             }
             catch (Exception e) {
-                return "message creation threw exception :" + e.Message;
+                return $"message creation threw exception :{e.Message}";
             }
         }
 

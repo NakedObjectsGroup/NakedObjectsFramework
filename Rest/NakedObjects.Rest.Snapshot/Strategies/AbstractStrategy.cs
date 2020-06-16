@@ -18,8 +18,8 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             Flags = flags;
         }
 
-        public IOidStrategy OidStrategy { get; set; }
-        public RestControlFlags Flags { get; }
+        protected IOidStrategy OidStrategy { get; }
+        protected RestControlFlags Flags { get; }
 
         public MapRepresentation GetExtensions() => GetExtensionsForSimple();
 

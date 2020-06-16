@@ -46,7 +46,7 @@ namespace NakedObjects.Core.Component {
 
         #endregion
 
-        public void MakeObjectPersistent(INakedObjectAdapter nakedObjectAdapter) {
+        private void MakeObjectPersistent(INakedObjectAdapter nakedObjectAdapter) {
             if (nakedObjectAdapter.ResolveState.IsAggregated() ||
                 nakedObjectAdapter.ResolveState.IsPersistent() ||
                 nakedObjectAdapter.Spec.Persistable == PersistableType.Transient ||
