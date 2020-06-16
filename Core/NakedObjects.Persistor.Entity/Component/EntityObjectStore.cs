@@ -52,9 +52,9 @@ namespace NakedObjects.Persistor.Entity.Component {
         #endregion
 
         private readonly GetAdapterForDelegate getAdapterFor;
+        private readonly ILogger<EntityObjectStore> logger;
         private readonly IMetamodelManager metamodelManager;
         private readonly INakedObjectManager nakedObjectManager;
-        private readonly ILogger<EntityObjectStore> logger;
         private readonly EntityOidGenerator oidGenerator;
         private readonly ISession session;
         private IDictionary<CodeFirstEntityContextConfiguration, LocalContext> contexts = new Dictionary<CodeFirstEntityContextConfiguration, LocalContext>();

@@ -21,7 +21,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class RangeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private ILogger<RangeAnnotationFacetFactory> logger;
+        private readonly ILogger<RangeAnnotationFacetFactory> logger;
 
         public RangeAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
             : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) =>

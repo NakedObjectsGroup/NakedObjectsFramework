@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 

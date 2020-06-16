@@ -47,9 +47,6 @@ namespace NakedObjects.Core.Test.Resolve {
             var mockFacet = new Mock<ITestCallbackFacet>();
             var testFacet = mockFacet.Object;
 
-            var mockLogger = new Mock<ILogger<ResolveStateMachine>>();
-            var testLogger = mockLogger.Object;
-
             mockFacet.Setup(f => f.Invoke(null, null, null, null));
 
             mockAdapter.Setup(a => a.Spec).Returns(testSpecification);

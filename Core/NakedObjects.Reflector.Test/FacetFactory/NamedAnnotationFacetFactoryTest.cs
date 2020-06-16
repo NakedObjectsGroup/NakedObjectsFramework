@@ -18,6 +18,7 @@ using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Spec;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -49,6 +50,57 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
+        #region Nested type: Customer11
+
+        private class Customer11 {
+            [Named("some name")]
+            public int NumberOfOrders => 0;
+
+            [Named("some name")]
+            public int NumberOfOrders1 => 0;
+        }
+
+        #endregion
+
+        #region Nested type: Customer13
+
+        private class Customer13 {
+            [Named("some name")]
+            public void SomeAction() { }
+
+            [Named("some name")]
+            public void SomeAction1() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+            [Named("some name")]
+            public IList Orders => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer3
+
+        private class Customer3 {
+            [Named("some name")]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer4
+
+        private class Customer4 {
+            // ReSharper disable UnusedParameter.Local
+            public void SomeAction([Named("some name")] int x) { }
+        }
+
+        #endregion
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -64,37 +116,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private class Customer11 {
-            [Named("some name")]
-            public int NumberOfOrders => 0;
-
-            [Named("some name")]
-            public int NumberOfOrders1 => 0;
-        }
-
-        private class Customer2 {
-            [Named("some name")]
-            public IList Orders => null;
-        }
-
-        private class Customer3 {
-            [Named("some name")]
-            public void SomeAction() { }
-        }
-
-        private class Customer13 {
-            [Named("some name")]
-            public void SomeAction() { }
-
-            [Named("some name")]
-            public void SomeAction1() { }
-        }
-
-        private class Customer4 {
-            // ReSharper disable UnusedParameter.Local
-            public void SomeAction([Named("some name")] int x) { }
-        }
 
         [DisplayName("some name")]
         private class Customer5 { }

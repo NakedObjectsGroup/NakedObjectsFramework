@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -25,47 +26,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         protected override IFacetFactory FacetFactory => facetFactory;
-
-        #region Nested type: Customer
-
-        private class Customer {
-            [QueryOnly]
-
-            public void SomeAction() { }
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new PotencyAnnotationFacetFactory(0, LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer1 {
-            [Idempotent]
-            public void SomeAction() { }
-        }
-
-        private class Customer2 {
-            public void SomeAction() { }
-        }
-
-        private class Customer3 {
-            [QueryOnly]
-            [Idempotent]
-            public void SomeAction() { }
-        }
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -120,6 +80,58 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(facet is QueryOnlyFacet);
             AssertNoMethodsRemoved();
         }
+
+        #region Nested type: Customer
+
+        private class Customer {
+            [QueryOnly]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [Idempotent]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer3
+
+        private class Customer3 {
+            [QueryOnly]
+            [Idempotent]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new PotencyAnnotationFacetFactory(0, LoggerFactory);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

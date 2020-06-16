@@ -55,8 +55,6 @@ namespace NakedObjects.Core.Test.Component {
             var mockASpec = new Mock<IAssociationSpec>();
             var mockCallBack = new Mock<IPersistingCallbackFacet>();
 
-            var mockLogger = new Mock<ILogger<ResolveStateMachine.TransientState>>().Object;
-
             mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.TransientState());
 
             mockSpec.Setup(s => s.Properties).Returns(new[] {mockASpec.Object});
@@ -80,7 +78,6 @@ namespace NakedObjects.Core.Test.Component {
 
             var mockSpec = new Mock<IObjectSpec>();
             var mockState = new Mock<IResolveStateMachine>();
-            var mockLogger = new Mock<ILogger<ResolveStateMachine.ResolvedState>>().Object;
 
             mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.ResolvedState());
 
@@ -101,8 +98,6 @@ namespace NakedObjects.Core.Test.Component {
 
             var mockSpec = new Mock<IObjectSpec>();
             var mockState = new Mock<IResolveStateMachine>();
-            var mockLogger = new Mock<ILogger<ResolveStateMachine.TransientState>>().Object;
-
 
             mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.TransientState());
             mockSpec.Setup(s => s.Persistable).Returns(PersistableType.Transient);
@@ -127,8 +122,6 @@ namespace NakedObjects.Core.Test.Component {
 
             var mockASpec = new Mock<IAssociationSpec>();
             var mockCallBack = new Mock<IPersistingCallbackFacet>();
-
-            var mockLogger = new Mock<ILogger<ResolveStateMachine.AggregatedState>>().Object;
 
             mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.AggregatedState());
 
@@ -156,8 +149,6 @@ namespace NakedObjects.Core.Test.Component {
 
             var mockASpec = new Mock<IAssociationSpec>();
             var mockCallBack = new Mock<IPersistingCallbackFacet>();
-
-            var mockLogger = new Mock<ILogger<ResolveStateMachine.AggregatedState>>().Object;
 
             mockState.Setup(s => s.CurrentState).Returns(new ResolveStateMachine.AggregatedState());
 

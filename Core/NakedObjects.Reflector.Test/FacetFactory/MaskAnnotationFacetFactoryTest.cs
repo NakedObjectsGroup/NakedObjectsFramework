@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -25,52 +26,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         protected override IFacetFactory FacetFactory => facetFactory;
-
-        #region Nested type: Customer
-
-        [Mask("###")]
-        private class Customer { }
-
-        #endregion
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [Mask("###")]
-
-            public string FirstName => null;
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new MaskAnnotationFacetFactory(0, LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer2 {
-            public void SomeAction([Mask("###")] string foo) { }
-        }
-
-        private class Customer3 {
-            [Mask("###")]
-            public int NumberOfOrders => 0;
-        }
-
-        private class Customer4 {
-            public void SomeAction([Mask("###")] int foo) { }
-        }
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -127,6 +82,64 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var maskFacet = (MaskFacet) facet;
             Assert.AreEqual("###", maskFacet.Value);
         }
+
+        #region Nested type: Customer
+
+        [Mask("###")]
+        private class Customer { }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [Mask("###")]
+
+            public string FirstName => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+            public void SomeAction([Mask("###")] string foo) { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer3
+
+        private class Customer3 {
+            [Mask("###")]
+            public int NumberOfOrders => 0;
+        }
+
+        #endregion
+
+        #region Nested type: Customer4
+
+        private class Customer4 {
+            public void SomeAction([Mask("###")] int foo) { }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new MaskAnnotationFacetFactory(0, LoggerFactory);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -28,7 +28,6 @@ namespace NakedObjects.ParallelReflect.Test {
     public abstract class AbstractReflectorTest {
         private static readonly ILoggerFactory MockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
-
         private readonly IFacetFactory[] facetFactories = {
             new FallbackFacetFactory(0, MockLoggerFactory),
             new IteratorFilteringFacetFactory(1, MockLoggerFactory),
@@ -125,10 +124,9 @@ namespace NakedObjects.ParallelReflect.Test {
             var classStrategy = new DefaultClassStrategy(config);
             var mockLogger = new Mock<ILogger<Metamodel>>().Object;
 
-            var metamodel = new Metamodel(classStrategy, cache, mockLogger); 
+            var metamodel = new Metamodel(classStrategy, cache, mockLogger);
             var mockLogger1 = new Mock<ILogger<ParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
-
 
             var reflector = new ParallelReflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, facetFactories, mockLoggerFactory, mockLogger1);
 

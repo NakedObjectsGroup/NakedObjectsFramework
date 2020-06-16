@@ -20,14 +20,14 @@ using NakedObjects.Security;
 namespace NakedObjects.Meta.Test.Authorization {
     [TestClass]
     public class AuthorizationManagerTest {
+        private readonly ILogger<AuthorizationManager> mockLogger = new Mock<ILogger<AuthorizationManager>>().Object;
+
         #region Setup/Teardown
 
         [TestInitialize]
         public void SetUp() { }
 
         #endregion
-
-        private ILogger<AuthorizationManager> mockLogger = new Mock<ILogger<AuthorizationManager>>().Object;
 
         [TestMethod]
         public void TestCreateOk() {

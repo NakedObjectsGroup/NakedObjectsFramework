@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -26,78 +27,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         protected override IFacetFactory FacetFactory => facetFactory;
-
-        #region Nested type: Customer
-
-        [DescribedAs("some description")]
-        private class Customer { }
-
-        #endregion
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [DescribedAs("some description")]
-
-            public int NumberOfOrders => 0;
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new DescribedAsAnnotationFacetFactory(0, LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer2 {
-            [DescribedAs("some description")]
-            public IList Orders => null;
-        }
-
-        private class Customer3 {
-            [DescribedAs("some description")]
-            public void SomeAction() { }
-        }
-
-        private class Customer4 {
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([DescribedAs("some description")] int x) { }
-        }
-
-        [System.ComponentModel.Description("some description")]
-        private class Customer5 { }
-
-        private class Customer6 {
-            [System.ComponentModel.Description("some description")]
-            public int NumberOfOrders => 0;
-        }
-
-        private class Customer7 {
-            [System.ComponentModel.Description("some description")]
-            public IList Orders => null;
-        }
-
-        private class Customer8 {
-            [System.ComponentModel.Description("some description")]
-            public void SomeAction() { }
-        }
-
-        private class Customer9 {
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([System.ComponentModel.Description("some description")]
-                                   int x) { }
-        }
 
         [TestMethod]
         public void TestDescribedAsAnnotationPickedUpOnAction() {
@@ -224,6 +153,110 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.ActionParameters));
         }
+
+        #region Nested type: Customer
+
+        [DescribedAs("some description")]
+        private class Customer { }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [DescribedAs("some description")]
+
+            public int NumberOfOrders => 0;
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+            [DescribedAs("some description")]
+            public IList Orders => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer3
+
+        private class Customer3 {
+            [DescribedAs("some description")]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer4
+
+        private class Customer4 {
+// ReSharper disable once UnusedParameter.Local
+            public void SomeAction([DescribedAs("some description")] int x) { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer5
+
+        [System.ComponentModel.Description("some description")]
+        private class Customer5 { }
+
+        #endregion
+
+        #region Nested type: Customer6
+
+        private class Customer6 {
+            [System.ComponentModel.Description("some description")]
+            public int NumberOfOrders => 0;
+        }
+
+        #endregion
+
+        #region Nested type: Customer7
+
+        private class Customer7 {
+            [System.ComponentModel.Description("some description")]
+            public IList Orders => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer8
+
+        private class Customer8 {
+            [System.ComponentModel.Description("some description")]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer9
+
+        private class Customer9 {
+// ReSharper disable once UnusedParameter.Local
+            public void SomeAction([System.ComponentModel.Description("some description")]
+                                   int x) { }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new DescribedAsAnnotationFacetFactory(0, LoggerFactory);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

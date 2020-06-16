@@ -26,7 +26,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     <see cref="ContributedActionAttribute" /> annotation
     /// </summary>
     public sealed class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private ILogger<ContributedActionAnnotationFacetFactory> logger;
+        private readonly ILogger<ContributedActionAnnotationFacetFactory> logger;
 
         public ContributedActionAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
             : base(numericOrder, loggerFactory, FeatureType.Actions) =>

@@ -24,7 +24,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     <see cref="FindMenuAttribute" /> annotation
     /// </summary>
     public sealed class FindMenuFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private ILogger<FindMenuFacetFactory> logger;
+        private readonly ILogger<FindMenuFacetFactory> logger;
 
         public FindMenuFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
             : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) =>

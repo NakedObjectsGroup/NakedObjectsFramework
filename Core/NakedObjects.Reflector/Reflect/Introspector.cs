@@ -24,8 +24,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect {
     public sealed class Introspector : IIntrospector {
-        private readonly IReflector reflector;
         private readonly ILogger<Introspector> logger;
+        private readonly IReflector reflector;
         private MethodInfo[] methods;
         private List<IAssociationSpecImmutable> orderedFields;
         private List<IActionSpecImmutable> orderedObjectActions;

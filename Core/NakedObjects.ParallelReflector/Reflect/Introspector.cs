@@ -25,8 +25,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect {
     public sealed class Introspector : IIntrospector {
-        private readonly IReflector reflector;
         private readonly ILogger<Introspector> logger;
+        private readonly IReflector reflector;
         private MethodInfo[] methods;
         private IList<IAssociationSpecImmutable> orderedFields;
         private IList<IActionSpecImmutable> orderedObjectActions;

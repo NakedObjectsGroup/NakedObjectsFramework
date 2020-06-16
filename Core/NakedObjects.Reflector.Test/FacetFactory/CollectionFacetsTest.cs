@@ -19,6 +19,7 @@ using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -26,6 +27,8 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
     [TestClass]
     public class CollectionFacetsTest {
         private readonly ILifecycleManager lifecycleManager;
+        private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
+        private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
         private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodel = new Mock<IMetamodelManager>().Object;
         private readonly Mock<ILifecycleManager> mockLifecycleManager = new Mock<ILifecycleManager>();
@@ -35,9 +38,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         private readonly IObjectPersistor persistor;
         private readonly ISession session = new Mock<ISession>().Object;
         private readonly ISpecification specification = new Mock<ISpecification>().Object;
-        private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
-        private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
-
 
         public CollectionFacetsTest() {
             lifecycleManager = mockLifecycleManager.Object;

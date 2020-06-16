@@ -20,7 +20,6 @@ namespace NakedObjects.Meta.Test.I18N {
     public class I18NManagerTest {
         private static readonly ILogger<I18NManager> mockLogger = new Mock<ILogger<I18NManager>>().Object;
 
-
         #region Setup/Teardown
 
         [TestInitialize]

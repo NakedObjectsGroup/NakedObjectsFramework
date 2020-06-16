@@ -18,7 +18,7 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Injection {
     [TestFixture]
     public class TestInjection : AbstractSystemTest<InjectionDbContext> {
-        protected override string[] Namespaces => new[] { typeof(Object1).Namespace };
+        protected override string[] Namespaces => new[] {typeof(Object1).Namespace};
 
         protected override Type[] Types => new[] {
             typeof(Object1),

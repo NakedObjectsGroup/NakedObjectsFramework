@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -56,7 +57,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
-        
         // ReSharper disable InconsistentNaming
         // ReSharper disable AssignNullToNotNullAttribute
         private class Customer : IEnumerable {

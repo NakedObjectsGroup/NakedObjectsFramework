@@ -13,6 +13,5 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     public abstract class AnnotationBasedFacetFactoryAbstract : FacetFactoryAbstract, IAnnotationBasedFacetFactory {
         protected AnnotationBasedFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes)
             : base(numericOrder, loggerFactory, featureTypes) { }
-
     }
 }

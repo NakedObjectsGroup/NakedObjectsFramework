@@ -19,15 +19,15 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public abstract class AbstractFacetFactoryTest {
+        private ILogger<AbstractFacetFactoryTest> logger;
+        protected ILoggerFactory LoggerFactory;
         protected IMetamodelManager Metamodel;
         protected IMethodRemover MethodRemover;
-        protected ILoggerFactory LoggerFactory;
         private Mock<IMetamodelManager> mockMetadata;
         private Mock<IMethodRemover> mockMethodRemover;
         private Mock<IReflector> mockReflector;
         protected IReflector Reflector;
         protected ISpecificationBuilder Specification;
-        private ILogger<AbstractFacetFactoryTest> logger;
         protected abstract Type[] SupportedTypes { get; }
         protected abstract IFacetFactory FacetFactory { get; }
 
@@ -83,7 +83,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             }
         }
 
-        protected  MethodInfo FindMethodIgnoreParms(Type type, string methodName) {
+        protected MethodInfo FindMethodIgnoreParms(Type type, string methodName) {
             try {
                 return type.GetMethod(methodName);
             }
@@ -101,7 +101,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             }
         }
 
-        protected  PropertyInfo FindProperty(Type type, string propertyName) {
+        protected PropertyInfo FindProperty(Type type, string propertyName) {
             try {
                 return type.GetProperty(propertyName);
             }

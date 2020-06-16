@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -47,6 +48,16 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
+        #region Nested type: Customer2
+
+        private class Customer2 {
+            [PresentationHint("ahint")]
+// ReSharper disable UnusedParameter.Local
+            public void SomeAction([PresentationHint("ahint")] string foo) { }
+        }
+
+        #endregion
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -62,12 +73,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private class Customer2 {
-            [PresentationHint("ahint")]
-// ReSharper disable UnusedParameter.Local
-            public void SomeAction([PresentationHint("ahint")] string foo) { }
-        }
 
         private class Customer3 {
             [PresentationHint("ahint")]

@@ -18,6 +18,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Local
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
@@ -67,6 +68,15 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         #endregion
 
+        #region Nested type: Customer2
+
+        private class Customer2 {
+            // ReSharper disable UnusedParameter.Local
+            public void SomeAction([EnumDataType(typeof(Cities))] int city) { }
+        }
+
+        #endregion
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -82,11 +92,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private class Customer2 {
-            // ReSharper disable UnusedParameter.Local
-            public void SomeAction([EnumDataType(typeof(Cities))] int city) { }
-        }
 
         private class Customer3 {
             public Cities City { get; set; }

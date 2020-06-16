@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -26,62 +27,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         protected override IFacetFactory FacetFactory => facetFactory;
-
-        #region Nested type: Customer
-
-        private class Customer {
-            [Disabled]
-
-            public int NumberOfOrders => 0;
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new DisabledAnnotationFacetFactory(0, LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer1 {
-            [Disabled]
-            public IList Orders => null;
-        }
-
-        private class Customer2 {
-            [Disabled]
-            public void SomeAction() { }
-        }
-
-        private class Customer3 {
-            [Disabled(WhenTo.Always)]
-            public void SomeAction() { }
-        }
-
-        private class Customer4 {
-            [Disabled(WhenTo.Never)]
-            public void SomeAction() { }
-        }
-
-        private class Customer5 {
-            [Disabled(WhenTo.OncePersisted)]
-            public void SomeAction() { }
-        }
-
-        private class Customer6 {
-            [Disabled(WhenTo.UntilPersisted)]
-            public void SomeAction() { }
-        }
 
         [TestMethod]
         public void TestDisabledAnnotationPickedUpOnAction() {
@@ -158,6 +103,86 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
         }
+
+        #region Nested type: Customer
+
+        private class Customer {
+            [Disabled]
+
+            public int NumberOfOrders => 0;
+        }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [Disabled]
+            public IList Orders => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+            [Disabled]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer3
+
+        private class Customer3 {
+            [Disabled(WhenTo.Always)]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer4
+
+        private class Customer4 {
+            [Disabled(WhenTo.Never)]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer5
+
+        private class Customer5 {
+            [Disabled(WhenTo.OncePersisted)]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer6
+
+        private class Customer6 {
+            [Disabled(WhenTo.UntilPersisted)]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new DisabledAnnotationFacetFactory(0, LoggerFactory);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

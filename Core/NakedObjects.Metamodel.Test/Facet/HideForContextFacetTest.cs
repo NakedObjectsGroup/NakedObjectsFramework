@@ -18,8 +18,7 @@ using NakedObjects.Meta.Facet;
 namespace NakedObjects.Metamodel.Test.Facet {
     [TestClass]
     public class HideForContextFacetTest {
-        private static ILogger<HideForContextFacet> mockLogger = new Mock<ILogger<HideForContextFacet>>().Object;
-
+        private static readonly ILogger<HideForContextFacet> mockLogger = new Mock<ILogger<HideForContextFacet>>().Object;
 
         private static void DelegateFuncTest(MethodInfo method, bool isHidden) {
             var hideForContextFacet = new HideForContextFacet(method, null, mockLogger);

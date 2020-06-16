@@ -1,5 +1,5 @@
 ﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. 
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -151,34 +151,6 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
         public static XElement SequenceForComplexTypeFor(XElement parentXsElement) => SequenceFor(ComplexTypeFor(parentXsElement));
 
-        // Returns the <code>xs:choice</code> or <code>xs:sequence</code> element under
-        // the supplied XSD element, or null if neither can be found.
-        // ReSharper disable PossibleMultipleEnumeration
-
-        public static XElement ChoiceOrSequenceFor(XElement parentXsElement) {
-            var choiceNodeList = parentXsElement.Descendants(Xs + "choice");
-            if (choiceNodeList.Any()) {
-                return choiceNodeList.First();
-            }
-
-            return parentXsElement.Descendants(Xs + "sequence").FirstOrDefault();
-        }
-
-
-        public static XElement ChildXsElement(XElement parentXsElement, string localName) {
-            var nodeList = parentXsElement.Descendants(Xs + localName);
-            if (nodeList.Any()) {
-                return nodeList.First();
-            }
-
-            var childXsElement = CreateXsElement(Helper.DocFor(parentXsElement), localName);
-            parentXsElement.Add(childXsElement);
-
-            return childXsElement;
-        }
-
-        // ReSharper restore PossibleMultipleEnumeration
-
         // Sets the <code>minOccurs</code> and <code>maxOccurs</code> attributes for
         // provided <code>element</code> (presumed to be an XSD element for which these
         // attributes makes sense.
@@ -199,6 +171,33 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
             return xsElement;
         }
+
+        // Returns the <code>xs:choice</code> or <code>xs:sequence</code> element under
+        // the supplied XSD element, or null if neither can be found.
+        // ReSharper disable PossibleMultipleEnumeration
+
+        public static XElement ChoiceOrSequenceFor(XElement parentXsElement) {
+            var choiceNodeList = parentXsElement.Descendants(Xs + "choice");
+            if (choiceNodeList.Any()) {
+                return choiceNodeList.First();
+            }
+
+            return parentXsElement.Descendants(Xs + "sequence").FirstOrDefault();
+        }
+
+        public static XElement ChildXsElement(XElement parentXsElement, string localName) {
+            var nodeList = parentXsElement.Descendants(Xs + localName);
+            if (nodeList.Any()) {
+                return nodeList.First();
+            }
+
+            var childXsElement = CreateXsElement(Helper.DocFor(parentXsElement), localName);
+            parentXsElement.Add(childXsElement);
+
+            return childXsElement;
+        }
+
+        // ReSharper restore PossibleMultipleEnumeration
 
         #region xs
 

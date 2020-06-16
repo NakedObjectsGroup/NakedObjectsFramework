@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Services;
 using NakedObjects.Util;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 

@@ -24,6 +24,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     [TestClass]
     public class CollectionFacetsTest {
         private readonly ILifecycleManager lifecycleManager;
+        private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
+        private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
         private readonly INakedObjectManager manager;
         private readonly IMetamodelManager metamodel = new Mock<IMetamodelManager>().Object;
         private readonly Mock<ILifecycleManager> mockLifecycleManager = new Mock<ILifecycleManager>();
@@ -33,9 +35,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         private readonly IObjectPersistor persistor;
         private readonly ISession session = new Mock<ISession>().Object;
         private readonly ISpecification specification = new Mock<ISpecification>().Object;
-        private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
-        private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
-
 
         public CollectionFacetsTest() {
             lifecycleManager = mockLifecycleManager.Object;

@@ -20,7 +20,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class OptionalAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private ILogger<OptionalAnnotationFacetFactory> logger;
+        private readonly ILogger<OptionalAnnotationFacetFactory> logger;
 
         public OptionalAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
             : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) =>

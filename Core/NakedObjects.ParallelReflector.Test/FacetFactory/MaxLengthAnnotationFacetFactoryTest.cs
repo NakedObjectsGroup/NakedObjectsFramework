@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -40,6 +41,15 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         #endregion
 
+        #region Nested type: Customer2
+
+        private class Customer2 {
+            // ReSharper disable UnusedParameter.Local
+            public void SomeAction([MaxLength(20)] string foo) { }
+        }
+
+        #endregion
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -55,11 +65,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private class Customer2 {
-            // ReSharper disable UnusedParameter.Local
-            public void SomeAction([MaxLength(20)] string foo) { }
-        }
 
         private class Customer4 {
             [StringLength(30)]

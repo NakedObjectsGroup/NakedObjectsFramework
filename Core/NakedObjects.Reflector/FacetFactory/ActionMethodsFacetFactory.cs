@@ -218,7 +218,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                     methodName,
                     returnType);
 
-                if(methods.Length > 1) {
+                if (methods.Length > 1) {
                     methods.Skip(1).ForEach(m => logger.LogWarning($"Found multiple action choices methods: {methodName} in type: {type} ignoring method(s) with params: {m.GetParameters().Select(p => p.Name).Aggregate("", (s, t) => s + " " + t)}"));
                 }
 

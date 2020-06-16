@@ -24,7 +24,6 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class ValidateObjectFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ValidatePrefix
         };

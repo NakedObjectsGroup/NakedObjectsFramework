@@ -24,7 +24,6 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class PropertyMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
-
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ModifyPrefix
         };
@@ -97,7 +96,7 @@ namespace NakedObjects.Reflect.FacetFactory {
             var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
             RemoveMethod(methodRemover, method);
             if (method != null) {
-                propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property, Logger< PropertyValidateFacetViaMethod>()));
+                propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property, Logger<PropertyValidateFacetViaMethod>()));
                 AddAjaxFacet(method, property);
             }
             else {

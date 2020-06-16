@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -27,47 +28,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         protected override Type[] SupportedTypes => new[] {typeof(IPasswordFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [DataType(DataType.Password)]
-
-            public string FirstName => null;
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new PasswordAnnotationFacetFactory(0, LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer2 {
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([DataType(DataType.Password)] string foo) { }
-        }
-
-        private class Customer3 {
-            [DataType(DataType.PhoneNumber)]
-            public string FirstName => null;
-        }
-
-        private class Customer4 {
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([DataType(DataType.PhoneNumber)] string foo) { }
-        }
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -124,6 +84,59 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.IsTrue(facet is PasswordFacet);
             Assert.IsNotNull(metamodel);
         }
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [DataType(DataType.Password)]
+
+            public string FirstName => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+// ReSharper disable once UnusedParameter.Local
+            public void SomeAction([DataType(DataType.Password)] string foo) { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer3
+
+        private class Customer3 {
+            [DataType(DataType.PhoneNumber)]
+            public string FirstName => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer4
+
+        private class Customer4 {
+// ReSharper disable once UnusedParameter.Local
+            public void SomeAction([DataType(DataType.PhoneNumber)] string foo) { }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new PasswordAnnotationFacetFactory(0, LoggerFactory);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

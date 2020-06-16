@@ -103,7 +103,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         // for testing
         public void ForceContextSet() => isContextSet = true;
 
-
         public string[] GetConnectionStringNamesFromConfig() {
             var connectionStrings = ConfigurationManager.ConnectionStrings.Cast<ConnectionStringSettings>().Where(x => x.ProviderName == "System.Data.EntityClient").ToArray();
             return connectionStrings.Select(cs => cs.Name).ToArray();

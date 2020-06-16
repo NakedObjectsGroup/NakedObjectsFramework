@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -26,54 +27,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         protected override IFacetFactory FacetFactory => facetFactory;
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [MaxLength(30)]
-
-            public string FirstName => null;
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new MaxLengthAnnotationFacetFactory(0, LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer2 {
-            public void SomeAction([MaxLength(20)] string foo) { }
-        }
-
-        private class Customer4 {
-            [StringLength(30)]
-            public string FirstName => null;
-        }
-
-        private class Customer5 {
-            public void SomeAction([StringLength(20)] string foo) { }
-        }
-
-        private class Customer7 {
-            [MaxLength(30)]
-            public string FirstName => null;
-        }
-
-        private class Customer8 {
-            public void SomeAction([MaxLength(20)] string foo) { }
-        }
 
         [TestMethod]
         public void TestMaxLengthAnnotationPickedUpOnActionParameter() {
@@ -150,6 +103,74 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var maxLengthFacetAnnotation = (MaxLengthFacetAnnotation) facet;
             Assert.AreEqual(30, maxLengthFacetAnnotation.Value);
         }
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [MaxLength(30)]
+
+            public string FirstName => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+            public void SomeAction([MaxLength(20)] string foo) { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer4
+
+        private class Customer4 {
+            [StringLength(30)]
+            public string FirstName => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer5
+
+        private class Customer5 {
+            public void SomeAction([StringLength(20)] string foo) { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer7
+
+        private class Customer7 {
+            [MaxLength(30)]
+            public string FirstName => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer8
+
+        private class Customer8 {
+            public void SomeAction([MaxLength(20)] string foo) { }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new MaxLengthAnnotationFacetFactory(0, LoggerFactory);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

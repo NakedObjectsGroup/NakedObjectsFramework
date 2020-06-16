@@ -19,11 +19,9 @@ using NakedObjects.Meta.Facet;
 namespace NakedObjects.Metamodel.Test.Facet {
     [TestClass]
     public class ActionValidationFacetTest {
-
-        private static ILogger<ActionValidationFacet> mockLogger = new Mock<ILogger<ActionValidationFacet>>().Object;
+        private static readonly ILogger<ActionValidationFacet> mockLogger = new Mock<ILogger<ActionValidationFacet>>().Object;
 
         private static void DelegateFuncTest(MethodInfo method) {
-
             IImperativeFacet actionValidationFacet = new ActionValidationFacet(method, null, mockLogger);
             var facet = (IActionValidationFacet) actionValidationFacet;
             Assert.IsNotNull(actionValidationFacet.GetMethodDelegate(), method.Name);

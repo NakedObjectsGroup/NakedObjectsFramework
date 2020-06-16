@@ -22,7 +22,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public abstract class MethodPrefixBasedFacetFactoryAbstract : FacetFactoryAbstract, IMethodPrefixBasedFacetFactory {
-        private ILogger<MethodPrefixBasedFacetFactoryAbstract> logger;
+        private readonly ILogger<MethodPrefixBasedFacetFactoryAbstract> logger;
 
         protected MethodPrefixBasedFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes)
             : base(numericOrder, loggerFactory, featureTypes) =>

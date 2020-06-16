@@ -19,6 +19,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
@@ -27,7 +28,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     [TestClass]
     public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         private CallbackMethodsFacetFactory facetFactory;
-
 
         protected override Type[] SupportedTypes =>
             new[] {
@@ -301,8 +301,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         #endregion
-
-        
 
         private class Customer {
             public void Created() { }

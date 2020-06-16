@@ -17,15 +17,15 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Reflect.Test.FacetFactory {
     public abstract class AbstractFacetFactoryTest {
+        private ILogger<AbstractFacetFactoryTest> logger;
+        protected ILoggerFactory LoggerFactory;
         protected IMetamodelManager Metamodel;
         protected IMethodRemover MethodRemover;
-        protected ILoggerFactory LoggerFactory;
         private Mock<IMetamodelManager> mockMetadata;
         private Mock<IMethodRemover> mockMethodRemover;
         private Mock<IReflector> mockReflector;
         protected IReflector Reflector;
         protected ISpecificationBuilder Specification;
-        private ILogger<AbstractFacetFactoryTest> logger;
         protected abstract Type[] SupportedTypes { get; }
         protected abstract IFacetFactory FacetFactory { get; }
 

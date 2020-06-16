@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -25,47 +26,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         protected override IFacetFactory FacetFactory => facetFactory;
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [Optionally]
-
-            public string FirstName => null;
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new OptionalAnnotationFacetFactory(0, LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer2 {
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Optionally] string foo) { }
-        }
-
-        private class Customer3 {
-            [Optionally]
-            public int NumberOfOrders => 0;
-        }
-
-        private class Customer4 {
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([Optionally] int foo) { }
-        }
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -108,6 +68,59 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is OptionalFacet);
         }
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [Optionally]
+
+            public string FirstName => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+// ReSharper disable once UnusedParameter.Local
+            public void SomeAction([Optionally] string foo) { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer3
+
+        private class Customer3 {
+            [Optionally]
+            public int NumberOfOrders => 0;
+        }
+
+        #endregion
+
+        #region Nested type: Customer4
+
+        private class Customer4 {
+// ReSharper disable once UnusedParameter.Local
+            public void SomeAction([Optionally] int foo) { }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new OptionalAnnotationFacetFactory(0, LoggerFactory);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

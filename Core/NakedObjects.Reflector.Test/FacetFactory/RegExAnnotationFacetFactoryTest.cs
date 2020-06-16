@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -44,6 +45,16 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
+        #region Nested type: Customer2
+
+        private class Customer2 {
+            // ReSharper disable UnusedParameter.Local
+            public void SomeAction([RegEx(Validation = "^A.*", Message = "Parameter message", CaseSensitive = false)]
+                                   string foo) { }
+        }
+
+        #endregion
+
         #region Setup/Teardown
 
         [TestInitialize]
@@ -59,12 +70,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private class Customer2 {
-            // ReSharper disable UnusedParameter.Local
-            public void SomeAction([RegEx(Validation = "^A.*", Message = "Parameter message", CaseSensitive = false)]
-                                   string foo) { }
-        }
 
         private class Customer3 {
             [RegEx(Validation = "^A.*", CaseSensitive = false)]

@@ -26,9 +26,9 @@ namespace NakedObjects.Reflect.Component {
     public sealed class Reflector : IReflector {
         private readonly IReflectorConfiguration config;
         private readonly FacetDecoratorSet facetDecoratorSet;
-        private readonly IMenuFactory menuFactory;
-        private readonly ILoggerFactory loggerFactory;
         private readonly ILogger<Reflector> logger;
+        private readonly ILoggerFactory loggerFactory;
+        private readonly IMenuFactory menuFactory;
         private readonly IMetamodelBuilder metamodel;
         private readonly ISet<Type> serviceTypes = new HashSet<Type>();
 

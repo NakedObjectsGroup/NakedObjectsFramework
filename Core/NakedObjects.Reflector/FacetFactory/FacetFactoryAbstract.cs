@@ -24,12 +24,11 @@ namespace NakedObjects.Meta.Facet {
             FeatureTypes = featureTypes;
         }
 
+        protected ILoggerFactory LoggerFactory { get; }
+
         #region IFacetFactory Members
 
-        protected ILogger<T> Logger<T>() => LoggerFactory.CreateLogger<T>();
-
         public int NumericOrder { get; }
-        protected ILoggerFactory LoggerFactory { get; }
 
         public virtual FeatureType FeatureTypes { get; }
 
@@ -50,6 +49,8 @@ namespace NakedObjects.Meta.Facet {
         public int CompareTo(IFacetFactory other) => NumericOrder.CompareTo(other.NumericOrder);
 
         #endregion
+
+        protected ILogger<T> Logger<T>() => LoggerFactory.CreateLogger<T>();
 
         public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => new PropertyInfo[] { };
 

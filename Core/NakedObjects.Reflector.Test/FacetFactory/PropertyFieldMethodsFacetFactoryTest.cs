@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -44,8 +45,19 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         #region Nested type: Customer
 
         private class Customer {
-            
             public string FirstName => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            public string FirstName {
+                get => null;
+                // ReSharper disable ValueParameterNotUsed
+                set { }
+            }
         }
 
         #endregion
@@ -65,14 +77,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private class Customer1 {
-            public string FirstName {
-                get => null;
-                // ReSharper disable ValueParameterNotUsed
-                set { }
-            }
-        }
 
         private class Customer10 {
             public string FirstName => null;

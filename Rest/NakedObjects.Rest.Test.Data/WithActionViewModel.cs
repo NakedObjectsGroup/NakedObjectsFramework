@@ -11,6 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Security;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 

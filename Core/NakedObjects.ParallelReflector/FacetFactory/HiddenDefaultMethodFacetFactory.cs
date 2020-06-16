@@ -21,7 +21,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     /// </summary>
     public sealed class HiddenDefaultMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly string[] FixedPrefixes;
-        private ILogger<HiddenDefaultMethodFacetFactory> logger;
+        private readonly ILogger<HiddenDefaultMethodFacetFactory> logger;
 
         static HiddenDefaultMethodFacetFactory() =>
             FixedPrefixes = new[] {

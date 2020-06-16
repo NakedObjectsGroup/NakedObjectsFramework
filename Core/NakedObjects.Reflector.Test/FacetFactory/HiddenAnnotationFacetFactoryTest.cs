@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -27,83 +28,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         protected override IFacetFactory FacetFactory => facetFactory;
-
-        #region Nested type: Customer
-
-        private class Customer {
-            [Hidden(WhenTo.Always)]
-
-            public int NumberOfOrders => 0;
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new HiddenAnnotationFacetFactory(0, LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer1 {
-            [Hidden(WhenTo.Always)]
-            public IList Orders => null;
-        }
-
-        private class Customer2 {
-            [Hidden(WhenTo.Always)]
-            public void SomeAction() { }
-        }
-
-        private class Customer3 {
-            [Hidden(WhenTo.Always)]
-            public void SomeAction() { }
-        }
-
-        private class Customer4 {
-            [Hidden(WhenTo.Never)]
-            public void SomeAction() { }
-        }
-
-        private class Customer5 {
-            [Hidden(WhenTo.OncePersisted)]
-            public void SomeAction() { }
-        }
-
-        private class Customer6 {
-            [Hidden(WhenTo.UntilPersisted)]
-            public void SomeAction() { }
-        }
-
-        private class Customer7 {
-            [ScaffoldColumn(false)]
-            public int NumberOfOrders => 0;
-        }
-
-        private class Customer8 {
-            [ScaffoldColumn(false)]
-            public IList Orders => null;
-        }
-
-        private class Customer9 {
-            [ScaffoldColumn(true)]
-            public int NumberOfOrders => 0;
-        }
-
-        private class Customer10 {
-            [Hidden(WhenTo.Always)]
-            [ScaffoldColumn(true)]
-            public int NumberOfOrders => 0;
-        }
 
         [TestMethod]
         public void TestDisabledWhenUntilPersistedAnnotationPickedUpOn() {
@@ -218,6 +142,123 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var hiddenFacetAbstract = (HiddenFacet) facet;
             Assert.AreEqual(WhenTo.Never, hiddenFacetAbstract.Value);
         }
+
+        #region Nested type: Customer
+
+        private class Customer {
+            [Hidden(WhenTo.Always)]
+
+            public int NumberOfOrders => 0;
+        }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [Hidden(WhenTo.Always)]
+            public IList Orders => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer10
+
+        private class Customer10 {
+            [Hidden(WhenTo.Always)]
+            [ScaffoldColumn(true)]
+            public int NumberOfOrders => 0;
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+            [Hidden(WhenTo.Always)]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer3
+
+        private class Customer3 {
+            [Hidden(WhenTo.Always)]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer4
+
+        private class Customer4 {
+            [Hidden(WhenTo.Never)]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer5
+
+        private class Customer5 {
+            [Hidden(WhenTo.OncePersisted)]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer6
+
+        private class Customer6 {
+            [Hidden(WhenTo.UntilPersisted)]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer7
+
+        private class Customer7 {
+            [ScaffoldColumn(false)]
+            public int NumberOfOrders => 0;
+        }
+
+        #endregion
+
+        #region Nested type: Customer8
+
+        private class Customer8 {
+            [ScaffoldColumn(false)]
+            public IList Orders => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer9
+
+        private class Customer9 {
+            [ScaffoldColumn(true)]
+            public int NumberOfOrders => 0;
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new HiddenAnnotationFacetFactory(0, LoggerFactory);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

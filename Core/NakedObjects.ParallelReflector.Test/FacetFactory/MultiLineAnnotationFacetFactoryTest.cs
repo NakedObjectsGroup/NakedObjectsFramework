@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -26,64 +27,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         protected override Type[] SupportedTypes => new[] {typeof(IMultiLineFacet)};
 
         protected override IFacetFactory FacetFactory => facetFactory;
-
-        #region Nested type: Customer
-
-        [MultiLine(NumberOfLines = 3, Width = 9)]
-        private class Customer { }
-
-        #endregion
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [MultiLine(NumberOfLines = 12, Width = 36)]
-
-            public string FirstName => null;
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new MultiLineAnnotationFacetFactory(0, LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer2 {
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)]
-                                   string foo) { }
-        }
-
-        [MultiLine]
-        private class Customer3 { }
-
-        private class Customer5 {
-            [MultiLine(NumberOfLines = 8, Width = 24)]
-            public int NumberOfOrders => 0;
-        }
-
-        private class Customer6 {
-// ReSharper disable once UnusedParameter.Local
-            public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)]
-                                   int foo) { }
-        }
-
-        private class Customer7 {
-            [MultiLine(NumberOfLines = 1)]
-            public void SomeAction() { }
-        }
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -185,6 +128,84 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.AreEqual(1, multiLineFacetAnnotation.NumberOfLines);
             Assert.IsNotNull(metamodel);
         }
+
+        #region Nested type: Customer
+
+        [MultiLine(NumberOfLines = 3, Width = 9)]
+        private class Customer { }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [MultiLine(NumberOfLines = 12, Width = 36)]
+
+            public string FirstName => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+// ReSharper disable once UnusedParameter.Local
+            public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)]
+                                   string foo) { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer3
+
+        [MultiLine]
+        private class Customer3 { }
+
+        #endregion
+
+        #region Nested type: Customer5
+
+        private class Customer5 {
+            [MultiLine(NumberOfLines = 8, Width = 24)]
+            public int NumberOfOrders => 0;
+        }
+
+        #endregion
+
+        #region Nested type: Customer6
+
+        private class Customer6 {
+// ReSharper disable once UnusedParameter.Local
+            public void SomeAction([MultiLine(NumberOfLines = 8, Width = 24)]
+                                   int foo) { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer7
+
+        private class Customer7 {
+            [MultiLine(NumberOfLines = 1)]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new MultiLineAnnotationFacetFactory(0, LoggerFactory);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

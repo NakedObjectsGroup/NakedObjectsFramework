@@ -26,9 +26,9 @@ namespace NakedObjects.ParallelReflect.Component {
         private readonly IReflectorConfiguration config;
         private readonly FacetDecoratorSet facetDecoratorSet;
         private readonly IMetamodelBuilder initialMetamodel;
-        private readonly IMenuFactory menuFactory;
-        private readonly ILoggerFactory loggerFactory;
         private readonly ILogger<ParallelReflector> logger;
+        private readonly ILoggerFactory loggerFactory;
+        private readonly IMenuFactory menuFactory;
         private readonly ISet<Type> serviceTypes = new HashSet<Type>();
 
         public ParallelReflector(IClassStrategy classStrategy,

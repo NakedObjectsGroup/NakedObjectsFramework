@@ -20,7 +20,6 @@ namespace NakedObjects.Reflect.Component {
     /// </summary>
     [Serializable]
     public sealed class DefaultClassStrategy : IClassStrategy {
-
         private readonly IReflectorConfiguration config;
 
         // only intended for use during initial reflection

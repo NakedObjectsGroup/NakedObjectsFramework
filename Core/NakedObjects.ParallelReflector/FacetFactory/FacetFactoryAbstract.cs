@@ -24,12 +24,11 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             FeatureTypes = featureTypes;
         }
 
-        protected ILogger<T> Logger<T>() => LoggerFactory.CreateLogger<T>();
+        protected ILoggerFactory LoggerFactory { get; }
 
         #region IFacetFactory Members
 
         public int NumericOrder { get; }
-        protected ILoggerFactory LoggerFactory { get; }
 
         public virtual FeatureType FeatureTypes { get; }
 
@@ -52,6 +51,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public int CompareTo(IFacetFactory other) => NumericOrder.CompareTo(other.NumericOrder);
 
         #endregion
+
+        protected ILogger<T> Logger<T>() => LoggerFactory.CreateLogger<T>();
 
         public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => new PropertyInfo[] { };
 

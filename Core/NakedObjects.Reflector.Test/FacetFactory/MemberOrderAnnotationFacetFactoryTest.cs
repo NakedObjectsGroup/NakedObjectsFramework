@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -26,46 +27,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         protected override IFacetFactory FacetFactory => facetFactory;
-
-        #region Nested type: Customer
-
-        private class Customer {
-            [MemberOrder(Sequence = "1")]
-
-            public string FirstName => null;
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            facetFactory = new MemberOrderAnnotationFacetFactory(0, LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            facetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        private class Customer1 {
-            [MemberOrder(Sequence = "2")]
-            public IList Orders => null;
-
-            public void AddToOrders(Order o) { }
-        }
-
-        private class Customer2 {
-            [MemberOrder(Sequence = "3")]
-            public void SomeAction() { }
-        }
-
-        private class Order { }
 
         [TestMethod]
         public override void TestFeatureTypes() {
@@ -112,6 +73,58 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.AreEqual("1", memberOrderFacetAnnotation.Sequence);
             AssertNoMethodsRemoved();
         }
+
+        #region Nested type: Customer
+
+        private class Customer {
+            [MemberOrder(Sequence = "1")]
+
+            public string FirstName => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [MemberOrder(Sequence = "2")]
+            public IList Orders => null;
+
+            public void AddToOrders(Order o) { }
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        private class Customer2 {
+            [MemberOrder(Sequence = "3")]
+            public void SomeAction() { }
+        }
+
+        #endregion
+
+        #region Nested type: Order
+
+        private class Order { }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            facetFactory = new MemberOrderAnnotationFacetFactory(0, LoggerFactory);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            facetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

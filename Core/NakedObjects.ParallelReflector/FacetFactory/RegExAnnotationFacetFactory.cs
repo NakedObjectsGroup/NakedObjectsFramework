@@ -23,7 +23,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class RegExAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private ILogger<RegExAnnotationFacetFactory> logger;
+        private readonly ILogger<RegExAnnotationFacetFactory> logger;
 
         public RegExAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
             : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) =>

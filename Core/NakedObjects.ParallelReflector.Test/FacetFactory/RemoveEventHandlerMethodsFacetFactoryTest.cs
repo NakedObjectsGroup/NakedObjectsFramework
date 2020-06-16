@@ -19,6 +19,7 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Component;
 using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -102,7 +103,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var metamodel = new Metamodel(classStrategy, cache, null);
             var mockLogger = new Mock<ILogger<ParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
-
 
             Reflector = new ParallelReflector(classStrategy, metamodel, reflectorConfiguration, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory}, mockLoggerFactory, mockLogger);
         }

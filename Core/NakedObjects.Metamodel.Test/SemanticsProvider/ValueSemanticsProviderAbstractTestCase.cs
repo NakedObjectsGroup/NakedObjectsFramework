@@ -18,6 +18,8 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Meta.Test.SemanticsProvider {
     public abstract class ValueSemanticsProviderAbstractTestCase<T> {
+        private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
+        private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
         private IEncodeableFacet encodeableFacet;
         protected ILifecycleManager LifecycleManager = new Mock<ILifecycleManager>().Object;
         protected INakedObjectManager Manager = new Mock<INakedObjectManager>().Object;
@@ -25,9 +27,6 @@ namespace NakedObjects.Meta.Test.SemanticsProvider {
         protected IObjectPersistor Persistor = new Mock<IObjectPersistor>().Object;
         protected IReflector Reflector = new Mock<IReflector>().Object;
         private IValueSemanticsProvider<T> value;
-        private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
-        private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
-
 
         protected void SetValue(IValueSemanticsProvider<T> newValue) {
             value = newValue;

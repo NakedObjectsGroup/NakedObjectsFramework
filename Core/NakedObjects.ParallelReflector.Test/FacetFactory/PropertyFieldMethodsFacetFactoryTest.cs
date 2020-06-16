@@ -18,6 +18,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -43,8 +44,19 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         #region Nested type: Customer
 
         private class Customer {
-            
             public string FirstName => null;
+        }
+
+        #endregion
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            public string FirstName {
+                get => null;
+                // ReSharper disable ValueParameterNotUsed
+                set { }
+            }
         }
 
         #endregion
@@ -64,14 +76,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         }
 
         #endregion
-
-        private class Customer1 {
-            public string FirstName {
-                get => null;
-                // ReSharper disable ValueParameterNotUsed
-                set { }
-            }
-        }
 
         private class Customer10 {
             public string FirstName => null;
@@ -225,7 +229,6 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             public void ModifyFirstName(string firstName) { }
         }
-
 
         public class CustomerStatic {
             public string FirstName {

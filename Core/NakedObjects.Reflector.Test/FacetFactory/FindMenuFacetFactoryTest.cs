@@ -11,6 +11,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -82,7 +83,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         private class Customer {
             // ReSharper disable UnusedParameter.Local
-            
+
             public void Action1(Foo param1, [FindMenu] Foo param2) { }
 
             public void Action2([FindMenu] string param1) { }
@@ -98,6 +99,10 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             // ReSharper restore UnusedParameter.Local
             // ReSharper restore UnusedMember.Local
         }
+
+        #endregion
+
+        #region Nested type: Customer
 
         #endregion
 

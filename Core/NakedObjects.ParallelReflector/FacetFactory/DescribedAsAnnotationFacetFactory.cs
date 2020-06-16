@@ -22,7 +22,7 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class DescribedAsAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        private ILogger<DescribedAsAnnotationFacetFactory> logger;
+        private readonly ILogger<DescribedAsAnnotationFacetFactory> logger;
 
         public DescribedAsAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
             : base(numericOrder, loggerFactory, FeatureType.Everything) =>

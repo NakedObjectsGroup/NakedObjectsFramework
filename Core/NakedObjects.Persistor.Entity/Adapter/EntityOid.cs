@@ -18,8 +18,8 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Persistor.Entity.Adapter {
     public sealed class EntityOid : IEncodedToStrings, IEntityOid {
-        private readonly IMetamodelManager metamodel;
         private readonly ILogger<EntityOid> logger;
+        private readonly IMetamodelManager metamodel;
         private int cachedHashCode;
         private string cachedToString;
         private EntityOid previous;

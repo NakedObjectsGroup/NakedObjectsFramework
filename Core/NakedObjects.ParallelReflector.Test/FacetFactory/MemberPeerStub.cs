@@ -13,6 +13,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Spec;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 

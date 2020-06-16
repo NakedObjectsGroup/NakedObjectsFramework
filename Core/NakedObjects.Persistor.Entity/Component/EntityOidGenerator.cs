@@ -14,8 +14,8 @@ using NakedObjects.Persistor.Entity.Adapter;
 namespace NakedObjects.Persistor.Entity.Component {
     public sealed class EntityOidGenerator : IOidGenerator {
         private static long transientId;
-        private readonly IMetamodelManager metamodel;
         private readonly ILoggerFactory loggerFactory;
+        private readonly IMetamodelManager metamodel;
 
         public EntityOidGenerator(IMetamodelManager metamodel, ILoggerFactory loggerFactory) {
             Assert.AssertNotNull(metamodel);
@@ -24,8 +24,6 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         public string Name => "Entity Oids";
-
-        private ILogger<EntityOid> Logger() => loggerFactory.CreateLogger<EntityOid>();
 
         #region IOidGenerator Members
 
@@ -38,5 +36,7 @@ namespace NakedObjects.Persistor.Entity.Component {
         public IOid CreateOid(string typeName, object[] keys) => new EntityOid(metamodel, typeName, keys, Logger());
 
         #endregion
+
+        private ILogger<EntityOid> Logger() => loggerFactory.CreateLogger<EntityOid>();
     }
 }

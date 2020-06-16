@@ -15,6 +15,7 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using TestData;
 using Assert = NUnit.Framework.Assert;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 

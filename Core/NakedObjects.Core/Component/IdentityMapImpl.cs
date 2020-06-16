@@ -17,10 +17,10 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Core.Component {
     public sealed class IdentityMapImpl : IIdentityMap {
         private readonly IIdentityAdapterMap identityAdapterMap;
+        private readonly ILogger<IdentityMapImpl> logger;
         private readonly INakedObjectAdapterMap nakedObjectAdapterMap;
         private readonly IOidGenerator oidGenerator;
         private readonly IDictionary<object, object> unloadedObjects = new Dictionary<object, object>();
-        private readonly ILogger<IdentityMapImpl> logger;
 
         public IdentityMapImpl(IOidGenerator oidGenerator,
                                IIdentityAdapterMap identityAdapterMap,

@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -26,46 +27,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         }
 
         protected override IFacetFactory FacetFactory => annotationFacetFactory;
-
-        #region Nested type: Customer1
-
-        private class Customer1 {
-            [Eagerly(EagerlyAttribute.Do.Rendering)]
-
-            public int Prop { get; set; }
-
-            [Eagerly(EagerlyAttribute.Do.Rendering)]
-            public IList<Customer1> Coll { get; set; }
-
-            [Eagerly(EagerlyAttribute.Do.Rendering)]
-            public IList<Customer1> Act() => new List<Customer1>();
-        }
-
-        #endregion
-
-        #region Setup/Teardown
-
-        [TestInitialize]
-        public override void SetUp() {
-            base.SetUp();
-            annotationFacetFactory = new EagerlyAnnotationFacetFactory(0, LoggerFactory);
-        }
-
-        [TestCleanup]
-        public override void TearDown() {
-            annotationFacetFactory = null;
-            base.TearDown();
-        }
-
-        #endregion
-
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
-        private class Customer2 {
-            public int Prop { get; set; }
-            public IList<Customer1> Coll { get; set; }
-
-            public IList<Customer1> Act() => new List<Customer1>();
-        }
 
         [TestMethod]
         public void TestEagerlyAnnotationPickedUpOnClass() {
@@ -150,6 +111,50 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             Assert.IsTrue(featureTypes.HasFlag(FeatureType.Actions));
             Assert.IsFalse(featureTypes.HasFlag(FeatureType.ActionParameters));
         }
+
+        #region Nested type: Customer1
+
+        private class Customer1 {
+            [Eagerly(EagerlyAttribute.Do.Rendering)]
+
+            public int Prop { get; set; }
+
+            [Eagerly(EagerlyAttribute.Do.Rendering)]
+            public IList<Customer1> Coll { get; set; }
+
+            [Eagerly(EagerlyAttribute.Do.Rendering)]
+            public IList<Customer1> Act() => new List<Customer1>();
+        }
+
+        #endregion
+
+        #region Nested type: Customer2
+
+        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        private class Customer2 {
+            public int Prop { get; set; }
+            public IList<Customer1> Coll { get; set; }
+
+            public IList<Customer1> Act() => new List<Customer1>();
+        }
+
+        #endregion
+
+        #region Setup/Teardown
+
+        [TestInitialize]
+        public override void SetUp() {
+            base.SetUp();
+            annotationFacetFactory = new EagerlyAnnotationFacetFactory(0, LoggerFactory);
+        }
+
+        [TestCleanup]
+        public override void TearDown() {
+            annotationFacetFactory = null;
+            base.TearDown();
+        }
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

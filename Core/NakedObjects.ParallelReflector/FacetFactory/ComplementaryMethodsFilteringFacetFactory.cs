@@ -20,7 +20,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
     public sealed class ComplementaryMethodsFilteringFacetFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
-
         private static readonly string[] PropertyPrefixes = {
             RecognisedMethodsAndPrefixes.AutoCompletePrefix,
             RecognisedMethodsAndPrefixes.ModifyPrefix,
@@ -44,7 +43,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             RecognisedMethodsAndPrefixes.ValidatePrefix
         };
 
-        private ILogger<ComplementaryMethodsFilteringFacetFactory> logger;
+        private readonly ILogger<ComplementaryMethodsFilteringFacetFactory> logger;
 
         /// <summary>
         ///     The <see cref="IFacet" />s registered are the generic ones from no-architecture (where they exist)

@@ -20,13 +20,12 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class TitleMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ToStringMethod,
             RecognisedMethodsAndPrefixes.TitleMethod
         };
 
-        private ILogger<TitleMethodFacetFactory> logger;
+        private readonly ILogger<TitleMethodFacetFactory> logger;
 
         public TitleMethodFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
             : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) =>

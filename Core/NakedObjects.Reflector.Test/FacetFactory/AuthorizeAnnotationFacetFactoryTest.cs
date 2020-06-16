@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Security;
+
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
@@ -817,7 +818,6 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
         #endregion
 
-        
         private class Customer {
             public int Property1 => 0;
 

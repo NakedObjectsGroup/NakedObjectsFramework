@@ -17,16 +17,15 @@ namespace NakedObjects.Core.Test.Adapter {
     [TestFixture]
     public class NakedObjectAdapterTest {
         private readonly ILifecycleManager lifecycleManager = new Mock<ILifecycleManager>().Object;
+        private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
+        private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
         private readonly IMetamodelManager metamodel = new Mock<IMetamodelManager>().Object;
         private readonly INakedObjectManager nakedObjectManager = new Mock<INakedObjectManager>().Object;
         private readonly IOid oid = new Mock<IOid>().Object;
         private readonly IObjectPersistor persistor = new Mock<IObjectPersistor>().Object;
         private readonly object poco = new object();
         private readonly ISession session = new Mock<ISession>().Object;
-        private readonly ILoggerFactory loggerFactory = new Mock<ILoggerFactory>().Object;
-        private readonly ILogger<NakedObjectAdapter> logger = new Mock<ILogger<NakedObjectAdapter>>().Object;
         private readonly ILogger<NullVersion> vLogger = new Mock<ILogger<NullVersion>>().Object;
-
 
         [Test]
         public void TestCheckLockDefaultOk() {
@@ -87,6 +86,5 @@ namespace NakedObjects.Core.Test.Adapter {
 
             Assert.AreEqual(testCcVersion, newVersion);
         }
-
     }
 }

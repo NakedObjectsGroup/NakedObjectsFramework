@@ -13,6 +13,7 @@ using System.Data.Entity.Core.Objects;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
@@ -23,7 +24,7 @@ using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
-using Microsoft.Extensions.Logging;
+
 // ReSharper disable UnusedMember.Global
 
 namespace NakedObjects.Core.Test.Adapter {
@@ -215,7 +216,6 @@ namespace NakedObjects.Core.Test.Adapter {
             var rawParm = new List<TestDomainObject> {target, obj2};
             var parm = NakedObjectsFramework.NakedObjectManager.CreateAdapter(rawParm, null, null);
             var logger = LoggerFactory.CreateLogger<CollectionMemento>();
-
 
             var memento = new CollectionMemento(NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.MetamodelManager, logger, targetNo, actionSpec, new[] {parm});
 

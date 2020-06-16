@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 // ReSharper disable UnusedMember.Global
+
 namespace NakedObjects.Architecture.Interactions {
     public enum InteractionType {
         ActionInvoke,

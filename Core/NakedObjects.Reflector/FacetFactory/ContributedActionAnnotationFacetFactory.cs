@@ -42,7 +42,7 @@ namespace NakedObjects.Reflect.FacetFactory {
                 var type = reflector.LoadSpecification<IObjectSpecImmutable>(p.ParameterType);
                 if (type != null) {
                     if (type.IsParseable) {
-                      logger.LogWarning($"ContributedAction attribute added to a value parameter type: {member.Name}");
+                        logger.LogWarning($"ContributedAction attribute added to a value parameter type: {member.Name}");
                     }
                     else if (type.IsCollection) {
                         var parent = reflector.LoadSpecification(member.DeclaringType);

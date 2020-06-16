@@ -19,14 +19,14 @@ using NakedObjects.Meta.Audit;
 namespace NakedObjects.Meta.Test.Audit {
     [TestClass]
     public class AuditManagerTest {
+        private readonly ILogger<AuditManager> mockLogger = new Mock<ILogger<AuditManager>>().Object;
+
         #region Setup/Teardown
 
         [TestInitialize]
         public void SetUp() { }
 
         #endregion
-
-        private ILogger<AuditManager> mockLogger = new Mock<ILogger<AuditManager>>().Object;
 
         [TestMethod]
         public void TestCreateOk() {
