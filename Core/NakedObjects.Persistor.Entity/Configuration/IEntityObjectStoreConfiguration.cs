@@ -70,6 +70,12 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         void ForceContextSet();
 
+        [Obsolete("Use Validate")]
         void AssertSetup();
+
+        /// <summary>
+        ///     Throws if config not valid
+        /// </summary>
+        void Validate();
     }
 }

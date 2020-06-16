@@ -434,7 +434,10 @@ namespace NakedObjects.Snapshot.Xml.Utility {
 
             // xsi:schemaLocation="http://www.nakedobjects.org/ns/app/<fully qualified class name> sdm.common.fixture.schemes.ao.communications sdm.common.fixture.schemes.ao.communications.AO11ConfirmAnimalRegistration.xsd"
 
-            Trace.Assert(rootElement != null, "rootElement != null");
+            if (rootElement == null) {
+                throw new NullReferenceException("rootElement cannot be null");
+            }
+
             rootElement.SetAttributeValue(XsMetaModel.Xsi + "schemaLocation", xsiSchemaLocationAttrValue);
         }
 

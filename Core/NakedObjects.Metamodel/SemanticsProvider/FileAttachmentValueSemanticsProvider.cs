@@ -36,20 +36,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
-        protected override FileAttachment DoParse(string entry) {
-            Trace.Assert(false, $"FileAttachment cannot parse: {entry}");
-            return null;
-        }
+        protected override FileAttachment DoParse(string entry) => throw new NakedObjectSystemException($"FileAttachment cannot parse: {entry}");
 
-        protected override FileAttachment DoParseInvariant(string entry) {
-            Trace.Assert(false, $"FileAttachment cannot parse invariant: {entry}");
-            return null;
-        }
+        protected override FileAttachment DoParseInvariant(string entry) => throw new NakedObjectSystemException($"FileAttachment cannot parse invariant: {entry}");
 
-        protected override string GetInvariantString(FileAttachment obj) {
-            Trace.Assert(false, "FileAttachment cannot get invraiant string");
-            return null;
-        }
+        protected override string GetInvariantString(FileAttachment obj) => throw new NakedObjectSystemException($"FileAttachment cannot get invariant string");
 
         protected override string DoEncode(FileAttachment fileAttachment) {
             var stream = fileAttachment.GetResourceAsStream();

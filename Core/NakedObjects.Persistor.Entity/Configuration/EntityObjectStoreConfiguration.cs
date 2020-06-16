@@ -103,7 +103,10 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         // for testing
         public void ForceContextSet() => isContextSet = true;
 
-        public void AssertSetup() {
+        [Obsolete("Use Validate")]
+        public void AssertSetup() => Validate();
+
+        public void Validate() {
             if (!NoValidate && !isContextSet) {
                 throw new InitialisationException(@"No context set on EntityObjectStoreConfiguration, must call ""UsingContext""");
             }

@@ -19,16 +19,13 @@ namespace NakedObjects.Core.Component {
     ///     object in the collection to the store.
     /// </summary>
     public sealed class FlatPersistAlgorithm : IPersistAlgorithm {
-        private readonly ILogger<FlatPersistAlgorithm> logger;
         private readonly INakedObjectManager manager;
         private readonly IObjectPersistor persistor;
 
         public FlatPersistAlgorithm(IObjectPersistor persistor,
-                                    INakedObjectManager manager,
-                                    ILogger<FlatPersistAlgorithm> logger) {
+                                    INakedObjectManager manager) {
             this.persistor = persistor;
             this.manager = manager;
-            this.logger = logger;
         }
 
         #region IPersistAlgorithm Members

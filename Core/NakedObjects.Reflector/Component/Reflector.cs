@@ -65,7 +65,10 @@ namespace NakedObjects.Reflect.Component {
         public ITypeSpecBuilder[] AllObjectSpecImmutables => metamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
 
         public ITypeSpecBuilder LoadSpecification(Type type) {
-            Assert.AssertNotNull(type);
+            if (type == null) {
+                throw new NakedObjectSystemException("cannot load specification for null");
+            }
+
             return (ITypeSpecBuilder) metamodel.GetSpecification(type, true) ?? LoadSpecificationAndCache(type);
         }
 

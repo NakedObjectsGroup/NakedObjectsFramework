@@ -36,20 +36,11 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         public static bool IsAdaptedType(Type type) => type == AdaptedType;
 
-        protected override Image DoParse(string entry) {
-            Trace.Assert(false, $"Image cannot parse: {entry}");
-            return null;
-        }
+        protected override Image DoParse(string entry) => throw new NakedObjectSystemException($"Image cannot parse: {entry}");
 
-        protected override Image DoParseInvariant(string entry) {
-            Trace.Assert(false, $"Image cannot parse invariant: {entry}");
-            return null;
-        }
+        protected override Image DoParseInvariant(string entry) => throw new NakedObjectSystemException($"Image cannot parse invariant: {entry}");
 
-        protected override string GetInvariantString(Image obj) {
-            Trace.Assert(false, "Image cannot get invraiant string");
-            return null;
-        }
+        protected override string GetInvariantString(Image obj) => throw new NakedObjectSystemException($"Image cannot get invariant string");
 
         protected override string DoEncode(Image image) {
             var stream = image.GetResourceAsStream();

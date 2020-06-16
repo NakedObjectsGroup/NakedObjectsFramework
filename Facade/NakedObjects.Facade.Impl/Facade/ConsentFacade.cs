@@ -13,10 +13,7 @@ namespace NakedObjects.Facade.Impl {
     public class ConsentFacade : IConsentFacade {
         private readonly IConsent consent;
 
-        public ConsentFacade(IConsent consent) {
-            FacadeUtils.AssertNotNull(consent, "Consent is null");
-            this.consent = consent;
-        }
+        public ConsentFacade(IConsent consent) => this.consent = consent ?? throw new NullReferenceException($"{nameof(consent)} is null");
 
         #region IConsentFacade Members
 

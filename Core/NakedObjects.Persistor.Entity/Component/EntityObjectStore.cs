@@ -21,6 +21,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Transactions;
 using Microsoft.Extensions.Logging;
+using Microsoft.VisualBasic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -87,7 +88,7 @@ namespace NakedObjects.Persistor.Entity.Component {
 
         public EntityObjectStore(ISession session, IEntityObjectStoreConfiguration config, EntityOidGenerator oidGenerator, IMetamodelManager metamodel, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager, ILogger<EntityObjectStore> logger)
             : this(metamodel, session, injector, nakedObjectManager, logger) {
-            config.AssertSetup();
+            config.Validate();
             this.oidGenerator = oidGenerator;
             contexts = config.ContextConfiguration.ToDictionary<CodeFirstEntityContextConfiguration, CodeFirstEntityContextConfiguration, LocalContext>(c => c, c => null);
 
@@ -123,7 +124,10 @@ namespace NakedObjects.Persistor.Entity.Component {
             if (EntityFrameworkKnowsType(adapter.Object.GetEntityProxiedType())) {
                 foreach (var pi in GetContext(adapter).GetComplexMembers(adapter.Object.GetEntityProxiedType())) {
                     var complexObject = pi.GetValue(adapter.Object, null);
-                    Assert.AssertNotNull("Complex type members should never be null", complexObject);
+                    if (complexObject == null) {
+                        throw new NakedObjectSystemException("Complex type members should never be null");
+                    }
+
                     InjectParentIntoChild(adapter.Object, complexObject);
                     injector.InjectInto(complexObject);
                     createAggregatedAdapter(adapter, pi, complexObject);
@@ -231,7 +235,10 @@ namespace NakedObjects.Persistor.Entity.Component {
 
                 var idmembers = currentContext.GetIdMembers(entityType);
                 var keyValues = ((IEntityOid) nakedObjectAdapter.Oid).Key;
-                Assert.AssertEquals("Member and value counts must match", idmembers.Length, keyValues.Length);
+
+                if (idmembers.Length != keyValues.Length) {
+                    throw new NakedObjectSystemException("Member and value counts must match");
+                }
 
                 var memberValueMap = MemberValueMap(idmembers, keyValues);
 
@@ -268,7 +275,10 @@ namespace NakedObjects.Persistor.Entity.Component {
             if (EntityFrameworkKnowsType(type)) {
                 foreach (var pi in GetContext(domainObject).GetComplexMembers(domainObject.GetType())) {
                     var complexObject = pi.GetValue(domainObject, null);
-                    Assert.AssertNotNull("Complex type members should never be null", complexObject);
+                    if (complexObject == null)
+                    {
+                        throw new NakedObjectSystemException("Complex type members should never be null");
+                    }
                     injector.InjectInto(complexObject);
                 }
             }
@@ -516,7 +526,10 @@ namespace NakedObjects.Persistor.Entity.Component {
         }
 
         private static IDictionary<string, object> MemberValueMap(ICollection<PropertyInfo> idmembers, ICollection<object> keyValues) {
-            Assert.AssertEquals("Member and value counts must match", idmembers.Count, keyValues.Count);
+            if (idmembers.Count != keyValues.Count) {
+                throw new NakedObjectSystemException("Member and value counts must match");
+            }
+
             return idmembers.Zip(keyValues, (k, v) => new {Key = k, Value = v})
                 .ToDictionary(x => x.Key.Name, x => x.Value);
         }
@@ -576,9 +589,19 @@ namespace NakedObjects.Persistor.Entity.Component {
             var adapter = getAdapterFor(objectToCheck);
             var isTransientObject = adapter?.Oid != null && adapter.Oid.IsTransient;
             var explanation = isTransientObject ? Resources.NakedObjects.ProxyExplanationTransient : Resources.NakedObjects.ProxyExplanation;
+            var msg = "";
 
-            Assert.AssertTrue(string.Format(Resources.NakedObjects.NoProxyMessage, objectToCheck.GetType(), explanation), TypeUtils.IsEntityProxy(objectToCheck.GetType()));
-            Assert.AssertTrue(string.Format(Resources.NakedObjects.NoChangeTrackerMessage, objectToCheck.GetType(), explanation), objectToCheck is IEntityWithChangeTracker);
+            if (!TypeUtils.IsEntityProxy(objectToCheck.GetType())) {
+                 msg = string.Format(Resources.NakedObjects.NoProxyMessage, objectToCheck.GetType(), explanation);
+            }
+
+            if (!(objectToCheck is IEntityWithChangeTracker)) {
+                 msg = string.Format(Resources.NakedObjects.NoChangeTrackerMessage, objectToCheck.GetType(), explanation);
+            }
+
+            if (!string.IsNullOrEmpty(msg)) {
+                throw new NakedObjectSystemException(msg);
+            }
         }
 
         private void LoadObjectIntoNakedObjectsFramework(object domainObject, LocalContext context) {

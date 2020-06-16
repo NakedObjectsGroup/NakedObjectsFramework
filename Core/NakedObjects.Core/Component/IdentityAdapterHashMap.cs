@@ -16,7 +16,6 @@ namespace NakedObjects.Core.Component {
     public sealed class IdentityAdapterHashMap : IIdentityAdapterMap {
         private readonly IDictionary<IOid, INakedObjectAdapter> adapters;
         private readonly int capacity = 10;
-        private readonly ILogger<FlatPersistAlgorithm> logger;
 
         public IdentityAdapterHashMap() => adapters = new Dictionary<IOid, INakedObjectAdapter>(capacity);
 
@@ -24,7 +23,6 @@ namespace NakedObjects.Core.Component {
         // ReSharper disable once UnusedMember.Global
         public IdentityAdapterHashMap(IConfiguration config,
                                       ILogger<FlatPersistAlgorithm> logger) : this() {
-            this.logger = logger;
             var capacityFromConfig = config.GetSection("NakedObjects")["HashMapCapacity"];
             if (capacityFromConfig == null) {
                 logger.LogWarning($"NakedObjects:HashMapCapacity not set defaulting to {capacity}");

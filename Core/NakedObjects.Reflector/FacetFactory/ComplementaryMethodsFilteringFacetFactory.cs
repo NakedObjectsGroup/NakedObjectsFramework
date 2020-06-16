@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
@@ -14,6 +13,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Core;
 using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Reflect.FacetFactory {
@@ -69,7 +69,11 @@ namespace NakedObjects.Reflect.FacetFactory {
         private bool IsComplementaryPropertyMethod(MethodInfo actionMethod, string prefix) {
             if (MatchesPrefix(actionMethod, prefix, out var propertyName)) {
                 var declaringType = actionMethod.DeclaringType;
-                Trace.Assert(declaringType != null, "declaringType != null");
+
+                if (declaringType == null) {
+                    throw new NakedObjectSystemException("declaring type cannot be null");
+                }
+
                 var baseType = declaringType.BaseType;
 
                 if (InheritsProperty(baseType, propertyName)) {
@@ -84,7 +88,10 @@ namespace NakedObjects.Reflect.FacetFactory {
         private bool IsComplementaryActionMethod(MethodInfo actionMethod, string prefix) {
             if (MatchesPrefix(actionMethod, prefix, out var propertyName)) {
                 var declaringType = actionMethod.DeclaringType;
-                Debug.Assert(declaringType != null, "declaringType != null");
+                if (declaringType == null) {
+                    throw new NakedObjectSystemException("declaring type cannot be null");
+                }
+
                 if (InheritsMethod(declaringType.BaseType, propertyName)) {
                     var baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
                     logger.LogWarning($"Filtering method {actionMethod.Name} because of action {propertyName} on {baseTypeName}");
@@ -99,7 +106,10 @@ namespace NakedObjects.Reflect.FacetFactory {
             if (MatchesPrefix(actionMethod, prefix, out var propertyName)) {
                 propertyName = TrimDigits(propertyName);
                 var declaringType = actionMethod.DeclaringType;
-                Debug.Assert(declaringType != null, "declaringType != null");
+                if (declaringType == null) {
+                    throw new NakedObjectSystemException("declaring type cannot be null");
+                }
+
                 if (InheritsMethod(declaringType.BaseType, propertyName)) {
                     var baseTypeName = declaringType.BaseType == null ? "Unknown type" : declaringType.BaseType.FullName;
                     logger.LogWarning($"Filtering method {actionMethod.Name} because of action {propertyName} on {baseTypeName}");

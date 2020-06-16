@@ -42,7 +42,9 @@ namespace NakedObjects.Meta.SemanticsProvider {
         #region IFromStream Members
 
         public object ParseFromStream(Stream stream, string mimeType = null, string name = null) {
-            Trace.Assert(typeof(T) == typeof(byte), $"Cannot parse an array of {typeof(T)} from stream");
+            if (typeof(T) != typeof(byte)) {
+                throw new NakedObjectSystemException($"Cannot parse an array of {typeof(T)} from stream");
+            }
 
             var ba = new byte[stream.Length];
             stream.Position = 0;

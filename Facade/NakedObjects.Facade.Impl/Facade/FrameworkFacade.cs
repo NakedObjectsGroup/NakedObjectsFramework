@@ -294,9 +294,8 @@ namespace NakedObjects.Facade.Impl {
             ValidateConcurrency(nakedObject, argument.Digest);
             var context = CanChangeProperty(nakedObject, propertyName, argument.Value);
             if (string.IsNullOrEmpty(context.Reason)) {
-                var spec = context.Target.Spec as IObjectSpec;
-                Trace.Assert(spec != null);
-
+                var spec = context.Target.Spec as IObjectSpec ?? throw new NakedObjectsFacadeException("context.Target.Spec must be IObjectSpec");
+                
                 var existingValues = spec.Properties.Where(p => p.Id != context.Id).Select(p => new {p, no = p.GetNakedObject(context.Target)}).Select(ao => new PropertyContext {
                         Property = ao.p,
                         ProposedNakedObject = ao.no,
