@@ -14,7 +14,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
     public interface IEntityObjectStoreConfiguration {
         IEnumerable<CodeFirstEntityContextConfiguration> ContextConfiguration { get; }
         IList<(Func<DbContext> getContexts, Func<Type[]> getTypes)> DbContextConstructors { get; set; }
-        IDictionary<string, Func<Type[]>> NamedContextTypes { get; set; }
         Func<Type[]> NotPersistedTypes { get; set; }
 
         /// <summary>
@@ -58,17 +57,19 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         /// <param name="types">A lambda or delegate that returns an array of Types</param>
         void SpecifyTypesNotAssociatedWithAnyContext(Func<Type[]> types);
 
+        [Obsolete("use UsingContext")]
+        EntityObjectStoreConfiguration.EntityContextConfigurator UsingCodeFirstContext(Func<DbContext> f);
+
         /// <summary>
-        ///     Call for each code first context in solution.
+        ///     Call for each  context in solution.
         /// </summary>
         /// <param name="f">A lambda or delegate that returns a newly constructed DbContext </param>
         /// <returns>A ContextInstaller that allows further configuration.</returns>
         /// <example>UsingCodeFirstContext( () => new MyDbContext())</example>
-        EntityObjectStoreConfiguration.EntityContextConfigurator UsingCodeFirstContext(Func<DbContext> f);
+        EntityObjectStoreConfiguration.EntityContextConfigurator UsingContext(Func<DbContext> f);
 
         void ForceContextSet();
 
-        string[] GetConnectionStringNamesFromConfig();
         void AssertSetup();
     }
 }

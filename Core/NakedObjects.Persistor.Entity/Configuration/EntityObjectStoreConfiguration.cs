@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
@@ -22,7 +21,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             RollBackOnError = false;
             DefaultMergeOption = MergeOption.AppendOnly;
             DbContextConstructors = new List<(Func<DbContext>, Func<Type[]>)>();
-            NamedContextTypes = new Dictionary<string, Func<Type[]>>();
             NotPersistedTypes = () => new Type[] { };
             MaximumCommitCycles = 10;
             IsInitializedCheck = () => true;
@@ -45,7 +43,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             });
 
         public IList<(Func<DbContext> getContexts, Func<Type[]> getTypes)> DbContextConstructors { get; set; }
-        public IDictionary<string, Func<Type[]>> NamedContextTypes { get; set; }
         public Func<Type[]> NotPersistedTypes { get; set; }
 
         /// <summary>
@@ -89,13 +86,16 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         /// <param name="types">A lambda or delegate that returns an array of Types</param>
         public void SpecifyTypesNotAssociatedWithAnyContext(Func<Type[]> types) => NotPersistedTypes = types;
 
+        [Obsolete]
+        public EntityContextConfigurator UsingCodeFirstContext(Func<DbContext> f) => UsingContext(f);
+
         /// <summary>
-        ///     Call for each code first context in solution.
+        ///     Call for each context in solution.
         /// </summary>
         /// <param name="f">A lambda or delegate that returns a newly constructed DbContext </param>
         /// <returns>A ContextInstaller that allows further configuration.</returns>
-        /// <example>UsingCodeFirstContext( () => new MyDbContext())</example>
-        public EntityContextConfigurator UsingCodeFirstContext(Func<DbContext> f) {
+        /// <example>UsingContext( () => new MyDbContext())</example>
+        public EntityContextConfigurator UsingContext(Func<DbContext> f) {
             isContextSet = true;
             return new EntityContextConfigurator(this, f);
         }
@@ -103,10 +103,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         // for testing
         public void ForceContextSet() => isContextSet = true;
 
-        public string[] GetConnectionStringNamesFromConfig() {
-            var connectionStrings = ConfigurationManager.ConnectionStrings.Cast<ConnectionStringSettings>().Where(x => x.ProviderName == "System.Data.EntityClient").ToArray();
-            return connectionStrings.Select(cs => cs.Name).ToArray();
-        }
 
         public void AssertSetup() {
             if (!NoValidate && !isContextSet) {
@@ -120,7 +116,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
 
         public class EntityContextConfigurator {
             private readonly int contextIndex;
-            private readonly string contextName;
             private readonly EntityObjectStoreConfiguration entityObjectStoreConfiguration;
 
             private EntityContextConfigurator(EntityObjectStoreConfiguration entityObjectStoreConfiguration) => this.entityObjectStoreConfiguration = entityObjectStoreConfiguration;
@@ -131,15 +126,6 @@ namespace NakedObjects.Persistor.Entity.Configuration {
                 contextIndex = entityObjectStoreConfiguration.DbContextConstructors.Count - 1;
             }
 
-            public EntityContextConfigurator(EntityObjectStoreConfiguration entityObjectStoreConfiguration, string contextName)
-                : this(entityObjectStoreConfiguration) {
-                this.contextName = contextName;
-
-                if (!entityObjectStoreConfiguration.NamedContextTypes.ContainsKey(contextName)) {
-                    entityObjectStoreConfiguration.NamedContextTypes.Add(contextName, () => new Type[] { });
-                }
-            }
-
             /// <summary>
             ///     Associates each of the array of Types passed-in with the context, and caches this information on the
             ///     session.  This is to avoid the overhead of the framework polling contexts to see if they known
@@ -148,13 +134,8 @@ namespace NakedObjects.Persistor.Entity.Configuration {
             /// <param name="types">A lambda or delegate that returns an array of Types</param>
             /// <returns>The ContextInstaller on which it was called, allowing further configuration.</returns>
             public EntityContextConfigurator AssociateTypes(Func<Type[]> types) {
-                if (string.IsNullOrEmpty(contextName)) {
-                    var entry = entityObjectStoreConfiguration.DbContextConstructors[contextIndex];
-                    entityObjectStoreConfiguration.DbContextConstructors[contextIndex] = (entry.getContexts, types);
-                }
-                else {
-                    entityObjectStoreConfiguration.NamedContextTypes[contextName] = types;
-                }
+                var (getContexts, _) = entityObjectStoreConfiguration.DbContextConstructors[contextIndex];
+                entityObjectStoreConfiguration.DbContextConstructors[contextIndex] = (getContexts, types);
 
                 return this;
             }
