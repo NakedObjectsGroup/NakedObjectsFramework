@@ -61,8 +61,7 @@ namespace NakedObjects.Persistor.Entity.Adapter {
         public object[] Key { get; private set; }
 
         public void CopyFrom(IOid oid) {
-            Assert.AssertTrue("Copy from Oid must be Entity Oid", oid is EntityOid);
-            var from = (EntityOid) oid;
+            var from = oid as EntityOid ?? throw new NakedObjectSystemException("Copy from Oid must be Entity Oid");
             Key = from.Key;
             TypeName = from.TypeName;
             EntityKey = from.EntityKey;
@@ -131,8 +130,7 @@ namespace NakedObjects.Persistor.Entity.Adapter {
         }
 
         public EntityOid(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
-            Assert.AssertNotNull(metamodel);
-            this.metamodel = metamodel;
+            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
             logger = loggerFactory.CreateLogger<EntityOid>();
             var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
 

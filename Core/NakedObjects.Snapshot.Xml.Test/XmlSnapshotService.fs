@@ -66,7 +66,7 @@ type DomainTests() =
           
             let config = new EntityObjectStoreConfiguration()
             let f = (fun () -> new TestObjectContext(cs) :> DbContext)
-            config.UsingCodeFirstContext(Func<DbContext>(f)) |> ignore
+            config.UsingContext(Func<DbContext>(f)) |> ignore
             config
         
         [<OneTimeSetUp>]

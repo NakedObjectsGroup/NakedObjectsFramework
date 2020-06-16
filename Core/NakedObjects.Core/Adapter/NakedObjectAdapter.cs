@@ -110,9 +110,7 @@ namespace NakedObjects.Core.Adapter {
         public void ReplacePoco(object obj) => Object = obj;
 
         public string ValidToPersist() {
-            var objectSpec = Spec as IObjectSpec;
-            Trace.Assert(objectSpec != null);
-
+            var objectSpec = Spec as IObjectSpec ?? throw new NakedObjectSystemException("Spec must be IObjectSpec to persist");
             var properties = objectSpec.Properties;
             foreach (var property in properties) {
                 var referencedObjectAdapter = property.GetNakedObject(this);
@@ -143,7 +141,9 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public void SetATransientOid(IOid newOid) {
-            Assert.AssertTrue("New Oid must be transient", newOid.IsTransient);
+            if (!newOid.IsTransient) {
+                throw new NakedObjectSystemException("New Oid must be transient");
+            }
             Oid = newOid;
         }
 

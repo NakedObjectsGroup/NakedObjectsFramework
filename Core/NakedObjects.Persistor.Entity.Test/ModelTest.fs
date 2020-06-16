@@ -17,7 +17,7 @@ open TestCode
 let persistor = 
     let c = new EntityObjectStoreConfiguration()
     let f = (fun () -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext)
-    c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
+    c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c
     setupPersistorForInjectorTesting p
 

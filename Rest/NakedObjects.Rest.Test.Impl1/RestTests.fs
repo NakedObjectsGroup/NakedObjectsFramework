@@ -83,7 +83,7 @@ type Tests() =
             let config = new EntityObjectStoreConfiguration()
             config.EnforceProxies <- false       
             let f = (fun () -> new CodeFirstContextLocal(csRTA) :> Data.Entity.DbContext)
-            config.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
+            config.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
             config
             
 

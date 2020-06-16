@@ -44,20 +44,13 @@ namespace NakedObjects.Core.Spec {
         private IObjectSpec spec;
 
         protected internal ActionParameterSpec(IMetamodelManager metamodel, int number, IActionSpec actionSpec, IActionParameterSpecImmutable actionParameterSpecImmutable, INakedObjectManager manager, ISession session, IObjectPersistor persistor) {
-            Assert.AssertNotNull(metamodel);
-            Assert.AssertNotNull(actionSpec);
-            Assert.AssertNotNull(actionParameterSpecImmutable);
-            Assert.AssertNotNull(manager);
-            Assert.AssertNotNull(session);
-            Assert.AssertNotNull(persistor);
-
-            this.metamodel = metamodel;
             Number = number;
-            parentAction = actionSpec;
-            this.actionParameterSpecImmutable = actionParameterSpecImmutable;
-            this.manager = manager;
-            this.session = session;
-            this.persistor = persistor;
+            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+            parentAction = actionSpec ?? throw new InitialisationException($"{nameof(actionSpec)} is null");
+            this.actionParameterSpecImmutable = actionParameterSpecImmutable ?? throw new InitialisationException($"{nameof(actionParameterSpecImmutable)} is null");
+            this.manager = manager ?? throw new InitialisationException($"{nameof(manager)} is null");
+            this.session = session ?? throw new InitialisationException($"{nameof(session)} is null");
+            this.persistor = persistor ?? throw new InitialisationException($"{nameof(persistor)} is null");
         }
 
         public virtual IObjectSpec ElementSpec {

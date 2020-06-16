@@ -21,8 +21,7 @@ namespace NakedObjects.Core.Adapter {
         private ViewModelOid previous;
 
         public ViewModelOid(IMetamodelManager metamodel, IObjectSpec spec) {
-            Assert.AssertNotNull(metamodel);
-            this.metamodel = metamodel;
+            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
             IsTransient = false;
             TypeName = TypeNameUtils.EncodeTypeName(spec.FullName);
             Keys = new[] {Guid.NewGuid().ToString()};
@@ -30,8 +29,7 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public ViewModelOid(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
-            Assert.AssertNotNull(metamodel);
-            this.metamodel = metamodel;
+            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
             var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
             TypeName = helper.GetNextString();
 

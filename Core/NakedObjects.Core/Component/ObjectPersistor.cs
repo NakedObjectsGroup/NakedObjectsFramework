@@ -48,8 +48,13 @@ namespace NakedObjects.Core.Component {
         public IQueryable Instances(IObjectSpec spec) => GetInstances(spec);
 
         public INakedObjectAdapter LoadObject(IOid oid, IObjectSpec spec) {
-            Assert.AssertNotNull("needs an OID", oid);
-            Assert.AssertNotNull("needs a specification", spec);
+            if (oid == null) {
+                throw new NakedObjectSystemException(logger.LogAndReturn("needs an OID"));
+            }
+
+            if (spec == null) {
+                throw new NakedObjectSystemException(logger.LogAndReturn("needs a specification"));
+            }
 
             return objectStore.GetObject(oid, spec);
         }
@@ -81,16 +86,13 @@ namespace NakedObjects.Core.Component {
         }
 
         public void LoadField(INakedObjectAdapter nakedObjectAdapter, string field) {
-            var spec = nakedObjectAdapter.Spec as IObjectSpec;
-            Trace.Assert(spec != null);
+            var spec = nakedObjectAdapter.Spec as IObjectSpec ?? throw new NakedObjectSystemException("nakedObjectAdapter.Spec must be an IObjectSpec");
             var associationSpec = spec.Properties.Single(x => x.Id == field);
             ResolveField(nakedObjectAdapter, associationSpec);
         }
 
         public int CountField(INakedObjectAdapter nakedObjectAdapter, string field) {
-            var spec = nakedObjectAdapter.Spec as IObjectSpec;
-            Trace.Assert(spec != null);
-
+            var spec = nakedObjectAdapter.Spec as IObjectSpec ?? throw new NakedObjectSystemException("nakedObjectAdapter.Spec must be an IObjectSpec");
             var associationSpec = spec.Properties.Single(x => x.Id == field);
 
             if (nakedObjectAdapter.Spec.IsViewModel) {
@@ -109,8 +111,14 @@ namespace NakedObjects.Core.Component {
 
         public void ResolveImmediately(INakedObjectAdapter nakedObjectAdapter) {
             if (nakedObjectAdapter.ResolveState.IsResolvable()) {
-                Assert.AssertFalse("only resolve object that is not yet resolved", nakedObjectAdapter, nakedObjectAdapter.ResolveState.IsResolved());
-                Assert.AssertTrue("only resolve object that is persistent", nakedObjectAdapter, nakedObjectAdapter.ResolveState.IsPersistent());
+                if (nakedObjectAdapter.ResolveState.IsResolved()) {
+                    throw new NakedObjectSystemException("only resolve object that is not yet resolved");
+                }
+
+                if (!nakedObjectAdapter.ResolveState.IsPersistent()) {
+                    throw new NakedObjectSystemException("only resolve object that is persistent");
+                }
+
                 if (nakedObjectAdapter.Oid is AggregateOid) {
                     return;
                 }

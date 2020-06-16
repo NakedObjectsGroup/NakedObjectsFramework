@@ -9,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Adapter;
-using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class NakedObjectFactory {
@@ -34,7 +33,10 @@ namespace NakedObjects.Core.Component {
         }
 
         public INakedObjectAdapter CreateAdapter(object obj, IOid oid) {
-            Assert.AssertTrue(isInitialized);
+            if (!isInitialized) {
+                throw new InitialisationException("NakedObjectFactory not initialized");
+            }
+
             return new NakedObjectAdapter(metamodelManager, session, persistor, lifecycleManager, nakedObjectManager, obj, oid, loggerFactory, loggerFactory.CreateLogger<NakedObjectAdapter>());
         }
     }

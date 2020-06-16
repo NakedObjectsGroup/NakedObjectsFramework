@@ -19,7 +19,7 @@ let persistor =
     EntityObjectStoreConfiguration.NoValidate <- true
     let c = new EntityObjectStoreConfiguration()
     let f = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
-    c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
+    c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
     let p = getEntityObjectStore c
     setupPersistorForTesting p
 
@@ -27,7 +27,7 @@ let overwritePersistor =
     EntityObjectStoreConfiguration.NoValidate <- true
     let c = new EntityObjectStoreConfiguration()
     let f = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
-    c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
+    c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
     c.DefaultMergeOption <- MergeOption.OverwriteChanges
     let p = getEntityObjectStore c
     setupPersistorForTesting p

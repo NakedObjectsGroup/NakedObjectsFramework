@@ -50,7 +50,10 @@ namespace NakedObjects.Core.Component {
         public void RemoveAdapter(INakedObjectAdapter objectAdapterToDispose) => identityMap.Unloaded(objectAdapterToDispose);
 
         public INakedObjectAdapter GetAdapterFor(object obj) {
-            Assert.AssertNotNull("must have a domain object", obj);
+            if (obj == null) {
+                throw new AdapterException(logger.LogAndReturn("must have a domain object"));
+            }
+
             var nakedObjectAdapter = identityMap.GetAdapterFor(obj);
             if (nakedObjectAdapter != null && nakedObjectAdapter.Object != obj) {
                 throw new AdapterException(logger.LogAndReturn($"Mapped adapter is for different domain object: {obj}; {nakedObjectAdapter}"));
@@ -60,7 +63,10 @@ namespace NakedObjects.Core.Component {
         }
 
         public INakedObjectAdapter GetAdapterFor(IOid oid) {
-            Assert.AssertNotNull("must have an OID", oid);
+            if (oid == null) {
+                throw new AdapterException(logger.LogAndReturn("must have an OID"));
+            }
+
             return identityMap.GetAdapterFor(oid);
         }
 
@@ -110,7 +116,6 @@ namespace NakedObjects.Core.Component {
                 adapterFor.OptimisticLock = new NullVersion(loggerFactory.CreateLogger<NullVersion>());
             }
 
-            Assert.AssertNotNull(adapterFor);
             return adapterFor;
         }
 

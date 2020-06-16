@@ -9,13 +9,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+// ReSharper disable UnusedType.Global
 
 namespace NakedObjects.Core.Util {
+    // used by reflection 
     public static class CopyUtils {
         // used by reflection 
         // ReSharper disable once UnusedMember.Local
         private static void ShallowCopyCollectionGeneric<T>(ICollection<T> fromCollection, ICollection<T> toCollection) {
-            Assert.AssertFalse(toCollection.Any());
+            if (toCollection.Any()) {
+                throw new NakedObjectSystemException("Copy to collection not empty");
+            }
+
             fromCollection.ForEach(toCollection.Add);
         }
 

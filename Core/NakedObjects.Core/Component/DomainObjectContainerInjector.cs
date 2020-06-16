@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Container;
-using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class DomainObjectContainerInjector : IDomainObjectInjector {
@@ -37,8 +36,10 @@ namespace NakedObjects.Core.Component {
 
         public void InjectInto(object obj) {
             Initialize();
-            Assert.AssertNotNull("no container", container);
-            Assert.AssertNotNull("no services", Services);
+            if (container == null) { throw new NakedObjectSystemException("no container"); }
+
+            if (Services == null) { throw new NakedObjectSystemException("no services"); }
+
             Methods.InjectContainer(obj, container);
             Methods.InjectServices(obj, Services.ToArray());
             Methods.InjectLogger(obj, loggerFactory);
@@ -46,7 +47,8 @@ namespace NakedObjects.Core.Component {
 
         public void InjectIntoInline(object root, object inlineObject) {
             Initialize();
-            Assert.AssertNotNull("no root object", root);
+            if (root == null) { throw new NakedObjectSystemException("no root object"); }
+
             Methods.InjectRoot(root, inlineObject);
         }
 
@@ -61,7 +63,8 @@ namespace NakedObjects.Core.Component {
 
         private void Initialize() {
             if (!initialized) {
-                Assert.AssertNotNull(Framework);
+                if (Framework == null) { throw new NakedObjectSystemException("no Framework"); }
+
                 container = new DomainObjectContainer(Framework, loggerFactory.CreateLogger<DomainObjectContainer>());
                 initialized = true;
             }

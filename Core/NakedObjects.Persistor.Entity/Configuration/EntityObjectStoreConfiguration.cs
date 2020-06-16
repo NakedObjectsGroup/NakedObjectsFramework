@@ -103,10 +103,9 @@ namespace NakedObjects.Persistor.Entity.Configuration {
         // for testing
         public void ForceContextSet() => isContextSet = true;
 
-
         public void AssertSetup() {
             if (!NoValidate && !isContextSet) {
-                throw new InitialisationException(@"No context set on EntityObjectStoreConfiguration, must call ""UsingCodeFirstContext""");
+                throw new InitialisationException(@"No context set on EntityObjectStoreConfiguration, must call ""UsingContext""");
             }
         }
 

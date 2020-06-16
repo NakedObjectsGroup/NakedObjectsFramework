@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Facet {
@@ -36,8 +37,7 @@ namespace NakedObjects.Meta.Facet {
 
         public string Validate(INakedObjectAdapter nakedObjectAdapter) {
             foreach (var validator in ValidateMethods) {
-                var objectSpec = nakedObjectAdapter.Spec as IObjectSpec;
-                Trace.Assert(objectSpec != null);
+                var objectSpec = nakedObjectAdapter.Spec as IObjectSpec ?? throw new NakedObjectSystemException("nakedObjectAdapter.Spec must be IObjectSpec");
 
                 var matches = validator.ParameterNames.Select(name => objectSpec.Properties.SingleOrDefault(p => p.Id.ToLower() == name)).Where(s => s != null).ToArray();
 

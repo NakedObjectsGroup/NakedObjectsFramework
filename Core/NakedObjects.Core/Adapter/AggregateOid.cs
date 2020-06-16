@@ -5,12 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Adapter {
     public sealed class AggregateOid : IEncodedToStrings, IAggregateOid {
@@ -25,8 +23,7 @@ namespace NakedObjects.Core.Adapter {
         }
 
         public AggregateOid(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {
-            Assert.AssertNotNull(metamodel);
-            this.metamodel = metamodel;
+            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
             var helper = new StringDecoderHelper(metamodel, loggerFactory, loggerFactory.CreateLogger<StringDecoderHelper>(), strings);
             typeName = helper.GetNextString();
             FieldName = helper.GetNextString();
@@ -45,7 +42,7 @@ namespace NakedObjects.Core.Adapter {
 
         public bool IsTransient => ParentOid.IsTransient;
 
-        public void CopyFrom(IOid oid) => Trace.Assert(false, "CopyFrom not supported on Aggregate oid");
+        public void CopyFrom(IOid oid) => throw new NakedObjectSystemException("CopyFrom not supported on Aggregate oid");
 
         public ITypeSpec Spec => metamodel.GetSpecification(typeName);
 

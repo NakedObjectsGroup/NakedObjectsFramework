@@ -15,7 +15,7 @@ open TestTypes
 let codeOnlyCePersistor =
     EntityObjectStoreConfiguration.NoValidate <- true
     let c = new EntityObjectStoreConfiguration()
-    c.UsingCodeFirstContext((CodeFirstConfig csCOCE).DbContext) |> ignore
+    c.UsingContext((CodeFirstConfig csCOCE).DbContext) |> ignore
     let p = getEntityObjectStore c
     setupPersistorForTesting p
 

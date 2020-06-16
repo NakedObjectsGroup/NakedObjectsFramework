@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Text;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 
 namespace NakedObjects.Meta.Adapter {
@@ -54,17 +55,15 @@ namespace NakedObjects.Meta.Adapter {
 
         public virtual bool IsField { get; }
 
-        public virtual string ToIdentityString(IdentifierDepth depth) {
-            Assert.AssertTrue(depth >= IdentifierDepth.Class && depth <= IdentifierDepth.Parms);
-            return depth switch {
+        public virtual string ToIdentityString(IdentifierDepth depth) =>
+            depth switch {
                 IdentifierDepth.Class => ToClassIdentityString(),
                 IdentifierDepth.ClassName => ToClassAndNameIdentityString(),
                 IdentifierDepth.ClassNameParams => ToFullIdentityString(),
                 IdentifierDepth.Name => ToNameIdentityString(),
                 IdentifierDepth.Parms => ToParmsIdentityString(),
-                _ => null
+                _ => throw new NakedObjectSystemException($"depth out of bounds: {depth}")
             };
-        }
 
         public virtual string ToIdentityStringWithCheckType(IdentifierDepth depth, CheckType checkType) => $"{ToIdentityString(depth)}:{checkType}";
 
@@ -146,7 +145,10 @@ namespace NakedObjects.Meta.Adapter {
         }
 
         public static IdentifierImpl FromIdentityString(IMetamodel metamodel, string asString) {
-            Assert.AssertNotNull(asString);
+            if (asString == null) {
+                throw new NakedObjectSystemException("asString cannot be null");
+            }
+
             var indexOfHash = asString.IndexOf("#", StringComparison.InvariantCulture);
             var indexOfOpenBracket = asString.IndexOf("(", StringComparison.InvariantCulture);
             var indexOfCloseBracket = asString.IndexOf(")", StringComparison.InvariantCulture);

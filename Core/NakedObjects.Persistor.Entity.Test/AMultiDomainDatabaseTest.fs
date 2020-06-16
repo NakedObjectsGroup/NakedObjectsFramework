@@ -22,11 +22,11 @@ let multiDomainDatabasePersistor =
 
     let c = new EntityObjectStoreConfiguration()
     let f = (fun () -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext)
-    c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f)) |> ignore
-    c.UsingCodeFirstContext((CodeFirstConfig csMD).DbContext) |> ignore
+    c.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
+    c.UsingContext((CodeFirstConfig csMD).DbContext) |> ignore
 
     let f1 = (fun () -> new AdventureWorksEntities(csAWMARS) :> Data.Entity.DbContext)
-    c.UsingCodeFirstContext(Func<Data.Entity.DbContext>(f1)) |> ignore
+    c.UsingContext(Func<Data.Entity.DbContext>(f1)) |> ignore
 
     let p = getEntityObjectStore c
     setupPersistorForTesting p

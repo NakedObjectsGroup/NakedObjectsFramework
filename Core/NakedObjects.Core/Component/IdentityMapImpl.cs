@@ -43,9 +43,14 @@ namespace NakedObjects.Core.Component {
         }
 
         public void AddAdapter(INakedObjectAdapter nakedObjectAdapter) {
-            Assert.AssertNotNull("Cannot add null adapter to IdentityAdapterMap", nakedObjectAdapter);
+            if (nakedObjectAdapter == null) {
+                throw new NakedObjectSystemException("Cannot add null adapter to IdentityAdapterMap");
+            }
+
             var obj = nakedObjectAdapter.Object;
-            Assert.AssertFalse("POCO Map already contains object", obj, nakedObjectAdapterMap.ContainsObject(obj));
+            if (nakedObjectAdapterMap.ContainsObject(obj)) {
+                throw new NakedObjectSystemException("POCO Map already contains object");
+            }
 
             if (unloadedObjects.ContainsKey(obj)) {
                 var msg = string.Format(Resources.NakedObjects.TransientReferenceMessage, obj);
@@ -75,9 +80,7 @@ namespace NakedObjects.Core.Component {
             adapter.ResolveState.Handle(Events.StartResolvingEvent);
             adapter.ResolveState.Handle(Events.EndResolvingEvent);
 
-            Assert.AssertTrue("Adapter's poco should exist in poco map and return the adapter", nakedObjectAdapterMap.GetObject(adapter.Object) == adapter);
-            Assert.AssertNull("Changed OID should not already map to a known adapter " + oid, identityAdapterMap.GetAdapter(oid));
-            identityAdapterMap.Add(oid, adapter);
+            ValidateAndAdd(adapter, oid);
         }
 
         public void UpdateViewModel(INakedObjectAdapter adapter, string[] keys) {
@@ -88,12 +91,8 @@ namespace NakedObjects.Core.Component {
             // finally re-add to the map.
 
             identityAdapterMap.Remove(oid);
-
             ((ViewModelOid) adapter.Oid).UpdateKeys(keys, false);
-
-            Assert.AssertTrue("Adapter's poco should exist in poco map and return the adapter", nakedObjectAdapterMap.GetObject(adapter.Object) == adapter);
-            Assert.AssertNull("Changed OID should not already map to a known adapter " + oid, identityAdapterMap.GetAdapter(oid));
-            identityAdapterMap.Add(oid, adapter);
+            ValidateAndAdd(adapter, oid);
         }
 
         public void Unloaded(INakedObjectAdapter nakedObjectAdapter) {
@@ -110,18 +109,27 @@ namespace NakedObjects.Core.Component {
         }
 
         public INakedObjectAdapter GetAdapterFor(object domainObject) {
-            Assert.AssertNotNull("can't get an adapter for null", this, domainObject);
+            if (domainObject == null) {
+                throw new NakedObjectSystemException("can't get an adapter for null");
+            }
+
             return nakedObjectAdapterMap.GetObject(domainObject);
         }
 
         public INakedObjectAdapter GetAdapterFor(IOid oid) {
-            Assert.AssertNotNull("OID should not be null", this, oid);
+            if (oid == null) {
+                throw new NakedObjectSystemException("OID should not be null");
+            }
+
             ProcessChangedOid(oid);
             return identityAdapterMap.GetAdapter(oid);
         }
 
         public bool IsIdentityKnown(IOid oid) {
-            Assert.AssertNotNull("OID should not be null", oid);
+            if (oid == null) {
+                throw new NakedObjectSystemException("OID should not be null");
+            }
+
             ProcessChangedOid(oid);
             return identityAdapterMap.IsIdentityKnown(oid);
         }
@@ -133,6 +141,18 @@ namespace NakedObjects.Core.Component {
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
+
+        private void ValidateAndAdd(INakedObjectAdapter adapter, IOid oid) {
+            if (nakedObjectAdapterMap.GetObject(adapter.Object) != adapter) {
+                throw new NakedObjectSystemException("Adapter's poco should exist in poco map and return the adapter");
+            }
+
+            if (identityAdapterMap.GetAdapter(oid) != null) {
+                throw new NakedObjectSystemException($"Changed OID should not already map to a known adapter {oid}");
+            }
+
+            identityAdapterMap.Add(oid, adapter);
+        }
 
         /// <summary>
         ///     Given a new Oid (not from the adapter, but usually a reference during distribution) this method

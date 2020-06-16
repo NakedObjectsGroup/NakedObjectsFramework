@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using Microsoft.Extensions.Logging;
@@ -55,8 +54,14 @@ namespace NakedObjects.Core.Component {
         #region ILifecycleManager Members
 
         public INakedObjectAdapter LoadObject(IOid oid, ITypeSpec spec) {
-            Assert.AssertNotNull("needs an OID", oid);
-            Assert.AssertNotNull("needs a specification", spec);
+            if (oid == null) {
+                throw new NakedObjectSystemException("needs an OID");
+            }
+
+            if (spec == null) {
+                throw new NakedObjectSystemException("needs a specification");
+            }
+
             return nakedObjectManager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, (IObjectSpec) spec);
         }
 
@@ -196,8 +201,7 @@ namespace NakedObjects.Core.Component {
         }
 
         private void CreateInlineObjects(INakedObjectAdapter parentObjectAdapter, object rootObject) {
-            var spec = parentObjectAdapter.Spec as IObjectSpec;
-            Trace.Assert(spec != null);
+            var spec = parentObjectAdapter.Spec as IObjectSpec ?? throw new NakedObjectSystemException("parentObjectAdapter.Spec must be IObjectSpec");
             foreach (var assoc in spec.Properties.OfType<IOneToOneAssociationSpec>().Where(p => p.IsInline)) {
                 var inlineObject = CreateObject(assoc.ReturnSpec);
 
@@ -209,8 +213,7 @@ namespace NakedObjects.Core.Component {
         }
 
         private void InitializeNewObject(INakedObjectAdapter nakedObjectAdapter, object rootObject) {
-            var spec = nakedObjectAdapter.Spec as IObjectSpec;
-            Trace.Assert(spec != null);
+            var spec = nakedObjectAdapter.Spec as IObjectSpec ?? throw new NakedObjectSystemException("nakedObjectAdapter.Spec must be IObjectSpec");
             spec.Properties.ForEach(field => field.ToDefault(nakedObjectAdapter));
             CreateInlineObjects(nakedObjectAdapter, rootObject);
             nakedObjectAdapter.Created();

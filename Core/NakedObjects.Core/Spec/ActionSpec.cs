@@ -52,19 +52,15 @@ namespace NakedObjects.Core.Spec {
                           ITransactionManager transactionManager,
                           ILoggerFactory loggerFactory,
                           ILogger<ActionSpec> logger)
-            : base(actionSpecImmutable.Identifier.MemberName, actionSpecImmutable, session, lifecycleManager, metamodel) {
-            Assert.AssertNotNull(memberFactory);
-            Assert.AssertNotNull(servicesManager);
-            Assert.AssertNotNull(nakedObjectManager);
-            Assert.AssertNotNull(actionSpecImmutable);
-
-            this.servicesManager = servicesManager;
-            this.nakedObjectManager = nakedObjectManager;
-            this.actionSpecImmutable = actionSpecImmutable;
-            this.messageBroker = messageBroker;
-            this.transactionManager = transactionManager;
-            this.loggerFactory = loggerFactory;
-            this.logger = logger;
+            : base(actionSpecImmutable?.Identifier?.MemberName, actionSpecImmutable, session, lifecycleManager, metamodel) {
+            
+            this.servicesManager = servicesManager ?? throw new InitialisationException($"{nameof(servicesManager)} is null");
+            this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
+            this.actionSpecImmutable = actionSpecImmutable ?? throw new InitialisationException($"{nameof(actionSpecImmutable)} is null");
+            this.messageBroker = messageBroker ?? throw new InitialisationException($"{nameof(messageBroker)} is null");
+            this.transactionManager = transactionManager ?? throw new InitialisationException($"{nameof(transactionManager)} is null");
+            this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
+            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
             var index = 0;
             Parameters = this.actionSpecImmutable.Parameters.Select(pp => memberFactory.CreateParameter(pp, this, index++)).ToArray();
         }

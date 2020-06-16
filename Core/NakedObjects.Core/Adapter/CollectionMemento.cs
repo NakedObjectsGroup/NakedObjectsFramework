@@ -45,8 +45,6 @@ namespace NakedObjects.Core.Adapter {
 
         public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, ILogger<CollectionMemento> logger, CollectionMemento otherMemento, object[] selectedObjects)
             : this(lifecycleManager, nakedObjectManager, metamodel, logger) {
-            Assert.AssertNotNull(otherMemento);
-
             IsPaged = otherMemento.IsPaged;
             IsNotQueryable = otherMemento.IsNotQueryable;
             Target = otherMemento.Target;

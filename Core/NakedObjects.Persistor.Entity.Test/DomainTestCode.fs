@@ -553,7 +553,7 @@ let CanDetectConcurrency(persistor : EntityObjectStore) =
         EntityObjectStoreConfiguration.NoValidate <- true
         let c = new EntityObjectStoreConfiguration()
         let f = fun () -> new AdventureWorksEntities(csAW) :> Data.Entity.DbContext   
-        c.UsingCodeFirstContext(Func<Data.Entity.DbContext>f) |> ignore
+        c.UsingContext(Func<Data.Entity.DbContext>f) |> ignore
         c.DefaultMergeOption <- MergeOption.AppendOnly
         let p = getEntityObjectStore c
         setupPersistorForTesting p
@@ -614,7 +614,7 @@ let ConcurrencyNoCustomOnUpdatingError(persistor : EntityObjectStore) =
         EntityObjectStoreConfiguration.NoValidate <- true
         let c = new EntityObjectStoreConfiguration()
         let f = fun () -> new AdventureWorksEntities(csAW) :> Data.Entity.DbContext   
-        c.UsingCodeFirstContext(Func<Data.Entity.DbContext>f) |> ignore
+        c.UsingContext(Func<Data.Entity.DbContext>f) |> ignore
         c.DefaultMergeOption <- MergeOption.AppendOnly
         let p = getEntityObjectStore c
         setupPersistorForTesting p

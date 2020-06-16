@@ -68,7 +68,9 @@ namespace NakedObjects.ParallelReflect.Component {
         public ITypeSpecBuilder[] AllObjectSpecImmutables => initialMetamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
 
         public (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Assert.AssertNotNull(type);
+            if (type == null) {
+                throw new NakedObjectSystemException("cannot load specification for null");
+            }
 
             var actualType = ClassStrategy.GetType(type) ?? type;
             var typeKey = ClassStrategy.GetKeyForType(actualType);
@@ -101,8 +103,10 @@ namespace NakedObjects.ParallelReflect.Component {
 
         #endregion
 
-        public (ITypeSpecBuilder tupeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) IntrospectSpecification(Type actualType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Assert.AssertNotNull(actualType);
+        public (ITypeSpecBuilder typeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) IntrospectSpecification(Type actualType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            if (actualType == null) {
+                throw new ReflectionException("cannot introspect null");
+            }
 
             var typeKey = ClassStrategy.GetKeyForType(actualType);
 

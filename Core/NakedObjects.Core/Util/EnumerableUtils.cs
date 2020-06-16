@@ -13,11 +13,16 @@ namespace NakedObjects.Core.Util.Enumer {
     public static class EnumerableUtils {
         private static Type ElementType(this IEnumerable e) {
             var t = e.GetType();
-            Assert.AssertTrue("Must be generic enumerable in order to use these helpers", t.IsGenericType);
+
+            if (!t.IsGenericType) {
+                throw new NakedObjectSystemException("Must be generic enumerable in order to use these helpers");
+            }
 
             var args = t.GenericTypeArguments;
 
-            Assert.AssertTrue("Must be only one generic arg in order to use these helpers", Enumerable.Count(args) == 1);
+            if (Enumerable.Count(args) != 1) {
+                throw new NakedObjectSystemException("Must be only one generic arg in order to use these helpers");
+            }
 
             return Enumerable.First(args);
         }
