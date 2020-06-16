@@ -122,9 +122,8 @@ namespace NakedObjects.Persistor.Entity.Adapter {
         }
 
         public EntityOid(IMetamodelManager metamodel, string typeName, object[] key, ILogger<EntityOid> logger) {
-            Assert.AssertNotNull(metamodel);
-            this.metamodel = metamodel;
-            this.logger = logger;
+            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
             TypeName = TypeNameUtils.EncodeTypeName(typeName);
             Key = key;
             IsTransient = false;

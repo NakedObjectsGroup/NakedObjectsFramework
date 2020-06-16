@@ -34,12 +34,9 @@ namespace NakedObjects.Core.Component {
         public ObjectPersistor(IObjectStore objectStore,
                                INakedObjectManager nakedObjectManager,
                                ILogger<ObjectPersistor> logger) {
-            Assert.AssertNotNull(objectStore);
-            Assert.AssertNotNull(nakedObjectManager);
-
-            this.objectStore = objectStore;
-            this.nakedObjectManager = nakedObjectManager;
-            this.logger = logger;
+            this.objectStore = objectStore ?? throw new InitialisationException($"{nameof(objectStore)} is null");
+            this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
+            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
 
         #region IObjectPersistor Members

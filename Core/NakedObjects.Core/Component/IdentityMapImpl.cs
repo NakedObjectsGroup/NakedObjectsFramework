@@ -26,14 +26,10 @@ namespace NakedObjects.Core.Component {
                                IIdentityAdapterMap identityAdapterMap,
                                INakedObjectAdapterMap nakedObjectAdapterMap,
                                ILogger<IdentityMapImpl> logger) {
-            Assert.AssertNotNull(oidGenerator);
-            Assert.AssertNotNull(identityAdapterMap);
-            Assert.AssertNotNull(nakedObjectAdapterMap);
-
-            this.oidGenerator = oidGenerator;
-            this.identityAdapterMap = identityAdapterMap;
-            this.nakedObjectAdapterMap = nakedObjectAdapterMap;
-            this.logger = logger;
+            this.oidGenerator = oidGenerator ?? throw new InitialisationException($"{nameof(oidGenerator)} is null");
+            this.identityAdapterMap = identityAdapterMap ?? throw new InitialisationException($"{nameof(identityAdapterMap)} is null");
+            this.nakedObjectAdapterMap = nakedObjectAdapterMap ?? throw new InitialisationException($"{nameof(nakedObjectAdapterMap)} is null");
+            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
 
         #region IIdentityMap Members

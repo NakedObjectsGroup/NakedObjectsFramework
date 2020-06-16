@@ -18,15 +18,10 @@ namespace NakedObjects.Core.Adapter {
         private readonly string typeName;
 
         public AggregateOid(IMetamodelManager metamodel, IOid oid, string id, string typeName) {
-            Assert.AssertNotNull(metamodel);
-            Assert.AssertNotNull(oid);
-            Assert.AssertNotNull(id);
-            Assert.AssertNotNull(typeName);
-
-            this.metamodel = metamodel;
-            ParentOid = oid;
-            FieldName = id;
-            this.typeName = typeName;
+            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+            ParentOid = oid ?? throw new InitialisationException($"{nameof(oid)} is null");
+            FieldName = id ?? throw new InitialisationException($"{nameof(id)} is null");
+            this.typeName = typeName ?? throw new InitialisationException($"{nameof(typeName)} is null");
         }
 
         public AggregateOid(IMetamodelManager metamodel, ILoggerFactory loggerFactory, string[] strings) {

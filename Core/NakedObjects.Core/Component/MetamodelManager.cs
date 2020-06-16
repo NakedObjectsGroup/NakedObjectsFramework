@@ -21,11 +21,8 @@ namespace NakedObjects.Core.Component {
         private readonly SpecFactory specFactory;
 
         public MetamodelManager(SpecFactory specFactory, IMetamodel metamodel) {
-            Assert.AssertNotNull(specFactory);
-            Assert.AssertNotNull(metamodel);
-
-            this.specFactory = specFactory;
-            Metamodel = metamodel;
+            this.specFactory = specFactory ?? throw new InitialisationException($"{nameof(specFactory)} is null");
+            Metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
         }
 
         #region IMetamodelManager Members

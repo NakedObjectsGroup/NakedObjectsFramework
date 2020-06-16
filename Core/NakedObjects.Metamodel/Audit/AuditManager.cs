@@ -97,9 +97,7 @@ namespace NakedObjects.Meta.Audit {
         private IAuditor GetAuditor(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager) => GetNamespaceAuditorFor(nakedObjectAdapter, lifecycleManager) ?? GetDefaultAuditor(lifecycleManager);
 
         private IAuditor GetNamespaceAuditorFor(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
-            Assert.AssertNotNull(target);
             var fullyQualifiedOfTarget = target.Spec.FullName;
-
             // order here as ImmutableDictionary not ordered
             var auditor = namespaceAuditors.OrderByDescending(x => x.Key.Length).Where(x => fullyQualifiedOfTarget.StartsWith(x.Key)).Select(x => x.Value).FirstOrDefault();
 

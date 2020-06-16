@@ -36,19 +36,13 @@ namespace NakedObjects.Core.Component {
                                   NakedObjectFactory nakedObjectFactory,
                                   ILoggerFactory loggerFactory,
                                   ILogger<NakedObjectManager> logger) {
-            Assert.AssertNotNull(metamodel);
-            Assert.AssertNotNull(session);
-            Assert.AssertNotNull(identityMap);
-            Assert.AssertNotNull(oidGenerator);
-            Assert.AssertNotNull(nakedObjectFactory);
-
-            this.metamodel = metamodel;
-            this.session = session;
-            this.identityMap = identityMap;
-            this.oidGenerator = oidGenerator;
-            this.nakedObjectFactory = nakedObjectFactory;
-            this.loggerFactory = loggerFactory;
-            this.logger = logger;
+            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+            this.session = session ?? throw new InitialisationException($"{nameof(session)} is null");
+            this.identityMap = identityMap ?? throw new InitialisationException($"{nameof(identityMap)} is null");
+            this.oidGenerator = oidGenerator ?? throw new InitialisationException($"{nameof(oidGenerator)} is null");
+            this.nakedObjectFactory = nakedObjectFactory ?? throw new InitialisationException($"{nameof(nakedObjectFactory)} is null");
+            this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
+            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
 
         #region INakedObjectManager Members

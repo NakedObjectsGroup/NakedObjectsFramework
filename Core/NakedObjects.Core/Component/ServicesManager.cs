@@ -31,13 +31,9 @@ namespace NakedObjects.Core.Component {
                                INakedObjectManager manager,
                                IReflectorConfiguration config,
                                ILogger<ServicesManager> logger) {
-            Assert.AssertNotNull(injector);
-            Assert.AssertNotNull(manager);
-            Assert.AssertNotNull(config);
-
-            this.injector = injector;
-            this.manager = manager;
-            this.logger = logger;
+            this.injector = injector ?? throw new InitialisationException($"{nameof(injector)} is null");
+            this.manager = manager ?? throw new InitialisationException($"{nameof(manager)} is null");
+            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
 
             services = config.Services.Select(Activator.CreateInstance).ToList();
         }

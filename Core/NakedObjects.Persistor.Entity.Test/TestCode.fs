@@ -99,8 +99,9 @@ let GetMaxID<'t when 't : not struct> (p : EntityObjectStore) fGetID =
 
 let GetNextID<'t when 't : not struct> (p : EntityObjectStore) fGetID = (GetMaxID<'t> p fGetID) + 1
 
-let CanGetObjectByKey<'t when 't : not struct> (p : EntityObjectStore) keys = 
-    let key = new EntityOid(mockMetamodelManager.Object, typeof<'t>, keys, false, null)
+let CanGetObjectByKey<'t when 't : not struct> (p : EntityObjectStore) keys =
+    let testLogger = (new Mock<ILogger<EntityOid>>()).Object;
+    let key = new EntityOid(mockMetamodelManager.Object, typeof<'t>, keys, false, testLogger)
     let obj = p.GetObjectByKey(key, typeof<'t>)
     Assert.IsNotNull(obj)
 

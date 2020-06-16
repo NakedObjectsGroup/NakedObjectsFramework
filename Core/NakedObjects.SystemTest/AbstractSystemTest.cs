@@ -46,7 +46,7 @@ namespace NakedObjects.SystemTest {
         protected override EntityObjectStoreConfiguration Persistor {
             get {
                 var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-                config.UsingCodeFirstContext(Activator.CreateInstance<TContext>);
+                config.UsingContext(Activator.CreateInstance<TContext>);
                 return config;
             }
         }

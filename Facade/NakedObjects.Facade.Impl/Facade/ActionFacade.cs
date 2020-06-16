@@ -5,9 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Core;
 using NakedObjects.Facade.Impl.Utility;
 
 namespace NakedObjects.Facade.Impl {
@@ -16,15 +18,10 @@ namespace NakedObjects.Facade.Impl {
         private readonly string overloadedUniqueId;
 
         public ActionFacade(IActionSpec action, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework, string overloadedUniqueId) {
-            FacadeUtils.AssertNotNull(action, "Action is null");
-            FacadeUtils.AssertNotNull(framework, "framework is null");
-            FacadeUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
-            FacadeUtils.AssertNotNull(frameworkFacade, "FrameworkFacade is null");
-
-            WrappedSpec = action;
-            this.framework = framework;
-            this.overloadedUniqueId = overloadedUniqueId;
-            FrameworkFacade = frameworkFacade;
+            WrappedSpec = action ?? throw new NullReferenceException($"{nameof(action)} is null");
+            this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");
+            this.overloadedUniqueId = overloadedUniqueId ?? throw new NullReferenceException($"{nameof(overloadedUniqueId)} is null");
+            FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");
         }
 
         public IActionSpec WrappedSpec { get; }

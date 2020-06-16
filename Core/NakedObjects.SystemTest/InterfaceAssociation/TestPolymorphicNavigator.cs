@@ -19,7 +19,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         protected override EntityObjectStoreConfiguration Persistor {
             get {
                 var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-                config.UsingCodeFirstContext(() => new PolymorphicNavigationContext(DatabaseName));
+                config.UsingContext(() => new PolymorphicNavigationContext(DatabaseName));
                 return config;
             }
         }

@@ -47,15 +47,10 @@ namespace NakedObjects.Core.Spec {
         private string untitledName;
 
         protected TypeSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, ITypeSpecImmutable innerSpec) {
-            Assert.AssertNotNull(memberFactory);
-            Assert.AssertNotNull(metamodelManager);
-            Assert.AssertNotNull(nakedObjectManager);
-            Assert.AssertNotNull(innerSpec);
-
-            MemberFactory = memberFactory;
-            this.metamodelManager = metamodelManager;
-            this.nakedObjectManager = nakedObjectManager;
-            InnerSpec = innerSpec;
+            MemberFactory = memberFactory ?? throw new InitialisationException($"{nameof(memberFactory)} is null");
+            this.metamodelManager = metamodelManager ?? throw new InitialisationException($"{nameof(metamodelManager)} is null");
+            this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
+            InnerSpec = innerSpec ?? throw new InitialisationException($"{nameof(innerSpec)} is null");
         }
 
         private Type Type => InnerSpec.Type;

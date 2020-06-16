@@ -24,18 +24,12 @@ namespace NakedObjects.Core.Component {
         // ReSharper disable ParameterHidesMember
         public void Initialize(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager nakedObjectManager, ILoggerFactory loggerFactory) {
             // ReSharper restore ParameterHidesMember
-            Assert.AssertNotNull(metamodelManager);
-            Assert.AssertNotNull(session);
-            Assert.AssertNotNull(lifecycleManager);
-            Assert.AssertNotNull(persistor);
-            Assert.AssertNotNull(nakedObjectManager);
-
-            this.metamodelManager = metamodelManager;
-            this.session = session;
-            this.lifecycleManager = lifecycleManager;
-            this.persistor = persistor;
-            this.nakedObjectManager = nakedObjectManager;
-            this.loggerFactory = loggerFactory;
+            this.metamodelManager = metamodelManager ?? throw new InitialisationException($"{nameof(metamodelManager)} is null");
+            this.session = session ?? throw new InitialisationException($"{nameof(session)} is null");
+            this.lifecycleManager = lifecycleManager ?? throw new InitialisationException($"{nameof(lifecycleManager)} is null");
+            this.persistor = persistor ?? throw new InitialisationException($"{nameof(persistor)} is null");
+            this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
+            this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
             isInitialized = true;
         }
 

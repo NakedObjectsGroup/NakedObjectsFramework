@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,13 +25,9 @@ namespace NakedObjects.Facade.Impl {
         private readonly INakedObjectsFramework framework;
 
         protected ObjectFacade(INakedObjectAdapter nakedObject, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework) {
-            FacadeUtils.AssertNotNull(nakedObject, "NakedObject is null");
-            FacadeUtils.AssertNotNull(frameworkFacade, "FrameworkFacade is null");
-            FacadeUtils.AssertNotNull(framework, "framework is null");
-
-            WrappedNakedObject = nakedObject;
-            this.framework = framework;
-            FrameworkFacade = frameworkFacade;
+            WrappedNakedObject = nakedObject ?? throw new NullReferenceException($"{nameof(nakedObject)} is null");
+            this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");
+            FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");
         }
 
         public INakedObjectAdapter WrappedNakedObject { get; }

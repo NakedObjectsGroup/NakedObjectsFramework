@@ -12,10 +12,7 @@ namespace NakedObjects.Core.Component {
     public sealed class BatchRunner : IBatchRunner {
         private readonly INakedObjectsFramework framework;
 
-        public BatchRunner(INakedObjectsFramework framework) {
-            Assert.AssertNotNull(framework);
-            this.framework = framework;
-        }
+        public BatchRunner(INakedObjectsFramework framework) => this.framework = framework ?? throw new InitialisationException($"{nameof(framework)} is null");
 
         #region IBatchRunner Members
 

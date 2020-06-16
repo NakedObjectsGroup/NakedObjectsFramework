@@ -42,21 +42,14 @@ namespace NakedObjects.Core.Component {
             ILoggerFactory loggerFactory,
             ILogger<LifeCycleManager> logger
         ) {
-            Assert.AssertNotNull(metamodel);
-            Assert.AssertNotNull(persistAlgorithm);
-            Assert.AssertNotNull(oidGenerator);
-            Assert.AssertNotNull(injector);
-            Assert.AssertNotNull(objectPersistor);
-            Assert.AssertNotNull(nakedObjectManager);
-
-            this.metamodel = metamodel;
-            this.persistAlgorithm = persistAlgorithm;
-            this.oidGenerator = oidGenerator;
-            this.injector = injector;
-            this.objectPersistor = objectPersistor;
-            this.nakedObjectManager = nakedObjectManager;
-            this.loggerFactory = loggerFactory;
-            this.logger = logger;
+            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+            this.persistAlgorithm = persistAlgorithm ?? throw new InitialisationException($"{nameof(persistAlgorithm)} is null");
+            this.oidGenerator = oidGenerator ?? throw new InitialisationException($"{nameof(oidGenerator)} is null");
+            this.injector = injector ?? throw new InitialisationException($"{nameof(injector)} is null");
+            this.objectPersistor = objectPersistor ?? throw new InitialisationException($"{nameof(objectPersistor)} is null");
+            this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
+            this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
+            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
 
         #region ILifecycleManager Members

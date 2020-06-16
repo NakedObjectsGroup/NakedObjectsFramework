@@ -20,10 +20,9 @@ namespace NakedObjects.Core.Component {
         private bool userAborted;
 
         public TransactionManager(IObjectStore objectStore, ILoggerFactory loggerFactory, ILogger<TransactionManager> logger) {
-            Assert.AssertNotNull(objectStore);
-            this.objectStore = objectStore;
-            this.loggerFactory = loggerFactory;
-            this.logger = logger;
+            this.objectStore = objectStore ?? throw new InitialisationException($"{nameof(objectStore)} is null");
+            this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
+            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
 
         private ITransaction Transaction => transaction ?? new NestedTransaction(objectStore, loggerFactory.CreateLogger<NestedTransaction>());

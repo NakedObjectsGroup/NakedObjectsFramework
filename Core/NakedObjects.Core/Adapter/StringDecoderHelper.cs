@@ -30,10 +30,9 @@ namespace NakedObjects.Core.Adapter {
         private int index;
 
         public StringDecoderHelper(IMetamodelManager metamodel, ILoggerFactory loggerFactory, ILogger<StringDecoderHelper> logger, string[] strings, bool decode = false) {
-            Assert.AssertNotNull(metamodel);
-            this.metamodel = metamodel;
-            this.loggerFactory = loggerFactory;
-            this.logger = logger;
+            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+            this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
+            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
             this.strings = decode ? strings.Select(HttpUtility.UrlDecode).ToArray() : strings;
         }
 

@@ -25,15 +25,10 @@ namespace NakedObjects.Facade.Impl {
         private readonly string overloadedUniqueId;
 
         public ActionParameterFacade(IActionParameterSpec nakedObjectActionParameter, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework, string overloadedUniqueId) {
-            FacadeUtils.AssertNotNull(nakedObjectActionParameter, "Action Parameter is null");
-            FacadeUtils.AssertNotNull(framework, "framework is null");
-            FacadeUtils.AssertNotNull(overloadedUniqueId, "overloadedUniqueId is null");
-            FacadeUtils.AssertNotNull(frameworkFacade, "FrameworkFacade is null");
-
-            WrappedSpec = nakedObjectActionParameter;
-            this.framework = framework;
-            this.overloadedUniqueId = overloadedUniqueId;
-            FrameworkFacade = frameworkFacade;
+            WrappedSpec = nakedObjectActionParameter ?? throw new NullReferenceException($"{nameof(nakedObjectActionParameter)} is null");
+            this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");
+            this.overloadedUniqueId = overloadedUniqueId ?? throw new NullReferenceException($"{nameof(overloadedUniqueId)} is null");
+            FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");
         }
 
         public IActionParameterSpec WrappedSpec { get; }

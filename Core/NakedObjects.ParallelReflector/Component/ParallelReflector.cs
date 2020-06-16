@@ -39,17 +39,12 @@ namespace NakedObjects.ParallelReflect.Component {
                                  IEnumerable<IFacetFactory> facetFactories,
                                  ILoggerFactory loggerFactory,
                                  ILogger<ParallelReflector> logger) {
-            Assert.AssertNotNull(classStrategy);
-            Assert.AssertNotNull(metamodel);
-            Assert.AssertNotNull(config);
-            Assert.AssertNotNull(menuFactory);
-
-            ClassStrategy = classStrategy;
-            initialMetamodel = metamodel;
-            this.config = config;
-            this.menuFactory = menuFactory;
-            this.loggerFactory = loggerFactory;
-            this.logger = logger;
+            ClassStrategy = classStrategy ?? throw new InitialisationException($"{nameof(classStrategy)} is null");
+            initialMetamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+            this.config = config ?? throw new InitialisationException($"{nameof(config)} is null");
+            this.menuFactory = menuFactory ?? throw new InitialisationException($"{nameof(menuFactory)} is null");
+            this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
+            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
             facetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
             FacetFactorySet = new FacetFactorySet(facetFactories.ToArray());
         }

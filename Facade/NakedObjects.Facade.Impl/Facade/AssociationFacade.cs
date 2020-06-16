@@ -20,13 +20,9 @@ namespace NakedObjects.Facade.Impl {
         private readonly INakedObjectsFramework framework;
 
         public AssociationFacade(IAssociationSpec assoc, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework) {
-            FacadeUtils.AssertNotNull(assoc, "Assoc is null");
-            FacadeUtils.AssertNotNull(framework, "framework is null");
-            FacadeUtils.AssertNotNull(frameworkFacade, "FrameworkFacade is null");
-
-            WrappedSpec = assoc;
-            this.framework = framework;
-            FrameworkFacade = frameworkFacade;
+            WrappedSpec = assoc ?? throw new NullReferenceException($"{nameof(assoc)} is null");
+            this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");
+            FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");
         }
 
         public IAssociationSpec WrappedSpec { get; }

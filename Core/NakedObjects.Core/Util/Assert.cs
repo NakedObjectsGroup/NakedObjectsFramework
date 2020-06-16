@@ -74,6 +74,8 @@ namespace NakedObjects.Core.Util {
                 Trace.Assert(flag, msg);
             }
         }
+
+        public static object NullException(string name) => throw new InitialisationException($"{name} is null");
     }
 
     // Copyright (c) Naked Objects Group Ltd.

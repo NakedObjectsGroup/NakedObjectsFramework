@@ -68,11 +68,11 @@ namespace NakedObjects.Persistor.Entity.Component {
         private EventHandler savingChangesHandlerDelegate;
 
         internal EntityObjectStore(IMetamodelManager metamodelManager, ISession session, IDomainObjectInjector injector, INakedObjectManager nakedObjectManager, ILogger<EntityObjectStore> logger) {
-            this.metamodelManager = metamodelManager;
-            this.session = session;
-            this.injector = injector;
-            this.nakedObjectManager = nakedObjectManager;
-            this.logger = logger;
+            this.metamodelManager = metamodelManager ?? throw new InitialisationException($"{nameof(metamodelManager)} is null");
+            this.session = session ?? throw new InitialisationException($"{nameof(session)} is null");
+            this.injector = injector ?? throw new InitialisationException($"{nameof(injector)} is null");
+            this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
+            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
 
             getAdapterFor = domainObject => this.nakedObjectManager.GetAdapterFor(domainObject);
             createAdapter = (oid, domainObject) => this.nakedObjectManager.CreateAdapter(domainObject, oid, null);

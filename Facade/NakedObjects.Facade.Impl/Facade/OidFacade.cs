@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Facade.Impl.Utility;
 
@@ -12,10 +13,7 @@ namespace NakedObjects.Facade.Impl {
     public class OidFacade : IOidFacade {
         private readonly IOid oid;
 
-        public OidFacade(IOid oid) {
-            FacadeUtils.AssertNotNull(oid, "Oid is null");
-            this.oid = oid;
-        }
+        public OidFacade(IOid oid) => this.oid = oid ?? throw new NullReferenceException($"{nameof(oid)} is null");
 
         #region IOidFacade Members
 

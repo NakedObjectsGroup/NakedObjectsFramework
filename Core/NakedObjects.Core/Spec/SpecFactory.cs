@@ -15,18 +15,25 @@ using NakedObjects.Core.Util;
 namespace NakedObjects.Core.Spec {
     public class SpecFactory {
         private INakedObjectsFramework framework;
+        private bool isInitialised;
         private ILogger<SpecFactory> logger;
         private ILoggerFactory loggerFactory;
 
         public void Initialize(INakedObjectsFramework newFramework, ILoggerFactory newLoggerFactory, ILogger<SpecFactory> newLogger) {
-            Assert.AssertNotNull(newFramework);
-            framework = newFramework;
-            loggerFactory = newLoggerFactory;
-            logger = newLogger;
+            framework = newFramework ?? throw new InitialisationException($"{nameof(newFramework)} is null");
+            loggerFactory = newLoggerFactory ?? throw new InitialisationException($"{nameof(newLoggerFactory)} is null");
+            logger = newLogger ?? throw new InitialisationException($"{nameof(newLogger)} is null");
+            isInitialised = true;
+        }
+
+        private void CheckInitialised() {
+            if (isInitialised) { return; }
+
+            throw new InitialisationException($"{nameof(SpecFactory)} not initialised");
         }
 
         public IActionParameterSpec CreateParameter(IActionParameterSpecImmutable parameterSpecImmutable, IActionSpec actionSpec, int index) {
-            Assert.AssertNotNull(framework);
+            CheckInitialised();
             var specification = parameterSpecImmutable.Specification;
             return specification switch {
                 _ when specification.IsParseable => new ActionParseableParameterSpec(framework.MetamodelManager, index, actionSpec, parameterSpecImmutable, framework.NakedObjectManager, framework.Session, framework.Persistor),
@@ -36,8 +43,8 @@ namespace NakedObjects.Core.Spec {
             };
         }
 
-        public IAssociationSpec CreateAssociation(IAssociationSpecImmutable specImmutable) {
-            Assert.AssertNotNull(framework);
+        private IAssociationSpec CreateAssociation(IAssociationSpecImmutable specImmutable) {
+            CheckInitialised();
             return specImmutable switch {
                 IOneToOneAssociationSpecImmutable oneToOneAssociationSpecImmutable => new OneToOneAssociationSpec(framework.MetamodelManager, oneToOneAssociationSpecImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor, framework.TransactionManager),
                 IOneToManyAssociationSpecImmutable oneToManyAssociationSpecImmutable => new OneToManyAssociationSpec(framework.MetamodelManager, oneToManyAssociationSpecImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor),
@@ -48,7 +55,7 @@ namespace NakedObjects.Core.Spec {
         public IActionSpec[] CreateActionSpecs(IList<IActionSpecImmutable> specImmutables) => specImmutables.Select(CreateActionSpec).ToArray();
 
         public IActionSpec CreateActionSpec(IActionSpecImmutable specImmutable) {
-            Assert.AssertNotNull(framework);
+            CheckInitialised();
             return new ActionSpec(this,
                 framework.MetamodelManager,
                 framework.LifecycleManager,
@@ -63,7 +70,7 @@ namespace NakedObjects.Core.Spec {
         }
 
         public IAssociationSpec CreateAssociationSpec(IAssociationSpecImmutable specImmutable) {
-            Assert.AssertNotNull(framework);
+            CheckInitialised();
             return CreateAssociation(specImmutable);
         }
 
@@ -75,12 +82,12 @@ namespace NakedObjects.Core.Spec {
             };
 
         private IServiceSpec CreateServiceSpec(IServiceSpecImmutable specImmutable) {
-            Assert.AssertNotNull(framework);
+            CheckInitialised();
             return new ServiceSpec(this, framework.MetamodelManager, framework.NakedObjectManager, specImmutable);
         }
 
         private IObjectSpec CreateObjectSpec(IObjectSpecImmutable specImmutable) {
-            Assert.AssertNotNull(framework);
+            CheckInitialised();
             return new ObjectSpec(this,
                 framework.MetamodelManager,
                 framework.NakedObjectManager,

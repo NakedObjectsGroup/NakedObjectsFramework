@@ -8,6 +8,7 @@
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Adapter;
 
@@ -18,9 +19,8 @@ namespace NakedObjects.Persistor.Entity.Component {
         private readonly IMetamodelManager metamodel;
 
         public EntityOidGenerator(IMetamodelManager metamodel, ILoggerFactory loggerFactory) {
-            Assert.AssertNotNull(metamodel);
-            this.metamodel = metamodel;
-            this.loggerFactory = loggerFactory;
+            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+            this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
         }
 
         public string Name => "Entity Oids";

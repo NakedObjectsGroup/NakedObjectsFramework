@@ -60,10 +60,12 @@ let mutable persistingCount = 0
 let AddAdapter (ob : obj) oid = 
     let mockNakedObject = new Mock<INakedObjectAdapter>()
     let testNakedObject = mockNakedObject.Object
+    let mockLogger = new Mock<ILogger<EntityOid>>();
+    let testLogger  = mockLogger.Object;
     let dobj = ob
     
     let eoid : IOid = 
-        if oid = null then ((box (new EntityOid(mockMetamodelManager.Object, ob.GetType(), [| box 0 |], true, null))) :?> IOid)
+        if oid = null then ((box (new EntityOid(mockMetamodelManager.Object, ob.GetType(), [| box 0 |], true, testLogger))) :?> IOid)
         else oid
     
     let rsm = new ResolveStateMachine(testNakedObject, null)

@@ -25,12 +25,9 @@ namespace NakedObjects.Core.Component {
         public RecursivePersistAlgorithm(IObjectPersistor persistor,
                                          INakedObjectManager manager,
                                          ILogger<RecursivePersistAlgorithm> logger) {
-            Assert.AssertNotNull(persistor);
-            Assert.AssertNotNull(manager);
-
-            this.persistor = persistor;
-            this.manager = manager;
-            this.logger = logger;
+            this.persistor = persistor ?? throw new InitialisationException($"{nameof(persistor)} is null");
+            this.manager = manager ?? throw new InitialisationException($"{nameof(manager)} is null");
+            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
 
         #region IPersistAlgorithm Members

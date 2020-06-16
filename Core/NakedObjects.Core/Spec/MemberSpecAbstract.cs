@@ -22,16 +22,11 @@ namespace NakedObjects.Core.Reflect {
         private readonly IMemberSpecImmutable memberSpecImmutable;
 
         protected internal MemberSpecAbstract(string id, IMemberSpecImmutable memberSpec, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
-            AssertArgNotNull(id, Resources.NakedObjects.NameNotSetMessage);
-            AssertArgNotNull(memberSpec);
-            AssertArgNotNull(session);
-            AssertArgNotNull(lifecycleManager);
-
-            Id = id;
-            memberSpecImmutable = memberSpec;
-            Session = session;
-            LifecycleManager = lifecycleManager;
-            MetamodelManager = metamodelManager;
+            Id = id ?? throw new InitialisationException($"{nameof(id)} is null");
+            memberSpecImmutable = memberSpec ?? throw new InitialisationException($"{nameof(memberSpec)} is null");
+            Session = session ?? throw new InitialisationException($"{nameof(session)} is null");
+            LifecycleManager = lifecycleManager ?? throw new InitialisationException($"{nameof(lifecycleManager)} is null");
+            MetamodelManager = metamodelManager ?? throw new InitialisationException($"{nameof(metamodelManager)} is null");
         }
 
         public ISession Session { get; }
@@ -97,10 +92,6 @@ namespace NakedObjects.Core.Reflect {
         public bool IsNullable => memberSpecImmutable.ContainsFacet(typeof(INullableFacet));
 
         #endregion
-
-        private static void AssertArgNotNull(object arg, string msg = null) {
-            Assert.AssertNotNull(msg ?? "", arg);
-        }
 
         public override string ToString() => "id=" + Id + ",name='" + Name + "'";
 

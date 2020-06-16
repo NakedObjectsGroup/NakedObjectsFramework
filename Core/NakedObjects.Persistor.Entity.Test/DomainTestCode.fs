@@ -20,6 +20,8 @@ open System
 open System.Data.Entity.Core.Objects
 open TestCode
 open TestTypes
+open Moq
+open Microsoft.Extensions.Logging
 
 let First<'t when 't : not struct> persistor = First<'t> persistor
 let Second<'t when 't : not struct> persistor = Second<'t> persistor
@@ -530,8 +532,8 @@ let CanRemoteResolve(persistor : EntityObjectStore) =
     let keys = 
         [| box 54002
            box 51409 |]
-    
-    let key = new EntityOid(mockMetamodelManager.Object, typeof<SalesOrderDetail>, keys, false, null)
+    let testLogger = (new Mock<ILogger<EntityOid>>()).Object;
+    let key = new EntityOid(mockMetamodelManager.Object, typeof<SalesOrderDetail>, keys, false, testLogger)
     let obj = persistor.GetObjectByKey(key, typeof<SalesOrderDetail>)
     let nakedObj = GetOrAddAdapterForTest obj key
     if nakedObj.ResolveState.IsResolvable() then persistor.ResolveImmediately(nakedObj)

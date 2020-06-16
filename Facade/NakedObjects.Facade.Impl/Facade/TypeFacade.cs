@@ -19,13 +19,9 @@ namespace NakedObjects.Facade.Impl {
         private readonly INakedObjectsFramework framework;
 
         public TypeFacade(ITypeSpec spec, IFrameworkFacade frameworkFacade, INakedObjectsFramework framework) {
-            FacadeUtils.AssertNotNull(spec, "Spec is null");
-            FacadeUtils.AssertNotNull(frameworkFacade, "FrameworkFacade is null");
-            FacadeUtils.AssertNotNull(framework, "framework is null");
-
-            FrameworkFacade = frameworkFacade;
-            WrappedValue = spec;
-            this.framework = framework;
+            FrameworkFacade = frameworkFacade ?? throw new NullReferenceException($"{nameof(frameworkFacade)} is null");
+            WrappedValue = spec ?? throw new NullReferenceException($"{nameof(spec)} is null");
+            this.framework = framework ?? throw new NullReferenceException($"{nameof(framework)} is null");
         }
 
         public ITypeSpec WrappedValue { get; }

@@ -60,8 +60,6 @@ namespace NakedObjects.Meta.Authorization {
         private object CreateAuthorizer(Type type, ILifecycleManager lifecycleManager) => lifecycleManager.CreateNonAdaptedInjectedObject(type);
 
         private object GetAuthorizer(INakedObjectAdapter target, ILifecycleManager lifecycleManager) {
-            Assert.AssertNotNull(target);
-
             //Look for exact-fit TypeAuthorizer
             // order here as ImmutableDictionary not ordered
             var fullyQualifiedOfTarget = target.Spec.FullName;

@@ -107,7 +107,7 @@ namespace NakedObjects.Core.Test.Adapter {
         protected override EntityObjectStoreConfiguration Persistor {
             get {
                 var c = new EntityObjectStoreConfiguration();
-                c.UsingCodeFirstContext(() => {
+                c.UsingContext(() => {
                     var cs = RootServiceProvider.GetService<IConfiguration>().GetConnectionString("TestContext");
                     return new TestContext(cs);
                 });

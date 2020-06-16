@@ -25,9 +25,7 @@ namespace NakedObjects.Core.Component {
         public DomainObjectContainerInjector(IReflectorConfiguration config,
                                              ILoggerFactory loggerFactory,
                                              ILogger<DomainObjectContainerInjector> logger) {
-            this.loggerFactory = loggerFactory;
-            Assert.AssertNotNull(config);
-
+            this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
             serviceTypes = config.Services.ToList();
         }
 

@@ -37,19 +37,16 @@ namespace NakedObjects.Core.Adapter {
                                   IOid oid,
                                   ILoggerFactory loggerFactory,
                                   ILogger<NakedObjectAdapter> logger) {
-            Assert.AssertNotNull(metamodel);
-            Assert.AssertNotNull(session);
+            this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+            this.session = session ?? throw new InitialisationException($"{nameof(session)} is null");
+            this.persistor = persistor ?? throw new InitialisationException($"{nameof(persistor)} is null");
+            this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
+            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
+            this.lifecycleManager = lifecycleManager ?? throw new InitialisationException($"{nameof(lifecycleManager)} is null");
 
             if (poco is INakedObjectAdapter) {
                 throw new AdapterException(logger.LogAndReturn($"Adapter can't be used to adapt an adapter: {poco}"));
             }
-
-            this.metamodel = metamodel;
-            this.session = session;
-            this.persistor = persistor;
-            this.nakedObjectManager = nakedObjectManager;
-            this.logger = logger;
-            this.lifecycleManager = lifecycleManager;
 
             Object = poco;
             Oid = oid;

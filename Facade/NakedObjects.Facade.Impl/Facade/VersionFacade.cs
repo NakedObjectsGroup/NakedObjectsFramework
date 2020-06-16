@@ -13,10 +13,7 @@ namespace NakedObjects.Facade.Impl {
     public class VersionFacade : IVersionFacade {
         private readonly IVersion version;
 
-        public VersionFacade(IVersion version) {
-            FacadeUtils.AssertNotNull(version, "Version is null");
-            this.version = version;
-        }
+        public VersionFacade(IVersion version) => this.version = version ?? throw new NullReferenceException($"{nameof(version)} is null");
 
         public DateTime? Time => version.Time;
 
