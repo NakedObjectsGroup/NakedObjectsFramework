@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
@@ -346,16 +347,19 @@ namespace NakedObjects.Rest {
                 success = true;
             }
             catch (ValidationException validationException) {
+                logger.LogInformation(validationException, validationException.Message);
                 var warning = RestUtils.ToWarningHeaderValue(199, validationException.Message);
                 AppendWarningHeader(GetResponseHeaders(), warning.ToString());
                 return StatusCode(validationException.StatusCode);
             }
             catch (RedirectionException redirectionException) {
+                logger.LogInformation(redirectionException, redirectionException.Message);
                 var responseHeaders = ControllerContext.HttpContext.Response.GetTypedHeaders();
                 responseHeaders.Location = redirectionException.RedirectAddress;
                 return StatusCode(redirectionException.StatusCode);
             }
             catch (NakedObjectsFacadeException e) {
+                LogFacadeException(e)();
                 return ErrorResult(e);
             }
             catch (Exception e) {
@@ -373,6 +377,7 @@ namespace NakedObjects.Rest {
             }
 
             if (endTransactionError != null) {
+                logger.LogError(endTransactionError, $"End transaction error : {endTransactionError.Message}");
                 return ErrorResult(endTransactionError);
             }
 
@@ -380,11 +385,13 @@ namespace NakedObjects.Rest {
                 return RepresentationResult(ss);
             }
             catch (ValidationException validationException) {
+                logger.LogInformation(validationException, validationException.Message);
                 var warning = RestUtils.ToWarningHeaderValue(199, validationException.Message);
                 AppendWarningHeader(GetResponseHeaders(), warning.ToString());
                 return StatusCode(validationException.StatusCode);
             }
             catch (NakedObjectsFacadeException e) {
+                LogFacadeException(e)();
                 return ErrorResult(e);
             }
             catch (Exception e) {
@@ -392,6 +399,29 @@ namespace NakedObjects.Rest {
                 return ErrorResult(e);
             }
         }
+
+        private Action LogFacadeException(NakedObjectsFacadeException e) {
+            return e switch {
+                DataUpdateNOSException _ => () => logger.LogError(e, e.Message),
+                GeneralErrorNOSException _ => () => logger.LogError(e, e.Message),
+                NoContentNOSException _ => () => logger.LogInformation(e, e.Message),
+                NotAllowedNOSException _ => () => logger.LogWarning(e, e.Message),
+                PreconditionFailedNOSException _ => () => logger.LogWarning(e, e.Message),
+                PreconditionMissingNOSException _ => () => logger.LogError(e, e.Message),
+                ActionResourceNotFoundNOSException _ => () => logger.LogError(e, e.Message),
+                BadArgumentsNOSException _ => () => logger.LogWarning(e, e.Message),
+                BadRequestNOSException _ => () => logger.LogWarning(e, e.Message),
+                CollectionResourceNotFoundNOSException _ => () => logger.LogError(e, e.Message),
+                MenuResourceNotFoundNOSException _ => () => logger.LogError(e, e.Message),
+                ObjectResourceNotFoundNOSException _ => () => logger.LogError(e, e.Message),
+                PropertyResourceNotFoundNOSException _ => () => logger.LogError(e, e.Message),
+                ServiceResourceNotFoundNOSException _ => () => logger.LogError(e, e.Message),
+                TypeActionResourceNotFoundException _ => () => logger.LogError(e, e.Message),
+                TypeResourceNotFoundNOSException _ => () => logger.LogError(e, e.Message),
+                _ => () => logger.LogError(e, e.Message)
+            };
+        }
+
 
         private ActionResult ErrorResult(Exception e) => RepresentationResult(SnapshotFactory.ErrorSnapshot(OidStrategy, e, Request)());
 

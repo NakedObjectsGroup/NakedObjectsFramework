@@ -79,7 +79,7 @@ namespace NakedObjects.Rest.Test.App {
             var cs = configuration.GetConnectionString("RestTest");
             DbContext GetContext() => cs.Contains("SQLEXPRESS") ? (DbContext) new CodeFirstContextLocal(cs) : new CodeFirstContext(cs);
 
-            config.UsingCodeFirstContext(GetContext);
+            config.UsingContext(GetContext);
             return config;
         }
 

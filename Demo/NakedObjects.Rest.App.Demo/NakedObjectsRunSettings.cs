@@ -72,7 +72,7 @@ namespace NakedObjects.Rest.App.Demo {
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration) {
             var config = new EntityObjectStoreConfiguration();
             var cs = configuration.GetConnectionString("AdventureWorksContext");
-            config.UsingCodeFirstContext(() => new AdventureWorksContext(cs));
+            config.UsingContext(() => new AdventureWorksContext(cs));
             return config;
         }
 
