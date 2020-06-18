@@ -346,23 +346,23 @@ namespace NakedObjects.Rest {
                 success = true;
             }
             catch (ValidationException validationException) {
-                logger.LogInformation(validationException, DisplayName);
+                logger.LogInformation(validationException, DisplayState);
                 var warning = RestUtils.ToWarningHeaderValue(199, validationException.Message);
                 AppendWarningHeader(GetResponseHeaders(), warning.ToString());
                 return StatusCode(validationException.StatusCode);
             }
             catch (RedirectionException redirectionException) {
-                logger.LogInformation(redirectionException, DisplayName);
+                logger.LogInformation(redirectionException, DisplayState);
                 var responseHeaders = ControllerContext.HttpContext.Response.GetTypedHeaders();
                 responseHeaders.Location = redirectionException.RedirectAddress;
                 return StatusCode(redirectionException.StatusCode);
             }
             catch (NakedObjectsFacadeException e) {
-                LogFacadeException(e)(DisplayName);
+                LogFacadeException(e)(DisplayState);
                 return ErrorResult(e);
             }
             catch (Exception e) {
-                logger.LogError(e, DisplayName);
+                logger.LogError(e, DisplayState);
                 return ErrorResult(e);
             }
             finally {
@@ -376,7 +376,7 @@ namespace NakedObjects.Rest {
             }
 
             if (endTransactionError != null) {
-                logger.LogError(endTransactionError, $"End transaction error : {DisplayName}");
+                logger.LogError(endTransactionError, $"End transaction error : {DisplayState}");
                 return ErrorResult(endTransactionError);
             }
 
@@ -384,22 +384,28 @@ namespace NakedObjects.Rest {
                 return RepresentationResult(ss);
             }
             catch (ValidationException validationException) {
-                logger.LogInformation(validationException, DisplayName);
+                logger.LogInformation(validationException, DisplayState);
                 var warning = RestUtils.ToWarningHeaderValue(199, validationException.Message);
                 AppendWarningHeader(GetResponseHeaders(), warning.ToString());
                 return StatusCode(validationException.StatusCode);
             }
             catch (NakedObjectsFacadeException e) {
-                LogFacadeException(e)(DisplayName);
+                LogFacadeException(e)(DisplayState);
                 return ErrorResult(e);
             }
             catch (Exception e) {
-                logger.LogError(e, DisplayName);
+                logger.LogError(e, DisplayState);
                 return ErrorResult(e);
             }
         }
 
-        private string DisplayName => ControllerContext?.ActionDescriptor?.DisplayName ?? "Unknown Context";
+        private string DisplayName => 
+            ControllerContext?.ActionDescriptor?.DisplayName ?? "Unknown Context";
+
+        private string DisplayModelState => 
+            ModelState?.Values.Select(v => v.AttemptedValue).Aggregate("", (a, s) => $"{a}{s};");
+
+        private string DisplayState => $"Context: {DisplayName} State {DisplayModelState}";
 
         private Action<string> LogFacadeException(NakedObjectsFacadeException e) {
             return e switch {
