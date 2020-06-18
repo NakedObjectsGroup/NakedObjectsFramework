@@ -399,7 +399,7 @@ namespace NakedObjects.Rest {
             }
         }
 
-        private string DisplayName => ControllerContext.ActionDescriptor.DisplayName;
+        private string DisplayName => ControllerContext?.ActionDescriptor?.DisplayName ?? "Unknown Context";
 
         private Action<string> LogFacadeException(NakedObjectsFacadeException e) {
             return e switch {
