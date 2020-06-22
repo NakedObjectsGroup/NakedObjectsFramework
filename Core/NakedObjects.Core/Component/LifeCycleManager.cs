@@ -142,9 +142,9 @@ namespace NakedObjects.Core.Component {
             }
 
             // todo fix - temp hack
-            //if (!vmoid.IsFinal) {
-            vmoid.UpdateKeys(nakedObjectAdapter.Spec.GetFacet<IViewModelFacet>().Derive(nakedObjectAdapter, nakedObjectManager, injector), true);
-            //}
+            if (!vmoid.IsFinal) {
+               vmoid.UpdateKeys(nakedObjectAdapter.Spec.GetFacet<IViewModelFacet>().Derive(nakedObjectAdapter, nakedObjectManager, injector), true);
+            }
         }
 
         public IOid RestoreOid(string[] encodedData) => RestoreGenericOid(encodedData) ?? oidGenerator.RestoreOid(encodedData);
