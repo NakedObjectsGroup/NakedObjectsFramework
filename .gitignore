@@ -4,9 +4,7 @@
 !**/Template/*/*.user
 *.nupkg
 /packages
-/Template_NOF7
-/Template_NOF9/packages
-/Template_NOF8/NakedObjects.Template/packages
+/Template/packages
 /test-results
 /TestResults
 /build
@@ -17,19 +15,12 @@
 UpgradeLog.htm
 *.mdf
 *.ldf
-**/nakedobjects_log*.*
 Documentation/~$veloperManual.docx
-Core - Richard.sln
 nog-packages.txt
 *.orig
 *.DotSettings
 *.dll
-RestfulObjects Server/RestfulObjects.Test.Data.Sdm2/lib/sdm.profiler.dll.config
 .vs/config/applicationhost.config
-Spa/NakedObjects.Spa/Content/content.zip
-Spa/NakedObjects.Spa/node_modules
-Spa/NakedObjects.Spa/typings
-Rest/NakedObjects.Rest.App/log.txt
 /Template_NOF8/NakedObjects.Template/Scripts/*.map
 /Template_NOF8/NakedObjects.Template/Scripts/*.js
 Spa2/nakedobjectsspa/.vs/config/applicationhost.config
@@ -37,12 +28,5 @@ Spa2/nakedobjectsspa/.vs/config/applicationhost.config
 .vs/
 Test/NakedObjects.PerformanceTest/Reflect/awnames.txt
 Test/NakedObjects.PerformanceTest/Reflect/dspnames.txt
-Core old
-Facade old
-Core old.sln
-Facade old.sln
-Rest old
-Rest old.sln
-Demo old
-Samples old
 Test old
+Demo/NakedObjects.Rest.App.Demo/nakedobjects.log
