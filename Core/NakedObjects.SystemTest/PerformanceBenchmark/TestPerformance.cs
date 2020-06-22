@@ -19,8 +19,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Performance {
     [TestFixture]
     public class TestPerformance : AbstractSystemTest<PerformanceDbContext> {
-      
-
         protected override Type[] Types =>
             new[] {
                 typeof(ObjectQuery<Qux>),
@@ -64,7 +62,7 @@ namespace NakedObjects.SystemTest.Performance {
         public virtual void BenchMark() {
             var stopWatch = new Stopwatch();
             stopWatch.Start();
-            for (var i = 0; i < 100; i++) {
+            for (var i = 0; i < 1000; i++) {
                 StartTest();
                 GetSingleRandomQux();
                 EndTest();
@@ -72,8 +70,9 @@ namespace NakedObjects.SystemTest.Performance {
 
             stopWatch.Stop();
             var time = stopWatch.ElapsedMilliseconds;
-            // last run 1127ms
-            Assert.IsTrue(time < 1200, $"Elapsed time was {time} milliseconds");
+            // with dynamic 2929 ms
+            // without dynamic 2918 ms
+            Assert.IsTrue(time < 3000, $"Elapsed time was {time} milliseconds");
         }
     }
 

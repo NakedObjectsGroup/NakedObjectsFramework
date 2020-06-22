@@ -21,7 +21,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Transactions;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
