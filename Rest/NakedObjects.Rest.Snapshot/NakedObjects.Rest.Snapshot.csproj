@@ -5,11 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="version.txt" />
+    <None Remove="implversion.txt" />
+    <None Remove="specversion.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="version.txt" />
+    <EmbeddedResource Include="specversion.txt" />
+    <EmbeddedResource Include="implversion.txt" />
   </ItemGroup>
 
   <ItemGroup>

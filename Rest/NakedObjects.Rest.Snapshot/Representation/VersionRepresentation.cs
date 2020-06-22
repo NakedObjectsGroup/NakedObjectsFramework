@@ -45,18 +45,24 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         private void SetHeader() => Caching = CacheType.NonExpiring;
 
-        private void SetScalars() {
-            SpecVersion = "1.1";
-            var assembly = Assembly.GetExecutingAssembly();
-            const string resourceName = "NakedObjects.Rest.Snapshot.version.txt";
+        private static string GetVersion(Assembly assembly, string resource) {
+            var resourceName = $"NakedObjects.Rest.Snapshot.{resource}.txt";
+            var version = "";
 
             using var stream = assembly.GetManifestResourceStream(resourceName);
             if (stream != null) {
                 using var reader = new StreamReader(stream);
-                ImplVersion = reader.ReadToEnd();
+                version = reader.ReadToEnd();
             }
 
-            ImplVersion = string.IsNullOrWhiteSpace(ImplVersion) ? "Failed to read version" : ImplVersion;
+            return string.IsNullOrWhiteSpace(version) ? $"Failed to read {resource}" : version;
+        }
+
+
+        private void SetScalars() {
+            var assembly = Assembly.GetExecutingAssembly();
+            SpecVersion = GetVersion(assembly, "specversion");
+            ImplVersion = GetVersion(assembly, "implversion");
         }
 
         private void SetOptionalCapabilities(IDictionary<string, string> capabilitiesMap) {
