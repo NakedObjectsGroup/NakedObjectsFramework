@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Rest.Snapshot.Constants;
@@ -416,15 +417,17 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return CreateTableRowValueLink(no, columns, rt, oidStrategy, req, flags);
         }
 
-        public static WarningHeaderValue ToWarningHeaderValue(int code, string warning) {
+        private static string CleanWarning(string warning) => warning.Replace('"', ' ').Replace('\r', ' ').Replace('\n', ' ');
+
+        public static WarningHeaderValue ToWarningHeaderValue(int code, string warning, ILogger logger) {
             const string agent = "RestfulObjects";
             try {
                 // remove all \" within warning message as they cause format exception 
-                return new WarningHeaderValue(code, agent, "\"" + warning.Replace('"', ' ') + "\"");
+                return new WarningHeaderValue(code, agent, $"\"{CleanWarning(warning)}\"");
             }
-            catch (FormatException) {
-                //logger.WarnFormat("Failed to parse warning message: {0} : {1}", w, fe.Message);
-                return new WarningHeaderValue(code, agent, "\"" + "Failed to parse warning message" + "\"");
+            catch (Exception e) {
+                logger.LogWarning(e, $"Failed to parse warning message: {warning}");
+                return new WarningHeaderValue(code, agent, $"\"" + "Failed to parse warning message" + "\"");
             }
         }
     }

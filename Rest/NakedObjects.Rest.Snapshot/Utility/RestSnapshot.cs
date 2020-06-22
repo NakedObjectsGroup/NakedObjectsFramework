@@ -13,6 +13,7 @@ using System.Net.Http.Headers;
 using System.Security.Principal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
@@ -24,7 +25,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
     public class RestSnapshot {
         private readonly IList<string> allowHeaders = new List<string>();
         private readonly IOidStrategy oidStrategy;
-        private readonly Action populator;
+        private readonly Action<ILogger> populator;
         private readonly HttpRequest requestMessage;
         private readonly IList<WarningHeaderValue> warningHeaders = new List<WarningHeaderValue>();
 
@@ -48,66 +49,66 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public RestSnapshot(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
             : this(oidStrategy, objectContext, req, true) {
-            populator = () => {
+            populator = logger => {
                 HttpStatusCode = httpStatusCode;
                 Representation = ObjectRepresentation.Create(oidStrategy, objectContext, req, flags);
-                SetHeaders();
+                SetHeaders(logger);
             };
         }
 
         public RestSnapshot(IOidStrategy oidStrategy, IMenuFacade menu, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
             : this(oidStrategy, req, true) {
-            populator = () => {
+            populator = logger => {
                 HttpStatusCode = httpStatusCode;
                 Representation = MenuRepresentation.Create(oidStrategy, menu, req, flags);
-                SetHeaders();
+                SetHeaders(logger);
             };
         }
 
         public RestSnapshot(IOidStrategy oidStrategy, ActionResultContextFacade actionResultContext, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, actionResultContext, req, true) {
-            populator = () => {
+            populator = logger => {
                 Representation = ActionResultRepresentation.Create(oidStrategy, req, actionResultContext, flags);
-                SetHeaders();
+                SetHeaders(logger);
             };
         }
 
         public RestSnapshot(IOidStrategy oidStrategy, ListContextFacade listContext, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            populator = () => {
+            populator = logger => {
                 Representation = ListRepresentation.Create(oidStrategy, listContext, req, flags);
-                SetHeaders();
+                SetHeaders(logger);
             };
         }
 
         public RestSnapshot(IOidStrategy oidStrategy, MenuContextFacade menus, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            populator = () => {
+            populator = logger => {
                 Representation = ListRepresentation.Create(oidStrategy, menus, req, flags);
-                SetHeaders();
+                SetHeaders(logger);
             };
         }
 
         public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            populator = () => {
+            populator = logger => {
                 Representation = PromptRepresentation.Create(oidStrategy, propertyContext, req, flags);
-                SetHeaders();
+                SetHeaders(logger);
             };
         }
 
         public RestSnapshot(IOidStrategy oidStrategy, ParameterContextFacade parmContext, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            populator = () => {
+            populator = logger => {
                 Representation = PromptRepresentation.Create(oidStrategy, parmContext, req, flags);
-                SetHeaders();
+                SetHeaders(logger);
             };
         }
 
         public RestSnapshot(IOidStrategy oidStrategy, PropertyContextFacade propertyContext, HttpRequest req, RestControlFlags flags, bool collectionValue)
             : this(oidStrategy, propertyContext, req, false) {
             FilterBlobsAndClobs(propertyContext, flags);
-            populator = () => {
+            populator = logger => {
                 if (collectionValue) {
                     Representation = CollectionValueRepresentation.Create(oidStrategy, propertyContext, req, flags);
                 }
@@ -117,57 +118,57 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                         : MemberAbstractRepresentation.Create(oidStrategy, req, propertyContext, flags);
                 }
 
-                SetHeaders();
+                SetHeaders(logger);
             };
         }
 
         public RestSnapshot(IOidStrategy oidStrategy, ActionContextFacade actionContext, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, actionContext, req, true) {
-            populator = () => {
+            populator = logger => {
                 Representation = ActionRepresentation.Create(oidStrategy, req, actionContext, flags);
-                SetHeaders();
+                SetHeaders(logger);
             };
         }
 
         public RestSnapshot(IOidStrategy oidStrategy, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            populator = () => {
+            populator = logger => {
                 Representation = HomePageRepresentation.Create(oidStrategy, req, flags);
-                SetHeaders();
+                SetHeaders(logger);
             };
         }
 
         public RestSnapshot(IOidStrategy oidStrategy, IDictionary<string, string> capabilities, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            populator = () => {
+            populator = logger => {
                 Representation = VersionRepresentation.Create(oidStrategy, req, capabilities, flags);
-                SetHeaders();
+                SetHeaders(logger);
             };
         }
 
         public RestSnapshot(IOidStrategy oidStrategy, IPrincipal user, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            populator = () => {
+            populator = logger => {
                 Representation = UserRepresentation.Create(oidStrategy, req, user, flags);
-                SetHeaders();
+                SetHeaders(logger);
             };
         }
 
         public RestSnapshot(IOidStrategy oidStrategy, TypeActionInvokeContext typeActionInvokeContext, HttpRequest req, RestControlFlags flags)
             : this(oidStrategy, req, true) {
-            populator = () => {
+            populator = logger => {
                 Representation = TypeActionInvokeRepresentation.Create(oidStrategy, req, typeActionInvokeContext, flags);
-                SetHeaders();
+                SetHeaders(logger);
             };
         }
 
         public RestSnapshot(IOidStrategy oidStrategy, Exception exception, HttpRequest req)
             : this(oidStrategy, req, true) {
-            populator = () => {
+            populator = logger => {
                 MapToHttpError(exception);
                 MapToRepresentation(exception, req);
-                MapToWarningHeader(exception);
-                SetHeaders();
+                MapToWarningHeader(exception, logger);
+                SetHeaders(logger);
             };
         }
 
@@ -207,9 +208,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             }
         }
 
-        public RestSnapshot Populate() {
+        public RestSnapshot Populate(ILogger logger) {
             try {
-                populator();
+                populator(logger);
                 return this;
             }
             catch (Exception e) {
@@ -303,12 +304,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 _ => ErrorRepresentation.Create(oidStrategy, e)
             };
 
-        private void SetHeaders() {
+        private void SetHeaders(ILogger logger) {
             if (Representation != null) {
                 Etag = Representation.GetEtag();
 
                 foreach (var w in Representation.GetWarnings()) {
-                    warningHeaders.Add(RestUtils.ToWarningHeaderValue(299, w));
+                    warningHeaders.Add(RestUtils.ToWarningHeaderValue(299, w, logger));
                 }
 
                 if (HttpStatusCode == HttpStatusCode.Created) {
@@ -335,7 +336,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        private void MapToWarningHeader(Exception e) {
+        private void MapToWarningHeader(Exception e, ILogger logger) {
             IList<string> ImmutableWarning() {
                 allowHeaders.Add("GET");
                 return new List<string> {"object is immutable"};
@@ -352,7 +353,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
 
             foreach (var w in warnings) {
-                warningHeaders.Add(RestUtils.ToWarningHeaderValue(199, w));
+                warningHeaders.Add(RestUtils.ToWarningHeaderValue(199, w, logger));
             }
         }
     }

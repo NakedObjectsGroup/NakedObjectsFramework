@@ -26,11 +26,13 @@ using static NakedObjects.Rest.API.ControllerHelpers;
 namespace NakedObjects.Rest {
     public class RestfulObjectsControllerBase : ControllerBase {
         private readonly ILogger logger;
+        private readonly ILoggerFactory loggerFactory;
 
         #region constructor and properties
 
-        protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade, ILogger logger) {
+        protected RestfulObjectsControllerBase(IFrameworkFacade frameworkFacade, ILogger logger, ILoggerFactory loggerFactory) {
             this.logger = logger;
+            this.loggerFactory = loggerFactory;
             FrameworkFacade = frameworkFacade;
             OidStrategy = frameworkFacade.OidStrategy;
         }
@@ -347,7 +349,7 @@ namespace NakedObjects.Rest {
             }
             catch (ValidationException validationException) {
                 logger.LogInformation(validationException, DisplayState);
-                var warning = RestUtils.ToWarningHeaderValue(199, validationException.Message);
+                var warning = RestUtils.ToWarningHeaderValue(199, validationException.Message, logger);
                 AppendWarningHeader(GetResponseHeaders(), warning.ToString());
                 return StatusCode(validationException.StatusCode);
             }
@@ -385,7 +387,7 @@ namespace NakedObjects.Rest {
             }
             catch (ValidationException validationException) {
                 logger.LogInformation(validationException, DisplayState);
-                var warning = RestUtils.ToWarningHeaderValue(199, validationException.Message);
+                var warning = RestUtils.ToWarningHeaderValue(199, validationException.Message, logger);
                 AppendWarningHeader(GetResponseHeaders(), warning.ToString());
                 return StatusCode(validationException.StatusCode);
             }
@@ -441,7 +443,7 @@ namespace NakedObjects.Rest {
                 return File(attachmentRepresentation.AsStream, attachmentRepresentation.GetContentType().ToString());
             }
 
-            ss.Populate();
+            ss.Populate(loggerFactory.CreateLogger<RestSnapshot>());
             SetHeaders(ss);
 
             return ss.Representation switch {

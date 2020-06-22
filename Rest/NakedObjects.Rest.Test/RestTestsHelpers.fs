@@ -37,7 +37,7 @@ let CodeFirstSetup() =
 let mapper = new TestTypeCodeMapper()
 let keyMapper = new TestKeyCodeMapper()
 
-type RestfulObjectsController(ff: IFrameworkFacade, l : ILogger<RestfulObjectsControllerBase>) = 
+type RestfulObjectsController(ff: IFrameworkFacade, l : ILogger<RestfulObjectsControllerBase>, lf : ILoggerFactory) = 
     class
-        inherit RestfulObjectsControllerBase(ff, l)
+        inherit RestfulObjectsControllerBase(ff, l, lf)
  end
