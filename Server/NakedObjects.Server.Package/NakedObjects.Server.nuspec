@@ -42,6 +42,7 @@
     <file src="..\..\Facade\NakedObjects.Facade.Impl\bin\Debug\**\NakedObjects.Facade.Impl.dll" target="lib" />
     <file src="..\..\Rest\NakedObjects.Rest\bin\Debug\**\NakedObjects.Rest.dll" target="lib" />
     <file src="..\..\Rest\NakedObjects.Rest.Snapshot\bin\Debug\**\NakedObjects.Rest.Snapshot.dll" target="lib" />
+    
     <file src="..\..\Core\NakedObjects.Architecture\bin\Debug\**\NakedObjects.Architecture.pdb" target="lib" />
     <file src="..\..\Core\NakedObjects.Core\bin\Debug\**\NakedObjects.Core.pdb" target="lib" />
     <file src="..\..\Core\NakedObjects.FWResources\bin\Debug\**\NakedObjects.FWResources.pdb" target="lib" />
@@ -53,7 +54,7 @@
           target="lib" />
     <file src="..\..\Facade\NakedObjects.Facade\bin\Debug\**\NakedObjects.Facade.pdb" target="lib" />
     <file src="..\..\Facade\NakedObjects.Facade.Impl\bin\Debug\**\NakedObjects.Facade.Impl.pdb" target="lib" />
-    <file src="..\..\Rest\NakedObjects.Rest\bin\Debug\**\NakedObjects.Rest.dll" target="lib" />
+    <file src="..\..\Rest\NakedObjects.Rest\bin\Debug\**\NakedObjects.Rest.pdb" target="lib" />
     <file src="..\..\Rest\NakedObjects.Rest.Snapshot\bin\Debug\**\NakedObjects.Rest.Snapshot.pdb" target="lib" />
   </files>
 </package>
