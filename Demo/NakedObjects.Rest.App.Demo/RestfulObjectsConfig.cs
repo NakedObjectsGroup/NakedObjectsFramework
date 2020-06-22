@@ -9,9 +9,7 @@ using Microsoft.AspNetCore.Routing;
 
 namespace NakedObjects.Rest.App.Demo {
     public class RestfulObjectsConfig {
-        public static string RestRoot {
-            get { return ""; }
-        }
+        public static string RestRoot => "";
 
         public static void RegisterRestfulObjectsRoutes(IRouteBuilder routes) {
             if (RestRoot != null) {

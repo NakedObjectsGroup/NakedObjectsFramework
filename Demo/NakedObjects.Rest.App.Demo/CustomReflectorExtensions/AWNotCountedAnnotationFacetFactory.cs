@@ -33,9 +33,7 @@ namespace NakedObjects.Rest.App.Demo.AWCustom {
             Process(property, specification);
         }
 
-        private static INotCountedFacet Create(AWNotCountedAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new NotCountedFacet(holder);
-        }
+        private static INotCountedFacet Create(AWNotCountedAttribute attribute, ISpecification holder) => attribute == null ? null : new NotCountedFacet(holder);
     }
 
     public sealed class AWNotCountedAnnotationFacetFactoryParallel : ParallelReflect.FacetFactory.AnnotationBasedFacetFactoryAbstract {
@@ -52,8 +50,6 @@ namespace NakedObjects.Rest.App.Demo.AWCustom {
             return metamodel;
         }
 
-        private static INotCountedFacet Create(AWNotCountedAttribute attribute, ISpecification holder) {
-            return attribute == null ? null : new NotCountedFacet(holder);
-        }
+        private static INotCountedFacet Create(AWNotCountedAttribute attribute, ISpecification holder) => attribute == null ? null : new NotCountedFacet(holder);
     }
 }

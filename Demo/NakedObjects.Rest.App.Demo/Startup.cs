@@ -43,7 +43,7 @@ namespace NakedObjects.Rest.App.Demo {
                             "https://nakedobjectstest2.azurewebsites.net",
                             "http://localhost")
                         .AllowAnyHeader()
-                        .WithExposedHeaders("Warning","ETag", "Set-Cookie")
+                        .WithExposedHeaders("Warning", "ETag", "Set-Cookie")
                         .AllowAnyMethod()
                         .AllowCredentials();
                 });
@@ -58,19 +58,8 @@ namespace NakedObjects.Rest.App.Demo {
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseHttpsRedirection();
-
             app.UseCors(MyAllowSpecificOrigins);
-
             app.UseRouting();
-
-            //app.UseAuthorization();
-
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllers();
-            //});
-
             app.UseMvc(routeBuilder => RestfulObjectsConfig.RegisterRestfulObjectsRoutes(routeBuilder));
         }
     }

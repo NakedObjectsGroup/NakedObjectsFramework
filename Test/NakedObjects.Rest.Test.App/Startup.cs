@@ -60,7 +60,7 @@ namespace NakedObjects.Rest.Test.App {
 
             app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
-            app.UseMvc(routeBuilder => RestfulObjectsConfig.RegisterRestfulObjectsRoutes(routeBuilder));
+            app.UseMvc(RestfulObjectsConfig.RegisterRestfulObjectsRoutes);
         }
     }
 }
