@@ -30,6 +30,7 @@ namespace NakedObjects.Architecture.Component {
         /// </para>
         FeatureType FeatureTypes { get; }
 
+        //  Reflector - remove when Reflector is obsoleted in favor of ParallelReflector
         /// <summary>
         ///     Process the class, and return the correctly setup annotation if present.
         /// </summary>
@@ -66,14 +67,45 @@ namespace NakedObjects.Architecture.Component {
         /// <param name="holder">to attach the facets to</param>
         void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder);
 
-        // new for Parallel reflector - TODO comment !
-
+        //  ParallelReflector
+        /// <summary>
+        ///     Process the class, and return the updated metamodel
+        /// </summary>
+        /// <param name="reflector"></param>
+        /// <param name="type">class being processed</param>
+        /// <param name="methodRemover">allow any methods of the class to be removed</param>
+        /// <param name="specification"> attach the facets to</param>
+        /// <param name="metamodel">current metamodel</param>
         IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
 
+        /// <summary>
+        ///     Process the method, and return the updated metamodel
+        /// </summary>
+        /// <param name="reflector"></param>
+        /// <param name="method">MethodInfo representing the feature being processed</param>
+        /// <param name="methodRemover">allow any methods of the class to be removed</param>
+        /// <param name="specification"> attach the facets to</param>
+        /// <param name="metamodel">current metamodel</param>
         IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
 
+        /// <summary>
+        ///     Process the property, and return the updated metamodel
+        /// </summary>
+        /// <param name="reflector"></param>
+        /// <param name="property">PropertyInfo representing the feature being processed</param>
+        /// <param name="methodRemover">allow any methods of the class to be removed</param>
+        /// <param name="specification"> attach the facets to</param>
+        /// <param name="metamodel">current metamodel</param>
         IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
 
+        /// <summary>
+        ///     Process the parameters of the method, and return the updated metamodel
+        /// </summary>
+        /// <param name="reflector"></param>
+        /// <param name="method">MethodInfo representing the feature being processed</param>
+        /// <param name="paramNum">zero-based index to the parameter to be processed</param>
+        /// <param name="holder">to attach the facets to</param>
+        /// <param name="metamodel">current metamodel</param>
         IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
     }
 }
