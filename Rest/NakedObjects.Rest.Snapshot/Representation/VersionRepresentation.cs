@@ -52,7 +52,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             using var stream = assembly.GetManifestResourceStream(resourceName);
             if (stream != null) {
                 using var reader = new StreamReader(stream);
-                version = reader.ReadToEnd();
+                version = reader.ReadToEnd().Trim();
             }
 
             return string.IsNullOrWhiteSpace(version) ? $"Failed to read {resource}" : version;
