@@ -17,7 +17,9 @@ namespace NakedObjects.Rest.App.Demo
 
     //[Authorize]
     public class RestfulObjectsController : RestfulObjectsControllerBase {
-        public RestfulObjectsController(IFrameworkFacade frameworkFacade, ILogger<RestfulObjectsController> logger) : base(frameworkFacade, logger) {}
+        public RestfulObjectsController(IFrameworkFacade frameworkFacade,
+                                        ILogger<RestfulObjectsController> logger,
+                                        ILoggerFactory loggerFactory) : base(frameworkFacade, logger, loggerFactory) { }
 
         [HttpGet]
         public override ActionResult GetHome() {
