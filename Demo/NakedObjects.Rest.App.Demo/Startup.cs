@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using Newtonsoft.Json;
 
@@ -51,7 +52,11 @@ namespace NakedObjects.Rest.App.Demo {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IReflector reflector) {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IReflector reflector, ILoggerFactory loggerFactory) {
+            
+            // for Demo use Log4Net. Configured in log4net.config  
+            loggerFactory.AddLog4Net();
+            
             reflector.Reflect();
 
             if (env.IsDevelopment()) {

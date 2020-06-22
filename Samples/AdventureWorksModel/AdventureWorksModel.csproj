@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.5" />
     <PackageReference Include="NakedObjects.ProgrammingModel" Version="8.0.0-beta01" />
   </ItemGroup>
 

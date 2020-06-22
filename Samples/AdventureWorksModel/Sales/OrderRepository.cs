@@ -11,6 +11,7 @@ using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace AdventureWorksModel {
     public enum Ordering {
@@ -26,12 +27,18 @@ namespace AdventureWorksModel {
 
         public OrderContributedActions OrderContributedActions { set; protected get; }
 
+        // inject ILogger and ILoggerFactory as example code
+        public ILogger<OrderRepository> Logger { set; private get; }
+        public ILoggerFactory LoggerFactory { set; private get; }
+
         #endregion
 
         [FinderAction]
         [MemberOrder(99)]
         [QueryOnly]
         public SalesOrderHeader RandomOrder() {
+            // example of using Logger 
+            Logger.LogInformation("Calling RandomOrder");
             return Random<SalesOrderHeader>();
         }
 
@@ -41,6 +48,12 @@ namespace AdventureWorksModel {
         [MemberOrder(5)]
         [TableView(true, "OrderDate", "DueDate")]
         public IQueryable<SalesOrderHeader> OrdersInProcess() {
+            // example of using LoggerFactory - in reality use the LoggerFactory to create a logger 
+            // to pass into a non-NOF object that doesn't get it injected.
+
+            var localLogger = LoggerFactory.CreateLogger<OrderRepository>();
+            localLogger.LogInformation("Calling OrdersInProcess");
+
             return from obj in Instances<SalesOrderHeader>()
                 where obj.Status == 1
                 select obj;
