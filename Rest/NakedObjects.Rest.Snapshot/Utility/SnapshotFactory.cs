@@ -27,8 +27,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public static Func<RestSnapshot> ObjectSnapshot(IOidStrategy oidStrategy, Func<ObjectContextFacade> objectContext, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
             => () => new RestSnapshot(oidStrategy, objectContext(), req, flags, httpStatusCode);
 
-        public static Func<RestSnapshot> MenuSnapshot(IOidStrategy oidStrategy, Func<IMenuFacade> menu, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
-            => () => new RestSnapshot(oidStrategy, menu(), req, flags, httpStatusCode);
+        public static Func<RestSnapshot> MenuSnapshot(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, Func<IMenuFacade> menu, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
+            => () => new RestSnapshot(oidStrategy, frameworkFacade, menu(), req, flags, httpStatusCode);
 
         public static Func<RestSnapshot> MenusSnapshot(IOidStrategy oidStrategy, Func<MenuContextFacade> menus, HttpRequest req, RestControlFlags flags)
             => () => new RestSnapshot(oidStrategy, menus(), req, flags);
@@ -57,7 +57,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public static Func<RestSnapshot> TypeActionSnapshot(IOidStrategy oidStrategy, Func<TypeActionInvokeContext> typeActionInvokeContext, HttpRequest req, RestControlFlags flags)
             => () => new RestSnapshot(oidStrategy, typeActionInvokeContext(), req, flags);
 
-        public static Func<RestSnapshot> ErrorSnapshot(IOidStrategy oidStrategy, Exception ex, HttpRequest req)
-            => () => new RestSnapshot(oidStrategy, ex, req);
+        public static Func<RestSnapshot> ErrorSnapshot(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, Exception ex, HttpRequest req)
+            => () => new RestSnapshot(oidStrategy, frameworkFacade, ex, req);
     }
 }

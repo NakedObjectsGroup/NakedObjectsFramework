@@ -230,14 +230,11 @@ namespace NakedObjects.ParallelReflect.Component {
                     return a;
                 });
 
-            //
-            var groupedContribActions = new List<IActionSpecImmutable>();
-
-            // group by service - probably do this better - TODO
-            foreach (var service in services) {
-                var matching = contribActions.Where(i => i.OwnerSpec.Type == service);
-                groupedContribActions.AddRange(matching);
-            }
+            var groupedContribActions = contribActions.
+                GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new {service, actions}).
+                OrderBy(a => Array.IndexOf(services, a.service)).
+                SelectMany(a => a.actions).
+                ToList();
 
             spec.AddContributedActions(groupedContribActions);
             spec.AddCollectionContributedActions(collContribActions);

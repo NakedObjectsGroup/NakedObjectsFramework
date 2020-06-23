@@ -68,7 +68,6 @@ namespace NakedObjects.ParallelReflect.Test {
                 });
 
         protected IServiceProvider GetContainer(IReflectorConfiguration rc) {
-            // TODO THIS IS A SMELL !!
             ImmutableSpecFactory.ClearCache();
             var hostBuilder = CreateHostBuilder(new string[] { }, rc).Build();
             return hostBuilder.Services;

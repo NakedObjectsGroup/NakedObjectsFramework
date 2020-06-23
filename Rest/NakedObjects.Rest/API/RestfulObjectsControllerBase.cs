@@ -121,7 +121,7 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult GetService(string serviceName) => InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetServiceByName(serviceName), Request, GetFlags(this)));
 
-        public virtual ActionResult GetMenu(string menuName) => InitAndHandleErrors(SnapshotFactory.MenuSnapshot(OidStrategy, () => FrameworkFacade.GetMenuByName(menuName), Request, GetFlags(this)));
+        public virtual ActionResult GetMenu(string menuName) => InitAndHandleErrors(SnapshotFactory.MenuSnapshot(OidStrategy, FrameworkFacade, () => FrameworkFacade.GetMenuByName(menuName), Request, GetFlags(this)));
 
         public virtual ActionResult GetServiceAction(string serviceName, string actionName) => InitAndHandleErrors(SnapshotFactory.ActionSnapshot(OidStrategy, () => FrameworkFacade.GetServiceActionByName(serviceName, actionName), Request, GetFlags(this)));
 
@@ -431,7 +431,7 @@ namespace NakedObjects.Rest {
             };
         }
 
-        private ActionResult ErrorResult(Exception e) => RepresentationResult(SnapshotFactory.ErrorSnapshot(OidStrategy, e, Request)());
+        private ActionResult ErrorResult(Exception e) => RepresentationResult(SnapshotFactory.ErrorSnapshot(OidStrategy, FrameworkFacade, e, Request)());
 
         private ResponseHeaders GetResponseHeaders() => ControllerContext.HttpContext.Response.GetTypedHeaders();
 

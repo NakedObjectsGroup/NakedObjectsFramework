@@ -32,12 +32,12 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return RefValueRepresentation.Create(oidStrategy, rt, flags);
         }
 
-        private static MapRepresentation GetMap(IOidStrategy oidStrategy, HttpRequest req, ContextFacade context, RestControlFlags flags) {
+        private static MapRepresentation GetMap(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, HttpRequest req, ContextFacade context, RestControlFlags flags) {
             MapRepresentation value;
 
             // All reasons why we cannot create a link representation
             if (context.Specification.IsCollection && context.ElementSpecification != null && !context.ElementSpecification.IsParseable) {
-                var proposedObjectFacade = oidStrategy.FrameworkFacade.GetObject(context.ProposedValue);
+                var proposedObjectFacade = frameworkFacade.GetObject(context.ProposedValue);
                 var coll = proposedObjectFacade.ToEnumerable().Select(no => CreateObjectRef(oidStrategy, req, no, flags)).ToArray();
                 value = CreateMap(context, coll);
             }
@@ -63,8 +63,8 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return Create(opts.ToArray());
         }
 
-        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ContextFacade contextFacade, IList<ContextFacade> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
-            var memberValues = contexts.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, req, c, flags))).ToList();
+        public static MapRepresentation Create(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, HttpRequest req, ContextFacade contextFacade, IList<ContextFacade> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
+            var memberValues = contexts.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, frameworkFacade, req, c, flags))).ToList();
             var target = contexts.First().Target;
             MapRepresentation mapRepresentation;
 
@@ -91,13 +91,13 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return mapRepresentation;
         }
 
-        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, ContextFacade context, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
+        public static MapRepresentation Create(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, HttpRequest req, ContextFacade context, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) {
             var objectContext = context as ObjectContextFacade;
             var actionResultContext = context as ActionResultContextFacade;
             MapRepresentation mapRepresentation;
 
             if (objectContext != null) {
-                var optionalProperties = objectContext.VisibleProperties.Where(p => p.Reason != null || p.ProposedValue != null).Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, req, c, flags))).ToList();
+                var optionalProperties = objectContext.VisibleProperties.Where(p => p.Reason != null || p.ProposedValue != null).Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, frameworkFacade, req, c, flags))).ToList();
                 if (!string.IsNullOrEmpty(objectContext.Reason)) {
                     optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, objectContext.Reason));
                 }
@@ -105,7 +105,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 mapRepresentation = Create(optionalProperties.ToArray());
             }
             else if (actionResultContext != null) {
-                var optionalProperties = actionResultContext.ActionContext.VisibleParameters.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, req, c, flags))).ToList();
+                var optionalProperties = actionResultContext.ActionContext.VisibleParameters.Select(c => new OptionalProperty(c.Id, GetMap(oidStrategy, frameworkFacade, req, c, flags))).ToList();
 
                 if (!string.IsNullOrEmpty(actionResultContext.Reason)) {
                     optionalProperties.Add(new OptionalProperty(JsonPropertyNames.XRoInvalidReason, actionResultContext.Reason));
@@ -114,7 +114,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 mapRepresentation = Create(optionalProperties.ToArray());
             }
             else {
-                mapRepresentation = GetMap(oidStrategy, req, context, flags);
+                mapRepresentation = GetMap(oidStrategy, frameworkFacade, req, context, flags);
             }
 
             mapRepresentation.SetContentType(mt);
@@ -122,6 +122,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return mapRepresentation;
         }
 
-        public static MapRepresentation Create(IOidStrategy oidStrategy, HttpRequest req, IList<ContextFacade> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) => Create(oidStrategy, req, null, contexts, format, flags, mt);
+        public static MapRepresentation Create(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, HttpRequest req, IList<ContextFacade> contexts, Format format, RestControlFlags flags, MediaTypeHeaderValue mt) => Create(oidStrategy, frameworkFacade, req, null, contexts, format, flags, mt);
     }
 }

@@ -90,23 +90,6 @@ namespace NakedObjects.Facade.Impl {
 
         public string GetMaskedValue(IObjectFacade objectFacade) => WrappedSpec.GetMaskedValue(objectFacade, framework.NakedObjectManager);
 
-        public IConsentFacade IsValid(IObjectFacade target, object value) {
-            var t = ((ObjectFacade) target).WrappedNakedObject;
-
-            IConsent consent;
-            try {
-                var v = GetValue(this, value);
-                consent = WrappedSpec.IsValid(t, v);
-            }
-            catch (InvalidEntryException) {
-                consent = new Veto(Resources.NakedObjects.InvalidEntry);
-            }
-            catch (Exception e) {
-                consent = new Veto(e.Message);
-            }
-
-            return new ConsentFacade(consent);
-        }
 
         public (IObjectFacade, string)[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) =>
             GetChoices(objectFacade, parameterNameValues).Select(c => (c, c.TitleString)).ToArray();

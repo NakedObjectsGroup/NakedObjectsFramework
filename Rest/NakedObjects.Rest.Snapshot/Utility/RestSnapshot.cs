@@ -56,11 +56,11 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, IMenuFacade menu, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
+        public RestSnapshot(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, IMenuFacade menu, HttpRequest req, RestControlFlags flags, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
             : this(oidStrategy, req, true) {
             populator = logger => {
                 HttpStatusCode = httpStatusCode;
-                Representation = MenuRepresentation.Create(oidStrategy, menu, req, flags);
+                Representation = MenuRepresentation.Create(oidStrategy, frameworkFacade, menu, req, flags);
                 SetHeaders(logger);
             };
         }
@@ -162,11 +162,11 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             };
         }
 
-        public RestSnapshot(IOidStrategy oidStrategy, Exception exception, HttpRequest req)
+        public RestSnapshot(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, Exception exception, HttpRequest req)
             : this(oidStrategy, req, true) {
             populator = logger => {
                 MapToHttpError(exception);
-                MapToRepresentation(exception, req);
+                MapToRepresentation(exception, req, frameworkFacade);
                 MapToWarningHeader(exception, logger);
                 SetHeaders(logger);
             };
@@ -289,12 +289,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             }
         }
 
-        private void MapToRepresentation(Exception e, HttpRequest req) =>
+        private void MapToRepresentation(Exception e, HttpRequest req, IFrameworkFacade frameworkFacade) =>
             Representation = e switch {
                 WithContextNOSException wce when wce.Contexts.Any(c => c.ErrorCause == Cause.Disabled || c.ErrorCause == Cause.Immutable) => NullRepresentation.Create(),
-                BadPersistArgumentsException bpe when bpe.ContextFacade != null && bpe.Contexts.Any() => ArgumentsRepresentation.Create(oidStrategy, req, bpe.ContextFacade, bpe.Contexts, ArgumentsRepresentation.Format.Full, bpe.Flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments)),
-                WithContextNOSException wce when wce.ContextFacade != null => ArgumentsRepresentation.Create(oidStrategy, req, wce.ContextFacade, ArgumentsRepresentation.Format.MembersOnly, RestControlFlags.DefaultFlags(), UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments)),
-                WithContextNOSException wce when wce.Contexts.Any() => ArgumentsRepresentation.Create(oidStrategy, req, wce.Contexts, ArgumentsRepresentation.Format.MembersOnly, RestControlFlags.DefaultFlags(), UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments)),
+                BadPersistArgumentsException bpe when bpe.ContextFacade != null && bpe.Contexts.Any() => ArgumentsRepresentation.Create(oidStrategy, frameworkFacade, req, bpe.ContextFacade, bpe.Contexts, ArgumentsRepresentation.Format.Full, bpe.Flags, UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments)),
+                WithContextNOSException wce when wce.ContextFacade != null => ArgumentsRepresentation.Create(oidStrategy, frameworkFacade, req, wce.ContextFacade, ArgumentsRepresentation.Format.MembersOnly, RestControlFlags.DefaultFlags(), UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments)),
+                WithContextNOSException wce when wce.Contexts.Any() => ArgumentsRepresentation.Create(oidStrategy, frameworkFacade, req, wce.Contexts, ArgumentsRepresentation.Format.MembersOnly, RestControlFlags.DefaultFlags(), UriMtHelper.GetJsonMediaType(RepresentationTypes.BadArguments)),
                 WithContextNOSException _ => NullRepresentation.Create(),
                 ResourceNotFoundNOSException _ => NullRepresentation.Create(),
                 NotAllowedNOSException _ => NullRepresentation.Create(),

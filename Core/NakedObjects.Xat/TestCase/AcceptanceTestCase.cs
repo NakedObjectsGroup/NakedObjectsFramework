@@ -315,7 +315,6 @@ namespace NakedObjects.Xat {
         }
 
         protected static void CleanupNakedObjectsFramework(AcceptanceTestCase tc) {
-            // TODO THIS IS A SMELL !!
             ImmutableSpecFactory.ClearCache();
             tc.RootServiceProvider.GetService<ISpecificationCache>().Clear();
             tc.EndTest();

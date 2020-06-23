@@ -18,12 +18,12 @@ using NakedObjects.Rest.Snapshot.Utility;
 namespace NakedObjects.Rest.Snapshot.Representations {
     [DataContract]
     public class MenuRepresentation : Representation {
-        protected MenuRepresentation(IOidStrategy oidStrategy, HttpRequest req, IMenuFacade menu, RestControlFlags flags)
+        protected MenuRepresentation(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, HttpRequest req, IMenuFacade menu, RestControlFlags flags)
             : base(oidStrategy, flags) {
             var helper = new UriMtHelper(oidStrategy, req, menu);
             SetScalars(menu);
             SelfRelType = new MenuRelType(RelValues.Self, helper);
-            SetLinksAndMembers(req, menu);
+            SetLinksAndMembers(req, frameworkFacade, menu);
             SetExtensions(menu);
             SetHeader(menu);
         }
@@ -50,27 +50,27 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         private void SetHeader(IMenuFacade menu) => Caching = CacheType.NonExpiring;
 
-        private void SetLinksAndMembers(HttpRequest req, IMenuFacade menu) {
+        private void SetLinksAndMembers(HttpRequest req, IFrameworkFacade frameworkFacade, IMenuFacade menu) {
             var tempLinks = new List<LinkRepresentation> {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)};
 
-            SetMembers(menu, req, tempLinks);
+            SetMembers(menu, frameworkFacade, req, tempLinks);
             Links = tempLinks.ToArray();
         }
 
-        private ActionContextFacade ActionContext(IMenuActionFacade actionFacade, string menuPath) =>
+        private ActionContextFacade ActionContext(IMenuActionFacade actionFacade, IFrameworkFacade frameworkFacade, string menuPath) =>
             new ActionContextFacade {
                 MenuPath = menuPath,
-                Target = OidStrategy.FrameworkFacade.GetServices().List.Single(s => s.Specification.IsOfType(actionFacade.Action.OnType)),
+                Target = frameworkFacade.GetServices().List.Single(s => s.Specification.IsOfType(actionFacade.Action.OnType)),
                 Action = actionFacade.Action,
                 VisibleParameters = actionFacade.Action.Parameters.Select(p => new ParameterContextFacade {Parameter = p, Action = actionFacade.Action}).ToArray()
             };
 
-        private (string name, ActionContextFacade action)[] GetMenuItem(IMenuItemFacade item, string parent = "") {
+        private (string name, ActionContextFacade action)[] GetMenuItem(IMenuItemFacade item, IFrameworkFacade frameworkFacade, string parent = "") {
             string Divider() => string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider;
 
             return item switch {
-                IMenuActionFacade menuActionFacade => new[] {(item.Name, ActionContext(menuActionFacade, parent))},
-                IMenuFacade menuFacade => menuFacade.MenuItems.SelectMany(mi => GetMenuItem(mi, $"{parent}{Divider()}{menuFacade.Name}")).ToArray(),
+                IMenuActionFacade menuActionFacade => new[] {(item.Name, ActionContext(menuActionFacade, frameworkFacade, parent))},
+                IMenuFacade menuFacade => menuFacade.MenuItems.SelectMany(mi => GetMenuItem(mi, frameworkFacade, $"{parent}{Divider()}{menuFacade.Name}")).ToArray(),
                 _ => new (string, ActionContextFacade)[] { }
             };
         }
@@ -79,8 +79,8 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             actionContextFacade.Action.IsVisible(actionContextFacade.Target) &&
             actionContextFacade.Action.IsUsable(actionContextFacade.Target).IsAllowed;
 
-        private void SetMembers(IMenuFacade menu, HttpRequest req, List<LinkRepresentation> tempLinks) {
-            var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(i)).Where(af => IsVisibleAndUsable(af.action));
+        private void SetMembers(IMenuFacade menu, IFrameworkFacade frameworkFacade, HttpRequest req, List<LinkRepresentation> tempLinks) {
+            var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(i, frameworkFacade)).Where(af => IsVisibleAndUsable(af.action));
 
             var actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a.action, Flags)).ToArray();
 
@@ -92,7 +92,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         private void SetExtensions(IMenuFacade menu) => Extensions = MapRepresentation.Create();
 
-        public static MenuRepresentation Create(IOidStrategy oidStrategy, IMenuFacade menu, HttpRequest req, RestControlFlags flags) => new MenuRepresentation(oidStrategy, req, menu, flags);
+        public static MenuRepresentation Create(IOidStrategy oidStrategy, IFrameworkFacade frameworkFacade, IMenuFacade menu, HttpRequest req, RestControlFlags flags) => new MenuRepresentation(oidStrategy, frameworkFacade, req, menu, flags);
 
         #region Nested type: ActionComparer
 
