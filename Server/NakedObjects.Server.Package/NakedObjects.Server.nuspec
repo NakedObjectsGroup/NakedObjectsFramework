@@ -19,9 +19,9 @@
       <group targetFramework="netcoreapp3.1">
         <dependency id="NakedObjects.ProgrammingModel" version="[8.0.0-beta01, 9)" />
         <dependency id="EntityFramework" version="[6.4.4, 7)" />
-        <dependency id="Microsoft.Extensions.DependencyInjection" version="[3.1.4, 4)" />
-        <dependency id="Microsoft.Extensions.Configuration" version="[3.1.4, 4)" />
-        <dependency id="Microsoft.Extensions.Logging" version="[3.1.4, 4)" />
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="[3.1.5, 4)" />
+        <dependency id="Microsoft.Extensions.Configuration" version="[3.1.5, 4)" />
+        <dependency id="Microsoft.Extensions.Logging" version="[3.1.5, 4)" />
         <dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.7, 6)" />
         <dependency id="System.Reflection.Emit" version="[4.7.0, 5)" />
       </group>
