@@ -15,7 +15,7 @@ namespace NakedObjects.Core.Util {
         public static object InvokeStatic(MethodInfo method, object[] parameters) => Invoke(method, null, parameters);
 
         public static object Invoke(MethodInfo method, INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters) {
-            var parameterPocos = parameters == null ? new object[] { } : parameters.Select(p => p == null ? null : p.Object).ToArray();
+            var parameterPocos = parameters == null ? new object[] { } : parameters.Select(p => p?.Object).ToArray();
             return Invoke(method, nakedObjectAdapter.Object, parameterPocos);
         }
 
@@ -37,7 +37,7 @@ namespace NakedObjects.Core.Util {
             }
 
             if (e is TargetInvocationException) {
-                throw new InvokeException(innerException.Message, innerException);
+                throw new InvokeException(innerException?.Message, innerException);
             }
 
             throw new ReflectionException(e.Message, e);

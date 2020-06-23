@@ -8,16 +8,22 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
+using NakedObjects.Architecture.Facet;
+using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Architecture.Reflect;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.DependencyInjection;
@@ -159,6 +165,8 @@ namespace NakedObjects.ParallelReflect.Test {
             RegisterFacetFactory<CollectionFacetFactory>("CollectionFacetFactory", services, order); // written to not trample over TypeOf if already installed
         }
 
+        private Action<IServiceCollection> TestHook { get; set; } = services => { };
+
         protected virtual void RegisterTypes(IServiceCollection services, IReflectorConfiguration rc) {
             RegisterFacetFactories(services);
 
@@ -170,6 +178,8 @@ namespace NakedObjects.ParallelReflect.Test {
             services.AddSingleton<IMenuFactory, NullMenuFactory>();
 
             services.AddSingleton(rc);
+
+            TestHook(services);
         }
 
         [TestMethod]
@@ -515,6 +525,80 @@ namespace NakedObjects.ParallelReflect.Test {
             AbstractReflectorTest.AssertSpec(typeof(IEnumerable), specs);
         }
 
+        [TestMethod]
+        public void ReplaceFacetFactory() {
+            TestHook = services => ConfigHelpers.RegisterReplacementFacetFactory<ReplacementBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
+
+            ReflectorConfiguration.NoValidate = true;
+
+            var rc = new ReflectorConfiguration(new[] {typeof(SimpleBoundedObject)}, new Type[] { }, new string[] { });
+            rc.SupportedSystemTypes.Clear();
+
+            var container = GetContainer(rc);
+
+            var reflector = container.GetService<IReflector>();
+            reflector.Reflect();
+
+            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Length);
+            var spec = reflector.AllObjectSpecImmutables.First();
+
+            Assert.IsFalse(spec.ContainsFacet<IBoundedFacet>());
+        }
+
+        [TestMethod]
+        public void ReplaceDelegatingFacetFactory() {
+            TestHook = services => ConfigHelpers.RegisterReplacementFacetFactoryDelegatingToOriginal<ReplacementDelegatingBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
+
+            ReflectorConfiguration.NoValidate = true;
+
+            var rc = new ReflectorConfiguration(new[] {typeof(SimpleBoundedObject)}, new Type[] { }, new string[] { });
+            rc.SupportedSystemTypes.Clear();
+
+            var container = GetContainer(rc);
+
+            var reflector = container.GetService<IReflector>();
+            reflector.Reflect();
+
+            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Length);
+            var spec = reflector.AllObjectSpecImmutables.First();
+
+            Assert.IsFalse(spec.ContainsFacet<IBoundedFacet>());
+        }
+
+        #region Nested type: ReplacementBoundedAnnotationFacetFactory
+
+        public sealed class ReplacementBoundedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+            public ReplacementBoundedAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+                : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) {
+                Assert.AreEqual(21, numericOrder);
+            }
+
+            public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+                return metamodel;
+            }
+        }
+
+        #endregion
+
+        #region Nested type: ReplacementDelegatingBoundedAnnotationFacetFactory
+
+        public sealed class ReplacementDelegatingBoundedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+            private readonly BoundedAnnotationFacetFactory originalFactory;
+
+            public ReplacementDelegatingBoundedAnnotationFacetFactory(int numericOrder, BoundedAnnotationFacetFactory originalFactory, ILoggerFactory loggerFactory)
+                : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) {
+                this.originalFactory = originalFactory;
+                Assert.AreEqual(21, numericOrder);
+            }
+
+            public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+                Assert.IsNotNull(originalFactory);
+                return metamodel;
+            }
+        }
+
+        #endregion
+
         #region Nested type: SetWrapper
 
         public class SetWrapper<T> : ISet<T> {
@@ -569,6 +653,18 @@ namespace NakedObjects.ParallelReflect.Test {
             public bool IsReadOnly => wrapped.IsReadOnly;
 
             #endregion
+        }
+
+        #endregion
+
+        #region Nested type: SimpleBoundedObject
+
+        [Bounded]
+        public class SimpleBoundedObject {
+            [Key]
+            [Title]
+            [ConcurrencyCheck]
+            public virtual int Id { get; set; }
         }
 
         #endregion

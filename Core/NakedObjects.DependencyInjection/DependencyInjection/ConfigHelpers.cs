@@ -6,23 +6,57 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.ParallelReflect;
 
 namespace NakedObjects.DependencyInjection {
-    public class ConfigHelpers {
-        public static void RegisterFacetFactory(Type factory, IServiceCollection services, int order) => services.AddSingleton(typeof(IFacetFactory), p => Activator.CreateInstance(factory, order, p.GetService<ILoggerFactory>()));
+    public static class ConfigHelpers {
+        private static T CreateFacetFactory<T>(IServiceProvider p, int order) =>
+            (T) Activator.CreateInstance(typeof(T), order, p.GetService<ILoggerFactory>());
 
-        // TODO write tests for these
+        private static TReplacement CreateDelegatingFacetFactory<TReplacement, TOrginal>(IServiceProvider p, int order) =>
+            (TReplacement) Activator.CreateInstance(typeof(TReplacement), order, p.GetService<TOrginal>(), p.GetService<ILoggerFactory>());
+
+        private static MethodInfo GetRegisterMethod(Type type) =>
+            typeof(ConfigHelpers).GetMethod(nameof(RegisterFacetFactory), BindingFlags.NonPublic | BindingFlags.Static)?.MakeGenericMethod(type);
+
+        public static void RegisterFacetFactory(Type factory, IServiceCollection services, int order) =>
+            GetRegisterMethod(factory).Invoke(null, new object[] {services, order});
+
+        // register with type so we can find to remove 
+        // called by reflection
+        // ReSharper disable once UnusedMember.Local
+        private static void RegisterFacetFactory<T>(IServiceCollection services, int order) =>
+            services.AddSingleton(typeof(IFacetFactory), p => CreateFacetFactory<T>(p, order));
+
+        private static bool SafeMatch(this ServiceDescriptor descriptor, Type toMatch) {
+            var types = descriptor.ImplementationFactory?.Target?.GetType().GenericTypeArguments;
+            return types != null && types.Length == 1 && types[0] == toMatch;
+        }
+
+        private static void RemoveFactory<T>(this IServiceCollection services) {
+            var serviceDescriptor = services.Where(descriptor => descriptor.ServiceType == typeof(IFacetFactory)).FirstOrDefault(descriptor => descriptor.SafeMatch(typeof(T)));
+            if (serviceDescriptor != null) {
+                services.Remove(serviceDescriptor);
+            }
+        }
 
         public static void RegisterReplacementFacetFactory<TReplacement, TOriginal>(IServiceCollection services)
             where TReplacement : IFacetFactory
             where TOriginal : IFacetFactory {
-            var order = FacetFactories.StandardIndexOf(typeof(TOriginal));
+            var order = GetExistingOrder<TOriginal>();
 
-            services.AddSingleton(typeof(IFacetFactory), p => Activator.CreateInstance(typeof(TReplacement), order));
+            // remove the original and register replacement.
+            services.RemoveFactory<TOriginal>();
+            services.AddSingleton(typeof(IFacetFactory), p => CreateFacetFactory<TReplacement>(p, order));
+        }
+
+        private static int GetExistingOrder<TOriginal>() {
+            var order = Reflect.FacetFactories.StandardIndexOf(typeof(TOriginal));
+            return order == -1 ? ParallelReflect.FacetFactories.StandardIndexOf(typeof(TOriginal)) : order;
         }
 
         // Helper method to, substitute a new implementation of a specific facet factory, but where the constructor
@@ -30,7 +64,10 @@ namespace NakedObjects.DependencyInjection {
         public static void RegisterReplacementFacetFactoryDelegatingToOriginal<TReplacement, TOriginal>(IServiceCollection services)
             where TReplacement : IFacetFactory
             where TOriginal : IFacetFactory {
-            var order = FacetFactories.StandardIndexOf(typeof(TOriginal));
+            var order = GetExistingOrder<TOriginal>();
+
+            // remove original as an IFacetFactory
+            services.RemoveFactory<TOriginal>();
 
             // Register the original (standard NOF implementation). Note that although already registered by StandardConfig.RegisterStandardFacetFactories
             // that will be as a named impl of IFacetFactory.  This will be the only one registered as the concrete type
@@ -38,12 +75,12 @@ namespace NakedObjects.DependencyInjection {
 
             // We don't care about the order, because this isn't called as a FacetFactory AS SUCH.
             // but we still need one for the constructor
-            services.AddSingleton(typeof(TOriginal), p => Activator.CreateInstance(typeof(TOriginal), 0));
+            services.AddSingleton(typeof(TOriginal), p => CreateFacetFactory<TOriginal>(p, 0));
 
             // Now add replacement using the standard pattern but using the same Name and orderNumber as the one being superseded. 
             // The original one will be auto-injected into it because of the implementation registered above
 
-            services.AddSingleton(typeof(IFacetFactory), p => Activator.CreateInstance(typeof(TReplacement), order, typeof(TOriginal)));
+            services.AddSingleton(typeof(IFacetFactory), p => CreateDelegatingFacetFactory<TReplacement, TOriginal>(p, order));
         }
     }
 }
