@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Core.Util;
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
 
 namespace NakedObjects.Core.Test.Util {
     [TestFixture]

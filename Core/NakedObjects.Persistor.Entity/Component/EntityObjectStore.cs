@@ -274,10 +274,10 @@ namespace NakedObjects.Persistor.Entity.Component {
             if (EntityFrameworkKnowsType(type)) {
                 foreach (var pi in GetContext(domainObject).GetComplexMembers(domainObject.GetType())) {
                     var complexObject = pi.GetValue(domainObject, null);
-                    if (complexObject == null)
-                    {
+                    if (complexObject == null) {
                         throw new NakedObjectSystemException("Complex type members should never be null");
                     }
+
                     injector.InjectInto(complexObject);
                 }
             }
@@ -591,11 +591,11 @@ namespace NakedObjects.Persistor.Entity.Component {
             var msg = "";
 
             if (!TypeUtils.IsEntityProxy(objectToCheck.GetType())) {
-                 msg = string.Format(Resources.NakedObjects.NoProxyMessage, objectToCheck.GetType(), explanation);
+                msg = string.Format(Resources.NakedObjects.NoProxyMessage, objectToCheck.GetType(), explanation);
             }
 
             if (!(objectToCheck is IEntityWithChangeTracker)) {
-                 msg = string.Format(Resources.NakedObjects.NoChangeTrackerMessage, objectToCheck.GetType(), explanation);
+                msg = string.Format(Resources.NakedObjects.NoChangeTrackerMessage, objectToCheck.GetType(), explanation);
             }
 
             if (!string.IsNullOrEmpty(msg)) {

@@ -21,7 +21,6 @@ using NakedObjects.Meta.Component;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Reflect.FacetFactory;
 using NakedObjects.Reflect.TypeFacetFactory;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Reflect.Test {
     public abstract class AbstractReflectorTest {

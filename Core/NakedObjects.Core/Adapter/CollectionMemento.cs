@@ -37,10 +37,12 @@ namespace NakedObjects.Core.Adapter {
         private object[] selectedObjects;
 
         private CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, ILogger<CollectionMemento> logger) {
-            this.lifecycleManager = lifecycleManager ?? throw new InitialisationException($"{nameof(lifecycleManager)} is null"); ;
-            this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null"); ;
+            this.lifecycleManager = lifecycleManager ?? throw new InitialisationException($"{nameof(lifecycleManager)} is null");
+            ;
+            this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
+            ;
             this.metamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
-            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null"); 
+            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
 
         public CollectionMemento(ILifecycleManager lifecycleManager, INakedObjectManager nakedObjectManager, IMetamodelManager metamodel, ILogger<CollectionMemento> logger, CollectionMemento otherMemento, object[] selectedObjects)

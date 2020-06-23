@@ -7,7 +7,6 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Facade.Impl.Utility;
 
 namespace NakedObjects.Facade.Impl {
     public class VersionFacade : IVersionFacade {

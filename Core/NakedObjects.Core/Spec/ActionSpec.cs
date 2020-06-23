@@ -53,7 +53,6 @@ namespace NakedObjects.Core.Spec {
                           ILoggerFactory loggerFactory,
                           ILogger<ActionSpec> logger)
             : base(actionSpecImmutable?.Identifier?.MemberName, actionSpecImmutable, session, lifecycleManager, metamodel) {
-            
             this.servicesManager = servicesManager ?? throw new InitialisationException($"{nameof(servicesManager)} is null");
             this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
             this.actionSpecImmutable = actionSpecImmutable ?? throw new InitialisationException($"{nameof(actionSpecImmutable)} is null");

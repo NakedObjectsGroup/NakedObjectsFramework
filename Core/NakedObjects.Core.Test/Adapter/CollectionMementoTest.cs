@@ -23,7 +23,6 @@ using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
-using Assert = NUnit.Framework.Assert;
 
 // ReSharper disable UnusedMember.Global
 

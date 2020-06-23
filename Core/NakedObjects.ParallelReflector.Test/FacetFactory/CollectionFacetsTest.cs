@@ -18,7 +18,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     [TestClass]

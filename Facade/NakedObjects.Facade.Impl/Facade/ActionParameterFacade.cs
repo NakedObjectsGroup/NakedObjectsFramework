@@ -12,10 +12,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core;
-using NakedObjects.Core.Reflect;
 using NakedObjects.Facade.Contexts;
 using NakedObjects.Facade.Impl.Utility;
 
@@ -89,7 +86,6 @@ namespace NakedObjects.Facade.Impl {
         public (string, ITypeFacade)[] GetChoicesParameters() => WrappedSpec.GetChoicesParameters().Select(WrapChoiceParm).ToArray();
 
         public string GetMaskedValue(IObjectFacade objectFacade) => WrappedSpec.GetMaskedValue(objectFacade, framework.NakedObjectManager);
-
 
         public (IObjectFacade, string)[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) =>
             GetChoices(objectFacade, parameterNameValues).Select(c => (c, c.TitleString)).ToArray();

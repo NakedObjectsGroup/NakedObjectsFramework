@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Diagnostics;
 using System.IO;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -40,7 +39,7 @@ namespace NakedObjects.Meta.SemanticsProvider {
 
         protected override Image DoParseInvariant(string entry) => throw new NakedObjectSystemException($"Image cannot parse invariant: {entry}");
 
-        protected override string GetInvariantString(Image obj) => throw new NakedObjectSystemException($"Image cannot get invariant string");
+        protected override string GetInvariantString(Image obj) => throw new NakedObjectSystemException("Image cannot get invariant string");
 
         protected override string DoEncode(Image image) {
             var stream = image.GetResourceAsStream();

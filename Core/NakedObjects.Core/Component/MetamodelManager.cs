@@ -13,7 +13,6 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Spec;
-using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class MetamodelManager : IMetamodelManager {

@@ -9,7 +9,6 @@ using System;
 using System.Linq;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core;
 using NakedObjects.Facade.Impl.Utility;
 
 namespace NakedObjects.Facade.Impl {

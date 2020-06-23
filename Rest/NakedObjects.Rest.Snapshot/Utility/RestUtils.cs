@@ -427,7 +427,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             }
             catch (Exception e) {
                 logger.LogWarning(e, $"Failed to parse warning message: {warning}");
-                return new WarningHeaderValue(code, agent, $"\"" + "Failed to parse warning message" + "\"");
+                return new WarningHeaderValue(code, agent, "\"Failed to parse warning message\"");
             }
         }
     }

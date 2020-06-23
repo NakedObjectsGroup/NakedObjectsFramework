@@ -230,11 +230,7 @@ namespace NakedObjects.ParallelReflect.Component {
                     return a;
                 });
 
-            var groupedContribActions = contribActions.
-                GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new {service, actions}).
-                OrderBy(a => Array.IndexOf(services, a.service)).
-                SelectMany(a => a.actions).
-                ToList();
+            var groupedContribActions = contribActions.GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new {service, actions}).OrderBy(a => Array.IndexOf(services, a.service)).SelectMany(a => a.actions).ToList();
 
             spec.AddContributedActions(groupedContribActions);
             spec.AddCollectionContributedActions(collContribActions);

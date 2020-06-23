@@ -22,7 +22,6 @@ using NakedObjects.Meta.Component;
 using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
 using NakedObjects.ParallelReflect.TypeFacetFactory;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.ParallelReflect.Test {
     public abstract class AbstractReflectorTest {

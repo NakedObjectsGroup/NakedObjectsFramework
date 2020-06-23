@@ -61,6 +61,8 @@ namespace NakedObjects.ParallelReflect.Test {
 
         #endregion
 
+        private Action<IServiceCollection> TestHook { get; set; } = services => { };
+
         private IHostBuilder CreateHostBuilder(string[] args, IReflectorConfiguration rc) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) => {
@@ -163,8 +165,6 @@ namespace NakedObjects.ParallelReflect.Test {
             RegisterFacetFactory<ArrayValueTypeFacetFactory<byte>>("ArrayValueTypeFacetFactory<byte>", services, order++);
             RegisterFacetFactory<CollectionFacetFactory>("CollectionFacetFactory", services, order); // written to not trample over TypeOf if already installed
         }
-
-        private Action<IServiceCollection> TestHook { get; set; } = services => { };
 
         protected virtual void RegisterTypes(IServiceCollection services, IReflectorConfiguration rc) {
             RegisterFacetFactories(services);
@@ -572,9 +572,7 @@ namespace NakedObjects.ParallelReflect.Test {
                 Assert.AreEqual(21, numericOrder);
             }
 
-            public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-                return metamodel;
-            }
+            public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
         }
 
         #endregion

@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
@@ -144,6 +143,7 @@ namespace NakedObjects.Core.Adapter {
             if (!newOid.IsTransient) {
                 throw new NakedObjectSystemException("New Oid must be transient");
             }
+
             Oid = newOid;
         }
 

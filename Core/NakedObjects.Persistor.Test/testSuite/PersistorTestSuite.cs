@@ -13,8 +13,8 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
+using NUnit.Framework;
 using TestData;
-using Assert = NUnit.Framework.Assert;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local

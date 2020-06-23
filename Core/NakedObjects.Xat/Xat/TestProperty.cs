@@ -15,7 +15,6 @@ using NakedObjects.Core;
 using NakedObjects.Core.Reflect;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace NakedObjects.Xat {
     public class TestProperty : ITestProperty {
@@ -84,7 +83,7 @@ namespace NakedObjects.Xat {
 
             var nakedObjectAdapter = owningObject.NakedObject;
 
-            IConsent valid = field switch {
+            var valid = field switch {
                 IOneToOneAssociationSpec associationSpec => associationSpec.IsAssociationValid(nakedObjectAdapter, testNakedObjectAdapter),
                 IOneToManyAssociationSpec _ => new Veto("Always disabled"),
                 _ => throw new UnknownTypeException(field)
@@ -263,7 +262,7 @@ namespace NakedObjects.Xat {
             var testNakedObjectAdapter = testObject.NakedObject;
             Assert.IsTrue(testNakedObjectAdapter.Spec.IsOfType(field.ReturnSpec), $"Can't drop a {testObject.NakedObject.Spec.ShortName} on to the {Name} field (which accepts {field.ReturnSpec})");
             var nakedObjectAdapter = owningObject.NakedObject;
-            IConsent valid = field switch {
+            var valid = field switch {
                 IOneToOneAssociationSpec spec => spec.IsAssociationValid(nakedObjectAdapter, testNakedObjectAdapter),
                 IOneToManyAssociationSpec _ => new Veto("Always disabled"),
                 _ => throw new UnknownTypeException(field)

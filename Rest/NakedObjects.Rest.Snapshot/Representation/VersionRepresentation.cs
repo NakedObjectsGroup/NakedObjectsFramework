@@ -58,7 +58,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             return string.IsNullOrWhiteSpace(version) ? $"Failed to read {resource}" : version;
         }
 
-
         private void SetScalars() {
             var assembly = Assembly.GetExecutingAssembly();
             SpecVersion = GetVersion(assembly, "specversion");

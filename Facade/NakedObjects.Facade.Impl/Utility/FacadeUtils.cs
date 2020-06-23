@@ -68,6 +68,5 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         public static (IActionSpec spec, string uid)[] GetActionsandUidFromSpec(ITypeSpec spec) =>
             spec.GetActionLeafNodes().Select(action => (action, GetOverloadedUId(action, spec))).ToArray();
-
     }
 }

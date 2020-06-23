@@ -401,10 +401,10 @@ namespace NakedObjects.Rest {
             }
         }
 
-        private string DisplayName => 
+        private string DisplayName =>
             ControllerContext?.ActionDescriptor?.DisplayName ?? "Unknown Context";
 
-        private string DisplayModelState => 
+        private string DisplayModelState =>
             ModelState?.Values.Select(v => v.AttemptedValue).Aggregate("", (a, s) => $"{a}{s};");
 
         private string DisplayState => $"Context: {DisplayName} State {DisplayModelState}";

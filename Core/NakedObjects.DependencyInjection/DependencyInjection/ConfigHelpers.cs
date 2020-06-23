@@ -11,6 +11,7 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Reflect;
 
 namespace NakedObjects.DependencyInjection {
     public static class ConfigHelpers {
@@ -55,7 +56,7 @@ namespace NakedObjects.DependencyInjection {
         }
 
         private static int GetExistingOrder<TOriginal>() {
-            var order = Reflect.FacetFactories.StandardIndexOf(typeof(TOriginal));
+            var order = FacetFactories.StandardIndexOf(typeof(TOriginal));
             return order == -1 ? ParallelReflect.FacetFactories.StandardIndexOf(typeof(TOriginal)) : order;
         }
 

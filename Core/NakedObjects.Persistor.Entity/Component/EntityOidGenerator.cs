@@ -9,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core;
-using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Adapter;
 
 namespace NakedObjects.Persistor.Entity.Component {
