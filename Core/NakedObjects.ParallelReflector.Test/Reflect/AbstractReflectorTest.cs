@@ -113,7 +113,7 @@ namespace NakedObjects.ParallelReflect.Test {
         protected IImmutableDictionary<string, ITypeSpecBuilder> Metamodel;
         protected IObjectSpecImmutable Specification;
 
-        protected void AssertIsInstanceOfType<T>(object o) => Assert.IsInstanceOfType(o, typeof(T));
+        protected static void AssertIsInstanceOfType<T>(object o) => Assert.IsInstanceOfType(o, typeof(T));
 
         [TestInitialize]
         public virtual void SetUp() {

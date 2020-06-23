@@ -17,6 +17,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public override Uri GetUri() => Helper.GetInvokeUri();
 
-        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(Helper.GetInvokeMediaType());
+        public override MediaTypeHeaderValue GetMediaType(RestControlFlags flags) => UriMtHelper.GetJsonMediaType(UriMtHelper.GetInvokeMediaType());
     }
 }

@@ -31,6 +31,8 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         public IFrameworkFacade FrameworkFacade { get; set; }
 
+        public IOidTranslator OidTranslator => FrameworkFacade.OidTranslator;
+
         public object GetDomainObjectByOid(IOidTranslation objectId) {
             var adapter = GetAdapterByOidTranslation(objectId);
             return adapter == null ? null : GetAdapterByOidTranslation(objectId).GetDomainObject();

@@ -34,7 +34,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
         }
 
-        public void ProcessSystemType(Type type, IMethodRemover methodRemover, ISpecification holder) {
+        public static void ProcessSystemType(Type type, IMethodRemover methodRemover, ISpecification holder) {
             var typeToMethods = new Dictionary<Type, MethodInfo[]>();
             InitForType(type, typeToMethods);
             foreach (var method in typeToMethods[type]) {

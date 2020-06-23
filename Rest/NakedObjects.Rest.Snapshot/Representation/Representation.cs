@@ -25,10 +25,9 @@ namespace NakedObjects.Rest.Snapshot.Representations {
     public class Representation : IRepresentation {
         private static readonly object ModuleBuilderLock = new object();
         protected CacheType Caching;
-        protected string Etag;
-        protected List<string> Warnings = new List<string>();
+        private string etag;
 
-        public Representation(IOidStrategy oidStrategy, RestControlFlags flags) {
+        protected Representation(IOidStrategy oidStrategy, RestControlFlags flags) {
             OidStrategy = oidStrategy;
             Flags = flags;
         }
@@ -44,12 +43,12 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         public virtual MediaTypeHeaderValue GetContentType() => SelfRelType?.GetMediaType(Flags);
 
-        public EntityTagHeaderValue GetEtag() => Etag != null ? new EntityTagHeaderValue($"\"{Etag}\"") : null;
+        public EntityTagHeaderValue GetEtag() => etag != null ? new EntityTagHeaderValue($"\"{etag}\"") : null;
 
         public CacheType GetCaching() => Caching;
 
         public string[] GetWarnings() {
-            var allWarnings = new List<string>(Warnings);
+            var allWarnings = new List<string>();
 
             var properties = GetType().GetProperties();
 
@@ -68,7 +67,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
         protected void SetEtag(string digest) {
             if (digest != null) {
-                Etag = digest;
+                etag = digest;
             }
         }
 

@@ -195,7 +195,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
             if (redirected != null) {
                 var (serverName, oid) = redirected.Value;
-                var redirectAddress = new UriMtHelper(oidStrategy, req).GetRedirectUri(req, serverName, oid);
+                var redirectAddress = UriMtHelper.GetRedirectUri(req, serverName, oid);
                 throw new RedirectionException(redirectAddress);
             }
         }

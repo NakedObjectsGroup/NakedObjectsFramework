@@ -346,7 +346,7 @@ namespace NakedObjects.Facade.Impl {
             }
 
             var objectFacade = ObjectFacade.Wrap(valueNakedObject, this, Framework);
-            return OidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade).Encode();
+            return OidTranslator.GetOidTranslation(objectFacade).Encode();
         }
 
         protected string GetTransientSecurityHash(ObjectContext target, out string rawValue) {

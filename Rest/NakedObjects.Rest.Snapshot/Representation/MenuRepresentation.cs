@@ -85,7 +85,6 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             var actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a.action, Flags)).ToArray();
 
             var actionComparer = new ActionComparer();
-            // todo fix distinct
             actions = actions.Distinct(actionComparer).ToArray();
 
             Members = RestUtils.CreateMap(actions.ToDictionary(m => m.Id, m => (object) m));

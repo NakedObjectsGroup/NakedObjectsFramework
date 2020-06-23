@@ -253,7 +253,7 @@ namespace NakedObjects.Core.Container {
         ///     Determines if the specified text is empty. Will return true if either: the specified reference is null;
         ///     or if the reference is an empty string
         /// </summary>
-        public bool IsEmpty(string text) => string.IsNullOrEmpty(text);
+        public static bool IsEmpty(string text) => string.IsNullOrEmpty(text);
 
         #region Constructors
 

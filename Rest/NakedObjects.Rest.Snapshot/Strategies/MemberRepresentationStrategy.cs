@@ -38,7 +38,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         protected UriMtHelper GetHelper() => new UriMtHelper(OidStrategy, Req, PropertyContext);
 
-        protected string GetAttachmentFileName(PropertyContextFacade context) {
+        protected static string GetAttachmentFileName(PropertyContextFacade context) {
             var no = context.Property.GetValue(context.Target);
             return no != null ? no.GetAttachment().FileName : "UnknownFile";
         }

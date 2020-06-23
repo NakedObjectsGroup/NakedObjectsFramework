@@ -200,7 +200,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         }
 
         private static ObjectRepresentation CreateObjectWithOptionals(IOidStrategy oidStrategy, ObjectContextFacade objectContext, HttpRequest req, RestControlFlags flags) {
-            var oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectContext.Target);
+            var oid = oidStrategy.OidTranslator.GetOidTranslation(objectContext.Target);
 
             var props = new List<OptionalProperty>();
             if (objectContext.Specification.IsService) {

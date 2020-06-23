@@ -53,7 +53,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
             }
 
-            var oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
+            var oid = oidStrategy.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
         }
@@ -65,7 +65,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
             }
 
-            var oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
+            var oid = oidStrategy.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = instanceId;
             CachedType = oid.DomainType;
         }
@@ -79,7 +79,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
             }
 
-            var oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
+            var oid = oidStrategy.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = propertyContext.Target.IsTransient ? "" : oid.InstanceId;
             CachedType = oid.DomainType;
         }
@@ -93,7 +93,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
             }
 
-            var oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
+            var oid = oidStrategy.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = instanceId;
             CachedType = oid.DomainType;
         }
@@ -107,7 +107,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
             }
 
-            var oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
+            var oid = oidStrategy.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
         }
@@ -122,7 +122,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
             }
 
-            var oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
+            var oid = oidStrategy.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
         }
@@ -136,7 +136,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, IAssociationFacade assoc, IObjectFacade objectFacade)
             : this(oidStrategy, req) {
-            var oid = oidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(objectFacade);
+            var oid = oidStrategy.OidTranslator.GetOidTranslation(objectFacade);
             cachedId = oid.InstanceId;
             CachedType = oid.DomainType;
             this.assoc = assoc;
@@ -152,9 +152,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         private string CachedType { get; }
 
-        public string[] GetObjectId(string value) {
-            // todo this needs testing 
-
+        public static (string type, string key)? GetObjectId(string value) {
             var uri = new Uri(value);
             var path = uri.AbsolutePath;
             var pattern = $"/{SegmentValues.Objects}/([^/]+)/([^/]+)";
@@ -165,15 +163,13 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 var objectType = matches.Groups[1].Value;
                 var objectKey = matches.Groups[2].Value;
 
-                return new[] {objectType, objectKey};
+                return (objectType, objectKey);
             }
 
             return null;
         }
 
-        public string GetTypeId(string value) {
-            // todo this needs testing 
-
+        public static string GetTypeId(string value) {
             var uri = new Uri(value);
             var path = uri.AbsolutePath;
             var pattern = $"/{SegmentValues.DomainTypes}/([^/]+)";
@@ -262,7 +258,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return new Uri($"{prefix}{SegmentValues.Objects}/{CachedType}");
         }
 
-        public Uri GetRedirectUri(HttpRequest req, string server, string oid) {
+        public static Uri GetRedirectUri(HttpRequest req, string server, string oid) {
             CheckArgumentNotNull(oid, "object oid");
             var redirectPrefix = new Uri("http://" + server);
             return new Uri($"{redirectPrefix}{SegmentValues.Objects}/{oid}");
@@ -322,9 +318,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         public Uri GetDetailsUri() => ByMemberType(GetMemberUri);
 
-        public string GetInvokeMediaType() => RepresentationTypes.ActionResult;
+        public static string GetInvokeMediaType() => RepresentationTypes.ActionResult;
 
-        public string GetActionResultMediaType() => RepresentationTypes.ActionResult;
+        public static string GetActionResultMediaType() => RepresentationTypes.ActionResult;
 
         public string GetMemberMediaType() {
             if (action != null) {
@@ -355,7 +351,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return mediaType;
         }
 
-        public string GetTypeActionMediaType() => RepresentationTypes.TypeActionResult;
+        public static string GetTypeActionMediaType() => RepresentationTypes.TypeActionResult;
 
         public Uri GetTypeActionsUri(string actionName) {
             CheckArgumentNotNull(CachedType, "object type");
@@ -364,9 +360,9 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return new Uri($"{prefix}{SegmentValues.DomainTypes}/{CachedType}/{SegmentValues.TypeActions}/{actionName}/{SegmentValues.Invoke}");
         }
 
-        public string GetObjectMediaType() => RepresentationTypes.Object;
+        public static string GetObjectMediaType() => RepresentationTypes.Object;
 
-        public string GetMenuMediaType() => RepresentationTypes.Menu;
+        public static string GetMenuMediaType() => RepresentationTypes.Menu;
 
         private static string GetParameterValue(RestControlFlags flags, string parameterValue) => parameterValue;
 
@@ -407,7 +403,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             }
         }
 
-        public string FormatParameter(string resource, string name) => $";{resource}=\"{name}\"";
+        public static string FormatParameter(string resource, string name) => $";{resource}=\"{name}\"";
 
         public string GetRelParameters() => GetRelParametersFor((IMemberFacade) action ?? assoc);
 

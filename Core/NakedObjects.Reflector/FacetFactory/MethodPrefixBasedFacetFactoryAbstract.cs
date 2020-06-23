@@ -48,11 +48,11 @@ namespace NakedObjects.Reflect.FacetFactory {
         /// <param name="methodType"></param>
         /// <param name="name"></param>
         /// <param name="returnType"></param>
-        protected MethodInfo[] FindMethods(IReflector reflector,
-                                           Type type,
-                                           MethodType methodType,
-                                           string name,
-                                           Type returnType = null) =>
+        protected static MethodInfo[] FindMethods(IReflector reflector,
+                                                  Type type,
+                                                  MethodType methodType,
+                                                  string name,
+                                                  Type returnType = null) =>
             type.GetMethods(GetBindingFlagsForMethodType(methodType, reflector)).Where(m => m.Name == name).Where(m => m.IsStatic && methodType == MethodType.Class || !m.IsStatic && methodType == MethodType.Object).Where(m => m.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null).Where(m => returnType == null || returnType.IsAssignableFrom(m.ReturnType)).ToArray();
 
         /// <summary>

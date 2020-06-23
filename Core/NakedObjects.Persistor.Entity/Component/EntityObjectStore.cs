@@ -1118,7 +1118,7 @@ namespace NakedObjects.Persistor.Entity.Component {
             loadSpecification = loadSpecificationHandler;
         }
 
-        public void SetProxyingAndDeferredLoading(LocalContext context, bool newValue) {
+        public static void SetProxyingAndDeferredLoading(LocalContext context, bool newValue) {
             context.WrappedObjectContext.ContextOptions.LazyLoadingEnabled = newValue;
             context.WrappedObjectContext.ContextOptions.ProxyCreationEnabled = newValue;
         }

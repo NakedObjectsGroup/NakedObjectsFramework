@@ -11,6 +11,7 @@ namespace NakedObjects.Facade {
     public interface IOidStrategy {
         // todo make public get while refactoring
         IFrameworkFacade FrameworkFacade { get; set; }
+        IOidTranslator OidTranslator { get; }
         object GetDomainObjectByOid(IOidTranslation objectId);
         IObjectFacade GetObjectFacadeByOid(IOidTranslation objectId);
         object GetServiceByServiceName(IOidTranslation serviceName);

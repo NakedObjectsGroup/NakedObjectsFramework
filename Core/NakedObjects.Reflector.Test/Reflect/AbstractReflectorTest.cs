@@ -112,7 +112,7 @@ namespace NakedObjects.Reflect.Test {
         protected IMetamodel Metamodel;
         protected IObjectSpecImmutable Specification;
 
-        protected void AssertIsInstanceOfType<T>(object o) {
+        protected static void AssertIsInstanceOfType<T>(object o) {
             Assert.IsInstanceOfType(o, typeof(T));
         }
 

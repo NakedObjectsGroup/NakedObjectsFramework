@@ -33,13 +33,13 @@ namespace NakedObjects.Rest.Model {
         }
 
         private static object GetObjectByHref(string href, IFrameworkFacade facade, UriMtHelper helper, IOidStrategy oidStrategy) {
-            var oids = helper.GetObjectId(href);
+            var oids = UriMtHelper.GetObjectId(href);
             if (oids != null) {
-                var oid = facade.OidTranslator.GetOidTranslation(oids[0] + "/" + oids[1]);
+                var oid = facade.OidTranslator.GetOidTranslation($"{oids.Value.type}/{oids.Value.key}");
                 return facade.GetObject(oid).Target?.Object;
             }
 
-            var typeName = helper.GetTypeId(href);
+            var typeName = UriMtHelper.GetTypeId(href);
             return facade.GetDomainType(typeName);
         }
     }

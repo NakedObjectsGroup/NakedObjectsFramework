@@ -23,7 +23,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         public MapRepresentation GetExtensions() => GetExtensionsForSimple();
 
-        protected IDictionary<string, object> GetTableViewCustomExtensions((bool, string[])? tableViewData) {
+        protected static IDictionary<string, object> GetTableViewCustomExtensions((bool, string[])? tableViewData) {
             if (tableViewData == null) {
                 return null;
             }

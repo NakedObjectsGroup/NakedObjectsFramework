@@ -18,7 +18,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         protected PropertyOrCollectionIdentifyingFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes)
             : base(numericOrder, loggerFactory, featureTypes) { }
 
-        protected bool IsPropertyIncluded(PropertyInfo property) => property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null;
+        protected static bool IsPropertyIncluded(PropertyInfo property) => property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null;
 
         protected IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
             candidates.Where(property => property.GetGetMethod() != null &&
