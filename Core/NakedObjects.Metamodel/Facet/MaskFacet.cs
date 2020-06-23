@@ -6,9 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
@@ -16,22 +14,6 @@ namespace NakedObjects.Meta.Facet {
     public sealed class MaskFacet : SingleStringValueFacetAbstract, IMaskFacet {
         public MaskFacet(string value, ISpecification holder)
             : base(typeof(IMaskFacet), holder, value) { }
-
-        #region IMaskFacet Members
-
-        /// <summary>
-        ///     Not yet implemented, so always returns <c>false</c>.
-        /// </summary>
-        public bool DoesNotMatch(INakedObjectAdapter nakedObjectAdapter) => false;
-
-        public string Invalidates(IInteractionContext ic) {
-            var proposedArgument = ic.ProposedArgument;
-            return DoesNotMatch(proposedArgument) ? string.Format(Resources.NakedObjects.MaskMismatch, proposedArgument.TitleString(), Value) : null;
-        }
-
-        public Exception CreateExceptionFor(IInteractionContext ic) => new InvalidMaskException(ic, Invalidates(ic));
-
-        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.
