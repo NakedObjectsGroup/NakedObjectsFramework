@@ -39,7 +39,7 @@ namespace NakedObjects.Rest {
 
         static RestfulObjectsControllerBase() {
             // defaults 
-            CacheSettings = (0, 0, 0);
+            CacheSettings = (0, 3600, 86400);
             DefaultPageSize = 20;
             InlineDetailsInActionMemberRepresentations = true;
             InlineDetailsInCollectionMemberRepresentations = true;
