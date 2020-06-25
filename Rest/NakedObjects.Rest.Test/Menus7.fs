@@ -138,7 +138,7 @@ let NotAcceptableGetMenus(api : RestfulObjectsControllerBase) =
    let msg = 
        if (RestSnapshot.DebugWarnings) 
        then "199 RestfulObjects \"Failed outgoing json MT validation ic:  urn:org.restfulobjects:repr-types/user  og:  urn:org.restfulobjects:repr-types/list \""
-       else "199 RestfulObjects \"\""
+       else "199 RestfulObjects \"Enable DebugWarnings to see message\""
 
    Assert.AreEqual(msg, headers.Headers.["Warning"].ToString())
    Assert.AreEqual("", jsonResult)

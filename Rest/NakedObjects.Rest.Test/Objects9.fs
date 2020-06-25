@@ -2053,7 +2053,7 @@ let PersistMostSimpleTransientObjectMalformedMemberArgs(api : RestfulObjectsCont
     let msg = 
         if (RestSnapshot.DebugWarnings) 
         then "199 RestfulObjects \"Malformed arguments : Unable to cast object of type 'Newtonsoft.Json.Linq.JValue' to type 'Newtonsoft.Json.Linq.JObject'"
-        else "199 RestfulObjects \"Malformed arguments\""
+        else "199 RestfulObjects \"Malformed arguments : Enable DebugWarnings to see message\""
 
     if (RestSnapshot.DebugWarnings) then 
         Assert.AreEqual(msg, headers.Headers.["Warning"].ToString().Substring(0, 140))

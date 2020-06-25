@@ -2010,7 +2010,7 @@ let PutWithValuePropertyMalformedArgs(api : RestfulObjectsControllerBase) =
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("199 RestfulObjects \"Malformed arguments : Enable DebugWarnings to see message\"", headers.Headers.["Warning"].ToString())
     Assert.AreEqual("", jsonResult)
 
 // 400
@@ -2397,7 +2397,7 @@ let PutWithValuePropertyMalformedArgsValidateOnly(api : RestfulObjectsController
     let (jsonResult, statusCode, headers) = readActionResult result api.ControllerContext.HttpContext
 
     assertStatusCode HttpStatusCode.BadRequest statusCode jsonResult
-    Assert.AreEqual("199 RestfulObjects \"Malformed arguments\"", headers.Headers.["Warning"].ToString())
+    Assert.AreEqual("199 RestfulObjects \"Malformed arguments : Enable DebugWarnings to see message\"", headers.Headers.["Warning"].ToString())
     Assert.AreEqual("", jsonResult)
 
 // 400
