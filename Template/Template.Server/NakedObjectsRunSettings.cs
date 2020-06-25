@@ -6,10 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Configuration;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Core.Objects.DataClasses;
-using System.Linq;
 using Microsoft.Extensions.Configuration;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
@@ -52,7 +48,7 @@ namespace NakedObjects.Rest.App.Demo {
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration) {
             var config = new EntityObjectStoreConfiguration();
             var cs = configuration.GetConnectionString("ExampleConnectionString");
-            config.UsingCodeFirstContext(() => new ExampleDbContext(cs, new ExampleDbInitializer()));
+            config.UsingContext(() => new ExampleDbContext(cs, new ExampleDbInitializer()));
             return config;
         }
 

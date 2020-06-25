@@ -21,6 +21,9 @@ namespace NakedObjects.Rest.App.Demo {
 
         public static void RestPreStart() {
             if (RestRoot != null) {
+                // to show debug information in HTTP message headers 
+                RestfulObjectsControllerBase.DebugWarnings = true;
+
                 // to make whole application 'read only' 
                 // RestfulObjectsControllerBase.IsReadOnly = true;
 
