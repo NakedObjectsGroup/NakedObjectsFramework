@@ -21,6 +21,9 @@ using NakedObjects.Rest.Snapshot.Utility;
 
 namespace NakedObjects.Rest.API {
     public static class ControllerHelpers {
+
+        public static string DebugFilter(Func<string> msgFunc) => RestSnapshot.DebugFilter(msgFunc);
+
         public static ObjectContextFacade GetServiceByName(this IFrameworkFacade frameworkFacade, string serviceName) {
             var oid = frameworkFacade.OidTranslator.GetOidTranslation(serviceName);
             return frameworkFacade.GetService(oid);
@@ -285,15 +288,15 @@ namespace NakedObjects.Rest.API {
 
         public static void RejectRequestIfReadOnly() {
             if (RestfulObjectsControllerBase.IsReadOnly) {
-                var msg = RestSnapshot.DebugWarnings ? "In readonly mode" : "";
+                var msg = DebugFilter(() => "In readonly mode");
                 throw new ValidationException((int) HttpStatusCode.Forbidden, msg);
             }
         }
 
         public static void ValidateArguments(ArgumentMap arguments, bool errorIfNone = true) {
             if (arguments.IsMalformed) {
-                var msg = $"Malformed arguments{(RestSnapshot.DebugWarnings ? " : " + arguments.MalformedReason : "")}";
-                throw new BadRequestNOSException(msg); // todo i18n
+                var msg = $"Malformed arguments : {DebugFilter(() => arguments.MalformedReason)}";
+                throw new BadRequestNOSException(msg);
             }
 
             if (!arguments.HasValue && errorIfNone) {
@@ -303,8 +306,8 @@ namespace NakedObjects.Rest.API {
 
         public static void ValidateArguments(SingleValueArgument arguments, bool errorIfNone = true) {
             if (arguments.IsMalformed) {
-                var msg = $"Malformed arguments{(RestSnapshot.DebugWarnings ? " : " + arguments.MalformedReason : "")}";
-                throw new BadRequestNOSException(msg); // todo i18n
+                var msg = $"Malformed arguments : {DebugFilter(() => arguments.MalformedReason)}";
+                throw new BadRequestNOSException(msg);
             }
 
             if (!arguments.HasValue && errorIfNone) {
@@ -325,10 +328,8 @@ namespace NakedObjects.Rest.API {
 
         public static RestControlFlags GetFlags(Arguments arguments) {
             if (arguments.IsMalformed || arguments.ReservedArguments == null) {
-                var errorMsg = arguments.IsMalformed ? arguments.MalformedReason : "Reserved args = null";
-                var msg = $"Malformed arguments{(RestSnapshot.DebugWarnings ? " : " + errorMsg : "")}";
-
-                throw new BadRequestNOSException(msg); // todo i18n
+                var msg = $"Malformed arguments : {DebugFilter(() => arguments.IsMalformed ? arguments.MalformedReason : "Reserved args = null")}"; // todo i18n
+                throw new BadRequestNOSException(msg);
             }
 
             return GetFlagsFromArguments(arguments.ReservedArguments);

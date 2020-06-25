@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using NakedObjects.Rest.API;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
 using Newtonsoft.Json;
@@ -23,7 +24,7 @@ using Newtonsoft.Json.Linq;
 
 namespace NakedObjects.Rest.Model {
     public static class ModelBinderUtils {
-        private static string ExceptionWarning(Exception e) => RestSnapshot.DebugWarnings ? $"{e.Message} {e.StackTrace?.Replace("\r", " ").Replace("\n", " ")}" : "";
+        private static string ExceptionWarning(Exception e) => ControllerHelpers.DebugFilter(() => $"{e.Message} {e.StackTrace?.Replace("\r", " ").Replace("\n", " ")}");
 
         private static bool IsReservedName(string name) => name.StartsWith(RestControlFlags.ReservedPrefix);
 
@@ -204,7 +205,8 @@ namespace NakedObjects.Rest.Model {
 
         public static PromptArgumentMap CreatePromptArgMap(JObject jObject, bool includeReservedArgs) => InitArgumentMap<PromptArgumentMap>(jObject, PopulatePromptArgumentMap, includeReservedArgs);
 
-        public static T CreateMalformedArguments<T>(string msg) where T : Arguments, new() => new T {IsMalformed = true, MalformedReason = RestSnapshot.DebugWarnings ? msg : ""};
+        public static T CreateMalformedArguments<T>(string msg) where T : Arguments, new() =>
+            new T {IsMalformed = true, MalformedReason = ControllerHelpers.DebugFilter(() => msg)};
 
         private static void PopulateSimpleArgumentMap(NameValueCollection collection, ArgumentMap args) => args.Map = collection.AllKeys.Where(k => !IsReservedName(k)).ToDictionary(s => s, s => (IValue) new ScalarValue(collection[s]));
 

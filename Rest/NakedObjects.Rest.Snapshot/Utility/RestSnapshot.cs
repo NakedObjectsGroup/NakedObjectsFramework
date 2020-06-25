@@ -34,6 +34,10 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             DebugWarnings = false;
         }
 
+        public static string DebugFilter(Func<string> msgFunc) =>
+            DebugWarnings ? msgFunc() : "Enable DebugWarnings to see message"; // todo i18n
+
+
         private RestSnapshot(IOidStrategy oidStrategy, HttpRequest req, bool validateAsJson) {
             this.oidStrategy = oidStrategy;
             requestMessage = req;
@@ -236,7 +240,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                     return;
                 }
 
-                var msg = DebugWarnings ? $"Failed incoming MT validation: {string.Join(',', incomingMediaTypes.Select(mt => mt.MediaType.ToString()).ToArray())}" : "";
+                var msg = DebugFilter(() => $"Failed incoming MT validation: {string.Join(',', incomingMediaTypes.Select(mt => mt.MediaType.ToString()).ToArray())}");
 
                 throw new ValidationException((int) HttpStatusCode.NotAcceptable, msg);
             }
@@ -261,7 +265,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             var outgoingMediaType = contentType?.MediaType ?? "";
 
             if (!incomingMediaTypes.Contains(outgoingMediaType)) {
-                var msg = DebugWarnings ? $"Failed outgoing attachment MT validation ic: {string.Join(',', incomingMediaTypes.ToArray())} og: {outgoingMediaType}" : "";
+                var msg = DebugFilter(() => $"Failed outgoing attachment MT validation ic: {string.Join(',', incomingMediaTypes.ToArray())} og: {outgoingMediaType}");
 
                 throw new ValidationException((int) HttpStatusCode.NotAcceptable, msg);
             }
@@ -281,7 +285,7 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                     HttpStatusCode = HttpStatusCode.NotAcceptable;
                 }
                 else {
-                    var msg = DebugWarnings ? $"Failed outgoing json MT validation ic: {string.Join(',', incomingProfiles.ToArray())} og: {string.Join(',', outgoingProfiles.ToArray())}" : "";
+                    var msg = DebugFilter(() => $"Failed outgoing json MT validation ic: {string.Join(',', incomingProfiles.ToArray())} og: {string.Join(',', outgoingProfiles.ToArray())}");
 
                     // outgoing profile not included in incoming profiles and not already an error so throw a 406
                     throw new ValidationException((int) HttpStatusCode.NotAcceptable, msg);

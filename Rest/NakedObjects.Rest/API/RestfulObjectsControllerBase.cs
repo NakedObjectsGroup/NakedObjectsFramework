@@ -68,6 +68,12 @@ namespace NakedObjects.Rest {
             set => RestSnapshot.AcceptHeaderStrict = value;
         }
 
+        public static bool DebugWarnings
+        {
+            get => RestSnapshot.DebugWarnings;
+            set => RestSnapshot.DebugWarnings = value;
+        }
+
         protected IFrameworkFacade FrameworkFacade { get; set; }
         public IOidStrategy OidStrategy { get; set; }
         public static bool AllowMutatingActionOnImmutableObject { get; set; }
