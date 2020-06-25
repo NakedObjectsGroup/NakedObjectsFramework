@@ -21,17 +21,17 @@ namespace NakedObjects.Rest.App.Demo {
         public static void RestPreStart() {
             if (RestRoot != null) {
                 // to make whole application 'read only' 
-                RestfulObjectsControllerBase.IsReadOnly = true;
+                // RestfulObjectsControllerBase.IsReadOnly = true;
 
                 // to change cache settings (transactional, user, non-expiring) where 0 = no-cache
                 // 0, 3600, 86400 are the defaults 
-                RestfulObjectsControllerBase.CacheSettings = (0, 3600, 86400);
+                // RestfulObjectsControllerBase.CacheSettings = (0, 3600, 86400);
 
                 // make Accept header handling non-strict (RO spec 2.4.4)
-                RestfulObjectsControllerBase.AcceptHeaderStrict = false;
+                // RestfulObjectsControllerBase.AcceptHeaderStrict = false;
 
                 // to change the size limit on returned collections. The default value is 20.  Specifying 0 means 'unlimited'.
-                RestfulObjectsControllerBase.DefaultPageSize = 50; 
+                // RestfulObjectsControllerBase.DefaultPageSize = 50; 
 
                 // These flags control Member Representations - if true the 'details' will be included 
                 // in the the member. This will increase the size of the initial representation but reduce 
