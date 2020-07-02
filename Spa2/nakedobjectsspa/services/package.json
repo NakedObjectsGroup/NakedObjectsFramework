@@ -86,7 +86,7 @@
         "lodash": "~4.17.11",
         "lodash-es": "~4.17.11",
         "moment": "2.22.2",
-        "@nakedobjects/restful-objects": "^10.0.0"
+        "@nakedobjects/restful-objects": "^10.0.1"
     },
     "peerDependencies": {
         "@angular/animations": "~7.2.0",

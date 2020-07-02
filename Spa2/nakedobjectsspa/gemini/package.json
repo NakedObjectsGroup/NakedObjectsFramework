@@ -78,9 +78,9 @@
         "lodash-es": "~4.17.11",
         "moment": "2.22.2",
         "@angular/cdk": "^7.3.0",
-        "@nakedobjects/restful-objects": "^10.0.0",
-        "@nakedobjects/services": "^10.0.0",
-        "@nakedobjects/view-models": "^10.0.0"
+        "@nakedobjects/restful-objects": "^10.0.1",
+        "@nakedobjects/services": "^10.0.1",
+        "@nakedobjects/view-models": "^10.0.1"
     },
     "peerDependencies": {
         "@angular/animations": "~7.2.0",
