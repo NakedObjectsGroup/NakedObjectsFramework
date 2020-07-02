@@ -27,6 +27,10 @@ export class ApplicationPropertiesComponent implements OnInit {
         return this.applicationProperties.serverVersion ? this.applicationProperties.serverVersion.implVersion : '';
     }
 
+    get apiVersion() {
+        return this.applicationProperties.serverVersion ? this.applicationProperties.serverVersion.specVersion : '';
+    }
+
     get clientVersion() {
         return clientVersion;
     }

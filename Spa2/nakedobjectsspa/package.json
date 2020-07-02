@@ -1,6 +1,6 @@
 {
     "name": "nakedobjects.spa",
-    "version": "10.0.0",
+    "version": "10.0.1",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -65,7 +65,8 @@
         "@angular/platform-browser": "~7.2.0",
         "@angular/platform-browser-dynamic": "~7.2.0",
         "@angular/router": "~7.2.0",
-        "auth0-js": "^9.8.2",
+        "@nakedobjects/restful-objects": "file:dist/nakedobjects-restful-objects/nakedobjects-restful-objects-10.0.0.tgz",
+        "auth0-js": "^9.13.3",
         "core-js": "^2.5.4",
         "lodash": "~4.17.11",
         "lodash-es": "~4.17.11",
