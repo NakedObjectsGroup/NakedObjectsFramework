@@ -6,4 +6,5 @@
 *.dll
 *.suo
 *.user
-
+Backup
+UpgradeLog.*
