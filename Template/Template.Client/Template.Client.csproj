@@ -118,6 +118,7 @@
     <Content Include="iconFont.507ceb31df41f6b52dc8.svg" />
     <Content Include="index.html" />
     <Content Include="list.697c8b857c1eba797d5e.png" />
+    <Content Include="main.1bf987eead8db4791aa7.js" />
     <Content Include="main.267600708ecc980ad661.js" />
     <Content Include="main.5632a8b600000866b837.js" />
     <Content Include="packages.config" />
@@ -131,7 +132,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="polyfills.c28e31c4bfc44e5a89c5.js" />
+    <Content Include="polyfills.e67313d237f5f6786f26.js" />
     <Content Include="runtime.5959ec9531e22bc6ae82.js" />
+    <Content Include="runtime.80ab492fe3d778817936.js" />
     <Content Include="styles.2f01a7a557ae9d7bf896.css" />
     <Content Include="summary.f67923f950a28f9c5a12.png" />
     <Content Include="table.48b72d4d56f021fd164e.png" />
