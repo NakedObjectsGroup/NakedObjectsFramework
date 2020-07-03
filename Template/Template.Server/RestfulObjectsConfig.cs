@@ -29,7 +29,8 @@ namespace NakedObjects.Rest.App.Demo {
 
                 // to change cache settings (transactional, user, non-expiring) where 0 = no-cache
                 // 0, 3600, 86400 are the defaults 
-                // RestfulObjectsControllerBase.CacheSettings = (0, 3600, 86400);
+                // no caching makes debugging easier
+                RestfulObjectsControllerBase.CacheSettings = (0, 0, 0);
 
                 // make Accept header handling non-strict (RO spec 2.4.4)
                 // RestfulObjectsControllerBase.AcceptHeaderStrict = false;
