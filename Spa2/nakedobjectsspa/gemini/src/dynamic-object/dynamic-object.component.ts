@@ -1,5 +1,5 @@
 ﻿import { Component, ComponentFactoryResolver, OnDestroy, ViewChild, ViewContainerRef } from '@angular/core';
-import { Type } from '@angular/core/src/type';
+import { Type } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as Ro from '@nakedobjects/restful-objects';
 import { ConfigService, ContextService, PaneRouteData, UrlManagerService, ViewType } from '@nakedobjects/services';
@@ -13,7 +13,7 @@ import { PaneComponent } from '../pane/pane';
 })
 export class DynamicObjectComponent extends PaneComponent implements OnDestroy {
 
-    @ViewChild('parent', { read: ViewContainerRef })
+    @ViewChild('parent', { read: ViewContainerRef, static : false })
     parent: ViewContainerRef;
 
     constructor(

@@ -43,7 +43,7 @@ export class CiceroComponent implements OnInit, OnDestroy {
     private lastPaneRouteData: PaneRouteData;
     private previousInput: string;
 
-    @ViewChild('inputField')
+    @ViewChild('inputField', {static: false})
     inputField: ElementRef;
 
     // template API

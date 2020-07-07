@@ -1,5 +1,5 @@
 ﻿import { Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { Type } from '@angular/core/src/type';
+import { Type } from '@angular/core';
 import { ContextService, LoggerService, UrlManagerService } from '@nakedobjects/services';
 import { CustomComponentService } from '../custom-component.service';
 
@@ -10,7 +10,7 @@ import { CustomComponentService } from '../custom-component.service';
 })
 export class DynamicErrorComponent implements OnInit {
 
-    @ViewChild('parent', { read: ViewContainerRef })
+    @ViewChild('parent', { read: ViewContainerRef, static : false })
     parent: ViewContainerRef;
 
     constructor(

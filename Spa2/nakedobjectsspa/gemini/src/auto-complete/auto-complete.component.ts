@@ -21,7 +21,7 @@ export class AutoCompleteComponent implements OnDestroy {
     private bSubject: BehaviorSubject<any>;
     private sub: ISubscription;
     private currentIndex = -1;
-    @ViewChild('focus')
+    @ViewChild('focus', {static: false})
     inputField: ElementRef;
     canDrop = false;
     dragOver = false;

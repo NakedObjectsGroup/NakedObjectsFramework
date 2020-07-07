@@ -24,7 +24,7 @@ export class TimePickerFacadeComponent implements AfterViewInit {
     @Input()
     model: FieldViewModel;
 
-    @ViewChild('tp')
+    @ViewChild('tp', {static : false})
     timepicker: TimePickerComponent;
 
     inputEvents: EventEmitter<ITimePickerInputEvent>;

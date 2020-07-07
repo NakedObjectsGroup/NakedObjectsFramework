@@ -102,7 +102,7 @@ export class DatePickerComponent implements OnInit, OnDestroy {
     opened: boolean;
     days: ICalendarDate[];
 
-    @ViewChild('inp')
+    @ViewChild('inp', {static: false})
     inputField: ElementRef;
 
     constructor() {

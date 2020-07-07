@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Type } from '@angular/core/src/type';
+import { Type } from '@angular/core';
 import { ContextService, TypeResultCache, ViewType, ClientErrorCode, ErrorCategory, HttpStatusCode } from '@nakedobjects/services';
 import { CustomComponentConfigService } from './custom-component-config.service';
 import { ErrorComponent } from './error/error.component';

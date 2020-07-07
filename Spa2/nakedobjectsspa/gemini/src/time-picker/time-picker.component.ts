@@ -42,7 +42,7 @@ export class TimePickerComponent implements OnInit, OnDestroy {
     @Input()
     id: string;
 
-    @ViewChild('focus')
+    @ViewChild('focus', {static: false})
     inputField: ElementRef;
 
     constructor() {

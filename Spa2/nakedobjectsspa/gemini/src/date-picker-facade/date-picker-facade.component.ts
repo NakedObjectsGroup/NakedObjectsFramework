@@ -39,7 +39,7 @@ export class DatePickerFacadeComponent implements AfterViewInit {
         return this.fieldViewModel;
     }
 
-    @ViewChild('dp')
+    @ViewChild('dp', {static: false})
     datepicker: DatePickerComponent;
 
     inputEvents: EventEmitter<IDatePickerInputEvent>;
