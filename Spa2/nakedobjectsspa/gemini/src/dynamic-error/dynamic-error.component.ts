@@ -10,7 +10,7 @@ import { CustomComponentService } from '../custom-component.service';
 })
 export class DynamicErrorComponent implements OnInit {
 
-    @ViewChild('parent', { read: ViewContainerRef, static : false })
+    @ViewChild('parent', { read: ViewContainerRef, static : true })
     parent: ViewContainerRef;
 
     constructor(

@@ -14,7 +14,7 @@ import { PaneComponent } from '../pane/pane';
 })
 export class DynamicListComponent extends PaneComponent implements OnDestroy {
 
-    @ViewChild('parent', { read: ViewContainerRef, static : false })
+    @ViewChild('parent', { read: ViewContainerRef, static : true })
     parent: ViewContainerRef;
 
     constructor(
