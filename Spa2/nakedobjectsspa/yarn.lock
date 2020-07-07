@@ -5815,10 +5815,10 @@ neo-async@^2.5.0, neo-async@^2.6.1:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
-ng-packagr@^5.4.0:
-  version "5.7.1"
-  resolved "https://registry.yarnpkg.com/ng-packagr/-/ng-packagr-5.7.1.tgz#8e082e38e7b6089296bf0491f2e5b29122f8e08d"
-  integrity sha512-NDAUcMtLyZnF3bP6JtC3ANpIQRclRDPilF7C0DsjQuIz1q0V3mT7f1PwV0jnRWy8iRpSZmJZr6AGl736gloHtQ==
+ng-packagr@5.7.0:
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/ng-packagr/-/ng-packagr-5.7.0.tgz#3a450d2264724a900dbf6270a8b4c5439eb1f236"
+  integrity sha512-/75eqAyk2ef8J0aMLl7XCx1QXmqUUTsQDu+fNCFDIYpkpWBh0C8Rkdd72hMLPv3MMo63pfaNeiMXa0zzpQINyA==
   dependencies:
     ajv "^6.10.2"
     autoprefixer "^9.6.0"
@@ -5837,7 +5837,7 @@ ng-packagr@^5.4.0:
     postcss-url "^8.0.0"
     read-pkg-up "^5.0.0"
     rimraf "^3.0.0"
-    rollup "1.25.2"
+    rollup "^1.12.1"
     rollup-plugin-commonjs "^10.0.0"
     rollup-plugin-json "^4.0.0"
     rollup-plugin-node-resolve "^5.0.0"
@@ -7247,10 +7247,10 @@ rollup-pluginutils@^2.0.1, rollup-pluginutils@^2.5.0, rollup-pluginutils@^2.8.1:
   dependencies:
     estree-walker "^0.6.1"
 
-rollup@1.25.2:
-  version "1.25.2"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-1.25.2.tgz#739f508bd8f7ece52bb6c1fcda83466af82b7f6d"
-  integrity sha512-+7z6Wab/L45QCPcfpuTZKwKiB0tynj05s/+s2U3F2Bi7rOLPr9UcjUwO7/xpjlPNXA/hwnth6jBExFRGyf3tMg==
+rollup@^1.12.1:
+  version "1.32.1"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-1.32.1.tgz#4480e52d9d9e2ae4b46ba0d9ddeaf3163940f9c4"
+  integrity sha512-/2HA0Ec70TvQnXdzynFffkjA6XN+1e2pEv/uKS5Ulca40g2L7KuOE3riasHoNVHOsFD5KKZgDsMk1CP3Tw9s+A==
   dependencies:
     "@types/estree" "*"
     "@types/node" "*"
