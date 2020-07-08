@@ -52,7 +52,8 @@
     "build:cicero": "npm i && yarn compile:cicero && yarn pack:cicero && yarn install:cicero",
     "build:clean": "rimraf dist && rimraf node_modules/@nakedobjects",
     "build:libs": "yarn build:restful-objects && yarn build:services && yarn build:view-models && yarn build:gemini && yarn build:cicero",
-    "build:app": "ng build packages --no-progress"
+    "build:app": "ng build packages --no-progress",
+    "build:app:prod": "ng build packages --no-progress --prod"
   },
   "private": true,
   "dependencies": {
