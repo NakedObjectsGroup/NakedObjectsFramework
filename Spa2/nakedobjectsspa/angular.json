@@ -13,6 +13,11 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
+                        "sourceMap": {
+                            "scripts": true,
+                            "styles": true,
+                            "vendor": true
+                          },
                         "outputPath": "dist/nakedobjectsspa",
                         "index": "src/index.html",
                         "main": "src/main.ts",
@@ -204,6 +209,11 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
+                        "sourceMap": {
+                            "scripts": true,
+                            "styles": true,
+                            "vendor": true
+                          },
                         "outputPath": "dist/app",
                         "index": "src/index.html",
                         "main": "src/main.ts",

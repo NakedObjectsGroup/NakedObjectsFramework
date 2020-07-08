@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as Ro from '@nakedobjects/restful-objects';
 import { ContextService, ErrorService, ErrorWrapper } from '@nakedobjects/services';
@@ -25,7 +25,7 @@ import { ParametersComponent } from '../parameters/parameters.component';
     templateUrl: 'dialog.component.html',
     styleUrls: ['dialog.component.css']
 })
-export class DialogComponent implements AfterViewInit, OnDestroy {
+export class DialogComponent implements AfterViewInit, OnDestroy, OnChanges {
 
     constructor(
         private readonly viewModelFactory: ViewModelFactoryService,
@@ -54,7 +54,6 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
     @Input()
     set selectedDialogId(id: string) {
         this.currentDialogId = id;
-        this.getDialog();
     }
 
     get selectedDialogId(): string {
@@ -197,5 +196,9 @@ export class DialogComponent implements AfterViewInit, OnDestroy {
         safeUnsubscribe(this.createFormSub);
         safeUnsubscribe(this.formSub);
         safeUnsubscribe(this.sub);
+    }
+
+    ngOnChanges(): void {
+        this.getDialog();
     }
 }
