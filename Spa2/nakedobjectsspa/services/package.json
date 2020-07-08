@@ -83,7 +83,7 @@
     },
     "dependencies": {
         "auth0-js": "^9.13.4",
-        "lodash": "~4.17.17",
+        "lodash": "~4.17.18",
         "lodash-es": "~4.17.15",
         "moment": "2.27.0",
         "@nakedobjects/restful-objects": "^10.3.0"

@@ -72,7 +72,7 @@
         "e2e": "ng e2e"
     },
     "dependencies": {
-        "lodash": "~4.17.17",
+        "lodash": "~4.17.18",
         "lodash-es": "~4.17.15",
         "@nakedobjects/restful-objects": "^10.3.0",
         "@nakedobjects/services": "^10.3.0"
