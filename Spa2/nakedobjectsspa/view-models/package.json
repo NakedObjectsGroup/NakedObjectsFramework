@@ -40,7 +40,7 @@
         "dest": "../dist/nakedobjects-view-models"
     },
     "name": "@nakedobjects/view-models",
-    "version": "10.1.0",
+    "version": "10.2.0",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -74,27 +74,27 @@
     "dependencies": {
         "lodash": "~4.17.11",
         "lodash-es": "~4.17.11",
-        "@nakedobjects/restful-objects": "^10.1.0",
-        "@nakedobjects/services": "^10.1.0"
+        "@nakedobjects/restful-objects": "^10.2.0",
+        "@nakedobjects/services": "^10.2.0"
     },
     "peerDependencies": {
-        "@angular/animations": "~8.2.14",
-        "@angular/common": "~8.2.14",
-        "@angular/compiler": "~8.2.14",
-        "@angular/core": "~8.2.14",
-        "@angular/forms": "~8.2.14",
-        "@angular/platform-browser": "~8.2.14",
-        "@angular/platform-browser-dynamic": "~8.2.14",
-        "@angular/router": "~8.2.14",
+        "@angular/animations": "~9.1.11",
+        "@angular/common": "~9.1.11",
+        "@angular/compiler": "~9.1.11",
+        "@angular/core": "~9.1.11",
+        "@angular/forms": "~9.1.11",
+        "@angular/platform-browser": "~9.1.11",
+        "@angular/platform-browser-dynamic": "~9.1.11",
+        "@angular/router": "~9.1.11",
         "rxjs": "~6.6.0",
         "tslib": "^1.9.0",
-        "zone.js": "~0.9.1"
+        "zone.js": "~0.10.3"
     },
     "devDependencies": {
-        "@angular-devkit/build-angular": "~0.803.28",
-        "@angular/cli": "~8.3.28",
-        "@angular/compiler-cli": "~8.2.14",
-        "@angular/language-service": "~8.2.14",
+        "@angular-devkit/build-angular": "~0.901.10",
+        "@angular/cli": "~9.1.10",
+        "@angular/compiler-cli": "~9.1.11",
+        "@angular/language-service": "~9.1.11",
         "@types/jasmine": "~2.8.8",
         "@types/jasminewd2": "~2.0.3",
         "@types/lodash": "~4.14.121",
@@ -111,6 +111,6 @@
         "protractor": "~5.4.0",
         "ts-node": "~7.0.0",
         "tslint": "~5.12.0",
-        "typescript": "~3.5.3"
+        "typescript": "~3.8.3"
     }
 }
