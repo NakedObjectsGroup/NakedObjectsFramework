@@ -92,7 +92,7 @@
         "@types/jasminewd2": "~2.0.3",
         "@types/lodash": "~4.14.121",
         "@types/lodash-es": "~4.17.2",
-        "@types/node": "~8.9.4",
+        "@types/node": "~14.0.9",
         "codelyzer": "^5.0.1",
         "jasmine-core": "~2.99.1",
         "jasmine-spec-reporter": "~4.2.1",
