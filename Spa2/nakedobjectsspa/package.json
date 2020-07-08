@@ -57,7 +57,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~9.1.11",
-    "@angular/cdk": "~8.2.3",
+    "@angular/cdk": "~9.2.4",
     "@angular/common": "~9.1.11",
     "@angular/compiler": "~9.1.11",
     "@angular/core": "~9.1.11",
@@ -93,7 +93,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "ng-packagr": "5.7.0",
+    "ng-packagr": "9.1.5",
     "protractor": "~5.4.0",
     "replace-in-file": "^3.4.2",
     "rimraf": "^2.6.2",

@@ -77,7 +77,7 @@
         "lodash": "~4.17.11",
         "lodash-es": "~4.17.11",
         "moment": "2.22.2",
-        "@angular/cdk": "^7.3.0",
+        "@angular/cdk": "^9.2.4",
         "@nakedobjects/restful-objects": "^10.2.0",
         "@nakedobjects/services": "^10.2.0",
         "@nakedobjects/view-models": "^10.2.0"
