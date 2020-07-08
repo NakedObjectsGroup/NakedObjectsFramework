@@ -28,7 +28,7 @@ import { UrlManagerService } from './url-manager.service';
     ]
 })
 export class LibModule {
-    public static forRoot(): ModuleWithProviders {
+    public static forRoot(): ModuleWithProviders<LibModule> {
 
         return {
             ngModule: LibModule,

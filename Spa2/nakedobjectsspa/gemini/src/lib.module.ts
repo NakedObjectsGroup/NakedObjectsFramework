@@ -145,7 +145,7 @@ import { ViewPropertyComponent } from './view-property/view-property.component';
     ],
 })
 export class LibModule {
-    public static forRoot(): ModuleWithProviders {
+    public static forRoot(): ModuleWithProviders<LibModule> {
 
         return {
             ngModule: LibModule,

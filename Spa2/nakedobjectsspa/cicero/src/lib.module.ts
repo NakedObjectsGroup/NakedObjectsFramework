@@ -24,7 +24,7 @@ import { CiceroComponent } from './cicero/cicero.component';
     ],
 })
 export class LibModule {
-    public static forRoot(): ModuleWithProviders {
+    public static forRoot(): ModuleWithProviders<LibModule> {
 
         return {
             ngModule: LibModule,
