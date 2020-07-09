@@ -45,7 +45,7 @@
             "lodash",
             "lodash-es",
             "moment",
-            "@nakedobjects/restful-objects"
+            "tslib"
         ],
         "dest": "../dist/nakedobjects-services"
     },
@@ -86,7 +86,7 @@
         "lodash": "~4.17.18",
         "lodash-es": "~4.17.15",
         "moment": "2.27.0",
-        "@nakedobjects/restful-objects": "^10.3.0"
+        "tslib": "~2.0.0"
     },
     "peerDependencies": {
         "@angular/animations": "~10.0.2",
@@ -97,8 +97,8 @@
         "@angular/platform-browser": "~10.0.2",
         "@angular/platform-browser-dynamic": "~10.0.2",
         "@angular/router": "~10.0.2",
+        "@nakedobjects/restful-objects": "10.3.0",
         "rxjs": "~6.6.0",
-        "tslib": "~2.0.0",
         "zone.js": "~0.10.3"
     },
     "devDependencies": {
