@@ -32,7 +32,7 @@
         "dest": "../dist/nakedobjects-cicero"
     },
     "name": "@nakedobjects/cicero",
-    "version": "10.3.0",
+    "version": "11.0.0-rc.01",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -77,8 +77,8 @@
         "@angular/platform-browser": "~10.0.2",
         "@angular/platform-browser-dynamic": "~10.0.2",
         "@angular/router": "~10.0.2",
-        "@nakedobjects/restful-objects": "10.3.0",
-        "@nakedobjects/services": "10.3.0",
+        "@nakedobjects/restful-objects": "11.0.0-rc.01",
+        "@nakedobjects/services": "11.0.0-rc.01",
         "rxjs": "~6.6.0",
         "zone.js": "~0.10.3"
     },

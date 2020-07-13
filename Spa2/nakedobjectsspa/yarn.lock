@@ -1060,50 +1060,6 @@
     merge-source-map "^1.1.0"
     schema-utils "^2.6.4"
 
-"@nakedobjects/cicero@file:./dist/nakedobjects-cicero/nakedobjects-cicero-v10.3.0.tgz":
-  version "10.3.0"
-  resolved "file:./dist/nakedobjects-cicero/nakedobjects-cicero-v10.3.0.tgz#8829a6d2ef0eeda7f6a2b8b250f960d970e20394"
-  dependencies:
-    lodash "~4.17.18"
-    lodash-es "~4.17.15"
-    tslib "~2.0.0"
-
-"@nakedobjects/gemini@file:./dist/nakedobjects-gemini/nakedobjects-gemini-v10.3.0.tgz":
-  version "10.3.0"
-  resolved "file:./dist/nakedobjects-gemini/nakedobjects-gemini-v10.3.0.tgz#844f93596d65f3774b5380826a73e3674c757701"
-  dependencies:
-    auth0-js "^9.13.4"
-    lodash "~4.17.18"
-    lodash-es "~4.17.15"
-    moment "~2.27.0"
-    tslib "~2.0.0"
-
-"@nakedobjects/restful-objects@file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v10.3.0.tgz":
-  version "10.3.0"
-  resolved "file:./dist/nakedobjects-restful-objects/nakedobjects-restful-objects-v10.3.0.tgz#faddc37d0d1339a124a68e088e0cc399c59302c6"
-  dependencies:
-    lodash "~4.17.18"
-    lodash-es "~4.17.15"
-    tslib "^2.0.0"
-
-"@nakedobjects/services@file:./dist/nakedobjects-services/nakedobjects-services-v10.3.0.tgz":
-  version "10.3.0"
-  resolved "file:./dist/nakedobjects-services/nakedobjects-services-v10.3.0.tgz#24ac583861fe03781b8ecab698c63eb6874b7781"
-  dependencies:
-    auth0-js "^9.13.4"
-    lodash "~4.17.18"
-    lodash-es "~4.17.15"
-    moment "2.27.0"
-    tslib "~2.0.0"
-
-"@nakedobjects/view-models@file:./dist/nakedobjects-view-models/nakedobjects-view-models-v10.3.0.tgz":
-  version "10.3.0"
-  resolved "file:./dist/nakedobjects-view-models/nakedobjects-view-models-v10.3.0.tgz#e02cc3312055822144b113abd745dccfba90b29c"
-  dependencies:
-    lodash "~4.17.18"
-    lodash-es "~4.17.15"
-    tslib "~2.0.0"
-
 "@ngtools/webpack@10.0.2":
   version "10.0.2"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-10.0.2.tgz#87f5c7ee2362cf6c8216f059d809c6537e8c28aa"
@@ -5718,7 +5674,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@~4.17.17, lodash@~4.17.18:
+lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@~4.17.17:
   version "4.17.19"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
   integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
@@ -6086,7 +6042,7 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-moment@2.27.0, moment@~2.27.0:
+moment@~2.27.0:
   version "2.27.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.27.0.tgz#8bff4e3e26a236220dfe3e36de756b6ebaa0105d"
   integrity sha512-al0MUK7cpIcglMv3YF13qSgdAIqxHTO7brRtaz3DlSULbqfazqkc5kEjNrLDOM7fsjshoFIihnU8snrP7zUvhQ==
@@ -7686,9 +7642,9 @@ regexpu-core@^4.6.0, regexpu-core@^4.7.0:
     unicode-match-property-value-ecmascript "^1.2.0"
 
 registry-auth-token@^4.0.0:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/registry-auth-token/-/registry-auth-token-4.1.1.tgz#40a33be1e82539460f94328b0f7f0f84c16d9479"
-  integrity sha512-9bKS7nTl9+/A1s7tnPeGrUpRcVY+LUh7bfFgzpndALdPfXQBfQV77rQVtqgUV3ti4vc/Ik81Ex8UJDWDQ12zQA==
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/registry-auth-token/-/registry-auth-token-4.2.0.tgz#1d37dffda72bbecd0f581e4715540213a65eb7da"
+  integrity sha512-P+lWzPrsgfN+UEpDS3U8AQKg/UjZX6mQSJueZj3EK+vNESoqBSpBUD3gmu4sF9lOsjXWjF11dQKUqemf3veq1w==
   dependencies:
     rc "^1.2.8"
 
