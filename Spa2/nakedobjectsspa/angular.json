@@ -214,7 +214,7 @@
                             "styles": true,
                             "vendor": true
                           },
-                        "outputPath": "dist/app",
+                        "outputPath": "dist/nakedobjectsspa",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "tsConfig": "src/tsconfig.packages.json",
@@ -232,6 +232,7 @@
                             }
                         ],
                         "styles": [
+                            "src/theme.css",
                             "src/styles.css"
                         ],
                         "scripts": []
