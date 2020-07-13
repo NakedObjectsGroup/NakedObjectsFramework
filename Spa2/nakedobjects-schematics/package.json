@@ -1,6 +1,6 @@
 {
   "name": "@nakedobjects/schematics",
-  "version": "10.0.1",
+  "version": "10.3.0",
   "description": "Schematics for Naked Objects",
   "license": "Apache-2.0",
   "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -12,9 +12,9 @@
   },
   "scripts": {
     "clean": "rimraf temp && rimraf src/nakedobjects-schematics/files",
-    "prebuild": "npm run clean && node prebuild.js",
+    "prebuild": "yarn clean && node prebuild.js",
     "build": "tsc -p tsconfig.json",
-    "test": "npm run build && jasmine src/**/*_spec.js"
+    "test": "yarn build && jasmine src/**/*_spec.js"
   },
   "keywords": [
     "schematics",
@@ -24,14 +24,14 @@
   ],
   "schematics": "./src/collection.json",
   "dependencies": {
-    "@angular-devkit/core": "~7.3.10",
-    "@angular-devkit/schematics": "~7.3.10",
-    "@types/jasmine": "^3.3.1",
-    "@types/node": "^10.12.12",
-    "jasmine": "^3.3.1",
-    "cpx": "1.5.0",
-    "mv": "2.1.1",
-    "rimraf": "^2.6.1",
-    "typescript": "~3.2.2"
+    "@angular-devkit/core": "~10.0.2",
+    "@angular-devkit/schematics": "~10.0.2",
+    "@types/jasmine": "~3.5.11",
+    "@types/node": "~14.0.22",
+    "jasmine": "~3.5.0",
+    "cpx": "~1.5.0",
+    "mv": "~2.1.1",
+    "rimraf": "~3.0.2",
+    "typescript": "~3.9.6"
   }
 }
