@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Client</id>
-    <version>11.0.0-rc01</version>
+    <version>11.0.0-rc02</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <license type="expression">Apache-2.0</license>
@@ -13,9 +13,12 @@
     </summary>
     <tags>rest restful objects naked nakedobjects ddd domain driven design api</tags>
     <description>Single Page Application client for a Naked Objects application.</description>
+    <contentFiles> 
+      <files include="..\..\Spa2\nakedobjectsspa\pack\*" buildAction="None" /> 
+      <files include="..\..\Spa2\nakedobjectsspa\pack\assets\*" buildAction="None" /> 
+    </contentFiles> 
   </metadata>
   <files>
-    <file src="..\..\Spa2\nakedobjectsspa\pack\*" target="Content"/>
-    <file src="..\..\Spa2\nakedobjectsspa\pack\assets\*" target="Content\assets"/>
+    <file src="contentFiles\**" target="contentFiles"/>
   </files>
 </package>
