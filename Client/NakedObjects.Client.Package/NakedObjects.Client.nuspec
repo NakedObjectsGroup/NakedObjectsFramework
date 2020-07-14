@@ -13,13 +13,12 @@
     </summary>
     <tags>rest restful objects naked nakedobjects ddd domain driven design api</tags>
     <description>Single Page Application client for a Naked Objects application.</description>
-    <contentFiles>
-      <files include="..\..\Spa2\nakedobjectsspa\pack\*" buildAction="None"/>
-      <files include="..\..\Spa2\nakedobjectsspa\pack\assets\*" buildAction="None"/>
-    </contentFiles>
+    <contentFiles> 
+      <files include="..\..\Spa2\nakedobjectsspa\pack\*" buildAction="None" /> 
+      <files include="..\..\Spa2\nakedobjectsspa\pack\assets\*" buildAction="None" /> 
+    </contentFiles> 
   </metadata>
   <files>
-    <file src="..\..\Spa2\nakedobjectsspa\pack\*" target="contentFiles"/>
-    <file src="..\..\Spa2\nakedobjectsspa\pack\assets\*" target="contentFiles"/>
+    <file src="contentFiles\**" target="contentFiles"/>
   </files>
 </package>
