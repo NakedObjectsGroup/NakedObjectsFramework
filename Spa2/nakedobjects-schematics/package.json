@@ -1,6 +1,6 @@
 {
   "name": "@nakedobjects/schematics",
-  "version": "10.3.0",
+  "version": "11.0.0-rc.01",
   "description": "Schematics for Naked Objects",
   "license": "Apache-2.0",
   "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -32,6 +32,6 @@
     "cpx": "~1.5.0",
     "mv": "~2.1.1",
     "rimraf": "~3.0.2",
-    "typescript": "~3.9.6"
+    "typescript": "~3.9.5"
   }
 }
