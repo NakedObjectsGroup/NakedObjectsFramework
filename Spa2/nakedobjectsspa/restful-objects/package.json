@@ -45,7 +45,7 @@
         "dest": "../dist/nakedobjects-restful-objects"
     },
     "name": "@nakedobjects/restful-objects",
-    "version": "11.0.0-rc.01",
+    "version": "11.0.0-rc.02",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -83,7 +83,7 @@
     "devDependencies": {
         "@types/lodash": "~4.14.157",
         "@types/lodash-es": "~4.17.3",
-        "tslint": "~6.1.2",
-        "typescript": "~3.9.6"
+        "tslint": "~6.1.0",
+        "typescript": "~3.9.5"
     }
 }
