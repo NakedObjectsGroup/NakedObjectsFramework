@@ -1,0 +1,199 @@
+/*Global fonts*/
+
+.gemini, table, a, pre, textarea, input, button {
+    font-family: var(--font-text-family);
+}
+
+.startup-message {
+    color: var(--default-text-color);
+}
+
+@font-face {
+    font-family: "iconFont";
+    src: url('./fonts/iconFont.eot');
+    src: url('./fonts/iconFont.eot?#iefix') format('embedded-opentype'), url('./fonts/iconFont.svg#iconFont') format('svg'), url('./fonts/iconFont.woff') format('woff'), url('./fonts/iconFont.ttf') format('truetype');
+    font-weight: var(--font-weight-1);
+    font-style: normal;
+}
+
+/* Override unwanted defaults */
+
+.gemini * {
+    /*Specifies that padding & border are added INSIDE the specified width*/
+    box-sizing: border-box;
+}
+
+pre {
+    white-space: pre-wrap;
+    /* CSS 3 */
+    white-space: -moz-pre-wrap;
+    /* Mozilla, since 1999 */
+    white-space: -pre-wrap;
+    /* Opera 4-6 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+    /* Internet Explorer 5.5+ */
+}
+
+html, #main, body, .background, .single, .split {
+    margin: 0px;
+    height: 100%;
+    /*fill the vertical space*/
+    background-color: var(--default-background-color);
+}
+
+/*Other global defaults*/
+
+gemini {
+    outline-style: var(--default-outline-style);
+    outline-color: var(--default-outline-color);
+}
+
+.background {
+    overflow-y: auto;
+}
+
+.single, .split {
+    overflow-x: auto;
+    padding-bottom: 60px;
+}
+
+.single {
+    width: 100%;
+}
+
+.split {
+    float: left;
+    width: 50%;
+}
+
+.object-color0 {
+    background-color: var(--object-color0, var(--default-object-color));
+    color: var(--object-text-color0, var(--default-object-text-color));
+}
+
+.link-color0 {
+    background-color: var(--link-color0, var(--default-link-color));
+    color: var(--link-text-color0, var(--default-link-text-color));
+}
+
+.object-color1 {
+    background-color: var(--object-color1, var(--default-object-color));
+    color: var(--object-text-color1, var(--default-object-text-color));
+}
+
+.link-color1 {
+    background-color: var(--link-color1, var(--default-link-color));
+    color: var(--link-text-color1, var(--default-link-text-color));
+}
+
+.object-color2 {
+    background-color: var(--object-color2, var(--default-object-color));
+    color: var(--object-text-color2, var(--default-object-text-color));
+}
+
+.link-color2 {
+    background-color: var(--link-color2, var(--default-link-color));
+    color: var(--link-text-color2, var(--default-link-text-color));
+}
+
+.object-color3 {
+    background-color: var(--object-color3, var(--default-object-color));
+    color: var(--object-text-color3, var(--default-object-text-color));
+}
+
+.link-color3 {
+    background-color: var(--link-color3, var(--default-link-color));
+    color: var(--link-text-color3, var(--default-link-text-color));
+}
+
+.object-color4 {
+    background-color: var(--object-color4, var(--default-object-color));
+    color: var(--object-text-color4, var(--default-object-text-color));
+}
+
+.link-color4 {
+    background-color: var(--link-color4, var(--default-link-color));
+    color: var(--link-text-color4, var(--default-link-text-color));
+}
+
+.object-color5 {
+    background-color: var(--object-color5, var(--default-object-color));
+    color: var(--object-text-color5, var(--default-object-text-color));
+}
+
+.link-color5 {
+    background-color: var(--link-color5, var(--default-link-color));
+    color: var(--link-text-color5, var(--default-link-text-color));
+}
+
+.object-color6 {
+    background-color: var(--object-color6, var(--default-object-color));
+    color: var(--object-text-color6, var(--default-object-text-color));
+}
+
+.link-color6 {
+    background-color: var(--link-color6, var(--default-link-color));
+    color: var(--link-text-color6, var(--default-link-text-color));
+}
+
+.object-color7 {
+    background-color: var(--object-color7, var(--default-object-color));
+    color: var(--object-text-color7, var(--default-object-text-color));
+}
+
+.link-color7 {
+    background-color: var(--link-color7, var(--default-link-color));
+    color: var(--link-text-color7, var(--default-link-text-color));
+}
+
+.object-color8 {
+    background-color: var(--object-color8, var(--default-object-color));
+    color: var(--object-text-color8, var(--default-object-text-color));
+}
+
+.link-color8 {
+    background-color: var(--link-color8, var(--default-link-color));
+    color: var(--link-text-color8, var(--default-link-text-color));
+}
+
+.object-color9 {
+    background-color: var(--object-color9, var(--default-object-color));
+    color: var(--object-text-color9, var(--default-object-text-color));
+}
+
+.link-color9 {
+    background-color: var(--link-color9, var(--default-link-color));
+    color: var(--link-text-color9, var(--default-link-text-color));
+}
+
+.object-color10 {
+    background-color: var(--object-color10, var(--default-object-color));
+    color: var(--object-text-color10, var(--default-object-text-color));
+}
+
+.link-color10 {
+    background-color: var(--link-color10, var(--default-link-color));
+    color: var(--link-text-color10, var(--default-link-text-color));
+}
+
+.object-color11 {
+    background-color: var(--object-color11, var(--default-object-color));
+    color: var(--object-text-color11, var(--default-object-text-color));
+}
+
+.link-color11 {
+    background-color: var(--link-color11, var(--default-link-color));
+    color: var(--link-text-color11, var(--default-link-text-color));
+}
+
+.object-color12 {
+    background-color: var(--object-color12, var(--default-object-color));
+    color: var(--object-text-color12, var(--default-object-text-color));
+}
+
+.link-color12 {
+    background-color: var(--link-color12, var(--default-link-color));
+    color: var(--link-text-color12, var(--default-link-text-color));
+}
