@@ -3,15 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Server", "Template\Template.Server\Template.Server.csproj", "{88775561-A873-416A-BD22-5F097EE7B07F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5BBA91B2-8F10-4606-92A6-5D626658365B}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\.nuget\packages.config = ..\..\.nuget\packages.config
+	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Model", "Template\Template.Model\Template.Model.csproj", "{5F87A0AD-C881-444D-9C87-084D8D74F00F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{736F4309-4D92-4EE2-8C0B-5CA5ECED0FAA}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Build.proj = ..\..\Build.proj
+		..\..\.build\MSBuild.Community.Tasks.dll = ..\..\.build\MSBuild.Community.Tasks.dll
+		..\..\.build\MSBuild.Community.Tasks.targets = ..\..\.build\MSBuild.Community.Tasks.targets
+	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Database", "Template\Template.Database\Template.Database.csproj", "{81D5756D-FC52-44C0-8EF5-6A5739C22494}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Server", "Template.Server\Template.Server.csproj", "{88775561-A873-416A-BD22-5F097EE7B07F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.SeedData", "Template\Template.SeedData\Template.SeedData.csproj", "{3B3DD38C-F7C2-4B93-8345-9A70A2200749}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Model", "Template.Model\Template.Model.csproj", "{5F87A0AD-C881-444D-9C87-084D8D74F00F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Spa", "Template\Template.Spa\Template.Spa.csproj", "{C4B1F7B2-0851-4ABE-8AE2-1E82B29562FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Database", "Template.Database\Template.Database.csproj", "{81D5756D-FC52-44C0-8EF5-6A5739C22494}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.SeedData", "Template.SeedData\Template.SeedData.csproj", "{3B3DD38C-F7C2-4B93-8345-9A70A2200749}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +45,6 @@ Global
 		{3B3DD38C-F7C2-4B93-8345-9A70A2200749}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B3DD38C-F7C2-4B93-8345-9A70A2200749}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B3DD38C-F7C2-4B93-8345-9A70A2200749}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4B1F7B2-0851-4ABE-8AE2-1E82B29562FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4B1F7B2-0851-4ABE-8AE2-1E82B29562FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4B1F7B2-0851-4ABE-8AE2-1E82B29562FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4B1F7B2-0851-4ABE-8AE2-1E82B29562FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
