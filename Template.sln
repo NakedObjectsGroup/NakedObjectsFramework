@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Database", "Templa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.SeedData", "Template\Template.SeedData\Template.SeedData.csproj", "{3B3DD38C-F7C2-4B93-8345-9A70A2200749}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Spa", "Template\Template.Spa\Template.Spa.csproj", "{C4B1F7B2-0851-4ABE-8AE2-1E82B29562FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Client", "Template\Template.Client\Template.Client.csproj", "{5B3DFF4C-FBD5-4C5E-8092-0AA0276F1D43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{3B3DD38C-F7C2-4B93-8345-9A70A2200749}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B3DD38C-F7C2-4B93-8345-9A70A2200749}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B3DD38C-F7C2-4B93-8345-9A70A2200749}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4B1F7B2-0851-4ABE-8AE2-1E82B29562FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4B1F7B2-0851-4ABE-8AE2-1E82B29562FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4B1F7B2-0851-4ABE-8AE2-1E82B29562FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4B1F7B2-0851-4ABE-8AE2-1E82B29562FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B3DFF4C-FBD5-4C5E-8092-0AA0276F1D43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B3DFF4C-FBD5-4C5E-8092-0AA0276F1D43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B3DFF4C-FBD5-4C5E-8092-0AA0276F1D43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B3DFF4C-FBD5-4C5E-8092-0AA0276F1D43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

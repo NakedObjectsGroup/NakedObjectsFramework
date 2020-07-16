@@ -10,6 +10,7 @@
 
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
