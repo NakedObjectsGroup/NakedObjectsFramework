@@ -38,7 +38,7 @@
         "dest": "../dist/nakedobjects-gemini"
     },
     "name": "@nakedobjects/gemini",
-    "version": "11.0.0-rc.02",
+    "version": "11.0.0-rc.03",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -71,7 +71,7 @@
     },
     "dependencies": {
         "auth0-js": "^9.13.4",
-        "lodash": "~4.17.18",
+        "lodash": "~4.17.19",
         "lodash-es": "~4.17.15",
         "moment": "~2.27.0",
         "tslib": "~2.0.0"
@@ -86,9 +86,9 @@
         "@angular/platform-browser": "~10.0.3",
         "@angular/platform-browser-dynamic": "~10.0.3",
         "@angular/router": "~10.0.3",
-        "@nakedobjects/restful-objects": "11.0.0-rc.02",
-        "@nakedobjects/services": "11.0.0-rc.02",
-        "@nakedobjects/view-models": "11.0.0-rc.02",
+        "@nakedobjects/restful-objects": "11.0.0-rc.03",
+        "@nakedobjects/services": "11.0.0-rc.03",
+        "@nakedobjects/view-models": "11.0.0-rc.03",
         "rxjs": "~6.5.5",
         "zone.js": "~0.10.3"
     },
