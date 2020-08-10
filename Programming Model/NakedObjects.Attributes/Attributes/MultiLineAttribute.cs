@@ -9,19 +9,20 @@ using System;
 
 namespace NakedObjects {
     /// <summary>
-    ///     provides information about the carriage returns in a <see cref="string" /> property or action parameter.
-    ///     The attribute indicates that:
-    ///     <list type="bullet">
-    ///         <item>the String property or parameter may contain carriage returns</item>
-    ///         <item>(optionally) the typical number of such carriage returns (default 6)</item>
-    ///         <item>(optionally) the width of each line before wrapping (default 0)</item>
-    ///     </list>
+    ///     Specifies that a <see cref="string" /> property or action parameter may contain carriage returns, and an optional default number of lines and width,
+    ///     which may be used by the display.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
     public class MultiLineAttribute : Attribute {
-        public MultiLineAttribute() {
-            NumberOfLines = 6;
-            Width = 0;
+        public MultiLineAttribute() : this(6) { }
+
+        public MultiLineAttribute(int numberOfLines) : this(numberOfLines, 0) { }
+
+
+        public MultiLineAttribute(int numberOfLines, int width)
+        {
+            NumberOfLines = numberOfLines;
+            Width = width;
         }
 
         public int NumberOfLines { get; set; }
