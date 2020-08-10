@@ -14,15 +14,10 @@ namespace NakedObjects {
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
     public class MultiLineAttribute : Attribute {
-        public MultiLineAttribute() : this(6) { }
-
-        public MultiLineAttribute(int numberOfLines) : this(numberOfLines, 0) { }
-
-
-        public MultiLineAttribute(int numberOfLines, int width)
+        public MultiLineAttribute()
         {
-            NumberOfLines = numberOfLines;
-            Width = width;
+            NumberOfLines = 6;
+            Width = 0;
         }
 
         public int NumberOfLines { get; set; }
