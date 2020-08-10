@@ -9,9 +9,8 @@ using System;
 
 namespace NakedObjects {
     /// <summary>
-    ///     The recommended mechanism for specifying the order in which fields and/or actions are presented to
-    ///     the user. (<see cref="ActionOrderAttribute" /> and <see cref="FieldOrderAttribute" /> provide alternative
-    ///     mechanisms)
+    ///     For specifying the order in which fields and/or actions are presented to
+    ///     the user.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class MemberOrderAttribute : Attribute {
