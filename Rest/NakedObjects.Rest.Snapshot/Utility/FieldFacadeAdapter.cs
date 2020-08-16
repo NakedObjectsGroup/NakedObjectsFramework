@@ -39,6 +39,8 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public DataType? DataType => parameter?.DataType ?? association?.DataType;
         public string PresentationHint => parameter?.PresentationHint ?? association?.PresentationHint;
 
+        public bool? IsFindMenuEnabled => parameter?.IsFindMenuEnabled ?? association?.IsFindMenuEnabled;
+
         public (string, ITypeFacade)[] GetChoicesParameters() => parameter?.GetChoicesParameters() ?? association?.GetChoicesParameters();
 
         public (IObjectFacade obj, string title)[] GetChoicesAndTitles(IObjectFacade objectFacade, IDictionary<string, object> parameterNameValues) => parameter?.GetChoicesAndTitles(objectFacade, parameterNameValues) ?? association?.GetChoicesAndTitles(objectFacade, parameterNameValues);
