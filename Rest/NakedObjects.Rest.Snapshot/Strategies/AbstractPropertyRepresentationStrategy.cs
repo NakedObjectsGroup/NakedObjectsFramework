@@ -95,6 +95,11 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
             LinkRepresentation.Create(OidStrategy, new MemberRelType(RelValues.Modify, GetHelper()) {Method = RelMethod.Put}, Flags,
                 new OptionalProperty(JsonPropertyNames.Arguments, MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, null, typeof(object)))));
 
+        private void AddCustomExtension(string name, object value) {
+            CustomExtensions ??= new Dictionary<string, object>();
+            CustomExtensions[name] = value;
+        }
+
         private IDictionary<string, object> GetCustomPropertyExtensions() {
             if (CustomExtensions == null) {
                 AddChoicesCustomExtension();
@@ -102,20 +107,21 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 var mask = PropertyContext.Property.Mask;
 
                 if (!string.IsNullOrWhiteSpace(mask)) {
-                    CustomExtensions ??= new Dictionary<string, object>();
-                    CustomExtensions[JsonPropertyNames.CustomMask] = mask;
+                    AddCustomExtension(JsonPropertyNames.CustomMask, mask);
                 }
 
                 var multipleLines = PropertyContext.Property.NumberOfLines;
 
                 if (multipleLines > 1) {
-                    CustomExtensions ??= new Dictionary<string, object>();
-                    CustomExtensions[JsonPropertyNames.CustomMultipleLines] = multipleLines;
+                    AddCustomExtension(JsonPropertyNames.CustomMultipleLines, multipleLines);
                 }
 
                 if (PropertyContext.Property.NotNavigable) {
-                    CustomExtensions ??= new Dictionary<string, object>();
-                    CustomExtensions[JsonPropertyNames.CustomNotNavigable] = true;
+                    AddCustomExtension(JsonPropertyNames.CustomNotNavigable, true);
+                }
+
+                if (PropertyContext.Property.IsFindMenuEnabled) {
+                    AddCustomExtension(JsonPropertyNames.CustomFindMenu, true);
                 }
 
                 CustomExtensions = RestUtils.AddRangeExtension(PropertyContext.Property, CustomExtensions);

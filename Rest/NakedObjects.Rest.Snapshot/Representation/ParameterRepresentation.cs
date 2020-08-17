@@ -94,6 +94,11 @@ namespace NakedObjects.Rest.Snapshot.Representations {
                 custom[JsonPropertyNames.CustomMultipleLines] = multipleLines;
             }
 
+            if (parameter.IsFindMenuEnabled != null && parameter.IsFindMenuEnabled.Value){
+                custom ??= new Dictionary<string, object>();
+                custom[JsonPropertyNames.CustomFindMenu] = true;
+            }
+
             custom = RestUtils.AddRangeExtension(parameter.AsField, custom);
 
             Extensions = RestUtils.GetExtensions(parameter.Name,
