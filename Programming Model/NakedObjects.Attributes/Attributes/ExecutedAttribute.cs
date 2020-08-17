@@ -8,10 +8,8 @@
 using System;
 
 namespace NakedObjects {
-    /// <summary>
-    ///     Override default location for execution of action when running client server.
-    /// </summary>
-    /// <seealso cref="Where" />
+
+    [Obsolete]
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class ExecutedAttribute : Attribute {
         public ExecutedAttribute(Where w) {

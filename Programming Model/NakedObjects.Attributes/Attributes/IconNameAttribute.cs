@@ -8,10 +8,7 @@
 using System;
 
 namespace NakedObjects {
-    /// <summary>
-    ///     Used when you want to specify a name for the icon.
-    /// </summary>
-    /// <seealso cref="PluralAttribute" />
+    [Obsolete]
     [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
     public class IconNameAttribute : Attribute {
         public IconNameAttribute(string s) {

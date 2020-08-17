@@ -8,9 +8,7 @@
 using System;
 
 namespace NakedObjects {
-    /// <summary>
-    ///     Indicates the typical length of a <see cref="string" /> property or parameter in an action.
-    /// </summary>
+    [Obsolete]
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
     public class TypicalLengthAttribute : Attribute {
         public TypicalLengthAttribute(int i) {

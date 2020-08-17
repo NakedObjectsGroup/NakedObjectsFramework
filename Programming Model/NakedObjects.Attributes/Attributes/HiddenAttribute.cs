@@ -19,6 +19,9 @@ namespace NakedObjects {
             Value = w;
         }
 
+        //Equivalent to specifying WhenTo.Always
+        public HiddenAttribute() : this(WhenTo.Always) { }
+
         public WhenTo Value { get; private set; }
     }
 }
