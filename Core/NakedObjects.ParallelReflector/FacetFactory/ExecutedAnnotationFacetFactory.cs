@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+#pragma warning disable 612
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     /// <summary>
