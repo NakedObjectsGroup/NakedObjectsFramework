@@ -22,6 +22,7 @@ using NakedObjects.Services;
 using NakedObjects.Xat;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
+#pragma warning disable 612
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local

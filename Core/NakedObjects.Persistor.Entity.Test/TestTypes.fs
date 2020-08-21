@@ -19,7 +19,7 @@ open System.Reflection
 open Microsoft.Extensions.Logging
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
-let localServer = @"Data Source=.\SQLEXPRESS;"
+let localServer =  @"Data Source=(localdb)\MSSQLLocalDB;"
 
 #if APPVEYOR 
 let server = appveyorServer

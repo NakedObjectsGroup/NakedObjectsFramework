@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.Server</id>
-    <version>11.0.0-rc02</version>
+    <version>11.0.0-rc03</version>
     <authors>Naked Objects Group Ltd</authors>
     <owners>Naked Objects Group Ltd</owners>
     <license type="expression">Apache-2.0</license>
@@ -17,11 +17,11 @@
     <tags>naked objects nakedobjects ddd domain driven design</tags>
     <dependencies>
       <group targetFramework="netcoreapp3.1">
-        <dependency id="NakedObjects.ProgrammingModel" version="[8.0.0, 9)" />
+        <dependency id="NakedObjects.ProgrammingModel" version="[11.0.0-rc01, 12)" />
         <dependency id="EntityFramework" version="[6.4.4, 7)" />
-        <dependency id="Microsoft.Extensions.DependencyInjection" version="[3.1.5, 4)" />
-        <dependency id="Microsoft.Extensions.Configuration" version="[3.1.5, 4)" />
-        <dependency id="Microsoft.Extensions.Logging" version="[3.1.5, 4)" />
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="[3.1.7, 4)" />
+        <dependency id="Microsoft.Extensions.Configuration" version="[3.1.7, 4)" />
+        <dependency id="Microsoft.Extensions.Logging" version="[3.1.7, 4)" />
         <dependency id="Microsoft.AspNet.WebApi.Client" version="[5.2.7, 6)" />
         <dependency id="System.Reflection.Emit" version="[4.7.0, 5)" />
       </group>

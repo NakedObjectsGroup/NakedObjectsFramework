@@ -20,6 +20,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.Value;
+#pragma warning disable 612
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class TypicalLengthDerivedFromTypeFacetFactory : AnnotationBasedFacetFactoryAbstract {

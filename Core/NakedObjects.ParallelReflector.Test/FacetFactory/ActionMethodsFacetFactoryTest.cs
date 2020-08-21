@@ -24,6 +24,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
+#pragma warning disable 612
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local

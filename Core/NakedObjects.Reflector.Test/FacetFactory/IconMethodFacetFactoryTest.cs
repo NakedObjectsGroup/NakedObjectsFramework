@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflect.FacetFactory;
+#pragma warning disable 612
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
