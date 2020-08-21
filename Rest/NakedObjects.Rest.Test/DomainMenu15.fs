@@ -353,6 +353,19 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
                                                   TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
                                                   TProperty(JsonPropertyNames.Optional, TObjectVal(false)) ])) ])
         TProperty(pmid, p)
+
+    let makeParmWithFindMenu pmid fid rt =               
+        let p = 
+            TObjectJson([ TProperty
+                              (JsonPropertyNames.Links, 
+                               TArray([  ]))
+                          TProperty(JsonPropertyNames.Extensions, 
+                                    TObjectJson([ TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fid))
+                                                  TProperty(JsonPropertyNames.Description, TObjectVal(""))
+                                                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rt))
+                                                  TProperty(JsonPropertyNames.Optional, TObjectVal(false))
+                                                  TProperty(JsonPropertyNames.CustomFindMenu, TObjectVal(true))])) ])
+        TProperty(pmid, p)
     
     let makeParmWithAC pmid pid fid rt =     
         let autoRel = RelValues.Prompt + mp RelParamValues.Action pid + mp RelParamValues.Param pmid
@@ -761,6 +774,7 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
     let p43 = makeStringParmWithDefaults "parm" "Parm" lst str
     let p44 = makeParmWithDefaults "parm" "AnActionWithCollectionParameterRef" "Parm" lst mst
     let p45 = makeIntParmWithRange "parm1" "Parm1" num
+    let p46 = makeParmWithFindMenu "parm2" "Parm2" mst
 
     let expected = 
         [ TProperty(JsonPropertyNames.MenuId, TObjectVal(mName))
@@ -890,6 +904,8 @@ let GetWithActionMenu(api : RestfulObjectsControllerBase) =
                                        TObjectJson(makeServiceActionMember "AnActionWithParametersWithChoicesWithDefaults" sName mst [ p10; p11; p12; p13 ]))                                  
                                   TProperty
                                       ("AnActionWithReferenceParameter", TObjectJson(makeServiceActionMember "AnActionWithReferenceParameter" sName mst [ p14 ]))                                  
+                                  TProperty
+                                       ("AnActionWithFindMenuParameter", TObjectJson(makeServiceActionMember "AnActionWithFindMenuParameter" sName mst [ p46 ]))                                  
                                   TProperty
                                       ("AnActionWithReferenceParameterWithChoices", 
                                        TObjectJson(makeServiceActionMember "AnActionWithReferenceParameterWithChoices" sName mst [ p15 ]))                                  

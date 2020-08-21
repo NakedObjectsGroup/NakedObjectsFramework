@@ -58,6 +58,10 @@ namespace RestfulObjects.Test.Data {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
         }
 
+        public virtual MostSimple AnActionWithFindMenuParameter([FindMenu] MostSimple parm2) {
+            return Container.Instances<MostSimple>().Single(x => x.Id == 1);
+        }
+
         [QueryOnly]
         public virtual MostSimple AnActionAnnotatedQueryOnly() {
             return Container.Instances<MostSimple>().Single(x => x.Id == 1);
