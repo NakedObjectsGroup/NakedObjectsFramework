@@ -661,7 +661,8 @@ let internal makePropertyMemberShort oType (mName : string) (oName : string) fNa
       let conditionalChoices = mName.Contains("ConditionalChoices")
       let choices = mName.Contains("Choices") && (not conditionalChoices)
       let disabled = mName.Contains("Disabled") || (oTypeName.Contains("ViewModel") && (not ( oTypeName.Contains("Form") || oTypeName.Contains("Edit")    )))      
-      let autocomplete = mName.Contains("AutoComplete")    
+      let autocomplete = mName.Contains("AutoComplete")
+      let findmenu = mName.Contains("FindMenu")
       let detailsRelValue = RelValues.Details + makeParm RelParamValues.Property mName 
 
       let detailsLink = 
@@ -691,19 +692,21 @@ let internal makePropertyMemberShort oType (mName : string) (oName : string) fNa
       let links = if disabled then links.ToList() else (Seq.append links [(TObjectJson(TProperty(JsonPropertyNames.Arguments, TObjectJson([TProperty(JsonPropertyNames.Value, TObjectVal(null))])) :: makePutLinkProp modifyRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty ""))]).ToList()               
       let links = if opt && not disabled then (Seq.append links [TObjectJson(makeDeleteLinkProp clearRel (sprintf "%s/%s/properties/%s" oType oName mName) RepresentationTypes.ObjectProperty "")]).ToList() else links.ToList()
       let links = if autocomplete || conditionalChoices then (Seq.append links [acLink]).ToList() else links.ToList()
+      let exts = [TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
+                  TProperty(JsonPropertyNames.Description, TObjectVal(desc));
+                  TProperty(JsonPropertyNames.ReturnType, TObjectVal(rType));
+                  TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
+                  TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]
+
+      let exts = if findmenu then TProperty(JsonPropertyNames.CustomFindMenu, TObjectVal(true)) :: exts else exts 
 
       let props = [ TProperty(JsonPropertyNames.MemberType, TObjectVal(MemberTypes.Property) );
                     TProperty(JsonPropertyNames.Id, TObjectVal(mName));
                     TProperty(JsonPropertyNames.Value, oValue);
                     TProperty(JsonPropertyNames.HasChoices, TObjectVal(choices));                                        
-                    TProperty(JsonPropertyNames.Extensions, TObjectJson([TProperty(JsonPropertyNames.FriendlyName, TObjectVal(fName));
-                                                                         TProperty(JsonPropertyNames.Description, TObjectVal(desc));
-                                                                         TProperty(JsonPropertyNames.ReturnType, TObjectVal(rType));
-                                                                         TProperty(JsonPropertyNames.MemberOrder, TObjectVal(order));
-                                                                         TProperty(JsonPropertyNames.Optional, TObjectVal(opt))]));
+                    TProperty(JsonPropertyNames.Extensions, TObjectJson(exts));
                     TProperty(JsonPropertyNames.Links, TArray(links))]
       
-
       if choices then 
         let mst = ttc "RestfulObjects.Test.Data.MostSimple"
         let choiceRel = RelValues.Choice + makeParm RelParamValues.Property mName

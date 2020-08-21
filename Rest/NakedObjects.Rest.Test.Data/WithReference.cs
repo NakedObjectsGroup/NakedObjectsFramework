@@ -40,6 +40,9 @@ namespace RestfulObjects.Test.Data {
         public virtual MostSimple AnAutoCompleteReference { get; set; }
         public virtual MostSimple AConditionalChoicesReference { get; set; }
 
+        [FindMenu]
+        public virtual MostSimple AFindMenuReference { get; set; }
+
         [Eagerly(EagerlyAttribute.Do.Rendering)]
         public virtual MostSimple AnEagerReference { get; set; }
 

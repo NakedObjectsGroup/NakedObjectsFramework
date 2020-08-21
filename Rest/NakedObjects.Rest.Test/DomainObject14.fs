@@ -1349,6 +1349,7 @@ let PutWithReferenceObject(api : RestfulObjectsControllerBase) =
         TProperty(JsonPropertyNames.Arguments, 
                   TObjectJson([ TProperty("AChoicesReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AConditionalChoicesReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("AFindMenuReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("ANullReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AnAutoCompleteReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
@@ -1370,7 +1371,12 @@ let PutWithReferenceObject(api : RestfulObjectsControllerBase) =
                                       ("AConditionalChoicesReference",                                        
                                        TObjectJson
                                            (makePropertyMemberShort "objects" "AConditionalChoicesReference" oName "A Conditional Choices Reference" "" roType 
-                                                false (TObjectVal(null)) []))                                  
+                                                false (TObjectVal(null)) []))
+                                  TProperty
+                                      ("AFindMenuReference",                                        
+                                       TObjectJson
+                                           (makePropertyMemberShort "objects" "AFindMenuReference" oName "A Find Menu Reference" "" roType 
+                                                false (TObjectVal(null)) []))
                                   TProperty
                                       ("ADisabledReference",                                        
                                        TObjectJson
@@ -2693,6 +2699,7 @@ let GetWithReferenceObject(api : RestfulObjectsControllerBase) =
         TProperty(JsonPropertyNames.Arguments, 
                   TObjectJson([ TProperty("AChoicesReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AConditionalChoicesReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
+                                TProperty("AFindMenuReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("ANullReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
                                 TProperty("AnAutoCompleteReference", TObjectJson([ TProperty(JsonPropertyNames.Value, TObjectVal(null)) ]))
@@ -2736,7 +2743,12 @@ let GetWithReferenceObject(api : RestfulObjectsControllerBase) =
                                       ("AConditionalChoicesReference",                                        
                                        TObjectJson
                                            (makePropertyMemberShort "objects" "AConditionalChoicesReference" oName "A Conditional Choices Reference" "" roType 
-                                                false (TObjectVal(null)) []))                                  
+                                                false (TObjectVal(null)) []))
+                                  TProperty
+                                      ("AFindMenuReference",                                        
+                                       TObjectJson
+                                           (makePropertyMemberShort "objects" "AFindMenuReference" oName "A Find Menu Reference" "" roType 
+                                                false (TObjectVal(null)) []))
                                   TProperty
                                       ("ADisabledReference",                                        
                                        TObjectJson
