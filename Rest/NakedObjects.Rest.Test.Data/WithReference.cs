@@ -7,6 +7,7 @@
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedObjects;
 
@@ -41,6 +42,7 @@ namespace RestfulObjects.Test.Data {
         public virtual MostSimple AConditionalChoicesReference { get; set; }
 
         [FindMenu]
+        [NotMapped]
         public virtual MostSimple AFindMenuReference { get; set; }
 
         [Eagerly(EagerlyAttribute.Do.Rendering)]
