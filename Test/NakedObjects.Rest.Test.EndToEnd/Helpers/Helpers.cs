@@ -238,6 +238,11 @@ namespace RestfulObjects.Test.EndToEnd {
                 return @"C:\Users\Stefano\Documents\GitHub\NakedObjectsFramework\" + suffix;
             }
 
+            if (machineName == "DESKTOP-988MJTA") {
+                return @"C:\GitHub\NakedObjectsFramework\" + suffix;
+            }
+
+
             // Azure
             return @"C:\projects\nakedobjectsframework-5i2u0\" + suffix;
         }
