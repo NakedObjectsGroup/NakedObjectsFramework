@@ -123,6 +123,8 @@ export class ActionViewModel {
 
     readonly disabled = () => !!this.actionRep.disabledReason();
 
+    readonly returnsScalar = () => this.actionRep.returnsScalar();
+
     readonly tempDisabled = () => this.invokableActionRep &&
         this.invokableActionRep.isPotent() &&
         this.context.isPendingPotentActionOrReload(this.paneId)

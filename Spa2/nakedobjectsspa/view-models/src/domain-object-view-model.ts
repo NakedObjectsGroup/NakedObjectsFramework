@@ -126,7 +126,7 @@ export class DomainObjectViewModel extends MessageViewModel implements IMenuHold
         this.props = routeData.interactionMode !== InteractionMode.View ? this.contextService.getObjectCachedValues(this.domainObject.id(), routeData.paneId) : {};
 
         const actions = values(this.domainObject.actionMembers()) as Ro.ActionMember[];
-        this.actions = map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData));
+        this.actions = map(actions, action => this.viewModelFactory.actionViewModel(action, this, this.routeData)).filter(avm => !avm.returnsScalar());
 
         this.menuItems = Helpers.createMenuItems(this.actions);
 

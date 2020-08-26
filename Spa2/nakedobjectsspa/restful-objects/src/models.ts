@@ -1239,6 +1239,10 @@ export class ActionRepresentation extends ResourceRepresentation<Ro.IActionRepre
         const invokeLink = this.invokeLink();
         return !!invokeLink && invokeLink.method() === 'POST';
     }
+
+    returnsScalar(): boolean {
+        return isScalarType(this.extensions().returnType());
+    }
 }
 
 // new in 1.1 15.0 in spec
@@ -1802,6 +1806,10 @@ export class ActionMember extends Member<Ro.IActionMember> {
 
     disabledReason(): string {
         return this.wrapped().disabledReason || '';
+    }
+
+    returnsScalar(): boolean {
+        return isScalarType(this.extensions().returnType());
     }
 }
 

@@ -53,7 +53,7 @@ export abstract class ContributedActionParentViewModel extends MessageViewModel 
     }
 
     setActions(actions: Dictionary<Ro.ActionMember>, routeData: PaneRouteData) {
-        this.actions = map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData));
+        this.actions = map(actions, action => this.viewModelFactory.actionViewModel(action, this, routeData)).filter(avm => !avm.returnsScalar());
         this.menuItems = Helpers.createMenuItems(this.actions);
         forEach(this.actions, a => this.decorate(a));
     }

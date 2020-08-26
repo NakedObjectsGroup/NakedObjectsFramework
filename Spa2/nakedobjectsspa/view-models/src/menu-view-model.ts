@@ -21,7 +21,7 @@ export class MenuViewModel extends MessageViewModel implements IMenuHolderViewMo
 
         const actions = menuRep.actionMembers();
         this.title = menuRep.title();
-        this.actions = map(actions, action => viewModelFactory.actionViewModel(action, this, routeData));
+        this.actions = map(actions, action => viewModelFactory.actionViewModel(action, this, routeData)).filter(avm => !avm.returnsScalar());
         this.menuItems = Helpers.createMenuItems(this.actions);
     }
 

@@ -14,7 +14,7 @@ using NakedObjects.Rest.Model;
 namespace NakedObjects.Rest.App.Demo
 {
 
-    [Authorize]
+    //[Authorize]
     public class RestfulObjectsController : RestfulObjectsControllerBase {
         public RestfulObjectsController(IFrameworkFacade frameworkFacade,
                                         ILogger<RestfulObjectsController> logger,

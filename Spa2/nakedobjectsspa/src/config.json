@@ -2,7 +2,7 @@
     "authenticate": false,
     "authClientId" : "bB8ln8mh8hVb5kxnpTowceMb0t25Owl9",
     "authDomain" : "nakedobjects.eu.auth0.com",
-    "appPath": "https://nakedobjectsrodemo.azurewebsites.net",
+    "appPath": "http://localhost:5000/",
     "logoffUrl": "",
     "urlShortCuts": [ "https://nakedobjectsrodemo.azurewebsites.net", "AdventureWorksModel" ],
     "doUrlValidation": true,
