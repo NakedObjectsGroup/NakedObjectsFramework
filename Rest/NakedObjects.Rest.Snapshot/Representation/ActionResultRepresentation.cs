@@ -88,7 +88,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
 
                 if (visibleParamContext.Specification.IsParseable) {
                     var proposedObj = visibleParamContext.ProposedObjectFacade == null ? visibleParamContext.ProposedValue : visibleParamContext.ProposedObjectFacade?.Object;
-                    var valueObj = RestUtils.ObjectToPredefinedType(proposedObj);
+                    var valueObj = proposedObj != null ? RestUtils.ObjectToPredefinedType(proposedObj) : null;
                     value = MapRepresentation.Create(new OptionalProperty(JsonPropertyNames.Value, valueObj));
                 }
                 else if (visibleParamContext.Specification.IsCollection) {
