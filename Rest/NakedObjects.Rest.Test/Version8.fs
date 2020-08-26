@@ -30,7 +30,7 @@ let internal links =
 let internal expected = 
     [ TProperty(JsonPropertyNames.Links, links)
       TProperty(JsonPropertyNames.SpecVersion, TObjectVal("1.1"))
-      TProperty(JsonPropertyNames.ImplVersion, TObjectVal("11.0.0-rc03"))
+      TProperty(JsonPropertyNames.ImplVersion, TObjectVal("11.0.0-rc04"))
       TProperty(JsonPropertyNames.OptionalCapabilities, capabilities)
       TProperty(JsonPropertyNames.Extensions, TObjectJson([])) ]
 
