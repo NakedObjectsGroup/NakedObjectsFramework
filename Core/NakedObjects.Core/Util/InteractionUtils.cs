@@ -26,13 +26,15 @@ namespace NakedObjects.Core.Util {
             return IsVisible(buf);
         }
 
-        public static bool IsVisibleWhenPersistent(ISpecification specification, IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) {
+        public static bool IsVisibleWhenPersistent(ISpecification specification, IInteractionContext ic,
+            ILifecycleManager lifecycleManager, IMetamodelManager manager) {
             var buf = new InteractionBuffer();
-            var facets = specification.GetFacets().Where(f => f is IHidingInteractionAdvisor).Cast<IHidingInteractionAdvisor>();
+            var facets = specification.GetFacets()
+                .Where(f => f is IHidingInteractionAdvisor)
+                .Cast<IHidingInteractionAdvisor>();
             foreach (var advisor in facets) {
-                var facet = advisor as IHiddenFacet;
-                if (facet?.Value != WhenTo.UntilPersisted) {
-                    buf.Append(advisor.Hides(ic, lifecycleManager, manager));
+                if (advisor is IHiddenFacet facet) {
+                    buf.Append(facet.HidesForState(true));
                 }
             }
 

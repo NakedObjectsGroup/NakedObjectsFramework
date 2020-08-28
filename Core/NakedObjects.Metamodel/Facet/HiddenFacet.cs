@@ -31,7 +31,20 @@ namespace NakedObjects.Meta.Facet {
                 _ => null
             };
 
+        private string HiddenReason(bool persisted) =>
+            Value switch
+            {
+                WhenTo.Always => Resources.NakedObjects.AlwaysHidden,
+                WhenTo.Never => null,
+                WhenTo.UntilPersisted when !persisted => Resources.NakedObjects.HiddenUntilPersisted,
+                WhenTo.OncePersisted when persisted => Resources.NakedObjects.HiddenOncePersisted,
+                _ => null
+            };
+
+
         public string Hides(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) => HiddenReason(ic.Target);
+        
+        public string HidesForState(bool persisted) => HiddenReason(persisted);
 
         public Exception CreateExceptionFor(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) => new HiddenException(ic, Hides(ic, lifecycleManager, manager));
 
