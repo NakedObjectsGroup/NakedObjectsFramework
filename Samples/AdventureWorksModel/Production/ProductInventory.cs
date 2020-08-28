@@ -83,7 +83,10 @@ namespace AdventureWorksModel {
         #region Sub-menu hierarchy for testing only
 
         // to test actions returning scalar are not displayed 
-        public int Action0() { }
+        public int Action0()
+        {
+            return 0;
+        }
 
         public static void Menu(IMenu menu)
         {
