@@ -40,6 +40,7 @@ namespace NakedObjects.Selenium {
 
         public virtual void OpenAndCloseSubMenusTo3Levels() {
             GeminiUrl("object?i1=View&o1=___1.ProductInventory--320--1&as1=open");
+            AssertActionNotDisplayed("Action0");
             AssertActionNotDisplayed("Action1");
             OpenSubMenu("Sub Menu");
             GetObjectEnabledAction("Action1");

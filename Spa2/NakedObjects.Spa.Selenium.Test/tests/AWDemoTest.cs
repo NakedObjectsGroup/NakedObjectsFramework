@@ -12,6 +12,7 @@ namespace NakedObjects.Selenium {
         protected const string SpecialOffersMenuUrl = GeminiBaseUrl + "home?m1=SpecialOfferRepository";
         protected const string ProductServiceUrl = GeminiBaseUrl + "home?m1=ProductRepository";
         protected const string SalesServiceUrl = GeminiBaseUrl + "home?m1=SalesRepository";
+        protected const string WorkOrdersMenuUrl = GeminiBaseUrl + "home?m1=WorkOrderRepository";
         protected const int MainMenusCount = 10; //'Empty' menu should not show
         protected const int CustomerServiceActions = 5;
         protected const int OrderServiceActions = 8;

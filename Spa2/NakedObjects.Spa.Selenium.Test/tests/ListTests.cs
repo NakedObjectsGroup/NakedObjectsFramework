@@ -113,6 +113,25 @@ namespace NakedObjects.Selenium {
             Assert.AreEqual(0, br.FindElements(By.CssSelector(".cell")).Count); //Cells are in Table view only
         }
 
+        // test after bug #193
+        public virtual void TableViewFromDialogWithOptionalInt()
+        {
+            Url(WorkOrdersMenuUrl);
+            OpenActionDialog("Locations By Availability");
+            Click(OKButton());
+            WaitForView(Pane.Single, PaneType.List, "Locations By Availability");
+            wait.Until(dr => dr.FindElements(By.CssSelector(".reference")).Count > 1);
+            var iconTable = WaitForCss(".icon.table");
+            Click(iconTable);
+
+            var iconList = WaitForCss(".icon.list");
+            WaitUntilElementDoesNotExist(".icon.table");
+            WaitUntilElementDoesNotExist(".icon.summary");
+
+            wait.Until(dr => dr.FindElements(By.CssSelector(".list table tbody tr")).Count > 1);
+        }
+
+
         public virtual void NavigateToItemFromListView() {
             Url(SpecialOffersMenuUrl);
             Click(GetObjectEnabledAction("Current Special Offers"));
@@ -372,6 +391,11 @@ namespace NakedObjects.Selenium {
         }
 
         [TestMethod]
+        public override void TableViewFromDialogWithOptionalInt() {
+            base.TableViewFromDialogWithOptionalInt();
+        }
+
+        [TestMethod]
         public override void NavigateToItemFromListView() {
             base.NavigateToItemFromListView();
         }
@@ -482,6 +506,7 @@ namespace NakedObjects.Selenium {
             TableViewWorksWithSubTypes();
             TableViewCanIncludeCollectionSummaries();
             SwitchToTableViewAndBackToList();
+            TableViewFromDialogWithOptionalInt();
             NavigateToItemFromListView();
             NavigateToItemFromTableView();
             Paging();
