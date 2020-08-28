@@ -36,6 +36,9 @@ namespace NakedObjects.Core.Util {
                 if (advisor is IHiddenFacet facet) {
                     buf.Append(facet.HidesForState(true));
                 }
+                else {
+                    buf.Append(advisor.Hides(ic, lifecycleManager, manager));
+                }
             }
 
             return IsVisible(buf);
