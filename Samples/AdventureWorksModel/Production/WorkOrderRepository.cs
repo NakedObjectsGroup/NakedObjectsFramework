@@ -85,5 +85,15 @@ namespace AdventureWorksModel {
         {
             return Container.Instances<Location>();
         }
+
+        public IQueryable<Location> LocationsByAvailability([Optionally] decimal? availability)
+        {
+            // for testing optional scalar parms
+            if (availability != null)
+            {
+                return Container.Instances<Location>().Where(l => l.Availability == availability);
+            }
+            return Container.Instances<Location>();
+        }
     }
 }
