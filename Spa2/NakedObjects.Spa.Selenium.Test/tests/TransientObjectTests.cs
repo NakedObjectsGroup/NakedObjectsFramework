@@ -256,6 +256,7 @@ namespace NakedObjects.Selenium {
         }
 
         // test for bug #104
+        // add modified date visibility checks for bug #195
         public virtual void TransientWithHiddenUntilPersistedFields() {
             Debug.WriteLine(nameof(TransientWithHiddenNonOptionalFields));
             GeminiUrl("object?i1=View&o1=___1.Product--390&as1=open");
@@ -268,12 +269,18 @@ namespace NakedObjects.Selenium {
             // no end date or routings 
             wait.Until(dr => dr.FindElements(By.CssSelector("nof-edit-property .name"))[6].Text.StartsWith("Due Date:"));
             wait.Until(dr => dr.FindElements(By.CssSelector("nof-collection .name")).Count == 0);
+            // visible modified date 
+            wait.Until(dr => dr.FindElements(By.CssSelector("nof-edit-property .name"))[7].Text.StartsWith("Modified Date:"));
 
             SaveObject();
 
             // visible end date and routings
+            wait.Until(dr => dr.FindElements(By.CssSelector("nof-view-property .name")).Count == 8);
             wait.Until(dr => dr.FindElements(By.CssSelector("nof-view-property .name"))[6].Text == "End Date:");
             wait.Until(dr => dr.FindElement(By.CssSelector("nof-collection .name")).Text == "Work Order Routings:");
+            // no modified date
+            wait.Until(dr => dr.FindElements(By.CssSelector("nof-view-property .name"))[7].Text == "Due Date:");
+
             // visible add routing action
             OpenObjectActions();
             GetObjectEnabledAction("Add New Routing");
