@@ -309,8 +309,7 @@ namespace NakedObjects.Selenium {
             WaitForOutput("date matches multiple fields:\r\n" +
                           "Start Date\r\n" +
                           "End Date\r\n" +
-                          "Due Date\r\n" +
-                          "Modified Date");
+                          "Due Date");
 
             //No matches
             EnterCommand("enter strt date,1 Jan 2015");
@@ -904,6 +903,10 @@ namespace NakedObjects.Selenium {
             EnterCommand("show");
             WaitForOutputContaining("List Price: £500.00 (modified)");
             WaitForOutputContaining("Style: U  (modified)");
+            //Test that date properties are correctly formatted/masked
+            EnterCommand("sh modified");
+            WaitForOutputContaining("Modified Date: 11 Mar 2008 10:01:36");
+            WaitForOutputContaining("10:01:36");
 
             //exact match takes priority over partial match
             //TODO: Need example from properties, not action params -  transfer this to Enter test
@@ -921,9 +924,6 @@ namespace NakedObjects.Selenium {
             WaitForOutput("Work Order: Road-750 Black, 52: 19 Jun 2008");
             EnterCommand("sh start");
             WaitForOutput("Start Date: 19 Jun 2008");
-            EnterCommand("sh modified");
-            WaitForOutputContaining("Modified Date: 30 Jun 2008");
-            WaitForOutputContaining(":00:00");
 
             #endregion
 
