@@ -76,6 +76,7 @@ namespace AdventureWorksModel {
         [MemberOrder(99)]
         [Disabled]
         [ConcurrencyCheck]
+        [Hidden(WhenTo.OncePersisted)] // for testing
         public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
