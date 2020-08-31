@@ -39,7 +39,7 @@
         "dest": "../dist/nakedobjects-view-models"
     },
     "name": "@nakedobjects/view-models",
-    "version": "11.0.0-rc.05",
+    "version": "11.0.0",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",
@@ -84,8 +84,8 @@
         "@angular/platform-browser": "~10.0.3",
         "@angular/platform-browser-dynamic": "~10.0.3",
         "@angular/router": "~10.0.3",
-        "@nakedobjects/restful-objects": "11.0.0-rc.05",
-        "@nakedobjects/services": "11.0.0-rc.05",
+        "@nakedobjects/restful-objects": "11.0.0",
+        "@nakedobjects/services": "11.0.0",
         "rxjs": "~6.5.5",
         "zone.js": "~0.10.3"
     },
