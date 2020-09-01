@@ -38,7 +38,7 @@
         "dest": "../dist/nakedobjects-gemini"
     },
     "name": "@nakedobjects/gemini",
-    "version": "11.0.0-rc.05",
+    "version": "11.0.0",
     "description": "Single Page Application client for a Naked Objects application.",
     "license": "Apache-2.0",
     "author": "Richard Pawson <rpawson@nakedobjects.org>",
