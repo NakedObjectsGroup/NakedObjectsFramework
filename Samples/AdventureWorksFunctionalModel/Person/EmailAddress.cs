@@ -1,8 +1,5 @@
-using NakedObjects;
-using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
+using System;
 
 namespace AdventureWorksModel {
 
@@ -29,25 +26,25 @@ namespace AdventureWorksModel {
 
         public EmailAddress() { }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int BusinessEntityID { get; set; }
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int EmailAddressID { get; set; }
 
-        [DisplayName("Email Address")]
+        [Named("Email Address")]
         [RegEx(Validation = @"^[\-\w\.]+@[\-\w\.]+\.[A-Za-z]+$", Message = "Not a valid email address")]
         public virtual string EmailAddress1 { get; set; }
 
-        //[NakedObjectsIgnore]
+        //[Hidden]
         //public virtual int PersonId { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Person Person { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
     }

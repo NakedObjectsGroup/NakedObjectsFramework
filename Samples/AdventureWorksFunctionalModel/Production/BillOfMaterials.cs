@@ -6,13 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel
 {
-    public class BillOfMaterial : IHasModifiedDate
+    public record BillOfMaterial : IHasModifiedDate
     {
         public BillOfMaterial(
             int billOfMaterialID,
@@ -44,7 +42,7 @@ namespace AdventureWorksModel
         }
         public BillOfMaterial() { }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int BillOfMaterialID { get; set; }
 
         public virtual DateTime StartDate { get; set; }
@@ -52,20 +50,20 @@ namespace AdventureWorksModel
         public virtual short BOMLevel { get; set; }
         public virtual decimal PerAssemblyQty { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int? ProductAssemblyID { get; set; }
         public virtual Product Product { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ComponentID { get; set; }
         public virtual Product Product1 { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public string UnitMeasureCode { get; set; }
         public virtual UnitMeasure UnitMeasure { get; set; }
 
        [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
     }

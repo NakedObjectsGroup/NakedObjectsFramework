@@ -6,22 +6,20 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+
+
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using NakedObjects;
-using System.Collections.Generic;
-using NakedObjects.Value;
-using System.ComponentModel.DataAnnotations.Schema;
 using NakedFunctions;
-using static NakedFunctions.Result;
+using System.Collections.Generic;
+
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace AdventureWorksModel {
 
-    [IconName("cellphone.png")]
-    public class Person : BusinessEntity, IHasRowGuid, IHasModifiedDate {
+        public record Person : BusinessEntity, IHasRowGuid, IHasModifiedDate {
         public Person() {
            
         }
@@ -61,31 +59,31 @@ namespace AdventureWorksModel {
             PhoneNumbers = phoneNumbers;
         }
 
-        [Optionally]
+        
         [MemberOrder(30)]
         public virtual string AdditionalContactInfo { get; set; }
 
-        [NotPersisted]
-        [NakedObjectsIgnore]
+        
+        [Hidden]
         public IBusinessEntity ForEntity { get; set; }
 
         [MemberOrder(2)]
-        [NotPersisted][Hidden(WhenTo.OncePersisted)]
+
         public ContactType ContactType { get; set; }
 
         #region Name fields
 
         #region NameStyle
 
-        [MemberOrder(15), DefaultValue(false), DisplayName("Reverse name order")]
+        [MemberOrder(15), DefaultValue(false), Named("Reverse name order")]
         public virtual bool NameStyle { get; set; }
 
         #endregion
 
         #region Title
 
-        [Optionally]
-        [StringLength(8)]
+        
+        
         [MemberOrder(11)]
         public virtual string Title { get; set; }
 
@@ -93,7 +91,7 @@ namespace AdventureWorksModel {
 
         #region FirstName
 
-        [StringLength(50)]
+        
         [MemberOrder(12)]
         public virtual string FirstName { get; set; }
 
@@ -101,8 +99,8 @@ namespace AdventureWorksModel {
 
         #region MiddleName
 
-        [StringLength(50)]
-        [Optionally]
+        
+        
         [MemberOrder(13)]
         public virtual string MiddleName { get; set; }
 
@@ -110,7 +108,7 @@ namespace AdventureWorksModel {
 
         #region LastName
 
-        [StringLength(50)]
+        
         [MemberOrder(14)]
         public virtual string LastName { get; set; }
 
@@ -118,8 +116,8 @@ namespace AdventureWorksModel {
 
         #region Suffix
 
-        [Optionally]
-        [StringLength(10)]
+        
+        
         [MemberOrder(15)]
         public virtual string Suffix { get; set; }
 
@@ -130,12 +128,12 @@ namespace AdventureWorksModel {
         [MemberOrder(21), DefaultValue(1)]
         public virtual EmailPromotion EmailPromotion { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Password Password { get; set; }
       
         //See Persisting method
-        [NotPersisted]
-        [Hidden(WhenTo.OncePersisted)]
+        
+        []
         [MemberOrder(27)]
         [DataType(DataType.Password)]
         public string InitialPassword { get; set; }
@@ -145,7 +143,7 @@ namespace AdventureWorksModel {
         [NotMapped]
         public virtual Image Photo { get { return null; } }
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [RenderEagerly]
         [TableView(false, nameof(EmailAddress.EmailAddress1))] 
         public virtual ICollection<EmailAddress> EmailAddresses { get; set; }
 
@@ -155,14 +153,14 @@ namespace AdventureWorksModel {
             nameof(PersonPhone.PhoneNumber))] 
         public virtual ICollection<PersonPhone> PhoneNumbers { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Employee Employee { get; set; }
 
         #region Row Guid and Modified Date
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion
@@ -170,7 +168,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
@@ -203,24 +201,24 @@ namespace AdventureWorksModel {
 
         public static Person Persisting(Person p, [Injected] Guid guid, [Injected] DateTime now)
         {
-            return Updating(p, now).With(x => x.rowguid, guid).CreateSaltAndHash(p.InitialPassword)
-                .With(x => x.BusinessEntityRowguid, guid)
-                .With(x => x.BusinessEntityModifiedDate, now);
+            return Updating(p, now) with {rowguid =  guid).CreateSaltAndHash(p.InitialPassword}
+                 with {BusinessEntityRowguid =  guid}
+                 with {BusinessEntityModifiedDate =  now};
         }
 
         public static Person Updating(Person p, [Injected] DateTime now)
         {
-            return p.With(x => x.BusinessEntityModifiedDate, now).With(x => x.ModifiedDate, now);
+            return p with {BusinessEntityModifiedDate =  now).With(x => x.ModifiedDate, now};
         }
         #endregion
 
         #region ChangePassword (Action)
 
-        [Hidden(WhenTo.UntilPersisted)]
+        
         [MemberOrder(1)]
         public static (Person,Person) ChangePassword(this Person p, [DataType(DataType.Password)] string oldPassword, [DataType(DataType.Password)] string newPassword, [Named("New Password (Confirm)"), DataType(DataType.Password)] string confirm)
         {
-            return  DisplayAndPersist(CreateSaltAndHash(p, newPassword));
+            return  Result.DisplayAndPersist(CreateSaltAndHash(p, newPassword));
         }
 
         internal static Person CreateSaltAndHash(this Person p, string newPassword)
@@ -278,12 +276,12 @@ namespace AdventureWorksModel {
 
         public static (Person, Person) UpdateMiddleName(this Person p, string newName)
         {
-            return DisplayAndPersist(p.With(x => x.MiddleName, newName));
+            return DisplayAndPersist(p with {MiddleName =  newName)};
         }
 
         public static (Person, Person) UpdateSuffix(this Person p, string newSuffix)
         {
-            return DisplayAndPersist(p.With(x => x.Suffix, newSuffix));
+            return DisplayAndPersist(p with {Suffix =  newSuffix)};
         }
 
 
@@ -314,13 +312,13 @@ namespace AdventureWorksModel {
             return Result.DisplayAndPersist(c);
         }
 
-        public static IList<CreditCard> ListCreditCards(this Person p, [Injected] IQueryable<PersonCreditCard> pccs)
+        public static IList<CreditCard> ListCreditCards(this Person p, IQueryable<PersonCreditCard> pccs)
         {
             int id = p.BusinessEntityID;
             return pccs.Where(pcc => pcc.PersonID == id).Select(pcc => pcc.CreditCard).ToList();
         }
 
-        public static IQueryable<CreditCard> RecentCreditCards(this Person p, [Injected] IQueryable<PersonCreditCard> pccs)
+        public static IQueryable<CreditCard> RecentCreditCards(this Person p, IQueryable<PersonCreditCard> pccs)
         {
             int id = p.BusinessEntityID;
             return pccs.Where(pcc => pcc.PersonID == id).Select(pcc => pcc.CreditCard).OrderByDescending(cc => cc.ModifiedDate);

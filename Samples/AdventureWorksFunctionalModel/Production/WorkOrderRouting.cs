@@ -6,14 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    public class WorkOrderRouting  {
+    public record WorkOrderRouting  {
 
         #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
+        
         #endregion
 
         #region Life Cycle Methods
@@ -26,37 +26,34 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int WorkOrderID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ProductID { get; set; }
 
-        [Disabled]
+        
         [MemberOrder(1)]
         public virtual short OperationSequence { get; set; }
 
         [MemberOrder(20)]
-        [Disabled]
-        [DataType(DataType.DateTime)]
+        
         public virtual DateTime? ScheduledStartDate { get; set; }
 
         [MemberOrder(22)]
-        [Disabled]
-        [DataType(DataType.DateTime)]
         public virtual DateTime? ScheduledEndDate { get; set; }
 
-        [Optionally]
+        
         [MemberOrder(21)]
         [Mask("d")]
         public virtual DateTime? ActualStartDate { get; set; }
 
-        [Optionally]
+        
         [MemberOrder(23)]
         [Mask("d")]
         public virtual DateTime? ActualEndDate { get; set; }
 
-        [Optionally]
+        
         [MemberOrder(31)]
         public virtual decimal? ActualResourceHrs { get; set; }
 
@@ -64,26 +61,26 @@ namespace AdventureWorksModel {
         [MemberOrder(40)]
         public virtual decimal PlannedCost { get; set; }
 
-        [Optionally]
+        
         [MemberOrder(41)]
         [Mask("C")]
         public virtual decimal? ActualCost { get; set; }
 
         #region Location
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual short LocationID { get; set; }
 
         [MemberOrder(10)]
         public virtual Location Location { get; set; }
         #endregion
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual WorkOrder WorkOrder { get; set; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 

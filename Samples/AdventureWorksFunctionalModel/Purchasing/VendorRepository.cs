@@ -5,40 +5,40 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.ComponentModel;
+
 using System.Linq;
 using NakedFunctions;
-using NakedObjects;
+using NakedFunctions;
 using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
 
 namespace AdventureWorksModel {
-    [DisplayName("Vendors")]
+    [Named("Vendors")]
     public static class VendorRepository  {
 
         [FinderAction]
         [TableView(true, "AccountNumber", "ActiveFlag", "PreferredVendorStatus")]
         public static IQueryable<Vendor> FindVendorByName(
             string name,
-            [Injected] IQueryable<Vendor> vendors) {
+            IQueryable<Vendor> vendors) {
             return vendors.Where(v => v.Name == name).OrderBy(v => v.Name);
         }
 
         [FinderAction]
         public static (Vendor, string) FindVendorByAccountNumber(
             string accountNumber,
-            [Injected] IQueryable<Vendor> vendors) {
+            IQueryable<Vendor> vendors) {
             return SingleObjectWarnIfNoMatch(vendors.Where(x => x.AccountNumber == accountNumber));
         }
 
         [FinderAction]
         public static Vendor RandomVendor(
-            [Injected] IQueryable<Vendor> vendors,
+            IQueryable<Vendor> vendors,
             [Injected] int random) {
             return Random(vendors, random);
         }
 
         public static IQueryable<Vendor> AllVendorsWithWebAddresses(
-            [Injected] IQueryable<Vendor> vendors) {
+            IQueryable<Vendor> vendors) {
             return vendors.Where(x => x.PurchasingWebServiceURL != null).OrderBy(x => x.Name);
         }
     }

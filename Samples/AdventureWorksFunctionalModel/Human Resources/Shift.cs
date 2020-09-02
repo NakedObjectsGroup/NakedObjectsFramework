@@ -6,20 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
-using System.ComponentModel.DataAnnotations.Schema;
+
 using NakedFunctions;
-using static NakedFunctions.Result;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace AdventureWorksModel {
     [Bounded]
-    [IconName("clock.png")]
-    public class Shift : IHasModifiedDate  {
+        public record Shift : IHasModifiedDate  {
 
         #region ID
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual byte ShiftID { get; set; }
 
         #endregion
@@ -27,7 +25,7 @@ namespace AdventureWorksModel {
         #region Name
 
         [MemberOrder(1)]
-        [StringLength(50)]
+        
         [TypicalLength(10)]
         public virtual string Name { get; set; }
 
@@ -36,7 +34,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -87,8 +85,9 @@ namespace AdventureWorksModel {
 
         public static (Shift,Shift) ChangeTimes(Shift s, TimeSpan startTime, TimeSpan endTime)
         {
-            var s2 = s.With(x => x.Times.StartTime, startTime).With(x => x.Times.EndTime,endTime);
-            return DisplayAndPersist(s2);
+            throw new NotImplementedException();
+            //var s2 = s with { Times.StartTime = startTime } with {Times.EndTime,endTime);
+            //return DisplayAndPersist(s2);
         }
 
         public static TimeSpan Default0ChangeTimes(Shift s)

@@ -7,24 +7,24 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+
 using System.Linq;
 using System.Security.Principal;
 using NakedFunctions;
-using NakedObjects;
-using NakedObjects.Services;
+using NakedFunctions;
+
 
 namespace AdventureWorksModel {
     /// <summary>
     /// 
     /// </summary>
     /// 
-    [DisplayName("Cart")]
+    [Named("Cart")]
     public static class ShoppingCartRepository {
 
-        [DisplayName("Show Cart")]
+        [Named("Show Cart")]
         public static IQueryable<ShoppingCartItem> Cart(
-            [Injected] IQueryable<ShoppingCartItem> items) {
+            IQueryable<ShoppingCartItem> items) {
             string id = GetShoppingCartIDForUser();
             return items.Where(x => x.ShoppingCartID == id);
         }
@@ -37,7 +37,7 @@ namespace AdventureWorksModel {
             return GetCustomerForUser().CustomerID.ToString();
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public static IQueryable<ShoppingCartItem> AddToShoppingCart(Product product) {
             //TODO: Transient object
             throw new NotImplementedException();
@@ -53,8 +53,8 @@ namespace AdventureWorksModel {
         }
 
         public static  SalesOrderHeader CheckOut(
-            [Injected] IQueryable<BusinessEntityAddress> addresses,
-            [Injected] IQueryable<SalesOrderHeader> headers) {
+            IQueryable<BusinessEntityAddress> addresses,
+            IQueryable<SalesOrderHeader> headers) {
             var cust = GetCustomerForUser();
             var order = OrderContributedActions.CreateNewOrder(cust, true, addresses, headers);
             order.AddItemsFromCart = true;
@@ -106,11 +106,11 @@ namespace AdventureWorksModel {
             return principal.Identity.Name;
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public static (SalesOrderHeader, IEnumerable<SalesOrderDetail>) AddAllItemsInCartToOrder(
             SalesOrderHeader order,
-            [Injected] IQueryable<SpecialOfferProduct> sops,
-            [Injected] IQueryable<ShoppingCartItem> items) {
+            IQueryable<SpecialOfferProduct> sops,
+            IQueryable<ShoppingCartItem> items) {
 
             //TODO: Procedural!  Need to remove item as it is added?
             var details = Cart(items).Select(item => order.AddNewDetail(item.Product, (short) item.Quantity, sops));
@@ -118,7 +118,7 @@ namespace AdventureWorksModel {
             return (order, details);
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public static void RemoveItems(IQueryable<ShoppingCartItem> items) {
             foreach (ShoppingCartItem item in items) {
 
@@ -135,7 +135,7 @@ namespace AdventureWorksModel {
             return DisableIfNoCustomerForUser();
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public static string DisableIfNoCustomerForUser() {
             var rb = new ReasonBuilder();
             rb.AppendOnCondition(GetCustomerForUser() == null, "User is not a recognised Customer");

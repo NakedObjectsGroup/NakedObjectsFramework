@@ -1,5 +1,5 @@
 ﻿using NakedFunctions;
-using NakedObjects;
+using NakedFunctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +8,17 @@ using System.Linq;
 namespace AdventureWorksModel.Sales
 {
     [ViewModel]
-    public class QuickOrderLine 
+    public record QuickOrderLine 
     {
         public QuickOrderLine(Product product, short number)
         {
             Product = product;
             Number = number;
         }
-        [NakedObjectsIgnore]
+        [Hidden]
         public Product Product { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public short Number { get; set; }
     }
 
@@ -32,12 +32,12 @@ namespace AdventureWorksModel.Sales
         public static QuickOrderLine PopulateUsingKeys(
             QuickOrderLine vm,
             string[] keys,
-            [Injected] IQueryable<Product> products)
+            IQueryable<Product> products)
         {
             int p = int.Parse(keys.First());
             short n = short.Parse(keys.Skip(1).First());
             var product = products.Single(c => c.ProductID == p);
-            return vm.With(x => x.Product, product).With(x => x.Number, n);
+            return vm with {Product =  product).With(x => x.Number, n};
         }
 
         public static string Title(QuickOrderLine vm)

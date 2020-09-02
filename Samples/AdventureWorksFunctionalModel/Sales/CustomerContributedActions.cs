@@ -6,19 +6,19 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
-using System.ComponentModel;
+
 using System.Linq;
-using NakedObjects;
-using NakedObjects.Services;
+using NakedFunctions;
+
 using System;
 
 namespace AdventureWorksModel {
 
 
-    [DisplayName("Customers")]
+    [Named("Customers")]
     public static class CustomerContributedActions {
 
-        public static CustomerCollectionViewModel ShowCustomersWithAddressInRegion(CountryRegion region, [ContributedAction] IQueryable<Customer> customers) {
+        public static CustomerCollectionViewModel ShowCustomersWithAddressInRegion(CountryRegion region, this IQueryable<Customer> customers) {
             throw new NotImplementedException();
             //List<Customer> cc = customers.Where(c => c.Addresses.Any(a => a.Address.StateProvince.CountryRegion == region)).ToList();
             //var ccvm = Container.NewViewModel<CustomerCollectionViewModel>();

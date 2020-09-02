@@ -6,13 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    public class JobCandidate  {
+    public record JobCandidate  {
         #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
+        
         #endregion
 
         #region Life Cycle Methods
@@ -29,13 +29,13 @@ namespace AdventureWorksModel {
         public virtual string Resume { get; set; }
 
         #region Employee
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int? EmployeeID { get; set; }
         public Employee Employee { get; set; }
         #endregion
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 

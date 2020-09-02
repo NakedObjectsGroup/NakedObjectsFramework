@@ -7,14 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedFunctions;
-using NakedObjects;
-using NakedObjects.Value;
-using static NakedFunctions.Result;
 
 namespace AdventureWorksModel
 {
@@ -25,8 +20,7 @@ namespace AdventureWorksModel
         int ProductID { get; }
     }
 
-    [IconName("carton.png")]
-    public class Product : IProduct, IHasModifiedDate, IHasRowGuid
+        public record Product : IProduct, IHasModifiedDate, IHasRowGuid
     { //: IRedirected {
 
         public Product(ProductCategory productCategory, int productId, string name, string productNumber, string color, bool make, bool finishedGoods,
@@ -77,7 +71,7 @@ namespace AdventureWorksModel
 
         #region ProductID
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ProductID { get; set; }
 
         #endregion
@@ -98,7 +92,7 @@ namespace AdventureWorksModel
 
         #region Color
 
-        [Optionally]
+        
         [MemberOrder(3)]
         public virtual string Color { get; set; }
 
@@ -184,16 +178,16 @@ namespace AdventureWorksModel
 
         #region Size & Weight
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual string Size { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual string SizeUnitMeasureCode { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual UnitMeasure SizeUnit { get; set; }
 
-        [DisplayName("Size")]
+        [Named("Size")]
         [MemberOrder(16)]
         public virtual string SizeWithUnit
         {
@@ -203,17 +197,17 @@ namespace AdventureWorksModel
             }
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual string WeightUnitMeasureCode { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual decimal? Weight { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual UnitMeasure WeightUnit { get; set; }
 
         [MemberOrder(17)]
-        [DisplayName("Weight")]
+        [Named("Weight")]
         public virtual string WeightWithUnit
         {
             get
@@ -233,7 +227,7 @@ namespace AdventureWorksModel
 
         #region ProductLine
 
-        [Optionally]
+        
         [MemberOrder(14)]
         public virtual string ProductLine { get; set; }
 
@@ -241,14 +235,14 @@ namespace AdventureWorksModel
 
         #region Class
 
-        [Optionally]
+        
         [MemberOrder(19)]
         public virtual string Class { get; set; }
         #endregion
 
         #region Style
 
-        [Optionally]
+        
         [MemberOrder(18)]
         public virtual string Style { get; set; }
         #endregion
@@ -264,7 +258,7 @@ namespace AdventureWorksModel
         #region SellEndDate
 
         [MemberOrder(82)]
-        [Optionally]
+        
         [Mask("d")]
         public virtual DateTime? SellEndDate { get; set; }
 
@@ -272,7 +266,7 @@ namespace AdventureWorksModel
 
         #region Discontinued
 
-        [Optionally]
+        
         [MemberOrder(83)]
         [Mask("d")]
         [Range(0, 10)]
@@ -281,10 +275,10 @@ namespace AdventureWorksModel
         #endregion
 
         #region ProductModel
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int? ProductModelID { get; set; }
 
-        [Optionally]
+        
         [MemberOrder(10)]
         public virtual ProductModel ProductModel { get; set; }
         #endregion
@@ -292,8 +286,8 @@ namespace AdventureWorksModel
         #region ProductSubcategory
         private ProductCategory productCategory;
 
-        [NotPersisted]
-        [Optionally]
+        
+        
         [MemberOrder(12)]
         public virtual ProductCategory ProductCategory  //TODO: How to handle derived properties?
         {
@@ -309,10 +303,10 @@ namespace AdventureWorksModel
         }
 
         #region ProductSubcategory
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int? ProductSubcategoryID { get; set; }
 
-        [Optionally]
+        
         [MemberOrder(12)]
         public virtual ProductSubcategory ProductSubcategory { get; set; }
 
@@ -326,14 +320,14 @@ namespace AdventureWorksModel
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
         #endregion
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion
@@ -348,7 +342,7 @@ namespace AdventureWorksModel
 
         private ICollection<ProductProductPhoto> _ProductProductPhoto = new List<ProductProductPhoto>();
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto
         {
             get { return _ProductProductPhoto; }
@@ -374,7 +368,7 @@ namespace AdventureWorksModel
 
         private ICollection<ProductInventory> _ProductInventory = new List<ProductInventory>();
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [RenderEagerly]
         [TableView(false, nameof(AdventureWorksModel.ProductInventory.Quantity),
                 nameof(AdventureWorksModel.ProductInventory.Location),
                     nameof(AdventureWorksModel.ProductInventory.Shelf),
@@ -385,7 +379,7 @@ namespace AdventureWorksModel
             set { _ProductInventory = value; }
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int NumberInStock()
         {
             return (from obj in ProductInventory
@@ -396,13 +390,13 @@ namespace AdventureWorksModel
 
         #region Special Offers
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; set; }
 
 
         // needs to be initialised for moment
         [NotMapped]
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [RenderEagerly]
         [TableView(true, "MinQty", "DiscountPct", "StartDate", "EndDate")]
         public virtual IList<SpecialOffer> SpecialOffers { get; private set; } = new List<SpecialOffer>();
 
@@ -422,7 +416,7 @@ namespace AdventureWorksModel
         #region Life Cycle Methods
         public static Product Updating(Product p, [Injected] DateTime now)
         {
-            return p.With(x => x.ModifiedDate, now);
+            return p with {ModifiedDate =  now};
         }
         #endregion
 
@@ -444,13 +438,13 @@ namespace AdventureWorksModel
             return new[] { "U ", "M ", "W " };
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public static bool IsDiscontinued(this Product p, DateTime now)
         {
             return p.DiscontinuedDate != null ? p.DiscontinuedDate.Value < now : false;
         }
 
-        public static IQueryable<ProductModel> AutoCompleteProductModel(Product p, string match, [Injected] IQueryable<ProductModel> models)
+        public static IQueryable<ProductModel> AutoCompleteProductModel(Product p, string match, IQueryable<ProductModel> models)
         {
             return models.Where(pm => pm.Name.ToUpper().Contains(match.ToUpper()));
         }
@@ -459,12 +453,12 @@ namespace AdventureWorksModel
         #region BestSpecialOffer
 
         
-        [Description("Determines the best discount offered by current special offers for a specified order quantity")]
+        [DescribedAs("Determines the best discount offered by current special offers for a specified order quantity")]
         public static (SpecialOffer, SpecialOfferProduct) BestSpecialOffer(
             
             Product p, 
             short quantity, 
-            [Injected] IQueryable<SpecialOfferProduct> sops,
+            IQueryable<SpecialOfferProduct> sops,
             IQueryable<SpecialOffer> offers
             )
         {
@@ -494,7 +488,7 @@ namespace AdventureWorksModel
         public static IList<ProductSubcategory> ChoicesProductSubcategory(
             Product p,
             ProductCategory productCategory, 
-            [Injected] IQueryable<ProductSubcategory> subCats)
+            IQueryable<ProductSubcategory> subCats)
         {
             if (productCategory != null)
             {
@@ -504,7 +498,7 @@ namespace AdventureWorksModel
             }
             return Display(new ProductSubcategory[] { }.ToList());
         }
-        [NakedObjectsIgnore]
+        [Hidden]
         public static SpecialOfferProduct BestSpecialOfferProduct(
             Product p, 
             short quantity, 

@@ -1,4 +1,4 @@
-﻿using NakedObjects;
+﻿using NakedFunctions;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdventureWorksModel
@@ -6,11 +6,11 @@ namespace AdventureWorksModel
 
     //Used to test creation/rendering of NotPersisted object
     //Note, however, that recommended pattern would be to use a ViewModel for this
-    [NotPersisted, NotMapped]
-    public class StaffSummary
+    [NotMapped]
+    public record StaffSummary
     {
         #region Injected services
-        public IDomainObjectContainer Container { set; protected get; }
+        
         #endregion
 
         public override string ToString()

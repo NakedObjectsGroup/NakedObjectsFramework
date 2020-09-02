@@ -7,16 +7,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("globe.png")]
-    [Bounded]
-    [Immutable]
-    [PresentationHint("Topaz")]
-    public class Location {
+        [Bounded]
+        [PresentationHint("Topaz")]
+    public record Location {
 
         public Location(
             short locationID,
@@ -35,7 +32,7 @@ namespace AdventureWorksModel {
 
         public Location() { }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual short LocationID { get; set; }
 
         public virtual string Name { get; set; }
@@ -47,7 +44,7 @@ namespace AdventureWorksModel {
         public virtual decimal Availability { get; set; }
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
     }
@@ -59,7 +56,7 @@ namespace AdventureWorksModel {
         }
         public static Location Updating(Location loc, [Injected] DateTime now)
         {
-            return loc.With(x => x.ModifiedDate, now);
+            return loc with {ModifiedDate =  now};
         }
     }
 }

@@ -6,16 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel
 {
-    [IconName("lookup.png")]
-    [Immutable]
-    [Bounded]
-    public class StateProvince :  IHasRowGuid, IHasModifiedDate
+            [Bounded]
+    public record StateProvince :  IHasRowGuid, IHasModifiedDate
     {
         //TODO: Extend ctor to include all properties
         public StateProvince(
@@ -43,7 +41,7 @@ namespace AdventureWorksModel
 
         public StateProvince() { }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int StateProvinceID { get; set; }
 
         public virtual string StateProvinceCode { get; set; }
@@ -52,30 +50,30 @@ namespace AdventureWorksModel
 
         public virtual string Name { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual string CountryRegionCode { get; set; }
 
         public virtual CountryRegion CountryRegion { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int TerritoryID { get; set; }
 
         public virtual SalesTerritory SalesTerritory { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
     }
     public static class StateProvinceFunctions
     {
-        public static string Title(this StateProvince sp)
-        {
-            return sp.CreateTitle(sp.Name);
-        }
+        //public static string Title(this StateProvince sp)
+        //{
+        //    return sp.CreateTitle(sp.Name);
+        //}
         public static StateProvince Updating(StateProvince sp, [Injected] DateTime now)
         {
             return LifeCycleFunctions.UpdateModified(sp, now);

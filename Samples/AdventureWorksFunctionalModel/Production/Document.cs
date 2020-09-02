@@ -7,13 +7,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel
 {
-    public class Document : IHasModifiedDate
+    public record Document : IHasModifiedDate
     {
 
         public Document(
@@ -58,7 +56,7 @@ namespace AdventureWorksModel
         public ICollection<ProductDocument> ProductDocument { get; set; }
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 

@@ -5,17 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+
+
 using System.Linq;
 using NakedFunctions;
-using NakedObjects;
-using NakedObjects.Services;
-using NakedObjects.Menu;
+
+
 using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
 
 namespace AdventureWorksModel {
-    [DisplayName("Sales")]
+    [Named("Sales")]
     public static class SalesRepository  {
 
         #region FindSalesPersonByName
@@ -26,8 +25,8 @@ namespace AdventureWorksModel {
             
             [Optionally] string firstName,
             string lastName, 
-            [Injected] IQueryable<Person> persons,
-            [Injected] IQueryable<SalesPerson> sps) {
+            IQueryable<Person> persons,
+            IQueryable<SalesPerson> sps) {
             IQueryable<Person> matchingPersons = PersonRepository.FindContactByName( firstName, lastName, persons);
             return from sp in sps
                 from person in matchingPersons
@@ -40,12 +39,12 @@ namespace AdventureWorksModel {
 
        
         public static SalesPerson RandomSalesPerson(
-             [Injected] IQueryable<SalesPerson> sps,
+             IQueryable<SalesPerson> sps,
             [Injected] int random) {
             return Random(sps, random);
         }
 
-        [Idempotent][Description("... from an existing Employee")]
+        [Idempotent][DescribedAs("... from an existing Employee")]
         public static SalesPerson CreateNewSalesPerson([ContributedAction("Sales"), FindMenu] Employee employee) {
             //TODO:
             //var salesPerson = NewTransientInstance<SalesPerson>();
@@ -59,7 +58,7 @@ namespace AdventureWorksModel {
         [TableView(true)] //TableView == ListView
         public static IQueryable<Store> ListAccountsForSalesPerson(
             [ContributedAction("Sales")] SalesPerson sp,
-            [Injected] IQueryable<Store> stores
+            IQueryable<Store> stores
             ) {
             return from obj in stores
                 where obj.SalesPerson.BusinessEntityID == sp.BusinessEntityID
@@ -68,8 +67,8 @@ namespace AdventureWorksModel {
 
         [PageSize(20)]
         public static IQueryable<SalesPerson> AutoComplete0ListAccountsForSalesPerson(
-            [MinLength(2)] string name,
-            [Injected] IQueryable<SalesPerson> sps
+            [Range(2,0)] string name,
+            IQueryable<SalesPerson> sps
             ) {
             return sps.Where(sp => sp.EmployeeDetails.PersonDetails.LastName.ToUpper().StartsWith(name.ToUpper()));
         }
@@ -78,13 +77,13 @@ namespace AdventureWorksModel {
 
 
         public static IQueryable<SalesTaxRate> SalesTaxRates(
-            [Injected] IQueryable<SalesTaxRate> strs)
+            IQueryable<SalesTaxRate> strs)
         {
             return strs;
         }
 
         public static SalesTaxRate RandomSalesTaxRate(
-            [Injected] IQueryable<SalesTaxRate> strs,
+            IQueryable<SalesTaxRate> strs,
             [Injected] int random
             )
         {

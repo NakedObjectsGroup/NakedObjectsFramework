@@ -7,11 +7,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+
 using System.Linq;
 using System.Text;
 using NakedFunctions;
-using NakedObjects;
+using NakedFunctions;
 using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
 
 namespace AdventureWorksModel {
@@ -28,14 +28,14 @@ namespace AdventureWorksModel {
         L
     }
 
-    [DisplayName("Products")]
+    [Named("Products")]
     public static class ProductRepository  { 
 
         [TableView(true, "ProductNumber", "ProductSubcategory", "ListPrice"), MemberOrder(1)]
         public static IQueryable<Product> FindProductByName(
              
             string searchString, 
-            [Injected] IQueryable<Product> products)
+            IQueryable<Product> products)
         {
             return products.Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
         }
@@ -45,7 +45,7 @@ namespace AdventureWorksModel {
         public static (Product,string) FindProductByNumber(
             
             string number, 
-            [Injected] IQueryable<Product> products)
+            IQueryable<Product> products)
         {
             return SingleObjectWarnIfNoMatch(products.Where(x => x.ProductNumber == number));
         }
@@ -55,7 +55,7 @@ namespace AdventureWorksModel {
         [MemberOrder(10)]
         public static Product RandomProduct(
             
-            [Injected] IQueryable<Product> products, 
+            IQueryable<Product> products, 
             [Injected] int random)
         {
             return Random(products, random);
@@ -80,11 +80,11 @@ namespace AdventureWorksModel {
             return product;
         }
 
-        public static Product Default0FindProduct([Injected] IQueryable<Product> products) {
+        public static Product Default0FindProduct(IQueryable<Product> products) {
             return products.FirstOrDefault();
         }
 
-        public static IQueryable<Product> AutoComplete0FindProduct(string name, [Injected] IQueryable<Product> products) {
+        public static IQueryable<Product> AutoComplete0FindProduct(string name, IQueryable<Product> products) {
             return products.Where(x => x.Name.ToUpper().Contains(name.ToUpper()));
         }
 
@@ -97,11 +97,11 @@ namespace AdventureWorksModel {
         public static IQueryable<Product> ListProductsBySubCategory(
             
             [ContributedAction("Products")] ProductSubcategory subCategory, 
-            [Injected] IQueryable<Product> products) {
+            IQueryable<Product> products) {
             return products.Where(x => x.ProductSubcategory.ProductSubcategoryID == subCategory.ProductSubcategoryID).OrderBy(x => x.Name);
         }
 
-        public static ProductSubcategory Default0ListProductsBySubCategory([Injected] IQueryable<ProductSubcategory> subCats) {
+        public static ProductSubcategory Default0ListProductsBySubCategory(IQueryable<ProductSubcategory> subCats) {
             return subCats.FirstOrDefault();
         }
 
@@ -114,12 +114,12 @@ namespace AdventureWorksModel {
              
             ProductCategory category, 
             ProductSubcategory subCategory, 
-            [Injected] IQueryable<Product> products)
+            IQueryable<Product> products)
         {
             return products.Where(x => x.ProductSubcategory.ProductSubcategoryID == subCategory.ProductSubcategoryID).OrderBy(x => x.Name);
         }
 
-        public static ProductCategory Default0ListProducts([Injected] IQueryable<ProductCategory> cats)
+        public static ProductCategory Default0ListProducts(IQueryable<ProductCategory> cats)
         {
             return cats.FirstOrDefault();
         }
@@ -139,11 +139,11 @@ namespace AdventureWorksModel {
         public static IList<Product> ListProductsBySubCategories(
             
             IEnumerable<ProductSubcategory> subCategories,
-            [Injected] IQueryable<Product> products) {
+            IQueryable<Product> products) {
             return QueryableOfProductsBySubcat(subCategories, products).ToList();
         }
 
-        public static IList<ProductSubcategory> Default0ListProductsBySubCategories([Injected] IQueryable<ProductSubcategory> subCats) {
+        public static IList<ProductSubcategory> Default0ListProductsBySubCategories(IQueryable<ProductSubcategory> subCats) {
             return new List<ProductSubcategory> {
                 subCats.Single(psc => psc.Name == "Mountain Bikes"),
                 subCats.Single(psc => psc.Name == "Touring Bikes")
@@ -153,7 +153,7 @@ namespace AdventureWorksModel {
         private static IQueryable<Product> QueryableOfProductsBySubcat(
             
             IEnumerable<ProductSubcategory> subCategories,
-            [Injected] IQueryable<Product> products) {
+            IQueryable<Product> products) {
 
             IEnumerable<int> subCatIds = subCategories.Select(x => x.ProductSubcategoryID);
             return from p in products
@@ -176,17 +176,17 @@ namespace AdventureWorksModel {
             
             IEnumerable<ProductCategory> categories, 
             IEnumerable<ProductSubcategory> subcategories,
-            [Injected] IQueryable<Product> products) {
+            IQueryable<Product> products) {
             return QueryableOfProductsBySubcat( subcategories, products);
         }
 
-        public static IQueryable<ProductCategory> Choices0FindProductsByCategory([Injected] IQueryable<ProductCategory> cats) {
+        public static IQueryable<ProductCategory> Choices0FindProductsByCategory(IQueryable<ProductCategory> cats) {
             return cats;
         }
 
         public static IQueryable<ProductSubcategory> Choices1FindProductsByCategory(
             IEnumerable<ProductCategory> categories, 
-            [Injected] IQueryable<ProductSubcategory> subCats) 
+            IQueryable<ProductSubcategory> subCats) 
         {
             if (categories != null) {
                 IEnumerable<int> catIds = categories.Select(c => c.ProductCategoryID);
@@ -200,14 +200,14 @@ namespace AdventureWorksModel {
         }
 
         public static IList<ProductCategory> Default0FindProductsByCategory(
-            [Injected] IQueryable<ProductCategory> cats)
+            IQueryable<ProductCategory> cats)
         {
             return new List<ProductCategory> {cats.FirstOrDefault()};
         }
 
         public static List<ProductSubcategory> Default1FindProductsByCategory(
-            [Injected] IQueryable<ProductCategory> cats,
-             [Injected] IQueryable<ProductSubcategory> subCats)
+            IQueryable<ProductCategory> cats,
+             IQueryable<ProductSubcategory> subCats)
         {
             IList<ProductCategory> pcs = Default0FindProductsByCategory(cats);
 
@@ -231,7 +231,7 @@ namespace AdventureWorksModel {
             
             IEnumerable<ProductLineEnum> productLine, 
             IEnumerable<ProductClassEnum> productClass,
-            [Injected] IQueryable<Product> products)
+            IQueryable<Product> products)
         {
             foreach (ProductLineEnum pl in productLine) {
                 string pls = Enum.GetName(typeof (ProductLineEnum), pl);
@@ -259,7 +259,7 @@ namespace AdventureWorksModel {
             
             [Optionally]IEnumerable<ProductLineEnum> productLine, 
             [Optionally]IEnumerable<ProductClassEnum> productClass,
-            [Injected] IQueryable<Product> products)
+            IQueryable<Product> products)
         {
             if (productLine != null) {
                 foreach (ProductLineEnum pl in productLine) {
@@ -294,7 +294,7 @@ namespace AdventureWorksModel {
             
             ProductLineEnum productLine, 
             ProductClassEnum productClass,
-            [Injected] IQueryable<Product> products)
+            IQueryable<Product> products)
         {
             string pls = Enum.GetName(typeof (ProductLineEnum), productLine);
             string pcs = Enum.GetName(typeof (ProductClassEnum), productClass);
@@ -318,7 +318,7 @@ namespace AdventureWorksModel {
         /// <returns></returns>
       public static string StockReport(
             
-          [Injected] IQueryable<ProductInventory> inv)
+          IQueryable<ProductInventory> inv)
       {
           var inventories = inv.Select(pi => new InventoryLine {ProductName = pi.Product.Name, Quantity = pi.Quantity});
           var sb = new StringBuilder();
@@ -340,7 +340,7 @@ namespace AdventureWorksModel {
       }
 
         public static IQueryable<ProductPhoto> AllProductPhotos(
-            [Injected] IQueryable<ProductPhoto> photos)
+            IQueryable<ProductPhoto> photos)
         {
             return photos;
         }

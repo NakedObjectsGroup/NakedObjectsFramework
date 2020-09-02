@@ -6,12 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    public class SpecialOffer: IHasRowGuid, IHasModifiedDate {
+    public record SpecialOffer: IHasRowGuid, IHasModifiedDate {
 
         public SpecialOffer()
         {
@@ -45,7 +45,7 @@ namespace AdventureWorksModel {
             rowguid = rowGuid;
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int SpecialOfferID { get; set; }
 
         [MemberOrder(10)]
@@ -72,7 +72,7 @@ namespace AdventureWorksModel {
         [MemberOrder(61)]
         public virtual int MinQty { get; set; }
 
-        [Optionally]
+        
         [MemberOrder(62)]
         public virtual int? MaxQty { get; set; }
 
@@ -82,7 +82,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -90,7 +90,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion
@@ -117,7 +117,7 @@ namespace AdventureWorksModel {
             SpecialOffer sp,
             [Injected] DateTime now)
         {
-            return sp.With(x => x.ModifiedDate, now);
+            return sp with {ModifiedDate =  now};
         }
         #endregion
 

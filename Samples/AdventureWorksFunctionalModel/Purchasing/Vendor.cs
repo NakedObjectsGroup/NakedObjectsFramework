@@ -7,16 +7,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+
+
 using System.Linq;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [IconName("skyscraper.png")]
-    public class Vendor : IBusinessEntity {
+        public record Vendor : IBusinessEntity {
         #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
+        
         #endregion
 
         #region Life Cycle Methods
@@ -29,13 +28,13 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int BusinessEntityID { get; set; }
 
         [MemberOrder(10)]
         public virtual string AccountNumber { get; set; }
 
-        [Title]
+        //Title
         [MemberOrder(20)]
         public virtual string Name { get; set; }
 
@@ -48,18 +47,18 @@ namespace AdventureWorksModel {
         [MemberOrder(50)]
         public virtual bool ActiveFlag { get; set; }
 
-        [Optionally]
+        
         [MemberOrder(60)]
         public virtual string PurchasingWebServiceURL { get; set; }
 
-        public virtual IQueryable<string> AutoCompletePurchasingWebServiceURL([MinLength(2)] string value) {
+        public virtual IQueryable<string> AutoCompletePurchasingWebServiceURL([Range(2,0)] string value) {
             var matchingNames = new List<string> { "http://www.store1.com", "http://www.store2.com", "http://www.store3.com" };
             return from p in matchingNames.AsQueryable() select p.Trim();
         }
 
         private ICollection<ProductVendor> _ProductVendor = new List<ProductVendor>();
 
-        [DisplayName("Product - Order Info")]
+        [Named("Product - Order Info")]
         [TableView(true)] //  Not obvious which of many possible fields should be shown here
         [AWNotCounted] //To test this capability
         public virtual ICollection<ProductVendor> Products {
@@ -69,7 +68,7 @@ namespace AdventureWorksModel {
 
         //private ICollection<VendorAddress> _VendorAddress = new List<VendorAddress>();
 
-        //[Eagerly(EagerlyAttribute.Do.Rendering)]
+        //[RenderEagerly]
         //[TableView(true)] // TableView == ListView
         //public virtual ICollection<VendorAddress> Addresses {
         //    get { return _VendorAddress; }
@@ -78,7 +77,7 @@ namespace AdventureWorksModel {
 
         //private ICollection<VendorContact> _VendorContact = new List<VendorContact>();
 
-        //[Eagerly(EagerlyAttribute.Do.Rendering)]
+        //[RenderEagerly]
         //[TableView(true)] // TableView == ListView
         //public virtual ICollection<VendorContact> Contacts {
         //    get { return _VendorContact; }
@@ -88,7 +87,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -100,7 +99,7 @@ namespace AdventureWorksModel {
             return _Contact;
         }
 
-        [Description("Get report from credit agency")]
+        [DescribedAs("Get report from credit agency")]
         public void CheckCredit()
         {
             //Not implemented.  Action is to test disable function only.

@@ -7,12 +7,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
-using NakedObjects.Value;
+
+using NakedFunctions;
+
 
 namespace AdventureWorksModel {
-    public class ProductPhoto  {
+    public record ProductPhoto  {
 
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -33,7 +33,7 @@ namespace AdventureWorksModel {
         private ICollection<ProductProductPhoto> _ProductProductPhoto = new List<ProductProductPhoto>();
         private byte[] _ThumbNailPhoto = new byte[0];
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ProductPhotoID { get; set; }
 
         public virtual byte[] ThumbNailPhoto {
@@ -57,7 +57,7 @@ namespace AdventureWorksModel {
             }
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto {
             get { return _ProductProductPhoto; }
             set { _ProductProductPhoto = value; }
@@ -66,7 +66,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 

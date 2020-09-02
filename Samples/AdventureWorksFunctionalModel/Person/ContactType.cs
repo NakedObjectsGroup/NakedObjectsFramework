@@ -6,14 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("lookup.png")]
-    [Bounded]
-    public class ContactType : IHasModifiedDate {
+        [Bounded]
+    public record ContactType : IHasModifiedDate {
 
         public ContactType(int contactTypeID, string name, DateTime modifiedDate)
         {
@@ -24,13 +21,13 @@ namespace AdventureWorksModel {
 
         public ContactType() { }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ContactTypeID { get; set; }
 
         public virtual string Name { get; set; }
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
     }

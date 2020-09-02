@@ -7,16 +7,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+
+
+using NakedFunctions;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [IconName("globe.png")]
-    [Bounded]
-    [Immutable]
-    public class SalesTerritory {
+        [Bounded]
+        public record SalesTerritory {
 
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -31,14 +29,14 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int TerritoryID { get; set; }
 
         #endregion
 
         #region Name
 
-        [Title]
+        //Title
         [MemberOrder(10)]
         public virtual string Name { get; set; }
 
@@ -70,7 +68,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion
@@ -78,7 +76,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -90,7 +88,7 @@ namespace AdventureWorksModel {
 
         private ICollection<StateProvince> _StateProvince = new List<StateProvince>();
 
-        [DisplayName("States/Provinces covered")]
+        [Named("States/Provinces covered")]
         [TableView(true)] //Table View == List View
         public virtual ICollection<StateProvince> StateProvince {
             get { return _StateProvince; }

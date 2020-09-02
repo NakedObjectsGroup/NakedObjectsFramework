@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using NakedObjects;
 using NakedFunctions;
 
 namespace AdventureWorksModel
 {
     [ViewModelEdit]
-    public class EmailTemplate 
+    public record EmailTemplate 
     {
 
         public EmailTemplate(
@@ -31,16 +29,16 @@ namespace AdventureWorksModel
         [MemberOrder(10), Optionally]
         public virtual string To { get; set; }
 
-        [MemberOrder(20), Optionally]
+        [MemberOrder(20)]
         public virtual string From { get; set; }
 
-        [MemberOrder(30), Optionally]
+        [MemberOrder(30)]
         public virtual string Subject { get; set; }
 
-        [MemberOrder(40), Optionally]
+        [MemberOrder(40)]
         public virtual string Message { get; set; }
 
-        [Disabled]
+        
         public virtual EmailStatus Status { get; set; }
     }
 
@@ -68,10 +66,11 @@ namespace AdventureWorksModel
 
         public static (EmailTemplate, EmailTemplate) Send(this EmailTemplate et)
         {
-            return Result.DisplayAndPersist(et.With(x => x.Status, EmailStatus.Sent));
+            var et2 = et with { Status = EmailStatus.Sent };
+            return (et2, et2);
         }
 
-        public static IQueryable<string> AutoCompleteSubject(this EmailTemplate et, [MinLength(2)] string value)
+        public static IQueryable<string> AutoCompleteSubject(this EmailTemplate et, [Range(2,0)] string value)
         {
             var matchingNames = new List<string> { "Subject1", "Subject2", "Subject3" };
             return from p in matchingNames.AsQueryable() select p.Trim();

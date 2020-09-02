@@ -6,13 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("information")]
-    public class ProductDescription: IHasRowGuid, IHasModifiedDate {
+        public record ProductDescription: IHasRowGuid, IHasModifiedDate {
         public ProductDescription(
             int productDescriptionID,
             string description,
@@ -26,10 +23,10 @@ namespace AdventureWorksModel {
         }
         public ProductDescription() { }
 
-       [NakedObjectsIgnore]
+       [Hidden]
         public virtual int ProductDescriptionID { get; set; }
 
-        [Title]
+        //Title
         [MultiLine(NumberOfLines = 10)]
         [TypicalLength(100)]
         [MemberOrder(2)]
@@ -39,7 +36,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion
@@ -47,7 +44,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -64,7 +61,7 @@ namespace AdventureWorksModel {
         }
         public static ProductDescription Updating(ProductDescription a, [Injected] DateTime now)
         {
-            return a.With(x => x.ModifiedDate, now);
+            return a with {ModifiedDate =  now};
         }
     }
 }

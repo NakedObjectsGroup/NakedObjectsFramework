@@ -11,51 +11,51 @@ using System.Linq;
 using System.Security.Principal;
 using AdventureWorksModel;
 using NakedFunctions;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksFunctionalModel.Functions {
     public static class ProductFunctions {
-        public static IProduct GetAnotherProduct(this Product product, [Injected] IQueryable<IProduct> allProducts) {
+        public static IProduct GetAnotherProduct(this Product product, IQueryable<IProduct> allProducts) {
             return allProducts.First(p => p.ProductID != product.ProductID);
         }
 
-        public static string DisableGetAnotherProduct(this Product product, [Injected] IQueryable<IProduct> products) {
+        public static string DisableGetAnotherProduct(this Product product, IQueryable<IProduct> products) {
             return "";
         }
 
-        public static string ValidateGetAnotherProduct(this Product product, [Injected] IQueryable<IProduct> products) {
+        public static string ValidateGetAnotherProduct(this Product product, IQueryable<IProduct> products) {
             return "";
         }
 
-        public static string HideGetAnotherProduct(this Product product, [Injected] IQueryable<IProduct> products) {
+        public static string HideGetAnotherProduct(this Product product, IQueryable<IProduct> products) {
             return "";
         }
 
-        public static (IProduct, string) GetAnotherProductWithWarning(this Product product, [Injected] IQueryable<IProduct> allProducts) {
+        public static (IProduct, string) GetAnotherProductWithWarning(this Product product, IQueryable<IProduct> allProducts) {
             return (allProducts.First(p => p.ProductID != product.ProductID), "A warning message");
         }
 
-        public static IQueryable<IProduct> GetProducts(this Product product, [Injected] IQueryable<IProduct> allProducts) {
+        public static IQueryable<IProduct> GetProducts(this Product product, IQueryable<IProduct> allProducts) {
             return allProducts.Where(p => p.ProductID != product.ProductID).Take(2);
         }
 
-        public static IList<IProduct> GetProductsNotQueryable(this Product product, [Injected] IQueryable<IProduct> allProducts) {
+        public static IList<IProduct> GetProductsNotQueryable(this Product product, IQueryable<IProduct> allProducts) {
             return allProducts.Where(p => p.ProductID != product.ProductID).Take(2).ToList();
         }
 
-        public static (Product, Product) GetAndPersistProduct(this Product product, [Injected] IQueryable<Product> allProducts) {
+        public static (Product, Product) GetAndPersistProduct(this Product product, IQueryable<Product> allProducts) {
             var pp = allProducts.First(p => p.ProductID != product.ProductID);
             pp.Name = $"{pp.Name}:1";
             return Result.DisplayAndPersist(pp);
         }
 
-        public static (Product, Product[]) GetAndPersistProducts(this Product product, [Injected] IQueryable<Product> allProducts) {
+        public static (Product, Product[]) GetAndPersistProducts(this Product product, IQueryable<Product> allProducts) {
             var pp = allProducts.First(p => p.ProductID != product.ProductID);
             pp.Name = $"{pp.Name}:1";
             return (pp, new[] {pp});
         }
 
-        public static (Product, (Product, Product)) GetAndPersistProductsTuple(this Product product, [Injected] IQueryable<Product> allProducts) {
+        public static (Product, (Product, Product)) GetAndPersistProductsTuple(this Product product, IQueryable<Product> allProducts) {
             var pps = allProducts.Where(p => p.ProductID != product.ProductID).Take(2).ToList();
             var pp1 = pps.First();
             var pp2 = pps.Last();
@@ -64,7 +64,7 @@ namespace AdventureWorksFunctionalModel.Functions {
             return (pp1, (pp1, pp2));
         }
 
-        public static (Product, (Product, Product, (Product, Product))) GetAndPersistProductsNestedTuple(this Product product, [Injected] IQueryable<Product> allProducts) {
+        public static (Product, (Product, Product, (Product, Product))) GetAndPersistProductsNestedTuple(this Product product, IQueryable<Product> allProducts) {
             var pps = allProducts.Where(p => p.ProductID != product.ProductID).Take(4).ToArray();
             var pp1 = pps[0];
             var pp2 = pps[1];
@@ -77,33 +77,33 @@ namespace AdventureWorksFunctionalModel.Functions {
             return (pp1, (pp1, pp2, (pp3, pp4)));
         }
 
-        public static (Product, Product[], string) GetAndPersistProductsWithWarning(this Product product, [Injected] IQueryable<Product> allProducts) {
+        public static (Product, Product[], string) GetAndPersistProductsWithWarning(this Product product, IQueryable<Product> allProducts) {
             var pp = allProducts.First(p => p.ProductID != product.ProductID);
             pp.Name = $"{pp.Name}:1";
             return (pp, new[] {pp}, "A warning message");
         }
 
-        public static (Product, Product, string) GetAndPersistProductWithWarning(this Product product, [Injected] IQueryable<Product> allProducts) {
+        public static (Product, Product, string) GetAndPersistProductWithWarning(this Product product, IQueryable<Product> allProducts) {
             var pp = allProducts.First(p => p.ProductID != product.ProductID);
             pp.Name = $"{pp.Name}:1";
             return Result.DisplayAndPersist(pp, "A warning message");
         }
 
-        public static (Product, Product) UpdateProductUsingRemute(this Product product, [Injected] IQueryable<Product> allProducts) {
+        public static (Product, Product) UpdateProductUsingRemute(this Product product, IQueryable<Product> allProducts) {
             //var pp = allProducts.First(p => p.ProductID != product.ProductID);
 
-            var up = product.With(x => x.Name, $"{product.Name}:1");
+            var up = product with {Name =  $"{product.Name}:1"};
             return Result.DisplayAndPersist(up);
         }
 
-        public static (IProduct, IProduct) UpdateIProductUsingRemute(this Product product, [Injected] IQueryable<IProduct> allProducts) {
+        public static (IProduct, IProduct) UpdateIProductUsingRemute(this Product product, IQueryable<IProduct> allProducts) {
             var pp = allProducts.First(p => p.ProductID != product.ProductID);
 
-            var up = pp.With(x => x.Name, $"{pp.Name}:1");
+            var up = pp with {Name =  $"{pp.Name}:1"};
             return Result.DisplayAndPersist(up);
         }
 
-        public static Product GetAndChangeButNotPersistProduct(this Product product, [Injected] IQueryable<Product> allProducts) {
+        public static Product GetAndChangeButNotPersistProduct(this Product product, IQueryable<Product> allProducts) {
             var pp = allProducts.First(p => p.ProductID != product.ProductID);
             pp.Name = $"{pp.Name}:2";
             return pp;
@@ -133,21 +133,21 @@ namespace AdventureWorksFunctionalModel.Functions {
             return p.CreateTitle($"{p.Name}");
         }
 
-        public static IProduct Persisting(this Product product, [Injected] IQueryable<Product> allProducts, [Injected] Guid guid) {
+        public static IProduct Persisting(this Product product, IQueryable<Product> allProducts, [Injected] Guid guid) {
             product.rowguid = guid;
             return product;
         }
 
-        public static IProduct Persisted(this Product product, [Injected] IQueryable<Product> allProducts, [Injected] Guid guid) {
+        public static IProduct Persisted(this Product product, IQueryable<Product> allProducts, [Injected] Guid guid) {
             return null;
         }
 
-        public static IProduct Updating(this Product product, [Injected] IQueryable<Product> allProducts, [Injected] Guid guid) {
+        public static IProduct Updating(this Product product, IQueryable<Product> allProducts, [Injected] Guid guid) {
             product.rowguid = guid;
             return product;
         }
 
-        public static IProduct Updated(this Product product, [Injected] IQueryable<Product> allProducts, [Injected] Guid guid) {
+        public static IProduct Updated(this Product product, IQueryable<Product> allProducts, [Injected] Guid guid) {
             return null;
         }
 
@@ -156,11 +156,11 @@ namespace AdventureWorksFunctionalModel.Functions {
             return product1;
         }
 
-        public static Product Default1FindProduct(this Product product, [Injected] IQueryable<Product> products) {
+        public static Product Default1FindProduct(this Product product, IQueryable<Product> products) {
             return products.FirstOrDefault();
         }
 
-        public static IQueryable<Product> AutoComplete1FindProduct(this Product product, string name, [Injected] IQueryable<Product> products) {
+        public static IQueryable<Product> AutoComplete1FindProduct(this Product product, string name, IQueryable<Product> products) {
             return products.Where(x => x.Name.ToUpper().Contains(name.ToUpper()));
         }
 
@@ -168,11 +168,11 @@ namespace AdventureWorksFunctionalModel.Functions {
             return product1;
         }
 
-        public static IEnumerable<Product> Choices1SelectProduct(this Product product, [Injected] IQueryable<Product> products) {
+        public static IEnumerable<Product> Choices1SelectProduct(this Product product, IQueryable<Product> products) {
             return products.Take(10).ToList();
         }
 
-        [Disabled]
+        
         public static Product TestDisabled(this Product product, Product product1) {
             return product1;
         }

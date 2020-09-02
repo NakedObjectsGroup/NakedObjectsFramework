@@ -6,15 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("lookup.png")]
-    [Bounded]
-    [Immutable]
-    public class ProductSubcategory: IHasRowGuid, IHasModifiedDate {
+        [Bounded]
+        public record ProductSubcategory: IHasRowGuid, IHasModifiedDate {
 
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -27,13 +24,13 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ProductSubcategoryID { get; set; }
 
-        [Title]
+        //Title
         public virtual string Name { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ProductCategoryID { get; set; }
 
         public virtual ProductCategory ProductCategory { get; set; }
@@ -42,7 +39,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion
@@ -50,7 +47,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -69,7 +66,7 @@ namespace AdventureWorksModel {
 
         public static ProductSubcategory Updating(ProductSubcategory a, [Injected] DateTime now)
         {
-            return a.With(x => x.ModifiedDate, now);
+            return a with {ModifiedDate =  now};
         }
 
     }

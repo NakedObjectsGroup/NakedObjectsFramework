@@ -7,16 +7,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using System.Linq;
 using NakedFunctions;
-using NakedObjects;
 
 
 namespace AdventureWorksModel {
-    [IconName("house.png")]
-    [Immutable(WhenTo.OncePersisted)]
-    public class Address : IHasRowGuid, IHasModifiedDate
+            public record Address : IHasRowGuid, IHasModifiedDate
     {
         public Address(
             int addressID,
@@ -57,63 +54,61 @@ namespace AdventureWorksModel {
 
         }
 
-        [Disabled]
+        
         public virtual int AddressID { get; set; }
 
         [MemberOrder(11)]
-        [StringLength(60)]
+        
         public virtual string AddressLine1 { get; set; }
 
         [MemberOrder(12)]
-        [Optionally]
-        [StringLength(60)]
         public virtual string AddressLine2 { get; set; }
 
         [MemberOrder(13)]
-        [StringLength(30)]
+        
         public virtual string City { get; set; }
 
         [MemberOrder(14)]
-        [StringLength(15)]
+        
         public virtual string PostalCode { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int StateProvinceID { get; set; }
 
         [MemberOrder(15)]
         public virtual StateProvince StateProvince { get; set; }
 
-        //[NakedObjectsIgnore]
+        //[Hidden]
         //public virtual int CountryRegionID { get; set; }
 
         [Disabled(WhenTo.OncePersisted)]
-        [NotPersisted]
-        [Optionally]
+        
+        
         [MemberOrder(16)]
         public virtual CountryRegion CountryRegion { get; set; }
 
-        //[NakedObjectsIgnore]
+        //[Hidden]
         //public virtual int AddressTypeID { get; set; }
 
-        [Hidden(WhenTo.OncePersisted)]
-        [NotPersisted]
+        []
+        
         [MemberOrder(10)]
         public virtual AddressType AddressType { get; set; }
 
-        //[NakedObjectsIgnore]
+        //[Hidden]
         //public virtual int AddressForID { get; set; }
 
-        [NotPersisted]
-        [Disabled]
+        
+        
         public virtual BusinessEntity AddressFor { get; set; }
 
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -133,7 +128,7 @@ namespace AdventureWorksModel {
 
         public static Address Persisting(Address a, [Injected] Guid guid, [Injected] DateTime now )
         {
-            return Updating(a, now).With(x => x.rowguid,guid); 
+            return Updating(a, now) with {rowguid = guid}; 
         }
 
         //Any object or list returned by Persisted (or Updated), is not for display but to be persisted/updated
@@ -160,7 +155,7 @@ namespace AdventureWorksModel {
 
         //TODO: Validate and Choices methods were both commented-out in original code, and
         //there is redundancy between them.  Included here (temporarily) for example purposes.
-        public static string Validate(Address a, CountryRegion countryRegion, StateProvince stateProvince, [Injected] IQueryable<StateProvince> allProvinces)
+        public static string Validate(Address a, CountryRegion countryRegion, StateProvince stateProvince, IQueryable<StateProvince> allProvinces)
         {
             IList<StateProvince> valid = StateProvincesForCountry(countryRegion, allProvinces);
 
@@ -177,7 +172,7 @@ namespace AdventureWorksModel {
         //Choices function with the Address type. 
         //TODO: Is Executed relevant any more? Or is it a hangover from early thick-client NOF ?
         [Executed(Where.Remotely)]
-        public static IList<StateProvince> ChoicesStateProvince(Address a, CountryRegion countryRegion, [Injected] IQueryable<StateProvince> allProvincences)
+        public static IList<StateProvince> ChoicesStateProvince(Address a, CountryRegion countryRegion, IQueryable<StateProvince> allProvincences)
         {
             return countryRegion != null ? StateProvincesForCountry(countryRegion, allProvincences) : new List<StateProvince>();
         }

@@ -6,12 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class ProductDocument : IHasModifiedDate {
+    public record ProductDocument : IHasModifiedDate {
         public ProductDocument(
             int productID,
             int documentID,
@@ -35,7 +33,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -46,7 +44,7 @@ namespace AdventureWorksModel {
     {
         public static ProductDocument Updating(ProductDocument c, [Injected] DateTime now)
         {
-            return c.With(x => x.ModifiedDate, now);
+            return c with {ModifiedDate =  now};
         }
     }
 }

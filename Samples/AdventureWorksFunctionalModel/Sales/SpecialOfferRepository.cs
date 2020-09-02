@@ -6,22 +6,22 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+
+
 using System.Linq;
 using AdventureWorksFunctionalModel.Functions;
 using NakedFunctions;
-using NakedObjects;
-using NakedObjects.Services;
+using NakedFunctions;
+
 
 namespace AdventureWorksModel {
-    [DisplayName("Special Offers")]
+    [Named("Special Offers")]
     public static class SpecialOfferRepository {
         #region CurrentSpecialOffers
 
         [MemberOrder(1)]
         [TableView(false, "Description", "XNoMatchingColumn", "Category", "DiscountPct")] 
-        public static IQueryable<SpecialOffer> CurrentSpecialOffers( [Injected] IQueryable<SpecialOffer> specialOffers) {
+        public static IQueryable<SpecialOffer> CurrentSpecialOffers( IQueryable<SpecialOffer> specialOffers) {
             return from obj in specialOffers
                 where obj.StartDate <= DateTime.Now &&
                       obj.EndDate >= new DateTime(2004, 6, 1)
@@ -33,7 +33,7 @@ namespace AdventureWorksModel {
         #region All Special Offers
         //Returns most recently-modified first
         [MemberOrder(2)]
-        public static IQueryable<SpecialOffer> AllSpecialOffers( [Injected] IQueryable<SpecialOffer> specialOffers)
+        public static IQueryable<SpecialOffer> AllSpecialOffers( IQueryable<SpecialOffer> specialOffers)
         {
             return specialOffers.OrderByDescending(so => so.ModifiedDate);
         }
@@ -41,7 +41,7 @@ namespace AdventureWorksModel {
 
         #region Special Offers With No Minimum Qty
         [MemberOrder(3)]
-        public static IQueryable<SpecialOffer> SpecialOffersWithNoMinimumQty( [Injected] IQueryable<SpecialOffer> specialOffers)
+        public static IQueryable<SpecialOffer> SpecialOffersWithNoMinimumQty( IQueryable<SpecialOffer> specialOffers)
         {
             return CurrentSpecialOffers(specialOffers).Where(s => s.MinQty <= 1);
         }
@@ -57,7 +57,7 @@ namespace AdventureWorksModel {
             DateTime startDate,
             DateTime endDate,
             [DefaultValue(1)] int minQty,
-            [Optionally] int? maxQty,
+             int? maxQty,
             [Injected] DateTime now,
             [Injected] Guid guid
             ) {
@@ -122,7 +122,7 @@ namespace AdventureWorksModel {
             
             [ContributedAction("Special Offers")] SpecialOffer offer, 
             [ContributedAction("Special Offers")] Product product,
-            [Injected] IQueryable<SpecialOfferProduct> sops
+            IQueryable<SpecialOfferProduct> sops
             ) {
             //First check if association already exists
             IQueryable<SpecialOfferProduct> query = from sop in sops
@@ -143,15 +143,15 @@ namespace AdventureWorksModel {
 
         [PageSize(20)]
         public static IQueryable<SpecialOffer> AutoComplete0AssociateSpecialOfferWithProduct(
-            [MinLength(2)] string name,
-            [Injected] IQueryable<SpecialOffer> offers) {
+            [Range(2,0)] string name,
+            IQueryable<SpecialOffer> offers) {
             return offers.Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
         }
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete1AssociateSpecialOfferWithProduct(
-            [MinLength(2)] string name,
-            [Injected] IQueryable<Product> products
+            [Range(2,0)] string name,
+            IQueryable<Product> products
             ) {
             return products.Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
         }
@@ -160,7 +160,7 @@ namespace AdventureWorksModel {
 
         #region Helper methods
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public static SpecialOffer NoDiscount(IQueryable<SpecialOffer> offers)
         {
             return offers.Where(x => x.SpecialOfferID == 1).First();

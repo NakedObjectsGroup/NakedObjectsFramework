@@ -1,11 +1,9 @@
-using NakedObjects;
-using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
+using System;
 
 namespace AdventureWorksModel {
     [Bounded]
-    public class PhoneNumberType : IHasModifiedDate {
+    public record PhoneNumberType : IHasModifiedDate {
         public PhoneNumberType(int phoneNumberTypeID, string name, DateTime modifiedDate)
         {
             PhoneNumberTypeID = phoneNumberTypeID;
@@ -15,13 +13,13 @@ namespace AdventureWorksModel {
 
         public PhoneNumberType() { }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int PhoneNumberTypeID { get; set; }
 
-        [Hidden(WhenTo.Always)]
+        [Hidden]
         public virtual string Name { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
     }

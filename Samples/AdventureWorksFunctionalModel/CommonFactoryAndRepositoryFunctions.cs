@@ -1,4 +1,4 @@
-﻿using NakedObjects.Resources;
+﻿
 using System.Linq;
 using NakedFunctions;
 

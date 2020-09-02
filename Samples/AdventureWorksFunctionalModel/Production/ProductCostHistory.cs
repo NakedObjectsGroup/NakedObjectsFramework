@@ -6,13 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("clipboard.png")]
-    public class ProductCostHistory : IHasModifiedDate {
+        public record ProductCostHistory : IHasModifiedDate {
         public ProductCostHistory(
             int productID,
             DateTime startDate,
@@ -31,20 +28,20 @@ namespace AdventureWorksModel {
         }
         public ProductCostHistory() {}
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ProductID { get; set; }
 
         public virtual DateTime StartDate { get; set; }
         public virtual DateTime? EndDate { get; set; }
         public virtual decimal StandardCost { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Product Product { get; set; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -61,7 +58,7 @@ namespace AdventureWorksModel {
         }
         public static ProductCostHistory Updating(ProductCostHistory c, [Injected] DateTime now)
         {
-            return c.With(x => x.ModifiedDate, now);
+            return c with {ModifiedDate =  now};
         }
 
     }

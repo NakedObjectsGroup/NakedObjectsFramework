@@ -7,17 +7,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+
+
 using System.Linq;
 using AdventureWorksFunctionalModel;
 using NakedFunctions;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel
 {
-    [IconName("skyscraper.png")]
-    public class Store : BusinessEntity, IBusinessEntityWithContacts, IHasModifiedDate
+        public record Store : BusinessEntity, IBusinessEntityWithContacts, IHasModifiedDate
     {
 
         private Store() { }
@@ -46,15 +45,15 @@ namespace AdventureWorksModel
 
         #region Properties
 
-        [DisplayName("Store Name"), MemberOrder(20)]
+        [Named("Store Name"), MemberOrder(20)]
         public virtual string Name { get; private set; }
 
         #region Demographics
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual string Demographics { get; private set; }
 
-        [DisplayName("Demographics"), MemberOrder(30), MultiLine(NumberOfLines = 10), TypicalLength(500)]
+        [Named("Demographics"), MemberOrder(30), MultiLine(NumberOfLines = 10), TypicalLength(500)]
         public virtual string FormattedDemographics
         {
             get { return Utilities.FormatXML(Demographics); }
@@ -63,18 +62,18 @@ namespace AdventureWorksModel
         #endregion
 
         #region SalesPerson
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int? SalesPersonID { get; private set; }
 
-        [Optionally]
+        
         [MemberOrder(40), FindMenu]
         public virtual SalesPerson SalesPerson { get; private set; }
 
         [PageSize(20)]
         public IQueryable<SalesPerson> AutoCompleteSalesPerson(
-            [MinLength(2)] string name,
-            [Injected] IQueryable<Person> persons,
-            [Injected] IQueryable<SalesPerson> sps)
+            [Range(2,0)] string name,
+            IQueryable<Person> persons,
+            IQueryable<SalesPerson> sps)
         {
             return SalesRepository.FindSalesPersonByName(null, name, persons, sps);
         }
@@ -86,14 +85,14 @@ namespace AdventureWorksModel
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         public virtual DateTime ModifiedDate { get; private set; }
 
         #endregion
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; private set; }
 
         #endregion
@@ -116,13 +115,14 @@ namespace AdventureWorksModel
             Store sp,
             [Injected] DateTime now)
         {
-            return sp.With(x => x.ModifiedDate, now);
+            return sp with {ModifiedDate =  now};
         }
         #endregion
 
         public static (Store,Store) UpdateName(this Store s, string newName)
         {
-            return Result.DisplayAndPersist(s.With(x => x.Name, newName));
+            var s2 = s with {Name =  newName};
+            return (s2, s2);
         }
     }
 }

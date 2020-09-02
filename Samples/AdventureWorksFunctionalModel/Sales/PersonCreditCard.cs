@@ -6,11 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    public class PersonCreditCard {
+    public record PersonCreditCard {
         #region Life Cycle Methods
         public virtual void Persisting() {
             ModifiedDate = DateTime.Now;
@@ -21,13 +21,13 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int PersonID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int CreditCardID { get; set; }
 
-        [Title]
+        //Title
         public virtual Person Person { get; set; }
 
         public virtual CreditCard CreditCard { get; set; }
@@ -35,7 +35,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 

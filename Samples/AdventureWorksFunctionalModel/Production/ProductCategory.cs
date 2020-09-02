@@ -7,15 +7,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
     [Bounded]
-    [Immutable]
-    public class ProductCategory: IHasRowGuid, IHasModifiedDate  {
+        public record ProductCategory: IHasRowGuid, IHasModifiedDate  {
 
         public ProductCategory(
             int productCategoryID,
@@ -36,12 +32,12 @@ namespace AdventureWorksModel {
 
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ProductCategoryID { get; set; }
 
         public virtual string Name { get; set; }
 
-        [DisplayName("Subcategories")]
+        [Named("Subcategories")]
         [TableView(true)] //TableView == ListView
         public virtual ICollection<ProductSubcategory> ProductSubcategory { get; set; } = new List<ProductSubcategory>();
 
@@ -49,7 +45,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion
@@ -57,7 +53,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -76,7 +72,7 @@ namespace AdventureWorksModel {
 
         public static ProductCategory Updating(ProductCategory a, [Injected] DateTime now)
         {
-            return a.With(x => x.ModifiedDate, now);
+            return a with {ModifiedDate =  now};
         }
 
     }

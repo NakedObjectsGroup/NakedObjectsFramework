@@ -7,12 +7,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class Illustration  {
+    public record Illustration  {
 
         public Illustration(
             int illustrationID,
@@ -35,7 +33,7 @@ namespace AdventureWorksModel {
         public ICollection<ProductModelIllustration> ProductModelIllustration { get; set; }
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
     }
@@ -44,7 +42,7 @@ namespace AdventureWorksModel {
     {
         public static Illustration Updating(Illustration ill, [Injected] DateTime now)
         {
-            return ill.With(x => x.ModifiedDate, now);
+            return ill with {ModifiedDate =  now};
         }
     }
 }

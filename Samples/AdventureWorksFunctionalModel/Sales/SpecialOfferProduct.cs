@@ -6,14 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    public class SpecialOfferProduct {
+    public record SpecialOfferProduct {
 
         #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
+        
         #endregion
 
         #region Life Cycle Methods
@@ -26,10 +26,10 @@ namespace AdventureWorksModel {
             ModifiedDate = DateTime.Now;
         }
         #endregion
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int SpecialOfferID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ProductID { get; set; }
 
         [MemberOrder(1)]
@@ -53,7 +53,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -61,7 +61,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion

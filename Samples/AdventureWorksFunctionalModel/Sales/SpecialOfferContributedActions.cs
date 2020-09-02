@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NakedObjects;
 using NakedFunctions;
-using static NakedFunctions.Result;
+using NakedFunctions;
+
 using System.Linq.Expressions;
 
 namespace AdventureWorksModel.Sales {
     public static class SpecialOfferContributedActions
     {
         //TODO: This example shows we must permit returning a List (not a queryable) for display.
-        public static (IList<SpecialOffer> , IList<SpecialOffer>) ExtendOffers([ContributedAction] IQueryable<SpecialOffer> offers, DateTime toDate)
+        public static (IList<SpecialOffer> , IList<SpecialOffer>) ExtendOffers(this IQueryable<SpecialOffer> offers, DateTime toDate)
         {
             return Change(offers, y => y.EndDate, toDate);
         }
 
         public static (IList<SpecialOffer>, IList<SpecialOffer>) TerminateActiveOffers(
-            [ContributedAction] IQueryable<SpecialOffer> offers,
+            this IQueryable<SpecialOffer> offers,
             [Injected] DateTime now)
         {
             var yesterday = now.Date.AddDays(-1);
@@ -24,20 +24,20 @@ namespace AdventureWorksModel.Sales {
         }
 
         public static (IList<SpecialOffer>, IList<SpecialOffer>) ChangeType(
-            [ContributedAction] IQueryable<SpecialOffer> offers, 
+            this IQueryable<SpecialOffer> offers, 
             string newType)
         {
             return Change(offers, y => y.Type, newType);
         }
 
         public static (IList<SpecialOffer>, IList<SpecialOffer>) ChangeMaxQuantity(
-            [ContributedAction] IQueryable<SpecialOffer> offers, 
+            this IQueryable<SpecialOffer> offers, 
             int newMax)
         {
             return Change(offers, y => y.MaxQty, newMax);
         }
 
-        public static (IList<SpecialOffer>, IList<SpecialOffer>) ChangeDiscount([ContributedAction] IQueryable<SpecialOffer> offers, decimal newDiscount)
+        public static (IList<SpecialOffer>, IList<SpecialOffer>) ChangeDiscount(this IQueryable<SpecialOffer> offers, decimal newDiscount)
         {
             return Change(offers, y => y.DiscountPct, newDiscount);
         }

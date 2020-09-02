@@ -6,14 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
-using NakedObjects.Menu;
 
 namespace AdventureWorksModel {
-    [IconName("cartons.png")]
-    public class ProductInventory : IHasRowGuid, IHasModifiedDate {
+        public record ProductInventory : IHasRowGuid, IHasModifiedDate {
 
         public ProductInventory(
             int productID,
@@ -40,10 +36,10 @@ namespace AdventureWorksModel {
 
         public ProductInventory() { }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ProductID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual short LocationID { get; set; }
 
         [MemberOrder(40)]
@@ -65,7 +61,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion
@@ -73,7 +69,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -90,7 +86,7 @@ namespace AdventureWorksModel {
         }
         public static ProductInventory Updating(ProductInventory a, [Injected] DateTime now)
         {
-            return a.With(x => x.ModifiedDate, now);
+            return a with {ModifiedDate =  now};
         }
     }
 }

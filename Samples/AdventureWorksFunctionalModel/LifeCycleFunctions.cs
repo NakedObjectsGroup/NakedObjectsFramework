@@ -9,7 +9,7 @@ namespace AdventureWorksModel
 
         internal static T UpdateModified<T>(T obj, DateTime when) where T : IHasModifiedDate
         {
-            return obj.With(x => x.ModifiedDate, when);
+            return obj with {ModifiedDate =  when};
         }
     }
 }

@@ -5,18 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+
 using System.Linq;
 using System.Security.Principal;
 using NakedFunctions;
-using NakedObjects;
 using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
-using static NakedFunctions.Result;
+
 
 namespace AdventureWorksModel {
-    [DisplayName("Employees")]
+    [Named("Employees")]
     public static class EmployeeRepository {
 
         [TableView(true,
@@ -28,8 +25,8 @@ namespace AdventureWorksModel {
             
             [Optionally] string firstName,
             string lastName,
-            [Injected] IQueryable<Person> persons,
-            [Injected] IQueryable<Employee> employees)
+            IQueryable<Person> persons,
+            IQueryable<Employee> employees)
         {
 
             IQueryable<Person> matchingContacts = PersonRepository.FindContactByName( firstName, lastName, persons);
@@ -47,7 +44,7 @@ namespace AdventureWorksModel {
         public static (Employee, string) FindEmployeeByNationalIDNumber(
             
             string nationalIDNumber,
-            [Injected] IQueryable<Employee> employees)
+            IQueryable<Employee> employees)
         {
             IQueryable<Employee> query = from obj in employees
                                          where obj.NationalIDNumber == nationalIDNumber
@@ -59,7 +56,7 @@ namespace AdventureWorksModel {
         public static (Employee, Employee) CreateNewEmployeeFromContact(
             
             [ContributedAction("Employees")] Person contactDetails,
-            [Injected] IQueryable<Employee> employees)
+            IQueryable<Employee> employees)
         {
             var e = new Employee(
                 contactDetails.BusinessEntityID,
@@ -69,22 +66,22 @@ namespace AdventureWorksModel {
 
         //[PageSize(20)]
         //public static IQueryable<Person> AutoComplete0CreateNewEmployeeFromContact(
-        //    [MinLength(2)] string name,
-        //    [Injected] IQueryable<Person> persons) {
+        //    [Range(2,0)] string name,
+        //    IQueryable<Person> persons) {
         //    return persons.Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
         //}
 
         [FinderAction]
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [RenderEagerly]
         [TableView(true, "GroupName")]
         public static IQueryable<Department> ListAllDepartments(
             
-            [Injected] IQueryable<Department> depts)
+            IQueryable<Department> depts)
         {
             return depts;
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public static Employee CurrentUserAsEmployee(
             
             IQueryable<Employee> employees,
@@ -97,7 +94,7 @@ namespace AdventureWorksModel {
         
         public static Employee Me(
             
-            [Injected] IQueryable<Employee> employees,
+            IQueryable<Employee> employees,
             [Injected] IPrincipal principal)
         {
             return CurrentUserAsEmployee( employees, principal);
@@ -105,9 +102,9 @@ namespace AdventureWorksModel {
 
         //public static (IQueryable<Employee>, string) MyDepartmentalColleagues(
         //    
-        //    [Injected] IQueryable<Employee> employees,
+        //    IQueryable<Employee> employees,
         //    [Injected] IPrincipal principal,
-        //    [Injected] IQueryable<EmployeeDepartmentHistory> edhs) {
+        //    IQueryable<EmployeeDepartmentHistory> edhs) {
         //    var me = CurrentUserAsEmployee(m, employees, principal);
         //    if (me == null) {
         //        return Display((IQueryable<Employee>) null, "Current user unknown");
@@ -120,7 +117,7 @@ namespace AdventureWorksModel {
         
         public static Employee RandomEmployee(
              
-             [Injected] IQueryable<Employee> employees,
+             IQueryable<Employee> employees,
              [Injected] int random)
         {
             return Random(employees, random);
@@ -133,7 +130,7 @@ namespace AdventureWorksModel {
         //    [Optionally] bool? married,
         //    [DefaultValue(false)] bool? salaried,
         //    [Optionally] [DefaultValue(true)] bool? olderThan50,
-        //    [Injected] IQueryable<Employee> employees
+        //    IQueryable<Employee> employees
         //    ) {
         //    var emps = employees.Where(e => e.Current == current.Value);
         //    if (married != null) {
@@ -160,14 +157,14 @@ namespace AdventureWorksModel {
         //    [Optionally] bool married,
         //    [DefaultValue(false)] bool salaried,
         //    [DefaultValue(true)] bool olderThan50,
-        //    [Injected] IQueryable<Employee> employees)
+        //    IQueryable<Employee> employees)
         //{
         //    return ListEmployees(m, current, married, salaried, olderThan50, employees);
         //}
 
         public static IQueryable<Shift> Shifts(
             
-            [Injected] IQueryable<Shift> shifts)
+            IQueryable<Shift> shifts)
         {
             return shifts;
         }

@@ -7,19 +7,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    [DisplayName("Sales Order")]
-    [IconName("trolley.png")]
-    public class SalesOrderHeader : ICreditCardCreator {
+    [Named("Sales Order")]
+        public record SalesOrderHeader : ICreditCardCreator {
 
         #region Injected Servives
-        public IDomainObjectContainer Container { set; protected get; }
+        
 
 
         #endregion
@@ -43,8 +39,8 @@ namespace AdventureWorksModel {
         }
 
         public void Persisted(
-            [Injected] IQueryable<SpecialOfferProduct> sops,
-            [Injected] IQueryable<ShoppingCartItem> items) {
+            IQueryable<SpecialOfferProduct> sops,
+            IQueryable<ShoppingCartItem> items) {
             if (AddItemsFromCart) {
                 ShoppingCartRepository.AddAllItemsInCartToOrder(this, sops, items);
                 AddItemsFromCart = false;
@@ -57,22 +53,21 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        [Disabled, NotPersisted, Hidden(WhenTo.OncePersisted)]
         public bool AddItemsFromCart { get; set; }
 
         #region Properties
 
         #region ID
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int SalesOrderID { get; set; }
 
         #endregion
 
         #region SalesOrderNumber
 
-        [Title]
-        [Disabled]
+        //Title
+        
         [MemberOrder(1)]
         public virtual string SalesOrderNumber { get; set; }
 
@@ -80,7 +75,7 @@ namespace AdventureWorksModel {
 
         #region Status
 
-        //Properly, the Status property should be [Disabled], and modified only through
+        //Properly, the Status property should be , and modified only through
         //appropriate actions such as Approve.  It has been left modifiable here only
         //to demonstrate the behaviour of Enum properties.
         [MemberOrder(1.1), TypicalLength(12), EnumDataType(typeof (OrderStatus))]
@@ -90,32 +85,32 @@ namespace AdventureWorksModel {
             return (byte) OrderStatus.InProcess;
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual bool IsInProcess() {
             return Status.Equals((byte) OrderStatus.InProcess);
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual bool IsApproved() {
             return Status.Equals((byte) OrderStatus.Approved);
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual bool IsBackOrdered() {
             return Status.Equals((byte) OrderStatus.BackOrdered);
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual bool IsRejected() {
             return Status.Equals((byte) OrderStatus.Rejected);
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual bool IsShipped() {
             return Status.Equals((byte) OrderStatus.Shipped);
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual bool IsCancelled() {
             return Status.Equals((byte) OrderStatus.Cancelled);
         }
@@ -124,21 +119,21 @@ namespace AdventureWorksModel {
 
         #region Customer
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int CustomerID { get; set; }
 
-        [Disabled, MemberOrder(2)]
+        [ MemberOrder(2)]
         public virtual Customer Customer { get; set; }
 
         #endregion
 
         #region Contact
 
-        //[NakedObjectsIgnore]
+        //[Hidden]
         //public virtual int ContactID { get; set; }
 
         //private Contact _contact;
-        //[NakedObjectsIgnore]
+        //[Hidden]
         //public virtual Contact Contact { get { return _contact; } set { _contact = value; } }
           
         //internal void SetUpContact(Contact value) {
@@ -187,14 +182,14 @@ namespace AdventureWorksModel {
 
         #region BillingAddress
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int BillingAddressID { get; set; }
 
         [MemberOrder(4)]
         public virtual Address BillingAddress { get; set; }
 
         [Executed(Where.Remotely)]
-        public List<Address> ChoicesBillingAddress([Injected] IQueryable<BusinessEntityAddress> addresses) {
+        public List<Address> ChoicesBillingAddress(IQueryable<BusinessEntityAddress> addresses) {
             return  PersonRepository.AddressesFor(Customer.BusinessEntity(), addresses).ToList();
         }
 
@@ -202,28 +197,28 @@ namespace AdventureWorksModel {
 
         #region PurchaseOrderNumber
 
-        [Optionally, StringLength(25), MemberOrder(5)]
+        [MemberOrder(5)]
         public virtual string PurchaseOrderNumber { get; set; }
 
         #endregion
 
         #region ShippingAddress
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ShippingAddressID { get; set; }
 
         [MemberOrder(10)]
         public virtual Address ShippingAddress { get; set; }
 
         [Executed(Where.Remotely)]
-        public List<Address> ChoicesShippingAddress([Injected] IQueryable<BusinessEntityAddress> addresses) {
+        public List<Address> ChoicesShippingAddress(IQueryable<BusinessEntityAddress> addresses) {
             return ChoicesBillingAddress(addresses);
         }
         #endregion
 
         #region ShipMethod
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ShipMethodID { get; set; }
 
         [MemberOrder(11)]
@@ -237,7 +232,7 @@ namespace AdventureWorksModel {
 
         #region AccountNumber
 
-        [Optionally, StringLength(15), MemberOrder(12)]
+        [Optionally,  MemberOrder(12)]
         public virtual string AccountNumber { get; set; }
 
         #endregion
@@ -246,7 +241,7 @@ namespace AdventureWorksModel {
 
         #region OrderDate
 
-        [Disabled]
+        
         [MemberOrder(20)]
         public virtual DateTime OrderDate { get; set; }
 
@@ -280,7 +275,7 @@ namespace AdventureWorksModel {
 
         #region ShipDate
 
-        [Optionally]
+        
         [MemberOrder(22)]
         [DataType(DataType.DateTime)][Mask("d")]//Just to prove that you can, if perverse enough, make something
         //a dateTime and then mask it as a Date
@@ -305,22 +300,22 @@ namespace AdventureWorksModel {
 
         #region Amounts
 
-        [Disabled]
+        
         [MemberOrder(31)]
         [Mask("C")]
         public virtual decimal SubTotal { get; set; }
 
-        [Disabled]
+        
         [MemberOrder(32)]
         [Mask("C")]
         public virtual decimal TaxAmt { get; set; }
 
-        [Disabled]
+        
         [MemberOrder(33)]
         [Mask("C")]
         public virtual decimal Freight { get; set; }
 
-        [Disabled]
+        
         [MemberOrder(34)]
         [Mask("C")]
         public virtual decimal TotalDue { get; set; }
@@ -341,10 +336,10 @@ namespace AdventureWorksModel {
 
         #region CurrencyRate
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int? CurrencyRateID { get; set; }
 
-        [Optionally]
+        
         [MemberOrder(35)]
         [FindMenu]
         public virtual CurrencyRate CurrencyRate { get; set; }
@@ -355,19 +350,19 @@ namespace AdventureWorksModel {
 
         #region OnlineOrder
 
-        [Description("Order has been placed via the web")]
-        [Disabled]
+        [DescribedAs("Order has been placed via the web")]
+        
         [MemberOrder(41)]
-        [DisplayName("Online Order")]
+        [Named("Online Order")]
         public virtual bool OnlineOrder { get; set; }
 
         #endregion
 
         #region CreditCard
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int? CreditCardID { get; set; }
 
-        [Optionally]
+        
         [MemberOrder(42)]
         public virtual CreditCard CreditCard { get; set; }
 
@@ -375,8 +370,8 @@ namespace AdventureWorksModel {
 
         #region CreditCardApprovalCode
 
-        [Disabled]
-        [StringLength(15)]
+        
+        
         [MemberOrder(43)]
         public virtual string CreditCardApprovalCode { get; set; }
 
@@ -384,7 +379,7 @@ namespace AdventureWorksModel {
 
         #region RevisionNumber
 
-        [Disabled]
+        
         [MemberOrder(51)]
         public virtual byte RevisionNumber { get; set; }
 
@@ -392,10 +387,10 @@ namespace AdventureWorksModel {
 
         #region Comment
 
-        [Optionally]
+        
         [MultiLine(NumberOfLines = 3, Width = 50)]
         [MemberOrder(52)]
-        [Description("Free-form text")]
+        [DescribedAs("Free-form text")]
         public virtual string Comment { get; set; }
 
 
@@ -437,7 +432,7 @@ namespace AdventureWorksModel {
 
         [PageSize(10)]
         public IEnumerable<string> AutoComplete0AddComment(
-            [DescribedAs("Auto-complete")] [MinLength(2)] string matching) {
+            [DescribedAs("Auto-complete")] [Range(2,0)] string matching) {
             return Choices0AddStandardComments().Where(c => c.ToLower().Contains(matching.ToLower()));
         }
 
@@ -448,7 +443,7 @@ namespace AdventureWorksModel {
 
         [PageSize(10)]
         public IList<string> AutoComplete0AddComment2(
-            [DescribedAs("Auto-complete")] [MinLength(2)] string matching) {
+            [DescribedAs("Auto-complete")] [Range(2,0)] string matching) {
             return Choices0AddStandardComments().Where(c => c.ToLower().Contains(matching.ToLower())).ToList();
         }
 
@@ -460,28 +455,28 @@ namespace AdventureWorksModel {
 
         #region SalesPerson
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int? SalesPersonID { get; set; }
 
-        [Optionally]
+        
         [MemberOrder(61)]
         public virtual SalesPerson SalesPerson { get; set; }
 
         [PageSize(20)]
         public IQueryable<SalesPerson> AutoCompleteSalesPerson(
-            [MinLength(2)] string name, 
-            [Injected] IQueryable<Person> persons,
-            [Injected] IQueryable<SalesPerson> sps) {
+            [Range(2,0)] string name, 
+            IQueryable<Person> persons,
+            IQueryable<SalesPerson> sps) {
             return SalesRepository.FindSalesPersonByName( null, name, persons, sps);
         }
 
         #endregion
 
         #region SalesTerritory
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int? SalesTerritoryID { get; set; }
 
-        [Optionally]
+        
         [MemberOrder(62)]
         public virtual SalesTerritory SalesTerritory { get; set; }
 
@@ -492,7 +487,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -500,7 +495,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion
@@ -515,7 +510,7 @@ namespace AdventureWorksModel {
 
         private ICollection<SalesOrderDetail> details = new List<SalesOrderDetail>();
 
-        [Disabled]
+        
         public virtual ICollection<SalesOrderDetail> Details {
             get { return details; }
             set { details = value; }
@@ -527,8 +522,8 @@ namespace AdventureWorksModel {
 
         private ICollection<SalesOrderHeaderSalesReason> salesOrderHeaderSalesReason = new List<SalesOrderHeaderSalesReason>();
 
-        [Disabled]
-        [DisplayName("Reasons")]
+        
+        [Named("Reasons")]
         public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReason {
             get { return salesOrderHeaderSalesReason; }
             set { salesOrderHeaderSalesReason = value; }
@@ -542,14 +537,14 @@ namespace AdventureWorksModel {
 
         #region Add New Detail
 
-        [Description("Add a new line item to the order")]
+        [DescribedAs("Add a new line item to the order")]
 #pragma warning disable 612,618
         [MemberOrder(Sequence="2", Name ="Details")]
 #pragma warning restore 612,618
         public SalesOrderDetail AddNewDetail(
             Product product,
             [DefaultValue((short) 1), Range(1, 999)] short quantity,
-            [Injected] IQueryable<SpecialOfferProduct> sops) {
+            IQueryable<SpecialOfferProduct> sops) {
             int stock = product.NumberInStock();
             if (stock < quantity) {
                 var t = Container.NewTitleBuilder();
@@ -574,13 +569,13 @@ namespace AdventureWorksModel {
         }
 
         [PageSize(20)]
-        public IQueryable<Product> AutoComplete0AddNewDetail([MinLength(2)] string name, [Injected] IQueryable<Product> products) {
+        public IQueryable<Product> AutoComplete0AddNewDetail([Range(2,0)] string name, IQueryable<Product> products) {
             return ProductRepository.FindProductByName( name, products);
         }
         #endregion
 
         #region Add New Details
-        [Description("Add multiple line items to the order")]
+        [DescribedAs("Add multiple line items to the order")]
         [MultiLine()]
 #pragma warning disable 612, 618
         [MemberOrder(Sequence = "1", Name = "Details")]
@@ -588,7 +583,7 @@ namespace AdventureWorksModel {
         public void AddNewDetails(
             Product product,
            [DefaultValue((short)1)] short quantity,
-           [Injected] IQueryable<SpecialOfferProduct> sops)
+           IQueryable<SpecialOfferProduct> sops)
         {
             var detail = AddNewDetail(product, quantity, sops);
             Container.Persist(ref detail);
@@ -598,7 +593,7 @@ namespace AdventureWorksModel {
             return DisableAddNewDetail();
         }
         [PageSize(20)]
-        public IQueryable<Product> AutoComplete0AddNewDetails([MinLength(2)] string name, [Injected] IQueryable<Product> products)
+        public IQueryable<Product> AutoComplete0AddNewDetails([Range(2,0)] string name, IQueryable<Product> products)
         {
             return AutoComplete0AddNewDetail(name, products);
         }
@@ -628,7 +623,7 @@ namespace AdventureWorksModel {
         }
 
         [MemberOrder(3)]
-        public void RemoveDetails([ContributedAction] IEnumerable<SalesOrderDetail> details) {
+        public void RemoveDetails(this IEnumerable<SalesOrderDetail> details) {
             foreach (SalesOrderDetail detail in details) {
                 if (Details.Contains(detail)) {
                     Details.Remove(detail);
@@ -639,7 +634,7 @@ namespace AdventureWorksModel {
 
         #region AdjustQuantities
         [MemberOrder(4)]
-        public void AdjustQuantities([ContributedAction] IEnumerable<SalesOrderDetail> details, short newQuantity)
+        public void AdjustQuantities(this IEnumerable<SalesOrderDetail> details, short newQuantity)
         {
             foreach (SalesOrderDetail detail in details)
             {
@@ -659,7 +654,7 @@ namespace AdventureWorksModel {
 
         #region CreateNewCreditCard
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public void CreatedCardHasBeenSaved(CreditCard card) {
             CreditCard = card;
         }
@@ -714,7 +709,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(2)]
         public void RemoveSalesReasons(
-            [ContributedAction] IEnumerable<SalesOrderHeaderSalesReason> salesOrderHeaderSalesReason)
+            this IEnumerable<SalesOrderHeaderSalesReason> salesOrderHeaderSalesReason)
         {
             foreach(var reason in salesOrderHeaderSalesReason)
             {
@@ -773,8 +768,8 @@ namespace AdventureWorksModel {
 
         #region MarkAsShipped
 
-        [Description("Indicate that the order has been shipped, specifying the date")]
-        [Hidden(WhenTo.Always)] //Testing that the complementary methods don't show up either
+        [DescribedAs("Indicate that the order has been shipped, specifying the date")]
+        [Hidden] //Testing that the complementary methods don't show up either
         public void MarkAsShipped(DateTime shipDate) {
             Status = (byte) OrderStatus.Shipped;
             ShipDate = shipDate;

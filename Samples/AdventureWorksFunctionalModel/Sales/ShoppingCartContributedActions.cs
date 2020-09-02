@@ -5,17 +5,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.ComponentModel;
+
+using NakedFunctions;
 using System.Linq;
-using NakedObjects.Services;
+
 
 namespace AdventureWorksModel {
     /// <summary>
     /// 
     /// </summary>
     /// 
-    [DisplayName("Cart")]
-    public class ShoppingCartContributedActions : AbstractFactoryAndRepository {
+    [Named("Cart")]
+    public record ShoppingCartContributedActions : AbstractFactoryAndRepository {
 
         public IQueryable<ShoppingCartItem> RemoveItems(
             IQueryable<ShoppingCartItem> items) {

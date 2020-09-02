@@ -6,13 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [IconName("clipboard.png")]
-    [Immutable(WhenTo.OncePersisted)]
-    public class EmployeePayHistory {
+            public record EmployeePayHistory {
         private Employee e;
         private DateTime now;
 
@@ -27,7 +25,7 @@ namespace AdventureWorksModel {
 
         }
         #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
+        
         #endregion
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -41,7 +39,7 @@ namespace AdventureWorksModel {
 
         #region EmployeeID
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int EmployeeID { get; set; }
 
         #endregion
@@ -64,7 +62,7 @@ namespace AdventureWorksModel {
 
         #region Employee
 
-        [Disabled]
+        
         [MemberOrder(4)]
         public virtual Employee Employee { get; set; }
 
@@ -73,7 +71,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 

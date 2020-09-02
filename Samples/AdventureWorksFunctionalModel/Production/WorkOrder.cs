@@ -7,40 +7,38 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedFunctions;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [IconName("gear.png")]
-    public class WorkOrder : IHasModifiedDate {
+        public record WorkOrder : IHasModifiedDate {
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int WorkOrderID { get; set; }
 
         [MemberOrder(22)]
-        [Disabled]
+        
         public virtual int StockedQty { get; set; }
 
         [MemberOrder(24)]
         public virtual short ScrappedQty { get; set; }
 
-        [Hidden(WhenTo.UntilPersisted)] //Mandatory  -  for testing only
         [MemberOrder(32)]
         [Mask("d")]
         public virtual DateTime? EndDate { get; set; }
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual short? ScrapReasonID { get; set; }
 
-        [Optionally]
+        
         [MemberOrder(26)]
         public virtual ScrapReason ScrapReason { get; set; }
 
@@ -55,22 +53,22 @@ namespace AdventureWorksModel {
         [Mask("d")]
         public virtual DateTime DueDate { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ProductID { get; set; }
 
         [MemberOrder(10)]
         public virtual Product Product { get; set; }
 
-        [Disabled]
-        [Hidden(WhenTo.UntilPersisted)]
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        
+        
+        [RenderEagerly]
         [TableView(true, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")]
         public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; set; }
 
 
         // for testing 
 
-        [Hidden(WhenTo.Always)]
+        [Hidden]
         [NotMapped]
         public virtual string AnAlwaysHiddenReadOnlyProperty {
             get { return ""; }
@@ -91,7 +89,7 @@ namespace AdventureWorksModel {
         #region LifeCycle functions
         public static WorkOrder Updating(WorkOrder wo, [Injected] DateTime now)
         {
-            return wo.With(x => x.ModifiedDate, now);
+            return wo with {ModifiedDate =  now};
         }
         #endregion
 
@@ -116,7 +114,7 @@ namespace AdventureWorksModel {
         }
 
         [PageSize(20)]
-        public static IQueryable<Product> AutoCompleteProduct([MinLength(2)] string name, [Injected] IQueryable<Product> products)
+        public static IQueryable<Product> AutoCompleteProduct([Range(2,0)] string name, IQueryable<Product> products)
         {
             return ProductRepository.FindProductByName( name, products);
         }

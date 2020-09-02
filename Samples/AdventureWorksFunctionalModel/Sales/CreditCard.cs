@@ -7,14 +7,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [Immutable(WhenTo.OncePersisted), IconName("id_card.png")]
-    public class CreditCard {
+        public record CreditCard {
         #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
+        
         #endregion
 
         #region Life Cycle Methods
@@ -38,22 +36,22 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int CreditCardID { get; set; }
 
         [MemberOrder(1)]
         public virtual string CardType { get; set; }
 
-        [Hidden(WhenTo.OncePersisted)]
-        [MemberOrder(2)][Description("Without spaces")]
+        []
+        [MemberOrder(2)][DescribedAs("Without spaces")]
         public virtual string CardNumber { get; set; }
 
         private string _ObfuscatedNumber;
 
-        [Hidden(WhenTo.UntilPersisted)]
+        
         [MemberOrder(2)]
-        [DisplayName("Card No.")]
-        [NotPersisted]
+        [Named("Card No.")]
+        
         public virtual string ObfuscatedNumber {
             get {
                 if (_ObfuscatedNumber == null && CardNumber != null && CardNumber.Length > 4) {
@@ -77,7 +75,7 @@ namespace AdventureWorksModel {
             this.p = p;
         }
 
-        [DisplayName("Persons")]
+        [Named("Persons")]
         [MemberOrder(5)]
         //[TableOrder(True, "Contact")]
         public virtual ICollection<PersonCreditCard> PersonLinks {
@@ -88,7 +86,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         //[ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -140,11 +138,11 @@ namespace AdventureWorksModel {
 
         #region Logic for creating new cards
 
-        [NakedObjectsIgnore]
-        [NotPersisted]
+        [Hidden]
+        
         public ICreditCardCreator Creator { get; set; }
 
-        [NotPersisted]
+        
         public Person ForContact { get; set; }
 
         #endregion

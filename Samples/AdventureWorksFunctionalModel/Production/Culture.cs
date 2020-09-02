@@ -6,14 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
     [Bounded]
-    [Immutable]
-    public class Culture : IHasModifiedDate {
+        public record Culture : IHasModifiedDate {
 
         public Culture(string cultureID, string name, DateTime modifiedDate)
         {
@@ -24,14 +21,14 @@ namespace AdventureWorksModel {
 
         public Culture() { }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual string CultureID { get; set; }
 
         [MemberOrder(10)]
         public virtual string Name { get; set; }
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 

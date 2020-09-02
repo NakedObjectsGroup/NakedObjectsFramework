@@ -5,22 +5,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+
+
 using System.Linq;
-using NakedObjects;
-using NakedObjects.Menu;
+using NakedFunctions;
+
 using System;
 using System.Collections.Generic;
-using System.Windows.Navigation;
-using AdventureWorksFunctionalModel;
-using NakedFunctions;
 using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
-using static NakedFunctions.Result;
+
 
 
 namespace AdventureWorksModel {
-    [DisplayName("Customers")]
+    [Named("Customers")]
     public static class CustomerRepository {
 
         //TODO
@@ -47,7 +44,7 @@ namespace AdventureWorksModel {
         
         public static CustomerDashboard CustomerDashboard(
             string accountNumber,
-            [Injected] IQueryable<Customer> customers) {
+            IQueryable<Customer> customers) {
              var (cust, _) = FindCustomerByAccountNumber(accountNumber, customers);
             return new CustomerDashboard(cust);
         }
@@ -58,7 +55,7 @@ namespace AdventureWorksModel {
         [MemberOrder(10)]
         public static (Customer, string) FindCustomerByAccountNumber(
             [DefaultValue("AW")] string accountNumber, 
-            [Injected] IQueryable<Customer> customers)
+            IQueryable<Customer> customers)
         {
             IQueryable<Customer> query = from obj in customers
                 where obj.AccountNumber == accountNumber
@@ -72,13 +69,13 @@ namespace AdventureWorksModel {
         //}
 
         //Method exists to test auto-complete
-        public static Customer FindCustomer([Description("Enter Account Number")] Customer customer)
+        public static Customer FindCustomer([DescribedAs("Enter Account Number")] Customer customer)
         {
             return customer;
         }
 
         //[PageSize(10)]
-        //public static IQueryable<Customer> AutoComplete0FindCustomer([MinLength(3)] string matching, [Injected] IQueryable<Customer> customers)
+        //public static IQueryable<Customer> AutoComplete0FindCustomer([Range(3,0)] string matching, IQueryable<Customer> customers)
         //{
         //    return customers.Where(c => c.AccountNumber.Contains(matching));
         //}
@@ -90,9 +87,9 @@ namespace AdventureWorksModel {
         [PageSize(2)]
         [TableView(true, "StoreName", "SalesPerson")] //Table view == List View
             public static IQueryable<Customer> FindStoreByName(
-            [Description("partial match")]string name,
-            [Injected] IQueryable<Customer> customers,
-            [Injected] IQueryable<Store> stores
+            [DescribedAs("partial match")]string name,
+            IQueryable<Customer> customers,
+            IQueryable<Store> stores
             ) {
                 return from c in customers
                        from s in stores
@@ -119,7 +116,8 @@ namespace AdventureWorksModel {
             [Injected] Guid guid,
             [Injected] DateTime dt)
         {
-            return DisplayAndPersist(new Customer(store, null, guid, dt));
+            var c = new Customer(store, null, guid, dt);
+            return (c, c);
         }
 
         //TODO: Temporary exploration
@@ -136,15 +134,15 @@ namespace AdventureWorksModel {
         }
 
         public static IQueryable<Store> FindStoreOnlyByName(
-           [Description("partial match")]string name,
-           [Injected] IQueryable<Store> stores
+           [DescribedAs("partial match")]string name,
+           IQueryable<Store> stores
            )
         {
             return stores.Where(s => s.Name.ToUpper().Contains(name.ToUpper()));
         }
 
         public static Customer RandomStore(
-            [Injected] IQueryable<Customer> customers,
+            IQueryable<Customer> customers,
             [Injected] int random) {
             return Random(customers.Where(t => t.StoreID != null), random);
         }
@@ -159,8 +157,8 @@ namespace AdventureWorksModel {
             
             [Optionally] string firstName, 
             string lastName, 
-            [Injected] IQueryable<Person> persons,
-            [Injected] IQueryable<Customer> customers) {
+            IQueryable<Person> persons,
+            IQueryable<Customer> customers) {
 
             IQueryable<Person> matchingPersons = PersonRepository.FindContactByName( firstName, lastName, persons);
             return from c in customers
@@ -186,7 +184,7 @@ namespace AdventureWorksModel {
         [FinderAction]
         [MemberOrder(70)]
         public static Customer RandomIndividual(
-            [Injected] IQueryable<Customer> customers,
+            IQueryable<Customer> customers,
             [Injected] int random)
         {
             return Random(customers.Where(t => t.StoreID == null), random);
@@ -199,7 +197,7 @@ namespace AdventureWorksModel {
         [TableView(false, "AccountNumber","Store","Person","SalesTerritory")]
         
         public static List<Customer> RandomCustomers(
-            [Injected] IQueryable<Customer> customers,
+            IQueryable<Customer> customers,
             [Injected] int random1,
             [Injected] int random2)
         {

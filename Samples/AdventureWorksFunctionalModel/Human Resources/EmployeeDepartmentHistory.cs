@@ -6,12 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [IconName("clipboard.png")]
-    public class EmployeeDepartmentHistory {
+        public record EmployeeDepartmentHistory {
         private Employee e;
         private DateTime now;
 
@@ -28,7 +27,7 @@ namespace AdventureWorksModel {
 
         }
         #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
+        
         #endregion
 
         #region Life Cycle Methods
@@ -41,13 +40,13 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int EmployeeID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual short DepartmentID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual byte ShiftID { get; set; }
 
         [Mask("d")]
@@ -70,7 +69,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 

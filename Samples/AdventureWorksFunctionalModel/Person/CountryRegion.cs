@@ -6,15 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("globe.png")]
-    [Bounded]
-    [Immutable]
-    public class CountryRegion: IHasModifiedDate {
+        [Bounded]
+        public record CountryRegion: IHasModifiedDate {
 
         public CountryRegion(string countryRegionCode, string name, DateTime modifiedDate)
         {
@@ -30,7 +26,7 @@ namespace AdventureWorksModel {
         public virtual string Name { get; set; }
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
     }

@@ -7,15 +7,15 @@
 
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
 
     [ComplexType]
-    public class TimePeriod {
+    public record TimePeriod {
 
         #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
+        
         #endregion
 
         public override string ToString() {

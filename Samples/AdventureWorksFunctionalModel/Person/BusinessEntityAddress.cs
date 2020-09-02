@@ -1,13 +1,12 @@
-using NakedObjects;
-using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
+using System;
+
+
 
 namespace AdventureWorksModel
 {
-    [DisplayName("Address")]
-    public class BusinessEntityAddress: IHasRowGuid, IHasModifiedDate
+    [Named("Address")]
+    public record BusinessEntityAddress: IHasRowGuid, IHasModifiedDate
     {
         public BusinessEntityAddress(
             //int businessEntityID,
@@ -31,30 +30,30 @@ namespace AdventureWorksModel
 
         public BusinessEntityAddress() { }
 
-        [Disabled]
+        
         public virtual int BusinessEntityID { get; set; }
         [MemberOrder(3)]
         public virtual BusinessEntity BusinessEntity { get; set; }
 
-        [Disabled]
+        
         public virtual int AddressTypeID { get; set; }
 
         [MemberOrder(1)]
-        [Optionally]
+        
         public virtual AddressType AddressType { get; set; }
 
-        [Disabled]
+        
         public virtual int AddressID { get; set; }
 
         [MemberOrder(2)]
-        [Optionally]
+        
         public virtual Address Address { get; set; }
 
         #region Row Guid and Modified Date
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion
@@ -62,7 +61,7 @@ namespace AdventureWorksModel
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -75,7 +74,7 @@ namespace AdventureWorksModel
         
     public static BusinessEntityAddress Updating(BusinessEntityAddress a, [Injected] DateTime now)
     {
-            return a.With(x => x.ModifiedDate, now);
+            return a with {ModifiedDate =  now};
     }
 
     public static string Title(this BusinessEntityAddress a)

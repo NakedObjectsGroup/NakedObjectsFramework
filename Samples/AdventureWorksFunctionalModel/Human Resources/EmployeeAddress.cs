@@ -6,14 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+
+using NakedFunctions;
 
 namespace AdventureWorksModel {
     //This class models an association table, and is never viewed directly by the user.
 
-    [IconName("house.png")]
-    public class EmployeeAddress : IAddressRole {
+        public record EmployeeAddress : IAddressRole {
 
         //TODO: remains to be converted
         #region Life Cycle Methods
@@ -29,16 +28,16 @@ namespace AdventureWorksModel {
 
         #region Properties
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int EmployeeID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int AddressID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Employee Employee { get; set; }
 
-        [Title, Disabled, MemberOrder(2)]
+        [MemberOrder(2)] //Title
         public virtual Address Address { get; set; }
 
         #region ModifiedDate and rowguid
@@ -46,7 +45,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -54,7 +53,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion

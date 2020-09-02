@@ -6,15 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+
+using NakedFunctions;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [IconName("lookup.png")]
-    [Bounded]
-    [Immutable]
-    public class UnitMeasure: IHasModifiedDate {
+        [Bounded]
+        public record UnitMeasure: IHasModifiedDate {
 
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -29,14 +27,14 @@ namespace AdventureWorksModel {
         [MemberOrder(10)]
         public virtual string UnitMeasureCode { get; set; }
 
-        [Title]
+        //Title
         [MemberOrder(20)]
         public virtual string Name { get; set; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 

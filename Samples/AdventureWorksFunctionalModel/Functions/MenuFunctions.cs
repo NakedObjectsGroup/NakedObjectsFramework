@@ -10,25 +10,24 @@ using System.Collections.Generic;
 using System.Linq;
 using AdventureWorksModel;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksFunctionalModel.Functions {
     public static class MenuFunctions {
         
-        public static Product GetRandomProduct([Injected] IQueryable<Product> allProducts) {
+        public static Product GetRandomProduct(IQueryable<Product> allProducts) {
             int count = new Random().Next(allProducts.Count());
             var p = allProducts.OrderBy(n => "").Skip(count).FirstOrDefault();
             return p;
         }
 
         
-        public static Product GetProductById([Injected] IQueryable<Product> allProducts, int id) {
+        public static Product GetProductById(IQueryable<Product> allProducts, int id) {
             var p = allProducts.Single(x => x.ProductID == id);
             return p;
         }
 
         
-        public static Product GetSpecificProduct([Injected] IQueryable<Product> allProducts)
+        public static Product GetSpecificProduct(IQueryable<Product> allProducts)
         {
             var p = allProducts.Single(x => x.ProductID == 709);
             return p;
@@ -38,11 +37,11 @@ namespace AdventureWorksFunctionalModel.Functions {
             return product1;
         }
 
-        public static IEnumerable<Product> Choices0SelectProduct([Injected] IQueryable<Product> products) {
+        public static IEnumerable<Product> Choices0SelectProduct(IQueryable<Product> products) {
             return products.Take(10).ToList();
         }
 
-        [Disabled]
+        
         public static Product TestDisabled(Product product1) {
             return product1;
         }

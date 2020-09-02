@@ -1,7 +1,5 @@
-using NakedObjects;
-using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
+using System;
 
 namespace AdventureWorksModel {
     public  class Password : IHasRowGuid, IHasModifiedDate

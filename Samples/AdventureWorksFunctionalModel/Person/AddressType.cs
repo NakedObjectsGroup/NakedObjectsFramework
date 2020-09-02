@@ -6,14 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
     [Bounded]
-    [Immutable]
-    public class AddressType: IHasModifiedDate, IHasRowGuid {
+        public record AddressType: IHasModifiedDate, IHasRowGuid {
         public AddressType(
             int addressTypeID,
             string name,
@@ -31,16 +29,16 @@ namespace AdventureWorksModel {
         {
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int AddressTypeID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual string Name { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
     }

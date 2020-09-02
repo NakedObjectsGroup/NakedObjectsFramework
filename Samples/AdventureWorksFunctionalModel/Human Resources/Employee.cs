@@ -7,18 +7,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using System.Linq;
 using System.Security.Principal;
 using NakedFunctions;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel
 {
 
     public interface IEmployee : IBusinessEntity { } //Interface is for testing purposes
-    [IconName("person.png")]
-    public class Employee : IEmployee, IHasRowGuid, IHasModifiedDate
+        public record Employee : IEmployee, IHasRowGuid, IHasModifiedDate
     {
         //TODO: add all properties
         public Employee(
@@ -31,7 +30,7 @@ namespace AdventureWorksModel
 
         public Employee() { }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int BusinessEntityID { get; set; }
 
         [MemberOrder(1), Disabled]
@@ -48,11 +47,11 @@ namespace AdventureWorksModel
         public virtual DateTime? DateOfBirth { get; set; }
 
         [MemberOrder(14)]
-        [StringLength(1)]
+        
         public virtual string MaritalStatus { get; set; }
 
         [MemberOrder(15)]
-        [StringLength(1)]
+        
         public virtual string Gender { get; set; }
 
         [MemberOrder(16)]
@@ -71,25 +70,25 @@ namespace AdventureWorksModel
         [MemberOrder(20)]
         public virtual bool Current { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int? ManagerID { get; set; }
 
-        [Optionally]
+        
         [MemberOrder(30)]
         public virtual Employee Manager { get; set; }
 
         [MemberOrder(11)]
         public virtual string LoginID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual SalesPerson SalesPerson { get; set; }
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         [TableView(true,
@@ -124,7 +123,7 @@ namespace AdventureWorksModel
 
         //public static bool HideLoginID(
         //    Employee e,
-        //    [Injected] IQueryable<Employee> employees,
+        //    IQueryable<Employee> employees,
         //    [Injected] IPrincipal principal)
         //{
         //    var userAsEmployee = EmployeeRepository.CurrentUserAsEmployee(null, employees, principal);
@@ -133,7 +132,7 @@ namespace AdventureWorksModel
 
         public static IQueryable<Employee> ColleaguesInSameDept(
             Employee e,
-            [Injected] IQueryable<EmployeeDepartmentHistory> edhs
+            IQueryable<EmployeeDepartmentHistory> edhs
         )
         {
             var allCurrent = edhs.Where(edh => edh.EndDate == null);
@@ -163,10 +162,10 @@ namespace AdventureWorksModel
         //public static (object[], object[]) ChangeDepartmentOrShift(
         //    Employee e,
         //    Department department, 
-        //    [Optionally] Shift shift,
+        //     Shift shift,
         //    [Injected] DateTime now)
         //{
-        //    var edh = CurrentAssignment(e).With(x => x.EndDate, now);
+        //    var edh = CurrentAssignment(e) with {EndDate =  now};
         //    var newAssignment = new EmployeeDepartmentHistory(department, shift, e, now );
         //    return Result.DisplayAndPersist(new object[] { edh, newAssignment });
         //}
@@ -188,15 +187,16 @@ namespace AdventureWorksModel
             Employee e, 
             IEmployee manager)
         {
-            return Result.DisplayAndPersist(e.With(x => x.ManagerID, manager.BusinessEntityID));
+            var e2 = e with {ManagerID =  manager.BusinessEntityID};
+            return (e2, e2);
         }
 
         //[PageSize(20)]
         //public static IQueryable<Employee> AutoCompleteManager(
         //     Employee e,
-        //    [MinLength(2)] string name,
-        //    [Injected] IQueryable<Person> persons,
-        //    [Injected] IQueryable<Employee> employees)
+        //    [Range(2,0)] string name,
+        //    IQueryable<Person> persons,
+        //    IQueryable<Employee> employees)
         //{
         //    return EmployeeRepository.FindEmployeeByName(null, null, name, persons, employees);
         //}
