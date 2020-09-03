@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 
@@ -48,15 +48,8 @@ namespace AdventureWorksModel {
             set { _ProductProductPhoto = value; }
         }
 
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
-
-        #endregion
-
 
         public override string ToString()
         {

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel
@@ -18,26 +19,12 @@ namespace AdventureWorksModel
         [MultiLine(10), MemberOrder(2)]
         public virtual string Description { get; init; }
 
-        #region Row Guid and Modified Date
-
-        #region rowguid
-
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        #endregion
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-
-        [ConcurrencyCheck]
+        [MemberOrder(99),ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
-
-        #endregion
-
-        #endregion
-
+ 
         public override string ToString()
         {
             return Description;

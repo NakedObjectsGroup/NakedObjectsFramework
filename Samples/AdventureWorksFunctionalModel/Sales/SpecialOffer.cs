@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
@@ -74,26 +75,12 @@ namespace AdventureWorksModel {
         [MemberOrder(62)]
         public virtual int? MaxQty { get; init; }
 
-
-        #region ModifiedDate and rowguid
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; init; }
-
-        #endregion
-
-        #region rowguid
-
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        #endregion
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        #endregion
     }
 
     public static class SpecialOfferFunctions

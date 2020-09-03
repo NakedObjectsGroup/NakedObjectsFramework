@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ using NakedFunctions;
 
 namespace AdventureWorksModel
 {
-        public record ProductModel: IHasRowGuid, IHasModifiedDate
+    public record ProductModel : IHasRowGuid, IHasModifiedDate
     {
         [Hidden]
         public virtual int ProductModelID { get; init; }
@@ -38,25 +39,11 @@ namespace AdventureWorksModel
         [Hidden]
         public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; init; }
 
-        #region Row Guid and Modified Date
-
-        #region rowguid
-
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        #endregion
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
-
-        #endregion
-
-        #endregion
 
         public override string ToString()
         {

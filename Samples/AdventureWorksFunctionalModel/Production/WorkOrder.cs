@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedFunctions;
@@ -29,9 +30,7 @@ namespace AdventureWorksModel
         [Mask("d")]
         public virtual DateTime? EndDate { get; init; }
 
-        [MemberOrder(99)]
-
-        [ConcurrencyCheck]
+        [MemberOrder(99),ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
@@ -57,8 +56,6 @@ namespace AdventureWorksModel
 
         [MemberOrder(10)]
         public virtual Product Product { get; init; }
-
-
 
         [RenderEagerly]
         [TableView(true, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")]

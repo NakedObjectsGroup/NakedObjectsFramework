@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
@@ -17,7 +18,7 @@ namespace AdventureWorksModel {
 
         public ICollection<ProductModelIllustration> ProductModelIllustration { get; init; }
 
-        [MemberOrder(99),ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
     }
 }

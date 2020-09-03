@@ -7,54 +7,34 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedFunctions;
 
 namespace AdventureWorksModel
 {
-
     public interface IProduct
     {
         string Name { get; }
         int ProductID { get; }
     }
 
-        public record Product : IProduct, IHasModifiedDate, IHasRowGuid
-    { 
-        #region Properties
-
-        #region ProductID
-
+    public record Product : IProduct, IHasModifiedDate, IHasRowGuid
+    {
         [Hidden]
         public virtual int ProductID { get; init; }
-
-        #endregion
-
-        #region Name
-
-       [MemberOrder(1)]
+ 
+        [MemberOrder(1)]
         public virtual string Name { get; init; }
-
-        #endregion
-
-        #region ProductNumber
-
+   
         [MemberOrder(2)]
         public virtual string ProductNumber { get; init; }
 
-        #endregion
-
-        #region Color
-
-        
         [MemberOrder(3)]
         public virtual string Color { get; init; }
 
-        #endregion
-
-        //#region Photo
-
+                //
         //private Image cachedPhoto;
 
         //[MemberOrder(4)]
@@ -85,55 +65,27 @@ namespace AdventureWorksModel
         //    p.LargePhotoFileName = newImage.Name;
         //}
 
-        //#endregion
-
-        #region Make
+        //
 
         [MemberOrder(20)]
         public virtual bool Make { get; init; }
 
-        #endregion
-
-        #region FinishedGoods
-
-        [MemberOrder(21)]
+    [MemberOrder(21)]
         public virtual bool FinishedGoods { get; init; }
-
-        #endregion
-
-        #region SafetyStockLevel
-
+        
         [MemberOrder(22)]
         public virtual short SafetyStockLevel { get; init; }
-
-        #endregion
-
-        #region ReorderPoint
-
+        
         [MemberOrder(23)]
         public virtual short ReorderPoint { get; init; }
 
-        #endregion
-
-        #region StandardCost
-
-        [MemberOrder(90)]
-        [Mask("C")]
+      [MemberOrder(90), Mask("C")]
         public virtual decimal StandardCost { get; init; }
-
-        #endregion
-
-        #region ListPrice
-
-        [MemberOrder(11)]
-        [Mask("C")]
+       
+        [MemberOrder(11), Mask("C")]
         public virtual decimal ListPrice { get; init; }
 
-        #endregion
-
-        #region Size & Weight
-
-        [Hidden]
+       [Hidden]
         public virtual string Size { get; init; }
 
         [Hidden]
@@ -142,8 +94,7 @@ namespace AdventureWorksModel
         [Hidden]
         public virtual UnitMeasure SizeUnit { get; init; }
 
-        [Named("Size")]
-        [MemberOrder(16)]
+        [Named("Size"),MemberOrder(16)]
         public virtual string SizeWithUnit
         {
             get
@@ -170,79 +121,36 @@ namespace AdventureWorksModel
                 return $"{Weight} {WeightUnit}";
             }
         }
-
-        #endregion
-
-        #region DaysToManufacture
-
+      
         [MemberOrder(24)] //TODO Range(1, 90)]
         public virtual int DaysToManufacture { get; init; }
 
-        #endregion
-
-        #region ProductLine
-
-        
         [MemberOrder(14)]
         public virtual string ProductLine { get; init; }
 
-        #endregion
-
-        #region Class
-
-        
         [MemberOrder(19)]
         public virtual string Class { get; init; }
-        #endregion
-
-        #region Style
-
         
         [MemberOrder(18)]
         public virtual string Style { get; init; }
-        #endregion
-
-        #region SellStartDate
-
-        [MemberOrder(81)]
-        [Mask("d")]
+               
+        [MemberOrder(81),Mask("d")]
         public virtual DateTime SellStartDate { get; init; }
 
-        #endregion
-
-        #region SellEndDate
-
-        [MemberOrder(82)]
-        
-        [Mask("d")]
+        [MemberOrder(82),Mask("d")]
         public virtual DateTime? SellEndDate { get; init; }
 
-        #endregion
-
-        #region Discontinued
-
-        
-        [MemberOrder(83)]
-        [Mask("d")]
-        //[Range(0, 10)] TODO
+        [MemberOrder(83), Mask("d")] //[Range(0, 10)] TODO
         public virtual DateTime? DiscontinuedDate { get; init; }
-
-        #endregion
-
-        #region ProductModel
+        
         [Hidden]
         public virtual int? ProductModelID { get; init; }
 
-        
         [MemberOrder(10)]
         public virtual ProductModel ProductModel { get; init; }
-        #endregion
-
-        #region ProductSubcategory
-        private ProductCategory productCategory;
-
         
-        
+                private ProductCategory productCategory;
+
         [MemberOrder(12)]
         public virtual ProductCategory ProductCategory  //TODO: How to handle derived properties?
         {
@@ -257,44 +165,18 @@ namespace AdventureWorksModel
             set { productCategory = value; }
         }
 
-        #region ProductSubcategory
-        [Hidden]
+                [Hidden]
         public virtual int? ProductSubcategoryID { get; init; }
 
-        
         [MemberOrder(12)]
         public virtual ProductSubcategory ProductSubcategory { get; init; }
-
-
-        #endregion
-
-        #endregion
-
-        #region ModifiedDate and rowguid
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; init; }
-        #endregion
-
-        #region rowguid
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        #endregion
-
-        #endregion
-
-        #endregion
-
-        #region Collections
-
-        #region Photos
-
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
+   
         private ICollection<ProductProductPhoto> _ProductProductPhoto = new List<ProductProductPhoto>();
 
         [Hidden]
@@ -303,11 +185,7 @@ namespace AdventureWorksModel
             get { return _ProductProductPhoto; }
             set { _ProductProductPhoto = value; }
         }
-
-        #endregion
-
-        #region Reviews
-
+        
         private ICollection<ProductReview> _ProductReviews = new List<ProductReview>();
 
         [TableView(true, nameof(ProductReview.Rating), nameof(ProductReview.Comments))]
@@ -316,11 +194,7 @@ namespace AdventureWorksModel
             get { return _ProductReviews; } //deliberately returned as array to test Bug #13269
             set { _ProductReviews = value; }
         }
-
-        #endregion
-
-        #region Inventory
-
+       
         private ICollection<ProductInventory> _ProductInventory = new List<ProductInventory>();
 
         [RenderEagerly]
@@ -341,24 +215,11 @@ namespace AdventureWorksModel
                     select obj).Sum(obj => obj.Quantity);
         }
 
-        #endregion
-
-        #region Special Offers
-
         [Hidden]
         public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; init; }
 
-
-        // needs to be initialised for moment
-        [NotMapped]
-        [RenderEagerly]
-        [TableView(true, "MinQty", "DiscountPct", "StartDate", "EndDate")]
+        [NotMapped, RenderEagerly, TableView(true, "MinQty", "DiscountPct", "StartDate", "EndDate")]
         public virtual IList<SpecialOffer> SpecialOffers { get; private set; } = new List<SpecialOffer>();
-
-
-        #endregion
-
-        #endregion
 
         public override string ToString()
         {

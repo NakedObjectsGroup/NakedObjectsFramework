@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
@@ -21,26 +22,11 @@ namespace AdventureWorksModel {
         [Named("Subcategories")]
         [TableView(true)] //TableView == ListView
         public virtual ICollection<ProductSubcategory> ProductSubcategory { get; init; } = new List<ProductSubcategory>();
-
-        #region Row Guid and Modified Date
-
-        #region rowguid
-
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        #endregion
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
-
-        #endregion
-
-        #endregion
 
         public override string ToString()
         {
