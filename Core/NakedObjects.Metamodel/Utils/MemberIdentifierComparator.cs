@@ -9,7 +9,8 @@ using System.Collections.Generic;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
-namespace NakedObjects.ParallelReflect {
+namespace NakedObjects.Meta.Utils
+{
     /// <summary>
     ///     Compares <see cref="IMemberSpecImmutable" /> by <see cref="ISpecification.Identifier" />
     /// </summary>

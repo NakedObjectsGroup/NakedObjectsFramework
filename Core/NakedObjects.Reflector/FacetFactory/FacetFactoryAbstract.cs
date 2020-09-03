@@ -31,6 +31,7 @@ namespace NakedObjects.Meta.Facet {
         public int NumericOrder { get; }
 
         public virtual FeatureType FeatureTypes { get; }
+        public ReflectionType ReflectionTypes { get; }
 
         public virtual void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) { }
         public virtual void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) { }

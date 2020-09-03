@@ -25,6 +25,12 @@ namespace NakedObjects.Meta.Facet {
 
         public abstract void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager);
 
+        public virtual object InvokeAndReturn(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager, IObjectPersistor persistor)
+        {
+            Invoke(nakedObjectAdapter, session, lifecycleManager, metamodelManager);
+            return null;
+        }
+
         #endregion
     }
 

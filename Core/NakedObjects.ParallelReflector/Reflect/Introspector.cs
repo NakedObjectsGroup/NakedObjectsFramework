@@ -20,6 +20,7 @@ using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.SpecImmutable;
+using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflect.Component;
 using NakedObjects.Util;
 
@@ -32,7 +33,7 @@ namespace NakedObjects.ParallelReflect {
         private IList<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
 
-        public Introspector(IReflector reflector, ILogger<Introspector> logger) {
+        public Introspector(IReflector reflector, IFacetFactorySet facetFactorySet, ILogger<Introspector> logger) {
             this.reflector = reflector;
             this.logger = logger;
         }

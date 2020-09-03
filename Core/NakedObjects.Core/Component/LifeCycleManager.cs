@@ -65,6 +65,12 @@ namespace NakedObjects.Core.Component {
             return nakedObjectManager.GetKnownAdapter(oid) ?? objectPersistor.LoadObject(oid, (IObjectSpec) spec);
         }
 
+        public object Persist(object poco)
+        {
+            return objectPersistor.PersistDetachedObject(poco);
+        }
+
+
         /// <summary>
         ///     Factory (for transient instance)
         /// </summary>

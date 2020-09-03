@@ -119,6 +119,8 @@ namespace NakedObjects.ParallelReflect.Test {
             var cache = new ImmutableInMemorySpecCache();
             ReflectorConfiguration.NoValidate = true;
             var config = new ReflectorConfiguration(new[] {typeof(List<TestPoco>), typeof(ArrayList)}, new Type[] { }, new[] {typeof(TestPoco).Namespace});
+            var functionalReflectorConfiguration = new FunctionalReflectorConfiguration(new Type[] { }, new Type[] { });
+
             var menuFactory = new NullMenuFactory();
             var classStrategy = new DefaultClassStrategy(config);
             var mockLogger = new Mock<ILogger<Metamodel>>().Object;
@@ -127,7 +129,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var mockLogger1 = new Mock<ILogger<ParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
-            var reflector = new ParallelReflector(classStrategy, metamodel, config, menuFactory, new IFacetDecorator[] { }, facetFactories, mockLoggerFactory, mockLogger1);
+            var reflector = new ParallelReflector(classStrategy, metamodel, config, functionalReflectorConfiguration, menuFactory, new IFacetDecorator[] { }, facetFactories, mockLoggerFactory, mockLogger1);
 
             ITypeSpecBuilder spec;
             (spec, Metamodel) = LoadSpecification(reflector);

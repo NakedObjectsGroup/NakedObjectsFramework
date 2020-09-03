@@ -103,6 +103,12 @@ namespace NakedObjects.Architecture.Adapter {
         void Persisted();
         void Updating();
         void Updated();
+
+
+        object PersistingAndReturn();
+        object PersistedAndReturn();
+        object UpdatingAndReturn();
+        object UpdatedAndReturn();
     }
 
     // Copyright (c) Naked Objects Group Ltd.

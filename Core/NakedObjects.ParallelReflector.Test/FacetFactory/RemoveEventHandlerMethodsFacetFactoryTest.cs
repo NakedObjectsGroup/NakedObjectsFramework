@@ -97,6 +97,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             ReflectorConfiguration.NoValidate = true;
 
             var reflectorConfiguration = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { });
+            var functionalReflectorConfiguration = new FunctionalReflectorConfiguration(new Type[] { }, new Type[] { });
+
             facetFactory = new RemoveEventHandlerMethodsFacetFactory(0, LoggerFactory);
             var menuFactory = new NullMenuFactory();
             var classStrategy = new DefaultClassStrategy(reflectorConfiguration);
@@ -104,7 +106,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var mockLogger = new Mock<ILogger<ParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
-            Reflector = new ParallelReflector(classStrategy, metamodel, reflectorConfiguration, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory}, mockLoggerFactory, mockLogger);
+            Reflector = new ParallelReflector(classStrategy, metamodel, reflectorConfiguration, functionalReflectorConfiguration, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory}, mockLoggerFactory, mockLogger);
         }
 
         [TestCleanup]

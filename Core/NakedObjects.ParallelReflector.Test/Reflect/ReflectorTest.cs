@@ -177,6 +177,7 @@ namespace NakedObjects.ParallelReflect.Test {
             services.AddSingleton<IMenuFactory, NullMenuFactory>();
 
             services.AddSingleton(rc);
+            services.AddSingleton<IFunctionalReflectorConfiguration>(new FunctionalReflectorConfiguration(new Type[]{}, new Type[]{} ));
 
             TestHook(services);
         }

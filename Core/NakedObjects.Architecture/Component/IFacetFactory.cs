@@ -30,6 +30,8 @@ namespace NakedObjects.Architecture.Component {
         /// </para>
         FeatureType FeatureTypes { get; }
 
+        ReflectionType ReflectionTypes { get; }
+
         //  Reflector - remove when Reflector is obsoleted in favor of ParallelReflector
         /// <summary>
         ///     Process the class, and return the correctly setup annotation if present.

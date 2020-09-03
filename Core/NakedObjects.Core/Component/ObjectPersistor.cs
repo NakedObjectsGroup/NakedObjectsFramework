@@ -190,6 +190,17 @@ namespace NakedObjects.Core.Component {
 
         public void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost) => objectStore.LoadComplexTypesIntoNakedObjectFramework(adapter, isGhost);
 
+        public object PersistDetachedObject(object poco)
+        {
+            return objectStore.ReattachAsModified(poco);
+        }
+
+        public void AdaptDetachedObject(object poco)
+        {
+            objectStore.AdaptDetachedObject(poco);
+        }
+
+
         #endregion
 
         private IQueryable<T> GetInstances<T>() where T : class => objectStore.GetInstances<T>();

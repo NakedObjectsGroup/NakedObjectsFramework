@@ -42,6 +42,8 @@ namespace NakedObjects.Architecture.Component {
         INakedObjectAdapter GetViewModel(IOid oid);
         IOid RestoreOid(string[] encodedData);
         INakedObjectAdapter LoadObject(IOid oid, ITypeSpec spec);
+
+        object Persist(object poco);
     }
 
     // Copyright (c) Naked Objects Group Ltd.
