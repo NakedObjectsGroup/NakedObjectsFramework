@@ -16,53 +16,50 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
+        //public virtual void Persisting() {
+        //    ModifiedDate = DateTime.Now;
+        //}
 
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
+        //public virtual void Updating() {
+        //    ModifiedDate = DateTime.Now;
+        //}
         #endregion
 
         [Hidden]
-        public virtual int ProductReviewID { get; set; }
+        public virtual int ProductReviewID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string ReviewerName { get; set; }
+        public virtual string ReviewerName { get; init; }
 
         [MemberOrder(2)]
-        public virtual DateTime ReviewDate { get; set; }
+        public virtual DateTime ReviewDate { get; init; }
 
         [MemberOrder(3)]
-        public virtual string EmailAddress { get; set; }
+        public virtual string EmailAddress { get; init; }
 
         [MemberOrder(4)]
-        public virtual int Rating { get; set; }
+        public virtual int Rating { get; init; }
 
         [MemberOrder(5)]
-        public virtual string Comments { get; set; }
+        public virtual string Comments { get; init; }
 
         [Hidden]
-        public int ProductID { get; set; }
+        public int ProductID { get; init; }
 
         [Hidden]
-        public virtual Product Product { get; set; }
+        public virtual Product Product { get; init; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
         public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            string stars = "*****".Substring(0, Rating);
-            t.Append(stars);
-            return t.ToString();
+            return "*****".Substring(0, Rating);
         }
     }
 }

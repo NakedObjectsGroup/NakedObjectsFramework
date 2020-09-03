@@ -31,37 +31,37 @@ namespace AdventureWorksModel {
         }
         public ProductModelProductDescriptionCulture() { }
         [Hidden]
-        public virtual int ProductModelID { get; set; }
+        public virtual int ProductModelID { get; init; }
 
         [Hidden]
-        public virtual int ProductDescriptionID { get; set; }
+        public virtual int ProductDescriptionID { get; init; }
 
         [Hidden]
-        public virtual string CultureID { get; set; }
+        public virtual string CultureID { get; init; }
 
-        public virtual Culture Culture { get; set; }
-        public virtual ProductDescription ProductDescription { get; set; }
+        public virtual Culture Culture { get; init; }
+        public virtual ProductDescription ProductDescription { get; init; }
 
         [Hidden]
-        public virtual ProductModel ProductModel { get; set; }
+        public virtual ProductModel ProductModel { get; init; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
+        public override string ToString()
+        {
+            return $"{Culture}";
+        }
     }
 
     public static class ProductModelProductDescriptionCultureFunctions
     {
-        public static string Title(this ProductModelProductDescriptionCulture p)
-        {
-            return p.CreateTitle($"{p.Culture}");
-        }
         public static ProductDocument Updating(ProductDocument c, [Injected] DateTime now)
         {
             return c with {ModifiedDate =  now};

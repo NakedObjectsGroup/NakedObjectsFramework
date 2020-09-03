@@ -45,23 +45,23 @@ namespace AdventureWorksFunctionalModel.Functions {
 
         public static (Product, Product) GetAndPersistProduct(this Product product, IQueryable<Product> allProducts) {
             var pp = allProducts.First(p => p.ProductID != product.ProductID);
-            pp.Name = $"{pp.Name}:1";
-            return (pp, pp);
+            var pp1 = pp with { Name = $"{pp.Name}:1" };
+            return (pp1, pp1);
         }
 
         public static (Product, Product[]) GetAndPersistProducts(this Product product, IQueryable<Product> allProducts) {
             var pp = allProducts.First(p => p.ProductID != product.ProductID);
-            pp.Name = $"{pp.Name}:1";
-            return (pp, new[] {pp});
+            var pp1 = pp with { Name = $"{pp.Name}:1" };
+            return (pp1, new[] {pp1});
         }
 
         public static (Product, (Product, Product)) GetAndPersistProductsTuple(this Product product, IQueryable<Product> allProducts) {
             var pps = allProducts.Where(p => p.ProductID != product.ProductID).Take(2).ToList();
             var pp1 = pps.First();
             var pp2 = pps.Last();
-            pp1.Name = $"{pp1.Name}:1";
-            pp2.Name = $"{pp2.Name}:2";
-            return (pp1, (pp1, pp2));
+            var pp1a = pp1 with { Name = $"{pp1.Name}:1" };
+            var pp2a = pp2 with { Name = $"{pp2.Name}:2" };
+            return (pp1a, (pp1a, pp2a));
         }
 
         public static (Product, (Product, Product, (Product, Product))) GetAndPersistProductsNestedTuple(this Product product, IQueryable<Product> allProducts) {
@@ -70,23 +70,23 @@ namespace AdventureWorksFunctionalModel.Functions {
             var pp2 = pps[1];
             var pp3 = pps[2];
             var pp4 = pps[3];
-            pp1.Name = $"{pp1.Name}:1";
-            pp2.Name = $"{pp2.Name}:2";
-            pp3.Name = $"{pp3.Name}:3";
-            pp4.Name = $"{pp4.Name}:4";
-            return (pp1, (pp1, pp2, (pp3, pp4)));
+            var pp1a = pp1 with { Name = $"{pp1.Name}:1" };
+            var pp2a = pp2 with { Name = $"{pp2.Name}:2" };
+            var pp3a = pp3 with { Name = $"{pp3.Name}:3" };
+            var pp4a = pp4 with { Name = $"{pp4.Name}:4" };
+            return (pp1a, (pp1a, pp2a, (pp3a, pp4a)));
         }
 
-        public static (Product, Product[], string) GetAndPersistProductsWithWarning(this Product product, IQueryable<Product> allProducts) {
+        public static (Product, Product[], Action<IUserAdvisory>) GetAndPersistProductsWithWarning(this Product product, IQueryable<Product> allProducts) {
             var pp = allProducts.First(p => p.ProductID != product.ProductID);
-            pp.Name = $"{pp.Name}:1";
-            return (pp, new[] {pp}, "A warning message");
+            var pp1 = pp with { Name = $"{pp.Name}:1" };
+            return (pp, new[] {pp}, (IUserAdvisory ua) => ua.WarnUser("A warning message"));
         }
 
-        public static (Product, Product, string) GetAndPersistProductWithWarning(this Product product, IQueryable<Product> allProducts) {
+        public static (Product, Product, Action<IUserAdvisory>) GetAndPersistProductWithWarning(this Product product, IQueryable<Product> allProducts) {
             var pp = allProducts.First(p => p.ProductID != product.ProductID);
-            pp.Name = $"{pp.Name}:1";
-            return (pp, pp, "A warning message");
+            var pp1 = pp with { Name = $"{pp.Name}:1" };
+            return (pp, pp, (IUserAdvisory ua) => ua.WarnUser("A warning message"));
         }
 
         public static (Product, Product) UpdateProductUsingRemute(this Product product, IQueryable<Product> allProducts) {
@@ -106,7 +106,7 @@ namespace AdventureWorksFunctionalModel.Functions {
 
         public static Product GetAndChangeButNotPersistProduct(this Product product, IQueryable<Product> allProducts) {
             var pp = allProducts.First(p => p.ProductID != product.ProductID);
-            pp.Name = $"{pp.Name}:2";
+            var pp1 = pp with {Name = $"{pp.Name}:2"};
             return pp;
         }
 
@@ -130,13 +130,10 @@ namespace AdventureWorksFunctionalModel.Functions {
             return product;
         }
 
-        public static string Title(this Product p) {
-            return p.CreateTitle($"{p.Name}");
-        }
 
         public static IProduct Persisting(this Product product, IQueryable<Product> allProducts, [Injected] Guid guid) {
-            product.rowguid = guid;
-            return product;
+            var p1 = product with { rowguid = guid };
+            return p1;
         }
 
         public static IProduct Persisted(this Product product, IQueryable<Product> allProducts, [Injected] Guid guid) {
@@ -144,7 +141,7 @@ namespace AdventureWorksFunctionalModel.Functions {
         }
 
         public static IProduct Updating(this Product product, IQueryable<Product> allProducts, [Injected] Guid guid) {
-            product.rowguid = guid;
+            var p1 = product with { rowguid = guid };
             return product;
         }
 
@@ -172,8 +169,7 @@ namespace AdventureWorksFunctionalModel.Functions {
         public static IEnumerable<Product> Choices1SelectProduct(this Product product, IQueryable<Product> products) {
             return products.Take(10).ToList();
         }
-
-        
+    
         public static Product TestDisabled(this Product product, Product product1) {
             return product1;
         }

@@ -10,22 +10,19 @@ using System;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-        [Bounded]
-        public record ScrapReason {
 
-        [Hidden]
-        public virtual short ScrapReasonID { get; init; }
 
-        //Title
-        public virtual string Name { get; init; }
+    public static class ProductSubcategoryFunctions
+    {
 
-        #region ModifiedDate
+        public static ProductSubcategory Updating(this ProductSubcategory x, [Injected] DateTime now)
+        {
+            return x with {ModifiedDate =  now};
+        }
 
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; init; }
-
-        #endregion
+        public static ProductSubcategory Persisting(this ProductSubcategory x, [Injected] Guid guid, [Injected] DateTime now)
+        {
+            return x with { ModifiedDate = now, rowguid = guid };
+        }
     }
 }

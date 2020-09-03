@@ -10,22 +10,20 @@ using System;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-        [Bounded]
-        public record ScrapReason {
+    public static class ScrapReasonFunctions {
 
-        [Hidden]
-        public virtual short ScrapReasonID { get; init; }
+        #region Life Cycle Methods
+        public static ScrapReason Updating(this ScrapReason x, [Injected] DateTime now)
+        {
+            return x with { ModifiedDate = now };
+        }
 
-        //Title
-        public virtual string Name { get; init; }
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; init; }
-
+        public static ScrapReason Persisting(this ScrapReason x,[Injected] DateTime now)
+        {
+            return x with { ModifiedDate = now};
+        }
         #endregion
+
+
     }
 }

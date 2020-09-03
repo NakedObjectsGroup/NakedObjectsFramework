@@ -39,32 +39,32 @@ namespace AdventureWorksModel
         }
         public ProductModel() { }
         [Hidden]
-        public virtual int ProductModelID { get; set; }
+        public virtual int ProductModelID { get; init; }
 
         [MemberOrder(10)]
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
         [Hidden]
-        public virtual string CatalogDescription { get; set; }
+        public virtual string CatalogDescription { get; init; }
 
         [MemberOrder(30)]
-        public virtual string Instructions { get; set; }
+        public virtual string Instructions { get; init; }
 
         [TableView(true, "Name", "Number", "Color", "ProductInventory")]
-        public virtual ICollection<Product> ProductVariants { get; set; }
+        public virtual ICollection<Product> ProductVariants { get; init; }
 
         [Hidden]
-        public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; set; }
+        public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; init; }
 
         [Hidden]
-        public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; set; }
+        public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; init; }
 
         #region Row Guid and Modified Date
 
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         #endregion
 
@@ -73,7 +73,7 @@ namespace AdventureWorksModel
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 

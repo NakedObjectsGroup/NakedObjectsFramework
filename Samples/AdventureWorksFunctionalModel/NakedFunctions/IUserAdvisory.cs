@@ -1,4 +1,4 @@
-﻿namespace AdventureWorksFunctionalModel.NakedFunctions
+﻿namespace NakedFunctions
 {
     public interface IUserAdvisory
     {

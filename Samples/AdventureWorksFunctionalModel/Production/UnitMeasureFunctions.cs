@@ -6,26 +6,19 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-        [Bounded]
-        public record ScrapReason {
+    public static class UnitMeasureFunctions
+    {
+       public static UnitMeasure Updating(this UnitMeasure x, [Injected] DateTime now)
+        {
+            return x with { ModifiedDate = now };
+        }
 
-        [Hidden]
-        public virtual short ScrapReasonID { get; init; }
-
-        //Title
-        public virtual string Name { get; init; }
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; init; }
-
-        #endregion
+        public static UnitMeasure Persisting(this UnitMeasure x, [Injected] DateTime now)
+        {
+            return x with { ModifiedDate = now };
+        }
     }
 }

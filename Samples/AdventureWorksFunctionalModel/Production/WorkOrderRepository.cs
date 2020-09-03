@@ -7,8 +7,8 @@
 
 
 
+using System;
 using System.Linq;
-using NakedFunctions;
 using NakedFunctions;
 using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
 
@@ -27,9 +27,8 @@ namespace AdventureWorksModel {
         public static (WorkOrder, WorkOrder) CreateNewWorkOrder(
              [DescribedAs("product partial name")] this Product product) {
             //TODO: Need to request all required fields for WO & pass into constructor
-            var wo = new WorkOrder();
-            wo.Product = product;
-            return Result.DisplayAndPersist(wo);
+            var wo = new WorkOrder() { Product = product };
+            return (wo, wo);
         }
 
         [PageSize(20)]
@@ -42,10 +41,9 @@ namespace AdventureWorksModel {
         //CreateNewWorkOrder2 deleted (no longer relevant for testing)
 
         public static(WorkOrder, WorkOrder) CreateNewWorkOrder3([FindMenu, DescribedAs("product partial name")] this Product product, int orderQty) {
-            var wo = CreateNewWorkOrder(product).Item2;
-            wo.OrderQty = orderQty;
-            wo.ScrappedQty = 0;
-            return Result.DisplayAndPersist(wo);
+            (_, var wo) = CreateNewWorkOrder(product);
+            var wo1 = wo with { OrderQty = orderQty, ScrappedQty = 0 };
+            return (wo1, wo1);
         }
 
         [PageSize(20)]
@@ -55,11 +53,6 @@ namespace AdventureWorksModel {
             return products.Where(p => p.Name.Contains(name));
         }
 
-        
-        public static string GenerateInfoAndWarning() {
-            //TODO: How should we ... or should we not ... distinguish these two? Maybe just an optional attribute in the string
-            return Display("Inform User of something [Warn] Warn User of something else ");
-        }
 
         #region CurrentWorkOrders
 

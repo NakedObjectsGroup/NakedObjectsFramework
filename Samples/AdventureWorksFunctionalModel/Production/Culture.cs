@@ -22,24 +22,24 @@ namespace AdventureWorksModel {
         public Culture() { }
 
         [Hidden]
-        public virtual string CultureID { get; set; }
+        public virtual string CultureID { get; init; }
 
         [MemberOrder(10)]
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 
     public static class CultureFunctions
     {
-        public static string Title(this Culture c)
-        {
-            return c.CreateTitle(c.Name);
-        }
         public static Culture Updating(Culture c, [Injected] DateTime now)
         {
             return LifeCycleFunctions.UpdateModified(c, now);

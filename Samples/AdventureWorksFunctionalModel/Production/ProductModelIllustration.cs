@@ -24,20 +24,20 @@ namespace AdventureWorksModel {
         public ProductModelIllustration() { }
 
         [Hidden]
-        public virtual int ProductModelID { get; set; }
+        public virtual int ProductModelID { get; init; }
 
         [Hidden]
-        public virtual int IllustrationID { get; set; }
+        public virtual int IllustrationID { get; init; }
 
-        public virtual Illustration Illustration { get; set; }
-        public virtual ProductModel ProductModel { get; set; }
+        public virtual Illustration Illustration { get; init; }
+        public virtual ProductModel ProductModel { get; init; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
     }

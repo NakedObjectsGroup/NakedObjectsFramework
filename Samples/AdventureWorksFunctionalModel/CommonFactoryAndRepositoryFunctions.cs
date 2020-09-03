@@ -1,7 +1,6 @@
 ﻿
 using System;
 using System.Linq;
-using AdventureWorksFunctionalModel.NakedFunctions;
 using NakedFunctions;
 
 namespace AdventureWorksModel

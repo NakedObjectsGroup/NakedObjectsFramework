@@ -12,34 +12,24 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     public record TransactionHistory  {
 
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
-        public virtual int TransactionID { get; set; }
-        public virtual int ReferenceOrderID { get; set; }
-        public virtual int ReferenceOrderLineID { get; set; }
-        public virtual DateTime TransactionDate { get; set; }
-        public virtual string TransactionType { get; set; }
-        public virtual int Quantity { get; set; }
-        public virtual decimal ActualCost { get; set; }
+        public virtual int TransactionID { get; init; }
+        public virtual int ReferenceOrderID { get; init; }
+        public virtual int ReferenceOrderLineID { get; init; }
+        public virtual DateTime TransactionDate { get; init; }
+        public virtual string TransactionType { get; init; }
+        public virtual int Quantity { get; init; }
+        public virtual decimal ActualCost { get; init; }
 
         [Hidden]
-        public virtual int ProductID { get; set; }
-        public Product Product { get; set; }
+        public virtual int ProductID { get; init; }
+        public Product Product { get; init; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
     }

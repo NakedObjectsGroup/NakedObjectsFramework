@@ -44,35 +44,35 @@ namespace AdventureWorksModel {
         }
 
         [Hidden]
-        public virtual int SpecialOfferID { get; set; }
+        public virtual int SpecialOfferID { get; init; }
 
         [MemberOrder(10)]
-        public virtual string Description { get; set; }
+        public virtual string Description { get; init; }
 
         [MemberOrder(20)]
         [Mask("P")]
-        public virtual decimal DiscountPct { get; set; }
+        public virtual decimal DiscountPct { get; init; }
 
         [MemberOrder(30)]
-        public virtual string Type { get; set; }
+        public virtual string Type { get; init; }
 
         [MemberOrder(40)]
-        public virtual string Category { get; set; }
+        public virtual string Category { get; init; }
 
         [MemberOrder(51)]
         [Mask("d")]
-        public virtual DateTime StartDate { get; set; }
+        public virtual DateTime StartDate { get; init; }
 
         [MemberOrder(52)]
         [Mask("d")]
-        public virtual DateTime EndDate { get; set; }
+        public virtual DateTime EndDate { get; init; }
 
         [MemberOrder(61)]
-        public virtual int MinQty { get; set; }
+        public virtual int MinQty { get; init; }
 
         
         [MemberOrder(62)]
-        public virtual int? MaxQty { get; set; }
+        public virtual int? MaxQty { get; init; }
 
 
         #region ModifiedDate and rowguid
@@ -82,14 +82,14 @@ namespace AdventureWorksModel {
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         #endregion
 

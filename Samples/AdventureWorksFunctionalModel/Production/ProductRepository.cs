@@ -42,7 +42,7 @@ namespace AdventureWorksModel {
 
         [FinderAction]
         [MemberOrder(2)]
-        public static (Product,string) FindProductByNumber(
+        public static (Product, Action<IUserAdvisory>) FindProductByNumber(
             
             string number, 
             IQueryable<Product> products)
@@ -335,8 +335,8 @@ namespace AdventureWorksModel {
       #endregion
 
       private class InventoryLine {
-          public  string ProductName { get; set; }
-          public  int Quantity { get; set; }
+          public  string ProductName { get; init; }
+          public  int Quantity { get; init; }
       }
 
         public static IQueryable<ProductPhoto> AllProductPhotos(

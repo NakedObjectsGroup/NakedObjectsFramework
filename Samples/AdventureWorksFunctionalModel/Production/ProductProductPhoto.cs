@@ -12,28 +12,18 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     public record ProductProductPhoto  {
 
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
-        public virtual int ProductID { get; set; }
-        public virtual int ProductPhotoID { get; set; }
-        public virtual bool Primary { get; set; }
-        public virtual Product Product { get; set; }
-        public virtual ProductPhoto ProductPhoto { get; set; }
+        public virtual int ProductID { get; init; }
+        public virtual int ProductPhotoID { get; init; }
+        public virtual bool Primary { get; init; }
+        public virtual Product Product { get; init; }
+        public virtual ProductPhoto ProductPhoto { get; init; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
     }

@@ -25,17 +25,17 @@ namespace AdventureWorksModel {
 
         public ProductDocument() { }
 
-        public virtual int ProductID { get; set; }
-        public virtual int DocumentID { get; set; }
-        public virtual Document Document { get; set; }
-        public virtual Product Product { get; set; }
+        public virtual int ProductID { get; init; }
+        public virtual int DocumentID { get; init; }
+        public virtual Document Document { get; init; }
+        public virtual Product Product { get; init; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
     }

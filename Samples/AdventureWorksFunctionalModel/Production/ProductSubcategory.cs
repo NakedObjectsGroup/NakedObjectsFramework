@@ -13,34 +13,23 @@ namespace AdventureWorksModel {
         [Bounded]
         public record ProductSubcategory: IHasRowGuid, IHasModifiedDate {
 
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
         [Hidden]
-        public virtual int ProductSubcategoryID { get; set; }
+        public virtual int ProductSubcategoryID { get; init; }
 
         //Title
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
         [Hidden]
-        public virtual int ProductCategoryID { get; set; }
+        public virtual int ProductCategoryID { get; init; }
 
-        public virtual ProductCategory ProductCategory { get; set; }
+        public virtual ProductCategory ProductCategory { get; init; }
 
         #region Row Guid and Modified Date
 
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         #endregion
 
@@ -49,25 +38,15 @@ namespace AdventureWorksModel {
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
         #endregion
-    }
 
-    public static class ProductSubcategoryFunctions
-    {
-
-        public static string Title(this ProductSubcategory pc)
+        public override string ToString()
         {
-            return pc.CreateTitle(pc.Name);
+            return Name;
         }
-
-        public static ProductSubcategory Updating(ProductSubcategory a, [Injected] DateTime now)
-        {
-            return a with {ModifiedDate =  now};
-        }
-
     }
 }

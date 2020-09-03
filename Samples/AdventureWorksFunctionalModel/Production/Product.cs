@@ -21,72 +21,27 @@ namespace AdventureWorksModel
     }
 
         public record Product : IProduct, IHasModifiedDate, IHasRowGuid
-    { //: IRedirected {
-
-        public Product(ProductCategory productCategory, int productId, string name, string productNumber, string color, bool make, bool finishedGoods,
-                       short safetyStockLevel, short reorderPoint, decimal standardCost, decimal listPrice, string size, string sizeUnitMeasureCode,
-                       UnitMeasure sizeUnit, string weightUnitMeasureCode, decimal? weight, UnitMeasure weightUnit, int daysToManufacture,
-                       string productLine, string @class, string style, DateTime sellStartDate, DateTime? sellEndDate, DateTime? discontinuedDate,
-                       int? productModelId, ProductModel productModel, int? productSubcategoryId, ProductSubcategory productSubcategory,
-                       ICollection<ProductReview> productReviews, ICollection<SpecialOfferProduct> specialOfferProduct, ICollection<ProductInventory> productInventory, ICollection<ProductProductPhoto> productProductPhoto)
-        {
-            this.productCategory = productCategory;
-            ProductID = productId;
-            Name = name;
-            ProductNumber = productNumber;
-            Color = color;
-            Make = make;
-            FinishedGoods = finishedGoods;
-            SafetyStockLevel = safetyStockLevel;
-            ReorderPoint = reorderPoint;
-            StandardCost = standardCost;
-            ListPrice = listPrice;
-            Size = size;
-            SizeUnitMeasureCode = sizeUnitMeasureCode;
-            SizeUnit = sizeUnit;
-            WeightUnitMeasureCode = weightUnitMeasureCode;
-            Weight = weight;
-            WeightUnit = weightUnit;
-            DaysToManufacture = daysToManufacture;
-            ProductLine = productLine;
-            Class = @class;
-            Style = style;
-            SellStartDate = sellStartDate;
-            SellEndDate = sellEndDate;
-            DiscontinuedDate = discontinuedDate;
-            ProductModelID = productModelId;
-            ProductModel = productModel;
-            ProductSubcategoryID = productSubcategoryId;
-            ProductSubcategory = productSubcategory;
-            ProductReviews = productReviews.ToList();
-            SpecialOfferProduct = specialOfferProduct.ToList();
-            ///SpecialOffers = specialOffers.ToList();
-            ProductInventory = productInventory.ToList();
-            ProductProductPhoto = productProductPhoto.ToList();
-            ModifiedDate = DateTime.Now;
-        }
-
-        public Product() { }
+    { 
         #region Properties
 
         #region ProductID
 
         [Hidden]
-        public virtual int ProductID { get; set; }
+        public virtual int ProductID { get; init; }
 
         #endregion
 
         #region Name
 
        [MemberOrder(1)]
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
         #endregion
 
         #region ProductNumber
 
         [MemberOrder(2)]
-        public virtual string ProductNumber { get; set; }
+        public virtual string ProductNumber { get; init; }
 
         #endregion
 
@@ -94,7 +49,7 @@ namespace AdventureWorksModel
 
         
         [MemberOrder(3)]
-        public virtual string Color { get; set; }
+        public virtual string Color { get; init; }
 
         #endregion
 
@@ -135,28 +90,28 @@ namespace AdventureWorksModel
         #region Make
 
         [MemberOrder(20)]
-        public virtual bool Make { get; set; }
+        public virtual bool Make { get; init; }
 
         #endregion
 
         #region FinishedGoods
 
         [MemberOrder(21)]
-        public virtual bool FinishedGoods { get; set; }
+        public virtual bool FinishedGoods { get; init; }
 
         #endregion
 
         #region SafetyStockLevel
 
         [MemberOrder(22)]
-        public virtual short SafetyStockLevel { get; set; }
+        public virtual short SafetyStockLevel { get; init; }
 
         #endregion
 
         #region ReorderPoint
 
         [MemberOrder(23)]
-        public virtual short ReorderPoint { get; set; }
+        public virtual short ReorderPoint { get; init; }
 
         #endregion
 
@@ -164,7 +119,7 @@ namespace AdventureWorksModel
 
         [MemberOrder(90)]
         [Mask("C")]
-        public virtual decimal StandardCost { get; set; }
+        public virtual decimal StandardCost { get; init; }
 
         #endregion
 
@@ -172,20 +127,20 @@ namespace AdventureWorksModel
 
         [MemberOrder(11)]
         [Mask("C")]
-        public virtual decimal ListPrice { get; set; }
+        public virtual decimal ListPrice { get; init; }
 
         #endregion
 
         #region Size & Weight
 
         [Hidden]
-        public virtual string Size { get; set; }
+        public virtual string Size { get; init; }
 
         [Hidden]
-        public virtual string SizeUnitMeasureCode { get; set; }
+        public virtual string SizeUnitMeasureCode { get; init; }
 
         [Hidden]
-        public virtual UnitMeasure SizeUnit { get; set; }
+        public virtual UnitMeasure SizeUnit { get; init; }
 
         [Named("Size")]
         [MemberOrder(16)]
@@ -193,18 +148,18 @@ namespace AdventureWorksModel
         {
             get
             {
-                return $"{Size} {UnitMeasureFunctions.Title(SizeUnit)}";
+                return $"{Size} {SizeUnit}";
             }
         }
 
         [Hidden]
-        public virtual string WeightUnitMeasureCode { get; set; }
+        public virtual string WeightUnitMeasureCode { get; init; }
 
         [Hidden]
-        public virtual decimal? Weight { get; set; }
+        public virtual decimal? Weight { get; init; }
 
         [Hidden]
-        public virtual UnitMeasure WeightUnit { get; set; }
+        public virtual UnitMeasure WeightUnit { get; init; }
 
         [MemberOrder(17)]
         [Named("Weight")]
@@ -212,7 +167,7 @@ namespace AdventureWorksModel
         {
             get
             {
-                return $"{Weight} {UnitMeasureFunctions.Title(WeightUnit)}";
+                return $"{Weight} {WeightUnit}";
             }
         }
 
@@ -221,7 +176,7 @@ namespace AdventureWorksModel
         #region DaysToManufacture
 
         [MemberOrder(24)] //TODO Range(1, 90)]
-        public virtual int DaysToManufacture { get; set; }
+        public virtual int DaysToManufacture { get; init; }
 
         #endregion
 
@@ -229,7 +184,7 @@ namespace AdventureWorksModel
 
         
         [MemberOrder(14)]
-        public virtual string ProductLine { get; set; }
+        public virtual string ProductLine { get; init; }
 
         #endregion
 
@@ -237,21 +192,21 @@ namespace AdventureWorksModel
 
         
         [MemberOrder(19)]
-        public virtual string Class { get; set; }
+        public virtual string Class { get; init; }
         #endregion
 
         #region Style
 
         
         [MemberOrder(18)]
-        public virtual string Style { get; set; }
+        public virtual string Style { get; init; }
         #endregion
 
         #region SellStartDate
 
         [MemberOrder(81)]
         [Mask("d")]
-        public virtual DateTime SellStartDate { get; set; }
+        public virtual DateTime SellStartDate { get; init; }
 
         #endregion
 
@@ -260,7 +215,7 @@ namespace AdventureWorksModel
         [MemberOrder(82)]
         
         [Mask("d")]
-        public virtual DateTime? SellEndDate { get; set; }
+        public virtual DateTime? SellEndDate { get; init; }
 
         #endregion
 
@@ -270,17 +225,17 @@ namespace AdventureWorksModel
         [MemberOrder(83)]
         [Mask("d")]
         //[Range(0, 10)] TODO
-        public virtual DateTime? DiscontinuedDate { get; set; }
+        public virtual DateTime? DiscontinuedDate { get; init; }
 
         #endregion
 
         #region ProductModel
         [Hidden]
-        public virtual int? ProductModelID { get; set; }
+        public virtual int? ProductModelID { get; init; }
 
         
         [MemberOrder(10)]
-        public virtual ProductModel ProductModel { get; set; }
+        public virtual ProductModel ProductModel { get; init; }
         #endregion
 
         #region ProductSubcategory
@@ -304,11 +259,11 @@ namespace AdventureWorksModel
 
         #region ProductSubcategory
         [Hidden]
-        public virtual int? ProductSubcategoryID { get; set; }
+        public virtual int? ProductSubcategoryID { get; init; }
 
         
         [MemberOrder(12)]
-        public virtual ProductSubcategory ProductSubcategory { get; set; }
+        public virtual ProductSubcategory ProductSubcategory { get; init; }
 
 
         #endregion
@@ -328,7 +283,7 @@ namespace AdventureWorksModel
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         #endregion
 
@@ -391,7 +346,7 @@ namespace AdventureWorksModel
         #region Special Offers
 
         [Hidden]
-        public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; set; }
+        public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; init; }
 
 
         // needs to be initialised for moment

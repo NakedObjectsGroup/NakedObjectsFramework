@@ -29,33 +29,32 @@ namespace AdventureWorksModel {
         public ProductCostHistory() {}
 
         [Hidden]
-        public virtual int ProductID { get; set; }
+        public virtual int ProductID { get; init; }
 
-        public virtual DateTime StartDate { get; set; }
-        public virtual DateTime? EndDate { get; set; }
-        public virtual decimal StandardCost { get; set; }
+        public virtual DateTime StartDate { get; init; }
+        public virtual DateTime? EndDate { get; init; }
+        public virtual decimal StandardCost { get; init; }
 
         [Hidden]
-        public virtual Product Product { get; set; }
+        public virtual Product Product { get; init; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
+        public override string ToString()
+        {
+            return $"{StandardCost} {StartDate}~";
+        }
     }
 
     public static class ProductCostHistoryFunctions
     {
-
-        public static string Title(this ProductCostHistory pch)
-        {
-            return pch.CreateTitle($"{pch.StandardCost} {pch.StartDate}~");
-        }
         public static ProductCostHistory Updating(ProductCostHistory c, [Injected] DateTime now)
         {
             return c with {ModifiedDate =  now};

@@ -17,104 +17,84 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
+        //public virtual void Persisting() {
+        //    ModifiedDate = DateTime.Now;
+        //}
 
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
+        //public virtual void Updating() {
+        //    ModifiedDate = DateTime.Now;
+        //}
         #endregion
 
         [Hidden]
-        public virtual int WorkOrderID { get; set; }
+        public virtual int WorkOrderID { get; init; }
 
         [Hidden]
-        public virtual int ProductID { get; set; }
+        public virtual int ProductID { get; init; }
 
         
         [MemberOrder(1)]
-        public virtual short OperationSequence { get; set; }
+        public virtual short OperationSequence { get; init; }
 
         [MemberOrder(20)]
         
-        public virtual DateTime? ScheduledStartDate { get; set; }
+        public virtual DateTime? ScheduledStartDate { get; init; }
 
         [MemberOrder(22)]
-        public virtual DateTime? ScheduledEndDate { get; set; }
+        public virtual DateTime? ScheduledEndDate { get; init; }
 
         
         [MemberOrder(21)]
         [Mask("d")]
-        public virtual DateTime? ActualStartDate { get; set; }
+        public virtual DateTime? ActualStartDate { get; init; }
 
         
         [MemberOrder(23)]
         [Mask("d")]
-        public virtual DateTime? ActualEndDate { get; set; }
+        public virtual DateTime? ActualEndDate { get; init; }
 
         
         [MemberOrder(31)]
-        public virtual decimal? ActualResourceHrs { get; set; }
+        public virtual decimal? ActualResourceHrs { get; init; }
 
         [Mask("C")]
         [MemberOrder(40)]
-        public virtual decimal PlannedCost { get; set; }
+        public virtual decimal PlannedCost { get; init; }
 
         
         [MemberOrder(41)]
         [Mask("C")]
-        public virtual decimal? ActualCost { get; set; }
+        public virtual decimal? ActualCost { get; init; }
 
         #region Location
         [Hidden]
-        public virtual short LocationID { get; set; }
+        public virtual short LocationID { get; init; }
 
         [MemberOrder(10)]
-        public virtual Location Location { get; set; }
+        public virtual Location Location { get; init; }
         #endregion
 
         [Hidden]
-        public virtual WorkOrder WorkOrder { get; set; }
+        public virtual WorkOrder WorkOrder { get; init; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
         #region Title
 
         public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(Location);
-            return t.ToString();
+            return Location.ToString();
         }
 
         #endregion
 
-        public virtual string ValidatePlannedCost(decimal plannedCost) {
-            var rb = new ReasonBuilder();
-            if (plannedCost <= 0) {
-                rb.Append("Planned cost must be > 0");
-            }
-            return rb.Reason;
-        }
-
-        [MemberOrder(1)]
-        public void SetScheduledStartDate(DateTime date, int hour, int minutes)
-        {
-            ScheduledStartDate = date.AddHours(hour).AddMinutes(minutes);
-        }
-
-        [MemberOrder(2)]
-        public void SetScheduledEndDate(DateTime date, [Optionally] int hour, [Optionally] int minutes)
-        {
-                ScheduledEndDate = date.AddHours(hour).AddMinutes(minutes);
-        }
+    
 
     }
 }

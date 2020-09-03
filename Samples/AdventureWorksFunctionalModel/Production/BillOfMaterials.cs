@@ -43,29 +43,29 @@ namespace AdventureWorksModel
         public BillOfMaterial() { }
 
         [Hidden]
-        public virtual int BillOfMaterialID { get; set; }
+        public virtual int BillOfMaterialID { get; init; }
 
-        public virtual DateTime StartDate { get; set; }
-        public virtual DateTime? EndDate { get; set; }
-        public virtual short BOMLevel { get; set; }
-        public virtual decimal PerAssemblyQty { get; set; }
-
-        [Hidden]
-        public virtual int? ProductAssemblyID { get; set; }
-        public virtual Product Product { get; set; }
+        public virtual DateTime StartDate { get; init; }
+        public virtual DateTime? EndDate { get; init; }
+        public virtual short BOMLevel { get; init; }
+        public virtual decimal PerAssemblyQty { get; init; }
 
         [Hidden]
-        public virtual int ComponentID { get; set; }
-        public virtual Product Product1 { get; set; }
+        public virtual int? ProductAssemblyID { get; init; }
+        public virtual Product Product { get; init; }
 
         [Hidden]
-        public string UnitMeasureCode { get; set; }
-        public virtual UnitMeasure UnitMeasure { get; set; }
+        public virtual int ComponentID { get; init; }
+        public virtual Product Product1 { get; init; }
+
+        [Hidden]
+        public string UnitMeasureCode { get; init; }
+        public virtual UnitMeasure UnitMeasure { get; init; }
 
        [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
     }
     public static class BillOfMaterialFunctions
     {

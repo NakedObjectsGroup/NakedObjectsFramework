@@ -6,48 +6,26 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
-using NakedFunctions;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
         [Bounded]
         public record UnitMeasure: IHasModifiedDate {
 
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
         [MemberOrder(10)]
-        public virtual string UnitMeasureCode { get; set; }
+        public virtual string UnitMeasureCode { get; init; }
 
         //Title
         [MemberOrder(20)]
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
-    }
-
-    public static class UnitMeasureFunctions
-    {
-        public static string Title(this UnitMeasure um)
-        {
-            return um.CreateTitle($"xxx");
-            //return CreateTitle2(um, $"xxx");
-        }
-
     }
 }

@@ -37,32 +37,32 @@ namespace AdventureWorksModel {
         public ProductInventory() { }
 
         [Hidden]
-        public virtual int ProductID { get; set; }
+        public virtual int ProductID { get; init; }
 
         [Hidden]
-        public virtual short LocationID { get; set; }
+        public virtual short LocationID { get; init; }
 
         [MemberOrder(40)]
-        public virtual string Shelf { get; set; }
+        public virtual string Shelf { get; init; }
 
         [MemberOrder(50)]
-        public virtual byte Bin { get; set; }
+        public virtual byte Bin { get; init; }
 
         [MemberOrder(10)]
-        public virtual short Quantity { get; set; }
+        public virtual short Quantity { get; init; }
 
         [MemberOrder(30)]
-        public virtual Location Location { get; set; }
+        public virtual Location Location { get; init; }
 
         [MemberOrder(20)]
-        public virtual Product Product { get; set; }
+        public virtual Product Product { get; init; }
 
         #region Row Guid and Modified Date
 
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         #endregion
 
@@ -71,7 +71,7 @@ namespace AdventureWorksModel {
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 

@@ -30,18 +30,18 @@ namespace AdventureWorksModel {
         }
         public ProductListPriceHistory() { }
 
-        public virtual int ProductID { get; set; }
-        public virtual DateTime StartDate { get; set; }
-        public virtual DateTime? EndDate { get; set; }
-        public virtual decimal ListPrice { get; set; }
-        public Product Product { get; set; }
+        public virtual int ProductID { get; init; }
+        public virtual DateTime StartDate { get; init; }
+        public virtual DateTime? EndDate { get; init; }
+        public virtual decimal ListPrice { get; init; }
+        public Product Product { get; init; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
     }

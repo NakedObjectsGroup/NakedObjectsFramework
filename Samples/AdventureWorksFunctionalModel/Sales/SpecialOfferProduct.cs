@@ -17,26 +17,26 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Life Cycle Methods
-        public virtual void Persisting() {
-            rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
-        }
+        //public virtual void Persisting() {
+        //    rowguid = Guid.NewGuid();
+        //    ModifiedDate = DateTime.Now;
+        //}
 
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
+        //public virtual void Updating() {
+        //    ModifiedDate = DateTime.Now;
+        //}
         #endregion
         [Hidden]
-        public virtual int SpecialOfferID { get; set; }
+        public virtual int SpecialOfferID { get; init; }
 
         [Hidden]
-        public virtual int ProductID { get; set; }
+        public virtual int ProductID { get; init; }
 
         [MemberOrder(1)]
-        public virtual SpecialOffer SpecialOffer { get; set; }
+        public virtual SpecialOffer SpecialOffer { get; init; }
 
         [MemberOrder(2)]
-        public virtual Product Product { get; set; }
+        public virtual Product Product { get; init; }
 
         #region Title
 
@@ -53,14 +53,14 @@ namespace AdventureWorksModel {
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         #endregion
 

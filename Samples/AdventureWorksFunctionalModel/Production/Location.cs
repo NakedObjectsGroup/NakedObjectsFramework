@@ -33,27 +33,29 @@ namespace AdventureWorksModel {
         public Location() { }
 
         [Hidden]
-        public virtual short LocationID { get; set; }
+        public virtual short LocationID { get; init; }
 
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
         [Mask("C")]
-        public virtual decimal CostRate { get; set; }
+        public virtual decimal CostRate { get; init; }
 
         [Mask("########.##")]
-        public virtual decimal Availability { get; set; }
+        public virtual decimal Availability { get; init; }
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
     public static class LocationFunctions
     {
-        public static string Title(this Location loc)
-        {
-            return loc.CreateTitle(loc.Name);
-        }
+
         public static Location Updating(Location loc, [Injected] DateTime now)
         {
             return loc with {ModifiedDate =  now};

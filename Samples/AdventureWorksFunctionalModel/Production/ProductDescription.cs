@@ -24,19 +24,19 @@ namespace AdventureWorksModel {
         public ProductDescription() { }
 
        [Hidden]
-        public virtual int ProductDescriptionID { get; set; }
+        public virtual int ProductDescriptionID { get; init; }
 
         //Title
         [MultiLine(10)]
         [MemberOrder(2)]
-        public virtual string Description { get; set; }
+        public virtual string Description { get; init; }
 
         #region Row Guid and Modified Date
 
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace AdventureWorksModel {
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 

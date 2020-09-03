@@ -19,53 +19,53 @@ namespace AdventureWorksModel
     {
 
         [Hidden]
-        public virtual int WorkOrderID { get; set; }
+        public virtual int WorkOrderID { get; init; }
 
         [MemberOrder(22)]
 
-        public virtual int StockedQty { get; set; }
+        public virtual int StockedQty { get; init; }
 
         [MemberOrder(24)]
-        public virtual short ScrappedQty { get; set; }
+        public virtual short ScrappedQty { get; init; }
 
         [MemberOrder(32)]
         [Mask("d")]
-        public virtual DateTime? EndDate { get; set; }
+        public virtual DateTime? EndDate { get; init; }
 
         [MemberOrder(99)]
 
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual short? ScrapReasonID { get; set; }
+        public virtual short? ScrapReasonID { get; init; }
 
 
         [MemberOrder(26)]
-        public virtual ScrapReason ScrapReason { get; set; }
+        public virtual ScrapReason ScrapReason { get; init; }
 
         [MemberOrder(20)]
-        public virtual int OrderQty { get; set; }
+        public virtual int OrderQty { get; init; }
 
         [MemberOrder(30)]
         [Mask("d")]
-        public virtual DateTime StartDate { get; set; }
+        public virtual DateTime StartDate { get; init; }
 
         [MemberOrder(34)]
         [Mask("d")]
-        public virtual DateTime DueDate { get; set; }
+        public virtual DateTime DueDate { get; init; }
 
         [Hidden]
-        public virtual int ProductID { get; set; }
+        public virtual int ProductID { get; init; }
 
         [MemberOrder(10)]
-        public virtual Product Product { get; set; }
+        public virtual Product Product { get; init; }
 
 
 
         [RenderEagerly]
         [TableView(true, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")]
-        public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; set; }
+        public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; init; }
 
 
         // for testing 
@@ -77,10 +77,7 @@ namespace AdventureWorksModel
             get { return ""; }
         }
 
-        public void ChangeScrappedQuantity(short newQty)
-        {
-            this.ScrappedQty = newQty;
-        }
+      
 
         public override string ToString()
         {
@@ -99,6 +96,11 @@ namespace AdventureWorksModel
         }
         #endregion
 
+        public static (WorkOrder, WorkOrder) ChangeScrappedQuantity(this WorkOrder wo, short newQty)
+        {
+            var w01 = wo with { ScrappedQty = newQty };
+            return (wo, wo);
+        }
         public static string Validate(WorkOrder wo, DateTime startDate, DateTime dueDate)
         {
             return startDate > dueDate ? "StartDate must be before DueDate" : null;
@@ -128,9 +130,6 @@ namespace AdventureWorksModel
         [MemberOrder(1)]
         public static (WorkOrderRouting, WorkOrderRouting) AddNewRouting(WorkOrder wo, Location loc)
         {
-            var wor = new WorkOrderRouting();  //TODO: Add all required parameters
-            wor.WorkOrder = wo;
-            wor.Location = loc;
             short highestSequence = 0;
             short increment = 1;
             if (wo.WorkOrderRoutings.Count > 0)
@@ -138,9 +137,13 @@ namespace AdventureWorksModel
                 highestSequence = wo.WorkOrderRoutings.Max(n => n.OperationSequence);
             }
             highestSequence += increment;
-            wor.OperationSequence = highestSequence;
-            return Result.DisplayAndPersist(wor);
+            var wor = new WorkOrderRouting() with
+            {
+                WorkOrder = wo,
+                Location = loc,
+                OperationSequence = highestSequence
+            };
+            return (wor, wor);
         }
-
     }
 }

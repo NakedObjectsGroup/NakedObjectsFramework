@@ -27,15 +27,15 @@ namespace AdventureWorksModel {
 
         public Illustration() { }
  
-        public virtual int IllustrationID { get; set; }
-        public virtual string Diagram { get; set; }
+        public virtual int IllustrationID { get; init; }
+        public virtual string Diagram { get; init; }
 
-        public ICollection<ProductModelIllustration> ProductModelIllustration { get; set; }
+        public ICollection<ProductModelIllustration> ProductModelIllustration { get; init; }
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
     }
 
     public static class IllustrationFunctions

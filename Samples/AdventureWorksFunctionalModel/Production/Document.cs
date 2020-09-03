@@ -43,22 +43,22 @@ namespace AdventureWorksModel
 
         public Document() { }
 
-        public virtual int DocumentID { get; set; }
-        public virtual string Title { get; set; }
-        public virtual string FileName { get; set; }
-        public virtual string FileExtension { get; set; }
-        public virtual string Revision { get; set; }
-        public virtual int ChangeNumber { get; set; }
-        public virtual byte Status { get; set; }
-        public virtual string DocumentSummary { get; set; }
-        public byte[] Document1 { get; set; }
+        public virtual int DocumentID { get; init; }
+        public virtual string Title { get; init; }
+        public virtual string FileName { get; init; }
+        public virtual string FileExtension { get; init; }
+        public virtual string Revision { get; init; }
+        public virtual int ChangeNumber { get; init; }
+        public virtual byte Status { get; init; }
+        public virtual string DocumentSummary { get; init; }
+        public byte[] Document1 { get; init; }
 
-        public ICollection<ProductDocument> ProductDocument { get; set; }
+        public ICollection<ProductDocument> ProductDocument { get; init; }
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
     }
 

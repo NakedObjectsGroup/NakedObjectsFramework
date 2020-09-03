@@ -14,17 +14,7 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     public record ProductPhoto  {
 
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
-        public string Title()
+        public override string ToString()
         {
             return "Product Photo";
         }
@@ -34,21 +24,21 @@ namespace AdventureWorksModel {
         private byte[] _ThumbNailPhoto = new byte[0];
 
         [Hidden]
-        public virtual int ProductPhotoID { get; set; }
+        public virtual int ProductPhotoID { get; init; }
 
         public virtual byte[] ThumbNailPhoto {
             get { return _ThumbNailPhoto; }
             set { _ThumbNailPhoto = value; }
         }
 
-        public virtual string ThumbnailPhotoFileName { get; set; }
+        public virtual string ThumbnailPhotoFileName { get; init; }
         public virtual byte[] LargePhoto {
             get { return _LargePhoto; }
             set { _LargePhoto = value; }
         }
 
         //TODO
-        //public virtual string LargePhotoFileName { get; set; }
+        //public virtual string LargePhotoFileName { get; init; }
         //public virtual FileAttachment LargePhotoAsAttachment
         //{
         //    get
@@ -69,7 +59,7 @@ namespace AdventureWorksModel {
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
     }

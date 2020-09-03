@@ -33,20 +33,20 @@ namespace AdventureWorksModel {
         }
 
         [Hidden]
-        public virtual int ProductCategoryID { get; set; }
+        public virtual int ProductCategoryID { get; init; }
 
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
         [Named("Subcategories")]
         [TableView(true)] //TableView == ListView
-        public virtual ICollection<ProductSubcategory> ProductSubcategory { get; set; } = new List<ProductSubcategory>();
+        public virtual ICollection<ProductSubcategory> ProductSubcategory { get; init; } = new List<ProductSubcategory>();
 
         #region Row Guid and Modified Date
 
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         #endregion
 
@@ -55,7 +55,7 @@ namespace AdventureWorksModel {
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
