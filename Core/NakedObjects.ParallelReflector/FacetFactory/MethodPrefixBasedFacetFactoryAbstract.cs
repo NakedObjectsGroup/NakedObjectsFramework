@@ -25,8 +25,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     public abstract class MethodPrefixBasedFacetFactoryAbstract : FacetFactoryAbstract, IMethodPrefixBasedFacetFactory {
         private readonly ILogger<MethodPrefixBasedFacetFactoryAbstract> logger;
 
-        protected MethodPrefixBasedFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes)
-            : base(numericOrder, loggerFactory, featureTypes) =>
+        protected MethodPrefixBasedFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes, ReflectionType reflectionType = ReflectionType.ObjectOriented)
+            : base(numericOrder, loggerFactory, featureTypes, reflectionType) =>
             logger = loggerFactory.CreateLogger<MethodPrefixBasedFacetFactoryAbstract>();
 
         #region IMethodPrefixBasedFacetFactory Members

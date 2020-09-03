@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using NakedFunctions.ParallelReflect;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -19,11 +20,13 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.SpecImmutable;
+using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect.Component {
     public sealed class ParallelReflector : IReflector {
         private readonly IReflectorConfiguration config;
+        private readonly IFunctionalReflectorConfiguration functionalConfig;
         private readonly FacetDecoratorSet facetDecoratorSet;
         private readonly IMetamodelBuilder initialMetamodel;
         private readonly ILogger<ParallelReflector> logger;
@@ -34,6 +37,7 @@ namespace NakedObjects.ParallelReflect.Component {
         public ParallelReflector(IClassStrategy classStrategy,
                                  IMetamodelBuilder metamodel,
                                  IReflectorConfiguration config,
+                                 IFunctionalReflectorConfiguration functionalConfig,
                                  IMenuFactory menuFactory,
                                  IEnumerable<IFacetDecorator> facetDecorators,
                                  IEnumerable<IFacetFactory> facetFactories,
@@ -42,12 +46,18 @@ namespace NakedObjects.ParallelReflect.Component {
             ClassStrategy = classStrategy ?? throw new InitialisationException($"{nameof(classStrategy)} is null");
             initialMetamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
             this.config = config ?? throw new InitialisationException($"{nameof(config)} is null");
+            this.functionalConfig = functionalConfig;
             this.menuFactory = menuFactory ?? throw new InitialisationException($"{nameof(menuFactory)} is null");
             this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
             facetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
-            FacetFactorySet = new FacetFactorySet(facetFactories.ToArray());
+            FacetFactorySet = new FacetFactorySet(facetFactories.Where(f => f.ReflectionTypes.HasFlag(ReflectionType.ObjectOriented)).ToArray());
+
+            FunctionalFacetFactorySet = new FacetFactorySet(facetFactories.Where(f => f.ReflectionTypes.HasFlag(ReflectionType.Functional)).ToArray());
+
         }
+
+        public FacetFactorySet FunctionalFacetFactorySet { get; }
 
         #region IReflector Members
 
@@ -90,9 +100,9 @@ namespace NakedObjects.ParallelReflect.Component {
 
             services.ForEach(t => serviceTypes.Add(t));
 
-            var allTypes = services.Union(nonServices).ToArray();
+            var allObjectTypes = services.Union(nonServices).ToArray();
 
-            var metamodelBuilder = InstallSpecificationsParallel(allTypes, initialMetamodel);
+            var metamodelBuilder = InstallSpecifications(allObjectTypes, functionalConfig.Types, functionalConfig.Functions, initialMetamodel);
 
             PopulateAssociatedActions(s1, metamodelBuilder);
 
@@ -103,7 +113,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         #endregion
 
-        public (ITypeSpecBuilder typeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) IntrospectSpecification(Type actualType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public (ITypeSpecBuilder typeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) IntrospectSpecification(Type actualType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, Func<IIntrospector> getIntrospector) {
             if (actualType == null) {
                 throw new ReflectionException("cannot introspect null");
             }
@@ -111,7 +121,7 @@ namespace NakedObjects.ParallelReflect.Component {
             var typeKey = ClassStrategy.GetKeyForType(actualType);
 
             return string.IsNullOrEmpty(metamodel[typeKey].FullName)
-                ? LoadSpecificationAndCache(actualType, metamodel)
+                ? LoadSpecificationAndCache(actualType, metamodel, getIntrospector)
                 : (metamodel[typeKey], metamodel);
         }
 
@@ -132,21 +142,42 @@ namespace NakedObjects.ParallelReflect.Component {
             return types.Union(systemTypes).ToArray();
         }
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(IImmutableDictionary<string, ITypeSpecBuilder> metamodel, Func<IIntrospector> getIntrospector) {
             var ph = metamodel.Where(i => string.IsNullOrEmpty(i.Value.FullName)).Select(i => i.Value.Type);
-            var mm = ph.AsParallel().SelectMany(type => IntrospectSpecification(type, metamodel).metamodel).Distinct(new TypeSpecKeyComparer()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value).ToImmutableDictionary();
+            var mm = ph.AsParallel().SelectMany(type => IntrospectSpecification(type, metamodel, getIntrospector).metamodel).Distinct(new TypeSpecKeyComparer()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value).ToImmutableDictionary();
 
             return mm.Any(i => string.IsNullOrEmpty(i.Value.FullName))
-                ? IntrospectPlaceholders(mm)
+                ? IntrospectPlaceholders(mm, getIntrospector)
                 : mm;
         }
 
-        private IMetamodelBuilder InstallSpecificationsParallel(Type[] types, IMetamodelBuilder metamodelBuilder) {
-            var metamodel = GetPlaceholders(types);
-            metamodel = IntrospectPlaceholders(metamodel);
-            metamodel.ForEach(i => metamodelBuilder.Add(i.Value.Type, i.Value));
-            return metamodelBuilder;
+        private IMetamodelBuilder InstallSpecifications(Type[] ooTypes, Type[] records, Type[] functions, IMetamodelBuilder metamodel)
+        {
+            // first oo
+            var mm = GetPlaceholders(ooTypes);
+            mm = IntrospectPlaceholders(mm, () => new Introspector(this, FacetFactorySet, loggerFactory.CreateLogger<Introspector>()));
+            // then functional
+            var allFunctionalTypes = records.Union(functions).ToArray();
+
+            var mm2 = GetPlaceholders(allFunctionalTypes);
+            if (mm2.Any())
+            {
+                mm = mm.AddRange(mm2);
+                mm = IntrospectPlaceholders(mm, () => new FunctionalIntrospector(this, FunctionalFacetFactorySet, functions));
+            }
+
+            mm.ForEach(i => metamodel.Add(i.Value.Type, i.Value));
+            return metamodel;
         }
+
+
+
+        //private IMetamodelBuilder InstallSpecificationsParallel(Type[] types, IMetamodelBuilder metamodelBuilder) {
+        //    var metamodel = GetPlaceholders(types);
+        //    metamodel = IntrospectPlaceholders(metamodel);
+        //    metamodel.ForEach(i => metamodelBuilder.Add(i.Value.Type, i.Value));
+        //    return metamodelBuilder;
+        //}
 
         private void PopulateAssociatedActions(Type[] services, IMetamodelBuilder metamodel) {
             var nonServiceSpecs = AllObjectSpecImmutables.OfType<IObjectSpecBuilder>();
@@ -261,14 +292,15 @@ namespace NakedObjects.ParallelReflect.Component {
 
         private IImmutableDictionary<string, ITypeSpecBuilder> GetPlaceholders(Type[] types) => types.Select(t => ClassStrategy.GetType(t)).Where(t => t != null).Distinct(new TypeKeyComparer(ClassStrategy)).ToDictionary(t => ClassStrategy.GetKeyForType(t), t => GetPlaceholder(t, null)).ToImmutableDictionary();
 
-        private (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecificationAndCache(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecificationAndCache(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, Func<IIntrospector> getIntrospector) {
             var specification = metamodel[ClassStrategy.GetKeyForType(type)];
 
             if (specification == null) {
                 throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
             }
 
-            metamodel = specification.Introspect(facetDecoratorSet, new Introspector(this, loggerFactory.CreateLogger<Introspector>()), metamodel);
+            //metamodel = specification.Introspect(facetDecoratorSet, new Introspector(this, loggerFactory.CreateLogger<Introspector>()), metamodel);
+            metamodel = specification.Introspect(facetDecoratorSet, getIntrospector(), metamodel);
 
             return (specification, metamodel);
         }

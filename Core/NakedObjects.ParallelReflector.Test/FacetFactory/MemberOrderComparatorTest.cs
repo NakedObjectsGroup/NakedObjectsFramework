@@ -7,6 +7,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Meta.Facet;
+using NakedObjects.Meta.Utils;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local

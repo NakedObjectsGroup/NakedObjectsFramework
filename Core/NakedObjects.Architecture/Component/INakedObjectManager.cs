@@ -30,6 +30,7 @@ namespace NakedObjects.Architecture.Component {
         INakedObjectAdapter CreateViewModelAdapter(IObjectSpec spec, object viewModel);
         INakedObjectAdapter CreateInstanceAdapter(object obj);
         INakedObjectAdapter AdapterForExistingObject(object domainObject, IOid oid);
+        INakedObjectAdapter CreateAdapterForExistingObject(object domainObject);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

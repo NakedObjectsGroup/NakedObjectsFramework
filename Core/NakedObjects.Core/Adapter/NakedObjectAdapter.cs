@@ -183,6 +183,26 @@ namespace NakedObjects.Core.Adapter {
 
         public void Updated() => CallCallback<IUpdatedCallbackFacet>();
 
+        public object PersistingAndReturn()
+        {
+            return CallCallbackAndReturn<IPersistingCallbackFacet>();
+        }
+
+        public object PersistedAndReturn()
+        {
+            return CallCallbackAndReturn<IPersistedCallbackFacet>();
+        }
+
+        public object UpdatingAndReturn()
+        {
+            return CallCallbackAndReturn<IUpdatingCallbackFacet>();
+        }
+
+        public object UpdatedAndReturn()
+        {
+            return CallCallbackAndReturn<IUpdatedCallbackFacet>();
+        }
+
         #endregion
 
         private ITypeSpec SetSpec() {
@@ -245,6 +265,11 @@ namespace NakedObjects.Core.Adapter {
         }
 
         private void CallCallback<T>() where T : ICallbackFacet => Spec.GetFacet<T>().Invoke(this, session, lifecycleManager, metamodel);
+
+        private object CallCallbackAndReturn<T>() where T : ICallbackFacet
+        {
+            return Spec.GetFacet<T>().InvokeAndReturn(this, session, lifecycleManager, metamodel, persistor);
+        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

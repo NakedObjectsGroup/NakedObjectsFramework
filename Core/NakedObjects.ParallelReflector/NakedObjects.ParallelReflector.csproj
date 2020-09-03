@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NakedFunctions.ProgrammingModel" Version="12.0.0-alpha01" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NakedFunctions.Metamodel\NakedFunctions.Metamodel.csproj" />
     <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj" />
     <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj" />
     <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj" />

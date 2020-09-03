@@ -36,5 +36,8 @@ namespace NakedObjects.Architecture.Component {
         IEnumerable GetBoundedSet(IObjectSpec spec);
         void LoadComplexTypes(INakedObjectAdapter adapter, bool isGhost);
         void ObjectChanged(INakedObjectAdapter nakedObjectAdapter, ILifecycleManager lifecycleManager, IMetamodelManager metamodel);
+
+        object PersistDetachedObject(object poco);
+        void AdaptDetachedObject(object poco);
     }
 }

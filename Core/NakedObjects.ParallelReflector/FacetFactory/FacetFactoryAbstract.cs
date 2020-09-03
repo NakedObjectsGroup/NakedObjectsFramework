@@ -18,10 +18,12 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public abstract class FacetFactoryAbstract : IFacetFactory {
-        protected FacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes) {
+        protected FacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes,
+            ReflectionType reflectionType = ReflectionType.ObjectOriented) {
             NumericOrder = numericOrder;
             LoggerFactory = loggerFactory;
             FeatureTypes = featureTypes;
+            ReflectionTypes = reflectionType;
         }
 
         protected ILoggerFactory LoggerFactory { get; }
@@ -31,6 +33,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public int NumericOrder { get; }
 
         public virtual FeatureType FeatureTypes { get; }
+        public ReflectionType ReflectionTypes { get; }
 
         public void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) { }
 

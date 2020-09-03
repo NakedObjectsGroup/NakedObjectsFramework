@@ -71,6 +71,10 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedObjects.Rest.Test.Impl
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedObjects.Rest.Test.Impl4", "Rest\NakedObjects.Rest.Test.Impl4\NakedObjects.Rest.Test.Impl4.fsproj", "{200D0273-DF21-423A-A64F-63A789CF8293}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Metamodel", "Core\NakedFunctions.Metamodel\NakedFunctions.Metamodel.csproj", "{8C803ABA-4FE4-4B6F-8367-D93C17654D0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedFunctions.ParallelReflector.Test", "Core\NakedFunctions.ParallelReflector.Test\NakedFunctions.ParallelReflector.Test.csproj", "{5A3E2EC8-DA9F-43E1-8084-4D1E17FE4B9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -211,6 +215,14 @@ Global
 		{200D0273-DF21-423A-A64F-63A789CF8293}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{200D0273-DF21-423A-A64F-63A789CF8293}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{200D0273-DF21-423A-A64F-63A789CF8293}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C803ABA-4FE4-4B6F-8367-D93C17654D0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C803ABA-4FE4-4B6F-8367-D93C17654D0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C803ABA-4FE4-4B6F-8367-D93C17654D0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C803ABA-4FE4-4B6F-8367-D93C17654D0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A3E2EC8-DA9F-43E1-8084-4D1E17FE4B9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A3E2EC8-DA9F-43E1-8084-4D1E17FE4B9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A3E2EC8-DA9F-43E1-8084-4D1E17FE4B9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A3E2EC8-DA9F-43E1-8084-4D1E17FE4B9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

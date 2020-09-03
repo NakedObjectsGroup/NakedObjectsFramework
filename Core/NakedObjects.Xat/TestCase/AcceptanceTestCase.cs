@@ -99,6 +99,18 @@ namespace NakedObjects.Xat {
             }
         }
 
+        protected virtual FunctionalReflectorConfiguration FunctionalReflector {
+            get {
+                var reflectorConfig = new FunctionalReflectorConfiguration(
+                    new Type[] { },
+                    new Type[] { }
+                );
+                ReflectorConfiguration.NoValidate = true;
+                return reflectorConfig;
+            }
+        }
+
+
         private IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostContext, configBuilder) => {
@@ -333,6 +345,7 @@ namespace NakedObjects.Xat {
             // config 
             services.AddSingleton<IReflectorConfiguration>(Reflector);
             services.AddSingleton<IEntityObjectStoreConfiguration>(Persistor);
+            services.AddSingleton<IFunctionalReflectorConfiguration>(FunctionalReflector);
 
             //Externals
             services.AddScoped(p => TestPrincipal);
