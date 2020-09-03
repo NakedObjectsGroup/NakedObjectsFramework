@@ -46,7 +46,7 @@ namespace AdventureWorksFunctionalModel.Functions {
         public static (Product, Product) GetAndPersistProduct(this Product product, IQueryable<Product> allProducts) {
             var pp = allProducts.First(p => p.ProductID != product.ProductID);
             pp.Name = $"{pp.Name}:1";
-            return Result.DisplayAndPersist(pp);
+            return (pp, pp);
         }
 
         public static (Product, Product[]) GetAndPersistProducts(this Product product, IQueryable<Product> allProducts) {
@@ -86,21 +86,22 @@ namespace AdventureWorksFunctionalModel.Functions {
         public static (Product, Product, string) GetAndPersistProductWithWarning(this Product product, IQueryable<Product> allProducts) {
             var pp = allProducts.First(p => p.ProductID != product.ProductID);
             pp.Name = $"{pp.Name}:1";
-            return Result.DisplayAndPersist(pp, "A warning message");
+            return (pp, pp, "A warning message");
         }
 
         public static (Product, Product) UpdateProductUsingRemute(this Product product, IQueryable<Product> allProducts) {
             //var pp = allProducts.First(p => p.ProductID != product.ProductID);
 
             var up = product with {Name =  $"{product.Name}:1"};
-            return Result.DisplayAndPersist(up);
+            return (up, up);
         }
 
         public static (IProduct, IProduct) UpdateIProductUsingRemute(this Product product, IQueryable<IProduct> allProducts) {
-            var pp = allProducts.First(p => p.ProductID != product.ProductID);
+            throw new NotImplementedException();
+            //Product pp = allProducts.First(p => p.ProductID != product.ProductID);
 
-            var up = pp with {Name =  $"{pp.Name}:1"};
-            return Result.DisplayAndPersist(up);
+            //var up = pp with {Name =  $"{pp.Name}:1"};
+            //return Result.DisplayAndPersist(up);
         }
 
         public static Product GetAndChangeButNotPersistProduct(this Product product, IQueryable<Product> allProducts) {

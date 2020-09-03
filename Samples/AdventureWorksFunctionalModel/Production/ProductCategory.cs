@@ -60,15 +60,15 @@ namespace AdventureWorksModel {
         #endregion
 
         #endregion
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 
     public static class ProductCategoryFunctions
     {
-
-        public static string Title(this ProductCategory pc)
-        {
-            return pc.CreateTitle(pc.Name);
-        }
 
         public static ProductCategory Updating(ProductCategory a, [Injected] DateTime now)
         {

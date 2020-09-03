@@ -10,6 +10,7 @@ using System;
 
 using System.Linq;
 using AdventureWorksFunctionalModel.Functions;
+using AdventureWorksFunctionalModel.NakedFunctions;
 using NakedFunctions;
 using NakedFunctions;
 
@@ -62,7 +63,8 @@ namespace AdventureWorksModel {
             [Injected] Guid guid
             ) {
 
-            return Result.DisplayAndPersist(new SpecialOffer(0, description, discountPct, type, category, startDate, endDate, minQty, maxQty, now, guid));
+            var so = new SpecialOffer(0, description, discountPct, type, category, startDate, endDate, minQty, maxQty, now, guid);
+            return (so, so);
         }
 
         public static DateTime Default4CreateNewSpecialOffer([Injected] DateTime now)
@@ -79,7 +81,7 @@ namespace AdventureWorksModel {
 
         #region Create Multiple Special Offers
         [MemberOrder(5)]
-        [MultiLine(NumberOfLines=2)]
+        [MultiLine(2)]
         public static (SpecialOffer, SpecialOffer) CreateMultipleSpecialOffers(
             
             string description,
@@ -100,7 +102,7 @@ namespace AdventureWorksModel {
             //in Current Special Offers (but can be viewed via All Special Offers)
             so.StartDate = startDate;
             so.EndDate = new DateTime(2003, 12, 31);
-            return Result.DisplayAndPersist(so);
+            return (so,so);
         }
 
         public static string[] Choices3CreateMultipleSpecialOffers()
@@ -118,10 +120,12 @@ namespace AdventureWorksModel {
         #region AssociateSpecialOfferWithProduct
 
         [MemberOrder(6)]
-        public static (SpecialOfferProduct, SpecialOfferProduct, string) AssociateSpecialOfferWithProduct(
+        public static (SpecialOfferProduct, SpecialOfferProduct, Action<IUserAdvisory>) AssociateSpecialOfferWithProduct(
             
-            [ContributedAction("Special Offers")] SpecialOffer offer, 
-            [ContributedAction("Special Offers")] Product product,
+           // [ContributedAction("Special Offers")] TODO
+        SpecialOffer offer, 
+            //[ContributedAction("Special Offers")] TODO
+        Product product,
             IQueryable<SpecialOfferProduct> sops
             ) {
             //First check if association already exists
@@ -132,13 +136,13 @@ namespace AdventureWorksModel {
 
             if (query.Count() != 0) {
 
-                string msg = $"{offer} is already associated with { product}"; //TODO: sort titles
-                return Result.DisplayAndPersist<SpecialOfferProduct>(null, msg);
+                Action<IUserAdvisory> msg = (IUserAdvisory ua) => ua.InformUser($"{offer} is already associated with { product}"); 
+                return (null, null, msg);
             }
             var newSop = new SpecialOfferProduct();  //TODO use proper constructor
             newSop.SpecialOffer = offer;
             newSop.Product = product;
-            return Result.DisplayAndPersist(newSop, null);
+            return (newSop, newSop, null);
         }
 
         [PageSize(20)]

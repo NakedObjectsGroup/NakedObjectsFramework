@@ -77,13 +77,14 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        public override string ToString()
+        {
+            return $"{Quantity} in {Location} - {Shelf}";
+        }
+
     }
     public static class ProductInventoryFunctions
     {
-        public static string Title(this ProductInventory pi)
-        {
-            return pi.CreateTitle($"{pi.Quantity} in {pi.Location} - {pi.Shelf}");
-        }
         public static ProductInventory Updating(ProductInventory a, [Injected] DateTime now)
         {
             return a with {ModifiedDate =  now};

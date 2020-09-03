@@ -66,7 +66,7 @@ namespace AdventureWorksModel {
         {
             //TODO: Must add parameters for minimum property set and call full constructor with null for others
             var p = new Product();
-            return Result.DisplayAndPersist(p);
+            return (p, p);
         }
 
         #region FindProduct
@@ -94,9 +94,9 @@ namespace AdventureWorksModel {
 
       //TODO: This action is both a menu action AND a contributed action.  Should that be permitted? How to specify it?
         [TableView(true, "ProductNumber", "ListPrice"), MemberOrder(3)]
-        public static IQueryable<Product> ListProductsBySubCategory(
-            
-            [ContributedAction("Products")] ProductSubcategory subCategory, 
+        public static IQueryable<Product> ListProductsBySubCategory(          
+            //[ContributedAction("Products")] TODO
+            ProductSubcategory subCategory, 
             IQueryable<Product> products) {
             return products.Where(x => x.ProductSubcategory.ProductSubcategoryID == subCategory.ProductSubcategoryID).OrderBy(x => x.Name);
         }

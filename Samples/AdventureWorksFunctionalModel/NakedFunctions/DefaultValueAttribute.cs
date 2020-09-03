@@ -2,12 +2,13 @@
 
 namespace NakedFunctions
 {
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Parameter)]
     public class DefaultValueAttribute : Attribute
     {
-        private bool v;
+        //TODO: Check this against the signature of the System.ComponentModel equivalent attribute
+        private object v;
 
-        public DefaultValueAttribute(bool v)
+        public DefaultValueAttribute(object v)
         {
             this.v = v;
         }

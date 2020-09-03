@@ -7,6 +7,11 @@ namespace NakedFunctions
     {
         private int v;
 
+        public MultiLineAttribute()
+        {
+            //TODO
+        }
+
         public MultiLineAttribute(int v)
         {
             this.v = v;

@@ -98,39 +98,39 @@ namespace AdventureWorksModel
 
         #endregion
 
-        #region Photo
+        //#region Photo
 
-        private Image cachedPhoto;
+        //private Image cachedPhoto;
 
-        [MemberOrder(4)]
-        public virtual Image Photo
-        {
-            get
-            {
-                if (cachedPhoto == null)
-                {
-                    ProductPhoto p = (from obj in ProductProductPhoto
-                                      select obj.ProductPhoto).FirstOrDefault();
+        //[MemberOrder(4)]
+        //public virtual Image Photo
+        //{
+        //    get
+        //    {
+        //        if (cachedPhoto == null)
+        //        {
+        //            ProductPhoto p = (from obj in ProductProductPhoto
+        //                              select obj.ProductPhoto).FirstOrDefault();
 
-                    if (p != null)
-                    {
-                        cachedPhoto = new Image(p.LargePhoto, p.LargePhotoFileName);
-                    }
-                }
-                return cachedPhoto;
-            }
-        }
+        //            if (p != null)
+        //            {
+        //                cachedPhoto = new Image(p.LargePhoto, p.LargePhotoFileName);
+        //            }
+        //        }
+        //        return cachedPhoto;
+        //    }
+        //}
 
-        public void AddOrChangePhoto(Image newImage)
-        {
-            ProductPhoto p = (from obj in ProductProductPhoto
-                              select obj.ProductPhoto).FirstOrDefault();
+        //public void AddOrChangePhoto(Image newImage)
+        //{
+        //    ProductPhoto p = (from obj in ProductProductPhoto
+        //                      select obj.ProductPhoto).FirstOrDefault();
 
-            p.LargePhoto = newImage.GetResourceAsByteArray();
-            p.LargePhotoFileName = newImage.Name;
-        }
+        //    p.LargePhoto = newImage.GetResourceAsByteArray();
+        //    p.LargePhotoFileName = newImage.Name;
+        //}
 
-        #endregion
+        //#endregion
 
         #region Make
 
@@ -220,7 +220,7 @@ namespace AdventureWorksModel
 
         #region DaysToManufacture
 
-        [MemberOrder(24), Range(1, 90)]
+        [MemberOrder(24)] //TODO Range(1, 90)]
         public virtual int DaysToManufacture { get; set; }
 
         #endregion
@@ -269,7 +269,7 @@ namespace AdventureWorksModel
         
         [MemberOrder(83)]
         [Mask("d")]
-        [Range(0, 10)]
+        //[Range(0, 10)] TODO
         public virtual DateTime? DiscontinuedDate { get; set; }
 
         #endregion
@@ -322,7 +322,7 @@ namespace AdventureWorksModel
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
         #endregion
 
         #region rowguid
@@ -404,15 +404,15 @@ namespace AdventureWorksModel
         #endregion
 
         #endregion
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 
     public static class ProductFunctions2
-    {//TODO: Temp name while Stef is using Product Functions for initial spiking
-        public static string Title(this Product p)
-        {
-            return p.CreateTitle(p.Name);
-        }
-
+    {
         #region Life Cycle Methods
         public static Product Updating(Product p, [Injected] DateTime now)
         {
@@ -465,10 +465,10 @@ namespace AdventureWorksModel
             var best =  BestSpecialOfferProduct(p, quantity, sops);
             if (best != null)
             {
-                return DisplayAndPersistDifferentItems(best.SpecialOffer, (SpecialOfferProduct) null);
+                return (best.SpecialOffer, (SpecialOfferProduct) null);
             }
             var none = SpecialOfferRepository.AssociateSpecialOfferWithProduct(SpecialOfferRepository.NoDiscount(offers), p, sops).Item2;
-            return DisplayAndPersistDifferentItems(none.SpecialOffer, none);
+            return (none.SpecialOffer, none);
         }
 
         public static string ValidateBestSpecialOffer(Product p, short quantity)
@@ -496,7 +496,7 @@ namespace AdventureWorksModel
                         where psc.ProductCategory.ProductCategoryID == productCategory.ProductCategoryID
                         select psc).ToList();
             }
-            return Display(new ProductSubcategory[] { }.ToList());
+            return new ProductSubcategory[] { }.ToList();
         }
         [Hidden]
         public static SpecialOfferProduct BestSpecialOfferProduct(

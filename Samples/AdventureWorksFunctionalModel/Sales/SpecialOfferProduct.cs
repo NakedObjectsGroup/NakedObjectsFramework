@@ -41,9 +41,7 @@ namespace AdventureWorksModel {
         #region Title
 
         public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(" ");
-            return t.ToString();
+            return "Special offer - title TODO";
         }
 
         #endregion

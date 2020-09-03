@@ -6,13 +6,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Human Resources\**" />
     <Compile Remove="Mapping\**" />
+    <Compile Remove="Person\**" />
+    <Compile Remove="Purchasing\**" />
+    <Compile Remove="Sales\**" />
+    <EmbeddedResource Remove="Human Resources\**" />
     <EmbeddedResource Remove="Mapping\**" />
+    <EmbeddedResource Remove="Person\**" />
+    <EmbeddedResource Remove="Purchasing\**" />
+    <EmbeddedResource Remove="Sales\**" />
+    <None Remove="Human Resources\**" />
     <None Remove="Mapping\**" />
+    <None Remove="Person\**" />
+    <None Remove="Purchasing\**" />
+    <None Remove="Sales\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="AdventureWorksContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Sales\SpecialOffer.cs" />
+    <Compile Include="Sales\SpecialOfferContributedActions.cs" />
+    <Compile Include="Sales\SpecialOfferProduct.cs" />
+    <Compile Include="Sales\SpecialOfferRepository.cs" />
   </ItemGroup>
 
 </Project>

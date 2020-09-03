@@ -10,7 +10,8 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     public interface ICreditCardCreator {
 
-        [Hidden]
-        void CreatedCardHasBeenSaved(CreditCard card);
+        //TODO: work out how to do this
+        //[Hidden]
+        //void CreatedCardHasBeenSaved(CreditCard card);
     }
 }

@@ -33,7 +33,7 @@ namespace AdventureWorksModel
         [Hidden]
         public virtual int BusinessEntityID { get; set; }
 
-        [MemberOrder(1), Disabled]
+        [MemberOrder(1)]
         public virtual Person PersonDetails { get; set; }
 
         [MemberOrder(10)]
@@ -102,15 +102,15 @@ namespace AdventureWorksModel
             nameof(EmployeePayHistory.RateChangeDate),
             nameof(EmployeePayHistory.Rate))]
         public virtual ICollection<EmployeePayHistory> PayHistory { get; set; }
+
+        public override string ToString()
+        {
+            return $"{PersonDetails}";
+        }
     }
 
     public static class EmployeeFunctions
     {
-
-        public static string Title(this Employee e)
-        {
-            return e.CreateTitle($"{PersonFunctions.Title(e.PersonDetails)}");
-        }
 
         #region LifeCycle methods
         public static Employee Updating(Employee a, [Injected] DateTime now)

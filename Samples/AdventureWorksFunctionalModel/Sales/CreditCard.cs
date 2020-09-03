@@ -20,15 +20,17 @@ namespace AdventureWorksModel {
             ModifiedDate = DateTime.Now;
         }
 
+        //TODO: How to handle this scenario! Maybe via Action(T)
         public void Persisted() {
-            var link = Container.NewTransientInstance<PersonCreditCard>();
-            link.CreditCard = this;
-            link.Person = ForContact;
-            Container.Persist(ref link);
+            throw new NotImplementedException();
+            //var link = Container.NewTransientInstance<PersonCreditCard>();
+            //link.CreditCard = this;
+            //link.Person = ForContact;
+            //Container.Persist(ref link);
 
-            if (Creator != null) {
-                Creator.CreatedCardHasBeenSaved(this);
-            }
+            //if (Creator != null) {
+            //    Creator.CreatedCardHasBeenSaved(this);
+            //}
         }
 
         public virtual void Updating() {
@@ -42,7 +44,6 @@ namespace AdventureWorksModel {
         [MemberOrder(1)]
         public virtual string CardType { get; set; }
 
-        []
         [MemberOrder(2)][DescribedAs("Without spaces")]
         public virtual string CardNumber { get; set; }
 
@@ -95,9 +96,7 @@ namespace AdventureWorksModel {
         #region Title
 
         public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(ObfuscatedNumber);
-            return t.ToString();
+            return ObfuscatedNumber;
         }
 
         #endregion
@@ -108,7 +107,7 @@ namespace AdventureWorksModel {
             }
 
             DateTime today = DateTime.Now.Date;
-            DateTime expiryDate = new DateTime(expYear, expMonth, 1).EndOfMonth();
+            DateTime expiryDate = new DateTime(expYear, expMonth, 1); //.EndOfMonth();
 
             if (expiryDate <= today) {
                 return "Expiry date must be in the future";

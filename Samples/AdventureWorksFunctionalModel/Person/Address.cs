@@ -81,17 +81,12 @@ namespace AdventureWorksModel {
         //[Hidden]
         //public virtual int CountryRegionID { get; set; }
 
-        [Disabled(WhenTo.OncePersisted)]
-        
-        
         [MemberOrder(16)]
         public virtual CountryRegion CountryRegion { get; set; }
 
         //[Hidden]
         //public virtual int AddressTypeID { get; set; }
-
-        []
-        
+    
         [MemberOrder(10)]
         public virtual AddressType AddressType { get; set; }
 
@@ -111,6 +106,11 @@ namespace AdventureWorksModel {
         
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
+
+        public override string ToString()
+        {
+            return $"{AddressLine1}...";
+        }
 
     }
 
@@ -148,10 +148,6 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        public static string Title(this Address a)
-        {
-            return a.CreateTitle($"{a.AddressLine1}...");
-        }
 
         //TODO: Validate and Choices methods were both commented-out in original code, and
         //there is redundancy between them.  Included here (temporarily) for example purposes.
@@ -171,7 +167,6 @@ namespace AdventureWorksModel {
         //TODO: Although the injected first param is not used here, it is still needed in order to match up this
         //Choices function with the Address type. 
         //TODO: Is Executed relevant any more? Or is it a hangover from early thick-client NOF ?
-        [Executed(Where.Remotely)]
         public static IList<StateProvince> ChoicesStateProvince(Address a, CountryRegion countryRegion, IQueryable<StateProvince> allProvincences)
         {
             return countryRegion != null ? StateProvincesForCountry(countryRegion, allProvincences) : new List<StateProvince>();

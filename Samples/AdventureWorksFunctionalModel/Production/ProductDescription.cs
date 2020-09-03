@@ -27,8 +27,7 @@ namespace AdventureWorksModel {
         public virtual int ProductDescriptionID { get; set; }
 
         //Title
-        [MultiLine(NumberOfLines = 10)]
-        [TypicalLength(100)]
+        [MultiLine(10)]
         [MemberOrder(2)]
         public virtual string Description { get; set; }
 
@@ -51,14 +50,15 @@ namespace AdventureWorksModel {
         #endregion
 
         #endregion
+
+        public override string ToString()
+        {
+            return Description;
+        }
     }
 
     public static class ProductDescriptionFunctions
     {
-        public static string Title(this ProductDescription pd)
-        {
-            return pd.CreateTitle(pd.Description);
-        }
         public static ProductDescription Updating(ProductDescription a, [Injected] DateTime now)
         {
             return a with {ModifiedDate =  now};

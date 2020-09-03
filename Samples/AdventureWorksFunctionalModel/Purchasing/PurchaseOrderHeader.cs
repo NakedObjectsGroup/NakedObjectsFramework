@@ -53,7 +53,6 @@ namespace AdventureWorksModel {
         [Hidden]
         public virtual int VendorID { get; set; }
 
-        [Disabled(WhenTo.OncePersisted)]
         [MemberOrder(1)]
         public virtual Vendor Vendor { get; set; }
 
@@ -68,7 +67,7 @@ namespace AdventureWorksModel {
         public virtual byte Status { get; set; }
 
         [Named("Status")]
-        [MemberOrder(1.1)]
+        [MemberOrder(1)]
         public virtual string StatusAsString {
             get { return statusLabels[Status - 1]; }
         }
@@ -187,7 +186,7 @@ namespace AdventureWorksModel {
             short qty)
         {
             var pod = new PurchaseOrderDetail(header, prod, qty);
-            return DisplayAndPersist(pod);
+            return (pod, pod);
         }
 
         public static string DisableAddNewDetail(PurchaseOrderHeader header)
@@ -211,7 +210,7 @@ namespace AdventureWorksModel {
         public static (PurchaseOrderHeader, PurchaseOrderHeader) Approve(PurchaseOrderHeader header)
         {
             var header2 = header with {Status =  2};
-            return DisplayAndPersist(header2);
+            return (header2, header2);
         }
 
         public static bool HideApprove(PurchaseOrderHeader header)
@@ -240,8 +239,8 @@ namespace AdventureWorksModel {
             PurchaseOrderHeader header,
             [Injected] DateTime now)
         {
-            var newRev = header.RevisionNumber + 1;
-            return header with {ModifiedDate =  now).With(x => x.RevisionNumber, newRev};
+            byte newRev = Convert.ToByte(header.RevisionNumber + 1);
+            return header with {ModifiedDate =  now, RevisionNumber = newRev};
         }
         #endregion
     }

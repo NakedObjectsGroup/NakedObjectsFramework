@@ -3,6 +3,5 @@
 namespace NakedFunctions
 {
         [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
-        [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
         public class HiddenAttribute : Attribute { }
 }

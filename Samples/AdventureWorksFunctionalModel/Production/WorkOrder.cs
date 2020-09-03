@@ -13,14 +13,16 @@ using System.Linq;
 using NakedFunctions;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-        public record WorkOrder : IHasModifiedDate {
+namespace AdventureWorksModel
+{
+    public record WorkOrder : IHasModifiedDate
+    {
 
         [Hidden]
         public virtual int WorkOrderID { get; set; }
 
         [MemberOrder(22)]
-        
+
         public virtual int StockedQty { get; set; }
 
         [MemberOrder(24)]
@@ -31,14 +33,14 @@ namespace AdventureWorksModel {
         public virtual DateTime? EndDate { get; set; }
 
         [MemberOrder(99)]
-        
+
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
         [Hidden]
         public virtual short? ScrapReasonID { get; set; }
 
-        
+
         [MemberOrder(26)]
         public virtual ScrapReason ScrapReason { get; set; }
 
@@ -59,8 +61,8 @@ namespace AdventureWorksModel {
         [MemberOrder(10)]
         public virtual Product Product { get; set; }
 
-        
-        
+
+
         [RenderEagerly]
         [TableView(true, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")]
         public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; set; }
@@ -70,7 +72,8 @@ namespace AdventureWorksModel {
 
         [Hidden]
         [NotMapped]
-        public virtual string AnAlwaysHiddenReadOnlyProperty {
+        public virtual string AnAlwaysHiddenReadOnlyProperty
+        {
             get { return ""; }
         }
 
@@ -78,18 +81,21 @@ namespace AdventureWorksModel {
         {
             this.ScrappedQty = newQty;
         }
+
+        public override string ToString()
+        {
+            return $"{Product}: {StartDate}";
+
+        }
     }
 
     public static class WorkOrderFunctions
     {
-        public static string Title(this WorkOrder wo)
-        {
-            return wo.CreateTitle($"{ProductFunctions2.Title(wo.Product)}: {wo.StartDate.ToString("d MMM yyyy")}");
-        }
+
         #region LifeCycle functions
         public static WorkOrder Updating(WorkOrder wo, [Injected] DateTime now)
         {
-            return wo with {ModifiedDate =  now};
+            return wo with { ModifiedDate = now };
         }
         #endregion
 
@@ -100,7 +106,7 @@ namespace AdventureWorksModel {
 
         public static string ValidateOrderQty(WorkOrder wo, int qty)
         {
-            return qty <= 0? "Order Quantity must be > 0": null;
+            return qty <= 0 ? "Order Quantity must be > 0" : null;
         }
 
         public static DateTime DefaultStartDate(WorkOrder wo, [Injected] DateTime now)
@@ -114,9 +120,9 @@ namespace AdventureWorksModel {
         }
 
         [PageSize(20)]
-        public static IQueryable<Product> AutoCompleteProduct([Range(2,0)] string name, IQueryable<Product> products)
+        public static IQueryable<Product> AutoCompleteProduct([Range(2, 0)] string name, IQueryable<Product> products)
         {
-            return ProductRepository.FindProductByName( name, products);
+            return ProductRepository.FindProductByName(name, products);
         }
 
         [MemberOrder(1)]

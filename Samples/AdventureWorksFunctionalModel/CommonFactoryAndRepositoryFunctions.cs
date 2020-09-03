@@ -1,24 +1,26 @@
 ﻿
+using System;
 using System.Linq;
+using AdventureWorksFunctionalModel.NakedFunctions;
 using NakedFunctions;
 
 namespace AdventureWorksModel
 {
     public static class CommonFactoryAndRepositoryFunctions
     {
-        public static (T,string) SingleObjectWarnIfNoMatch<T>(IQueryable<T> query)
+        public static (T,Action<IUserAdvisory>) SingleObjectWarnIfNoMatch<T>(IQueryable<T> query)
         {
             T result = default(T);
             string message = "";
             if (!query.Any())
             {
-                message = ProgrammingModel.NoMatchSingular;
+                message = "There is no matching object";
                 
             } else
             {
                 result = query.First();
             }
-            return Result.Display(result, message);
+            return (result, (IUserAdvisory ua) => ua.WarnUser(message));
         }
 
         /// <summary>

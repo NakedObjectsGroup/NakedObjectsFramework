@@ -47,15 +47,16 @@ namespace AdventureWorksModel {
             set { _LargePhoto = value; }
         }
 
-        public virtual string LargePhotoFileName { get; set; }
-        public virtual FileAttachment LargePhotoAsAttachment
-        {
-            get
-            {
-                // fake minetype
-                return new FileAttachment(LargePhoto, LargePhotoFileName, "text/plain") { DispositionType = "inline" };
-            }
-        }
+        //TODO
+        //public virtual string LargePhotoFileName { get; set; }
+        //public virtual FileAttachment LargePhotoAsAttachment
+        //{
+        //    get
+        //    {
+        //        // fake minetype
+        //        return new FileAttachment(LargePhoto, LargePhotoFileName, "text/plain") { DispositionType = "inline" };
+        //    }
+        //}
 
         [Hidden]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto {

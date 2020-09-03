@@ -2,12 +2,12 @@
 
 namespace NakedFunctions
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Parameter)]
-    public class NamedAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Parameter)]
+    public class RegExAttribute : Attribute
     {
         private string v;
 
-        public NamedAttribute(string v)
+        public RegExAttribute(string v)
         {
             this.v = v;
         }

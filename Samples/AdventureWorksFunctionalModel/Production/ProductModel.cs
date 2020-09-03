@@ -78,14 +78,15 @@ namespace AdventureWorksModel
         #endregion
 
         #endregion
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 
     public static class ProductModelFunctions
     {
-        public static string Title(this ProductModel pm)
-        {
-            return pm.CreateTitle(pm.Name);
-        }
         [DisplayAsProperty]
         [MemberOrder(22)]
         public static string LocalCultureDescription(ProductModel pm)
@@ -99,8 +100,7 @@ namespace AdventureWorksModel
         [DisplayAsProperty]
         [Named("CatalogDescription")]
         [MemberOrder(20)]
-        [MultiLine(NumberOfLines = 10)]
-        [TypicalLength(500)]
+        [MultiLine(10)]
         public static string FormattedCatalogDescription(ProductModel pm)
         {
             var output = new StringBuilder();
