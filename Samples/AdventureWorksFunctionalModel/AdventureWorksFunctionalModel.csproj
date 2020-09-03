@@ -8,16 +8,19 @@
   <ItemGroup>
     <Compile Remove="Human Resources\**" />
     <Compile Remove="Mapping\**" />
+    <Compile Remove="NakedFunctions\**" />
     <Compile Remove="Person\**" />
     <Compile Remove="Purchasing\**" />
     <Compile Remove="Sales\**" />
     <EmbeddedResource Remove="Human Resources\**" />
     <EmbeddedResource Remove="Mapping\**" />
+    <EmbeddedResource Remove="NakedFunctions\**" />
     <EmbeddedResource Remove="Person\**" />
     <EmbeddedResource Remove="Purchasing\**" />
     <EmbeddedResource Remove="Sales\**" />
     <None Remove="Human Resources\**" />
     <None Remove="Mapping\**" />
+    <None Remove="NakedFunctions\**" />
     <None Remove="Person\**" />
     <None Remove="Purchasing\**" />
     <None Remove="Sales\**" />
@@ -32,6 +35,10 @@
     <Compile Include="Sales\SpecialOfferContributedActions.cs" />
     <Compile Include="Sales\SpecialOfferProduct.cs" />
     <Compile Include="Sales\SpecialOfferRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Functional Programming Model\NakedFunctions.Attributes\NakedFunctions.Attributes.csproj" />
   </ItemGroup>
 
 </Project>

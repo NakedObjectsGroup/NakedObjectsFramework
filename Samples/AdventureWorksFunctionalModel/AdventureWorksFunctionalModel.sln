@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30428.66
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorksFunctionalModel", "AdventureWorksFunctionalModel.csproj", "{0F43C2B3-5E97-48B0-9BFA-005CA18A06EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksFunctionalModel", "AdventureWorksFunctionalModel.csproj", "{0F43C2B3-5E97-48B0-9BFA-005CA18A06EB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Attributes", "..\..\Functional Programming Model\NakedFunctions.Attributes\NakedFunctions.Attributes.csproj", "{F9477030-57D1-4035-ABEB-3B5DF47030A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{0F43C2B3-5E97-48B0-9BFA-005CA18A06EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F43C2B3-5E97-48B0-9BFA-005CA18A06EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F43C2B3-5E97-48B0-9BFA-005CA18A06EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9477030-57D1-4035-ABEB-3B5DF47030A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9477030-57D1-4035-ABEB-3B5DF47030A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9477030-57D1-4035-ABEB-3B5DF47030A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9477030-57D1-4035-ABEB-3B5DF47030A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

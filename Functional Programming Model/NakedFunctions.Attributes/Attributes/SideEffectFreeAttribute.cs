@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NakedFunctions.Attributes.Attributes
+namespace NakedFunctions
 {
-    class SideEffectFreeAttribute
-    {
-    }
+    [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
+    public class SideEffectFreeAttribute : Attribute { }
 }

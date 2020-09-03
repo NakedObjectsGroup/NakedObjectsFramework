@@ -38,7 +38,6 @@ namespace AdventureWorksModel {
             return products.Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
         }
 
-        [FinderAction]
         [MemberOrder(2)]
         public static (Product, Action<IUserAdvisory>) FindProductByNumber(
             
@@ -47,8 +46,6 @@ namespace AdventureWorksModel {
         {
             return SingleObjectWarnIfNoMatch(products.Where(x => x.ProductNumber == number));
         }
-
-        [FinderAction]
         
         [MemberOrder(10)]
         public static Product RandomProduct(
@@ -168,7 +165,6 @@ namespace AdventureWorksModel {
 
         #region FindProductsByCategory
 
-        [FinderAction]
         [MemberOrder(8)]
         public static IQueryable<Product> FindProductsByCategory(
             
@@ -286,7 +282,6 @@ namespace AdventureWorksModel {
 
         #region FindByProductLineAndClass
 
-        [FinderAction]
         [MemberOrder(5)]
         public static IQueryable<Product> FindByProductLineAndClass(
             

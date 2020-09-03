@@ -39,7 +39,7 @@ namespace AdventureWorksModel {
 
         //CreateNewWorkOrder2 deleted (no longer relevant for testing)
 
-        public static(WorkOrder, WorkOrder) CreateNewWorkOrder3([FindMenu, DescribedAs("product partial name")] this Product product, int orderQty) {
+        public static(WorkOrder, WorkOrder) CreateNewWorkOrder3([DescribedAs("product partial name")] this Product product, int orderQty) {
             (_, var wo) = CreateNewWorkOrder(product);
             var wo1 = wo with { OrderQty = orderQty, ScrappedQty = 0 };
             return (wo1, wo1);
