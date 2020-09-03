@@ -13,36 +13,6 @@ namespace AdventureWorksModel
 {
     public record Document : IHasModifiedDate
     {
-
-        public Document(
-            int documentID,
-            string title,
-            string fileName,
-            string fileExtension,
-            string revision,
-            int changeNumber,
-            byte status,
-            string documentSummary,
-            byte[] document1,
-            ICollection<ProductDocument> productDocument,
-            DateTime modifiedDate
-            )
-        {
-            DocumentID = documentID;
-            Title = title;
-            FileName = fileName;
-            FileExtension = fileExtension;
-            Revision = revision;
-            ChangeNumber = changeNumber;
-            Status = status;
-            DocumentSummary = documentSummary;
-            Document1 = document1;
-            ProductDocument = productDocument;
-            ModifiedDate = modifiedDate;
-        }
-
-        public Document() { }
-
         public virtual int DocumentID { get; init; }
         public virtual string Title { get; init; }
         public virtual string FileName { get; init; }
@@ -55,19 +25,7 @@ namespace AdventureWorksModel
 
         public ICollection<ProductDocument> ProductDocument { get; init; }
 
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
-
-    }
-
-    public static class DocumentFunctions
-    {
-        public static Document Updating(Document d, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(d, now);
-
-        }
     }
 }

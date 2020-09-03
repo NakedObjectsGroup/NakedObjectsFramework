@@ -5,7 +5,6 @@ namespace AdventureWorksModel
 {
     public static class WorkOrderRoutingFunctions
     {
-
         public static string ValidatePlannedCost(this WorkOrderRouting wor, decimal plannedCost)
         {
             return plannedCost <= 0 ? "Planned cost must be > 0" : "";

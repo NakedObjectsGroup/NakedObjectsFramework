@@ -13,12 +13,6 @@ using NakedFunctions;
 
 namespace AdventureWorksModel {
     public record ProductPhoto  {
-
-        public override string ToString()
-        {
-            return "Product Photo";
-        }
-
         private byte[] _LargePhoto = new byte[0];
         private ICollection<ProductProductPhoto> _ProductProductPhoto = new List<ProductProductPhoto>();
         private byte[] _ThumbNailPhoto = new byte[0];
@@ -62,5 +56,11 @@ namespace AdventureWorksModel {
         public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
+
+
+        public override string ToString()
+        {
+            return "Product Photo";
+        }
     }
 }

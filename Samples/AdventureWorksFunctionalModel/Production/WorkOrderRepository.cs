@@ -17,7 +17,6 @@ namespace AdventureWorksModel {
     [Named("Work Orders")]
     public static class WorkOrderRepository {
 
-        
         public static WorkOrder RandomWorkOrder(
             IQueryable<WorkOrder> workOrders,
             [Injected] int random) {

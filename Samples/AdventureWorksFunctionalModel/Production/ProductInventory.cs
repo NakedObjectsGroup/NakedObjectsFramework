@@ -11,31 +11,6 @@ using NakedFunctions;
 namespace AdventureWorksModel {
         public record ProductInventory : IHasRowGuid, IHasModifiedDate {
 
-        public ProductInventory(
-            int productID,
-            short locationID,
-            string shelf,
-            byte bin,
-            short quantity,
-            Location location,
-            Product product,
-            Guid rowguid,
-            DateTime modifiedDate
-            )
-        {
-            ProductID = productID;
-            LocationID = locationID;
-            Shelf = shelf;
-            Bin = bin;
-            Quantity = quantity;
-            Location = location;
-            Product = product;
-            this.rowguid = rowguid;
-            ModifiedDate = modifiedDate;
-        }
-
-        public ProductInventory() { }
-
         [Hidden]
         public virtual int ProductID { get; init; }
 
@@ -80,14 +55,6 @@ namespace AdventureWorksModel {
         public override string ToString()
         {
             return $"{Quantity} in {Location} - {Shelf}";
-        }
-
-    }
-    public static class ProductInventoryFunctions
-    {
-        public static ProductInventory Updating(ProductInventory a, [Injected] DateTime now)
-        {
-            return a with {ModifiedDate =  now};
         }
     }
 }

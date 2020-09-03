@@ -7,17 +7,14 @@
 
 using System;
 using System.Collections.Generic;
-
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using NakedFunctions;
 using NakedFunctions;
 
 namespace AdventureWorksModel
 {
     public record WorkOrder : IHasModifiedDate
     {
-
         [Hidden]
         public virtual int WorkOrderID { get; init; }
 
@@ -83,67 +80,6 @@ namespace AdventureWorksModel
         {
             return $"{Product}: {StartDate}";
 
-        }
-    }
-
-    public static class WorkOrderFunctions
-    {
-
-        #region LifeCycle functions
-        public static WorkOrder Updating(WorkOrder wo, [Injected] DateTime now)
-        {
-            return wo with { ModifiedDate = now };
-        }
-        #endregion
-
-        public static (WorkOrder, WorkOrder) ChangeScrappedQuantity(this WorkOrder wo, short newQty)
-        {
-            var w01 = wo with { ScrappedQty = newQty };
-            return (wo, wo);
-        }
-        public static string Validate(WorkOrder wo, DateTime startDate, DateTime dueDate)
-        {
-            return startDate > dueDate ? "StartDate must be before DueDate" : null;
-        }
-
-        public static string ValidateOrderQty(WorkOrder wo, int qty)
-        {
-            return qty <= 0 ? "Order Quantity must be > 0" : null;
-        }
-
-        public static DateTime DefaultStartDate(WorkOrder wo, [Injected] DateTime now)
-        {
-            return now;
-        }
-
-        public static DateTime DefaultDueDate([Injected] DateTime now)
-        {
-            return now.AddMonths(1).Date;
-        }
-
-        [PageSize(20)]
-        public static IQueryable<Product> AutoCompleteProduct([Range(2, 0)] string name, IQueryable<Product> products)
-        {
-            return ProductRepository.FindProductByName(name, products);
-        }
-
-        [MemberOrder(1)]
-        public static (WorkOrderRouting, WorkOrderRouting) AddNewRouting(WorkOrder wo, Location loc)
-        {
-            short highestSequence = 0;
-            short increment = 1;
-            if (wo.WorkOrderRoutings.Count > 0)
-            {
-                highestSequence = wo.WorkOrderRoutings.Max(n => n.OperationSequence);
-            }
-            highestSequence += increment;
-            var wor = new WorkOrderRouting() with
-            {
-                WorkOrder = wo,
-                Location = loc,
-                OperationSequence = highestSequence
-            };
-            return (wor, wor);
         }
     }
 }

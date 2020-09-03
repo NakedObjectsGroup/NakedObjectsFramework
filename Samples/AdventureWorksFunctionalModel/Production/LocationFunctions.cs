@@ -6,26 +6,16 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-    public record ProductModelIllustration : IHasModifiedDate {
-        [Hidden]
-        public virtual int ProductModelID { get; init; }
+     public static class LocationFunctions
+    {
 
-        [Hidden]
-        public virtual int IllustrationID { get; init; }
-
-        public virtual Illustration Illustration { get; init; }
-        public virtual ProductModel ProductModel { get; init; }
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; init; }
-
-        #endregion
+        public static Location Updating(Location loc, [Injected] DateTime now)
+        {
+            return loc with {ModifiedDate =  now};
+        }
     }
 }

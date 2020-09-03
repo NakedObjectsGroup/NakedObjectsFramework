@@ -10,21 +10,6 @@ using NakedFunctions;
 
 namespace AdventureWorksModel {
     public record ProductDocument : IHasModifiedDate {
-        public ProductDocument(
-            int productID,
-            int documentID,
-            Document document,
-            Product product
-            )
-        {
-            ProductID = productID;
-            DocumentID = documentID;
-            Document = document;
-            Product = product;
-        }
-
-        public ProductDocument() { }
-
         public virtual int ProductID { get; init; }
         public virtual int DocumentID { get; init; }
         public virtual Document Document { get; init; }
@@ -38,13 +23,5 @@ namespace AdventureWorksModel {
         public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
-    }
-
-    public static class ProductDocumentFunctions
-    {
-        public static ProductDocument Updating(ProductDocument c, [Injected] DateTime now)
-        {
-            return c with {ModifiedDate =  now};
-        }
     }
 }

@@ -12,35 +12,6 @@ namespace AdventureWorksModel
 {
     public record BillOfMaterial : IHasModifiedDate
     {
-        public BillOfMaterial(
-            int billOfMaterialID,
-            DateTime startDate,
-            DateTime? endDate,
-            short bOMLevel,
-            decimal perAssemblyQty,
-            int? productAssemblyID,
-            Product product,
-            int componentID,
-            Product product1,
-            string unitMeasureCode,
-            UnitMeasure unitMeasure,
-            DateTime modifiedDate
-            )
-        {
-            BillOfMaterialID = billOfMaterialID;
-            StartDate = startDate;
-            EndDate = endDate;
-            BOMLevel = bOMLevel;
-            PerAssemblyQty = perAssemblyQty;
-            ProductAssemblyID = ProductAssemblyID;
-            Product = product;
-            ComponentID = componentID;
-            Product1 = product1;
-            UnitMeasureCode = unitMeasureCode;
-            UnitMeasure = unitMeasure;
-            ModifiedDate = modifiedDate;
-        }
-        public BillOfMaterial() { }
 
         [Hidden]
         public virtual int BillOfMaterialID { get; init; }
@@ -66,13 +37,5 @@ namespace AdventureWorksModel
         
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
-    }
-    public static class BillOfMaterialFunctions
-    {
-        public static BillOfMaterial Updating(BillOfMaterial bom, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(bom, now);
-
-        }
     }
 }

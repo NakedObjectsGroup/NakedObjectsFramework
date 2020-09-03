@@ -6,36 +6,16 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
-using NakedFunctions;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
     public record ProductListPriceHistory: IHasModifiedDate {
-        public ProductListPriceHistory(
-            int productID,
-            DateTime startDate,
-            DateTime? endDate,
-            decimal listPrice,
-            Product product,
-            DateTime modifiedDate
-            )
-        {
-            ProductID = productID;
-            StartDate = startDate;
-            EndDate = endDate;
-            ListPrice = listPrice;
-            Product = product;
-            ModifiedDate = modifiedDate;
-        }
-        public ProductListPriceHistory() { }
 
         public virtual int ProductID { get; init; }
         public virtual DateTime StartDate { get; init; }
         public virtual DateTime? EndDate { get; init; }
         public virtual decimal ListPrice { get; init; }
         public Product Product { get; init; }
-
         #region ModifiedDate
 
         [MemberOrder(99)]
@@ -44,12 +24,5 @@ namespace AdventureWorksModel {
         public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
-    }
-    public static class ProductListPriceHistoryFunctions
-    {
-        public static ProductListPriceHistory Updating(ProductListPriceHistory c, [Injected] DateTime now)
-        {
-            return c with {ModifiedDate =  now};
-        }
     }
 }

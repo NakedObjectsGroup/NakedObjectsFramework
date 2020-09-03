@@ -7,10 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-
 using System.Linq;
 using System.Text;
-using NakedFunctions;
 using NakedFunctions;
 using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
 

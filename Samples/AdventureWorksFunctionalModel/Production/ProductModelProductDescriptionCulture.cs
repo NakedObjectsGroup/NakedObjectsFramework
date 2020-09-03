@@ -10,26 +10,6 @@ using NakedFunctions;
 
 namespace AdventureWorksModel {
             public record ProductModelProductDescriptionCulture : IHasModifiedDate {
-
-        public ProductModelProductDescriptionCulture(
-            int productModelID,
-            int productDescriptionID,
-            string cultureID,
-            Culture culture,
-            ProductDescription productDescription,
-            ProductModel productModel,
-            DateTime modifiedDate
-            )
-        {
-            ProductModelID = productModelID;
-            ProductDescriptionID = productDescriptionID;
-            CultureID = cultureID;
-            Culture = culture;
-            ProductDescription = productDescription;
-            ProductModel = productModel;
-            ModifiedDate = modifiedDate;
-        }
-        public ProductModelProductDescriptionCulture() { }
         [Hidden]
         public virtual int ProductModelID { get; init; }
 
@@ -57,14 +37,6 @@ namespace AdventureWorksModel {
         public override string ToString()
         {
             return $"{Culture}";
-        }
-    }
-
-    public static class ProductModelProductDescriptionCultureFunctions
-    {
-        public static ProductDocument Updating(ProductDocument c, [Injected] DateTime now)
-        {
-            return c with {ModifiedDate =  now};
         }
     }
 }

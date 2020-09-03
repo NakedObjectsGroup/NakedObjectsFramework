@@ -16,7 +16,6 @@ namespace AdventureWorksModel {
         [Hidden]
         public virtual int ProductSubcategoryID { get; init; }
 
-        //Title
         public virtual string Name { get; init; }
 
         [Hidden]

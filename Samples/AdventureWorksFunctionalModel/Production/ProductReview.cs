@@ -11,20 +11,6 @@ using NakedFunctions;
 
 namespace AdventureWorksModel {
     public record ProductReview {
-        #region Injected Services
-        
-        #endregion
-
-        #region Life Cycle Methods
-        //public virtual void Persisting() {
-        //    ModifiedDate = DateTime.Now;
-        //}
-
-        //public virtual void Updating() {
-        //    ModifiedDate = DateTime.Now;
-        //}
-        #endregion
-
         [Hidden]
         public virtual int ProductReviewID { get; init; }
 

@@ -8,27 +8,14 @@
 using System;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-        public record ProductDescription: IHasRowGuid, IHasModifiedDate {
-        public ProductDescription(
-            int productDescriptionID,
-            string description,
-            Guid rowguid,
-            DateTime modifiedDate)
-        {
-            ProductDescriptionID = productDescriptionID;
-            Description = description;
-            this.rowguid = rowguid;
-            ModifiedDate = modifiedDate;
-        }
-        public ProductDescription() { }
-
-       [Hidden]
+namespace AdventureWorksModel
+{
+    public record ProductDescription : IHasRowGuid, IHasModifiedDate
+    {
+        [Hidden]
         public virtual int ProductDescriptionID { get; init; }
 
-        //Title
-        [MultiLine(10)]
-        [MemberOrder(2)]
+        [MultiLine(10), MemberOrder(2)]
         public virtual string Description { get; init; }
 
         #region Row Guid and Modified Date
@@ -43,7 +30,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        
+
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
@@ -54,14 +41,6 @@ namespace AdventureWorksModel {
         public override string ToString()
         {
             return Description;
-        }
-    }
-
-    public static class ProductDescriptionFunctions
-    {
-        public static ProductDescription Updating(ProductDescription a, [Injected] DateTime now)
-        {
-            return a with {ModifiedDate =  now};
         }
     }
 }

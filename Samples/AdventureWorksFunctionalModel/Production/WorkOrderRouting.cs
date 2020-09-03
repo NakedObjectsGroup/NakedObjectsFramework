@@ -12,20 +12,6 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     public record WorkOrderRouting  {
 
-        #region Injected Services
-        
-        #endregion
-
-        #region Life Cycle Methods
-        //public virtual void Persisting() {
-        //    ModifiedDate = DateTime.Now;
-        //}
-
-        //public virtual void Updating() {
-        //    ModifiedDate = DateTime.Now;
-        //}
-        #endregion
-
         [Hidden]
         public virtual int WorkOrderID { get; init; }
 
@@ -86,15 +72,8 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region Title
-
         public override string ToString() {
             return Location.ToString();
         }
-
-        #endregion
-
-    
-
     }
 }

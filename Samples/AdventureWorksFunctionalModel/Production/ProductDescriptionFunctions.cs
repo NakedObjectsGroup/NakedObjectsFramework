@@ -8,24 +8,13 @@
 using System;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-    public record ProductModelIllustration : IHasModifiedDate {
-        [Hidden]
-        public virtual int ProductModelID { get; init; }
-
-        [Hidden]
-        public virtual int IllustrationID { get; init; }
-
-        public virtual Illustration Illustration { get; init; }
-        public virtual ProductModel ProductModel { get; init; }
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; init; }
-
-        #endregion
+namespace AdventureWorksModel
+{
+    public static class ProductDescriptionFunctions
+    {
+        public static ProductDescription Updating(ProductDescription a, [Injected] DateTime now)
+        {
+            return a with { ModifiedDate = now };
+        }
     }
 }

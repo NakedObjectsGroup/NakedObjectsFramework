@@ -15,7 +15,6 @@ namespace AdventureWorksModel {
         [MemberOrder(10)]
         public virtual string UnitMeasureCode { get; init; }
 
-        //Title
         [MemberOrder(20)]
         public virtual string Name { get; init; }
 
@@ -27,5 +26,10 @@ namespace AdventureWorksModel {
         public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

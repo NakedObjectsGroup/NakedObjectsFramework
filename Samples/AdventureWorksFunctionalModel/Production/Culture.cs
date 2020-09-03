@@ -8,42 +8,23 @@
 using System;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
+namespace AdventureWorksModel
+{
     [Bounded]
-        public record Culture : IHasModifiedDate {
-
-        public Culture(string cultureID, string name, DateTime modifiedDate)
-        {
-            CultureID = cultureID;
-            Name = name;
-            ModifiedDate = modifiedDate;
-        }
-
-        public Culture() { }
-
+    public record Culture : IHasModifiedDate
+    {
         [Hidden]
         public virtual string CultureID { get; init; }
 
         [MemberOrder(10)]
         public virtual string Name { get; init; }
 
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString()
         {
             return Name;
-        }
-    }
-
-    public static class CultureFunctions
-    {
-        public static Culture Updating(Culture c, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(c, now);
-
         }
     }
 }

@@ -10,31 +10,11 @@ using NakedFunctions;
 
 namespace AdventureWorksModel {
         public record ProductCostHistory : IHasModifiedDate {
-        public ProductCostHistory(
-            int productID,
-            DateTime startDate,
-            DateTime? endDate,
-            decimal standardCost,
-            Product product,
-            DateTime modifiedDate
-            )
-        {
-            ProductID = productID;
-            StartDate = startDate;
-            EndDate = endDate;
-            StandardCost = standardCost;
-            Product = product;
-            ModifiedDate = modifiedDate;
-        }
-        public ProductCostHistory() {}
-
         [Hidden]
         public virtual int ProductID { get; init; }
-
         public virtual DateTime StartDate { get; init; }
         public virtual DateTime? EndDate { get; init; }
         public virtual decimal StandardCost { get; init; }
-
         [Hidden]
         public virtual Product Product { get; init; }
 
@@ -51,14 +31,5 @@ namespace AdventureWorksModel {
         {
             return $"{StandardCost} {StartDate}~";
         }
-    }
-
-    public static class ProductCostHistoryFunctions
-    {
-        public static ProductCostHistory Updating(ProductCostHistory c, [Injected] DateTime now)
-        {
-            return c with {ModifiedDate =  now};
-        }
-
     }
 }

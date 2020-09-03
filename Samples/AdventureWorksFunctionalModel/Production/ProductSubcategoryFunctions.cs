@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
 
 namespace AdventureWorksModel {
@@ -14,8 +13,7 @@ namespace AdventureWorksModel {
 
     public static class ProductSubcategoryFunctions
     {
-
-        public static ProductSubcategory Updating(this ProductSubcategory x, [Injected] DateTime now)
+       public static ProductSubcategory Updating(this ProductSubcategory x, [Injected] DateTime now)
         {
             return x with {ModifiedDate =  now};
         }

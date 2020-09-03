@@ -11,38 +11,13 @@ using NakedFunctions;
 
 namespace AdventureWorksModel {
     public record Illustration  {
-
-        public Illustration(
-            int illustrationID,
-            string diagram,
-            ICollection<ProductModelIllustration> productModelIllustration,
-            DateTime modifiedDate
-            )
-        {
-            IllustrationID = illustrationID;
-            Diagram = diagram;
-            ProductModelIllustration = productModelIllustration;
-            ModifiedDate = modifiedDate;
-        }
-
-        public Illustration() { }
  
         public virtual int IllustrationID { get; init; }
         public virtual string Diagram { get; init; }
 
         public ICollection<ProductModelIllustration> ProductModelIllustration { get; init; }
 
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+        [MemberOrder(99),ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
-    }
-
-    public static class IllustrationFunctions
-    {
-        public static Illustration Updating(Illustration ill, [Injected] DateTime now)
-        {
-            return ill with {ModifiedDate =  now};
-        }
     }
 }

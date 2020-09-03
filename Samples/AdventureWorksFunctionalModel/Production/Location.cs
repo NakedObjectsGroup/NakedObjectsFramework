@@ -10,27 +10,11 @@ using System.Collections.Generic;
 
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-        [Bounded]
-        [PresentationHint("Topaz")]
-    public record Location {
-
-        public Location(
-            short locationID,
-            string name,
-            decimal costRate,
-            decimal availability,
-            DateTime modifiedDate
-            )
-        {
-            LocationID = locationID;
-            Name = name;
-            CostRate = costRate;
-            Availability = availability;
-            ModifiedDate = modifiedDate;
-        }
-
-        public Location() { }
+namespace AdventureWorksModel
+{
+    [Bounded, PresentationHint("Topaz")]
+    public record Location
+    {
 
         [Hidden]
         public virtual short LocationID { get; init; }
@@ -44,21 +28,13 @@ namespace AdventureWorksModel {
         public virtual decimal Availability { get; init; }
 
         [MemberOrder(99)]
-        
+
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString()
         {
             return Name;
-        }
-    }
-    public static class LocationFunctions
-    {
-
-        public static Location Updating(Location loc, [Injected] DateTime now)
-        {
-            return loc with {ModifiedDate =  now};
         }
     }
 }

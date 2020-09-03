@@ -13,26 +13,7 @@ namespace AdventureWorksModel {
     [Bounded]
         public record ProductCategory: IHasRowGuid, IHasModifiedDate  {
 
-        public ProductCategory(
-            int productCategoryID,
-            string name,
-            ICollection<ProductSubcategory> productSubcategory,
-             Guid rowguid,
-             DateTime modifiedDate
-            )
-        {
-            ProductCategoryID = productCategoryID;
-            Name = name;
-            ProductSubcategory = productSubcategory;
-            this.rowguid = rowguid;
-            ModifiedDate = modifiedDate;
-        }
-
-        public ProductCategory() {
-
-        }
-
-        [Hidden]
+       [Hidden]
         public virtual int ProductCategoryID { get; init; }
 
         public virtual string Name { get; init; }
@@ -65,15 +46,5 @@ namespace AdventureWorksModel {
         {
             return Name;
         }
-    }
-
-    public static class ProductCategoryFunctions
-    {
-
-        public static ProductCategory Updating(ProductCategory a, [Injected] DateTime now)
-        {
-            return a with {ModifiedDate =  now};
-        }
-
     }
 }

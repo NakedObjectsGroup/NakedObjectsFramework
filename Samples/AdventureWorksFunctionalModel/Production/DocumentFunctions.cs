@@ -6,26 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-    public record ProductModelIllustration : IHasModifiedDate {
-        [Hidden]
-        public virtual int ProductModelID { get; init; }
+namespace AdventureWorksModel
+{
+    public static class DocumentFunctions
+    {
+        public static Document Updating(Document d, [Injected] DateTime now)
+        {
+            return d with { ModifiedDate = now };
 
-        [Hidden]
-        public virtual int IllustrationID { get; init; }
-
-        public virtual Illustration Illustration { get; init; }
-        public virtual ProductModel ProductModel { get; init; }
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; init; }
-
-        #endregion
+        }
     }
 }
