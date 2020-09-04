@@ -8,7 +8,7 @@
 using System;
 using System.Linq;
 using NakedFunctions;
-
+using static NakedFunctions.Helpers;
 
 namespace AdventureWorksModel
 {
@@ -62,8 +62,9 @@ namespace AdventureWorksModel
             )
         {
 
-            var so = new SpecialOffer(0, description, discountPct, type, category, startDate, endDate, minQty, maxQty, now, guid);
-            return (so, so);
+            var so = new SpecialOffer() with { };
+            // TODO    (0, description, discountPct, type, category, startDate, endDate, minQty, maxQty, now, guid);
+            return DisplayAndPersist(so);
         }
 
         public static DateTime Default4CreateNewSpecialOffer([Injected] DateTime now)
@@ -79,8 +80,7 @@ namespace AdventureWorksModel
         #endregion
 
         #region Create Multiple Special Offers
-        [MemberOrder(5)]
-        [MultiLine(2)]
+        [MemberOrder(5), MultiLine(2)]
         public static (SpecialOffer, SpecialOffer) CreateMultipleSpecialOffers(
 
             string description,
@@ -106,15 +106,12 @@ namespace AdventureWorksModel
             return (so, so);
         }
 
-        public static string[] Choices3CreateMultipleSpecialOffers()
-        {
-            return new[] { "Reseller", "Customer" };
-        }
+        public static string[] Choices3CreateMultipleSpecialOffers() => new[] { "Reseller", "Customer" };
 
-        public static string Validate5CreateMultipleSpecialOffers(DateTime startDate)
-        {
-            return startDate > new DateTime(2003, 12, 1) ? "Start Date must be before 1/12/2003" : null;
-        }
+
+        public static string Validate5CreateMultipleSpecialOffers(DateTime startDate) 
+            => startDate > new DateTime(2003, 12, 1) ? "Start Date must be before 1/12/2003" : null;
+
 
         #endregion
 
@@ -139,7 +136,7 @@ namespace AdventureWorksModel
             if (query.Count() != 0)
             {
 
-                Action<IUserAdvisory> msg = (IUserAdvisory ua) => ua.InformUser($"{offer} is already associated with { product}");
+                Action<IUserAdvisory> msg = InformUser($"{offer} is already associated with { product}");
                 return (null, null, msg);
             }
             var newSop = new SpecialOfferProduct() with
@@ -154,29 +151,18 @@ namespace AdventureWorksModel
         public static IQueryable<SpecialOffer> AutoComplete0AssociateSpecialOfferWithProduct(
             [Range(2, 0)] string name,
             IQueryable<SpecialOffer> offers)
-        {
-            return offers.Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
-        }
+        => offers.Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
 
         [PageSize(20)]
-        public static IQueryable<Product> AutoComplete1AssociateSpecialOfferWithProduct(
-            [Range(2, 0)] string name,
-            IQueryable<Product> products
-            )
-        {
-            return products.Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
-        }
+        public static IQueryable<Product> AutoComplete1AssociateSpecialOfferWithProduct([Range(2, 0)] string name, IQueryable<Product> products)
+            => products.Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
 
         #endregion
 
         #region Helper methods
 
         [Hidden]
-        public static SpecialOffer NoDiscount(IQueryable<SpecialOffer> offers)
-        {
-            return offers.Where(x => x.SpecialOfferID == 1).First();
-        }
-
+        public static SpecialOffer NoDiscount(IQueryable<SpecialOffer> offers) => offers.Where(x => x.SpecialOfferID == 1).First();
         #endregion
 
     }

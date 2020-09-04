@@ -221,9 +221,7 @@ namespace AdventureWorksModel
         [NotMapped, RenderEagerly, TableView(true, "MinQty", "DiscountPct", "StartDate", "EndDate")]
         public virtual IList<SpecialOffer> SpecialOffers { get; private set; } = new List<SpecialOffer>();
 
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString()=> Name;
+        
     }
 }

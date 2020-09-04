@@ -73,10 +73,6 @@ namespace AdventureWorksModel
 
       
 
-        public override string ToString()
-        {
-            return $"{Product}: {StartDate}";
-
-        }
+        public override string ToString() => $"{Product}: {StartDate}";
     }
 }

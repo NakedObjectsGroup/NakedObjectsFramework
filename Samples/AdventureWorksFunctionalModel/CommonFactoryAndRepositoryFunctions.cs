@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using NakedFunctions;
+using static NakedFunctions.Helpers;
 
 namespace AdventureWorksModel
 {
@@ -19,7 +20,7 @@ namespace AdventureWorksModel
             {
                 result = query.First();
             }
-            return (result, (IUserAdvisory ua) => ua.WarnUser(message));
+            return (result, WarnUser(message));
         }
 
         /// <summary>

@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Sales\SpecialOffer_Functions.cs" />
     <Compile Include="Sales\SpecialOffer.cs" />
     <Compile Include="Sales\SpecialOfferContributedActions.cs" />
     <Compile Include="Sales\SpecialOfferProduct.cs" />
@@ -39,6 +40,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Functional Programming Model\NakedFunctions.Attributes\NakedFunctions.Attributes.csproj" />
+    <ProjectReference Include="..\..\Functional Programming Model\NakedFunctions.Helpers\NakedFunctions.Helpers.csproj" />
   </ItemGroup>
 
 </Project>

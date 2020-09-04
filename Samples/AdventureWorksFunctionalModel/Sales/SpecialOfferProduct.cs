@@ -9,23 +9,11 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-    public record SpecialOfferProduct {
+namespace AdventureWorksModel
+{
+    public record SpecialOfferProduct
+    {
 
-        #region Injected Services
-        
-        #endregion
-
-        #region Life Cycle Methods
-        //public virtual void Persisting() {
-        //    rowguid = Guid.NewGuid();
-        //    ModifiedDate = DateTime.Now;
-        //}
-
-        //public virtual void Updating() {
-        //    ModifiedDate = DateTime.Now;
-        //}
-        #endregion
         [Hidden]
         public virtual int SpecialOfferID { get; init; }
 
@@ -38,14 +26,20 @@ namespace AdventureWorksModel {
         [MemberOrder(2)]
         public virtual Product Product { get; init; }
 
-        public override string ToString() {
-            return "Special offer - title TODO";
-        }
-
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
+
+        public override string ToString() => "Special offer - title TODO";
     }
+
+    public static class SpecialOfferProductFunctions
+    {
+        public static Product Updating(Product p, [Injected] DateTime now) => p with { ModifiedDate = now };
+        public static Product Persisting(Product p, [Injected] DateTime now, [Injected] Guid guid) => p with { rowguid = guid, ModifiedDate = now };
+
+    }
+
 }

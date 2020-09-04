@@ -9,13 +9,10 @@ using System;
 
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-     public static class LocationFunctions
+namespace AdventureWorksModel
+{
+    public static class LocationFunctions
     {
-
-        public static Location Updating(Location loc, [Injected] DateTime now)
-        {
-            return loc with {ModifiedDate =  now};
-        }
+        public static Location Updating(Location loc, [Injected] DateTime now) => loc with { ModifiedDate = now };
     }
 }

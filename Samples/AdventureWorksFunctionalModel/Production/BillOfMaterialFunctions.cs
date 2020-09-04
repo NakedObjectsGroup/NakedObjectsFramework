@@ -12,9 +12,6 @@ namespace AdventureWorksModel
 {
     public static class BillOfMaterialFunctions
     {
-        public static BillOfMaterial Updating(BillOfMaterial bom, [Injected] DateTime now)
-        {
-            return bom with { ModifiedDate = now };
-        }
+        public static BillOfMaterial Updating(BillOfMaterial bom, [Injected] DateTime now) => bom with { ModifiedDate = now };        
     }
 }

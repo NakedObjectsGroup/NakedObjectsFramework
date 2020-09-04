@@ -1,4 +1,5 @@
 ﻿using NakedFunctions;
+using static NakedFunctions.Helpers;
 using System;
 
 namespace AdventureWorksModel
@@ -12,16 +13,11 @@ namespace AdventureWorksModel
 
         [MemberOrder(1)]
         public static (WorkOrderRouting, WorkOrderRouting) SetScheduledStartDate(this WorkOrderRouting wor, DateTime date, int hour, int minutes)
-        {
-            var wor1 = wor with { ScheduledStartDate = date.AddHours(hour).AddMinutes(minutes) };
-            return (wor1, wor1);
-        }
+            => DisplayAndPersist(wor with { ScheduledStartDate = date.AddHours(hour).AddMinutes(minutes) });
+
 
         [MemberOrder(2)]
         public static (WorkOrderRouting, WorkOrderRouting) SetScheduledEndDate(this WorkOrderRouting wor, DateTime date, [Optionally] int hour, [Optionally] int minutes)
-        {
-            var wor1 = wor with { ScheduledEndDate = date.AddHours(hour).AddMinutes(minutes) };
-            return (wor1, wor1);
-        }
+        => DisplayAndPersist(wor with { ScheduledEndDate = date.AddHours(hour).AddMinutes(minutes) });
     }
 }

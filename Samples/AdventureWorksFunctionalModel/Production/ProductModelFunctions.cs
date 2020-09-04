@@ -15,36 +15,27 @@ using NakedFunctions;
 
 namespace AdventureWorksModel
 {
-          public static class ProductModelFunctions
+    public static class ProductModelFunctions
     {
-        [DisplayAsProperty]
-        [MemberOrder(22)]
-        public static string LocalCultureDescription(ProductModel pm)
-        {
-            string usersPref = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-            return (from obj in pm.ProductModelProductDescriptionCulture
-                    where obj.Culture.CultureID.StartsWith(usersPref)
-                    select obj.ProductDescription.Description).FirstOrDefault();
-        }
+        [DisplayAsProperty, MemberOrder(22)]
+        public static string LocalCultureDescription(ProductModel pm) =>
+            pm.ProductModelProductDescriptionCulture
+            .Where(obj => obj.Culture.CultureID.StartsWith(CultureInfo.CurrentCulture.TwoLetterISOLanguageName))
+            .Select(obj => obj.ProductDescription.Description)
+            .FirstOrDefault();
 
-        [DisplayAsProperty]
-        [Named("CatalogDescription")]
-        [MemberOrder(20)]
-        [MultiLine(10)]
-        public static string FormattedCatalogDescription(ProductModel pm)
+    [DisplayAsProperty, Named("CatalogDescription"),MemberOrder(20),MultiLine(10)]
+    public static string FormattedCatalogDescription(ProductModel pm)
+    {
+        var output = new StringBuilder();
+        //TODO: Re-write using aggregation (reduce) pattern & without builder
+        if (!string.IsNullOrEmpty(pm.CatalogDescription))
         {
-            var output = new StringBuilder();
-            //TODO: Re-write using aggregation (reduce) pattern
-            if (!string.IsNullOrEmpty(pm.CatalogDescription))
-            {
-                XElement.Parse(pm.CatalogDescription).Elements().ToList().ForEach(n => output.Append(n.Name.ToString().Substring(n.Name.ToString().IndexOf("}") + 1) + ": " + n.Value + "\n"));
-            }
-            return output.ToString();
+            XElement.Parse(pm.CatalogDescription).Elements().ToList().ForEach(n => output.Append(n.Name.ToString().Substring(n.Name.ToString().IndexOf("}") + 1) + ": " + n.Value + "\n"));
         }
-
-        public static ProductInventory Updating(ProductInventory a, [Injected] DateTime now)
-        {
-            return a with {ModifiedDate =  now};
-        }
+        return output.ToString();
     }
+
+    public static ProductInventory Updating(ProductInventory a, [Injected] DateTime now) => a with { ModifiedDate = now };
+}
 }

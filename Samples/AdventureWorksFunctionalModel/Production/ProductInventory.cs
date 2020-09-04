@@ -39,9 +39,6 @@ namespace AdventureWorksModel {
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public override string ToString()
-        {
-            return $"{Quantity} in {Location} - {Shelf}";
-        }
+        public override string ToString() => $"{Quantity} in {Location} - {Shelf}";
     }
 }

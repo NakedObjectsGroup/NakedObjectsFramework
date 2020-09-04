@@ -59,7 +59,7 @@ namespace AdventureWorksModel {
         [MemberOrder(9)]
         public static (Product, Product) NewProduct()
         {
-            //TODO: Must add parameters for minimum property set and call full constructor with null for others
+            //TODO: Must add parameters for minimum property set
             var p = new Product();
             return (p, p);
         }

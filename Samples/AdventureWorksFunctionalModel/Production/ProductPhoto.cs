@@ -51,9 +51,6 @@ namespace AdventureWorksModel {
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public override string ToString()
-        {
-            return "Product Photo";
-        }
+        public override string ToString() => "Product Photo";
     }
 }

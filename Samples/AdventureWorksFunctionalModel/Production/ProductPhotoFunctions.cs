@@ -9,19 +9,15 @@ using System;
 
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-    public static class ProductPhotoFunctions {
+namespace AdventureWorksModel
+{
+    public static class ProductPhotoFunctions
+    {
 
         #region Life Cycle Methods
-        public static ProductPhoto Updating(this ProductPhoto x, [Injected] DateTime now)
-        {
-            return x with { ModifiedDate = now };
-        }
+        public static ProductPhoto Updating(this ProductPhoto x, [Injected] DateTime now) => x with { ModifiedDate = now };
 
-        public static ProductPhoto Persisting(this ProductPhoto x,[Injected] DateTime now)
-        {
-            return x with { ModifiedDate = now};
-        }
+        public static ProductPhoto Persisting(this ProductPhoto x, [Injected] DateTime now) => x with { ModifiedDate = now };
         #endregion
 
 

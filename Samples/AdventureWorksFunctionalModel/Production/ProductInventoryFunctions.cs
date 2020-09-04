@@ -8,12 +8,10 @@
 using System;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-        public static class ProductInventoryFunctions
+namespace AdventureWorksModel
+{
+    public static class ProductInventoryFunctions
     {
-        public static ProductInventory Updating(ProductInventory a, [Injected] DateTime now)
-        {
-            return a with {ModifiedDate =  now};
-        }
+        public static ProductInventory Updating(ProductInventory a, [Injected] DateTime now) => a with { ModifiedDate = now };
     }
 }

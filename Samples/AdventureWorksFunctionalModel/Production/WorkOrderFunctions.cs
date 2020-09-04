@@ -7,9 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedFunctions;
+using static NakedFunctions.Helpers;
 
 namespace AdventureWorksModel
 {
@@ -25,8 +25,7 @@ namespace AdventureWorksModel
 
         public static (WorkOrder, WorkOrder) ChangeScrappedQuantity(this WorkOrder wo, short newQty)
         {
-            var w01 = wo with { ScrappedQty = newQty };
-            return (wo, wo);
+           return DisplayAndPersist(wo with { ScrappedQty = newQty });
         }
         public static string Validate(WorkOrder wo, DateTime startDate, DateTime dueDate)
         {
@@ -57,20 +56,14 @@ namespace AdventureWorksModel
         [MemberOrder(1)]
         public static (WorkOrderRouting, WorkOrderRouting) AddNewRouting(WorkOrder wo, Location loc)
         {
-            short highestSequence = 0;
-            short increment = 1;
-            if (wo.WorkOrderRoutings.Count > 0)
-            {
-                highestSequence = wo.WorkOrderRoutings.Max(n => n.OperationSequence);
-            }
-            highestSequence += increment;
+            int highestSequence = wo.WorkOrderRoutings.Count > 0 ? wo.WorkOrderRoutings.Max(n => n.OperationSequence) + 1 : 1;
             var wor = new WorkOrderRouting() with
             {
                 WorkOrder = wo,
                 Location = loc,
-                OperationSequence = highestSequence
+                OperationSequence = (short) highestSequence
             };
-            return (wor, wor);
+            return DisplayAndPersist(wor);
         }
     }
 }

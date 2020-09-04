@@ -11,9 +11,7 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     public static class CultureFunctions
     {
-        public static Culture Updating(Culture c, [Injected] DateTime now)
-        {
-            return  c with { ModifiedDate = now };
-        }
+        public static Culture Updating(Culture c, [Injected] DateTime now) =>  c with { ModifiedDate = now };
+
     }
 }

@@ -12,9 +12,6 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     public static class ProductListPriceHistoryFunctions
     {
-        public static ProductListPriceHistory Updating(ProductListPriceHistory c, [Injected] DateTime now)
-        {
-            return c with {ModifiedDate =  now};
-        }
+        public static ProductListPriceHistory Updating(ProductListPriceHistory c, [Injected] DateTime now) =>  c with {ModifiedDate =  now};
     }
 }

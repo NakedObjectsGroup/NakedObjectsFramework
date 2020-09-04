@@ -9,21 +9,14 @@ using System;
 
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-    public static class ScrapReasonFunctions {
+namespace AdventureWorksModel
+{
+    public static class ScrapReasonFunctions
+    {
 
         #region Life Cycle Methods
-        public static ScrapReason Updating(this ScrapReason x, [Injected] DateTime now)
-        {
-            return x with { ModifiedDate = now };
-        }
-
-        public static ScrapReason Persisting(this ScrapReason x,[Injected] DateTime now)
-        {
-            return x with { ModifiedDate = now};
-        }
+        public static ScrapReason Updating(this ScrapReason x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static ScrapReason Persisting(this ScrapReason x, [Injected] DateTime now) => x with { ModifiedDate = now };
         #endregion
-
-
     }
 }

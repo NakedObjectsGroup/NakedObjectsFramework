@@ -10,6 +10,7 @@
 using System;
 using System.Linq;
 using NakedFunctions;
+using static NakedFunctions.Helpers;
 using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
 
 
@@ -26,8 +27,7 @@ namespace AdventureWorksModel {
         public static (WorkOrder, WorkOrder) CreateNewWorkOrder(
              [DescribedAs("product partial name")] this Product product) {
             //TODO: Need to request all required fields for WO & pass into constructor
-            var wo = new WorkOrder() { Product = product };
-            return (wo, wo);
+            return DisplayAndPersist(new WorkOrder() { Product = product });
         }
 
         [PageSize(20)]
@@ -37,12 +37,9 @@ namespace AdventureWorksModel {
             return products.Where(p => p.Name.Contains(name));
         }
 
-        //CreateNewWorkOrder2 deleted (no longer relevant for testing)
-
-        public static(WorkOrder, WorkOrder) CreateNewWorkOrder3([DescribedAs("product partial name")] this Product product, int orderQty) {
+         public static(WorkOrder, WorkOrder) CreateNewWorkOrder3([DescribedAs("product partial name")] this Product product, int orderQty) {
             (_, var wo) = CreateNewWorkOrder(product);
-            var wo1 = wo with { OrderQty = orderQty, ScrappedQty = 0 };
-            return (wo1, wo1);
+            return DisplayAndPersist(wo with { OrderQty = orderQty, ScrappedQty = 0 });
         }
 
         [PageSize(20)]
@@ -57,14 +54,11 @@ namespace AdventureWorksModel {
 
         [TableView(true, "Product", "OrderQty", "StartDate")]
         public static IQueryable<WorkOrder> WorkOrders(
-            this Product product, 
+            this Product product,
             bool currentOrdersOnly,
-            IQueryable<WorkOrder> workOrders) {
-            return from obj in workOrders
-                   where obj.Product.ProductID == product.ProductID &&
-                      (currentOrdersOnly == false || obj.EndDate == null)
-                select obj;
-        }
+            IQueryable<WorkOrder> workOrders) =>
+            workOrders.Where(x => x.Product.ProductID == product.ProductID &&
+                      (currentOrdersOnly == false || x.EndDate == null));
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete0WorkOrders(

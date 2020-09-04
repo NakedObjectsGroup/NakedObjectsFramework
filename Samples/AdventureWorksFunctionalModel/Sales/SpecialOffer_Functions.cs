@@ -9,8 +9,19 @@ using System;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-    public static class ProductDocumentFunctions
+
+
+    public static class SpecialOffer_Functions
     {
-        public static ProductDocument Updating(ProductDocument c, [Injected] DateTime now) => c with {ModifiedDate =  now};
+
+        #region Life Cycle Methods
+        public static SpecialOffer Updating(SpecialOffer sp, [Injected] DateTime now) => sp with {ModifiedDate =  now};
+        #endregion
+
+        public static string[] ChoicesCategory(SpecialOffer sp) =>  new[] { "Reseller", "Customer" };
+
+        public static DateTime DefaultStartDate(SpecialOffer sp, [Injected] DateTime now) => now;
+
+        public static DateTime DefaultEndDate(SpecialOffer sp, [Injected] DateTime now) => now.AddDays(90);
     }
 }

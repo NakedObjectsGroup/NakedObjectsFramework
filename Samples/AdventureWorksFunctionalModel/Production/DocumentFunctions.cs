@@ -6,17 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using NakedFunctions;
 
 namespace AdventureWorksModel
 {
     public static class DocumentFunctions
     {
-        public static Document Updating(Document d, [Injected] DateTime now)
-        {
-            return d with { ModifiedDate = now };
-
-        }
+        public static Document Updating(Document d, [Injected] DateTime now) => d with { ModifiedDate = now };
     }
 }

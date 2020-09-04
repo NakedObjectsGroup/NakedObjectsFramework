@@ -25,9 +25,6 @@ namespace AdventureWorksModel
         [MemberOrder(99),ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
  
-        public override string ToString()
-        {
-            return Description;
-        }
+        public override string ToString() => Description;
     }
 }

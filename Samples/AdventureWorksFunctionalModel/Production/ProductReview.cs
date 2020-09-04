@@ -38,8 +38,7 @@ namespace AdventureWorksModel {
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public override string ToString() {
-            return "*****".Substring(0, Rating);
-        }
+        public override string ToString()  => "*****".Substring(0, Rating);
+        
     }
 }

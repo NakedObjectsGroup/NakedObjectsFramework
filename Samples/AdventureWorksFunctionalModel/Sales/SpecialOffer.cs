@@ -9,40 +9,10 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-    public record SpecialOffer: IHasRowGuid, IHasModifiedDate {
-
-        public SpecialOffer()
-        {
-
-        }
-
-        public SpecialOffer(
-            int specialOfferID,
-            string description,
-            decimal discountPct,
-            string type,
-            string category,
-            DateTime startDate,
-            DateTime endDate,
-            int minQty,
-            int? maxQty,
-            DateTime modifiedDate,
-            Guid rowGuid
-            )
-        {
-            SpecialOfferID = specialOfferID;
-            Description = description;
-            DiscountPct = discountPct;
-            Type = type;
-            Category = category;
-            StartDate = startDate;
-            EndDate = endDate;
-            MinQty = minQty;
-            MaxQty = maxQty;
-            ModifiedDate = modifiedDate;
-            rowguid = rowGuid;
-        }
+namespace AdventureWorksModel
+{
+    public record SpecialOffer : IHasRowGuid, IHasModifiedDate
+    {
 
         [Hidden]
         public virtual int SpecialOfferID { get; init; }
@@ -71,7 +41,7 @@ namespace AdventureWorksModel {
         [MemberOrder(61)]
         public virtual int MinQty { get; init; }
 
-        
+
         [MemberOrder(62)]
         public virtual int? MaxQty { get; init; }
 
@@ -81,48 +51,7 @@ namespace AdventureWorksModel {
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
-    }
+        public override string ToString() => Description;
 
-    public static class SpecialOfferFunctions
-    {
-
-        public static string Title(SpecialOffer sp)
-        {
-            return sp.Description;
-        }
-
-        public static string IconName(SpecialOffer sp)
-        {
-            return sp.Type == "No Discount"? "default.png":"scissors.png";
-        }
-
-
-        #region Life Cycle Methods
-        public static SpecialOffer Updating(
-            SpecialOffer sp,
-            [Injected] DateTime now)
-        {
-            return sp with {ModifiedDate =  now};
-        }
-        #endregion
-
-        public static string[] ChoicesCategory(SpecialOffer sp)
-        {
-            return new[] { "Reseller", "Customer" };
-        }
-
-        public static DateTime DefaultStartDate(
-            SpecialOffer sp,
-            [Injected] DateTime now)
-        {
-            return now;
-        }
-
-        public static DateTime DefaultEndDate(
-            SpecialOffer sp,
-            [Injected] DateTime now)
-        {
-            return now.AddDays(90);
-        }
     }
 }
