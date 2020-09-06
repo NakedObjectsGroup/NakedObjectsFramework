@@ -6,54 +6,30 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
     [Bounded]
         public record AddressType: IHasModifiedDate, IHasRowGuid {
-        public AddressType(
-            int addressTypeID,
-            string name,
-            Guid rowguid,
-            DateTime modifiedDate
-            )
-        {
-            AddressTypeID = addressTypeID;
-            Name = name;
-            this.rowguid = rowguid;
-            ModifiedDate = modifiedDate;
-        }
-
-        public AddressType()
-        {
-        }
 
         [Hidden]
-        public virtual int AddressTypeID { get; set; }
+        public virtual int AddressTypeID { get; init; }
 
         [Hidden]
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
-        [Hidden]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        [Hidden, ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public override string ToString() => Name;
     }
 
     public static class AddressTypeFunctions
     {
-        public static string Title(this AddressType a)
-        {
-            return a.CreateTitle(a.Name);
-        }
-
-        public static AddressType Updating(AddressType a, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(a, now);
-
-        }
+        public static AddressType Updating(this AddressType a, [Injected] DateTime now) => a with { ModifiedDate = now };
     }
 }

@@ -6,83 +6,51 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
         public record EmployeeDepartmentHistory {
-        private Employee e;
-        private DateTime now;
-
-        public EmployeeDepartmentHistory(Department department, Shift shift, Employee e, DateTime now)
-        {
-            Department = department;
-            Shift = shift;
-            this.e = e;
-            this.now = now;
-        }
-
-        public EmployeeDepartmentHistory()
-        {
-
-        }
-        #region Injected Services
-        
-        #endregion
-
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
 
         [Hidden]
-        public virtual int EmployeeID { get; set; }
+        public virtual int EmployeeID { get; init; }
 
         [Hidden]
-        public virtual short DepartmentID { get; set; }
+        public virtual short DepartmentID { get; init; }
 
         [Hidden]
-        public virtual byte ShiftID { get; set; }
+        public virtual byte ShiftID { get; init; }
 
         [Mask("d")]
         [MemberOrder(4)]
-        public virtual DateTime StartDate { get; set; }
+        public virtual DateTime StartDate { get; init; }
 
         [Mask("d")]
         [MemberOrder(5)]
-        public virtual DateTime? EndDate { get; set; }
+        public virtual DateTime? EndDate { get; init; }
 
         [MemberOrder(2)]
-        public virtual Department Department { get; set; }
+        public virtual Department Department { get; init; }
 
         [MemberOrder(1)]
-        public virtual Employee Employee { get; set; }
+        public virtual Employee Employee { get; init; }
 
         [MemberOrder(3)]
-        public virtual Shift Shift { get; set; }
+        public virtual Shift Shift { get; init; }
 
-        #region ModifiedDate
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public override string ToString() => $"{Department} {StartDate.ToString("d")}";
+    }
 
-        #endregion
+    public static class EmployeeDepartmentHistoryFunctions
+    {
 
-        #region Title
+        #region Life Cycle Methods
+        public static EmployeeDepartmentHistory Updating(this EmployeeDepartmentHistory x, [Injected] DateTime now) => x with { ModifiedDate = now };
 
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(Department).Append(StartDate, "d", null);
-            return t.ToString();
-        }
-
+        public static EmployeeDepartmentHistory Persisting(this EmployeeDepartmentHistory x, [Injected] DateTime now) => x with { ModifiedDate = now };
         #endregion
     }
 }

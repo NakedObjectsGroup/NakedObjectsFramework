@@ -6,33 +6,20 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
         public record Currency {
+        [Hidden]
+        public virtual string CurrencyCode { get; init; }
+        [Hidden]
+        public virtual string Name { get; init; }
 
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-        public virtual string CurrencyCode { get; set; }
-
-        //Title
-        public virtual string Name { get; set; }
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+        [Hidden, ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
-        #endregion
+        public override string ToString() => Name;
     }
+
 }

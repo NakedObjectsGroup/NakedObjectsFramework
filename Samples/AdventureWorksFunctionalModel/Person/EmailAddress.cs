@@ -5,27 +5,6 @@ namespace AdventureWorksModel {
 
     public  class EmailAddress : IHasRowGuid, IHasModifiedDate {
 
-        public EmailAddress(
-            int businessEntityID,
-            int emailAddressID,
-            string emailAddress1,
-            int personId,
-            Person person,
-            Guid rowguid,
-            DateTime modifiedDate
-            )
-        {
-            BusinessEntityID = businessEntityID;
-            EmailAddressID = emailAddressID;
-            EmailAddress1 = emailAddress1;
-            //PersonId = personId;
-            Person = person;
-            this.rowguid = rowguid;
-            ModifiedDate = modifiedDate;
-        }
-
-        public EmailAddress() { }
-
         [Hidden]
         public virtual int BusinessEntityID { get; set; }
         [Hidden]

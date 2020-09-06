@@ -6,9 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 
+using System;
 using System.Linq;
 using System.Security.Principal;
 using NakedFunctions;
+using static NakedFunctions.Helpers;
 using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
 
 
@@ -41,7 +43,7 @@ namespace AdventureWorksModel {
         }
 
         
-        public static (Employee, string) FindEmployeeByNationalIDNumber(
+        public static (Employee, Action<IUserAdvisory>) FindEmployeeByNationalIDNumber(
             
             string nationalIDNumber,
             IQueryable<Employee> employees)
@@ -53,15 +55,16 @@ namespace AdventureWorksModel {
             return SingleObjectWarnIfNoMatch(query);
         }
 
+        //[ContributedAction("Employees")]
         public static (Employee, Employee) CreateNewEmployeeFromContact(
             
-            [ContributedAction("Employees")] Person contactDetails,
+             Person contactDetails,
             IQueryable<Employee> employees)
         {
             var e = new Employee(
                 contactDetails.BusinessEntityID,
                 contactDetails);
-            return Result.DisplayAndPersist(e);
+            return DisplayAndPersist(e);
         }
 
         //[PageSize(20)]
@@ -71,7 +74,7 @@ namespace AdventureWorksModel {
         //    return persons.Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
         //}
 
-        [FinderAction]
+        //[FinderAction]
         [RenderEagerly]
         [TableView(true, "GroupName")]
         public static IQueryable<Department> ListAllDepartments(

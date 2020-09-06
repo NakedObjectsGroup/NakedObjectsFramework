@@ -6,47 +6,35 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
     public record JobCandidate  {
-        #region Injected Services
-        
-        #endregion
-
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
-        public virtual int JobCandidateID { get; set; }
-        public virtual string Resume { get; set; }
+        public virtual int JobCandidateID { get; init; }
+        public virtual string Resume { get; init; }
 
         #region Employee
         [Hidden]
-        public virtual int? EmployeeID { get; set; }
-        public Employee Employee { get; set; }
+        public virtual int? EmployeeID { get; init; }
+        public Employee Employee { get; init; }
         #endregion
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
-        #region Title
+        public override string ToString() => $"{Employee}";
+    }
 
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(Employee);
-            return t.ToString();
-        }
+    public static class JobCandidateFunctions
+    {
+        #region Life Cycle Methods
+        public static JobCandidate Updating(this JobCandidate x, [Injected] DateTime now) => x with { ModifiedDate = now };
 
+        public static JobCandidate Persisting(this JobCandidate x, [Injected] DateTime now) => x with { ModifiedDate = now };
         #endregion
     }
+
 }

@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 using NakedFunctions;
 
@@ -42,42 +42,35 @@ namespace AdventureWorksModel
         public StateProvince() { }
 
         [Hidden]
-        public virtual int StateProvinceID { get; set; }
+        public virtual int StateProvinceID { get; init; }
 
-        public virtual string StateProvinceCode { get; set; }
+        public virtual string StateProvinceCode { get; init; }
 
-        public virtual bool IsOnlyStateProvinceFlag { get; set; }
+        public virtual bool IsOnlyStateProvinceFlag { get; init; }
 
-        public virtual string Name { get; set; }
-
-        [Hidden]
-        public virtual string CountryRegionCode { get; set; }
-
-        public virtual CountryRegion CountryRegion { get; set; }
+        public virtual string Name { get; init; }
 
         [Hidden]
-        public virtual int TerritoryID { get; set; }
+        public virtual string CountryRegionCode { get; init; }
+
+        public virtual CountryRegion CountryRegion { get; init; }
+
+        [Hidden]
+        public virtual int TerritoryID { get; init; }
 
         public virtual SalesTerritory SalesTerritory { get; set; }
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
     }
     public static class StateProvinceFunctions
     {
-        //public static string Title(this StateProvince sp)
-        //{
-        //    return sp.CreateTitle(sp.Name);
-        //}
-        public static StateProvince Updating(StateProvince sp, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(sp, now);
+          public static StateProvince Updating(StateProvince sp, [Injected] DateTime now)  => sp with { ModifiedDate = now };
 
-        }
     }
 }

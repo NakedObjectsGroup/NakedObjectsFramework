@@ -7,8 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-
-
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 using NakedFunctions;
 
@@ -60,31 +59,14 @@ namespace AdventureWorksModel {
         [Mask("C")]
         public virtual decimal CostYTD { get; set; }
 
-        [MemberOrder(43)]
-        [Mask("C")]
+        [MemberOrder(43), Mask("C")]
         public virtual decimal CostLastYear { get; set; }
-
-        #region Row Guid and Modified Date
-
-        #region rowguid
 
         [Hidden]
         public virtual Guid rowguid { get; set; }
 
-        #endregion
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+        [MemberOrder(99),ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #endregion
-
-        #region States/Provinces covered
 
         private ICollection<StateProvince> _StateProvince = new List<StateProvince>();
 
@@ -95,15 +77,11 @@ namespace AdventureWorksModel {
             set { _StateProvince = value; }
         }
 
-        #endregion
+        public override string ToString() => Name;
     }
 
     public static class SalesTerritoryFunctions
     {
 
-        public static string Title(this SalesTerritory t)
-        {
-            return t.CreateTitle(t.Name);
-        }
     }
 }

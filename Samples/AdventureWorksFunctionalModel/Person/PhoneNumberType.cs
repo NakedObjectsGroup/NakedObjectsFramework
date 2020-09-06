@@ -1,39 +1,23 @@
 using NakedFunctions;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AdventureWorksModel {
     [Bounded]
     public record PhoneNumberType : IHasModifiedDate {
-        public PhoneNumberType(int phoneNumberTypeID, string name, DateTime modifiedDate)
-        {
-            PhoneNumberTypeID = phoneNumberTypeID;
-            Name = name;
-            ModifiedDate = modifiedDate;
-        }
-
-        public PhoneNumberType() { }
+        [Hidden]
+        public virtual int PhoneNumberTypeID { get; init; }
 
         [Hidden]
-        public virtual int PhoneNumberTypeID { get; set; }
+        public virtual string Name { get; init; }
 
-        [Hidden]
-        public virtual string Name { get; set; }
+        [Hidden, ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        [Hidden]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public override string ToString() => Name;
     }
     public static class PhoneNumberTypeFunctions
     {
-        public static PhoneNumberType Updating(PhoneNumberType pnt, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(pnt, now);
-
-        }
-
-        public static string Title(this PhoneNumberType pnt)
-        {
-            return pnt.CreateTitle(pnt.Name);
-        }
+        public static PhoneNumberType Updating(PhoneNumberType pnt, [Injected] DateTime now) => pnt with { ModifiedDate = now };
     }
 }

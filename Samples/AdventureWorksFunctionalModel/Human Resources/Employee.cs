@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Principal;
 using NakedFunctions;
@@ -31,77 +31,77 @@ namespace AdventureWorksModel
         public Employee() { }
 
         [Hidden]
-        public virtual int BusinessEntityID { get; set; }
+        public virtual int BusinessEntityID { get; init; }
 
         [MemberOrder(1)]
-        public virtual Person PersonDetails { get; set; }
+        public virtual Person PersonDetails { get; init; }
 
         [MemberOrder(10)]
-        public virtual string NationalIDNumber { get; set; }
+        public virtual string NationalIDNumber { get; init; }
 
         [MemberOrder(12)]
-        public virtual string JobTitle { get; set; }
+        public virtual string JobTitle { get; init; }
 
         [MemberOrder(13)]
         [Mask("d")]
-        public virtual DateTime? DateOfBirth { get; set; }
+        public virtual DateTime? DateOfBirth { get; init; }
 
         [MemberOrder(14)]
         
-        public virtual string MaritalStatus { get; set; }
+        public virtual string MaritalStatus { get; init; }
 
         [MemberOrder(15)]
         
-        public virtual string Gender { get; set; }
+        public virtual string Gender { get; init; }
 
         [MemberOrder(16)]
         [Mask("d")]
-        public virtual DateTime? HireDate { get; set; }
+        public virtual DateTime? HireDate { get; init; }
 
         [MemberOrder(17)]
-        public virtual bool Salaried { get; set; }
+        public virtual bool Salaried { get; init; }
 
         [MemberOrder(18)]
-        public virtual short VacationHours { get; set; }
+        public virtual short VacationHours { get; init; }
 
         [MemberOrder(19)]
-        public virtual short SickLeaveHours { get; set; }
+        public virtual short SickLeaveHours { get; init; }
 
         [MemberOrder(20)]
-        public virtual bool Current { get; set; }
+        public virtual bool Current { get; init; }
 
         [Hidden]
-        public virtual int? ManagerID { get; set; }
+        public virtual int? ManagerID { get; init; }
 
         
         [MemberOrder(30)]
-        public virtual Employee Manager { get; set; }
+        public virtual Employee Manager { get; init; }
 
         [MemberOrder(11)]
-        public virtual string LoginID { get; set; }
+        public virtual string LoginID { get; init; }
 
         [Hidden]
-        public virtual SalesPerson SalesPerson { get; set; }
+        public virtual SalesPerson SalesPerson { get; init; }
 
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         [TableView(true,
             nameof(EmployeeDepartmentHistory.StartDate),
             nameof(EmployeeDepartmentHistory.EndDate),
             nameof(EmployeeDepartmentHistory.Department),
             nameof(EmployeeDepartmentHistory.Shift))]
-        public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory { get; set; }
+        public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory { get; init; }
 
         [TableView(true,
             nameof(EmployeePayHistory.RateChangeDate),
             nameof(EmployeePayHistory.Rate))]
-        public virtual ICollection<EmployeePayHistory> PayHistory { get; set; }
+        public virtual ICollection<EmployeePayHistory> PayHistory { get; init; }
 
         public override string ToString()
         {
@@ -112,13 +112,8 @@ namespace AdventureWorksModel
     public static class EmployeeFunctions
     {
 
-        #region LifeCycle methods
-        public static Employee Updating(Employee a, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(a, now);
-
-        }
-
+        #region Life Cycle Methods
+        public static Employee Updating(this Employee x, [Injected] DateTime now) => x with { ModifiedDate = now };
         #endregion
 
         //public static bool HideLoginID(

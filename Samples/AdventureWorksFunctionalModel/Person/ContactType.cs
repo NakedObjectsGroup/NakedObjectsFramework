@@ -6,43 +6,26 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-        [Bounded]
+    [Bounded]
     public record ContactType : IHasModifiedDate {
 
-        public ContactType(int contactTypeID, string name, DateTime modifiedDate)
-        {
-            ContactTypeID = contactTypeID;
-            Name = name;
-            ModifiedDate = modifiedDate;
-        }
-
-        public ContactType() { }
-
         [Hidden]
-        public virtual int ContactTypeID { get; set; }
+        public virtual int ContactTypeID { get; init; }
 
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public override string ToString() => Name;
     }
 
     public static class ContactTypeFunctions
     {
-        public static string Title(this ContactType ct)
-        {
-            return ct.CreateTitle(ct.Name);
-        }
-
-        public static ContactType Updating(ContactType ct, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(ct, now);
-
-        }
+        public static ContactType Updating(ContactType ct, [Injected] DateTime now) => ct with { ModifiedDate = now };
     }
 }

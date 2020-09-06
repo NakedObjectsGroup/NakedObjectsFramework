@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
@@ -14,31 +14,21 @@ namespace AdventureWorksModel {
 
         public record EmployeeAddress : IAddressRole {
 
-        //TODO: remains to be converted
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
-        }
 
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
 
         #region Properties
 
         [Hidden]
-        public virtual int EmployeeID { get; set; }
+        public virtual int EmployeeID { get; init; }
 
         [Hidden]
-        public virtual int AddressID { get; set; }
+        public virtual int AddressID { get; init; }
 
         [Hidden]
-        public virtual Employee Employee { get; set; }
+        public virtual Employee Employee { get; init; }
 
         [MemberOrder(2)] //Title
-        public virtual Address Address { get; set; }
+        public virtual Address Address { get; init; }
 
         #region ModifiedDate and rowguid
 
@@ -47,19 +37,29 @@ namespace AdventureWorksModel {
         [MemberOrder(99)]
         
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         #endregion
 
         #endregion
 
+        #endregion
+    }
+
+    public static class EmployeeAddressFunctions
+    {
+        //TODO: remains to be converted
+        #region Life Cycle Methods
+        public static EmployeeAddress Updating(this EmployeeAddress x, [Injected] DateTime now) => x with { ModifiedDate = now };
+
+        public static EmployeeAddress Persisting(this EmployeeAddress x, [Injected] DateTime now) => x with { ModifiedDate = now };
         #endregion
     }
 }

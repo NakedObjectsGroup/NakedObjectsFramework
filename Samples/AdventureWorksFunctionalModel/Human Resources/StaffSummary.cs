@@ -13,24 +13,20 @@ namespace AdventureWorksModel
         
         #endregion
 
-        public override string ToString()
-        {
-            var t = Container.NewTitleBuilder();
-            t.Append("Staff Summary");
-            return t.ToString();
-        }
+        public override string ToString() => "Staff Summary";
+
         public string DisablePropertyDefault()
         {
             return "Not editable";
         }
         [MemberOrder(1)]
-        public virtual int Female { get; set; }
+        public virtual int Female { get; init; }
 
         [MemberOrder(2)]
-        public virtual int Male { get; set; }
+        public virtual int Male { get; init; }
 
         [MemberOrder(3)]
-        public virtual int TotalStaff { get; set; }
+        public virtual int TotalStaff { get; init; }
 
     }
 }
