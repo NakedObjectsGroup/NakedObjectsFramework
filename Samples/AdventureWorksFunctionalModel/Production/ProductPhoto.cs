@@ -16,7 +16,7 @@ namespace AdventureWorksModel {
         private byte[] _LargePhoto = new byte[0];
         private byte[] _ThumbNailPhoto = new byte[0];
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductPhotoID { get; init; }
 
         public virtual byte[] ThumbNailPhoto {
@@ -41,7 +41,7 @@ namespace AdventureWorksModel {
         //    }
         //}
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
 
         [MemberOrder(99), ConcurrencyCheck]

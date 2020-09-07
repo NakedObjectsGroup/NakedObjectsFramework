@@ -3,5 +3,5 @@
 namespace NakedFunctions
 {
         [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
-        public class HiddenAttribute : Attribute { }
+        public class NakedObjectsIgnoreAttribute : Attribute { }
 }

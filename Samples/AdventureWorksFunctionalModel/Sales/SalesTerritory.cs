@@ -16,7 +16,7 @@ namespace AdventureWorksModel
     public record SalesTerritory
     {
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int TerritoryID { get; set; }
 
         [MemberOrder(10)]
@@ -40,7 +40,7 @@ namespace AdventureWorksModel
         [MemberOrder(43), Mask("C")]
         public virtual decimal CostLastYear { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Guid rowguid { get; set; }
 
         [MemberOrder(99), ConcurrencyCheck]

@@ -161,7 +161,7 @@ namespace AdventureWorksModel
 
         #region Helper methods
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public static SpecialOffer NoDiscount(IQueryable<SpecialOffer> offers) => offers.Where(x => x.SpecialOfferID == 1).First();
         #endregion
 

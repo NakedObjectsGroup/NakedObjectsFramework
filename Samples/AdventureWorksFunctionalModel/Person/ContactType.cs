@@ -13,7 +13,7 @@ namespace AdventureWorksModel {
     [Bounded]
     public record ContactType : IHasModifiedDate {
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ContactTypeID { get; init; }
 
         public virtual string Name { get; init; }

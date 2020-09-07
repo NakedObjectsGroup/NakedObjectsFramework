@@ -40,7 +40,7 @@ namespace AdventureWorksFunctionalModel {
             return new[] { "U ", "M ", "W " };
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public static bool IsDiscontinued(this Product p, DateTime now)
         {
             return p.DiscontinuedDate != null ? p.DiscontinuedDate.Value < now : false;
@@ -100,7 +100,7 @@ namespace AdventureWorksFunctionalModel {
             }
             return new ProductSubcategory[] { }.ToList();
         }
-        [Hidden]
+        [NakedObjectsIgnore]
         public static SpecialOfferProduct BestSpecialOfferProduct(
             Product p,
             short quantity,

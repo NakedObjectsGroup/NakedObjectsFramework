@@ -41,7 +41,7 @@ namespace AdventureWorksModel
 
         public StateProvince() { }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int StateProvinceID { get; init; }
 
         public virtual string StateProvinceCode { get; init; }
@@ -50,17 +50,17 @@ namespace AdventureWorksModel
 
         public virtual string Name { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string CountryRegionCode { get; init; }
 
         public virtual CountryRegion CountryRegion { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int TerritoryID { get; init; }
 
         public virtual SalesTerritory SalesTerritory { get; set; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99)]

@@ -5,13 +5,13 @@ using System.ComponentModel.DataAnnotations;
 namespace AdventureWorksModel {
     [Bounded]
     public record PhoneNumberType : IHasModifiedDate {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int PhoneNumberTypeID { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string Name { get; init; }
 
-        [Hidden, ConcurrencyCheck]
+        [NakedObjectsIgnore, ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;

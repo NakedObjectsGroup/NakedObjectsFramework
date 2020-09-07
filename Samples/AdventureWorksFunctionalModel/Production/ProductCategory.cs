@@ -14,14 +14,14 @@ namespace AdventureWorksModel {
     [Bounded]
         public record ProductCategory: IHasRowGuid, IHasModifiedDate  {
 
-       [Hidden]
+       [NakedObjectsIgnore]
         public virtual int ProductCategoryID { get; init; }
 
         public virtual string Name { get; init; }
 
         [Named("Subcategories"), TableView(true)] //TableView == ListView ?
         public virtual ICollection<ProductSubcategory> ProductSubcategory { get; init; } = new List<ProductSubcategory>();
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]

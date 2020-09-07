@@ -13,17 +13,17 @@ namespace AdventureWorksModel {
         [Bounded]
         public record ProductSubcategory: IHasRowGuid, IHasModifiedDate {
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductSubcategoryID { get; init; }
 
         public virtual string Name { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductCategoryID { get; init; }
 
         public virtual ProductCategory ProductCategory { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]

@@ -14,10 +14,10 @@ namespace AdventureWorksModel
     public record SpecialOfferProduct
     {
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int SpecialOfferID { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductID { get; init; }
 
         [MemberOrder(1)]
@@ -26,7 +26,7 @@ namespace AdventureWorksModel
         [MemberOrder(2)]
         public virtual Product Product { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]

@@ -13,13 +13,13 @@ namespace AdventureWorksModel
 {
     public record ProductDescription : IHasRowGuid, IHasModifiedDate
     {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductDescriptionID { get; init; }
 
         [MultiLine(10), MemberOrder(2)]
         public virtual string Description { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99),ConcurrencyCheck]

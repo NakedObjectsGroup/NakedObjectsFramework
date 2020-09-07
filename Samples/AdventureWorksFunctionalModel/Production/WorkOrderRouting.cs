@@ -12,10 +12,10 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     public record WorkOrderRouting  {
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int WorkOrderID { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductID { get; init; }
 
         
@@ -53,14 +53,14 @@ namespace AdventureWorksModel {
         public virtual decimal? ActualCost { get; init; }
 
         #region Location
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual short LocationID { get; init; }
 
         [MemberOrder(10)]
         public virtual Location Location { get; init; }
         #endregion
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual WorkOrder WorkOrder { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]

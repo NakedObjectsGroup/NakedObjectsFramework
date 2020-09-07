@@ -22,7 +22,7 @@ namespace AdventureWorksModel
 
     public record Product : IProduct, IHasModifiedDate, IHasRowGuid
     {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductID { get; init; }
  
         [MemberOrder(1)]
@@ -85,13 +85,13 @@ namespace AdventureWorksModel
         [MemberOrder(11), Mask("C")]
         public virtual decimal ListPrice { get; init; }
 
-       [Hidden]
+       [NakedObjectsIgnore]
         public virtual string Size { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string SizeUnitMeasureCode { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual UnitMeasure SizeUnit { get; init; }
 
         [Named("Size"),MemberOrder(16)]
@@ -103,13 +103,13 @@ namespace AdventureWorksModel
             }
         }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string WeightUnitMeasureCode { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual decimal? Weight { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual UnitMeasure WeightUnit { get; init; }
 
         [MemberOrder(17)]
@@ -143,7 +143,7 @@ namespace AdventureWorksModel
         [MemberOrder(83), Mask("d")] //[Range(0, 10)] TODO
         public virtual DateTime? DiscontinuedDate { get; init; }
         
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int? ProductModelID { get; init; }
 
         [MemberOrder(10)]
@@ -165,19 +165,19 @@ namespace AdventureWorksModel
             set { productCategory = value; }
         }
 
-                [Hidden]
+                [NakedObjectsIgnore]
         public virtual int? ProductSubcategoryID { get; init; }
 
         [MemberOrder(12)]
         public virtual ProductSubcategory ProductSubcategory { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
    
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
         
         private ICollection<ProductReview> _ProductReviews = new List<ProductReview>();
@@ -191,13 +191,13 @@ namespace AdventureWorksModel
                         nameof(AdventureWorksModel.ProductInventory.Bin))]
         public virtual ICollection<ProductInventory> ProductInventory { get; init; } = new List<ProductInventory>();
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int NumberInStock()
         {
             return (from obj in ProductInventory
                     select obj).Sum(obj => obj.Quantity);
         }
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; init; } = new List<SpecialOfferProduct>();
 
         //TODO: NOt sure what this is supposed to be doing?

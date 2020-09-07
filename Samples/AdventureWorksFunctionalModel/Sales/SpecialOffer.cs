@@ -14,7 +14,7 @@ namespace AdventureWorksModel
     public record SpecialOffer : IHasRowGuid, IHasModifiedDate
     {
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int SpecialOfferID { get; init; }
 
         [MemberOrder(10)]
@@ -45,7 +45,7 @@ namespace AdventureWorksModel
         [MemberOrder(62)]
         public virtual int? MaxQty { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]

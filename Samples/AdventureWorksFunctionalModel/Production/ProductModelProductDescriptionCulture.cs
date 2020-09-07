@@ -11,19 +11,19 @@ using NakedFunctions;
 
 namespace AdventureWorksModel {
             public record ProductModelProductDescriptionCulture : IHasModifiedDate {
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductModelID { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual int ProductDescriptionID { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual string CultureID { get; init; }
 
         public virtual Culture Culture { get; init; }
         public virtual ProductDescription ProductDescription { get; init; }
 
-        [Hidden]
+        [NakedObjectsIgnore]
         public virtual ProductModel ProductModel { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]
