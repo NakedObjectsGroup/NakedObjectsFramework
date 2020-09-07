@@ -19,6 +19,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
@@ -67,49 +68,41 @@ namespace NakedFunctions.ParallelReflect.FacetFactory {
 
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            // must be true
+            if (!actionMethod.IsStatic) {
+                throw new ReflectionException($"{actionMethod.Name} must be static");
+            }
+
+
             string capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
             Type type = actionMethod.DeclaringType;
             var facets = new List<IFacet>();
-            var result = reflector.LoadSpecification(type, metamodel);
-            metamodel = result.Item2;
-            ITypeSpecBuilder onType = result.Item1;
+            ITypeSpecBuilder onType;
+            ITypeSpecBuilder returnSpec;
+            (onType, metamodel) = reflector.LoadSpecification(type, metamodel);
 
-            //if (FacetUtils.IsEitherTuple(actionMethod.ReturnType)) {
-            //    var genericTypes = actionMethod.ReturnType.GetGenericArguments();
+            (returnSpec, metamodel) = LoadReturnSpecs(actionMethod.ReturnType, metamodel, reflector);
 
-            //    // count down so final result is first parameter
-            //    for (var index = genericTypes.Length -1 ; index >= 0; index--) {
-            //        var t = genericTypes[index];
-            //        result = reflector.LoadSpecification(t, metamodel);
-            //        metamodel = result.Item2;
-            //    }
-            //}
-            //else {
-            //    result = reflector.LoadSpecification(actionMethod.ReturnType, metamodel);
-            //    metamodel = result.Item2;
-            //}
-            result = LoadReturnSpecs(actionMethod.ReturnType, metamodel, reflector);
-
-
-            var returnSpec = result.Item1 as IObjectSpecBuilder;
-            metamodel = result.Item2;
-
-            IObjectSpecImmutable elementSpec = null;
-            bool isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(actionMethod.ReturnType);
-            if (returnSpec != null && IsCollection(actionMethod.ReturnType)) {
-                Type elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
-                result = reflector.LoadSpecification(elementType, metamodel);
-                metamodel = result.Item2;
-                elementSpec = result.Item1 as IObjectSpecImmutable;
+            if (!(returnSpec is IObjectSpecImmutable)) {
+                throw new ReflectionException($"{returnSpec.Identifier} must be Object spec");
             }
 
+            ITypeSpecImmutable elementSpec = null;
+            var isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(actionMethod.ReturnType);
+            if (returnSpec is IObjectSpecBuilder && IsCollection(actionMethod.ReturnType)) {
+                var elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
+                (elementSpec, metamodel) = reflector.LoadSpecification(elementType, metamodel);
+                if (!(elementSpec is IObjectSpecImmutable)) {
+                    throw new ReflectionException($"{elementSpec.Identifier} must be Object spec");
+                }
+            }
+
+            
             RemoveMethod(methodRemover, actionMethod);
 
-            // TODO ignore non static methods 
-            var invokeFacet = actionMethod.IsStatic
-                ? (IFacet) new ActionInvocationFacetViaStaticMethod(actionMethod, onType, returnSpec, elementSpec, action, isQueryable, LoggerFactory.CreateLogger<ActionInvocationFacetViaStaticMethod>())
-                : new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, isQueryable, LoggerFactory.CreateLogger<ActionInvocationFacetViaMethod>());
+            var invokeFacet = new ActionInvocationFacetViaStaticMethod(actionMethod, onType, (IObjectSpecImmutable)returnSpec, (IObjectSpecImmutable)elementSpec, 
+                action, isQueryable, LoggerFactory.CreateLogger<ActionInvocationFacetViaStaticMethod>());
 
             facets.Add(invokeFacet);
 
@@ -118,9 +111,7 @@ namespace NakedFunctions.ParallelReflect.FacetFactory {
             AddHideForSessionFacetNone(facets, action);
             AddDisableForSessionFacetNone(facets, action);
 
-            if (actionMethod.IsStatic) {
-                facets.Add(new StaticFunctionFacet(action));
-            }
+            facets.Add(new StaticFunctionFacet(action));
 
             FacetUtils.AddFacets(facets);
 
@@ -135,16 +126,23 @@ namespace NakedFunctions.ParallelReflect.FacetFactory {
                 facets.Add(new NullableFacetAlways(holder));
             }
 
-            var result = reflector.LoadSpecification(parameter.ParameterType, metamodel);
-            metamodel = result.Item2;
-            var returnSpec = result.Item1 as IObjectSpecBuilder;
+            ITypeSpecBuilder returnSpec;
+            (returnSpec, metamodel) = reflector.LoadSpecification(parameter.ParameterType, metamodel);
 
-            if (returnSpec != null && IsParameterCollection(parameter.ParameterType)) {
-                Type elementType = CollectionUtils.ElementType(parameter.ParameterType);
-                result = reflector.LoadSpecification(elementType, metamodel);
-                metamodel = result.Item2;
-                var elementSpec = result.Item1 as IObjectSpecImmutable;
-                facets.Add(new ElementTypeFacet(holder, elementType, elementSpec));
+
+            if (!(returnSpec is IObjectSpecImmutable)) {
+                throw new ReflectionException($"{returnSpec.Identifier} must be Object spec");
+            }
+
+            if (IsParameterCollection(parameter.ParameterType)) {
+                var elementType = CollectionUtils.ElementType(parameter.ParameterType);
+                ITypeSpecImmutable elementSpec;
+                (elementSpec, metamodel) = reflector.LoadSpecification(elementType, metamodel);
+                if (!(elementSpec is IObjectSpecImmutable)) {
+                    throw new ReflectionException($"{elementSpec.Identifier} must be Object spec");
+                }
+
+                facets.Add(new ElementTypeFacet(holder, elementType, (IObjectSpecImmutable) elementSpec));
             }
 
             FacetUtils.AddFacets(facets);

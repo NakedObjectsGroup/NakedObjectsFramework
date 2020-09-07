@@ -59,13 +59,8 @@ namespace NakedFunctions.Reflect.Test {
         }
     }
 
-    public static class TupleFunctions {
-        public static Tuple<SimpleClass, SimpleClass> TupleFunction(IQueryable<SimpleClass> injected) {
-            return new Tuple<SimpleClass, SimpleClass>(injected.First(), injected.First());
-        }
-    }
 
-    public static class ValueTupleFunctions
+    public static class TupleFunctions
     {
         public static (SimpleClass, SimpleClass) TupleFunction(IQueryable<SimpleClass> injected)
         {
@@ -79,16 +74,16 @@ namespace NakedFunctions.Reflect.Test {
 
         private Action<IServiceCollection> TestHook { get; set; } = services => { };
 
-        private IHostBuilder CreateHostBuilder(string[] args, IFunctionalReflectorConfiguration rc) =>
+        private IHostBuilder CreateHostBuilder(string[] args, IFunctionalReflectorConfiguration rc, IReflectorConfiguration orc = null) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) => {
-                    RegisterTypes(services, rc);
+                    RegisterTypes(services, rc, orc);
                 });
 
-        protected IServiceProvider GetContainer(IFunctionalReflectorConfiguration rc)
+        protected IServiceProvider GetContainer(IFunctionalReflectorConfiguration rc, IReflectorConfiguration orc = null)
         {
             ImmutableSpecFactory.ClearCache();
-            var hostBuilder = CreateHostBuilder(new string[] { }, rc).Build();
+            var hostBuilder = CreateHostBuilder(new string[] { }, rc, orc).Build();
             return hostBuilder.Services;
         }
 
@@ -188,7 +183,7 @@ namespace NakedFunctions.Reflect.Test {
 
         }
 
-        protected virtual void RegisterTypes(IServiceCollection services, IFunctionalReflectorConfiguration frc) {
+        protected virtual void RegisterTypes(IServiceCollection services, IFunctionalReflectorConfiguration frc, IReflectorConfiguration orc = null) {
             RegisterFacetFactories(services);
 
 
@@ -199,14 +194,15 @@ namespace NakedFunctions.Reflect.Test {
             services.AddSingleton<IMetamodelBuilder, NakedObjects.Meta.Component.Metamodel>();
             services.AddSingleton<IMenuFactory, NullMenuFactory>();
 
-            var rc = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { "NakedFunctions" });
-            rc.SupportedSystemTypes.Clear();
+            var dflt = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { "NakedFunctions" });
+            dflt.SupportedSystemTypes.Clear();
 
+            var rc = orc ?? dflt;
 
             services.AddSingleton<IReflectorConfiguration>(rc);
 
 
-            services.AddSingleton(frc);
+            services.AddSingleton<IFunctionalReflectorConfiguration>(frc);
 
             TestHook(services);
         }
@@ -261,92 +257,70 @@ namespace NakedFunctions.Reflect.Test {
             AbstractReflectorTest.AssertSpec(typeof(SimpleFunctions), specs);
         }
 
-        //[TestMethod]
-        //public void ReflectTupleFunction() {
-        //    IUnityContainer container = GetContainer();
-        //    ReflectorConfiguration.NoValidate = true;
-        //    var rcO = RegisterObjectConfig(container);
-        //    rcO.SupportedSystemTypes.Add(typeof(IQueryable<>));
+        [TestMethod]
+        public void ReflectTupleFunction() {
+            ReflectorConfiguration.NoValidate = true;
 
-        //    var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[] { typeof(TupleFunctions) });
+            var orc = new ReflectorConfiguration(new Type[]{}, new Type[] { }, new string[] { "NakedFunctions" });
+            orc.SupportedSystemTypes.Clear();
+            orc.SupportedSystemTypes.Add(typeof(IQueryable<>));
 
-        //    container.RegisterInstance<IFunctionalReflectorConfiguration>(rc);
+            var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[] { typeof(TupleFunctions) });
 
-        //    var reflector = container.Resolve<IReflector>();
-        //    reflector.Reflect();
-        //    var specs = reflector.AllObjectSpecImmutables;
-        //    Assert.AreEqual(4, specs.Length);
-        //    AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
-        //    AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
-        //    AbstractReflectorTest.AssertSpec(typeof(TupleFunctions), specs);
-        //    AbstractReflectorTest.AssertSpec(typeof(IQueryable<>), specs);
-        //}
+            var container = GetContainer(rc, orc);
 
-        //[TestMethod]
-        //public void ReflectValueTupleFunction()
-        //{
-        //    IUnityContainer container = GetContainer();
-        //    ReflectorConfiguration.NoValidate = true;
-        //    var rcO = RegisterObjectConfig(container);
-        //    rcO.SupportedSystemTypes.Add(typeof(IQueryable<>));
+            var reflector = container.GetService<IReflector>();
+            reflector.Reflect();
+            var specs = reflector.AllObjectSpecImmutables;
+            //Assert.AreEqual(4, specs.Length);
+            //AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
+            AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
+            AbstractReflectorTest.AssertSpec(typeof(TupleFunctions), specs);
+            AbstractReflectorTest.AssertSpec(typeof(IQueryable<>), specs);
+        }
 
-        //    var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[] { typeof(ValueTupleFunctions) });
+        [TestMethod]
+        public void ReflectSimpleInjectedFunction()
+        {
+            ReflectorConfiguration.NoValidate = true;
 
-        //    container.RegisterInstance<IFunctionalReflectorConfiguration>(rc);
+            var orc = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { "NakedFunctions" });
+            orc.SupportedSystemTypes.Clear();
+            orc.SupportedSystemTypes.Add(typeof(IQueryable<>));
 
-        //    var reflector = container.Resolve<IReflector>();
-        //    reflector.Reflect();
-        //    var specs = reflector.AllObjectSpecImmutables;
-        //    Assert.AreEqual(4, specs.Length);
-        //    AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
-        //    AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
-        //    AbstractReflectorTest.AssertSpec(typeof(ValueTupleFunctions), specs);
-        //    AbstractReflectorTest.AssertSpec(typeof(IQueryable<>), specs);
-        //}
+            var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[] { typeof(SimpleInjectedFunctions) });
 
-        //[TestMethod]
-        //public void ReflectSimpleInjectedFunction() {
-        //    IUnityContainer container = GetContainer();
-        //    ReflectorConfiguration.NoValidate = true;
-        //    var rcO = RegisterObjectConfig(container);
-        //    rcO.SupportedSystemTypes.Add(typeof(IQueryable<>));
+            var container = GetContainer(rc, orc);
 
-        //    var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[] { typeof(SimpleInjectedFunctions) });
+            var reflector = container.GetService<IReflector>();
+            reflector.Reflect();
+            var specs = reflector.AllObjectSpecImmutables;
+            //Assert.AreEqual(4, specs.Length);
+            //AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
+            AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
+            AbstractReflectorTest.AssertSpec(typeof(SimpleInjectedFunctions), specs);
+            AbstractReflectorTest.AssertSpec(typeof(IQueryable<>), specs);
 
-        //    container.RegisterInstance<IFunctionalReflectorConfiguration>(rc);
-
-        //    var reflector = container.Resolve<IReflector>();
+           // Assert.AreEqual(1, specs[0].ObjectActions.Count);
+        }
 
 
-        //    reflector.Reflect();
-        //    var specs = reflector.AllObjectSpecImmutables;
-        //    Assert.AreEqual(4, specs.Length);
-        //    AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
-        //    AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
-        //    AbstractReflectorTest.AssertSpec(typeof(SimpleInjectedFunctions), specs);
-        //    AbstractReflectorTest.AssertSpec(typeof(IQueryable<>), specs);
+        [TestMethod]
+        public void ReflectNavigableType()
+        {
+            ReflectorConfiguration.NoValidate = true;
 
-        //    Assert.AreEqual(1, specs[0].ObjectActions.Count);
-        //}
+            var rc = new FunctionalReflectorConfiguration(new[] { typeof(NavigableClass) }, new Type[0]);
 
+            var container = GetContainer(rc);
 
-        //[TestMethod]
-        //public void ReflectNavigableType() {
-        //    IUnityContainer container = GetContainer();
-        //    ReflectorConfiguration.NoValidate = true;
-        //    RegisterObjectConfig(container);
-
-        //    var rc = new FunctionalReflectorConfiguration(new[] { typeof(NavigableClass) }, new Type[0]);
-
-        //    container.RegisterInstance<IFunctionalReflectorConfiguration>(rc);
-
-        //    var reflector = container.Resolve<IReflector>();
-        //    reflector.Reflect();
-        //    var specs = reflector.AllObjectSpecImmutables;
-        //    //Assert.AreEqual(2, specs.Length);
-        //    //AbstractReflectorTest.AssertSpec(typeof(NavigableClass), specs);
-        //    //AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
-        //}
+            var reflector = container.GetService<IReflector>();
+            reflector.Reflect();
+            var specs = reflector.AllObjectSpecImmutables;
+            //Assert.AreEqual(2, specs.Length);
+            AbstractReflectorTest.AssertSpec(typeof(NavigableClass), specs);
+            //AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
+        }
 
     }
 }

@@ -32,11 +32,11 @@ namespace NakedObjects.Meta.Facet {
 
         public ActionInvocationFacetViaStaticMethod(MethodInfo method,
                                                     ITypeSpecImmutable onType,
-                                                        IObjectSpecImmutable returnType,
-                                                        IObjectSpecImmutable elementType,
-                                                        ISpecification holder,
-                                                        bool isQueryOnly,
-                                                        ILogger<ActionInvocationFacetViaStaticMethod> logger)
+                                                    IObjectSpecImmutable returnType,
+                                                    IObjectSpecImmutable elementType,
+                                                    ISpecification holder,
+                                                    bool isQueryOnly,
+                                                    ILogger<ActionInvocationFacetViaStaticMethod> logger)
             : base(holder) {
             actionMethod = method;
             this.logger = logger;
