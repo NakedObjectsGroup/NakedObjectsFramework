@@ -32,8 +32,6 @@ namespace NakedFunctions.ParallelReflect.FacetFactory {
     public sealed class FunctionsFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodIdentifyingFacetFactory {
         private static readonly string[] FixedPrefixes = { };
 
-        //private static readonly ILog Log = LogManager.GetLogger(typeof(FunctionsFacetFactory));
-
         private readonly ILogger<ActionMethodsFacetFactory> logger;
 
         public FunctionsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
@@ -108,8 +106,9 @@ namespace NakedFunctions.ParallelReflect.FacetFactory {
 
             RemoveMethod(methodRemover, actionMethod);
 
+            // TODO ignore non static methods 
             var invokeFacet = actionMethod.IsStatic
-                ? (IFacet) new ActionInvocationFacetViaStaticMethod(actionMethod, onType, returnSpec, elementSpec, action, isQueryable)
+                ? (IFacet) new ActionInvocationFacetViaStaticMethod(actionMethod, onType, returnSpec, elementSpec, action, isQueryable, LoggerFactory.CreateLogger<ActionInvocationFacetViaStaticMethod>())
                 : new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, isQueryable, LoggerFactory.CreateLogger<ActionInvocationFacetViaMethod>());
 
             facets.Add(invokeFacet);
@@ -152,9 +151,12 @@ namespace NakedFunctions.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
+        private static bool IsStatic(Type type) => type.IsAbstract && type.IsSealed;
+ 
         public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
             return candidates.Where(methodInfo => methodInfo.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
-                                                  methodInfo.IsStatic).ToArray();
+                                                  methodInfo.IsStatic && 
+                                                  IsStatic(methodInfo.DeclaringType)).ToArray();
         }
 
         #endregion
@@ -188,7 +190,7 @@ namespace NakedFunctions.ParallelReflect.FacetFactory {
                 if (!classStrategy.IsTypeToBeIntrospected(parameterInfo.ParameterType)) {
                     // log if not a System or NOF type
                     if (!TypeUtils.IsSystem(method.DeclaringType) && !TypeUtils.IsNakedObjects(method.DeclaringType)) {
-                        //Log.WarnFormat("Ignoring method: {0}.{1} because parameter '{2}' is of type {3}", method.DeclaringType, method.Name, parameterInfo.Name, parameterInfo.ParameterType);
+                        logger.LogWarning("Ignoring method: {method.DeclaringType}.{method.Name} because parameter '{parameterInfo.Name}' is of type {parameterInfo.ParameterType}");
                     }
 
                     return false;

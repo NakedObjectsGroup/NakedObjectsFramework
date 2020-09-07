@@ -10,6 +10,7 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFunctions.ParallelReflect.FacetFactory;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
@@ -38,7 +39,7 @@ namespace NakedFunctions.Reflect.Test {
         public IMenu NewMenu(string name) => null;
     }
 
-    public class SimpleClass {
+    public record SimpleClass {
         public virtual SimpleClass SimpleProperty { get; set; }
     }
 
@@ -47,7 +48,7 @@ namespace NakedFunctions.Reflect.Test {
     }
 
     public static class SimpleFunctions {
-        public static SimpleClass SimpleFunction(SimpleClass target) {
+        public static SimpleClass SimpleFunction(this SimpleClass target) {
             return target;
         }
     }
@@ -242,24 +243,23 @@ namespace NakedFunctions.Reflect.Test {
             AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
         }
 
-        //[TestMethod]
-        //public void ReflectSimpleFunction() {
-        //    IUnityContainer container = GetContainer();
-        //    ReflectorConfiguration.NoValidate = true;
-        //    RegisterObjectConfig(container);
+        [TestMethod]
+        public void ReflectSimpleFunction()
+        {
+            ReflectorConfiguration.NoValidate = true;
 
-        //    var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[] {typeof (SimpleFunctions)});
+            var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[] { typeof(SimpleFunctions) });
 
-        //    container.RegisterInstance<IFunctionalReflectorConfiguration>(rc);
+            var container = GetContainer(rc);
 
-        //    var reflector = container.Resolve<IReflector>();
-        //    reflector.Reflect();
-        //    var specs = reflector.AllObjectSpecImmutables;
-        //    Assert.AreEqual(3, specs.Length);
-        //    AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
-        //    AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
-        //    AbstractReflectorTest.AssertSpec(typeof(SimpleFunctions), specs);
-        //}
+            var reflector = container.GetService<IReflector>();
+            reflector.Reflect();
+            var specs = reflector.AllObjectSpecImmutables;
+            //Assert.AreEqual(3, specs.Length);
+            //AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
+            AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
+            AbstractReflectorTest.AssertSpec(typeof(SimpleFunctions), specs);
+        }
 
         //[TestMethod]
         //public void ReflectTupleFunction() {
