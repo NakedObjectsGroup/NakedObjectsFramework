@@ -75,13 +75,13 @@ namespace AdventureWorksFunctionalModel {
             return (pp1a, (pp1a, pp2a, (pp3a, pp4a)));
         }
 
-        public static (Product, Product[], Action<IUserAdvisory>) GetAndPersistProductsWithWarning(this Product product, IQueryable<Product> allProducts) {
+        public static (Product, Product[], Action<IAlert>) GetAndPersistProductsWithWarning(this Product product, IQueryable<Product> allProducts) {
             var pp = allProducts.First(p => p.ProductID != product.ProductID);
             var pp1 = pp with { Name = $"{pp.Name}:1" };
             return (pp, new[] {pp}, WarnUser("A warning message"));
         }
 
-        public static (Product, Product, Action<IUserAdvisory>) GetAndPersistProductWithWarning(this Product product, IQueryable<Product> allProducts) {
+        public static (Product, Product, Action<IAlert>) GetAndPersistProductWithWarning(this Product product, IQueryable<Product> allProducts) {
             var pp = allProducts.First(p => p.ProductID != product.ProductID);
             var pp1 = pp with { Name = $"{pp.Name}:1" };
             return (pp, pp, WarnUser("A warning message"));

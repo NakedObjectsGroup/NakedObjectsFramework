@@ -118,7 +118,7 @@ namespace AdventureWorksModel
         #region AssociateSpecialOfferWithProduct
 
         [MemberOrder(6)]
-        public static (SpecialOfferProduct, SpecialOfferProduct, Action<IUserAdvisory>) AssociateSpecialOfferWithProduct(
+        public static (SpecialOfferProduct, SpecialOfferProduct, Action<IAlert>) AssociateSpecialOfferWithProduct(
 
         // [ContributedAction("Special Offers")] TODO
         SpecialOffer offer,
@@ -136,7 +136,7 @@ namespace AdventureWorksModel
             if (query.Count() != 0)
             {
 
-                Action<IUserAdvisory> msg = InformUser($"{offer} is already associated with { product}");
+                Action<IAlert> msg = InformUser($"{offer} is already associated with { product}");
                 return (null, null, msg);
             }
             var newSop = new SpecialOfferProduct() with
