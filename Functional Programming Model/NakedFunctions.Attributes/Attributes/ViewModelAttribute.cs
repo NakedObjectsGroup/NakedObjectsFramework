@@ -9,8 +9,7 @@ using System;
 
 namespace NakedFunctions {
     /// <summary>
-    ///     Use for injected parameters
-    /// </summary>
+    ///         /// </summary>
     /// <remarks>
     ///     <para>
     ///        

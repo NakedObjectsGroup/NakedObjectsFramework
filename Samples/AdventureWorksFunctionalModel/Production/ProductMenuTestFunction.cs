@@ -12,7 +12,7 @@ using AdventureWorksModel;
 using NakedFunctions;
 
 namespace AdventureWorksFunctionalModel.Functions {
-    public static class MenuFunctions {
+    public static class ProductMenuTestFunction {
         
         public static Product GetRandomProduct(IQueryable<Product> allProducts) {
             int count = new Random().Next(allProducts.Count());

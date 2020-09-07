@@ -27,7 +27,7 @@ namespace AdventureWorksModel {
     }
 
     [Named("Products")]
-    public static class ProductRepository  { 
+    public static class ProductMenuFunctions  { 
 
         [TableView(true, "ProductNumber", "ProductSubcategory", "ListPrice"), MemberOrder(1)]
         public static IQueryable<Product> FindProductByName(
