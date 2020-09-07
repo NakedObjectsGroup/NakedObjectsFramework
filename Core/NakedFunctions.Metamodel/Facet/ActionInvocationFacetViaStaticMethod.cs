@@ -6,12 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -19,26 +20,31 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
-using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacetAbstract, IImperativeFacet {
-        //private static readonly ILog Log = LogManager.GetLogger(typeof(ActionInvocationFacetViaMethod));
 
         [field: NonSerialized] private readonly MethodInfo actionMethod;
+        private readonly ILogger<ActionInvocationFacetViaStaticMethod> logger;
 
         private readonly int paramCount;
 
-        public ActionInvocationFacetViaStaticMethod(MethodInfo method, ITypeSpecImmutable onType, IObjectSpecImmutable returnType, IObjectSpecImmutable elementType, ISpecification holder, bool isQueryOnly)
+        public ActionInvocationFacetViaStaticMethod(MethodInfo method,
+                                                    ITypeSpecImmutable onType,
+                                                        IObjectSpecImmutable returnType,
+                                                        IObjectSpecImmutable elementType,
+                                                        ISpecification holder,
+                                                        bool isQueryOnly,
+                                                        ILogger<ActionInvocationFacetViaStaticMethod> logger)
             : base(holder) {
             actionMethod = method;
+            this.logger = logger;
             paramCount = method.GetParameters().Length;
-            this.OnType = onType;
-            this.ReturnType = returnType;
-            this.ElementType = elementType;
-            this.IsQueryOnly = isQueryOnly;
+            OnType = onType;
+            ReturnType = returnType;
+            ElementType = elementType;
+            IsQueryOnly = isQueryOnly;
         }
 
         public override MethodInfo ActionMethod => actionMethod;
@@ -66,7 +72,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        private INakedObjectAdapter AdaptResult(INakedObjectManager nakedObjectManager, object result) {
+        private static INakedObjectAdapter AdaptResult(INakedObjectManager nakedObjectManager, object result) {
             if (CollectionUtils.IsCollection(result.GetType()) ||
                 CollectionUtils.IsQueryable(result.GetType())) {
                 return nakedObjectManager.CreateAdapter(result, null, null);
@@ -75,47 +81,20 @@ namespace NakedObjects.Meta.Facet {
             return nakedObjectManager.CreateAdapterForExistingObject(result);
         }
 
-        private static IEnumerable<object> UnpackTuples(object result) {
 
-            if (FacetUtils.IsValueTuple(result.GetType())) {
-                return result.GetType().GetTypeInfo().DeclaredFields.SelectMany<FieldInfo, object>(p => UnpackTuples(p.GetValue(result))).ToArray();
-            }
+        private static (object, object)[] PersistResult(ILifecycleManager lifecycleManager, IEnumerable<object> toPersist) =>
+            toPersist.Select(obj => (obj, lifecycleManager.Persist(obj))).ToArray();
 
-            return result as IEnumerable<object> ?? new[] {result};
-        }
-
-
-
-        private (object,object)[] PersistResult(ILifecycleManager lifecycleManager, object result) {
-            var ret = new List<(object,object)>();
-
-            if (result != null) {
-                // already filtered strings
-
-                foreach (var obj in UnpackTuples(result)) {
-                    ret.Add((obj, lifecycleManager.Persist(obj)));
-                }
-            }
-
-            return ret.ToArray();
-        }
-
-        private void MessageResult(IMessageBroker messageBroker, string message) {
-            if (message != null) {
-                messageBroker.AddWarning(message);
-            }
-        }
-
-        private object ReplacePersisted(object toReturn, (object, object)[] persisted)
+        private static object ReplacePersisted(object toReturn, (object, object)[] persisted)
         {
             var asEnumerable = toReturn as IEnumerable ?? new[] { toReturn };
             var result = new List<object>();
 
             foreach (var obj in asEnumerable) {
                 var found = false;
-                foreach (var tuple in persisted) {
-                    if (tuple.Item1 == obj) {
-                        result.Add(tuple.Item2);
+                foreach (var (item1, item2) in persisted) {
+                    if (item1 == obj) {
+                        result.Add(item2);
                         found = true;
                         break;
                     }
@@ -129,57 +108,60 @@ namespace NakedObjects.Meta.Facet {
             return result.Count == 1 ? result.First() : result;
         }
 
+        private (IEnumerable<object>, IEnumerable<Action>) HandleTupleItem(object item, IEnumerable<object> persisting, IEnumerable<Action> acting) =>
+             item switch {
+                Action action => (persisting, acting.Append(action)),
+                ITuple tuple => HandleNestedTuple(tuple, persisting, acting),
+                { } o => (persisting.Append(o), acting),
+                null => (persisting, acting)
+            };
+
+
+        private (IEnumerable<object>, IEnumerable<Action>) IterateTuple(ITuple tuple, int start, IEnumerable<object> persisting, IEnumerable<Action> acting) {
+            for (var i = start; i < tuple.Length; i++) {
+                (persisting, acting) = HandleTupleItem(tuple[i], persisting, acting);
+            }
+
+            return (persisting, acting);
+        }
+
+        private (IEnumerable<object>, IEnumerable<Action>) HandleNestedTuple(ITuple tuple,  IEnumerable<object> persisting, IEnumerable<Action> acting) =>
+            IterateTuple(tuple, 0, persisting, acting);
+
+        private (object, (IEnumerable<object>, IEnumerable<Action>)) HandleTuple(ITuple tuple, IEnumerable<object> persisting, IEnumerable<Action> acting) =>
+            (tuple[0], IterateTuple(tuple, 1, persisting, acting));
 
         private INakedObjectAdapter HandleInvokeResult(INakedObjectManager nakedObjectManager, ILifecycleManager lifecycleManager, IMessageBroker messageBroker, object result) {
-            var type = result.GetType();
-            string message = null;
             object toReturn;
-            object toPersist = null;
+            IEnumerable<object> toPersist = new List<object>();
+            IEnumerable<Action> toAct = new List<Action>();
 
-            if (FacetUtils.IsEitherTuple(type)) {
-                // TODO dynamic just for spike do a proper cast in real code
-                dynamic tuple = result;
-                int size = FacetUtils.ValueTupleSize(type);
+            if (result is ITuple tuple ) {
+                var size = tuple.Length;
                
                 if (size < 2) {
                     throw new InvokeException("Invalid return type", new Exception());
                 }
 
-                toReturn = tuple.Item1;
-
-                if (size == 2) {
-                    if (tuple.Item2 is string) {
-                        message = tuple.Item2;
-                    }
-                    else {
-                        toPersist = tuple.Item2;
-                    }
-                }
-
-                if (size == 3) {
-                    toReturn = tuple.Item1;
-                    toPersist = tuple.Item2;
-                    message = tuple.Item3;
-                }
+                (toReturn, (toPersist, toAct)) = HandleTuple(tuple, toPersist, toAct);
             }
             else {
                 toReturn = result;
             }
 
             var persisted = PersistResult(lifecycleManager, toPersist);
-            MessageResult(messageBroker, message);
+
+            // TODO handle injection on actions 
+            toAct.ForEach(a => a());
 
             toReturn = ReplacePersisted(toReturn, persisted);
-            
 
             return AdaptResult(nakedObjectManager, toReturn);
         }
 
-       
-
         public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager) {
             if (parameters.Length != paramCount) {
-                //Log.Error(actionMethod + " requires " + paramCount + " parameters, not " + parameters.Length);
+                logger.LogError($"{actionMethod} requires {paramCount} parameters, not {parameters.Length}");
             }
 
             return HandleInvokeResult(nakedObjectManager, lifecycleManager, messageBroker, InvokeUtils.InvokeStatic(actionMethod, parameters));
@@ -194,7 +176,7 @@ namespace NakedObjects.Meta.Facet {
         }
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) { }
+        private static void OnDeserialized(StreamingContext context) { }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -90,5 +91,6 @@ namespace NakedObjects.Meta.Utils {
         }
 
         public static bool IsEitherTuple(Type type) => IsValueTuple(type) || IsTuple(type);
+
     }
 }
