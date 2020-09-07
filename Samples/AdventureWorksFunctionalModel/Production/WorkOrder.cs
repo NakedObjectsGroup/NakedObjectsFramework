@@ -59,7 +59,7 @@ namespace AdventureWorksModel
 
         [RenderEagerly]
         [TableView(true, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")]
-        public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; init; }
+        public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; init; } = new List<WorkOrderRouting>();
 
 
         // for testing 

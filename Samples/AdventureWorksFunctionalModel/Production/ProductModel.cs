@@ -31,13 +31,13 @@ namespace AdventureWorksModel
         public virtual string Instructions { get; init; }
 
         [TableView(true, "Name", "Number", "Color", "ProductInventory")]
-        public virtual ICollection<Product> ProductVariants { get; init; }
+        public virtual ICollection<Product> ProductVariants { get; init; } = new List<Product>();
 
         [Hidden]
-        public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; init; }
+        public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; init; } = new List<ProductModelIllustration>();
 
         [Hidden]
-        public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; init; }
+        public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; init; } = new List<ProductModelProductDescriptionCulture>();
 
         [Hidden]
         public virtual Guid rowguid { get; init; }

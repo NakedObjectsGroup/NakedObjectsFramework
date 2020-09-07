@@ -177,36 +177,19 @@ namespace AdventureWorksModel
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
    
-        private ICollection<ProductProductPhoto> _ProductProductPhoto = new List<ProductProductPhoto>();
-
         [Hidden]
-        public virtual ICollection<ProductProductPhoto> ProductProductPhoto
-        {
-            get { return _ProductProductPhoto; }
-            set { _ProductProductPhoto = value; }
-        }
+        public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
         
         private ICollection<ProductReview> _ProductReviews = new List<ProductReview>();
 
         [TableView(true, nameof(ProductReview.Rating), nameof(ProductReview.Comments))]
-        public virtual ICollection<ProductReview> ProductReviews
-        {
-            get { return _ProductReviews; } //deliberately returned as array to test Bug #13269
-            set { _ProductReviews = value; }
-        }
-       
-        private ICollection<ProductInventory> _ProductInventory = new List<ProductInventory>();
+        public virtual ICollection<ProductReview> ProductReviews { get; init; } = new List<ProductReview>();
 
-        [RenderEagerly]
-        [TableView(false, nameof(AdventureWorksModel.ProductInventory.Quantity),
+        [RenderEagerly, TableView(false, nameof(AdventureWorksModel.ProductInventory.Quantity),
                 nameof(AdventureWorksModel.ProductInventory.Location),
                     nameof(AdventureWorksModel.ProductInventory.Shelf),
                         nameof(AdventureWorksModel.ProductInventory.Bin))]
-        public virtual ICollection<ProductInventory> ProductInventory
-        {
-            get { return _ProductInventory; }
-            set { _ProductInventory = value; }
-        }
+        public virtual ICollection<ProductInventory> ProductInventory { get; init; } = new List<ProductInventory>();
 
         [Hidden]
         public virtual int NumberInStock()
@@ -214,10 +197,10 @@ namespace AdventureWorksModel
             return (from obj in ProductInventory
                     select obj).Sum(obj => obj.Quantity);
         }
-
         [Hidden]
-        public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; init; }
+        public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; init; } = new List<SpecialOfferProduct>();
 
+        //TODO: NOt sure what this is supposed to be doing?
         [NotMapped, RenderEagerly, TableView(true, "MinQty", "DiscountPct", "StartDate", "EndDate")]
         public virtual IList<SpecialOffer> SpecialOffers { get; private set; } = new List<SpecialOffer>();
 

@@ -16,7 +16,7 @@ namespace AdventureWorksModel {
         public virtual int IllustrationID { get; init; }
         public virtual string Diagram { get; init; }
 
-        public ICollection<ProductModelIllustration> ProductModelIllustration { get; init; }
+        public ICollection<ProductModelIllustration> ProductModelIllustration { get; init; } = new List<ProductModelIllustration>();
 
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }

@@ -14,7 +14,6 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     public record ProductPhoto  {
         private byte[] _LargePhoto = new byte[0];
-        private ICollection<ProductProductPhoto> _ProductProductPhoto = new List<ProductProductPhoto>();
         private byte[] _ThumbNailPhoto = new byte[0];
 
         [Hidden]
@@ -43,10 +42,7 @@ namespace AdventureWorksModel {
         //}
 
         [Hidden]
-        public virtual ICollection<ProductProductPhoto> ProductProductPhoto {
-            get { return _ProductProductPhoto; }
-            set { _ProductProductPhoto = value; }
-        }
+        public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
 
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }

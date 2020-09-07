@@ -9,37 +9,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedFunctions;
 
-namespace AdventureWorksModel {
-        [Bounded]
-        public record SalesTerritory {
-
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
-        #region ID
+namespace AdventureWorksModel
+{
+    [Bounded]
+    public record SalesTerritory
+    {
 
         [Hidden]
         public virtual int TerritoryID { get; set; }
 
-        #endregion
-
-        #region Name
-
-        //Title
         [MemberOrder(10)]
         public virtual string Name { get; set; }
-
-        #endregion
 
         [MemberOrder(20)]
         public virtual string CountryRegionCode { get; set; }
@@ -47,16 +28,13 @@ namespace AdventureWorksModel {
         [MemberOrder(30)]
         public virtual string Group { get; set; }
 
-        [MemberOrder(40)]
-        [Mask("C")]
+        [MemberOrder(40), Mask("C")]
         public virtual decimal SalesYTD { get; set; }
 
-        [MemberOrder(41)]
-        [Mask("C")]
+        [MemberOrder(41), Mask("C")]
         public virtual decimal SalesLastYear { get; set; }
 
-        [MemberOrder(42)]
-        [Mask("C")]
+        [MemberOrder(42), Mask("C")]
         public virtual decimal CostYTD { get; set; }
 
         [MemberOrder(43), Mask("C")]
@@ -65,23 +43,21 @@ namespace AdventureWorksModel {
         [Hidden]
         public virtual Guid rowguid { get; set; }
 
-        [MemberOrder(99),ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
-        private ICollection<StateProvince> _StateProvince = new List<StateProvince>();
-
-        [Named("States/Provinces covered")]
-        [TableView(true)] //Table View == List View
-        public virtual ICollection<StateProvince> StateProvince {
-            get { return _StateProvince; }
-            set { _StateProvince = value; }
-        }
+        [Named("States/Provinces covered"), TableView(true)] //Table View == List View
+        public virtual ICollection<StateProvince> StateProvince { get; init; } = new List<StateProvince>();
 
         public override string ToString() => Name;
     }
 
     public static class SalesTerritoryFunctions
     {
+        #region Life Cycle Methods
+        public static Department Updating(this Department x, [Injected] DateTime now) => x with { ModifiedDate = now };
 
+        public static Department Persisting(this Department x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        #endregion
     }
 }

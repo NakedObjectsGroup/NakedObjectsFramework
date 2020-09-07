@@ -24,7 +24,7 @@ namespace AdventureWorksModel
         public virtual string DocumentSummary { get; init; }
         public byte[] Document1 { get; init; }
 
-        public ICollection<ProductDocument> ProductDocument { get; init; }
+        public ICollection<ProductDocument> ProductDocument { get; init; } = new List<ProductDocument>();
 
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
