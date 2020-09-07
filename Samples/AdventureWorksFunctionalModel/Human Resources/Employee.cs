@@ -11,14 +11,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Principal;
 using NakedFunctions;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel
 {
 
     public interface IEmployee : IBusinessEntity { } //Interface is for testing purposes
-    [IconName("person.png")]
-    public class Employee : IEmployee, IHasRowGuid, IHasModifiedDate
+        public record Employee : IEmployee, IHasRowGuid, IHasModifiedDate
     {
         //TODO: add all properties
         public Employee(
@@ -31,100 +30,95 @@ namespace AdventureWorksModel
 
         public Employee() { }
 
-        [NakedObjectsIgnore]
-        public virtual int BusinessEntityID { get; set; }
+        [Hidden]
+        public virtual int BusinessEntityID { get; init; }
 
-        [MemberOrder(1), Disabled]
-        public virtual Person PersonDetails { get; set; }
+        [MemberOrder(1)]
+        public virtual Person PersonDetails { get; init; }
 
         [MemberOrder(10)]
-        public virtual string NationalIDNumber { get; set; }
+        public virtual string NationalIDNumber { get; init; }
 
         [MemberOrder(12)]
-        public virtual string JobTitle { get; set; }
+        public virtual string JobTitle { get; init; }
 
         [MemberOrder(13)]
         [Mask("d")]
-        public virtual DateTime? DateOfBirth { get; set; }
+        public virtual DateTime? DateOfBirth { get; init; }
 
         [MemberOrder(14)]
-        [StringLength(1)]
-        public virtual string MaritalStatus { get; set; }
+        
+        public virtual string MaritalStatus { get; init; }
 
         [MemberOrder(15)]
-        [StringLength(1)]
-        public virtual string Gender { get; set; }
+        
+        public virtual string Gender { get; init; }
 
         [MemberOrder(16)]
         [Mask("d")]
-        public virtual DateTime? HireDate { get; set; }
+        public virtual DateTime? HireDate { get; init; }
 
         [MemberOrder(17)]
-        public virtual bool Salaried { get; set; }
+        public virtual bool Salaried { get; init; }
 
         [MemberOrder(18)]
-        public virtual short VacationHours { get; set; }
+        public virtual short VacationHours { get; init; }
 
         [MemberOrder(19)]
-        public virtual short SickLeaveHours { get; set; }
+        public virtual short SickLeaveHours { get; init; }
 
         [MemberOrder(20)]
-        public virtual bool Current { get; set; }
+        public virtual bool Current { get; init; }
 
-        [NakedObjectsIgnore]
-        public virtual int? ManagerID { get; set; }
+        [Hidden]
+        public virtual int? ManagerID { get; init; }
 
-        [Optionally]
+        
         [MemberOrder(30)]
-        public virtual Employee Manager { get; set; }
+        public virtual Employee Manager { get; init; }
 
         [MemberOrder(11)]
-        public virtual string LoginID { get; set; }
+        public virtual string LoginID { get; init; }
 
-        [NakedObjectsIgnore]
-        public virtual SalesPerson SalesPerson { get; set; }
+        [Hidden]
+        public virtual SalesPerson SalesPerson { get; init; }
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
-        [NakedObjectsIgnore]
-        public virtual Guid rowguid { get; set; }
+        [Hidden]
+        public virtual Guid rowguid { get; init; }
 
         [TableView(true,
             nameof(EmployeeDepartmentHistory.StartDate),
             nameof(EmployeeDepartmentHistory.EndDate),
             nameof(EmployeeDepartmentHistory.Department),
             nameof(EmployeeDepartmentHistory.Shift))]
-        public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory { get; set; }
+        public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory { get; init; }
 
         [TableView(true,
             nameof(EmployeePayHistory.RateChangeDate),
             nameof(EmployeePayHistory.Rate))]
-        public virtual ICollection<EmployeePayHistory> PayHistory { get; set; }
+        public virtual ICollection<EmployeePayHistory> PayHistory { get; init; }
+
+        public override string ToString()
+        {
+            return $"{PersonDetails}";
+        }
     }
 
     public static class EmployeeFunctions
     {
 
-        public static string Title(this Employee e)
-        {
-            return e.CreateTitle($"{PersonFunctions.Title(e.PersonDetails)}");
-        }
-
-        #region LifeCycle methods
-        public static Employee Updating(Employee a, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(a, now);
-
-        }
-
+        #region Life Cycle Methods
+        public static Employee Updating(this Employee x, [Injected] DateTime now) => x with { ModifiedDate = now };
         #endregion
 
         //public static bool HideLoginID(
         //    Employee e,
-        //    [Injected] IQueryable<Employee> employees,
+        //    IQueryable<Employee> employees,
         //    [Injected] IPrincipal principal)
         //{
         //    var userAsEmployee = EmployeeRepository.CurrentUserAsEmployee(null, employees, principal);
@@ -133,7 +127,7 @@ namespace AdventureWorksModel
 
         public static IQueryable<Employee> ColleaguesInSameDept(
             Employee e,
-            [Injected] IQueryable<EmployeeDepartmentHistory> edhs
+            IQueryable<EmployeeDepartmentHistory> edhs
         )
         {
             var allCurrent = edhs.Where(edh => edh.EndDate == null);
@@ -163,10 +157,10 @@ namespace AdventureWorksModel
         //public static (object[], object[]) ChangeDepartmentOrShift(
         //    Employee e,
         //    Department department, 
-        //    [Optionally] Shift shift,
+        //     Shift shift,
         //    [Injected] DateTime now)
         //{
-        //    var edh = CurrentAssignment(e).With(x => x.EndDate, now);
+        //    var edh = CurrentAssignment(e) with {EndDate =  now};
         //    var newAssignment = new EmployeeDepartmentHistory(department, shift, e, now );
         //    return Result.DisplayAndPersist(new object[] { edh, newAssignment });
         //}
@@ -188,15 +182,16 @@ namespace AdventureWorksModel
             Employee e, 
             IEmployee manager)
         {
-            return Result.DisplayAndPersist(e.With(x => x.ManagerID, manager.BusinessEntityID));
+            var e2 = e with {ManagerID =  manager.BusinessEntityID};
+            return (e2, e2);
         }
 
         //[PageSize(20)]
         //public static IQueryable<Employee> AutoCompleteManager(
         //     Employee e,
-        //    [MinLength(2)] string name,
-        //    [Injected] IQueryable<Person> persons,
-        //    [Injected] IQueryable<Employee> employees)
+        //    [Range(2,0)] string name,
+        //    IQueryable<Person> persons,
+        //    IQueryable<Employee> employees)
         //{
         //    return EmployeeRepository.FindEmployeeByName(null, null, name, persons, employees);
         //}

@@ -8,45 +8,34 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("org_chart.png")]
-    [Bounded]
-    [Immutable]
-    public class Department:IHasModifiedDate {
-
-
-        #region Properties
+        [Bounded]
+        public record Department:IHasModifiedDate {
 
         [NakedObjectsIgnore]
-        public virtual short DepartmentID { get; set; }
+        public virtual short DepartmentID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
         [MemberOrder(2)]
-        public virtual string GroupName { get; set; }
+        public virtual string GroupName { get; init; }
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
-        #endregion
+        public override string ToString() => Name;
     }
     public static class DepartmentFunctions
     {
-        public static string Title(Department d)
-        {
-            return d.Name;
-        }
 
         #region Life Cycle Methods
-        public static Department Updating(Department p, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(p, now);
-        }
+        public static Department Updating(this Department x, [Injected] DateTime now) => x with { ModifiedDate = now };
+
+        public static Department Persisting(this Department x, [Injected] DateTime now) => x with { ModifiedDate = now };
         #endregion
     }
 }

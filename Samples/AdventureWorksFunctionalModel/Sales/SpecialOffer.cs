@@ -8,136 +8,50 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
-namespace AdventureWorksModel {
-    public class SpecialOffer: IHasRowGuid, IHasModifiedDate {
-
-        public SpecialOffer()
-        {
-
-        }
-
-        public SpecialOffer(
-            int specialOfferID,
-            string description,
-            decimal discountPct,
-            string type,
-            string category,
-            DateTime startDate,
-            DateTime endDate,
-            int minQty,
-            int? maxQty,
-            DateTime modifiedDate,
-            Guid rowGuid
-            )
-        {
-            SpecialOfferID = specialOfferID;
-            Description = description;
-            DiscountPct = discountPct;
-            Type = type;
-            Category = category;
-            StartDate = startDate;
-            EndDate = endDate;
-            MinQty = minQty;
-            MaxQty = maxQty;
-            ModifiedDate = modifiedDate;
-            rowguid = rowGuid;
-        }
+namespace AdventureWorksModel
+{
+    public record SpecialOffer : IHasRowGuid, IHasModifiedDate
+    {
 
         [NakedObjectsIgnore]
-        public virtual int SpecialOfferID { get; set; }
+        public virtual int SpecialOfferID { get; init; }
 
         [MemberOrder(10)]
-        public virtual string Description { get; set; }
+        public virtual string Description { get; init; }
 
         [MemberOrder(20)]
         [Mask("P")]
-        public virtual decimal DiscountPct { get; set; }
+        public virtual decimal DiscountPct { get; init; }
 
         [MemberOrder(30)]
-        public virtual string Type { get; set; }
+        public virtual string Type { get; init; }
 
         [MemberOrder(40)]
-        public virtual string Category { get; set; }
+        public virtual string Category { get; init; }
 
         [MemberOrder(51)]
         [Mask("d")]
-        public virtual DateTime StartDate { get; set; }
+        public virtual DateTime StartDate { get; init; }
 
         [MemberOrder(52)]
         [Mask("d")]
-        public virtual DateTime EndDate { get; set; }
+        public virtual DateTime EndDate { get; init; }
 
         [MemberOrder(61)]
-        public virtual int MinQty { get; set; }
+        public virtual int MinQty { get; init; }
 
-        [Optionally]
+
         [MemberOrder(62)]
-        public virtual int? MaxQty { get; set; }
-
-
-        #region ModifiedDate and rowguid
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #region rowguid
+        public virtual int? MaxQty { get; init; }
 
         [NakedObjectsIgnore]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
-        #endregion
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        #endregion
-    }
+        public override string ToString() => Description;
 
-    public static class SpecialOfferFunctions
-    {
-
-        public static string Title(SpecialOffer sp)
-        {
-            return sp.Description;
-        }
-
-        public static string IconName(SpecialOffer sp)
-        {
-            return sp.Type == "No Discount"? "default.png":"scissors.png";
-        }
-
-
-        #region Life Cycle Methods
-        public static SpecialOffer Updating(
-            SpecialOffer sp,
-            [Injected] DateTime now)
-        {
-            return sp.With(x => x.ModifiedDate, now);
-        }
-        #endregion
-
-        public static string[] ChoicesCategory(SpecialOffer sp)
-        {
-            return new[] { "Reseller", "Customer" };
-        }
-
-        public static DateTime DefaultStartDate(
-            SpecialOffer sp,
-            [Injected] DateTime now)
-        {
-            return now;
-        }
-
-        public static DateTime DefaultEndDate(
-            SpecialOffer sp,
-            [Injected] DateTime now)
-        {
-            return now.AddDays(90);
-        }
     }
 }

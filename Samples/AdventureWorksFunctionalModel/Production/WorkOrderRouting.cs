@@ -7,117 +7,65 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    public class WorkOrderRouting  {
-
-        #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
-        #endregion
-
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
+    public record WorkOrderRouting  {
 
         [NakedObjectsIgnore]
-        public virtual int WorkOrderID { get; set; }
+        public virtual int WorkOrderID { get; init; }
 
         [NakedObjectsIgnore]
-        public virtual int ProductID { get; set; }
+        public virtual int ProductID { get; init; }
 
-        [Disabled]
+        
         [MemberOrder(1)]
-        public virtual short OperationSequence { get; set; }
+        public virtual short OperationSequence { get; init; }
 
         [MemberOrder(20)]
-        [Disabled]
-        [DataType(DataType.DateTime)]
-        public virtual DateTime? ScheduledStartDate { get; set; }
+        
+        public virtual DateTime? ScheduledStartDate { get; init; }
 
         [MemberOrder(22)]
-        [Disabled]
-        [DataType(DataType.DateTime)]
-        public virtual DateTime? ScheduledEndDate { get; set; }
+        public virtual DateTime? ScheduledEndDate { get; init; }
 
-        [Optionally]
+        
         [MemberOrder(21)]
         [Mask("d")]
-        public virtual DateTime? ActualStartDate { get; set; }
+        public virtual DateTime? ActualStartDate { get; init; }
 
-        [Optionally]
+        
         [MemberOrder(23)]
         [Mask("d")]
-        public virtual DateTime? ActualEndDate { get; set; }
+        public virtual DateTime? ActualEndDate { get; init; }
 
-        [Optionally]
+        
         [MemberOrder(31)]
-        public virtual decimal? ActualResourceHrs { get; set; }
+        public virtual decimal? ActualResourceHrs { get; init; }
 
         [Mask("C")]
         [MemberOrder(40)]
-        public virtual decimal PlannedCost { get; set; }
+        public virtual decimal PlannedCost { get; init; }
 
-        [Optionally]
+        
         [MemberOrder(41)]
         [Mask("C")]
-        public virtual decimal? ActualCost { get; set; }
+        public virtual decimal? ActualCost { get; init; }
 
         #region Location
         [NakedObjectsIgnore]
-        public virtual short LocationID { get; set; }
+        public virtual short LocationID { get; init; }
 
         [MemberOrder(10)]
-        public virtual Location Location { get; set; }
+        public virtual Location Location { get; init; }
         #endregion
 
         [NakedObjectsIgnore]
-        public virtual WorkOrder WorkOrder { get; set; }
+        public virtual WorkOrder WorkOrder { get; init; }
 
-        #region ModifiedDate
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #region Title
-
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(Location);
-            return t.ToString();
-        }
-
-        #endregion
-
-        public virtual string ValidatePlannedCost(decimal plannedCost) {
-            var rb = new ReasonBuilder();
-            if (plannedCost <= 0) {
-                rb.Append("Planned cost must be > 0");
-            }
-            return rb.Reason;
-        }
-
-        [MemberOrder(1)]
-        public void SetScheduledStartDate(DateTime date, int hour, int minutes)
-        {
-            ScheduledStartDate = date.AddHours(hour).AddMinutes(minutes);
-        }
-
-        [MemberOrder(2)]
-        public void SetScheduledEndDate(DateTime date, [Optionally] int hour, [Optionally] int minutes)
-        {
-                ScheduledEndDate = date.AddHours(hour).AddMinutes(minutes);
-        }
-
+        public override string ToString() => $"{Location}";
     }
 }

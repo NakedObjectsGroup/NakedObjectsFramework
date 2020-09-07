@@ -7,77 +7,26 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
     [Bounded]
-    [Immutable]
-    public class ProductCategory: IHasRowGuid, IHasModifiedDate  {
+        public record ProductCategory: IHasRowGuid, IHasModifiedDate  {
 
-        public ProductCategory(
-            int productCategoryID,
-            string name,
-            ICollection<ProductSubcategory> productSubcategory,
-             Guid rowguid,
-             DateTime modifiedDate
-            )
-        {
-            ProductCategoryID = productCategoryID;
-            Name = name;
-            ProductSubcategory = productSubcategory;
-            this.rowguid = rowguid;
-            ModifiedDate = modifiedDate;
-        }
+       [NakedObjectsIgnore]
+        public virtual int ProductCategoryID { get; init; }
 
-        public ProductCategory() {
+        public virtual string Name { get; init; }
 
-        }
-
+        [Named("Subcategories"), TableView(true)] //TableView == ListView ?
+        public virtual ICollection<ProductSubcategory> ProductSubcategory { get; init; } = new List<ProductSubcategory>();
         [NakedObjectsIgnore]
-        public virtual int ProductCategoryID { get; set; }
+        public virtual Guid rowguid { get; init; }
 
-        public virtual string Name { get; set; }
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        [DisplayName("Subcategories")]
-        [TableView(true)] //TableView == ListView
-        public virtual ICollection<ProductSubcategory> ProductSubcategory { get; set; } = new List<ProductSubcategory>();
-
-        #region Row Guid and Modified Date
-
-        #region rowguid
-
-        [NakedObjectsIgnore]
-        public virtual Guid rowguid { get; set; }
-
-        #endregion
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #endregion
-    }
-
-    public static class ProductCategoryFunctions
-    {
-
-        public static string Title(this ProductCategory pc)
-        {
-            return pc.CreateTitle(pc.Name);
-        }
-
-        public static ProductCategory Updating(ProductCategory a, [Injected] DateTime now)
-        {
-            return a.With(x => x.ModifiedDate, now);
-        }
-
+        public override string ToString() => Name;
     }
 }

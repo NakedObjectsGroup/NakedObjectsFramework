@@ -9,12 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFunctions;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel.Sales {
 
     [ViewModelEdit]
-    public class QuickOrderForm  {
+    public record QuickOrderForm  {
         public QuickOrderForm(Customer customer, 
             string accountNumber, 
             ICollection<QuickOrderLine> details)
@@ -30,7 +30,7 @@ namespace AdventureWorksModel.Sales {
         }
 
         //TODO: Properties defined as read-only, even though the user will appear to modify them.
-        [NakedObjectsIgnore]
+        [Hidden]
         public Customer Customer { get; }
 
         public string AccountNumber { get; }
@@ -51,7 +51,7 @@ namespace AdventureWorksModel.Sales {
         public static QuickOrderForm PopulateUsingKeys(
             QuickOrderForm vm, 
             string[] keys,
-            [Injected] IQueryable<Customer> customers)
+            IQueryable<Customer> customers)
         {
             throw new NotImplementedException(); //TODO
             //var cust = customers.Single(c => c.AccountNumber == keys[0]);
@@ -78,13 +78,13 @@ namespace AdventureWorksModel.Sales {
             var ol = new QuickOrderLine(product, number);
             var details = vm.Details;
             details.Add(ol); //TODO: redo using immutable collection
-            return vm.With(x => x.Details, details);
+            return vm with {Details =  details};
         }
 
         public static (SalesOrderHeader, SalesOrderHeader) CreateOrder(
             QuickOrderForm vm,
-            [Injected] IQueryable<BusinessEntityAddress> addresses,
-            [Injected] IQueryable<SpecialOfferProduct> sops)
+            IQueryable<BusinessEntityAddress> addresses,
+            IQueryable<SpecialOfferProduct> sops)
         {
             throw new NotImplementedException();
             //SalesOrderHeader soh = OrderRepository.CreateNewOrder(Customer, true, addresses);

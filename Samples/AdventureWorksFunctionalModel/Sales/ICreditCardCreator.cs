@@ -5,12 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
     public interface ICreditCardCreator {
 
-        [NakedObjectsIgnore]
-        void CreatedCardHasBeenSaved(CreditCard card);
+        //TODO: work out how to do this
+        //[Hidden]
+        //void CreatedCardHasBeenSaved(CreditCard card);
     }
 }

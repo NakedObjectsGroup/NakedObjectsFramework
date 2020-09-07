@@ -7,16 +7,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using System.Linq;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [IconName("dog.png")]
-    public class SalesPerson : IBusinessEntity {
+        public record SalesPerson : IBusinessEntity {
 
         #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
+        
         #endregion
 
         #region Life Cycle Methods
@@ -58,15 +57,15 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int BusinessEntityID { get; set; }
 
         #endregion
 
         #region Employee
 
-        [Title]
-        [Disabled]
+        //Title
+        
         [MemberOrder(10)]
         public virtual Employee EmployeeDetails { get; set; }
 
@@ -81,10 +80,10 @@ namespace AdventureWorksModel {
 
         #region SalesTerritory
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int? SalesTerritoryID { get; set; }
 
-        [Optionally]
+        
         [MemberOrder(20)]
         public virtual SalesTerritory SalesTerritory { get; set; }
 
@@ -92,7 +91,7 @@ namespace AdventureWorksModel {
 
         #region "Sales performance data"
 
-        [Optionally]
+        
         [MemberOrder(30)]
         [Mask("C")]
         public virtual decimal? SalesQuota { get; set; }
@@ -127,7 +126,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion

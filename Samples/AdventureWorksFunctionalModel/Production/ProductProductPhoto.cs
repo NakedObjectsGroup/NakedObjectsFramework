@@ -7,34 +7,18 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    public class ProductProductPhoto  {
+    public record ProductProductPhoto  {
 
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
+        public virtual int ProductID { get; init; }
+        public virtual int ProductPhotoID { get; init; }
+        public virtual bool Primary { get; init; }
+        public virtual Product Product { get; init; }
+        public virtual ProductPhoto ProductPhoto { get; init; }
 
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
-        public virtual int ProductID { get; set; }
-        public virtual int ProductPhotoID { get; set; }
-        public virtual bool Primary { get; set; }
-        public virtual Product Product { get; set; }
-        public virtual ProductPhoto ProductPhoto { get; set; }
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
+        [MemberOrder(99),ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
     }
 }

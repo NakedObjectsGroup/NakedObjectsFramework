@@ -9,42 +9,16 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class Illustration  {
-
-        public Illustration(
-            int illustrationID,
-            string diagram,
-            ICollection<ProductModelIllustration> productModelIllustration,
-            DateTime modifiedDate
-            )
-        {
-            IllustrationID = illustrationID;
-            Diagram = diagram;
-            ProductModelIllustration = productModelIllustration;
-            ModifiedDate = modifiedDate;
-        }
-
-        public Illustration() { }
+    public record Illustration  {
  
-        public virtual int IllustrationID { get; set; }
-        public virtual string Diagram { get; set; }
+        public virtual int IllustrationID { get; init; }
+        public virtual string Diagram { get; init; }
 
-        public ICollection<ProductModelIllustration> ProductModelIllustration { get; set; }
+        public ICollection<ProductModelIllustration> ProductModelIllustration { get; init; } = new List<ProductModelIllustration>();
 
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-    }
-
-    public static class IllustrationFunctions
-    {
-        public static Illustration Updating(Illustration ill, [Injected] DateTime now)
-        {
-            return ill.With(x => x.ModifiedDate, now);
-        }
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
     }
 }

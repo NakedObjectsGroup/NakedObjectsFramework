@@ -1,10 +1,10 @@
-﻿using NakedObjects;
+﻿using NakedFunctions;
 
 namespace AdventureWorksModel {
-    public class ServiceWithNoVisibleActions
+    public record ServiceWithNoVisibleActions
     {
 
-        [Hidden(WhenTo.Always)]
+        [NakedObjectsIgnore]
         public void DoSomething() { }
     }
 }

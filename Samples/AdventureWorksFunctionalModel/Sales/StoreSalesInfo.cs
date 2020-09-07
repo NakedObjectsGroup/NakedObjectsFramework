@@ -7,14 +7,14 @@
 
 using System.Linq;
 using NakedFunctions;
-using NakedObjects;
-using static NakedFunctions.Result;
+using NakedFunctions;
+
 
 namespace AdventureWorksModel {
     //TODO: Need to think how we want to do ViewModels. Can't require methods to be implemented.
     //Probably just need a constructor that takes all keys, as well as any required Injected params
     [ViewModel]
-    public class StoreSalesInfo {
+    public record StoreSalesInfo {
         public StoreSalesInfo(
             string accountNumber,
             bool editMode,
@@ -30,7 +30,7 @@ namespace AdventureWorksModel {
 
         public StoreSalesInfo() { }
 
-        [MemberOrder(1), Disabled]
+        [MemberOrder(1), ]
         public string AccountNumber { get; set; }
 
         [MemberOrder(2)]
@@ -47,7 +47,7 @@ namespace AdventureWorksModel {
 
     public static class StoreSalesInfoFunctions {
         public static string Title(this StoreSalesInfo vm,
-                                   [Injected] IQueryable<Customer> customers) {
+                                   IQueryable<Customer> customers) {
             return $"{(vm.EditMode ? "Editing - " : "")} Sales Info for: {vm.StoreName}";
         }
 
@@ -57,16 +57,16 @@ namespace AdventureWorksModel {
 
         public static StoreSalesInfo PopulateUsingKeys(StoreSalesInfo vm,
                                                        string[] keys,
-                                                       [Injected] IQueryable<Customer> customers) {
+                                                       IQueryable<Customer> customers) {
             var cus = CustomerRepository.FindCustomerByAccountNumber(keys[0], customers).Item1;
-            return vm.With(x => x.AccountNumber, keys[0])
-                .With(x => x.SalesTerritory, cus.SalesTerritory)
-                .With(x => x.SalesPerson, cus.Store?.SalesPerson)
-                .With(x => x.EditMode, bool.Parse(keys[1]));
+            return vm with {AccountNumber =  keys[0]}
+                 with {SalesTerritory =  cus.SalesTerritory}
+                 with {SalesPerson =  cus.Store?.SalesPerson}
+                 with {EditMode =  bool.Parse(keys[1])};
         }
 
         public static StoreSalesInfo Edit(this StoreSalesInfo ssi) {
-            return ssi.With(x => x.EditMode, true);
+            return ssi with {EditMode =  true};
         }
 
         public static bool HideEdit(this StoreSalesInfo ssi) {
@@ -79,7 +79,7 @@ namespace AdventureWorksModel {
         }
 
         public static (Customer, Customer) Save(this StoreSalesInfo vm,
-                                                [Injected] IQueryable<Customer> customers) {
+                                                IQueryable<Customer> customers) {
             var (cus, _) = CustomerRepository.FindCustomerByAccountNumber(vm.AccountNumber, customers);
             var st = vm.SalesTerritory;
             var sp = vm.SalesPerson;

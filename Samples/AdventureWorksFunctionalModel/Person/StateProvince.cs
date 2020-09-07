@@ -8,14 +8,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel
 {
-    [IconName("lookup.png")]
-    [Immutable]
-    [Bounded]
-    public class StateProvince :  IHasRowGuid, IHasModifiedDate
+            [Bounded]
+    public record StateProvince :  IHasRowGuid, IHasModifiedDate
     {
         //TODO: Extend ctor to include all properties
         public StateProvince(
@@ -44,42 +42,35 @@ namespace AdventureWorksModel
         public StateProvince() { }
 
         [NakedObjectsIgnore]
-        public virtual int StateProvinceID { get; set; }
+        public virtual int StateProvinceID { get; init; }
 
-        public virtual string StateProvinceCode { get; set; }
+        public virtual string StateProvinceCode { get; init; }
 
-        public virtual bool IsOnlyStateProvinceFlag { get; set; }
+        public virtual bool IsOnlyStateProvinceFlag { get; init; }
 
-        public virtual string Name { get; set; }
-
-        [NakedObjectsIgnore]
-        public virtual string CountryRegionCode { get; set; }
-
-        public virtual CountryRegion CountryRegion { get; set; }
+        public virtual string Name { get; init; }
 
         [NakedObjectsIgnore]
-        public virtual int TerritoryID { get; set; }
+        public virtual string CountryRegionCode { get; init; }
+
+        public virtual CountryRegion CountryRegion { get; init; }
+
+        [NakedObjectsIgnore]
+        public virtual int TerritoryID { get; init; }
 
         public virtual SalesTerritory SalesTerritory { get; set; }
 
         [NakedObjectsIgnore]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
     }
     public static class StateProvinceFunctions
     {
-        public static string Title(this StateProvince sp)
-        {
-            return sp.CreateTitle(sp.Name);
-        }
-        public static StateProvince Updating(StateProvince sp, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(sp, now);
+          public static StateProvince Updating(StateProvince sp, [Injected] DateTime now)  => sp with { ModifiedDate = now };
 
-        }
     }
 }

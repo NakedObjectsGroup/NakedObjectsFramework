@@ -6,24 +6,24 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFunctions;
-using NakedObjects;
+using NakedFunctions;
 using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+
+
 using System.Linq;
 using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
-using static NakedFunctions.Result;
+
 
 namespace AdventureWorksModel
 {
-    [DisplayName("Purchase Orders")]
+    [Named("Purchase Orders")]
     public static class PurchaseOrderRepository
     {
-        [Description("For demonstration purposes only")]
+        [DescribedAs("For demonstration purposes only")]
         
         [MemberOrder(1)]
         public static PurchaseOrderHeader RandomPurchaseOrder(
-            [Injected] IQueryable<PurchaseOrderHeader> pohs, 
+            IQueryable<PurchaseOrderHeader> pohs, 
             [Injected] int random)
         {
             return Random(pohs, random);
@@ -32,7 +32,7 @@ namespace AdventureWorksModel
         //returns most recently-modified first
         [MemberOrder(2)]
         public static IQueryable<PurchaseOrderHeader> AllPurchaseOrders(
-            [Injected] IQueryable<PurchaseOrderHeader> pohs)
+            IQueryable<PurchaseOrderHeader> pohs)
         {
             return pohs.OrderByDescending(poh => poh.ModifiedDate);
         }
@@ -40,7 +40,7 @@ namespace AdventureWorksModel
         [MemberOrder(2)]
         [TableView(true, "Vendor", "OrderDate", "TotalDue")]
         public static IQueryable<PurchaseOrderHeader> AllOpenPurchaseOrders(
-             [Injected] IQueryable<PurchaseOrderHeader> pohs)
+             IQueryable<PurchaseOrderHeader> pohs)
         {
             return pohs.Where(poh => poh.Status <= 2);
         }
@@ -50,16 +50,16 @@ namespace AdventureWorksModel
         [MemberOrder(3)]
         [TableView(true, "OrderDate", "TotalDue")]
         public static IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForVendor(
-            [ContributedAction("Purchase Orders")] Vendor vendor,
-             [Injected] IQueryable<PurchaseOrderHeader> pohs)
+            this Vendor vendor,
+             IQueryable<PurchaseOrderHeader> pohs)
         {
             return AllOpenPurchaseOrders(pohs).Where(poh => poh.Vendor.BusinessEntityID == vendor.BusinessEntityID);
         }
 
         [PageSize(20)]
         public static IQueryable<Vendor> AutoComplete0OpenPurchaseOrdersForVendor(
-            [MinLength(2)] string name,
-            [Injected] IQueryable<Vendor> vendors)
+            [Range(2,0)] string name,
+            IQueryable<Vendor> vendors)
         {
             return vendors.Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
         }
@@ -74,7 +74,7 @@ namespace AdventureWorksModel
             [ContributedAction("Purchase Orders")] Vendor vendor,
             DateTime? fromDate, 
             DateTime? toDate,
-            [Injected] IQueryable<PurchaseOrderHeader> pohs)
+            IQueryable<PurchaseOrderHeader> pohs)
         {
             return from obj in pohs
                    where obj.Vendor.BusinessEntityID == vendor.BusinessEntityID &&
@@ -86,8 +86,8 @@ namespace AdventureWorksModel
 
         [PageSize(20)]
         public static IQueryable<Vendor> AutoComplete0ListPurchaseOrders(
-            [MinLength(2)] string name,
-            [Injected] IQueryable<Vendor> vendors)
+            [Range(2,0)] string name,
+            IQueryable<Vendor> vendors)
         {
             return vendors.Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
         }
@@ -108,7 +108,7 @@ namespace AdventureWorksModel
         [TableView(true, "Vendor", "OrderDate", "Status")]
         public static IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForProduct(
             [ContributedAction("Purchase Orders")] Product product,
-            [Injected] IQueryable<PurchaseOrderDetail> details)
+            IQueryable<PurchaseOrderDetail> details)
         {
             return from obj in details
                    where obj.Product.ProductID == product.ProductID &&
@@ -118,8 +118,8 @@ namespace AdventureWorksModel
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete0OpenPurchaseOrdersForProduct(
-            [MinLength(2)] string name,
-            [Injected] IQueryable<Product> products)
+            [Range(2,0)] string name,
+            IQueryable<Product> products)
         {
             return products.Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
         }
@@ -128,7 +128,7 @@ namespace AdventureWorksModel
         public static IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForVendorAndProduct(
             Vendor vendor, 
             Product product,
-            [Injected] IQueryable<PurchaseOrderDetail> details)
+            IQueryable<PurchaseOrderDetail> details)
         {
             return from obj in details
                    where obj.Product.ProductID == product.ProductID &&
@@ -154,8 +154,8 @@ namespace AdventureWorksModel
 
         [PageSize(20)]
         public static IQueryable<Vendor> AutoComplete0CreateNewPurchaseOrder(
-            [MinLength(2)] string name,
-            [Injected] IQueryable<Vendor> vendors)
+            [Range(2,0)] string name,
+            IQueryable<Vendor> vendors)
         {
             return vendors.Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
         }
@@ -175,7 +175,7 @@ namespace AdventureWorksModel
         [MemberOrder(7)]
         public static PurchaseOrderHeader FindById(
             int id,
-            [Injected] IQueryable<PurchaseOrderHeader> headers)
+            IQueryable<PurchaseOrderHeader> headers)
         {
             return headers.Where(x => x.PurchaseOrderID == id).FirstOrDefault();
         }

@@ -9,67 +9,24 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel
 {
-    public class Document : IHasModifiedDate
+    public record Document : IHasModifiedDate
     {
+        public virtual int DocumentID { get; init; }
+        public virtual string Title { get; init; }
+        public virtual string FileName { get; init; }
+        public virtual string FileExtension { get; init; }
+        public virtual string Revision { get; init; }
+        public virtual int ChangeNumber { get; init; }
+        public virtual byte Status { get; init; }
+        public virtual string DocumentSummary { get; init; }
+        public byte[] Document1 { get; init; }
 
-        public Document(
-            int documentID,
-            string title,
-            string fileName,
-            string fileExtension,
-            string revision,
-            int changeNumber,
-            byte status,
-            string documentSummary,
-            byte[] document1,
-            ICollection<ProductDocument> productDocument,
-            DateTime modifiedDate
-            )
-        {
-            DocumentID = documentID;
-            Title = title;
-            FileName = fileName;
-            FileExtension = fileExtension;
-            Revision = revision;
-            ChangeNumber = changeNumber;
-            Status = status;
-            DocumentSummary = documentSummary;
-            Document1 = document1;
-            ProductDocument = productDocument;
-            ModifiedDate = modifiedDate;
-        }
+        public ICollection<ProductDocument> ProductDocument { get; init; } = new List<ProductDocument>();
 
-        public Document() { }
-
-        public virtual int DocumentID { get; set; }
-        public virtual string Title { get; set; }
-        public virtual string FileName { get; set; }
-        public virtual string FileExtension { get; set; }
-        public virtual string Revision { get; set; }
-        public virtual int ChangeNumber { get; set; }
-        public virtual byte Status { get; set; }
-        public virtual string DocumentSummary { get; set; }
-        public byte[] Document1 { get; set; }
-
-        public ICollection<ProductDocument> ProductDocument { get; set; }
-
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-    }
-
-    public static class DocumentFunctions
-    {
-        public static Document Updating(Document d, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(d, now);
-
-        }
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
     }
 }

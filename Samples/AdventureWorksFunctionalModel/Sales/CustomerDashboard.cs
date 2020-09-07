@@ -8,21 +8,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using NakedFunctions;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
     /// <summary>
     /// 
     /// </summary>
     //TODO: ViewModel
-    public class CustomerDashboard {
+    public record CustomerDashboard {
 
         public CustomerDashboard(Customer cust)
         {
             Root = cust;
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Customer Root { get; set; }
       
 
@@ -33,14 +33,14 @@ namespace AdventureWorksModel {
         [DisplayAsProperty]
         [TableView(true, "OrderDate", "TotalDue", "Status")]
         public IList<SalesOrderHeader> RecentOrders(
-            [Injected] IQueryable<SalesOrderHeader> headers)
+            IQueryable<SalesOrderHeader> headers)
             {
             return OrderContributedActions.RecentOrders(Root, headers).ToList();
         }
 
         [DisplayAsProperty]
         public decimal TotalOrderValue(
-            [Injected] IQueryable<SalesOrderHeader> headers)
+            IQueryable<SalesOrderHeader> headers)
         {
                 int id = Root.CustomerID;
             return headers.Where(x => x.Customer.CustomerID == id).Sum(x => x.TotalDue);
@@ -54,8 +54,8 @@ namespace AdventureWorksModel {
         }
 
         public (SalesOrderHeader, SalesOrderHeader) NewOrder(
-            [Injected] IQueryable<BusinessEntityAddress> addresses,
-            [Injected] IQueryable<SalesOrderHeader> headers) {
+            IQueryable<BusinessEntityAddress> addresses,
+            IQueryable<SalesOrderHeader> headers) {
             var order = OrderContributedActions.CreateNewOrder(Root, true, addresses, headers);
             return Result.DisplayAndPersist(order);
         }

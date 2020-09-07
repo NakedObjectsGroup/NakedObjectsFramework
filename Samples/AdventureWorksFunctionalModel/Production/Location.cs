@@ -9,57 +9,27 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
-namespace AdventureWorksModel {
-    [IconName("globe.png")]
-    [Bounded]
-    [Immutable]
-    [PresentationHint("Topaz")]
-    public class Location {
-
-        public Location(
-            short locationID,
-            string name,
-            decimal costRate,
-            decimal availability,
-            DateTime modifiedDate
-            )
-        {
-            LocationID = locationID;
-            Name = name;
-            CostRate = costRate;
-            Availability = availability;
-            ModifiedDate = modifiedDate;
-        }
-
-        public Location() { }
+namespace AdventureWorksModel
+{
+    [Bounded, PresentationHint("Topaz")]
+    public record Location
+    {
 
         [NakedObjectsIgnore]
-        public virtual short LocationID { get; set; }
+        public virtual short LocationID { get; init; }
 
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
         [Mask("C")]
-        public virtual decimal CostRate { get; set; }
+        public virtual decimal CostRate { get; init; }
 
         [Mask("########.##")]
-        public virtual decimal Availability { get; set; }
+        public virtual decimal Availability { get; init; }
 
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-    }
-    public static class LocationFunctions
-    {
-        public static string Title(this Location loc)
-        {
-            return loc.CreateTitle(loc.Name);
-        }
-        public static Location Updating(Location loc, [Injected] DateTime now)
-        {
-            return loc.With(x => x.ModifiedDate, now);
-        }
-    }
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public override string ToString() => Name;
+   }
 }

@@ -6,14 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [IconName("speech.png")]
-    [Bounded]
-    [Immutable]
-    public class SalesReason {
+        [Bounded]
+        public record SalesReason {
 
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -25,10 +23,10 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int SalesReasonID { get; set; }
 
-        [Title]
+        //Title
         public virtual string Name { get; set; }
 
         public virtual string ReasonType { get; set; }
@@ -36,7 +34,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 

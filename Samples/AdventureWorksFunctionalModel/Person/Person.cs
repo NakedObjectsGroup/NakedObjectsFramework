@@ -6,22 +6,20 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+
+
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using NakedObjects;
-using System.Collections.Generic;
-using NakedObjects.Value;
-using System.ComponentModel.DataAnnotations.Schema;
 using NakedFunctions;
-using static NakedFunctions.Result;
+using System.Collections.Generic;
+
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace AdventureWorksModel {
 
-    [IconName("cellphone.png")]
-    public class Person : BusinessEntity, IHasRowGuid, IHasModifiedDate {
+        public record Person : BusinessEntity, IHasRowGuid, IHasModifiedDate {
         public Person() {
            
         }
@@ -61,31 +59,31 @@ namespace AdventureWorksModel {
             PhoneNumbers = phoneNumbers;
         }
 
-        [Optionally]
+        
         [MemberOrder(30)]
         public virtual string AdditionalContactInfo { get; set; }
 
-        [NotPersisted]
-        [NakedObjectsIgnore]
+        
+        [Hidden]
         public IBusinessEntity ForEntity { get; set; }
 
         [MemberOrder(2)]
-        [NotPersisted][Hidden(WhenTo.OncePersisted)]
+
         public ContactType ContactType { get; set; }
 
         #region Name fields
 
         #region NameStyle
 
-        [MemberOrder(15), DefaultValue(false), DisplayName("Reverse name order")]
+        [MemberOrder(15), DefaultValue(false), Named("Reverse name order")]
         public virtual bool NameStyle { get; set; }
 
         #endregion
 
         #region Title
 
-        [Optionally]
-        [StringLength(8)]
+        
+        
         [MemberOrder(11)]
         public virtual string Title { get; set; }
 
@@ -93,7 +91,7 @@ namespace AdventureWorksModel {
 
         #region FirstName
 
-        [StringLength(50)]
+        
         [MemberOrder(12)]
         public virtual string FirstName { get; set; }
 
@@ -101,8 +99,8 @@ namespace AdventureWorksModel {
 
         #region MiddleName
 
-        [StringLength(50)]
-        [Optionally]
+        
+        
         [MemberOrder(13)]
         public virtual string MiddleName { get; set; }
 
@@ -110,7 +108,7 @@ namespace AdventureWorksModel {
 
         #region LastName
 
-        [StringLength(50)]
+        
         [MemberOrder(14)]
         public virtual string LastName { get; set; }
 
@@ -118,8 +116,8 @@ namespace AdventureWorksModel {
 
         #region Suffix
 
-        [Optionally]
-        [StringLength(10)]
+        
+        
         [MemberOrder(15)]
         public virtual string Suffix { get; set; }
 
@@ -130,22 +128,15 @@ namespace AdventureWorksModel {
         [MemberOrder(21), DefaultValue(1)]
         public virtual EmailPromotion EmailPromotion { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Password Password { get; set; }
       
-        //See Persisting method
-        [NotPersisted]
-        [Hidden(WhenTo.OncePersisted)]
-        [MemberOrder(27)]
-        [DataType(DataType.Password)]
-        public string InitialPassword { get; set; }
-
 
         //To test a null image
         [NotMapped]
         public virtual Image Photo { get { return null; } }
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [RenderEagerly]
         [TableView(false, nameof(EmailAddress.EmailAddress1))] 
         public virtual ICollection<EmailAddress> EmailAddresses { get; set; }
 
@@ -155,14 +146,14 @@ namespace AdventureWorksModel {
             nameof(PersonPhone.PhoneNumber))] 
         public virtual ICollection<PersonPhone> PhoneNumbers { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Employee Employee { get; set; }
 
         #region Row Guid and Modified Date
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion
@@ -170,7 +161,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
@@ -183,7 +174,7 @@ namespace AdventureWorksModel {
     {
         public static string Title(this Person p)
         {
-            return p.CreateTitle(p.NameStyle ? $"{p.LastName} {p.FirstName}" : $"{p.FirstName} {p.LastName}");
+            return p.ToString(); // CreateTitle(p.NameStyle ? $"{p.LastName} {p.FirstName}" : $"{p.FirstName} {p.LastName}");
         }
 
         #region Life Cycle Methods
@@ -203,51 +194,55 @@ namespace AdventureWorksModel {
 
         public static Person Persisting(Person p, [Injected] Guid guid, [Injected] DateTime now)
         {
-            return Updating(p, now).With(x => x.rowguid, guid).CreateSaltAndHash(p.InitialPassword)
-                .With(x => x.BusinessEntityRowguid, guid)
-                .With(x => x.BusinessEntityModifiedDate, now);
+            throw new NotImplementedException();
+            ////return Updating(p, now) with {rowguid =  guid).CreateSaltAndHash(p.InitialPassword}
+            ////     with {BusinessEntityRowguid =  guid}
+            ////     with {BusinessEntityModifiedDate =  now};
         }
 
         public static Person Updating(Person p, [Injected] DateTime now)
         {
-            return p.With(x => x.BusinessEntityModifiedDate, now).With(x => x.ModifiedDate, now);
+            return p with {BusinessEntityModifiedDate =  now, ModifiedDate = now};
         }
         #endregion
 
         #region ChangePassword (Action)
 
-        [Hidden(WhenTo.UntilPersisted)]
+        
         [MemberOrder(1)]
-        public static (Person,Person) ChangePassword(this Person p, [DataType(DataType.Password)] string oldPassword, [DataType(DataType.Password)] string newPassword, [Named("New Password (Confirm)"), DataType(DataType.Password)] string confirm)
+        public static (Person,Password) ChangePassword(this Person p, [Password] string oldPassword, [Password] string newPassword, [Named("New Password (Confirm)"), Password] string confirm)
         {
-            return  DisplayAndPersist(CreateSaltAndHash(p, newPassword));
+            throw new NotImplementedException();
+            //var p1 = CreateSaltAndHash(p, newPassword));
         }
 
-        internal static Person CreateSaltAndHash(this Person p, string newPassword)
+        internal static Person CreateSaltAndHash(this Person p, string newPassword, [Injected] Guid guid, [Injected] DateTime now)
         {
-            return p.With(x => x.Password.PasswordSalt,CreateRandomSalt())
-                .With(x => x.Password.PasswordHash, Hashed(newPassword, p.Password.PasswordSalt));
+            var pw = new Password(p.BusinessEntityID, Hashed(newPassword, p.Password.PasswordSalt),
+                CreateRandomSalt(), guid, now);
+            return p with { Password = pw };
         }
 
         public static string ValidateChangePassword(this Person p, string oldPassword, string newPassword, string confirm)
         {
-            var rb = new ReasonBuilder();
-            //if (Hashed(oldPassword, Password.PasswordSalt) != Password.PasswordHash) {
-            //    rb.Append("Old Password is incorrect");
-            //}
+            var reason = "";
+            if (Hashed(oldPassword, p.Password.PasswordSalt) != p.Password.PasswordHash)
+            {
+                reason += "Old Password is incorrect";
+            }
             if (newPassword != confirm)
             {
-                rb.Append("New Password and Confirmation don't match");
+                reason += "New Password and Confirmation don't match";
             }
             if (newPassword.Length < 6)
             {
-                rb.Append("New Password must be at least 6 characters");
+                reason += "New Password must be at least 6 characters";
             }
             if (newPassword == oldPassword)
             {
-                rb.Append("New Password should be different from Old Password");
+                reason += "New Password should be different from Old Password";
             }
-            return rb.Reason;
+            return reason;
         }
         #endregion
 
@@ -278,14 +273,15 @@ namespace AdventureWorksModel {
 
         public static (Person, Person) UpdateMiddleName(this Person p, string newName)
         {
-            return DisplayAndPersist(p.With(x => x.MiddleName, newName));
+            var p1 = p with {MiddleName =  newName};
+            return (p1, p1);
         }
 
         public static (Person, Person) UpdateSuffix(this Person p, string newSuffix)
         {
-            return DisplayAndPersist(p.With(x => x.Suffix, newSuffix));
+            var p1 = p with {Suffix =  newSuffix};
+            return (p1, p1);
         }
-
 
         //To test a ViewModelEdit
         public static EmailTemplate CreateEmail(this Person p)
@@ -311,16 +307,16 @@ namespace AdventureWorksModel {
         public static (CreditCard, CreditCard) CreateNewCreditCard(this Person p)
         {
             var c = new CreditCard(p);
-            return Result.DisplayAndPersist(c);
+            return (c,c);
         }
 
-        public static IList<CreditCard> ListCreditCards(this Person p, [Injected] IQueryable<PersonCreditCard> pccs)
+        public static IList<CreditCard> ListCreditCards(this Person p, IQueryable<PersonCreditCard> pccs)
         {
             int id = p.BusinessEntityID;
             return pccs.Where(pcc => pcc.PersonID == id).Select(pcc => pcc.CreditCard).ToList();
         }
 
-        public static IQueryable<CreditCard> RecentCreditCards(this Person p, [Injected] IQueryable<PersonCreditCard> pccs)
+        public static IQueryable<CreditCard> RecentCreditCards(this Person p, IQueryable<PersonCreditCard> pccs)
         {
             int id = p.BusinessEntityID;
             return pccs.Where(pcc => pcc.PersonID == id).Select(pcc => pcc.CreditCard).OrderByDescending(cc => cc.ModifiedDate);
@@ -335,9 +331,9 @@ namespace AdventureWorksModel {
         }
 
         public static (Person, PersonPhone) CreateNewPhoneNumber(this Person p, PhoneNumberType type,
-    [RegularExpression(@"[0-9][0-9\s-]+")]string phoneNumber, [Injected] DateTime now)
+    [RegEx(@"[0-9][0-9\s-]+")]string phoneNumber, [Injected] DateTime now)
         {
-            return DisplayAndPersistDifferentItems(p, new PersonPhone(p.BusinessEntityID, p, type, type.PhoneNumberTypeID, phoneNumber, now));
+            return (p, new PersonPhone(p.BusinessEntityID, p, type, type.PhoneNumberTypeID, phoneNumber, now));
         }
     }
 }

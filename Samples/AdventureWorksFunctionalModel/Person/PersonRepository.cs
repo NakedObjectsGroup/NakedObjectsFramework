@@ -6,14 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Collections.Generic;
-using System.ComponentModel;
+
 using System.Linq;
 using NakedFunctions;
-using NakedObjects;
+
 using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
 
 namespace AdventureWorksModel {
-    [DisplayName("Contacts")]
+    [Named("Contacts")]
     public static class PersonRepository {
 
         [TableView(true, nameof(Person.AdditionalContactInfo))]
@@ -29,7 +29,7 @@ namespace AdventureWorksModel {
         
         public static Person RandomContact(
             
-            [Injected] IQueryable<Person> persons, 
+            IQueryable<Person> persons, 
             [Injected] int random) {
             return Random(persons, random);
         }
@@ -38,7 +38,7 @@ namespace AdventureWorksModel {
         [TableView(true, nameof(Person.AdditionalContactInfo))]
         public static IQueryable<Person> RandomContacts(
             
-            [Injected] IQueryable<Person> persons,
+            IQueryable<Person> persons,
             [Injected] int random1, 
             [Injected] int random2) {
             Person contact1 = RandomContact(persons, random1);
@@ -54,13 +54,13 @@ namespace AdventureWorksModel {
         [TableView(true)] //Tableview == list view
         public static List<CountryRegion> ValidCountries(
             
-            [Injected] IQueryable<StateProvince> sps) {
+            IQueryable<StateProvince> sps) {
             return sps.Select(sp => sp.CountryRegion).Distinct().ToList();
         }
 
         #endregion
 
-        internal static IQueryable<Address> AddressesFor(IBusinessEntity entity, [Injected] IQueryable<BusinessEntityAddress> allBaes, string ofType = null) {
+        internal static IQueryable<Address> AddressesFor(IBusinessEntity entity, IQueryable<BusinessEntityAddress> allBaes, string ofType = null) {
             int id = entity.BusinessEntityID;
             var baes = allBaes.Where(bae => bae.BusinessEntityID == id);
             if (ofType != null) {
@@ -72,12 +72,12 @@ namespace AdventureWorksModel {
 
         public static IList<Address> RecentAddresses(
              
-            [Injected] IQueryable<Address> addresses)
+            IQueryable<Address> addresses)
         {
             return addresses.OrderByDescending(a => a.ModifiedDate).Take(10).ToList();
         }
 
-        //public static IList<BusinessEntityAddress> RecentAddressLinks([Injected] IQueryable<BusinessEntityAddress> beAddresses)
+        //public static IList<BusinessEntityAddress> RecentAddressLinks(IQueryable<BusinessEntityAddress> beAddresses)
         //{
         //    return beAddresses.OrderByDescending(a => a.ModifiedDate).Take(10).ToList();
         //}

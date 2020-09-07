@@ -8,68 +8,45 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects;
-using NakedObjects.Value;
+using NakedFunctions;
+
 
 namespace AdventureWorksModel {
-    public class ProductPhoto  {
-
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
-        public string Title()
-        {
-            return "Product Photo";
-        }
-
+    public record ProductPhoto  {
         private byte[] _LargePhoto = new byte[0];
-        private ICollection<ProductProductPhoto> _ProductProductPhoto = new List<ProductProductPhoto>();
         private byte[] _ThumbNailPhoto = new byte[0];
 
         [NakedObjectsIgnore]
-        public virtual int ProductPhotoID { get; set; }
+        public virtual int ProductPhotoID { get; init; }
 
         public virtual byte[] ThumbNailPhoto {
             get { return _ThumbNailPhoto; }
             set { _ThumbNailPhoto = value; }
         }
 
-        public virtual string ThumbnailPhotoFileName { get; set; }
+        public virtual string ThumbnailPhotoFileName { get; init; }
         public virtual byte[] LargePhoto {
             get { return _LargePhoto; }
             set { _LargePhoto = value; }
         }
 
-        public virtual string LargePhotoFileName { get; set; }
-        public virtual FileAttachment LargePhotoAsAttachment
-        {
-            get
-            {
-                // fake minetype
-                return new FileAttachment(LargePhoto, LargePhotoFileName, "text/plain") { DispositionType = "inline" };
-            }
-        }
+        //TODO
+        //public virtual string LargePhotoFileName { get; init; }
+        //public virtual FileAttachment LargePhotoAsAttachment
+        //{
+        //    get
+        //    {
+        //        // fake minetype
+        //        return new FileAttachment(LargePhoto, LargePhotoFileName, "text/plain") { DispositionType = "inline" };
+        //    }
+        //}
 
         [NakedObjectsIgnore]
-        public virtual ICollection<ProductProductPhoto> ProductProductPhoto {
-            get { return _ProductProductPhoto; }
-            set { _ProductProductPhoto = value; }
-        }
+        public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
 
-        #region ModifiedDate
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
+        public override string ToString() => "Product Photo";
     }
 }

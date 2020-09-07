@@ -6,26 +6,25 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AdventureWorksFunctionalModel.Functions;
 using NakedFunctions;
-using NakedObjects;
-using NakedObjects.Services;
+using static NakedFunctions.Helpers;
 
-namespace AdventureWorksModel {
-    [DisplayName("Special Offers")]
-    public static class SpecialOfferRepository {
+namespace AdventureWorksModel
+{
+    [Named("Special Offers")]
+    public static class SpecialOfferRepository
+    {
         #region CurrentSpecialOffers
 
         [MemberOrder(1)]
-        [TableView(false, "Description", "XNoMatchingColumn", "Category", "DiscountPct")] 
-        public static IQueryable<SpecialOffer> CurrentSpecialOffers( [Injected] IQueryable<SpecialOffer> specialOffers) {
+        [TableView(false, "Description", "XNoMatchingColumn", "Category", "DiscountPct")]
+        public static IQueryable<SpecialOffer> CurrentSpecialOffers(IQueryable<SpecialOffer> specialOffers)
+        {
             return from obj in specialOffers
-                where obj.StartDate <= DateTime.Now &&
-                      obj.EndDate >= new DateTime(2004, 6, 1)
-                select obj;
+                   where obj.StartDate <= DateTime.Now &&
+                         obj.EndDate >= new DateTime(2004, 6, 1)
+                   select obj;
         }
 
         #endregion
@@ -33,7 +32,7 @@ namespace AdventureWorksModel {
         #region All Special Offers
         //Returns most recently-modified first
         [MemberOrder(2)]
-        public static IQueryable<SpecialOffer> AllSpecialOffers( [Injected] IQueryable<SpecialOffer> specialOffers)
+        public static IQueryable<SpecialOffer> AllSpecialOffers(IQueryable<SpecialOffer> specialOffers)
         {
             return specialOffers.OrderByDescending(so => so.ModifiedDate);
         }
@@ -41,7 +40,7 @@ namespace AdventureWorksModel {
 
         #region Special Offers With No Minimum Qty
         [MemberOrder(3)]
-        public static IQueryable<SpecialOffer> SpecialOffersWithNoMinimumQty( [Injected] IQueryable<SpecialOffer> specialOffers)
+        public static IQueryable<SpecialOffer> SpecialOffersWithNoMinimumQty(IQueryable<SpecialOffer> specialOffers)
         {
             return CurrentSpecialOffers(specialOffers).Where(s => s.MinQty <= 1);
         }
@@ -57,12 +56,15 @@ namespace AdventureWorksModel {
             DateTime startDate,
             DateTime endDate,
             [DefaultValue(1)] int minQty,
-            [Optionally] int? maxQty,
+             int? maxQty,
             [Injected] DateTime now,
             [Injected] Guid guid
-            ) {
+            )
+        {
 
-            return Result.DisplayAndPersist(new SpecialOffer(0, description, discountPct, type, category, startDate, endDate, minQty, maxQty, now, guid));
+            var so = new SpecialOffer() with { };
+            // TODO    (0, description, discountPct, type, category, startDate, endDate, minQty, maxQty, now, guid);
+            return DisplayAndPersist(so);
         }
 
         public static DateTime Default4CreateNewSpecialOffer([Injected] DateTime now)
@@ -78,10 +80,9 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Create Multiple Special Offers
-        [MemberOrder(5)]
-        [MultiLine(NumberOfLines=2)]
+        [MemberOrder(5), MultiLine(2)]
         public static (SpecialOffer, SpecialOffer) CreateMultipleSpecialOffers(
-            
+
             string description,
             [Mask("P")] decimal discountPct,
             string type,
@@ -90,82 +91,78 @@ namespace AdventureWorksModel {
             DateTime startDate
             )
         {
-            var so = new SpecialOffer();  //TODO -  use full constructor
-            so.Description = description;
-            so.DiscountPct = discountPct;
-            so.Type = type;
-            so.Category = category;
-            so.MinQty = minQty;
-            //Deliberately created non-current so they don't show up
-            //in Current Special Offers (but can be viewed via All Special Offers)
-            so.StartDate = startDate;
-            so.EndDate = new DateTime(2003, 12, 31);
-            return Result.DisplayAndPersist(so);
+            var so = new SpecialOffer() with
+            {
+                Description = description,
+                DiscountPct = discountPct,
+                Type = type,
+                Category = category,
+                MinQty = minQty,
+                //Deliberately created non-current so they don't show up
+                //in Current Special Offers (but can be viewed via All Special Offers)
+                StartDate = startDate,
+                EndDate = new DateTime(2003, 12, 31)
+            };
+            return (so, so);
         }
 
-        public static string[] Choices3CreateMultipleSpecialOffers()
-        {
-            return new[] { "Reseller", "Customer" };
-        }
+        public static string[] Choices3CreateMultipleSpecialOffers() => new[] { "Reseller", "Customer" };
 
-        public static string Validate5CreateMultipleSpecialOffers(DateTime startDate)
-        {
-            return startDate > new DateTime(2003,12,1)? "Start Date must be before 1/12/2003": null;
-        }
+
+        public static string Validate5CreateMultipleSpecialOffers(DateTime startDate) 
+            => startDate > new DateTime(2003, 12, 1) ? "Start Date must be before 1/12/2003" : null;
+
 
         #endregion
 
         #region AssociateSpecialOfferWithProduct
 
         [MemberOrder(6)]
-        public static (SpecialOfferProduct, SpecialOfferProduct, string) AssociateSpecialOfferWithProduct(
-            
-            [ContributedAction("Special Offers")] SpecialOffer offer, 
-            [ContributedAction("Special Offers")] Product product,
-            [Injected] IQueryable<SpecialOfferProduct> sops
-            ) {
+        public static (SpecialOfferProduct, SpecialOfferProduct, Action<IUserAdvisory>) AssociateSpecialOfferWithProduct(
+
+        // [ContributedAction("Special Offers")] TODO
+        SpecialOffer offer,
+        //[ContributedAction("Special Offers")] TODO
+        Product product,
+            IQueryable<SpecialOfferProduct> sops
+            )
+        {
             //First check if association already exists
             IQueryable<SpecialOfferProduct> query = from sop in sops
-                      where sop.SpecialOfferID == offer.SpecialOfferID &&
-                      sop.ProductID == product.ProductID
-                select sop;
+                                                    where sop.SpecialOfferID == offer.SpecialOfferID &&
+                                                    sop.ProductID == product.ProductID
+                                                    select sop;
 
-            if (query.Count() != 0) {
+            if (query.Count() != 0)
+            {
 
-                string msg = $"{offer} is already associated with { product}"; //TODO: sort titles
-                return Result.DisplayAndPersist<SpecialOfferProduct>(null, msg);
+                Action<IUserAdvisory> msg = InformUser($"{offer} is already associated with { product}");
+                return (null, null, msg);
             }
-            var newSop = new SpecialOfferProduct();  //TODO use proper constructor
-            newSop.SpecialOffer = offer;
-            newSop.Product = product;
-            return Result.DisplayAndPersist(newSop, null);
+            var newSop = new SpecialOfferProduct() with
+            {
+                SpecialOffer = offer,
+                Product = product
+            };
+            return (newSop, newSop, null);
         }
 
         [PageSize(20)]
         public static IQueryable<SpecialOffer> AutoComplete0AssociateSpecialOfferWithProduct(
-            [MinLength(2)] string name,
-            [Injected] IQueryable<SpecialOffer> offers) {
-            return offers.Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
-        }
+            [Range(2, 0)] string name,
+            IQueryable<SpecialOffer> offers)
+        => offers.Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
 
         [PageSize(20)]
-        public static IQueryable<Product> AutoComplete1AssociateSpecialOfferWithProduct(
-            [MinLength(2)] string name,
-            [Injected] IQueryable<Product> products
-            ) {
-            return products.Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
-        }
+        public static IQueryable<Product> AutoComplete1AssociateSpecialOfferWithProduct([Range(2, 0)] string name, IQueryable<Product> products)
+            => products.Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
 
         #endregion
 
         #region Helper methods
 
         [NakedObjectsIgnore]
-        public static SpecialOffer NoDiscount(IQueryable<SpecialOffer> offers)
-        {
-            return offers.Where(x => x.SpecialOfferID == 1).First();
-        }
-
+        public static SpecialOffer NoDiscount(IQueryable<SpecialOffer> offers) => offers.Where(x => x.SpecialOfferID == 1).First();
         #endregion
 
     }

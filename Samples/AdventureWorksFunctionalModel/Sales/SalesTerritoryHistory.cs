@@ -6,16 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+
+using NakedFunctions;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [IconName("clipboard.png")]
-    public class SalesTerritoryHistory {
+        public record SalesTerritoryHistory {
 
         #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
+        
         #endregion
 
         #region Life Cycle Methods
@@ -38,7 +37,7 @@ namespace AdventureWorksModel {
         public virtual DateTime? EndDate { get; set; }
 
         #region SalesPerson
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int BusinessEntityID { get; set; }
 
         [MemberOrder(3)]
@@ -46,7 +45,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Sales Territory
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int SalesTerritoryID { get; set; }
         [MemberOrder(4)]
         public virtual SalesTerritory SalesTerritory { get; set; }
@@ -57,7 +56,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -65,7 +64,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion

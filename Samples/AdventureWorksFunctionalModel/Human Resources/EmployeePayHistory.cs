@@ -7,12 +7,10 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [IconName("clipboard.png")]
-    [Immutable(WhenTo.OncePersisted)]
-    public class EmployeePayHistory {
+            public record EmployeePayHistory {
         private Employee e;
         private DateTime now;
 
@@ -27,22 +25,13 @@ namespace AdventureWorksModel {
 
         }
         #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
-        #endregion
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
+        
         #endregion
 
         #region EmployeeID
 
-        [NakedObjectsIgnore]
-        public virtual int EmployeeID { get; set; }
+        [Hidden]
+        public virtual int EmployeeID { get; init; }
 
         #endregion
 
@@ -50,7 +39,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(1)]
         [Mask("d")]
-        public virtual DateTime RateChangeDate { get; set; }
+        public virtual DateTime RateChangeDate { get; init; }
 
         #endregion
 
@@ -58,36 +47,28 @@ namespace AdventureWorksModel {
 
         [Mask("C")]
         [MemberOrder(2)]
-        public virtual decimal Rate { get; set; }
+        public virtual decimal Rate { get; init; }
 
         #endregion
 
         #region Employee
 
-        [Disabled]
+        
         [MemberOrder(4)]
-        public virtual Employee Employee { get; set; }
+        public virtual Employee Employee { get; init; }
 
         #endregion
 
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
-        #region Title
-
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(Rate, "C", null).Append(" from", RateChangeDate, "d", null);
-            return t.ToString();
-        }
-
-        #endregion
+        public override string ToString() => $"{Rate.ToString("C")} from {RateChangeDate.ToString("d")}";
 
         #region Life Cycle methods
 
@@ -99,8 +80,17 @@ namespace AdventureWorksModel {
 
         #region PayFrequency
 
-        public virtual byte PayFrequency { get; set; }
+        public virtual byte PayFrequency { get; init; }
 
+        #endregion
+    }
+
+    public static class EmployeePayHistoryFunctions
+    {
+        #region Life Cycle Methods
+        public static EmployeePayHistory Updating(this EmployeePayHistory x, [Injected] DateTime now) => x with { ModifiedDate = now };
+
+        public static EmployeePayHistory Persisting(this EmployeePayHistory x, [Injected] DateTime now) => x with { ModifiedDate = now };
         #endregion
     }
 }

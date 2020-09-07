@@ -8,48 +8,16 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class ProductListPriceHistory: IHasModifiedDate {
-        public ProductListPriceHistory(
-            int productID,
-            DateTime startDate,
-            DateTime? endDate,
-            decimal listPrice,
-            Product product,
-            DateTime modifiedDate
-            )
-        {
-            ProductID = productID;
-            StartDate = startDate;
-            EndDate = endDate;
-            ListPrice = listPrice;
-            Product = product;
-            ModifiedDate = modifiedDate;
-        }
-        public ProductListPriceHistory() { }
+    public record ProductListPriceHistory: IHasModifiedDate {
 
-        public virtual int ProductID { get; set; }
-        public virtual DateTime StartDate { get; set; }
-        public virtual DateTime? EndDate { get; set; }
-        public virtual decimal ListPrice { get; set; }
-        public Product Product { get; set; }
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-    }
-    public static class ProductListPriceHistoryFunctions
-    {
-        public static ProductListPriceHistory Updating(ProductListPriceHistory c, [Injected] DateTime now)
-        {
-            return c.With(x => x.ModifiedDate, now);
-        }
+        public virtual int ProductID { get; init; }
+        public virtual DateTime StartDate { get; init; }
+        public virtual DateTime? EndDate { get; init; }
+        public virtual decimal ListPrice { get; init; }
+        public Product Product { get; init; }
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
     }
 }

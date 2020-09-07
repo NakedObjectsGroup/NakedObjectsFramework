@@ -6,95 +6,65 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
-using System.ComponentModel.DataAnnotations.Schema;
+
 using NakedFunctions;
-using static NakedFunctions.Result;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace AdventureWorksModel {
     [Bounded]
-    [IconName("clock.png")]
-    public class Shift : IHasModifiedDate  {
+        public record Shift : IHasModifiedDate  {
 
         #region ID
 
         [NakedObjectsIgnore]
-        public virtual byte ShiftID { get; set; }
+        public virtual byte ShiftID { get; init; }
 
         #endregion
 
         #region Name
 
         [MemberOrder(1)]
-        [StringLength(50)]
-        [TypicalLength(10)]
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
         #endregion
 
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
-        #region Complex Types
+ 
+        [Mask("T"), MemberOrder(3)]
+        public virtual TimeSpan StartTime { get; init; }
 
-        private TimePeriod times = new TimePeriod();
+        [Mask("T"), MemberOrder(4)]
+        public virtual TimeSpan EndTime { get; init; }
 
-        [MemberOrder(2)]
-        public virtual TimePeriod Times {
-            get { return times; }
-            set { times = value; }
-        }
-
-        [Mask("T")]
-        [MemberOrder(3), NotMapped]
-        public virtual TimeSpan StartTime
-        {
-            get { return Times.StartTime; }
-        }
-
-        [Mask("T")]
-        [MemberOrder(4), NotMapped]
-        public virtual TimeSpan EndTime
-        {
-            get { return Times.EndTime; }
-        }
-
-        #endregion
-
+        public override string ToString() => Name;
     }
     public static class ShiftFunctions
     {
-        public static string Title(Shift s)
-        {
-            return s.Name;
-        }
-
-        #region Life Cycle Methods
-        public static Shift Updating(Shift p, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(p, now);
-
-        }
-        #endregion
-
 
         public static (Shift,Shift) ChangeTimes(Shift s, TimeSpan startTime, TimeSpan endTime)
         {
-            var s2 = s.With(x => x.Times.StartTime, startTime).With(x => x.Times.EndTime,endTime);
-            return DisplayAndPersist(s2);
+            throw new NotImplementedException();
+            //var s2 = s with { Times.StartTime = startTime } with {Times.EndTime,endTime);
+            //return DisplayAndPersist(s2);
         }
 
         public static TimeSpan Default0ChangeTimes(Shift s)
         {
             return new TimeSpan(0, 9, 0, 0);
         }
+
+        #region Life Cycle Methods
+        public static Shift Updating(this Shift x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        #endregion
     }
 
 }

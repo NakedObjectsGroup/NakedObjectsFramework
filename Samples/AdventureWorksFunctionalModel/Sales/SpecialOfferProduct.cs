@@ -7,65 +7,39 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+using NakedFunctions;
 
-namespace AdventureWorksModel {
-    public class SpecialOfferProduct {
-
-        #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
-        #endregion
-
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-        [NakedObjectsIgnore]
-        public virtual int SpecialOfferID { get; set; }
+namespace AdventureWorksModel
+{
+    public record SpecialOfferProduct
+    {
 
         [NakedObjectsIgnore]
-        public virtual int ProductID { get; set; }
+        public virtual int SpecialOfferID { get; init; }
+
+        [NakedObjectsIgnore]
+        public virtual int ProductID { get; init; }
 
         [MemberOrder(1)]
-        public virtual SpecialOffer SpecialOffer { get; set; }
+        public virtual SpecialOffer SpecialOffer { get; init; }
 
         [MemberOrder(2)]
-        public virtual Product Product { get; set; }
-
-        #region Title
-
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(" ");
-            return t.ToString();
-        }
-
-        #endregion
-
-        #region ModifiedDate and rowguid
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #region rowguid
+        public virtual Product Product { get; init; }
 
         [NakedObjectsIgnore]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
-        #endregion
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        #endregion
+        public override string ToString() => "Special offer - title TODO";
     }
+
+    public static class SpecialOfferProductFunctions
+    {
+        public static Product Updating(Product p, [Injected] DateTime now) => p with { ModifiedDate = now };
+        public static Product Persisting(Product p, [Injected] DateTime now, [Injected] Guid guid) => p with { rowguid = guid, ModifiedDate = now };
+
+    }
+
 }

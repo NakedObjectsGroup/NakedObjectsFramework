@@ -8,69 +8,27 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("lookup.png")]
-    [Bounded]
-    [Immutable]
-    public class ProductSubcategory: IHasRowGuid, IHasModifiedDate {
-
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
+        [Bounded]
+        public record ProductSubcategory: IHasRowGuid, IHasModifiedDate {
 
         [NakedObjectsIgnore]
-        public virtual int ProductSubcategoryID { get; set; }
+        public virtual int ProductSubcategoryID { get; init; }
 
-        [Title]
-        public virtual string Name { get; set; }
-
-        [NakedObjectsIgnore]
-        public virtual int ProductCategoryID { get; set; }
-
-        public virtual ProductCategory ProductCategory { get; set; }
-
-        #region Row Guid and Modified Date
-
-        #region rowguid
+        public virtual string Name { get; init; }
 
         [NakedObjectsIgnore]
-        public virtual Guid rowguid { get; set; }
+        public virtual int ProductCategoryID { get; init; }
 
-        #endregion
+        public virtual ProductCategory ProductCategory { get; init; }
 
-        #region ModifiedDate
+        [NakedObjectsIgnore]
+        public virtual Guid rowguid { get; init; }
 
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        #endregion
-
-        #endregion
-    }
-
-    public static class ProductSubcategoryFunctions
-    {
-
-        public static string Title(this ProductSubcategory pc)
-        {
-            return pc.CreateTitle(pc.Name);
-        }
-
-        public static ProductSubcategory Updating(ProductSubcategory a, [Injected] DateTime now)
-        {
-            return a.With(x => x.ModifiedDate, now);
-        }
-
+        public override string ToString() => Name;
     }
 }

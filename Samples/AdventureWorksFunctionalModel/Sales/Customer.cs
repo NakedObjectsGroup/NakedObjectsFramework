@@ -6,15 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel;
+
 using AdventureWorksFunctionalModel;
-using NakedObjects;
+using NakedFunctions;
 using NakedFunctions;
 using static AdventureWorksModel.CustomerFunctions;
 
 namespace AdventureWorksModel {
-    [IconName("default.png")]
-    public class Customer 
+        public record Customer 
     {
         public Customer()
         {
@@ -39,17 +38,17 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int CustomerID { get; set; }
 
-        [Disabled, Description("xxx"), MemberOrder(10)]
+        [DescribedAs("xxx"), MemberOrder(10)]
         public virtual string AccountNumber { get; set; }
 
         #region Sales Territory
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int? SalesTerritoryID { get; set; }
 
-        [Disabled, MemberOrder(20)]
+        [ MemberOrder(20)]
         public virtual SalesTerritory SalesTerritory { get; set; }
         #endregion
 
@@ -61,18 +60,18 @@ namespace AdventureWorksModel {
             throw new DomainException("Customer is neither Store nor Person!");
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int? StoreID { get; set; }
 
-        [Disabled, MemberOrder(20)]
+        [ MemberOrder(20)]
         public virtual Store Store { get; set; }
 
 
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int? PersonID { get; set; }
 
-        [Disabled, MemberOrder(20)]
+        [ MemberOrder(20)]
         public virtual Person Person { get; set; }
 
 
@@ -90,7 +89,7 @@ namespace AdventureWorksModel {
 
         #region ModifiedDate
 
-        [Hidden(WhenTo.Always)]
+        [Hidden]
         //[ConcurrencyCheck]
         public virtual DateTime CustomerModifiedDate { get; set; }
 
@@ -98,7 +97,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid CustomerRowguid { get; set; }
 
         #endregion
@@ -110,10 +109,10 @@ namespace AdventureWorksModel {
     public static class CustomerFunctions
     {
 
-        public  static string Title(Customer c)
-        {
-            return c.CreateTitle($"{PartTitle(c)}, {c.AccountNumber}");
-        }
+        //public  static string Title(Customer c)
+        //{
+        //    return c.CreateTitle($"{PartTitle(c)}, {c.AccountNumber}");
+        //}
          private static string PartTitle(Customer c)
         {
             return IsStore(c) ? StoreFunctions.Title(c.Store) : PersonFunctions.Title(c.Person);
@@ -147,13 +146,13 @@ namespace AdventureWorksModel {
         }
 
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public static bool IsIndividual(Customer c)
         {
             return !IsStore(c);
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public static bool IsStore(Customer c)
         {
             return c.Store != null;

@@ -6,17 +6,16 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+
+
 using System.Linq;
 using NakedFunctions;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [IconName("trolley_item.png")]
-    public class SalesOrderDetail {
+        public record SalesOrderDetail {
         #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
+        
         #endregion
 
         #region Life Cycle Methods
@@ -32,7 +31,7 @@ namespace AdventureWorksModel {
 
         #region OrderQty
 
-        [Disabled]
+        
         [MemberOrder(15)]
         public virtual short OrderQty { get; set; }
 
@@ -40,7 +39,7 @@ namespace AdventureWorksModel {
 
         #region UnitPrice
 
-        [Disabled]
+        
         [MemberOrder(20)]
         [Mask("C")]
         public virtual decimal UnitPrice { get; set; }
@@ -49,8 +48,8 @@ namespace AdventureWorksModel {
 
         #region UnitPriceDiscount
 
-        [Disabled]
-        [DisplayName("Discount")]
+        
+        [Named("Discount")]
         [MemberOrder(30)]
         [Mask("C")]
         public virtual decimal UnitPriceDiscount { get; set; }
@@ -58,8 +57,8 @@ namespace AdventureWorksModel {
         #endregion
 
         #region LineTotal
-        [NotPersisted]
-        [Disabled]
+        
+        
         [MemberOrder(40)]
         [Mask("C")]
         public virtual decimal LineTotal { get; set; }
@@ -68,16 +67,16 @@ namespace AdventureWorksModel {
 
         #region CarrierTrackingNumber
 
-        [Optionally]
+        
         [MemberOrder(50)]
-        [StringLength(25)]
+        
         public virtual string CarrierTrackingNumber { get; set; }
 
         #endregion
 
         #region SalesOrder
 
-        // [NakedObjectsIgnore]
+        // [Hidden]
         public virtual SalesOrderHeader SalesOrderHeader { get; set; }
 
         #endregion
@@ -108,7 +107,7 @@ namespace AdventureWorksModel {
 
         public void ChangeQuantity(
             short newQuantity,
-            [Injected] IQueryable<SpecialOfferProduct> sops) {
+            IQueryable<SpecialOfferProduct> sops) {
             OrderQty = newQuantity;
             SpecialOfferProduct = ProductFunctions2.BestSpecialOfferProduct(Product, newQuantity, sops);
             Recalculate();
@@ -120,10 +119,10 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int SalesOrderID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int SalesOrderDetailID { get; set; }
 
         #endregion
@@ -132,19 +131,19 @@ namespace AdventureWorksModel {
 
         #region SpecialOfferProduct
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int SpecialOfferID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ProductID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual SpecialOfferProduct SpecialOfferProduct { get; set; }
 
         #endregion
 
-        [Disabled]
-        [NotPersisted]
+        
+        
         [MemberOrder(11)]
         public virtual Product Product {
             get { return SpecialOfferProduct == null ? null : SpecialOfferProduct.Product; }
@@ -153,7 +152,7 @@ namespace AdventureWorksModel {
             }
         }
 
-        [Disabled]
+        
         [MemberOrder(12)]
         public virtual SpecialOffer SpecialOffer {
             get { return SpecialOfferProduct == null ? null : SpecialOfferProduct.SpecialOffer; }
@@ -167,7 +166,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -175,7 +174,7 @@ namespace AdventureWorksModel {
 
         #region rowguid
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; set; }
 
         #endregion

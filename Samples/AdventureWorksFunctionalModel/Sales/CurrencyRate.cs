@@ -6,12 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [IconName("currency.png")]
-    public class CurrencyRate {
+        public record CurrencyRate {
 
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -23,21 +22,21 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int CurrencyRateID { get; set; }
 
         public virtual DateTime CurrencyRateDate { get; set; }
 
-        [Title]
+        //Title
         public virtual decimal AverageRate { get; set; }
 
         public virtual decimal EndOfDayRate { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual string FromCurrencyCode { get; set; }
         public virtual Currency Currency { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual string ToCurrencyCode { get; set; }
 
         public virtual Currency Currency1 { get; set; }
@@ -45,7 +44,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 

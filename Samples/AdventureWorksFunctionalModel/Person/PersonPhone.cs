@@ -1,11 +1,9 @@
-using NakedObjects;
-using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
+using System;
 
 namespace AdventureWorksModel
 {
-    public class PersonPhone : IHasModifiedDate {
+    public record PersonPhone : IHasModifiedDate {
 
         public PersonPhone(
             int businessEntityID, 
@@ -25,18 +23,18 @@ namespace AdventureWorksModel
 
         public PersonPhone() { }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int BusinessEntityID { get; set; }
 
         public virtual string PhoneNumber { get; set; }
 
-        //[NakedObjectsIgnore]
+        //[Hidden]
         //public virtual int PersonID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Person Person { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int PhoneNumberTypeID { get; set; }
 
         public virtual PhoneNumberType PhoneNumberType { get; set; }

@@ -7,46 +7,34 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    public class JobCandidate  {
-        #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
-        #endregion
-
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
-        public virtual int JobCandidateID { get; set; }
-        public virtual string Resume { get; set; }
+    public record JobCandidate  {
+        public virtual int JobCandidateID { get; init; }
+        public virtual string Resume { get; init; }
 
         #region Employee
-        [NakedObjectsIgnore]
-        public virtual int? EmployeeID { get; set; }
-        public Employee Employee { get; set; }
+        [Hidden]
+        public virtual int? EmployeeID { get; init; }
+        public Employee Employee { get; init; }
         #endregion
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
-        #region Title
+        public override string ToString() => $"{Employee}";
+    }
 
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(Employee);
-            return t.ToString();
-        }
+    public static class JobCandidateFunctions
+    {
+        #region Life Cycle Methods
+        public static JobCandidate Updating(this JobCandidate x, [Injected] DateTime now) => x with { ModifiedDate = now };
 
+        public static JobCandidate Persisting(this JobCandidate x, [Injected] DateTime now) => x with { ModifiedDate = now };
         #endregion
     }
+
 }

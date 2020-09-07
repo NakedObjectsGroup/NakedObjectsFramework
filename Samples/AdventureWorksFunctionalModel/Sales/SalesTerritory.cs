@@ -7,42 +7,20 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-    [IconName("globe.png")]
+namespace AdventureWorksModel
+{
     [Bounded]
-    [Immutable]
-    public class SalesTerritory {
-
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
-        #region ID
+    public record SalesTerritory
+    {
 
         [NakedObjectsIgnore]
         public virtual int TerritoryID { get; set; }
 
-        #endregion
-
-        #region Name
-
-        [Title]
         [MemberOrder(10)]
         public virtual string Name { get; set; }
-
-        #endregion
 
         [MemberOrder(20)]
         public virtual string CountryRegionCode { get; set; }
@@ -50,62 +28,36 @@ namespace AdventureWorksModel {
         [MemberOrder(30)]
         public virtual string Group { get; set; }
 
-        [MemberOrder(40)]
-        [Mask("C")]
+        [MemberOrder(40), Mask("C")]
         public virtual decimal SalesYTD { get; set; }
 
-        [MemberOrder(41)]
-        [Mask("C")]
+        [MemberOrder(41), Mask("C")]
         public virtual decimal SalesLastYear { get; set; }
 
-        [MemberOrder(42)]
-        [Mask("C")]
+        [MemberOrder(42), Mask("C")]
         public virtual decimal CostYTD { get; set; }
 
-        [MemberOrder(43)]
-        [Mask("C")]
+        [MemberOrder(43), Mask("C")]
         public virtual decimal CostLastYear { get; set; }
-
-        #region Row Guid and Modified Date
-
-        #region rowguid
 
         [NakedObjectsIgnore]
         public virtual Guid rowguid { get; set; }
 
-        #endregion
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
-        #endregion
+        [Named("States/Provinces covered"), TableView(true)] //Table View == List View
+        public virtual ICollection<StateProvince> StateProvince { get; init; } = new List<StateProvince>();
 
-        #endregion
-
-        #region States/Provinces covered
-
-        private ICollection<StateProvince> _StateProvince = new List<StateProvince>();
-
-        [DisplayName("States/Provinces covered")]
-        [TableView(true)] //Table View == List View
-        public virtual ICollection<StateProvince> StateProvince {
-            get { return _StateProvince; }
-            set { _StateProvince = value; }
-        }
-
-        #endregion
+        public override string ToString() => Name;
     }
 
     public static class SalesTerritoryFunctions
     {
+        #region Life Cycle Methods
+        public static Department Updating(this Department x, [Injected] DateTime now) => x with { ModifiedDate = now };
 
-        public static string Title(this SalesTerritory t)
-        {
-            return t.CreateTitle(t.Name);
-        }
+        public static Department Persisting(this Department x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        #endregion
     }
 }

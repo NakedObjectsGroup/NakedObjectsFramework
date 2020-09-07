@@ -7,37 +7,21 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+using NakedFunctions;
 
-namespace AdventureWorksModel {
-    [IconName("lookup.png")]
+namespace AdventureWorksModel
+{
     [Bounded]
-    [Immutable]
-    public class ScrapReason {
-
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
+    public record ScrapReason
+    {
 
         [NakedObjectsIgnore]
-        public virtual short ScrapReasonID { get; set; }
+        public virtual short ScrapReasonID { get; init; }
 
-        [Title]
-        public virtual string Name { get; set; }
+        //Title
+        public virtual string Name { get; init; }
 
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
     }
 }

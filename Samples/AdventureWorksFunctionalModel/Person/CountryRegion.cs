@@ -8,44 +8,23 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("globe.png")]
-    [Bounded]
-    [Immutable]
-    public class CountryRegion: IHasModifiedDate {
+        [Bounded]
+        public record CountryRegion: IHasModifiedDate {
 
-        public CountryRegion(string countryRegionCode, string name, DateTime modifiedDate)
-        {
-            CountryRegionCode = countryRegionCode;
-            Name = name;
-            ModifiedDate = modifiedDate;
-        }
+        public virtual string CountryRegionCode { get; init; }
 
-        public CountryRegion() { }
+        public virtual string Name { get; init; }
 
-        public virtual string CountryRegionCode { get; set; }
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        public virtual string Name { get; set; }
-
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public override string ToString() => Name;
     }
 
     public static class CountryRegionFunctions
     {
-        public static string Title(this CountryRegion cr)
-        {
-            return cr.CreateTitle(cr.Name);
-        }
-
-        public static CountryRegion Updating(CountryRegion cr, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(cr, now);
-
-        }
+        public static CountryRegion Updating(CountryRegion cr, [Injected] DateTime now) => cr with { ModifiedDate = now };
     }
 }

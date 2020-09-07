@@ -6,76 +6,61 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
-using NakedObjects.Redirect;
+
+using NakedFunctions;
+
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AdventureWorksModel {
+namespace AdventureWorksModel
+{
 
     //Redirects to the StateProvince object on the Azure server
-    public class SalesTaxRate : IRedirectedObject {
-        #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
-        #endregion
+    public record SalesTaxRate : IRedirectedObject
+    {
 
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
-        public override string ToString()
-        {
-            var t = Container.NewTitleBuilder();
-            t.Append("Tax Rate for: ").Append(StateProvince);
+        public override string ToString() => $"Tax Rate for: {StateProvince}";
             return t.ToString();
         }
 
-        [NakedObjectsIgnore]
-        public virtual int SalesTaxRateID { get; set; }
-        public virtual byte TaxType { get; set; }
-        public virtual decimal TaxRate { get; set; }
-        public virtual string Name { get; set; }
+    [Hidden]
+    public virtual int SalesTaxRateID { get; set; }
+    public virtual byte TaxType { get; set; }
+    public virtual decimal TaxRate { get; set; }
+    public virtual string Name { get; set; }
 
-        [NakedObjectsIgnore]
-        public virtual int StateProvinceID { get; set; }
-        public virtual StateProvince StateProvince { get; set; }
+    [Hidden]
+    public virtual int StateProvinceID { get; set; }
+    public virtual StateProvince StateProvince { get; set; }
 
-        #region ModifiedDate and rowguid
+    [MemberOrder(99), ConcurrencyCheck]
+    public virtual DateTime ModifiedDate { get; set; }
 
-        #region ModifiedDate
+    public virtual Guid rowguid { get; set; }
 
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #region rowguid
-
-        [NakedObjectsIgnore]
-        public virtual Guid rowguid { get; set; }
-
-        [NakedObjectsIgnore, NotMapped]
-        public virtual string ServerName { get
-            {
-                return "nakedobjectsrodemo.azurewebsites.net";
-            }  set { } }
-
-        [NakedObjectsIgnore, NotMapped]
-        public virtual string Oid { get {
-                return "AdventureWorksModel.StateProvince/"+StateProvinceID;
-            } set { } }
-
-        #endregion
-
-        #endregion
+    [Hidden, NotMapped]
+    public virtual string ServerName
+    {
+        get
+        {
+            return "nakedobjectsrodemo.azurewebsites.net";
+        }
     }
+
+    [Hidden, NotMapped]
+    public virtual string Oid
+    {
+        get
+        {
+            return "AdventureWorksModel.StateProvince/" + StateProvinceID;
+        }
+    }
+}
+
+public static class SalesTaxRateFunctions
+{
+    public static SalesTaxRate Updating(SalesTaxRate a, [Injected] DateTime now) => a with { ModifiedDate = now };
+
+    public static SalesTaxRate Updating(SalesTaxRate a, [Injected] DateTime now, [Injected] Guid guid) => a with { ModifiedDate = now, rowguid = guid };
+
+}
 }

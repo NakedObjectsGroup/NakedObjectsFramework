@@ -8,89 +8,37 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
-using NakedObjects.Menu;
 
 namespace AdventureWorksModel {
-    [IconName("cartons.png")]
-    public class ProductInventory : IHasRowGuid, IHasModifiedDate {
-
-        public ProductInventory(
-            int productID,
-            short locationID,
-            string shelf,
-            byte bin,
-            short quantity,
-            Location location,
-            Product product,
-            Guid rowguid,
-            DateTime modifiedDate
-            )
-        {
-            ProductID = productID;
-            LocationID = locationID;
-            Shelf = shelf;
-            Bin = bin;
-            Quantity = quantity;
-            Location = location;
-            Product = product;
-            this.rowguid = rowguid;
-            ModifiedDate = modifiedDate;
-        }
-
-        public ProductInventory() { }
+        public record ProductInventory : IHasRowGuid, IHasModifiedDate {
 
         [NakedObjectsIgnore]
-        public virtual int ProductID { get; set; }
+        public virtual int ProductID { get; init; }
 
         [NakedObjectsIgnore]
-        public virtual short LocationID { get; set; }
+        public virtual short LocationID { get; init; }
 
         [MemberOrder(40)]
-        public virtual string Shelf { get; set; }
+        public virtual string Shelf { get; init; }
 
         [MemberOrder(50)]
-        public virtual byte Bin { get; set; }
+        public virtual byte Bin { get; init; }
 
         [MemberOrder(10)]
-        public virtual short Quantity { get; set; }
+        public virtual short Quantity { get; init; }
 
         [MemberOrder(30)]
-        public virtual Location Location { get; set; }
+        public virtual Location Location { get; init; }
 
         [MemberOrder(20)]
-        public virtual Product Product { get; set; }
-
-        #region Row Guid and Modified Date
-
-        #region rowguid
+        public virtual Product Product { get; init; }
 
         [NakedObjectsIgnore]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
-        #endregion
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #endregion
-
-    }
-    public static class ProductInventoryFunctions
-    {
-        public static string Title(this ProductInventory pi)
-        {
-            return pi.CreateTitle($"{pi.Quantity} in {pi.Location} - {pi.Shelf}");
-        }
-        public static ProductInventory Updating(ProductInventory a, [Injected] DateTime now)
-        {
-            return a.With(x => x.ModifiedDate, now);
-        }
+        public override string ToString() => $"{Quantity} in {Location} - {Shelf}";
     }
 }

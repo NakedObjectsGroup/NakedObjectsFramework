@@ -8,44 +8,24 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("lookup.png")]
     [Bounded]
-    public class ContactType : IHasModifiedDate {
-
-        public ContactType(int contactTypeID, string name, DateTime modifiedDate)
-        {
-            ContactTypeID = contactTypeID;
-            Name = name;
-            ModifiedDate = modifiedDate;
-        }
-
-        public ContactType() { }
+    public record ContactType : IHasModifiedDate {
 
         [NakedObjectsIgnore]
-        public virtual int ContactTypeID { get; set; }
+        public virtual int ContactTypeID { get; init; }
 
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public override string ToString() => Name;
     }
 
     public static class ContactTypeFunctions
     {
-        public static string Title(this ContactType ct)
-        {
-            return ct.CreateTitle(ct.Name);
-        }
-
-        public static ContactType Updating(ContactType ct, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(ct, now);
-
-        }
+        public static ContactType Updating(ContactType ct, [Injected] DateTime now) => ct with { ModifiedDate = now };
     }
 }

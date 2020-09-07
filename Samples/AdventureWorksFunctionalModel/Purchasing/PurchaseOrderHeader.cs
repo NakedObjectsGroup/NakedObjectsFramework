@@ -7,29 +7,28 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+
+
 using System.Linq;
 using NakedFunctions;
-using NakedObjects;
-using static NakedFunctions.Result;
+using NakedFunctions;
+
 
 namespace AdventureWorksModel {
-    [IconName("memo.png")]
-    public class PurchaseOrderHeader: IHasModifiedDate  {
+        public record PurchaseOrderHeader: IHasModifiedDate  {
 
         //TODO: Constructors & include work specified in old Created method (below) effectively as default values?
 
         #region ID
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int PurchaseOrderID { get; set; }
 
         #endregion
 
         #region Revision Number
 
-        [Disabled]
+        
         [MemberOrder(90)]
         public virtual byte RevisionNumber { get; set; }
 
@@ -38,23 +37,22 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ShipMethodID { get; set; }
 
         [MemberOrder(22)]
         public virtual ShipMethod ShipMethod { get; set; }
 
         #region Vendor
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int VendorID { get; set; }
 
-        [Disabled(WhenTo.OncePersisted)]
         [MemberOrder(1)]
         public virtual Vendor Vendor { get; set; }
 
@@ -64,17 +62,17 @@ namespace AdventureWorksModel {
 
         private static readonly string[] statusLabels = {"Pending", "Approved", "Rejected", "Complete"};
 
-        [NakedObjectsIgnore]
+        [Hidden]
         [MemberOrder(10)]
         public virtual byte Status { get; set; }
 
-        [DisplayName("Status")]
-        [MemberOrder(1.1)]
+        [Named("Status")]
+        [MemberOrder(1)]
         public virtual string StatusAsString {
             get { return statusLabels[Status - 1]; }
         }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual bool IsPending() {
             return Status == 1;
         }
@@ -83,7 +81,7 @@ namespace AdventureWorksModel {
 
         #region Dates
 
-        [Title]
+        //Title
         [Mask("d")]
         [MemberOrder(11)]
         public virtual DateTime OrderDate { get; set; }
@@ -97,21 +95,21 @@ namespace AdventureWorksModel {
         #region Amounts
 
         [MemberOrder(31)]
-        [Disabled]
+        
         [Mask("C")]
         public virtual decimal SubTotal { get; set; }
 
-        [Disabled]
+        
         [MemberOrder(32)]
         [Mask("C")]
         public virtual decimal TaxAmt { get; set; }
 
-        [Disabled]
+        
         [MemberOrder(33)]
         [Mask("C")]
         public virtual decimal Freight { get; set; }
 
-        [Disabled]
+        
         [MemberOrder(34)]
         [Mask("C")]
         public virtual decimal TotalDue { get; set; }
@@ -119,14 +117,14 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Order Placed By (Employee)
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int OrderPlacedByID { get; set; }
 
         [MemberOrder(12)]
         public virtual Employee OrderPlacedBy { get; set; }
         #endregion
 
-         [Eagerly(EagerlyAttribute.Do.Rendering)]
+         [RenderEagerly]
         [TableView(true, "OrderQty", "Product", "UnitPrice", "LineTotal")]
         public virtual ICollection<PurchaseOrderDetail> Details { get; set; }
     }
@@ -145,18 +143,18 @@ namespace AdventureWorksModel {
         {
             var det = AddNewDetail(header, prod, qty);
             //TODO:  create new detail directly calling constructor with all params
-            var det2 = det.Item1.With(x => x.UnitPrice, unitPrice)
-                .With(x => x.DueDate,now.Date.AddDays(7)) 
-                .With(x => x.ReceivedQty,0)
-                .With(x => x.RejectedQty, 0);
+            var det2 = det.Item1 with {UnitPrice =  unitPrice}
+                 with {DueDate = now.Date.AddDays(7)} 
+                 with {ReceivedQty = 0}
+                 with {RejectedQty =  0};
             return(null, det2);
         }
 
         [PageSize(10)]
         public static IQueryable<Product> AutoComplete0AddNewDetails(
             PurchaseOrderHeader header,
-            [MinLength(3)] string matching,
-            [Injected] IQueryable<Product> products)
+            [Range(3,0)] string matching,
+            IQueryable<Product> products)
         {
             return ProductRepository.FindProductByName(matching, products);
         }
@@ -166,7 +164,7 @@ namespace AdventureWorksModel {
 
         public static Employee DefaultOrderPlacedBy(
             PurchaseOrderHeader header,
-            [Injected] IQueryable<Employee> employees,
+            IQueryable<Employee> employees,
             [Injected] int random)
         {
             return EmployeeRepository.RandomEmployee( employees, random);
@@ -174,7 +172,7 @@ namespace AdventureWorksModel {
 
         public static ShipMethod DefaultShipMethod(
             PurchaseOrderHeader header,
-            [Injected] IQueryable<ShipMethod> shipMethods)
+            IQueryable<ShipMethod> shipMethods)
         {
             return shipMethods.First();
         }
@@ -188,7 +186,7 @@ namespace AdventureWorksModel {
             short qty)
         {
             var pod = new PurchaseOrderDetail(header, prod, qty);
-            return DisplayAndPersist(pod);
+            return (pod, pod);
         }
 
         public static string DisableAddNewDetail(PurchaseOrderHeader header)
@@ -211,8 +209,8 @@ namespace AdventureWorksModel {
         [MemberOrder(1)]
         public static (PurchaseOrderHeader, PurchaseOrderHeader) Approve(PurchaseOrderHeader header)
         {
-            var header2 = header.With(x => x.Status, 2);
-            return DisplayAndPersist(header2);
+            var header2 = header with {Status =  2};
+            return (header2, header2);
         }
 
         public static bool HideApprove(PurchaseOrderHeader header)
@@ -241,8 +239,8 @@ namespace AdventureWorksModel {
             PurchaseOrderHeader header,
             [Injected] DateTime now)
         {
-            var newRev = header.RevisionNumber + 1;
-            return header.With(x => x.ModifiedDate, now).With(x => x.RevisionNumber, newRev);
+            byte newRev = Convert.ToByte(header.RevisionNumber + 1);
+            return header with {ModifiedDate =  now, RevisionNumber = newRev};
         }
         #endregion
     }

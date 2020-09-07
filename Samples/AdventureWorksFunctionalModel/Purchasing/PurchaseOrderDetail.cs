@@ -6,12 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [IconName("memo_point.png")]
-    public class PurchaseOrderDetail {
+        public record PurchaseOrderDetail {
         private Product prod;
         private short qty;
 
@@ -22,7 +21,7 @@ namespace AdventureWorksModel {
             this.qty = qty;
         }
         #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
+        
         #endregion
 
         #region Life Cycle Methods
@@ -34,10 +33,10 @@ namespace AdventureWorksModel {
             ModifiedDate = DateTime.Now;
         }
         #endregion
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int PurchaseOrderID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int PurchaseOrderDetailID { get; set; }
 
         [MemberOrder(26)]
@@ -53,7 +52,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(24)]
         [Mask("C")]
-        [Disabled]
+        
         public virtual decimal LineTotal { get; set; }
 
         [Mask("#")]
@@ -66,23 +65,23 @@ namespace AdventureWorksModel {
 
         [Mask("#")]
         [MemberOrder(34)]
-        [Disabled]
+        
         public virtual decimal StockedQty { get; set; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 
         #region Product
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int ProductID { get; set; }
 
-        [Disabled]
+        
         [MemberOrder(10)]
         public virtual Product Product { get; set; }
 
@@ -90,7 +89,7 @@ namespace AdventureWorksModel {
 
         #region Header
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual PurchaseOrderHeader PurchaseOrderHeader { get; set; }
 
         #endregion

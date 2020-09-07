@@ -8,67 +8,27 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("globe.png")]
-    [Immutable]
-    public class ProductModelProductDescriptionCulture : IHasModifiedDate {
-
-        public ProductModelProductDescriptionCulture(
-            int productModelID,
-            int productDescriptionID,
-            string cultureID,
-            Culture culture,
-            ProductDescription productDescription,
-            ProductModel productModel,
-            DateTime modifiedDate
-            )
-        {
-            ProductModelID = productModelID;
-            ProductDescriptionID = productDescriptionID;
-            CultureID = cultureID;
-            Culture = culture;
-            ProductDescription = productDescription;
-            ProductModel = productModel;
-            ModifiedDate = modifiedDate;
-        }
-        public ProductModelProductDescriptionCulture() { }
+            public record ProductModelProductDescriptionCulture : IHasModifiedDate {
         [NakedObjectsIgnore]
-        public virtual int ProductModelID { get; set; }
+        public virtual int ProductModelID { get; init; }
 
         [NakedObjectsIgnore]
-        public virtual int ProductDescriptionID { get; set; }
+        public virtual int ProductDescriptionID { get; init; }
 
         [NakedObjectsIgnore]
-        public virtual string CultureID { get; set; }
+        public virtual string CultureID { get; init; }
 
-        public virtual Culture Culture { get; set; }
-        public virtual ProductDescription ProductDescription { get; set; }
+        public virtual Culture Culture { get; init; }
+        public virtual ProductDescription ProductDescription { get; init; }
 
         [NakedObjectsIgnore]
-        public virtual ProductModel ProductModel { get; set; }
+        public virtual ProductModel ProductModel { get; init; }
 
-        #region ModifiedDate
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-    }
-
-    public static class ProductModelProductDescriptionCultureFunctions
-    {
-        public static string Title(this ProductModelProductDescriptionCulture p)
-        {
-            return p.CreateTitle($"{p.Culture}");
-        }
-        public static ProductDocument Updating(ProductDocument c, [Injected] DateTime now)
-        {
-            return c.With(x => x.ModifiedDate, now);
-        }
+        public override string ToString() => $"{Culture}";
     }
 }

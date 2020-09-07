@@ -7,14 +7,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [Immutable(WhenTo.OncePersisted), IconName("id_card.png")]
-    public class CreditCard {
+        public record CreditCard {
         #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
+        
         #endregion
 
         #region Life Cycle Methods
@@ -22,15 +20,17 @@ namespace AdventureWorksModel {
             ModifiedDate = DateTime.Now;
         }
 
+        //TODO: How to handle this scenario! Maybe via Action(T)
         public void Persisted() {
-            var link = Container.NewTransientInstance<PersonCreditCard>();
-            link.CreditCard = this;
-            link.Person = ForContact;
-            Container.Persist(ref link);
+            throw new NotImplementedException();
+            //var link = Container.NewTransientInstance<PersonCreditCard>();
+            //link.CreditCard = this;
+            //link.Person = ForContact;
+            //Container.Persist(ref link);
 
-            if (Creator != null) {
-                Creator.CreatedCardHasBeenSaved(this);
-            }
+            //if (Creator != null) {
+            //    Creator.CreatedCardHasBeenSaved(this);
+            //}
         }
 
         public virtual void Updating() {
@@ -38,22 +38,21 @@ namespace AdventureWorksModel {
         }
         #endregion
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int CreditCardID { get; set; }
 
         [MemberOrder(1)]
         public virtual string CardType { get; set; }
 
-        [Hidden(WhenTo.OncePersisted)]
-        [MemberOrder(2)][Description("Without spaces")]
+        [MemberOrder(2)][DescribedAs("Without spaces")]
         public virtual string CardNumber { get; set; }
 
         private string _ObfuscatedNumber;
 
-        [Hidden(WhenTo.UntilPersisted)]
+        
         [MemberOrder(2)]
-        [DisplayName("Card No.")]
-        [NotPersisted]
+        [Named("Card No.")]
+        
         public virtual string ObfuscatedNumber {
             get {
                 if (_ObfuscatedNumber == null && CardNumber != null && CardNumber.Length > 4) {
@@ -77,7 +76,7 @@ namespace AdventureWorksModel {
             this.p = p;
         }
 
-        [DisplayName("Persons")]
+        [Named("Persons")]
         [MemberOrder(5)]
         //[TableOrder(True, "Contact")]
         public virtual ICollection<PersonCreditCard> PersonLinks {
@@ -88,7 +87,7 @@ namespace AdventureWorksModel {
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         //[ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
@@ -97,9 +96,7 @@ namespace AdventureWorksModel {
         #region Title
 
         public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(ObfuscatedNumber);
-            return t.ToString();
+            return ObfuscatedNumber;
         }
 
         #endregion
@@ -110,7 +107,7 @@ namespace AdventureWorksModel {
             }
 
             DateTime today = DateTime.Now.Date;
-            DateTime expiryDate = new DateTime(expYear, expMonth, 1).EndOfMonth();
+            DateTime expiryDate = new DateTime(expYear, expMonth, 1); //.EndOfMonth();
 
             if (expiryDate <= today) {
                 return "Expiry date must be in the future";
@@ -140,11 +137,11 @@ namespace AdventureWorksModel {
 
         #region Logic for creating new cards
 
-        [NakedObjectsIgnore]
-        [NotPersisted]
+        [Hidden]
+        
         public ICreditCardCreator Creator { get; set; }
 
-        [NotPersisted]
+        
         public Person ForContact { get; set; }
 
         #endregion

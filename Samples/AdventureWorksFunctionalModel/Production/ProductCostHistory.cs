@@ -8,61 +8,20 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("clipboard.png")]
-    public class ProductCostHistory : IHasModifiedDate {
-        public ProductCostHistory(
-            int productID,
-            DateTime startDate,
-            DateTime? endDate,
-            decimal standardCost,
-            Product product,
-            DateTime modifiedDate
-            )
-        {
-            ProductID = productID;
-            StartDate = startDate;
-            EndDate = endDate;
-            StandardCost = standardCost;
-            Product = product;
-            ModifiedDate = modifiedDate;
-        }
-        public ProductCostHistory() {}
-
+        public record ProductCostHistory : IHasModifiedDate {
         [NakedObjectsIgnore]
-        public virtual int ProductID { get; set; }
-
-        public virtual DateTime StartDate { get; set; }
-        public virtual DateTime? EndDate { get; set; }
-        public virtual decimal StandardCost { get; set; }
-
+        public virtual int ProductID { get; init; }
+        public virtual DateTime StartDate { get; init; }
+        public virtual DateTime? EndDate { get; init; }
+        public virtual decimal StandardCost { get; init; }
         [NakedObjectsIgnore]
-        public virtual Product Product { get; set; }
+        public virtual Product Product { get; init; }
 
-        #region ModifiedDate
+        [MemberOrder(99),ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-    }
-
-    public static class ProductCostHistoryFunctions
-    {
-
-        public static string Title(this ProductCostHistory pch)
-        {
-            return pch.CreateTitle($"{pch.StandardCost} {pch.StartDate}~");
-        }
-        public static ProductCostHistory Updating(ProductCostHistory c, [Injected] DateTime now)
-        {
-            return c.With(x => x.ModifiedDate, now);
-        }
-
+        public override string ToString() => $"{StandardCost} {StartDate}~";
     }
 }

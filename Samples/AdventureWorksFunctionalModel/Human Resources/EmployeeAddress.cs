@@ -7,60 +7,59 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
     //This class models an association table, and is never viewed directly by the user.
 
-    [IconName("house.png")]
-    public class EmployeeAddress : IAddressRole {
+        public record EmployeeAddress : IAddressRole {
 
-        //TODO: remains to be converted
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
-        }
 
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
 
         #region Properties
 
-        [NakedObjectsIgnore]
-        public virtual int EmployeeID { get; set; }
+        [Hidden]
+        public virtual int EmployeeID { get; init; }
 
-        [NakedObjectsIgnore]
-        public virtual int AddressID { get; set; }
+        [Hidden]
+        public virtual int AddressID { get; init; }
 
-        [NakedObjectsIgnore]
-        public virtual Employee Employee { get; set; }
+        [Hidden]
+        public virtual Employee Employee { get; init; }
 
-        [Title, Disabled, MemberOrder(2)]
-        public virtual Address Address { get; set; }
+        [MemberOrder(2)] //Title
+        public virtual Address Address { get; init; }
 
         #region ModifiedDate and rowguid
 
         #region ModifiedDate
 
         [MemberOrder(99)]
-        [Disabled]
+        
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
         #region rowguid
 
-        [NakedObjectsIgnore]
-        public virtual Guid rowguid { get; set; }
+        [Hidden]
+        public virtual Guid rowguid { get; init; }
 
         #endregion
 
         #endregion
 
+        #endregion
+    }
+
+    public static class EmployeeAddressFunctions
+    {
+        //TODO: remains to be converted
+        #region Life Cycle Methods
+        public static EmployeeAddress Updating(this EmployeeAddress x, [Injected] DateTime now) => x with { ModifiedDate = now };
+
+        public static EmployeeAddress Persisting(this EmployeeAddress x, [Injected] DateTime now) => x with { ModifiedDate = now };
         #endregion
     }
 }

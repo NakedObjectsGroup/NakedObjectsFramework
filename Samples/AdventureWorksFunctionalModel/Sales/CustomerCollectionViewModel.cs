@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace AdventureWorksModel
 {
     [ViewModel]
-    public class CustomerCollectionViewModel
+    public record CustomerCollectionViewModel
     {
         public CustomerCollectionViewModel(IList<Customer> customers)
         {
@@ -26,7 +26,7 @@ namespace AdventureWorksModel
         public static CustomerCollectionViewModel PopulateUsingKeys(
             CustomerCollectionViewModel vm,
             string[] keys, 
-            [Injected] IQueryable<Customer> customers )
+            IQueryable<Customer> customers )
         {
             int[] ids = keys == null ? new int[] { } : keys.Select(int.Parse).ToArray();
             return vm.With(x => x.Customers, (from c in customers

@@ -1,12 +1,11 @@
-using NakedObjects;
+using NakedFunctions;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using NakedFunctions;
+
 
 namespace AdventureWorksModel {
 
-    public class BusinessEntity : IBusinessEntity {
+    public record BusinessEntity : IBusinessEntity {
         public BusinessEntity(
             int businessEntityID,
             ICollection<BusinessEntityAddress> addresses,
@@ -24,23 +23,23 @@ namespace AdventureWorksModel {
 
         public BusinessEntity() {}
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int BusinessEntityID { get; set; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid BusinessEntityRowguid { get; set; }
 
-        [Hidden(WhenTo.Always)]
+        [Hidden]
         [ConcurrencyCheck]
         public virtual DateTime BusinessEntityModifiedDate { get; set; }
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [RenderEagerly]
         [TableView(false,
             nameof(BusinessEntityAddress.AddressType),
             nameof(BusinessEntityAddress.Address))] 
         public virtual ICollection<BusinessEntityAddress> Addresses { get; set; }
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [RenderEagerly]
         [TableView(false, "ContactType", "Person")] 
         public virtual ICollection<BusinessEntityContact> Contacts { get; set; }
 
@@ -66,7 +65,7 @@ namespace AdventureWorksModel {
         #region Life Cycle Methods
         public static BusinessEntity Updating(BusinessEntity be, [Injected] DateTime now)
         {
-            return be.With(x => x.BusinessEntityModifiedDate, now);
+            return be with {BusinessEntityModifiedDate =  now};
         }
         #endregion
     }

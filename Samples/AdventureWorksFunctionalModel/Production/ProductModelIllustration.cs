@@ -8,47 +8,19 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class ProductModelIllustration : IHasModifiedDate {
-        public ProductModelIllustration(
-            int productModelID,
-            int illustrationID,
-            Illustration illustration,
-            ProductModel productModel)
-        {
-            ProductModelID = productModelID;
-            IllustrationID = illustrationID;
-            Illustration = illustration;
-            ProductModel = productModel;
-        }
-        public ProductModelIllustration() { }
+    public record ProductModelIllustration : IHasModifiedDate {
+        [NakedObjectsIgnore]
+        public virtual int ProductModelID { get; init; }
 
         [NakedObjectsIgnore]
-        public virtual int ProductModelID { get; set; }
+        public virtual int IllustrationID { get; init; }
 
-        [NakedObjectsIgnore]
-        public virtual int IllustrationID { get; set; }
+        public virtual Illustration Illustration { get; init; }
+        public virtual ProductModel ProductModel { get; init; }
 
-        public virtual Illustration Illustration { get; set; }
-        public virtual ProductModel ProductModel { get; set; }
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-    }
-
-    public static class ProductModelIllustrationFunctions
-    {
-        public static ProductDocument Updating(ProductDocument c, [Injected] DateTime now)
-        {
-            return c.With(x => x.ModifiedDate, now);
-        }
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
     }
 }

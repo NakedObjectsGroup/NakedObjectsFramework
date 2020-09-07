@@ -8,63 +8,23 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
-namespace AdventureWorksModel {
-    [IconName("information")]
-    public class ProductDescription: IHasRowGuid, IHasModifiedDate {
-        public ProductDescription(
-            int productDescriptionID,
-            string description,
-            Guid rowguid,
-            DateTime modifiedDate)
-        {
-            ProductDescriptionID = productDescriptionID;
-            Description = description;
-            this.rowguid = rowguid;
-            ModifiedDate = modifiedDate;
-        }
-        public ProductDescription() { }
+namespace AdventureWorksModel
+{
+    public record ProductDescription : IHasRowGuid, IHasModifiedDate
+    {
+        [NakedObjectsIgnore]
+        public virtual int ProductDescriptionID { get; init; }
 
-       [NakedObjectsIgnore]
-        public virtual int ProductDescriptionID { get; set; }
-
-        [Title]
-        [MultiLine(NumberOfLines = 10)]
-        [TypicalLength(100)]
-        [MemberOrder(2)]
-        public virtual string Description { get; set; }
-
-        #region Row Guid and Modified Date
-
-        #region rowguid
+        [MultiLine(10), MemberOrder(2)]
+        public virtual string Description { get; init; }
 
         [NakedObjectsIgnore]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
-        #endregion
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #endregion
-    }
-
-    public static class ProductDescriptionFunctions
-    {
-        public static string Title(this ProductDescription pd)
-        {
-            return pd.CreateTitle(pd.Description);
-        }
-        public static ProductDescription Updating(ProductDescription a, [Injected] DateTime now)
-        {
-            return a.With(x => x.ModifiedDate, now);
-        }
+        [MemberOrder(99),ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
+ 
+        public override string ToString() => Description;
     }
 }

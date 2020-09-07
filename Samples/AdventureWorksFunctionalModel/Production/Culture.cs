@@ -8,45 +8,21 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedObjects;
 
-namespace AdventureWorksModel {
+namespace AdventureWorksModel
+{
     [Bounded]
-    [Immutable]
-    public class Culture : IHasModifiedDate {
-
-        public Culture(string cultureID, string name, DateTime modifiedDate)
-        {
-            CultureID = cultureID;
-            Name = name;
-            ModifiedDate = modifiedDate;
-        }
-
-        public Culture() { }
-
+    public record Culture : IHasModifiedDate
+    {
         [NakedObjectsIgnore]
-        public virtual string CultureID { get; set; }
+        public virtual string CultureID { get; init; }
 
         [MemberOrder(10)]
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-    }
-
-    public static class CultureFunctions
-    {
-        public static string Title(this Culture c)
-        {
-            return c.CreateTitle(c.Name);
-        }
-        public static Culture Updating(Culture c, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(c, now);
-
-        }
+        public override string ToString() => Name;
     }
 }

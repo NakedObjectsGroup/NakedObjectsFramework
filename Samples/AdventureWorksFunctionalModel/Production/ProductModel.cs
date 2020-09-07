@@ -7,118 +7,44 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using NakedObjects;
 using NakedFunctions;
 
 namespace AdventureWorksModel
 {
-    [IconName("information.png")]
-    public class ProductModel: IHasRowGuid, IHasModifiedDate
+    public record ProductModel : IHasRowGuid, IHasModifiedDate
     {
-        public ProductModel(
-            int productModelID,
-            string name,
-            string catalogDescription,
-            string instructions,
-            ICollection<Product> productVariants,
-            ICollection<ProductModelIllustration> productModelIllustration,
-            ICollection<ProductModelProductDescriptionCulture>productModelProductDescriptionCulture,
-            Guid rowguid,
-            DateTime modifiedDate
-            )
-        {
-            ProductModelID = productModelID;
-            Name = name;
-            CatalogDescription = catalogDescription;
-            Instructions = instructions;
-            ProductVariants = productVariants;
-            ProductModelIllustration = productModelIllustration;
-            ProductModelProductDescriptionCulture = productModelProductDescriptionCulture;
-        }
-        public ProductModel() { }
         [NakedObjectsIgnore]
-        public virtual int ProductModelID { get; set; }
+        public virtual int ProductModelID { get; init; }
 
         [MemberOrder(10)]
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
         [NakedObjectsIgnore]
-        public virtual string CatalogDescription { get; set; }
+        public virtual string CatalogDescription { get; init; }
 
         [MemberOrder(30)]
-        public virtual string Instructions { get; set; }
+        public virtual string Instructions { get; init; }
 
         [TableView(true, "Name", "Number", "Color", "ProductInventory")]
-        public virtual ICollection<Product> ProductVariants { get; set; }
+        public virtual ICollection<Product> ProductVariants { get; init; } = new List<Product>();
 
         [NakedObjectsIgnore]
-        public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; set; }
+        public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; init; } = new List<ProductModelIllustration>();
 
         [NakedObjectsIgnore]
-        public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; set; }
-
-        #region Row Guid and Modified Date
-
-        #region rowguid
+        public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; init; } = new List<ProductModelProductDescriptionCulture>();
 
         [NakedObjectsIgnore]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
-        #endregion
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #endregion
-    }
-
-    public static class ProductModelFunctions
-    {
-        public static string Title(this ProductModel pm)
-        {
-            return pm.CreateTitle(pm.Name);
-        }
-        [DisplayAsProperty]
-        [MemberOrder(22)]
-        public static string LocalCultureDescription(ProductModel pm)
-        {
-            string usersPref = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-            return (from obj in pm.ProductModelProductDescriptionCulture
-                    where obj.Culture.CultureID.StartsWith(usersPref)
-                    select obj.ProductDescription.Description).FirstOrDefault();
-        }
-
-        [DisplayAsProperty]
-        [DisplayName("CatalogDescription")]
-        [MemberOrder(20)]
-        [MultiLine(NumberOfLines = 10)]
-        [TypicalLength(500)]
-        public static string FormattedCatalogDescription(ProductModel pm)
-        {
-            var output = new StringBuilder();
-            //TODO: Re-write using aggregation (reduce) pattern
-            if (!string.IsNullOrEmpty(pm.CatalogDescription))
-            {
-                XElement.Parse(pm.CatalogDescription).Elements().ToList().ForEach(n => output.Append(n.Name.ToString().Substring(n.Name.ToString().IndexOf("}") + 1) + ": " + n.Value + "\n"));
-            }
-            return output.ToString();
-        }
-
-        public static ProductInventory Updating(ProductInventory a, [Injected] DateTime now)
-        {
-            return a.With(x => x.ModifiedDate, now);
-        }
+        public override string ToString() => Name;
     }
 }

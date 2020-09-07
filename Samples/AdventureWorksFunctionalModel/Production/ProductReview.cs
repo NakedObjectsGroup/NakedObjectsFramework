@@ -7,62 +7,38 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using NakedObjects;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
-    public class ProductReview {
-        #region Injected Services
-        public IDomainObjectContainer Container { set; protected get; }
-        #endregion
-
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
+    public record ProductReview {
         [NakedObjectsIgnore]
-        public virtual int ProductReviewID { get; set; }
+        public virtual int ProductReviewID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string ReviewerName { get; set; }
+        public virtual string ReviewerName { get; init; }
 
         [MemberOrder(2)]
-        public virtual DateTime ReviewDate { get; set; }
+        public virtual DateTime ReviewDate { get; init; }
 
         [MemberOrder(3)]
-        public virtual string EmailAddress { get; set; }
+        public virtual string EmailAddress { get; init; }
 
         [MemberOrder(4)]
-        public virtual int Rating { get; set; }
+        public virtual int Rating { get; init; }
 
         [MemberOrder(5)]
-        public virtual string Comments { get; set; }
+        public virtual string Comments { get; init; }
 
         [NakedObjectsIgnore]
-        public int ProductID { get; set; }
+        public int ProductID { get; init; }
 
         [NakedObjectsIgnore]
-        public virtual Product Product { get; set; }
+        public virtual Product Product { get; init; }
 
-        #region ModifiedDate
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        [MemberOrder(99)]
-        [Disabled]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            string stars = "*****".Substring(0, Rating);
-            t.Append(stars);
-            return t.ToString();
-        }
+        public override string ToString()  => "*****".Substring(0, Rating);
+        
     }
 }
