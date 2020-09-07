@@ -50,7 +50,7 @@ namespace AdventureWorksModel
         [PageSize(20)]
         public static IQueryable<Product> AutoCompleteProduct([Range(2, 0)] string name, IQueryable<Product> products)
         {
-            return ProductRepository.FindProductByName(name, products);
+            return ProductMenuFunctions.FindProductByName(name, products);
         }
 
         [MemberOrder(1)]

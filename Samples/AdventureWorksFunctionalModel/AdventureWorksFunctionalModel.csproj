@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="AdventureWorksContext.cs" />
+    <Compile Remove="%28Old%29 AdventureWorksContext - Copy.cs" />
     <Compile Remove="Human Resources\Employee.cs" />
     <Compile Remove="Human Resources\EmployeeAddress.cs" />
     <Compile Remove="Human Resources\EmployeeDepartmentHistory.cs" />
@@ -53,6 +53,10 @@
     <Compile Include="Sales\SpecialOfferContributedActions.cs" />
     <Compile Include="Sales\SpecialOfferProduct.cs" />
     <Compile Include="Sales\SpecialOfferRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
   </ItemGroup>
 
   <ItemGroup>
