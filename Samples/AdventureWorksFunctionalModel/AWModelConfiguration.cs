@@ -1,6 +1,7 @@
 ﻿using AdventureWorksModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 
 namespace AdventureWorksFunctionalModel
 {
@@ -8,8 +9,10 @@ namespace AdventureWorksFunctionalModel
     {
         public static List<Type> DomainTypes() => new List<Type>
         {
-            typeof(Product), typeof(SpecialOffer)
+            typeof(Product), typeof(SpecialOffer) //etc.
         };
+
+        public static Func<string, DbContext> DbContextGenerator => (string connectionString) => new AdventureWorksContext(connectionString);
 
 
         //Main menu functions would be registered like this (with no need for IMenu or other type)
