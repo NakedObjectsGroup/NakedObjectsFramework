@@ -3,7 +3,7 @@
 namespace NakedFunctions
 {
     /// <summary>
-    ///     Used to indicate that an action parameter, is optional.
+    ///     Used to indicate that an action parameter, is optional. May be applied to properties, but relevant to editable view models only.
     /// </summary>
     /// <remarks>
     ///     <para>
@@ -11,6 +11,6 @@ namespace NakedFunctions
     ///         user execute that action unless values have been specified for each parameter.
     ///     </para>
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class OptionallyAttribute : Attribute { }
 }

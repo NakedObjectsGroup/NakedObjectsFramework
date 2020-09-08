@@ -330,6 +330,11 @@ namespace AdventureWorksModel {
         {
             return photos;
         }
+
+        #region Create new
+        public static ProductEVM CreateNewProduct()
+        => new ProductEVM();
+        #endregion
     }
 
 }

@@ -21,62 +21,6 @@ namespace AdventureWorksFunctionalModel {
 
         #endregion
 
-        #region Edit properties
-        #region Edit Product Line
-        public static (Product, Product) EditProductLine(this Product p, string line)
-            => DisplayAndPersist(p with { ProductLine = line });
-        public static string[] Choices0EditProductLine(this Product p)
-        => new[] { "R ", "M ", "T ", "S " };  // nchar(2) in database so pad right with space
-        #endregion
-
-        #region Edit class
-        public static (Product, Product) EditClass(this Product p, string newClass)
-    => DisplayAndPersist(p with { Class = newClass });
-
-        public static string[] Choices0EditClass(this Product p)
-        => new[] { "H ", "M ", "L " }; // nchar(2) in database so pad right with space
-        #endregion
-
-        #region Edit style
-        public static (Product, Product) EditStyle(this Product p, string style)
-    => DisplayAndPersist(p with { Style = style });
-
-        public static string[] Choices0EditStyle(this Product p)
-        => new[] { "U ", "M ", "W " }; // nchar(2) in database so pad right with space
-        #endregion
-
-        #region Edit Product Model
-
-        public static (Product, Product) EditProductModel(this Product p, ProductModel newModel)
-        => DisplayAndPersist(p with { ProductModel = newModel });
-
-        public static IQueryable<ProductModel> AutoComplete0EditProductModel(Product p, string match, IQueryable<ProductModel> models)
-        {
-            return models.Where(pm => pm.Name.ToUpper().Contains(match.ToUpper()));
-        }
-        #endregion
-
-        #region Edit Categories
-        public static (Product, Product) EditCategories(this Product p, ProductCategory category, ProductSubcategory subcategory)
-            => DisplayAndPersist(p with { ProductCategory = category, ProductSubcategory = subcategory });
-
-
-
-        //TODO: Check - does the contributee count as a parameter?
-        public static IList<ProductSubcategory> Choices1Edit(
-            Product p,
-            ProductCategory productCategory,
-            IQueryable<ProductSubcategory> subCats)
-        {
-            if (productCategory != null)
-            {
-                return subCats.Where(psc => psc.ProductCategory.ProductCategoryID == productCategory.ProductCategoryID).ToList();
-            }
-            return new ProductSubcategory[] { }.ToList();
-        }
-        #endregion
-#endregion
-
         #region BestSpecialOffer
 
 
@@ -107,6 +51,10 @@ namespace AdventureWorksFunctionalModel {
             return p.DiscontinuedDate != null ? p.DiscontinuedDate.Value < now : false;
         }
 
+        #endregion
+
+        #region Edit
+        public static ProductEVM Edit(this Product p) => ProductEVMFunctions.CreateFrom(p);
         #endregion
     }
 }
