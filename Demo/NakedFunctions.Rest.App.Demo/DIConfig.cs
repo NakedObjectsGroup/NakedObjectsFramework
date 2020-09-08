@@ -67,5 +67,6 @@ namespace NakedObjects.Rest.App.Demo {
             //Externals
             services.AddScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);
         }
+
     }
 }

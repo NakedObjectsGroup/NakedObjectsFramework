@@ -19,6 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{736F43
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Rest.App.Demo", "Demo\NakedObjects.Rest.App.Demo\NakedObjects.Rest.App.Demo.csproj", "{C9323589-82ED-445C-9CCC-553C8DC9DB73}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Rest.App.Demo", "Demo\NakedFunctions.Rest.App.Demo\NakedFunctions.Rest.App.Demo.csproj", "{1A2C6C78-CBCE-4E3B-AE4E-C7EF1011FE48}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksFunctionalModel", "Samples\AdventureWorksFunctionalModel\AdventureWorksFunctionalModel.csproj", "{1F69C01B-49B9-4D06-8482-D51D19BA938D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{C9323589-82ED-445C-9CCC-553C8DC9DB73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9323589-82ED-445C-9CCC-553C8DC9DB73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9323589-82ED-445C-9CCC-553C8DC9DB73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A2C6C78-CBCE-4E3B-AE4E-C7EF1011FE48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A2C6C78-CBCE-4E3B-AE4E-C7EF1011FE48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A2C6C78-CBCE-4E3B-AE4E-C7EF1011FE48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A2C6C78-CBCE-4E3B-AE4E-C7EF1011FE48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F69C01B-49B9-4D06-8482-D51D19BA938D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F69C01B-49B9-4D06-8482-D51D19BA938D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F69C01B-49B9-4D06-8482-D51D19BA938D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F69C01B-49B9-4D06-8482-D51D19BA938D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -255,7 +255,14 @@ namespace NakedObjects.Persistor.Entity.Component {
             // do nothing 
         }
 
-        public IQueryable<T> GetInstances<T>() where T : class => (IQueryable<T>) GetContext(typeof(T)).GetQueryableOfDerivedType<T>();
+        private IQueryable<T> EagerLoad<T>(LocalContext context, Type entityType, IQueryable queryable) => (IQueryable<T>) queryable.AsNoTracking();
+
+        public IQueryable<T> GetInstances<T>(bool tracked = true) where T : class
+        {
+            var context = GetContext(typeof(T));
+            IQueryable<T> queryable = (IQueryable<T>) context.GetQueryableOfDerivedType<T>();
+            return tracked ? queryable : EagerLoad<T>(context, typeof(T), queryable);
+        }
 
         public IQueryable GetInstances(Type type) => (IQueryable) GetContext(type).GetQueryableOfDerivedType(type);
 
@@ -463,7 +470,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 catch (ArgumentException)
                 {
                     // not an EF recognised entry 
-                    //Log.Warn($"Attempting to 'Reattach' a non-EF object: {poco.GetType().FullName}");
+                    logger.LogWarning($"Attempting to 'Reattach' a non-EF object: {poco.GetType().FullName}");
                 }
             }
         }

@@ -40,7 +40,9 @@ namespace NakedObjects.Core.Component {
 
         #region IObjectPersistor Members
 
-        public IQueryable<T> Instances<T>() where T : class => GetInstances<T>();
+        public IQueryable<T> UntrackedInstances<T>() where T : class => GetInstances<T>(false);
+
+        public IQueryable<T> Instances<T>() where T : class => GetInstances<T>(true);
 
         public IQueryable Instances(Type type) => GetInstances(type);
 
@@ -203,7 +205,7 @@ namespace NakedObjects.Core.Component {
 
         #endregion
 
-        private IQueryable<T> GetInstances<T>() where T : class => objectStore.GetInstances<T>();
+        private IQueryable<T> GetInstances<T>(bool tracked = true) where T : class => objectStore.GetInstances<T>(tracked);
 
         private IQueryable GetInstances(Type type) => objectStore.GetInstances(type);
 

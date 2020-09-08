@@ -183,25 +183,13 @@ namespace NakedObjects.Core.Adapter {
 
         public void Updated() => CallCallback<IUpdatedCallbackFacet>();
 
-        public object PersistingAndReturn()
-        {
-            return CallCallbackAndReturn<IPersistingCallbackFacet>();
-        }
+        public object PersistingAndReturn() => CallCallbackAndReturn<IPersistingCallbackFacet>();
 
-        public object PersistedAndReturn()
-        {
-            return CallCallbackAndReturn<IPersistedCallbackFacet>();
-        }
+        public object PersistedAndReturn() => CallCallbackAndReturn<IPersistedCallbackFacet>();
 
-        public object UpdatingAndReturn()
-        {
-            return CallCallbackAndReturn<IUpdatingCallbackFacet>();
-        }
+        public object UpdatingAndReturn() => CallCallbackAndReturn<IUpdatingCallbackFacet>();
 
-        public object UpdatedAndReturn()
-        {
-            return CallCallbackAndReturn<IUpdatedCallbackFacet>();
-        }
+        public object UpdatedAndReturn() => CallCallbackAndReturn<IUpdatedCallbackFacet>();
 
         #endregion
 

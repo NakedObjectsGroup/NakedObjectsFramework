@@ -18,6 +18,7 @@ namespace NakedObjects.Architecture.Component {
     ///     inheritance.
     /// </summary>
     public interface IObjectPersistor {
+        IQueryable<T> UntrackedInstances<T>() where T : class;
         IQueryable<T> Instances<T>() where T : class;
         IQueryable Instances(Type type);
         IQueryable Instances(IObjectSpec spec);
