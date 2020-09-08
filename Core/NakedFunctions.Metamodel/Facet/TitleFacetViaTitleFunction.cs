@@ -14,30 +14,24 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet
-{
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class TitleFacetViaTitleFunction : TitleFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public TitleFacetViaTitleFunction(MethodInfo method, ISpecification holder)
-            : base(holder) {
-            this.method = method;
-        }
+        public TitleFacetViaTitleFunction(MethodInfo method, ISpecification holder) : base(holder) => this.method = method;
 
-        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, ISession session, IObjectPersistor persistor) {
-            return method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, session, persistor)) as string;
-        }
+        public override string GetTitle(INakedObjectAdapter nakedObjectAdapter,
+                                        INakedObjectManager nakedObjectManager,
+                                        ISession session,
+                                        IObjectPersistor persistor) =>
+            method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, session, persistor)) as string;
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return method;
-        }
+        public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return null;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => null;
 
         #endregion
     }

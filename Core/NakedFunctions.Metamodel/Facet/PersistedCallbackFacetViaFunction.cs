@@ -15,43 +15,39 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet
-{
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class PersistedCallbackFacetViaFunction : PersistedCallbackFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
-        public PersistedCallbackFacetViaFunction(MethodInfo method, ISpecification holder)
-            : base(holder) {
-            this.method = method;
-        }
+        public PersistedCallbackFacetViaFunction(MethodInfo method, ISpecification holder) : base(holder) => this.method = method;
 
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() {
-            return method;
-        }
-
-        public Func<object, object[], object> GetMethodDelegate() {
-            return null;
-        }
-
-        #endregion
-
-        public override void Invoke(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
+        public override void Invoke(INakedObjectAdapter nakedObjectAdapter,
+                                    ISession session,
+                                    ILifecycleManager lifecycleManager,
+                                    IMetamodelManager metamodelManager) {
             // do nothing should always be called via Invoke and Return
         }
 
-        public override object InvokeAndReturn(INakedObjectAdapter nakedObjectAdapter, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager, IObjectPersistor persistor) {
-            return method.Invoke(obj: null, parameters: method.GetParameterValues(nakedObjectAdapter, session, persistor));
-        }
+        public override object InvokeAndReturn(INakedObjectAdapter nakedObjectAdapter,
+                                               ISession session,
+                                               ILifecycleManager lifecycleManager,
+                                               IMetamodelManager metamodelManager,
+                                               IObjectPersistor persistor) =>
+            method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, session, persistor));
 
-        protected override string ToStringValues() {
-            return "method=" + method;
-        }
+        protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context) { }
+
+        #region IImperativeFacet Members
+
+        public MethodInfo GetMethod() => method;
+
+        public Func<object, object[], object> GetMethodDelegate() => null;
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

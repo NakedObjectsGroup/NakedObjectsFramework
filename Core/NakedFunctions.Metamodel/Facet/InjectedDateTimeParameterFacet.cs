@@ -15,16 +15,13 @@ using NakedObjects.Meta.Utils;
 namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class InjectedDateTimeParameterFacet : FacetAbstract, IInjectedParameterFacet {
-        public InjectedDateTimeParameterFacet(ISpecification holder)
-            : base(Type, holder) { }
+        public InjectedDateTimeParameterFacet(ISpecification holder) : base(Type, holder) { }
 
         public static Type Type => typeof(IInjectedParameterFacet);
 
         #region IInjectedParameterFacet Members
 
-        public object GetInjectedValue(INakedObjectsFramework framework) {
-            return InjectUtils.GetInjectedDateTimeValue();
-        }
+        public object GetInjectedValue(INakedObjectsFramework framework) => InjectUtils.GetInjectedDateTimeValue();
 
         #endregion
     }

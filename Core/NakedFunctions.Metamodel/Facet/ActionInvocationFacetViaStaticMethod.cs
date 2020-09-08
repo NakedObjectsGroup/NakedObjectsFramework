@@ -22,12 +22,9 @@ using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 
-namespace NakedFunctions.Meta.Facet
-{
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class ActionInvocationFacetViaStaticMethod : ActionInvocationFacetAbstract, IImperativeFacet {
-
-        [field: NonSerialized] private readonly MethodInfo actionMethod;
         private readonly ILogger<ActionInvocationFacetViaStaticMethod> logger;
 
         private readonly int paramCount;
@@ -40,7 +37,7 @@ namespace NakedFunctions.Meta.Facet
                                                     bool isQueryOnly,
                                                     ILogger<ActionInvocationFacetViaStaticMethod> logger)
             : base(holder) {
-            actionMethod = method;
+            ActionMethod = method;
             this.logger = logger;
             paramCount = method.GetParameters().Length;
             OnType = onType;
@@ -49,7 +46,7 @@ namespace NakedFunctions.Meta.Facet
             IsQueryOnly = isQueryOnly;
         }
 
-        public override MethodInfo ActionMethod => actionMethod;
+        [field: NonSerialized] public override MethodInfo ActionMethod { get; }
 
         public override IObjectSpecImmutable ReturnType { get; }
 
@@ -58,21 +55,6 @@ namespace NakedFunctions.Meta.Facet
         public override IObjectSpecImmutable ElementType { get; }
 
         public override bool IsQueryOnly { get; }
-
-        #region IImperativeFacet Members
-
-        /// <summary>
-        ///     See <see cref="IImperativeFacet" />
-        /// </summary>
-        public MethodInfo GetMethod() {
-            return actionMethod;
-        }
-
-        public Func<object, object[], object> GetMethodDelegate() {
-            return null;
-        }
-
-        #endregion
 
         private static INakedObjectAdapter AdaptResult(INakedObjectManager nakedObjectManager, object result) {
             if (CollectionUtils.IsCollection(result.GetType()) ||
@@ -84,12 +66,12 @@ namespace NakedFunctions.Meta.Facet
         }
 
 
-        private static (object, object)[] PersistResult(ILifecycleManager lifecycleManager, IEnumerable<object> toPersist) =>
+        private static (object, object)[] PersistResult(ILifecycleManager lifecycleManager,
+                                                        IEnumerable<object> toPersist) =>
             toPersist.Select(obj => (obj, lifecycleManager.Persist(obj))).ToArray();
 
-        private static object ReplacePersisted(object toReturn, (object, object)[] persisted)
-        {
-            var asEnumerable = toReturn as IEnumerable ?? new[] { toReturn };
+        private static object ReplacePersisted(object toReturn, (object, object)[] persisted) {
+            var asEnumerable = toReturn as IEnumerable ?? new[] {toReturn};
             var result = new List<object>();
 
             foreach (var obj in asEnumerable) {
@@ -110,8 +92,9 @@ namespace NakedFunctions.Meta.Facet
             return result.Count == 1 ? result.First() : result;
         }
 
-        private (IEnumerable<object>, IEnumerable<Action>) HandleTupleItem(object item, IEnumerable<object> persisting, IEnumerable<Action> acting) =>
-             item switch {
+        private (IEnumerable<object>, IEnumerable<Action>) HandleTupleItem(object item, IEnumerable<object> persisting,
+                                                                           IEnumerable<Action> acting) =>
+            item switch {
                 Action action => (persisting, acting.Append(action)),
                 ITuple tuple => HandleNestedTuple(tuple, persisting, acting),
                 { } o => (persisting.Append(o), acting),
@@ -119,7 +102,9 @@ namespace NakedFunctions.Meta.Facet
             };
 
 
-        private (IEnumerable<object>, IEnumerable<Action>) IterateTuple(ITuple tuple, int start, IEnumerable<object> persisting, IEnumerable<Action> acting) {
+        private (IEnumerable<object>, IEnumerable<Action>) IterateTuple(ITuple tuple, int start,
+                                                                        IEnumerable<object> persisting,
+                                                                        IEnumerable<Action> acting) {
             for (var i = start; i < tuple.Length; i++) {
                 (persisting, acting) = HandleTupleItem(tuple[i], persisting, acting);
             }
@@ -127,20 +112,24 @@ namespace NakedFunctions.Meta.Facet
             return (persisting, acting);
         }
 
-        private (IEnumerable<object>, IEnumerable<Action>) HandleNestedTuple(ITuple tuple,  IEnumerable<object> persisting, IEnumerable<Action> acting) =>
+        private (IEnumerable<object>, IEnumerable<Action>) HandleNestedTuple(ITuple tuple,
+                                                                             IEnumerable<object> persisting,
+                                                                             IEnumerable<Action> acting) =>
             IterateTuple(tuple, 0, persisting, acting);
 
         private (object, (IEnumerable<object>, IEnumerable<Action>)) HandleTuple(ITuple tuple, IEnumerable<object> persisting, IEnumerable<Action> acting) =>
             (tuple[0], IterateTuple(tuple, 1, persisting, acting));
 
-        private INakedObjectAdapter HandleInvokeResult(INakedObjectManager nakedObjectManager, ILifecycleManager lifecycleManager, IMessageBroker messageBroker, object result) {
+        private INakedObjectAdapter HandleInvokeResult(INakedObjectManager nakedObjectManager,
+                                                       ILifecycleManager lifecycleManager, IMessageBroker messageBroker,
+                                                       object result) {
             object toReturn;
             IEnumerable<object> toPersist = new List<object>();
             IEnumerable<Action> toAct = new List<Action>();
 
-            if (result is ITuple tuple ) {
+            if (result is ITuple tuple) {
                 var size = tuple.Length;
-               
+
                 if (size < 2) {
                     throw new InvokeException("Invalid return type", new Exception());
                 }
@@ -161,24 +150,46 @@ namespace NakedFunctions.Meta.Facet
             return AdaptResult(nakedObjectManager, toReturn);
         }
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager) {
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter,
+                                                   INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager,
+                                                   IMetamodelManager manager,
+                                                   ISession session, INakedObjectManager nakedObjectManager,
+                                                   IMessageBroker messageBroker,
+                                                   ITransactionManager transactionManager) {
             if (parameters.Length != paramCount) {
-                logger.LogError($"{actionMethod} requires {paramCount} parameters, not {parameters.Length}");
+                logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
             }
 
-            return HandleInvokeResult(nakedObjectManager, lifecycleManager, messageBroker, InvokeUtils.InvokeStatic(actionMethod, parameters));
+            return HandleInvokeResult(nakedObjectManager, lifecycleManager, messageBroker, InvokeUtils.InvokeStatic(ActionMethod, parameters));
         }
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager) {
-            return Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager, messageBroker, transactionManager);
-        }
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,
+                                                   INakedObjectAdapter[] parameters,
+                                                   int resultPage,
+                                                   ILifecycleManager lifecycleManager,
+                                                   IMetamodelManager manager,
+                                                   ISession session,
+                                                   INakedObjectManager nakedObjectManager,
+                                                   IMessageBroker messageBroker,
+                                                   ITransactionManager transactionManager) =>
+            Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager,
+                   messageBroker, transactionManager);
 
-        protected override string ToStringValues() {
-            return "method=" + actionMethod;
-        }
+        protected override string ToStringValues() => $"method={ActionMethod}";
 
         [OnDeserialized]
         private static void OnDeserialized(StreamingContext context) { }
+
+        #region IImperativeFacet Members
+
+        /// <summary>
+        ///     See <see cref="IImperativeFacet" />
+        /// </summary>
+        public MethodInfo GetMethod() => ActionMethod;
+
+        public Func<object, object[], object> GetMethodDelegate() => null;
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -14,41 +14,39 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
-using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet
-{
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class HideForContextViaFunctionFacet : FacetAbstract, IHideForContextFacet, IImperativeFacet {
         private readonly MethodInfo method;
-       
 
-        public HideForContextViaFunctionFacet(MethodInfo method, ISpecification holder)
-            : base(typeof (IHideForContextFacet), holder) {
-            this.method = method;
-        }
+
+        public HideForContextViaFunctionFacet(MethodInfo method, ISpecification holder) : base(typeof(IHideForContextFacet), holder) => this.method = method;
+
+        protected override string ToStringValues() => $"method={method}";
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context) { }
 
         #region IHideForContextFacet Members
 
-        public string Hides(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager)
-        {
-            INakedObjectAdapter target = ic.Target;
-            return HiddenReason(target, ic.Session, ic.Persistor);
-        }
+        public string Hides(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager) => HiddenReason(ic.Target, ic.Session, ic.Persistor);
 
-        public Exception CreateExceptionFor(IInteractionContext ic, ILifecycleManager lifecycleManager, IMetamodelManager manager)
-        {
-            return new HiddenException(ic, Hides(ic, lifecycleManager, manager));
-        }
+        public Exception CreateExceptionFor(IInteractionContext ic,
+                                            ILifecycleManager lifecycleManager,
+                                            IMetamodelManager manager) =>
+            new HiddenException(ic, Hides(ic, lifecycleManager, manager));
 
-        public string HiddenReason(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor) {
-            if (nakedObjectAdapter == null)
-            {
+        public string HiddenReason(INakedObjectAdapter nakedObjectAdapter,
+                                   ISession session,
+                                   IObjectPersistor persistor) {
+            if (nakedObjectAdapter == null) {
                 return null;
             }
-            var isHidden = (bool)method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, session, persistor));
+
+            var isHidden = (bool) method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, session, persistor));
             return isHidden ? NakedObjects.Resources.NakedObjects.Hidden : null;
         }
 
@@ -56,26 +54,11 @@ namespace NakedFunctions.Meta.Facet
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return method;
-        }
+        public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return null;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => null;
 
         #endregion
-
-        protected override string ToStringValues() {
-            return "method=" + method;
-        }
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-            
-        }
-
-     
     }
 
     // Copyright (c) Naked Objects Group Ltd.

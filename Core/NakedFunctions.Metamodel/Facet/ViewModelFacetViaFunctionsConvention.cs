@@ -11,34 +11,40 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet
-{
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class ViewModelFacetViaFunctionsConvention : ViewModelFacetAbstract {
-        private readonly ISpecification holder;
         private readonly MethodInfo deriveFunction;
+        private readonly ISpecification holder;
         private readonly MethodInfo populateFunction;
 
-        public ViewModelFacetViaFunctionsConvention(ISpecification holder, MethodInfo deriveFunction, MethodInfo populateFunction)
+        public ViewModelFacetViaFunctionsConvention(ISpecification holder,
+                                                    MethodInfo deriveFunction,
+                                                    MethodInfo populateFunction)
             : base(Type, holder) {
             this.holder = holder;
             this.deriveFunction = deriveFunction;
             this.populateFunction = populateFunction;
         }
 
-        private static Type Type => typeof (IViewModelFacet);
+        private static Type Type => typeof(IViewModelFacet);
 
-        public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector, ISession session, IObjectPersistor persistor) {
-            return deriveFunction.Invoke(null, deriveFunction.GetParameterValues(nakedObjectAdapter, session, persistor)) as string[];
-        }
+        public override string[] Derive(INakedObjectAdapter nakedObjectAdapter,
+                                        INakedObjectManager nakedObjectManager,
+                                        IDomainObjectInjector injector,
+                                        ISession session,
+                                        IObjectPersistor persistor) =>
+            deriveFunction.Invoke(null, deriveFunction.GetParameterValues(nakedObjectAdapter, session, persistor)) as string[];
 
-        public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector, ISession session, IObjectPersistor persistor) {
+        public override void Populate(string[] keys,
+                                      INakedObjectAdapter nakedObjectAdapter,
+                                      INakedObjectManager nakedObjectManager, IDomainObjectInjector injector,
+                                      ISession session,
+                                      IObjectPersistor persistor) {
             var newVm = populateFunction.Invoke(null, populateFunction.GetParameterValues(nakedObjectAdapter, keys, session, persistor));
-
             nakedObjectAdapter.ReplacePoco(newVm);
         }
     }

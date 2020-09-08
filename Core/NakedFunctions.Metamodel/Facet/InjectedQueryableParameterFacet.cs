@@ -12,16 +12,12 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet
-{
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class InjectedQueryableParameterFacet : FacetAbstract, IInjectedParameterFacet {
         private readonly Type typeOfQueryable;
 
-        public InjectedQueryableParameterFacet(ISpecification holder, Type typeOfQueryable)
-            : base(Type, holder) {
-            this.typeOfQueryable = InjectUtils.GetMatchingImpl(typeOfQueryable);
-        }
+        public InjectedQueryableParameterFacet(ISpecification holder, Type typeOfQueryable) : base(Type, holder) => this.typeOfQueryable = InjectUtils.GetMatchingImpl(typeOfQueryable);
 
         public static Type Type => typeof(IInjectedParameterFacet);
 

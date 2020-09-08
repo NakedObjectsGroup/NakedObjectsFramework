@@ -7,7 +7,6 @@
 
 using System;
 using System.Reflection;
-
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -15,8 +14,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet
-{
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class ViewModelSwitchableFacetViaFunctionsConvention : ViewModelFacetAbstract {
         private readonly MethodInfo deriveFunction;
@@ -24,7 +22,10 @@ namespace NakedFunctions.Meta.Facet
         private readonly MethodInfo isEditMethod;
         private readonly MethodInfo populateFunction;
 
-        public ViewModelSwitchableFacetViaFunctionsConvention(ISpecification holder, MethodInfo deriveFunction, MethodInfo populateFunction, MethodInfo isEditMethod) : base(Type, holder) {
+        public ViewModelSwitchableFacetViaFunctionsConvention(ISpecification holder,
+                                                              MethodInfo deriveFunction,
+                                                              MethodInfo populateFunction,
+                                                              MethodInfo isEditMethod) : base(Type, holder) {
             this.holder = holder;
             this.deriveFunction = deriveFunction;
             this.populateFunction = populateFunction;
@@ -33,18 +34,28 @@ namespace NakedFunctions.Meta.Facet
 
         private static Type Type => typeof(IViewModelFacet);
 
-        public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector, ISession session, IObjectPersistor persistor) {
-            return deriveFunction.Invoke(null, deriveFunction.GetParameterValues(nakedObjectAdapter, session, persistor)) as string[];
-        }
+        public override string[] Derive(INakedObjectAdapter nakedObjectAdapter,
+                                        INakedObjectManager nakedObjectManager,
+                                        IDomainObjectInjector injector,
+                                        ISession session,
+                                        IObjectPersistor persistor) =>
+            deriveFunction.Invoke(null, deriveFunction.GetParameterValues(nakedObjectAdapter, session, persistor)) as string[];
 
-        public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector, ISession session, IObjectPersistor persistor) {
-            var newVm = populateFunction.Invoke(null, populateFunction.GetParameterValues(nakedObjectAdapter, keys, session, persistor));
+        public override void Populate(string[] keys,
+                                      INakedObjectAdapter nakedObjectAdapter,
+                                      INakedObjectManager nakedObjectManager,
+                                      IDomainObjectInjector injector,
+                                      ISession session,
+                                      IObjectPersistor persistor) {
+            var newVm = populateFunction.Invoke(null,
+                                                populateFunction.GetParameterValues(nakedObjectAdapter, keys, session, persistor));
 
             nakedObjectAdapter.ReplacePoco(newVm);
         }
 
-        public override bool IsEditView(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor) {
-            return (bool)isEditMethod.Invoke(null, isEditMethod.GetParameterValues(nakedObjectAdapter, session, persistor));
-        }
+        public override bool IsEditView(INakedObjectAdapter nakedObjectAdapter,
+                                        ISession session,
+                                        IObjectPersistor persistor) =>
+            (bool) isEditMethod.Invoke(null, isEditMethod.GetParameterValues(nakedObjectAdapter, session, persistor));
     }
 }

@@ -12,20 +12,16 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet
-{
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class InjectedIPrincipalParameterFacet : FacetAbstract, IInjectedParameterFacet {
-        public InjectedIPrincipalParameterFacet(ISpecification holder)
-            : base(Type, holder) { }
+        public InjectedIPrincipalParameterFacet(ISpecification holder) : base(Type, holder) { }
 
         public static Type Type => typeof(IInjectedParameterFacet);
 
         #region IInjectedParameterFacet Members
 
-        public object GetInjectedValue(INakedObjectsFramework framework) {
-            return InjectUtils.GetInjectedIPrincipalValue(framework.Session);
-        }
+        public object GetInjectedValue(INakedObjectsFramework framework) => InjectUtils.GetInjectedIPrincipalValue(framework.Session);
 
         #endregion
     }

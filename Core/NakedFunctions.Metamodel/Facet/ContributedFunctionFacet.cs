@@ -8,32 +8,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 
-namespace NakedFunctions.Meta.Facet
-{
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class ContributedFunctionFacet : FacetAbstract, IContributedFunctionFacet {
-
         private readonly List<ITypeSpecImmutable> objectContributees = new List<ITypeSpecImmutable>();
 
-        public ContributedFunctionFacet(ISpecification holder)
-            : base(typeof(IContributedFunctionFacet), holder) { }
+        public ContributedFunctionFacet(ISpecification holder) : base(typeof(IContributedFunctionFacet), holder) { }
 
         #region IContributedFunctionFacet Members
 
-        public bool IsContributedTo(ITypeSpecImmutable spec) {
-            return objectContributees.Any(spec.IsOfType);
-        }
+        public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);
 
         #endregion
 
-        public void AddContributee(ITypeSpecImmutable type) {
-            objectContributees.Add(type);
-        }
+        public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);
     }
 }

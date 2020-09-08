@@ -11,27 +11,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
-using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet
-{
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class ActionChoicesFacetViaFunction : ActionChoicesFacetAbstract, IImperativeFacet {
-
         private readonly MethodInfo choicesMethod;
         private readonly Type choicesType;
         private readonly string[] parameterNames;
 
-        public ActionChoicesFacetViaFunction(MethodInfo choicesMethod, (string, IObjectSpecImmutable)[] parameterNamesAndTypes, Type choicesType, ISpecification holder, bool isMultiple = false)
+        public ActionChoicesFacetViaFunction(MethodInfo choicesMethod,
+                                             (string, IObjectSpecImmutable)[] parameterNamesAndTypes, Type choicesType,
+                                             ISpecification holder,
+                                             bool isMultiple = false)
             : base(holder) {
             this.choicesMethod = choicesMethod;
             this.choicesType = choicesType;
@@ -44,40 +43,38 @@ namespace NakedFunctions.Meta.Facet
 
         public override bool IsMultiple { get; }
 
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() {
-            return choicesMethod;
-        }
-
-        public Func<object, object[], object> GetMethodDelegate() {
-            return null;
-        }
-
-        #endregion
-
-        public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, ISession session, IObjectPersistor persistor) {
-
+        public override object[] GetChoices(INakedObjectAdapter nakedObjectAdapter,
+                                            IDictionary<string, INakedObjectAdapter> parameterNameValues,
+                                            ISession session,
+                                            IObjectPersistor persistor) {
             try {
-                var options = choicesMethod.Invoke(null, choicesMethod.GetParameterValues(nakedObjectAdapter, parameterNameValues, session, persistor)) as IEnumerable;
-
-                if (options != null) {
+                if (choicesMethod.Invoke(null, choicesMethod.GetParameterValues(nakedObjectAdapter,
+                                                                                parameterNameValues,
+                                                                                session,
+                                                                                persistor)) is IEnumerable options) {
                     return options.Cast<object>().ToArray();
                 }
+
                 throw new NakedObjectDomainException($"Must return IEnumerable from choices method: {choicesMethod.Name}");
             }
             catch (ArgumentException ae) {
-                throw new InvokeException($"Choices exception: {choicesMethod.Name} has mismatched (ie type of choices parameter does not match type of action parameter) parameter types", ae);
+                throw new InvokeException($"Choices exception: {choicesMethod.Name} has mismatched (ie type of choices parameter does not match type of action parameter) parameter types",
+                                          ae);
             }
         }
 
-        protected override string ToStringValues() {
-            return "method=" + choicesMethod + ",Type=" + choicesType;
-        }
+        protected override string ToStringValues() => $"method={choicesMethod},Type={choicesType}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-        }
+        private void OnDeserialized(StreamingContext context) { }
+
+        #region IImperativeFacet Members
+
+        public MethodInfo GetMethod() => choicesMethod;
+
+        public Func<object, object[], object> GetMethodDelegate() => null;
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

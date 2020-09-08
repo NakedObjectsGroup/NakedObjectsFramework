@@ -14,59 +14,42 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
-using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet
-{
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class DisableForContextViaFunctionFacet : FacetAbstract, IDisableForContextFacet, IImperativeFacet {
         private readonly MethodInfo method;
-       
 
-        public DisableForContextViaFunctionFacet(MethodInfo method, ISpecification holder)
-            : base(typeof (IDisableForContextFacet), holder) {
-            this.method = method;
-        }
+
+        public DisableForContextViaFunctionFacet(MethodInfo method, ISpecification holder) : base(typeof(IDisableForContextFacet), holder) => this.method = method;
+
+        protected override string ToStringValues() => $"method={method}";
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context) { }
 
         #region IDisableForContextFacet Members
 
-        public string Disables(IInteractionContext ic) {
-            INakedObjectAdapter target = ic.Target;
-            return DisabledReason(target, ic.Session, ic.Persistor);
-        }
+        public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Session, ic.Persistor);
 
-        public Exception CreateExceptionFor(IInteractionContext ic) {
-            return new DisabledException(ic, Disables(ic));
-        }
+        public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
-        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor) {
-            return (string) method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, session, persistor));
-        }
+        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter,
+                                     ISession session,
+                                     IObjectPersistor persistor) =>
+            (string) method.Invoke(null, method.GetParameterValues(nakedObjectAdapter, session, persistor));
 
         #endregion
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return method;
-        }
+        public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return null;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => null;
 
         #endregion
-
-        protected override string ToStringValues() {
-            return "method=" + method;
-        }
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-            
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

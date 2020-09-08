@@ -6,44 +6,30 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Reflection;
 using System.Runtime.Serialization;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet
-{
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class ActionDefaultsFacetViaFunction : ActionDefaultsFacetAbstract, IImperativeFacet {
         private readonly MethodInfo method;
 
         public ActionDefaultsFacetViaFunction(MethodInfo method, ISpecification holder)
-            : base(holder) {
+            : base(holder) =>
             this.method = method;
-        }
 
         // for testing only 
         internal Func<object, object[], object> MethodDelegate => null;
 
-        #region IImperativeFacet Members
-
-        public MethodInfo GetMethod() {
-            return method;
-        }
-
-        public Func<object, object[], object> GetMethodDelegate() {
-            return null;
-        }
-
-        #endregion
-
-        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor) {
+        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter,
+                                                                ISession session,
+                                                                IObjectPersistor persistor) {
             // type safety is given by the reflector only identifying methods that match the 
             // parameter type
 
@@ -52,13 +38,18 @@ namespace NakedFunctions.Meta.Facet
             return (defaultValue, TypeOfDefaultValue.Explicit);
         }
 
-        protected override string ToStringValues() {
-            return "method=" + method;
-        }
+        protected override string ToStringValues() => $"method={method}";
 
         [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-        }
+        private void OnDeserialized(StreamingContext context) { }
+
+        #region IImperativeFacet Members
+
+        public MethodInfo GetMethod() => method;
+
+        public Func<object, object[], object> GetMethodDelegate() => null;
+
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -8,7 +8,6 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
-
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
@@ -17,51 +16,37 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta;
 using NakedObjects.Meta.Facet;
 
-namespace NakedFunctions.Meta.Facet
-{
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class ActionValidationViaFunctionFacet : FacetAbstract, IActionValidationFacet, IImperativeFacet {
         private readonly MethodInfo method;
 
         public ActionValidationViaFunctionFacet(MethodInfo method, ISpecification holder)
-            : base(typeof(IActionValidationFacet), holder) {
+            : base(typeof(IActionValidationFacet), holder) =>
             this.method = method;
-        }
+
+        protected override string ToStringValues() => $"method={method}";
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context) { }
 
         #region IActionValidationFacet Members
 
-        public string Invalidates(IInteractionContext ic) {
-            return InvalidReason(ic.Target, ic.ProposedArguments);
-        }
+        public string Invalidates(IInteractionContext ic) => InvalidReason(ic.Target, ic.ProposedArguments);
 
-        public Exception CreateExceptionFor(IInteractionContext ic) {
-            return new ActionArgumentsInvalidException(ic, Invalidates(ic));
-        }
+        public Exception CreateExceptionFor(IInteractionContext ic) => new ActionArgumentsInvalidException(ic, Invalidates(ic));
 
-        public string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter[] proposedArguments) {
-            return (string) InvokeUtils.InvokeStatic(method, proposedArguments);
-        }
+        public string InvalidReason(INakedObjectAdapter target, INakedObjectAdapter[] proposedArguments) => (string) InvokeUtils.InvokeStatic(method, proposedArguments);
 
         #endregion
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return method;
-        }
+        public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return null;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => null;
 
         #endregion
-
-        protected override string ToStringValues() {
-            return "method=" + method;
-        }
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) { }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

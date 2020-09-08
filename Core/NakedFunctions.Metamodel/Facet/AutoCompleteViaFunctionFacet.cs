@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -21,8 +20,7 @@ using NakedObjects.Core.Util.Query;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedFunctions.Meta.Facet
-{
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class AutoCompleteViaFunctionFacet : FacetAbstract, IAutoCompleteFacet, IImperativeFacet {
         private const int DefaultPageSize = 50;
@@ -31,7 +29,8 @@ namespace NakedFunctions.Meta.Facet
         private AutoCompleteViaFunctionFacet(ISpecification holder)
             : base(Type, holder) { }
 
-        public AutoCompleteViaFunctionFacet(MethodInfo autoCompleteMethod, int pageSize, int minLength, ISpecification holder)
+        public AutoCompleteViaFunctionFacet(MethodInfo autoCompleteMethod, int pageSize, int minLength,
+                                            ISpecification holder)
             : this(holder) {
             method = autoCompleteMethod;
             PageSize = pageSize == 0 ? DefaultPageSize : pageSize;
@@ -42,13 +41,18 @@ namespace NakedFunctions.Meta.Facet
 
         public int PageSize { get; }
 
+        protected override string ToStringValues() => $"method={method}";
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context) { }
+
         #region IAutoCompleteFacet Members
 
         public int MinLength { get; }
 
         public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm, ISession session, IObjectPersistor persistor) {
             try {
-                object autoComplete = method.Invoke(null, method.GetParameterValues(inObjectAdapter, autoCompleteParm, session, persistor));
+                var autoComplete = method.Invoke(null, method.GetParameterValues(inObjectAdapter, autoCompleteParm, session, persistor));
 
                 //returning an IQueryable
                 var queryable = autoComplete as IQueryable;
@@ -78,23 +82,11 @@ namespace NakedFunctions.Meta.Facet
 
         #region IImperativeFacet Members
 
-        public MethodInfo GetMethod() {
-            return method;
-        }
+        public MethodInfo GetMethod() => method;
 
-        public Func<object, object[], object> GetMethodDelegate() {
-            return null;
-        }
+        public Func<object, object[], object> GetMethodDelegate() => null;
 
         #endregion
-
-        protected override string ToStringValues() {
-            return "method=" + method;
-        }
-
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext context) {
-        }
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -10,12 +10,10 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
-namespace NakedFunctions.Meta.Facet
-{
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class InjectedFacet : MarkerFacetAbstract, IInjectedFacet {
-        public InjectedFacet(ISpecification holder)
-            : base(Type, holder) { }
+        public InjectedFacet(ISpecification holder) : base(Type, holder) { }
 
         public static Type Type => typeof(IInjectedFacet);
     }
