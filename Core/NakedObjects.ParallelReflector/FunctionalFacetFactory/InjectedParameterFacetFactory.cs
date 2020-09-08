@@ -19,7 +19,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
-using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
@@ -30,13 +29,10 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         private readonly ILogger<InjectedParameterFacetFactory> logger;
 
         public InjectedParameterFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ActionParameters, ReflectionType.Functional) {
+            : base(numericOrder, loggerFactory, FeatureType.ActionParameters, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<InjectedParameterFacetFactory>();
 
-        }
-
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            
             var parm = method.GetParameters()[paramNum];
 
             if (parm.GetCustomAttribute<InjectedAttribute>() != null) {
@@ -59,8 +55,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     facet = new InjectedRandomParameterFacet(holder);
                 }
 
-                if (parm.ParameterType == typeof(IPrincipal))
-                {
+                if (parm.ParameterType == typeof(IPrincipal)) {
                     facet = new InjectedIPrincipalParameterFacet(holder);
                 }
 

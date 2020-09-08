@@ -22,15 +22,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     Creates an <see cref="IQueryOnlyFacet" /> or <see cref="IIdempotentFacet" />  based on the presence of a
     ///     <see cref="QueryOnlyAttribute" /> or <see cref="IdempotentAttribute" /> annotation
     /// </summary>
-    public sealed class PotencyDerivedFromSignatureFacetFactory : FacetFactoryAbstract
-    {
+    public sealed class PotencyDerivedFromSignatureFacetFactory : FacetFactoryAbstract {
         private readonly ILogger<PotencyDerivedFromSignatureFacetFactory> logger;
 
         public PotencyDerivedFromSignatureFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Functional) {
+            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<PotencyDerivedFromSignatureFacetFactory>();
-
-        }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var method = member as MethodInfo;

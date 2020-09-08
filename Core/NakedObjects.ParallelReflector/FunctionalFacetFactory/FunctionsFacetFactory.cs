@@ -36,30 +36,67 @@ namespace NakedFunctions.ParallelReflect.FacetFactory {
         private readonly ILogger<ActionMethodsFacetFactory> logger;
 
         public FunctionsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ActionsAndActionParameters, ReflectionType.Functional) {
+            : base(numericOrder, loggerFactory, FeatureType.ActionsAndActionParameters, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<ActionMethodsFacetFactory>();
-        }
 
         public override string[] Prefixes => FixedPrefixes;
+
+        private bool IsQueryOnly(MethodInfo method) =>
+            method.GetCustomAttribute<IdempotentAttribute>() == null &&
+            method.GetCustomAttribute<QueryOnlyAttribute>() != null;
+
+        // separate methods to reproduce old reflector behaviour
+        private bool IsParameterCollection(Type type) =>
+            type != null && (
+                CollectionUtils.IsGenericEnumerable(type) ||
+                type.IsArray ||
+                type == typeof(string) ||
+                CollectionUtils.IsCollectionButNotArray(type));
+
+        private bool IsCollection(Type type) =>
+            type != null && (
+                CollectionUtils.IsGenericEnumerable(type) ||
+                type.IsArray ||
+                type == typeof(string) ||
+                CollectionUtils.IsCollectionButNotArray(type) ||
+                IsCollection(type.BaseType) ||
+                type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
+
+        private bool ParametersAreSupported(MethodInfo method, IClassStrategy classStrategy) {
+            foreach (var parameterInfo in method.GetParameters()) {
+                if (!classStrategy.IsTypeToBeIntrospected(parameterInfo.ParameterType)) {
+                    // log if not a System or NOF type
+                    if (!TypeUtils.IsSystem(method.DeclaringType) && !TypeUtils.IsNakedObjects(method.DeclaringType)) {
+                        logger.LogWarning("Ignoring method: {method.DeclaringType}.{method.Name} because parameter '{parameterInfo.Name}' is of type {parameterInfo.ParameterType}");
+                    }
+
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        ///     Must be called after the <c>CheckForXxxPrefix</c> methods.
+        /// </summary>
+        private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string name, ISpecification action) => actionFacets.Add(new NamedFacetInferred(name, action));
 
         #region IMethodIdentifyingFacetFactory Members
 
         private (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadReturnSpecs(Type returnType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, IReflector reflector) {
             ITypeSpecBuilder onType = null;
 
-            if (FacetUtils.IsEitherTuple(returnType))
-            {
+            if (FacetUtils.IsEitherTuple(returnType)) {
                 var genericTypes = returnType.GetGenericArguments();
 
                 // count down so final result is first parameter
-                for (var index = genericTypes.Length - 1; index >= 0; index--)
-                {
+                for (var index = genericTypes.Length - 1; index >= 0; index--) {
                     var t = genericTypes[index];
                     (onType, metamodel) = LoadReturnSpecs(t, metamodel, reflector);
                 }
             }
-            else
-            {
+            else {
                 (onType, metamodel) = reflector.LoadSpecification(returnType, metamodel);
             }
 
@@ -74,9 +111,9 @@ namespace NakedFunctions.ParallelReflect.FacetFactory {
             }
 
 
-            string capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
+            var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
-            Type type = actionMethod.DeclaringType;
+            var type = actionMethod.DeclaringType;
             var facets = new List<IFacet>();
             ITypeSpecBuilder onType;
             ITypeSpecBuilder returnSpec;
@@ -98,11 +135,11 @@ namespace NakedFunctions.ParallelReflect.FacetFactory {
                 }
             }
 
-            
+
             RemoveMethod(methodRemover, actionMethod);
 
-            var invokeFacet = new ActionInvocationFacetViaStaticMethod(actionMethod, onType, (IObjectSpecImmutable)returnSpec, (IObjectSpecImmutable)elementSpec, 
-                action, isQueryable, LoggerFactory.CreateLogger<ActionInvocationFacetViaStaticMethod>());
+            var invokeFacet = new ActionInvocationFacetViaStaticMethod(actionMethod, onType, (IObjectSpecImmutable) returnSpec, (IObjectSpecImmutable) elementSpec,
+                                                                       action, isQueryable, LoggerFactory.CreateLogger<ActionInvocationFacetViaStaticMethod>());
 
             facets.Add(invokeFacet);
 
@@ -119,10 +156,10 @@ namespace NakedFunctions.ParallelReflect.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            ParameterInfo parameter = method.GetParameters()[paramNum];
+            var parameter = method.GetParameters()[paramNum];
             var facets = new List<IFacet>();
 
-            if (parameter.ParameterType.IsGenericType && (parameter.ParameterType.GetGenericTypeDefinition() == typeof(Nullable<>))) {
+            if (parameter.ParameterType.IsGenericType && parameter.ParameterType.GetGenericTypeDefinition() == typeof(Nullable<>)) {
                 facets.Add(new NullableFacetAlways(holder));
             }
 
@@ -150,59 +187,13 @@ namespace NakedFunctions.ParallelReflect.FacetFactory {
         }
 
         private static bool IsStatic(Type type) => type.IsAbstract && type.IsSealed;
- 
+
         public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
             return candidates.Where(methodInfo => methodInfo.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
-                                                  methodInfo.IsStatic && 
+                                                  methodInfo.IsStatic &&
                                                   IsStatic(methodInfo.DeclaringType)).ToArray();
         }
 
         #endregion
-
-        private bool IsQueryOnly(MethodInfo method) {
-            return (method.GetCustomAttribute<IdempotentAttribute>() == null) &&
-                   (method.GetCustomAttribute<QueryOnlyAttribute>() != null);
-        }
-
-        // separate methods to reproduce old reflector behaviour
-        private bool IsParameterCollection(Type type) {
-            return type != null && (
-                       CollectionUtils.IsGenericEnumerable(type) ||
-                       type.IsArray ||
-                       type == typeof(string) ||
-                       CollectionUtils.IsCollectionButNotArray(type));
-        }
-
-        private bool IsCollection(Type type) {
-            return type != null && (
-                       CollectionUtils.IsGenericEnumerable(type) ||
-                       type.IsArray ||
-                       type == typeof(string) ||
-                       CollectionUtils.IsCollectionButNotArray(type) ||
-                       IsCollection(type.BaseType) ||
-                       type.GetInterfaces().Where(i => i.IsPublic).Any(IsCollection));
-        }
-
-        private bool ParametersAreSupported(MethodInfo method, IClassStrategy classStrategy) {
-            foreach (ParameterInfo parameterInfo in method.GetParameters()) {
-                if (!classStrategy.IsTypeToBeIntrospected(parameterInfo.ParameterType)) {
-                    // log if not a System or NOF type
-                    if (!TypeUtils.IsSystem(method.DeclaringType) && !TypeUtils.IsNakedObjects(method.DeclaringType)) {
-                        logger.LogWarning("Ignoring method: {method.DeclaringType}.{method.Name} because parameter '{parameterInfo.Name}' is of type {parameterInfo.ParameterType}");
-                    }
-
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        ///     Must be called after the <c>CheckForXxxPrefix</c> methods.
-        /// </summary>
-        private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string name, ISpecification action) {
-            actionFacets.Add(new NamedFacetInferred(name, action));
-        }
     }
 }

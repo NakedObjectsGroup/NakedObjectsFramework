@@ -29,10 +29,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         private readonly ILogger<ContributedFunctionFacetFactory> logger;
 
         public ContributedFunctionFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Functional) {
+            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<ContributedFunctionFacetFactory>();
-
-        }
 
 
         private static bool IsContributed(MethodInfo member) {
@@ -40,12 +38,9 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
             return member.IsDefined(typeof(ExtensionAttribute), false) ||
                    firstParam != null && firstParam.IsDefined(typeof(ContributedActionAttribute), false);
-
         }
 
-        private static Type GetContributeeType(MethodInfo member) {
-            return IsContributed(member) ? member.GetParameters().First().ParameterType : typeof(MenuFunctions);
-        }
+        private static Type GetContributeeType(MethodInfo member) => IsContributed(member) ? member.GetParameters().First().ParameterType : typeof(MenuFunctions);
 
         private IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo member, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // all functions are contributed to first parameter or MenuService
@@ -65,8 +60,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            return Process(reflector, method, specification, metamodel);
-        }
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => Process(reflector, method, specification, metamodel);
     }
 }

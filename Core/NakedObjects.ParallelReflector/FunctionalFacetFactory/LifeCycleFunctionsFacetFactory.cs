@@ -23,8 +23,6 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class LifeCycleFunctionsFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodFilteringFacetFactory {
-        private readonly ILogger<LifeCycleFunctionsFacetFactory> logger;
-
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.PersistingMethod,
             RecognisedMethodsAndPrefixes.PersistedMethod,
@@ -32,39 +30,17 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             RecognisedMethodsAndPrefixes.UpdatedMethod
         };
 
-        public LifeCycleFunctionsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Objects, ReflectionType.Functional) {
-            logger = loggerFactory.CreateLogger<LifeCycleFunctionsFacetFactory>();
+        private readonly ILogger<LifeCycleFunctionsFacetFactory> logger;
 
-        }
+        public LifeCycleFunctionsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Objects, ReflectionType.Functional) =>
+            logger = loggerFactory.CreateLogger<LifeCycleFunctionsFacetFactory>();
 
         public override string[] Prefixes => FixedPrefixes;
 
-        #region IMethodFilteringFacetFactory Members
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var facets = new List<IFacet>();
-
-            facets = AddPersistingFacet(facets, type, specification);
-            facets = AddPersistedFacet(facets, type, specification);
-            facets = AddUpdatingFacet(facets, type, specification);
-            facets = AddUpdatedFacet(facets, type, specification);
-
-            FacetUtils.AddFacets(facets);
-
-            return metamodel;
-        }
-
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
-            return FixedPrefixes.Any(p => p == method.Name);
-        }
-
-        #endregion
-
-        private static bool IsSameType(ParameterInfo pi, Type toMatch) {
-            return pi != null &&
-                   pi.ParameterType == toMatch;
-        }
+        private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
+            pi != null &&
+            pi.ParameterType == toMatch;
 
         private List<IFacet> AddPersistingFacet(List<IFacet> facets, Type type, ISpecificationBuilder holder) {
             var match = FunctionalIntrospector.Functions.SelectMany(t => t.GetMethods()).Where(m => m.Name == RecognisedMethodsAndPrefixes.PersistingMethod).SingleOrDefault(m => IsSameType(m.GetParameters().FirstOrDefault(), type));
@@ -93,5 +69,26 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             facets.Add(facet);
             return facets;
         }
+
+        #region IMethodFilteringFacetFactory Members
+
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var facets = new List<IFacet>();
+
+            facets = AddPersistingFacet(facets, type, specification);
+            facets = AddPersistedFacet(facets, type, specification);
+            facets = AddUpdatingFacet(facets, type, specification);
+            facets = AddUpdatedFacet(facets, type, specification);
+
+            FacetUtils.AddFacets(facets);
+
+            return metamodel;
+        }
+
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
+            return FixedPrefixes.Any(p => p == method.Name);
+        }
+
+        #endregion
     }
 }

@@ -20,24 +20,30 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class ActionValidateViaFunctionFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodFilteringFacetFactory {
-        private readonly ILogger<ActionValidateViaFunctionFacetFactory> logger;
-
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ValidatePrefix
         };
 
+        private readonly ILogger<ActionValidateViaFunctionFacetFactory> logger;
+
         public ActionValidateViaFunctionFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Functional) {
+            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<ActionValidateViaFunctionFacetFactory>();
 
-        }
-
         public override string[] Prefixes => FixedPrefixes;
+
+        private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
+            pi != null &&
+            pi.ParameterType == toMatch;
+
+        private static bool NameMatches(MethodInfo compFunction, MethodInfo actionFunction) =>
+            compFunction.Name.StartsWith(RecognisedMethodsAndPrefixes.ValidatePrefix)
+            && compFunction.Name.Substring(RecognisedMethodsAndPrefixes.ValidatePrefix.Length) == actionFunction.Name;
 
         #region IMethodFilteringFacetFactory Members
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Type type = actionMethod.GetParameters().FirstOrDefault()?.ParameterType;
+            var type = actionMethod.GetParameters().FirstOrDefault()?.ParameterType;
 
             if (type != null) {
                 // find matching disable function
@@ -53,20 +59,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
-            return method.Name.StartsWith(RecognisedMethodsAndPrefixes.ValidatePrefix);
-        }
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.ValidatePrefix);
 
         #endregion
-
-        private static bool IsSameType(ParameterInfo pi, Type toMatch) {
-            return pi != null &&
-                   pi.ParameterType == toMatch;
-        }
-
-        private static bool NameMatches(MethodInfo compFunction, MethodInfo actionFunction) {
-            return compFunction.Name.StartsWith(RecognisedMethodsAndPrefixes.ValidatePrefix)
-                   && compFunction.Name.Substring(RecognisedMethodsAndPrefixes.ValidatePrefix.Length) == actionFunction.Name;
-        }
     }
 }

@@ -20,19 +20,21 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class TitleFunctionFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodFilteringFacetFactory {
-        private readonly ILogger<TitleFunctionFacetFactory> logger;
-
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.TitleMethod
         };
 
+        private readonly ILogger<TitleFunctionFacetFactory> logger;
+
         public TitleFunctionFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Objects, ReflectionType.Functional) {
+            : base(numericOrder, loggerFactory, FeatureType.Objects, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<TitleFunctionFacetFactory>();
 
-        }
-
         public override string[] Prefixes => FixedPrefixes;
+
+        private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
+            pi != null &&
+            pi.ParameterType == toMatch;
 
         #region IMethodFilteringFacetFactory Members
 
@@ -49,15 +51,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
-            return method.Name == RecognisedMethodsAndPrefixes.TitleMethod;
-        }
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name == RecognisedMethodsAndPrefixes.TitleMethod;
 
         #endregion
-
-        private static bool IsSameType(ParameterInfo pi, Type toMatch) {
-            return pi != null &&
-                   pi.ParameterType == toMatch;
-        }
     }
 }

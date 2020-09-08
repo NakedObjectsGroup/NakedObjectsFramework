@@ -25,30 +25,25 @@ using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class ActionChoicesViaFunctionFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodFilteringFacetFactory {
-
-        private readonly ILogger<ActionChoicesViaFunctionFacetFactory> logger;
-
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ParameterChoicesPrefix
         };
 
-        public ActionChoicesViaFunctionFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Functional) {
-            logger = loggerFactory.CreateLogger<ActionChoicesViaFunctionFacetFactory>();
+        private readonly ILogger<ActionChoicesViaFunctionFacetFactory> logger;
 
-        }
+        public ActionChoicesViaFunctionFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
+            logger = loggerFactory.CreateLogger<ActionChoicesViaFunctionFacetFactory>();
 
         public override string[] Prefixes => FixedPrefixes;
 
-        private static bool IsSameType(ParameterInfo pi, Type toMatch) {
-            return pi != null &&
-                   pi.ParameterType == toMatch;
-        }
+        private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
+            pi != null &&
+            pi.ParameterType == toMatch;
 
-        private ParameterInfo[] FilterParms(MethodInfo m) {
-            return m.GetParameters().Where(p => !p.IsDefined(typeof(InjectedAttribute), false) && (!m.IsDefined(typeof(ExtensionAttribute), false) || p.Position > 0))
-                .ToArray();
-        }
+        private ParameterInfo[] FilterParms(MethodInfo m) =>
+            m.GetParameters().Where(p => !p.IsDefined(typeof(InjectedAttribute), false) && (!m.IsDefined(typeof(ExtensionAttribute), false) || p.Position > 0))
+             .ToArray();
 
 
         private IImmutableDictionary<string, ITypeSpecBuilder> FindChoicesMethod(IReflector reflector, Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -85,22 +80,19 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private static bool Matches(MethodInfo m, string name, Type type, Type returnType) {
-            return m.Name == name &&
-                   m.DeclaringType == type &&
-                   MatchReturnType(m.ReturnType, returnType);
-        }
+        private static bool Matches(MethodInfo m, string name, Type type, Type returnType) =>
+            m.Name == name &&
+            m.DeclaringType == type &&
+            MatchReturnType(m.ReturnType, returnType);
 
-        private static bool MatchReturnType(Type returnType, Type toMatch) {
-            return CollectionUtils.IsGenericEnumerable(returnType) && returnType.GenericTypeArguments.SequenceEqual(toMatch.GenericTypeArguments);
-        }
+        private static bool MatchReturnType(Type returnType, Type toMatch) => CollectionUtils.IsGenericEnumerable(returnType) && returnType.GenericTypeArguments.SequenceEqual(toMatch.GenericTypeArguments);
 
 
         private MethodInfo FindChoicesMethod(IReflector reflector, Type type, string capitalizedName, int i, Type returnType) {
             var name = RecognisedMethodsAndPrefixes.ParameterChoicesPrefix + i + capitalizedName;
             var match = FunctionalIntrospector.Functions.SelectMany(t => t.GetMethods())
-                .Where(m => m.Name == name)
-                .SingleOrDefault(m => Matches(m, name, type, returnType));
+                                              .Where(m => m.Name == name)
+                                              .SingleOrDefault(m => Matches(m, name, type, returnType));
 
             return match;
         }
@@ -111,7 +103,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
             var type = actionMethod.DeclaringType;
-        
+
             var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
 
             var actionSpecImmutable = action as IActionSpecImmutable;
@@ -123,9 +115,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
-            return method.Name.StartsWith(RecognisedMethodsAndPrefixes.ParameterChoicesPrefix);
-        }
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.ParameterChoicesPrefix);
 
         #endregion
     }

@@ -23,24 +23,17 @@ using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class AutocompleteViaFunctionFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodFilteringFacetFactory {
-        private readonly ILogger<AutocompleteViaFunctionFacetFactory> logger;
-
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.AutoCompletePrefix
         };
 
+        private readonly ILogger<AutocompleteViaFunctionFacetFactory> logger;
+
         public AutocompleteViaFunctionFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Functional) {
+            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<AutocompleteViaFunctionFacetFactory>();
 
-        }
-
         public override string[] Prefixes => FixedPrefixes;
-
-        private static bool IsSameType(ParameterInfo pi, Type toMatch) {
-            return pi != null &&
-                   pi.ParameterType == toMatch;
-        }
 
         private void FindAutoCompleteMethod(IReflector reflector, Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters) {
             for (var i = 0; i < paramTypes.Length; i++) {
@@ -53,7 +46,9 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                                  FindAutoCompleteMethod(reflector, type, capitalizedName, i, paramType);
 
                     //... or returning an enumerable of string
-                    if (method == null && TypeUtils.IsString(paramType)) method = FindAutoCompleteMethod(reflector, type, capitalizedName, i, typeof(IEnumerable<string>));
+                    if (method == null && TypeUtils.IsString(paramType)) {
+                        method = FindAutoCompleteMethod(reflector, type, capitalizedName, i, typeof(IEnumerable<string>));
+                    }
 
                     if (method != null) {
                         var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
@@ -69,18 +64,17 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
         }
 
-        private static bool Matches(MethodInfo m, string name, Type type, Type returnType) {
-            return m.Name == name &&
-                   m.DeclaringType == type &&
-                   m.ReturnType == returnType;
-        }
+        private static bool Matches(MethodInfo m, string name, Type type, Type returnType) =>
+            m.Name == name &&
+            m.DeclaringType == type &&
+            m.ReturnType == returnType;
 
         private MethodInfo FindAutoCompleteMethod(IReflector reflector, Type type, string capitalizedName, int i, Type returnType) {
             var name = RecognisedMethodsAndPrefixes.AutoCompletePrefix + i + capitalizedName;
             var match = FunctionalIntrospector.Functions.SelectMany(t => t.GetMethods())
-                .Where(m => m.Name == name)
-                .Where(m => m.ReturnType == returnType)
-                .SingleOrDefault(m => Matches(m, name, type, returnType));
+                                              .Where(m => m.Name == name)
+                                              .Where(m => m.ReturnType == returnType)
+                                              .SingleOrDefault(m => Matches(m, name, type, returnType));
 
             return match;
         }
@@ -91,7 +85,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
             var type = actionMethod.DeclaringType;
-         
+
             var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
 
             var actionSpecImmutable = action as IActionSpecImmutable;
@@ -103,9 +97,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
-            return method.Name.StartsWith(RecognisedMethodsAndPrefixes.AutoCompletePrefix);
-        }
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.AutoCompletePrefix);
 
         #endregion
     }

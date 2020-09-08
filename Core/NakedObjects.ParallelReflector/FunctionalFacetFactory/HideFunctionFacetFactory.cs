@@ -20,24 +20,30 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class HideFunctionFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodFilteringFacetFactory {
-        private readonly ILogger<HideFunctionFacetFactory> logger;
-
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.HidePrefix
         };
 
+        private readonly ILogger<HideFunctionFacetFactory> logger;
+
         public HideFunctionFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Functional) {
+            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<HideFunctionFacetFactory>();
 
-        }
-
         public override string[] Prefixes => FixedPrefixes;
+
+        private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
+            pi != null &&
+            pi.ParameterType == toMatch;
+
+        private static bool NameMatches(MethodInfo compFunction, MethodInfo actionFunction) =>
+            compFunction.Name.StartsWith(RecognisedMethodsAndPrefixes.HidePrefix)
+            && compFunction.Name.Substring(RecognisedMethodsAndPrefixes.HidePrefix.Length) == actionFunction.Name;
 
         #region IMethodFilteringFacetFactory Members
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Type type = actionMethod.GetParameters().FirstOrDefault()?.ParameterType;
+            var type = actionMethod.GetParameters().FirstOrDefault()?.ParameterType;
 
             if (type != null) {
                 // find matching Hide function
@@ -53,20 +59,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) {
-            return method.Name.StartsWith(RecognisedMethodsAndPrefixes.HidePrefix);
-        }
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.HidePrefix);
 
         #endregion
-
-        private static bool IsSameType(ParameterInfo pi, Type toMatch) {
-            return pi != null &&
-                   pi.ParameterType == toMatch;
-        }
-
-        private static bool NameMatches(MethodInfo compFunction, MethodInfo actionFunction) {
-            return compFunction.Name.StartsWith(RecognisedMethodsAndPrefixes.HidePrefix)
-                   && compFunction.Name.Substring(RecognisedMethodsAndPrefixes.HidePrefix.Length) == actionFunction.Name;
-        }
     }
 }
