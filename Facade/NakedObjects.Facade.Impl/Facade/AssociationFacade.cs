@@ -152,7 +152,7 @@ namespace NakedObjects.Facade.Impl {
             }
 
             var titleFacet = ((TypeFacade) objectFacade.Specification).WrappedValue.GetFacet<ITitleFacet>();
-            return titleFacet.GetTitleWithMask(mask.Value, ((ObjectFacade) objectFacade).WrappedNakedObject, framework.NakedObjectManager);
+            return titleFacet.GetTitleWithMask(mask.Value, ((ObjectFacade) objectFacade).WrappedNakedObject, framework.NakedObjectManager, framework.Session, framework.Persistor);
         }
 
         public IFrameworkFacade FrameworkFacade { get; set; }
@@ -177,7 +177,7 @@ namespace NakedObjects.Facade.Impl {
 
         public string PresentationHint => WrappedSpec.GetPresentationHint();
 
-        public string GetMaskedValue(IObjectFacade objectFacade) => WrappedSpec.GetMaskedValue(objectFacade, framework.NakedObjectManager);
+        public string GetMaskedValue(IObjectFacade objectFacade) => WrappedSpec.GetMaskedValue(objectFacade, framework.NakedObjectManager, framework.Session, framework.Persistor);
 
         public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) {
             var no = ((ObjectFacade) objectFacade).WrappedNakedObject;

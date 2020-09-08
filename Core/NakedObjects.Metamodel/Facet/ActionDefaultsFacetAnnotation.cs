@@ -7,6 +7,7 @@
 
 using System;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
@@ -20,7 +21,7 @@ namespace NakedObjects.Meta.Facet {
 
         public override bool CanAlwaysReplace => false;
 
-        public override (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter) => (value, TypeOfDefaultValue.Explicit);
+        public override (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor) => (value, TypeOfDefaultValue.Explicit);
 
         protected override string ToStringValues() => $"Value={value}";
     }

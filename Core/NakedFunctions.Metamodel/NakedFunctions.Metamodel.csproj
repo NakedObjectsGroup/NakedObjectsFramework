@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj" />
+    <ProjectReference Include="..\NakedObjects.FWResources\NakedObjects.FWResources.csproj" />
     <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj" />
   </ItemGroup>
 

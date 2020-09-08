@@ -17,8 +17,8 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociationSpec {
-        protected AssociationSpecAbstract(IMetamodelManager metamodel, IAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager)
-            : base(association.Identifier.MemberName, association, session, lifecycleManager, metamodel) {
+        protected AssociationSpecAbstract(IMetamodelManager metamodel, IAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor)
+            : base(association.Identifier.MemberName, association, session, lifecycleManager, metamodel, persistor) {
             Manager = manager ?? throw new InitialisationException($"{nameof(manager)} is null");
             ReturnSpec = MetamodelManager.GetSpecification(association.ReturnSpec);
         }
@@ -62,7 +62,7 @@ namespace NakedObjects.Core.Spec {
 
             if (viewModelFacet != null) {
                 // all fields on a non-editable view model are disabled
-                if (!viewModelFacet.IsEditView(target)) {
+                if (!viewModelFacet.IsEditView(target, Session, Persistor)) {
                     return new Veto(Resources.NakedObjects.FieldDisabled);
                 }
             }
@@ -84,7 +84,7 @@ namespace NakedObjects.Core.Spec {
             }
 
             var f = GetFacet<IDisableForContextFacet>();
-            var reason = f?.DisabledReason(target);
+            var reason = f?.DisabledReason(target, Session, Persistor);
 
             if (reason == null) {
                 var fs = GetFacet<IDisableForSessionFacet>();

@@ -65,6 +65,7 @@ namespace NakedObjects.Core.Spec {
                 specImmutable,
                 framework.MessageBroker,
                 framework.TransactionManager,
+                framework.Persistor,
                 loggerFactory,
                 loggerFactory.CreateLogger<ActionSpec>());
         }
@@ -83,7 +84,7 @@ namespace NakedObjects.Core.Spec {
 
         private IServiceSpec CreateServiceSpec(IServiceSpecImmutable specImmutable) {
             CheckInitialised();
-            return new ServiceSpec(this, framework.MetamodelManager, framework.NakedObjectManager, specImmutable);
+            return new ServiceSpec(this, framework.MetamodelManager, framework.NakedObjectManager, specImmutable, framework.Session, framework.Persistor);
         }
 
         private IObjectSpec CreateObjectSpec(IObjectSpecImmutable specImmutable) {
@@ -92,6 +93,8 @@ namespace NakedObjects.Core.Spec {
                 framework.MetamodelManager,
                 framework.NakedObjectManager,
                 specImmutable,
+                framework.Session,
+                framework.Persistor,
                 loggerFactory.CreateLogger<ObjectSpec>());
         }
     }

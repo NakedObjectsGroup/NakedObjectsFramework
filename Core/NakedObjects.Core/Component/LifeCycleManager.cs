@@ -26,6 +26,7 @@ namespace NakedObjects.Core.Component {
         private readonly ILoggerFactory loggerFactory;
         private readonly IMetamodelManager metamodel;
         private readonly INakedObjectManager nakedObjectManager;
+        private readonly ISession session;
         private readonly IDictionary<Type, object> nonPersistedObjectCache = new Dictionary<Type, object>();
         private readonly IObjectPersistor objectPersistor;
         private readonly IOidGenerator oidGenerator;
@@ -38,6 +39,7 @@ namespace NakedObjects.Core.Component {
             IDomainObjectInjector injector,
             IObjectPersistor objectPersistor,
             INakedObjectManager nakedObjectManager,
+            ISession session,
             ILoggerFactory loggerFactory,
             ILogger<LifeCycleManager> logger
         ) {
@@ -47,6 +49,7 @@ namespace NakedObjects.Core.Component {
             this.injector = injector ?? throw new InitialisationException($"{nameof(injector)} is null");
             this.objectPersistor = objectPersistor ?? throw new InitialisationException($"{nameof(objectPersistor)} is null");
             this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
+            this.session = session;
             this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
         }
@@ -147,7 +150,7 @@ namespace NakedObjects.Core.Component {
                 throw new UnknownTypeException(logger.LogAndReturn($"Expect ViewModelOid got {(nakedObjectAdapter.Oid == null ? "null" : nakedObjectAdapter.Oid.GetType().ToString())}"));
             }
 
-            vmoid.UpdateKeys(nakedObjectAdapter.Spec.GetFacet<IViewModelFacet>().Derive(nakedObjectAdapter, nakedObjectManager, injector), true);
+            vmoid.UpdateKeys(nakedObjectAdapter.Spec.GetFacet<IViewModelFacet>().Derive(nakedObjectAdapter, nakedObjectManager, injector, session, objectPersistor), true);
         }
 
         public IOid RestoreOid(string[] encodedData) => RestoreGenericOid(encodedData) ?? oidGenerator.RestoreOid(encodedData);
@@ -198,7 +201,7 @@ namespace NakedObjects.Core.Component {
             var keys = oid.Keys;
             var spec = (IObjectSpec) oid.Spec;
             var vm = CreateViewModel(spec);
-            vm.Spec.GetFacet<IViewModelFacet>().Populate(keys, vm, nakedObjectManager, injector);
+            vm.Spec.GetFacet<IViewModelFacet>().Populate(keys, vm, nakedObjectManager, injector, session, objectPersistor);
             nakedObjectManager.UpdateViewModel(vm, keys);
             return vm;
         }

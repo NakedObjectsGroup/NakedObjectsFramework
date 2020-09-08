@@ -6,11 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class InjectedDateTimeParameterFacet : FacetAbstract, IInjectedParameterFacet {
         public InjectedDateTimeParameterFacet(ISpecification holder)

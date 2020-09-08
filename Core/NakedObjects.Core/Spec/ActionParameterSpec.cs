@@ -133,7 +133,7 @@ namespace NakedObjects.Core.Spec {
             }
 
             var buf = new InteractionBuffer();
-            IInteractionContext ic = InteractionContext.ModifyingPropParam(session, false, parentAction.RealTarget(nakedObjectAdapter), Identifier, proposedValue);
+            IInteractionContext ic = InteractionContext.ModifyingPropParam(session, persistor, false, parentAction.RealTarget(nakedObjectAdapter), Identifier, proposedValue);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
@@ -166,7 +166,7 @@ namespace NakedObjects.Core.Spec {
             var enumFacet = GetFacet<IEnumFacet>();
 
             if (choicesFacet != null) {
-                var options = choicesFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter), parameterNameValues);
+                var options = choicesFacet.GetChoices(parentAction.RealTarget(nakedObjectAdapter), parameterNameValues, session, persistor);
                 if (enumFacet == null) {
                     return manager.GetCollectionOfAdaptedObjects(options).ToArray();
                 }
@@ -193,7 +193,7 @@ namespace NakedObjects.Core.Spec {
 
         public INakedObjectAdapter[] GetCompletions(INakedObjectAdapter nakedObjectAdapter, string autoCompleteParm) {
             var autoCompleteFacet = GetFacet<IAutoCompleteFacet>();
-            return autoCompleteFacet == null ? null : manager.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObjectAdapter), autoCompleteParm)).ToArray();
+            return autoCompleteFacet == null ? null : manager.GetCollectionOfAdaptedObjects(autoCompleteFacet.GetCompletions(parentAction.RealTarget(nakedObjectAdapter), autoCompleteParm, session, persistor)).ToArray();
         }
 
         public INakedObjectAdapter GetDefault(INakedObjectAdapter nakedObjectAdapter) => GetDefaultValueAndType(nakedObjectAdapter).value;
@@ -216,7 +216,7 @@ namespace NakedObjects.Core.Spec {
             var facet = this.GetOpFacet<IActionDefaultsFacet>() ?? Spec.GetOpFacet<IDefaultedFacet>();
 
             var (domainObject, typeOfDefaultValue) = facet switch {
-                IActionDefaultsFacet adf => adf.GetDefault(parentAction.RealTarget(nakedObjectAdapter)),
+                IActionDefaultsFacet adf => adf.GetDefault(parentAction.RealTarget(nakedObjectAdapter), session, persistor),
                 IDefaultedFacet df => (df.Default, TypeOfDefaultValue.Implicit),
                 _ when nakedObjectAdapter == null => (null, TypeOfDefaultValue.Implicit),
                 _ when nakedObjectAdapter.Object.GetType().IsValueType => (0, TypeOfDefaultValue.Implicit),

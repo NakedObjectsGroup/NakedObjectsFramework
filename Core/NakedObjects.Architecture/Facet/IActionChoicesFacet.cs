@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Facet {
@@ -21,6 +22,6 @@ namespace NakedObjects.Architecture.Facet {
     public interface IActionChoicesFacet : IFacet {
         (string, IObjectSpecImmutable)[] ParameterNamesAndTypes { get; }
         bool IsMultiple { get; }
-        object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues);
+        object[] GetChoices(INakedObjectAdapter nakedObjectAdapter, IDictionary<string, INakedObjectAdapter> parameterNameValues, ISession session, IObjectPersistor persistor);
     }
 }

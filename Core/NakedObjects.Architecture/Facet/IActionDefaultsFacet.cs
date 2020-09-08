@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Architecture.Facet {
@@ -17,6 +18,6 @@ namespace NakedObjects.Architecture.Facet {
     ///     invoking the <c>DefaultsXxx(...)</c> support method for an action
     /// </para>
     public interface IActionDefaultsFacet : IFacet {
-        (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter);
+        (object value, TypeOfDefaultValue type) GetDefault(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor);
     }
 }

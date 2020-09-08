@@ -568,7 +568,7 @@ namespace NakedObjects.Facade.Impl {
             var actionResultContext = new ActionResultContext {Target = actionContext.Target, ActionContext = actionContext};
             var errorOnChange = false;
 
-            if (actionContext.Target.IsViewModelEditView()) {
+            if (actionContext.Target.IsViewModelEditView(Framework.Session, Framework.Persistor)) {
                 // this is a form so we expect to update form with values in arguments 
 
                 var objectContext = ChangeObject(actionContext.Target, arguments);

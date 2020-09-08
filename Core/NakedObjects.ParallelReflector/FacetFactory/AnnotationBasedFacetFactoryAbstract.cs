@@ -11,7 +11,7 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public abstract class AnnotationBasedFacetFactoryAbstract : FacetFactoryAbstract, IAnnotationBasedFacetFactory {
-        protected AnnotationBasedFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes)
-            : base(numericOrder, loggerFactory, featureTypes) { }
+        protected AnnotationBasedFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes, ReflectionType reflectionTypes = ReflectionType.ObjectOriented)
+            : base(numericOrder, loggerFactory, featureTypes, reflectionTypes) { }
     }
 }

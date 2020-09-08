@@ -144,7 +144,7 @@ namespace NakedObjects.Core.Container {
 
         public string TitleOf(object obj, string format = null) {
             var adapter = AdapterFor(obj);
-            return format == null ? adapter.TitleString() : adapter.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(format, adapter, framework.NakedObjectManager);
+            return format == null ? adapter.TitleString() : adapter.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(format, adapter, framework.NakedObjectManager, framework.Session, framework.Persistor);
         }
 
         #endregion

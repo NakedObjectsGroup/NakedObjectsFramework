@@ -62,7 +62,7 @@ namespace NakedObjects.Facade.Impl.Implementation {
             var wrappedNakedObject = ((ObjectFacade) nakedObjectForKey).WrappedNakedObject;
 
             if (wrappedNakedObject.Spec.IsViewModel) {
-                keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject, framework.NakedObjectManager, framework.DomainObjectInjector);
+                keys = wrappedNakedObject.Spec.GetFacet<IViewModelFacet>().Derive(wrappedNakedObject, framework.NakedObjectManager, framework.DomainObjectInjector, framework.Session, framework.Persistor);
             }
             else {
                 var keyPropertyInfo = nakedObjectForKey.GetKeys();

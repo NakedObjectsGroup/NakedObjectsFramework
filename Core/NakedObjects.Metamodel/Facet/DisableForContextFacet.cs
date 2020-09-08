@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Interactions;
 using NakedObjects.Architecture.Spec;
@@ -33,11 +34,11 @@ namespace NakedObjects.Meta.Facet {
 
         #region IDisableForContextFacet Members
 
-        public string Disables(IInteractionContext ic) => DisabledReason(ic.Target);
+        public string Disables(IInteractionContext ic) => DisabledReason(ic.Target, ic.Session, ic.Persistor);
 
         public Exception CreateExceptionFor(IInteractionContext ic) => new DisabledException(ic, Disables(ic));
 
-        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { });
+        public string DisabledReason(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor) => (string) methodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { });
 
         #endregion
 

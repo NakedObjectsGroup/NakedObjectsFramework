@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
@@ -43,7 +44,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter) {
+        public override (object, TypeOfDefaultValue) GetDefault(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor) {
             // type safety is given by the reflector only identifying methods that match the 
             // parameter type
             var defaultValue = MethodDelegate(nakedObjectAdapter.GetDomainObject(), new object[] { });

@@ -30,8 +30,10 @@ namespace NakedObjects.Core.Spec {
                           IMetamodelManager metamodelManager,
                           INakedObjectManager nakedObjectManager,
                           IObjectSpecImmutable innerSpec,
+                          ISession session,
+                          IObjectPersistor persistor,
                           ILogger<ObjectSpec> logger) :
-            base(memberFactory, metamodelManager, nakedObjectManager, innerSpec) => this.logger = logger;
+            base(memberFactory, metamodelManager, nakedObjectManager, innerSpec, session, persistor) => this.logger = logger;
 
         private IActionSpec[] ContributedActions => contributedActions ??= MemberFactory.CreateActionSpecs(InnerSpec.ContributedActions);
 

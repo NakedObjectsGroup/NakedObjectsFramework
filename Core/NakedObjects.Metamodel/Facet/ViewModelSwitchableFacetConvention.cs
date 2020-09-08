@@ -20,18 +20,20 @@ namespace NakedObjects.Meta.Facet {
 
         private static Type Type => typeof(IViewModelFacet);
 
-        public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector) => nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
+        public override string[] Derive(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector, ISession session, IObjectPersistor persistor) => nakedObjectAdapter.GetDomainObject<IViewModel>().DeriveKeys();
 
-        public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector) => nakedObjectAdapter.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);
+        public override void Populate(string[] keys, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, IDomainObjectInjector injector, ISession session, IObjectPersistor persistor) => nakedObjectAdapter.GetDomainObject<IViewModel>().PopulateUsingKeys(keys);
 
-        public override bool IsEditView(INakedObjectAdapter nakedObjectAdapter) {
+        public override bool IsEditView(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor) {
             var target = nakedObjectAdapter.GetDomainObject<IViewModelSwitchable>();
 
-            if (target != null) {
-                return target.IsEditView();
+            if (target == null) {
+                throw new NakedObjectSystemException(nakedObjectAdapter.Object == null
+                    ? "Null domain object"
+                    : $"Wrong type of domain object: {nakedObjectAdapter.Object.GetType().FullName}");
             }
 
-            throw new NakedObjectSystemException(nakedObjectAdapter.Object == null ? "Null domain object" : $"Wrong type of domain object: {nakedObjectAdapter.Object.GetType().FullName}");
+            return target.IsEditView();
         }
     }
 }

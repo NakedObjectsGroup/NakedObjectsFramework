@@ -20,13 +20,11 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public sealed class OneToOneAssociationSpec : AssociationSpecAbstract, IOneToOneAssociationSpec {
-        private readonly IObjectPersistor persistor;
         private readonly ITransactionManager transactionManager;
         private bool? isFindMenuEnabled;
 
         public OneToOneAssociationSpec(IMetamodelManager metamodel, IOneToOneAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor, ITransactionManager transactionManager)
-            : base(metamodel, association, session, lifecycleManager, manager) {
-            this.persistor = persistor;
+            : base(metamodel, association, session, lifecycleManager, manager, persistor) {
             this.transactionManager = transactionManager;
         }
 
@@ -82,7 +80,7 @@ namespace NakedObjects.Core.Spec {
             }
 
             if (ReturnSpec.IsBoundedSet()) {
-                return Manager.GetCollectionOfAdaptedObjects(persistor.GetBoundedSet(ReturnSpec)).ToArray();
+                return Manager.GetCollectionOfAdaptedObjects(Persistor.GetBoundedSet(ReturnSpec)).ToArray();
             }
 
             return null;
@@ -90,7 +88,7 @@ namespace NakedObjects.Core.Spec {
 
         public override INakedObjectAdapter[] GetCompletions(INakedObjectAdapter target, string autoCompleteParm) {
             var propertyAutoCompleteFacet = GetFacet<IAutoCompleteFacet>();
-            return propertyAutoCompleteFacet == null ? null : Manager.GetCollectionOfAdaptedObjects(propertyAutoCompleteFacet.GetCompletions(target, autoCompleteParm)).ToArray();
+            return propertyAutoCompleteFacet == null ? null : Manager.GetCollectionOfAdaptedObjects(propertyAutoCompleteFacet.GetCompletions(target, autoCompleteParm, Session, Persistor)).ToArray();
         }
 
         public void InitAssociation(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter associate) {
@@ -110,7 +108,7 @@ namespace NakedObjects.Core.Spec {
             }
 
             var buf = new InteractionBuffer();
-            IInteractionContext ic = InteractionContext.ModifyingPropParam(Session, false, inObjectAdapter, Identifier, reference);
+            IInteractionContext ic = InteractionContext.ModifyingPropParam(Session, Persistor,false, inObjectAdapter, Identifier, reference);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }

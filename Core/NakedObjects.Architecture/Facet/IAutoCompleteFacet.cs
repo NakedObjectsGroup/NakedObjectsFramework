@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Architecture.Facet {
     /// <summary>
@@ -24,6 +25,6 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     Gets the available autocompletions for this property or parm
         /// </summary>
-        object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm);
+        object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm, ISession session, IObjectPersistor persistor);
     }
 }

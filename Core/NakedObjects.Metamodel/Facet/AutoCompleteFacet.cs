@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
@@ -46,7 +47,7 @@ namespace NakedObjects.Meta.Facet {
 
         public int MinLength { get; }
 
-        public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm) {
+        public object[] GetCompletions(INakedObjectAdapter inObjectAdapter, string autoCompleteParm, ISession session, IObjectPersistor persistor) {
             try {
                 var autoComplete = methodDelegate(inObjectAdapter.GetDomainObject(), new object[] {autoCompleteParm});
                 return autoComplete switch {

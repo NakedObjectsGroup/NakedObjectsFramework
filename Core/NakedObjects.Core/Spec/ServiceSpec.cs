@@ -12,8 +12,8 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Core.Spec {
     public sealed class ServiceSpec : TypeSpec, IServiceSpec {
-        public ServiceSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, IServiceSpecImmutable innerSpec) :
-            base(memberFactory, metamodelManager, nakedObjectManager, innerSpec) { }
+        public ServiceSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, IServiceSpecImmutable innerSpec, ISession session, IObjectPersistor persistor) :
+            base(memberFactory, metamodelManager, nakedObjectManager, innerSpec, session, persistor) { }
 
         #region IServiceSpec Members
 

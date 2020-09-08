@@ -14,13 +14,13 @@ namespace NakedObjects.Core.Test.Interactions {
     public class InteractionContextTest {
         [Test]
         public void IsProgramaticTest() {
-            IInteractionContext context = InteractionContext.InvokingAction(null, true, null, null, null);
+            IInteractionContext context = InteractionContext.InvokingAction(null, null, true, null, null, null);
             Assert.IsTrue(context.IsProgrammatic);
         }
 
         [Test]
         public void IsNotProgramaticTest() {
-            IInteractionContext context = InteractionContext.InvokingAction(null, false, null, null, null);
+            IInteractionContext context = InteractionContext.InvokingAction(null, null, false, null, null, null);
             Assert.IsFalse(context.IsProgrammatic);
         }
     }

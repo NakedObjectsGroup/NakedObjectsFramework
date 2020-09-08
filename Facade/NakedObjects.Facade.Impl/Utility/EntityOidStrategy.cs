@@ -172,7 +172,7 @@ namespace NakedObjects.Facade.Impl.Utility {
         private INakedObjectAdapter GetViewModel(string[] keys, IObjectSpec spec) {
             try {
                 var viewModel = framework.LifecycleManager.CreateViewModel(spec);
-                spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel, framework.NakedObjectManager, framework.DomainObjectInjector);
+                spec.GetFacet<IViewModelFacet>().Populate(keys, viewModel, framework.NakedObjectManager, framework.DomainObjectInjector, framework.Session, framework.Persistor);
                 return viewModel;
             }
             catch (Exception e) {

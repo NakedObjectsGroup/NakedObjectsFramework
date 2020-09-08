@@ -13,14 +13,14 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Facade.Impl.Utility {
     public static class FacetUtils {
-        public static string GetMaskedValue(this ISpecification spec, IObjectFacade objectFacade, INakedObjectManager nakedObjectManager) {
+        public static string GetMaskedValue(this ISpecification spec, IObjectFacade objectFacade, INakedObjectManager nakedObjectManager, ISession session, IObjectPersistor persistor) {
             if (objectFacade == null) {
                 return null;
             }
 
             var mask = spec.GetFacet<IMaskFacet>();
             var no = ((ObjectFacade) objectFacade).WrappedNakedObject;
-            return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, nakedObjectManager) : no.TitleString();
+            return mask != null ? no.Spec.GetFacet<ITitleFacet>().GetTitleWithMask(mask.Value, no, nakedObjectManager, session, persistor) : no.TitleString();
         }
 
         public static int GetMemberOrder(this ISpecification spec) {

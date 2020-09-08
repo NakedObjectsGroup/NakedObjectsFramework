@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Core.Util {
     public static class FeatureSpecUtils {
-        public static string PropertyTitle(this IMemberSpec memberSpec, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager manager) {
+        public static string PropertyTitle(this IMemberSpec memberSpec, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager manager, ISession session, IObjectPersistor persistor) {
             if (nakedObjectAdapter == null) {
                 return "";
             }
@@ -26,7 +26,7 @@ namespace NakedObjects.Core.Util {
             var mask = memberSpec.GetFacet<IMaskFacet>();
             if (mask != null) {
                 var title = memberSpec.ReturnSpec.GetFacet<ITitleFacet>();
-                text = title.GetTitleWithMask(mask.Value, nakedObjectAdapter, manager);
+                text = title.GetTitleWithMask(mask.Value, nakedObjectAdapter, manager, session, persistor);
             }
 
             return text ?? nakedObjectAdapter.TitleString();

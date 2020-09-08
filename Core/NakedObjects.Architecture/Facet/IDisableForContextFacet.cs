@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facet {
@@ -21,7 +22,7 @@ namespace NakedObjects.Architecture.Facet {
         /// <summary>
         ///     The reason this object is disabled, or <c>null</c> otherwise
         /// </summary>
-        string DisabledReason(INakedObjectAdapter nakedObjectAdapter);
+        string DisabledReason(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

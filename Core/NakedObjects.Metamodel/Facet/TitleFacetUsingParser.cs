@@ -23,9 +23,9 @@ namespace NakedObjects.Meta.Facet {
 
         #region ITitleFacet Members
 
-        public string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) => nakedObjectAdapter?.Object == null ? null : parser.DisplayTitleOf((T) nakedObjectAdapter.Object);
+        public string GetTitle(INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, ISession session, IObjectPersistor persistor) => nakedObjectAdapter?.Object == null ? null : parser.DisplayTitleOf((T) nakedObjectAdapter.Object);
 
-        public string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager) => nakedObjectAdapter?.Object == null ? null : parser.TitleWithMaskOf(mask, (T) nakedObjectAdapter.Object);
+        public string GetTitleWithMask(string mask, INakedObjectAdapter nakedObjectAdapter, INakedObjectManager nakedObjectManager, ISession session, IObjectPersistor persistor) => nakedObjectAdapter?.Object == null ? null : parser.TitleWithMaskOf(mask, (T) nakedObjectAdapter.Object);
 
         #endregion
 

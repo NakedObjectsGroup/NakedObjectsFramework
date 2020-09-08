@@ -21,6 +21,8 @@ namespace NakedObjects.Core.Spec {
         private readonly IMetamodelManager metamodelManager;
 
         private readonly INakedObjectManager nakedObjectManager;
+        private readonly ISession session;
+        private readonly IObjectPersistor persistor;
 
         // cached values 
         private string description;
@@ -46,10 +48,12 @@ namespace NakedObjects.Core.Spec {
         private ITypeSpec superclass;
         private string untitledName;
 
-        protected TypeSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, ITypeSpecImmutable innerSpec) {
+        protected TypeSpec(SpecFactory memberFactory, IMetamodelManager metamodelManager, INakedObjectManager nakedObjectManager, ITypeSpecImmutable innerSpec, ISession session, IObjectPersistor persistor) {
             MemberFactory = memberFactory ?? throw new InitialisationException($"{nameof(memberFactory)} is null");
             this.metamodelManager = metamodelManager ?? throw new InitialisationException($"{nameof(metamodelManager)} is null");
             this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
+            this.session = session ?? throw new InitialisationException($"{nameof(session)} is null");
+            this.persistor = persistor ?? throw new InitialisationException($"{nameof(persistor)} is null");
             InnerSpec = innerSpec ?? throw new InitialisationException($"{nameof(innerSpec)} is null");
         }
 
@@ -242,7 +246,7 @@ namespace NakedObjects.Core.Spec {
 
         public string GetTitle(INakedObjectAdapter nakedObjectAdapter) {
             var titleFacet = GetFacet<ITitleFacet>();
-            var title = titleFacet == null ? null : titleFacet.GetTitle(nakedObjectAdapter, nakedObjectManager);
+            var title = titleFacet == null ? null : titleFacet.GetTitle(nakedObjectAdapter, nakedObjectManager, session, persistor);
             return title ?? DefaultTitle();
         }
 

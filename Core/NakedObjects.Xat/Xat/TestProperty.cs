@@ -38,7 +38,7 @@ namespace NakedObjects.Xat {
 
         public string Id => field.Id;
 
-        public string Title => field.PropertyTitle(field.GetNakedObject(owningObject.NakedObject), manager);
+        public string Title => field.PropertyTitle(field.GetNakedObject(owningObject.NakedObject), manager, null, null);
 
         public ITestNaked Content {
             get {

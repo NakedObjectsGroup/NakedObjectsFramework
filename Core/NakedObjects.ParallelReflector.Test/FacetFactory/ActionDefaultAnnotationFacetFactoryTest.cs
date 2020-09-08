@@ -48,8 +48,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionDefaultsFacetAnnotation);
             var actionDefaultFacetAnnotation = (ActionDefaultsFacetAnnotation) facet;
-            Assert.AreEqual(1, actionDefaultFacetAnnotation.GetDefault(null).value);
-            Assert.AreEqual(TypeOfDefaultValue.Explicit, actionDefaultFacetAnnotation.GetDefault(null).type);
+            Assert.AreEqual(1, actionDefaultFacetAnnotation.GetDefault(null, null, null).value);
+            Assert.AreEqual(TypeOfDefaultValue.Explicit, actionDefaultFacetAnnotation.GetDefault(null, null, null).type);
             Assert.AreEqual(0, metamodel.Count);
         }
 

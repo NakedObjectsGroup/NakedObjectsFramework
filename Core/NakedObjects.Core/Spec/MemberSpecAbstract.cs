@@ -21,15 +21,18 @@ namespace NakedObjects.Core.Reflect {
     public abstract class MemberSpecAbstract : IMemberSpec {
         private readonly IMemberSpecImmutable memberSpecImmutable;
 
-        protected internal MemberSpecAbstract(string id, IMemberSpecImmutable memberSpec, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager) {
+        protected internal MemberSpecAbstract(string id, IMemberSpecImmutable memberSpec, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager, IObjectPersistor persistor) {
             Id = id ?? throw new InitialisationException($"{nameof(id)} is null");
             memberSpecImmutable = memberSpec ?? throw new InitialisationException($"{nameof(memberSpec)} is null");
             Session = session ?? throw new InitialisationException($"{nameof(session)} is null");
             LifecycleManager = lifecycleManager ?? throw new InitialisationException($"{nameof(lifecycleManager)} is null");
             MetamodelManager = metamodelManager ?? throw new InitialisationException($"{nameof(metamodelManager)} is null");
+            Persistor = persistor ?? throw new InitialisationException($"{nameof(persistor)} is null"); ;
         }
 
         public ISession Session { get; }
+
+        public IObjectPersistor Persistor { get; }
 
         public ILifecycleManager LifecycleManager { get; }
 
@@ -70,12 +73,12 @@ namespace NakedObjects.Core.Reflect {
         ///     returns <c>true</c> only if none hide the member.
         /// </summary>
         public virtual bool IsVisible(INakedObjectAdapter target) {
-            IInteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
+            IInteractionContext ic = InteractionContext.AccessMember(Session, Persistor, false, target, Identifier);
             return InteractionUtils.IsVisible(this, ic, LifecycleManager, MetamodelManager);
         }
 
         public virtual bool IsVisibleWhenPersistent(INakedObjectAdapter target) {
-            IInteractionContext ic = InteractionContext.AccessMember(Session, false, target, Identifier);
+            IInteractionContext ic = InteractionContext.AccessMember(Session, Persistor, false, target, Identifier);
             return InteractionUtils.IsVisibleWhenPersistent(this, ic, LifecycleManager, MetamodelManager);
         }
 
@@ -85,7 +88,7 @@ namespace NakedObjects.Core.Reflect {
         /// </summary>
         public virtual IConsent IsUsable(INakedObjectAdapter target) {
             IInteractionContext ic = InteractionContext
-                .AccessMember(Session, false, target, Identifier);
+                .AccessMember(Session, Persistor, false, target, Identifier);
             return InteractionUtils.IsUsable(this, ic);
         }
 

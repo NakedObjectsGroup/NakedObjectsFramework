@@ -8,8 +8,10 @@
 using System;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
+using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.Meta.Facet {
+namespace NakedFunctions.Meta.Facet
+{
     [Serializable]
     public sealed class InjectedFacet : MarkerFacetAbstract, IInjectedFacet {
         public InjectedFacet(ISpecification holder)

@@ -16,11 +16,8 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public sealed class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToManyAssociationSpec {
-        private readonly IObjectPersistor persistor;
-
         public OneToManyAssociationSpec(IMetamodelManager metamodel, IOneToManyAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor)
-            : base(metamodel, association, session, lifecycleManager, manager) {
-            this.persistor = persistor;
+            : base(metamodel, association, session, lifecycleManager, manager, persistor) {
             IsASet = association.ContainsFacet<IIsASetFacet>();
 
             ElementSpec = MetamodelManager.GetSpecification(association.ElementSpec);
@@ -38,7 +35,7 @@ namespace NakedObjects.Core.Spec {
 
         public override bool IsEmpty(INakedObjectAdapter inObjectAdapter) => Count(inObjectAdapter) == 0;
 
-        public int Count(INakedObjectAdapter inObjectAdapter) => persistor.CountField(inObjectAdapter, Id);
+        public int Count(INakedObjectAdapter inObjectAdapter) => Persistor.CountField(inObjectAdapter, Id);
 
         public override bool IsInline => false;
 

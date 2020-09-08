@@ -33,6 +33,8 @@ namespace NakedObjects.Architecture.Interactions {
         /// </para>
         ISession Session { get; }
 
+        IObjectPersistor Persistor { get; }
+
         /// <summary>
         ///     How the interaction was initiated
         /// </summary>

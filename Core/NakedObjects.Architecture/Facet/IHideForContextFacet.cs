@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedObjects.Architecture.Adapter;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Interactions;
 
 namespace NakedObjects.Architecture.Facet {
@@ -17,7 +18,7 @@ namespace NakedObjects.Architecture.Facet {
     ///     invoking the <c>HideXxx</c> support method for the member.
     /// </para>
     public interface IHideForContextFacet : IFacet, IHidingInteractionAdvisor {
-        string HiddenReason(INakedObjectAdapter nakedObjectAdapter);
+        string HiddenReason(INakedObjectAdapter nakedObjectAdapter, ISession session, IObjectPersistor persistor);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

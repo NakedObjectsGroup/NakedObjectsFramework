@@ -50,9 +50,10 @@ namespace NakedObjects.Core.Spec {
                           IActionSpecImmutable actionSpecImmutable,
                           IMessageBroker messageBroker,
                           ITransactionManager transactionManager,
+                          IObjectPersistor persistor,
                           ILoggerFactory loggerFactory,
                           ILogger<ActionSpec> logger)
-            : base(actionSpecImmutable?.Identifier?.MemberName, actionSpecImmutable, session, lifecycleManager, metamodel) {
+            : base(actionSpecImmutable?.Identifier?.MemberName, actionSpecImmutable, session, lifecycleManager, metamodel, persistor) {
             this.servicesManager = servicesManager ?? throw new InitialisationException($"{nameof(servicesManager)} is null");
             this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
             this.actionSpecImmutable = actionSpecImmutable ?? throw new InitialisationException($"{nameof(actionSpecImmutable)} is null");
@@ -148,19 +149,19 @@ namespace NakedObjects.Core.Spec {
             if (parameterSet != null) {
                 var parms = RealParameters(nakedObjectAdapter, parameterSet);
                 for (var i = 0; i < parms.Length; i++) {
-                    ic = InteractionContext.ModifyingPropParam(Session, false, RealTarget(nakedObjectAdapter), Identifier, parameterSet[i]);
+                    ic = InteractionContext.ModifyingPropParam(Session, Persistor, false, RealTarget(nakedObjectAdapter), Identifier, parameterSet[i]);
                     InteractionUtils.IsValid(GetParameter(i), ic, buf);
                 }
             }
 
             var target = RealTarget(nakedObjectAdapter);
-            ic = InteractionContext.InvokingAction(Session, false, target, Identifier, parameterSet);
+            ic = InteractionContext.InvokingAction(Session, Persistor,false, target, Identifier, parameterSet);
             InteractionUtils.IsValid(this, ic, buf);
             return InteractionUtils.IsValid(buf);
         }
 
         public override IConsent IsUsable(INakedObjectAdapter target) {
-            IInteractionContext ic = InteractionContext.InvokingAction(Session, false, RealTarget(target), Identifier, new[] {target});
+            IInteractionContext ic = InteractionContext.InvokingAction(Session, Persistor,false, RealTarget(target), Identifier, new[] {target});
             return InteractionUtils.IsUsable(this, ic);
         }
 

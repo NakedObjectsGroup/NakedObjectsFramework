@@ -26,7 +26,7 @@ namespace NakedObjects.Metamodel.Test.Facet {
             Assert.IsNotNull(hideForContextFacet.GetMethodDelegate(), method.Name);
             var target = MockParm(new TestDelegateClass());
             var result = isHidden ? Resources.NakedObjects.Hidden : null;
-            Assert.AreEqual(result, facet.HiddenReason(target));
+            Assert.AreEqual(result, facet.HiddenReason(target, null, null));
         }
 
         [TestMethod]
