@@ -9,14 +9,14 @@ namespace NakedFunctions
             return (obj, obj);
         }
 
-        public static Action<IUserAdvisory> WarnUser(string message)
+        public static Action<IAlert> WarnUser(string message)
         {
-            return (IUserAdvisory ua) => ua.WarnUser(message);
+            return (IAlert ua) => ua.WarnUser(message);
         }
 
-        public static Action<IUserAdvisory> InformUser(string message)
+        public static Action<IAlert> InformUser(string message)
         {
-            return (IUserAdvisory ua) => ua.InformUser(message);
+            return (IAlert ua) => ua.InformUser(message);
         }
     }
 }

@@ -14,258 +14,97 @@ using NakedFunctions;
 using static NakedFunctions.Helpers;
 
 namespace AdventureWorksFunctionalModel {
-    public static class ProductFunctions {
+    public static class Product_Functions {
 
-        #region Methods copied from NOF AW
         #region Life Cycle Methods
-        public static Product Updating(Product p, [Injected] DateTime now) => p with { ModifiedDate = now };
- 
+        public static Product Updating(this Product p, [Injected] DateTime now) => p with { ModifiedDate = now };
+
         #endregion
 
-        public static string[] ChoicesProductLine(Product p)
-        {
-            // nchar(2) in database so pad right with space
-            return new[] { "R ", "M ", "T ", "S " };
-        }
+        #region Edit properties
+        #region Edit Product Line
+        public static (Product, Product) EditProductLine(this Product p, string line)
+            => DisplayAndPersist(p with { ProductLine = line });
+        public static string[] Choices0EditProductLine(this Product p)
+        => new[] { "R ", "M ", "T ", "S " };  // nchar(2) in database so pad right with space
+        #endregion
 
-        public static string[] ChoicesClass(Product p)
-        {
-            // nchar(2) in database so pad right with space
-            return new[] { "H ", "M ", "L " };
-        }
+        #region Edit class
+        public static (Product, Product) EditClass(this Product p, string newClass)
+    => DisplayAndPersist(p with { Class = newClass });
 
-        public static string[] ChoicesStyle(Product p)
-        {
-            // nchar(2) in database so pad right with space
-            return new[] { "U ", "M ", "W " };
-        }
+        public static string[] Choices0EditClass(this Product p)
+        => new[] { "H ", "M ", "L " }; // nchar(2) in database so pad right with space
+        #endregion
 
-        [NakedObjectsIgnore]
-        public static bool IsDiscontinued(this Product p, DateTime now)
-        {
-            return p.DiscontinuedDate != null ? p.DiscontinuedDate.Value < now : false;
-        }
+        #region Edit style
+        public static (Product, Product) EditStyle(this Product p, string style)
+    => DisplayAndPersist(p with { Style = style });
 
-        public static IQueryable<ProductModel> AutoCompleteProductModel(Product p, string match, IQueryable<ProductModel> models)
+        public static string[] Choices0EditStyle(this Product p)
+        => new[] { "U ", "M ", "W " }; // nchar(2) in database so pad right with space
+        #endregion
+
+        #region Edit Product Model
+
+        public static (Product, Product) EditProductModel(this Product p, ProductModel newModel)
+        => DisplayAndPersist(p with { ProductModel = newModel });
+
+        public static IQueryable<ProductModel> AutoComplete0EditProductModel(Product p, string match, IQueryable<ProductModel> models)
         {
             return models.Where(pm => pm.Name.ToUpper().Contains(match.ToUpper()));
         }
+        #endregion
+
+        #region Edit Categories
+        public static (Product, Product) EditCategories(this Product p, ProductCategory category, ProductSubcategory subcategory)
+            => DisplayAndPersist(p with { ProductCategory = category, ProductSubcategory = subcategory });
 
 
-        #region BestSpecialOffer
 
-
-        [DescribedAs("Determines the best discount offered by current special offers for a specified order quantity")]
-        public static (SpecialOffer, SpecialOfferProduct) BestSpecialOffer(
-
-            Product p,
-            short quantity,
-            IQueryable<SpecialOfferProduct> sops,
-            IQueryable<SpecialOffer> offers
-            )
-        {
-            var best = BestSpecialOfferProduct(p, quantity, sops);
-            if (best != null)
-            {
-                return (best.SpecialOffer, (SpecialOfferProduct)null);
-            }
-            var none = SpecialOfferRepository.AssociateSpecialOfferWithProduct(SpecialOfferRepository.NoDiscount(offers), p, sops).Item2;
-            return (none.SpecialOffer, none);
-        }
-
-        public static string ValidateBestSpecialOffer(Product p, short quantity)
-        {
-            return quantity <= 0 ? "Quantity must be > 0" : null;
-        }
-
-        public static string DisableBestSpecialOffer(Product p, [Injected] DateTime now)
-        {
-            if (p.IsDiscontinued(now))
-            {
-                return "Product is discontinued";
-            }
-            return null;
-        }
-
-        public static IList<ProductSubcategory> ChoicesProductSubcategory(
+        //TODO: Check - does the contributee count as a parameter?
+        public static IList<ProductSubcategory> Choices1Edit(
             Product p,
             ProductCategory productCategory,
             IQueryable<ProductSubcategory> subCats)
         {
             if (productCategory != null)
             {
-                return (from psc in subCats
-                        where psc.ProductCategory.ProductCategoryID == productCategory.ProductCategoryID
-                        select psc).ToList();
+                return subCats.Where(psc => psc.ProductCategory.ProductCategoryID == productCategory.ProductCategoryID).ToList();
             }
             return new ProductSubcategory[] { }.ToList();
         }
-        [NakedObjectsIgnore]
-        public static SpecialOfferProduct BestSpecialOfferProduct(
+        #endregion
+#endregion
+
+        #region BestSpecialOffer
+
+
+        [DescribedAs("Determines the best discount offered by current special offers for a specified order quantity")]
+        public static SpecialOffer BestSpecialOffer(
+            Product p, short quantity, IQueryable<SpecialOfferProduct> sops, IQueryable<SpecialOffer> offers)
+           => BestSpecialOfferProduct(p, quantity, sops).SpecialOffer ?? SpecialOfferRepository.NoDiscount(offers);
+
+        public static string ValidateBestSpecialOffer(this Product p, short quantity)
+            => quantity <= 0 ? "Quantity must be > 0" : null;
+
+        public static string DisableBestSpecialOffer(this Product p, [Injected] DateTime now)
+         => p.IsDiscontinued(now) ? "Product is discontinued" : null;
+
+        private static SpecialOfferProduct BestSpecialOfferProduct(
             Product p,
             short quantity,
             IQueryable<SpecialOfferProduct> sops)
-        {
-            //reason for testing end date against 1/6/2004 is that in AW database, all offers terminate by 30/6/04
-            return sops.Where(obj => obj.Product.ProductID == p.ProductID &&
+        => sops.Where(obj => obj.Product.ProductID == p.ProductID &&
                               obj.SpecialOffer.StartDate <= DateTime.Now &&
                               obj.SpecialOffer.EndDate >= new DateTime(2004, 6, 1) &&
                               obj.SpecialOffer.MinQty < quantity).
                         OrderByDescending(obj => obj.SpecialOffer.DiscountPct)
                         .FirstOrDefault();
 
-        }
-
-        #endregion
-
-
-        #endregion
-
-        #region Original methods from spike, generated by Stef
-        public static IProduct GetAnotherProduct(this Product product, IQueryable<IProduct> allProducts) {
-            return allProducts.First(p => p.ProductID != product.ProductID);
-        }
-
-        public static string DisableGetAnotherProduct(this Product product, IQueryable<IProduct> products) {
-            return "";
-        }
-
-        public static string ValidateGetAnotherProduct(this Product product, IQueryable<IProduct> products) {
-            return "";
-        }
-
-        public static string HideGetAnotherProduct(this Product product, IQueryable<IProduct> products) {
-            return "";
-        }
-
-        public static (IProduct, string) GetAnotherProductWithWarning(this Product product, IQueryable<IProduct> allProducts) {
-            return (allProducts.First(p => p.ProductID != product.ProductID), "A warning message");
-        }
-
-        public static IQueryable<IProduct> GetProducts(this Product product, IQueryable<IProduct> allProducts) =>  
-            allProducts.Where(p => p.ProductID != product.ProductID).Take(2);       
-
-        public static IList<IProduct> GetProductsNotQueryable(this Product product, IQueryable<IProduct> allProducts) =>
-            allProducts.Where(p => p.ProductID != product.ProductID).Take(2).ToList();
-
-
-        public static (Product, Product) GetAndPersistProduct(this Product product, IQueryable<Product> allProducts) {
-            var pp = allProducts.First(p => p.ProductID != product.ProductID);
-            return DisplayAndPersist(pp with { Name = $"{pp.Name}:1" });
-        }
-
-        public static (Product, Product[]) GetAndPersistProducts(this Product product, IQueryable<Product> allProducts) {
-            var pp = allProducts.First(p => p.ProductID != product.ProductID);
-            var pp1 = pp with { Name = $"{pp.Name}:1" };
-            return (pp1, new[] {pp1});
-        }
-
-        public static (Product, (Product, Product)) GetAndPersistProductsTuple(this Product product, IQueryable<Product> allProducts) {
-            var pps = allProducts.Where(p => p.ProductID != product.ProductID).Take(2).ToList();
-            var pp1 = pps.First();
-            var pp2 = pps.Last();
-            var pp1a = pp1 with { Name = $"{pp1.Name}:1" };
-            var pp2a = pp2 with { Name = $"{pp2.Name}:2" };
-            return (pp1a, (pp1a, pp2a));
-        }
-
-        public static (Product, (Product, Product, (Product, Product))) GetAndPersistProductsNestedTuple(this Product product, IQueryable<Product> allProducts) {
-            var pps = allProducts.Where(p => p.ProductID != product.ProductID).Take(4).ToArray();
-            var pp1 = pps[0];
-            var pp2 = pps[1];
-            var pp3 = pps[2];
-            var pp4 = pps[3];
-            var pp1a = pp1 with { Name = $"{pp1.Name}:1" };
-            var pp2a = pp2 with { Name = $"{pp2.Name}:2" };
-            var pp3a = pp3 with { Name = $"{pp3.Name}:3" };
-            var pp4a = pp4 with { Name = $"{pp4.Name}:4" };
-            return (pp1a, (pp1a, pp2a, (pp3a, pp4a)));
-        }
-
-        public static (Product, Product[], Action<IUserAdvisory>) GetAndPersistProductsWithWarning(this Product product, IQueryable<Product> allProducts) {
-            var pp = allProducts.First(p => p.ProductID != product.ProductID);
-            var pp1 = pp with { Name = $"{pp.Name}:1" };
-            return (pp, new[] {pp}, WarnUser("A warning message"));
-        }
-
-        public static (Product, Product, Action<IUserAdvisory>) GetAndPersistProductWithWarning(this Product product, IQueryable<Product> allProducts) {
-            var pp = allProducts.First(p => p.ProductID != product.ProductID);
-            var pp1 = pp with { Name = $"{pp.Name}:1" };
-            return (pp, pp, WarnUser("A warning message"));
-        }
-
-        public static (Product, Product) UpdateProductUsingRemute(this Product product, IQueryable<Product> allProducts) {
-            //var pp = allProducts.First(p => p.ProductID != product.ProductID);
-
-            var up = product with {Name =  $"{product.Name}:1"};
-            return (up, up);
-        }
-
-        public static (IProduct, IProduct) UpdateIProductUsingRemute(this Product product, IQueryable<IProduct> allProducts) {
-            throw new NotImplementedException();
-            //Product pp = allProducts.First(p => p.ProductID != product.ProductID);
-
-            //var up = pp with {Name =  $"{pp.Name}:1"};
-            //return Result.DisplayAndPersist(up);
-        }
-
-        public static Product GetAndChangeButNotPersistProduct(this Product product, IQueryable<Product> allProducts) {
-            var pp = allProducts.First(p => p.ProductID != product.ProductID);
-            var pp1 = pp with {Name = $"{pp.Name}:2"};
-            return pp;
-        }
-
-        public static IProduct TestInjectedGuid(this Product product, [Injected] Guid guid) {
-            var test = guid;
-            return product;
-        }
-
-        public static IProduct TestInjectedPrincipal(this Product product, [Injected] IPrincipal principal) {
-            var test = principal;
-            return product;
-        }
-
-        public static IProduct TestInjectedDateTime(this Product product, [Injected] DateTime dateTime) {
-            var test = dateTime;
-            return product;
-        }
-
-        public static IProduct TestInjectedRandom(this Product product, [Injected] int random) {
-            var test = random;
-            return product;
-        }
-
-
-        public static IProduct Persisting(this Product product, IQueryable<Product> allProducts, [Injected] Guid guid)
-            => product with { rowguid = guid };
-
-        public static IProduct Persisted(this Product product, IQueryable<Product> allProducts, [Injected] Guid guid) {
-            return null;
-        }
-
-        public static IProduct Updating(this Product product, IQueryable<Product> allProducts, [Injected] Guid guid) => product with { rowguid = guid };
-
-        public static IProduct Updated(this Product product, IQueryable<Product> allProducts, [Injected] Guid guid) => null;
-
-        public static Product FindProduct(this Product product, Product product1) => product1;
-
-        public static Product Default1FindProduct(this Product product, IQueryable<Product> products) => products.FirstOrDefault();
-   
-
-        public static IQueryable<Product> AutoComplete1FindProduct(this Product product, string name, IQueryable<Product> products) {
-            return products.Where(x => x.Name.ToUpper().Contains(name.ToUpper()));
-        }
-
-        public static Product SelectProduct(this Product product, Product product1) {
-            return product1;
-        }
-
-        public static IEnumerable<Product> Choices1SelectProduct(this Product product, IQueryable<Product> products) {
-            return products.Take(10).ToList();
-        }
-    
-        public static Product TestDisabled(this Product product, Product product1) {
-            return product1;
+        private static bool IsDiscontinued(this Product p, DateTime now)
+        {
+            return p.DiscontinuedDate != null ? p.DiscontinuedDate.Value < now : false;
         }
 
         #endregion

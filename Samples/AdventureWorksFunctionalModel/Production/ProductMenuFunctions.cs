@@ -25,13 +25,10 @@ namespace AdventureWorksModel {
         M,
         L
     }
-
-    [Named("Products")]
     public static class ProductMenuFunctions  { 
 
-        [TableView(true, "ProductNumber", "ProductSubcategory", "ListPrice"), MemberOrder(1)]
-        public static IQueryable<Product> FindProductByName(
-             
+        [MemberOrder(1), TableView(true, nameof(Product.ProductNumber), nameof(Product.ProductSubcategory), nameof(Product.ListPrice))]
+        public static IQueryable<Product> FindProductByName(      
             string searchString, 
             IQueryable<Product> products)
         {
@@ -39,7 +36,7 @@ namespace AdventureWorksModel {
         }
 
         [MemberOrder(2)]
-        public static (Product, Action<IUserAdvisory>) FindProductByNumber(
+        public static (Product, Action<IAlert>) FindProductByNumber(
             
             string number, 
             IQueryable<Product> products)
@@ -48,21 +45,17 @@ namespace AdventureWorksModel {
         }
         
         [MemberOrder(10)]
-        public static Product RandomProduct(
-            
+        public static Product RandomProduct(           
             IQueryable<Product> products, 
             [Injected] int random)
         {
             return Random(products, random);
         }
 
-        [MemberOrder(9)]
-        public static (Product, Product) NewProduct()
-        {
-            //TODO: Must add parameters for minimum property set
-            var p = new Product();
-            return (p, p);
-        }
+        //TODO:
+        //[MemberOrder(9)]
+        //public static NewProductVM NewProduct() => new NewProductVM;
+  
 
         #region FindProduct
 

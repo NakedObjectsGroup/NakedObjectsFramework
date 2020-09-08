@@ -8,7 +8,7 @@ namespace AdventureWorksModel
 {
     public static class CommonFactoryAndRepositoryFunctions
     {
-        public static (T,Action<IUserAdvisory>) SingleObjectWarnIfNoMatch<T>(IQueryable<T> query)
+        public static (T,Action<IAlert>) SingleObjectWarnIfNoMatch<T>(IQueryable<T> query)
         {
             T result = default(T);
             string message = "";
