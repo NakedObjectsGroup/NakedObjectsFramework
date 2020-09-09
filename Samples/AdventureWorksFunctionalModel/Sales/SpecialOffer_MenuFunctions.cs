@@ -13,7 +13,7 @@ using static NakedFunctions.Helpers;
 namespace AdventureWorksModel
 {
     [Named("Special Offers")]
-    public static class SpecialOfferRepository
+    public static class SpecialOffer_MenuFunctions
     {
         #region CurrentSpecialOffers
 
@@ -48,38 +48,15 @@ namespace AdventureWorksModel
 
         #region Create New Special Offer
         [MemberOrder(4)]
-        public static (SpecialOffer, SpecialOffer) CreateNewSpecialOffer(
-            string description,
-            decimal discountPct,
-            string type,
-            string category,
-            DateTime startDate,
-            DateTime endDate,
-            [DefaultValue(1)] int minQty,
-             int? maxQty,
-            [Injected] DateTime now,
-            [Injected] Guid guid
-            )
+        public static SpecialOffer_Edit CreateNewSpecialOffer(this SpecialOffer x)
         {
-
-            var so = new SpecialOffer() with { };
-            // TODO    (0, description, discountPct, type, category, startDate, endDate, minQty, maxQty, now, guid);
-            return DisplayAndPersist(so);
-        }
-
-        public static DateTime Default4CreateNewSpecialOffer([Injected] DateTime now)
-        {
-            return now.Date;
-        }
-
-        public static DateTime Default5CreateNewSpecialOffer([Injected] DateTime now)
-        {
-            return now.Date.AddMonths(1);
+            return SpecialOffer_EditFunctions.CreateFrom(x);
         }
 
         #endregion
 
         #region Create Multiple Special Offers
+        //TODO: MultiLine functions ???
         [MemberOrder(5), MultiLine(2)]
         public static (SpecialOffer, SpecialOffer) CreateMultipleSpecialOffers(
 
@@ -115,49 +92,7 @@ namespace AdventureWorksModel
 
         #endregion
 
-        #region AssociateSpecialOfferWithProduct
 
-        [MemberOrder(6)]
-        public static (SpecialOfferProduct, SpecialOfferProduct, Action<IAlert>) AssociateSpecialOfferWithProduct(
-
-        // [ContributedAction("Special Offers")] TODO
-        SpecialOffer offer,
-        //[ContributedAction("Special Offers")] TODO
-        Product product,
-            IQueryable<SpecialOfferProduct> sops
-            )
-        {
-            //First check if association already exists
-            IQueryable<SpecialOfferProduct> query = from sop in sops
-                                                    where sop.SpecialOfferID == offer.SpecialOfferID &&
-                                                    sop.ProductID == product.ProductID
-                                                    select sop;
-
-            if (query.Count() != 0)
-            {
-
-                Action<IAlert> msg = InformUser($"{offer} is already associated with { product}");
-                return (null, null, msg);
-            }
-            var newSop = new SpecialOfferProduct() with
-            {
-                SpecialOffer = offer,
-                Product = product
-            };
-            return (newSop, newSop, null);
-        }
-
-        [PageSize(20)]
-        public static IQueryable<SpecialOffer> AutoComplete0AssociateSpecialOfferWithProduct(
-            [Range(2, 0)] string name,
-            IQueryable<SpecialOffer> offers)
-        => offers.Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
-
-        [PageSize(20)]
-        public static IQueryable<Product> AutoComplete1AssociateSpecialOfferWithProduct([Range(2, 0)] string name, IQueryable<Product> products)
-            => products.Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
-
-        #endregion
 
         #region Helper methods
 

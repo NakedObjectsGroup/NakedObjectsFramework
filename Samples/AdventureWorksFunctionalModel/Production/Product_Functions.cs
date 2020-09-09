@@ -27,7 +27,7 @@ namespace AdventureWorksFunctionalModel {
         [DescribedAs("Determines the best discount offered by current special offers for a specified order quantity")]
         public static SpecialOffer BestSpecialOffer(
             Product p, short quantity, IQueryable<SpecialOfferProduct> sops, IQueryable<SpecialOffer> offers)
-           => BestSpecialOfferProduct(p, quantity, sops).SpecialOffer ?? SpecialOfferRepository.NoDiscount(offers);
+           => BestSpecialOfferProduct(p, quantity, sops).SpecialOffer ?? SpecialOffer_MenuFunctions.NoDiscount(offers);
 
         public static string ValidateBestSpecialOffer(this Product p, short quantity)
             => quantity <= 0 ? "Quantity must be > 0" : null;
@@ -54,7 +54,22 @@ namespace AdventureWorksFunctionalModel {
         #endregion
 
         #region Edit
-        public static ProductEVM Edit(this Product p) => ProductEVMFunctions.CreateFrom(p);
+        public static Product_Edit Edit(this Product p) => Product_EditFunctions.CreateFrom(p);
+        #endregion
+
+        #region Associate with Special Offer
+        public static (SpecialOfferProduct, SpecialOfferProduct, Action<IAlert>) AssociateWithSpecialOffer(
+            this Product product,
+            SpecialOffer offer,
+             IQueryable<SpecialOfferProduct> sops
+        )
+        => SpecialOffer_Functions.AssociateWithProduct(offer, product, sops);
+
+        [PageSize(20)]
+        public static IQueryable<SpecialOffer> AutoComplete1AssociateWithSpecialOffer(
+            [Range(2, 0)] string name,
+            IQueryable<SpecialOffer> offers)
+        => offers.Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
         #endregion
     }
 }

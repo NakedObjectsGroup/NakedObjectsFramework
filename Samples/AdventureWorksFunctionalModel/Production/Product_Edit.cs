@@ -11,7 +11,7 @@ using NakedFunctions;
 namespace AdventureWorksModel
 {
     [ViewModelEdit]
-    public record ProductEVM
+    public record Product_Edit
     {
         [NakedObjectsIgnore]
         public virtual int ProductID { get; init; }
