@@ -6,11 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel
 {
-    public record SpecialOffer: IHasModifiedDate, IHasRowGuid     {
+    public record SpecialOffer_Edit
+    {
 
         [NakedObjectsIgnore]
         public virtual int SpecialOfferID { get; init; }
@@ -39,15 +41,14 @@ namespace AdventureWorksModel
         [MemberOrder(61)]
         public virtual int MinQty { get; init; }
 
-        [MemberOrder(62)]
+
+        [MemberOrder(62), Optionally]
         public virtual int? MaxQty { get; init; }
 
         [NakedObjectsIgnore]
         public virtual Guid rowguid { get; init; }
 
-        [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        public override string ToString() => Description is null ? "New Special Offer" : Description;
 
-        public override string ToString() => Description;
     }
 }

@@ -6,7 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using NakedFunctions;
+using static NakedFunctions.Helpers;
 
 namespace AdventureWorksModel {
 
@@ -15,13 +17,48 @@ namespace AdventureWorksModel {
     {
 
         #region Life Cycle Methods
-        public static SpecialOffer Updating(SpecialOffer sp, [Injected] DateTime now) => sp with {ModifiedDate =  now};
+        public static SpecialOffer Updating(SpecialOffer x, [Injected] DateTime now) => x with {ModifiedDate =  now};
+
+        public static SpecialOffer Persisting(SpecialOffer x, [Injected] DateTime now, [Injected] Guid guid) => x with { ModifiedDate = now, rowguid = guid };
         #endregion
 
-        public static string[] ChoicesCategory(SpecialOffer sp) =>  new[] { "Reseller", "Customer" };
+        #region Edit
+        public static SpecialOffer_Edit Edit(this SpecialOffer x) => SpecialOffer_EditFunctions.CreateFrom(x);
+        #endregion
 
-        public static DateTime DefaultStartDate(SpecialOffer sp, [Injected] DateTime now) => now;
+        #region AssociateWithProduct
 
-        public static DateTime DefaultEndDate(SpecialOffer sp, [Injected] DateTime now) => now.AddDays(90);
+       //Helper method
+        public static (SpecialOfferProduct, SpecialOfferProduct, Action<IAlert>) AssociateWithProduct(
+        this SpecialOffer offer,
+        Product product,
+            IQueryable<SpecialOfferProduct> sops
+            )
+        {
+            //First check if association already exists
+            IQueryable<SpecialOfferProduct> query = from sop in sops
+                                                    where sop.SpecialOfferID == offer.SpecialOfferID &&
+                                                    sop.ProductID == product.ProductID
+                                                    select sop;
+
+            if (query.Count() != 0)
+            {
+
+                Action<IAlert> msg = InformUser($"{offer} is already associated with { product}");
+                return (null, null, msg);
+            }
+            var newSop = new SpecialOfferProduct() with
+            {
+                SpecialOffer = offer,
+                Product = product
+            };
+            return (newSop, newSop, null);
+        }
+
+        [PageSize(20)]
+        public static IQueryable<Product> AutoComplete1AssociateWithProduct([Range(2, 0)] string name, IQueryable<Product> products)
+            => products.Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
+
+        #endregion
     }
 }

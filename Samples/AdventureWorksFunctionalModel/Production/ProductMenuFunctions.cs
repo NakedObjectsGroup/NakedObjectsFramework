@@ -332,8 +332,8 @@ namespace AdventureWorksModel {
         }
 
         #region Create new
-        public static ProductEVM CreateNewProduct()
-        => new ProductEVM();
+        public static Product_Edit CreateNewProduct()
+        => new Product_Edit();
         #endregion
     }
 

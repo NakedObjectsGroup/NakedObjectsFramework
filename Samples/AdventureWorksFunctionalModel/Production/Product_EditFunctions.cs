@@ -16,30 +16,30 @@ using static NakedFunctions.Helpers;
 
 namespace AdventureWorksFunctionalModel
 {
-    public static class ProductEVMFunctions
+    public static class Product_EditFunctions
     {
 
         #region Life cycle
-        public static string[] DeriveKeys(this ProductEVM vm)
+        public static string[] DeriveKeys(this Product_Edit vm)
         => new string[]
         {
             vm.ProductID.ToString(),
             vm.Color,
         };
-        public static ProductEVM PopulateUsingKeys(string[] keys)
-    => new ProductEVM
+        public static Product_Edit PopulateUsingKeys(string[] keys)
+    => new Product_Edit
     {
         ProductID = Convert.ToInt32(keys[0]),
         Color = keys[1]
     };
 
-        public static ProductEVM CreateFrom(Product p)
-   => new ProductEVM { 
+        public static Product_Edit CreateFrom(Product p)
+   => new Product_Edit { 
        ProductID = p.ProductID, 
        Color = p.Color 
    }; //TODO: all relevant props
 
-        public static (Product, Product) Save(this ProductEVM vm)
+        public static (Product, Product) Save(this Product_Edit vm)
               => DisplayAndPersist(new Product()
               {
                   ProductID = vm.ProductID,

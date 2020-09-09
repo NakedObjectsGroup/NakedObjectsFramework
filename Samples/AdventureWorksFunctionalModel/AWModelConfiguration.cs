@@ -24,7 +24,7 @@ namespace AdventureWorksFunctionalModel
         public static IDictionary<string, Type> MainMenus() => new Dictionary<string, Type>()
         {
             ["Products"] = typeof(ProductMenuFunctions),
-            ["Special Offers"] = typeof(SpecialOfferRepository),
+            ["Special Offers"] = typeof(SpecialOffer_MenuFunctions),
         };
 
         //Register static types that contain functions - all defined with 'extension method' syntax - that are to be contributed to a
