@@ -26,6 +26,6 @@ namespace NakedObjects.Core.Configuration {
 
         #endregion
 
-        private bool HasConfig() => Types != null && Types.Any() || Functions != null && Functions.Any();
+        private bool HasConfig() => Types?.Any() == true || Functions?.Any() == true;
     }
 }

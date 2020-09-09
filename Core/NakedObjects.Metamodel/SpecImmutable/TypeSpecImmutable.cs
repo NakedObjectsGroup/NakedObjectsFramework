@@ -177,6 +177,11 @@ namespace NakedObjects.Meta.SpecImmutable {
             return baseType != null && IsAssignableToGenericType(baseType, genericType);
         }
 
+        public void AddContributedFunctions(IList<IActionSpecImmutable> contributedFunctions)
+        {
+            ContributedActions = ContributedActions.Union(contributedFunctions).ToImmutableList();
+        }
+
         public void AddContributedActions(IList<IActionSpecImmutable> contributedActions) => ContributedActions = contributedActions.ToImmutableList();
 
         public void AddCollectionContributedActions(IList<IActionSpecImmutable> collectionContributedActions) => CollectionContributedActions = collectionContributedActions.ToImmutableList();
