@@ -20,8 +20,14 @@ namespace NakedObjects.ParallelReflect.Component {
     [Serializable]
     public class DefaultClassStrategy : IClassStrategy {
         private readonly IReflectorConfiguration config;
+        private readonly IFunctionalReflectorConfiguration fConfig;
 
-        public DefaultClassStrategy(IReflectorConfiguration config) => this.config = config;
+        public DefaultClassStrategy(IReflectorConfiguration config,
+                                    IFunctionalReflectorConfiguration fConfig = null)
+        {
+            this.config = config;
+            this.fConfig = fConfig;
+        }
 
         #region IClassStrategy Members
 
@@ -67,10 +73,12 @@ namespace NakedObjects.ParallelReflect.Component {
 
         private bool IsTypeWhiteListed(Type type) => IsTypeSupportedSystemType(type) || IsNamespaceMatch(type) || IsTypeExplicitlyRequested(type);
 
-        private bool IsTypeExplicitlyRequested(Type type) =>
-            config.TypesToIntrospect.Any(t => t == type) ||
-            config.Services.Any(t => t == type) ||
-            type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
+        private bool IsTypeExplicitlyRequested(Type type) {
+            var services = config.Services.Union(fConfig == null ? new Type[] { } : fConfig.Services).ToArray();
+            return config.TypesToIntrospect.Any(t => t == type) ||
+                   services.Any(t => t == type) ||
+                   type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
+        }
 
         private Type ToMatch(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() : type;
 

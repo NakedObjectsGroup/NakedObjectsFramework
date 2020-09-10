@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using NakedObjects.Architecture.Reflect;
 
@@ -22,5 +23,6 @@ namespace NakedObjects.Architecture.SpecImmutable {
         IImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
 
         void AddSubclass(ITypeSpecImmutable subclass);
+        void AddContributedFunctions(IList<IActionSpecImmutable> result);
     }
 }

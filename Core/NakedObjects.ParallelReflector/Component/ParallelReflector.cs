@@ -94,7 +94,7 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         public void Reflect() {
-            var s1 = config.Services;
+            Type[] s1 = config.Services.Union(functionalConfig.Services).ToArray();
             var services = s1;
             var nonServices = GetTypesToIntrospect();
 
@@ -105,6 +105,8 @@ namespace NakedObjects.ParallelReflect.Component {
             var metamodelBuilder = InstallSpecifications(allObjectTypes, functionalConfig.Types, functionalConfig.Functions, initialMetamodel);
 
             PopulateAssociatedActions(s1, metamodelBuilder);
+
+            PopulateAssociatedFunctions(metamodelBuilder);
 
             //Menus installed once rest of metamodel has been built:
             InstallMainMenus(metamodelBuilder);
@@ -170,14 +172,56 @@ namespace NakedObjects.ParallelReflect.Component {
             return metamodel;
         }
 
+        private bool IsStatic(ITypeSpecImmutable spec)
+        {
+            return spec.Type.IsAbstract && spec.Type.IsSealed;
+        }
 
+        private bool IsNotStatic(ITypeSpecImmutable spec)
+        {
+            return !IsStatic(spec);
+        }
 
-        //private IMetamodelBuilder InstallSpecificationsParallel(Type[] types, IMetamodelBuilder metamodelBuilder) {
-        //    var metamodel = GetPlaceholders(types);
-        //    metamodel = IntrospectPlaceholders(metamodel);
-        //    metamodel.ForEach(i => metamodelBuilder.Add(i.Value.Type, i.Value));
-        //    return metamodelBuilder;
-        //}
+        private bool IsContributedFunction(IActionSpecImmutable sa, ITypeSpecImmutable ts)
+        {
+            var f = sa.GetFacet<IContributedFunctionFacet>();
+            return f != null && f.IsContributedTo(ts);
+        }
+
+        private void PopulateContributedFunctions(ITypeSpecBuilder spec, ITypeSpecImmutable[] functions, IMetamodel metamodel)
+        {
+            var result = functions.AsParallel().SelectMany(functionsSpec => {
+
+                var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
+
+                var matchingActionsForObject = new List<IActionSpecImmutable>();
+
+                foreach (var sa in serviceActions)
+                {
+
+                    if (IsContributedFunction(sa, spec))
+                    {
+                        matchingActionsForObject.Add(sa);
+                    }
+                }
+
+                return matchingActionsForObject;
+            }).ToList();
+
+            spec.AddContributedFunctions(result);
+        }
+
+        private void PopulateAssociatedFunctions(IMetamodelBuilder metamodel)
+        {
+            // todo add facet for this 
+            var functions = metamodel.AllSpecifications.Where(IsStatic).ToArray();
+            var objects = metamodel.AllSpecifications.Where(IsNotStatic).Cast<ITypeSpecBuilder>();
+
+            foreach (var spec in objects)
+            {
+                PopulateContributedFunctions(spec, functions, metamodel);
+            }
+        }
 
         private void PopulateAssociatedActions(Type[] services, IMetamodelBuilder metamodel) {
             var nonServiceSpecs = AllObjectSpecImmutables.OfType<IObjectSpecBuilder>();

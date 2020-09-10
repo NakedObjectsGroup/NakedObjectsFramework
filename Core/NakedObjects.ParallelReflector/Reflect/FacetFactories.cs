@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFunctions.ParallelReflect.FacetFactory;
 using NakedObjects.ParallelReflect.FacetFactory;
 using NakedObjects.ParallelReflect.TypeFacetFactory;
 
@@ -109,7 +110,22 @@ namespace NakedObjects.ParallelReflect {
                 typeof(ImageValueTypeFacetFactory),
                 typeof(ArrayValueTypeFacetFactory<byte>),
                 typeof(CollectionFacetFactory),
-                typeof(MenuFacetFactory)
+                typeof(MenuFacetFactory),
+
+                typeof(FunctionsFacetFactory),
+                typeof(ContributedFunctionFacetFactory),
+                typeof(InjectedParameterFacetFactory),
+                typeof(InjectedAnnotationFacetFactory),
+                typeof(TitleFunctionFacetFactory),
+                typeof(LifeCycleFunctionsFacetFactory),
+                typeof(DisableFunctionFacetFactory),
+                typeof(ActionValidateViaFunctionFacetFactory),
+                typeof(HideFunctionFacetFactory),
+                typeof(ActionDefaultViaFunctionFacetFactory),
+                typeof(ActionChoicesViaFunctionFacetFactory),
+                typeof(AutocompleteViaFunctionFacetFactory),
+                typeof(PotencyDerivedFromSignatureFacetFactory),
+                typeof(ViewModelAnnotationFacetFactory)
             };
 
         public static int StandardIndexOf(Type factory) => Array.FindIndex(StandardFacetFactories(), x => x == factory);

@@ -9,6 +9,7 @@
 /TestResults
 /build
 /coverage
+/Scratchpad
 **/bin
 **/obj
 **/bld
@@ -33,3 +34,4 @@ Demo/NakedObjects.Rest.App.Demo/nakedobjects.log
 Backup*/
 UpgradeLog*.htm
 *.log
+ScratchServer.sln
