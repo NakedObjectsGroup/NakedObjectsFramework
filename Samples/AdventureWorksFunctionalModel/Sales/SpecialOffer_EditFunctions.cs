@@ -8,6 +8,7 @@
 using System;
 using NakedFunctions;
 using static NakedFunctions.Helpers;
+using static System.Convert;
 
 namespace AdventureWorksModel
 {
@@ -15,6 +16,7 @@ namespace AdventureWorksModel
 
     public static class SpecialOffer_EditFunctions
     {
+        //WRITE A SNIPPET FOR THIS!
 
         #region Life Cycle Methods
         public static string[] DeriveKeys(this SpecialOffer_Edit edit)
@@ -35,12 +37,12 @@ namespace AdventureWorksModel
         {
             Category = k[0],
             Description = k[1],
-            DiscountPct = Convert.ToInt32(k[2]),
-            EndDate = Convert.ToDateTime(k[3]),
-            MaxQty = Convert.ToInt32(k[4]),
-            MinQty = Convert.ToInt32(k[5]),
-            SpecialOfferID = Convert.ToInt32(k[6]),
-            StartDate = Convert.ToDateTime(k[7]),
+            DiscountPct = ToInt32(k[2]),
+            EndDate = ToDateTime(k[3]),
+            MaxQty = ToInt32(k[4]),
+            MinQty = ToInt32(k[5]),
+            SpecialOfferID = ToInt32(k[6]),
+            StartDate = ToDateTime(k[7]),
             Type = k[8]
         };
 
@@ -71,8 +73,6 @@ namespace AdventureWorksModel
             StartDate = x.StartDate,
             Type = x.Type
         });
-
-
         #endregion
 
         #region Property-associated functions
