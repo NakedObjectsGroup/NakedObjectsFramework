@@ -25,10 +25,13 @@ namespace NakedFunctions
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
     public class RegExAttribute : Attribute
     {
-        public RegExAttribute()
+        public RegExAttribute() : this("") { }
+        public RegExAttribute(string format) : this(format, false) { }
+
+        public RegExAttribute(string format, bool caseSensitive)
         {
-            CaseSensitive = false;
-            Format = "";
+            CaseSensitive = caseSensitive;
+            Format = format;
         }
 
         /// <summary>
