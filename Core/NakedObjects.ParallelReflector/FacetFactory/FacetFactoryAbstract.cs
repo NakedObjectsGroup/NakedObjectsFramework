@@ -18,8 +18,10 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public abstract class FacetFactoryAbstract : IFacetFactory {
-        protected FacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes,
-            ReflectionType reflectionType = ReflectionType.ObjectOriented) {
+        protected FacetFactoryAbstract(int numericOrder,
+                                       ILoggerFactory loggerFactory,
+                                       FeatureType featureTypes,
+                                       ReflectionType reflectionType = ReflectionType.ObjectOriented) {
             NumericOrder = numericOrder;
             LoggerFactory = loggerFactory;
             FeatureTypes = featureTypes;
@@ -27,6 +29,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         protected ILoggerFactory LoggerFactory { get; }
+
+        protected ILogger<T> Logger<T>() => LoggerFactory.CreateLogger<T>();
+
+        public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => new PropertyInfo[] { };
+
+        public virtual IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => new PropertyInfo[] { };
 
         #region IFacetFactory Members
 
@@ -54,11 +62,5 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public int CompareTo(IFacetFactory other) => NumericOrder.CompareTo(other.NumericOrder);
 
         #endregion
-
-        protected ILogger<T> Logger<T>() => LoggerFactory.CreateLogger<T>();
-
-        public virtual IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => new PropertyInfo[] { };
-
-        public virtual IList<PropertyInfo> FindProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) => new PropertyInfo[] { };
     }
 }

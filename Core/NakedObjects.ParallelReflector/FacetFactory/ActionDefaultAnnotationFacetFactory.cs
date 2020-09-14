@@ -20,7 +20,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class ActionDefaultAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public ActionDefaultAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ActionParameters) { }
+            : base(numericOrder, loggerFactory, FeatureType.ActionParameters, ReflectionType.Both) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];

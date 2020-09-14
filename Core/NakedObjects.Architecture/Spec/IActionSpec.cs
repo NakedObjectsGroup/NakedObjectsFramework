@@ -35,6 +35,8 @@ namespace NakedObjects.Architecture.Spec {
         /// </summary>
         bool IsContributedMethod { get; }
 
+        bool IsStaticFunction { get; }
+
         /// <summary>
         ///     Return true if the action is run on a service object and can be used as a finder
         /// </summary>

@@ -23,7 +23,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         private readonly ILogger<OptionalAnnotationFacetFactory> logger;
 
         public OptionalAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
+            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters, ReflectionType.Both) =>
             logger = loggerFactory.CreateLogger<OptionalAnnotationFacetFactory>();
 
         private static void Process(MemberInfo member, ISpecification holder) {

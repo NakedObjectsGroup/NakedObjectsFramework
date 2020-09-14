@@ -22,7 +22,7 @@ using NakedObjects.Util;
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class MultiLineAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public MultiLineAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.EverythingButCollections) { }
+            : base(numericOrder, loggerFactory, FeatureType.EverythingButCollections, ReflectionType.Both) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var attribute = type.GetCustomAttribute<MultiLineAttribute>();

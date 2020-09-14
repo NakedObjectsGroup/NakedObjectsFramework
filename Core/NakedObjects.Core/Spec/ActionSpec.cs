@@ -93,6 +93,8 @@ namespace NakedObjects.Core.Spec {
 
         public bool IsContributedMethod => actionSpecImmutable.IsContributedMethod;
 
+        public bool IsStaticFunction => actionSpecImmutable.IsStaticFunction;
+
         public bool IsFinderMethod {
             get {
                 isFinderMethod ??= actionSpecImmutable.IsFinderMethod;

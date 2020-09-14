@@ -38,6 +38,7 @@ namespace NakedObjects.Core.Spec {
         private bool? isAutoCompleteEnabled;
         private bool? isChoicesEnabled;
         private bool? isMandatory;
+        private bool? isInjected;
         private bool? isMultipleChoicesEnabled;
         private bool? isNullable;
         private string name;
@@ -107,8 +108,15 @@ namespace NakedObjects.Core.Spec {
         public virtual bool IsMandatory {
             get {
                 isMandatory ??= GetFacet<IMandatoryFacet>().IsMandatory;
-
                 return isMandatory.Value;
+            }
+        }
+
+        public virtual bool IsInjected
+        {
+            get {
+                isInjected ??= GetFacet<IInjectedFacet>() != null;
+                return isInjected.Value;
             }
         }
 

@@ -96,6 +96,8 @@ namespace NakedObjects.Facade.Impl {
 
         public IObjectFacade GetDefault(IObjectFacade objectFacade) => ObjectFacade.Wrap(WrappedSpec.GetDefault(((ObjectFacade) objectFacade).WrappedNakedObject), FrameworkFacade, framework);
 
+        public bool IsInjected => WrappedSpec.IsInjected;
+
         public IFrameworkFacade FrameworkFacade { get; set; }
 
         public bool IsFindMenuEnabled => WrappedSpec is IOneToOneActionParameterSpec ws && ws.IsFindMenuEnabled;

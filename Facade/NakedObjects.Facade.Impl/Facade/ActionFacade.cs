@@ -37,6 +37,8 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsQueryOnly => WrappedSpec.ReturnSpec.IsQueryable || WrappedSpec.ContainsFacet<IQueryOnlyFacet>();
 
+        public bool IsStatic => WrappedSpec.IsStaticFunction;
+
         public bool IsIdempotent => WrappedSpec.ContainsFacet<IIdempotentFacet>();
 
         public int MemberOrder => WrappedSpec.GetMemberOrder();

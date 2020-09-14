@@ -29,7 +29,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     /// </para>
     public sealed class MandatoryDefaultFacetFactory : FacetFactoryAbstract {
         public MandatoryDefaultFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
+            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters, ReflectionType.Both) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FacetUtils.AddFacet(Create(specification));

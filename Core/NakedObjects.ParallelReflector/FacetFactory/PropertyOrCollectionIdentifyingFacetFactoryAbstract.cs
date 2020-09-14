@@ -15,8 +15,8 @@ using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public abstract class PropertyOrCollectionIdentifyingFacetFactoryAbstract : MethodPrefixBasedFacetFactoryAbstract, IPropertyOrCollectionIdentifyingFacetFactory {
-        protected PropertyOrCollectionIdentifyingFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes)
-            : base(numericOrder, loggerFactory, featureTypes) { }
+        protected PropertyOrCollectionIdentifyingFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes, ReflectionType reflectionType)
+            : base(numericOrder, loggerFactory, featureTypes, reflectionType) { }
 
         protected static bool IsPropertyIncluded(PropertyInfo property) => property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null;
 
