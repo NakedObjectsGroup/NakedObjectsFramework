@@ -36,20 +36,36 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Person\Address_Functions.cs" />
+    <Compile Include="Person\Address.cs" />
     <Compile Include="Person\AddressType.cs" />
+    <Compile Include="Person\BusinessEntity.cs" />
+    <Compile Include="Person\BusinessEntityAddress_Functions.cs" />
+    <Compile Include="Person\BusinessEntityAddress.cs" />
+    <Compile Include="Person\BusinessEntityContact_Functions.cs" />
+    <Compile Include="Person\BusinessEntityContact.cs" />
     <Compile Include="Person\ContactType.cs" />
     <Compile Include="Person\CountryRegion.cs" />
+    <Compile Include="Person\EmailAddress.cs" />
+    <Compile Include="Person\EmailTemplate.cs" />
     <Compile Include="Person\IAddressRole.cs" />
     <Compile Include="Person\IBusinessEntity.cs" />
     <Compile Include="Person\IContactRole.cs" />
     <Compile Include="Person\Password.cs" />
+    <Compile Include="Person\Person.cs" />
+    <Compile Include="Person\PersonPhone _Functions.cs" />
+    <Compile Include="Person\PersonPhone.cs" />
     <Compile Include="Person\PhoneNumberType.cs" />
     <Compile Include="Person\StateProvince.cs" />
+    <Compile Include="Sales\CreditCard_Functions.cs" />
+    <Compile Include="Sales\CreditCard.cs" />
     <Compile Include="Sales\Currency.cs" />
     <Compile Include="Sales\ICreditCardCreator.cs" />
+    <Compile Include="Sales\PersonCreditCard_Functions.cs" />
+    <Compile Include="Sales\PersonCreditCard.cs" />
     <Compile Include="Sales\SalesTerritory.cs" />
     <Compile Include="Sales\SpecialOffer_Edit.cs" />
-    <Compile Include="Sales\SpecialOffer_EditFunctions.cs" />
+    <Compile Include="Sales\SpecialOffer_Edit_Functions.cs" />
     <Compile Include="Sales\SpecialOffer_Functions.cs" />
     <Compile Include="Sales\SpecialOffer.cs" />
     <Compile Include="Sales\SpecialOfferContributedActions.cs" />

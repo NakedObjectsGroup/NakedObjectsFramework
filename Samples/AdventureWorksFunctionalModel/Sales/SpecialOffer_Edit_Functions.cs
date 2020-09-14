@@ -14,10 +14,8 @@ namespace AdventureWorksModel
 {
 
 
-    public static class SpecialOffer_EditFunctions
+    public static class SpecialOffer_Edit_Functions
     {
-        //WRITE A SNIPPET FOR THIS!
-
         #region Life Cycle Methods
         public static string[] DeriveKeys(this SpecialOffer_Edit edit)
         => new string[]

@@ -1,44 +1,38 @@
 using NakedFunctions;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AdventureWorksModel {
 
-    public  class EmailAddress : IHasRowGuid, IHasModifiedDate {
+    public record EmailAddress : IHasRowGuid, IHasModifiedDate {
 
         [Hidden]
-        public virtual int BusinessEntityID { get; set; }
+        public virtual int BusinessEntityID { get; init; }
         [Hidden]
-        public virtual int EmailAddressID { get; set; }
+        public virtual int EmailAddressID { get; init; }
 
         [Named("Email Address")]
         [RegEx(Validation = @"^[\-\w\.]+@[\-\w\.]+\.[A-Za-z]+$", Message = "Not a valid email address")]
-        public virtual string EmailAddress1 { get; set; }
+        public virtual string EmailAddress1 { get; init; }
 
         //[Hidden]
-        //public virtual int PersonId { get; set; }
+        //public virtual int PersonId { get; init; }
 
         [Hidden]
-        public virtual Person Person { get; set; }
+        public virtual Person Person { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
-        [Hidden]
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        [Hidden, ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public override string ToString() => EmailAddress1;
     }
 
     public static class EmailAddressFunctions
     {
-        public static string Title(this EmailAddress ema)
-        {
-            return ema.CreateTitle(ema.EmailAddress1);
-        }
 
-        public static EmailAddress Updating(EmailAddress ea, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(ea, now);
-
-        }
+        public static EmailAddress Updating(EmailAddress x, [Injected] DateTime now) => x with { ModifiedDate = now };
     }
 }

@@ -1,25 +1,25 @@
 using NakedFunctions;
 using System;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace AdventureWorksModel {
 
     public record BusinessEntity : IBusinessEntity {
-        public BusinessEntity(
-            int businessEntityID,
-            ICollection<BusinessEntityAddress> addresses,
-            ICollection<BusinessEntityContact> contacts,
-            Guid businessEntityRowguid,
-            DateTime businessEntityModifiedDate
-            )
-        {
-            BusinessEntityID = businessEntityID;
-            Addresses = addresses;
-            Contacts = contacts;
-            BusinessEntityRowguid = businessEntityRowguid;
-            BusinessEntityModifiedDate = businessEntityModifiedDate;
-        }
+        //public BusinessEntity(
+        //    int businessEntityID,
+        //    ICollection<BusinessEntityAddress> addresses,
+        //    ICollection<BusinessEntityContact> contacts,
+        //    Guid businessEntityRowguid,
+        //    DateTime businessEntityModifiedDate
+        //    )
+        //{
+        //    BusinessEntityID = businessEntityID;
+        //    Addresses = addresses;
+        //    Contacts = contacts;
+        //    BusinessEntityRowguid = businessEntityRowguid;
+        //    BusinessEntityModifiedDate = businessEntityModifiedDate;
+        //}
 
         public BusinessEntity() {}
 
@@ -29,8 +29,7 @@ namespace AdventureWorksModel {
         [Hidden]
         public virtual Guid BusinessEntityRowguid { get; set; }
 
-        [Hidden]
-        [ConcurrencyCheck]
+        [Hidden, ConcurrencyCheck]
         public virtual DateTime BusinessEntityModifiedDate { get; set; }
 
         [RenderEagerly]
@@ -39,11 +38,8 @@ namespace AdventureWorksModel {
             nameof(BusinessEntityAddress.Address))] 
         public virtual ICollection<BusinessEntityAddress> Addresses { get; set; }
 
-        [RenderEagerly]
-        [TableView(false, "ContactType", "Person")] 
+        [RenderEagerly, TableView(false, "ContactType", "Person")] 
         public virtual ICollection<BusinessEntityContact> Contacts { get; set; }
-
-
     }
 
     public static class BusinessEntityFunctions

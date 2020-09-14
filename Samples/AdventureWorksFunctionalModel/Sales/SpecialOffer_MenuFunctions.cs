@@ -50,13 +50,12 @@ namespace AdventureWorksModel
         [MemberOrder(4)]
         public static SpecialOffer_Edit CreateNewSpecialOffer(this SpecialOffer x)
         {
-            return SpecialOffer_EditFunctions.CreateFrom(x);
+            return SpecialOffer_Edit_Functions.CreateFrom(x);
         }
 
         #endregion
 
         #region Create Multiple Special Offers
-        //TODO: MultiLine functions ???
         [MemberOrder(5), MultiLine(2)]
         public static (SpecialOffer, SpecialOffer) CreateMultipleSpecialOffers(
 
@@ -91,7 +90,6 @@ namespace AdventureWorksModel
 
 
         #endregion
-
 
 
         #region Helper methods

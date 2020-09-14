@@ -17,6 +17,7 @@ namespace AdventureWorksModel
 {
 
     public interface IEmployee : IBusinessEntity { } //Interface is for testing purposes
+
         public record Employee : IEmployee, IHasRowGuid, IHasModifiedDate
     {
         //TODO: add all properties
