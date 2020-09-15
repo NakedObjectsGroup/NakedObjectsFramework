@@ -2,7 +2,7 @@
 
 namespace NakedFunctions
 {
-    [AttributeUsage(AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class DefaultValueAttribute : Attribute
     {
         public object Value { get; private set; }

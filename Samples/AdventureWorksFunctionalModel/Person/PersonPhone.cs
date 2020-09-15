@@ -1,59 +1,31 @@
 using NakedFunctions;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AdventureWorksModel
 {
     public record PersonPhone : IHasModifiedDate {
 
-        public PersonPhone(
-            int businessEntityID, 
-            Person person, 
-            PhoneNumberType phoneNumberType, 
-            int phoneNumberTypeID, 
-            string phoneNumber,
-            DateTime modifiedDate)
-        {
-            BusinessEntityID = businessEntityID;
-            Person = person;
-            PhoneNumberType = phoneNumberType;
-            PhoneNumberTypeID = phoneNumberTypeID;
-            PhoneNumber = phoneNumber;
-            ModifiedDate = modifiedDate;
-        }
-
-        public PersonPhone() { }
 
         [Hidden]
-        public virtual int BusinessEntityID { get; set; }
+        public virtual int BusinessEntityID { get; init; }
 
-        public virtual string PhoneNumber { get; set; }
+        public virtual string PhoneNumber { get; init; }
 
         //[Hidden]
-        //public virtual int PersonID { get; set; }
+        //public virtual int PersonID { get; init; }
 
         [Hidden]
-        public virtual Person Person { get; set; }
+        public virtual Person Person { get; init; }
 
         [Hidden]
-        public virtual int PhoneNumberTypeID { get; set; }
+        public virtual int PhoneNumberTypeID { get; init; }
 
-        public virtual PhoneNumberType PhoneNumberType { get; set; }
+        public virtual PhoneNumberType PhoneNumberType { get; init; }
 
         [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-    }
+        public virtual DateTime ModifiedDate { get; init; }
 
-    public static class PersonPhoneFunctions
-    {
-
-        public static PersonPhone Updating(PersonPhone pp, [Injected] DateTime now)
-        {
-            return LifeCycleFunctions.UpdateModified(pp, now);
-        }
-
-        public static string Title(this PersonPhone pp)
-        {
-           return pp.CreateTitle($"{pp.PhoneNumberType}:{pp.PhoneNumber}");
-        }
+        public override string ToString() => $"{PhoneNumberType}:{PhoneNumber}";
     }
 }

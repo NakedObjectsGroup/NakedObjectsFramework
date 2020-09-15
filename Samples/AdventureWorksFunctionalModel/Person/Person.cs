@@ -20,63 +20,39 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AdventureWorksModel {
 
         public record Person : BusinessEntity, IHasRowGuid, IHasModifiedDate {
-        public Person() {
-           
-        }
 
-        public Person(string additionalContactInfo,
-                        bool nameStyle,
-                      string title,
-                      string firstName,
-                      string middleName,
-                      string lastName,
-                      string suffix,
-                      int emailPromotion,
-                      Password password,
-                      Guid rowGuid,
-                      DateTime modifiedDate,
-                      ICollection<PersonPhone> phoneNumbers,
-                      ICollection<EmailAddress> emailAddresses,
-                      int businessEntityID,
-                      ICollection<BusinessEntityAddress> addresses,
-                      ICollection<BusinessEntityContact> contacts,
-                      Guid businessEntityRowguid,
-                      DateTime businessEntityModifiedDate      
-                      ) : base(businessEntityID, addresses, contacts, businessEntityRowguid, businessEntityModifiedDate)
-        {
-            AdditionalContactInfo = additionalContactInfo;
-            NameStyle = nameStyle;
-            Title = title;
-            FirstName = firstName;
-            LastName = lastName;
-            MiddleName = middleName;
-            Suffix = suffix;
-            EmailPromotion = (EmailPromotion)emailPromotion;
-            Password = password;
-            ModifiedDate = modifiedDate;
-            rowguid = rowGuid;
-            EmailAddresses = emailAddresses;
-            PhoneNumbers = phoneNumbers;
-        }
+            //AdditionalContactInfo = additionalContactInfo;
+            //NameStyle = nameStyle;
+            //Title = title;
+            //FirstName = firstName;
+            //LastName = lastName;
+            //MiddleName = middleName;
+            //Suffix = suffix;
+            //EmailPromotion = (EmailPromotion)emailPromotion;
+            //Password = password;
+            //ModifiedDate = modifiedDate;
+            //rowguid = rowGuid;
+            //EmailAddresses = emailAddresses;
+            //PhoneNumbers = phoneNumbers;
 
         
         [MemberOrder(30)]
-        public virtual string AdditionalContactInfo { get; set; }
+        public virtual string AdditionalContactInfo { get; init; }
 
         
         [Hidden]
-        public IBusinessEntity ForEntity { get; set; }
+        public IBusinessEntity ForEntity { get; init; }
 
         [MemberOrder(2)]
 
-        public ContactType ContactType { get; set; }
+        public ContactType ContactType { get; init; }
 
         #region Name fields
 
         #region NameStyle
 
         [MemberOrder(15), DefaultValue(false), Named("Reverse name order")]
-        public virtual bool NameStyle { get; set; }
+        public virtual bool NameStyle { get; init; }
 
         #endregion
 
@@ -85,7 +61,7 @@ namespace AdventureWorksModel {
         
         
         [MemberOrder(11)]
-        public virtual string Title { get; set; }
+        public virtual string Title { get; init; }
 
         #endregion
 
@@ -93,7 +69,7 @@ namespace AdventureWorksModel {
 
         
         [MemberOrder(12)]
-        public virtual string FirstName { get; set; }
+        public virtual string FirstName { get; init; }
 
         #endregion
 
@@ -102,7 +78,7 @@ namespace AdventureWorksModel {
         
         
         [MemberOrder(13)]
-        public virtual string MiddleName { get; set; }
+        public virtual string MiddleName { get; init; }
 
         #endregion
 
@@ -110,7 +86,7 @@ namespace AdventureWorksModel {
 
         
         [MemberOrder(14)]
-        public virtual string LastName { get; set; }
+        public virtual string LastName { get; init; }
 
         #endregion
 
@@ -119,42 +95,43 @@ namespace AdventureWorksModel {
         
         
         [MemberOrder(15)]
-        public virtual string Suffix { get; set; }
+        public virtual string Suffix { get; init; }
 
         #endregion
 
         #endregion
 
         [MemberOrder(21), DefaultValue(1)]
-        public virtual EmailPromotion EmailPromotion { get; set; }
+        public virtual EmailPromotion EmailPromotion { get; init; }
 
         [Hidden]
-        public virtual Password Password { get; set; }
+        public virtual Password Password { get; init; }
       
 
         //To test a null image
-        [NotMapped]
-        public virtual Image Photo { get { return null; } }
+        //[NotMapped]
+        //public virtual Image Photo { get { return null; } }
 
         [RenderEagerly]
         [TableView(false, nameof(EmailAddress.EmailAddress1))] 
-        public virtual ICollection<EmailAddress> EmailAddresses { get; set; }
+        public virtual ICollection<EmailAddress> EmailAddresses { get; init; }
 
         [AWNotCounted]
         [TableView(false, 
             nameof(PersonPhone.PhoneNumberType),
             nameof(PersonPhone.PhoneNumber))] 
-        public virtual ICollection<PersonPhone> PhoneNumbers { get; set; }
+        public virtual ICollection<PersonPhone> PhoneNumbers { get; init; }
 
-        [Hidden]
-        public virtual Employee Employee { get; set; }
+        //TODO
+        //[Hidden]
+        //public virtual Employee Employee { get; init; }
 
         #region Row Guid and Modified Date
 
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         #endregion
 
@@ -162,7 +139,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99)]
         
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
@@ -178,18 +155,20 @@ namespace AdventureWorksModel {
         }
 
         #region Life Cycle Methods
-        public static BusinessEntityContact Persisted(Person p, Guid guid, DateTime now)
+        public static BusinessEntityContact Persisted(Person p)
         {
-            return new BusinessEntityContact(
-                p.ForEntity.BusinessEntityID,
-                p,
-                p.BusinessEntityID,
-                p,
-                p.ContactType.ContactTypeID,
-                p.ContactType,
-                guid,
-                now
-                );
+            return new BusinessEntityContact()
+            {
+                //TODO:
+                //p.ForEntity.BusinessEntityID,
+                //p,
+                //p.BusinessEntityID,
+                //p,
+                //p.ContactType.ContactTypeID,
+                //p.ContactType,
+                //guid,
+                //now
+            };
         }
 
         public static Person Persisting(Person p, [Injected] Guid guid, [Injected] DateTime now)
@@ -216,10 +195,14 @@ namespace AdventureWorksModel {
             //var p1 = CreateSaltAndHash(p, newPassword));
         }
 
-        internal static Person CreateSaltAndHash(this Person p, string newPassword, [Injected] Guid guid, [Injected] DateTime now)
+        internal static Person CreateSaltAndHash(this Person p, string newPassword)
         {
-            var pw = new Password(p.BusinessEntityID, Hashed(newPassword, p.Password.PasswordSalt),
-                CreateRandomSalt(), guid, now);
+            var pw = new Password()
+            {
+                BusinessEntityID = p.BusinessEntityID,
+                PasswordHash = Hashed(newPassword, p.Password.PasswordSalt),
+                PasswordSalt = CreateRandomSalt()
+            };
             return p with { Password = pw };
         }
 
@@ -331,9 +314,12 @@ namespace AdventureWorksModel {
         }
 
         public static (Person, PersonPhone) CreateNewPhoneNumber(this Person p, PhoneNumberType type,
-    [RegEx(@"[0-9][0-9\s-]+")]string phoneNumber, [Injected] DateTime now)
-        {
-            return (p, new PersonPhone(p.BusinessEntityID, p, type, type.PhoneNumberTypeID, phoneNumber, now));
-        }
+    [RegEx(@"[0-9][0-9\s-]+")] string phoneNumber)
+            => (p, new PersonPhone()
+            {
+                BusinessEntityID = p.BusinessEntityID,
+                PhoneNumberType = type,
+                PhoneNumber = phoneNumber
+            });
     }
 }

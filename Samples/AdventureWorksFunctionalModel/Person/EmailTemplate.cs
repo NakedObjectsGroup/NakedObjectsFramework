@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using NakedFunctions;
 
 namespace AdventureWorksModel
@@ -40,6 +42,8 @@ namespace AdventureWorksModel
 
         
         public virtual EmailStatus Status { get; set; }
+
+        public override string ToString() => $"{Status} email";
     }
 
     public static class EmailTemplateFunctions {
@@ -59,10 +63,6 @@ namespace AdventureWorksModel
             return new EmailTemplate(keys[0],keys[1],keys[2],keys[3],(EmailStatus)Enum.Parse(typeof(EmailStatus), keys[4]));
         }
 
-        public static string Title(this EmailTemplate et)
-        {
-            return et.CreateTitle($"{((EmailStatus)et.Status).ToString()} email");
-        }
 
         public static (EmailTemplate, EmailTemplate) Send(this EmailTemplate et)
         {
@@ -70,11 +70,13 @@ namespace AdventureWorksModel
             return (et2, et2);
         }
 
-        public static IQueryable<string> AutoCompleteSubject(this EmailTemplate et, [Range(2,0)] string value)
+        public static IQueryable<string> AutoCompleteSubject(this EmailTemplate et, [Range(2, 0)] string value)
         {
             var matchingNames = new List<string> { "Subject1", "Subject2", "Subject3" };
             return from p in matchingNames.AsQueryable() select p.Trim();
         }
+
+
 
     }
     public enum EmailStatus

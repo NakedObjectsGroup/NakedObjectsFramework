@@ -1,86 +1,39 @@
 using NakedFunctions;
 using System;
-
-
+using System.ComponentModel.DataAnnotations;
 
 namespace AdventureWorksModel
 {
     [Named("Address")]
     public record BusinessEntityAddress: IHasRowGuid, IHasModifiedDate
     {
-        public BusinessEntityAddress(
-            //int businessEntityID,
-            BusinessEntity businessEntity,
-            //int addressTypeID,           
-            AddressType addressType,
-            int addressID,
-            Address address,
-            Guid guid, 
-            DateTime now)
-        {
-            AddressID = addressID;
-            Address = address;
-            //AddressTypeID = addressTypeID;
-            AddressType = addressType;
-            //BusinessEntityID = businessEntityID;
-            BusinessEntity = businessEntity;
-            rowguid = guid;
-            ModifiedDate = now;
-        }
+         public BusinessEntityAddress() { }
 
-        public BusinessEntityAddress() { }
+        [NakedObjectsIgnore]
+        public virtual int BusinessEntityID { get; init; }
 
-        
-        public virtual int BusinessEntityID { get; set; }
         [MemberOrder(3)]
-        public virtual BusinessEntity BusinessEntity { get; set; }
+        public virtual BusinessEntity BusinessEntity { get; init; }
 
-        
-        public virtual int AddressTypeID { get; set; }
+        [NakedObjectsIgnore]
+        public virtual int AddressTypeID { get; init; }
 
         [MemberOrder(1)]
-        
-        public virtual AddressType AddressType { get; set; }
+        public virtual AddressType AddressType { get; init; }
 
         
-        public virtual int AddressID { get; set; }
+        public virtual int AddressID { get; init; }
 
-        [MemberOrder(2)]
-        
-        public virtual Address Address { get; set; }
+        [MemberOrder(2)]    
+        public virtual Address Address { get; init; }
 
-        #region Row Guid and Modified Date
+        [NakedObjectsIgnore]
+        public virtual Guid rowguid { get; init; }
 
-        #region rowguid
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
 
-        [Hidden]
-        public virtual Guid rowguid { get; set; }
-
-        #endregion
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #endregion
+         public override string ToString() => $"{AddressType}: {Address}";
     }
 
-    public static class BusinessEntityAddressFunctions {
-        
-    public static BusinessEntityAddress Updating(BusinessEntityAddress a, [Injected] DateTime now)
-    {
-            return a with {ModifiedDate =  now};
-    }
-
-    public static string Title(this BusinessEntityAddress a)
-    {
-            return a.CreateTitle($"{AddressTypeFunctions.Title(a.AddressType)}: { AddressFunctions.Title(a.Address)}");
-    }
-
-}
 }

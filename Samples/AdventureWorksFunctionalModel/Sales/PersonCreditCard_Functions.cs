@@ -6,25 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-    public record PersonCreditCard {
+    public static class PersonCreditCard_Functions {
+        #region Life Cycle Methods
+        public static PersonCreditCard Updating(PersonCreditCard x, [Injected] DateTime now) => x with { ModifiedDate = now };
 
-        [NakedObjectsIgnore]
-        public virtual int PersonID { get; set; }
-
-        [NakedObjectsIgnore]
-        public virtual int CreditCardID { get; set; }
-
-        public virtual Person Person { get; set; }
-
-        public virtual CreditCard CreditCard { get; set; }
-
-        [MemberOrder(99),ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
-
-        public override string ToString() => $"{Person}";
+        public static PersonCreditCard Persisting(PersonCreditCard x, [Injected] DateTime now) => x with {ModifiedDate = now };
+        #endregion
     }
 }

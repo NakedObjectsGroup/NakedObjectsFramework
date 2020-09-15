@@ -6,12 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFunctions;
+using System;
 
 namespace AdventureWorksModel {
     public interface ICreditCardCreator {
 
-        //TODO: work out how to do this
-        //[Hidden]
-        //void CreatedCardHasBeenSaved(CreditCard card);
+        public static ICreditCardCreator CreatedCardHasBeenSaved(ICreditCardCreator creator, CreditCard card)
+        {
+            throw new NotImplementedException();
+        }
     }
+
 }

@@ -23,7 +23,7 @@ namespace AdventureWorksModel {
         #endregion
 
         #region Edit
-        public static SpecialOffer_Edit Edit(this SpecialOffer x) => SpecialOffer_EditFunctions.CreateFrom(x);
+        public static SpecialOffer_Edit Edit(this SpecialOffer x) => SpecialOffer_Edit_Functions.CreateFrom(x);
         #endregion
 
         #region AssociateWithProduct

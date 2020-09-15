@@ -6,22 +6,20 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel
-{
+{ 
+    [ViewModelEdit]
     public record SpecialOffer_Edit
     {
-
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual int SpecialOfferID { get; init; }
 
         [MemberOrder(10)]
         public virtual string Description { get; init; }
 
-        [MemberOrder(20)]
-        [Mask("P")]
+        [MemberOrder(20), Mask("P")]
         public virtual decimal DiscountPct { get; init; }
 
         [MemberOrder(30)]
@@ -30,22 +28,19 @@ namespace AdventureWorksModel
         [MemberOrder(40)]
         public virtual string Category { get; init; }
 
-        [MemberOrder(51)]
-        [Mask("d")]
+        [MemberOrder(51), Mask("d")]
         public virtual DateTime StartDate { get; init; }
 
-        [MemberOrder(52)]
-        [Mask("d")]
+        [MemberOrder(52), Mask("d")]
         public virtual DateTime EndDate { get; init; }
 
         [MemberOrder(61)]
         public virtual int MinQty { get; init; }
 
-
         [MemberOrder(62), Optionally]
         public virtual int? MaxQty { get; init; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; init; }
 
         public override string ToString() => Description is null ? "New Special Offer" : Description;
