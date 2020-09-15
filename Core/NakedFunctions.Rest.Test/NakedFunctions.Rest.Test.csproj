@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Facade\NakedObjects.Facade.Impl\NakedObjects.Facade.Impl.csproj" />
+    <ProjectReference Include="..\..\Rest\NakedObjects.Rest\NakedObjects.Rest.csproj" />
+    <ProjectReference Include="..\NakedFunctions.Rest.Test.Data\NakedFunctions.Rest.Test.Data.csproj" />
+    <ProjectReference Include="..\NakedObjects.Xat\NakedObjects.Xat.csproj" />
+  </ItemGroup>
+
+</Project>
