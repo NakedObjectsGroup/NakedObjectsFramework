@@ -138,9 +138,59 @@ namespace NakedObjects.Facade.Impl {
                 return ExecuteAction(actionContext, arguments);
             });
 
+
+        public (string, ActionContextFacade)[] GetMenuItem(IMenuItemFacade item, string parent = "")
+        {
+            var menuActionFacade = item as IMenuActionFacade;
+
+            if (menuActionFacade != null)
+            {
+                return new[] { (item.Name, GetActionContext(menuActionFacade, parent)) };
+            }
+
+            var menuFacade = item as IMenuFacade;
+
+            if (menuFacade != null)
+            {
+                parent = parent + (string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider) + menuFacade.Name;
+                return menuFacade.MenuItems.SelectMany(i => GetMenuItem(i, parent)).ToArray();
+            }
+
+            return new (string, ActionContextFacade)[] { };
+        }
+
+
+
+
         #endregion
 
         #region Helpers
+
+        private IObjectFacade GetTarget(IMenuActionFacade actionFacade)
+        {
+            if (actionFacade.Action.IsStatic)
+            {
+                // return fake service
+                var oid = OidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(typeof(global::MenuFunctions).FullName);
+                return OidStrategy.FrameworkFacade.GetService(oid).Target;
+            }
+
+            return OidStrategy.FrameworkFacade.GetServices().List.Single(s => s.Specification.IsOfType(actionFacade.Action.OnType));
+        }
+
+        private ActionContextFacade GetActionContext(IMenuActionFacade actionFacade, string menuPath)
+        {
+            //var service = GetTarget(actionFacade);
+            //var actionContext = GetServiceAction(service.Oid)
+
+            return new ActionContextFacade
+            {
+                MenuPath = menuPath,
+                Target = GetTarget(actionFacade),
+                Action = actionFacade.Action,
+                VisibleParameters = FilterMenuParms(actionFacade)
+            };
+        }
 
         private static IAssociationSpec GetPropertyInternal(INakedObjectAdapter nakedObject, string propertyName, bool onlyVisible = true) {
             if (string.IsNullOrWhiteSpace(propertyName)) {

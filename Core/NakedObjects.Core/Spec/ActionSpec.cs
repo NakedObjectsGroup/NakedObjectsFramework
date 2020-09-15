@@ -117,6 +117,7 @@ namespace NakedObjects.Core.Spec {
 
         public INakedObjectAdapter RealTarget(INakedObjectAdapter target) =>
             target switch {
+                null when IsStaticFunction => null,
                 null => FindService(),
                 _ when target.Spec is IServiceSpec => target,
                 _ when IsContributedMethod => FindService(),

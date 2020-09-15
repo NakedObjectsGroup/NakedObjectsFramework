@@ -78,8 +78,7 @@ namespace NakedObjects.Meta.Menu {
         }
 
         public IMenu AddContributedActions() {
-            var spec = ObjectSpec as IObjectSpecImmutable;
-            spec?.ContributedActions.ForEach(ca => AddContributedAction(ca, spec));
+            ObjectSpec?.ContributedActions.ForEach(AddContributed);
             return this;
         }
 
@@ -123,9 +122,25 @@ namespace NakedObjects.Meta.Menu {
 
         private void AddMenuItem(IMenuItemImmutable item) => items = items.Add(item); //Only way to add to an immutable collection
 
+
+        private void AddContributed(IActionSpecImmutable ca)
+        {
+            if (ObjectSpec is IObjectSpecImmutable objectSpec) {
+                 AddContributedAction(ca, objectSpec);
+            }
+            else {
+                AddContributedFunction(ca);
+            }
+        }
+
+        private void AddContributedFunction(IActionSpecImmutable ca) {
+            //i.e. no sub-menu
+            AddMenuItem(new MenuAction(ca));
+        }
+
         private void AddContributedAction(IActionSpecImmutable ca, IObjectSpecImmutable spec) {
             var facet = ca.GetFacet<IContributedActionFacet>();
-            var subMenuName = facet.SubMenuWhenContributedTo(spec);
+            var subMenuName = facet?.SubMenuWhenContributedTo(spec);
             if (subMenuName != null) {
                 var id = facet.IdWhenContributedTo(spec);
                 var subMenu = GetSubMenuIfExists(subMenuName) ?? CreateMenuImmutableAsSubMenu(subMenuName, id);

@@ -66,13 +66,15 @@ namespace NakedObjects.Rest.Snapshot.Representations {
             };
 
         private (string name, ActionContextFacade action)[] GetMenuItem(IMenuItemFacade item, IFrameworkFacade frameworkFacade, string parent = "") {
-            string Divider() => string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider;
+            //string Divider() => string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider;
 
-            return item switch {
-                IMenuActionFacade menuActionFacade => new[] {(item.Name, ActionContext(menuActionFacade, frameworkFacade, parent))},
-                IMenuFacade menuFacade => menuFacade.MenuItems.SelectMany(mi => GetMenuItem(mi, frameworkFacade, $"{parent}{Divider()}{menuFacade.Name}")).ToArray(),
-                _ => new (string, ActionContextFacade)[] { }
-            };
+            //return item switch {
+            //    IMenuActionFacade menuActionFacade => new[] {(item.Name, ActionContext(menuActionFacade, frameworkFacade, parent))},
+            //    IMenuFacade menuFacade => menuFacade.MenuItems.SelectMany(mi => GetMenuItem(mi, frameworkFacade, $"{parent}{Divider()}{menuFacade.Name}")).ToArray(),
+            //    _ => new (string, ActionContextFacade)[] { }
+            //};
+
+            return OidStrategy.FrameworkFacade.GetMenuItem(item, parent);
         }
 
         private static bool IsVisibleAndUsable(ActionContextFacade actionContextFacade) =>
