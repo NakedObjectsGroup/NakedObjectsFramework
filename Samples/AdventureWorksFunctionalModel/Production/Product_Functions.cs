@@ -53,9 +53,6 @@ namespace AdventureWorksFunctionalModel {
 
         #endregion
 
-        #region Edit
-        public static Product_Edit Edit(this Product p) => Product_EditFunctions.CreateFrom(p);
-        #endregion
 
         #region Associate with Special Offer
         public static (SpecialOfferProduct, SpecialOfferProduct, Action<IAlert>) AssociateWithSpecialOffer(
@@ -70,6 +67,44 @@ namespace AdventureWorksFunctionalModel {
             [Range(2, 0)] string name,
             IQueryable<SpecialOffer> offers)
         => offers.Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
+        #endregion
+
+        #region Property functions
+        #region Product Line
+        public static string[] ChoicesProductLine(this Product p)
+        => new[] { "R ", "M ", "T ", "S " };  // nchar(2) in database so pad right with space
+        #endregion
+
+        #region Class
+        public static string[] ChoicesClass(this Product p)
+        => new[] { "H ", "M ", "L " }; // nchar(2) in database so pad right with space
+        #endregion
+
+        #region Style
+        public static string[] ChoicesStyle(this Product p)
+        => new[] { "U ", "M ", "W " }; // nchar(2) in database so pad right with space
+        #endregion
+
+        #region Product Model
+        public static IQueryable<ProductModel> AutoCompleteProductModel(Product p, string match, IQueryable<ProductModel> models)
+        {
+            return models.Where(pm => pm.Name.ToUpper().Contains(match.ToUpper()));
+        }
+        #endregion
+
+        #region Categories
+        public static IList<ProductSubcategory> ChoicesCategories(
+            Product p,
+            ProductCategory productCategory,
+            IQueryable<ProductSubcategory> subCats)
+        {
+            if (productCategory != null)
+            {
+                return subCats.Where(psc => psc.ProductCategory.ProductCategoryID == productCategory.ProductCategoryID).ToList();
+            }
+            return new ProductSubcategory[] { }.ToList();
+        }
+        #endregion
         #endregion
     }
 }

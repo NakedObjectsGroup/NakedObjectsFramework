@@ -47,11 +47,9 @@ namespace AdventureWorksModel
         #endregion
 
         #region Create New Special Offer
-        [MemberOrder(4)]
-        public static SpecialOffer_Edit CreateNewSpecialOffer(this SpecialOffer x)
-        {
-            return SpecialOffer_Edit_Functions.CreateFrom(x);
-        }
+        [MemberOrder(4), CreateObject]
+        public static (SpecialOffer, SpecialOffer) CreateNewSpecialOffer(string description)
+       => DisplayAndPersist(new SpecialOffer { Description = description });
 
         #endregion
 
