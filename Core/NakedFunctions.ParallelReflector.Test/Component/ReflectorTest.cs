@@ -318,7 +318,7 @@ namespace NakedFunctions.Reflect.Test {
             var reflector = container.GetService<IReflector>();
             reflector.Reflect();
             var specs = reflector.AllObjectSpecImmutables;
-            Assert.AreEqual(2, specs.Length);
+            Assert.AreEqual(3, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(NavigableClass), specs);
             //AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
         }

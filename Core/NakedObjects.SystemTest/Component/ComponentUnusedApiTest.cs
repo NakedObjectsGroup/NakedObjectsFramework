@@ -59,7 +59,7 @@ namespace NakedObjects.SystemTest.Component {
         [Test]
         public virtual void MetamodelManagerAllSpecs() {
             var allSpecs = NakedObjectsFramework.MetamodelManager.AllSpecs;
-            Assert.AreEqual(56, allSpecs.Length);
+            Assert.AreEqual(57, allSpecs.Length);
         }
 
         [Test]
