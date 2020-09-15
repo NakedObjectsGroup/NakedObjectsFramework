@@ -462,6 +462,28 @@ namespace NakedObjects.Facade.Impl {
             return oc.ToObjectContextFacade(this, Framework);
         }
 
+        private static void SetFirstParmFromTarget(ActionContext actionContext, IDictionary<string, object> rawParms)
+        {
+            IActionParameterSpec parm = actionContext.Action.Parameters.FirstOrDefault(p => actionContext.Target.Spec.IsOfType(p.Spec));
+
+            if (parm != null)
+            {
+                rawParms[parm.Id] = actionContext.Target.Object;
+            }
+        }
+
+        private void SetInjectedParms(ActionContext actionContext, IDictionary<string, object> rawParms)
+        {
+            foreach (var parameterSpec in actionContext.Action.Parameters)
+            {
+                var injectedFacet = parameterSpec.GetFacet<IInjectedParameterFacet>();
+                if (injectedFacet != null)
+                {
+                    rawParms[parameterSpec.Id] = injectedFacet.GetInjectedValue(Framework);
+                }
+            }
+        }
+
         private bool ValidateParameters(ActionContext actionContext, IDictionary<string, object> rawParms) {
             if (rawParms.Any(kvp => !actionContext.Action.Parameters.Select(p => p.Id).Contains(kvp.Key))) {
                 throw new BadRequestNOSException("Malformed arguments");
@@ -469,6 +491,16 @@ namespace NakedObjects.Facade.Impl {
 
             var isValid = true;
             var orderedParms = new Dictionary<string, ParameterContext>();
+
+            if (actionContext.Action.IsStaticFunction)
+            {
+                // need to pass in target and injected parms 
+
+                // same as contributed 
+                SetFirstParmFromTarget(actionContext, rawParms);
+                SetInjectedParms(actionContext, rawParms);
+            }
+
 
             // handle contributed actions 
 
@@ -608,6 +640,12 @@ namespace NakedObjects.Facade.Impl {
                 }
             }
 
+            if (actionContext.Action.IsStaticFunction)
+            {
+                // Filter parameters
+                actionContext.VisibleParameters = actionContext.VisibleParameters.Where(p => p.Parameter.Number > 0 && !p.Parameter.IsInjected).ToArray();
+            }
+
             return actionResultContext.ToActionResultContextFacade(this, Framework);
         }
 
@@ -700,6 +738,37 @@ namespace NakedObjects.Facade.Impl {
             return Framework.NakedObjectManager.GetAdapterFor(obj);
         }
 
+        private ParameterContext[] FilterParms(IActionSpec action, ITypeSpec targetSpec, string uid)
+        {
+            return action.IsStaticFunction ? FilterParmsForFunctions(action, uid, targetSpec is IServiceSpec) : FilterParmsForContributedActions(action, targetSpec, uid);
+        }
+
+        private static ParameterContextFacade[] FilterMenuParms(IMenuActionFacade actionFacade)
+        {
+            var parms = actionFacade.Action.Parameters;
+            if (actionFacade.Action.IsStatic)
+            {
+                // filter parms for functions 
+
+                parms = parms.Where(p => !p.IsInjected).ToArray();
+            }
+
+            return parms.Select(p => new ParameterContextFacade { Parameter = p, Action = actionFacade.Action }).ToArray();
+        }
+
+        private ParameterContext[] FilterParmsForFunctions(IActionSpec action, string uid, bool isService)
+        {
+            return action.Parameters
+                         .Where(p => (isService || p.Number > 0) && !p.IsInjected)
+                         .Select(p => new ParameterContext
+                         {
+                             Action = action,
+                             Parameter = p,
+                             OverloadedUniqueId = uid
+                         })
+                         .ToArray();
+        }
+
         private static ParameterContext[] FilterParmsForContributedActions(IActionSpec action, ITypeSpec targetSpec, string uid) {
             IActionParameterSpec[] parms;
             if (action.IsContributedMethod && !action.OnSpec.Equals(targetSpec)) {
@@ -784,7 +853,7 @@ namespace NakedObjects.Facade.Impl {
             return new ActionContext {
                 Target = nakedObject,
                 Action = actionSpec,
-                VisibleParameters = FilterParmsForContributedActions(actionSpec, nakedObject.Spec, uid),
+                VisibleParameters = FilterParms(actionSpec, nakedObject.Spec, uid),
                 OverloadedUniqueId = uid
             };
         }
@@ -797,7 +866,7 @@ namespace NakedObjects.Facade.Impl {
             var ac = new ActionContext {
                 Target = nakedObject,
                 Action = actionSpec,
-                VisibleParameters = FilterParmsForContributedActions(actionSpec, nakedObject.Spec, uid),
+                VisibleParameters = FilterParms(actionSpec, nakedObject.Spec, uid),
                 OverloadedUniqueId = uid
             };
 
@@ -881,7 +950,7 @@ namespace NakedObjects.Facade.Impl {
             var actionContexts = actions.Select(a => new {a.action, uid = FacadeUtils.GetOverloadedUId(a.action, nakedObject.Spec), mp = a.parent}).Select(a => new ActionContext {
                 Action = a.action,
                 Target = nakedObject,
-                VisibleParameters = FilterParmsForContributedActions(a.action, nakedObject.Spec, a.uid),
+                VisibleParameters = FilterParms(a.action, nakedObject.Spec, a.uid),
                 OverloadedUniqueId = a.uid,
                 MenuPath = a.mp
             });

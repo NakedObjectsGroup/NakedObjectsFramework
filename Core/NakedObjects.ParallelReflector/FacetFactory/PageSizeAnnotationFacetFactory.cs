@@ -24,7 +24,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     /// </summary>
     public sealed class PageSizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public PageSizeAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions) { }
+            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Both) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<PageSizeAttribute>();

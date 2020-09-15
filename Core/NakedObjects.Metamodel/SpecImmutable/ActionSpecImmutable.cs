@@ -44,6 +44,8 @@ namespace NakedObjects.Meta.SpecImmutable {
         public bool IsContributedMethod => OwnerSpec is IServiceSpecImmutable && Parameters.Any() &&
                                            ContainsFacet(typeof(IContributedActionFacet));
 
+        public bool IsStaticFunction => ContainsFacet<IStaticFunctionFacet>();
+
         public bool IsContributedTo(IObjectSpecImmutable objectSpecImmutable) {
             return Parameters.Any(parm => IsContributedTo(parm.Specification, objectSpecImmutable));
         }

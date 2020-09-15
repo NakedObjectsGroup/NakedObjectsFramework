@@ -32,7 +32,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         private readonly ILogger<PropertyMethodsFacetFactory> logger;
 
         public PropertyMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Properties) =>
+            : base(numericOrder, loggerFactory, FeatureType.Properties, ReflectionType.Both) =>
             logger = loggerFactory.CreateLogger<PropertyMethodsFacetFactory>();
 
         public override string[] Prefixes => FixedPrefixes;

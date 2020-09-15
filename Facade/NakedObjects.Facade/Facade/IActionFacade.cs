@@ -26,5 +26,6 @@ namespace NakedObjects.Facade {
         string MemberOrderName { get; }
         bool IsVisible(IObjectFacade objectFacade);
         IConsentFacade IsUsable(IObjectFacade objectFacade);
+        bool IsStatic { get; }
     }
 }

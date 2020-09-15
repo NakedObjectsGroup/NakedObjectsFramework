@@ -12,5 +12,6 @@ namespace NakedObjects.Facade {
         ITypeFacade ElementType { get; }
         IActionFacade Action { get; }
         IObjectFacade GetDefault(IObjectFacade objectFacade);
+        bool IsInjected { get; }
     }
 }

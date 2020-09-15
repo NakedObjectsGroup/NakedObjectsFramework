@@ -27,6 +27,11 @@ namespace NakedObjects.Architecture.Spec {
         bool IsMandatory { get; }
 
         /// <summary>
+        ///     Returns a flag indicating if it is injected
+        /// </summary>
+        bool IsInjected { get; }
+
+        /// <summary>
         ///     Returns the zero-based index to this parameter
         /// </summary>
         int Number { get; }
