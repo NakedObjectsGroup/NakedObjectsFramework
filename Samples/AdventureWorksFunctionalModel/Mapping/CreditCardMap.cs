@@ -12,7 +12,7 @@ namespace AdventureWorksModel
             //Ignores
             Ignore(t => t.Creator);
             Ignore(t => t.ForContact);
-            Ignore(t => t.ObfuscatedNumber);
+            //Ignore(t => t.ObfuscatedNumber);
 
             // Properties
             Property(t => t.CardType)

@@ -19,8 +19,8 @@ namespace AdventureWorksModel
             ToTable("Shift", "HumanResources");
             Property(t => t.ShiftID).HasColumnName("ShiftID").HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             Property(t => t.Name).HasColumnName("Name");
-            Property(t => t.Times.StartTime).HasColumnName("StartTime");
-            Property(t => t.Times.EndTime).HasColumnName("EndTime");
+            Property(t => t.StartTime).HasColumnName("StartTime");
+            Property(t => t.EndTime).HasColumnName("EndTime");
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
         }
     }

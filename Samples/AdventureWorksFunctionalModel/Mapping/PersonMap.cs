@@ -10,7 +10,7 @@ namespace AdventureWorksModel
             HasKey(t => t.BusinessEntityID);
 
             //Ignores
-            Ignore(t => t.InitialPassword);
+            //Ignore(t => t.InitialPassword);
             Ignore(t => t.ContactType);
             Ignore(t => t.ForEntity);
             //TODO: Temp ignored
@@ -48,7 +48,7 @@ namespace AdventureWorksModel
             Property(t => t.rowguid).HasColumnName("rowguid");
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
 
-            HasOptional(t => t.Employee).WithRequired(t => t.PersonDetails);
+            //HasOptional(t => t.Employee).WithRequired(t => t.PersonDetails);
         }
     }
 }
