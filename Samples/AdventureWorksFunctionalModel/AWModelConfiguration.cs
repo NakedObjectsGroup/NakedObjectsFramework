@@ -29,10 +29,10 @@ namespace AdventureWorksFunctionalModel
 
         //Register static types that contain functions - all defined with 'extension method' syntax - that are to be contributed to a
         //specific domain type, IQueryable<DomainType>, or an interface implemented by domain types
-        public List<Type> ObjectFunctions() => new List<Type> { };
+        public static  List<Type> ObjectFunctions() => new List<Type> { typeof(ProductMenuFunctions), typeof(SpecialOffer_MenuFunctions) };
 
         //Register types representing services that may be passed by the framework into any Action<Tservice> returned by a main menu or object function.
-        public static List<Type> Services() => new List<Type> { };
+        public static List<Type> Services() => new List<Type> {  };
 
 
     }

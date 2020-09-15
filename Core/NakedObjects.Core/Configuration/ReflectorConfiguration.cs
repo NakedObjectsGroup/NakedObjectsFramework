@@ -77,7 +77,8 @@ namespace NakedObjects.Core.Configuration {
             // WhereSelectEnumerableIterator
             new List<int>().Where(i => true).Select(i => i).GetType().GetGenericTypeDefinition(),
             // UnionIterator
-            new List<int>().Union(new List<int>()).GetType().GetGenericTypeDefinition()
+            new List<int>().Union(new List<int>()).GetType().GetGenericTypeDefinition(),
+            typeof(Action<>)
         };
 
         public ReflectorConfiguration(Type[] typesToIntrospect,
