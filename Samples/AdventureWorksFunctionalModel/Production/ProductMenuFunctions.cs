@@ -25,11 +25,12 @@ namespace AdventureWorksModel {
         M,
         L
     }
-    public static class ProductMenuFunctions  { 
+    public static class ProductMenuFunctions
+    {
 
         [MemberOrder(1), TableView(true, nameof(Product.ProductNumber), nameof(Product.ProductSubcategory), nameof(Product.ListPrice))]
-        public static IQueryable<Product> FindProductByName(      
-            string searchString, 
+        public static IQueryable<Product> FindProductByName(
+            string searchString,
             IQueryable<Product> products)
         {
             return products.Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
@@ -37,16 +38,16 @@ namespace AdventureWorksModel {
 
         [MemberOrder(2)]
         public static (Product, Action<IAlert>) FindProductByNumber(
-            
-            string number, 
+
+            string number,
             IQueryable<Product> products)
         {
             return SingleObjectWarnIfNoMatch(products.Where(x => x.ProductNumber == number));
         }
-        
+
         [MemberOrder(10)]
-        public static Product RandomProduct(           
-            IQueryable<Product> products, 
+        public static Product RandomProduct(
+            IQueryable<Product> products,
             [Injected] int random)
         {
             return Random(products, random);
@@ -55,41 +56,45 @@ namespace AdventureWorksModel {
         //TODO:
         //[MemberOrder(9)]
         //public static NewProductVM NewProduct() => new NewProductVM;
-  
+
 
         #region FindProduct
 
-        
+
         [MemberOrder(7)]
         public static Product FindProduct(
-             
+
             Product product)
         {
             return product;
         }
 
-        public static Product Default0FindProduct(IQueryable<Product> products) {
+        public static Product Default0FindProduct(IQueryable<Product> products)
+        {
             return products.FirstOrDefault();
         }
 
-        public static IQueryable<Product> AutoComplete0FindProduct(string name, IQueryable<Product> products) {
+        public static IQueryable<Product> AutoComplete0FindProduct(string name, IQueryable<Product> products)
+        {
             return products.Where(x => x.Name.ToUpper().Contains(name.ToUpper()));
         }
 
         #endregion
 
-       #region ListProductsBySubCategory
+        #region ListProductsBySubCategory
 
-      //TODO: This action is both a menu action AND a contributed action.  Should that be permitted? How to specify it?
+        //TODO: This action is both a menu action AND a contributed action.  Should that be permitted? How to specify it?
         [TableView(true, "ProductNumber", "ListPrice"), MemberOrder(3)]
-        public static IQueryable<Product> ListProductsBySubCategory(          
+        public static IQueryable<Product> ListProductsBySubCategory(
             //[ContributedAction("Products")] TODO
-            ProductSubcategory subCategory, 
-            IQueryable<Product> products) {
+            ProductSubcategory subCategory,
+            IQueryable<Product> products)
+        {
             return products.Where(x => x.ProductSubcategory.ProductSubcategoryID == subCategory.ProductSubcategoryID).OrderBy(x => x.Name);
         }
 
-        public static ProductSubcategory Default0ListProductsBySubCategory(IQueryable<ProductSubcategory> subCats) {
+        public static ProductSubcategory Default0ListProductsBySubCategory(IQueryable<ProductSubcategory> subCats)
+        {
             return subCats.FirstOrDefault();
         }
 
@@ -99,9 +104,9 @@ namespace AdventureWorksModel {
 
         [TableView(true, "ProductNumber", "ListPrice"), MemberOrder(3)]
         public static IQueryable<Product> ListProducts(
-             
-            ProductCategory category, 
-            ProductSubcategory subCategory, 
+
+            ProductCategory category,
+            ProductSubcategory subCategory,
             IQueryable<Product> products)
         {
             return products.Where(x => x.ProductSubcategory.ProductSubcategoryID == subCategory.ProductSubcategoryID).OrderBy(x => x.Name);
@@ -115,7 +120,7 @@ namespace AdventureWorksModel {
 
         public static IList<ProductSubcategory> Choices1ListProducts(ProductCategory category)
         {
-                return category is null ? null : category.ProductSubcategory.ToList();
+            return category is null ? null : category.ProductSubcategory.ToList();
         }
 
         #endregion
@@ -123,15 +128,17 @@ namespace AdventureWorksModel {
         #region ListProductsBySubcategories
 
         [MemberOrder(4)]
-        
+
         public static IList<Product> ListProductsBySubCategories(
-            
+
             IEnumerable<ProductSubcategory> subCategories,
-            IQueryable<Product> products) {
+            IQueryable<Product> products)
+        {
             return QueryableOfProductsBySubcat(subCategories, products).ToList();
         }
 
-        public static IList<ProductSubcategory> Default0ListProductsBySubCategories(IQueryable<ProductSubcategory> subCats) {
+        public static IList<ProductSubcategory> Default0ListProductsBySubCategories(IQueryable<ProductSubcategory> subCats)
+        {
             return new List<ProductSubcategory> {
                 subCats.Single(psc => psc.Name == "Mountain Bikes"),
                 subCats.Single(psc => psc.Name == "Touring Bikes")
@@ -139,20 +146,22 @@ namespace AdventureWorksModel {
         }
 
         private static IQueryable<Product> QueryableOfProductsBySubcat(
-            
+
             IEnumerable<ProductSubcategory> subCategories,
-            IQueryable<Product> products) {
+            IQueryable<Product> products)
+        {
 
             IEnumerable<int> subCatIds = subCategories.Select(x => x.ProductSubcategoryID);
             return from p in products
-                from sc in subCatIds
-                where p.ProductSubcategory.ProductSubcategoryID == sc
-                orderby p.Name
-                select p;
+                   from sc in subCatIds
+                   where p.ProductSubcategory.ProductSubcategoryID == sc
+                   orderby p.Name
+                   select p;
         }
 
-        public static string Validate0ListProductsBySubCategories(IEnumerable<ProductSubcategory> subCategories) {
-            return subCategories.Count() > 5? "Max 5 SubCategories may be selected": null;
+        public static string Validate0ListProductsBySubCategories(IEnumerable<ProductSubcategory> subCategories)
+        {
+            return subCategories.Count() > 5 ? "Max 5 SubCategories may be selected" : null;
         }
         #endregion
 
@@ -160,36 +169,39 @@ namespace AdventureWorksModel {
 
         [MemberOrder(8)]
         public static IQueryable<Product> FindProductsByCategory(
-            
-            IEnumerable<ProductCategory> categories, 
+
+            IEnumerable<ProductCategory> categories,
             IEnumerable<ProductSubcategory> subcategories,
-            IQueryable<Product> products) {
-            return QueryableOfProductsBySubcat( subcategories, products);
+            IQueryable<Product> products)
+        {
+            return QueryableOfProductsBySubcat(subcategories, products);
         }
 
-        public static IQueryable<ProductCategory> Choices0FindProductsByCategory(IQueryable<ProductCategory> cats) {
+        public static IQueryable<ProductCategory> Choices0FindProductsByCategory(IQueryable<ProductCategory> cats)
+        {
             return cats;
         }
 
         public static IQueryable<ProductSubcategory> Choices1FindProductsByCategory(
-            IEnumerable<ProductCategory> categories, 
-            IQueryable<ProductSubcategory> subCats) 
+            IEnumerable<ProductCategory> categories,
+            IQueryable<ProductSubcategory> subCats)
         {
-            if (categories != null) {
+            if (categories != null)
+            {
                 IEnumerable<int> catIds = categories.Select(c => c.ProductCategoryID);
 
                 return from psc in subCats
-                    from cid in catIds
-                    where psc.ProductCategory.ProductCategoryID == cid
-                    select psc;
+                       from cid in catIds
+                       where psc.ProductCategory.ProductCategoryID == cid
+                       select psc;
             }
-            return new ProductSubcategory[] {}.AsQueryable();
+            return new ProductSubcategory[] { }.AsQueryable();
         }
 
         public static IList<ProductCategory> Default0FindProductsByCategory(
             IQueryable<ProductCategory> cats)
         {
-            return new List<ProductCategory> {cats.FirstOrDefault()};
+            return new List<ProductCategory> { cats.FirstOrDefault() };
         }
 
         public static List<ProductSubcategory> Default1FindProductsByCategory(
@@ -198,13 +210,14 @@ namespace AdventureWorksModel {
         {
             IList<ProductCategory> pcs = Default0FindProductsByCategory(cats);
 
-            if (pcs != null) {
+            if (pcs != null)
+            {
                 IEnumerable<int> ids = pcs.Select(c => c.ProductCategoryID);
 
                 return (from psc in subCats
-                    from cid in ids
-                    where psc.ProductCategory.ProductCategoryID == cid
-                    select psc).OrderBy(psc => psc.ProductSubcategoryID).Take(2).ToList();
+                        from cid in ids
+                        where psc.ProductCategory.ProductCategoryID == cid
+                        select psc).OrderBy(psc => psc.ProductSubcategoryID).Take(2).ToList();
             }
             return new List<ProductSubcategory>();
         }
@@ -215,48 +228,56 @@ namespace AdventureWorksModel {
 
         [MemberOrder(6)]
         public static IQueryable<Product> FindByProductLinesAndClasses(
-            
-            IEnumerable<ProductLineEnum> productLine, 
+
+            IEnumerable<ProductLineEnum> productLine,
             IEnumerable<ProductClassEnum> productClass,
             IQueryable<Product> products)
         {
-            foreach (ProductLineEnum pl in productLine) {
-                string pls = Enum.GetName(typeof (ProductLineEnum), pl);
+            foreach (ProductLineEnum pl in productLine)
+            {
+                string pls = Enum.GetName(typeof(ProductLineEnum), pl);
                 products = products.Where(p => p.ProductLine == pls);
             }
 
-            foreach (ProductClassEnum pc in productClass) {
-                string pcs = Enum.GetName(typeof (ProductClassEnum), pc);
+            foreach (ProductClassEnum pc in productClass)
+            {
+                string pcs = Enum.GetName(typeof(ProductClassEnum), pc);
                 products = products.Where(p => p.Class == pcs);
             }
 
             return products;
         }
 
-        public static  IList<ProductLineEnum> Default0FindByProductLinesAndClasses() {
-            return new List<ProductLineEnum> {ProductLineEnum.M, ProductLineEnum.S};
+        public static IList<ProductLineEnum> Default0FindByProductLinesAndClasses()
+        {
+            return new List<ProductLineEnum> { ProductLineEnum.M, ProductLineEnum.S };
         }
 
-        public static  IList<ProductClassEnum> Default1FindByProductLinesAndClasses() {
-            return new List<ProductClassEnum> {ProductClassEnum.H};
+        public static IList<ProductClassEnum> Default1FindByProductLinesAndClasses()
+        {
+            return new List<ProductClassEnum> { ProductClassEnum.H };
         }
 
         [MemberOrder(7)]
         public static IQueryable<Product> FindByOptionalProductLinesAndClasses(
-            
-            [Optionally]IEnumerable<ProductLineEnum> productLine, 
-            [Optionally]IEnumerable<ProductClassEnum> productClass,
+
+            [Optionally] IEnumerable<ProductLineEnum> productLine,
+            [Optionally] IEnumerable<ProductClassEnum> productClass,
             IQueryable<Product> products)
         {
-            if (productLine != null) {
-                foreach (ProductLineEnum pl in productLine) {
+            if (productLine != null)
+            {
+                foreach (ProductLineEnum pl in productLine)
+                {
                     string pls = Enum.GetName(typeof(ProductLineEnum), pl);
                     products = products.Where(p => p.ProductLine == pls);
                 }
             }
 
-            if (productClass != null) {
-                foreach (ProductClassEnum pc in productClass) {
+            if (productClass != null)
+            {
+                foreach (ProductClassEnum pc in productClass)
+                {
                     string pcs = Enum.GetName(typeof(ProductClassEnum), pc);
                     products = products.Where(p => p.Class == pcs);
                 }
@@ -264,11 +285,13 @@ namespace AdventureWorksModel {
             return products;
         }
 
-        public static  IList<ProductLineEnum> Default0FindByOptionalProductLinesAndClasses() {
+        public static IList<ProductLineEnum> Default0FindByOptionalProductLinesAndClasses()
+        {
             return new List<ProductLineEnum> { ProductLineEnum.M, ProductLineEnum.S };
         }
 
-        public static  IList<ProductClassEnum> Default1FindByOptionalProductLinesAndClasses() {
+        public static IList<ProductClassEnum> Default1FindByOptionalProductLinesAndClasses()
+        {
             return new List<ProductClassEnum> { ProductClassEnum.H };
         }
         #endregion
@@ -277,53 +300,57 @@ namespace AdventureWorksModel {
 
         [MemberOrder(5)]
         public static IQueryable<Product> FindByProductLineAndClass(
-            
-            ProductLineEnum productLine, 
+
+            ProductLineEnum productLine,
             ProductClassEnum productClass,
             IQueryable<Product> products)
         {
-            string pls = Enum.GetName(typeof (ProductLineEnum), productLine);
-            string pcs = Enum.GetName(typeof (ProductClassEnum), productClass);
+            string pls = Enum.GetName(typeof(ProductLineEnum), productLine);
+            string pcs = Enum.GetName(typeof(ProductClassEnum), productClass);
             return products.Where(p => p.ProductLine == pls && p.Class == pcs);
         }
 
-        public static  ProductLineEnum Default0FindByProductLineAndClass() {
+        public static ProductLineEnum Default0FindByProductLineAndClass()
+        {
             return ProductLineEnum.M;
         }
 
-        public static  ProductClassEnum Default1FindByProductLineAndClass() {
+        public static ProductClassEnum Default1FindByProductLineAndClass()
+        {
             return ProductClassEnum.H;
         }
 
         #endregion
-      
-      #region Inventory
+
+        #region Inventory
         /// <summary>
         /// Action is intended to test the returing of a scalar (large multi-line string).
         /// </summary>
         /// <returns></returns>
-      public static string StockReport(
-            
-          IQueryable<ProductInventory> inv)
-      {
-          var inventories = inv.Select(pi => new InventoryLine {ProductName = pi.Product.Name, Quantity = pi.Quantity});
-          var sb = new StringBuilder();
-          sb.AppendLine(@"<h1 id=""report"">Stock Report</h1>");
-          sb.AppendLine("<table>");
-          sb.AppendLine("<tr><th>Product</th><th>Quantity</th></tr>");
-          foreach (var i in inventories) {
-              sb.AppendLine("<tr><td>"+i.ProductName+"</td><td>"+i.Quantity+"</td></tr>");
-          }
-          sb.AppendLine("</table>");
-          return sb.ToString();
+        public static string StockReport(
 
-      }
-      #endregion
+            IQueryable<ProductInventory> inv)
+        {
+            var inventories = inv.Select(pi => new InventoryLine { ProductName = pi.Product.Name, Quantity = pi.Quantity });
+            var sb = new StringBuilder();
+            sb.AppendLine(@"<h1 id=""report"">Stock Report</h1>");
+            sb.AppendLine("<table>");
+            sb.AppendLine("<tr><th>Product</th><th>Quantity</th></tr>");
+            foreach (var i in inventories)
+            {
+                sb.AppendLine("<tr><td>" + i.ProductName + "</td><td>" + i.Quantity + "</td></tr>");
+            }
+            sb.AppendLine("</table>");
+            return sb.ToString();
 
-      private class InventoryLine {
-          public  string ProductName { get; init; }
-          public  int Quantity { get; init; }
-      }
+        }
+        #endregion
+
+        private class InventoryLine
+        {
+            public string ProductName { get; init; }
+            public int Quantity { get; init; }
+        }
 
         public static IQueryable<ProductPhoto> AllProductPhotos(
             IQueryable<ProductPhoto> photos)
@@ -331,10 +358,5 @@ namespace AdventureWorksModel {
             return photos;
         }
 
-        #region Create new
-        public static Product_Edit CreateNewProduct()
-        => new Product_Edit();
-        #endregion
     }
-
 }

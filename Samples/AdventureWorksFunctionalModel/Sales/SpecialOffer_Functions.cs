@@ -10,25 +10,57 @@ using System.Linq;
 using NakedFunctions;
 using static NakedFunctions.Helpers;
 
-namespace AdventureWorksModel {
+namespace AdventureWorksModel
+{
 
 
     public static class SpecialOffer_Functions
     {
 
         #region Life Cycle Methods
-        public static SpecialOffer Updating(SpecialOffer x, [Injected] DateTime now) => x with {ModifiedDate =  now};
+        public static SpecialOffer Updating(SpecialOffer x, [Injected] DateTime now) => x with { ModifiedDate = now };
 
         public static SpecialOffer Persisting(SpecialOffer x, [Injected] DateTime now, [Injected] Guid guid) => x with { ModifiedDate = now, rowguid = guid };
         #endregion
 
         #region Edit
-        public static SpecialOffer_Edit Edit(this SpecialOffer x) => SpecialOffer_Edit_Functions.CreateFrom(x);
+        [Edit]
+        public static (SpecialOffer, SpecialOffer) EditDescription(this SpecialOffer sp, string description)
+        => DisplayAndPersist(sp with { Description = description });
+
+        [Edit]
+        public static (SpecialOffer, SpecialOffer) EditDiscount(this SpecialOffer sp, decimal discountPct)
+        => DisplayAndPersist(sp with { DiscountPct = discountPct });
+
+        [Edit]
+        public static (SpecialOffer, SpecialOffer) EditType(this SpecialOffer sp, string type)
+        => DisplayAndPersist(sp with { Type = type });
+
+        [Edit]
+        public static (SpecialOffer, SpecialOffer) EditCategory(this SpecialOffer sp, string category)
+        => DisplayAndPersist(sp with { Category = category });
+
+        public static string[] Choices0Category(this SpecialOffer sp) => new[] { "Reseller", "Customer" };
+
+        [Edit]
+        public static (SpecialOffer, SpecialOffer) EditDates(this SpecialOffer sp, DateTime startDate, DateTime endDate)
+        => DisplayAndPersist(sp with { StartDate = startDate, EndDate = endDate });
+
+        public static DateTime Default0EditDates(this SpecialOffer sp, [Injected] DateTime now) => now;
+
+        public static DateTime Default1EditDates(this SpecialOffer sp, [Injected] DateTime now) => now.AddDays(90);
+
+        [Edit]
+        public static (SpecialOffer, SpecialOffer) EditQuantities(this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty)
+=> DisplayAndPersist(sp with { MinQty = minQty, MaxQty = maxQty });
+
+        public static string ValidateEditQuantities(this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty)
+=> minQty >= 1 && maxQty is null || maxQty.Value >= minQty ? null : "Quanties invalid";
         #endregion
 
         #region AssociateWithProduct
 
-       //Helper method
+        //Helper method
         public static (SpecialOfferProduct, SpecialOfferProduct, Action<IAlert>) AssociateWithProduct(
         this SpecialOffer offer,
         Product product,

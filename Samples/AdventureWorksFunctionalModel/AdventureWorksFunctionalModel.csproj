@@ -64,8 +64,6 @@
     <Compile Include="Sales\PersonCreditCard_Functions.cs" />
     <Compile Include="Sales\PersonCreditCard.cs" />
     <Compile Include="Sales\SalesTerritory.cs" />
-    <Compile Include="Sales\SpecialOffer_Edit.cs" />
-    <Compile Include="Sales\SpecialOffer_Edit_Functions.cs" />
     <Compile Include="Sales\SpecialOffer_Functions.cs" />
     <Compile Include="Sales\SpecialOffer.cs" />
     <Compile Include="Sales\SpecialOfferContributedActions.cs" />
