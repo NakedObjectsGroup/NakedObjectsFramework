@@ -1,3 +1,10 @@
+// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -7,7 +14,6 @@ using NakedFunctions.Rest.Test.Data;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
-using NakedObjects.Core.Util.Enumer;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;
 using NakedObjects.Facade.Impl.Implementation;
@@ -62,9 +68,8 @@ namespace NakedFunctions.Rest.Test {
             services.AddScoped<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>();
             services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
             services.AddSingleton(FunctionalReflectorConfiguration());
-            services.AddMvc((options) => options.EnableEndpointRouting = false)
-                    .AddNewtonsoftJson((options) => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
-
+            services.AddMvc(options => options.EnableEndpointRouting = false)
+                    .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
         }
 
 
@@ -99,7 +104,7 @@ namespace NakedFunctions.Rest.Test {
             var result = api.GetMenus();
             var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             var parsedResult = JObject.Parse(json);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
 
             var val = parsedResult.GetValue("value") as JArray;
 
@@ -116,13 +121,12 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        public void TestGetMenu()
-        {
+        public void TestGetMenu() {
             var api = Api();
             var result = api.GetMenu("SimpleMenuFunction");
             var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             var parsedResult = JObject.Parse(json);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
 
             Assert.AreEqual("Test menu", parsedResult["title"].ToString());
             Assert.AreEqual("SimpleMenuFunction", parsedResult["menuId"].ToString());
@@ -149,18 +153,16 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("GET", invokeLink["method"].ToString());
             Assert.AreEqual("application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8", invokeLink["type"].ToString());
             Assert.AreEqual("http://localhost/services/MenuFunctions/actions/GetSimpleRecord/invoke", invokeLink["href"].ToString());
-
         }
 
 
         [Test]
-        public void TestInvokeMenuAction()
-        {
+        public void TestInvokeMenuAction() {
             var api = Api();
-            var result = api.GetInvokeOnService("MenuFunctions", "GetSimpleRecord", new ArgumentMap() {Map = new Dictionary<string, IValue>()}  );
+            var result = api.GetInvokeOnService("MenuFunctions", "GetSimpleRecord", new ArgumentMap {Map = new Dictionary<string, IValue>()});
             var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             var parsedResult = JObject.Parse(json);
-            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
 
             var resultObj = parsedResult["result"];
 
