@@ -31,10 +31,10 @@ namespace NakedObjects.Rest.App.Demo {
         private static Type[] Services => AWModelConfiguration.Services().ToArray();
         
 
-        private static Type[] FunctionalTypes => AWModelConfiguration.DomainTypes().ToArray();
+        private static Type[] FunctionalTypes => AWModelConfiguration.ObjectFunctions().ToArray();
       
 
-        private static Type[] Functions => AWModelConfiguration.ObjectFunctions().ToArray();
+        private static Type[] Functions => AWModelConfiguration.DomainTypes().ToArray();
         
 
         public static ReflectorConfiguration ReflectorConfig() {
