@@ -30,7 +30,6 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public DbSet<SimpleRecord> SimpleRecords { get; set; }
 
-
         public static void Delete() => Database.Delete(Cs);
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -22,6 +22,7 @@ namespace NakedFunctions.Rest.Test {
             httpContext.Request.Scheme = "http";
             httpContext.Request.Host = new HostString(uri.Host);
             httpContext.Request.Path = new PathString(uri.PathAndQuery);
+            httpContext.Request.Method = "GET";
 
             return httpContext;
         }

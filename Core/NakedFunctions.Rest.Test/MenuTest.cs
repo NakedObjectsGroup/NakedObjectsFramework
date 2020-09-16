@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -6,6 +7,7 @@ using NakedFunctions.Rest.Test.Data;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
+using NakedObjects.Core.Util.Enumer;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;
 using NakedObjects.Facade.Impl.Implementation;
@@ -15,6 +17,7 @@ using NakedObjects.Facade.Translation;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Rest;
+using NakedObjects.Rest.Model;
 using NakedObjects.Xat;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -74,10 +77,7 @@ namespace NakedFunctions.Rest.Test {
         [OneTimeSetUp]
         public void FixtureSetUp() {
             ReflectorConfiguration.NoValidate = true;
-            TestDbContext.Delete();
-            var context = Activator.CreateInstance<TestDbContext>();
-
-            context.Database.Create();
+            var context = new TestDbContext();
             InitializeNakedObjectsFramework(this);
         }
 
@@ -94,7 +94,7 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        public void TestGetMenu() {
+        public void TestGetMenus() {
             var api = Api();
             var result = api.GetMenus();
             var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
@@ -113,6 +113,60 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("GET", firstItem["method"].ToString());
             Assert.AreEqual("application/json; profile=\"urn:org.restfulobjects:repr-types/menu\"; charset=utf-8", firstItem["type"].ToString());
             Assert.AreEqual("http://localhost/menus/SimpleMenuFunction", firstItem["href"].ToString());
+        }
+
+        [Test]
+        public void TestGetMenu()
+        {
+            var api = Api();
+            var result = api.GetMenu("SimpleMenuFunction");
+            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            var parsedResult = JObject.Parse(json);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+
+            Assert.AreEqual("Test menu", parsedResult["title"].ToString());
+            Assert.AreEqual("SimpleMenuFunction", parsedResult["menuId"].ToString());
+
+            var members = parsedResult["members"] as JObject;
+            Assert.AreEqual(1, members?.Count);
+
+            var function = members["GetSimpleRecord"];
+
+            Assert.AreEqual("action", function["memberType"].ToString());
+            Assert.AreEqual("GetSimpleRecord", function["id"].ToString());
+            Assert.AreEqual(false, function["extensions"]["hasParams"].Value<bool>());
+
+            var links = function["links"] as JArray;
+
+            Assert.AreEqual(2, links.Count);
+
+            var invokeLink = links.Last as JObject;
+
+            Assert.AreEqual(5, invokeLink.Count);
+
+            Assert.AreEqual("{}", invokeLink["arguments"].ToString());
+            Assert.AreEqual("urn:org.restfulobjects:rels/invoke;action=\"GetSimpleRecord\"", invokeLink["rel"].ToString());
+            Assert.AreEqual("GET", invokeLink["method"].ToString());
+            Assert.AreEqual("application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8", invokeLink["type"].ToString());
+            Assert.AreEqual("http://localhost/services/MenuFunctions/actions/GetSimpleRecord/invoke", invokeLink["href"].ToString());
+
+        }
+
+
+        [Test]
+        public void TestInvokeMenuAction()
+        {
+            var api = Api();
+            var result = api.GetInvokeOnService("MenuFunctions", "GetSimpleRecord", new ArgumentMap() {Map = new Dictionary<string, IValue>()}  );
+            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            var parsedResult = JObject.Parse(json);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+
+            var resultObj = parsedResult["result"];
+
+            Assert.AreEqual("1", resultObj["instanceId"].ToString());
+            Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["domainType"].ToString());
+            Assert.AreEqual("Untitled Simple Record", resultObj["title"].ToString());
         }
     }
 }
