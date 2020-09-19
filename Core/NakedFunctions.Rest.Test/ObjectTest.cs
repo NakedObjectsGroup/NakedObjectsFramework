@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFunctions.Rest.Test.Data;
@@ -21,6 +22,7 @@ using NakedObjects.Facade.Translation;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Rest;
+using NakedObjects.Rest.Model;
 using NakedObjects.Xat;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -123,19 +125,20 @@ namespace NakedFunctions.Rest.Test {
         }
 
 
-        //[Test]
-        //public void TestInvokeSimpleRecordAction() {
-        //    var api = Api();
-        //    var result = api.GetInvokeOnService("MenuFunctions", "GetSimpleRecord", new ArgumentMap {Map = new Dictionary<string, IValue>()});
-        //    var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        //    var parsedResult = JObject.Parse(json);
-        //    Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        [Test]
+        public void TestInvokeSimpleRecordAction()
+        {
+            var api = Api();
+            var result = api.GetInvoke("NakedFunctions.Rest.Test.Data.SimpleRecord", "1", "ReShowRecord", new ArgumentMap { Map = new Dictionary<string, IValue>() });
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+            
+            var resultObj = parsedResult["result"];
 
-        //    var resultObj = parsedResult["result"];
-
-        //    Assert.AreEqual("1", resultObj["instanceId"].ToString());
-        //    Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["domainType"].ToString());
-        //    Assert.AreEqual("Untitled Simple Record", resultObj["title"].ToString());
-        //}
+            Assert.AreEqual("1", resultObj["instanceId"].ToString());
+            Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["domainType"].ToString());
+            Assert.AreEqual("Untitled Simple Record", resultObj["title"].ToString());
+        }
     }
 }
