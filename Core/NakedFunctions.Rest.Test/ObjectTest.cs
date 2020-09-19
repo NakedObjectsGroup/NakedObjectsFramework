@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFunctions.Rest.Test.Data;
@@ -22,17 +21,15 @@ using NakedObjects.Facade.Translation;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Rest;
-using NakedObjects.Rest.Model;
 using NakedObjects.Xat;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace NakedFunctions.Rest.Test {
-  
-
-    public class MenuTest : AcceptanceTestCase {
-        private readonly Type[] FunctionTypes = {typeof(SimpleMenuFunction)};
+    
+    public class ObjectTest : AcceptanceTestCase {
+        private readonly Type[] FunctionTypes = {typeof(SimpleRecordFunctions)};
 
         private readonly Type[] RecordTypes = {typeof(SimpleRecord)};
         protected override Type[] Types { get; } = { };
@@ -44,15 +41,9 @@ namespace NakedFunctions.Rest.Test {
         protected override EntityObjectStoreConfiguration Persistor {
             get {
                 var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-                config.UsingContext(Activator.CreateInstance<MenuDbContext>);
+                config.UsingContext(Activator.CreateInstance<ObjectDbContext>);
                 return config;
             }
-        }
-
-        protected override IMenu[] MainMenus(IMenuFactory factory) {
-            return new[] {
-                factory.NewMenu(typeof(SimpleMenuFunction), true, "Test menu")
-            };
         }
 
         private IFunctionalReflectorConfiguration FunctionalReflectorConfiguration() => new FunctionalReflectorConfiguration(RecordTypes, FunctionTypes);
@@ -79,14 +70,13 @@ namespace NakedFunctions.Rest.Test {
         [OneTimeSetUp]
         public void FixtureSetUp() {
             ReflectorConfiguration.NoValidate = true;
-            var context = new MenuDbContext();
             InitializeNakedObjectsFramework(this);
         }
 
         [OneTimeTearDown]
         public void FixtureTearDown() {
             CleanupNakedObjectsFramework(this);
-            MenuDbContext.Delete();
+            ObjectDbContext.Delete();
         }
 
         protected RestfulObjectsControllerBase Api() {
@@ -96,46 +86,41 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        public void TestGetMenus() {
+        public void TestSimpleRecord() {
             var api = Api();
-            var result = api.GetMenus();
+            var result = api.GetObject("NakedFunctions.Rest.Test.Data.SimpleRecord", "1");
             var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             var parsedResult = JObject.Parse(json);
             Assert.AreEqual((int) HttpStatusCode.OK, sc);
 
-            var val = parsedResult.GetValue("value") as JArray;
-
-            Assert.IsNotNull(val);
-            Assert.AreEqual(1, val.Count);
-
-            var firstItem = val.First;
-
-            Assert.AreEqual("Test menu", firstItem["title"].ToString());
-            Assert.AreEqual("urn:org.restfulobjects:rels/menu;menuId=\"SimpleMenuFunction\"", firstItem["rel"].ToString());
-            Assert.AreEqual("GET", firstItem["method"].ToString());
-            Assert.AreEqual("application/json; profile=\"urn:org.restfulobjects:repr-types/menu\"; charset=utf-8", firstItem["type"].ToString());
-            Assert.AreEqual("http://localhost/menus/SimpleMenuFunction", firstItem["href"].ToString());
-        }
-
-        [Test]
-        public void TestGetMenu() {
-            var api = Api();
-            var result = api.GetMenu("SimpleMenuFunction");
-            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            var parsedResult = JObject.Parse(json);
-            Assert.AreEqual((int) HttpStatusCode.OK, sc);
-
-            Assert.AreEqual("Test menu", parsedResult["title"].ToString());
-            Assert.AreEqual("SimpleMenuFunction", parsedResult["menuId"].ToString());
+            Assert.AreEqual("Untitled Simple Record", parsedResult["title"].ToString());
 
             var members = parsedResult["members"] as JObject;
-            Assert.AreEqual(1, members?.Count);
+            Assert.AreEqual(3, members?.Count);
 
-            var function = members["GetSimpleRecord"];
+            var function = members["ReShowRecord"];
 
             Assert.AreEqual("action", function["memberType"].ToString());
-            Assert.AreEqual("GetSimpleRecord", function["id"].ToString());
+            Assert.AreEqual("ReShowRecord", function["id"].ToString());
             Assert.AreEqual(false, function["extensions"]["hasParams"].Value<bool>());
+
+            var propertyId = members["Id"];
+
+            Assert.AreEqual("property", propertyId["memberType"].ToString());
+            Assert.AreEqual("Id", propertyId["id"].ToString());
+            Assert.AreEqual("1", propertyId["value"].ToString());
+            Assert.AreEqual(false, propertyId["hasChoices"].Value<bool>());
+
+            //Assert.AreEqual(false, propertyId["extensions"]["hasParams"].Value<bool>());
+
+            var propertyName = members["Name"];
+
+            Assert.AreEqual("property", propertyName["memberType"].ToString());
+            Assert.AreEqual("Name", propertyName["id"].ToString());
+            Assert.AreEqual("Fred", propertyName["value"].ToString());
+            Assert.AreEqual(false, propertyName["hasChoices"].Value<bool>());
+
+
 
             var links = function["links"] as JArray;
 
@@ -146,26 +131,26 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual(5, invokeLink.Count);
 
             Assert.AreEqual("{}", invokeLink["arguments"].ToString());
-            Assert.AreEqual("urn:org.restfulobjects:rels/invoke;action=\"GetSimpleRecord\"", invokeLink["rel"].ToString());
+            Assert.AreEqual("urn:org.restfulobjects:rels/invoke;action=\"ReShowRecord\"", invokeLink["rel"].ToString());
             Assert.AreEqual("GET", invokeLink["method"].ToString());
             Assert.AreEqual("application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8", invokeLink["type"].ToString());
-            Assert.AreEqual("http://localhost/services/MenuFunctions/actions/GetSimpleRecord/invoke", invokeLink["href"].ToString());
+            Assert.AreEqual("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1/actions/ReShowRecord/invoke", invokeLink["href"].ToString());
         }
 
 
-        [Test]
-        public void TestInvokeMenuAction() {
-            var api = Api();
-            var result = api.GetInvokeOnService("MenuFunctions", "GetSimpleRecord", new ArgumentMap {Map = new Dictionary<string, IValue>()});
-            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            var parsedResult = JObject.Parse(json);
-            Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        //[Test]
+        //public void TestInvokeSimpleRecordAction() {
+        //    var api = Api();
+        //    var result = api.GetInvokeOnService("MenuFunctions", "GetSimpleRecord", new ArgumentMap {Map = new Dictionary<string, IValue>()});
+        //    var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        //    var parsedResult = JObject.Parse(json);
+        //    Assert.AreEqual((int) HttpStatusCode.OK, sc);
 
-            var resultObj = parsedResult["result"];
+        //    var resultObj = parsedResult["result"];
 
-            Assert.AreEqual("1", resultObj["instanceId"].ToString());
-            Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["domainType"].ToString());
-            Assert.AreEqual("Untitled Simple Record", resultObj["title"].ToString());
-        }
+        //    Assert.AreEqual("1", resultObj["instanceId"].ToString());
+        //    Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["domainType"].ToString());
+        //    Assert.AreEqual("Untitled Simple Record", resultObj["title"].ToString());
+        //}
     }
 }

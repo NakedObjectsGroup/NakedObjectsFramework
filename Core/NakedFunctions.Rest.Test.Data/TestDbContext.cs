@@ -17,27 +17,38 @@ namespace NakedFunctions.Rest.Test.Data {
 #else
         public static string Server => LocalServer;
 #endif
+
+        public static readonly string CsMenu = @$"Data Source={Server};Initial Catalog={"MenuRestTests"};Integrated Security=True;";
+        public static readonly string CsObject = @$"Data Source={Server};Initial Catalog={"ObjectRestTests"};Integrated Security=True;";
     }
 
-    public class DatabaseInitializer : DropCreateDatabaseAlways<TestDbContext> {
-        protected override void Seed(TestDbContext context) {
+    public class DatabaseInitializer<T> : DropCreateDatabaseAlways<T> where T : TestDbContext {
+        protected override void Seed(T context) {
             context.SimpleRecords.Add(new SimpleRecord {Name = "Fred"});
             context.SaveChanges();
         }
     }
 
-    public class TestDbContext : DbContext {
-        public const string DatabaseName = "FunctionRestTests";
-
-        private static readonly string Cs = @$"Data Source={Constants.Server};Initial Catalog={DatabaseName};Integrated Security=True;";
-        public TestDbContext() : base(Cs) { }
+    public abstract class TestDbContext : DbContext {
+        protected TestDbContext(string cs) : base(cs) { }
 
         public DbSet<SimpleRecord> SimpleRecords { get; set; }
 
-        public static void Delete() => Database.Delete(Cs);
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-            Database.SetInitializer(new DatabaseInitializer());
+        protected void OnModelCreating<T>(DbModelBuilder modelBuilder) where T : TestDbContext {
+            Database.SetInitializer(new DatabaseInitializer<T>());
         }
+    }
+
+    public class MenuDbContext : TestDbContext {
+        public MenuDbContext() : base(Constants.CsMenu) { }
+        public static void Delete() => Database.Delete(Constants.CsMenu);
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) => OnModelCreating<MenuDbContext>(modelBuilder);
+    }
+
+    public class ObjectDbContext : TestDbContext
+    {
+        public ObjectDbContext() : base(Constants.CsObject) { }
+        public static void Delete() => Database.Delete(Constants.CsObject);
+        protected override void OnModelCreating(DbModelBuilder modelBuilder) => OnModelCreating<ObjectDbContext>(modelBuilder);
     }
 }

@@ -10,9 +10,16 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using NakedObjects.Facade;
 using NakedObjects.Rest;
 
 namespace NakedFunctions.Rest.Test {
+    public class RestfulObjectsController : RestfulObjectsControllerBase {
+        public RestfulObjectsController(IFrameworkFacade ff, ILogger<RestfulObjectsControllerBase> l, ILoggerFactory lf) : base(ff, l, lf) { }
+    }
+
+
     public static class Helpers {
         public static DefaultHttpContext CreateTestHttpContext(IServiceProvider sp) {
             var httpContext = new DefaultHttpContext {RequestServices = sp};
