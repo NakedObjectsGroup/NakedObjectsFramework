@@ -89,9 +89,9 @@ namespace NakedFunctions.Rest.Test {
         public void TestSimpleRecord() {
             var api = Api();
             var result = api.GetObject("NakedFunctions.Rest.Test.Data.SimpleRecord", "1");
-            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            var parsedResult = JObject.Parse(json);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int) HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual("Untitled Simple Record", parsedResult["title"].ToString());
 
@@ -100,41 +100,26 @@ namespace NakedFunctions.Rest.Test {
 
             var function = members["ReShowRecord"];
 
-            Assert.AreEqual("action", function["memberType"].ToString());
-            Assert.AreEqual("ReShowRecord", function["id"].ToString());
-            Assert.AreEqual(false, function["extensions"]["hasParams"].Value<bool>());
+            function.AssertAction("ReShowRecord", "{}");
+
+            function["extensions"].AssertExtensions(5); // todo add 
 
             var propertyId = members["Id"];
 
-            Assert.AreEqual("property", propertyId["memberType"].ToString());
-            Assert.AreEqual("Id", propertyId["id"].ToString());
-            Assert.AreEqual("1", propertyId["value"].ToString());
-            Assert.AreEqual(false, propertyId["hasChoices"].Value<bool>());
-
-            //Assert.AreEqual(false, propertyId["extensions"]["hasParams"].Value<bool>());
+            propertyId.AssertProperty("Id", "1", false);
+            propertyId["extensions"].AssertExtensions(6); // todo add 
 
             var propertyName = members["Name"];
 
-            Assert.AreEqual("property", propertyName["memberType"].ToString());
-            Assert.AreEqual("Name", propertyName["id"].ToString());
-            Assert.AreEqual("Fred", propertyName["value"].ToString());
-            Assert.AreEqual(false, propertyName["hasChoices"].Value<bool>());
-
-
+            propertyName.AssertProperty("Name", "Fred", false);
+            propertyName["extensions"].AssertExtensions(8); // todo add 
 
             var links = function["links"] as JArray;
 
             Assert.AreEqual(2, links.Count);
 
-            var invokeLink = links.Last as JObject;
-
-            Assert.AreEqual(5, invokeLink.Count);
-
-            Assert.AreEqual("{}", invokeLink["arguments"].ToString());
-            Assert.AreEqual("urn:org.restfulobjects:rels/invoke;action=\"ReShowRecord\"", invokeLink["rel"].ToString());
-            Assert.AreEqual("GET", invokeLink["method"].ToString());
-            Assert.AreEqual("application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8", invokeLink["type"].ToString());
-            Assert.AreEqual("http://localhost/objects/NakedFunctions.Rest.Test.Data.SimpleRecord/1/actions/ReShowRecord/invoke", invokeLink["href"].ToString());
+            var invokeLink = links.Last;
+            invokeLink.AssertObjectInvokeLink("{}", "GET", "NakedFunctions.Rest.Test.Data.SimpleRecord", "1", "ReShowRecord");
         }
 
 

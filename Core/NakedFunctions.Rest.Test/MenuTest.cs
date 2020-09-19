@@ -99,9 +99,9 @@ namespace NakedFunctions.Rest.Test {
         public void TestGetMenus() {
             var api = Api();
             var result = api.GetMenus();
-            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            var parsedResult = JObject.Parse(json);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int) HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
 
             var val = parsedResult.GetValue("value") as JArray;
 
@@ -110,20 +110,16 @@ namespace NakedFunctions.Rest.Test {
 
             var firstItem = val.First;
 
-            Assert.AreEqual("Test menu", firstItem["title"].ToString());
-            Assert.AreEqual("urn:org.restfulobjects:rels/menu;menuId=\"SimpleMenuFunction\"", firstItem["rel"].ToString());
-            Assert.AreEqual("GET", firstItem["method"].ToString());
-            Assert.AreEqual("application/json; profile=\"urn:org.restfulobjects:repr-types/menu\"; charset=utf-8", firstItem["type"].ToString());
-            Assert.AreEqual("http://localhost/menus/SimpleMenuFunction", firstItem["href"].ToString());
+            firstItem.AssertMenuLink("Test menu", "GET", "SimpleMenuFunction");
         }
 
         [Test]
         public void TestGetMenu() {
             var api = Api();
             var result = api.GetMenu("SimpleMenuFunction");
-            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            var parsedResult = JObject.Parse(json);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int) HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual("Test menu", parsedResult["title"].ToString());
             Assert.AreEqual("SimpleMenuFunction", parsedResult["menuId"].ToString());
@@ -133,23 +129,16 @@ namespace NakedFunctions.Rest.Test {
 
             var function = members["GetSimpleRecord"];
 
-            Assert.AreEqual("action", function["memberType"].ToString());
-            Assert.AreEqual("GetSimpleRecord", function["id"].ToString());
-            Assert.AreEqual(false, function["extensions"]["hasParams"].Value<bool>());
+            function.AssertAction("GetSimpleRecord", "{}");
+            function["extensions"].AssertExtensions(5); // todo add 
 
             var links = function["links"] as JArray;
 
             Assert.AreEqual(2, links.Count);
 
-            var invokeLink = links.Last as JObject;
+            var invokeLink = links.Last;
 
-            Assert.AreEqual(5, invokeLink.Count);
-
-            Assert.AreEqual("{}", invokeLink["arguments"].ToString());
-            Assert.AreEqual("urn:org.restfulobjects:rels/invoke;action=\"GetSimpleRecord\"", invokeLink["rel"].ToString());
-            Assert.AreEqual("GET", invokeLink["method"].ToString());
-            Assert.AreEqual("application/json; profile=\"urn:org.restfulobjects:repr-types/action-result\"; charset=utf-8", invokeLink["type"].ToString());
-            Assert.AreEqual("http://localhost/services/MenuFunctions/actions/GetSimpleRecord/invoke", invokeLink["href"].ToString());
+            invokeLink.AssertServiceInvokeLink("{}", "GET", "MenuFunctions", "GetSimpleRecord");
         }
 
 

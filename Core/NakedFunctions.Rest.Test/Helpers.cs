@@ -19,7 +19,6 @@ namespace NakedFunctions.Rest.Test {
         public RestfulObjectsController(IFrameworkFacade ff, ILogger<RestfulObjectsControllerBase> l, ILoggerFactory lf) : base(ff, l, lf) { }
     }
 
-
     public static class Helpers {
         public static DefaultHttpContext CreateTestHttpContext(IServiceProvider sp) {
             var httpContext = new DefaultHttpContext {RequestServices = sp};
