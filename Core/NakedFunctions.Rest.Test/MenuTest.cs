@@ -125,7 +125,7 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("SimpleMenuFunctions", parsedResult["menuId"].ToString());
 
             var members = parsedResult["members"] as JObject;
-            Assert.AreEqual(5, members?.Count);
+            Assert.AreEqual(6, members?.Count);
 
             var function = members["GetSimpleRecord"];
 

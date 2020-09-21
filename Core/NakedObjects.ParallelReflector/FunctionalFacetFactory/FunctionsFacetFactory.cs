@@ -84,23 +84,23 @@ namespace NakedFunctions.ParallelReflect.FacetFactory {
 
         #region IMethodIdentifyingFacetFactory Members
 
-        private (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadReturnSpecs(Type returnType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, IReflector reflector) {
+        private (ITypeSpecBuilder, Type, IImmutableDictionary<string, ITypeSpecBuilder>) LoadReturnSpecs(Type returnType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, IReflector reflector) {
             ITypeSpecBuilder onType = null;
 
-            if (FacetUtils.IsEitherTuple(returnType)) {
+            if (FacetUtils.IsValueTuple(returnType)) {
                 var genericTypes = returnType.GetGenericArguments();
 
                 // count down so final result is first parameter
                 for (var index = genericTypes.Length - 1; index >= 0; index--) {
                     var t = genericTypes[index];
-                    (onType, metamodel) = LoadReturnSpecs(t, metamodel, reflector);
+                    (onType, returnType, metamodel) = LoadReturnSpecs(t, metamodel, reflector);
                 }
             }
             else {
                 (onType, metamodel) = reflector.LoadSpecification(returnType, metamodel);
             }
 
-            return (onType, metamodel);
+            return (onType, returnType, metamodel);
         }
 
 
@@ -119,16 +119,18 @@ namespace NakedFunctions.ParallelReflect.FacetFactory {
             ITypeSpecBuilder returnSpec;
             (onType, metamodel) = reflector.LoadSpecification(type, metamodel);
 
-            (returnSpec, metamodel) = LoadReturnSpecs(actionMethod.ReturnType, metamodel, reflector);
+            Type returnType;
+
+            (returnSpec, returnType, metamodel) = LoadReturnSpecs(actionMethod.ReturnType, metamodel, reflector);
 
             if (!(returnSpec is IObjectSpecImmutable)) {
                 throw new ReflectionException($"{returnSpec.Identifier} must be Object spec");
             }
 
             ITypeSpecImmutable elementSpec = null;
-            var isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(actionMethod.ReturnType);
-            if (returnSpec is IObjectSpecBuilder && IsCollection(actionMethod.ReturnType)) {
-                var elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
+            var isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(returnType);
+            if (returnSpec is IObjectSpecBuilder && IsCollection(returnType)) {
+                var elementType = CollectionUtils.ElementType(returnType);
                 (elementSpec, metamodel) = reflector.LoadSpecification(elementType, metamodel);
                 if (!(elementSpec is IObjectSpecImmutable)) {
                     throw new ReflectionException($"{elementSpec.Identifier} must be Object spec");

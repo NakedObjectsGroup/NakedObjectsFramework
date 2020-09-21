@@ -55,6 +55,11 @@ namespace NakedObjects.Meta.Utils {
             if (type.IsGenericType)
             {
                 var genericTypeDefinition = type.GetGenericTypeDefinition();
+
+                if (genericTypeDefinition == typeof(ValueTuple<,,,>))  {
+                    throw new NotImplementedException("only support tuples up to size 3");
+                }
+                
                 return genericTypeDefinition == typeof(ValueTuple<>) ||
                        genericTypeDefinition == typeof(ValueTuple<,>) ||
                        genericTypeDefinition == typeof(ValueTuple<,,>);
@@ -69,28 +74,36 @@ namespace NakedObjects.Meta.Utils {
             {
                 var genericTypeDefinition = type.GetGenericTypeDefinition();
 
+            
                 if (genericTypeDefinition == typeof(ValueTuple<>)) return 1;
                 if (genericTypeDefinition == typeof(ValueTuple<,>)) return 2;
                 if (genericTypeDefinition == typeof(ValueTuple<,,>)) return 3;
+
+                if (genericTypeDefinition == typeof(ValueTuple<,,,>))
+                {
+                    throw new NotImplementedException("only support tuples up to size 3");
+                }
+
+
             }
 
             return 0;
         }
 
-        public static bool IsTuple(Type type)
-        {
-            if (type.IsGenericType)
-            {
-                var genericTypeDefinition = type.GetGenericTypeDefinition();
-                return genericTypeDefinition == typeof(Tuple<>) ||
-                       genericTypeDefinition == typeof(Tuple<,>) ||
-                       genericTypeDefinition == typeof(Tuple<,,>);
-            }
+        //public static bool IsTuple(Type type)
+        //{
+        //    if (type.IsGenericType)
+        //    {
+        //        var genericTypeDefinition = type.GetGenericTypeDefinition();
+        //        return genericTypeDefinition == typeof(Tuple<>) ||
+        //               genericTypeDefinition == typeof(Tuple<,>) ||
+        //               genericTypeDefinition == typeof(Tuple<,,>);
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        public static bool IsEitherTuple(Type type) => IsValueTuple(type) || IsTuple(type);
+        //public static bool IsEitherTuple(Type type) => IsValueTuple(type) || IsTuple(type);
 
     }
 }

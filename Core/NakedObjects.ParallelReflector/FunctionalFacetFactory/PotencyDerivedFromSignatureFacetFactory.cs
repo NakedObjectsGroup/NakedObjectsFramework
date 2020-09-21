@@ -34,7 +34,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             if (method != null) {
                 var returnType = method.ReturnType;
 
-                if (FacetUtils.IsEitherTuple(returnType)) {
+                if (FacetUtils.IsValueTuple(returnType)) {
                     var tupleTypes = returnType.GenericTypeArguments;
 
                     if (tupleTypes.Length >= 3 ||
