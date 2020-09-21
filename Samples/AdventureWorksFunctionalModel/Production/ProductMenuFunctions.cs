@@ -27,7 +27,6 @@ namespace AdventureWorksModel {
     }
     public static class ProductMenuFunctions
     {
-
         [MemberOrder(1), TableView(true, nameof(Product.ProductNumber), nameof(Product.ProductSubcategory), nameof(Product.ListPrice))]
         public static IQueryable<Product> FindProductByName(
             string searchString,
@@ -47,7 +46,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(10)]
         public static Product RandomProduct(
-            IQueryable<Product> products,
+            [Injected] IQueryable<Product> products,
             [Injected] int random)
         {
             return Random(products, random);

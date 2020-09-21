@@ -15,6 +15,12 @@ namespace AdventureWorksModel
     [Named("Special Offers")]
     public static class SpecialOffer_MenuFunctions
     {
+        [MemberOrder(0)]
+        public static SpecialOffer FirstOrDefault([Injected] IQueryable<SpecialOffer> offers)
+        {
+            return offers.FirstOrDefault();
+        }
+
         #region CurrentSpecialOffers
 
         [MemberOrder(1)]
