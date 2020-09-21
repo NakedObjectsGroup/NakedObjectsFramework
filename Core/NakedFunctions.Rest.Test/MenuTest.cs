@@ -125,7 +125,7 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("SimpleMenuFunctions", parsedResult["menuId"].ToString());
 
             var members = parsedResult["members"] as JObject;
-            Assert.AreEqual(2, members?.Count);
+            Assert.AreEqual(4, members?.Count);
 
             var function = members["GetSimpleRecord"];
 
@@ -147,8 +147,9 @@ namespace NakedFunctions.Rest.Test {
             var api = Api();
             var result = api.GetInvokeOnService("MenuFunctions", "GetSimpleRecord", new ArgumentMap {Map = new Dictionary<string, IValue>()});
             var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            var parsedResult = JObject.Parse(json);
+            
             Assert.AreEqual((int) HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual("object", parsedResult["resultType"].ToString());
 
@@ -160,13 +161,14 @@ namespace NakedFunctions.Rest.Test {
         }
 
         [Test]
-        public void TestInvokeMenuActionThatReturnsList()
+        public void TestInvokeMenuActionThatReturnsSingleItemList()
         {
             var api = Api();
-            var result = api.GetInvokeOnService("MenuFunctions", "GetSimpleRecords", new ArgumentMap { Map = new Dictionary<string, IValue>() });
+            var result = api.GetInvokeOnService("MenuFunctions", "GetSimpleRecordsSingle", new ArgumentMap { Map = new Dictionary<string, IValue>() });
             var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            var parsedResult = JObject.Parse(json);
+           
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual("list", parsedResult["resultType"].ToString());
 
@@ -175,9 +177,53 @@ namespace NakedFunctions.Rest.Test {
 
             Assert.AreEqual(1, value.Count);
 
+
+            value[0].AssertObjectElementLink("Untitled Simple Record", "GET", "NakedFunctions.Rest.Test.Data.SimpleRecord", "1");
+        }
+
+        [Test]
+        public void TestInvokeMenuActionThatReturnsMultiItemList()
+        {
+            var api = Api();
+            var result = api.GetInvokeOnService("MenuFunctions", "GetSimpleRecordsMultiple", new ArgumentMap { Map = new Dictionary<string, IValue>() });
+            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+           
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("list", parsedResult["resultType"].ToString());
+
+            var resultObj = parsedResult["result"];
+            var value = resultObj["value"] as JArray;
+
+            Assert.AreEqual(2, value.Count);
+
             var firstItem = value[0];
 
-            firstItem.AssertObjectElementLink("Untitled Simple Record", "GET", "NakedFunctions.Rest.Test.Data.SimpleRecord", "1");
+            value[0].AssertObjectElementLink("Untitled Simple Record", "GET", "NakedFunctions.Rest.Test.Data.SimpleRecord", "1");
+            value[1].AssertObjectElementLink("Untitled Simple Record", "GET", "NakedFunctions.Rest.Test.Data.SimpleRecord", "2");
+        }
+
+        [Test]
+        public void TestInvokeMenuActionThatUpdatesObject()
+        {
+            var api = Api();
+            api.HttpContext.Request.Method = "POST";
+            var result = api.PostInvokeOnService("MenuFunctions", "GetAndUpdateSimpleRecord", new ArgumentMap { Map = new Dictionary<string, IValue>() });
+            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+
+            Assert.AreEqual("object", parsedResult["resultType"].ToString());
+
+            var resultObj = parsedResult["result"];
+
+            Assert.AreEqual("3", resultObj["instanceId"].ToString());
+            Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["domainType"].ToString());
+            Assert.AreEqual("Untitled Simple Record", resultObj["title"].ToString());
+            Assert.AreEqual("Jill", resultObj["members"]["Name"]["value"].ToString());
         }
     }
 }

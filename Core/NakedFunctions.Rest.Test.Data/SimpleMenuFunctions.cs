@@ -12,7 +12,16 @@ using System.Linq;
 namespace NakedFunctions.Rest.Test.Data {
     public static class SimpleMenuFunctions {
         public static SimpleRecord GetSimpleRecord([Injected] IQueryable<SimpleRecord> allSimpleRecords) => allSimpleRecords.First();
+        public static IList<SimpleRecord> GetSimpleRecordsSingle([Injected] IQueryable<SimpleRecord> allSimpleRecords) => new[] {allSimpleRecords.First()};
+        public static IList<SimpleRecord> GetSimpleRecordsMultiple([Injected] IQueryable<SimpleRecord> allSimpleRecords) => allSimpleRecords.ToList().SkipLast(1).ToList();
 
-        public static IList<SimpleRecord> GetSimpleRecords([Injected] IQueryable<SimpleRecord> allSimpleRecords) => allSimpleRecords.ToList();
+        public static (SimpleRecord, SimpleRecord) GetAndUpdateSimpleRecord([Injected] IQueryable<SimpleRecord> allSimpleRecords) {
+            var sr = allSimpleRecords.ToList().Last();
+            var updatedSr = sr with {
+                Name = "Jill"
+            };
+
+            return (updatedSr, updatedSr);
+        }
     }
 }
