@@ -84,5 +84,11 @@ namespace NakedFunctions.Rest.Test {
         public static void AssertExtensions(this JToken extensions, int count) {
             Assert.AreEqual(count, extensions.Count());
         }
+
+        public static void AssertObject(this JToken obj, string title,  string type, string instance) {
+            Assert.AreEqual(instance, obj["instanceId"].ToString());
+            Assert.AreEqual(type, obj["domainType"].ToString());
+            Assert.AreEqual(title, obj["title"].ToString());
+        }
     }
 }

@@ -136,9 +136,7 @@ namespace NakedFunctions.Rest.Test {
             
             var resultObj = parsedResult["result"];
 
-            Assert.AreEqual("1", resultObj["instanceId"].ToString());
-            Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["domainType"].ToString());
-            Assert.AreEqual("Untitled Simple Record", resultObj["title"].ToString());
+            resultObj.AssertObject("Untitled Simple Record", "NakedFunctions.Rest.Test.Data.SimpleRecord", "1");
         }
     }
 }

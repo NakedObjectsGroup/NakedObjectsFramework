@@ -24,9 +24,10 @@ namespace NakedFunctions.Rest.Test.Data {
 
     public class DatabaseInitializer<T> : DropCreateDatabaseAlways<T> where T : TestDbContext {
         protected override void Seed(T context) {
+            // keep names 4 characters
             context.SimpleRecords.Add(new SimpleRecord {Name = "Fred"});
             context.SimpleRecords.Add(new SimpleRecord { Name = "Bill" });
-            context.SimpleRecords.Add(new SimpleRecord { Name = "Ted" });
+            context.SimpleRecords.Add(new SimpleRecord { Name = "Jack" });
             context.SaveChanges();
         }
     }

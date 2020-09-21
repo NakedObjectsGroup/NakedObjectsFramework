@@ -98,6 +98,8 @@ namespace NakedFunctions.Meta.Facet {
             item switch {
                 Action action => (persisting, acting.Append(action)),
                 ITuple tuple => HandleNestedTuple(tuple, persisting, acting),
+                IQueryable coll => (persisting.Union(coll.Cast<object>()), acting),
+                ICollection coll => (persisting.Union(coll.Cast<object>()), acting),
                 { } o => (persisting.Append(o), acting),
                 null => (persisting, acting)
             };

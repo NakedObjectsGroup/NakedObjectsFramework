@@ -17,11 +17,29 @@ namespace NakedFunctions.Rest.Test.Data {
 
         public static (SimpleRecord, SimpleRecord) GetAndUpdateSimpleRecord([Injected] IQueryable<SimpleRecord> allSimpleRecords) {
             var sr = allSimpleRecords.ToList().Last();
-            var updatedSr = sr with {
-                Name = "Jill"
-            };
+            var updatedSr = UpdateName(sr, "0");
 
             return (updatedSr, updatedSr);
         }
+
+
+        //public static (IList<SimpleRecord>, IList<SimpleRecord>) GetAndUpdateSimpleRecords([Injected] IQueryable<SimpleRecord> allSimpleRecords) {
+        //    var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "1")).ToList();
+
+        //    return (updated, updated);
+        //}
+
+
+        public static (SimpleRecord, IList<SimpleRecord>) GetSimpleRecordAndUpdateSimpleRecords([Injected] IQueryable<SimpleRecord> allSimpleRecords)
+        {
+            var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "1")).ToList();
+
+            return (updated.First(), updated);
+        }
+
+
+        private static SimpleRecord UpdateName(SimpleRecord sr, string suffix) => sr with {
+            Name = $"{sr.Name.Substring(0, 4)}{suffix}"
+        };
     }
 }
