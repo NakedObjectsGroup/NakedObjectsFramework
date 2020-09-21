@@ -71,6 +71,7 @@ namespace NakedFunctions.Meta.Facet {
             toPersist.Select(obj => (obj, lifecycleManager.Persist(obj))).ToArray();
 
         private static object ReplacePersisted(object toReturn, (object, object)[] persisted) {
+            var returnList = toReturn is IEnumerable;
             var asEnumerable = toReturn as IEnumerable ?? new[] {toReturn};
             var result = new List<object>();
 
@@ -89,7 +90,7 @@ namespace NakedFunctions.Meta.Facet {
                 }
             }
 
-            return result.Count == 1 ? result.First() : result;
+            return returnList ? result : result.First();
         }
 
         private (IEnumerable<object>, IEnumerable<Action>) HandleTupleItem(object item, IEnumerable<object> persisting,

@@ -6,10 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NakedFunctions.Rest.Test.Data {
-    public static class SimpleMenuFunction {
+    public static class SimpleMenuFunctions {
         public static SimpleRecord GetSimpleRecord([Injected] IQueryable<SimpleRecord> allSimpleRecords) => allSimpleRecords.First();
+
+        public static IList<SimpleRecord> GetSimpleRecords([Injected] IQueryable<SimpleRecord> allSimpleRecords) => allSimpleRecords.ToList();
     }
 }

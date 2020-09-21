@@ -69,6 +69,18 @@ namespace NakedFunctions.Rest.Test {
                                   $"http://localhost/objects/{type}/{instance}/actions/{id}/invoke");
         }
 
+     
+        public static void AssertObjectElementLink(this JToken link, string title, string method, string type, string instance)
+        {
+            Assert.AreEqual(5, link.Count());
+            Assert.AreEqual(title, link["title"].ToString());
+            link.AssertLink(method,
+                            "urn:org.restfulobjects:rels/element",
+                            $"application/json; profile=\"urn:org.restfulobjects:repr-types/object\"; charset=utf-8; x-ro-domain-type=\"{type}\"",
+                            $"http://localhost/objects/{type}/{instance}");
+        }
+
+
         public static void AssertExtensions(this JToken extensions, int count) {
             Assert.AreEqual(count, extensions.Count());
         }
