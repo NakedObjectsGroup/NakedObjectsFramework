@@ -24,14 +24,37 @@ namespace NakedFunctions.Rest.Test.Data {
 
 
         public static (IList<SimpleRecord>, IList<SimpleRecord>) GetAndUpdateSimpleRecords([Injected] IQueryable<SimpleRecord> allSimpleRecords) {
-            var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "2")).ToList();
+            var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "1")).ToList();
             return (updated, updated);
         }
 
-
-        public static (SimpleRecord, IList<SimpleRecord>) GetSimpleRecordAndUpdateSimpleRecords([Injected] IQueryable<SimpleRecord> allSimpleRecords) {
-            var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "1")).ToList();
+        public static (SimpleRecord, IList<SimpleRecord>) GetSimpleRecordAndUpdateSimpleRecords([Injected] IQueryable<SimpleRecord> allSimpleRecords)
+        {
+            var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "2")).ToList();
             return (updated.First(), updated);
+        }
+
+        public static (SimpleRecord, SimpleRecord, SimpleRecord) GetSimpleRecordAndUpdateSimpleRecordsByTuple([Injected] IQueryable<SimpleRecord> allSimpleRecords) {
+            var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "3")).ToList();
+            return (updated.First(), updated[0], updated[1]);
+        }
+
+        public static (IList<SimpleRecord>, SimpleRecord, SimpleRecord) GetAndUpdateSimpleRecordsByTuple([Injected] IQueryable<SimpleRecord> allSimpleRecords)
+        {
+            var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "4")).ToList();
+            return (updated, updated[0], updated[1]);
+        }
+
+        public static (SimpleRecord, (SimpleRecord, SimpleRecord)) GetSimpleRecordAndUpdateSimpleRecordsBySubTuple([Injected] IQueryable<SimpleRecord> allSimpleRecords)
+        {
+            var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "5")).ToList();
+            return (updated.First(), (updated[0], updated[1]));
+        }
+
+        public static (IList<SimpleRecord>, (SimpleRecord, SimpleRecord)) GetAndUpdateSimpleRecordsBySubTuple([Injected] IQueryable<SimpleRecord> allSimpleRecords)
+        {
+            var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "6")).ToList();
+            return (updated, (updated[0], updated[1]));
         }
 
 

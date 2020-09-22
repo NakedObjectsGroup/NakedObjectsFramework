@@ -11,7 +11,6 @@ using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFunctions.Rest.Test.Data;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;
@@ -19,7 +18,6 @@ using NakedObjects.Facade.Impl.Implementation;
 using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
-using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Rest;
 using NakedObjects.Rest.Model;
@@ -99,27 +97,27 @@ namespace NakedFunctions.Rest.Test {
 
         [Test]
         public void TestASimpleRecord() {
-            var parsedResult = GetObject("NakedFunctions.Rest.Test.Data.SimpleRecord", "1");
+            var parsedResult = GetObject($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
 
             Assert.AreEqual("Untitled Simple Record", parsedResult["title"].ToString());
 
             var members = parsedResult["members"] as JObject;
             Assert.AreEqual(5, members?.Count);
 
-            var function = members["ReShowRecord"];
+            var function = members[nameof(SimpleRecordFunctions.ReShowRecord)];
 
-            function.AssertAction("ReShowRecord", "{}");
+            function.AssertAction(nameof(SimpleRecordFunctions.ReShowRecord), "{}");
 
             function["extensions"].AssertExtensions(5); // todo add 
 
-            var propertyId = members["Id"];
+            var propertyId = members[nameof(SimpleRecord.Id)];
 
-            propertyId.AssertProperty("Id", "1", false);
+            propertyId.AssertProperty(nameof(SimpleRecord.Id), "1", false);
             propertyId["extensions"].AssertExtensions(6); // todo add 
 
-            var propertyName = members["Name"];
+            var propertyName = members[nameof(SimpleRecord.Name)];
 
-            propertyName.AssertProperty("Name", "Fred", false);
+            propertyName.AssertProperty(nameof(SimpleRecord.Name), "Fred", false);
             propertyName["extensions"].AssertExtensions(8); // todo add 
 
             var links = function["links"] as JArray;
@@ -127,7 +125,7 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual(2, links.Count);
 
             var invokeLink = links.Last;
-            invokeLink.AssertObjectInvokeLink("{}", "GET", "NakedFunctions.Rest.Test.Data.SimpleRecord", "1", "ReShowRecord");
+            invokeLink.AssertObjectInvokeLink("{}", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.ReShowRecord));
         }
 
 
@@ -135,14 +133,14 @@ namespace NakedFunctions.Rest.Test {
         public void TestInvokeReShowRecord()
         {
             var api = Api();
-            var result = api.GetInvoke("NakedFunctions.Rest.Test.Data.SimpleRecord", "1", "ReShowRecord", new ArgumentMap { Map = new Dictionary<string, IValue>() });
+            var result = api.GetInvoke($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.ReShowRecord), new ArgumentMap { Map = new Dictionary<string, IValue>() });
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
             
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Untitled Simple Record", "NakedFunctions.Rest.Test.Data.SimpleRecord", "1");
+            resultObj.AssertObject("Untitled Simple Record", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
         }
 
         [Test]
@@ -151,14 +149,14 @@ namespace NakedFunctions.Rest.Test {
             var api = Api().AsPost();
             var map = new ArgumentMap {Map = new Dictionary<string, IValue>() {{"name", new ScalarValue("Fred3")}}};
 
-            var result = api.PostInvoke("NakedFunctions.Rest.Test.Data.SimpleRecord", "1", "UpdateSimpleRecord", map);
+            var result = api.PostInvoke($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.UpdateSimpleRecord), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Untitled Simple Record", "NakedFunctions.Rest.Test.Data.SimpleRecord", "1");
+            resultObj.AssertObject("Untitled Simple Record", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
             Assert.AreEqual("Fred3", resultObj["members"]["Name"]["value"].ToString());
         }
 
@@ -168,14 +166,14 @@ namespace NakedFunctions.Rest.Test {
             var api = Api().AsPost();
             var map = new ArgumentMap { Map = new Dictionary<string, IValue>() { { "name", new ScalarValue("Fred4") } } };
 
-            var result = api.PostInvoke("NakedFunctions.Rest.Test.Data.SimpleRecord", "1", "UpdateAndPersistSimpleRecord", map);
+            var result = api.PostInvoke($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.UpdateAndPersistSimpleRecord), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Untitled Simple Record", "NakedFunctions.Rest.Test.Data.SimpleRecord", "1");
+            resultObj.AssertObject("Untitled Simple Record", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
             Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
         }
     }
