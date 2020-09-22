@@ -23,18 +23,14 @@ namespace NakedFunctions.Rest.Test.Data {
         }
 
 
-        public static (IList<SimpleRecord>, IList<SimpleRecord>) GetAndUpdateSimpleRecords([Injected] IQueryable<SimpleRecord> allSimpleRecords)
-        {
+        public static (IList<SimpleRecord>, IList<SimpleRecord>) GetAndUpdateSimpleRecords([Injected] IQueryable<SimpleRecord> allSimpleRecords) {
             var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "2")).ToList();
-
             return (updated, updated);
         }
 
 
-        public static (SimpleRecord, IList<SimpleRecord>) GetSimpleRecordAndUpdateSimpleRecords([Injected] IQueryable<SimpleRecord> allSimpleRecords)
-        {
+        public static (SimpleRecord, IList<SimpleRecord>) GetSimpleRecordAndUpdateSimpleRecords([Injected] IQueryable<SimpleRecord> allSimpleRecords) {
             var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "1")).ToList();
-
             return (updated.First(), updated);
         }
 

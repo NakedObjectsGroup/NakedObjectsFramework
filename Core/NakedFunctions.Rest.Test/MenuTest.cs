@@ -244,8 +244,7 @@ namespace NakedFunctions.Rest.Test {
         [Test]
         public void TestInvokeMenuActionThatUpdatesListAndReturnsIt()
         {
-            var api = Api();
-            api.HttpContext.Request.Method = "POST";
+            var api = Api().AsPost();
             var result = api.PostInvokeOnService("MenuFunctions", "GetAndUpdateSimpleRecords", new ArgumentMap { Map = new Dictionary<string, IValue>() });
             var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 

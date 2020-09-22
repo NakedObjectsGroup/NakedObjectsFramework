@@ -52,5 +52,16 @@ namespace NakedFunctions.Rest.Test {
             var headers = testContext.HttpContext.Response.GetTypedHeaders();
             return (json, statusCode, headers);
         }
+
+        public static RestfulObjectsControllerBase AsPost(this RestfulObjectsControllerBase api) {
+            api.HttpContext.Request.Method = "POST";
+            return api;
+        }
+
+        public static RestfulObjectsControllerBase AsGet(this RestfulObjectsControllerBase api)
+        {
+            api.HttpContext.Request.Method = "GET";
+            return api;
+        }
     }
 }
