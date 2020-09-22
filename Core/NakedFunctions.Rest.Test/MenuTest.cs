@@ -122,7 +122,7 @@ namespace NakedFunctions.Rest.Test {
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual("Test menu", parsedResult["title"].ToString());
-            Assert.AreEqual("SimpleMenuFunctions", parsedResult["menuId"].ToString());
+            Assert.AreEqual(nameof(SimpleMenuFunctions), parsedResult["menuId"].ToString());
 
             var members = parsedResult["members"] as JObject;
             Assert.AreEqual(10, members?.Count);
@@ -146,7 +146,7 @@ namespace NakedFunctions.Rest.Test {
         public void TestInvokeMenuActionThatReturnsObject() {
             var api = Api();
             var result = api.GetInvokeOnService(nameof(MenuFunctions), nameof(SimpleMenuFunctions.GetSimpleRecord), new ArgumentMap {Map = new Dictionary<string, IValue>()});
-            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             
             Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
@@ -163,7 +163,7 @@ namespace NakedFunctions.Rest.Test {
         {
             var api = Api();
             var result = api.GetInvokeOnService(nameof(MenuFunctions), nameof(SimpleMenuFunctions.GetSimpleRecordsSingle), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
            
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
@@ -184,7 +184,7 @@ namespace NakedFunctions.Rest.Test {
         {
             var api = Api();
             var result = api.GetInvokeOnService(nameof(MenuFunctions), nameof(SimpleMenuFunctions.GetSimpleRecordsMultiple), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
            
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
@@ -205,10 +205,9 @@ namespace NakedFunctions.Rest.Test {
         [Test]
         public void TestInvokeMenuActionThatUpdatesObject()
         {
-            var api = Api();
-            api.HttpContext.Request.Method = "POST";
+            var api = Api().AsPost();
             var result = api.PostInvokeOnService(nameof(MenuFunctions), nameof(SimpleMenuFunctions.GetAndUpdateSimpleRecord), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
             
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
@@ -225,10 +224,9 @@ namespace NakedFunctions.Rest.Test {
         [Test]
         public void TestInvokeMenuActionThatUpdatesList()
         {
-            var api = Api();
-            api.HttpContext.Request.Method = "POST";
+            var api = Api().AsPost();
             var result = api.PostInvokeOnService(nameof(MenuFunctions), nameof(SimpleMenuFunctions.GetSimpleRecordAndUpdateSimpleRecords), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
@@ -246,7 +244,7 @@ namespace NakedFunctions.Rest.Test {
         {
             var api = Api().AsPost();
             var result = api.PostInvokeOnService(nameof(MenuFunctions), nameof(SimpleMenuFunctions.GetAndUpdateSimpleRecords), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
@@ -270,7 +268,7 @@ namespace NakedFunctions.Rest.Test {
             var api = Api();
             api.HttpContext.Request.Method = "POST";
             var result = api.PostInvokeOnService(nameof(MenuFunctions), nameof(SimpleMenuFunctions.GetSimpleRecordAndUpdateSimpleRecordsByTuple), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
@@ -288,7 +286,7 @@ namespace NakedFunctions.Rest.Test {
         {
             var api = Api().AsPost();
             var result = api.PostInvokeOnService(nameof(MenuFunctions), nameof(SimpleMenuFunctions.GetAndUpdateSimpleRecordsByTuple), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
@@ -312,7 +310,7 @@ namespace NakedFunctions.Rest.Test {
             var api = Api();
             api.HttpContext.Request.Method = "POST";
             var result = api.PostInvokeOnService(nameof(MenuFunctions), nameof(SimpleMenuFunctions.GetSimpleRecordAndUpdateSimpleRecordsBySubTuple), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
@@ -330,7 +328,7 @@ namespace NakedFunctions.Rest.Test {
         {
             var api = Api().AsPost();
             var result = api.PostInvokeOnService(nameof(MenuFunctions), nameof(SimpleMenuFunctions.GetAndUpdateSimpleRecordsBySubTuple), new ArgumentMap { Map = new Dictionary<string, IValue>() });
-            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
