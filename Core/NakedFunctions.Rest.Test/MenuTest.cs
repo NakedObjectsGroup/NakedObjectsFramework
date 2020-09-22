@@ -241,26 +241,28 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("Fred1", resultObj["members"]["Name"]["value"].ToString());
         }
 
-        //[Test]
-        //public void TestInvokeMenuActionThatUpdatesListAndReturnsIt()
-        //{
-        //    var api = Api();
-        //    api.HttpContext.Request.Method = "POST";
-        //    var result = api.PostInvokeOnService("MenuFunctions", "GetAndUpdateSimpleRecords", new ArgumentMap { Map = new Dictionary<string, IValue>() });
-        //    var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        [Test]
+        public void TestInvokeMenuActionThatUpdatesListAndReturnsIt()
+        {
+            var api = Api();
+            api.HttpContext.Request.Method = "POST";
+            var result = api.PostInvokeOnService("MenuFunctions", "GetAndUpdateSimpleRecords", new ArgumentMap { Map = new Dictionary<string, IValue>() });
+            var (json, sc, headers) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
-        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
 
 
-        //    Assert.AreEqual("list", parsedResult["resultType"].ToString());
+            Assert.AreEqual("list", parsedResult["resultType"].ToString());
 
-        //    //var resultObj = parsedResult["result"];
+            var item1 = parsedResult["result"]["value"][0];
+            var item2 = parsedResult["result"]["value"][1];
+            var item3 = parsedResult["result"]["value"][2];
 
-        //    //Assert.AreEqual("3", resultObj["instanceId"].ToString());
-        //    //Assert.AreEqual("NakedFunctions.Rest.Test.Data.SimpleRecord", resultObj["domainType"].ToString());
-        //    //Assert.AreEqual("Untitled Simple Record", resultObj["title"].ToString());
-        //    //Assert.AreEqual("Ted0", resultObj["members"]["Name"]["value"].ToString());
-        //}
+            item1.AssertObjectElementLink("Untitled Simple Record", "GET", "NakedFunctions.Rest.Test.Data.SimpleRecord", "1");
+            item2.AssertObjectElementLink("Untitled Simple Record", "GET", "NakedFunctions.Rest.Test.Data.SimpleRecord", "2");
+            item3.AssertObjectElementLink("Untitled Simple Record", "GET", "NakedFunctions.Rest.Test.Data.SimpleRecord", "3");
+
+        }
     }
 }
