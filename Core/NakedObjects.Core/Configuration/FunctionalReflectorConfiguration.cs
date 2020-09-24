@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using NakedObjects.Architecture.Configuration;
+using NakedObjects.Core.Framework;
 using NakedObjects.Service;
 
 namespace NakedObjects.Core.Configuration {
@@ -22,7 +23,7 @@ namespace NakedObjects.Core.Configuration {
         public Type[] Types { get; }
         public Type[] Functions { get; }
 
-        public Type[] Services => HasConfig() ? new[] {typeof(MenuFunctions)} : new Type[] { };
+        public Type[] Services => HasConfig() ? new[] {typeof(MenuFunctions), typeof(Alert)} : new Type[] { };
 
         #endregion
 

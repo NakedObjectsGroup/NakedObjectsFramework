@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -51,6 +52,8 @@ namespace NakedFunctions.Rest.Test.Data {
             return (updated, (updated[0], updated[1]));
         }
 
+        public static (SimpleRecord, Action<IAlert>) GetSimpleRecordWithWarning([Injected] IQueryable<SimpleRecord> allSimpleRecords) =>
+            (allSimpleRecords.First(), a => a.WarnUser("a warning"));
 
         private static SimpleRecord UpdateName(SimpleRecord sr, string suffix) => sr with {
             Name = $"{sr.Name.Substring(0, 4)}{suffix}"

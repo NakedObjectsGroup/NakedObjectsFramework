@@ -21,9 +21,10 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflect.FacetFactory;
 using NakedObjects.Util;
 
-namespace NakedObjects.ParallelReflect.FacetFactory {
+namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
     public sealed class ActionChoicesViaFunctionFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodFilteringFacetFactory {
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ParameterChoicesPrefix

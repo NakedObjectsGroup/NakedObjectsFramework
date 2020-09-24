@@ -11,7 +11,6 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedFunctions.ParallelReflect.FacetFactory;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
@@ -22,6 +21,7 @@ using NakedObjects.Meta.Component;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
+using NakedObjects.ParallelReflect.FunctionalFacetFactory;
 using NakedObjects.ParallelReflect.Test;
 using NakedObjects.ParallelReflect.TypeFacetFactory;
 
@@ -246,7 +246,7 @@ namespace NakedFunctions.Reflect.Test {
             var reflector = container.GetService<IReflector>();
             reflector.Reflect();
             var specs = reflector.AllObjectSpecImmutables;
-            Assert.AreEqual(2, specs.Length);
+            Assert.AreEqual(4, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
         }
@@ -263,7 +263,7 @@ namespace NakedFunctions.Reflect.Test {
             var reflector = container.GetService<IReflector>();
             reflector.Reflect();
             var specs = reflector.AllObjectSpecImmutables;
-            Assert.AreEqual(4, specs.Length);
+            Assert.AreEqual(6, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleFunctions), specs);
@@ -284,7 +284,7 @@ namespace NakedFunctions.Reflect.Test {
             var reflector = container.GetService<IReflector>();
             reflector.Reflect();
             var specs = reflector.AllObjectSpecImmutables;
-            Assert.AreEqual(5, specs.Length);
+            Assert.AreEqual(7, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
             AbstractReflectorTest.AssertSpec(typeof(TupleFunctions), specs);
@@ -308,7 +308,7 @@ namespace NakedFunctions.Reflect.Test {
             var reflector = container.GetService<IReflector>();
             reflector.Reflect();
             var specs = reflector.AllObjectSpecImmutables;
-            Assert.AreEqual(4, specs.Length);
+            Assert.AreEqual(6, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleInjectedFunctions), specs);
@@ -330,7 +330,7 @@ namespace NakedFunctions.Reflect.Test {
             var reflector = container.GetService<IReflector>();
             reflector.Reflect();
             var specs = reflector.AllObjectSpecImmutables;
-            Assert.AreEqual(3, specs.Length);
+            Assert.AreEqual(5, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(NavigableClass), specs);
             //AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
         }

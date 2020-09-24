@@ -68,6 +68,20 @@ namespace NakedObjects.Meta.Utils {
             return false;
         }
 
+        public static bool IsAction(Type type)
+        {
+            if (type.IsGenericType)
+            {
+                var genericTypeDefinition = type.GetGenericTypeDefinition();
+
+                return genericTypeDefinition == typeof(Action<>);
+            }
+
+            return false;
+        }
+
+
+
         public static int ValueTupleSize(Type type)
         {
             if (type.IsGenericType)

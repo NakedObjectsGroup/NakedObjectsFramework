@@ -74,7 +74,7 @@ namespace NakedObjects.Xat {
             return null;
         }
 
-        public ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject) => new TestAction(metamodelManager, Session, lifecycleManager, transactionManager, actionSpec, owningObject, this, manager, messageBroker);
+        public ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject) => new TestAction(metamodelManager, Session, lifecycleManager, transactionManager, actionSpec, owningObject, this, manager, messageBroker, servicesManager);
 
         public ITestAction CreateTestAction(IActionSpecImmutable actionSpecImm, ITestHasActions owningObject) {
             var actionSpec = metamodelManager.GetActionSpec(actionSpecImm);
@@ -94,7 +94,7 @@ namespace NakedObjects.Xat {
             return CreateTestAction(actionSpecImm, testService);
         }
 
-        public ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject) => new TestAction(metamodelManager, Session, lifecycleManager, transactionManager, contributor, actionSpec, owningObject, this, manager, messageBroker);
+        public ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject) => new TestAction(metamodelManager, Session, lifecycleManager, transactionManager, contributor, actionSpec, owningObject, this, manager, messageBroker, servicesManager);
 
         public ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject) => new TestProperty(persistor, field, owningObject, this, manager);
 

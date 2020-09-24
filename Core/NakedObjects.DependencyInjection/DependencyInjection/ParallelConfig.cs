@@ -24,7 +24,7 @@ namespace NakedObjects.DependencyInjection {
             services.AddSingleton<DefaultClassStrategy, DefaultClassStrategy>();
             services.AddSingleton<IClassStrategy>(p => new CachingClassStrategy(p.GetService<DefaultClassStrategy>()));
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
-            services.AddSingleton<IReflector, ParallelReflector>();
+            services.AddSingleton<IReflector, ParallelReflect.Component.ParallelReflector>();
             services.AddSingleton<IMetamodel, Metamodel>();
             services.AddSingleton<IMetamodelBuilder, Metamodel>();
             services.AddSingleton<IMenuFactory, MenuFactory>();

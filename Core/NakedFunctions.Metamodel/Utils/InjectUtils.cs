@@ -93,5 +93,7 @@ namespace NakedObjects.Meta.Utils {
         public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string autocomplete, ISession session, IObjectPersistor persistor) => method.GetParameters().Select(p => p.GetParameterValue(adapter, session, persistor) ?? autocomplete).ToArray();
 
         public static object[] GetParameterValues(this MethodInfo method, INakedObjectAdapter adapter, string[] keys, ISession session, IObjectPersistor persistor) => method.GetParameters().Select(p => p.GetParameterValue(adapter, session, persistor) ?? keys).ToArray();
+
+        public static void PerformAction<T>(object action, T toInject) => ((Action<T>)action)(toInject);
     }
 }

@@ -12,7 +12,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
-using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -26,11 +25,11 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflect.FacetFactory;
 using NakedObjects.Util;
 
-namespace NakedFunctions.ParallelReflect.FacetFactory {
+namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
-    public sealed class FunctionsFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodIdentifyingFacetFactory {
+public sealed class FunctionsFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodIdentifyingFacetFactory {
         private static readonly string[] FixedPrefixes = { };
 
         private readonly ILogger<ActionMethodsFacetFactory> logger;

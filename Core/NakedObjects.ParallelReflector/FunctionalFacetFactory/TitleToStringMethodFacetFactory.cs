@@ -16,8 +16,9 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflect.FacetFactory;
 
-namespace NakedObjects.ParallelReflect.FacetFactory {
+namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
     public sealed class TitleToStringMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ToStringMethod

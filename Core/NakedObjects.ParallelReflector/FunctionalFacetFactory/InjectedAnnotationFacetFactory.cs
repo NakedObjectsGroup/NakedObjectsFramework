@@ -16,8 +16,9 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflect.FacetFactory;
 
-namespace NakedObjects.ParallelReflect.FacetFactory {
+namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
     public sealed class InjectedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
 
         public InjectedAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)

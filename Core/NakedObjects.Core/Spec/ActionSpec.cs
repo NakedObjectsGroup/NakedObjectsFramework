@@ -106,7 +106,7 @@ namespace NakedObjects.Core.Spec {
         public INakedObjectAdapter Execute(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameterSet) {
             var parms = RealParameters(nakedObjectAdapter, parameterSet);
             var target = RealTarget(nakedObjectAdapter);
-            var result = ActionInvocationFacet.Invoke(target, parms, LifecycleManager, MetamodelManager, Session, nakedObjectManager, messageBroker, transactionManager);
+            var result = ActionInvocationFacet.Invoke(target, parms, LifecycleManager, MetamodelManager, Session, nakedObjectManager, messageBroker, transactionManager, servicesManager);
 
             if (result != null && result.Oid == null) {
                 result.SetATransientOid(new CollectionMemento(LifecycleManager, nakedObjectManager, MetamodelManager, loggerFactory.CreateLogger<CollectionMemento>(), nakedObjectAdapter, this, parameterSet));

@@ -26,8 +26,8 @@ namespace NakedObjects.Architecture.Facet {
         ITypeSpecImmutable OnType { get; }
         IObjectSpecImmutable ElementType { get; }
         bool IsQueryOnly { get; }
-        INakedObjectAdapter Invoke(INakedObjectAdapter target, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager);
-        INakedObjectAdapter Invoke(INakedObjectAdapter target, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager);
+        INakedObjectAdapter Invoke(INakedObjectAdapter target, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager, IServicesManager servicesManager);
+        INakedObjectAdapter Invoke(INakedObjectAdapter target, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager, IServicesManager servicesManager);
     }
 
     // Copyright (c) Naked Objects Group Ltd.
