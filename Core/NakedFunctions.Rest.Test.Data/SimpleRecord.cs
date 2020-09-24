@@ -7,10 +7,13 @@
 
 
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography.X509Certificates;
 
 namespace NakedFunctions.Rest.Test.Data {
     public record SimpleRecord {
         [Key] public int Id { get; init; }
         public string Name { get; init; }
+
+        public override string ToString() => Name;
     }
 }

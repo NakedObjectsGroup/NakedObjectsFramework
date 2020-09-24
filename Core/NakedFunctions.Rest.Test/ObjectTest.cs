@@ -99,7 +99,7 @@ namespace NakedFunctions.Rest.Test {
         public void TestASimpleRecord() {
             var parsedResult = GetObject($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
 
-            Assert.AreEqual("Untitled Simple Record", parsedResult["title"].ToString());
+            Assert.AreEqual("Fred", parsedResult["title"].ToString());
 
             var members = parsedResult["members"] as JObject;
             Assert.AreEqual(5, members?.Count);
@@ -140,7 +140,7 @@ namespace NakedFunctions.Rest.Test {
             
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Untitled Simple Record", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            resultObj.AssertObject("Fred", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
         }
 
         [Test]
@@ -156,7 +156,7 @@ namespace NakedFunctions.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Untitled Simple Record", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            resultObj.AssertObject("Fred3", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
             Assert.AreEqual("Fred3", resultObj["members"]["Name"]["value"].ToString());
         }
 
@@ -173,7 +173,7 @@ namespace NakedFunctions.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Untitled Simple Record", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            resultObj.AssertObject("Fred4", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
             Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
         }
     }

@@ -155,7 +155,7 @@ namespace NakedFunctions.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Untitled Simple Record", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            resultObj.AssertObject("Fred", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
         }
 
         [Test]
@@ -176,7 +176,7 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual(1, value.Count);
 
 
-            value[0].AssertObjectElementLink("Untitled Simple Record", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            value[0].AssertObjectElementLink("Fred", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
         }
 
         [Test]
@@ -198,8 +198,8 @@ namespace NakedFunctions.Rest.Test {
 
             var firstItem = value[0];
 
-            value[0].AssertObjectElementLink("Untitled Simple Record", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-            value[1].AssertObjectElementLink("Untitled Simple Record", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "2");
+            value[0].AssertObjectElementLink("Fred", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            value[1].AssertObjectElementLink("Bill", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "2");
         }
 
         [Test]
@@ -217,7 +217,7 @@ namespace NakedFunctions.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Untitled Simple Record", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "3");
+            resultObj.AssertObject("Jack0", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "3");
             Assert.AreEqual("Jack0", resultObj["members"]["Name"]["value"].ToString());
         }
 
@@ -235,7 +235,7 @@ namespace NakedFunctions.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Untitled Simple Record", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            resultObj.AssertObject("Fred2", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
             Assert.AreEqual("Fred2", resultObj["members"]["Name"]["value"].ToString());
         }
 
@@ -256,9 +256,9 @@ namespace NakedFunctions.Rest.Test {
             var item2 = parsedResult["result"]["value"][1];
             var item3 = parsedResult["result"]["value"][2];
 
-            item1.AssertObjectElementLink("Untitled Simple Record", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-            item2.AssertObjectElementLink("Untitled Simple Record", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "2");
-            item3.AssertObjectElementLink("Untitled Simple Record", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "3");
+            item1.AssertObjectElementLink("Fred1", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            item2.AssertObjectElementLink("Bill1", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "2");
+            item3.AssertObjectElementLink("Jack1", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "3");
 
         }
 
@@ -277,7 +277,7 @@ namespace NakedFunctions.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Untitled Simple Record", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            resultObj.AssertObject("Fred3", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
             Assert.AreEqual("Fred3", resultObj["members"]["Name"]["value"].ToString());
         }
 
@@ -298,9 +298,9 @@ namespace NakedFunctions.Rest.Test {
             var item2 = parsedResult["result"]["value"][1];
             var item3 = parsedResult["result"]["value"][2];
 
-            item1.AssertObjectElementLink("Untitled Simple Record", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-            item2.AssertObjectElementLink("Untitled Simple Record", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "2");
-            item3.AssertObjectElementLink("Untitled Simple Record", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "3");
+            item1.AssertObjectElementLink("Fred4", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            item2.AssertObjectElementLink("Bill4", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "2");
+            item3.AssertObjectElementLink("Jack4", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "3");
 
         }
 
@@ -319,7 +319,7 @@ namespace NakedFunctions.Rest.Test {
 
             var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Untitled Simple Record", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            resultObj.AssertObject("Fred5", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
             Assert.AreEqual("Fred5", resultObj["members"]["Name"]["value"].ToString());
         }
 
@@ -340,9 +340,9 @@ namespace NakedFunctions.Rest.Test {
             var item2 = parsedResult["result"]["value"][1];
             var item3 = parsedResult["result"]["value"][2];
 
-            item1.AssertObjectElementLink("Untitled Simple Record", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-            item2.AssertObjectElementLink("Untitled Simple Record", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "2");
-            item3.AssertObjectElementLink("Untitled Simple Record", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "3");
+            item1.AssertObjectElementLink("Fred6", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            item2.AssertObjectElementLink("Bill6", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "2");
+            item3.AssertObjectElementLink("Jack6", "GET", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "3");
 
         }
     }
