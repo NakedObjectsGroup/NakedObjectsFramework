@@ -139,7 +139,7 @@ namespace NakedFunctions.Meta.Facet {
                 var size = tuple.Length;
 
                 if (size < 2) {
-                    throw new InvokeException("Invalid return type", new Exception());
+                    throw new InvokeException($"Invalid return type single item tuple on {ActionMethod.Name}");
                 }
 
                 (toReturn, (toPersist, toAct)) = HandleTuple(tuple, toPersist, toAct);
@@ -159,16 +159,26 @@ namespace NakedFunctions.Meta.Facet {
 
         private void PerformActions(IServicesManager servicesManager, IEnumerable<object> toAct) => toAct.ForEach(a => PerformAction(servicesManager, a));
 
-        private void PerformAction<T>(object action, T toInject) => ((Action<T>) action)(toInject);
-
         private void PerformAction(IServicesManager servicesManager, object action) {
-            var injectType = action.GetType().GetGenericArguments().SingleOrDefault();
+            var injectType = GetInjectArgumentType(action);
 
-            var injectedService = servicesManager.GetServices().Select(no =>  no.Object).SingleOrDefault(service => injectType?.IsInstanceOfType(service) == true);
+            var injectedService = servicesManager.GetServices().Select(no =>  no.Object).SingleOrDefault(service => injectType.IsInstanceOfType(service));
 
             if (injectedService != null) {
                 var f = typeof(InjectUtils).GetMethod("PerformAction")?.MakeGenericMethod(injectType);
                 f?.Invoke(null, new object[] {action, injectedService});
+            }
+            else {
+                throw new InvokeException($"Failed to get service for injection argument type {injectType} on action {ActionMethod.Name}");
+            }
+        }
+
+        private Type GetInjectArgumentType(object action) {
+            try {
+                return action.GetType().GetGenericArguments().Single();
+            }
+            catch (Exception e) {
+                throw new InvokeException($"Failed to get Single injection argument for action on {ActionMethod.Name}", e);
             }
         }
 
@@ -198,8 +208,7 @@ namespace NakedFunctions.Meta.Facet {
                                                    IMessageBroker messageBroker,
                                                    ITransactionManager transactionManager,
                                                    IServicesManager servicesManager) =>
-            Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager,
-                   messageBroker, transactionManager, servicesManager);
+            Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager, messageBroker, transactionManager, servicesManager);
 
         protected override string ToStringValues() => $"method={ActionMethod}";
 

@@ -5,16 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace NakedFunctions.Rest.Test.Data {
     public static class SimpleRecordFunctions {
         public static SimpleRecord ReShowRecord(this SimpleRecord simpleRecord) => simpleRecord;
 
-        public static SimpleRecord UpdateSimpleRecord(this SimpleRecord simpleRecord, [Injected] IQueryable<SimpleRecord> allSimpleRecords, string name)
-        {
-           
+        public static SimpleRecord UpdateSimpleRecord(this SimpleRecord simpleRecord, [Injected] IQueryable<SimpleRecord> allSimpleRecords, string name) {
             var updatedSr = simpleRecord with {
                 Name = name
             };
@@ -23,15 +21,15 @@ namespace NakedFunctions.Rest.Test.Data {
         }
 
 
-        public static (SimpleRecord, SimpleRecord) UpdateAndPersistSimpleRecord(this SimpleRecord simpleRecord, [Injected] IQueryable<SimpleRecord> allSimpleRecords, string name)
-        {
-
+        public static (SimpleRecord, SimpleRecord) UpdateAndPersistSimpleRecord(this SimpleRecord simpleRecord, [Injected] IQueryable<SimpleRecord> allSimpleRecords, string name) {
             var updatedSr = simpleRecord with
             {
                 Name = name
-            };
+            } ;
 
             return (updatedSr, updatedSr);
         }
+
+        public static (SimpleRecord, Action<IAlert>) GetSimpleRecordWithWarning(this SimpleRecord simpleRecord) =>  (simpleRecord, a => a.WarnUser("a warning"));
     }
 }

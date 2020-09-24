@@ -102,7 +102,7 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual("Fred", parsedResult["title"].ToString());
 
             var members = parsedResult["members"] as JObject;
-            Assert.AreEqual(5, members?.Count);
+            Assert.AreEqual(6, members?.Count);
 
             var function = members[nameof(SimpleRecordFunctions.ReShowRecord)];
 
@@ -175,6 +175,25 @@ namespace NakedFunctions.Rest.Test {
 
             resultObj.AssertObject("Fred4", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
             Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
+        }
+
+        [Test]
+        public void TestInvokeWithWarning()
+        {
+            var api = Api();
+            var result = api.GetInvoke($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.GetSimpleRecordWithWarning), new ArgumentMap { Map = new Dictionary<string, IValue>() });
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("object", parsedResult["resultType"].ToString());
+
+            Assert.AreEqual("a warning", parsedResult["extensions"]["x-ro-nof-warnings"][0].ToString());
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Fred4", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
         }
     }
 }

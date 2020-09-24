@@ -26,7 +26,7 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
     ///     Creates an <see cref="IContributedActionFacet" /> based on the presence of an
     ///     <see cref="ContributedActionAttribute" /> annotation
     /// </summary>
-public sealed class ContributedFunctionFacetFactory : FacetFactoryAbstract {
+    public sealed class ContributedFunctionFacetFactory : FacetFactoryAbstract {
         private readonly ILogger<ContributedFunctionFacetFactory> logger;
 
         public ContributedFunctionFacetFactory(int numericOrder, ILoggerFactory loggerFactory)

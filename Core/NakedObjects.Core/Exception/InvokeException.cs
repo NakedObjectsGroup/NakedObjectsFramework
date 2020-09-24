@@ -10,5 +10,6 @@ using System;
 namespace NakedObjects.Core {
     public class InvokeException : NakedObjectApplicationException {
         public InvokeException(string message, Exception exception) : base(message, exception) { }
+        public InvokeException(string message) : base(message) { }
     }
 }

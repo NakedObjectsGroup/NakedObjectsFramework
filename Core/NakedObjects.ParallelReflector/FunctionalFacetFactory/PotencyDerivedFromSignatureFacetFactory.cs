@@ -25,7 +25,7 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
     ///     Creates an <see cref="IQueryOnlyFacet" /> or <see cref="IIdempotentFacet" />  based on the presence of a
     ///     <see cref="QueryOnlyAttribute" /> or <see cref="IdempotentAttribute" /> annotation
     /// </summary>
-public sealed class PotencyDerivedFromSignatureFacetFactory : FacetFactoryAbstract {
+    public sealed class PotencyDerivedFromSignatureFacetFactory : FacetFactoryAbstract {
         private readonly ILogger<PotencyDerivedFromSignatureFacetFactory> logger;
 
         public PotencyDerivedFromSignatureFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
@@ -33,26 +33,20 @@ public sealed class PotencyDerivedFromSignatureFacetFactory : FacetFactoryAbstra
             logger = loggerFactory.CreateLogger<PotencyDerivedFromSignatureFacetFactory>();
 
 
-
         private static bool TypeIncludesUpdate(Type type) =>
             type switch {
-                _ when FacetUtils.IsValueTuple(type) => TupleIncludesUpdates(type, 0),
+                _ when FacetUtils.IsValueTuple(type) => TupleIncludesUpdates(type, false),
                 _ when FacetUtils.IsAction(type) => false,
                 _ => true
             };
-        
-        private static bool TupleIncludesUpdates(Type tuple, int skip) => tuple.GenericTypeArguments.Skip(skip).Any(TypeIncludesUpdate);
-        
-        private static bool IsSideEffectFree(Type returnType) {
-            return !FacetUtils.IsValueTuple(returnType) || !TupleIncludesUpdates(returnType, 1);
-        }
+
+        private static bool TupleIncludesUpdates(Type tuple, bool skipFirst) => tuple.GenericTypeArguments.Skip(skipFirst ? 1 : 0).Any(TypeIncludesUpdate);
+
+        private static bool IsSideEffectFree(Type returnType) => !FacetUtils.IsValueTuple(returnType) || !TupleIncludesUpdates(returnType, true);
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var method = member as MethodInfo;
-            if (method != null) {
-                var returnType = method.ReturnType;
-
-                if (IsSideEffectFree(returnType)) {
+            if (member is MethodInfo method) {
+                if (IsSideEffectFree(method.ReturnType)) {
                     FacetUtils.AddFacet(new QueryOnlyFacet(holder));
                 }
             }
