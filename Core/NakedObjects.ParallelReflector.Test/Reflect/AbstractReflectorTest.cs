@@ -117,8 +117,8 @@ namespace NakedObjects.ParallelReflect.Test {
         [TestInitialize]
         public virtual void SetUp() {
             var cache = new ImmutableInMemorySpecCache();
-            ReflectorConfiguration.NoValidate = true;
-            var config = new ReflectorConfiguration(new[] {typeof(List<TestPoco>), typeof(ArrayList)}, new Type[] { }, new[] {typeof(TestPoco).Namespace});
+            ObjectReflectorConfiguration.NoValidate = true;
+            var config = new ObjectReflectorConfiguration(new[] {typeof(List<TestPoco>), typeof(ArrayList)}, new Type[] { }, new[] {typeof(TestPoco).Namespace});
             var functionalReflectorConfiguration = new FunctionalReflectorConfiguration(new Type[] { }, new Type[] { });
 
             var menuFactory = new NullMenuFactory();

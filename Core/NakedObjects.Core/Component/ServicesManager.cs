@@ -30,7 +30,7 @@ namespace NakedObjects.Core.Component {
 
         public ServicesManager(IDomainObjectInjector injector,
                                INakedObjectManager manager,
-                               IReflectorConfiguration config,
+                               IObjectReflectorConfiguration config,
                                ILogger<ServicesManager> logger,
                                IFunctionalReflectorConfiguration fConfig = null) {
             this.injector = injector ?? throw new InitialisationException($"{nameof(injector)} is null");

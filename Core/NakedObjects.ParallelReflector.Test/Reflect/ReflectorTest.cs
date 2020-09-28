@@ -63,13 +63,13 @@ namespace NakedObjects.ParallelReflect.Test {
 
         private Action<IServiceCollection> TestHook { get; set; } = services => { };
 
-        private IHostBuilder CreateHostBuilder(string[] args, IReflectorConfiguration rc) =>
+        private IHostBuilder CreateHostBuilder(string[] args, IObjectReflectorConfiguration rc) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) => {
                     RegisterTypes(services, rc);
                 });
 
-        protected IServiceProvider GetContainer(IReflectorConfiguration rc) {
+        protected IServiceProvider GetContainer(IObjectReflectorConfiguration rc) {
             ImmutableSpecFactory.ClearCache();
             var hostBuilder = CreateHostBuilder(new string[] { }, rc).Build();
             return hostBuilder.Services;
@@ -166,7 +166,7 @@ namespace NakedObjects.ParallelReflect.Test {
             RegisterFacetFactory<CollectionFacetFactory>("CollectionFacetFactory", services, order); // written to not trample over TypeOf if already installed
         }
 
-        protected virtual void RegisterTypes(IServiceCollection services, IReflectorConfiguration rc) {
+        protected virtual void RegisterTypes(IServiceCollection services, IObjectReflectorConfiguration rc) {
             RegisterFacetFactories(services);
 
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
@@ -184,9 +184,9 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void ReflectNoTypes() {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(rc);
@@ -198,9 +198,9 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void ReflectObjectType() {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof(object)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] {typeof(object)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(rc);
@@ -214,9 +214,9 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void ReflectListTypes() {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof(List<object>), typeof(List<int>), typeof(object), typeof(int)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] {typeof(List<object>), typeof(List<int>), typeof(object), typeof(int)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(rc);
@@ -233,9 +233,9 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void ReflectSetTypes() {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof(SetWrapper<>), typeof(object)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] {typeof(SetWrapper<>), typeof(object)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(rc);
@@ -253,9 +253,9 @@ namespace NakedObjects.ParallelReflect.Test {
         public void ReflectQueryableTypes() {
             var qo = new List<object>().AsQueryable();
             var qi = new List<int>().AsQueryable();
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {qo.GetType(), qi.GetType(), typeof(int), typeof(object)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] {qo.GetType(), qi.GetType(), typeof(int), typeof(object)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(rc);
@@ -273,9 +273,9 @@ namespace NakedObjects.ParallelReflect.Test {
         [TestMethod]
         public void ReflectWhereIterator() {
             var it = new List<int> {1, 2, 3}.Where(i => i == 2);
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(rc);
@@ -292,9 +292,9 @@ namespace NakedObjects.ParallelReflect.Test {
         [TestMethod]
         public void ReflectWhereSelectIterator() {
             var it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(rc);
@@ -314,9 +314,9 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void ReflectInt() {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof(int)}, new Type[] { }, new[] {"System"});
+            var rc = new ObjectReflectorConfiguration(new[] {typeof(int)}, new Type[] { }, new[] {"System"});
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(rc);
@@ -338,9 +338,9 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void ReflectByteArray() {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof(TestObjectWithByteArray)}, new Type[] { }, new[] {"System"});
+            var rc = new ObjectReflectorConfiguration(new[] {typeof(TestObjectWithByteArray)}, new Type[] { }, new[] {"System"});
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(rc);
@@ -386,9 +386,9 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void ReflectStringArray() {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof(TestObjectWithStringArray), typeof(string)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] {typeof(TestObjectWithStringArray), typeof(string)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(rc);
@@ -404,9 +404,9 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void ReflectWithScalars() {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof(WithScalars)}, new Type[] { }, new[] {"System"});
+            var rc = new ObjectReflectorConfiguration(new[] {typeof(WithScalars)}, new Type[] { }, new[] {"System"});
             rc.SupportedSystemTypes.Clear();
             var container = GetContainer(rc);
 
@@ -492,9 +492,9 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void ReflectSimpleDomainObject() {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof(SimpleDomainObject)}, new Type[] { }, new[] {"System"});
+            var rc = new ObjectReflectorConfiguration(new[] {typeof(SimpleDomainObject)}, new Type[] { }, new[] {"System"});
             rc.SupportedSystemTypes.Clear();
             var container = GetContainer(rc);
 
@@ -529,9 +529,9 @@ namespace NakedObjects.ParallelReflect.Test {
         public void ReplaceFacetFactory() {
             TestHook = services => ConfigHelpers.RegisterReplacementFacetFactory<ReplacementBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
 
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof(SimpleBoundedObject)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] {typeof(SimpleBoundedObject)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(rc);
@@ -549,9 +549,9 @@ namespace NakedObjects.ParallelReflect.Test {
         public void ReplaceDelegatingFacetFactory() {
             TestHook = services => ConfigHelpers.RegisterReplacementFacetFactoryDelegatingToOriginal<ReplacementDelegatingBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
 
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ReflectorConfiguration(new[] {typeof(SimpleBoundedObject)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] {typeof(SimpleBoundedObject)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(rc);

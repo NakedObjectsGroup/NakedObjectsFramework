@@ -87,14 +87,14 @@ namespace NakedObjects.Xat {
 
         protected virtual EntityObjectStoreConfiguration Persistor => new EntityObjectStoreConfiguration();
 
-        protected virtual ReflectorConfiguration Reflector {
+        protected virtual ObjectReflectorConfiguration Reflector {
             get {
-                var reflectorConfig = new ReflectorConfiguration(
+                var reflectorConfig = new ObjectReflectorConfiguration(
                     Types ?? new Type[] { },
                     Services,
                     Namespaces ?? new string[] { },
                     MainMenus);
-                ReflectorConfiguration.NoValidate = true;
+                ObjectReflectorConfiguration.NoValidate = true;
                 return reflectorConfig;
             }
         }
@@ -105,7 +105,7 @@ namespace NakedObjects.Xat {
                     new Type[] { },
                     new Type[] { }
                 );
-                ReflectorConfiguration.NoValidate = true;
+                ObjectReflectorConfiguration.NoValidate = true;
                 return reflectorConfig;
             }
         }
@@ -343,7 +343,7 @@ namespace NakedObjects.Xat {
             ParallelConfig.RegisterCoreScopedTypes(services);
 
             // config 
-            services.AddSingleton<IReflectorConfiguration>(Reflector);
+            services.AddSingleton<IObjectReflectorConfiguration>(Reflector);
             services.AddSingleton<IEntityObjectStoreConfiguration>(Persistor);
             services.AddSingleton<IFunctionalReflectorConfiguration>(FunctionalReflector);
 

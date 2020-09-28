@@ -29,8 +29,8 @@ let resetPersistor (p : EntityObjectStore) =
 
 let getEntityObjectStore (config) = 
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
-    ReflectorConfiguration.NoValidate <- true
-    let c = new ReflectorConfiguration( [||], [||],[||])
+    ObjectReflectorConfiguration.NoValidate <- true
+    let c = new ObjectReflectorConfiguration( [||], [||],[||])
     let mlf = new Mock<ILoggerFactory>();
     let ml = new Mock<ILogger<DomainObjectContainerInjector>>();
     let i = new DomainObjectContainerInjector(c, mlf.Object, ml.Object)

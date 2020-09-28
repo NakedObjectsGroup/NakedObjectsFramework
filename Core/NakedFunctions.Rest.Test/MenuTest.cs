@@ -78,7 +78,7 @@ namespace NakedFunctions.Rest.Test {
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
             var context = new MenuDbContext();
             InitializeNakedObjectsFramework(this);
         }

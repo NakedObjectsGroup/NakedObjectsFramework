@@ -28,8 +28,8 @@ let ModelConfig =
     pc.DefaultMergeOption <- MergeOption.AppendOnly
     pc
 
-ReflectorConfiguration.NoValidate <- true
-let config = new ReflectorConfiguration([||], [| typeof<NakedObjects.Services.SimpleRepository<Person>> |], [||]  )
+ObjectReflectorConfiguration.NoValidate <- true
+let config = new ObjectReflectorConfiguration([||], [| typeof<NakedObjects.Services.SimpleRepository<Person>> |], [||]  )
 
 let mockLoggerFactory = new Mock<ILoggerFactory>();
 let mockLogger = new Mock<ILogger<DomainObjectContainerInjector>>();

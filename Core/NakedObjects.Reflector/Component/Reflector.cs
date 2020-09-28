@@ -24,7 +24,7 @@ using NakedObjects.Util;
 namespace NakedObjects.Reflect.Component {
     // This is designed to run once, single threaded at startup. It is not intended to be thread safe.
     public sealed class Reflector : IReflector {
-        private readonly IReflectorConfiguration config;
+        private readonly IObjectReflectorConfiguration config;
         private readonly FacetDecoratorSet facetDecoratorSet;
         private readonly ILogger<Reflector> logger;
         private readonly ILoggerFactory loggerFactory;
@@ -34,7 +34,7 @@ namespace NakedObjects.Reflect.Component {
 
         public Reflector(IClassStrategy classStrategy,
                          IMetamodelBuilder metamodel,
-                         IReflectorConfiguration config,
+                         IObjectReflectorConfiguration config,
                          IMenuFactory menuFactory,
                          IEnumerable<IFacetDecorator> facetDecorators,
                          IEnumerable<IFacetFactory> facetFactories,
@@ -150,7 +150,7 @@ namespace NakedObjects.Reflect.Component {
 
         private void InstallMainMenus() {
             var menus = config.MainMenus?.Invoke(menuFactory);
-            // Unlike other things specified in config, this one can't be checked when ReflectorConfiguration is constructed.
+            // Unlike other things specified in config, this one can't be checked when ObjectReflectorConfiguration is constructed.
             // Allows developer to deliberately not specify any menus
             if (menus != null) {
                 if (!menus.Any()) {

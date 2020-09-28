@@ -24,7 +24,7 @@ using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect.Component {
     public sealed class ParallelReflector : IReflector {
-        private readonly IReflectorConfiguration config;
+        private readonly IObjectReflectorConfiguration config;
         private readonly IFunctionalReflectorConfiguration functionalConfig;
         private readonly FacetDecoratorSet facetDecoratorSet;
         private readonly IMetamodelBuilder initialMetamodel;
@@ -35,7 +35,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         public ParallelReflector(IClassStrategy classStrategy,
                                  IMetamodelBuilder metamodel,
-                                 IReflectorConfiguration config,
+                                 IObjectReflectorConfiguration config,
                                  IFunctionalReflectorConfiguration functionalConfig,
                                  IMenuFactory menuFactory,
                                  IEnumerable<IFacetDecorator> facetDecorators,
@@ -249,7 +249,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         private void InstallMainMenus(IMetamodelBuilder metamodel) {
             var menus = config.MainMenus?.Invoke(menuFactory);
-            // Unlike other things specified in config, this one can't be checked when ReflectorConfiguration is constructed.
+            // Unlike other things specified in config, this one can't be checked when ObjectReflectorConfiguration is constructed.
             // Allows developer to deliberately not specify any menus
             if (menus != null) {
                 if (!menus.Any()) {

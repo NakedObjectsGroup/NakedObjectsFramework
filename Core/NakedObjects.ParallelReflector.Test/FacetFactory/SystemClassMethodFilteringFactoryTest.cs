@@ -43,9 +43,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         [TestMethod]
         public void TestFilterActions() {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var config = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {typeof(Customer).Namespace});
+            var config = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {typeof(Customer).Namespace});
 
             var classStrategy = new DefaultClassStrategy(config);
 
@@ -117,9 +117,9 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             base.SetUp();
 
             var cache = new ImmutableInMemorySpecCache();
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var config = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {typeof(Customer).Namespace});
+            var config = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {typeof(Customer).Namespace});
             var functionalReflectorConfiguration = new FunctionalReflectorConfiguration(new Type[] { }, new Type[] { });
 
             var menuFactory = new NullMenuFactory();

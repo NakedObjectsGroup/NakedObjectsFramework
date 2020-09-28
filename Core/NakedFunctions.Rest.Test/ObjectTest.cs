@@ -69,7 +69,7 @@ namespace NakedFunctions.Rest.Test {
 
         [OneTimeSetUp]
         public void FixtureSetUp() {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
             InitializeNakedObjectsFramework(this);
         }
 

@@ -95,13 +95,13 @@ namespace NakedFunctions.Reflect.Test {
 
         private Action<IServiceCollection> TestHook { get; set; } = services => { };
 
-        private IHostBuilder CreateHostBuilder(string[] args, IFunctionalReflectorConfiguration rc, IReflectorConfiguration orc = null) =>
+        private IHostBuilder CreateHostBuilder(string[] args, IFunctionalReflectorConfiguration rc, IObjectReflectorConfiguration orc = null) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) => {
                     RegisterTypes(services, rc, orc);
                 });
 
-        protected IServiceProvider GetContainer(IFunctionalReflectorConfiguration rc, IReflectorConfiguration orc = null)
+        protected IServiceProvider GetContainer(IFunctionalReflectorConfiguration rc, IObjectReflectorConfiguration orc = null)
         {
             ImmutableSpecFactory.ClearCache();
             var hostBuilder = CreateHostBuilder(new string[] { }, rc, orc).Build();
@@ -204,7 +204,7 @@ namespace NakedFunctions.Reflect.Test {
 
         }
 
-        protected virtual void RegisterTypes(IServiceCollection services, IFunctionalReflectorConfiguration frc, IReflectorConfiguration orc = null) {
+        protected virtual void RegisterTypes(IServiceCollection services, IFunctionalReflectorConfiguration frc, IObjectReflectorConfiguration orc = null) {
             RegisterFacetFactories(services);
 
 
@@ -215,12 +215,12 @@ namespace NakedFunctions.Reflect.Test {
             services.AddSingleton<IMetamodelBuilder, NakedObjects.Meta.Component.Metamodel>();
             services.AddSingleton<IMenuFactory, NullMenuFactory>();
 
-            var dflt = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { "NakedFunctions" });
+            var dflt = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { "NakedFunctions" });
             dflt.SupportedSystemTypes.Clear();
 
             var rc = orc ?? dflt;
 
-            services.AddSingleton<IReflectorConfiguration>(rc);
+            services.AddSingleton<IObjectReflectorConfiguration>(rc);
 
 
             services.AddSingleton<IFunctionalReflectorConfiguration>(frc);
@@ -233,7 +233,7 @@ namespace NakedFunctions.Reflect.Test {
 
         [TestMethod]
         public void ReflectNoTypes() {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new FunctionalReflectorConfiguration(new Type[0], new Type[0]);
 
@@ -247,7 +247,7 @@ namespace NakedFunctions.Reflect.Test {
         [TestMethod]
         public void ReflectSimpleType()
         {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[0]);
 
@@ -264,7 +264,7 @@ namespace NakedFunctions.Reflect.Test {
         [TestMethod]
         public void ReflectSimpleFunction()
         {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[] { typeof(SimpleFunctions) });
 
@@ -281,9 +281,9 @@ namespace NakedFunctions.Reflect.Test {
 
         [TestMethod]
         public void ReflectTupleFunction() {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var orc = new ReflectorConfiguration(new Type[]{}, new Type[] { }, new string[] { "NakedFunctions" });
+            var orc = new ObjectReflectorConfiguration(new Type[]{}, new Type[] { }, new string[] { "NakedFunctions" });
             orc.SupportedSystemTypes.Clear();
             orc.SupportedSystemTypes.Add(typeof(IQueryable<>));
 
@@ -305,7 +305,7 @@ namespace NakedFunctions.Reflect.Test {
         [TestMethod]
         public void ReflectUnsupportedTuple()
         {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new FunctionalReflectorConfiguration(new[] { typeof(UnsupportedTupleFunctions) }, new Type[0]);
 
@@ -327,9 +327,9 @@ namespace NakedFunctions.Reflect.Test {
         [TestMethod]
         public void ReflectSimpleInjectedFunction()
         {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
-            var orc = new ReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { "NakedFunctions" });
+            var orc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { "NakedFunctions" });
             orc.SupportedSystemTypes.Clear();
             orc.SupportedSystemTypes.Add(typeof(IQueryable<>));
 
@@ -353,7 +353,7 @@ namespace NakedFunctions.Reflect.Test {
         [TestMethod]
         public void ReflectNavigableType()
         {
-            ReflectorConfiguration.NoValidate = true;
+            ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new FunctionalReflectorConfiguration(new[] { typeof(NavigableClass) }, new Type[0]);
 

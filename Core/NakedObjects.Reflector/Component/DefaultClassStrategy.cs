@@ -20,12 +20,12 @@ namespace NakedObjects.Reflect.Component {
     /// </summary>
     [Serializable]
     public sealed class DefaultClassStrategy : IClassStrategy {
-        private readonly IReflectorConfiguration config;
+        private readonly IObjectReflectorConfiguration config;
 
         // only intended for use during initial reflection
         [NonSerialized] private IImmutableDictionary<Type, bool> namespaceScratchPad = ImmutableDictionary<Type, bool>.Empty;
 
-        public DefaultClassStrategy(IReflectorConfiguration config) => this.config = config;
+        public DefaultClassStrategy(IObjectReflectorConfiguration config) => this.config = config;
 
         #region IClassStrategy Members
 
