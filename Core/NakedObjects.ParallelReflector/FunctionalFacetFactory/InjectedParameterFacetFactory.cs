@@ -29,8 +29,8 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
     public sealed class InjectedParameterFacetFactory : FacetFactoryAbstract {
         private readonly ILogger<InjectedParameterFacetFactory> logger;
 
-        public InjectedParameterFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ActionParameters, ReflectionType.Functional) =>
+        public InjectedParameterFacetFactory(IFacetFactoryOrder<InjectedParameterFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ActionParameters, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<InjectedParameterFacetFactory>();
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

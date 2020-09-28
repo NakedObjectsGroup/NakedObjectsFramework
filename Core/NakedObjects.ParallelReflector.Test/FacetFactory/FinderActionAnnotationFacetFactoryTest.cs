@@ -14,6 +14,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
+using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
@@ -84,7 +85,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new FinderActionFacetFactory(0, LoggerFactory);
+            facetFactory = new FinderActionFacetFactory(new FacetFactoryOrder<FinderActionFacetFactory>(), LoggerFactory);
         }
 
         [TestCleanup]

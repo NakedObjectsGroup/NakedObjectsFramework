@@ -15,7 +15,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public sealed class FloatValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public FloatValueTypeFacetFactory(int numericOrder, ILoggerFactory loggerFactory) : base(numericOrder, loggerFactory) { }
+        public FloatValueTypeFacetFactory(IFacetFactoryOrder<FloatValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (FloatValueSemanticsProvider.IsAdaptedType(type)) {

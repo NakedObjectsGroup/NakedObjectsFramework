@@ -19,8 +19,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class ConcurrencyCheckAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ConcurrencyCheckAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Properties) { }
+        public ConcurrencyCheckAnnotationFacetFactory(IFacetFactoryOrder<ConcurrencyCheckAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             Attribute attribute = property.GetCustomAttribute<ConcurrencyCheckAttribute>();

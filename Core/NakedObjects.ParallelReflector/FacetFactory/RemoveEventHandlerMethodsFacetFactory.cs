@@ -21,8 +21,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     Removes any methods on a type that handle events.
     /// </summary>
     public sealed class RemoveEventHandlerMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
-        public RemoveEventHandlerMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+        public RemoveEventHandlerMethodsFacetFactory(IFacetFactoryOrder<RemoveEventHandlerMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
         public override string[] Prefixes {
             get { return new string[] { }; }

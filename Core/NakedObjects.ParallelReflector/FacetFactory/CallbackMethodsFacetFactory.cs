@@ -35,8 +35,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             RecognisedMethodsAndPrefixes.OnUpdatingErrorMethod
         };
 
-        public CallbackMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Objects) { }
+        public CallbackMethodsFacetFactory(IFacetFactoryOrder<CallbackMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Objects) { }
 
         public override string[] Prefixes => FixedPrefixes;
 

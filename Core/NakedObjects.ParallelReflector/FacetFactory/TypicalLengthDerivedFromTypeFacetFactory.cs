@@ -47,8 +47,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             {typeof(ushort), 5}
         };
 
-        public TypicalLengthDerivedFromTypeFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters, ReflectionType.Both) { }
+        public TypicalLengthDerivedFromTypeFacetFactory(IFacetFactoryOrder<TypicalLengthDerivedFromTypeFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters, ReflectionType.Both) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             AddFacetDerivedFromTypeIfPresent(specification, property.PropertyType, reflector.ClassStrategy);

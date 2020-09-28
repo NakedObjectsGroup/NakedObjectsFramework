@@ -28,8 +28,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class ContributedActionAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private readonly ILogger<ContributedActionAnnotationFacetFactory> logger;
 
-        public ContributedActionAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions) =>
+        public ContributedActionAnnotationFacetFactory(IFacetFactoryOrder<ContributedActionAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<ContributedActionAnnotationFacetFactory>();
 
         private static bool IsParseable(Type type) => type.IsValueType;

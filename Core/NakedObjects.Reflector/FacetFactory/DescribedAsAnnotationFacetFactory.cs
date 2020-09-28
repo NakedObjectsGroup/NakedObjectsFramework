@@ -22,8 +22,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public sealed class DescribedAsAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private readonly ILogger<DescribedAsAnnotationFacetFactory> logger;
 
-        public DescribedAsAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Everything) =>
+        public DescribedAsAnnotationFacetFactory(IFacetFactoryOrder<DescribedAsAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Everything) =>
             logger = loggerFactory.CreateLogger<DescribedAsAnnotationFacetFactory>();
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {

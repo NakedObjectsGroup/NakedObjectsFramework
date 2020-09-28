@@ -21,8 +21,10 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
-using NakedObjects.Reflect.Component;
+using NakedObjects.ParallelReflect.Component;
 using NakedObjects.Reflect.FacetFactory;
+using DefaultClassStrategy = NakedObjects.Reflect.Component.DefaultClassStrategy;
+
 #pragma warning disable 612
 
 // ReSharper disable UnusedMember.Global
@@ -746,7 +748,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ActionMethodsFacetFactory(0, LoggerFactory);
+            facetFactory = new ActionMethodsFacetFactory(new FacetFactoryOrder<ActionMethodsFacetFactory>(), LoggerFactory);
         }
 
         [TestCleanup]

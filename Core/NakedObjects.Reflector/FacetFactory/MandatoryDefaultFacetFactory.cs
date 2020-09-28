@@ -26,8 +26,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     property or parameter is annotated or otherwise indicated as being optional.
     /// </para>
     public sealed class MandatoryDefaultFacetFactory : FacetFactoryAbstract {
-        public MandatoryDefaultFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
+        public MandatoryDefaultFacetFactory(IFacetFactoryOrder<MandatoryDefaultFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => FacetUtils.AddFacet(Create(specification));
 

@@ -23,8 +23,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class RangeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private readonly ILogger<RangeAnnotationFacetFactory> logger;
 
-        public RangeAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters, ReflectionType.Both) =>
+        public RangeAnnotationFacetFactory(IFacetFactoryOrder<RangeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters, ReflectionType.Both) =>
             logger = loggerFactory.CreateLogger<RangeAnnotationFacetFactory>();
 
         private void Process(MemberInfo member, bool isDate, ISpecification specification) {

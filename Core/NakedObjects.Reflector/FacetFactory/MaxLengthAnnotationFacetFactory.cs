@@ -22,8 +22,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public sealed class MaxLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private readonly ILogger<MaxLengthAnnotationFacetFactory> logger;
 
-        public MaxLengthAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) =>
+        public MaxLengthAnnotationFacetFactory(IFacetFactoryOrder<MaxLengthAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) =>
             logger = loggerFactory.CreateLogger<MaxLengthAnnotationFacetFactory>();
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {

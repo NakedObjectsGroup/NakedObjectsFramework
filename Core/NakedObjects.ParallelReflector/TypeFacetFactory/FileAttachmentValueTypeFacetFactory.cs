@@ -16,7 +16,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class FileAttachmentValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public FileAttachmentValueTypeFacetFactory(int numericOrder, ILoggerFactory loggerFactory) : base(numericOrder, loggerFactory) { }
+        public FileAttachmentValueTypeFacetFactory(IFacetFactoryOrder<FileAttachmentValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!FileAttachmentValueSemanticsProvider.IsAdaptedType(type)) {

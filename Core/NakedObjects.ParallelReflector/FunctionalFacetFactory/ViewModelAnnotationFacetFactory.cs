@@ -25,8 +25,8 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
     public sealed class ViewModelAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private readonly ILogger<ViewModelAnnotationFacetFactory> logger;
 
-        public ViewModelAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory) : base(numericOrder, loggerFactory,
-                                                                                                      FeatureType.ObjectsAndInterfaces, ReflectionType.Functional) =>
+        public ViewModelAnnotationFacetFactory(IFacetFactoryOrder<ViewModelAnnotationFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory,
+                                                                                                                                               FeatureType.ObjectsAndInterfaces, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<ViewModelAnnotationFacetFactory>();
 
         private static bool IsSameType(ParameterInfo pi, Type toMatch) =>

@@ -18,8 +18,8 @@ using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
     public sealed class InjectedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public InjectedAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ActionParameters, ReflectionType.Functional) { }
+        public InjectedAnnotationFacetFactory(IFacetFactoryOrder<InjectedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ActionParameters, ReflectionType.Functional) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (FunctionalFacetFactoryHelpers.IsInjectedParameter(method, paramNum)) {

@@ -20,6 +20,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Spec;
+using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
 
 // ReSharper disable UnusedMember.Global
@@ -107,7 +108,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new NamedAnnotationFacetFactory(0, LoggerFactory);
+            facetFactory = new NamedAnnotationFacetFactory(new FacetFactoryOrder<NamedAnnotationFacetFactory>(), LoggerFactory);
         }
 
         [TestCleanup]

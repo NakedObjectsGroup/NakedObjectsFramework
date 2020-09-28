@@ -50,8 +50,8 @@ namespace NakedObjects.Reflect.FacetFactory {
         ///     The <see cref="IFacet" />s registered are the generic ones from no-architecture (where they exist)
         /// </summary>
         /// <param name="numericOrder"></param>
-        public ComplementaryMethodsFilteringFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions) =>
+        public ComplementaryMethodsFilteringFacetFactory(IFacetFactoryOrder<ComplementaryMethodsFilteringFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<ComplementaryMethodsFilteringFacetFactory>();
 
         #region IMethodFilteringFacetFactory Members

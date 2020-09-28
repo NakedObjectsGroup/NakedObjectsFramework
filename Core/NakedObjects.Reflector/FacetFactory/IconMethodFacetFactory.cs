@@ -21,8 +21,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public sealed class IconMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
         private static readonly string[] FixedPrefixes = {RecognisedMethodsAndPrefixes.IconNameMethod};
 
-        public IconMethodFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+        public IconMethodFacetFactory(IFacetFactoryOrder<IconMethodFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
         public override string[] Prefixes => FixedPrefixes;
 

@@ -22,8 +22,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class EnumFacetFactory : FacetFactoryAbstract {
-        public EnumFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
+        public EnumFacetFactory(IFacetFactoryOrder<EnumFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = property.GetCustomAttribute<EnumDataTypeAttribute>();

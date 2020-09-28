@@ -24,8 +24,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class MaxLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private readonly ILogger<MaxLengthAnnotationFacetFactory> logger;
 
-        public MaxLengthAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters, ReflectionType.Both) =>
+        public MaxLengthAnnotationFacetFactory(IFacetFactoryOrder<MaxLengthAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters, ReflectionType.Both) =>
             logger = loggerFactory.CreateLogger<MaxLengthAnnotationFacetFactory>();
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

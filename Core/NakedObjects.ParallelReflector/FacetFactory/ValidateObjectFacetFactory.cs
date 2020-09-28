@@ -30,8 +30,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         private ILogger<ValidateObjectFacetFactory> logger;
 
-        public ValidateObjectFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
+        public ValidateObjectFacetFactory(IFacetFactoryOrder<ValidateObjectFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
             logger = loggerFactory.CreateLogger<ValidateObjectFacetFactory>();
 
         public override string[] Prefixes => FixedPrefixes;

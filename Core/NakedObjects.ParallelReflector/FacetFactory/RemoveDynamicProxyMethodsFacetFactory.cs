@@ -22,8 +22,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class RemoveDynamicProxyMethodsFacetFactory : FacetFactoryAbstract {
         private static readonly string[] MethodsToRemove = {"GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker"};
 
-        public RemoveDynamicProxyMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesAndProperties) { }
+        public RemoveDynamicProxyMethodsFacetFactory(IFacetFactoryOrder<RemoveDynamicProxyMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesAndProperties) { }
 
         private static bool IsDynamicProxyType(Type type) => type.FullName?.StartsWith("System.Data.Entity.DynamicProxies", StringComparison.Ordinal) == true;
 

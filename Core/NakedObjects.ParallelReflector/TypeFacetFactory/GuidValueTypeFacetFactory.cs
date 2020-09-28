@@ -16,7 +16,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class GuidValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public GuidValueTypeFacetFactory(int numericOrder, ILoggerFactory loggerFactory) : base(numericOrder, loggerFactory) { }
+        public GuidValueTypeFacetFactory(IFacetFactoryOrder<GuidValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!GuidValueSemanticsProvider.IsAdaptedType(type)) {

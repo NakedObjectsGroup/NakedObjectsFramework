@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
 
 // ReSharper disable UnusedMember.Global
@@ -40,7 +41,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new TypeMarkerFacetFactory(0, LoggerFactory);
+            facetFactory = new TypeMarkerFacetFactory(new FacetFactoryOrder<TypeMarkerFacetFactory>(), LoggerFactory);
         }
 
         [TestCleanup]

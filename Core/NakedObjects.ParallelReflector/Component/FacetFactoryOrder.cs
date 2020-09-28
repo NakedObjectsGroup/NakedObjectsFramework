@@ -5,17 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFunctions;
+using System;
 using NakedObjects.Architecture.Component;
+using NakedObjects.ParallelReflect;
 
-namespace NakedObjects.Core.Framework {
-    public sealed class FunctionalAlert : IAlert {
-        private readonly IMessageBroker messageBroker;
-
-        public FunctionalAlert(IMessageBroker messageBroker) => this.messageBroker = messageBroker;
-
-        public void WarnUser(string message) => messageBroker.AddWarning(message);
-
-        public void InformUser(string message) => messageBroker.AddMessage(message);
+namespace NakedObjects.ParallelReflect.Component {
+    public class FacetFactoryOrder<T> : IFacetFactoryOrder<T> {
+        public int Order => Array.IndexOf(FacetFactories.StandardFacetFactories(), typeof(T));
     }
 }

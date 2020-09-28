@@ -30,8 +30,8 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
 
         private readonly ILogger<AutocompleteViaFunctionFacetFactory> logger;
 
-        public AutocompleteViaFunctionFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
+        public AutocompleteViaFunctionFacetFactory(IFacetFactoryOrder<AutocompleteViaFunctionFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<AutocompleteViaFunctionFacetFactory>();
 
         public override string[] Prefixes => FixedPrefixes;

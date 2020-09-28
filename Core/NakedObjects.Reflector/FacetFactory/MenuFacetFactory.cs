@@ -20,8 +20,8 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         static MenuFacetFactory() => FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.MenuMethod};
 
-        public MenuFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+        public MenuFacetFactory(IFacetFactoryOrder<MenuFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
         public override string[] Prefixes => FixedPrefixes;
 

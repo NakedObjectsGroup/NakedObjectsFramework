@@ -19,8 +19,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class HiddenAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public HiddenAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
+        public HiddenAnnotationFacetFactory(IFacetFactoryOrder<HiddenAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) =>
             Process(type.GetCustomAttribute<HiddenAttribute>,

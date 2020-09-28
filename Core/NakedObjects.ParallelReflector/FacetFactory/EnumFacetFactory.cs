@@ -24,8 +24,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class EnumFacetFactory : FacetFactoryAbstract {
-        public EnumFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters, ReflectionType.Both) { }
+        public EnumFacetFactory(IFacetFactoryOrder<EnumFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters, ReflectionType.Both) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var attribute = property.GetCustomAttribute<EnumDataTypeAttribute>();

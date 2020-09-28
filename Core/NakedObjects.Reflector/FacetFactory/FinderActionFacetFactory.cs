@@ -21,8 +21,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="FinderActionAttribute" /> annotation
     /// </summary>
     public sealed class FinderActionFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public FinderActionFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions) { }
+        public FinderActionFacetFactory(IFacetFactoryOrder<FinderActionFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Actions) { }
 
         private static void Process(MethodInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<FinderActionAttribute>();

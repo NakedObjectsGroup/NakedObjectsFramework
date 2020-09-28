@@ -15,7 +15,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public sealed class TimeValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public TimeValueTypeFacetFactory(int numericOrder, ILoggerFactory loggerFactory) : base(numericOrder, loggerFactory) { }
+        public TimeValueTypeFacetFactory(IFacetFactoryOrder<TimeValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (TimeValueSemanticsProvider.IsAdaptedType(type)) {

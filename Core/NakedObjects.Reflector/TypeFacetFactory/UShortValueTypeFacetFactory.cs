@@ -15,7 +15,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public sealed class UShortValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public UShortValueTypeFacetFactory(int numericOrder, ILoggerFactory loggerFactory) : base(numericOrder, loggerFactory) { }
+        public UShortValueTypeFacetFactory(IFacetFactoryOrder<UShortValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (UShortValueSemanticsProvider.IsAdaptedType(type)) {

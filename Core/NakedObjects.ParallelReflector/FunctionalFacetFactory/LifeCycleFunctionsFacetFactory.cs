@@ -33,8 +33,8 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
 
         private readonly ILogger<LifeCycleFunctionsFacetFactory> logger;
 
-        public LifeCycleFunctionsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Objects, ReflectionType.Functional) =>
+        public LifeCycleFunctionsFacetFactory(IFacetFactoryOrder<LifeCycleFunctionsFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Objects, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<LifeCycleFunctionsFacetFactory>();
 
         public override string[] Prefixes => FixedPrefixes;

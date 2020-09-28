@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
 using NakedObjects.Security;
 
@@ -974,7 +975,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new AuthorizeAnnotationFacetFactory(0, LoggerFactory);
+            facetFactory = new AuthorizeAnnotationFacetFactory(new FacetFactoryOrder<AuthorizeAnnotationFacetFactory>(), LoggerFactory);
 
             mockPersistor = new Mock<ILifecycleManager>();
             lifecycleManager = mockPersistor.Object;

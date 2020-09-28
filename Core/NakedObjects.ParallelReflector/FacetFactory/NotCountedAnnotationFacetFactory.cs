@@ -19,8 +19,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class NotCountedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public NotCountedAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Collections) { }
+        public NotCountedAnnotationFacetFactory(IFacetFactoryOrder<NotCountedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Collections) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<NotCountedAttribute>();

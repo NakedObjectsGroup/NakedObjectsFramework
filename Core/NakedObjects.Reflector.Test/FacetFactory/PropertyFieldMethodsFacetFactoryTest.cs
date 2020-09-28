@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
+using NakedObjects.ParallelReflect.Component;
 using NakedObjects.Reflect.FacetFactory;
 #pragma warning disable 612
 
@@ -68,7 +69,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PropertyMethodsFacetFactory(0, LoggerFactory);
+            facetFactory = new PropertyMethodsFacetFactory(new FacetFactoryOrder<PropertyMethodsFacetFactory>(), LoggerFactory);
         }
 
         [TestCleanup]

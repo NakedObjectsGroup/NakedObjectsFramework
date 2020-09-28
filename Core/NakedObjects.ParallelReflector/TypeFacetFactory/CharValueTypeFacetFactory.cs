@@ -16,7 +16,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class CharValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public CharValueTypeFacetFactory(int numericOrder, ILoggerFactory loggerFactory) : base(numericOrder, loggerFactory) { }
+        public CharValueTypeFacetFactory(IFacetFactoryOrder<CharValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!CharValueSemanticsProvider.IsAdaptedType(type)) {

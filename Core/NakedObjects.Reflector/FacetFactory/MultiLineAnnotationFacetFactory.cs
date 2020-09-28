@@ -19,8 +19,8 @@ using NakedObjects.Util;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class MultiLineAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public MultiLineAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.EverythingButCollections) { }
+        public MultiLineAnnotationFacetFactory(IFacetFactoryOrder<MultiLineAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.EverythingButCollections) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttribute<MultiLineAttribute>();

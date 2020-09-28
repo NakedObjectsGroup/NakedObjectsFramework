@@ -5,17 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFunctions;
-using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.Core.Framework {
-    public sealed class FunctionalAlert : IAlert {
-        private readonly IMessageBroker messageBroker;
-
-        public FunctionalAlert(IMessageBroker messageBroker) => this.messageBroker = messageBroker;
-
-        public void WarnUser(string message) => messageBroker.AddWarning(message);
-
-        public void InformUser(string message) => messageBroker.AddMessage(message);
+namespace NakedObjects.Architecture.Component {
+    public interface IFacetFactoryOrder<T> {
+        int Order { get; }
     }
 }

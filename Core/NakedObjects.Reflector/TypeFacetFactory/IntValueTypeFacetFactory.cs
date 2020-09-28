@@ -15,7 +15,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public sealed class IntValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public IntValueTypeFacetFactory(int numericOrder, ILoggerFactory loggerFactory) : base(numericOrder, loggerFactory) { }
+        public IntValueTypeFacetFactory(IFacetFactoryOrder<IntValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (IntValueSemanticsProvider.IsAdaptedType(type)) {

@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
@@ -56,8 +57,8 @@ namespace NakedObjects.DependencyInjection {
 
         public static void RegisterStandardFacetFactories(IServiceCollection services) {
             var factoryTypes = FacetFactories.StandardFacetFactories();
-            for (var i = 0; i < factoryTypes.Length; i++) {
-                ConfigHelpers.RegisterFacetFactory(factoryTypes[i], services, i);
+            foreach (var t in factoryTypes) {
+                ConfigHelpers.RegisterFacetFactory(t, services);
             }
         }
     }

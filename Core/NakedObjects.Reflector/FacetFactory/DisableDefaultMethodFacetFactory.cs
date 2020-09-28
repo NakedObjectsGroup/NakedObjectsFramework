@@ -27,8 +27,8 @@ namespace NakedObjects.Reflect.FacetFactory {
                 RecognisedMethodsAndPrefixes.DisablePrefix + "Property" + RecognisedMethodsAndPrefixes.DefaultPrefix
             };
 
-        public DisableDefaultMethodFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
+        public DisableDefaultMethodFacetFactory(IFacetFactoryOrder<DisableDefaultMethodFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
             logger = loggerFactory.CreateLogger<DisableDefaultMethodFacetFactory>();
 
         public override string[] Prefixes => FixedPrefixes;

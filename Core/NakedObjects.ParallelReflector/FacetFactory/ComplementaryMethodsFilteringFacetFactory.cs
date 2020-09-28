@@ -50,8 +50,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         /// </summary>
         /// <param name="numericOrder"></param>
         /// <param name="loggerFactory"></param>
-        public ComplementaryMethodsFilteringFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions) =>
+        public ComplementaryMethodsFilteringFacetFactory(IFacetFactoryOrder<ComplementaryMethodsFilteringFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<ComplementaryMethodsFilteringFacetFactory>();
 
         #region IMethodFilteringFacetFactory Members

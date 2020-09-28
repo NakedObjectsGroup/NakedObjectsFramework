@@ -19,8 +19,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class DateOnlyFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public DateOnlyFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
+        public DateOnlyFacetFactory(IFacetFactoryOrder<DateOnlyFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var dataTypeAttribute = member.GetCustomAttribute<DataTypeAttribute>();

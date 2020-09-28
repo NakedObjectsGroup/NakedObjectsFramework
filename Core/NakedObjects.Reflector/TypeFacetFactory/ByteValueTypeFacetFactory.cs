@@ -15,7 +15,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.Reflect.TypeFacetFactory {
     public sealed class ByteValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public ByteValueTypeFacetFactory(int numericOrder, ILoggerFactory loggerFactory) : base(numericOrder, loggerFactory) { }
+        public ByteValueTypeFacetFactory(IFacetFactoryOrder<ByteValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             if (ByteValueSemanticsProvider.IsAdaptedType(type)) {

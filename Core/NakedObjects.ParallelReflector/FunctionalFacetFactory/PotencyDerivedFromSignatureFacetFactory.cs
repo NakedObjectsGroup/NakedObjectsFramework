@@ -28,8 +28,8 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
     public sealed class PotencyDerivedFromSignatureFacetFactory : FacetFactoryAbstract {
         private readonly ILogger<PotencyDerivedFromSignatureFacetFactory> logger;
 
-        public PotencyDerivedFromSignatureFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
+        public PotencyDerivedFromSignatureFacetFactory(IFacetFactoryOrder<PotencyDerivedFromSignatureFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<PotencyDerivedFromSignatureFacetFactory>();
 
 

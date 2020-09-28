@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
+using NakedObjects.ParallelReflect.Component;
 using NakedObjects.Reflect.FacetFactory;
 
 // ReSharper disable UnusedMember.Global
@@ -247,7 +248,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         public override void SetUp() {
             base.SetUp();
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
-            facetFactory = new CallbackMethodsFacetFactory(0, mockLoggerFactory);
+            facetFactory = new CallbackMethodsFacetFactory(new FacetFactoryOrder<CallbackMethodsFacetFactory>(), mockLoggerFactory);
         }
 
         [TestCleanup]

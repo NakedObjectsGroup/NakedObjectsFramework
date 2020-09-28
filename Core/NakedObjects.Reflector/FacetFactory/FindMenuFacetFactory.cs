@@ -24,8 +24,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public sealed class FindMenuFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private readonly ILogger<FindMenuFacetFactory> logger;
 
-        public FindMenuFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
+        public FindMenuFacetFactory(IFacetFactoryOrder<FindMenuFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
             logger = loggerFactory.CreateLogger<FindMenuFacetFactory>();
 
         private static void Process(MemberInfo member, ISpecification holder) {

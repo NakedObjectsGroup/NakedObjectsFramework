@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
+using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
 
 // ReSharper disable UnusedType.Local
@@ -383,7 +384,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public override void SetUp() {
             base.SetUp();
 
-            facetFactory = new CollectionFieldMethodsFacetFactory(0, LoggerFactory);
+            facetFactory = new CollectionFieldMethodsFacetFactory(new FacetFactoryOrder<CollectionFieldMethodsFacetFactory>(), LoggerFactory);
         }
 
         [TestCleanup]

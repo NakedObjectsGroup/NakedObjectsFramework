@@ -20,8 +20,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     public sealed class OptionalAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private readonly ILogger<OptionalAnnotationFacetFactory> logger;
 
-        public OptionalAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
+        public OptionalAnnotationFacetFactory(IFacetFactoryOrder<OptionalAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
             logger = loggerFactory.CreateLogger<OptionalAnnotationFacetFactory>();
 
         private static void Process(MemberInfo member, ISpecification holder) {

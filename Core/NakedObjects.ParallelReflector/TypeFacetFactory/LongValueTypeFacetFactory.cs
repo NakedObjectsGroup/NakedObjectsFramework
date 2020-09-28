@@ -16,7 +16,7 @@ using NakedObjects.Meta.SemanticsProvider;
 
 namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class LongValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
-        public LongValueTypeFacetFactory(int numericOrder, ILoggerFactory loggerFactory) : base(numericOrder, loggerFactory) { }
+        public LongValueTypeFacetFactory(IFacetFactoryOrder<LongValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!LongValueSemanticsProvider.IsAdaptedType(type)) {

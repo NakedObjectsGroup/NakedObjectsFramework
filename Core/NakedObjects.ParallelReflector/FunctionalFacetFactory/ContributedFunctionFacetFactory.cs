@@ -29,8 +29,8 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
     public sealed class ContributedFunctionFacetFactory : FacetFactoryAbstract {
         private readonly ILogger<ContributedFunctionFacetFactory> logger;
 
-        public ContributedFunctionFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
+        public ContributedFunctionFacetFactory(IFacetFactoryOrder<ContributedFunctionFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<ContributedFunctionFacetFactory>();
 
 

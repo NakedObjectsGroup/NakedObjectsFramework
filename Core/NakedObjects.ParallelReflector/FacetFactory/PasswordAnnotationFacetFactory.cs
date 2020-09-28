@@ -20,8 +20,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class PasswordAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PasswordAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
+        public PasswordAnnotationFacetFactory(IFacetFactoryOrder<PasswordAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<DataTypeAttribute>();

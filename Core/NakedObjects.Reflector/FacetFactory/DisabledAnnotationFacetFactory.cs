@@ -17,8 +17,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class DisabledAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public DisabledAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
+        public DisabledAnnotationFacetFactory(IFacetFactoryOrder<DisabledAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<DisabledAttribute>();

@@ -22,8 +22,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     by other factories.  This factory thus needs to be registered earlier than most other factories.
     /// </summary>
     public class RemoveIgnoredMethodsFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public RemoveIgnoredMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+        public RemoveIgnoredMethodsFacetFactory(IFacetFactoryOrder<RemoveIgnoredMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             RemoveExplicitlyIgnoredMembers(type, methodRemover);

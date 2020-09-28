@@ -27,8 +27,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             RecognisedMethodsAndPrefixes.ModifyPrefix
         };
 
-        public CollectionFieldMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Collections, ReflectionType.Both) { }
+        public CollectionFieldMethodsFacetFactory(IFacetFactoryOrder<CollectionFieldMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Collections, ReflectionType.Both) { }
 
         public override string[] Prefixes => FixedPrefixes;
 

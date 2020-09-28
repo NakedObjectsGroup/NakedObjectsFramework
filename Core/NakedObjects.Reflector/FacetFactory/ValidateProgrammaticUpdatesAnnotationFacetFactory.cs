@@ -18,8 +18,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class ValidateProgrammaticUpdatesAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ValidateProgrammaticUpdatesAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+        public ValidateProgrammaticUpdatesAnnotationFacetFactory(IFacetFactoryOrder<ValidateProgrammaticUpdatesAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = type.GetCustomAttribute<ValidateProgrammaticUpdatesAttribute>();

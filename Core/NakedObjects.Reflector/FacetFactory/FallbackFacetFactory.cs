@@ -24,8 +24,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     Framework itself.
     /// </summary>
     public sealed class FallbackFacetFactory : FacetFactoryAbstract {
-        public FallbackFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Everything) { }
+        public FallbackFacetFactory(IFacetFactoryOrder<FallbackFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Everything) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) =>
             FacetUtils.AddFacets(

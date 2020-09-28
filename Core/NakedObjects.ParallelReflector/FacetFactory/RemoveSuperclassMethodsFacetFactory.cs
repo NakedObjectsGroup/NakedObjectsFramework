@@ -25,8 +25,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     Implementation - .Net fails to find methods properly for root class, so we used the saved set.
     /// </para>
     public sealed class RemoveSuperclassMethodsFacetFactory : FacetFactoryAbstract {
-        public RemoveSuperclassMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Objects) { }
+        public RemoveSuperclassMethodsFacetFactory(IFacetFactoryOrder<RemoveSuperclassMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Objects) { }
 
         private static void InitForType(Type type, IDictionary<Type, MethodInfo[]> typeToMethods) {
             if (!typeToMethods.ContainsKey(type)) {

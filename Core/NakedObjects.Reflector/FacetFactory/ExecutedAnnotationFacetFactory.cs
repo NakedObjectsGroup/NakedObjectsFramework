@@ -22,8 +22,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     <see cref="ExecutedAttribute" /> annotation
     /// </summary>
     public sealed class ExecutedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public ExecutedAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions) { }
+        public ExecutedAnnotationFacetFactory(IFacetFactoryOrder<ExecutedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Actions) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<ExecutedAttribute>();

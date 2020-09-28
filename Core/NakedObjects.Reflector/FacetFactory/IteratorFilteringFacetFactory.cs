@@ -27,8 +27,8 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         static IteratorFilteringFacetFactory() => FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.GetEnumeratorMethod};
 
-        public IteratorFilteringFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+        public IteratorFilteringFacetFactory(IFacetFactoryOrder<IteratorFilteringFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
         public override string[] Prefixes => FixedPrefixes;
 

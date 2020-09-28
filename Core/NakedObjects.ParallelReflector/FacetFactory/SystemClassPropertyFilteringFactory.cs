@@ -19,8 +19,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class SystemClassPropertyFilteringFactory : FacetFactoryAbstract, IPropertyFilteringFacetFactory {
         private ILogger<SystemClassPropertyFilteringFactory> logger;
 
-        public SystemClassPropertyFilteringFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Properties) =>
+        public SystemClassPropertyFilteringFactory(IFacetFactoryOrder<SystemClassPropertyFilteringFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Properties) =>
             logger = loggerFactory.CreateLogger<SystemClassPropertyFilteringFactory>();
 
         #region IPropertyFilteringFacetFactory Members

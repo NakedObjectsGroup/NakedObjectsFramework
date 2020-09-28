@@ -25,8 +25,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     makes everything optional by default. Requiring the use of annotations to indicate mandatoryness.
     /// </para>
     public sealed class OptionalDefaultFacetFactory : FacetFactoryAbstract {
-        public OptionalDefaultFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
+        public OptionalDefaultFacetFactory(IFacetFactoryOrder<OptionalDefaultFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
         public override void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) => FacetUtils.AddFacet(method.ReturnType.IsPrimitive ? CreateMandatory(specification) : CreateOptional(specification));
 

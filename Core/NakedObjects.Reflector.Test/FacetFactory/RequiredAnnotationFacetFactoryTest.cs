@@ -12,6 +12,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Meta.Facet;
+using NakedObjects.ParallelReflect.Component;
 using NakedObjects.Reflect.FacetFactory;
 
 // ReSharper disable UnusedMember.Global
@@ -119,7 +120,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new RequiredAnnotationFacetFactory(0, LoggerFactory);
+            facetFactory = new RequiredAnnotationFacetFactory(new FacetFactoryOrder<RequiredAnnotationFacetFactory>(), LoggerFactory);
         }
 
         [TestCleanup]

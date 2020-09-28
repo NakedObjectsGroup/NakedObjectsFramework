@@ -18,6 +18,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Meta.Facet;
+using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
 #pragma warning disable 612
 
@@ -139,7 +140,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new IconMethodFacetFactory(0, LoggerFactory);
+            facetFactory = new IconMethodFacetFactory(new FacetFactoryOrder<IconMethodFacetFactory>(), LoggerFactory);
         }
 
         [TestCleanup]

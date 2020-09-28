@@ -27,8 +27,8 @@ namespace NakedObjects.Reflect.FacetFactory {
 
         private readonly ILogger<TitleMethodFacetFactory> logger;
 
-        public TitleMethodFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
+        public TitleMethodFacetFactory(IFacetFactoryOrder<TitleMethodFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
             logger = loggerFactory.CreateLogger<TitleMethodFacetFactory>();
 
         public override string[] Prefixes => FixedPrefixes;

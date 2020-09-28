@@ -17,8 +17,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class NotNavigableAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public NotNavigableAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesAndProperties) { }
+        public NotNavigableAnnotationFacetFactory(IFacetFactoryOrder<NotNavigableAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesAndProperties) { }
 
         public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
             var attribute = property.GetCustomAttribute<NotNavigableAttribute>() ?? property.PropertyType.GetCustomAttribute<NotNavigableAttribute>();

@@ -26,8 +26,8 @@ namespace NakedObjects.Reflect.FacetFactory {
             RecognisedMethodsAndPrefixes.ValidatePrefix
         };
 
-        public ValidateObjectFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+        public ValidateObjectFacetFactory(IFacetFactoryOrder<ValidateObjectFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
         public override string[] Prefixes => FixedPrefixes;
 

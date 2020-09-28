@@ -89,7 +89,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var reflectorConfiguration = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { });
             var functionalReflectorConfiguration = new FunctionalReflectorConfiguration(new Type[] { }, new Type[] { });
-            facetFactory = new RemoveIgnoredMethodsFacetFactory(0, LoggerFactory);
+            facetFactory = new RemoveIgnoredMethodsFacetFactory(new FacetFactoryOrder<RemoveIgnoredMethodsFacetFactory>(), LoggerFactory);
             var menuFactory = new NullMenuFactory();
             var classStrategy = new DefaultClassStrategy(reflectorConfiguration);
             var metamodel = new Metamodel(classStrategy, cache, null);

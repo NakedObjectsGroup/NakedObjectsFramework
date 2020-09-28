@@ -23,8 +23,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
     ///     <see cref="QueryOnlyAttribute" /> or <see cref="IdempotentAttribute" /> annotation
     /// </summary>
     public sealed class PotencyAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public PotencyAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Actions) { }
+        public PotencyAnnotationFacetFactory(IFacetFactoryOrder<PotencyAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.Actions) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             // give priority to Idempotent as more restrictive

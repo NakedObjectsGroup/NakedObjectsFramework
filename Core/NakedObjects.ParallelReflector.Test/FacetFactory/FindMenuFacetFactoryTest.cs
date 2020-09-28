@@ -13,6 +13,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
 
 // ReSharper disable UnusedMember.Global
@@ -127,7 +128,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new FindMenuFacetFactory(0, LoggerFactory);
+            facetFactory = new FindMenuFacetFactory(new FacetFactoryOrder<FindMenuFacetFactory>(), LoggerFactory);
         }
 
         [TestCleanup]

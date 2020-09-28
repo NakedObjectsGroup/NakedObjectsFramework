@@ -20,8 +20,8 @@ using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflect.FacetFactory {
     public sealed class CollectionFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public CollectionFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
+        public CollectionFacetFactory(IFacetFactoryOrder<CollectionFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
 
         private static void ProcessArray(IReflector reflector, Type type, ISpecification holder) {
             FacetUtils.AddFacet(new ArrayFacet(holder));

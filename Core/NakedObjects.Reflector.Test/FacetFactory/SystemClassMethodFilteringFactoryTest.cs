@@ -16,8 +16,10 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Component;
+using NakedObjects.ParallelReflect.Component;
 using NakedObjects.Reflect.Component;
 using NakedObjects.Reflect.FacetFactory;
+using DefaultClassStrategy = NakedObjects.Reflect.Component.DefaultClassStrategy;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -125,7 +127,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             var config = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {typeof(Customer).Namespace});
             var menuFactory = new NullMenuFactory();
 
-            facetFactory = new SystemClassMethodFilteringFactory(0, LoggerFactory);
+            facetFactory = new SystemClassMethodFilteringFactory(new Component.FacetFactoryOrder<SystemClassMethodFilteringFactory>(), LoggerFactory);
             var classStrategy = new DefaultClassStrategy(config);
             var metamodel = new Metamodel(classStrategy, cache, null);
             var mockLogger = new Mock<ILogger<Reflector>>().Object;

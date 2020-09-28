@@ -20,8 +20,8 @@ namespace NakedObjects.Reflect.FacetFactory {
     ///     by other factories.  This factory thus needs to be registered earlier than most other factories.
     /// </summary>
     public class RemoveIgnoredMethodsFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public RemoveIgnoredMethodsFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+        public RemoveIgnoredMethodsFacetFactory(IFacetFactoryOrder<RemoveIgnoredMethodsFacetFactory> order, ILoggerFactory loggerFactory)
+            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
         public override void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder spec) => RemoveExplicitlyIgnoredMembers(type, methodRemover);
 
