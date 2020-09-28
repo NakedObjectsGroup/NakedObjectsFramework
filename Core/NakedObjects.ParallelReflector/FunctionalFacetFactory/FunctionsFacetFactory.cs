@@ -83,16 +83,20 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
 
         #region IMethodIdentifyingFacetFactory Members
 
-        private (ITypeSpecBuilder, Type, IImmutableDictionary<string, ITypeSpecBuilder>) LoadReturnSpecs(Type returnType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, IReflector reflector) {
+        private (ITypeSpecBuilder, Type, IImmutableDictionary<string, ITypeSpecBuilder>) LoadReturnSpecs(Type returnType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, IReflector reflector, MethodInfo actionMethod) {
             ITypeSpecBuilder onType = null;
 
-            if (FacetUtils.IsValueTuple(returnType)) {
+            if (FacetUtils.IsTuple(returnType)) {
                 var genericTypes = returnType.GetGenericArguments();
+
+                if (genericTypes.Length == 0) {
+                    throw new ReflectionException($"Cannot reflect empty tuple on {actionMethod.DeclaringType}.{actionMethod.Name}");
+                }
 
                 // count down so final result is first parameter
                 for (var index = genericTypes.Length - 1; index >= 0; index--) {
                     var t = genericTypes[index];
-                    (onType, returnType, metamodel) = LoadReturnSpecs(t, metamodel, reflector);
+                    (onType, returnType, metamodel) = LoadReturnSpecs(t, metamodel, reflector, actionMethod);
                 }
             }
             else {
@@ -106,9 +110,8 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // must be true
             if (!actionMethod.IsStatic) {
-                throw new ReflectionException($"{actionMethod.Name} must be static");
+                throw new ReflectionException($"{actionMethod.DeclaringType}.{actionMethod.Name} must be static");
             }
-
 
             var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
@@ -119,8 +122,7 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
             (onType, metamodel) = reflector.LoadSpecification(type, metamodel);
 
             Type returnType;
-
-            (returnSpec, returnType, metamodel) = LoadReturnSpecs(actionMethod.ReturnType, metamodel, reflector);
+            (returnSpec, returnType, metamodel) = LoadReturnSpecs(actionMethod.ReturnType, metamodel, reflector, actionMethod);
 
             if (!(returnSpec is IObjectSpecImmutable)) {
                 throw new ReflectionException($"{returnSpec.Identifier} must be Object spec");

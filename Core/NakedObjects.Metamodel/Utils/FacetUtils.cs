@@ -50,23 +50,8 @@ namespace NakedObjects.Meta.Utils {
 
         public static bool IsNotANoopFacet(IFacet facet) => facet != null && !facet.IsNoOp;
 
-        public static bool IsValueTuple(Type type)
-        {
-            if (type.IsGenericType)
-            {
-                var genericTypeDefinition = type.GetGenericTypeDefinition();
 
-                if (genericTypeDefinition == typeof(ValueTuple<,,,>))  {
-                    throw new NotImplementedException("only support tuples up to size 3");
-                }
-                
-                return genericTypeDefinition == typeof(ValueTuple<>) ||
-                       genericTypeDefinition == typeof(ValueTuple<,>) ||
-                       genericTypeDefinition == typeof(ValueTuple<,,>);
-            }
-
-            return false;
-        }
+        public static bool IsTuple(Type type) => type.GetInterfaces().Any(i => i == typeof(ITuple));
 
         public static bool IsAction(Type type)
         {

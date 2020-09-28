@@ -14,6 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Core;
 using NakedObjects.Core.Configuration;
 using NakedObjects.DependencyInjection;
 using NakedObjects.Menu;
@@ -77,6 +78,15 @@ namespace NakedFunctions.Reflect.Test {
         {
             return (injected.ToList(), injected.ToList());
         }
+    }
+
+    public static class UnsupportedTupleFunctions
+    {
+        public static ValueTuple TupleFunction(IQueryable<SimpleClass> injected)
+        {
+            return new ValueTuple();
+        }
+
     }
 
 
@@ -290,6 +300,28 @@ namespace NakedFunctions.Reflect.Test {
             AbstractReflectorTest.AssertSpec(typeof(TupleFunctions), specs);
             AbstractReflectorTest.AssertSpec(typeof(IQueryable<>), specs);
             AbstractReflectorTest.AssertSpec(typeof(IList<>), specs);
+        }
+
+        [TestMethod]
+        public void ReflectUnsupportedTuple()
+        {
+            ReflectorConfiguration.NoValidate = true;
+
+            var rc = new FunctionalReflectorConfiguration(new[] { typeof(UnsupportedTupleFunctions) }, new Type[0]);
+
+            var container = GetContainer(rc);
+
+            var reflector = container.GetService<IReflector>();
+
+            try {
+                reflector.Reflect();
+                Assert.Fail("exception expected");
+            }
+            catch (AggregateException ae) {
+                var re = ae.InnerExceptions.FirstOrDefault();
+                Assert.IsInstanceOfType(re, typeof(ReflectionException));
+                Assert.AreEqual("Cannot reflect empty tuple on NakedFunctions.Reflect.Test.UnsupportedTupleFunctions.TupleFunction", re.Message);
+            }
         }
 
         [TestMethod]

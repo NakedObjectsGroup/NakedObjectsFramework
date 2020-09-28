@@ -35,14 +35,14 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
 
         private static bool TypeIncludesUpdate(Type type) =>
             type switch {
-                _ when FacetUtils.IsValueTuple(type) => TupleIncludesUpdates(type, false),
+                _ when FacetUtils.IsTuple(type) => TupleIncludesUpdates(type, false),
                 _ when FacetUtils.IsAction(type) => false,
                 _ => true
             };
 
-        private static bool TupleIncludesUpdates(Type tuple, bool skipFirst) => tuple.GenericTypeArguments.Skip(skipFirst ? 1 : 0).Any(TypeIncludesUpdate);
+        private static bool TupleIncludesUpdates(Type tuple, bool skipFirst) => tuple.GetGenericArguments().Skip(skipFirst ? 1 : 0).Any(TypeIncludesUpdate);
 
-        private static bool IsSideEffectFree(Type returnType) => !FacetUtils.IsValueTuple(returnType) || !TupleIncludesUpdates(returnType, true);
+        private static bool IsSideEffectFree(Type returnType) => !FacetUtils.IsTuple(returnType) || !TupleIncludesUpdates(returnType, true);
 
         private static void Process(MemberInfo member, ISpecification holder) {
             if (member is MethodInfo method) {
