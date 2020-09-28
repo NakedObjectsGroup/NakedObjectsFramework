@@ -8,10 +8,8 @@
 using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using NakedFunctions;
 using NakedFunctions.Meta.Facet;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
@@ -24,13 +22,11 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
             : base(numericOrder, loggerFactory, FeatureType.ActionParameters, ReflectionType.Functional) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var parameter = method.GetParameters()[paramNum];
+            if (FunctionalFacetFactoryHelpers.IsInjectedParameter(method, paramNum)) {
+                FacetUtils.AddFacet(new InjectedFacet(holder));
+            }
 
-            var attribute = parameter.GetCustomAttribute<InjectedAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
             return metamodel;
         }
-
-        private static IInjectedFacet Create(InjectedAttribute attribute, ISpecification holder) => attribute != null ? new InjectedFacet(holder) : null;
     }
 }

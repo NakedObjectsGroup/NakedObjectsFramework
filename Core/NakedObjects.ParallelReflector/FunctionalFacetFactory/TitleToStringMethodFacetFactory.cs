@@ -33,8 +33,7 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
         public override string[] Prefixes => FixedPrefixes;
 
         /// <summary>
-        ///     If no title or ToString can be used then will use Facets provided by
-        ///     <see cref="FallbackFacetFactory" /> instead.
+        ///     use ToString for title
         /// </summary>
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             try {

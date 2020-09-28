@@ -36,7 +36,7 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parm = method.GetParameters()[paramNum];
 
-            if (parm.GetCustomAttribute<InjectedAttribute>() != null) {
+            if (FunctionalFacetFactoryHelpers.IsInjectedParameter(method, paramNum)) {
                 IFacet facet = null;
 
                 if (CollectionUtils.IsQueryable(parm.ParameterType)) {
