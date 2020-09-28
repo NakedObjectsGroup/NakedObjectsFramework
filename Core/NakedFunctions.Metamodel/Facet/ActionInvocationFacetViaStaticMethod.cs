@@ -19,7 +19,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
-using NakedObjects.Core.Component;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
@@ -159,10 +158,15 @@ namespace NakedFunctions.Meta.Facet {
 
         private void PerformActions(IServicesManager servicesManager, IEnumerable<object> toAct) => toAct.ForEach(a => PerformAction(servicesManager, a));
 
+        private static object GetInjectedService(IServicesManager servicesManager, Type injectType) {
+            return servicesManager.GetServices().Select(no => no.Object).SingleOrDefault(service => injectType.IsInstanceOfType(service));
+        }
+
+
         private void PerformAction(IServicesManager servicesManager, object action) {
             var injectType = GetInjectArgumentType(action);
 
-            var injectedService = servicesManager.GetServices().Select(no =>  no.Object).SingleOrDefault(service => injectType.IsInstanceOfType(service));
+            var injectedService = GetInjectedService(servicesManager, injectType);
 
             if (injectedService != null) {
                 var f = typeof(InjectUtils).GetMethod("PerformAction")?.MakeGenericMethod(injectType);
