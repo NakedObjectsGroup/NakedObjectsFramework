@@ -12,7 +12,7 @@ namespace NakedFunctions.Rest.Test.Data {
     public static class SimpleRecordFunctions {
         public static SimpleRecord ReShowRecord(this SimpleRecord simpleRecord) => simpleRecord;
 
-        public static SimpleRecord UpdateSimpleRecord(this SimpleRecord simpleRecord, [Injected] IQueryable<SimpleRecord> allSimpleRecords, string name) {
+        public static SimpleRecord UpdateSimpleRecord(this SimpleRecord simpleRecord, IQueryable<SimpleRecord> allSimpleRecords, string name) {
             var updatedSr = simpleRecord with {
                 Name = name
             };
@@ -21,7 +21,7 @@ namespace NakedFunctions.Rest.Test.Data {
         }
 
 
-        public static (SimpleRecord, SimpleRecord) UpdateAndPersistSimpleRecord(this SimpleRecord simpleRecord, [Injected] IQueryable<SimpleRecord> allSimpleRecords, string name) {
+        public static (SimpleRecord, SimpleRecord) UpdateAndPersistSimpleRecord(this SimpleRecord simpleRecord, IQueryable<SimpleRecord> allSimpleRecords, string name) {
             var updatedSr = simpleRecord with
             {
                 Name = name

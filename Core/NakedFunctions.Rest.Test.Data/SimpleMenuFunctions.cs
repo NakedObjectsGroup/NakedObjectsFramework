@@ -12,47 +12,47 @@ using System.Linq;
 
 namespace NakedFunctions.Rest.Test.Data {
     public static class SimpleMenuFunctions {
-        public static SimpleRecord GetSimpleRecord([Injected] IQueryable<SimpleRecord> allSimpleRecords) => allSimpleRecords.First();
-        public static IList<SimpleRecord> GetSimpleRecordsSingle([Injected] IQueryable<SimpleRecord> allSimpleRecords) => new[] {allSimpleRecords.First()};
-        public static IList<SimpleRecord> GetSimpleRecordsMultiple([Injected] IQueryable<SimpleRecord> allSimpleRecords) => allSimpleRecords.ToList().SkipLast(1).ToList();
+        public static SimpleRecord GetSimpleRecord(IQueryable<SimpleRecord> allSimpleRecords) => allSimpleRecords.First();
+        public static IList<SimpleRecord> GetSimpleRecordsSingle(IQueryable<SimpleRecord> allSimpleRecords) => new[] {allSimpleRecords.First()};
+        public static IList<SimpleRecord> GetSimpleRecordsMultiple(IQueryable<SimpleRecord> allSimpleRecords) => allSimpleRecords.ToList().SkipLast(1).ToList();
 
-        public static (SimpleRecord, SimpleRecord) GetAndUpdateSimpleRecord([Injected] IQueryable<SimpleRecord> allSimpleRecords) {
+        public static (SimpleRecord, SimpleRecord) GetAndUpdateSimpleRecord(IQueryable<SimpleRecord> allSimpleRecords) {
             var sr = allSimpleRecords.ToList().Last();
             var updatedSr = UpdateName(sr, "0");
             return (updatedSr, updatedSr);
         }
 
-        public static (IList<SimpleRecord>, IList<SimpleRecord>) GetAndUpdateSimpleRecords([Injected] IQueryable<SimpleRecord> allSimpleRecords) {
+        public static (IList<SimpleRecord>, IList<SimpleRecord>) GetAndUpdateSimpleRecords(IQueryable<SimpleRecord> allSimpleRecords) {
             var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "1")).ToList();
             return (updated, updated);
         }
 
-        public static (SimpleRecord, IList<SimpleRecord>) GetSimpleRecordAndUpdateSimpleRecords([Injected] IQueryable<SimpleRecord> allSimpleRecords) {
+        public static (SimpleRecord, IList<SimpleRecord>) GetSimpleRecordAndUpdateSimpleRecords(IQueryable<SimpleRecord> allSimpleRecords) {
             var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "2")).ToList();
             return (updated.First(), updated);
         }
 
-        public static (SimpleRecord, SimpleRecord, SimpleRecord) GetSimpleRecordAndUpdateSimpleRecordsByTuple([Injected] IQueryable<SimpleRecord> allSimpleRecords) {
+        public static (SimpleRecord, SimpleRecord, SimpleRecord) GetSimpleRecordAndUpdateSimpleRecordsByTuple(IQueryable<SimpleRecord> allSimpleRecords) {
             var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "3")).ToList();
             return (updated.First(), updated[0], updated[1]);
         }
 
-        public static (IList<SimpleRecord>, SimpleRecord, SimpleRecord) GetAndUpdateSimpleRecordsByTuple([Injected] IQueryable<SimpleRecord> allSimpleRecords) {
+        public static (IList<SimpleRecord>, SimpleRecord, SimpleRecord) GetAndUpdateSimpleRecordsByTuple(IQueryable<SimpleRecord> allSimpleRecords) {
             var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "4")).ToList();
             return (updated, updated[0], updated[1]);
         }
 
-        public static (SimpleRecord, (SimpleRecord, SimpleRecord)) GetSimpleRecordAndUpdateSimpleRecordsBySubTuple([Injected] IQueryable<SimpleRecord> allSimpleRecords) {
+        public static (SimpleRecord, (SimpleRecord, SimpleRecord)) GetSimpleRecordAndUpdateSimpleRecordsBySubTuple(IQueryable<SimpleRecord> allSimpleRecords) {
             var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "5")).ToList();
             return (updated.First(), (updated[0], updated[1]));
         }
 
-        public static (IList<SimpleRecord>, (SimpleRecord, SimpleRecord)) GetAndUpdateSimpleRecordsBySubTuple([Injected] IQueryable<SimpleRecord> allSimpleRecords) {
+        public static (IList<SimpleRecord>, (SimpleRecord, SimpleRecord)) GetAndUpdateSimpleRecordsBySubTuple(IQueryable<SimpleRecord> allSimpleRecords) {
             var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "6")).ToList();
             return (updated, (updated[0], updated[1]));
         }
 
-        public static (SimpleRecord, Action<IAlert>) GetSimpleRecordWithWarning([Injected] IQueryable<SimpleRecord> allSimpleRecords) =>
+        public static (SimpleRecord, Action<IAlert>) GetSimpleRecordWithWarning(IQueryable<SimpleRecord> allSimpleRecords) =>
             (allSimpleRecords.First(), a => a.WarnUser("a warning"));
 
         private static SimpleRecord UpdateName(SimpleRecord sr, string suffix) => sr with {
