@@ -6,10 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.Extensions.DependencyInjection;
+using NakedFunctions;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Authentication;
 using NakedObjects.Core.Component;
+using NakedObjects.Core.Framework;
 using NakedObjects.Core.Spec;
 using NakedObjects.Meta.Component;
 using NakedObjects.Meta.Menu;
@@ -63,6 +65,10 @@ namespace NakedObjects.DependencyInjection {
             for (var i = 0; i < factoryTypes.Length; i++) {
                 ConfigHelpers.RegisterFacetFactory(factoryTypes[i], services);
             }
+        }
+
+        public static void RegisterWellKnownServices(IServiceCollection services) {
+            services.AddScoped<IAlert, Alert>();
         }
     }
 }

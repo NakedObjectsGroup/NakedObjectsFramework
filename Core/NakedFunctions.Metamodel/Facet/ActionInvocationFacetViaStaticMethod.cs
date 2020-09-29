@@ -147,24 +147,25 @@ namespace NakedFunctions.Meta.Facet {
 
             var persisted = PersistResult(framework.LifecycleManager, toPersist);
 
-            PerformActions(framework.ServicesManager, toAct);
+            PerformActions(framework.ServicesManager, framework.ServiceProvider, toAct);
 
             toReturn = ReplacePersisted(toReturn, persisted);
 
             return AdaptResult(framework.NakedObjectManager, toReturn);
         }
 
-        private void PerformActions(IServicesManager servicesManager, IEnumerable<object> toAct) => toAct.ForEach(a => PerformAction(servicesManager, a));
+        private void PerformActions(IServicesManager servicesManager, IServiceProvider serviceProvider, IEnumerable<object> toAct) => toAct.ForEach(a => PerformAction(servicesManager, serviceProvider, a));
 
-        private static object GetInjectedService(IServicesManager servicesManager, Type injectType) {
-            return servicesManager.GetServices().Select(no => no.Object).SingleOrDefault(service => injectType.IsInstanceOfType(service));
+        private static object GetInjectedService(IServicesManager servicesManager, IServiceProvider serviceProvider, Type injectType) {
+            return servicesManager.GetServices().Select(no => no.Object).SingleOrDefault(service => injectType.IsInstanceOfType(service)) ??
+                   serviceProvider.GetService(injectType);
         }
 
 
-        private void PerformAction(IServicesManager servicesManager, object action) {
+        private void PerformAction(IServicesManager servicesManager, IServiceProvider serviceProvider, object action) {
             var injectType = GetInjectArgumentType(action);
 
-            var injectedService = GetInjectedService(servicesManager, injectType);
+            var injectedService = GetInjectedService(servicesManager, serviceProvider, injectType);
 
             if (injectedService != null) {
                 var f = typeof(InjectUtils).GetMethod("PerformAction")?.MakeGenericMethod(injectType);

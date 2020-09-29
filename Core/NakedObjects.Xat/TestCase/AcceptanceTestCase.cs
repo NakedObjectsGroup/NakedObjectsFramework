@@ -341,6 +341,7 @@ namespace NakedObjects.Xat {
             ParallelConfig.RegisterStandardFacetFactories(services);
             ParallelConfig.RegisterCoreSingletonTypes(services);
             ParallelConfig.RegisterCoreScopedTypes(services);
+            ParallelConfig.RegisterWellKnownServices(services);
 
             // config 
             services.AddSingleton<IObjectReflectorConfiguration>(Reflector);

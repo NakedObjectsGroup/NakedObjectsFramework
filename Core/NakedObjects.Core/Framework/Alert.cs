@@ -6,13 +6,16 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFunctions;
+using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Core.Framework {
     public sealed class Alert : IAlert {
-        public IDomainObjectContainer Container { private get; set; }
+        private readonly IMessageBroker messageBroker;
 
-        public void WarnUser(string message) => Container.WarnUser(message);
+        public Alert(IMessageBroker messageBroker) => this.messageBroker = messageBroker;
 
-        public void InformUser(string message) => Container.InformUser(message);
+        public void WarnUser(string message) => messageBroker.AddWarning(message);
+
+        public void InformUser(string message) => messageBroker.AddMessage(message);
     }
 }

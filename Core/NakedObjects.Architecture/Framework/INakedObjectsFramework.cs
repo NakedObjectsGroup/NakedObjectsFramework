@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects {
@@ -25,5 +26,6 @@ namespace NakedObjects {
         IDomainObjectInjector DomainObjectInjector { get; }
         ITransactionManager TransactionManager { get; }
         IFrameworkResolver FrameworkResolver { get; }
+        IServiceProvider ServiceProvider { get; }
     }
 }
