@@ -16,8 +16,8 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public sealed class OneToManyAssociationSpec : AssociationSpecAbstract, IOneToManyAssociationSpec {
-        public OneToManyAssociationSpec(IMetamodelManager metamodel, IOneToManyAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor)
-            : base(metamodel, association, session, lifecycleManager, manager, persistor) {
+        public OneToManyAssociationSpec(IOneToManyAssociationSpecImmutable association, INakedObjectsFramework framework)
+            : base(association, framework) {
             IsASet = association.ContainsFacet<IIsASetFacet>();
 
             ElementSpec = MetamodelManager.GetSpecification(association.ElementSpec);

@@ -23,9 +23,9 @@ namespace NakedObjects.Core.Spec {
         private readonly ITransactionManager transactionManager;
         private bool? isFindMenuEnabled;
 
-        public OneToOneAssociationSpec(IMetamodelManager metamodel, IOneToOneAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor, ITransactionManager transactionManager)
-            : base(metamodel, association, session, lifecycleManager, manager, persistor) {
-            this.transactionManager = transactionManager;
+        public OneToOneAssociationSpec(IOneToOneAssociationSpecImmutable association, INakedObjectsFramework framework)
+            : base(association, framework) {
+            this.transactionManager = framework.TransactionManager;
         }
 
         public override IObjectSpec ElementSpec => null;

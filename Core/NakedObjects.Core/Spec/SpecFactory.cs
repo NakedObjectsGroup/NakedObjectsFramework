@@ -46,8 +46,8 @@ namespace NakedObjects.Core.Spec {
         private IAssociationSpec CreateAssociation(IAssociationSpecImmutable specImmutable) {
             CheckInitialised();
             return specImmutable switch {
-                IOneToOneAssociationSpecImmutable oneToOneAssociationSpecImmutable => new OneToOneAssociationSpec(framework.MetamodelManager, oneToOneAssociationSpecImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor, framework.TransactionManager),
-                IOneToManyAssociationSpecImmutable oneToManyAssociationSpecImmutable => new OneToManyAssociationSpec(framework.MetamodelManager, oneToManyAssociationSpecImmutable, framework.Session, framework.LifecycleManager, framework.NakedObjectManager, framework.Persistor),
+                IOneToOneAssociationSpecImmutable oneToOneAssociationSpecImmutable => new OneToOneAssociationSpec(oneToOneAssociationSpecImmutable, framework),
+                IOneToManyAssociationSpecImmutable oneToManyAssociationSpecImmutable => new OneToManyAssociationSpec(oneToManyAssociationSpecImmutable, framework),
                 _ => throw new ReflectionException(logger.LogAndReturn($"Unknown spec type: {specImmutable}"))
             };
         }
@@ -56,16 +56,10 @@ namespace NakedObjects.Core.Spec {
 
         public IActionSpec CreateActionSpec(IActionSpecImmutable specImmutable) {
             CheckInitialised();
-            return new ActionSpec(this,
-                framework.MetamodelManager,
-                framework.LifecycleManager,
-                framework.Session,
-                framework.ServicesManager,
-                framework.NakedObjectManager,
+            return new ActionSpec( 
+                framework,
+                this,
                 specImmutable,
-                framework.MessageBroker,
-                framework.TransactionManager,
-                framework.Persistor,
                 loggerFactory,
                 loggerFactory.CreateLogger<ActionSpec>());
         }

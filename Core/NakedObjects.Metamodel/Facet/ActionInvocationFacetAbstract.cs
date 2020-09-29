@@ -29,8 +29,8 @@ namespace NakedObjects.Meta.Facet {
         public abstract IObjectSpecImmutable ElementType { get; }
 
         //Note: Some passed-in components are not used within NOF code, but are provided for third-party customization. DO NOT REMOVE.
-        public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager, IServicesManager servicesManager);
-        public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager, IServicesManager servicesManager);
+        public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedObjectsFramework framework);
+        public abstract INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedObjectsFramework framework);
         public abstract bool IsQueryOnly { get; }
 
         #endregion

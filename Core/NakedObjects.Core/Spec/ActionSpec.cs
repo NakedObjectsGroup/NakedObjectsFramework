@@ -24,13 +24,11 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public sealed class ActionSpec : MemberSpecAbstract, IActionSpec {
+        private readonly INakedObjectsFramework framework;
         private readonly IActionSpecImmutable actionSpecImmutable;
         private readonly ILogger<ActionSpec> logger;
         private readonly ILoggerFactory loggerFactory;
-        private readonly IMessageBroker messageBroker;
-        private readonly INakedObjectManager nakedObjectManager;
-        private readonly IServicesManager servicesManager;
-        private readonly ITransactionManager transactionManager;
+      
         private IObjectSpec elementSpec;
         private Where? executedWhere;
         private bool? hasReturn;
@@ -41,24 +39,16 @@ namespace NakedObjects.Core.Spec {
         // cached values     
         private IObjectSpec returnSpec;
 
-        public ActionSpec(SpecFactory memberFactory,
-                          IMetamodelManager metamodel,
-                          ILifecycleManager lifecycleManager,
-                          ISession session,
-                          IServicesManager servicesManager,
-                          INakedObjectManager nakedObjectManager,
+        public ActionSpec(INakedObjectsFramework framework,
+                          SpecFactory memberFactory,
+                          
                           IActionSpecImmutable actionSpecImmutable,
-                          IMessageBroker messageBroker,
-                          ITransactionManager transactionManager,
-                          IObjectPersistor persistor,
+                          
                           ILoggerFactory loggerFactory,
                           ILogger<ActionSpec> logger)
-            : base(actionSpecImmutable?.Identifier?.MemberName, actionSpecImmutable, session, lifecycleManager, metamodel, persistor) {
-            this.servicesManager = servicesManager ?? throw new InitialisationException($"{nameof(servicesManager)} is null");
-            this.nakedObjectManager = nakedObjectManager ?? throw new InitialisationException($"{nameof(nakedObjectManager)} is null");
+            : base(actionSpecImmutable?.Identifier?.MemberName, actionSpecImmutable, framework) {
+            this.framework = framework ?? throw new InitialisationException($"{nameof(framework)} is null");
             this.actionSpecImmutable = actionSpecImmutable ?? throw new InitialisationException($"{nameof(actionSpecImmutable)} is null");
-            this.messageBroker = messageBroker ?? throw new InitialisationException($"{nameof(messageBroker)} is null");
-            this.transactionManager = transactionManager ?? throw new InitialisationException($"{nameof(transactionManager)} is null");
             this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
             var index = 0;
@@ -106,10 +96,10 @@ namespace NakedObjects.Core.Spec {
         public INakedObjectAdapter Execute(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameterSet) {
             var parms = RealParameters(nakedObjectAdapter, parameterSet);
             var target = RealTarget(nakedObjectAdapter);
-            var result = ActionInvocationFacet.Invoke(target, parms, LifecycleManager, MetamodelManager, Session, nakedObjectManager, messageBroker, transactionManager, servicesManager);
+            var result = ActionInvocationFacet.Invoke(target, parms, framework);
 
             if (result != null && result.Oid == null) {
-                result.SetATransientOid(new CollectionMemento(LifecycleManager, nakedObjectManager, MetamodelManager, loggerFactory.CreateLogger<CollectionMemento>(), nakedObjectAdapter, this, parameterSet));
+                result.SetATransientOid(new CollectionMemento(LifecycleManager, framework.NakedObjectManager, MetamodelManager, loggerFactory.CreateLogger<CollectionMemento>(), nakedObjectAdapter, this, parameterSet));
             }
 
             return result;
@@ -186,7 +176,7 @@ namespace NakedObjects.Core.Spec {
         private bool FindServiceOnSpecOrSpecSuperclass(ITypeSpec spec) => spec != null && (spec.Equals(OnSpec) || FindServiceOnSpecOrSpecSuperclass(spec.Superclass));
 
         private INakedObjectAdapter FindService() {
-            foreach (var serviceAdapter in servicesManager.GetServices()) {
+            foreach (var serviceAdapter in framework.ServicesManager.GetServices()) {
                 if (FindServiceOnSpecOrSpecSuperclass(serviceAdapter.Spec)) {
                     return serviceAdapter;
                 }

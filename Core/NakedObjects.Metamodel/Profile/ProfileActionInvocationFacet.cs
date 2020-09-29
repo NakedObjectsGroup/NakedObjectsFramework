@@ -38,23 +38,23 @@ namespace NakedObjects.Meta.Profile {
 
         public override ITypeSpecImmutable OnType => underlyingFacet.OnType;
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager, IServicesManager servicesManager) {
-            profileManager.Begin(session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, lifecycleManager);
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedObjectsFramework framework) {
+            profileManager.Begin(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
             try {
-                return underlyingFacet.Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager, messageBroker, transactionManager, servicesManager);
+                return underlyingFacet.Invoke(nakedObjectAdapter, parameters, framework);
             }
             finally {
-                profileManager.End(session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, lifecycleManager);
+                profileManager.End(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
             }
         }
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager, IServicesManager servicesManager) {
-            profileManager.Begin(session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, lifecycleManager);
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedObjectsFramework framework) {
+            profileManager.Begin(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
             try {
-                return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, lifecycleManager, manager, session, nakedObjectManager, messageBroker, transactionManager, servicesManager);
+                return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, framework);
             }
             finally {
-                profileManager.End(session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, lifecycleManager);
+                profileManager.End(framework.Session, ProfileEvent.ActionInvocation, identifier.MemberName, nakedObjectAdapter, framework.LifecycleManager);
             }
         }
     }

@@ -52,7 +52,7 @@ namespace NakedObjects.Xat {
         protected virtual IServiceScope ServiceScope { set; get; }
         protected string Name { set; get; }
 
-        protected virtual ITestObjectFactory TestObjectFactoryClass => testObjectFactory ??= new TestObjectFactory(NakedObjectsFramework.MetamodelManager, NakedObjectsFramework.Session, NakedObjectsFramework.LifecycleManager, NakedObjectsFramework.Persistor, NakedObjectsFramework.NakedObjectManager, NakedObjectsFramework.TransactionManager, NakedObjectsFramework.ServicesManager, NakedObjectsFramework.MessageBroker);
+        protected virtual ITestObjectFactory TestObjectFactoryClass => testObjectFactory ??= new TestObjectFactory(NakedObjectsFramework);
 
         protected virtual IPrincipal TestPrincipal {
             get { return testPrincipal ??= CreatePrincipal("Test", new string[] { }); }

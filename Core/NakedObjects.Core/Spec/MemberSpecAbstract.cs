@@ -21,13 +21,13 @@ namespace NakedObjects.Core.Reflect {
     public abstract class MemberSpecAbstract : IMemberSpec {
         private readonly IMemberSpecImmutable memberSpecImmutable;
 
-        protected internal MemberSpecAbstract(string id, IMemberSpecImmutable memberSpec, ISession session, ILifecycleManager lifecycleManager, IMetamodelManager metamodelManager, IObjectPersistor persistor) {
+        protected internal MemberSpecAbstract(string id, IMemberSpecImmutable memberSpec, INakedObjectsFramework framework) {
             Id = id ?? throw new InitialisationException($"{nameof(id)} is null");
             memberSpecImmutable = memberSpec ?? throw new InitialisationException($"{nameof(memberSpec)} is null");
-            Session = session ?? throw new InitialisationException($"{nameof(session)} is null");
-            LifecycleManager = lifecycleManager ?? throw new InitialisationException($"{nameof(lifecycleManager)} is null");
-            MetamodelManager = metamodelManager ?? throw new InitialisationException($"{nameof(metamodelManager)} is null");
-            Persistor = persistor ?? throw new InitialisationException($"{nameof(persistor)} is null"); ;
+            Session = framework?.Session ?? throw new InitialisationException($"{nameof(framework.Session)} is null");
+            LifecycleManager = framework.LifecycleManager ?? throw new InitialisationException($"{nameof(framework.LifecycleManager)} is null");
+            MetamodelManager = framework.MetamodelManager ?? throw new InitialisationException($"{nameof(framework.MetamodelManager)} is null");
+            Persistor = framework.Persistor ?? throw new InitialisationException($"{nameof(framework.Persistor)} is null"); ;
         }
 
         public ISession Session { get; }

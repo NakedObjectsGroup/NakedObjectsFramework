@@ -17,9 +17,9 @@ using NakedObjects.Core.Util;
 
 namespace NakedObjects.Core.Spec {
     public abstract class AssociationSpecAbstract : MemberSpecAbstract, IAssociationSpec {
-        protected AssociationSpecAbstract(IMetamodelManager metamodel, IAssociationSpecImmutable association, ISession session, ILifecycleManager lifecycleManager, INakedObjectManager manager, IObjectPersistor persistor)
-            : base(association.Identifier.MemberName, association, session, lifecycleManager, metamodel, persistor) {
-            Manager = manager ?? throw new InitialisationException($"{nameof(manager)} is null");
+        protected AssociationSpecAbstract(IAssociationSpecImmutable association,  INakedObjectsFramework framework)
+            : base(association.Identifier.MemberName, association, framework) {
+            Manager = framework.NakedObjectManager ?? throw new InitialisationException($"{nameof(framework.NakedObjectManager)} is null");
             ReturnSpec = MetamodelManager.GetSpecification(association.ReturnSpec);
         }
 

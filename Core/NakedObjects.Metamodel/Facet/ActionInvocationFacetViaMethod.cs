@@ -63,7 +63,7 @@ namespace NakedObjects.Meta.Facet {
 
         #endregion
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager, IServicesManager servicesManager) {
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter, INakedObjectAdapter[] parameters, INakedObjectsFramework framework) {
             if (parameters.Length != paramCount) {
                 logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
             }
@@ -77,10 +77,10 @@ namespace NakedObjects.Meta.Facet {
                 result = InvokeUtils.Invoke(ActionMethod, inObjectAdapter, parameters);
             }
 
-            return nakedObjectManager.CreateAdapter(result, null, null);
+            return framework.NakedObjectManager.CreateAdapter(result, null, null);
         }
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager, IServicesManager servicesManager) => Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager, messageBroker, transactionManager, servicesManager);
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedObjectsFramework framework) => Invoke(nakedObjectAdapter, parameters, framework);
 
         protected override string ToStringValues() => $"method={ActionMethod}";
 

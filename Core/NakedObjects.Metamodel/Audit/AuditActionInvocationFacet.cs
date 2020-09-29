@@ -37,14 +37,14 @@ namespace NakedObjects.Meta.Audit {
 
         public override ITypeSpecImmutable OnType => underlyingFacet.OnType;
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager, IServicesManager servicesManager) {
-            auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, session, lifecycleManager);
-            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager, messageBroker, transactionManager, servicesManager);
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, INakedObjectsFramework framework) {
+            auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, framework.Session, framework.LifecycleManager);
+            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, framework);
         }
 
-        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, ILifecycleManager lifecycleManager, IMetamodelManager manager, ISession session, INakedObjectManager nakedObjectManager, IMessageBroker messageBroker, ITransactionManager transactionManager, IServicesManager servicesManager) {
-            auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, session, lifecycleManager);
-            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, lifecycleManager, manager, session, nakedObjectManager, messageBroker, transactionManager, servicesManager);
+        public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter, INakedObjectAdapter[] parameters, int resultPage, INakedObjectsFramework framework) {
+            auditManager.Invoke(nakedObjectAdapter, parameters, IsQueryOnly, identifier, framework.Session, framework.LifecycleManager);
+            return underlyingFacet.Invoke(nakedObjectAdapter, parameters, resultPage, framework);
         }
     }
 }

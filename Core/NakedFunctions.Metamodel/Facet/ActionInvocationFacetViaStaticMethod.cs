@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
+using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -125,10 +126,7 @@ namespace NakedFunctions.Meta.Facet {
         private (object, (IEnumerable<object>, IEnumerable<object>)) HandleTuple(ITuple tuple, IEnumerable<object> persisting, IEnumerable<object> acting) =>
             (tuple[0], IterateTuple(tuple, 1, persisting, acting));
 
-        private INakedObjectAdapter HandleInvokeResult(INakedObjectManager nakedObjectManager,
-                                                       ILifecycleManager lifecycleManager,
-                                                       IMessageBroker messageBroker,
-                                                       IServicesManager servicesManager,
+        private INakedObjectAdapter HandleInvokeResult(INakedObjectsFramework framework,
                                                        object result) {
             object toReturn;
             IEnumerable<object> toPersist = new List<object>();
@@ -147,13 +145,13 @@ namespace NakedFunctions.Meta.Facet {
                 toReturn = result;
             }
 
-            var persisted = PersistResult(lifecycleManager, toPersist);
+            var persisted = PersistResult(framework.LifecycleManager, toPersist);
 
-            PerformActions(servicesManager, toAct);
+            PerformActions(framework.ServicesManager, toAct);
 
             toReturn = ReplacePersisted(toReturn, persisted);
 
-            return AdaptResult(nakedObjectManager, toReturn);
+            return AdaptResult(framework.NakedObjectManager, toReturn);
         }
 
         private void PerformActions(IServicesManager servicesManager, IEnumerable<object> toAct) => toAct.ForEach(a => PerformAction(servicesManager, a));
@@ -188,31 +186,19 @@ namespace NakedFunctions.Meta.Facet {
 
         public override INakedObjectAdapter Invoke(INakedObjectAdapter inObjectAdapter,
                                                    INakedObjectAdapter[] parameters,
-                                                   ILifecycleManager lifecycleManager,
-                                                   IMetamodelManager manager,
-                                                   ISession session,
-                                                   INakedObjectManager nakedObjectManager,
-                                                   IMessageBroker messageBroker,
-                                                   ITransactionManager transactionManager,
-                                                   IServicesManager servicesManager) {
+                                                   INakedObjectsFramework framework) {
             if (parameters.Length != paramCount) {
                 logger.LogError($"{ActionMethod} requires {paramCount} parameters, not {parameters.Length}");
             }
 
-            return HandleInvokeResult(nakedObjectManager, lifecycleManager, messageBroker, servicesManager, InvokeUtils.InvokeStatic(ActionMethod, parameters));
+            return HandleInvokeResult(framework, InvokeUtils.InvokeStatic(ActionMethod, parameters));
         }
 
         public override INakedObjectAdapter Invoke(INakedObjectAdapter nakedObjectAdapter,
                                                    INakedObjectAdapter[] parameters,
                                                    int resultPage,
-                                                   ILifecycleManager lifecycleManager,
-                                                   IMetamodelManager manager,
-                                                   ISession session,
-                                                   INakedObjectManager nakedObjectManager,
-                                                   IMessageBroker messageBroker,
-                                                   ITransactionManager transactionManager,
-                                                   IServicesManager servicesManager) =>
-            Invoke(nakedObjectAdapter, parameters, lifecycleManager, manager, session, nakedObjectManager, messageBroker, transactionManager, servicesManager);
+                                                   INakedObjectsFramework framework) =>
+            Invoke(nakedObjectAdapter, parameters, framework);
 
         protected override string ToStringValues() => $"method={ActionMethod}";
 

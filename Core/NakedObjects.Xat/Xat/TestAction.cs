@@ -18,29 +18,18 @@ namespace NakedObjects.Xat {
     internal class TestAction : ITestAction {
         private readonly IActionSpec actionSpec;
         private readonly ITestObjectFactory factory;
-        private readonly ILifecycleManager lifecycleManager;
-        private readonly INakedObjectManager manager;
-        private readonly IMessageBroker messageBroker;
-        private readonly IServicesManager servicesManager;
-        private readonly IMetamodelManager metamodelManager;
+        private readonly INakedObjectsFramework framework;
         private readonly ITestHasActions owningObject;
-        private readonly ISession session;
-        private readonly ITransactionManager transactionManager;
+       
 
-        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, ITransactionManager transactionManager, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager, IMessageBroker messageBroker, IServicesManager servicesManager)
-            : this(metamodelManager, session, lifecycleManager, transactionManager, string.Empty, actionSpec, owningObject, factory, manager, messageBroker, servicesManager) { }
+        public TestAction(INakedObjectsFramework framework, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory)
+            : this(framework, string.Empty, actionSpec, owningObject, factory) { }
 
-        public TestAction(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, ITransactionManager transactionManager, string contributor, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory, INakedObjectManager manager, IMessageBroker messageBroker, IServicesManager servicesManager) {
+        public TestAction(INakedObjectsFramework framework, string contributor, IActionSpec actionSpec, ITestHasActions owningObject, ITestObjectFactory factory) {
             SubMenu = contributor;
-            this.metamodelManager = metamodelManager;
-            this.session = session;
-            this.lifecycleManager = lifecycleManager;
-            this.transactionManager = transactionManager;
-            this.messageBroker = messageBroker;
-            this.servicesManager = servicesManager;
+            this.framework = framework;
             this.owningObject = owningObject;
             this.factory = factory;
-            this.manager = manager;
             this.actionSpec = actionSpec;
         }
 
@@ -58,7 +47,7 @@ namespace NakedObjects.Xat {
         public bool MatchParameters(Type[] typestoMatch) {
             if (actionSpec.Parameters.Length == typestoMatch.Length) {
                 var i = 0;
-                return actionSpec.Parameters.All(x => x.Spec.IsOfType(metamodelManager.GetSpecification(typestoMatch[i++])));
+                return actionSpec.Parameters.All(x => x.Spec.IsOfType(framework.MetamodelManager.GetSpecification(typestoMatch[i++])));
             }
 
             return false;
@@ -66,41 +55,41 @@ namespace NakedObjects.Xat {
 
         public ITestObject InvokeReturnObject(params object[] parameters) {
             try {
-                transactionManager.StartTransaction();
+                framework.TransactionManager.StartTransaction();
                 return (ITestObject) DoInvoke(ParsedParameters(parameters));
             }
             finally {
-                transactionManager.EndTransaction();
+                framework.TransactionManager.EndTransaction();
             }
         }
 
         public ITestCollection InvokeReturnCollection(params object[] parameters) {
             try {
-                transactionManager.StartTransaction();
+                framework.TransactionManager.StartTransaction();
                 return (ITestCollection) DoInvoke(ParsedParameters(parameters));
             }
             finally {
-                transactionManager.EndTransaction();
+                framework.TransactionManager.EndTransaction();
             }
         }
 
         public void Invoke(params object[] parameters) {
             try {
-                transactionManager.StartTransaction();
+                framework.TransactionManager.StartTransaction();
                 DoInvoke(ParsedParameters(parameters));
             }
             finally {
-                transactionManager.EndTransaction();
+                framework.TransactionManager.EndTransaction();
             }
         }
 
         public ITestCollection InvokeReturnPagedCollection(int page, params object[] parameters) {
             try {
-                transactionManager.StartTransaction();
+                framework.TransactionManager.StartTransaction();
                 return (ITestCollection) DoInvoke(page, ParsedParameters(parameters));
             }
             finally {
-                transactionManager.EndTransaction();
+                framework.TransactionManager.EndTransaction();
             }
         }
 
@@ -109,11 +98,11 @@ namespace NakedObjects.Xat {
         private ITestNaked DoInvoke(int page, params object[] parameters) {
             ResetLastMessage();
             AssertIsValidWithParms(parameters);
-            var parameterObjectsAdapter = parameters.AsTestNakedArray(manager).Select(x => x.NakedObject).ToArray();
+            var parameterObjectsAdapter = parameters.AsTestNakedArray(framework.NakedObjectManager).Select(x => x.NakedObject).ToArray();
 
             var parms = actionSpec.RealParameters(owningObject.NakedObject, parameterObjectsAdapter);
             var target = actionSpec.RealTarget(owningObject.NakedObject);
-            var result = actionSpec.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, lifecycleManager, metamodelManager, session, manager, messageBroker, transactionManager, servicesManager);
+            var result = actionSpec.GetFacet<IActionInvocationFacet>().Invoke(target, parms, page, framework);
 
             if (result == null) {
                 return null;
@@ -129,7 +118,7 @@ namespace NakedObjects.Xat {
         private ITestNaked DoInvoke(params object[] parameters) {
             ResetLastMessage();
             AssertIsValidWithParms(parameters);
-            var parameterObjectsAdapter = parameters.AsTestNakedArray(manager).Select(x => x.NakedObject).ToArray();
+            var parameterObjectsAdapter = parameters.AsTestNakedArray(framework.NakedObjectManager).Select(x => x.NakedObject).ToArray();
             INakedObjectAdapter result = null;
             try {
                 result = actionSpec.Execute(owningObject.NakedObject, parameterObjectsAdapter);
@@ -187,7 +176,7 @@ namespace NakedObjects.Xat {
                 var canUse = actionSpec.IsUsable(owningObject.NakedObject);
                 LastMessage = canUse.Reason;
                 if (canUse.IsAllowed) {
-                    var parameterObjectsAdapter = parsedParameters.AsTestNakedArray(manager).Select(x => x == null ? null : x.NakedObject).ToArray();
+                    var parameterObjectsAdapter = parsedParameters.AsTestNakedArray(framework.NakedObjectManager).Select(x => x == null ? null : x.NakedObject).ToArray();
                     var canExecute = actionSpec.IsParameterSetValid(owningObject.NakedObject, parameterObjectsAdapter);
                     LastMessage = canExecute.Reason;
                     Assert.IsFalse(canExecute.IsAllowed, "Action '" + Name + "' is usable and executable");
@@ -204,7 +193,7 @@ namespace NakedObjects.Xat {
 
             var parsedParameters = ParsedParameters(parameters);
 
-            var parameterObjectsAdapter = parsedParameters.AsTestNakedArray(manager).Select(x => x == null ? null : x.NakedObject).ToArray();
+            var parameterObjectsAdapter = parsedParameters.AsTestNakedArray(framework.NakedObjectManager).Select(x => x == null ? null : x.NakedObject).ToArray();
             var canExecute = actionSpec.IsParameterSetValid(owningObject.NakedObject, parameterObjectsAdapter);
             Assert.IsTrue(canExecute.IsAllowed, "Action '" + Name + "' is unusable: " + canExecute.Reason);
             return this;
@@ -248,7 +237,7 @@ namespace NakedObjects.Xat {
 
                 var valueAsString = value as string;
                 if (valueAsString != null && parm.Spec.IsParseable) {
-                    parsedParameters.Add(parm.Spec.GetFacet<IParseableFacet>().ParseTextEntry(valueAsString, manager).Object);
+                    parsedParameters.Add(parm.Spec.GetFacet<IParseableFacet>().ParseTextEntry(valueAsString, framework.NakedObjectManager).Object);
                 }
                 else {
                     parsedParameters.Add(value);

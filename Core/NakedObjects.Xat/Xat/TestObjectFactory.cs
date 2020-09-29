@@ -15,23 +15,10 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Xat {
     public class TestObjectFactory : ITestObjectFactory {
-        private readonly ILifecycleManager lifecycleManager;
-        private readonly INakedObjectManager manager;
-        private readonly IMessageBroker messageBroker;
-        private readonly IMetamodelManager metamodelManager;
-        private readonly IObjectPersistor persistor;
-        private readonly IServicesManager servicesManager;
-        private readonly ITransactionManager transactionManager;
-
-        public TestObjectFactory(IMetamodelManager metamodelManager, ISession session, ILifecycleManager lifecycleManager, IObjectPersistor persistor, INakedObjectManager manager, ITransactionManager transactionManager, IServicesManager servicesManager, IMessageBroker messageBroker) {
-            this.metamodelManager = metamodelManager;
-            Session = session;
-            this.lifecycleManager = lifecycleManager;
-            this.persistor = persistor;
-            this.manager = manager;
-            this.transactionManager = transactionManager;
-            this.servicesManager = servicesManager;
-            this.messageBroker = messageBroker;
+        private readonly INakedObjectsFramework framework;
+      
+        public TestObjectFactory(INakedObjectsFramework framework) {
+            this.framework = framework;
         }
 
         #region ITestObjectFactory Members
@@ -39,7 +26,7 @@ namespace NakedObjects.Xat {
         public ISession Session { get; set; }
 
         public ITestService CreateTestService(object service) {
-            var no = manager.GetServiceAdapter(service);
+            var no = framework.NakedObjectManager.GetServiceAdapter(service);
             Assert.IsNotNull(no);
             return CreateTestService(no);
         }
@@ -50,9 +37,9 @@ namespace NakedObjects.Xat {
 
         public ITestMenuItem CreateTestMenuItem(IMenuItemImmutable item, ITestHasActions owningObject) => new TestMenuItem(item, this, owningObject);
 
-        public ITestCollection CreateTestCollection(INakedObjectAdapter instances) => new TestCollection(instances, this, manager);
+        public ITestCollection CreateTestCollection(INakedObjectAdapter instances) => new TestCollection(instances, this, framework.NakedObjectManager);
 
-        public ITestObject CreateTestObject(INakedObjectAdapter nakedObjectAdapter) => new TestObject(lifecycleManager, persistor, nakedObjectAdapter, this, transactionManager);
+        public ITestObject CreateTestObject(INakedObjectAdapter nakedObjectAdapter) => new TestObject(framework.LifecycleManager, framework.Persistor, nakedObjectAdapter, this, framework.TransactionManager);
 
         public ITestNaked CreateTestNaked(INakedObjectAdapter nakedObjectAdapter) {
             if (nakedObjectAdapter == null) {
@@ -74,10 +61,10 @@ namespace NakedObjects.Xat {
             return null;
         }
 
-        public ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject) => new TestAction(metamodelManager, Session, lifecycleManager, transactionManager, actionSpec, owningObject, this, manager, messageBroker, servicesManager);
+        public ITestAction CreateTestAction(IActionSpec actionSpec, ITestHasActions owningObject) => new TestAction(framework, actionSpec, owningObject, this);
 
         public ITestAction CreateTestAction(IActionSpecImmutable actionSpecImm, ITestHasActions owningObject) {
-            var actionSpec = metamodelManager.GetActionSpec(actionSpecImm);
+            var actionSpec = framework.MetamodelManager.GetActionSpec(actionSpecImm);
             return CreateTestAction(actionSpec, owningObject);
         }
 
@@ -88,15 +75,15 @@ namespace NakedObjects.Xat {
                 throw new Exception("Action is not on a known service");
             }
 
-            var serviceSpec = (IServiceSpec) metamodelManager.GetSpecification(objectIm);
-            var service = servicesManager.GetService(serviceSpec);
+            var serviceSpec = (IServiceSpec)framework.MetamodelManager.GetSpecification(objectIm);
+            var service = framework.ServicesManager.GetService(serviceSpec);
             var testService = CreateTestService(service);
             return CreateTestAction(actionSpecImm, testService);
         }
 
-        public ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject) => new TestAction(metamodelManager, Session, lifecycleManager, transactionManager, contributor, actionSpec, owningObject, this, manager, messageBroker, servicesManager);
+        public ITestAction CreateTestAction(string contributor, IActionSpec actionSpec, ITestHasActions owningObject) => new TestAction(framework, contributor, actionSpec, owningObject, this);
 
-        public ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject) => new TestProperty(persistor, field, owningObject, this, manager);
+        public ITestProperty CreateTestProperty(IAssociationSpec field, ITestHasActions owningObject) => new TestProperty(framework.Persistor, field, owningObject, this, framework.NakedObjectManager);
 
         public ITestParameter CreateTestParameter(IActionSpec actionSpec, IActionParameterSpec parameterSpec, ITestHasActions owningObject) => new TestParameter(parameterSpec, owningObject, this);
 
