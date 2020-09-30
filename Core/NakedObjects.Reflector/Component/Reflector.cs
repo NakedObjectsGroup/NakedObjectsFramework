@@ -47,7 +47,7 @@ namespace NakedObjects.Reflect.Component {
             this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
             facetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
-            FacetFactorySet = new FacetFactorySet(facetFactories.ToArray());
+            ObjectFacetFactorySet = new FacetFactorySet(facetFactories.ToArray());
         }
 
         #region IReflector Members
@@ -58,7 +58,7 @@ namespace NakedObjects.Reflect.Component {
 
         public IClassStrategy ClassStrategy { get; }
 
-        public IFacetFactorySet FacetFactorySet { get; }
+        public IFacetFactorySet ObjectFacetFactorySet { get; }
 
         public IMetamodel Metamodel => metamodel;
 

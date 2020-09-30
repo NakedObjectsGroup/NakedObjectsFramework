@@ -19,8 +19,8 @@ namespace NakedObjects.ParallelReflect.Test {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
             (_, metamodel) = reflector.LoadSpecification(typeof(IEnumerable<char>), metamodel);
             (_, metamodel) = reflector.LoadSpecification(typeof(string), metamodel);
-            (_, metamodel) = reflector.IntrospectSpecification(typeof(IEnumerable<char>), metamodel, () => new Introspector(reflector, reflector.FacetFactorySet, null));
-            return reflector.IntrospectSpecification(typeof(string), metamodel, () => new Introspector(reflector, reflector.FacetFactorySet, null));
+            (_, metamodel) = reflector.IntrospectSpecification(typeof(IEnumerable<char>), metamodel, () => new Introspector(reflector, reflector.ObjectFacetFactorySet, null));
+            return reflector.IntrospectSpecification(typeof(string), metamodel, () => new Introspector(reflector, reflector.ObjectFacetFactorySet, null));
         }
 
         [TestMethod]

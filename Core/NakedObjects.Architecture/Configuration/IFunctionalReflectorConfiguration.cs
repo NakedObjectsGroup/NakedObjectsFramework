@@ -6,14 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Reflection;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Menu;
 
 namespace NakedObjects.Architecture.Configuration {
     public interface IFunctionalReflectorConfiguration {
         Type[] Types { get; }
-
         Type[] Functions { get; }
-
         Type[] Services { get; }
+        bool ConcurrencyChecking { get; }
+        bool IgnoreCase { get; }
+
+        Func<IMenuFactory, IMenu[]> MainMenus { get; }
+        bool HasConfig();
     }
 }

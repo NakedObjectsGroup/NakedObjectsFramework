@@ -59,5 +59,7 @@ namespace NakedObjects.Architecture.Configuration {
         ///     A convenience flag to switch concurrency checking globally off. For testing or debugging use
         /// </summary>
         bool ConcurrencyChecking { get; }
+
+        bool HasConfig();
     }
 }

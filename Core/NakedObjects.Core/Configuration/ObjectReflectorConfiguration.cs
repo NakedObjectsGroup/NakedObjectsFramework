@@ -104,6 +104,8 @@ namespace NakedObjects.Core.Configuration {
         public Type[] TypesToIntrospect { get; }
         public bool IgnoreCase { get; }
         public bool ConcurrencyChecking { get; }
+        public bool HasConfig() => TypesToIntrospect.Any() && Services.Any();
+
         public Type[] Services { get; }
         public Func<IMenuFactory, IMenu[]> MainMenus { get; }
         public string[] ModelNamespaces { get; }

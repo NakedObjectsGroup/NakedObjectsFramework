@@ -8,14 +8,21 @@
 using System;
 using System.Linq;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Core.Framework;
-using NakedObjects.Service;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Menu;
 
 namespace NakedObjects.Core.Configuration {
     public class FunctionalReflectorConfiguration : IFunctionalReflectorConfiguration {
-        public FunctionalReflectorConfiguration(Type[] types, Type[] functions) {
+        public FunctionalReflectorConfiguration(Type[] types,
+                                                Type[] functions,
+                                                string[] modelNamespaces = null,
+                                                Func<IMenuFactory, IMenu[]> mainMenus = null,
+                                                bool concurrencyChecking = true) {
             Types = types;
             Functions = functions;
+            MainMenus = mainMenus;
+            ConcurrencyChecking = concurrencyChecking;
+            IgnoreCase = false;
         }
 
         #region IFunctionalReflectorConfiguration Members
@@ -24,9 +31,12 @@ namespace NakedObjects.Core.Configuration {
         public Type[] Functions { get; }
 
         public Type[] Services => HasConfig() ? new[] {typeof(MenuFunctions)} : new Type[] { };
+        public bool ConcurrencyChecking { get;  }
+        public bool IgnoreCase { get; }
+        public Func<IMenuFactory, IMenu[]> MainMenus { get; }
 
         #endregion
 
-        private bool HasConfig() => Types?.Any() == true || Functions?.Any() == true;
+        public bool HasConfig() => Types?.Any() == true || Functions?.Any() == true;
     }
 }
