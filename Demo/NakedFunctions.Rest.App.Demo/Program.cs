@@ -22,7 +22,7 @@ namespace NakedObjects.Rest.App.Demo {
             Host.CreateDefaultBuilder(args)
                 .ConfigureLogging(logging => {
                     // Clear default logging providers so we just log to log4net
-                    //logging.ClearProviders();
+                    logging.ClearProviders();
                 })
                 .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder.UseStartup<Startup>();

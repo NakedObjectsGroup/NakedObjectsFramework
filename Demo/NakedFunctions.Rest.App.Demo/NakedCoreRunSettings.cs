@@ -6,30 +6,22 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using AdventureWorksFunctionalModel;
 using AdventureWorksModel;
+using AdventureWorksModel.Sales;
 using Microsoft.Extensions.Configuration;
-using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
+using NakedObjects.Meta.Audit;
+using NakedObjects.Meta.Authorization;
 using NakedObjects.Persistor.Entity.Configuration;
 
 namespace NakedObjects.Rest.App.Demo {
-    public static class NakedObjectsRunSettings {
-        private static string[] ModelNamespaces => new[] {"AdventureWorksModel"};
-
-        private static Type[] Types => new Type[] { };
-
-        private static Type[] Services => AWModelConfiguration.Services().ToArray();
-
-        public static IMenu[] MainMenus(IMenuFactory factory) => AWModelConfiguration.MainMenus().Select(kvp => factory.NewMenu(kvp.Value, true, kvp.Key)).ToArray();
-
-        public static IObjectReflectorConfiguration ObjectReflectorConfig() {
-            ObjectReflectorConfiguration.NoValidate = true;
-            return new ObjectReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
-        }
+    public static class NakedCoreRunSettings {
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration) {
             var config = new EntityObjectStoreConfiguration();
@@ -37,5 +29,9 @@ namespace NakedObjects.Rest.App.Demo {
             config.UsingContext(() => new AdventureWorksContext(cs));
             return config;
         }
+
+        public static IAuditConfiguration AuditConfig() => null;
+
+        public static IAuthorizationConfiguration AuthorizationConfig() => null;
     }
 }

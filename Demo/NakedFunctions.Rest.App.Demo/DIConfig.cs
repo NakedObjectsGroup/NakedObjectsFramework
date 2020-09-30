@@ -29,31 +29,24 @@ namespace NakedObjects.Rest.App.Demo {
     }
 
     /// <summary>
-    /// Specifies the Unity configuration for the main container.
+    ///     Specifies the Unity configuration for the main container.
     /// </summary>
     public static class DIConfig {
-        /// <summary>Registers the type mappings with the Unity container.</summary>
-        /// <param name="services"></param>
-        /// <param name="configuration"></param>
-        /// <param name="container">The unity container to configure.</param>
-        /// <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
-        /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
-        public static void AddNakedObjects(this IServiceCollection services, IConfiguration configuration) {
-            // NOTE: To load from web.config uncomment the line below. Make sure to add a Microsoft.Practices.Unity.Configuration to the using statements.
-            // container.LoadConfiguration();
-            //Standard configuration
+
+        private static bool coreAdded = false; 
+
+        public static void AddNakedCore(this IServiceCollection services, IConfiguration configuration) {
+          
+
+            if (coreAdded) {
+                return;
+            }
 
             ParallelConfig.RegisterStandardFacetFactories(services);
             ParallelConfig.RegisterCoreSingletonTypes(services);
             ParallelConfig.RegisterCoreScopedTypes(services);
 
-
-            // config 
-            services.AddSingleton<IReflectorConfiguration>(p => NakedObjectsRunSettings.ReflectorConfig());
-
-            services.AddSingleton<IFunctionalReflectorConfiguration>(p => NakedObjectsRunSettings.FunctionalReflectorConfig());
-
-            services.AddSingleton<IEntityObjectStoreConfiguration>(p => NakedObjectsRunSettings.EntityObjectStoreConfig(configuration));
+            services.AddSingleton<IEntityObjectStoreConfiguration>(p => NakedCoreRunSettings.EntityObjectStoreConfig(configuration));
 
             // frameworkFacade
             services.AddTransient<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>();
@@ -64,7 +57,19 @@ namespace NakedObjects.Rest.App.Demo {
 
             //Externals
             services.AddScoped<IPrincipal>(p => p.GetService<IHttpContextAccessor>().HttpContext.User);
+
+            coreAdded = true;
         }
 
+        public static void AddNakedObjects(this IServiceCollection services, IConfiguration configuration) {
+            AddNakedCore(services, configuration);
+            services.AddSingleton<IObjectReflectorConfiguration>(p => NakedObjectsRunSettings.ObjectReflectorConfig());
+        }
+
+        public static void AddNakedFunctions(this IServiceCollection services, IConfiguration configuration) {
+            AddNakedCore(services, configuration);
+            ParallelConfig.RegisterWellKnownServices(services);
+            services.AddSingleton<IFunctionalReflectorConfiguration>(p => NakedFunctionsRunSettings.FunctionalReflectorConfig());
+        }
     }
 }

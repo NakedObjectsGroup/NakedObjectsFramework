@@ -32,6 +32,7 @@ namespace NakedObjects.Rest.App.Demo {
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedObjects(Configuration);
+            services.AddNakedFunctions(Configuration);
 
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
@@ -55,7 +56,7 @@ namespace NakedObjects.Rest.App.Demo {
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IReflector reflector, ILoggerFactory loggerFactory) {
             
             // for Demo use Log4Net. Configured in log4net.config  
-            //loggerFactory.AddLog4Net();
+            loggerFactory.AddLog4Net();
             
             reflector.Reflect();
 
