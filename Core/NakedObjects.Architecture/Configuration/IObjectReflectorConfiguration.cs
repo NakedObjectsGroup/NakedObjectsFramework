@@ -47,7 +47,7 @@ namespace NakedObjects.Architecture.Configuration {
         ///     Specify a function that can create the array of main menus, having been passed-in an
         ///     implementation of IMenuFactory.
         /// </summary>
-        Func<IMenuFactory, IMenu[]> MainMenus { get; }
+        List<(Type rootType, string name, bool allActions, Action<IMenu> action)> MainMenus { get; }
 
         /// <summary>
         ///     Instructs the reflector to ignore case on method names i.e. not to enforce the

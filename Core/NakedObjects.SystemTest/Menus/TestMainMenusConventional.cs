@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
@@ -49,7 +50,7 @@ namespace NakedObjects.SystemTest.Menus.Service2 {
             MenusDbContext.Delete();
         }
 
-        protected override IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
+        protected override (Type rootType, string name, bool allActions, Action<IMenu> action)[] MainMenus() => LocalMainMenus.MainMenus();
 
         [Test]
         public virtual void TestActionVisibility() {
@@ -163,37 +164,77 @@ namespace NakedObjects.SystemTest.Menus.Service2 {
     #region Classes used in test
 
     public class LocalMainMenus {
-        public static IMenu[] MainMenus(IMenuFactory factory) {
-            var foos = factory.NewMenu<FooService>(true);
-            var bars = factory.NewMenu<BarService>(true);
+        public static (Type rootType, string name, bool allActions, Action<IMenu>)[] MainMenus() {
+            //var foos = factory.NewMenu<FooService>(true);
+            //var bars = factory.NewMenu<BarService>(true);
 
-            var q = factory.NewMenu<QuxService>(false, "Qs");
-            q.AddAction("QuxAction0");
-            q.AddAction("QuxAction3");
-            q.AddRemainingNativeActions();
+            (Type rootType, string name, bool allActions, Action<IMenu>) foos = (typeof(FooService), null, true, null);
 
-            var subs = factory.NewMenu<ServiceWithSubMenus>();
-            var sub1 = subs.CreateSubMenu("Sub1");
-            sub1.AddAction("Action1");
-            sub1.AddAction("Action3");
-            var sub2 = subs.CreateSubMenu("Sub2");
-            sub2.AddAction("Action2");
-            sub2.AddAction("Action0");
+            (Type rootType, string name, bool allActions, Action<IMenu>) bars = (typeof(BarService), null, true, null);
 
-            var hyb = factory.NewMenu<object>(false, "Hybrid");
-            hyb.Type = typeof(FooService);
-            hyb.AddAction("FooAction0");
-            hyb.Type = typeof(BarService);
-            hyb.AddAction("BarAction0");
-            hyb.Type = typeof(QuxService);
-            hyb.AddRemainingNativeActions();
+            //var q = factory.NewMenu<QuxService>(false, "Qs");
+            //q.AddAction("QuxAction0");
+            //q.AddAction("QuxAction3");
+            //q.AddRemainingNativeActions();
 
-            var empty = factory.NewMenu<object>(false, "Empty");
+            (Type rootType, string name, bool allActions, Action<IMenu>) q = (typeof(QuxService), "Qs", false, menu => {
+                        menu.AddAction("QuxAction0");
+                        menu.AddAction("QuxAction3");
+                        menu.AddRemainingNativeActions();
+                    }
+                );
 
-            var empty2 = factory.NewMenu<object>(false, "Empty2");
-            empty2.CreateSubMenu("Sub");
+
+            //var subs = factory.NewMenu<ServiceWithSubMenus>();
+            //var sub1 = subs.CreateSubMenu("Sub1");
+            //sub1.AddAction("Action1");
+            //sub1.AddAction("Action3");
+            //var sub2 = subs.CreateSubMenu("Sub2");
+            //sub2.AddAction("Action2");
+            //sub2.AddAction("Action0");
+
+            (Type rootType, string name, bool allActions, Action<IMenu>) subs = (typeof(ServiceWithSubMenus), null, false, menu => {
+                        var sub1 = menu.CreateSubMenu("Sub1");
+                        sub1.AddAction("Action1");
+                        sub1.AddAction("Action3");
+                        var sub2 = menu.CreateSubMenu("Sub2");
+                        sub2.AddAction("Action2");
+                        sub2.AddAction("Action0");
+                    }
+                );
+
+
+            //var hyb = factory.NewMenu<object>(false, "Hybrid");
+            //hyb.Type = typeof(FooService);
+            //hyb.AddAction("FooAction0");
+            //hyb.Type = typeof(BarService);
+            //hyb.AddAction("BarAction0");
+            //hyb.Type = typeof(QuxService);
+            //hyb.AddRemainingNativeActions();
+
+            (Type rootType, string name, bool allActions, Action<IMenu>) hyb = (typeof(object), "Hybrid", false, menu => {
+                        menu.Type = typeof(FooService);
+                        menu.AddAction("FooAction0");
+                        menu.Type = typeof(BarService);
+                        menu.AddAction("BarAction0");
+                        menu.Type = typeof(QuxService);
+                        menu.AddRemainingNativeActions();
+                    }
+                );
+
+
+            //var empty = factory.NewMenu<object>(false, "Empty");
+
+            //var empty2 = factory.NewMenu<object>(false, "Empty2");
+            //empty2.CreateSubMenu("Sub");
+
+            (Type rootType, string name, bool allActions, Action<IMenu>) empty = (typeof(object), "Empty", false, null);
+
+            (Type rootType, string name, bool allActions, Action<IMenu>) empty2 = (typeof(object), "Empty2", false, menu => { menu.CreateSubMenu("Sub"); }   );
 
             return new[] {foos, bars, q, subs, hyb, empty, empty2};
+
+            //return Array.Empty<(Type, string, bool)>();
         }
     }
 

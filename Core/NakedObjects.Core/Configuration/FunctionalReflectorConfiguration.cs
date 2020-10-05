@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
@@ -16,7 +18,7 @@ namespace NakedObjects.Core.Configuration {
         public FunctionalReflectorConfiguration(Type[] types,
                                                 Type[] functions,
                                                 string[] modelNamespaces = null,
-                                                Func<IMenuFactory, IMenu[]> mainMenus = null,
+                                                List<(Type rootType, string name, bool allActions, Action<IMenu> action)> mainMenus = null,
                                                 bool concurrencyChecking = true) {
             Types = types;
             Functions = functions;
@@ -33,7 +35,7 @@ namespace NakedObjects.Core.Configuration {
         public Type[] Services => HasConfig() ? new[] {typeof(MenuFunctions)} : new Type[] { };
         public bool ConcurrencyChecking { get;  }
         public bool IgnoreCase { get; }
-        public Func<IMenuFactory, IMenu[]> MainMenus { get; }
+        public List<(Type rootType, string name, bool allActions, Action<IMenu> action)> MainMenus { get; }
 
         #endregion
 

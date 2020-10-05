@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
@@ -14,15 +15,18 @@ namespace NakedObjects.Core.Configuration {
     [Serializable]
     [Obsolete("Use ObjectReflectorConfiguration")]
     public class ReflectorConfiguration : ObjectReflectorConfiguration, IReflectorConfiguration {
+
         public ReflectorConfiguration(Type[] typesToIntrospect,
                                       Type[] services,
                                       string[] modelNamespaces,
-                                      Func<IMenuFactory, IMenu[]> mainMenus = null,
+                                      List<(Type rootType, string name, bool allActions, Action<IMenu> action)> mainMenus = null,
                                       bool concurrencyChecking = true) : base(typesToIntrospect, services, modelNamespaces, mainMenus, concurrencyChecking) { }
 
 
         #region IObjectReflectorConfiguration Members
 
         #endregion
+
+       
     }
 }

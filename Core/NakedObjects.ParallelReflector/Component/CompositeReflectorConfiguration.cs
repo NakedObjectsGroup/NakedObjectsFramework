@@ -12,7 +12,7 @@ namespace NakedObjects.ParallelReflect.Component {
         public Type[] Services => Array.Empty<Type>();
         public string[] ModelNamespaces => Array.Empty<string>();
         public List<Type> SupportedSystemTypes => new List<Type>();
-        public Func<IMenuFactory, IMenu[]> MainMenus => null;
+        public List<(Type rootType, string name, bool allActions, Action<IMenu> action)> MainMenus => null;
         public bool IgnoreCase => false;
         public bool ConcurrencyChecking => true;
         public bool HasConfig() => false;
@@ -25,7 +25,7 @@ namespace NakedObjects.ParallelReflect.Component {
         public Type[] Services => Array.Empty<Type>();
         public bool ConcurrencyChecking => true;
         public bool IgnoreCase => false;
-        public Func<IMenuFactory, IMenu[]> MainMenus => null;
+        public List<(Type rootType, string name, bool allActions, Action<IMenu> action)> MainMenus => null;
         public bool HasConfig() => false;
     }
 
@@ -79,17 +79,31 @@ namespace NakedObjects.ParallelReflect.Component {
 
         public Func<IMenuFactory, IMenu[]> MainMenus() =>
             mf => {
-                var om = objectReflectorConfiguration.MainMenus?.Invoke(mf);
-                var fm = functionalReflectorConfiguration.MainMenus?.Invoke(mf);
+                var omm = objectReflectorConfiguration.MainMenus;
+                var fmm = functionalReflectorConfiguration.MainMenus;
+                IMenu[] menus = null;
 
-                if (om is null && fm is null) {
-                    return null;
+                if (omm is not null && omm.Any()) {
+                    menus = omm.Select(tuple => {
+                        var (type, name, addAll, action) = tuple;
+                        var menu = mf.NewMenu(type, addAll, name);
+                        action?.Invoke(menu);
+                        return menu;
+                    }).ToArray();
                 }
 
-                fm ??= Array.Empty<IMenu>();
-                om ??= Array.Empty<IMenu>();
+                if (fmm is not null && fmm.Any()) {
+                    menus ??= new IMenu[] { };
+                    menus = menus.Union(fmm.Select(tuple => {
+                        var (type, name, addAll, action) = tuple;
+                        var menu = mf.NewMenu(type, addAll, name);
+                        action?.Invoke(menu);
+                        return menu;
+                    })).ToArray();
+                }
 
-                return om.Union(fm).ToArray();
+
+                return menus;
             };
 
         private static Type EnsureGenericTypeIsComplete(Type type) {

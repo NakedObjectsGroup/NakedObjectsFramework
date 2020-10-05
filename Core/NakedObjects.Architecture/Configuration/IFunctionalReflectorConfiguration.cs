@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
 
@@ -17,7 +18,7 @@ namespace NakedObjects.Architecture.Configuration {
         bool ConcurrencyChecking { get; }
         bool IgnoreCase { get; }
 
-        Func<IMenuFactory, IMenu[]> MainMenus { get; }
+        List<(Type rootType, string name, bool allActions, Action<IMenu> action)> MainMenus { get; }
         bool HasConfig();
     }
 }

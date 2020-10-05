@@ -93,7 +93,7 @@ namespace NakedObjects.Xat {
                     Types ?? new Type[] { },
                     Services,
                     Namespaces ?? new string[] { },
-                    MainMenus);
+                    MainMenus()?.ToList());
                 ObjectReflectorConfiguration.NoValidate = true;
                 return reflectorConfig;
             }
@@ -128,7 +128,7 @@ namespace NakedObjects.Xat {
         /// </summary>
         protected virtual IServiceProvider GetConfiguredContainer() => scopeServiceProvider;
 
-        protected virtual IMenu[] MainMenus(IMenuFactory factory) => null; //Allows tests not to define menus if not needed.
+        protected virtual (Type rootType, string name, bool allActions, Action<IMenu> action)[] MainMenus() => null; //Allows tests not to define menus if not needed.
 
         protected virtual void StartTest() {
             ServiceScope = RootServiceProvider.CreateScope();
