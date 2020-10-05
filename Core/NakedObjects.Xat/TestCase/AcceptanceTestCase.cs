@@ -128,7 +128,7 @@ namespace NakedObjects.Xat {
         /// </summary>
         protected virtual IServiceProvider GetConfiguredContainer() => scopeServiceProvider;
 
-        protected virtual (Type rootType, string name, bool allActions, Action<IMenu> action)[] MainMenus() => null; //Allows tests not to define menus if not needed.
+        protected virtual (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus() => null; //Allows tests not to define menus if not needed.
 
         protected virtual void StartTest() {
             ServiceScope = RootServiceProvider.CreateScope();

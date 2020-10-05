@@ -12,7 +12,6 @@ using System.Data.Entity.Core.Objects.DataClasses;
 using System.Drawing;
 using System.Linq;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
 using NakedObjects.Value;
 
@@ -82,10 +81,10 @@ namespace NakedObjects.Core.Configuration {
         };
 
         public ObjectReflectorConfiguration(Type[] typesToIntrospect,
-                                      Type[] services,
-                                      string[] modelNamespaces,
-                                      List<(Type rootType, string name, bool allActions, Action<IMenu>)> mainMenus = null,
-                                      bool concurrencyChecking = true) {
+                                            Type[] services,
+                                            string[] modelNamespaces,
+                                            List<(Type rootType, string name, bool allActions, Action<IMenu> customConstruction)> mainMenus = null,
+                                            bool concurrencyChecking = true) {
             ModelNamespaces = modelNamespaces;
             SupportedSystemTypes = defaultSystemTypes.ToList();
             TypesToIntrospect = typesToIntrospect;
@@ -98,20 +97,6 @@ namespace NakedObjects.Core.Configuration {
 
         // for testing
         public static bool NoValidate { get; set; }
-
-        #region IObjectReflectorConfiguration Members
-
-        public Type[] TypesToIntrospect { get; }
-        public bool IgnoreCase { get; }
-        public bool ConcurrencyChecking { get; }
-        public bool HasConfig() => TypesToIntrospect.Any() && Services.Any();
-
-        public Type[] Services { get; }
-        public List<(Type rootType, string name, bool allActions, Action<IMenu> action)> MainMenus { get; }
-        public string[] ModelNamespaces { get; }
-        public List<Type> SupportedSystemTypes { get; }
-
-        #endregion
 
         private void ValidateConfig() {
             if (NoValidate) {
@@ -135,5 +120,19 @@ namespace NakedObjects.Core.Configuration {
                 throw new InitialisationException(msg);
             }
         }
+
+        #region IObjectReflectorConfiguration Members
+
+        public Type[] TypesToIntrospect { get; }
+        public bool IgnoreCase { get; }
+        public bool ConcurrencyChecking { get; }
+        public bool HasConfig() => TypesToIntrospect.Any() && Services.Any();
+
+        public Type[] Services { get; }
+        public List<(Type rootType, string name, bool allActions, Action<IMenu> customConstruction)> MainMenus { get; }
+        public string[] ModelNamespaces { get; }
+        public List<Type> SupportedSystemTypes { get; }
+
+        #endregion
     }
 }

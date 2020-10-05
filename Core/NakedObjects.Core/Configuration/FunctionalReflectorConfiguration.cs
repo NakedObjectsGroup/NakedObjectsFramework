@@ -6,11 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
 
 namespace NakedObjects.Core.Configuration {
@@ -18,7 +16,7 @@ namespace NakedObjects.Core.Configuration {
         public FunctionalReflectorConfiguration(Type[] types,
                                                 Type[] functions,
                                                 string[] modelNamespaces = null,
-                                                List<(Type rootType, string name, bool allActions, Action<IMenu> action)> mainMenus = null,
+                                                List<(Type rootType, string name, bool allActions, Action<IMenu> customConstruction)> mainMenus = null,
                                                 bool concurrencyChecking = true) {
             Types = types;
             Functions = functions;
@@ -27,18 +25,18 @@ namespace NakedObjects.Core.Configuration {
             IgnoreCase = false;
         }
 
+        public bool HasConfig() => Types?.Any() == true || Functions?.Any() == true;
+
         #region IFunctionalReflectorConfiguration Members
 
         public Type[] Types { get; }
         public Type[] Functions { get; }
 
         public Type[] Services => HasConfig() ? new[] {typeof(MenuFunctions)} : new Type[] { };
-        public bool ConcurrencyChecking { get;  }
+        public bool ConcurrencyChecking { get; }
         public bool IgnoreCase { get; }
-        public List<(Type rootType, string name, bool allActions, Action<IMenu> action)> MainMenus { get; }
+        public List<(Type rootType, string name, bool allActions, Action<IMenu> customConstruction)> MainMenus { get; }
 
         #endregion
-
-        public bool HasConfig() => Types?.Any() == true || Functions?.Any() == true;
     }
 }

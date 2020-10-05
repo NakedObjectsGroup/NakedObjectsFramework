@@ -152,7 +152,6 @@ namespace NakedObjects.Reflect.Component {
             var menuList = config.MainMenus;
 
             if (menuList is not null && menuList.Any()) {
-
                 var menus = menuList.Select(tuple => {
                     var (type, name, addAll, action) = tuple;
                     var menu = menuFactory.NewMenu(type, addAll, name);
@@ -160,19 +159,14 @@ namespace NakedObjects.Reflect.Component {
                     return menu;
                 }).ToArray();
 
-                //var menus = config.MainMenus?.Invoke(menuFactory);
-                // Unlike other things specified in config, this one can't be checked when ObjectReflectorConfiguration is constructed.
-                // Allows developer to deliberately not specify any menus
-                //if (menus != null) {
-                    if (!menus.Any()) {
-                        //Catches accidental non-specification of menus
-                        throw new ReflectionException(logger.LogAndReturn("No MainMenus specified."));
-                    }
+                if (!menus.Any()) {
+                    //Catches accidental non-specification of menus
+                    throw new ReflectionException(logger.LogAndReturn("No MainMenus specified."));
+                }
 
-                    foreach (var menu in menus.OfType<IMenuImmutable>()) {
-                        metamodel.AddMainMenu(menu);
-                    }
-                //}
+                foreach (var menu in menus.OfType<IMenuImmutable>()) {
+                    metamodel.AddMainMenu(menu);
+                }
             }
         }
 

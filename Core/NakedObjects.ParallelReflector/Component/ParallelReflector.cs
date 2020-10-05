@@ -244,7 +244,6 @@ namespace NakedObjects.ParallelReflect.Component {
                     metamodel.AddMainMenu(menu);
                 }
             }
-
         }
 
         private static void InstallObjectMenus(IMetamodelBuilder metamodel) {

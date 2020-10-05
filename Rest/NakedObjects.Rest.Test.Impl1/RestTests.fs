@@ -73,14 +73,10 @@ type Tests() =
 
         override x.Namespaces = [| "RestfulObjects.Test.Data" |]
 
-        override x.MainMenus ()  = 
-            //let menu1 = factory.NewMenu<RestDataRepository>(true)
-            //let menu2 = factory.NewMenu<WithActionService>(true)
-            //let menu3 = factory.NewMenu<ContributorService>(true)
-            //[| menu1; menu2; menu3 |]
+        override x.MainMenus() = 
             [| (typeof<RestDataRepository>, null, true, null);
-              (typeof<WithActionService>, null, true, null);
-              (typeof<ContributorService>, null, true, null) |]
+               (typeof<WithActionService>, null, true, null);
+               (typeof<ContributorService>, null, true, null) |]
 
         override x.Persistor =
             let config = new EntityObjectStoreConfiguration()

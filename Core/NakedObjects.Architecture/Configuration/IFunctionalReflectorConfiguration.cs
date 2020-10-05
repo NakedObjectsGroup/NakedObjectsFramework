@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
 
 namespace NakedObjects.Architecture.Configuration {
@@ -18,7 +17,7 @@ namespace NakedObjects.Architecture.Configuration {
         bool ConcurrencyChecking { get; }
         bool IgnoreCase { get; }
 
-        List<(Type rootType, string name, bool allActions, Action<IMenu> action)> MainMenus { get; }
+        List<(Type rootType, string name, bool allActions, Action<IMenu> customConstruction)> MainMenus { get; }
         bool HasConfig();
     }
 }

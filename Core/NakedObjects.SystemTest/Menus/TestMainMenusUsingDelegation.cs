@@ -50,7 +50,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
             MenusDbContext.Delete();
         }
 
-        protected override (Type rootType, string name, bool allActions, Action<IMenu> action)[] MainMenus() => LocalMainMenus.MainMenus();
+        protected override (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus() => LocalMainMenus.MainMenus();
 
         [Test]
         public virtual void TestMainMenus() {
@@ -73,40 +73,12 @@ namespace NakedObjects.SystemTest.Menus.Service {
     #region Classes used in test
 
     public class LocalMainMenus {
-        public static (Type rootType, string name, bool allActions, Action<IMenu> action)[] MainMenus() {
-            //var menuDefs = new Dictionary<Type, Action<IMenu>> {
-            //    {typeof(FooService), FooService.Menu},
-            //    {typeof(BarService), BarService.Menu},
-            //    {typeof(ServiceWithSubMenus), ServiceWithSubMenus.Menu}
-            //};
-
-            ////var menus = new List<IMenu>();
-            //foreach (var menuDef in menuDefs)
-            //{
-            //    var menu = factory.NewMenu(menuDef.Key);
-            //    menuDef.Value(menu);
-            //    menus.Add(menu);
-            //}
-
-            ////return menus.ToArray();
-
-            //return Array.Empty<(Type, string, bool)>();
-
-            return new (Type rootType, string name, bool allActions, Action<IMenu> action)[] {
-                (typeof(FooService), null, false, menu => menu.AddRemainingNativeActions()),
-                (typeof(BarService), null, true, menu => menu.AddRemainingNativeActions()),
-                (typeof(ServiceWithSubMenus), null, true, menu => {
-                    var sub1 = menu.CreateSubMenu("Sub1");
-                    sub1.AddAction("Action1");
-                    sub1.AddAction("Action3");
-                    var sub2 = menu.CreateSubMenu("Sub2");
-                    sub2.AddAction("Action2");
-                    sub2.AddAction("Action0");
-                })
+        public static (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus() =>
+            new (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] {
+                (typeof(FooService), null, false, FooService.Menu),
+                (typeof(BarService), null, true, BarService.Menu),
+                (typeof(ServiceWithSubMenus), null, true, ServiceWithSubMenus.Menu)
             };
-
-
-        }
     }
 
     public class FooService {

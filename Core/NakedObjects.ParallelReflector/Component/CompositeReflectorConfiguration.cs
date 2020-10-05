@@ -1,4 +1,11 @@
-﻿using System;
+﻿// Copyright Naked Objects Group Ltd, 45 Station Road, Henley on Thames, UK, RG9 1AT
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+// Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Configuration;
@@ -12,7 +19,7 @@ namespace NakedObjects.ParallelReflect.Component {
         public Type[] Services => Array.Empty<Type>();
         public string[] ModelNamespaces => Array.Empty<string>();
         public List<Type> SupportedSystemTypes => new List<Type>();
-        public List<(Type rootType, string name, bool allActions, Action<IMenu> action)> MainMenus => null;
+        public List<(Type rootType, string name, bool allActions, Action<IMenu> customConstruction)> MainMenus => null;
         public bool IgnoreCase => false;
         public bool ConcurrencyChecking => true;
         public bool HasConfig() => false;
@@ -25,7 +32,7 @@ namespace NakedObjects.ParallelReflect.Component {
         public Type[] Services => Array.Empty<Type>();
         public bool ConcurrencyChecking => true;
         public bool IgnoreCase => false;
-        public List<(Type rootType, string name, bool allActions, Action<IMenu> action)> MainMenus => null;
+        public List<(Type rootType, string name, bool allActions, Action<IMenu> customConstruction)> MainMenus => null;
         public bool HasConfig() => false;
     }
 
@@ -64,7 +71,7 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         public bool ConcurrencyChecking { get; }
-        
+
         public bool IgnoreCase { get; }
 
         public Type[] Services => objectReflectorConfiguration.Services.Union(functionalReflectorConfiguration.Services).ToArray();
