@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using AdventureWorksFunctionalModel;
 using AdventureWorksModel;
@@ -24,11 +25,12 @@ namespace NakedObjects.Rest.App.Demo {
 
         private static Type[] Services => AWModelConfiguration.Services().ToArray();
 
-        public static IMenu[] MainMenus(IMenuFactory factory) => AWModelConfiguration.MainMenus().Select(kvp => factory.NewMenu(kvp.Value, true, kvp.Key)).ToArray();
+        public static List<(Type rootType, string name, bool allActions, Action<IMenu> customConstruction)> MainMenus() =>
+            AWModelConfiguration.MainMenus().Select(t => (t.rootType, t.name, true, (Action<IMenu>) null)).ToList();
 
         public static IObjectReflectorConfiguration ObjectReflectorConfig() {
             ObjectReflectorConfiguration.NoValidate = true;
-            return new ObjectReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
+            return new ObjectReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus());
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration) {

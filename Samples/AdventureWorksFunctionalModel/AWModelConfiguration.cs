@@ -21,10 +21,9 @@ namespace AdventureWorksFunctionalModel
         //Under the covers, and within the server project, this could be converted to the NO programming model via this code,
         //which does use IMenu and IMenuFactory:
         //static IMenu[] MainMenus2(IMenuFactory factory) => MainMenus().Select(m => factory.NewMenu(m.Value, true, m.Key)).ToArray();
-        public static IDictionary<string, Type> MainMenus() => new Dictionary<string, Type>()
-        {
-            ["Products"] = typeof(ProductMenuFunctions),
-            ["Special Offers"] = typeof(SpecialOffer_MenuFunctions),
+        public static IList<(string name, Type rootType)> MainMenus() => new List<(string, Type)> {
+            ("Products", typeof(ProductMenuFunctions)),
+            ("Special Offers", typeof(SpecialOffer_MenuFunctions))
         };
 
         //Register static types that contain functions - all defined with 'extension method' syntax - that are to be contributed to a
