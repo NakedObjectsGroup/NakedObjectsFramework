@@ -5,6 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using System.Data.Entity;
+using System.Linq;
+using AdventureWorksFunctionalModel;
+using AdventureWorksModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +17,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
+using NakedObjects.DependencyInjection.Extensions;
+using NakedObjects.Menu;
 using Newtonsoft.Json;
 
 namespace NakedObjects.Rest.App.Demo {
@@ -25,14 +32,27 @@ namespace NakedObjects.Rest.App.Demo {
 
         public IConfiguration Configuration { get; }
 
+
+        private static Func<IConfiguration, DbContext> ContextInstaller =>
+            c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
-            services.AddNakedObjects(Configuration);
-            services.AddNakedFunctions(Configuration);
+            services.AddNakedCore(options => options.ContextInstallers = new[] { ContextInstaller });
+            services.AddNakedObjects(options => {
+                options.ModelNamespaces = new[] { "AdventureWorksModel" };
+                options.Services = AWModelConfiguration.Services().ToArray();
+                options.MainMenus = AWModelConfiguration.MainMenus().Select(t => (t.rootType, t.name, true, (Action<IMenu>)null)).ToArray();
+                options.NoValidate = true;
+            });
+            services.AddNakedFunctions(options => {
+                options.FunctionalTypes = AWModelConfiguration.DomainTypes().ToArray();
+                options.Functions = AWModelConfiguration.ObjectFunctions().ToArray();
+            });
 
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
