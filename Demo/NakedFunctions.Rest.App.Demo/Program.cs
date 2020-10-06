@@ -24,8 +24,6 @@ namespace NakedObjects.Rest.App.Demo {
                     // Clear default logging providers so we just log to log4net
                     logging.ClearProviders();
                 })
-                .ConfigureWebHostDefaults(webBuilder => {
-                    webBuilder.UseStartup<Startup>();
-                });
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }

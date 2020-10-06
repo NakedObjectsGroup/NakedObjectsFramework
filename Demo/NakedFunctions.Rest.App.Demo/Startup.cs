@@ -27,7 +27,6 @@ namespace NakedObjects.Rest.App.Demo {
 
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
-            RestfulObjectsConfig.RestPreStart();
         }
 
         public IConfiguration Configuration { get; }
@@ -53,6 +52,7 @@ namespace NakedObjects.Rest.App.Demo {
                 options.FunctionalTypes = AWModelConfiguration.DomainTypes().ToArray();
                 options.Functions = AWModelConfiguration.ObjectFunctions().ToArray();
             });
+            services.AddRestfulObjects();
 
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
@@ -86,7 +86,7 @@ namespace NakedObjects.Rest.App.Demo {
 
             app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
-            app.UseMvc(routeBuilder => RestfulObjectsConfig.RegisterRestfulObjectsRoutes(routeBuilder));
+            app.UseRestfulObjects();
         }
     }
 }
