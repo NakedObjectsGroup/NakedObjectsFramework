@@ -44,13 +44,13 @@ namespace NakedObjects.Rest.App.Demo {
             services.AddNakedCore(options => options.ContextInstallers = new[] { ContextInstaller });
             services.AddNakedObjects(options => {
                 options.ModelNamespaces = new[] { "AdventureWorksModel" };
-                options.Services = AWModelConfiguration.Services().ToArray();
-                options.MainMenus = AWModelConfiguration.MainMenus().Select(t => (t.rootType, t.name, true, (Action<IMenu>)null)).ToArray();
+                options.Services = AWNakedObjectsConfiguration.Services().ToArray();               
                 options.NoValidate = true;
             });
             services.AddNakedFunctions(options => {
-                options.FunctionalTypes = AWModelConfiguration.DomainTypes().ToArray();
-                options.Functions = AWModelConfiguration.ObjectFunctions().ToArray();
+                options.FunctionalTypes = AWNakedFunctionsConfiguration.DomainTypes().ToArray();
+                options.Functions = AWNakedFunctionsConfiguration.ObjectFunctions().ToArray();
+                options.MainMenus = AWNakedFunctionsConfiguration.MainMenus().Select(t => (t.rootType, t.name, true, (Action<IMenu>)null)).ToArray();
             });
             services.AddRestfulObjects();
 
