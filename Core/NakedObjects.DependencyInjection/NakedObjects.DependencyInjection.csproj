@@ -5,10 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.7" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Facade\NakedObjects.Facade.Impl\NakedObjects.Facade.Impl.csproj" />
+    <ProjectReference Include="..\..\Facade\NakedObjects.Facade\NakedObjects.Facade.csproj" />
     <ProjectReference Include="..\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj" />
     <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj" />
     <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />

@@ -46,7 +46,7 @@ namespace NakedFunctions.Rest.Test {
             }
         }
 
-        protected override (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus() => new (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] {(typeof(SimpleMenuFunctions), "Test menu", true, null)};
+        protected override (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus => new (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] {(typeof(SimpleMenuFunctions), "Test menu", true, null)};
 
         private IFunctionalReflectorConfiguration FunctionalReflectorConfiguration() => new FunctionalReflectorConfiguration(RecordTypes, FunctionTypes);
 

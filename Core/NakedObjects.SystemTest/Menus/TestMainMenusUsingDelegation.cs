@@ -50,7 +50,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
             MenusDbContext.Delete();
         }
 
-        protected override (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus() => LocalMainMenus.MainMenus();
+        protected override (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus => LocalMainMenus.MainMenus();
 
         [Test]
         public virtual void TestMainMenus() {

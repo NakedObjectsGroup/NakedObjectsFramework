@@ -19,7 +19,7 @@ namespace NakedObjects.ParallelReflect.Component {
         public Type[] Services => Array.Empty<Type>();
         public string[] ModelNamespaces => Array.Empty<string>();
         public List<Type> SupportedSystemTypes => new List<Type>();
-        public List<(Type rootType, string name, bool allActions, Action<IMenu> customConstruction)> MainMenus => null;
+        public (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus => null;
         public bool IgnoreCase => false;
         public bool ConcurrencyChecking => true;
         public bool HasConfig() => false;
@@ -32,7 +32,7 @@ namespace NakedObjects.ParallelReflect.Component {
         public Type[] Services => Array.Empty<Type>();
         public bool ConcurrencyChecking => true;
         public bool IgnoreCase => false;
-        public List<(Type rootType, string name, bool allActions, Action<IMenu> customConstruction)> MainMenus => null;
+        public (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus => null;
         public bool HasConfig() => false;
     }
 

@@ -16,7 +16,7 @@ namespace NakedObjects.Core.Configuration {
         public FunctionalReflectorConfiguration(Type[] types,
                                                 Type[] functions,
                                                 string[] modelNamespaces = null,
-                                                List<(Type rootType, string name, bool allActions, Action<IMenu> customConstruction)> mainMenus = null,
+                                                (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] mainMenus = null,
                                                 bool concurrencyChecking = true) {
             Types = types;
             Functions = functions;
@@ -35,7 +35,7 @@ namespace NakedObjects.Core.Configuration {
         public Type[] Services => HasConfig() ? new[] {typeof(MenuFunctions)} : new Type[] { };
         public bool ConcurrencyChecking { get; }
         public bool IgnoreCase { get; }
-        public List<(Type rootType, string name, bool allActions, Action<IMenu> customConstruction)> MainMenus { get; }
+        public (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus { get; }
 
         #endregion
     }

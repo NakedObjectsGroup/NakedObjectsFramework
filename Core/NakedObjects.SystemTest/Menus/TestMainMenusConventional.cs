@@ -48,7 +48,7 @@ namespace NakedObjects.SystemTest.Menus.Service2 {
 
         protected override string[] Namespaces => Types.Select(t => t.Namespace).Distinct().ToArray();
 
-        protected override (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus() => LocalMainMenus.MainMenus();
+        protected override (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus => LocalMainMenus.MainMenus();
 
         [Test]
         public virtual void TestActionVisibility() {

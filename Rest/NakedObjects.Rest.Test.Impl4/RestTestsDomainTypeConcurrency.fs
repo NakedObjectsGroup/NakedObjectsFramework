@@ -71,7 +71,7 @@ type Tests() =
 
         override x.Namespaces = [| "RestfulObjects.Test.Data" |]
 
-        override x.MainMenus() = 
+        override x.MainMenus = 
            [| (typeof<RestDataRepository>, null, true, null);
               (typeof<WithActionService>, null, true, null);
               (typeof<ContributorService>,null, true, null);

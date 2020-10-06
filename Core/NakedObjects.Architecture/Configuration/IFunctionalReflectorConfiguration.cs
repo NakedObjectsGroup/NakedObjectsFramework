@@ -17,7 +17,7 @@ namespace NakedObjects.Architecture.Configuration {
         bool ConcurrencyChecking { get; }
         bool IgnoreCase { get; }
 
-        List<(Type rootType, string name, bool allActions, Action<IMenu> customConstruction)> MainMenus { get; }
+        (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus { get; }
         bool HasConfig();
     }
 }

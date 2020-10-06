@@ -17,7 +17,7 @@ namespace NakedObjects.Core.Configuration {
         public ReflectorConfiguration(Type[] typesToIntrospect,
                                       Type[] services,
                                       string[] modelNamespaces,
-                                      List<(Type rootType, string name, bool allActions, Action<IMenu> customConstruction)> mainMenus = null,
+                                      (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] mainMenus = null,
                                       bool concurrencyChecking = true) : base(typesToIntrospect, services, modelNamespaces, mainMenus, concurrencyChecking) { }
 
 
