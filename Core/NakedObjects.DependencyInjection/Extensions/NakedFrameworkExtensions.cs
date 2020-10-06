@@ -9,7 +9,9 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Principal;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Configuration;
@@ -23,6 +25,7 @@ using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Rest;
 
 namespace NakedObjects.DependencyInjection.Extensions {
     public class InvariantStringHasher : IStringHasher {
@@ -45,6 +48,32 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public Type[] FunctionalTypes { get; set; } = Array.Empty<Type>();
         public Type[] Functions { get; set; } = Array.Empty<Type>();
         public (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus { get; set; }
+    }
+
+    public class RestfulObjectsOptions {
+
+        public bool DebugWarnings { get; set; } = true;
+
+        // to make whole application 'read only' 
+        public bool IsReadOnly { get; set; }
+
+        // to change cache settings (transactional, user, non-expiring) where 0 = no-cache
+        // 0, 3600, 86400 are the defaults 
+        // no caching makes debugging easier
+        public (int,int,int)  CacheSettings { get; set; } = (0, 3600, 86400);
+
+        // make Accept header handling non-strict (RO spec 2.4.4)
+        public bool AcceptHeaderStrict { get; set; }
+
+        // to change the size limit on returned collections. The default value is 20.  Specifying 0 means 'unlimited'.
+        public int DefaultPageSize { get; set; } = 50; 
+
+        // These flags control Member Representations - if true the 'details' will be included 
+        // in the the member. This will increase the size of the initial representation but reduce 
+        // the number of messages.   
+        public bool InlineDetailsInActionMemberRepresentations { get; set; }
+        public bool InlineDetailsInCollectionMemberRepresentations { get; set; }
+        public bool InlineDetailsInPropertyMemberRepresentations { get; set; }
     }
 
 
@@ -107,6 +136,25 @@ namespace NakedObjects.DependencyInjection.Extensions {
             services.AddSingleton<IFunctionalReflectorConfiguration>(p => FunctionalReflectorConfig(options));
         }
 
-        //public static void UseRestfulObjects(this IApplicationBuilder app, Action<IRouteBuilder> configureRoutes) { }
+        public static void AddRestfulObjects(this IServiceCollection services, Action<RestfulObjectsOptions> setupAction = null)
+        {
+            var options = new RestfulObjectsOptions();
+            setupAction?.Invoke(options);
+
+            // TODO configure with config object ?
+            RestfulObjectsControllerBase.DebugWarnings = options.DebugWarnings;
+            RestfulObjectsControllerBase.IsReadOnly = options.IsReadOnly;
+            RestfulObjectsControllerBase.CacheSettings = options.CacheSettings;
+            RestfulObjectsControllerBase.AcceptHeaderStrict = options.AcceptHeaderStrict;
+            RestfulObjectsControllerBase.DefaultPageSize = options.DefaultPageSize;
+            RestfulObjectsControllerBase.InlineDetailsInActionMemberRepresentations = options.InlineDetailsInActionMemberRepresentations;
+            RestfulObjectsControllerBase.InlineDetailsInCollectionMemberRepresentations = options.InlineDetailsInCollectionMemberRepresentations;
+            RestfulObjectsControllerBase.InlineDetailsInPropertyMemberRepresentations = options.InlineDetailsInPropertyMemberRepresentations;
+        }
+
+        public static void UseRestfulObjects(this IApplicationBuilder app, string restRoot = "") {
+            restRoot ??= "";
+            app.UseMvc(routeBuilder => RestfulObjectsRouting.AddRestRoutes(routeBuilder, restRoot));
+        }
     }
 }
