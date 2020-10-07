@@ -32,25 +32,22 @@ namespace NakedObjects.Rest.App.Demo {
         public IConfiguration Configuration { get; }
 
 
-        private static Func<IConfiguration, DbContext> ContextInstaller =>
-            c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
-            services.AddNakedCore(options => options.ContextInstallers = new[] { ContextInstaller });
+            services.AddNakedCore(options => options.ContextInstallers = new[] { ModelConfig_NakedFunctionsPM.ContextInstaller });
             services.AddNakedObjects(options => {
-                options.ModelNamespaces = new[] { "AdventureWorksModel" };
-                options.Services = AWNakedObjectsConfiguration.Services().ToArray();               
+                options.ModelNamespaces = ModelConfig_NakedObjectsPM.ModelNamespaces();
+                options.Services = ModelConfig_NakedObjectsPM.Services().ToArray();               
                 options.NoValidate = true;
             });
             services.AddNakedFunctions(options => {
-                options.FunctionalTypes = AWNakedFunctionsConfiguration.DomainTypes().ToArray();
-                options.Functions = AWNakedFunctionsConfiguration.ObjectFunctions().ToArray();
-                options.MainMenus = AWNakedFunctionsConfiguration.MainMenus().Select(t => (t.rootType, t.name, true, (Action<IMenu>)null)).ToArray();
+                options.FunctionalTypes = ModelConfig_NakedFunctionsPM.DomainTypes().ToArray();
+                options.Functions = ModelConfig_NakedFunctionsPM.ObjectFunctions().ToArray();
+                options.MainMenus = ModelConfig_NakedFunctionsPM.MainMenus().Select(t => (t.rootType, t.name, true, (Action<IMenu>)null)).ToArray();
             });
             services.AddRestfulObjects();
 
