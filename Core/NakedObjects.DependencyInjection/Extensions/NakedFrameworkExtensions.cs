@@ -24,6 +24,8 @@ using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Menu;
+using NakedObjects.Meta.Audit;
+using NakedObjects.Meta.Authorization;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Rest;
 
@@ -34,6 +36,8 @@ namespace NakedObjects.DependencyInjection.Extensions {
 
     public class NakedCoreOptions {
         public Func<IConfiguration, DbContext>[] ContextInstallers { get; set; }
+        public IAuthorizationConfiguration AuthorizationConfiguration { get; set; }
+        public IAuditConfiguration AuditConfiguration { get; set; }
     }
 
     public class NakedObjectsOptions {
@@ -100,6 +104,15 @@ namespace NakedObjects.DependencyInjection.Extensions {
             ParallelConfig.RegisterCoreScopedTypes(services);
 
             services.AddSingleton<IEntityObjectStoreConfiguration>(p => EntityObjectStoreConfig(p.GetService<IConfiguration>(), options));
+
+            if (options.AuthorizationConfiguration is not null) {
+                services.AddSingleton<IAuthorizationConfiguration>(options.AuthorizationConfiguration);
+            }
+
+            if (options.AuditConfiguration is not null) {
+                services.AddSingleton<IAuditConfiguration>(options.AuditConfiguration);
+            }
+
 
             // frameworkFacade
             services.AddTransient<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>();
