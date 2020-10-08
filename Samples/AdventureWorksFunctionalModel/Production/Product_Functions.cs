@@ -13,7 +13,7 @@ using AdventureWorksModel;
 using NakedFunctions;
 using static NakedFunctions.Helpers;
 
-namespace AdventureWorksFunctionalModel {
+namespace AdventureWorksModel {
     public static class Product_Functions {
 
         #region Life Cycle Methods

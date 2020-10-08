@@ -25,7 +25,7 @@ namespace AdventureWorksModel {
         M,
         L
     }
-    public static class ProductMenuFunctions
+    public static class Product_MenuFunctions
     {
         [MemberOrder(1), TableView(true, nameof(Product.ProductNumber), nameof(Product.ProductSubcategory), nameof(Product.ListPrice))]
         public static IQueryable<Product> FindProductByName(
