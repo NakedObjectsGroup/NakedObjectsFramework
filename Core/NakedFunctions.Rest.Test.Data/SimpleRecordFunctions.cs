@@ -7,6 +7,7 @@
 
 using System;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace NakedFunctions.Rest.Test.Data {
     public static class SimpleRecordFunctions {
@@ -31,5 +32,7 @@ namespace NakedFunctions.Rest.Test.Data {
         }
 
         public static (SimpleRecord, Action<IAlert>) GetSimpleRecordWithWarning(this SimpleRecord simpleRecord) =>  (simpleRecord, a => a.WarnUser("a warning"));
+
+        public static (SimpleRecord, Action<ILogger<SimpleRecord>>) GetSimpleRecordWithLog(this SimpleRecord simpleRecord) => (simpleRecord, l => l.LogInformation("a log"));
     }
 }
