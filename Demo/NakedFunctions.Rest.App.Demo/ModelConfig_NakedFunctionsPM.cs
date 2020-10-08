@@ -8,7 +8,7 @@ namespace NakedObjects.Rest.App.Demo
 {
     public static class ModelConfig_NakedFunctionsPM
     {
-        public static Func<IConfiguration, DbContext> ContextInstaller =>  c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
+        public static Func<IConfiguration, DbContext> DbContextInstaller =>  c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
 
         public static List<Type> DomainTypes() => new List<Type>
         {
@@ -18,10 +18,10 @@ namespace NakedObjects.Rest.App.Demo
 
         //Register static types that contain functions - all defined with 'extension method' syntax - that are to be contributed to a
         //specific domain type, IQueryable<DomainType>, or an interface implemented by domain types
-        public static List<Type> ObjectFunctions() => new List<Type> { typeof(ProductMenuFunctions), typeof(SpecialOffer_MenuFunctions) };
+        public static List<Type> ContributedFunctions() => new List<Type> { typeof(Product_MenuFunctions), typeof(SpecialOffer_MenuFunctions), typeof(Product_Functions), typeof(SpecialOffer_Functions) };
 
         public static IList<(string name, Type rootType)> MainMenus() => new List<(string, Type)> {
-            ("Products", typeof(ProductMenuFunctions)),
+            ("Products", typeof(Product_MenuFunctions)),
             ("Special Offers", typeof(SpecialOffer_MenuFunctions))
         };
     }
