@@ -56,6 +56,7 @@ namespace NakedObjects.Rest.App.Demo {
                     builder
                         .WithOrigins("http://localhost:49998",
                             "http://localhost:8080",
+                            "http://localhost:5001",
                             "http://nakedobjectstest.azurewebsites.net",
                             "http://nakedobjectstest2.azurewebsites.net",
                             "https://nakedobjectstest.azurewebsites.net",
