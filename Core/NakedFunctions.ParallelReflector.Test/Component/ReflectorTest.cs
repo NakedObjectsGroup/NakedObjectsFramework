@@ -14,8 +14,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Configuration;
+using NakedObjects.Core.Util;
 using NakedObjects.DependencyInjection;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Component;
@@ -40,6 +42,9 @@ namespace NakedFunctions.Reflect.Test {
 
         public IMenu NewMenu(string name) => null;
     }
+
+    [Bounded]
+    public record BoundedClass { }
 
     public record SimpleClass {
         public virtual SimpleClass SimpleProperty { get; set; }
@@ -367,5 +372,20 @@ namespace NakedFunctions.Reflect.Test {
             //AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
         }
 
+        [TestMethod]
+        public void ReflectBoundedType() {
+            ObjectReflectorConfiguration.NoValidate = true;
+
+            var rc = new FunctionalReflectorConfiguration(new[] {typeof(BoundedClass)}, new Type[0]);
+
+            var container = GetContainer(rc);
+
+            var reflector = container.GetService<IReflector>();
+            reflector.Reflect();
+            var specs = reflector.AllObjectSpecImmutables;
+            var spec = specs.OfType<ObjectSpecImmutable>().Single();
+            Assert.AreEqual("NakedFunctions.Reflect.Test.BoundedClass", spec.FullName);
+            Assert.IsTrue(spec.IsBoundedSet());
+        }
     }
 }

@@ -24,11 +24,11 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces, ReflectionType.Both) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = type.GetCustomAttribute<BoundedAttribute>();
+            Attribute attribute = (Attribute) type.GetCustomAttribute<NakedObjects.BoundedAttribute>() ?? type.GetCustomAttribute<NakedFunctions.BoundedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
             return metamodel;
         }
 
-        private static IBoundedFacet Create(BoundedAttribute attribute, ISpecification holder) => attribute == null ? null : new BoundedFacet(holder);
+        private static IBoundedFacet Create(Attribute attribute, ISpecification holder) => attribute == null ? null : new BoundedFacet(holder);
     }
 }
