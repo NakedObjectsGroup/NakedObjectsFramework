@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -6,122 +6,96 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Mapping\**" />
     <Compile Remove="NakedFunctions\**" />
-    <Compile Remove="Person\**" />
-    <Compile Remove="Purchasing\**" />
-    <Compile Remove="Sales\**" />
-    <EmbeddedResource Remove="Mapping\**" />
+    <Compile Remove="Person - NF\**" />
+    <Compile Remove="Sales - NF\**" />
     <EmbeddedResource Remove="NakedFunctions\**" />
-    <EmbeddedResource Remove="Person\**" />
-    <EmbeddedResource Remove="Purchasing\**" />
-    <EmbeddedResource Remove="Sales\**" />
-    <None Remove="Mapping\**" />
+    <EmbeddedResource Remove="Person - NF\**" />
+    <EmbeddedResource Remove="Sales - NF\**" />
     <None Remove="NakedFunctions\**" />
-    <None Remove="Person\**" />
-    <None Remove="Purchasing\**" />
-    <None Remove="Sales\**" />
+    <None Remove="Person - NF\**" />
+    <None Remove="Sales - NF\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="%28Old%29 AdventureWorksContext - Copy.cs" />
-    <Compile Remove="Human Resources\Employee.cs" />
-    <Compile Remove="Human Resources\EmployeeAddress.cs" />
-    <Compile Remove="Human Resources\EmployeeDepartmentHistory.cs" />
-    <Compile Remove="Human Resources\EmployeePayHistory.cs" />
-    <Compile Remove="Human Resources\EmployeeRepository.cs" />
-    <Compile Remove="Human Resources\JobCandidate.cs" />
-    <Compile Remove="Human Resources\TimePeriod.cs" />
-    <Compile Remove="Human Resources\TimePeriodValueSemanticsProvider.cs" />
+    <Compile Remove="Human Resources - NF\Employee.cs" />
+    <Compile Remove="Human Resources - NF\EmployeeAddress.cs" />
+    <Compile Remove="Human Resources - NF\EmployeeDepartmentHistory.cs" />
+    <Compile Remove="Human Resources - NF\EmployeePayHistory.cs" />
+    <Compile Remove="Human Resources - NF\EmployeeRepository.cs" />
+    <Compile Remove="Human Resources - NF\JobCandidate.cs" />
+    <Compile Remove="Human Resources - NF\StaffSummary.cs" />
+    <Compile Remove="Human Resources - NF\TimePeriod.cs" />
+    <Compile Remove="Human Resources - NF\TimePeriodValueSemanticsProvider.cs" />
+    <Compile Remove="Human Resources - NO\Department.cs" />
+    <Compile Remove="Human Resources - NO\Shift.cs" />
+    <Compile Remove="Production - NO\BillOfMaterials.cs" />
+    <Compile Remove="Production - NO\Culture.cs" />
+    <Compile Remove="Production - NO\Document.cs" />
+    <Compile Remove="Production - NO\Illustration.cs" />
+    <Compile Remove="Production - NO\Location.cs" />
+    <Compile Remove="Production - NO\Product.cs" />
+    <Compile Remove="Production - NO\ProductCategory.cs" />
+    <Compile Remove="Production - NO\ProductCostHistory.cs" />
+    <Compile Remove="Production - NO\ProductDescription.cs" />
+    <Compile Remove="Production - NO\ProductDocument.cs" />
+    <Compile Remove="Production - NO\ProductInventory.cs" />
+    <Compile Remove="Production - NO\ProductListPriceHistory.cs" />
+    <Compile Remove="Production - NO\ProductModel.cs" />
+    <Compile Remove="Production - NO\ProductModelIllustration.cs" />
+    <Compile Remove="Production - NO\ProductModelProductDescriptionCulture.cs" />
+    <Compile Remove="Production - NO\ProductPhoto.cs" />
+    <Compile Remove="Production - NO\ProductProductPhoto.cs" />
+    <Compile Remove="Production - NO\ProductReview.cs" />
+    <Compile Remove="Production - NO\ProductSubcategory.cs" />
+    <Compile Remove="Production - NO\ScrapReason.cs" />
+    <Compile Remove="Production - NO\TransactionHistory.cs" />
+    <Compile Remove="Production - NO\UnitMeasure.cs" />
+    <Compile Remove="Production - NO\WorkOrder.cs" />
+    <Compile Remove="Production - NO\WorkOrderRepository.cs" />
+    <Compile Remove="Production - NO\WorkOrderRouting.cs" />
+    <Compile Remove="Purchasing - NF\ProductVendor.cs" />
+    <Compile Remove="Purchasing - NF\PurchaseOrderDetail.cs" />
+    <Compile Remove="Purchasing - NF\PurchaseOrderHeader.cs" />
+    <Compile Remove="Purchasing - NF\PurchaseOrderRepository.cs" />
+    <Compile Remove="Purchasing - NF\ShipMethod.cs" />
+    <Compile Remove="Purchasing - NF\Vendor.cs" />
+    <Compile Remove="Purchasing - NF\VendorRepository.cs" />
+    <Compile Remove="Sales - NO\Currency.cs" />
+    <Compile Remove="Sales - NO\PersonCreditCard.cs" />
+    <Compile Remove="Sales - NO\SalesTerritory.cs" />
+    <Compile Remove="Sales - NO\SpecialOffer.cs" />
+    <Compile Remove="Sales - NO\SpecialOfferContributedActions.cs" />
+    <Compile Remove="Sales - NO\SpecialOfferProduct.cs" />
+    <Compile Remove="Sales - NO\SpecialOfferRepository.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Mapping\AddressMap.cs" />
-    <Compile Include="Mapping\AddressTypeMap.cs" />
-    <Compile Include="Mapping\BillOfMaterialMap.cs" />
-    <Compile Include="Mapping\BusinessEntityAddressMap.cs" />
-    <Compile Include="Mapping\BusinessEntityContactMap.cs" />
-    <Compile Include="Mapping\BusinessEntityMap.cs" />
-    <Compile Include="Mapping\ContactTypeMap.cs" />
-    <Compile Include="Mapping\CountryRegionMap.cs" />
-    <Compile Include="Mapping\CreditCardMap.cs" />
-    <Compile Include="Mapping\CultureMap.cs" />
-    <Compile Include="Mapping\CurrencyMap.cs" />
-    <Compile Include="Mapping\DepartmentMap.cs" />
-    <Compile Include="Mapping\DocumentMap.cs" />
-    <Compile Include="Mapping\EmailAddressMap.cs" />
-    <Compile Include="Mapping\IllustrationMap.cs" />
-    <Compile Include="Mapping\LocationMap.cs" />
-    <Compile Include="Mapping\PasswordMap.cs" />
-    <Compile Include="Mapping\PersonCreditCardMap.cs" />
-    <Compile Include="Mapping\PersonMap.cs" />
-    <Compile Include="Mapping\PersonPhoneMap.cs" />
-    <Compile Include="Mapping\PhoneNumberTypeMap.cs" />
-    <Compile Include="Mapping\ProductCategoryMap.cs" />
-    <Compile Include="Mapping\ProductCostHistoryMap.cs" />
-    <Compile Include="Mapping\ProductDescriptionMap.cs" />
-    <Compile Include="Mapping\ProductDocumentMap.cs" />
-    <Compile Include="Mapping\ProductInventoryMap.cs" />
-    <Compile Include="Mapping\ProductListPriceHistoryMap.cs" />
-    <Compile Include="Mapping\ProductMap.cs" />
-    <Compile Include="Mapping\ProductModelIllustrationMap.cs" />
-    <Compile Include="Mapping\ProductModelMap.cs" />
-    <Compile Include="Mapping\ProductModelProductDescriptionCultureMap.cs" />
-    <Compile Include="Mapping\ProductPhotoMap.cs" />
-    <Compile Include="Mapping\ProductProductPhotoMap.cs" />
-    <Compile Include="Mapping\ProductReviewMap.cs" />
-    <Compile Include="Mapping\ProductSubcategoryMap.cs" />
-    <Compile Include="Mapping\SalesTerritoryMap.cs" />
-    <Compile Include="Mapping\ScrapReasonMap.cs" />
-    <Compile Include="Mapping\ShiftMap.cs" />
-    <Compile Include="Mapping\SpecialOfferMap.cs" />
-    <Compile Include="Mapping\SpecialOfferProductMap.cs" />
-    <Compile Include="Mapping\StateProvinceMap.cs" />
-    <Compile Include="Mapping\TransactionHistoryMap.cs" />
-    <Compile Include="Mapping\UnitMeasureMap.cs" />
-    <Compile Include="Mapping\WorkOrderMap.cs" />
-    <Compile Include="Mapping\WorkOrderRoutingMap.cs" />
-    <Compile Include="Person\Address_Functions.cs" />
-    <Compile Include="Person\Address.cs" />
-    <Compile Include="Person\AddressType.cs" />
-    <Compile Include="Person\BusinessEntity.cs" />
-    <Compile Include="Person\BusinessEntityAddress_Functions.cs" />
-    <Compile Include="Person\BusinessEntityAddress.cs" />
-    <Compile Include="Person\BusinessEntityContact_Functions.cs" />
-    <Compile Include="Person\BusinessEntityContact.cs" />
-    <Compile Include="Person\ContactType.cs" />
-    <Compile Include="Person\CountryRegion.cs" />
-    <Compile Include="Person\EmailAddress.cs" />
-    <Compile Include="Person\EmailTemplate.cs" />
-    <Compile Include="Person\IAddressRole.cs" />
-    <Compile Include="Person\IBusinessEntity.cs" />
-    <Compile Include="Person\IContactRole.cs" />
-    <Compile Include="Person\Password.cs" />
-    <Compile Include="Person\Person.cs" />
-    <Compile Include="Person\PersonPhone _Functions.cs" />
-    <Compile Include="Person\PersonPhone.cs" />
-    <Compile Include="Person\PhoneNumberType.cs" />
-    <Compile Include="Person\StateProvince.cs" />
-    <Compile Include="Sales\CreditCard_Functions.cs" />
-    <Compile Include="Sales\CreditCard.cs" />
-    <Compile Include="Sales\Currency.cs" />
-    <Compile Include="Sales\ICreditCardCreator.cs" />
-    <Compile Include="Sales\PersonCreditCard_Functions.cs" />
-    <Compile Include="Sales\PersonCreditCard.cs" />
-    <Compile Include="Sales\SalesTerritory.cs" />
-    <Compile Include="Sales\SpecialOffer_Functions.cs" />
-    <Compile Include="Sales\SpecialOffer.cs" />
-    <Compile Include="Sales\SpecialOfferProduct.cs" />
-    <Compile Include="Sales\SpecialOffer_MenuFunctions.cs" />
+    <Compile Include="Sales - NF\Currency.cs" />
+    <Compile Include="Sales - NF\PersonCreditCard_Functions.cs" />
+    <Compile Include="Sales - NF\PersonCreditCard.cs" />
+    <Compile Include="Sales - NF\SalesTerritory.cs" />
+    <Compile Include="Sales - NF\SpecialOffer_Functions.cs" />
+    <Compile Include="Sales - NF\SpecialOffer.cs" />
+    <Compile Include="Sales - NF\SpecialOfferProduct.cs" />
+    <Compile Include="Sales - NF\SpecialOffer_MenuFunctions.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.8" />
+    <PackageReference Include="NakedObjects.ProgrammingModel" Version="12.0.0-alpha01" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Functional Programming Model\NakedFunctions.Attributes\NakedFunctions.Attributes.csproj" />
     <ProjectReference Include="..\..\Functional Programming Model\NakedFunctions.Helpers\NakedFunctions.Helpers.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Person - NF\" />
+    <Folder Include="Purchasing - NF\" />
   </ItemGroup>
 
 </Project>

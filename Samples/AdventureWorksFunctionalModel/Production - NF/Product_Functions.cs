@@ -35,8 +35,8 @@ namespace AdventureWorksModel {
         public static string DisableBestSpecialOffer(this Product p, [Injected] DateTime now)
          => p.IsDiscontinued(now) ? "Product is discontinued" : null;
 
-        private static SpecialOfferProduct BestSpecialOfferProduct(
-            Product p,
+        public static SpecialOfferProduct BestSpecialOfferProduct(
+            this Product p,
             short quantity,
             IQueryable<SpecialOfferProduct> sops)
         => sops.Where(obj => obj.Product.ProductID == p.ProductID &&
