@@ -111,7 +111,6 @@
     <Compile Include="Sales\SalesTerritory.cs" />
     <Compile Include="Sales\SpecialOffer_Functions.cs" />
     <Compile Include="Sales\SpecialOffer.cs" />
-    <Compile Include="Sales\SpecialOfferContributedActions.cs" />
     <Compile Include="Sales\SpecialOfferProduct.cs" />
     <Compile Include="Sales\SpecialOffer_MenuFunctions.cs" />
   </ItemGroup>

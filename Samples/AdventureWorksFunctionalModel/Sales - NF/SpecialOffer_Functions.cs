@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NakedFunctions;
 using static NakedFunctions.Helpers;
@@ -60,7 +61,6 @@ namespace AdventureWorksModel
 
         #region AssociateWithProduct
 
-        //Helper method
         public static (SpecialOfferProduct, SpecialOfferProduct, Action<IAlert>) AssociateWithProduct(
         this SpecialOffer offer,
         Product product,
@@ -91,6 +91,25 @@ namespace AdventureWorksModel
         public static IQueryable<Product> AutoComplete1AssociateWithProduct([Range(2, 0)] string name, IQueryable<Product> products)
             => products.Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
 
+        #endregion
+
+        #region Queryable-contributed
+        private static (IList<SpecialOffer>, IList<SpecialOffer>) Change(this IQueryable<SpecialOffer> offers, Func<SpecialOffer, SpecialOffer> change)
+=> DisplayAndPersist(offers.ToList().Select(change).ToList());
+
+        //TODO: This example shows we must permit returning a List (not a queryable) for display.
+        public static (IList<SpecialOffer>, IList<SpecialOffer>) ExtendOffers(this IQueryable<SpecialOffer> offers, DateTime toDate)
+        => Change(offers, x => x with { EndDate = toDate });
+
+
+        public static (IList<SpecialOffer>, IList<SpecialOffer>) TerminateActiveOffers(
+            this IQueryable<SpecialOffer> offers,
+            [Injected] DateTime now)
+        {
+            var yesterday = now.Date.AddDays(-1);
+            var list = offers.Where(x => x.EndDate > yesterday).ToList().Select(x => x with { EndDate = yesterday }).ToList();
+            return DisplayAndPersist(list);
+        }
         #endregion
     }
 }
