@@ -20,17 +20,6 @@ namespace AdventureWorksModel
 
         public record Employee : IEmployee, IHasRowGuid, IHasModifiedDate
     {
-        //TODO: add all properties
-        public Employee(
-            int businessEntityID, 
-            Person personDetails)
-        {
-            BusinessEntityID = businessEntityID;
-            PersonDetails = personDetails;
-        }
-
-        public Employee() { }
-
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
@@ -108,103 +97,5 @@ namespace AdventureWorksModel
         {
             return $"{PersonDetails}";
         }
-    }
-
-    public static class EmployeeFunctions
-    {
-
-        #region Life Cycle Methods
-        public static Employee Updating(this Employee x, [Injected] DateTime now) => x with { ModifiedDate = now };
-        #endregion
-
-        //public static bool HideLoginID(
-        //    Employee e,
-        //    IQueryable<Employee> employees,
-        //    [Injected] IPrincipal principal)
-        //{
-        //    var userAsEmployee = EmployeeRepository.CurrentUserAsEmployee(null, employees, principal);
-        //    return userAsEmployee != null ? userAsEmployee.LoginID != e.LoginID : true;
-        //}
-
-        public static IQueryable<Employee> ColleaguesInSameDept(
-            Employee e,
-            IQueryable<EmployeeDepartmentHistory> edhs
-        )
-        {
-            var allCurrent = edhs.Where(edh => edh.EndDate == null);
-            var thisId = e.BusinessEntityID;
-            var thisDeptId = allCurrent.Single(edh => edh.EmployeeID == thisId).DepartmentID;
-            return allCurrent.Where(edh => edh.DepartmentID == thisDeptId).Select(edh => edh.Employee);
-        }
-
-        //[MemberOrder(10)]
-        //public static (EmployeePayHistory, EmployeePayHistory) ChangePayRate(
-        //    Employee e,
-        //    [Injected] DateTime now
-        //)
-        //{
-        //    EmployeePayHistory current = CurrentEmployeePayHistory(e);
-        //    var eph = new EmployeePayHistory(e, now, current.PayFrequency);
-        //    return Result.DisplayAndPersist(eph);
-        //}
-
-        public static EmployeePayHistory CurrentEmployeePayHistory(Employee e)
-        {
-           return e.PayHistory.OrderByDescending(x => x.RateChangeDate).FirstOrDefault();
-        }
-
-        //#region ChangeDepartmentOrShift (Action)
-        //[MemberOrder(20)]
-        //public static (object[], object[]) ChangeDepartmentOrShift(
-        //    Employee e,
-        //    Department department, 
-        //     Shift shift,
-        //    [Injected] DateTime now)
-        //{
-        //    var edh = CurrentAssignment(e) with {EndDate =  now};
-        //    var newAssignment = new EmployeeDepartmentHistory(department, shift, e, now );
-        //    return Result.DisplayAndPersist(new object[] { edh, newAssignment });
-        //}
-
-        //public static Department Default0ChangeDepartmentOrShift(Employee e)
-        //{
-        //    EmployeeDepartmentHistory current = CurrentAssignment(e);
-        //    return current != null ? current.Department : null;
-        //}
-
-        //private static EmployeeDepartmentHistory CurrentAssignment(Employee e)
-        //{
-        //    return e.DepartmentHistory.Where(n => n.EndDate == null).FirstOrDefault();
-        //}
-
-        //#endregion
-
-        public static (Employee, Employee) SpecifyManager(
-            Employee e, 
-            IEmployee manager)
-        {
-            var e2 = e with {ManagerID =  manager.BusinessEntityID};
-            return (e2, e2);
-        }
-
-        //[PageSize(20)]
-        //public static IQueryable<Employee> AutoCompleteManager(
-        //     Employee e,
-        //    [Range(2,0)] string name,
-        //    IQueryable<Person> persons,
-        //    IQueryable<Employee> employees)
-        //{
-        //    return EmployeeRepository.FindEmployeeByName(null, null, name, persons, employees);
-        //}
-
-        //public static  IList<string> ChoicesGender(Employee e)
-        //{
-        //    return new[] { "M", "F" };
-        //}
-
-        //public static IList<string> ChoicesMaritalStatus(Employee e)
-        //{
-        //    return new[] { "S", "M" };
-        //}
     }
 }

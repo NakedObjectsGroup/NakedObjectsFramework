@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <Compile Remove="%28Old%29 AdventureWorksContext - Copy.cs" />
-    <Compile Remove="Human Resources - NF\Employee.cs" />
     <Compile Remove="Human Resources - NF\EmployeeAddress.cs" />
     <Compile Remove="Human Resources - NF\EmployeeDepartmentHistory.cs" />
     <Compile Remove="Human Resources - NF\EmployeePayHistory.cs" />
@@ -29,6 +28,7 @@
     <Compile Remove="Human Resources - NF\TimePeriod.cs" />
     <Compile Remove="Human Resources - NF\TimePeriodValueSemanticsProvider.cs" />
     <Compile Remove="Human Resources - NO\Department.cs" />
+    <Compile Remove="Human Resources - NO\Employee.cs" />
     <Compile Remove="Human Resources - NO\Shift.cs" />
     <Compile Remove="Person - NO\IAddressRole.cs" />
     <Compile Remove="Person - NO\IBusinessEntity.cs" />
@@ -78,6 +78,7 @@
     <Compile Include="Person - NF\IAddressRole.cs" />
     <Compile Include="Person - NF\IBusinessEntity.cs" />
     <Compile Include="Person - NF\IBusinessEntityWithContacts.cs" />
+    <Compile Include="Person - NF\Person_MenuFunctions.cs" />
     <Compile Include="Sales - NF\Currency.cs" />
     <Compile Include="Sales - NF\PersonCreditCard_Functions.cs" />
     <Compile Include="Sales - NF\PersonCreditCard.cs" />

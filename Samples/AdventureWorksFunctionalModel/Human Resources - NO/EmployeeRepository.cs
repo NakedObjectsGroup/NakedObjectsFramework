@@ -71,8 +71,8 @@ namespace AdventureWorksModel {
 
         public Employee CreateNewEmployeeFromContact([ContributedAction("Employees")] [FindMenu] Person contactDetails) {
             var _Employee = Container.NewTransientInstance<Employee>();
-            _Employee.BusinessEntityID = contactDetails.BusinessEntityID;
-            _Employee.PersonDetails = contactDetails;
+            //_Employee.BusinessEntityID = contactDetails.BusinessEntityID; commented-out to make compile temporarily
+            //_Employee.PersonDetails = contactDetails;
             return _Employee;
         }
 
@@ -104,14 +104,15 @@ namespace AdventureWorksModel {
         }
 
         public IQueryable<Employee> MyDepartmentalColleagues() {
-            var me = CurrentUserAsEmployee();
-            if (me == null) {
-                Container.WarnUser("Current user unknown");
-                return null;
-            }
-            else {
-                return me.ColleaguesInSameDept();
-            }
+            //var me = CurrentUserAsEmployee();
+            //if (me == null) {
+            //    Container.WarnUser("Current user unknown");
+            //    return null;
+            //}
+            //else {
+            //    return me.ColleaguesInSameDept();
+            //}
+            throw new Exception();
         }
 
         #region RandomEmployee

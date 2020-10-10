@@ -16,7 +16,7 @@ namespace AdventureWorksModel
 {
     public record WorkOrder : IHasModifiedDate
     {
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int WorkOrderID { get; init; }
 
         [MemberOrder(22)]
@@ -33,7 +33,7 @@ namespace AdventureWorksModel
         [MemberOrder(99),ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual short? ScrapReasonID { get; init; }
 
 
@@ -51,7 +51,7 @@ namespace AdventureWorksModel
         [Mask("d")]
         public virtual DateTime DueDate { get; init; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int ProductID { get; init; }
 
         [MemberOrder(10)]
@@ -64,7 +64,7 @@ namespace AdventureWorksModel
 
         // for testing 
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         [NotMapped]
         public virtual string AnAlwaysHiddenReadOnlyProperty
         {

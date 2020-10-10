@@ -14,7 +14,7 @@ using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
 
 namespace AdventureWorksModel {
     [Named("Contacts")]
-    public static class PersonRepository {
+    public static class Person_MenuFunctions {
 
         [TableView(true, nameof(Person.AdditionalContactInfo))]
         public static IQueryable<Person> FindContactByName(
@@ -34,7 +34,6 @@ namespace AdventureWorksModel {
             return Random(persons, random);
         }
 
-        [FinderAction]
         [TableView(true, nameof(Person.AdditionalContactInfo))]
         public static IQueryable<Person> RandomContacts(
             

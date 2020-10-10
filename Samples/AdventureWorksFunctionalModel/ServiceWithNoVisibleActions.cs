@@ -4,7 +4,7 @@ namespace AdventureWorksModel {
     public record ServiceWithNoVisibleActions
     {
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public void DoSomething() { }
     }
 }

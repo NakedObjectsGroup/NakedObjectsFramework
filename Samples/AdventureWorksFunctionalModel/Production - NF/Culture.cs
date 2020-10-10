@@ -14,7 +14,7 @@ namespace AdventureWorksModel
     [Bounded]
     public record Culture : IHasModifiedDate
     {
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual string CultureID { get; init; }
 
         [MemberOrder(10)]

@@ -14,7 +14,7 @@ namespace AdventureWorksModel
     public record BillOfMaterial : IHasModifiedDate
     {
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int BillOfMaterialID { get; init; }
 
         public virtual DateTime StartDate { get; init; }
@@ -22,15 +22,15 @@ namespace AdventureWorksModel
         public virtual short BOMLevel { get; init; }
         public virtual decimal PerAssemblyQty { get; init; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int? ProductAssemblyID { get; init; }
         public virtual Product Product { get; init; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int ComponentID { get; init; }
         public virtual Product Product1 { get; init; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public string UnitMeasureCode { get; init; }
         public virtual UnitMeasure UnitMeasure { get; init; }
 
