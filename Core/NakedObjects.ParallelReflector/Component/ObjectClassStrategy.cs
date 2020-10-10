@@ -18,11 +18,11 @@ namespace NakedObjects.ParallelReflect.Component {
     ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
     /// </summary>
     [Serializable]
-    public class DefaultClassStrategy : IClassStrategy {
+    public class ObjectClassStrategy : IClassStrategy {
         private readonly IObjectReflectorConfiguration config;
         private readonly IFunctionalReflectorConfiguration fConfig;
 
-        public DefaultClassStrategy(IObjectReflectorConfiguration config,
+        public ObjectClassStrategy(IObjectReflectorConfiguration config,
                                     IFunctionalReflectorConfiguration fConfig = null)
         {
             this.config = config;

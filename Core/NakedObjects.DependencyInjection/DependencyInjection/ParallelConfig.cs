@@ -23,8 +23,8 @@ using NakedObjects.Service;
 namespace NakedObjects.DependencyInjection {
     public static class ParallelConfig {
         public static void RegisterCoreSingletonTypes(IServiceCollection services) {
-            services.AddSingleton<DefaultClassStrategy, DefaultClassStrategy>();
-            services.AddSingleton<IClassStrategy>(p => new CachingClassStrategy(p.GetService<DefaultClassStrategy>()));
+            services.AddSingleton<ObjectClassStrategy, ObjectClassStrategy>();
+            services.AddSingleton<IClassStrategy>(p => new CachingClassStrategy(p.GetService<ObjectClassStrategy>()));
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
             services.AddSingleton<IReflector, ParallelReflect.Component.ParallelReflector>();
             services.AddSingleton<IMetamodel, Metamodel>();

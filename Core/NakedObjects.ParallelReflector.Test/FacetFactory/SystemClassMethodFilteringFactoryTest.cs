@@ -47,7 +47,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var config = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {typeof(Customer).Namespace});
 
-            var classStrategy = new DefaultClassStrategy(config);
+            var classStrategy = new ObjectClassStrategy(config);
 
             var methods = typeof(Customer).GetMethods().ToList();
             var filteredActions = methods.Where(m => facetFactory.Filters(m, classStrategy)).ToArray();
@@ -125,7 +125,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var menuFactory = new NullMenuFactory();
 
             facetFactory = new SystemClassMethodFilteringFactory(new FacetFactoryOrder<SystemClassMethodFilteringFactory>(), LoggerFactory);
-            var classStrategy = new DefaultClassStrategy(config);
+            var classStrategy = new ObjectClassStrategy(config);
             var metamodel = new Metamodel(classStrategy, cache, null);
             var mockLogger = new Mock<ILogger<ParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;

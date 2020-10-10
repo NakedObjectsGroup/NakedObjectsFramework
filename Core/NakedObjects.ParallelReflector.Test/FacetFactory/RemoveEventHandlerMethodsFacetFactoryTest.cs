@@ -101,7 +101,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             facetFactory = new RemoveEventHandlerMethodsFacetFactory(new FacetFactoryOrder<RemoveEventHandlerMethodsFacetFactory>(), LoggerFactory);
             var menuFactory = new NullMenuFactory();
-            var classStrategy = new DefaultClassStrategy(reflectorConfiguration);
+            var classStrategy = new ObjectClassStrategy(reflectorConfiguration);
             var metamodel = new Metamodel(classStrategy, cache, null);
             var mockLogger = new Mock<ILogger<ParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;

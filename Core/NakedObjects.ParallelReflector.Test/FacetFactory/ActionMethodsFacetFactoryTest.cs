@@ -839,7 +839,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var config = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {typeof(Customer34).Namespace});
 
-            var classStrategy = new DefaultClassStrategy(config);
+            var classStrategy = new ObjectClassStrategy(config);
 
             var methods = typeof(Customer34).GetMethods().ToList();
             var actions = facetFactory.FindActions(methods, classStrategy);

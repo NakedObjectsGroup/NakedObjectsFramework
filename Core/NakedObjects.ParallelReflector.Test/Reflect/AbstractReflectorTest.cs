@@ -122,7 +122,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var functionalReflectorConfiguration = new FunctionalReflectorConfiguration(new Type[] { }, new Type[] { });
 
             var menuFactory = new NullMenuFactory();
-            var classStrategy = new DefaultClassStrategy(config);
+            var classStrategy = new ObjectClassStrategy(config);
             var mockLogger = new Mock<ILogger<Metamodel>>().Object;
 
             var metamodel = new Metamodel(classStrategy, cache, mockLogger);

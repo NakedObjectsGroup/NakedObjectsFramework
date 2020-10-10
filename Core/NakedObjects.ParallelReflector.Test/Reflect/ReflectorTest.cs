@@ -169,7 +169,7 @@ namespace NakedObjects.ParallelReflect.Test {
             RegisterFacetFactories(services);
 
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
-            services.AddSingleton<IClassStrategy, DefaultClassStrategy>();
+            services.AddSingleton<IClassStrategy, ObjectClassStrategy>();
             services.AddSingleton<IReflector, ParallelReflector>();
             services.AddSingleton<IMetamodel, Metamodel>();
             services.AddSingleton<IMetamodelBuilder, Metamodel>();
