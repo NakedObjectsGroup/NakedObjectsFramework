@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 
-namespace NakedObjects.Rest.App.Demo
+namespace NakedFunctions.Rest.App.Demo
 {
     public class ModelConfig_NakedObjectsPM
     {
@@ -17,6 +17,8 @@ namespace NakedObjects.Rest.App.Demo
 
         public static List<Type> DomainTypes() => new List<Type>
         {
+                    //typeof(EntityCollection<object>),  TODO: What are this and next line for?
+                   // typeof(ObjectQuery<object>),
                    //typeof(CustomerCollectionViewModel),
                    // //typeof(OrderLine),
                    // typeof(OrderStatus),

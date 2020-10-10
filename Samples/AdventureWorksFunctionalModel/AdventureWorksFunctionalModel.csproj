@@ -30,6 +30,9 @@
     <Compile Remove="Human Resources - NF\TimePeriodValueSemanticsProvider.cs" />
     <Compile Remove="Human Resources - NO\Department.cs" />
     <Compile Remove="Human Resources - NO\Shift.cs" />
+    <Compile Remove="Person - NO\IAddressRole.cs" />
+    <Compile Remove="Person - NO\IBusinessEntity.cs" />
+    <Compile Remove="Person - NO\IBusinessEntityWithContacts.cs" />
     <Compile Remove="Production - NO\BillOfMaterials.cs" />
     <Compile Remove="Production - NO\Culture.cs" />
     <Compile Remove="Production - NO\Document.cs" />
@@ -72,6 +75,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Person - NF\IAddressRole.cs" />
+    <Compile Include="Person - NF\IBusinessEntity.cs" />
+    <Compile Include="Person - NF\IBusinessEntityWithContacts.cs" />
     <Compile Include="Sales - NF\Currency.cs" />
     <Compile Include="Sales - NF\PersonCreditCard_Functions.cs" />
     <Compile Include="Sales - NF\PersonCreditCard.cs" />
@@ -94,7 +100,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Person - NF\" />
     <Folder Include="Purchasing - NF\" />
   </ItemGroup>
 

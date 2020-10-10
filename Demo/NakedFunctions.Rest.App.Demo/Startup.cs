@@ -6,10 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity;
 using System.Linq;
-using AdventureWorksFunctionalModel;
-using AdventureWorksModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +18,7 @@ using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.Menu;
 using Newtonsoft.Json;
 
-namespace NakedObjects.Rest.App.Demo {
+namespace NakedFunctions.Rest.App.Demo {
     public class Startup {
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
