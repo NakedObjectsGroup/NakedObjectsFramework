@@ -22,6 +22,8 @@ namespace NakedFunctions.Rest.App.Demo
             typeof(Product_MenuFunctions), 
             typeof(SpecialOffer_MenuFunctions),
             typeof(Employee_MenuFunctions),
+            typeof(Customer_MenuFunctions),
+
             typeof(Product_Functions), 
             typeof(SpecialOffer_Functions), 
             typeof(Employee_Functions)
@@ -31,6 +33,7 @@ namespace NakedFunctions.Rest.App.Demo
             ("Products", typeof(Product_MenuFunctions)),
             ("Special Offers", typeof(SpecialOffer_MenuFunctions)),
            ("Employees", typeof(Employee_MenuFunctions)),
+           ("Customers NF", typeof(Customer_MenuFunctions)),
         };
     }
 }

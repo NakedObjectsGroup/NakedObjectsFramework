@@ -13,56 +13,33 @@ using NakedFunctions;
 using System;
 using System.Collections.Generic;
 using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
-
-
+using System.CodeDom;
+using static NakedFunctions.Helpers;
 
 namespace AdventureWorksModel {
-    [Named("Customers")]
-    public static class CustomerRepository {
+    public static class Customer_MenuFunctions {
 
-        //TODO
-        //public static void Menu(IMenu menu) {
-        //    menu.AddAction(nameof(FindCustomerByAccountNumber));
-        //    menu.CreateSubMenu("Stores")
-        //        .AddAction(nameof(FindStoreByName))
-        //        .AddAction(nameof(CreateNewStoreCustomer))
-        //        .AddAction(nameof(RandomStore));
-        //    menu.CreateSubMenu("Individuals")
-        //        .AddAction(nameof(FindIndividualCustomerByName))
-        //        .AddAction(nameof(CreateNewIndividualCustomer))
-        //        .AddAction(nameof(RandomIndividual));
-        //    menu.AddAction(nameof(CustomerDashboard));
-        //    menu.AddAction(nameof(ThrowDomainException));
-        //    menu.AddAction(nameof(FindCustomer));
-        //    menu.AddRemainingNativeActions();
+       
+        //public static CustomerDashboard CustomerDashboard(
+        //    string accountNumber,
+        //    IQueryable<Customer> customers) {
+        //     var (cust, _) = FindCustomerByAccountNumber(accountNumber, customers);
+        //    return new CustomerDashboard(cust);
         //}
 
-        //public static object ThrowDomainException() {
-        //    throw new DomainException("Foo");
+        //#region FindCustomerByAccountNumber
+
+        //[MemberOrder(10)]
+        //public static (Customer, string) FindCustomerByAccountNumber(
+        //    [DefaultValue("AW")] string accountNumber, 
+        //    IQueryable<Customer> customers)
+        //{
+        //    IQueryable<Customer> query = from obj in customers
+        //        where obj.AccountNumber == accountNumber
+        //        orderby obj.AccountNumber
+        //        select obj;
+        //    return SingleObjectWarnIfNoMatch(query);
         //}
-
-        
-        public static CustomerDashboard CustomerDashboard(
-            string accountNumber,
-            IQueryable<Customer> customers) {
-             var (cust, _) = FindCustomerByAccountNumber(accountNumber, customers);
-            return new CustomerDashboard(cust);
-        }
-
-        #region FindCustomerByAccountNumber
-
-        [FinderAction]
-        [MemberOrder(10)]
-        public static (Customer, string) FindCustomerByAccountNumber(
-            [DefaultValue("AW")] string accountNumber, 
-            IQueryable<Customer> customers)
-        {
-            IQueryable<Customer> query = from obj in customers
-                where obj.AccountNumber == accountNumber
-                orderby obj.AccountNumber
-                select obj;
-            return SingleObjectWarnIfNoMatch(query);
-        }
 
         //public static string ValidateFindCustomerByAccountNumber( string accountNumber) {
         //    return accountNumber.StartsWith("AW")? null : "Account number must start with AW";
@@ -79,11 +56,10 @@ namespace AdventureWorksModel {
         //{
         //    return customers.Where(c => c.AccountNumber.Contains(matching));
         //}
-        #endregion
+
 
         #region Stores Menu
 
-        [FinderAction]
         [PageSize(2)]
         [TableView(true, "StoreName", "SalesPerson")] //Table view == List View
             public static IQueryable<Customer> FindStoreByName(
@@ -106,9 +82,10 @@ namespace AdventureWorksModel {
             [Injected] Guid g3,
             [Injected] DateTime d)
         {
-            var s = new Store(name, demographics, null, null, d, g1, 0, new List<BusinessEntityAddress>(), new List<BusinessEntityContact>(), g2, d);
-            var c = new Customer(s, null, g3, d);
-            return DisplayAndPersist(c);
+            throw new NotImplementedException();
+            //var s = new Store(name, demographics, null, null, d, g1, 0, new List<BusinessEntityAddress>(), new List<BusinessEntityContact>(), g2, d);
+            //var c = new Customer(s, null, g3, d);
+            //return DisplayAndPersist(c);
         }
 
         public static (Customer, Customer) CreateCustomerFromStore(
@@ -116,8 +93,10 @@ namespace AdventureWorksModel {
             [Injected] Guid guid,
             [Injected] DateTime dt)
         {
-            var c = new Customer(store, null, guid, dt);
-            return (c, c);
+
+            throw new NotImplementedException();
+            //var c = new Customer(store, null, guid, dt);
+            //return (c, c);
         }
 
         //TODO: Temporary exploration
@@ -129,8 +108,10 @@ namespace AdventureWorksModel {
             [Injected] DateTime dt
             )
         {
-            var store = new Store(name, demographics, null, null, dt, guid1, 0, new List<BusinessEntityAddress>(), new List<BusinessEntityContact>(), guid2, dt);
-            return DisplayAndPersist(store);
+
+            throw new NotImplementedException();
+            //var store = new Store(name, demographics, null, null, dt, guid1, 0, new List<BusinessEntityAddress>(), new List<BusinessEntityContact>(), guid2, dt);
+            //return DisplayAndPersist(store);
         }
 
         public static IQueryable<Store> FindStoreOnlyByName(
@@ -150,29 +131,28 @@ namespace AdventureWorksModel {
 
         #region Individuals Menu
 
-        [FinderAction]
         [MemberOrder(30)]
         [TableView(true)] //Table view == List View
         public static IQueryable<Customer> FindIndividualCustomerByName(
-            
-            [Optionally] string firstName, 
-            string lastName, 
+            [Optionally] string firstName,
+            string lastName,
             IQueryable<Person> persons,
-            IQueryable<Customer> customers) {
+            IQueryable<Customer> customers)
+        {
+            throw new NotImplementedException();
 
-            IQueryable<Person> matchingPersons = PersonRepository.FindContactByName( firstName, lastName, persons);
-            return from c in customers
-                   from p in matchingPersons
-                   where c.PersonID == p.BusinessEntityID
-                   select c;
+            //IQueryable<Person> matchingPersons = PersonRepository.FindContactByName( firstName, lastName, persons);
+            //return from c in customers
+            //       from p in matchingPersons
+            //       where c.PersonID == p.BusinessEntityID
+            //       select c;
         }
 
-        [FinderAction]
         [MemberOrder(50)]
         public static (Customer, Customer) CreateNewIndividualCustomer(
             string firstName, 
             string lastName, 
-            [DataType(DataType.Password)] string initialPassword) {
+            [Password] string initialPassword) {
 
             //var person = new Person(firstName,"",lastName, 0, false); //person.EmailPromotion = 0; person.NameStyle = false;
             //var (person2, _) = PersonFunctions.ChangePassword(person, null, initialPassword, null); 
@@ -181,7 +161,6 @@ namespace AdventureWorksModel {
             return (null, null);
         }
 
-        [FinderAction]
         [MemberOrder(70)]
         public static Customer RandomIndividual(
             IQueryable<Customer> customers,
