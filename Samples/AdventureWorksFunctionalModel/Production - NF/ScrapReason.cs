@@ -15,7 +15,7 @@ namespace AdventureWorksModel
     public record ScrapReason
     {
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual short ScrapReasonID { get; init; }
 
         //Title

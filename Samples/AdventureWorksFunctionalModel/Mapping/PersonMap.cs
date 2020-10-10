@@ -10,7 +10,7 @@ namespace AdventureWorksModel
             HasKey(t => t.BusinessEntityID);
 
             //Ignores
-            //Ignore(t => t.InitialPassword);
+            Ignore(t => t.InitialPassword);
             Ignore(t => t.ContactType);
             Ignore(t => t.ForEntity);
             //TODO: Temp ignored

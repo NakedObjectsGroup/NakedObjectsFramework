@@ -12,10 +12,10 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     public record PersonCreditCard {
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int PersonID { get; set; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int CreditCardID { get; set; }
 
         public virtual Person Person { get; set; }

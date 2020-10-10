@@ -20,7 +20,7 @@ namespace AdventureWorksModel {
         public virtual int Quantity { get; init; }
         public virtual decimal ActualCost { get; init; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int ProductID { get; init; }
         public Product Product { get; init; }
 

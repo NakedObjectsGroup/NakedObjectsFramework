@@ -16,7 +16,7 @@ using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
 
 namespace AdventureWorksModel {
     [Named("Employees")]
-    public static class EmployeeRepository {
+    public static class Employee_MenuFunctions {
 
         [TableView(true,
             nameof(Employee.Current),
@@ -31,7 +31,7 @@ namespace AdventureWorksModel {
             IQueryable<Employee> employees)
         {
 
-            IQueryable<Person> matchingContacts = PersonRepository.FindContactByName( firstName, lastName, persons);
+            IQueryable<Person> matchingContacts = Person_MenuFunctions.FindContactByName( firstName, lastName, persons);
 
             IQueryable<Employee> query = from emp in employees
                                          from contact in matchingContacts
@@ -43,7 +43,7 @@ namespace AdventureWorksModel {
         }
 
         
-        public static (Employee, Action<IUserAdvisory>) FindEmployeeByNationalIDNumber(
+        public static (Employee, Action<IAlert>) FindEmployeeByNationalIDNumber(
             
             string nationalIDNumber,
             IQueryable<Employee> employees)
@@ -55,69 +55,69 @@ namespace AdventureWorksModel {
             return SingleObjectWarnIfNoMatch(query);
         }
 
-        //[ContributedAction("Employees")]
-        public static (Employee, Employee) CreateNewEmployeeFromContact(
-            
-             Person contactDetails,
-            IQueryable<Employee> employees)
+        public static (Employee, Employee) CreateNewEmployeeFromContact(Person contactDetails)
         {
-            var e = new Employee(
-                contactDetails.BusinessEntityID,
-                contactDetails);
+            var e = new Employee()
+            {
+                BusinessEntityID = contactDetails.BusinessEntityID,
+                PersonDetails = contactDetails
+            };
             return DisplayAndPersist(e);
         }
 
-        //[PageSize(20)]
-        //public static IQueryable<Person> AutoComplete0CreateNewEmployeeFromContact(
-        //    [Range(2,0)] string name,
-        //    IQueryable<Person> persons) {
-        //    return persons.Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
-        //}
+        [PageSize(20)]
+        public static IQueryable<Person> AutoComplete0CreateNewEmployeeFromContact(
+            [Range(2, 0)] string name,
+            IQueryable<Person> persons)
+        {
+            return persons.Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
+        }
 
-        //[FinderAction]
         [RenderEagerly]
         [TableView(true, "GroupName")]
-        public static IQueryable<Department> ListAllDepartments(
-            
-            IQueryable<Department> depts)
+        public static IQueryable<Department> ListAllDepartments(IQueryable<Department> depts)
         {
             return depts;
         }
 
-        [Hidden]
-        public static Employee CurrentUserAsEmployee(
+        //TODO: 3 functions marked internal temporarily, as IPrincipal is being reflected over.
+        internal static Employee CurrentUserAsEmployee(
             
             IQueryable<Employee> employees,
-            IPrincipal principal
+            [Injected] IPrincipal principal
             )
         {
             return employees.Where(x => x.LoginID == "adventure-works\\" + principal.Identity.Name).FirstOrDefault();
         }
 
         
-        public static Employee Me(
+        internal static Employee Me(
             
             IQueryable<Employee> employees,
             [Injected] IPrincipal principal)
         {
             return CurrentUserAsEmployee( employees, principal);
         }
+        internal static (IQueryable<Employee>, Action<IAlert>) MyDepartmentalColleagues(
 
-        //public static (IQueryable<Employee>, string) MyDepartmentalColleagues(
-        //    
-        //    IQueryable<Employee> employees,
-        //    [Injected] IPrincipal principal,
-        //    IQueryable<EmployeeDepartmentHistory> edhs) {
-        //    var me = CurrentUserAsEmployee(m, employees, principal);
-        //    if (me == null) {
-        //        return Display((IQueryable<Employee>) null, "Current user unknown");
-        //    }
-        //    else {
-        //        return Display(EmployeeFunctions.ColleaguesInSameDept(me, edhs), null);
-        //    }
-        //}
+            IQueryable<Employee> employees,
+            [Injected] IPrincipal principal,
+            IQueryable<EmployeeDepartmentHistory> edhs)
+        {
 
-        
+            var me = CurrentUserAsEmployee(employees, principal);
+            if (me == null)
+            {
+                Action<IAlert> alert = WarnUser("Current user unknown");
+                return ((IQueryable<Employee>)null, alert);
+            }
+            else
+            {
+                return (Employee_Functions.ColleaguesInSameDept(me, edhs), null);
+            }
+        }
+
+
         public static Employee RandomEmployee(
              
              IQueryable<Employee> employees,

@@ -11,10 +11,10 @@ using NakedFunctions;
 
 namespace AdventureWorksModel {
     public record ProductModelIllustration : IHasModifiedDate {
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int ProductModelID { get; init; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int IllustrationID { get; init; }
 
         public virtual Illustration Illustration { get; init; }
