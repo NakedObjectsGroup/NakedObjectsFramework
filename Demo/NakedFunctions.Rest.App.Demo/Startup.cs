@@ -6,10 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity;
 using System.Linq;
-using AdventureWorksFunctionalModel;
-using AdventureWorksModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +18,7 @@ using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.Menu;
 using Newtonsoft.Json;
 
-namespace NakedObjects.Rest.App.Demo {
+namespace NakedFunctions.Rest.App.Demo {
     public class Startup {
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -41,7 +38,8 @@ namespace NakedObjects.Rest.App.Demo {
             services.AddNakedCore(options => options.ContextInstallers = new[] { ModelConfig_NakedFunctionsPM.DbContextInstaller });
             services.AddNakedObjects(options => {
                 options.ModelNamespaces = ModelConfig_NakedObjectsPM.ModelNamespaces();
-                options.Services = ModelConfig_NakedObjectsPM.Services().ToArray();               
+                options.Services = ModelConfig_NakedObjectsPM.Services().ToArray();
+                options.MainMenus = ModelConfig_NakedObjectsPM.MainMenus().Select(t => (t.rootType, t.name, true, (Action<IMenu>)null)).ToArray();
                 options.NoValidate = true;
             });
             services.AddNakedFunctions(options => {
@@ -56,6 +54,7 @@ namespace NakedObjects.Rest.App.Demo {
                     builder
                         .WithOrigins("http://localhost:49998",
                             "http://localhost:8080",
+                            "http://localhost:5001",
                             "http://nakedobjectstest.azurewebsites.net",
                             "http://nakedobjectstest2.azurewebsites.net",
                             "https://nakedobjectstest.azurewebsites.net",

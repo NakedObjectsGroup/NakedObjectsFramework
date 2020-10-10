@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 
-namespace NakedObjects.Rest.App.Demo
+namespace NakedFunctions.Rest.App.Demo
 {
     public static class ModelConfig_NakedFunctionsPM
     {

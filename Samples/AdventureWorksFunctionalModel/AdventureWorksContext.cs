@@ -81,11 +81,11 @@ namespace AdventureWorksModel
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Configurations.Add(new DepartmentMap());
-            //modelBuilder.Configurations.Add(new EmployeeMap());
-            //modelBuilder.Configurations.Add(new EmployeeAddressMap());
-            //modelBuilder.Configurations.Add(new EmployeeDepartmentHistoryMap());
-            //modelBuilder.Configurations.Add(new EmployeePayHistoryMap());
-            //modelBuilder.Configurations.Add(new JobCandidateMap());
+            modelBuilder.Configurations.Add(new EmployeeMap());
+            modelBuilder.Configurations.Add(new EmployeeAddressMap());
+            modelBuilder.Configurations.Add(new EmployeeDepartmentHistoryMap());
+            modelBuilder.Configurations.Add(new EmployeePayHistoryMap());
+            modelBuilder.Configurations.Add(new JobCandidateMap());
             modelBuilder.Configurations.Add(new ShiftMap());
             modelBuilder.Configurations.Add(new AddressMap());
             modelBuilder.Configurations.Add(new AddressTypeMap());
@@ -125,30 +125,30 @@ namespace AdventureWorksModel
             modelBuilder.Configurations.Add(new UnitMeasureMap());
             modelBuilder.Configurations.Add(new WorkOrderMap());
             modelBuilder.Configurations.Add(new WorkOrderRoutingMap());
-            //modelBuilder.Configurations.Add(new ProductVendorMap());
-            //modelBuilder.Configurations.Add(new PurchaseOrderDetailMap());
-            //modelBuilder.Configurations.Add(new PurchaseOrderHeaderMap());
-            //modelBuilder.Configurations.Add(new ShipMethodMap());
-            //modelBuilder.Configurations.Add(new VendorMap());
+            modelBuilder.Configurations.Add(new ProductVendorMap());
+            modelBuilder.Configurations.Add(new PurchaseOrderDetailMap());
+            modelBuilder.Configurations.Add(new PurchaseOrderHeaderMap());
+            modelBuilder.Configurations.Add(new ShipMethodMap());
+            modelBuilder.Configurations.Add(new VendorMap());
             modelBuilder.Configurations.Add(new PersonCreditCardMap());
-           // modelBuilder.Configurations.Add(new CountryRegionCurrencyMap());
+            modelBuilder.Configurations.Add(new CountryRegionCurrencyMap());
             modelBuilder.Configurations.Add(new CreditCardMap());
             modelBuilder.Configurations.Add(new CurrencyMap());
-            //modelBuilder.Configurations.Add(new CurrencyRateMap());
-            //modelBuilder.Configurations.Add(new CustomerMap());
-            //modelBuilder.Configurations.Add(new SalesOrderDetailMap());
-            //modelBuilder.Configurations.Add(new SalesOrderHeaderMap());
-            //modelBuilder.Configurations.Add(new SalesOrderHeaderSalesReasonMap());
-            //modelBuilder.Configurations.Add(new SalesPersonMap());
-            //modelBuilder.Configurations.Add(new SalesPersonQuotaHistoryMap());
-            //modelBuilder.Configurations.Add(new SalesReasonMap());
-            //modelBuilder.Configurations.Add(new SalesTaxRateMap());
+            modelBuilder.Configurations.Add(new CurrencyRateMap());
+            modelBuilder.Configurations.Add(new CustomerMap());
+            modelBuilder.Configurations.Add(new SalesOrderDetailMap());
+            modelBuilder.Configurations.Add(new SalesOrderHeaderMap());
+            modelBuilder.Configurations.Add(new SalesOrderHeaderSalesReasonMap());
+            modelBuilder.Configurations.Add(new SalesPersonMap());
+            modelBuilder.Configurations.Add(new SalesPersonQuotaHistoryMap());
+            modelBuilder.Configurations.Add(new SalesReasonMap());
+            modelBuilder.Configurations.Add(new SalesTaxRateMap());
             modelBuilder.Configurations.Add(new SalesTerritoryMap());
-            //modelBuilder.Configurations.Add(new SalesTerritoryHistoryMap());
-            //modelBuilder.Configurations.Add(new ShoppingCartItemMap());
+            modelBuilder.Configurations.Add(new SalesTerritoryHistoryMap());
+            modelBuilder.Configurations.Add(new ShoppingCartItemMap());
             modelBuilder.Configurations.Add(new SpecialOfferMap());
             modelBuilder.Configurations.Add(new SpecialOfferProductMap());
-            //modelBuilder.Configurations.Add(new StoreMap());
+            modelBuilder.Configurations.Add(new StoreMap());
         }
     }
 }
