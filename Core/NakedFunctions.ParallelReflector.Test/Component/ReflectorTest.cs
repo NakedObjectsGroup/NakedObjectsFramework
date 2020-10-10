@@ -392,6 +392,7 @@ namespace NakedFunctions.Reflect.Test {
         }
 
         [TestMethod]
+        [Ignore]
         public void ReflectDefaultValueProperty()
         {
             ObjectReflectorConfiguration.NoValidate = true;
