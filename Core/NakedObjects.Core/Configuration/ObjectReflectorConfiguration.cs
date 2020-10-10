@@ -16,9 +16,9 @@ using NakedObjects.Menu;
 using NakedObjects.Value;
 
 namespace NakedObjects.Core.Configuration {
-    [Serializable]
-    public class ObjectReflectorConfiguration : IObjectReflectorConfiguration {
-        private readonly Type[] defaultSystemTypes = {
+
+    public static class ReflectorDefaults {
+        public static readonly Type[] DefaultSystemTypes = {
             typeof(bool),
             typeof(byte),
             typeof(char),
@@ -79,20 +79,26 @@ namespace NakedObjects.Core.Configuration {
             new List<int>().Union(new List<int>()).GetType().GetGenericTypeDefinition(),
             typeof(Action<>)
         };
+    }
 
+
+    [Serializable]
+    public class ObjectReflectorConfiguration : IObjectReflectorConfiguration {
         public ObjectReflectorConfiguration(Type[] typesToIntrospect,
                                             Type[] services,
                                             string[] modelNamespaces,
                                             (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] mainMenus = null,
                                             bool concurrencyChecking = true) {
             ModelNamespaces = modelNamespaces;
-            SupportedSystemTypes = defaultSystemTypes.ToList();
+            SupportedSystemTypes = ReflectorDefaults.DefaultSystemTypes.ToList();
             TypesToIntrospect = typesToIntrospect;
             Services = services;
             IgnoreCase = false;
             ConcurrencyChecking = concurrencyChecking;
             MainMenus = mainMenus;
+            
             ValidateConfig();
+
         }
 
         // for testing

@@ -33,6 +33,7 @@ namespace NakedObjects.ParallelReflect.Component {
         public bool ConcurrencyChecking => true;
         public bool IgnoreCase => false;
         public (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus => null;
+        public List<Type> SupportedSystemTypes => new List<Type>();
         public bool HasConfig() => false;
     }
 
@@ -126,7 +127,9 @@ namespace NakedObjects.ParallelReflect.Component {
 
         private Type[] GetObjectTypesToIntrospect() {
             var types = objectReflectorConfiguration.TypesToIntrospect.Select(EnsureGenericTypeIsComplete);
-            var systemTypes = objectReflectorConfiguration.SupportedSystemTypes.Select(EnsureGenericTypeIsComplete);
+            var oSystemTypes = objectReflectorConfiguration.SupportedSystemTypes.Select(EnsureGenericTypeIsComplete);
+            var fSystemTypes = functionalReflectorConfiguration.SupportedSystemTypes.Select(EnsureGenericTypeIsComplete);
+            var systemTypes = oSystemTypes.Union(fSystemTypes).Distinct();
             return types.Union(systemTypes).ToArray();
         }
     }

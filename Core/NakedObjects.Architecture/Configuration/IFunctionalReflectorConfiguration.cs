@@ -18,6 +18,7 @@ namespace NakedObjects.Architecture.Configuration {
         bool IgnoreCase { get; }
 
         (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus { get; }
+        List<Type> SupportedSystemTypes { get; }
         bool HasConfig();
     }
 }

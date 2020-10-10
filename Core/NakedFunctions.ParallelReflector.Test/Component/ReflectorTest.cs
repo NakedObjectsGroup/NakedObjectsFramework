@@ -13,8 +13,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
-using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
@@ -45,6 +45,11 @@ namespace NakedFunctions.Reflect.Test {
 
     [Bounded]
     public record BoundedClass { }
+
+    public record PropertyDefaultClass {
+        [NakedFunctions.DefaultValue("ADefault")]
+        public virtual string DefaultedProperty { get; set; }
+    }
 
     public record SimpleClass {
         public virtual SimpleClass SimpleProperty { get; set; }
@@ -382,10 +387,26 @@ namespace NakedFunctions.Reflect.Test {
 
             var reflector = container.GetService<IReflector>();
             reflector.Reflect();
-            var specs = reflector.AllObjectSpecImmutables;
-            var spec = specs.OfType<ObjectSpecImmutable>().Single();
-            Assert.AreEqual("NakedFunctions.Reflect.Test.BoundedClass", spec.FullName);
+            var spec = reflector.AllObjectSpecImmutables.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.BoundedClass");
             Assert.IsTrue(spec.IsBoundedSet());
+        }
+
+        [TestMethod]
+        public void ReflectDefaultValueProperty()
+        {
+            ObjectReflectorConfiguration.NoValidate = true;
+
+            var rc = new FunctionalReflectorConfiguration(new[] { typeof(PropertyDefaultClass) }, new Type[0]);
+
+            var container = GetContainer(rc);
+
+            var reflector = container.GetService<IReflector>();
+            reflector.Reflect();
+            var spec = reflector.AllObjectSpecImmutables.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.PropertyDefaultClass");
+            var fieldSpec = spec.Fields.Single();
+            var facet = fieldSpec.GetFacet<IPropertyDefaultFacet>();
+            Assert.IsNotNull(facet);
+            Assert.AreEqual("ADefault", facet.GetDefault(null));
         }
     }
 }

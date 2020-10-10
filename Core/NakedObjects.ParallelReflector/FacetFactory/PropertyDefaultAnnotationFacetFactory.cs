@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Reflection;
@@ -21,11 +22,17 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.ParallelReflect.FacetFactory {
     public sealed class PropertyDefaultAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         public PropertyDefaultAnnotationFacetFactory(IFacetFactoryOrder<PropertyDefaultAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Properties) { }
+            : base(order.Order, loggerFactory, FeatureType.Properties, ReflectionType.Both) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<DefaultValueAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
+            var attribute = (Attribute) member.GetCustomAttribute<DefaultValueAttribute>() ?? member.GetCustomAttribute<NakedFunctions.DefaultValueAttribute>();
+            FacetUtils.AddFacet(
+                attribute switch {
+                    DefaultValueAttribute a => Create(a, holder),
+                    NakedFunctions.DefaultValueAttribute a => Create(a, holder),
+                    _ => null
+                }
+            );
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -34,5 +41,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         private static IPropertyDefaultFacet Create(DefaultValueAttribute attribute, ISpecification holder) => attribute == null ? null : new PropertyDefaultFacetAnnotation(attribute.Value, holder);
+        private static IPropertyDefaultFacet Create(NakedFunctions.DefaultValueAttribute attribute, ISpecification holder) => attribute == null ? null : new PropertyDefaultFacetAnnotation(attribute.Value, holder);
+
     }
 }
