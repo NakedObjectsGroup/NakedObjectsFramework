@@ -20,6 +20,7 @@ using Newtonsoft.Json;
 
 namespace NakedFunctions.Rest.App.Demo {
     public class Startup {
+
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         public Startup(IConfiguration configuration) {
@@ -43,8 +44,8 @@ namespace NakedFunctions.Rest.App.Demo {
                 options.NoValidate = true;
             });
             services.AddNakedFunctions(options => {
-                options.FunctionalTypes = ModelConfig_NakedFunctionsPM.DomainTypes().ToArray();
-                options.Functions = ModelConfig_NakedFunctionsPM.ContributedFunctions().ToArray();
+                options.FunctionalTypes = ModelConfig_NakedFunctionsPM.DomainTypes();
+                options.Functions = ModelConfig_NakedFunctionsPM.ContributedFunctions();
                 options.MainMenus = ModelConfig_NakedFunctionsPM.MainMenus().Select(t => (t.rootType, t.name, true, (Action<IMenu>)null)).ToArray();
             });
             services.AddRestfulObjects();
