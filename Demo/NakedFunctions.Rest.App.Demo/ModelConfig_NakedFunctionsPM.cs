@@ -10,7 +10,7 @@ namespace NakedFunctions.Rest.App.Demo
     {
         public static Func<IConfiguration, DbContext> DbContextInstaller =>  c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
 
-        public static List<Type> DomainTypes() => new List<Type>
+        public static Type[] DomainTypes() => new []
         {
             typeof(Product), typeof(SpecialOffer), typeof(Employee)
         };
@@ -18,7 +18,7 @@ namespace NakedFunctions.Rest.App.Demo
 
         //Register static types that contain functions - all defined with 'extension method' syntax - that are to be contributed to a
         //specific domain type, IQueryable<DomainType>, or an interface implemented by domain types
-        public static List<Type> ContributedFunctions() => new List<Type> {
+        public static Type[] ContributedFunctions() => new [] {
             typeof(Product_MenuFunctions), 
             typeof(SpecialOffer_MenuFunctions),
             typeof(Employee_MenuFunctions),
@@ -29,7 +29,7 @@ namespace NakedFunctions.Rest.App.Demo
             typeof(Employee_Functions)
         };
 
-        public static IList<(string name, Type rootType)> MainMenus() => new List<(string, Type)> {
+        public static (string name, Type rootType)[] MainMenus() => new [] {
             ("Products", typeof(Product_MenuFunctions)),
             ("Special Offers", typeof(SpecialOffer_MenuFunctions)),
            ("Employees", typeof(Employee_MenuFunctions)),
