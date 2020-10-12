@@ -13,7 +13,6 @@ using System.Linq;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("memo.png")]
     public class PurchaseOrderHeader  {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }

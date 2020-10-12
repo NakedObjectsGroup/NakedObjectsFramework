@@ -12,7 +12,6 @@ using System.Linq;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("house.png")]
     [Immutable(WhenTo.OncePersisted)]
     public class Address  {
         #region Injected Services

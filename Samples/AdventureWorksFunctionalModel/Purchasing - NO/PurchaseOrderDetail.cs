@@ -10,7 +10,6 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("memo_point.png")]
     public class PurchaseOrderDetail {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }

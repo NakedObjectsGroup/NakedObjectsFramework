@@ -12,7 +12,6 @@ using System.Linq;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("dog.png")]
     public class SalesPerson : IBusinessEntity {
 
         #region Injected Services

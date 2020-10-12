@@ -10,7 +10,6 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("clipboard.png")]
     [Immutable(WhenTo.OncePersisted)]
     public class EmployeePayHistory {
         #region Injected Services

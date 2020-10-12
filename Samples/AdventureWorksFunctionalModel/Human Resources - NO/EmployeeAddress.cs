@@ -12,7 +12,6 @@ using NakedObjects;
 namespace AdventureWorksModel {
     //This class models an association table, and is never viewed directly by the user.
 
-    [IconName("house.png")]
     public class EmployeeAddress : IAddressRole {
         #region Life Cycle Methods
         public virtual void Persisting() {
