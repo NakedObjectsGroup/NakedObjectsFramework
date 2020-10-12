@@ -16,7 +16,6 @@
     <ProjectReference Include="..\..\Rest\NakedObjects.Rest\NakedObjects.Rest.csproj" />
     <ProjectReference Include="..\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj" />
     <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj" />
-    <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
   </ItemGroup>
 
 </Project>

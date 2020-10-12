@@ -44,7 +44,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestPropertyDefaultAnnotationPickedUpOnActionParameter() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
             var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(int)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+            metamodel = facetFactory.ProcessParams(Reflector, null,method, 0, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionDefaultsFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionDefaultsFacetAnnotation);

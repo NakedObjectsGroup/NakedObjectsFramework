@@ -36,7 +36,6 @@
     <file src="..\..\Core\NakedObjects.Metamodel\bin\Debug\**\NakedObjects.Metamodel.dll" target="lib" />
     <file src="..\..\Core\NakedObjects.ParallelReflector\bin\Debug\**\NakedObjects.ParallelReflector.dll" target="lib" />
     <file src="..\..\Core\NakedObjects.Persistor.Entity\bin\Debug\**\NakedObjects.Persistor.Entity.dll" target="lib" />
-    <file src="..\..\Core\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.dll" target="lib" />
     <file src="..\..\Core\NakedObjects.DependencyInjection\bin\Debug\**\NakedObjects.DependencyInjection.dll"
           target="lib" />
     <file src="..\..\Core\NakedFunctions.Metamodel\bin\Debug\**\NakedFunctions.Metamodel.dll" target="lib" />
@@ -51,7 +50,6 @@
     <file src="..\..\Core\NakedObjects.Metamodel\bin\Debug\**\NakedObjects.Metamodel.pdb" target="lib" />
     <file src="..\..\Core\NakedObjects.ParallelReflector\bin\Debug\**\NakedObjects.ParallelReflector.pdb" target="lib" />
     <file src="..\..\Core\NakedObjects.Persistor.Entity\bin\Debug\**\NakedObjects.Persistor.Entity.pdb" target="lib" />
-    <file src="..\..\Core\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.pdb" target="lib" />
     <file src="..\..\Core\NakedObjects.DependencyInjection\bin\Debug\**\NakedObjects.DependencyInjection.pdb"
           target="lib" />
     <file src="..\..\Core\NakedFunctions.Metamodel\bin\Debug\**\NakedFunctions.Metamodel.pdb" target="lib" />

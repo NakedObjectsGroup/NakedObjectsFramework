@@ -33,7 +33,7 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
             : base(order.Order, loggerFactory, FeatureType.ActionParameters, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<InjectedParameterFacetFactory>();
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, IClassStrategy classStrategy, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parm = method.GetParameters()[paramNum];
 
             if (FunctionalFacetFactoryHelpers.IsInjectedParameter(method, paramNum)) {

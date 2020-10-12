@@ -43,7 +43,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestDefaultMenuPickedUp() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof(Class1), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, null,typeof(Class1), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IMenuFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MenuFacetDefault);
@@ -55,7 +55,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var class2Type = typeof(Class2);
-            metamodel = facetFactory.Process(Reflector, class2Type, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, null,class2Type, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IMenuFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MenuFacetViaMethod);

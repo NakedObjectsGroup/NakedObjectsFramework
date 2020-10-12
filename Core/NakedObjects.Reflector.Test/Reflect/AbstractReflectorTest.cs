@@ -124,7 +124,7 @@ namespace NakedObjects.Reflect.Test {
             var menuFactory = new NullMenuFactory();
             var classStrategy = new DefaultClassStrategy(config);
             var mockLogger = new Mock<ILogger<Metamodel>>().Object;
-            var metamodel = new Metamodel(classStrategy, cache, mockLogger);
+            var metamodel = new Metamodel(cache, mockLogger);
             var mockLogger1 = new Mock<ILogger<Reflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 

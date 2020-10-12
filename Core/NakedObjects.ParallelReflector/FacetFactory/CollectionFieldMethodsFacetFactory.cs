@@ -32,7 +32,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         public override string[] Prefixes => FixedPrefixes;
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = property.Name;
             var type = property.DeclaringType;
 

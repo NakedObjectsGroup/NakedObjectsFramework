@@ -43,13 +43,13 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
 
         private static Type GetContributeeType(MethodInfo member) => IsContributed(member) ? member.GetParameters().First().ParameterType : typeof(MenuFunctions);
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo member, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, MethodInfo member, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // all functions are contributed to first parameter or MenuService
 
             var facet = new ContributedFunctionFacet(holder);
 
             var contributeeType = GetContributeeType(member);
-            var result = reflector.LoadSpecification(contributeeType, metamodel);
+            var result = reflector.LoadSpecification(contributeeType, classStrategy, metamodel);
             metamodel = result.Item2;
 
             var type = result.Item1 as ITypeSpecImmutable;
@@ -61,6 +61,6 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => Process(reflector, method, specification, metamodel);
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => Process(reflector, classStrategy, method, specification, metamodel);
     }
 }

@@ -25,7 +25,6 @@
     <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj" />
     <ProjectReference Include="..\NakedObjects.DependencyInjection\NakedObjects.DependencyInjection.csproj" />
     <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj" />
-    <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
   </ItemGroup>
 
 </Project>

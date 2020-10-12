@@ -90,7 +90,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
             facetFactory = new RemoveIgnoredMethodsFacetFactory(new Component.FacetFactoryOrder<RemoveIgnoredMethodsFacetFactory>(), LoggerFactory);
             var menuFactory = new NullMenuFactory();
             var classStrategy = new DefaultClassStrategy(reflectorConfiguration);
-            var metamodel = new Metamodel(classStrategy, cache, null);
+            var metamodel = new Metamodel(cache, null);
             var mockLogger = new Mock<ILogger<Reflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 

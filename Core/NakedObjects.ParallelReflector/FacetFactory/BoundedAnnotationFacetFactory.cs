@@ -23,7 +23,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public BoundedAnnotationFacetFactory(IFacetFactoryOrder<BoundedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces, ReflectionType.Both) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Attribute attribute = (Attribute) type.GetCustomAttribute<NakedObjects.BoundedAttribute>() ?? type.GetCustomAttribute<NakedFunctions.BoundedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
             return metamodel;

@@ -129,7 +129,7 @@ namespace NakedObjects.Reflect.Test.FacetFactory {
 
             facetFactory = new SystemClassMethodFilteringFactory(new Component.FacetFactoryOrder<SystemClassMethodFilteringFactory>(), LoggerFactory);
             var classStrategy = new DefaultClassStrategy(config);
-            var metamodel = new Metamodel(classStrategy, cache, null);
+            var metamodel = new Metamodel(cache, null);
             var mockLogger = new Mock<ILogger<Reflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 

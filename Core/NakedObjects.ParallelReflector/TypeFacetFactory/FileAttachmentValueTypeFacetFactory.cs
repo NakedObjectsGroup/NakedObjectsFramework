@@ -18,12 +18,12 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class FileAttachmentValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public FileAttachmentValueTypeFacetFactory(IFacetFactoryOrder<FileAttachmentValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!FileAttachmentValueSemanticsProvider.IsAdaptedType(type)) {
                 return metamodel;
             }
 
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(FileAttachmentValueSemanticsProvider.AdaptedType, metamodel);
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(FileAttachmentValueSemanticsProvider.AdaptedType, classStrategy, metamodel);
             AddValueFacets(new FileAttachmentValueSemanticsProvider(oSpec, specification), specification);
             return mm;
         }

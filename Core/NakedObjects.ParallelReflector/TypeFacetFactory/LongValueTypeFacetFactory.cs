@@ -18,12 +18,12 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class LongValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public LongValueTypeFacetFactory(IFacetFactoryOrder<LongValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!LongValueSemanticsProvider.IsAdaptedType(type)) {
                 return metamodel;
             }
 
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(LongValueSemanticsProvider.AdaptedType, metamodel);
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(LongValueSemanticsProvider.AdaptedType, classStrategy, metamodel);
             AddValueFacets(new LongValueSemanticsProvider(oSpec, specification), specification);
             return mm;
         }

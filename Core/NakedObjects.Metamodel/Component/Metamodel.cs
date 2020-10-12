@@ -18,11 +18,9 @@ namespace NakedObjects.Meta.Component {
     [Serializable]
     public sealed class Metamodel : IMetamodelBuilder {
         private readonly ISpecificationCache cache;
-        private readonly IClassStrategy classStrategy;
         private readonly ILogger<Metamodel> logger;
 
-        public Metamodel(IClassStrategy classStrategy, ISpecificationCache cache, ILogger<Metamodel> logger) {
-            this.classStrategy = classStrategy;
+        public Metamodel(ISpecificationCache cache, ILogger<Metamodel> logger) {
             this.cache = cache;
             this.logger = logger;
         }

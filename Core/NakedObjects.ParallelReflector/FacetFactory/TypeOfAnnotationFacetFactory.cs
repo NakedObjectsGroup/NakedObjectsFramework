@@ -24,7 +24,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public TypeOfAnnotationFacetFactory(IFacetFactoryOrder<TypeOfAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.CollectionsAndActions, ReflectionType.Both) { }
 
-        private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type methodReturnType, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type methodReturnType, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!CollectionUtils.IsCollection(methodReturnType)) {
                 return metamodel;
             }
@@ -32,7 +32,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             if (methodReturnType.IsArray) {
                 var elementType = methodReturnType.GetElementType();
                 IObjectSpecBuilder elementSpec;
-                (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
+                (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, classStrategy, metamodel);
                 FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
                 FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
             }
@@ -41,7 +41,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 if (actualTypeArguments.Any()) {
                     var elementType = actualTypeArguments.First();
                     IObjectSpecBuilder elementSpec;
-                    (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
+                    (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, classStrategy, metamodel);
                     FacetUtils.AddFacet(new ElementTypeFacet(holder, elementType, elementSpec));
                     FacetUtils.AddFacet(new TypeOfFacetInferredFromGenerics(holder));
                 }
@@ -50,12 +50,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
-            Process(reflector, method.ReturnType, specification, metamodel);
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
+            Process(reflector, classStrategy, method.ReturnType, specification, metamodel);
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
             property.GetGetMethod() != null
-                ? Process(reflector, property.PropertyType, specification, metamodel)
+                ? Process(reflector, classStrategy, property.PropertyType, specification, metamodel)
                 : metamodel;
     }
 }

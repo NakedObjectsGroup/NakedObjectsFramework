@@ -19,13 +19,13 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class EnumValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public EnumValueTypeFacetFactory(IFacetFactoryOrder<EnumValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!typeof(Enum).IsAssignableFrom(type)) {
                 return metamodel;
             }
 
             var semanticsProviderType = typeof(EnumValueSemanticsProvider<>).MakeGenericType(type);
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, metamodel);
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(type, classStrategy, metamodel);
             var semanticsProvider = Activator.CreateInstance(semanticsProviderType, oSpec, specification);
             var method = typeof(ValueUsingValueSemanticsProviderFacetFactory).GetMethod("AddValueFacets", BindingFlags.Static | BindingFlags.Public).MakeGenericMethod(type);
             method.Invoke(null, new[] {semanticsProvider, specification});

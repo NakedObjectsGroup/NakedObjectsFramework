@@ -266,7 +266,7 @@ namespace NakedFunctions.Reflect.Test {
             var reflector = container.GetService<IReflector>();
             reflector.Reflect();
             var specs = reflector.AllObjectSpecImmutables;
-            Assert.AreEqual(2, specs.Length);
+            Assert.AreEqual(3, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
         }
@@ -283,7 +283,7 @@ namespace NakedFunctions.Reflect.Test {
             var reflector = container.GetService<IReflector>();
             reflector.Reflect();
             var specs = reflector.AllObjectSpecImmutables;
-            Assert.AreEqual(4, specs.Length);
+            Assert.AreEqual(5, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleFunctions), specs);
@@ -304,7 +304,7 @@ namespace NakedFunctions.Reflect.Test {
             var reflector = container.GetService<IReflector>();
             reflector.Reflect();
             var specs = reflector.AllObjectSpecImmutables;
-            Assert.AreEqual(5, specs.Length);
+            Assert.AreEqual(7, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
             AbstractReflectorTest.AssertSpec(typeof(TupleFunctions), specs);
@@ -350,7 +350,7 @@ namespace NakedFunctions.Reflect.Test {
             var reflector = container.GetService<IReflector>();
             reflector.Reflect();
             var specs = reflector.AllObjectSpecImmutables;
-            Assert.AreEqual(4, specs.Length);
+            Assert.AreEqual(6, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleInjectedFunctions), specs);

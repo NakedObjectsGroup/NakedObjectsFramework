@@ -43,7 +43,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestMultiLineAnnotationDefaults() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof(Customer3), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, null,typeof(Customer3), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IMultiLineFacet));
             var multiLineFacetAnnotation = (MultiLineFacetAnnotation) facet;
             Assert.AreEqual(6, multiLineFacetAnnotation.NumberOfLines);
@@ -56,7 +56,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Customer6), "SomeAction", new[] {typeof(int)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+            metamodel = facetFactory.ProcessParams(Reflector, null,method, 0, Specification, metamodel);
             Assert.IsNull(Specification.GetFacet(typeof(IMultiLineFacet)));
             Assert.IsNotNull(metamodel);
         }
@@ -66,7 +66,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer5), "NumberOfOrders");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IMultiLineFacet));
             Assert.IsNull(facet);
             Assert.IsNotNull(metamodel);
@@ -77,7 +77,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Customer2), "SomeAction", new[] {typeof(string)});
-            metamodel = facetFactory.ProcessParams(Reflector, method, 0, Specification, metamodel);
+            metamodel = facetFactory.ProcessParams(Reflector, null,method, 0, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IMultiLineFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MultiLineFacetAnnotation);
@@ -91,7 +91,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestMultiLineAnnotationPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, null,typeof(Customer), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IMultiLineFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MultiLineFacetAnnotation);
@@ -106,7 +106,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer1), "FirstName");
-            metamodel = facetFactory.Process(Reflector, property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IMultiLineFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MultiLineFacetAnnotation);
@@ -121,7 +121,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethodIgnoreParms(typeof(Customer7), nameof(Customer7.SomeAction));
-            metamodel = facetFactory.Process(Reflector, method, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, null,method, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IMultiLineFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is MultiLineFacetAnnotation);

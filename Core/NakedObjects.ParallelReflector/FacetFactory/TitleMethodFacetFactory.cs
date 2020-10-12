@@ -39,7 +39,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         ///     If no title or ToString can be used then will use Facets provided by
         ///     <see cref="FallbackFacetFactory" /> instead.
         /// </summary>
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             IList<MethodInfo> attributedMethods = new List<MethodInfo>();
             foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)) {
                 if (propertyInfo.GetCustomAttribute<TitleAttribute>() != null) {

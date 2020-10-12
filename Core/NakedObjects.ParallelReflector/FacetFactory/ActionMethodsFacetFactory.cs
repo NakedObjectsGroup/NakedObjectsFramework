@@ -48,23 +48,23 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         #region IMethodIdentifyingFacetFactory Members
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
             var type = actionMethod.DeclaringType;
             var facets = new List<IFacet>();
 
             ITypeSpecBuilder onType;
-            (onType, metamodel) = reflector.LoadSpecification(type, metamodel);
+            (onType, metamodel) = reflector.LoadSpecification(type, classStrategy, metamodel);
 
             IObjectSpecBuilder returnSpec;
-            (returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(actionMethod.ReturnType, metamodel);
+            (returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(actionMethod.ReturnType, classStrategy, metamodel);
 
             IObjectSpecBuilder elementSpec = null;
             var isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(actionMethod.ReturnType);
             if (returnSpec != null && IsCollection(actionMethod.ReturnType)) {
                 var elementType = CollectionUtils.ElementType(actionMethod.ReturnType);
-                (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, metamodel);
+                (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, classStrategy, metamodel);
             }
 
             RemoveMethod(methodRemover, actionMethod);
@@ -92,7 +92,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 var paramNames = actionMethod.GetParameters().Select(p => p.Name).ToArray();
 
                 FindAndRemoveParametersAutoCompleteMethod(reflector, methodRemover, type, capitalizedName, paramTypes, actionParameters);
-                metamodel = FindAndRemoveParametersChoicesMethod(reflector, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters, metamodel);
+                metamodel = FindAndRemoveParametersChoicesMethod(reflector, classStrategy, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters, metamodel);
                 FindAndRemoveParametersDefaultsMethod(reflector, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters);
                 FindAndRemoveParametersValidateMethod(reflector, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters);
             }
@@ -102,7 +102,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, IClassStrategy classStrategy, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];
             var facets = new List<IFacet>();
 
@@ -111,12 +111,12 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
 
             IObjectSpecBuilder returnSpec;
-            (returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(parameter.ParameterType, metamodel);
+            (returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(parameter.ParameterType, classStrategy, metamodel);
 
             if (returnSpec != null && IsParameterCollection(parameter.ParameterType)) {
                 var elementType = CollectionUtils.ElementType(parameter.ParameterType);
                 IObjectSpecImmutable elementSpec;
-                (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(elementType, metamodel);
+                (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(elementType, classStrategy, metamodel);
                 facets.Add(new ElementTypeFacet(holder, elementType, elementSpec));
             }
 
@@ -222,7 +222,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
         }
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndRemoveParametersChoicesMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindAndRemoveParametersChoicesMethod(IReflector reflector, IClassStrategy classStrategy, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 var paramType = paramTypes[i];
                 var paramName = paramNames[i];
@@ -273,7 +273,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
                     foreach (var p in methodToUse.GetParameters()) {
                         IObjectSpecBuilder oSpec;
-                        (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, metamodel);
+                        (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, classStrategy, metamodel);
                         var name = p.Name.ToLower();
                         parameterNamesAndTypes.Add((name, oSpec));
                     }

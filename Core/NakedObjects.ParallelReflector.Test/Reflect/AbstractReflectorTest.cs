@@ -111,6 +111,7 @@ namespace NakedObjects.ParallelReflect.Test {
 
         protected IImmutableDictionary<string, ITypeSpecBuilder> Metamodel;
         protected IObjectSpecImmutable Specification;
+        protected IClassStrategy ClassStrategy;
 
         protected static void AssertIsInstanceOfType<T>(object o) => Assert.IsInstanceOfType(o, typeof(T));
 
@@ -122,14 +123,14 @@ namespace NakedObjects.ParallelReflect.Test {
             var functionalReflectorConfiguration = new FunctionalReflectorConfiguration(new Type[] { }, new Type[] { });
 
             var menuFactory = new NullMenuFactory();
-            var classStrategy = new ObjectClassStrategy(config);
+            ClassStrategy = new ObjectClassStrategy(config);
             var mockLogger = new Mock<ILogger<Metamodel>>().Object;
 
-            var metamodel = new Metamodel(classStrategy, cache, mockLogger);
+            var metamodel = new Metamodel(cache, mockLogger);
             var mockLogger1 = new Mock<ILogger<ParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
-            var reflector = new ParallelReflector(classStrategy, metamodel, config, functionalReflectorConfiguration, menuFactory, new IFacetDecorator[] { }, facetFactories, mockLoggerFactory, mockLogger1);
+            var reflector = new ParallelReflector(metamodel, config, functionalReflectorConfiguration, menuFactory, new IFacetDecorator[] { }, facetFactories, mockLoggerFactory, mockLogger1);
 
             ITypeSpecBuilder spec;
             (spec, Metamodel) = LoadSpecification(reflector);

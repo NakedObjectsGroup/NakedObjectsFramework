@@ -46,7 +46,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestActionWithNoParameters() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, null,typeof(Customer), MethodRemover, Specification, metamodel);
 
             AssertRemovedCalled(2);
 
@@ -102,11 +102,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             facetFactory = new RemoveEventHandlerMethodsFacetFactory(new FacetFactoryOrder<RemoveEventHandlerMethodsFacetFactory>(), LoggerFactory);
             var menuFactory = new NullMenuFactory();
             var classStrategy = new ObjectClassStrategy(reflectorConfiguration);
-            var metamodel = new Metamodel(classStrategy, cache, null);
+            var metamodel = new Metamodel(cache, null);
             var mockLogger = new Mock<ILogger<ParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
-            Reflector = new ParallelReflector(classStrategy, metamodel, reflectorConfiguration, functionalReflectorConfiguration, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory}, mockLoggerFactory, mockLogger);
+            Reflector = new ParallelReflector( metamodel, reflectorConfiguration, functionalReflectorConfiguration, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory}, mockLoggerFactory, mockLogger);
         }
 
         [TestCleanup]

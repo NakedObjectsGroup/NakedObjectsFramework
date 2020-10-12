@@ -59,7 +59,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestIconNameFromAttribute() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof(Customer1), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, null,typeof(Customer1), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetAnnotation);
@@ -73,7 +73,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestIconNameFromMethod() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, null,typeof(Customer), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
@@ -88,7 +88,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var iconNameMethod = FindMethod(typeof(Customer), "IconName");
-            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, null,typeof(Customer), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);
@@ -100,7 +100,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestIconNameWithFallbackAttribute() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof(Customer2), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, null,typeof(Customer2), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet<IIconFacet>();
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IconFacetViaMethod);

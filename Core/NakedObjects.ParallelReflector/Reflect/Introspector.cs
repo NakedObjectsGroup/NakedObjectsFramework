@@ -33,12 +33,13 @@ namespace NakedObjects.ParallelReflect {
         private IList<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
 
-        public Introspector(IReflector reflector, IFacetFactorySet facetFactorySet, ILogger<Introspector> logger) {
+        public Introspector(IReflector reflector, IFacetFactorySet facetFactorySet, IClassStrategy classStrategy, ILogger<Introspector> logger) {
             this.reflector = reflector;
+            ClassStrategy = classStrategy;
             this.logger = logger;
         }
 
-        private IClassStrategy ClassStrategy => reflector.ClassStrategy;
+        private IClassStrategy ClassStrategy { get; }
 
         private IFacetFactorySet FacetFactorySet => reflector.ObjectFacetFactorySet;
 
@@ -87,10 +88,10 @@ namespace NakedObjects.ParallelReflect {
             // Process facets at object level
             // this will also remove some methods, such as the superclass methods.
             var methodRemover = new IntrospectorMethodRemover(methods);
-            metamodel = FacetFactorySet.Process(reflector, IntrospectedType, methodRemover, spec, metamodel);
+            metamodel = FacetFactorySet.Process(reflector, ClassStrategy, IntrospectedType, methodRemover, spec, metamodel);
 
             if (SuperclassType != null && ClassStrategy.IsTypeToBeIntrospected(SuperclassType)) {
-                (Superclass, metamodel) = reflector.LoadSpecification(SuperclassType, metamodel);
+                (Superclass, metamodel) = reflector.LoadSpecification(SuperclassType, ClassStrategy, metamodel);
             }
 
             AddAsSubclass(spec);
@@ -99,7 +100,7 @@ namespace NakedObjects.ParallelReflect {
             foreach (var interfaceType in InterfacesTypes) {
                 if (interfaceType != null && ClassStrategy.IsTypeToBeIntrospected(interfaceType)) {
                     ITypeSpecBuilder interfaceSpec;
-                    (interfaceSpec, metamodel) = reflector.LoadSpecification(interfaceType, metamodel);
+                    (interfaceSpec, metamodel) = reflector.LoadSpecification(interfaceType, ClassStrategy, metamodel);
                     interfaceSpec.AddSubclass(spec);
                     interfaces.Add(interfaceSpec);
                 }
@@ -180,15 +181,15 @@ namespace NakedObjects.ParallelReflect {
                 // create a collection property spec
                 var returnType = property.PropertyType;
                 IObjectSpecImmutable returnSpec;
-                (returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(returnType, metamodel);
+                (returnSpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(returnType, ClassStrategy, metamodel);
 
                 var defaultType = typeof(object);
                 IObjectSpecImmutable defaultSpec;
-                (defaultSpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(defaultType, metamodel);
+                (defaultSpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(defaultType, ClassStrategy, metamodel);
 
                 var collection = ImmutableSpecFactory.CreateOneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
 
-                metamodel = FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections, metamodel);
+                metamodel = FacetFactorySet.Process(reflector, ClassStrategy, property, new IntrospectorMethodRemover(methods), collection, FeatureType.Collections, metamodel);
                 specs.Add(collection);
             }
 
@@ -206,7 +207,7 @@ namespace NakedObjects.ParallelReflect {
                 var identifier = new IdentifierImpl(FullName, property.Name);
                 var propertyType = property.PropertyType;
                 IObjectSpecImmutable propertySpec;
-                (propertySpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(propertyType, metamodel);
+                (propertySpec, metamodel) = reflector.LoadSpecification<IObjectSpecImmutable>(propertyType, ClassStrategy, metamodel);
 
                 if (propertySpec == null) {
                     throw new ReflectionException(logger.LogAndReturn($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}. If the property is intended to be an injected service it should have a protected get."));
@@ -215,7 +216,7 @@ namespace NakedObjects.ParallelReflect {
                 var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec);
 
                 // Process facets for the property
-                metamodel = FacetFactorySet.Process(reflector, property, new IntrospectorMethodRemover(methods), referenceProperty, FeatureType.Properties, metamodel);
+                metamodel = FacetFactorySet.Process(reflector, ClassStrategy, property, new IntrospectorMethodRemover(methods), referenceProperty, FeatureType.Properties, metamodel);
                 specs.Add(referenceProperty);
             }
 
@@ -224,7 +225,7 @@ namespace NakedObjects.ParallelReflect {
 
         private (IActionSpecImmutable[], IImmutableDictionary<string, ITypeSpecBuilder>) FindActionMethods(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var actionSpecs = new List<IActionSpecImmutable>();
-            var actions = FacetFactorySet.FindActions(methods.Where(m => m != null).ToArray(), reflector.ClassStrategy).Where(a => !FacetFactorySet.Filters(a, reflector.ClassStrategy)).ToArray();
+            var actions = FacetFactorySet.FindActions(methods.Where(m => m != null).ToArray(), ClassStrategy).Where(a => !FacetFactorySet.Filters(a, ClassStrategy)).ToArray();
             methods = methods.Except(actions).ToArray();
 
             // ReSharper disable once ForCanBeConvertedToForeach
@@ -241,7 +242,7 @@ namespace NakedObjects.ParallelReflect {
                     // build action & its parameters
 
                     if (actionMethod.ReturnType != typeof(void)) {
-                        (_, metamodel) = reflector.LoadSpecification(actionMethod.ReturnType, metamodel);
+                        (_, metamodel) = reflector.LoadSpecification(actionMethod.ReturnType, ClassStrategy, metamodel);
                     }
 
                     IIdentifier identifier = new IdentifierImpl(FullName, fullMethodName, actionMethod.GetParameters().ToArray());
@@ -250,7 +251,7 @@ namespace NakedObjects.ParallelReflect {
 
                     foreach (var pt in parameterTypes) {
                         IObjectSpecBuilder oSpec;
-                        (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(pt, metamodel);
+                        (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(pt, ClassStrategy, metamodel);
                         var actionSpec = ImmutableSpecFactory.CreateActionParameterSpecImmutable(oSpec, identifier);
                         actionParams.Add(actionSpec);
                     }
@@ -258,9 +259,9 @@ namespace NakedObjects.ParallelReflect {
                     var action = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, spec, actionParams.ToArray());
 
                     // Process facets on the action & parameters
-                    metamodel = FacetFactorySet.Process(reflector, actionMethod, new IntrospectorMethodRemover(actions), action, FeatureType.Actions, metamodel);
+                    metamodel = FacetFactorySet.Process(reflector, ClassStrategy, actionMethod, new IntrospectorMethodRemover(actions), action, FeatureType.Actions, metamodel);
                     for (var l = 0; l < actionParams.Count; l++) {
-                        metamodel = FacetFactorySet.ProcessParams(reflector, actionMethod, l, actionParams[l], metamodel);
+                        metamodel = FacetFactorySet.ProcessParams(reflector, ClassStrategy, actionMethod, l, actionParams[l], metamodel);
                     }
 
                     actionSpecs.Add(action);

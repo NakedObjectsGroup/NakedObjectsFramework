@@ -18,12 +18,12 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class ImageValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public ImageValueTypeFacetFactory(IFacetFactoryOrder<ImageValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!ImageValueSemanticsProvider.IsAdaptedType(type)) {
                 return metamodel;
             }
 
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(ImageValueSemanticsProvider.AdaptedType, metamodel);
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(ImageValueSemanticsProvider.AdaptedType, classStrategy, metamodel);
             AddValueFacets(new ImageValueSemanticsProvider(oSpec, specification), specification);
             return mm;
         }

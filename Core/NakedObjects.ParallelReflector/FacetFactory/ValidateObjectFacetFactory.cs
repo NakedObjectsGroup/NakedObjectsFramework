@@ -43,7 +43,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                                           !CollectionUtils.IsCollection(p.PropertyType) &&
                                           !CollectionUtils.IsQueryable(p.PropertyType));
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var methodPeers = new List<ValidateObjectFacet.NakedObjectValidationMethod>();
             var methods = FindMethods(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix, typeof(string));
 

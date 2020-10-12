@@ -126,11 +126,11 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             facetFactory = new SystemClassMethodFilteringFactory(new FacetFactoryOrder<SystemClassMethodFilteringFactory>(), LoggerFactory);
             var classStrategy = new ObjectClassStrategy(config);
-            var metamodel = new Metamodel(classStrategy, cache, null);
+            var metamodel = new Metamodel(cache, null);
             var mockLogger = new Mock<ILogger<ParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
-            Reflector = new ParallelReflector(classStrategy, metamodel, config, functionalReflectorConfiguration, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory}, mockLoggerFactory, mockLogger);
+            Reflector = new ParallelReflector( metamodel, config, functionalReflectorConfiguration, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory}, mockLoggerFactory, mockLogger);
         }
 
         [TestCleanup]

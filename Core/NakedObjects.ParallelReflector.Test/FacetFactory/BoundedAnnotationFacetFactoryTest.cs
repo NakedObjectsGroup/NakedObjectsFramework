@@ -30,7 +30,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestBoundedAnnotationPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, null,typeof(Customer), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IBoundedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is BoundedFacet);

@@ -37,7 +37,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         public override string[] Prefixes => FixedPrefixes;
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = property.Name;
             var paramTypes = new[] {property.PropertyType};
 
@@ -65,7 +65,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             FindAndRemoveModifyMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, paramTypes, specification);
 
             FindAndRemoveAutoCompleteMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification);
-            metamodel = FindAndRemoveChoicesMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification, metamodel);
+            metamodel = FindAndRemoveChoicesMethod(reflector, classStrategy, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification, metamodel);
             FindAndRemoveDefaultMethod(reflector, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification);
             FindAndRemoveValidateMethod(reflector, facets, methodRemover, property.DeclaringType, paramTypes, capitalizedName, specification);
 
@@ -122,6 +122,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         }
 
         private IImmutableDictionary<string, ITypeSpecBuilder> FindAndRemoveChoicesMethod(IReflector reflector,
+                                                                                          IClassStrategy classStrategy,
                                                                                           ICollection<IFacet> propertyFacets,
                                                                                           IMethodRemover methodRemover,
                                                                                           Type type,
@@ -147,7 +148,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
                 foreach (var p in method.GetParameters()) {
                     IObjectSpecBuilder oSpec;
-                    (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, metamodel);
+                    (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType, classStrategy, metamodel);
                     parameterNamesAndTypes.Add((p.Name.ToLower(), oSpec));
                 }
 

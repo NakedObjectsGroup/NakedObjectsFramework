@@ -18,12 +18,12 @@ namespace NakedObjects.ParallelReflect.TypeFacetFactory {
     public sealed class CharValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public CharValueTypeFacetFactory(IFacetFactoryOrder<CharValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!CharValueSemanticsProvider.IsAdaptedType(type)) {
                 return metamodel;
             }
 
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(CharValueSemanticsProvider.AdaptedType, metamodel);
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(CharValueSemanticsProvider.AdaptedType, classStrategy, metamodel);
             AddValueFacets(new CharValueSemanticsProvider(oSpec, specification), specification);
             return mm;
         }

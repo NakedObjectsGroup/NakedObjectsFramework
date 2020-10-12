@@ -18,8 +18,8 @@ namespace NakedObjects.ParallelReflect.Test {
     public class ReflectorGenericCollectionTest : AbstractReflectorTest {
         protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(ParallelReflector reflector) {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            (_, metamodel) = reflector.LoadSpecification(typeof(List<TestPoco>), metamodel);
-            return reflector.IntrospectSpecification(typeof(List<TestPoco>), metamodel, () => new Introspector(reflector, reflector.ObjectFacetFactorySet, null));
+            (_, metamodel) = reflector.LoadSpecification(typeof(List<TestPoco>), ClassStrategy, metamodel);
+            return reflector.IntrospectSpecification(typeof(List<TestPoco>), metamodel, () => new Introspector(reflector, reflector.ObjectFacetFactorySet, ClassStrategy, null));
         }
 
         [TestMethod]
