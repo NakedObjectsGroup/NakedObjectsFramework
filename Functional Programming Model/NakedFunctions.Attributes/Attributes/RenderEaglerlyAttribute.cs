@@ -3,7 +3,7 @@
 namespace NakedFunctions
 {
     /// <summary>
-    ///     Indicates that a property or all the properties of a class are to be eagerly rendered.
+    ///     Indicates that a collection property, or all the collection properties of a class, are to rendered 'opened' by default
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Method)]
         public class RenderEagerlyAttribute : Attribute { }

@@ -10,7 +10,6 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("speech.png")]
     [Bounded]
     [Immutable]
     public class SalesReason {

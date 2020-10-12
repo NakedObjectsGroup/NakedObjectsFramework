@@ -11,7 +11,6 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("trolley_item.png")]
     public class SalesOrderDetail {
         #region Injected Services
         public IDomainObjectContainer Container { set; protected get; }

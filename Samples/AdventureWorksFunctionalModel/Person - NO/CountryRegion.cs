@@ -10,7 +10,6 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("globe.png")]
     [Bounded]
     [Immutable]
     public class CountryRegion {

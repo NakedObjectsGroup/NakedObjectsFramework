@@ -10,7 +10,6 @@ using System.ComponentModel;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("default.png")]
     public class Customer  {
         #region Injected Services
         public PersonRepository ContactRepository { set; protected get; }

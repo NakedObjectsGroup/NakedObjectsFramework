@@ -10,7 +10,6 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("gear.png")]
     public class ProductVendor {
 
         #region Life Cycle Methods

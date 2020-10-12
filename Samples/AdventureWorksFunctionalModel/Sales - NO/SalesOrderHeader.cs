@@ -14,7 +14,6 @@ using NakedObjects;
 
 namespace AdventureWorksModel {
     [DisplayName("Sales Order")]
-    [IconName("trolley.png")]
     public class SalesOrderHeader : ICreditCardCreator {
 
         #region Injected Servives

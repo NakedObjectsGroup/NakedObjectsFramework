@@ -17,8 +17,6 @@ namespace NakedFunctions.Rest.App.Demo
 
         public static List<Type> DomainTypes() => new List<Type>
         {
-                    //typeof(EntityCollection<object>),  TODO: What are this and next line for?
-                   // typeof(ObjectQuery<object>),
                    //typeof(CustomerCollectionViewModel),
                    // //typeof(OrderLine),
                    // typeof(OrderStatus),
@@ -29,19 +27,20 @@ namespace NakedFunctions.Rest.App.Demo
 
         public static (string name, Type rootType)[] MainMenus() => new []
         {
-            ("Customers", typeof(CustomerRepository)),
+            ("Customers - NO", typeof(CustomerRepository)),
                // ("Orders", typeof(OrderRepository)),
                // ("Employees", typeof(EmployeeRepository)),
                // ("Persons", typeof(PersonRepository)),
-                ("Vendors", typeof(VendorRepository)),
+                ("Vendors - NO", typeof(VendorRepository)),
                 //("Purchase Orders", typeof(PurchaseOrderRepository)),
                 //("Work Orders", typeof(WorkOrderRepository))
+                // ("Products - NO", typeof(ProductRepository)),
         };
 
         public static Type[] Services() => new [] {
           typeof(CustomerRepository),
           //          typeof(OrderRepository),
-          //          typeof(ProductRepository),
+          //      typeof(ProductRepository),
           //          typeof(EmployeeRepository),
           //          typeof(SalesRepository),
           //          typeof(PersonRepository),

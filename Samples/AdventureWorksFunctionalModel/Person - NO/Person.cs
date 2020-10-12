@@ -18,7 +18,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdventureWorksModel {
 
-    [IconName("cellphone.png")]
     public class Person : BusinessEntity {
 
         #region Life Cycle Methods

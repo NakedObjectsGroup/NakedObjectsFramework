@@ -10,7 +10,6 @@ using System.ComponentModel.DataAnnotations;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    [IconName("currency.png")]
     public class CurrencyRate {
 
         #region Life Cycle Methods

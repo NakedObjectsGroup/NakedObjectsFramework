@@ -8,12 +8,9 @@
 
 
 using System.Linq;
-using NakedFunctions;
-
 using System;
 using System.Collections.Generic;
-using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
-using System.CodeDom;
+using NakedFunctions;
 using static NakedFunctions.Helpers;
 
 namespace AdventureWorksModel {
