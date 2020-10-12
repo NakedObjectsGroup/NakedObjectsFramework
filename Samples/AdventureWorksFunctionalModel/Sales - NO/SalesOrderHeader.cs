@@ -85,7 +85,7 @@ namespace AdventureWorksModel {
         //Properly, the Status property should be [Disabled], and modified only through
         //appropriate actions such as Approve.  It has been left modifiable here only
         //to demonstrate the behaviour of Enum properties.
-        [MemberOrder(1.1), TypicalLength(12), EnumDataType(typeof (OrderStatus))]
+        [MemberOrder(1.1), EnumDataType(typeof (OrderStatus))]
         public virtual byte Status { get; set; }
 
         public byte DefaultStatus() {
@@ -195,7 +195,6 @@ namespace AdventureWorksModel {
         [MemberOrder(4)]
         public virtual Address BillingAddress { get; set; }
 
-        [Executed(Where.Remotely)]
         public List<Address> ChoicesBillingAddress() {
             return  PersonRepository.AddressesFor(Customer.BusinessEntity()).ToList();
         }
@@ -217,7 +216,6 @@ namespace AdventureWorksModel {
         [MemberOrder(10)]
         public virtual Address ShippingAddress { get; set; }
 
-        [Executed(Where.Remotely)]
         public List<Address> ChoicesShippingAddress() {
             return ChoicesBillingAddress();
         }
