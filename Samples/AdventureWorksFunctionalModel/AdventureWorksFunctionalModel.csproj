@@ -101,8 +101,4 @@
     <ProjectReference Include="..\..\Functional Programming Model\NakedFunctions.Helpers\NakedFunctions.Helpers.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Purchasing - NF\" />
-  </ItemGroup>
-
 </Project>

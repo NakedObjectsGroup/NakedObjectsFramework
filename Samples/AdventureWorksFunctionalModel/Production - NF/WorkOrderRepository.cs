@@ -11,8 +11,6 @@ using System;
 using System.Linq;
 using NakedFunctions;
 using static NakedFunctions.Helpers;
-using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
-
 
 namespace AdventureWorksModel {
     [Named("Work Orders")]

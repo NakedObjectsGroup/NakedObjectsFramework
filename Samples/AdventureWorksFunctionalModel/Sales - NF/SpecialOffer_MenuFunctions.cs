@@ -95,11 +95,17 @@ namespace AdventureWorksModel
 
         #endregion
 
+        [MemberOrder(10)]
+        public static (SpecialOffer, Action<IAlert>) RandomSpecialOffertWithAlert(
+[Injected] IQueryable<SpecialOffer> offers,
+[Injected] int random)
+        {
+            return (Random(offers, random), InformUser("This was randomly selected"));
+        }
 
         #region Helper methods
 
         internal static SpecialOffer NoDiscount(IQueryable<SpecialOffer> offers) => offers.Where(x => x.SpecialOfferID == 1).First();
         #endregion
-
     }
 }

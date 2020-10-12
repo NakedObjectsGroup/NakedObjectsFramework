@@ -11,8 +11,6 @@ using System.Linq;
 using System.Security.Principal;
 using NakedFunctions;
 using static NakedFunctions.Helpers;
-using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
-
 
 namespace AdventureWorksModel {
     [Named("Employees")]

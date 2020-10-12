@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NakedFunctions;
-using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
+using static NakedFunctions.Helpers;
 
 namespace AdventureWorksModel {
     public enum ProductLineEnum {
@@ -27,6 +27,7 @@ namespace AdventureWorksModel {
     }
     public static class Product_MenuFunctions
     {
+
         [MemberOrder(1), TableView(true, nameof(Product.ProductNumber), nameof(Product.ProductSubcategory), nameof(Product.ListPrice))]
         public static IQueryable<Product> FindProductByName(
             string searchString,
