@@ -2,7 +2,10 @@
 
 namespace NakedFunctions
 {
-    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    /// <summary>
+    /// Provides a statically-defined default value for an action parameter.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
     public class DefaultValueAttribute : Attribute
     {
         public object Value { get; private set; }

@@ -9,13 +9,14 @@ using System;
 
 namespace NakedFunctions {
     /// <summary>
-    ///     Use for injected parameters
+    ///     Specifies that this parameter
+    ///     should not be displayed on the UI, but rather that the framework should provide a value for this parameter when the action is
+    ///     invoked. Currently supported types:
+    ///     - Integer (framework injects a random integer value in the full range of the integer type
+    ///     - GUID (framework injects a new GUID)
+    ///     - DateTime (framework injects the current date & time)
+    ///     - IPrincipal (framework injects an IPrincipal corresponding to the current user)
     /// </summary>
-    /// <remarks>
-    ///     <para>
-    ///        
-    ///     </para>
-    /// </remarks>
     [AttributeUsage(AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
     public class InjectedAttribute : Attribute { }
 }
