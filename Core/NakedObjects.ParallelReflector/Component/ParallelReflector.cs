@@ -78,7 +78,7 @@ namespace NakedObjects.ParallelReflect.Component {
             }
 
             var actualType = ClassStrategy.GetType(type) ?? type;
-            var typeKey = ClassStrategy.GetKeyForType(actualType);
+            var typeKey = TypeKeyUtils.GetKeyForType(actualType);
             return !metamodel.ContainsKey(typeKey) ? LoadPlaceholder(actualType, metamodel) : (metamodel[typeKey], metamodel);
         }
 
@@ -111,7 +111,7 @@ namespace NakedObjects.ParallelReflect.Component {
                 throw new ReflectionException("cannot introspect null");
             }
 
-            var typeKey = ClassStrategy.GetKeyForType(actualType);
+            var typeKey = TypeKeyUtils.GetKeyForType(actualType);
 
             return string.IsNullOrEmpty(metamodel[typeKey].FullName)
                 ? LoadSpecificationAndCache(actualType, metamodel, getIntrospector)
@@ -311,15 +311,15 @@ namespace NakedObjects.ParallelReflect.Component {
                 throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
             }
 
-            metamodel = metamodel.Add(ClassStrategy.GetKeyForType(type), specification);
+            metamodel = metamodel.Add(TypeKeyUtils.GetKeyForType(type), specification);
 
             return (specification, metamodel);
         }
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> GetPlaceholders(Type[] types) => types.Select(t => ClassStrategy.GetType(t)).Where(t => t != null).Distinct(new TypeKeyComparer(ClassStrategy)).ToDictionary(t => ClassStrategy.GetKeyForType(t), t => GetPlaceholder(t, null)).ToImmutableDictionary();
+        private IImmutableDictionary<string, ITypeSpecBuilder> GetPlaceholders(Type[] types) => types.Select(t => ClassStrategy.GetType(t)).Where(t => t != null).Distinct(new TypeKeyComparer(ClassStrategy)).ToDictionary(t => TypeKeyUtils.GetKeyForType(t), t => GetPlaceholder(t, null)).ToImmutableDictionary();
 
         private (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecificationAndCache(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, Func<IIntrospector> getIntrospector) {
-            var specification = metamodel[ClassStrategy.GetKeyForType(type)];
+            var specification = metamodel[TypeKeyUtils.GetKeyForType(type)];
 
             if (specification == null) {
                 throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
@@ -348,9 +348,9 @@ namespace NakedObjects.ParallelReflect.Component {
 
             #region IEqualityComparer<Type> Members
 
-            public bool Equals(Type x, Type y) => classStrategy.GetKeyForType(x).Equals(classStrategy.GetKeyForType(y), StringComparison.Ordinal);
+            public bool Equals(Type x, Type y) => TypeKeyUtils.GetKeyForType(x).Equals(TypeKeyUtils.GetKeyForType(y), StringComparison.Ordinal);
 
-            public int GetHashCode(Type obj) => classStrategy.GetKeyForType(obj).GetHashCode();
+            public int GetHashCode(Type obj) => TypeKeyUtils.GetKeyForType(obj).GetHashCode();
 
             #endregion
         }

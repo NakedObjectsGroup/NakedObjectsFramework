@@ -33,7 +33,7 @@ namespace NakedObjects.Meta.Component {
 
         public ITypeSpecImmutable GetSpecification(Type type, bool allowNull = false) {
             try {
-                var spec = GetSpecificationFromCache(classStrategy.FilterNullableAndProxies(type));
+                var spec = GetSpecificationFromCache(TypeKeyUtils.FilterNullableAndProxies(type));
                 if (spec == null && !allowNull) {
                     throw new NakedObjectSystemException(logger.LogAndReturn($"Failed to Load Specification for: {type?.FullName} error: unexpected null"));
                 }
@@ -54,7 +54,7 @@ namespace NakedObjects.Meta.Component {
             return GetSpecification(type);
         }
 
-        public void Add(Type type, ITypeSpecBuilder spec) => cache.Cache(classStrategy.GetKeyForType(type), spec);
+        public void Add(Type type, ITypeSpecBuilder spec) => cache.Cache(TypeKeyUtils.GetKeyForType(type), spec);
 
         public void AddMainMenu(IMenuImmutable menu) => cache.Cache(menu);
 
@@ -63,7 +63,7 @@ namespace NakedObjects.Meta.Component {
         #endregion
 
         private ITypeSpecImmutable GetSpecificationFromCache(Type type) {
-            var key = classStrategy.GetKeyForType(type);
+            var key = TypeKeyUtils.GetKeyForType(type);
             TypeUtils.GetType(type.FullName); // This should ensure type is cached 
             return cache.GetSpecification(key);
         }

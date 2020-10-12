@@ -34,6 +34,7 @@ namespace NakedObjects.ParallelReflect.Component {
         public bool IgnoreCase => false;
         public (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus => null;
         public List<Type> SupportedSystemTypes => new List<Type>();
+        public string[] ModelNamespaces => Array.Empty<string>();
         public bool HasConfig() => false;
     }
 

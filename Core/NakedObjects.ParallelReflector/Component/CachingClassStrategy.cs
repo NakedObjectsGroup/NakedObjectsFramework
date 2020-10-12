@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.ParallelReflect.Component {
     /// <summary>
@@ -43,29 +44,8 @@ namespace NakedObjects.ParallelReflect.Component {
             }
         }
 
-        public Type FilterNullableAndProxies(Type type) {
-            lock (Cache) {
-                var flags = Setup(type);
-                flags.FilterNullableAndProxies ??= classStrategy.FilterNullableAndProxies(type);
-                return flags.FilterNullableAndProxies;
-            }
-        }
+        
 
-        public bool IsSystemClass(Type introspectedType) {
-            lock (Cache) {
-                var flags = Setup(introspectedType);
-                flags.IsSystemClass ??= classStrategy.IsSystemClass(introspectedType);
-                return flags.IsSystemClass.Value;
-            }
-        }
-
-        public string GetKeyForType(Type type) {
-            lock (Cache) {
-                var flags = Setup(type);
-                flags.KeyForType ??= classStrategy.GetKeyForType(type);
-                return flags.KeyForType;
-            }
-        }
 
         #endregion
 
@@ -82,9 +62,6 @@ namespace NakedObjects.ParallelReflect.Component {
         private class Flags {
             public bool? IsTypeToBeIntrospected { get; set; }
             public Type Type { get; set; }
-            public Type FilterNullableAndProxies { get; set; }
-            public bool? IsSystemClass { get; set; }
-            public string KeyForType { get; set; }
         }
 
         #endregion

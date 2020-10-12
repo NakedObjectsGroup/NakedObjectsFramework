@@ -7,9 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-using NakedObjects.Core.Util;
 
-namespace NakedObjects.ParallelReflect.Component {
+namespace NakedObjects.Core.Util {
     public static class FasterTypeUtils {
         private const string SystemTypePrefix = "System.";
         private const string NakedObjectsTypePrefix = "NakedObjects.";

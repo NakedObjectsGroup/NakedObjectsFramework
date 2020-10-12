@@ -18,15 +18,12 @@ namespace NakedObjects.ParallelReflect.Component {
     ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
     /// </summary>
     [Serializable]
-    public class ObjectClassStrategy : IClassStrategy {
-        private readonly IObjectReflectorConfiguration config;
-        private readonly IFunctionalReflectorConfiguration fConfig;
+    public class FunctionClassStrategy : IClassStrategy {
+        private readonly IFunctionalReflectorConfiguration config;
 
-        public ObjectClassStrategy(IObjectReflectorConfiguration config,
-                                    IFunctionalReflectorConfiguration fConfig = null)
+        public FunctionClassStrategy( IFunctionalReflectorConfiguration config)
         {
             this.config = config;
-            this.fConfig = fConfig;
         }
 
         #region IClassStrategy Members
@@ -44,6 +41,7 @@ namespace NakedObjects.ParallelReflect.Component {
             return IsTypeToBeIntrospected(returnType) ? returnType : null;
         }
 
+
         #endregion
 
         private bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
@@ -56,10 +54,9 @@ namespace NakedObjects.ParallelReflect.Component {
         private bool IsTypeWhiteListed(Type type) => IsTypeSupportedSystemType(type) || IsNamespaceMatch(type) || IsTypeExplicitlyRequested(type);
 
         private bool IsTypeExplicitlyRequested(Type type) {
-            var services = config.Services.Union(fConfig == null ? new Type[] { } : fConfig.Services).ToArray();
-            return config.TypesToIntrospect.Any(t => t == type) ||
-                   services.Any(t => t == type) ||
-                   type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
+            var types = config.Types.Union(config.Functions).ToArray();
+            return types.Any(t => t == type) ||
+                   type.IsGenericType && types.Any(t => t == type.GetGenericTypeDefinition());
         }
 
         private Type ToMatch(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() : type;

@@ -30,7 +30,7 @@ namespace NakedObjects.Reflect.Component {
         #region IClassStrategy Members
 
         public bool IsTypeToBeIntrospected(Type type) {
-            var returnType = FilterNullableAndProxies(type);
+            var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
             return !IsTypeMarkedUpToBeIgnored(returnType) &&
                    !IsTypeUnsupportedByReflector(returnType) &&
                    IsTypeWhiteListed(returnType) &&
@@ -38,32 +38,11 @@ namespace NakedObjects.Reflect.Component {
         }
 
         public Type GetType(Type type) {
-            var returnType = FilterNullableAndProxies(type);
+            var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
             return IsTypeToBeIntrospected(returnType) ? returnType : null;
         }
 
-        public Type FilterNullableAndProxies(Type type) {
-            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>)) {
-                // use type inside nullable wrapper
-                return type.GetGenericArguments()[0];
-            }
-
-            return TypeUtils.IsProxy(type) ? type.BaseType : type;
-        }
-
-        public bool IsSystemClass(Type introspectedType) => introspectedType.FullName.StartsWith("System.");
-
-        public string GetKeyForType(Type type) {
-            if (IsGenericCollection(type)) {
-                return type.Namespace + "." + type.Name;
-            }
-
-            if (type.IsArray && !(type.GetElementType().IsValueType || type.GetElementType() == typeof(string))) {
-                return "System.Array";
-            }
-
-            return type.GetProxiedTypeFullName();
-        }
+       
 
         #endregion
 

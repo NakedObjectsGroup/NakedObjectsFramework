@@ -21,6 +21,7 @@ namespace NakedObjects.Core.Configuration {
             
             Types = types;
             Functions = functions;
+            ModelNamespaces = modelNamespaces ?? Array.Empty<string>();
             MainMenus = mainMenus;
             ConcurrencyChecking = concurrencyChecking;
             IgnoreCase = false;
@@ -28,6 +29,7 @@ namespace NakedObjects.Core.Configuration {
         }
 
         public List<Type> SupportedSystemTypes { get; set; }
+        public string[] ModelNamespaces { get; }
 
         public bool HasConfig() => Types?.Any() == true || Functions?.Any() == true;
 

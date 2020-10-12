@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.ParallelReflect.FacetFactory {
     /// <summary>
@@ -25,7 +26,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         #region IMethodFilteringFacetFactory Members
 
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => classStrategy.IsSystemClass(method.DeclaringType);
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => TypeKeyUtils.IsSystemClass(method.DeclaringType);
 
         #endregion
     }
