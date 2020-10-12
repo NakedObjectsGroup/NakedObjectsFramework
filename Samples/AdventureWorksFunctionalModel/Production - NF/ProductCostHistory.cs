@@ -11,12 +11,12 @@ using NakedFunctions;
 
 namespace AdventureWorksModel {
         public record ProductCostHistory : IHasModifiedDate {
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual int ProductID { get; init; }
         public virtual DateTime StartDate { get; init; }
         public virtual DateTime? EndDate { get; init; }
         public virtual decimal StandardCost { get; init; }
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual Product Product { get; init; }
 
         [MemberOrder(99),ConcurrencyCheck]

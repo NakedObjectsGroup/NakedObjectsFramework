@@ -18,13 +18,13 @@ namespace AdventureWorksModel
 {
     public record ProductModel : IHasRowGuid, IHasModifiedDate
     {
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual int ProductModelID { get; init; }
 
         [MemberOrder(10)]
         public virtual string Name { get; init; }
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual string CatalogDescription { get; init; }
 
         [MemberOrder(30)]
@@ -33,13 +33,13 @@ namespace AdventureWorksModel
         [TableView(true, "Name", "Number", "Color", "ProductInventory")]
         public virtual ICollection<Product> ProductVariants { get; init; } = new List<Product>();
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual ICollection<ProductModelIllustration> ProductModelIllustration { get; init; } = new List<ProductModelIllustration>();
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCulture { get; init; } = new List<ProductModelProductDescriptionCulture>();
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]

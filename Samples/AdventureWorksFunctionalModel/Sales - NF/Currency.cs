@@ -11,12 +11,12 @@ using NakedFunctions;
 
 namespace AdventureWorksModel {
         public record Currency {
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual string CurrencyCode { get; init; }
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual string Name { get; init; }
 
-        [NakedFunctionsIgnore, ConcurrencyCheck]
+        [Hidden, ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
         public override string ToString() => Name;
