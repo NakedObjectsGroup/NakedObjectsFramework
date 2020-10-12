@@ -12,10 +12,10 @@ using NakedFunctions;
 namespace AdventureWorksModel {
         public record ProductInventory : IHasRowGuid, IHasModifiedDate {
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual int ProductID { get; init; }
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual short LocationID { get; init; }
 
         [MemberOrder(40)]
@@ -33,7 +33,7 @@ namespace AdventureWorksModel {
         [MemberOrder(20)]
         public virtual Product Product { get; init; }
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]

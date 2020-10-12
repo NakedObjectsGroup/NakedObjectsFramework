@@ -16,7 +16,7 @@ namespace AdventureWorksModel
     public record Location
     {
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual short LocationID { get; init; }
 
         public virtual string Name { get; init; }

@@ -17,7 +17,7 @@ namespace AdventureWorksModel {
 
         #region ID
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual byte ShiftID { get; init; }
 
         #endregion

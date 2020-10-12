@@ -11,7 +11,7 @@ using NakedFunctions;
 
 namespace AdventureWorksModel {
     public record ProductReview {
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual int ProductReviewID { get; init; }
 
         [MemberOrder(1)]
@@ -29,10 +29,10 @@ namespace AdventureWorksModel {
         [MemberOrder(5)]
         public virtual string Comments { get; init; }
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public int ProductID { get; init; }
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual Product Product { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]

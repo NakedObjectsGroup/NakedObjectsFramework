@@ -12,7 +12,7 @@ namespace AdventureWorksModel
 {
     public record SpecialOffer: IHasModifiedDate, IHasRowGuid     {
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual int SpecialOfferID { get; init; }
 
         [MemberOrder(10)]
@@ -42,7 +42,7 @@ namespace AdventureWorksModel
         [MemberOrder(62)]
         public virtual int? MaxQty { get; init; }
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99)]

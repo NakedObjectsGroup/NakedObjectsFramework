@@ -80,6 +80,7 @@
     <Compile Include="Person - NF\IBusinessEntityWithContacts.cs" />
     <Compile Include="Person - NF\Person_MenuFunctions.cs" />
     <Compile Include="Sales - NF\Currency.cs" />
+    <Compile Include="Sales - NF\Customer_MenuFunctions.cs" />
     <Compile Include="Sales - NF\PersonCreditCard_Functions.cs" />
     <Compile Include="Sales - NF\PersonCreditCard.cs" />
     <Compile Include="Sales - NF\SalesTerritory.cs" />

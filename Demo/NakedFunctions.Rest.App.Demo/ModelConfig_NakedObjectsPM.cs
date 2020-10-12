@@ -27,7 +27,7 @@ namespace NakedFunctions.Rest.App.Demo
                    // typeof(ProductModelProductDescriptionCulture)
         };
 
-        public static IList<(string name, Type rootType)> MainMenus() => new List<(string, Type)>
+        public static (string name, Type rootType)[] MainMenus() => new []
         {
             ("Customers", typeof(CustomerRepository)),
                // ("Orders", typeof(OrderRepository)),
@@ -38,7 +38,7 @@ namespace NakedFunctions.Rest.App.Demo
                 //("Work Orders", typeof(WorkOrderRepository))
         };
 
-        public static List<Type> Services() => new List<Type> {
+        public static Type[] Services() => new [] {
           typeof(CustomerRepository),
           //          typeof(OrderRepository),
           //          typeof(ProductRepository),

@@ -13,7 +13,7 @@ namespace AdventureWorksModel {
         [Bounded]
         public record Department:IHasModifiedDate {
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual short DepartmentID { get; init; }
 
         [MemberOrder(1)]
