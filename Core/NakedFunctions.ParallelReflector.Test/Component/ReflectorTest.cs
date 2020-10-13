@@ -47,7 +47,7 @@ namespace NakedFunctions.Reflect.Test {
     public record BoundedClass { }
 
     public record PropertyDefaultClass {
-        [NakedFunctions.DefaultValue("ADefault")]
+        //[NakedFunctions.DefaultValue("ADefault")]
         public virtual string DefaultedProperty { get; set; }
     }
 
