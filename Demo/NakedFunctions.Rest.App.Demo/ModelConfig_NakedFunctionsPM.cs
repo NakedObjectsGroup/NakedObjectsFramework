@@ -40,6 +40,8 @@ namespace NakedFunctions.Rest.App.Demo
             typeof(UnitMeasure),
             typeof(WorkOrder),
             typeof(WorkOrderRouting),
+            typeof(ProductLineEnum),
+            typeof(ProductClassEnum),
 
 
             //Sales

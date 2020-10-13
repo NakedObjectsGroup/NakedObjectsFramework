@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -16,6 +17,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.SpecImmutable;
@@ -107,6 +109,10 @@ namespace NakedObjects.ParallelReflect {
 
             IntrospectedType = typeToIntrospect;
             SpecificationType = GetSpecificationType(typeToIntrospect);
+
+            if (SpecificationType is null) {
+                throw new ReflectionException($"Failed to get specification type for {typeToIntrospect}");
+            }
 
             properties = typeToIntrospect.GetProperties();
             methods = GetNonPropertyMethods();
