@@ -914,7 +914,7 @@ namespace NakedObjects.Persistor.Entity.Component {
                 catch (InvalidOperationException)
                 {
                     // not an EF recognised entity 
-                    Log.Warn($"Attempting to 'Count' a non attached entity: {field.Id}");
+                    logger.LogWarning($"Attempting to 'Count' a non attached entity: {field.Id}");
                 }
             }
 
