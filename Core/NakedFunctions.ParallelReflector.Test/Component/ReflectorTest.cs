@@ -21,6 +21,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.DependencyInjection;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Component;
+using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
@@ -46,9 +47,8 @@ namespace NakedFunctions.Reflect.Test {
     [Bounded]
     public record BoundedClass { }
 
-    public record PropertyDefaultClass {
-        //[NakedFunctions.DefaultValue("ADefault")]
-        public virtual string DefaultedProperty { get; set; }
+    public static class ParameterDefaultClass {
+        public static SimpleClass DefaultParameterFunction(this SimpleClass target, [NakedFunctions.DefaultValue("a default")] string parameter) => target;
     }
 
     public record SimpleClass {
@@ -209,7 +209,8 @@ namespace NakedFunctions.Reflect.Test {
             RegisterFacetFactory<ArrayValueTypeFacetFactory<byte>>("ArrayValueTypeFacetFactory<byte>", services);
             RegisterFacetFactory<CollectionFacetFactory>("CollectionFacetFactory", services); // written to not trample over TypeOf if already installed
 
-            RegisterFacetFactory<FunctionsFacetFactory>("FunctionsFacetFactory", services);
+            RegisterFacetFactory<FunctionsFacetFactory>(nameof(FunctionsFacetFactory), services);
+            RegisterFacetFactory<ContributedFunctionFacetFactory>(nameof(ContributedFunctionFacetFactory), services);
 
         }
 
@@ -391,23 +392,26 @@ namespace NakedFunctions.Reflect.Test {
             Assert.IsTrue(spec.IsBoundedSet());
         }
 
-        [TestMethod]
-        [Ignore]
-        public void ReflectDefaultValueProperty()
+        [TestMethod] 
+        public void ReflectDefaultValueParameter()
         {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new FunctionalReflectorConfiguration(new[] { typeof(PropertyDefaultClass) }, new Type[0]);
+            var rc = new FunctionalReflectorConfiguration(new Type[] { typeof(SimpleClass) }, new Type[] { typeof(ParameterDefaultClass) });
 
             var container = GetContainer(rc);
 
             var reflector = container.GetService<IReflector>();
             reflector.Reflect();
-            var spec = reflector.AllObjectSpecImmutables.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.PropertyDefaultClass");
-            var fieldSpec = spec.Fields.Single();
-            var facet = fieldSpec.GetFacet<IPropertyDefaultFacet>();
+            var spec = reflector.AllObjectSpecImmutables.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.SimpleClass");
+            var actionSpec = spec.ContributedActions.Single();
+            var parmSpec = actionSpec.Parameters[1];
+            var facet = parmSpec.GetFacet<IActionDefaultsFacet>();
             Assert.IsNotNull(facet);
-            Assert.AreEqual("ADefault", facet.GetDefault(null));
+
+            var (defaultValue, type) = facet.GetDefault(null, null, null);
+            Assert.AreEqual("a default", defaultValue);
+            Assert.AreEqual("Explicit", type.ToString());
         }
     }
 }
