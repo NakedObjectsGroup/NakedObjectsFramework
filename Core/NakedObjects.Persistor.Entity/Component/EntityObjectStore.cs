@@ -911,6 +911,11 @@ namespace NakedObjects.Persistor.Entity.Component {
                     // not an EF recognized collection 
                     logger.LogWarning($"Attempting to 'Count' a non-EF collection: {field.Id}");
                 }
+                catch (InvalidOperationException)
+                {
+                    // not an EF recognised entity 
+                    Log.Warn($"Attempting to 'Count' a non attached entity: {field.Id}");
+                }
             }
 
             return field.GetNakedObject(nakedObjectAdapter).GetAsEnumerable(manager).Count();
