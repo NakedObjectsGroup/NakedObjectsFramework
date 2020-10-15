@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Reflection;
 
 namespace NakedObjects.Architecture.Component {
     /// <summary>
@@ -21,6 +22,8 @@ namespace NakedObjects.Architecture.Component {
         Type GetType(Type type);
 
         bool IsTypeToBeIntrospected(Type type);
+
+        bool IsIgnored(MemberInfo member);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

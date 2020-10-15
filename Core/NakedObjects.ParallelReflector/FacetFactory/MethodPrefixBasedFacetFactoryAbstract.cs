@@ -35,9 +35,9 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
         #endregion
 
-        protected MethodInfo FindMethodWithOrWithoutParameters(IReflector reflector, Type type, MethodType methodType, string name, Type returnType, Type[] parms) =>
-            FindMethod(reflector, type, methodType, name, returnType, parms) ??
-            FindMethod(reflector, type, methodType, name, returnType, Type.EmptyTypes);
+        protected MethodInfo FindMethodWithOrWithoutParameters(IReflector reflector, IClassStrategy classStrategy, Type type, MethodType methodType, string name, Type returnType, Type[] parms) =>
+            FindMethod(reflector, type, methodType, name, returnType, parms, classStrategy) ??
+            FindMethod(reflector, type, methodType, name, returnType, Type.EmptyTypes, classStrategy);
 
         /// <summary>
         ///     Returns  specific public methods that: have the specified prefix; have the specified return Type, or
@@ -74,6 +74,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                                         string name,
                                         Type returnType,
                                         Type[] paramTypes,
+                                        IClassStrategy classStrategy,
                                         string[] paramNames = null) {
             try {
                 var method = paramTypes == null
@@ -93,7 +94,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     return null;
                 }
 
-                if (method.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null) {
+                if (classStrategy.IsIgnored(method)) {
                     return null;
                 }
 
@@ -128,31 +129,31 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
         }
 
-        protected void FindDefaultDisableMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
-            var method = FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.DisablePrefix + capitalizedName, typeof(string), Type.EmptyTypes);
+        protected void FindDefaultDisableMethod(IReflector reflector, IClassStrategy classStrategy, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
+            var method = FindMethodWithOrWithoutParameters(reflector, classStrategy, type, methodType, RecognisedMethodsAndPrefixes.DisablePrefix + capitalizedName, typeof(string), Type.EmptyTypes);
             if (method != null) {
                 facets.Add(new DisableForContextFacet(method, specification, Logger<DisableForContextFacet>()));
             }
         }
 
-        protected void FindAndRemoveDisableMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
-            var method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.DisablePrefix + capitalizedName, typeof(string), Type.EmptyTypes);
+        protected void FindAndRemoveDisableMethod(IReflector reflector, IClassStrategy classStrategy, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
+            var method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.DisablePrefix + capitalizedName, typeof(string), Type.EmptyTypes, classStrategy);
             if (method != null) {
                 methodRemover.RemoveMethod(method);
                 facets.Add(new DisableForContextFacet(method, specification, Logger<DisableForContextFacet>()));
             }
         }
 
-        protected void FindDefaultHideMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
-            var method = FindMethodWithOrWithoutParameters(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
+        protected void FindDefaultHideMethod(IReflector reflector, IClassStrategy classStrategy, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
+            var method = FindMethodWithOrWithoutParameters(reflector, classStrategy,  type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
             if (method != null) {
                 facets.Add(new HideForContextFacet(method, specification, Logger<HideForContextFacet>()));
                 AddOrAddToExecutedWhereFacet(method, specification);
             }
         }
 
-        protected void FindAndRemoveHideMethod(IReflector reflector, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
-            var method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes);
+        protected void FindAndRemoveHideMethod(IReflector reflector, IClassStrategy classStrategy, IList<IFacet> facets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, ISpecification specification) {
+            var method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.HidePrefix + capitalizedName, typeof(bool), Type.EmptyTypes, classStrategy);
             if (method != null) {
                 methodRemover.RemoveMethod(method);
                 facets.Add(new HideForContextFacet(method, specification, Logger<HideForContextFacet>()));

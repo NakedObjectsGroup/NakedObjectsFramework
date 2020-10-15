@@ -37,7 +37,7 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
         /// </summary>
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             try {
-                var toStringMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes);
+                var toStringMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes, classStrategy);
 
                 methodRemover.RemoveMethod(toStringMethod);
 

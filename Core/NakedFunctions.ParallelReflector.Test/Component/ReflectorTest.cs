@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -46,6 +47,12 @@ namespace NakedFunctions.Reflect.Test {
 
     [Bounded]
     public record BoundedClass { }
+
+   
+    public record IgnoredClass {
+        [NakedFunctionsIgnore]
+        public virtual string IgnoredProperty { get; set; }
+    }
 
     public static class ParameterDefaultClass {
         public static SimpleClass DefaultParameterFunction(this SimpleClass target, [NakedFunctions.DefaultValue("a default")] string parameter) => target;
@@ -391,6 +398,22 @@ namespace NakedFunctions.Reflect.Test {
             var spec = reflector.AllObjectSpecImmutables.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.BoundedClass");
             Assert.IsTrue(spec.IsBoundedSet());
         }
+
+        [TestMethod]
+        public void ReflectIgnoredProperty()
+        {
+            ObjectReflectorConfiguration.NoValidate = true;
+
+            var rc = new FunctionalReflectorConfiguration(new[] { typeof(IgnoredClass) }, new Type[0]);
+
+            var container = GetContainer(rc);
+
+            var reflector = container.GetService<IReflector>();
+            reflector.Reflect();
+            var spec = reflector.AllObjectSpecImmutables.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.IgnoredClass");
+            Assert.AreEqual(0, spec.Fields.Count);
+        }
+
 
         [TestMethod] 
         public void ReflectDefaultValueParameter()

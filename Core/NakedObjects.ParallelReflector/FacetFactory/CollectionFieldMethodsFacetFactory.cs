@@ -42,8 +42,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
             AddHideForSessionFacetNone(facets, collection);
             AddDisableFacetAlways(facets, collection);
-            FindDefaultHideMethod(reflector, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", collection);
-            FindAndRemoveHideMethod(reflector, facets, methodRemover, type, MethodType.Object, capitalizedName, collection);
+            FindDefaultHideMethod(reflector, classStrategy, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", collection);
+            FindAndRemoveHideMethod(reflector, classStrategy, facets, methodRemover, type, MethodType.Object, capitalizedName, collection);
             FacetUtils.AddFacets(facets);
             return metamodel;
         }

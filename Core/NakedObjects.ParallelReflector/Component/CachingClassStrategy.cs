@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 
@@ -35,6 +36,8 @@ namespace NakedObjects.ParallelReflect.Component {
                 return flags.IsTypeToBeIntrospected.Value;
             }
         }
+
+        public bool IsIgnored(MemberInfo member) => classStrategy.IsIgnored(member);
 
         public Type GetType(Type type) {
             lock (Cache) {

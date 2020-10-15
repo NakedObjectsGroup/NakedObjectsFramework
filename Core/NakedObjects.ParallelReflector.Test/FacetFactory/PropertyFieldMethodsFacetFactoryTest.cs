@@ -327,7 +327,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer19), "FirstName");
             var propertyValidateMethod = FindMethod(typeof(Customer19), "ValidateFirstName", new[] {typeof(string)});
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IAjaxFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is AjaxFacet);
@@ -341,7 +341,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer20), "FirstName");
             var propertyValidateMethod = FindMethod(typeof(Customer20), "ValidateFirstName", new[] {typeof(string)});
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IAjaxFacet));
             Assert.IsNull(facet);
             AssertMethodRemoved(propertyValidateMethod);
@@ -354,7 +354,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer12), "FirstName");
             var propertyValidateMethod = FindMethod(typeof(Customer12), "ValidateFirstName", new[] {typeof(string)});
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IAjaxFacet));
             Assert.IsNull(facet);
             AssertMethodRemoved(propertyValidateMethod);
@@ -367,7 +367,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer26), "FirstName");
             var propertyAutoCompleteMethod = FindMethodIgnoreParms(typeof(Customer26), "AutoCompleteFirstName");
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IAutoCompleteFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is AutoCompleteFacet);
@@ -385,7 +385,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer21), "FirstName");
             var propertyAutoCompleteMethod = FindMethodIgnoreParms(typeof(Customer21), "AutoCompleteFirstName");
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IAutoCompleteFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is AutoCompleteFacet);
@@ -403,7 +403,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer22), "FirstName");
             var propertyAutoCompleteMethod = FindMethodIgnoreParms(typeof(Customer22), "AutoCompleteFirstName");
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IAutoCompleteFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is AutoCompleteFacet);
@@ -421,7 +421,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer27), "FirstName");
             var propertyAutoCompleteMethod = FindMethodIgnoreParms(typeof(Customer27), "AutoCompleteFirstName");
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IAutoCompleteFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is AutoCompleteFacet);
@@ -549,7 +549,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer11), "FirstName");
             var propertyDefaultMethod = FindMethod(typeof(Customer11), "DefaultFirstName");
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyDefaultFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyDefaultFacetViaMethod);
@@ -567,7 +567,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer11l), "FirstName");
             var propertyDefaultMethod = FindMethod(typeof(Customer11l), "DefaultFirstName");
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyDefaultFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyDefaultFacetViaMethod);
@@ -586,7 +586,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer11r), "FirstName");
             var propertyDefaultMethod = FindMethod(typeof(Customer11r), "DefaultFirstName");
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyDefaultFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyDefaultFacetViaMethod);
@@ -605,7 +605,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer16), "FirstName");
             var hideMethod = FindMethod(typeof(Customer16), "DisablePropertyDefault", new Type[0]);
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDisableForContextFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisableForContextFacet);
@@ -621,7 +621,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer16), "SecondName");
             var hideMethod = FindMethod(typeof(Customer16), "DisableSecondName", new Type[0]);
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDisableForContextFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisableForContextFacet);
@@ -648,7 +648,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer15), "SecondName");
             var hideMethod = FindMethod(typeof(Customer15), "DisableSecondName", new Type[0]);
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDisableForContextFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisableForContextFacet);
@@ -674,7 +674,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer14), "FirstName");
             var hideMethod = FindMethod(typeof(Customer14), "HidePropertyDefault", new Type[0]);
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHideForContextFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForContextFacet);
@@ -690,7 +690,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer14), "SecondName");
             var hideMethod = FindMethod(typeof(Customer14), "HideSecondName", new Type[] { });
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHideForContextFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForContextFacet);
@@ -705,7 +705,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer13), "SecondName");
             var hideMethod = FindMethod(typeof(Customer13), "HideSecondName", new Type[] { });
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHideForContextFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForContextFacet);
@@ -721,7 +721,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer13), "FirstName");
             var hideMethod = FindMethod(typeof(Customer13), "HideFirstName", new Type[0]);
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHideForContextFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForContextFacet);
@@ -737,7 +737,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer7), "FirstName");
             var propertyModifyMethod = FindMethod(typeof(Customer7), "ModifyFirstName", new[] {typeof(string)});
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertySetterFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertySetterFacetViaModifyMethod);
@@ -788,7 +788,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer6), "FirstName");
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INotPersistedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NotPersistedFacet);
@@ -816,7 +816,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer4), "FirstName");
             var propertyModifyMethod = FindMethod(typeof(Customer4), "ModifyFirstName", new[] {typeof(string)});
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertySetterFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertySetterFacetViaModifyMethod);
@@ -855,7 +855,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property = FindProperty(typeof(Customer12), "FirstName");
             var propertyValidateMethod = FindMethod(typeof(Customer12), "ValidateFirstName", new[] {typeof(string)});
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPropertyValidateFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PropertyValidateFacetViaMethod);

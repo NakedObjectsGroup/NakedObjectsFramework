@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using NakedFunctions;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Util;
@@ -41,10 +42,11 @@ namespace NakedObjects.ParallelReflect.Component {
             return IsTypeToBeIntrospected(returnType) ? returnType : null;
         }
 
+        public bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedFunctionsIgnoreAttribute>() != null;
 
         #endregion
 
-        private bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
+        private bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedFunctionsIgnoreAttribute>() != null;
 
         private bool IsNamespaceMatch(Type type) {
             var ns = type.Namespace ?? "";

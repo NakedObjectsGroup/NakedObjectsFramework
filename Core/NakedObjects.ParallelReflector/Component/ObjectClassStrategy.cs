@@ -39,6 +39,8 @@ namespace NakedObjects.ParallelReflect.Component {
                    (!FasterTypeUtils.IsGenericCollection(type) || type.GetGenericArguments().All(IsTypeToBeIntrospected));
         }
 
+        public bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
+
         public virtual Type GetType(Type type) {
             var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
             return IsTypeToBeIntrospected(returnType) ? returnType : null;

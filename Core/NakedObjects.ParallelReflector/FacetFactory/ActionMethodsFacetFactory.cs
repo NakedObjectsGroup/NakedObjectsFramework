@@ -72,16 +72,16 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
 
             var methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
             var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
-            FindAndRemoveValidMethod(reflector, facets, methodRemover, type, methodType, capitalizedName, paramTypes, action);
+            FindAndRemoveValidMethod(reflector, classStrategy, facets, methodRemover, type, methodType, capitalizedName, paramTypes, action);
 
             DefaultNamedFacet(facets, actionMethod.Name, action); // must be called after the checkForXxxPrefix methods
 
             AddHideForSessionFacetNone(facets, action);
             AddDisableForSessionFacetNone(facets, action);
-            FindDefaultHideMethod(reflector, facets, methodRemover, type, methodType, "ActionDefault", action);
-            FindAndRemoveHideMethod(reflector, facets, methodRemover, type, methodType, capitalizedName, action);
-            FindDefaultDisableMethod(reflector, facets, methodRemover, type, methodType, "ActionDefault", action);
-            FindAndRemoveDisableMethod(reflector, facets, methodRemover, type, methodType, capitalizedName, action);
+            FindDefaultHideMethod(reflector, classStrategy, facets, methodRemover, type, methodType, "ActionDefault", action);
+            FindAndRemoveHideMethod(reflector, classStrategy, facets, methodRemover, type, methodType, capitalizedName, action);
+            FindDefaultDisableMethod(reflector, classStrategy, facets, methodRemover, type, methodType, "ActionDefault", action);
+            FindAndRemoveDisableMethod(reflector, classStrategy, facets, methodRemover, type, methodType, capitalizedName, action);
 
             if (action is IActionSpecImmutable actionSpecImmutable) {
                 // Process the action's parameters names, descriptions and optional
@@ -91,10 +91,10 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 var actionParameters = actionSpecImmutable.Parameters;
                 var paramNames = actionMethod.GetParameters().Select(p => p.Name).ToArray();
 
-                FindAndRemoveParametersAutoCompleteMethod(reflector, methodRemover, type, capitalizedName, paramTypes, actionParameters);
+                FindAndRemoveParametersAutoCompleteMethod(reflector, classStrategy, methodRemover, type, capitalizedName, paramTypes, actionParameters);
                 metamodel = FindAndRemoveParametersChoicesMethod(reflector, classStrategy, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters, metamodel);
-                FindAndRemoveParametersDefaultsMethod(reflector, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters);
-                FindAndRemoveParametersValidateMethod(reflector, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters);
+                FindAndRemoveParametersDefaultsMethod(reflector, classStrategy, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters);
+                FindAndRemoveParametersValidateMethod(reflector, classStrategy, methodRemover, type, capitalizedName, paramTypes, paramNames, actionParameters);
             }
 
             FacetUtils.AddFacets(facets);
@@ -176,20 +176,21 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         /// </summary>
         private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string name, ISpecification action) => actionFacets.Add(new NamedFacetInferred(name, action));
 
-        private void FindAndRemoveValidMethod(IReflector reflector, ICollection<IFacet> actionFacets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] parms, ISpecification action) {
-            var method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
+        private void FindAndRemoveValidMethod(IReflector reflector, IClassStrategy classStrategy, ICollection<IFacet> actionFacets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] parms, ISpecification action) {
+            var method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms, classStrategy);
             if (method != null) {
                 RemoveMethod(methodRemover, method);
                 actionFacets.Add(new ActionValidationFacet(method, action, LoggerFactory.CreateLogger<ActionValidationFacet>()));
             }
         }
 
-        private void FindAndRemoveParametersDefaultsMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters) {
+        private void FindAndRemoveParametersDefaultsMethod(IReflector reflector, IClassStrategy classStrategy, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 var paramType = paramTypes[i];
                 var paramName = paramNames[i];
 
                 var methodUsingIndex = FindMethodWithOrWithoutParameters(reflector,
+                                                                         classStrategy,
                     type,
                     MethodType.Object,
                     RecognisedMethodsAndPrefixes.ParameterDefaultPrefix + i + capitalizedName,
@@ -203,6 +204,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     RecognisedMethodsAndPrefixes.ParameterDefaultPrefix + capitalizedName,
                     paramType,
                     new[] {paramType},
+                    classStrategy,
                     new[] {paramName});
 
                 if (methodUsingIndex != null && methodUsingName != null) {
@@ -256,6 +258,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     RecognisedMethodsAndPrefixes.ParameterChoicesPrefix + capitalizedName,
                     returnType,
                     new[] {paramType},
+                    classStrategy,
                     new[] {paramName});
 
                 if (methodUsingIndex != null && methodUsingName != null) {
@@ -286,19 +289,19 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             return metamodel;
         }
 
-        private void FindAndRemoveParametersAutoCompleteMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters) {
+        private void FindAndRemoveParametersAutoCompleteMethod(IReflector reflector, IClassStrategy classStrategy, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 // only support on strings and reference types
                 var paramType = paramTypes[i];
                 if (paramType.IsClass || paramType.IsInterface) {
                     //returning an IQueryable ...
                     //.. or returning a single object
-                    var method = FindAutoCompleteMethod(reflector, type, capitalizedName, i, typeof(IQueryable<>).MakeGenericType(paramType)) ??
-                                 FindAutoCompleteMethod(reflector, type, capitalizedName, i, paramType);
+                    var method = FindAutoCompleteMethod(reflector, classStrategy, type, capitalizedName, i, typeof(IQueryable<>).MakeGenericType(paramType)) ??
+                                 FindAutoCompleteMethod(reflector, classStrategy, type, capitalizedName, i, paramType);
 
                     //... or returning an enumerable of string
                     if (method == null && TypeUtils.IsString(paramType)) {
-                        method = FindAutoCompleteMethod(reflector, type, capitalizedName, i, typeof(IEnumerable<string>));
+                        method = FindAutoCompleteMethod(reflector, classStrategy, type, capitalizedName, i, typeof(IEnumerable<string>));
                     }
 
                     if (method != null) {
@@ -319,24 +322,26 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
         }
 
-        private MethodInfo FindAutoCompleteMethod(IReflector reflector, Type type, string capitalizedName, int i, Type returnType) {
+        private MethodInfo FindAutoCompleteMethod(IReflector reflector, IClassStrategy classStrategy, Type type, string capitalizedName, int i, Type returnType) {
             var method = FindMethod(reflector,
                 type,
                 MethodType.Object,
                 RecognisedMethodsAndPrefixes.AutoCompletePrefix + i + capitalizedName,
                 returnType,
-                new[] {typeof(string)});
+                new[] {typeof(string)},
+                classStrategy);
             return method;
         }
 
-        private void FindAndRemoveParametersValidateMethod(IReflector reflector, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters) {
+        private void FindAndRemoveParametersValidateMethod(IReflector reflector, IClassStrategy classStrategy, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 var methodUsingIndex = FindMethod(reflector,
                     type,
                     MethodType.Object,
                     RecognisedMethodsAndPrefixes.ValidatePrefix + i + capitalizedName,
                     typeof(string),
-                    new[] {paramTypes[i]});
+                    new[] {paramTypes[i]}, 
+                    classStrategy);
 
                 var methodUsingName = FindMethod(reflector,
                     type,
@@ -344,6 +349,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName,
                     typeof(string),
                     new[] {paramTypes[i]},
+                    classStrategy,
                     new[] {paramNames[i]});
 
                 if (methodUsingIndex != null && methodUsingName != null) {

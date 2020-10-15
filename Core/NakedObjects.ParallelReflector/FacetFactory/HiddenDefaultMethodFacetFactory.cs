@@ -38,7 +38,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             try {
                 foreach (var methodName in FixedPrefixes) {
-                    var methodInfo = FindMethod(reflector, type, MethodType.Object, methodName, typeof(bool), Type.EmptyTypes);
+                    var methodInfo = FindMethod(reflector, type, MethodType.Object, methodName, typeof(bool), Type.EmptyTypes, classStrategy);
                     if (methodInfo != null) {
                         methodRemover.RemoveMethod(methodInfo);
                     }

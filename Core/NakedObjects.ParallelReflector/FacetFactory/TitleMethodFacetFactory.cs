@@ -58,7 +58,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
             }
 
             try {
-                var titleMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.TitleMethod, typeof(string), Type.EmptyTypes);
+                var titleMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.TitleMethod, typeof(string), Type.EmptyTypes, classStrategy);
                 IFacet titleFacet = null;
 
                 if (titleMethod != null) {
@@ -66,7 +66,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     titleFacet = new TitleFacetViaTitleMethod(titleMethod, specification, Logger<TitleFacetViaTitleMethod>());
                 }
 
-                var toStringMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes);
+                var toStringMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes, classStrategy);
                 if (toStringMethod != null && !(toStringMethod.DeclaringType == typeof(object))) {
                     methodRemover.RemoveMethod(toStringMethod);
                 }
@@ -75,7 +75,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                     toStringMethod = null;
                 }
 
-                var maskMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] {typeof(string)});
+                var maskMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] {typeof(string)}, classStrategy);
 
                 if (maskMethod != null) {
                     methodRemover.RemoveMethod(maskMethod);

@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
@@ -16,6 +17,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.ParallelReflect.Component;
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public abstract class AbstractFacetFactoryTest {
@@ -30,6 +32,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         protected ISpecificationBuilder Specification;
         protected abstract Type[] SupportedTypes { get; }
         protected abstract IFacetFactory FacetFactory { get; }
+        protected IClassStrategy ClassStrategy = new ObjectClassStrategy(null);
 
         public virtual void SetUp() {
             Specification = new TestSpecification();

@@ -54,7 +54,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var titleMethod = FindMethod(typeof(Customer), "Title");
-            metamodel = facetFactory.Process(Reflector, null,typeof(Customer), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, typeof(Customer), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITitleFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TitleFacetViaTitleMethod);
@@ -69,7 +69,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var toStringMethod = FindMethod(typeof(Customer1), "ToString", new[] {typeof(string)});
-            metamodel = facetFactory.Process(Reflector, null,typeof(Customer1), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, ClassStrategy, typeof(Customer1), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(ITitleFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is TitleFacetViaToStringMethod);
