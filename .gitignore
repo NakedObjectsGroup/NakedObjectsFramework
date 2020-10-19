@@ -36,3 +36,4 @@ UpgradeLog*.htm
 *.log
 ScratchServer.sln
 Demo/NakedFunctions.Rest.App.Demo.Debug/appsettings.Development.json
+Demo/NakedFunctions.Rest.App.Demo/appsettings.Development.json
