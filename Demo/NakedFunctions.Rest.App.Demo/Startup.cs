@@ -70,12 +70,12 @@ namespace NakedFunctions.Rest.App.Demo {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IReflector reflector, ILoggerFactory loggerFactory) {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IModelBuilder builder, ILoggerFactory loggerFactory) {
             
             // for Demo use Log4Net. Configured in log4net.config  
             loggerFactory.AddLog4Net();
             
-            reflector.Reflect();
+            builder.Build();
 
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
