@@ -12,10 +12,12 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.ModelBuilding.Component;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
+using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
@@ -231,6 +233,8 @@ namespace NakedFunctions.Reflect.Test {
             services.AddSingleton<IMetamodel, NakedObjects.Meta.Component.Metamodel>();
             services.AddSingleton<IMetamodelBuilder, NakedObjects.Meta.Component.Metamodel>();
             services.AddSingleton<IMenuFactory, NullMenuFactory>();
+            services.AddSingleton<IModelBuilder, ModelBuilder>();
+            services.AddSingleton<IModelIntegrator, ModelIntegrator>();
             services.AddSingleton(typeof(IFacetFactoryOrder<>), typeof(FacetFactoryOrder<>));
 
             var dflt = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { "NakedFunctions" });
@@ -248,6 +252,11 @@ namespace NakedFunctions.Reflect.Test {
 
         public record Test(int a) { }
 
+        private ITypeSpecBuilder[] AllObjectSpecImmutables(IServiceProvider provider) {
+            var metaModel = provider.GetService<IMetamodel>();
+            return metaModel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
+        }
+
 
         [TestMethod]
         public void ReflectNoTypes() {
@@ -257,9 +266,10 @@ namespace NakedFunctions.Reflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            Assert.IsFalse(reflector.AllObjectSpecImmutables.Any());
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var metaModel = container.GetService<IMetamodel>();
+            Assert.IsFalse(metaModel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray().Any());
         }
 
         [TestMethod]
@@ -271,9 +281,9 @@ namespace NakedFunctions.Reflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            var specs = reflector.AllObjectSpecImmutables;
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(3, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
@@ -288,9 +298,9 @@ namespace NakedFunctions.Reflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            var specs = reflector.AllObjectSpecImmutables;
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(5, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
@@ -309,9 +319,9 @@ namespace NakedFunctions.Reflect.Test {
 
             var container = GetContainer(rc, orc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            var specs = reflector.AllObjectSpecImmutables;
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(7, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
@@ -329,10 +339,10 @@ namespace NakedFunctions.Reflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
+            var builder = container.GetService<IModelBuilder>();
 
             try {
-                reflector.Reflect();
+                builder.Build();
                 Assert.Fail("exception expected");
             }
             catch (AggregateException ae) {
@@ -355,9 +365,9 @@ namespace NakedFunctions.Reflect.Test {
 
             var container = GetContainer(rc, orc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            var specs = reflector.AllObjectSpecImmutables;
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(6, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(MenuFunctions), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
@@ -377,9 +387,9 @@ namespace NakedFunctions.Reflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            var specs = reflector.AllObjectSpecImmutables;
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(3, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(NavigableClass), specs);
             //AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
@@ -393,9 +403,10 @@ namespace NakedFunctions.Reflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            var spec = reflector.AllObjectSpecImmutables.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.BoundedClass");
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
+            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.BoundedClass");
             Assert.IsTrue(spec.IsBoundedSet());
         }
 
@@ -408,9 +419,10 @@ namespace NakedFunctions.Reflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            var spec = reflector.AllObjectSpecImmutables.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.IgnoredClass");
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
+            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.IgnoredClass");
             Assert.AreEqual(0, spec.Fields.Count);
         }
 
@@ -424,9 +436,10 @@ namespace NakedFunctions.Reflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            var spec = reflector.AllObjectSpecImmutables.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.SimpleClass");
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
+            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.SimpleClass");
             var actionSpec = spec.ContributedActions.Single();
             var parmSpec = actionSpec.Parameters[1];
             var facet = parmSpec.GetFacet<IActionDefaultsFacet>();

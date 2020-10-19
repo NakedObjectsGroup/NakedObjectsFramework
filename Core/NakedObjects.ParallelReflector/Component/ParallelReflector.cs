@@ -91,19 +91,16 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
 
-
-
-
         public void Reflect() {
             var metamodelBuilder = InstallSpecifications(reflectorConfiguration.ObjectTypes, reflectorConfiguration.RecordTypes, reflectorConfiguration.FunctionTypes, initialMetamodel);
 
-            PopulateAssociatedActions(reflectorConfiguration.Services, metamodelBuilder);
+            //PopulateAssociatedActions(reflectorConfiguration.Services, metamodelBuilder);
 
-            PopulateAssociatedFunctions(metamodelBuilder);
+            //PopulateAssociatedFunctions(metamodelBuilder);
 
-            //Menus installed once rest of metamodel has been built:
-            InstallMainMenus(metamodelBuilder);
-            InstallObjectMenus(metamodelBuilder);
+            ////Menus installed once rest of metamodel has been built:
+            //InstallMainMenus(metamodelBuilder);
+            //InstallObjectMenus(metamodelBuilder);
         }
 
         #endregion

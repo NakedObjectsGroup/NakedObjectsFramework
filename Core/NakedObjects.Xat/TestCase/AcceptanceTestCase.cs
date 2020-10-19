@@ -323,7 +323,7 @@ namespace NakedObjects.Xat {
             var host = tc.CreateHostBuilder(new string[] { }).Build();
             tc.RootServiceProvider = host.Services;
             tc.servicesCache = new Dictionary<string, ITestService>();
-            tc.RootServiceProvider.GetService<IReflector>().Reflect();
+            tc.RootServiceProvider.GetService<IModelBuilder>().Build();
         }
 
         protected static void CleanupNakedObjectsFramework(AcceptanceTestCase tc) {

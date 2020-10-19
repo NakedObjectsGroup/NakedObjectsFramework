@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.ModelBuilding.Component;
 using NakedFunctions;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
@@ -30,6 +31,8 @@ namespace NakedObjects.DependencyInjection {
             services.AddSingleton<IMetamodel, Metamodel>();
             services.AddSingleton<IMetamodelBuilder, Metamodel>();
             services.AddSingleton<IMenuFactory, MenuFactory>();
+            services.AddSingleton<IModelIntegrator, ModelIntegrator>();
+            services.AddSingleton<IModelBuilder, ModelBuilder>();
             services.AddSingleton(typeof(IFacetFactoryOrder<>), typeof(FacetFactoryOrder<>));
         }
 
