@@ -229,7 +229,7 @@ namespace NakedFunctions.Reflect.Test {
 
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
             services.AddSingleton<IClassStrategy, ObjectClassStrategy>();
-            services.AddSingleton<IReflector, NakedObjects.ParallelReflect.Component.ParallelReflector>();
+            services.AddSingleton<IReflector,ObjectReflector>();
             services.AddSingleton<IMetamodel, NakedObjects.Meta.Component.Metamodel>();
             services.AddSingleton<IMetamodelBuilder, NakedObjects.Meta.Component.Metamodel>();
             services.AddSingleton<IMenuFactory, NullMenuFactory>();

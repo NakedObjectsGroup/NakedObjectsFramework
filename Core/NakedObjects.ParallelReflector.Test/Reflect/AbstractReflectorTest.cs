@@ -130,7 +130,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var mockLogger1 = new Mock<ILogger<ParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
-            var reflector = new ParallelReflector(metamodel, config, functionalReflectorConfiguration, menuFactory, new IFacetDecorator[] { }, facetFactories, mockLoggerFactory, mockLogger1);
+            var reflector = new ObjectReflector(metamodel, config, functionalReflectorConfiguration, new IFacetDecorator[] { }, facetFactories, mockLoggerFactory, mockLogger1);
 
             ITypeSpecBuilder spec;
             (spec, Metamodel) = LoadSpecification(reflector);

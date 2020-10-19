@@ -96,7 +96,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var mockLogger = new Mock<ILogger<ParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
-            Reflector = new ParallelReflector( metamodel, reflectorConfiguration, functionalReflectorConfiguration, menuFactory, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory}, mockLoggerFactory, mockLogger);
+            Reflector = new ObjectReflector( metamodel, reflectorConfiguration, functionalReflectorConfiguration, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory}, mockLoggerFactory, mockLogger);
         }
 
         [TestCleanup]
