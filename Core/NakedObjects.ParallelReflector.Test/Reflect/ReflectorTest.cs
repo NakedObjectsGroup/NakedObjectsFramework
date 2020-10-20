@@ -64,15 +64,15 @@ namespace NakedObjects.ParallelReflect.Test {
 
         private Action<IServiceCollection> TestHook { get; set; } = services => { };
 
-        private IHostBuilder CreateHostBuilder(string[] args, IObjectReflectorConfiguration rc) =>
+        private IHostBuilder CreateHostBuilder(string[] args, ICoreConfiguration cc, IObjectReflectorConfiguration rc) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) => {
-                    RegisterTypes(services, rc);
+                    RegisterTypes(services, cc, rc);
                 });
 
-        protected IServiceProvider GetContainer(IObjectReflectorConfiguration rc) {
+        protected IServiceProvider GetContainer(ICoreConfiguration cc, IObjectReflectorConfiguration rc) {
             ImmutableSpecFactory.ClearCache();
-            var hostBuilder = CreateHostBuilder(new string[] { }, rc).Build();
+            var hostBuilder = CreateHostBuilder(new string[] { }, cc, rc).Build();
             return hostBuilder.Services;
         }
 
@@ -166,7 +166,7 @@ namespace NakedObjects.ParallelReflect.Test {
             RegisterFacetFactory<CollectionFacetFactory>("CollectionFacetFactory", services); 
         }
 
-        protected virtual void RegisterTypes(IServiceCollection services, IObjectReflectorConfiguration rc) {
+        protected virtual void RegisterTypes(IServiceCollection services, ICoreConfiguration cc, IObjectReflectorConfiguration rc) {
             RegisterFacetFactories(services);
 
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
@@ -180,6 +180,7 @@ namespace NakedObjects.ParallelReflect.Test {
             services.AddSingleton<IModelIntegrator, ModelIntegrator>();
             services.AddSingleton(typeof(IFacetFactoryOrder<>), typeof(FacetFactoryOrder<>));
 
+            services.AddSingleton(cc);
             services.AddSingleton(rc);
             services.AddSingleton<IFunctionalReflectorConfiguration>(new FunctionalReflectorConfiguration(new Type[]{}, new Type[]{} ));
 
@@ -199,7 +200,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var rc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(),  rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -214,7 +215,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var rc = new ObjectReflectorConfiguration(new[] {typeof(object)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -231,7 +232,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var rc = new ObjectReflectorConfiguration(new[] {typeof(List<object>), typeof(List<int>), typeof(object), typeof(int)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -250,7 +251,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var rc = new ObjectReflectorConfiguration(new[] {typeof(SetWrapper<>), typeof(object)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -270,7 +271,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var rc = new ObjectReflectorConfiguration(new[] {qo.GetType(), qi.GetType(), typeof(int), typeof(object)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -290,7 +291,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var rc = new ObjectReflectorConfiguration(new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -309,7 +310,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var rc = new ObjectReflectorConfiguration(new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -331,7 +332,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var rc = new ObjectReflectorConfiguration(new[] {typeof(int)}, new Type[] { }, new[] {"System"});
             rc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -355,7 +356,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var rc = new ObjectReflectorConfiguration(new[] {typeof(TestObjectWithByteArray)}, new Type[] { }, new[] {"System"});
             rc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -403,7 +404,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var rc = new ObjectReflectorConfiguration(new[] {typeof(TestObjectWithStringArray), typeof(string)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -421,7 +422,7 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var rc = new ObjectReflectorConfiguration(new[] {typeof(WithScalars)}, new Type[] { }, new[] {"System"});
             rc.SupportedSystemTypes.Clear();
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -510,7 +511,7 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var rc = new ObjectReflectorConfiguration(new[] {typeof(SimpleDomainObject)}, new Type[] { }, new[] {"System"});
             rc.SupportedSystemTypes.Clear();
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -548,7 +549,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var rc = new ObjectReflectorConfiguration(new[] {typeof(SimpleBoundedObject)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -569,7 +570,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var rc = new ObjectReflectorConfiguration(new[] {typeof(SimpleBoundedObject)}, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();

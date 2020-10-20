@@ -86,34 +86,6 @@ namespace NakedObjects.ParallelReflect.Component {
 
         public ISet<Type> ServiceTypeSet => new HashSet<Type>(Services);
 
-        public Func<IMenuFactory, IMenu[]> MainMenus() =>
-            mf => {
-                var omm = objectReflectorConfiguration.MainMenus;
-                var fmm = functionalReflectorConfiguration.MainMenus;
-                IMenu[] menus = null;
-
-                if (omm is not null && omm.Any()) {
-                    menus = omm.Select(tuple => {
-                        var (type, name, addAll, action) = tuple;
-                        var menu = mf.NewMenu(type, addAll, name);
-                        action?.Invoke(menu);
-                        return menu;
-                    }).ToArray();
-                }
-
-                if (fmm is not null && fmm.Any()) {
-                    menus ??= new IMenu[] { };
-                    menus = menus.Union(fmm.Select(tuple => {
-                        var (type, name, addAll, action) = tuple;
-                        var menu = mf.NewMenu(type, addAll, name);
-                        action?.Invoke(menu);
-                        return menu;
-                    })).ToArray();
-                }
-
-
-                return menus;
-            };
 
         private static Type EnsureGenericTypeIsComplete(Type type) {
             if (type.IsGenericType && !type.IsConstructedGenericType) {

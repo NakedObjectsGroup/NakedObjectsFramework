@@ -16,13 +16,11 @@ namespace NakedObjects.Core.Configuration {
         public FunctionalReflectorConfiguration(Type[] types,
                                                 Type[] functions,
                                                 string[] modelNamespaces = null,
-                                                (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] mainMenus = null,
                                                 bool concurrencyChecking = true) {
             
             Types = types;
             Functions = functions;
             ModelNamespaces = modelNamespaces ?? Array.Empty<string>();
-            MainMenus = mainMenus;
             ConcurrencyChecking = concurrencyChecking;
             IgnoreCase = false;
             SupportedSystemTypes = HasConfig() ? ReflectorDefaults.DefaultSystemTypes.ToList() : new List<Type>();
@@ -41,7 +39,6 @@ namespace NakedObjects.Core.Configuration {
         public Type[] Services => HasConfig() ? new[] {typeof(MenuFunctions)} : new Type[] { };
         public bool ConcurrencyChecking { get; }
         public bool IgnoreCase { get; }
-        public (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus { get; }
 
         #endregion
     }

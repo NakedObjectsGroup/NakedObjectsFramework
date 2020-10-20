@@ -92,8 +92,7 @@ namespace NakedObjects.Xat {
                 var reflectorConfig = new ObjectReflectorConfiguration(
                     Types ?? new Type[] { },
                     Services,
-                    Namespaces ?? new string[] { },
-                    MainMenus);
+                    Namespaces ?? new string[] { });
                 ObjectReflectorConfiguration.NoValidate = true;
                 return reflectorConfig;
             }
@@ -107,6 +106,17 @@ namespace NakedObjects.Xat {
                 );
                 ObjectReflectorConfiguration.NoValidate = true;
                 return reflectorConfig;
+            }
+        }
+
+
+        protected virtual CoreConfiguration CoreConfig {
+            get {
+                var coreConfig = new CoreConfiguration(
+                    MainMenus
+                );
+
+                return coreConfig;
             }
         }
 
@@ -347,6 +357,7 @@ namespace NakedObjects.Xat {
             services.AddSingleton<IObjectReflectorConfiguration>(Reflector);
             services.AddSingleton<IEntityObjectStoreConfiguration>(Persistor);
             services.AddSingleton<IFunctionalReflectorConfiguration>(FunctionalReflector);
+            services.AddSingleton<ICoreConfiguration>(CoreConfig);
 
             //Externals
             services.AddScoped(p => TestPrincipal);

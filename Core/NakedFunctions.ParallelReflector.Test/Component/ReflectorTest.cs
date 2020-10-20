@@ -114,16 +114,16 @@ namespace NakedFunctions.Reflect.Test {
 
         private Action<IServiceCollection> TestHook { get; set; } = services => { };
 
-        private IHostBuilder CreateHostBuilder(string[] args, IFunctionalReflectorConfiguration rc, IObjectReflectorConfiguration orc = null) =>
+        private IHostBuilder CreateHostBuilder(string[] args, ICoreConfiguration cc,  IFunctionalReflectorConfiguration rc, IObjectReflectorConfiguration orc = null) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) => {
-                    RegisterTypes(services, rc, orc);
+                    RegisterTypes(services, cc, rc, orc);
                 });
 
-        protected IServiceProvider GetContainer(IFunctionalReflectorConfiguration rc, IObjectReflectorConfiguration orc = null)
+        protected IServiceProvider GetContainer(ICoreConfiguration cc, IFunctionalReflectorConfiguration rc, IObjectReflectorConfiguration orc = null)
         {
             ImmutableSpecFactory.ClearCache();
-            var hostBuilder = CreateHostBuilder(new string[] { }, rc, orc).Build();
+            var hostBuilder = CreateHostBuilder(new string[] { }, cc, rc, orc).Build();
             return hostBuilder.Services;
         }
 
@@ -223,7 +223,7 @@ namespace NakedFunctions.Reflect.Test {
 
         }
 
-        protected virtual void RegisterTypes(IServiceCollection services, IFunctionalReflectorConfiguration frc, IObjectReflectorConfiguration orc = null) {
+        protected virtual void RegisterTypes(IServiceCollection services, ICoreConfiguration cc, IFunctionalReflectorConfiguration frc, IObjectReflectorConfiguration orc = null) {
             RegisterFacetFactories(services);
 
 
@@ -243,9 +243,8 @@ namespace NakedFunctions.Reflect.Test {
 
             var rc = orc ?? dflt;
 
+            services.AddSingleton<ICoreConfiguration>(cc);
             services.AddSingleton<IObjectReflectorConfiguration>(rc);
-
-
             services.AddSingleton<IFunctionalReflectorConfiguration>(frc);
 
             TestHook(services);
@@ -265,7 +264,7 @@ namespace NakedFunctions.Reflect.Test {
 
             var rc = new FunctionalReflectorConfiguration(new Type[0], new Type[0]);
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -280,7 +279,7 @@ namespace NakedFunctions.Reflect.Test {
 
             var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[0]);
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -297,7 +296,7 @@ namespace NakedFunctions.Reflect.Test {
 
             var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[] { typeof(SimpleFunctions) });
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -318,7 +317,7 @@ namespace NakedFunctions.Reflect.Test {
 
             var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[] { typeof(TupleFunctions) });
 
-            var container = GetContainer(rc, orc);
+            var container = GetContainer(new CoreConfiguration(), rc, orc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -338,7 +337,7 @@ namespace NakedFunctions.Reflect.Test {
 
             var rc = new FunctionalReflectorConfiguration(new[] { typeof(UnsupportedTupleFunctions) }, new Type[0]);
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
 
@@ -364,7 +363,7 @@ namespace NakedFunctions.Reflect.Test {
 
             var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[] { typeof(SimpleInjectedFunctions) });
 
-            var container = GetContainer(rc, orc);
+            var container = GetContainer(new CoreConfiguration(), rc, orc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -386,7 +385,7 @@ namespace NakedFunctions.Reflect.Test {
 
             var rc = new FunctionalReflectorConfiguration(new[] { typeof(NavigableClass) }, new Type[0]);
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -402,7 +401,7 @@ namespace NakedFunctions.Reflect.Test {
 
             var rc = new FunctionalReflectorConfiguration(new[] {typeof(BoundedClass)}, new Type[0]);
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -418,7 +417,7 @@ namespace NakedFunctions.Reflect.Test {
 
             var rc = new FunctionalReflectorConfiguration(new[] { typeof(IgnoredClass) }, new Type[0]);
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -435,7 +434,7 @@ namespace NakedFunctions.Reflect.Test {
 
             var rc = new FunctionalReflectorConfiguration(new Type[] { typeof(SimpleClass) }, new Type[] { typeof(ParameterDefaultClass) });
 
-            var container = GetContainer(rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();

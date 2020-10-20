@@ -38,20 +38,20 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public Func<IConfiguration, DbContext>[] ContextInstallers { get; set; }
         public IAuthorizationConfiguration AuthorizationConfiguration { get; set; }
         public IAuditConfiguration AuditConfiguration { get; set; }
+        public (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus { get; set; }
     }
 
     public class NakedObjectsOptions {
         public Type[] Types { get; set; } = Array.Empty<Type>();
         public Type[] Services { get; set; } = Array.Empty<Type>();
         public string[] ModelNamespaces { get; set; } = Array.Empty<string>();
-        public (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus { get; set; }
+       
         public bool NoValidate { get; set; }
     }
 
     public class NakedFunctionsOptions {
         public Type[] FunctionalTypes { get; set; } = Array.Empty<Type>();
         public Type[] Functions { get; set; } = Array.Empty<Type>();
-        public (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus { get; set; }
     }
 
     public class RestfulObjectsOptions {
@@ -91,12 +91,14 @@ namespace NakedObjects.DependencyInjection.Extensions {
 
         private static ObjectReflectorConfiguration ObjectReflectorConfig(NakedObjectsOptions options) {
             ObjectReflectorConfiguration.NoValidate = options.NoValidate;
-            return new ObjectReflectorConfiguration(options.Types, options.Services, options.ModelNamespaces, options.MainMenus);
+            return new ObjectReflectorConfiguration(options.Types, options.Services, options.ModelNamespaces);
         }
 
         public static FunctionalReflectorConfiguration FunctionalReflectorConfig(NakedFunctionsOptions options) =>
-            new FunctionalReflectorConfiguration(options.FunctionalTypes, options.Functions, null, options.MainMenus);
+            new FunctionalReflectorConfiguration(options.FunctionalTypes, options.Functions, null);
 
+
+        public static CoreConfiguration CoreConfig(NakedCoreOptions options) => new CoreConfiguration(options.MainMenus);
 
         private static void AddNakedCoreFramework(this IServiceCollection services, NakedCoreOptions options) {
             ParallelConfig.RegisterStandardFacetFactories(services);
@@ -112,6 +114,8 @@ namespace NakedObjects.DependencyInjection.Extensions {
             if (options.AuditConfiguration is not null) {
                 services.AddSingleton<IAuditConfiguration>(options.AuditConfiguration);
             }
+
+            services.AddSingleton<CoreConfiguration>(p => CoreConfig(options));
 
 
             // frameworkFacade

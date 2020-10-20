@@ -16,8 +16,6 @@ namespace NakedObjects.Architecture.Configuration {
         Type[] Services { get; }
         bool ConcurrencyChecking { get; }
         bool IgnoreCase { get; }
-
-        (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus { get; }
         List<Type> SupportedSystemTypes { get; }
         string[] ModelNamespaces { get; }
         bool HasConfig();

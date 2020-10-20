@@ -87,7 +87,6 @@ namespace NakedObjects.Core.Configuration {
         public ObjectReflectorConfiguration(Type[] typesToIntrospect,
                                             Type[] services,
                                             string[] modelNamespaces,
-                                            (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] mainMenus = null,
                                             bool concurrencyChecking = true) {
             ModelNamespaces = modelNamespaces;
             SupportedSystemTypes = ReflectorDefaults.DefaultSystemTypes.ToList();
@@ -95,7 +94,6 @@ namespace NakedObjects.Core.Configuration {
             Services = services;
             IgnoreCase = false;
             ConcurrencyChecking = concurrencyChecking;
-            MainMenus = mainMenus;
             
             ValidateConfig();
 
@@ -135,7 +133,6 @@ namespace NakedObjects.Core.Configuration {
         public bool HasConfig() => TypesToIntrospect.Any() && Services.Any();
 
         public Type[] Services { get; }
-        public (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus { get; }
         public string[] ModelNamespaces { get; }
         public List<Type> SupportedSystemTypes { get; }
 

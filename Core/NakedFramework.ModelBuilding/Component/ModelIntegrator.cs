@@ -24,17 +24,20 @@ namespace NakedFramework.ModelBuilding.Component {
         private readonly IMetamodelBuilder metamodelBuilder;
         private readonly IMenuFactory menuFactory;
         private readonly ILogger<ModelIntegrator> logger;
+        private readonly ICoreConfiguration coreConfiguration;
         private readonly IObjectReflectorConfiguration objectReflectorConfiguration;
         private readonly IFunctionalReflectorConfiguration functionalReflectorConfiguration;
 
         public ModelIntegrator(IMetamodelBuilder metamodelBuilder, 
                                IMenuFactory menuFactory,
                                ILogger<ModelIntegrator> logger, 
+                               ICoreConfiguration coreConfiguration,
                                IObjectReflectorConfiguration objectReflectorConfiguration, 
                                IFunctionalReflectorConfiguration functionalReflectorConfiguration) {
             this.metamodelBuilder = metamodelBuilder;
             this.menuFactory = menuFactory;
             this.logger = logger;
+            this.coreConfiguration = coreConfiguration;
             this.objectReflectorConfiguration = objectReflectorConfiguration;
             this.functionalReflectorConfiguration = functionalReflectorConfiguration;
         }
@@ -133,56 +136,17 @@ namespace NakedFramework.ModelBuilding.Component {
             PopulateContributedActions(spec, services, metamodel);
         }
 
-        // temp kludge 
-        public Func<IMenuFactory, IMenu[]> MainMenus() =>
-            mf => {
-                var omm = objectReflectorConfiguration.MainMenus;
-                var fmm = functionalReflectorConfiguration.MainMenus;
-                IMenu[] menus = null;
-
-                if (omm is not null && omm.Any())
-                {
-                    menus = omm.Select(tuple => {
-                        var (type, name, addAll, action) = tuple;
-                        var menu = mf.NewMenu(type, addAll, name);
-                        action?.Invoke(menu);
-                        return menu;
-                    }).ToArray();
-                }
-
-                if (fmm is not null && fmm.Any())
-                {
-                    menus ??= new IMenu[] { };
-                    menus = menus.Union(fmm.Select(tuple => {
-                        var (type, name, addAll, action) = tuple;
-                        var menu = mf.NewMenu(type, addAll, name);
-                        action?.Invoke(menu);
-                        return menu;
-                    })).ToArray();
-                }
-
-
-                return menus;
-            };
-
-
-        private void InstallMainMenus(IMetamodelBuilder metamodel)
-        {
-        
-
-            var menus = MainMenus()?.Invoke(menuFactory);
+        private void InstallMainMenus(IMetamodelBuilder metamodel) {
+            var menus = coreConfiguration.GetMainMenus()?.Invoke(menuFactory);
             // Unlike other things specified in objectReflectorConfiguration, this one can't be checked when ObjectReflectorConfiguration is constructed.
             // Allows developer to deliberately not specify any menus
-            if (menus != null)
-            {
-                if (!menus.Any())
-                {
+            if (menus != null) {
+                if (!menus.Any()) {
                     //Catches accidental non-specification of menus
                     throw new ReflectionException(logger.LogAndReturn("No MainMenus specified."));
                 }
 
-                foreach (var menu in menus.OfType<IMenuImmutable>())
-                {
+                foreach (var menu in menus.OfType<IMenuImmutable>()) {
                     metamodel.AddMainMenu(menu);
                 }
             }

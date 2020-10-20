@@ -6,8 +6,17 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedObjects.Architecture.Menu;
+using NakedObjects.Menu;
 
 namespace NakedObjects.Architecture.Configuration {
-    [Obsolete("Use IObjectReflectorConfiguration")]
-    public interface IReflectorConfiguration : IObjectReflectorConfiguration { }
+    public interface ICoreConfiguration {
+        /// <summary>
+        ///     Specify a function that can create the array of main menus, having been passed-in an
+        ///     implementation of IMenuFactory.
+        /// </summary>
+        (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus { get; }
+
+        public Func<IMenuFactory, IMenu[]> GetMainMenus();
+    }
 }
