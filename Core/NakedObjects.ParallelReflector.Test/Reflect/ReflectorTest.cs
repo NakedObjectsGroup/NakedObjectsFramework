@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework.ModelBuilding.Component;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -171,15 +172,24 @@ namespace NakedObjects.ParallelReflect.Test {
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
             services.AddSingleton<IClassStrategy, ObjectClassStrategy>();
             services.AddSingleton<IReflector, ObjectReflector>();
+            services.AddSingleton<IReflector, FunctionalReflector>();
             services.AddSingleton<IMetamodel, Metamodel>();
             services.AddSingleton<IMetamodelBuilder, Metamodel>();
             services.AddSingleton<IMenuFactory, NullMenuFactory>();
+            services.AddSingleton<IModelBuilder, ModelBuilder>();
+            services.AddSingleton<IModelIntegrator, ModelIntegrator>();
             services.AddSingleton(typeof(IFacetFactoryOrder<>), typeof(FacetFactoryOrder<>));
 
             services.AddSingleton(rc);
             services.AddSingleton<IFunctionalReflectorConfiguration>(new FunctionalReflectorConfiguration(new Type[]{}, new Type[]{} ));
 
             TestHook(services);
+        }
+
+        private ITypeSpecBuilder[] AllObjectSpecImmutables(IServiceProvider provider)
+        {
+            var metaModel = provider.GetService<IMetamodel>();
+            return metaModel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
         }
 
         [TestMethod]
@@ -191,9 +201,10 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            Assert.IsFalse(reflector.AllObjectSpecImmutables.Any());
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
+            Assert.IsFalse(specs.Any());
         }
 
         [TestMethod]
@@ -205,11 +216,12 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Length);
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
+            Assert.AreEqual(1, specs.Length);
 
-            AbstractReflectorTest.AssertSpec(typeof(object), reflector.AllObjectSpecImmutables.First());
+            AbstractReflectorTest.AssertSpec(typeof(object), specs.First());
         }
 
         [TestMethod]
@@ -221,9 +233,9 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            var specs = reflector.AllObjectSpecImmutables;
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(3, specs.Length);
 
             AbstractReflectorTest.AssertSpec(typeof(int), specs);
@@ -240,9 +252,9 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            var specs = reflector.AllObjectSpecImmutables;
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(2, specs.Length);
 
             AbstractReflectorTest.AssertSpec(typeof(object), specs);
@@ -260,9 +272,9 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            var specs = reflector.AllObjectSpecImmutables;
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(3, specs.Length);
 
             AbstractReflectorTest.AssertSpec(typeof(int), specs);
@@ -280,9 +292,9 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            var specs = reflector.AllObjectSpecImmutables;
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(2, specs.Length);
 
             AbstractReflectorTest.AssertSpec(typeof(object), specs);
@@ -299,9 +311,9 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            var specs = reflector.AllObjectSpecImmutables;
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(2, specs.Length);
 
             AbstractReflectorTest.AssertSpec(typeof(object), specs);
@@ -321,10 +333,10 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
 
-            var specs = reflector.AllObjectSpecImmutables;
+            var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(8, specs.Length);
             AbstractReflectorTest.AssertSpec(typeof(IEquatable<int>), specs);
             AbstractReflectorTest.AssertSpec(typeof(int), specs);
@@ -345,10 +357,10 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
 
-            var specs = reflector.AllObjectSpecImmutables;
+            var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(31, specs.Length);
 
             AbstractReflectorTest.AssertSpec(typeof(IList), specs);
@@ -393,9 +405,10 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            var specs = reflector.AllObjectSpecImmutables;
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+
+            var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(2, specs.Length);
 
             AbstractReflectorTest.AssertSpec(typeof(TestObjectWithStringArray), specs);
@@ -410,9 +423,10 @@ namespace NakedObjects.ParallelReflect.Test {
             rc.SupportedSystemTypes.Clear();
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
-            var specs = reflector.AllObjectSpecImmutables;
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+
+            var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(74, specs.Length);
 
             AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<decimal>), specs);
@@ -498,10 +512,10 @@ namespace NakedObjects.ParallelReflect.Test {
             rc.SupportedSystemTypes.Clear();
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
 
-            var specs = reflector.AllObjectSpecImmutables;
+            var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(19, specs.Length);
 
             AbstractReflectorTest.AssertSpec(typeof(IComparable<string>), specs);
@@ -536,11 +550,12 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
 
-            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Length);
-            var spec = reflector.AllObjectSpecImmutables.First();
+            Assert.AreEqual(1, specs.Length);
+            var spec = specs.First();
 
             Assert.IsFalse(spec.ContainsFacet<IBoundedFacet>());
         }
@@ -556,11 +571,12 @@ namespace NakedObjects.ParallelReflect.Test {
 
             var container = GetContainer(rc);
 
-            var reflector = container.GetService<IReflector>();
-            reflector.Reflect();
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
 
-            Assert.AreEqual(1, reflector.AllObjectSpecImmutables.Length);
-            var spec = reflector.AllObjectSpecImmutables.First();
+            Assert.AreEqual(1,specs.Length);
+            var spec = specs.First();
 
             Assert.IsFalse(spec.ContainsFacet<IBoundedFacet>());
         }

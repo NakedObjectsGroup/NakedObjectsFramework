@@ -28,6 +28,7 @@ namespace NakedObjects.DependencyInjection {
             services.AddSingleton<IClassStrategy>(p => new CachingClassStrategy(p.GetService<ObjectClassStrategy>()));
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
             services.AddSingleton<IReflector, ObjectReflector>();
+            services.AddSingleton<IReflector, FunctionalReflector>();
             services.AddSingleton<IMetamodel, Metamodel>();
             services.AddSingleton<IMetamodelBuilder, Metamodel>();
             services.AddSingleton<IMenuFactory, MenuFactory>();

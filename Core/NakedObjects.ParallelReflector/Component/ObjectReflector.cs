@@ -5,10 +5,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
+using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Util;
 
 namespace NakedObjects.ParallelReflect.Component {
     public sealed class ObjectReflector : ParallelReflector {
@@ -19,7 +24,24 @@ namespace NakedObjects.ParallelReflect.Component {
                                IEnumerable<IFacetFactory> facetFactories,
                                ILoggerFactory loggerFactory,
                                ILogger<ParallelReflector> logger) : base(metamodel, objectReflectorConfiguration, functionalReflectorConfiguration, facetDecorators, facetFactories, loggerFactory, logger) { }
+
+
+        private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectObjectTypes(Type[] ooTypes) {
+            var placeholders = GetPlaceholders(ooTypes, ObjectClassStrategy);
+            return placeholders.Any()
+                ? IntrospectPlaceholders(placeholders, () => new Introspector(this, ObjectFacetFactorySet, ObjectClassStrategy, loggerFactory.CreateLogger<Introspector>()))
+                : placeholders;
+        }
+
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
+            var ooTypes = reflectorConfiguration.ObjectTypes;
+
+            return IntrospectObjectTypes(ooTypes);
+
+            //specDictionary.ForEach(i => initialMetamodel.Add(i.Value.Type, i.Value));
+        }
     }
+
 
     // Copyright (c) Naked Objects Group Ltd.
 }

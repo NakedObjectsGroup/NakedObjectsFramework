@@ -21,19 +21,19 @@ using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect.Component {
     public abstract class ParallelReflector : IReflector {
-        private readonly FacetDecoratorSet facetDecoratorSet;
-        private readonly IMetamodelBuilder initialMetamodel;
-        private readonly ILogger<ParallelReflector> logger;
-        private readonly ILoggerFactory loggerFactory;
-        private readonly CompositeReflectorConfiguration reflectorConfiguration;
+        protected readonly FacetDecoratorSet facetDecoratorSet;
+        protected readonly IMetamodelBuilder initialMetamodel;
+        protected readonly ILogger<ParallelReflector> logger;
+        protected readonly ILoggerFactory loggerFactory;
+        protected readonly CompositeReflectorConfiguration reflectorConfiguration;
 
         protected ParallelReflector(IMetamodelBuilder metamodel,
-                                 IObjectReflectorConfiguration objectReflectorConfiguration,
-                                 IFunctionalReflectorConfiguration functionalReflectorConfiguration,
-                                 IEnumerable<IFacetDecorator> facetDecorators,
-                                 IEnumerable<IFacetFactory> facetFactories,
-                                 ILoggerFactory loggerFactory,
-                                 ILogger<ParallelReflector> logger) {
+                                    IObjectReflectorConfiguration objectReflectorConfiguration,
+                                    IFunctionalReflectorConfiguration functionalReflectorConfiguration,
+                                    IEnumerable<IFacetDecorator> facetDecorators,
+                                    IEnumerable<IFacetFactory> facetFactories,
+                                    ILoggerFactory loggerFactory,
+                                    ILogger<ParallelReflector> logger) {
             ObjectClassStrategy = new ObjectClassStrategy(objectReflectorConfiguration, functionalReflectorConfiguration);
             FunctionalClassStrategy = new FunctionClassStrategy(functionalReflectorConfiguration);
             initialMetamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
@@ -60,7 +60,7 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(IImmutableDictionary<string, ITypeSpecBuilder> metamodel, Func<IIntrospector> getIntrospector) {
+        protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(IImmutableDictionary<string, ITypeSpecBuilder> metamodel, Func<IIntrospector> getIntrospector) {
             var ph = metamodel.Where(i => string.IsNullOrEmpty(i.Value.FullName)).Select(i => i.Value.Type);
             var mm = ph.AsParallel().SelectMany(type => IntrospectSpecification(type, metamodel, getIntrospector).metamodel).Distinct(new TypeSpecKeyComparer()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value).ToImmutableDictionary();
 
@@ -69,27 +69,6 @@ namespace NakedObjects.ParallelReflect.Component {
                 : mm;
         }
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectObjectTypes(Type[] ooTypes) {
-            var placeholders = GetPlaceholders(ooTypes, ObjectClassStrategy);
-            return placeholders.Any()
-                ? IntrospectPlaceholders(placeholders, () => new Introspector(this, ObjectFacetFactorySet, ObjectClassStrategy, loggerFactory.CreateLogger<Introspector>()))
-                : placeholders;
-        }
-
-        private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectFunctionalTypes(Type[] records, Type[] functions, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
-            var allFunctionalTypes = records.Union(functions).ToArray();
-
-            var placeholders = GetPlaceholders(allFunctionalTypes, FunctionalClassStrategy);
-            return placeholders.Any()
-                ? IntrospectPlaceholders(specDictionary.AddRange(placeholders), () => new FunctionalIntrospector(this, FunctionalFacetFactorySet, FunctionalClassStrategy, functions))
-                : specDictionary;
-        }
-
-        private void InstallSpecifications(Type[] ooTypes, Type[] records, Type[] functions, IMetamodelBuilder metamodel) {
-            var mm = IntrospectObjectTypes(ooTypes);
-            mm = IntrospectFunctionalTypes(records, functions, mm);
-            mm.ForEach(i => metamodel.Add(i.Value.Type, i.Value));
-        }
 
         private ITypeSpecBuilder GetPlaceholder(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var specification = CreateSpecification(type, metamodel);
@@ -113,7 +92,7 @@ namespace NakedObjects.ParallelReflect.Component {
             return (specification, metamodel);
         }
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> GetPlaceholders(Type[] types, IClassStrategy classStrategy) => 
+        protected IImmutableDictionary<string, ITypeSpecBuilder> GetPlaceholders(Type[] types, IClassStrategy classStrategy) =>
             types.Select(t => classStrategy.GetType(t))
                  .Where(t => t != null)
                  .Distinct(new TypeKeyComparer())
@@ -142,8 +121,6 @@ namespace NakedObjects.ParallelReflect.Component {
         #region Nested type: TypeKeyComparer
 
         private class TypeKeyComparer : IEqualityComparer<Type> {
-            public TypeKeyComparer() { }
-
             #region IEqualityComparer<Type> Members
 
             public bool Equals(Type x, Type y) => TypeKeyUtils.GetKeyForType(x).Equals(TypeKeyUtils.GetKeyForType(y), StringComparison.Ordinal);
@@ -206,9 +183,7 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
 
-        public void Reflect() {
-            InstallSpecifications(reflectorConfiguration.ObjectTypes, reflectorConfiguration.RecordTypes, reflectorConfiguration.FunctionTypes, initialMetamodel);
-        }
+        public abstract IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary);
 
         #endregion
     }

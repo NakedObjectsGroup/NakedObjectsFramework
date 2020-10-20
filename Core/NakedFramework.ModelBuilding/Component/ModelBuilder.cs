@@ -5,20 +5,32 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Util;
 
 namespace NakedFramework.ModelBuilding.Component {
     public class ModelBuilder : IModelBuilder {
-        private readonly IReflector reflector;
+        private readonly IMetamodelBuilder initialMetamodel;
         private readonly IModelIntegrator integrator;
+        private readonly IEnumerable<IReflector> reflectors;
 
-        public ModelBuilder(IReflector reflector, IModelIntegrator integrator) {
-            this.reflector = reflector;
+        public ModelBuilder(IEnumerable<IReflector> reflectors, IModelIntegrator integrator, IMetamodelBuilder initialMetamodel) {
+            this.reflectors = reflectors;
             this.integrator = integrator;
+            this.initialMetamodel = initialMetamodel;
         }
 
         public void Build() {
-            reflector.Reflect();
+            IImmutableDictionary<string, ITypeSpecBuilder> specDictionary = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
+
+            specDictionary = reflectors.Aggregate(specDictionary, (current, reflector) => reflector.Reflect(current));
+
+            specDictionary.ForEach(i => initialMetamodel.Add(i.Value.Type, i.Value));
+
             integrator.Integrate();
         }
     }

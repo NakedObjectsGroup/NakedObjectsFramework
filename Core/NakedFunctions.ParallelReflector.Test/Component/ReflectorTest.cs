@@ -230,6 +230,7 @@ namespace NakedFunctions.Reflect.Test {
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
             services.AddSingleton<IClassStrategy, ObjectClassStrategy>();
             services.AddSingleton<IReflector,ObjectReflector>();
+            services.AddSingleton<IReflector, FunctionalReflector>();
             services.AddSingleton<IMetamodel, NakedObjects.Meta.Component.Metamodel>();
             services.AddSingleton<IMetamodelBuilder, NakedObjects.Meta.Component.Metamodel>();
             services.AddSingleton<IMenuFactory, NullMenuFactory>();
@@ -268,8 +269,8 @@ namespace NakedFunctions.Reflect.Test {
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
-            var metaModel = container.GetService<IMetamodel>();
-            Assert.IsFalse(metaModel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray().Any());
+            var specs = AllObjectSpecImmutables(container);
+            Assert.IsFalse(specs.Any());
         }
 
         [TestMethod]

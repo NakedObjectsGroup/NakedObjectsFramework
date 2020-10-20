@@ -35,7 +35,7 @@ namespace NakedObjects.Architecture.Component {
         /// <returns></returns>
         T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable;
 
-        void Reflect();
+        IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary);
 
         // new for ParallelReflector
 
