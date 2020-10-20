@@ -36,17 +36,18 @@ namespace NakedFunctions.Rest.App.Demo {
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
-            services.AddNakedCore(options => options.ContextInstallers = new[] { ModelConfig_NakedFunctionsPM.DbContextInstaller });
+            services.AddNakedCore(options => { 
+                options.ContextInstallers = new[] {ModelConfig_NakedFunctionsPM.DbContextInstaller};
+                options.MainMenus = ModelConfig_NakedObjectsPM.MainMenus().Select(t => (t.rootType, t.name, true, (Action<IMenu>)null)).ToArray();
+            });
             services.AddNakedObjects(options => {
                 options.ModelNamespaces = ModelConfig_NakedObjectsPM.ModelNamespaces();
                 options.Services = ModelConfig_NakedObjectsPM.Services().ToArray();
-                options.MainMenus = ModelConfig_NakedObjectsPM.MainMenus().Select(t => (t.rootType, t.name, true, (Action<IMenu>)null)).ToArray();
                 options.NoValidate = true;
             });
             services.AddNakedFunctions(options => {
                 options.FunctionalTypes = ModelConfig_NakedFunctionsPM.DomainTypes();
                 options.Functions = ModelConfig_NakedFunctionsPM.ContributedFunctions();
-                options.MainMenus = ModelConfig_NakedFunctionsPM.MainMenus().Select(t => (t.rootType, t.name, true, (Action<IMenu>)null)).ToArray();
             });
             services.AddRestfulObjects();
 
