@@ -115,7 +115,7 @@ namespace NakedObjects.DependencyInjection.Extensions {
                 services.AddSingleton<IAuditConfiguration>(options.AuditConfiguration);
             }
 
-            services.AddSingleton<CoreConfiguration>(p => CoreConfig(options));
+            services.AddSingleton<ICoreConfiguration>(p => CoreConfig(options));
 
 
             // frameworkFacade
