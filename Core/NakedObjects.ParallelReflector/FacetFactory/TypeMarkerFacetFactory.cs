@@ -28,7 +28,8 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
                 new TypeIsAbstractFacet(specification, IsAbstract(type)),
                 new TypeIsInterfaceFacet(specification, IsInterface(type)),
                 new TypeIsSealedFacet(specification, IsSealed(type)),
-                new TypeIsVoidFacet(specification, IsVoid(type))
+                new TypeIsVoidFacet(specification, IsVoid(type)),
+                new TypeIsStaticFacet(specification, IsStatic(type))
             };
 
             FacetUtils.AddFacets(facets);
@@ -42,5 +43,7 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         private static bool IsInterface(Type type) => type.IsInterface;
 
         private static bool IsAbstract(Type type) => type.IsAbstract;
+
+        private static bool IsStatic(Type type) => IsAbstract(type) && IsSealed(type);
     }
 }

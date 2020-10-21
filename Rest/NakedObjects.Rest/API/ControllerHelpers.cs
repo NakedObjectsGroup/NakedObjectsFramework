@@ -43,6 +43,11 @@ namespace NakedObjects.Rest.API {
             return frameworkFacade.GetServiceAction(oid, actionName);
         }
 
+        public static ActionContextFacade GetMenuActionByName(this IFrameworkFacade frameworkFacade, string menuName, string actionName) {
+            var oid = frameworkFacade.OidTranslator.GetOidTranslation(menuName);
+            return frameworkFacade.GetMenuAction(oid, actionName);
+        }
+
         public static ObjectContextFacade GetObjectByName(this IFrameworkFacade frameworkFacade, string domainType, string instanceId) {
             var oidTranslation = frameworkFacade.OidTranslator.GetOidTranslation(domainType, instanceId);
             return frameworkFacade.GetObject(oidTranslation);
@@ -207,6 +212,12 @@ namespace NakedObjects.Rest.API {
         public static ActionResultContextFacade ExecuteServiceActionAndValidate(this IFrameworkFacade frameworkFacade, string serviceName, string actionName, ArgumentsContextFacade argsContext) {
             var link = frameworkFacade.OidTranslator.GetOidTranslation(serviceName);
             var context = frameworkFacade.ExecuteServiceAction(link, actionName, argsContext);
+            return ValidateActionResult(context);
+        }
+
+        public static ActionResultContextFacade ExecuteMenuActionAndValidate(this IFrameworkFacade frameworkFacade, string menuName, string actionName, ArgumentsContextFacade argsContext) {
+            var link = frameworkFacade.OidTranslator.GetOidTranslation(menuName);
+            var context = frameworkFacade.ExecuteMenuAction(link, actionName, argsContext);
             return ValidateActionResult(context);
         }
 

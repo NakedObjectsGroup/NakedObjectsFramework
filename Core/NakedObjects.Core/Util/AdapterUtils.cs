@@ -18,7 +18,7 @@ namespace NakedObjects.Core.Util {
         /// <summary>
         ///     Safe (returns null if INakedObjectAdapter is null) getter
         /// </summary>
-        public static object GetDomainObject(this INakedObjectAdapter inObjectAdapter) => inObjectAdapter == null ? null : inObjectAdapter.Object;
+        public static object GetDomainObject(this INakedObjectAdapter inObjectAdapter) => inObjectAdapter?.Object;
 
         /// <summary>
         ///     Return spec as object spec if is otherwise null

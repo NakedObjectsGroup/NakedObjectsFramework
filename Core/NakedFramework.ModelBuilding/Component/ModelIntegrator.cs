@@ -53,21 +53,11 @@ namespace NakedFramework.ModelBuilding.Component {
             InstallObjectMenus(metamodelBuilder);
         }
 
-        private bool IsStatic(ITypeSpecImmutable spec)
-        {
-            return spec.Type.IsAbstract && spec.Type.IsSealed;
-        }
+        private static bool IsStatic(ITypeSpecImmutable spec) => spec.GetFacet<ITypeIsStaticFacet>()?.Flag == true;
 
-        private bool IsNotStatic(ITypeSpecImmutable spec)
-        {
-            return !IsStatic(spec);
-        }
+        private static bool IsNotStatic(ITypeSpecImmutable spec) => !IsStatic(spec);
 
-        private bool IsContributedFunction(IActionSpecImmutable sa, ITypeSpecImmutable ts)
-        {
-            var f = sa.GetFacet<IContributedFunctionFacet>();
-            return f != null && f.IsContributedTo(ts);
-        }
+        private static bool IsContributedFunction(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedTo(ts) == true;
 
 
         private void PopulateContributedFunctions(ITypeSpecBuilder spec, ITypeSpecImmutable[] functions, IMetamodel metamodel)

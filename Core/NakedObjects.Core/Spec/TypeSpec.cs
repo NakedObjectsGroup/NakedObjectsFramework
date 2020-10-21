@@ -39,6 +39,7 @@ namespace NakedObjects.Core.Spec {
         private bool? isQueryable;
         private bool? isViewModel;
         private bool? isVoid;
+        private bool? isStatic;
         private IActionSpec[] objectActions;
         private PersistableType? persistable;
         private string pluralName;
@@ -228,6 +229,16 @@ namespace NakedObjects.Core.Spec {
                 isVoid ??= InnerSpec.GetFacet<ITypeIsVoidFacet>().Flag;
 
                 return isVoid.Value;
+            }
+        }
+
+        public bool IsStatic
+        {
+            get
+            {
+                isStatic ??= InnerSpec.GetFacet<ITypeIsStaticFacet>().Flag;
+
+                return isStatic.Value;
             }
         }
 

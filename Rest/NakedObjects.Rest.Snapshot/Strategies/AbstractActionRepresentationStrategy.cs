@@ -18,12 +18,14 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
     public abstract class AbstractActionRepresentationStrategy : AbstractStrategy {
         private readonly RelType self;
         private IEnumerable<ParameterRepresentation> parameterList;
+        private readonly UriMtHelper helper;
 
         protected AbstractActionRepresentationStrategy(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags)
             : base(oidStrategy, flags) {
             Req = req;
             ActionContext = actionContext;
-            self = new MemberRelType(RelValues.Self, new UriMtHelper(oidStrategy, req, actionContext));
+            helper = new UriMtHelper(oidStrategy, req, actionContext);
+            self = new MemberRelType(RelValues.Self, helper);
         }
 
         protected ActionContextFacade ActionContext { get; }
@@ -51,13 +53,22 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         public virtual MapRepresentation GetParameters() => RestUtils.CreateMap(parameterList.ToDictionary(p => p.Name, p => (object) p));
 
-        protected LinkRepresentation CreateDetailsLink() => LinkRepresentation.Create(OidStrategy, new MemberRelType(new UriMtHelper(OidStrategy, Req, ActionContext)), Flags);
+        protected LinkRepresentation CreateDetailsLink() => LinkRepresentation.Create(OidStrategy, new MemberRelType(helper), Flags);
 
         public abstract LinkRepresentation[] GetLinks();
 
         protected LinkRepresentation CreateUpLink() {
-            var helper = new UriMtHelper(OidStrategy, Req, ActionContext.Target);
-            var parentRelType = ActionContext.Target.Specification.IsService ? new ServiceRelType(RelValues.Up, helper) : new ObjectRelType(RelValues.Up, helper);
+            RelType parentRelType;
+
+            if (ActionContext.Target is not null) {
+                var parentHelper = new UriMtHelper(OidStrategy, Req, ActionContext.Target); 
+                parentRelType = ActionContext.Target.Specification.IsService ? new ServiceRelType(RelValues.Up, parentHelper) : new ObjectRelType(RelValues.Up, parentHelper);
+            }
+            else {
+                var parentHelper = new UriMtHelper(OidStrategy, Req, (IMenuFacade)null);
+                parentRelType = new MenuRelType(RelValues.Up, parentHelper);
+            }
+
             return LinkRepresentation.Create(OidStrategy, parentRelType, Flags);
         }
 
@@ -129,7 +140,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
         public static AbstractActionRepresentationStrategy GetStrategy(bool inline, IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext, RestControlFlags flags) {
             AbstractActionRepresentationStrategy strategy;
             if (inline) {
-                if (actionContext.Target.IsViewModelEditView) {
+                if (actionContext.Target?.IsViewModelEditView == true) {
                     strategy = new FormActionMemberRepresentationStrategy(oidStrategy, req, actionContext, flags);
                 }
                 else if (InlineDetails(actionContext, flags)) {
@@ -140,7 +151,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 }
             }
             else {
-                if (actionContext.Target.IsViewModelEditView) {
+                if (actionContext.Target?.IsViewModelEditView == true) {
                     strategy = new FormActionRepresentationStrategy(oidStrategy, req, actionContext, flags);
                 }
                 else {

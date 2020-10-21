@@ -41,10 +41,10 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
                    firstParam != null && firstParam.IsDefined(typeof(ContributedActionAttribute), false);
         }
 
-        private static Type GetContributeeType(MethodInfo member) => IsContributed(member) ? member.GetParameters().First().ParameterType : typeof(MenuFunctions);
+        private static Type GetContributeeType(MethodInfo member) => IsContributed(member) ? member.GetParameters().First().ParameterType : member.DeclaringType;
 
         private IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, MethodInfo member, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            // all functions are contributed to first parameter or MenuService
+            // all functions are contributed to first parameter or if menu, itself
 
             var facet = new ContributedFunctionFacet(holder);
 

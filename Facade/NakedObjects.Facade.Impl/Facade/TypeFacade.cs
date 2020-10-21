@@ -40,6 +40,8 @@ namespace NakedObjects.Facade.Impl {
 
         public bool IsAggregated => WrappedValue.IsAggregated;
 
+        public bool IsStatic => WrappedValue.IsStatic;
+
         public bool IsImage {
             get {
                 var imageSpec = framework.MetamodelManager.GetSpecification(typeof(Image));

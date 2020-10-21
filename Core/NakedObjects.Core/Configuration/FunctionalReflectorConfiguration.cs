@@ -36,7 +36,7 @@ namespace NakedObjects.Core.Configuration {
         public Type[] Types { get; }
         public Type[] Functions { get; }
 
-        public Type[] Services => HasConfig() ? new[] {typeof(MenuFunctions)} : new Type[] { };
+        public Type[] Services =>  new Type[] { };
         public bool ConcurrencyChecking { get; }
         public bool IgnoreCase { get; }
 

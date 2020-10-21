@@ -45,8 +45,28 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         public object GetServiceByServiceName(IOidTranslation serviceName) {
             var oid = serviceName.GetSid(this);
-            return GetAdapterByOid(oid.Value as IOid).GetDomainObject();
+            return GetAdapterByOid(oid?.Value as IOid).GetDomainObject();
         }
+
+        private ITypeSpec GetServiceTypeSpecByServiceName(IOidTranslation id) {
+            var type = ValidateServiceId(id);
+            ITypeSpec spec;
+
+            try {
+                spec = framework.MetamodelManager.GetSpecification(type);
+            }
+            catch (Exception e) {
+                throw new ServiceResourceNotFoundNOSException(type.ToString(), e);
+            }
+
+            if (spec == null) {
+                throw new ServiceResourceNotFoundNOSException(type.ToString());
+            }
+
+            return spec;
+        }
+
+        public ITypeFacade GetServiceTypeByServiceName(IOidTranslation id) => new TypeFacade(GetServiceTypeSpecByServiceName(id), FrameworkFacade, framework);
 
         public ITypeFacade GetSpecificationByLinkDomainType(string linkDomainType) {
             var type = GetType(linkDomainType);
@@ -79,26 +99,26 @@ namespace NakedObjects.Facade.Impl.Utility {
         }
 
         public IOidFacade RestoreSid(OidTranslationSlashSeparatedTypeAndIds id) {
-            var type = ValidateServiceId(id);
-            IServiceSpec spec;
-            try {
-                spec = (IServiceSpec) framework.MetamodelManager.GetSpecification(type);
-            }
-            catch (Exception e) {
-                throw new ServiceResourceNotFoundNOSException(type.ToString(), e);
-            }
+        
+            ITypeSpec spec = GetServiceTypeSpecByServiceName(id);
+            
+            if (spec is IServiceSpec) {
 
-            if (spec == null) {
-                throw new ServiceResourceNotFoundNOSException(type.ToString());
-            }
+                var service = framework.ServicesManager.GetServicesWithVisibleActions(framework.LifecycleManager).SingleOrDefault(no => no.Spec.IsOfType(spec));
 
-            var service = framework.ServicesManager.GetServicesWithVisibleActions(framework.LifecycleManager).SingleOrDefault(no => no.Spec.IsOfType(spec));
+                if (service == null) {
+                    throw new ServiceResourceNotFoundNOSException(spec.FullName);
+                }
 
-            if (service == null) {
-                throw new ServiceResourceNotFoundNOSException(type.ToString());
+                return new OidFacade(service.Oid);
             }
 
-            return new OidFacade(service.Oid);
+            if (!spec.IsStatic) {
+                // we were looking for a static class masquerading as a service 
+                throw new ServiceResourceNotFoundNOSException(spec.FullName);
+            }
+
+            return null;
         }
 
         #endregion

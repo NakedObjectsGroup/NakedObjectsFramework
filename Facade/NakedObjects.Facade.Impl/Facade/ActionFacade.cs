@@ -60,9 +60,9 @@ namespace NakedObjects.Facade.Impl {
 
         public IActionParameterFacade[] Parameters => WrappedSpec.Parameters.Select(p => new ActionParameterFacade(p, FrameworkFacade, framework, overloadedUniqueId)).Cast<IActionParameterFacade>().ToArray();
 
-        public bool IsVisible(IObjectFacade objectFacade) => WrappedSpec.IsVisible(((ObjectFacade) objectFacade).WrappedNakedObject);
+        public bool IsVisible(IObjectFacade objectFacade) => WrappedSpec.IsVisible(((ObjectFacade) objectFacade)?.WrappedNakedObject);
 
-        public IConsentFacade IsUsable(IObjectFacade objectFacade) => new ConsentFacade(WrappedSpec.IsUsable(((ObjectFacade) objectFacade).WrappedNakedObject));
+        public IConsentFacade IsUsable(IObjectFacade objectFacade) => new ConsentFacade(WrappedSpec.IsUsable(((ObjectFacade) objectFacade)?.WrappedNakedObject));
 
         public ITypeFacade OnType => new TypeFacade(WrappedSpec.OnSpec, FrameworkFacade, framework);
 

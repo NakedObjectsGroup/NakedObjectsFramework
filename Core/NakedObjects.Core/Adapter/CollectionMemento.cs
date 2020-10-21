@@ -61,7 +61,7 @@ namespace NakedObjects.Core.Adapter {
             Action = actionSpec;
             Parameters = parameters;
 
-            if (Target.Spec.IsViewModel) {
+            if (Target?.Spec.IsViewModel == true) {
                 lifecycleManager.PopulateViewModelKeys(Target);
             }
         }

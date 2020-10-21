@@ -68,6 +68,28 @@ namespace NakedObjects.Rest {
                 template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
 
+            routes.MapRoute("GetInvokeOnMenu",
+                            template: menus + "/{menuName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
+                            defaults: new { controller = "RestfulObjects", action = "GetInvokeOnMenu" },
+                            constraints: new { httpMethod = new HttpMethodRouteConstraint("GET") }
+            );
+
+            routes.MapRoute("PutInvokeOnMenu",
+                            template: menus + "/{menuName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
+                            defaults: new { controller = "RestfulObjects", action = "PutInvokeOnMenu" },
+                            constraints: new { httpMethod = new HttpMethodRouteConstraint("PUT") }
+            );
+
+            routes.MapRoute("PostInvokeOnMenu",
+                            template: menus + "/{menuName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
+                            defaults: new { controller = "RestfulObjects", action = "PostInvokeOnMenu" },
+                            constraints: new { httpMethod = new HttpMethodRouteConstraint("POST") }
+            );
+
+            routes.MapRoute("InvalidInvokeOnMenu",
+                            template: menus + "/{menuName}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
+                            defaults: new { controller = "RestfulObjects", action = "InvalidMethod" });
+
             routes.MapRoute("GetInvoke",
                 template: objects + "/{domainType}/{instanceId}/" + SegmentValues.Actions + "/{actionName}/" + SegmentValues.Invoke,
                 defaults: new {controller = "RestfulObjects", action = "GetInvoke"},
@@ -255,6 +277,16 @@ namespace NakedObjects.Rest {
             routes.MapRoute("InvalidServiceAction",
                 template: services + "/{serviceName}/" + SegmentValues.Actions + "/{actionName}",
                 defaults: new {controller = "RestfulObjects", action = "InvalidMethod"});
+
+            routes.MapRoute("MenuAction",
+                            template: menus + "/{menuName}/" + SegmentValues.Actions + "/{actionName}",
+                            defaults: new { controller = "RestfulObjects", action = "GetMenuAction" },
+                            constraints: new { httpMethod = new HttpMethodRouteConstraint("GET") }
+            );
+
+            routes.MapRoute("InvalidMenuAction",
+                            template: menus + "/{menuName}/" + SegmentValues.Actions + "/{actionName}",
+                            defaults: new { controller = "RestfulObjects", action = "InvalidMethod" });
 
             routes.MapRoute("Service",
                 template: services + "/{serviceName}",

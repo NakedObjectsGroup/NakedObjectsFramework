@@ -20,6 +20,7 @@ namespace NakedObjects.Facade {
         bool IsQueryable { get; }
         bool IsService { get; }
         bool IsVoid { get; }
+        bool IsStatic { get; }
         bool IsDateTime { get; }
         bool IsCollection { get; }
         bool IsObject { get; }

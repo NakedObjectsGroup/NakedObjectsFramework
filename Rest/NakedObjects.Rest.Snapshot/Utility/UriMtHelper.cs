@@ -101,15 +101,24 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext)
             : this(oidStrategy, req) {
             action = actionContext.Action;
-            objectFacade = actionContext.Target;
-            spec = objectFacade.Specification;
-            if (objectFacade.Specification.IsParseable) {
-                throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
-            }
+            
+            if (actionContext.Target is not null) {
 
-            var oid = oidStrategy.OidTranslator.GetOidTranslation(objectFacade);
-            cachedId = oid.InstanceId;
-            CachedType = oid.DomainType;
+                objectFacade = actionContext.Target;
+                spec = objectFacade.Specification;
+                if (spec.IsParseable) {
+                    throw new ArgumentException($"Cannot build URI  for parseable specification : {objectFacade.Specification.FullName}");
+                }
+
+                var oid = oidStrategy.OidTranslator.GetOidTranslation(objectFacade);
+                cachedId = oid.InstanceId;
+                CachedType = oid.DomainType;
+            }
+            else {
+                spec = actionContext.Action.OnType;
+                cachedId = "";
+                CachedType = RestUtils.SpecToPredefinedTypeString(spec, oidStrategy);
+            }
         }
 
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, ParameterContextFacade parameterContext)
@@ -212,7 +221,19 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
         }
 
-        public Uri GetParamUri() => spec.IsService ? GetServiceParamUri() : GetObjectParamUri();
+        public Uri GetMenuParamUri() {
+            CheckArgumentNotNull(CachedType, "object type");
+            CheckArgumentNotNull(action.Id, "action id");
+            CheckArgumentNotNull(param.Id, "param id");
+            return new Uri($"{prefix}{SegmentValues.Menus}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Params}/{param.Id}");
+        }
+
+        public Uri GetParamUri() =>
+            spec.IsService
+                ? GetServiceParamUri()
+                : spec.IsStatic
+                    ? GetMenuParamUri()
+                    : GetObjectParamUri();
 
         public Uri GetTypeActionInvokeUri() {
             CheckArgumentNotNull(CachedType, "domain type");
@@ -231,7 +252,18 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return new Uri($"{prefix}{SegmentValues.Services}/{CachedType}");
         }
 
-        public Uri GetInvokeUri() => spec.IsService ? GetServiceInvokeUri() : GetObjectInvokeUri();
+        public Uri GetInvokeUri() =>
+            spec.IsService
+                ? GetServiceInvokeUri()
+                : spec.IsStatic
+                    ? GetMenuInvokeUri()
+                    : GetObjectInvokeUri();
+
+        private Uri GetMenuInvokeUri() {
+            CheckArgumentNotNull(CachedType, "service type");
+            CheckArgumentNotNull(action.Id, "action id");
+            return new Uri($"{prefix}{SegmentValues.Menus}/{CachedType}/{SegmentValues.Actions}/{action.Id}/{SegmentValues.Invoke}");
+        }
 
         private Uri GetServiceInvokeUri() {
             CheckArgumentNotNull(CachedType, "service type");
@@ -264,6 +296,13 @@ namespace NakedObjects.Rest.Snapshot.Utility {
             return new Uri($"{redirectPrefix}{SegmentValues.Objects}/{oid}");
         }
 
+        private Uri GetMenuMemberUri(IMemberFacade member, string memberType) {
+            CheckArgumentNotNull(CachedType, "menu type");
+            CheckArgumentNotNull(memberType, "member type");
+            CheckArgumentNotNull(member.Id, "member id");
+            return new Uri($"{prefix}{SegmentValues.Menus}/{CachedType}/{memberType}/{member.Id}");
+        }
+
         private Uri GetServiceMemberUri(IMemberFacade member, string memberType) {
             CheckArgumentNotNull(CachedType, "service type");
             CheckArgumentNotNull(memberType, "member type");
@@ -286,7 +325,12 @@ namespace NakedObjects.Rest.Snapshot.Utility {
 
         private Uri GetObjectMemberUri(IMemberFacade member, string memberType) => string.IsNullOrEmpty(cachedId) ? GetTransientObjectMemberUri(member, memberType) : GetPersistentObjectMemberUri(member, memberType);
 
-        private Uri GetMemberUri(IMemberFacade member, string memberType) => spec.IsService ? GetServiceMemberUri(member, memberType) : GetObjectMemberUri(member, memberType);
+        private Uri GetMemberUri(IMemberFacade member, string memberType) =>
+            spec.IsService
+                ? GetServiceMemberUri(member, memberType)
+                : spec.IsStatic
+                    ? GetMenuMemberUri(member, memberType)
+                    : GetObjectMemberUri(member, memberType);
 
         private Uri ByMemberType(Func<IMemberFacade, string, Uri> getUri) {
             if (action != null) {

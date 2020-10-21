@@ -65,6 +65,7 @@ namespace NakedObjects.Architecture.Spec {
         bool HasNoIdentity { get; }
         bool IsQueryable { get; }
         bool IsVoid { get; }
+        bool IsStatic { get; }
 
         /// <summary>
         ///     Determines if objects of this specification can be persisted or not. If it can be persisted (i.e. it

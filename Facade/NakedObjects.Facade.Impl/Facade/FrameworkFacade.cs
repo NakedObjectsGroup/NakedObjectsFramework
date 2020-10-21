@@ -116,6 +116,8 @@ namespace NakedObjects.Facade.Impl {
 
         public ActionContextFacade GetServiceAction(IOidTranslation serviceName, string actionName) => MapErrors(() => GetAction(actionName, GetServiceAsNakedObject(serviceName)).ToActionContextFacade(this, Framework));
 
+        public ActionContextFacade GetMenuAction(IOidTranslation menuName, string actionName) => MapErrors(() => GetActionOnMenu(menuName, actionName).ToActionContextFacade(this, Framework));
+
         public ActionContextFacade GetObjectAction(IOidTranslation objectId, string actionName) => MapErrors(() => GetAction(actionName, GetObjectAsNakedObject(objectId)).ToActionContextFacade(this, Framework));
 
         public ActionContextFacade GetObjectActionWithCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments) => MapErrors(() => GetActionWithCompletions(actionName, GetObjectAsNakedObject(objectId), parmName, arguments).ToActionContextFacade(this, Framework));
@@ -138,6 +140,11 @@ namespace NakedObjects.Facade.Impl {
                 return ExecuteAction(actionContext, arguments);
             });
 
+        public ActionResultContextFacade ExecuteMenuAction(IOidTranslation menuName, string actionName, ArgumentsContextFacade arguments) =>
+            MapErrors(() => {
+                var actionContext = GetActionOnMenu(menuName, actionName);
+                return ExecuteAction(actionContext, arguments);
+            });
 
         public (string, ActionContextFacade)[] GetMenuItem(IMenuItemFacade item, string parent = "")
         {
@@ -168,11 +175,8 @@ namespace NakedObjects.Facade.Impl {
 
         private IObjectFacade GetTarget(IMenuActionFacade actionFacade)
         {
-            if (actionFacade.Action.IsStatic)
-            {
-                // return fake service
-                var oid = OidStrategy.FrameworkFacade.OidTranslator.GetOidTranslation(typeof(global::MenuFunctions).FullName);
-                return OidStrategy.FrameworkFacade.GetService(oid).Target;
+            if (actionFacade.Action.IsStatic) {
+                return null;
             }
 
             return OidStrategy.FrameworkFacade.GetServices().List.Single(s => s.Specification.IsOfType(actionFacade.Action.OnType));
@@ -514,11 +518,13 @@ namespace NakedObjects.Facade.Impl {
 
         private static void SetFirstParmFromTarget(ActionContext actionContext, IDictionary<string, object> rawParms)
         {
-            IActionParameterSpec parm = actionContext.Action.Parameters.FirstOrDefault(p => actionContext.Target.Spec.IsOfType(p.Spec));
+            if (actionContext.Target is not null) {
 
-            if (parm != null)
-            {
-                rawParms[parm.Id] = actionContext.Target.Object;
+                IActionParameterSpec parm = actionContext.Action.Parameters.FirstOrDefault(p => actionContext.Target.Spec.IsOfType(p.Spec));
+
+                if (parm != null) {
+                    rawParms[parm.Id] = actionContext.Target.Object;
+                }
             }
         }
 
@@ -650,7 +656,7 @@ namespace NakedObjects.Facade.Impl {
             var actionResultContext = new ActionResultContext {Target = actionContext.Target, ActionContext = actionContext};
             var errorOnChange = false;
 
-            if (actionContext.Target.IsViewModelEditView(Framework.Session, Framework.Persistor)) {
+            if (actionContext.Target?.IsViewModelEditView(Framework.Session, Framework.Persistor) == true) {
                 // this is a form so we expect to update form with values in arguments 
 
                 var objectContext = ChangeObject(actionContext.Target, arguments);
@@ -898,6 +904,39 @@ namespace NakedObjects.Facade.Impl {
             return parm;
         }
 
+        private ActionContext GetActionOnMenu(IOidTranslation menuName, string actionName)
+        {
+            // Use spec to invoke statically
+            var spec = OidStrategy.GetServiceTypeByServiceName(menuName);
+            return GetAction(actionName, spec);
+        }
+
+        private (IActionSpec spec, string uid) GetActionFromSpec(string actionName, ITypeSpec spec) {
+            if (string.IsNullOrWhiteSpace(actionName)) {
+                throw new BadRequestNOSException();
+            }
+
+            var actions = spec.GetActionLeafNodes().Where(p => p.IsVisible(null)).ToArray();
+            var action = GetAction(actionName, spec, actions);
+
+            if (action == null) {
+                throw new ActionResourceNotFoundNOSException(actionName);
+            }
+
+            return (action, FacadeUtils.GetOverloadedUId(action, spec));
+        }
+
+        private ActionContext GetAction(string actionName, ITypeFacade specFacade) {
+            var spec = ((TypeFacade) specFacade).WrappedValue;
+            var (actionSpec, uid) = GetActionFromSpec(actionName, spec);
+            return new ActionContext {
+                Target = null,
+                Action = actionSpec,
+                VisibleParameters = FilterParms(actionSpec, spec, uid),
+                OverloadedUniqueId = uid
+            };
+        }
+
         private ActionContext GetAction(string actionName, INakedObjectAdapter nakedObject) {
             var (actionSpec, uid) = GetActionInternal(actionName, nakedObject);
             return new ActionContext {
@@ -907,6 +946,9 @@ namespace NakedObjects.Facade.Impl {
                 OverloadedUniqueId = uid
             };
         }
+
+        private static IActionSpec GetAction(string actionName, ITypeSpec spec, IActionSpec[] actions) => 
+            actions.SingleOrDefault(p => p.Id == actionName) ?? FacadeUtils.GetOverloadedAction(actionName, spec);
 
         private ActionContext GetActionWithCompletions(string actionName, INakedObjectAdapter nakedObject, string parmName, ArgumentsContextFacade arguments) {
             var (actionSpec, uid) = GetActionInternal(actionName, nakedObject);
@@ -938,6 +980,7 @@ namespace NakedObjects.Facade.Impl {
             var nakedObject = GetServiceAsNakedObject(serviceName);
             return GetAction(actionName, nakedObject);
         }
+
 
         private static IActionSpec MatchingActionSpecOnService(IActionSpec actionToMatch) {
             var allServiceActions = actionToMatch.OnSpec.GetActionLeafNodes();

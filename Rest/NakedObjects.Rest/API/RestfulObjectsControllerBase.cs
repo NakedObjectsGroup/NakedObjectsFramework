@@ -131,6 +131,8 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult GetServiceAction(string serviceName, string actionName) => InitAndHandleErrors(SnapshotFactory.ActionSnapshot(OidStrategy, () => FrameworkFacade.GetServiceActionByName(serviceName, actionName), Request, GetFlags(this)));
 
+        public virtual ActionResult GetMenuAction(string menuName, string actionName) => InitAndHandleErrors(SnapshotFactory.ActionSnapshot(OidStrategy, () => FrameworkFacade.GetMenuActionByName(menuName, actionName), Request, GetFlags(this)));
+
         public virtual ActionResult GetImage(string imageId) => InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetImage(imageId), Request, GetFlags(this)));
 
         public virtual ActionResult GetObject(string domainType, string instanceId) => InitAndHandleErrors(SnapshotFactory.ObjectSnapshot(OidStrategy, () => FrameworkFacade.GetObjectByName(domainType, instanceId), Request, GetFlags(this)));
@@ -273,11 +275,37 @@ namespace NakedObjects.Rest {
             return InitAndHandleErrors(() => SnapshotOrNoContent(Execute()));
         }
 
+        private ActionResult InvokeOnMenu(string menuName, string actionName, ArgumentMap arguments, bool queryOnly)
+        {
+            (Func<RestSnapshot>, bool) Execute()
+            {
+                if (!queryOnly)
+                {
+                    RejectRequestIfReadOnly();
+                }
+
+                // ignore concurrency always true here
+                var (argsContext, flags) = ProcessArgumentMap(arguments, false, true);
+                // seems strange to call and then wrap in lambda but need to validate here not when snapshot created
+                var context = FrameworkFacade.ExecuteMenuActionAndValidate(menuName, actionName, argsContext);
+                return (SnapshotFactory.ActionResultSnapshot(OidStrategy, () => context, Request, flags), flags.ValidateOnly);
+            }
+
+            return InitAndHandleErrors(() => SnapshotOrNoContent(Execute()));
+        }
+
+
         public virtual ActionResult GetInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) => InvokeOnService(serviceName, actionName, arguments, true);
 
         public virtual ActionResult PutInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) => InvokeOnService(serviceName, actionName, arguments, false);
 
         public virtual ActionResult PostInvokeOnService(string serviceName, string actionName, ArgumentMap arguments) => InvokeOnService(serviceName, actionName, arguments, true);
+
+        public virtual ActionResult GetInvokeOnMenu(string menuName, string actionName, ArgumentMap arguments) => InvokeOnMenu(menuName, actionName, arguments, true);
+        
+        public virtual ActionResult PutInvokeOnMenu(string menuName, string actionName, ArgumentMap arguments) => InvokeOnMenu(menuName, actionName, arguments, true);
+        
+        public virtual ActionResult PostInvokeOnMenu(string menuName, string actionName, ArgumentMap arguments) => InvokeOnMenu(menuName, actionName, arguments, true);
 
         public virtual ActionResult GetInvokeTypeActions(string typeName, string actionName, ArgumentMap arguments) {
             Func<RestSnapshot> GetTypeAction() => SnapshotFactory.TypeActionSnapshot(OidStrategy, () => GetIsTypeOf(actionName, typeName, arguments), Request, GetFlags(this));
@@ -563,5 +591,6 @@ namespace NakedObjects.Rest {
         }
 
         #endregion
+
     }
 }

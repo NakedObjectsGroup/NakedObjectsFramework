@@ -74,7 +74,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         private bool IsMutable(IObjectFacade target) => Flags.AllowMutatingActionsOnImmutableObject || !target.Specification.IsImmutable(target);
 
         protected void SetEtag(IObjectFacade target) {
-            if (!target.Specification.IsService && IsMutable(target)) {
+            if (target?.Specification.IsService == false && IsMutable(target)) {
                 var digest = target.Version.Digest;
                 SetEtag(digest);
             }

@@ -21,5 +21,6 @@ namespace NakedObjects.Facade {
         IOidFacade RestoreSid(OidTranslationSemiColonSeparatedList id);
         IOidFacade RestoreOid(OidTranslationSlashSeparatedTypeAndIds id);
         IOidFacade RestoreSid(OidTranslationSlashSeparatedTypeAndIds id);
+        ITypeFacade GetServiceTypeByServiceName(IOidTranslation id);
     }
 }
