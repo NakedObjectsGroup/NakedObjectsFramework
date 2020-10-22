@@ -148,20 +148,15 @@ namespace NakedObjects.Facade.Impl {
             });
 
         public (string, ActionContextFacade)[] GetMenuItem(IMenuItemFacade item, string parent = "") {
-            var menuActionFacade = item as IMenuActionFacade;
-
-            if (menuActionFacade != null) {
-                return new[] {(item.Name, GetActionContext(menuActionFacade, parent))};
+            switch (item) {
+                case IMenuActionFacade menuActionFacade:
+                    return new[] {(item.Name, GetActionContext(menuActionFacade, parent))};
+                case IMenuFacade menuFacade:
+                    parent = parent + (string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider) + menuFacade.Name;
+                    return menuFacade.MenuItems.SelectMany(i => GetMenuItem(i, parent)).ToArray();
+                default:
+                    return new (string, ActionContextFacade)[] { };
             }
-
-            var menuFacade = item as IMenuFacade;
-
-            if (menuFacade != null) {
-                parent = parent + (string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider) + menuFacade.Name;
-                return menuFacade.MenuItems.SelectMany(i => GetMenuItem(i, parent)).ToArray();
-            }
-
-            return new (string, ActionContextFacade)[] { };
         }
 
 
@@ -180,9 +175,6 @@ namespace NakedObjects.Facade.Impl {
 
         private ActionContextFacade GetActionContext(IMenuActionFacade actionFacade, string menuPath)
         {
-            //var service = GetTarget(actionFacade);
-            //var actionContext = GetServiceAction(service.Oid)
-
             return new ActionContextFacade
             {
                 MenuPath = menuPath,
@@ -915,7 +907,7 @@ namespace NakedObjects.Facade.Impl {
 
             if (menu is not null) {
                 try {
-                    var action = GetActionsFromMenuItems(menu.MenuItems).SingleOrDefault(a => a.Name == actionName);
+                    var action = GetActionsFromMenuItems(menu.MenuItems).SingleOrDefault(a => a.Identifier.MemberName == actionName);
                     if (action is not null) {
                         var actionSpec = Framework.MetamodelManager.GetActionSpec(action);
                         var uid = FacadeUtils.GetOverloadedUId(actionSpec, actionSpec.OnSpec);
@@ -923,6 +915,7 @@ namespace NakedObjects.Facade.Impl {
                         return new ActionContext {
                             Target = null,
                             Action = actionSpec,
+                            MenuId = menu.Id,
                             VisibleParameters = FilterParms(actionSpec, actionSpec.OnSpec, uid),
                             OverloadedUniqueId = uid
                         };

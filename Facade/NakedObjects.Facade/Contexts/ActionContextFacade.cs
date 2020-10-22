@@ -18,5 +18,6 @@ namespace NakedObjects.Facade.Contexts {
         public ParameterContextFacade[] VisibleParameters { get; set; }
         public PropertyContextFacade[] VisibleProperties { get; set; }
         public string MenuPath { get; set; }
+        public string MenuId { get; set; }
     }
 }

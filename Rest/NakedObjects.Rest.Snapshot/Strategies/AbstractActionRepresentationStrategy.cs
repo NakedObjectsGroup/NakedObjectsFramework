@@ -57,6 +57,14 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
 
         public abstract LinkRepresentation[] GetLinks();
 
+        private class MenuIdHolder : IMenuFacade {
+            public MenuIdHolder(string id) => Id = id;
+            public string Name => null;
+            public string Id { get; }
+            public object Wrapped => null;
+            public IList<IMenuItemFacade> MenuItems => null;
+        }
+
         protected LinkRepresentation CreateUpLink() {
             RelType parentRelType;
 
@@ -65,7 +73,7 @@ namespace NakedObjects.Rest.Snapshot.Strategies {
                 parentRelType = ActionContext.Target.Specification.IsService ? new ServiceRelType(RelValues.Up, parentHelper) : new ObjectRelType(RelValues.Up, parentHelper);
             }
             else {
-                var parentHelper = new UriMtHelper(OidStrategy, Req, (IMenuFacade)null);
+                var parentHelper = new UriMtHelper(OidStrategy, Req, new MenuIdHolder(ActionContext.MenuId));
                 parentRelType = new MenuRelType(RelValues.Up, parentHelper);
             }
 

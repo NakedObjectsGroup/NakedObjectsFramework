@@ -34,10 +34,12 @@ namespace NakedObjects.Facade.Impl.Contexts {
         public string MenuPath { get; set; }
 
         public string OverloadedUniqueId { get; set; }
+        public string MenuId { get; set; }
 
         public ActionContextFacade ToActionContextFacade(IFrameworkFacade facade, INakedObjectsFramework framework) {
             var ac = new ActionContextFacade {
                 MenuPath = MenuPath,
+                MenuId = MenuId,
                 Action = new ActionFacade(Action, facade, framework, OverloadedUniqueId ?? ""),
                 VisibleParameters = VisibleParameters.Select(p => p.ToParameterContextFacade(facade, framework)).ToArray(),
                 VisibleProperties = VisibleProperties.Select(p => p.ToPropertyContextFacade(facade, framework)).ToArray()

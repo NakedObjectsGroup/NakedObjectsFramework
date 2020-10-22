@@ -101,9 +101,13 @@ namespace NakedObjects.Rest.Snapshot.Utility {
         public UriMtHelper(IOidStrategy oidStrategy, HttpRequest req, ActionContextFacade actionContext)
             : this(oidStrategy, req) {
             action = actionContext.Action;
-            
-            if (actionContext.Target is not null) {
 
+            if (actionContext.Target is null) {
+                spec = actionContext.Action.OnType;
+                cachedId = "";
+                CachedType = actionContext.MenuId;
+            }
+            else {
                 objectFacade = actionContext.Target;
                 spec = objectFacade.Specification;
                 if (spec.IsParseable) {
@@ -113,11 +117,6 @@ namespace NakedObjects.Rest.Snapshot.Utility {
                 var oid = oidStrategy.OidTranslator.GetOidTranslation(objectFacade);
                 cachedId = oid.InstanceId;
                 CachedType = oid.DomainType;
-            }
-            else {
-                spec = actionContext.Action.OnType;
-                cachedId = "";
-                CachedType = RestUtils.SpecToPredefinedTypeString(spec, oidStrategy);
             }
         }
 

@@ -11,7 +11,6 @@ using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Http;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Contexts;
-using NakedObjects.Facade.Utility;
 using NakedObjects.Rest.Snapshot.Constants;
 using NakedObjects.Rest.Snapshot.Utility;
 
@@ -53,38 +52,26 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         private void SetLinksAndMembers(HttpRequest req, IFrameworkFacade frameworkFacade, IMenuFacade menu) {
             var tempLinks = new List<LinkRepresentation> {LinkRepresentation.Create(OidStrategy, SelfRelType, Flags)};
 
-            SetMembers(menu, frameworkFacade, req, tempLinks);
+            SetMembers(menu, req);
             Links = tempLinks.ToArray();
         }
 
-        private ActionContextFacade ActionContext(IMenuActionFacade actionFacade, IFrameworkFacade frameworkFacade, string menuPath) =>
-            new ActionContextFacade {
-                MenuPath = menuPath,
-                Target = frameworkFacade.GetServices().List.Single(s => s.Specification.IsOfType(actionFacade.Action.OnType)),
-                Action = actionFacade.Action,
-                VisibleParameters = actionFacade.Action.Parameters.Select(p => new ParameterContextFacade {Parameter = p, Action = actionFacade.Action}).ToArray()
-            };
-
-        private (string name, ActionContextFacade action)[] GetMenuItem(IMenuItemFacade item, IFrameworkFacade frameworkFacade, string parent = "") {
-            //string Divider() => string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider;
-
-            //return item switch {
-            //    IMenuActionFacade menuActionFacade => new[] {(item.Name, ActionContext(menuActionFacade, frameworkFacade, parent))},
-            //    IMenuFacade menuFacade => menuFacade.MenuItems.SelectMany(mi => GetMenuItem(mi, frameworkFacade, $"{parent}{Divider()}{menuFacade.Name}")).ToArray(),
-            //    _ => new (string, ActionContextFacade)[] { }
-            //};
-
-            return OidStrategy.FrameworkFacade.GetMenuItem(item, parent);
-        }
+        private (string name, ActionContextFacade action)[] GetMenuItem(IMenuItemFacade item, string parent = "") => OidStrategy.FrameworkFacade.GetMenuItem(item, parent);
 
         private static bool IsVisibleAndUsable(ActionContextFacade actionContextFacade) =>
             actionContextFacade.Action.IsVisible(actionContextFacade.Target) &&
             actionContextFacade.Action.IsUsable(actionContextFacade.Target).IsAllowed;
 
-        private void SetMembers(IMenuFacade menu, IFrameworkFacade frameworkFacade, HttpRequest req, List<LinkRepresentation> tempLinks) {
-            var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(i, frameworkFacade)).Where(af => IsVisibleAndUsable(af.action));
 
-            var actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, a.action, Flags)).ToArray();
+        private void SetMembers(IMenuFacade menu, HttpRequest req) {
+            ActionContextFacade SetMenuId(ActionContextFacade action) {
+                action.MenuId = menu.Id;
+                return action;
+            }
+
+            var actionFacades = menu.MenuItems.SelectMany(i => GetMenuItem(i)).Where(af => IsVisibleAndUsable(af.action)).ToArray();
+
+            var actions = actionFacades.Select(a => InlineActionRepresentation.Create(OidStrategy, req, SetMenuId(a.action), Flags)).ToArray();
 
             var actionComparer = new ActionComparer();
             actions = actions.Distinct(actionComparer).ToArray();
