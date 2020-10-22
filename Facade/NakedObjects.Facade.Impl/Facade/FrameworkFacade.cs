@@ -29,6 +29,7 @@ using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Facade.Utility;
+using NakedObjects.Meta.Menu;
 using NakedObjects.Util;
 
 namespace NakedObjects.Facade.Impl {
@@ -116,7 +117,7 @@ namespace NakedObjects.Facade.Impl {
 
         public ActionContextFacade GetServiceAction(IOidTranslation serviceName, string actionName) => MapErrors(() => GetAction(actionName, GetServiceAsNakedObject(serviceName)).ToActionContextFacade(this, Framework));
 
-        public ActionContextFacade GetMenuAction(IOidTranslation menuName, string actionName) => MapErrors(() => GetActionOnMenu(menuName, actionName).ToActionContextFacade(this, Framework));
+        public ActionContextFacade GetMenuAction(string menuName, string actionName) => MapErrors(() => GetActionOnMenu(menuName, actionName).ToActionContextFacade(this, Framework));
 
         public ActionContextFacade GetObjectAction(IOidTranslation objectId, string actionName) => MapErrors(() => GetAction(actionName, GetObjectAsNakedObject(objectId)).ToActionContextFacade(this, Framework));
 
@@ -140,33 +141,28 @@ namespace NakedObjects.Facade.Impl {
                 return ExecuteAction(actionContext, arguments);
             });
 
-        public ActionResultContextFacade ExecuteMenuAction(IOidTranslation menuName, string actionName, ArgumentsContextFacade arguments) =>
+        public ActionResultContextFacade ExecuteMenuAction(string menuName, string actionName, ArgumentsContextFacade arguments) =>
             MapErrors(() => {
                 var actionContext = GetActionOnMenu(menuName, actionName);
                 return ExecuteAction(actionContext, arguments);
             });
 
-        public (string, ActionContextFacade)[] GetMenuItem(IMenuItemFacade item, string parent = "")
-        {
+        public (string, ActionContextFacade)[] GetMenuItem(IMenuItemFacade item, string parent = "") {
             var menuActionFacade = item as IMenuActionFacade;
 
-            if (menuActionFacade != null)
-            {
-                return new[] { (item.Name, GetActionContext(menuActionFacade, parent)) };
+            if (menuActionFacade != null) {
+                return new[] {(item.Name, GetActionContext(menuActionFacade, parent))};
             }
 
             var menuFacade = item as IMenuFacade;
 
-            if (menuFacade != null)
-            {
+            if (menuFacade != null) {
                 parent = parent + (string.IsNullOrEmpty(parent) ? "" : IdConstants.MenuItemDivider) + menuFacade.Name;
                 return menuFacade.MenuItems.SelectMany(i => GetMenuItem(i, parent)).ToArray();
             }
 
             return new (string, ActionContextFacade)[] { };
         }
-
-
 
 
         #endregion
@@ -904,37 +900,41 @@ namespace NakedObjects.Facade.Impl {
             return parm;
         }
 
-        private ActionContext GetActionOnMenu(IOidTranslation menuName, string actionName)
-        {
-            // Use spec to invoke statically
-            var spec = OidStrategy.GetServiceTypeByServiceName(menuName);
-            return GetAction(actionName, spec);
-        }
+        private IEnumerable<IActionSpecImmutable> GetActionsFromMenuItems(IEnumerable<IMenuItemImmutable> menuItems) => menuItems.SelectMany(GetActionFromMenuItem);
 
-        private (IActionSpec spec, string uid) GetActionFromSpec(string actionName, ITypeSpec spec) {
-            if (string.IsNullOrWhiteSpace(actionName)) {
-                throw new BadRequestNOSException();
-            }
-
-            var actions = spec.GetActionLeafNodes().Where(p => p.IsVisible(null)).ToArray();
-            var action = GetAction(actionName, spec, actions);
-
-            if (action == null) {
-                throw new ActionResourceNotFoundNOSException(actionName);
-            }
-
-            return (action, FacadeUtils.GetOverloadedUId(action, spec));
-        }
-
-        private ActionContext GetAction(string actionName, ITypeFacade specFacade) {
-            var spec = ((TypeFacade) specFacade).WrappedValue;
-            var (actionSpec, uid) = GetActionFromSpec(actionName, spec);
-            return new ActionContext {
-                Target = null,
-                Action = actionSpec,
-                VisibleParameters = FilterParms(actionSpec, spec, uid),
-                OverloadedUniqueId = uid
+        private IEnumerable<IActionSpecImmutable> GetActionFromMenuItem(IMenuItemImmutable menuItemImmutable) =>
+            menuItemImmutable switch {
+                MenuAction menuAction => new[] {menuAction.Action},
+                MenuImpl menuImpl => GetActionsFromMenuItems(menuImpl.MenuItems),
+                _ => Array.Empty<IActionSpecImmutable>()
             };
+
+
+        private ActionContext GetActionOnMenu(string menuName, string actionName) {
+            var menu = Framework.MetamodelManager.MainMenus().SingleOrDefault(m => m.Id == menuName);
+
+            if (menu is not null) {
+                try {
+                    var action = GetActionsFromMenuItems(menu.MenuItems).SingleOrDefault(a => a.Name == actionName);
+                    if (action is not null) {
+                        var actionSpec = Framework.MetamodelManager.GetActionSpec(action);
+                        var uid = FacadeUtils.GetOverloadedUId(actionSpec, actionSpec.OnSpec);
+
+                        return new ActionContext {
+                            Target = null,
+                            Action = actionSpec,
+                            VisibleParameters = FilterParms(actionSpec, actionSpec.OnSpec, uid),
+                            OverloadedUniqueId = uid
+                        };
+                    }
+                }
+                catch (InvalidOperationException e) {
+                    logger.LogError($"multiple actions with name '{actionName}' found on menu '{menuName}'");
+                    throw new ActionResourceNotFoundNOSException(actionName);
+                }
+            }
+
+            throw new ActionResourceNotFoundNOSException(actionName);
         }
 
         private ActionContext GetAction(string actionName, INakedObjectAdapter nakedObject) {
@@ -946,9 +946,6 @@ namespace NakedObjects.Facade.Impl {
                 OverloadedUniqueId = uid
             };
         }
-
-        private static IActionSpec GetAction(string actionName, ITypeSpec spec, IActionSpec[] actions) => 
-            actions.SingleOrDefault(p => p.Id == actionName) ?? FacadeUtils.GetOverloadedAction(actionName, spec);
 
         private ActionContext GetActionWithCompletions(string actionName, INakedObjectAdapter nakedObject, string parmName, ArgumentsContextFacade arguments) {
             var (actionSpec, uid) = GetActionInternal(actionName, nakedObject);

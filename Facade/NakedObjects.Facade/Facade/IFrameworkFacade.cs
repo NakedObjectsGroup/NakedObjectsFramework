@@ -26,7 +26,7 @@ namespace NakedObjects.Facade {
         PropertyContextFacade GetProperty(IOidTranslation objectId, string propertyName);
         PropertyContextFacade GetPropertyWithCompletions(IObjectFacade transient, string propertyName, ArgumentsContextFacade arguments);
         ActionContextFacade GetServiceAction(IOidTranslation serviceName, string actionName);
-        ActionContextFacade GetMenuAction(IOidTranslation oid, string actionName);
+        ActionContextFacade GetMenuAction(string menuName, string actionName);
         ActionContextFacade GetObjectAction(IOidTranslation objectId, string actionName);
         ActionContextFacade GetServiceActionWithCompletions(IOidTranslation serviceName, string actionName, string parmName, ArgumentsContextFacade arguments);
         ActionContextFacade GetObjectActionWithCompletions(IOidTranslation objectId, string actionName, string parmName, ArgumentsContextFacade arguments);
@@ -34,7 +34,7 @@ namespace NakedObjects.Facade {
         PropertyContextFacade DeleteProperty(IOidTranslation objectId, string propertyName, ArgumentContextFacade argument);
         ActionResultContextFacade ExecuteObjectAction(IOidTranslation objectId, string actionName, ArgumentsContextFacade arguments);
         ActionResultContextFacade ExecuteServiceAction(IOidTranslation serviceName, string actionName, ArgumentsContextFacade arguments);
-        ActionResultContextFacade ExecuteMenuAction(IOidTranslation menuName, string actionName, ArgumentsContextFacade argsContext);
+        ActionResultContextFacade ExecuteMenuAction(string menuName, string actionName, ArgumentsContextFacade argsContext);
         ObjectContextFacade GetImage(string imageId);
         ITypeFacade GetDomainType(string typeName);
         ObjectContextFacade Persist(string typeName, ArgumentsContextFacade arguments);
