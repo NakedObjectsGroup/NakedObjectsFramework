@@ -61,6 +61,16 @@ namespace NakedFunctions.Rest.Test {
                                   $"http://localhost/services/{service}/actions/{id}/invoke");
         }
 
+        public static void AssertMenuInvokeLink(this JToken link, string arguments, string method, string menu, string id)
+        {
+            Assert.AreEqual(5, link.Count());
+            link.AssertInvokeLink(arguments,
+                                  method,
+                                  id,
+                                  $"http://localhost/menus/{menu}/actions/{id}/invoke");
+        }
+
+
         public static void AssertObjectInvokeLink(this JToken link, string arguments, string method, string type, string instance, string id) {
             Assert.AreEqual(5, link.Count());
             link.AssertInvokeLink(arguments,

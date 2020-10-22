@@ -47,7 +47,7 @@ namespace NakedObjects.ParallelReflect.Test {
 
         [TestMethod]
         public void TestFacets() {
-            Assert.AreEqual(23, Specification.FacetTypes.Length);
+            Assert.AreEqual(24, Specification.FacetTypes.Length);
         }
 
         [TestMethod]

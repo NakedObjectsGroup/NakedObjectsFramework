@@ -365,12 +365,12 @@ namespace NakedObjects.Facade.Impl {
         private static void SetProperty(PropertyContext context) => ((IOneToOneAssociationSpec) context.Property).SetAssociation(context.Target, context.ProposedValue == null ? null : context.ProposedNakedObject);
 
         private static void ValidateConcurrency(INakedObjectAdapter nakedObject, string digest) {
-            if (!string.IsNullOrEmpty(nakedObject.Version.Digest) && string.IsNullOrEmpty(digest)) {
+            if (!string.IsNullOrEmpty(nakedObject?.Version.Digest) && string.IsNullOrEmpty(digest)) {
                 // expect concurrency 
                 throw new PreconditionMissingNOSException();
             }
 
-            if (!string.IsNullOrEmpty(digest) && new VersionFacade(nakedObject.Version).IsDifferent(digest)) {
+            if (!string.IsNullOrEmpty(digest) && new VersionFacade(nakedObject?.Version).IsDifferent(digest)) {
                 throw new PreconditionFailedNOSException();
             }
         }

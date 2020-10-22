@@ -51,6 +51,9 @@ namespace NakedFramework.ModelBuilding.Component {
             //Menus installed once rest of metamodel has been built:
             InstallMainMenus(metamodelBuilder);
             InstallObjectMenus(metamodelBuilder);
+
+            // todo validation of model including no duplicate functions in menus 
+
         }
 
         private static bool IsStatic(ITypeSpecImmutable spec) => spec.GetFacet<ITypeIsStaticFacet>()?.Flag == true;

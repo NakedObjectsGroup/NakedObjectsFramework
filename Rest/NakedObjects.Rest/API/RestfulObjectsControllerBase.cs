@@ -303,9 +303,9 @@ namespace NakedObjects.Rest {
 
         public virtual ActionResult GetInvokeOnMenu(string menuName, string actionName, ArgumentMap arguments) => InvokeOnMenu(menuName, actionName, arguments, true);
         
-        public virtual ActionResult PutInvokeOnMenu(string menuName, string actionName, ArgumentMap arguments) => InvokeOnMenu(menuName, actionName, arguments, true);
+        public virtual ActionResult PutInvokeOnMenu(string menuName, string actionName, ArgumentMap arguments) => InvokeOnMenu(menuName, actionName, arguments, false);
         
-        public virtual ActionResult PostInvokeOnMenu(string menuName, string actionName, ArgumentMap arguments) => InvokeOnMenu(menuName, actionName, arguments, true);
+        public virtual ActionResult PostInvokeOnMenu(string menuName, string actionName, ArgumentMap arguments) => InvokeOnMenu(menuName, actionName, arguments, false);
 
         public virtual ActionResult GetInvokeTypeActions(string typeName, string actionName, ArgumentMap arguments) {
             Func<RestSnapshot> GetTypeAction() => SnapshotFactory.TypeActionSnapshot(OidStrategy, () => GetIsTypeOf(actionName, typeName, arguments), Request, GetFlags(this));
