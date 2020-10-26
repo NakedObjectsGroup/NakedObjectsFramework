@@ -26,6 +26,8 @@ namespace NakedObjects.Architecture.Component {
         bool IsIgnored(MemberInfo member);
 
         bool IsService(Type type);
+
+        bool LoadReturnType(MethodInfo method);
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -38,6 +38,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         public bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
         public bool IsService(Type type) => config.Services.Contains(type);
+        public bool LoadReturnType(MethodInfo method) => method.ReturnType != typeof(void);
 
         public virtual Type GetType(Type type) {
             var returnType = TypeKeyUtils.FilterNullableAndProxies(type);

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
@@ -25,6 +26,15 @@ using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect {
     public abstract class Introspector : IIntrospector {
+        private readonly ILogger logger;
+
+        public Introspector(IReflector reflector, ILogger logger) {
+            Reflector = reflector;
+            ClassStrategy = reflector.ClassStrategy;
+            this.logger = logger;
+            FacetFactorySet = reflector.FacetFactorySet;
+        }
+
         protected IList<IAssociationSpecImmutable> OrderedFields { get; set; }
         protected IList<IActionSpecImmutable> OrderedObjectActions { get; set; }
         protected PropertyInfo[] Properties { get; set; }
@@ -32,209 +42,13 @@ namespace NakedObjects.ParallelReflect {
         protected MethodInfo[] Methods { get; set; }
 
 
-        protected IClassStrategy ClassStrategy { get; init;  }
+        protected IClassStrategy ClassStrategy { get; init; }
 
         protected IFacetFactorySet FacetFactorySet { get; init; }
 
         protected Type[] InterfacesTypes => IntrospectedType.GetInterfaces().Where(i => i.IsPublic).ToArray();
 
         protected Type SuperclassType => IntrospectedType.BaseType;
-
-        protected void AddAsSubclass(ITypeSpecImmutable spec) => Superclass?.AddSubclass(spec);
-
-        private static IList<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable => members.OrderBy(m => m, new MemberOrderComparator<T>()).ToArray();
-
-        protected abstract (IActionSpecImmutable[], IImmutableDictionary<string, ITypeSpecBuilder>) FindActionMethods(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
-
-
-        protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPropertiesAndCollections(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
-        {
-            if (spec is IObjectSpecImmutable objectSpec)
-            {
-                IAssociationSpecImmutable[] fields;
-                (fields, metamodel) = FindAndCreateFieldSpecs(objectSpec, metamodel);
-                OrderedFields = CreateSortedListOfMembers(fields);
-            }
-            else
-            {
-                OrderedFields = new List<IAssociationSpecImmutable>();
-            }
-
-            return metamodel;
-        }
-
-        protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectActions(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
-        {
-            // find the actions ...
-            IActionSpecImmutable[] findObjectActionMethods;
-            (findObjectActionMethods, metamodel) = FindActionMethods(spec, metamodel);
-            OrderedObjectActions = CreateSortedListOfMembers(findObjectActionMethods);
-            return metamodel;
-        }
-
-
-        protected MethodInfo[] GetNonPropertyMethods()
-        {
-            // no better way to do this (ie no flag that indicates getter/setter)
-            var allMethods = new List<MethodInfo>(IntrospectedType.GetMethods());
-            foreach (var pInfo in Properties)
-            {
-                allMethods.Remove(pInfo.GetGetMethod());
-                allMethods.Remove(pInfo.GetSetMethod());
-            }
-
-            return allMethods.OrderBy(m => m, new FunctionalIntrospector.SortActionsFirst(FacetFactorySet)).ToArray();
-        }
-
-        protected (IAssociationSpecImmutable[], IImmutableDictionary<string, ITypeSpecBuilder>) FindAndCreateFieldSpecs(IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
-        {
-            // now create fieldSpecs for value properties, for collections and for reference properties
-            var collectionProperties = FacetFactorySet.FindCollectionProperties(Properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToArray();
-            IEnumerable<IAssociationSpecImmutable> collectionSpecs;
-            (collectionSpecs, metamodel) = CreateCollectionSpecs(collectionProperties, spec, metamodel);
-
-            // every other accessor is assumed to be a reference property.
-            var allProperties = FacetFactorySet.FindProperties(Properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToArray();
-            var refProperties = allProperties.Except(collectionProperties);
-
-            IEnumerable<IAssociationSpecImmutable> refSpecs;
-            (refSpecs, metamodel) = CreateRefPropertySpecs(refProperties, spec, metamodel);
-
-            return (collectionSpecs.Union(refSpecs).ToArray(), metamodel);
-        }
-
-        protected (IEnumerable<IAssociationSpecImmutable>, IImmutableDictionary<string, ITypeSpecBuilder>) CreateCollectionSpecs(IEnumerable<PropertyInfo> collectionProperties, IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
-        {
-            var specs = new List<IAssociationSpecImmutable>();
-
-            foreach (var property in collectionProperties)
-            {
-                IIdentifier identifier = new IdentifierImpl(FullName, property.Name);
-
-                // create a collection property spec
-                var returnType = property.PropertyType;
-                IObjectSpecImmutable returnSpec;
-                (returnSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(returnType, ClassStrategy, metamodel);
-
-                var defaultType = typeof(object);
-                IObjectSpecImmutable defaultSpec;
-                (defaultSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(defaultType, ClassStrategy, metamodel);
-
-                var collection = ImmutableSpecFactory.CreateOneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
-
-                metamodel = FacetFactorySet.Process(Reflector, ClassStrategy, property, new FunctionalIntrospector.IntrospectorMethodRemover(Methods), collection, FeatureType.Collections, metamodel);
-                specs.Add(collection);
-            }
-
-            return (specs, metamodel);
-        }
-
-        protected (IEnumerable<IAssociationSpecImmutable>, IImmutableDictionary<string, ITypeSpecBuilder>) CreateRefPropertySpecs(IEnumerable<PropertyInfo> foundProperties, IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
-        {
-            var specs = new List<IAssociationSpecImmutable>();
-
-            foreach (var property in foundProperties)
-            {
-                // create a reference property spec
-                var identifier = new IdentifierImpl(FullName, property.Name);
-                var propertyType = property.PropertyType;
-                IObjectSpecImmutable propertySpec;
-                (propertySpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(propertyType, ClassStrategy, metamodel);
-
-                if (propertySpec == null)
-                {
-                    throw new ReflectionException($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}. If the property is intended to be an injected service it should have a protected get.");
-                }
-
-                var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec);
-
-                // Process facets for the property
-                metamodel = FacetFactorySet.Process(Reflector, ClassStrategy, property, new FunctionalIntrospector.IntrospectorMethodRemover(Methods), referenceProperty, FeatureType.Properties, metamodel);
-                specs.Add(referenceProperty);
-            }
-
-            return (specs, metamodel);
-        }
-
-
-
-        #region Nested type: IntrospectorMethodRemover
-
-        #region Nested Type: DotnetIntrospectorMethodRemover
-
-        protected class IntrospectorMethodRemover : IMethodRemover
-        {
-            private readonly MethodInfo[] methods;
-
-            public IntrospectorMethodRemover(MethodInfo[] methods) => this.methods = methods;
-
-            #region IMethodRemover Members
-
-            public void RemoveMethod(MethodInfo methodToRemove)
-            {
-                for (var i = 0; i < methods.Length; i++)
-                {
-                    if (methods[i] != null)
-                    {
-                        if (methods[i].MemberInfoEquals(methodToRemove))
-                        {
-                            methods[i] = null;
-                        }
-                    }
-                }
-            }
-
-            public void RemoveMethods(IList<MethodInfo> methodList)
-            {
-                for (var i = 0; i < methods.Length; i++)
-                {
-                    if (methods[i] != null)
-                    {
-                        if (methodList.Any(methodToRemove => methods[i].MemberInfoEquals(methodToRemove)))
-                        {
-                            methods[i] = null;
-                        }
-                    }
-                }
-            }
-
-            #endregion
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Nested type: SortActionsFirst
-
-        protected class SortActionsFirst : IComparer<MethodInfo>
-        {
-            private readonly IFacetFactorySet factories;
-
-            public SortActionsFirst(IFacetFactorySet factories) => this.factories = factories;
-
-            #region IComparer<MethodInfo> Members
-
-            public int Compare(MethodInfo x, MethodInfo y)
-            {
-                var xIsRecognised = x != null && factories.Recognizes(x);
-                var yIsRecognised = y != null && factories.Recognizes(y);
-
-                if (xIsRecognised == yIsRecognised)
-                {
-                    return 0;
-                }
-
-                return xIsRecognised ? 1 : -1;
-            }
-
-            #endregion
-        }
-
-        #endregion
-
-
-
 
 
         public Type IntrospectedType { get; protected set; }
@@ -259,6 +73,270 @@ namespace NakedObjects.ParallelReflect {
         public ITypeSpecBuilder[] Interfaces { get; set; }
         public ITypeSpecBuilder Superclass { get; set; }
 
-        public abstract IImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+        public virtual IImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            if (!TypeUtils.IsPublic(typeToIntrospect)) {
+                throw new ReflectionException(string.Format(Resources.NakedObjects.DomainClassReflectionError, typeToIntrospect));
+            }
+
+            IntrospectedType = typeToIntrospect;
+            SpecificationType = GetSpecificationType(typeToIntrospect);
+
+            if (SpecificationType is null) {
+                throw new ReflectionException($"Failed to get specification type for {typeToIntrospect}");
+            }
+
+            Properties = typeToIntrospect.GetProperties();
+            Methods = GetNonPropertyMethods();
+            Identifier = new IdentifierImpl(FullName);
+
+            // Process facets at object level
+            // this will also remove some methods, such as the superclass methods.
+            var methodRemover = new IntrospectorMethodRemover(Methods);
+            metamodel = FacetFactorySet.Process(Reflector, ClassStrategy, IntrospectedType, methodRemover, spec, metamodel);
+
+            if (SuperclassType != null && ClassStrategy.IsTypeToBeIntrospected(SuperclassType)) {
+                (Superclass, metamodel) = Reflector.LoadSpecification(SuperclassType, ClassStrategy, metamodel);
+            }
+
+            AddAsSubclass(spec);
+
+            var interfaces = new List<ITypeSpecBuilder>();
+            foreach (var interfaceType in InterfacesTypes) {
+                if (interfaceType != null && ClassStrategy.IsTypeToBeIntrospected(interfaceType)) {
+                    ITypeSpecBuilder interfaceSpec;
+                    (interfaceSpec, metamodel) = Reflector.LoadSpecification(interfaceType, ClassStrategy, metamodel);
+                    interfaceSpec.AddSubclass(spec);
+                    interfaces.Add(interfaceSpec);
+                }
+            }
+
+            Interfaces = interfaces.ToArray();
+            metamodel = IntrospectPropertiesAndCollections(spec, metamodel);
+            metamodel = IntrospectActions(spec, metamodel);
+
+            return metamodel;
+        }
+
+        protected void AddAsSubclass(ITypeSpecImmutable spec) => Superclass?.AddSubclass(spec);
+
+        private static IList<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable => members.OrderBy(m => m, new MemberOrderComparator<T>()).ToArray();
+
+
+        protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPropertiesAndCollections(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            if (spec is IObjectSpecImmutable objectSpec) {
+                IAssociationSpecImmutable[] fields;
+                (fields, metamodel) = FindAndCreateFieldSpecs(objectSpec, metamodel);
+                OrderedFields = CreateSortedListOfMembers(fields);
+            }
+            else {
+                OrderedFields = new List<IAssociationSpecImmutable>();
+            }
+
+            return metamodel;
+        }
+
+        protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectActions(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            // find the actions ...
+            IActionSpecImmutable[] findObjectActionMethods;
+            (findObjectActionMethods, metamodel) = FindActionMethods(spec, metamodel);
+            OrderedObjectActions = CreateSortedListOfMembers(findObjectActionMethods);
+            return metamodel;
+        }
+
+
+        protected MethodInfo[] GetNonPropertyMethods() {
+            // no better way to do this (ie no flag that indicates getter/setter)
+            var allMethods = new List<MethodInfo>(IntrospectedType.GetMethods());
+            foreach (var pInfo in Properties) {
+                allMethods.Remove(pInfo.GetGetMethod());
+                allMethods.Remove(pInfo.GetSetMethod());
+            }
+
+            return allMethods.OrderBy(m => m, new SortActionsFirst(FacetFactorySet)).ToArray();
+        }
+
+        protected (IAssociationSpecImmutable[], IImmutableDictionary<string, ITypeSpecBuilder>) FindAndCreateFieldSpecs(IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            // now create fieldSpecs for value properties, for collections and for reference properties
+            var collectionProperties = FacetFactorySet.FindCollectionProperties(Properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToArray();
+            IEnumerable<IAssociationSpecImmutable> collectionSpecs;
+            (collectionSpecs, metamodel) = CreateCollectionSpecs(collectionProperties, spec, metamodel);
+
+            // every other accessor is assumed to be a reference property.
+            var allProperties = FacetFactorySet.FindProperties(Properties, ClassStrategy).Where(pi => !FacetFactorySet.Filters(pi, ClassStrategy)).ToArray();
+            var refProperties = allProperties.Except(collectionProperties);
+
+            IEnumerable<IAssociationSpecImmutable> refSpecs;
+            (refSpecs, metamodel) = CreateRefPropertySpecs(refProperties, spec, metamodel);
+
+            return (collectionSpecs.Union(refSpecs).ToArray(), metamodel);
+        }
+
+        protected (IEnumerable<IAssociationSpecImmutable>, IImmutableDictionary<string, ITypeSpecBuilder>) CreateCollectionSpecs(IEnumerable<PropertyInfo> collectionProperties, IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var specs = new List<IAssociationSpecImmutable>();
+
+            foreach (var property in collectionProperties) {
+                IIdentifier identifier = new IdentifierImpl(FullName, property.Name);
+
+                // create a collection property spec
+                var returnType = property.PropertyType;
+                IObjectSpecImmutable returnSpec;
+                (returnSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(returnType, ClassStrategy, metamodel);
+
+                var defaultType = typeof(object);
+                IObjectSpecImmutable defaultSpec;
+                (defaultSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(defaultType, ClassStrategy, metamodel);
+
+                var collection = ImmutableSpecFactory.CreateOneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
+
+                metamodel = FacetFactorySet.Process(Reflector, ClassStrategy, property, new IntrospectorMethodRemover(Methods), collection, FeatureType.Collections, metamodel);
+                specs.Add(collection);
+            }
+
+            return (specs, metamodel);
+        }
+
+        protected (IEnumerable<IAssociationSpecImmutable>, IImmutableDictionary<string, ITypeSpecBuilder>) CreateRefPropertySpecs(IEnumerable<PropertyInfo> foundProperties, IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var specs = new List<IAssociationSpecImmutable>();
+
+            foreach (var property in foundProperties) {
+                // create a reference property spec
+                var identifier = new IdentifierImpl(FullName, property.Name);
+                var propertyType = property.PropertyType;
+                IObjectSpecImmutable propertySpec;
+                (propertySpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(propertyType, ClassStrategy, metamodel);
+
+                if (propertySpec == null) {
+                    throw new ReflectionException($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}. If the property is intended to be an injected service it should have a protected get.");
+                }
+
+                var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec);
+
+                // Process facets for the property
+                metamodel = FacetFactorySet.Process(Reflector, ClassStrategy, property, new IntrospectorMethodRemover(Methods), referenceProperty, FeatureType.Properties, metamodel);
+                specs.Add(referenceProperty);
+            }
+
+            return (specs, metamodel);
+        }
+
+        private Type GetSpecificationType(Type type) =>
+            FasterTypeUtils.IsGenericCollection(type)
+                ? type.GetGenericTypeDefinition()
+                : FasterTypeUtils.IsObjectArray(type)
+                    ? typeof(Array)
+                    : ClassStrategy.GetType(type);
+
+
+        protected (IActionSpecImmutable[], IImmutableDictionary<string, ITypeSpecBuilder>) FindActionMethods(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var actionSpecs = new List<IActionSpecImmutable>();
+            var actions = FacetFactorySet.FindActions(Methods.Where(m => m != null).ToArray(), ClassStrategy).Where(a => !FacetFactorySet.Filters(a, ClassStrategy)).ToArray();
+            Methods = Methods.Except(actions).ToArray();
+
+            // ReSharper disable once ForCanBeConvertedToForeach
+            // keep a "for loop" as actions are nulled out within loop
+            for (var i = 0; i < actions.Length; i++) {
+                var actionMethod = actions[i];
+
+                // actions are potentially being nulled within this loop
+                if (actionMethod != null) {
+                    var fullMethodName = actionMethod.Name;
+
+                    var parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
+
+                    // build action & its parameters
+
+                    if (ClassStrategy.LoadReturnType(actionMethod)) {
+                        (_, metamodel) = Reflector.LoadSpecification(actionMethod.ReturnType, ClassStrategy, metamodel);
+                    }
+
+                    IIdentifier identifier = new IdentifierImpl(FullName, fullMethodName, actionMethod.GetParameters().ToArray());
+
+                    var actionParams = new List<IActionParameterSpecImmutable>();
+
+                    foreach (var pt in parameterTypes) {
+                        IObjectSpecBuilder oSpec;
+                        (oSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecBuilder>(pt, ClassStrategy, metamodel);
+                        var actionSpec = ImmutableSpecFactory.CreateActionParameterSpecImmutable(oSpec, identifier);
+                        actionParams.Add(actionSpec);
+                    }
+
+                    var action = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, spec, actionParams.ToArray());
+
+                    // Process facets on the action & parameters
+                    metamodel = FacetFactorySet.Process(Reflector, ClassStrategy, actionMethod, new IntrospectorMethodRemover(actions), action, FeatureType.Actions, metamodel);
+                    for (var l = 0; l < actionParams.Count; l++) {
+                        metamodel = FacetFactorySet.ProcessParams(Reflector, ClassStrategy, actionMethod, l, actionParams[l], metamodel);
+                    }
+
+                    actionSpecs.Add(action);
+                }
+            }
+
+            return (actionSpecs.ToArray(), metamodel);
+        }
+
+
+        #region Nested type: IntrospectorMethodRemover
+
+        #region Nested Type: DotnetIntrospectorMethodRemover
+
+        protected class IntrospectorMethodRemover : IMethodRemover {
+            private readonly MethodInfo[] methods;
+
+            public IntrospectorMethodRemover(MethodInfo[] methods) => this.methods = methods;
+
+            #region IMethodRemover Members
+
+            public void RemoveMethod(MethodInfo methodToRemove) {
+                for (var i = 0; i < methods.Length; i++) {
+                    if (methods[i] != null) {
+                        if (methods[i].MemberInfoEquals(methodToRemove)) {
+                            methods[i] = null;
+                        }
+                    }
+                }
+            }
+
+            public void RemoveMethods(IList<MethodInfo> methodList) {
+                for (var i = 0; i < methods.Length; i++) {
+                    if (methods[i] != null) {
+                        if (methodList.Any(methodToRemove => methods[i].MemberInfoEquals(methodToRemove))) {
+                            methods[i] = null;
+                        }
+                    }
+                }
+            }
+
+            #endregion
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Nested type: SortActionsFirst
+
+        protected class SortActionsFirst : IComparer<MethodInfo> {
+            private readonly IFacetFactorySet factories;
+
+            public SortActionsFirst(IFacetFactorySet factories) => this.factories = factories;
+
+            #region IComparer<MethodInfo> Members
+
+            public int Compare(MethodInfo x, MethodInfo y) {
+                var xIsRecognised = x != null && factories.Recognizes(x);
+                var yIsRecognised = y != null && factories.Recognizes(y);
+
+                if (xIsRecognised == yIsRecognised) {
+                    return 0;
+                }
+
+                return xIsRecognised ? 1 : -1;
+            }
+
+            #endregion
+        }
+
+        #endregion
     }
 }

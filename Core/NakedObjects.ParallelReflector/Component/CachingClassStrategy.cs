@@ -39,6 +39,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         public bool IsIgnored(MemberInfo member) => classStrategy.IsIgnored(member);
         public bool IsService(Type type) => classStrategy.IsService(type);
+        public bool LoadReturnType(MethodInfo method) => classStrategy.LoadReturnType(method);
 
         public Type GetType(Type type) {
             lock (Cache) {
