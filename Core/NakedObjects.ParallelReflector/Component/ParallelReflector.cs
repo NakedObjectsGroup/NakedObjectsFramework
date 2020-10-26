@@ -35,7 +35,7 @@ namespace NakedObjects.ParallelReflect.Component {
             FacetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
         }
 
-        protected IClassStrategy ClassStrategy { get; init; }
+        public IClassStrategy ClassStrategy { get; init; }
         public IFacetFactorySet FacetFactorySet { get; init; }
 
         public (ITypeSpecBuilder typeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) IntrospectSpecification(Type actualType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, Func<IIntrospector> getIntrospector) {

@@ -37,19 +37,6 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         #region ITypeSpecBuilder Members
 
-        public void Introspect(IFacetDecoratorSet decorator, IIntrospector introspector) {
-            introspector.IntrospectType(Type, this);
-            identifier = introspector.Identifier;
-            FullName = introspector.FullName;
-            ShortName = introspector.ShortName;
-            Superclass = introspector.Superclass;
-            Interfaces = introspector.Interfaces.Cast<ITypeSpecImmutable>().ToImmutableList();
-            Fields = introspector.Fields;
-            ObjectActions = introspector.ObjectActions;
-            DecorateAllFacets(decorator);
-            Type = introspector.SpecificationType;
-        }
-
         public IImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             metamodel = introspector.IntrospectType(Type, this, metamodel);
             identifier = introspector.Identifier;

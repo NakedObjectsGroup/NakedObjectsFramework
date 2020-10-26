@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Immutable;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Component {
@@ -20,6 +21,8 @@ namespace NakedObjects.Architecture.Component {
     public interface IReflector {
         bool IgnoreCase { get; }
         bool ConcurrencyChecking { get; }
+        IClassStrategy ClassStrategy { get;  }
+        IFacetFactorySet FacetFactorySet { get; }
 
         IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary);
 

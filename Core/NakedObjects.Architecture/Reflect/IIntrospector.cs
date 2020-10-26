@@ -31,8 +31,6 @@ namespace NakedObjects.Architecture.Reflect {
         ITypeSpecBuilder[] Interfaces { get; set; }
         ITypeSpecBuilder Superclass { get; set; }
 
-        void IntrospectType(Type typeToIntrospect, ITypeSpecImmutable specification);
-
         IImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
     }
 }

@@ -36,7 +36,7 @@ namespace NakedObjects.ParallelReflect.Component {
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectObjectTypes(Type[] ooTypes) {
             var placeholders = GetPlaceholders(ooTypes, ClassStrategy);
             return placeholders.Any()
-                ? IntrospectPlaceholders(placeholders, () => new ObjectIntrospector(this, FacetFactorySet, ClassStrategy, LoggerFactory.CreateLogger<ObjectIntrospector>()))
+                ? IntrospectPlaceholders(placeholders, () => new ObjectIntrospector(this, LoggerFactory.CreateLogger<ObjectIntrospector>()))
                 : placeholders;
         }
 

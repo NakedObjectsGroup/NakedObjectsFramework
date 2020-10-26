@@ -18,8 +18,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
         ///     the be accommodated as there should always a specification available even though it might not be
         ///     complete.
         /// </summary>
-        void Introspect(IFacetDecoratorSet decorator, IIntrospector introspector);
-
+        
         IImmutableDictionary<string, ITypeSpecBuilder> Introspect(IFacetDecoratorSet decorator, IIntrospector introspector, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
 
         void AddSubclass(ITypeSpecImmutable subclass);

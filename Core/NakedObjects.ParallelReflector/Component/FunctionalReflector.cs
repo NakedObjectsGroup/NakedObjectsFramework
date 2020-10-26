@@ -35,7 +35,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
             var placeholders = GetPlaceholders(allFunctionalTypes, ClassStrategy);
             return placeholders.Any()
-                ? IntrospectPlaceholders(specDictionary.AddRange(placeholders), () => new FunctionalIntrospector(this, FacetFactorySet, ClassStrategy, functions))
+                ? IntrospectPlaceholders(specDictionary.AddRange(placeholders), () => new FunctionalIntrospector(this, functions, LoggerFactory.CreateLogger<FunctionalIntrospector>()))
                 : specDictionary;
         }
 
