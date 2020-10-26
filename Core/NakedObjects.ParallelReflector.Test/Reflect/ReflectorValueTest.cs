@@ -21,8 +21,8 @@ namespace NakedObjects.ParallelReflect.Test {
             (_, metamodel) = reflector.LoadSpecification(typeof(IEnumerable<char>), ClassStrategy, metamodel);
             (_, metamodel) = reflector.LoadSpecification(typeof(string), ClassStrategy, metamodel);
 
-            (_, metamodel) = reflector.IntrospectSpecification(typeof(IEnumerable<char>), metamodel, () => new Introspector(reflector, objectReflector.ObjectFacetFactorySet, ClassStrategy, null));
-            return reflector.IntrospectSpecification(typeof(string), metamodel, () => new Introspector(reflector, objectReflector.ObjectFacetFactorySet, ClassStrategy, null));
+            (_, metamodel) = reflector.IntrospectSpecification(typeof(IEnumerable<char>), metamodel, () => new Introspector(reflector, objectReflector.FacetFactorySet, ClassStrategy, null));
+            return reflector.IntrospectSpecification(typeof(string), metamodel, () => new Introspector(reflector, objectReflector.FacetFactorySet, ClassStrategy, null));
         }
 
         [TestMethod]

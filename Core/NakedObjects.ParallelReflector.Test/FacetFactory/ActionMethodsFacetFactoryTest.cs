@@ -177,7 +177,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
             var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod) facet;
-            Assert.AreEqual(Reflector.LoadSpecification(type), actionInvocationFacetViaMethod.OnType);
+            var (_, expectedSpec) = Reflector.LoadSpecification(type, null, null);
+            Assert.AreEqual(expectedSpec, actionInvocationFacetViaMethod.OnType);
             Assert.AreEqual(0, metamodel.Count);
         }
 
@@ -190,7 +191,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
             var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod) facet;
-            Assert.AreEqual(Reflector.LoadSpecification(typeof(string)), actionInvocationFacetViaMethod.ReturnType);
+            var (_, expectedSpec) = Reflector.LoadSpecification(typeof(string), null, null);
+            Assert.AreEqual(expectedSpec, actionInvocationFacetViaMethod.ReturnType);
             Assert.AreEqual(0, metamodel.Count);
         }
 
@@ -203,7 +205,8 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
             var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod) facet;
-            Assert.AreEqual(Reflector.LoadSpecification(typeof(void)), actionInvocationFacetViaMethod.ReturnType);
+            var (_, expectedSpec) = Reflector.LoadSpecification(typeof(void), null, null);
+            Assert.AreEqual(expectedSpec, actionInvocationFacetViaMethod.ReturnType);
             Assert.AreEqual(0, metamodel.Count);
         }
 

@@ -48,6 +48,13 @@ namespace NakedObjects.Meta.SpecImmutable {
             }
         }
 
+        public static ITypeSpecBuilder CreateTypeSpecImmutable(Type type, bool isService, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
+        {
+            return isService
+                ? (ITypeSpecBuilder)CreateServiceSpecImmutable(type, metamodel)
+                : CreateObjectSpecImmutable(type, metamodel);
+        }
+
         public static void ClearCache() {
             lock (SpecCache) {
                 SpecCache.Clear();

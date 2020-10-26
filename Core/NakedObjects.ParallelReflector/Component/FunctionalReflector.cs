@@ -12,35 +12,40 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Core.Util;
 
 namespace NakedObjects.ParallelReflect.Component {
     public sealed class FunctionalReflector : ParallelReflector {
+        private readonly IFunctionalReflectorConfiguration functionalReflectorConfiguration;
+
         public FunctionalReflector(IMetamodelBuilder metamodel,
-                                   IObjectReflectorConfiguration objectReflectorConfiguration,
                                    IFunctionalReflectorConfiguration functionalReflectorConfiguration,
                                    IEnumerable<IFacetDecorator> facetDecorators,
                                    IEnumerable<IFacetFactory> facetFactories,
                                    ILoggerFactory loggerFactory,
-                                   ILogger<ParallelReflector> logger) : base(metamodel, objectReflectorConfiguration, functionalReflectorConfiguration, facetDecorators, facetFactories, loggerFactory, logger) { }
-
+                                   ILogger<ParallelReflector> logger) : base(metamodel, facetDecorators, loggerFactory, logger) {
+            this.functionalReflectorConfiguration = functionalReflectorConfiguration;
+            ClassStrategy = new FunctionClassStrategy(functionalReflectorConfiguration);
+            FacetFactorySet = new FacetFactorySet(facetFactories.Where(f => f.ReflectionTypes.HasFlag(ReflectionType.Functional)).ToArray());
+        }
 
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectFunctionalTypes(Type[] records, Type[] functions, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
             var allFunctionalTypes = records.Union(functions).ToArray();
 
-            var placeholders = GetPlaceholders(allFunctionalTypes, FunctionalClassStrategy);
+            var placeholders = GetPlaceholders(allFunctionalTypes, ClassStrategy);
             return placeholders.Any()
-                ? IntrospectPlaceholders(specDictionary.AddRange(placeholders), () => new FunctionalIntrospector(this, FunctionalFacetFactorySet, FunctionalClassStrategy, functions))
+                ? IntrospectPlaceholders(specDictionary.AddRange(placeholders), () => new FunctionalIntrospector(this, FacetFactorySet, ClassStrategy, functions))
                 : specDictionary;
         }
 
+        public override bool IgnoreCase => functionalReflectorConfiguration.IgnoreCase;
+        public override bool ConcurrencyChecking => functionalReflectorConfiguration.ConcurrencyChecking;
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
-            var records = reflectorConfiguration.RecordTypes;
-            var functions = reflectorConfiguration.FunctionTypes;
+            var records = functionalReflectorConfiguration.Types;
+            var functions = functionalReflectorConfiguration.Functions;
             return IntrospectFunctionalTypes(records, functions, specDictionary);
-            //specDictionary.ForEach(i => initialMetamodel.Add(i.Value.Type, i.Value));
         }
     }
 

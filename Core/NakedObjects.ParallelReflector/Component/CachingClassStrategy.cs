@@ -38,6 +38,7 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         public bool IsIgnored(MemberInfo member) => classStrategy.IsIgnored(member);
+        public bool IsService(Type type) => classStrategy.IsService(type);
 
         public Type GetType(Type type) {
             lock (Cache) {
@@ -46,9 +47,6 @@ namespace NakedObjects.ParallelReflect.Component {
                 return flags.Type;
             }
         }
-
-        
-
 
         #endregion
 

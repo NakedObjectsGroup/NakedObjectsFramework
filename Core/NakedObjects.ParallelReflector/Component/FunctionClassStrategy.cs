@@ -43,6 +43,7 @@ namespace NakedObjects.ParallelReflect.Component {
         }
 
         public bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedFunctionsIgnoreAttribute>() != null;
+        public bool IsService(Type type) => false;
 
         #endregion
 

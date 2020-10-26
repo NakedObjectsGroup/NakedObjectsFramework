@@ -125,6 +125,28 @@ namespace NakedObjects.Core.Configuration {
             }
         }
 
+        private static Type EnsureGenericTypeIsComplete(Type type)
+        {
+            if (type.IsGenericType && !type.IsConstructedGenericType)
+            {
+                var genericType = type.GetGenericTypeDefinition();
+                var genericParms = genericType.GetGenericArguments().Select(a => typeof(object)).ToArray();
+
+                return type.GetGenericTypeDefinition().MakeGenericType(genericParms);
+            }
+
+            return type;
+        }
+
+        private Type[] GetObjectTypesToIntrospect()
+        {
+            var types = TypesToIntrospect.Select(EnsureGenericTypeIsComplete);
+            var oSystemTypes = SupportedSystemTypes.Select(EnsureGenericTypeIsComplete);
+   
+            var systemTypes = oSystemTypes;
+            return types.Union(systemTypes).ToArray();
+        }
+
         #region IObjectReflectorConfiguration Members
 
         public Type[] TypesToIntrospect { get; }
@@ -135,6 +157,10 @@ namespace NakedObjects.Core.Configuration {
         public Type[] Services { get; }
         public string[] ModelNamespaces { get; }
         public List<Type> SupportedSystemTypes { get; }
+
+
+        public Type[] ObjectTypes => Services.Union(GetObjectTypesToIntrospect()).ToArray();
+
 
         #endregion
     }

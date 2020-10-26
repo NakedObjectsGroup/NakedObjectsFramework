@@ -53,6 +53,8 @@ namespace NakedObjects.Architecture.Configuration {
         /// </summary>
         bool ConcurrencyChecking { get; }
 
+        Type[] ObjectTypes { get; }
+
         bool HasConfig();
     }
 }

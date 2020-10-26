@@ -11,7 +11,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
@@ -21,31 +20,23 @@ using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect.Component {
     public abstract class ParallelReflector : IReflector {
-        protected readonly FacetDecoratorSet facetDecoratorSet;
-        protected readonly IMetamodelBuilder initialMetamodel;
-        protected readonly ILogger<ParallelReflector> logger;
-        protected readonly ILoggerFactory loggerFactory;
-        protected readonly CompositeReflectorConfiguration reflectorConfiguration;
+        protected readonly FacetDecoratorSet FacetDecoratorSet;
+        protected readonly IMetamodelBuilder InitialMetamodel;
+        protected readonly ILogger<ParallelReflector> Logger;
+        protected readonly ILoggerFactory LoggerFactory;
 
         protected ParallelReflector(IMetamodelBuilder metamodel,
-                                    IObjectReflectorConfiguration objectReflectorConfiguration,
-                                    IFunctionalReflectorConfiguration functionalReflectorConfiguration,
                                     IEnumerable<IFacetDecorator> facetDecorators,
-                                    IEnumerable<IFacetFactory> facetFactories,
                                     ILoggerFactory loggerFactory,
                                     ILogger<ParallelReflector> logger) {
-            
-            FunctionalClassStrategy = new FunctionClassStrategy(functionalReflectorConfiguration);
-            initialMetamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
-            reflectorConfiguration = new CompositeReflectorConfiguration(objectReflectorConfiguration, functionalReflectorConfiguration);
-            this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
-            this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
-            facetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
-           
-            FunctionalFacetFactorySet = new FacetFactorySet(facetFactories.Where(f => f.ReflectionTypes.HasFlag(ReflectionType.Functional)).ToArray());
+            InitialMetamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
+            LoggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
+            Logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
+            FacetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
         }
 
-        public FacetFactorySet FunctionalFacetFactorySet { get; }
+        protected IClassStrategy ClassStrategy { get; init; }
+        public IFacetFactorySet FacetFactorySet { get; init; }
 
         public (ITypeSpecBuilder typeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) IntrospectSpecification(Type actualType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, Func<IIntrospector> getIntrospector) {
             if (actualType == null) {
@@ -74,7 +65,7 @@ namespace NakedObjects.ParallelReflect.Component {
             var specification = CreateSpecification(type, metamodel);
 
             if (specification == null) {
-                throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
+                throw new ReflectionException(Logger.LogAndReturn($"unrecognised type {type.FullName}"));
             }
 
             return specification;
@@ -84,7 +75,7 @@ namespace NakedObjects.ParallelReflect.Component {
             var specification = CreateSpecification(type, metamodel);
 
             if (specification == null) {
-                throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
+                throw new ReflectionException(Logger.LogAndReturn($"unrecognised type {type.FullName}"));
             }
 
             metamodel = metamodel.Add(TypeKeyUtils.GetKeyForType(type), specification);
@@ -102,21 +93,18 @@ namespace NakedObjects.ParallelReflect.Component {
             var specification = metamodel[TypeKeyUtils.GetKeyForType(type)];
 
             if (specification == null) {
-                throw new ReflectionException(logger.LogAndReturn($"unrecognised type {type.FullName}"));
+                throw new ReflectionException(Logger.LogAndReturn($"unrecognised type {type.FullName}"));
             }
 
-            metamodel = specification.Introspect(facetDecoratorSet, getIntrospector(), metamodel);
+            metamodel = specification.Introspect(FacetDecoratorSet, getIntrospector(), metamodel);
 
             return (specification, metamodel);
         }
 
         private ITypeSpecBuilder CreateSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             TypeUtils.GetType(type.FullName); // This should ensure type is cached
-
-            return IsService(type) ? (ITypeSpecBuilder) ImmutableSpecFactory.CreateServiceSpecImmutable(type, metamodel) : ImmutableSpecFactory.CreateObjectSpecImmutable(type, metamodel);
+            return ImmutableSpecFactory.CreateTypeSpecImmutable(type, ClassStrategy.IsService(type), metamodel);
         }
-
-        private bool IsService(Type type) => reflectorConfiguration.ServiceTypeSet.Contains(type);
 
         #region Nested type: TypeKeyComparer
 
@@ -148,33 +136,20 @@ namespace NakedObjects.ParallelReflect.Component {
 
         #region IReflector Members
 
-        public bool ConcurrencyChecking => reflectorConfiguration.ConcurrencyChecking;
+        public abstract bool ConcurrencyChecking { get; }
+        public abstract bool IgnoreCase { get; }
 
-        public bool IgnoreCase => reflectorConfiguration.IgnoreCase;
-
-       // public IClassStrategy ObjectClassStrategy { get; }
-
-        public IClassStrategy FunctionalClassStrategy { get; }
-
-        public IMetamodel Metamodel => null;
-
-        public ITypeSpecBuilder LoadSpecification(Type type) => throw new NotImplementedException();
-
-        public T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable => throw new NotImplementedException();
-
-        public ITypeSpecBuilder[] AllObjectSpecImmutables => initialMetamodel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
-
-        public (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IClassStrategy classStrategy, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public virtual (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IClassStrategy classStrategy, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (type == null) {
                 throw new NakedObjectSystemException("cannot load specification for null");
             }
 
             var actualType = classStrategy.GetType(type) ?? type;
             var typeKey = TypeKeyUtils.GetKeyForType(actualType);
-            return !metamodel.ContainsKey(typeKey) ? LoadPlaceholder(actualType, metamodel) : (metamodel[typeKey], metamodel);
+            return metamodel.ContainsKey(typeKey) ? (metamodel[typeKey], metamodel) : LoadPlaceholder(actualType, metamodel);
         }
 
-        public (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type, IClassStrategy classStrategy, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) where T : class, ITypeSpecImmutable {
+        public virtual (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type, IClassStrategy classStrategy, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) where T : class, ITypeSpecImmutable {
             ITypeSpecBuilder spec;
             (spec, metamodel) = LoadSpecification(type, classStrategy, metamodel);
             return (spec as T, metamodel);

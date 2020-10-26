@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Immutable;
-using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Component {
@@ -19,26 +18,12 @@ namespace NakedObjects.Architecture.Component {
     ///     the Reflector is not called at all.
     /// </summary>
     public interface IReflector {
-        //IClassStrategy ClassStrategy { get; }
-        //IFacetFactorySet ObjectFacetFactorySet { get; }
-        ITypeSpecBuilder[] AllObjectSpecImmutables { get; }
         bool IgnoreCase { get; }
         bool ConcurrencyChecking { get; }
-        IMetamodel Metamodel { get; }
-        ITypeSpecBuilder LoadSpecification(Type type);
-
-        /// <summary>
-        ///     For when you know the expected subclass of the Spec
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        T LoadSpecification<T>(Type type) where T : ITypeSpecImmutable;
 
         IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary);
 
         // new for ParallelReflector
-
         (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IClassStrategy classStrategy, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
 
         /// <summary>

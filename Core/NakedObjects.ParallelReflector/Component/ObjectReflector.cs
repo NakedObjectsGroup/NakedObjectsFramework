@@ -14,39 +14,36 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Core.Util;
 
 namespace NakedObjects.ParallelReflect.Component {
     public sealed class ObjectReflector : ParallelReflector {
+        private readonly IObjectReflectorConfiguration objectReflectorConfiguration;
+
         public ObjectReflector(IMetamodelBuilder metamodel,
                                IObjectReflectorConfiguration objectReflectorConfiguration,
                                IFunctionalReflectorConfiguration functionalReflectorConfiguration,
                                IEnumerable<IFacetDecorator> facetDecorators,
                                IEnumerable<IFacetFactory> facetFactories,
                                ILoggerFactory loggerFactory,
-                               ILogger<ParallelReflector> logger) : base(metamodel, objectReflectorConfiguration, functionalReflectorConfiguration, facetDecorators, facetFactories, loggerFactory, logger) {
-            ObjectClassStrategy = new ObjectClassStrategy(objectReflectorConfiguration);
-            ObjectFacetFactorySet = new FacetFactorySet(facetFactories.Where(f => f.ReflectionTypes.HasFlag(ReflectionType.ObjectOriented)).ToArray());
+                               ILogger<ParallelReflector> logger) : base(metamodel, facetDecorators, loggerFactory, logger) {
+            this.objectReflectorConfiguration = objectReflectorConfiguration;
+            FacetFactorySet = new FacetFactorySet(facetFactories.Where(f => f.ReflectionTypes.HasFlag(ReflectionType.ObjectOriented)).ToArray());
+            ClassStrategy = new ObjectClassStrategy(objectReflectorConfiguration);
         }
 
-
-        public IClassStrategy ObjectClassStrategy { get; }
-
-        public IFacetFactorySet ObjectFacetFactorySet { get; }
+        public override bool ConcurrencyChecking => objectReflectorConfiguration.ConcurrencyChecking;
+        public override bool IgnoreCase => objectReflectorConfiguration.IgnoreCase;
 
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectObjectTypes(Type[] ooTypes) {
-            var placeholders = GetPlaceholders(ooTypes, ObjectClassStrategy);
+            var placeholders = GetPlaceholders(ooTypes, ClassStrategy);
             return placeholders.Any()
-                ? IntrospectPlaceholders(placeholders, () => new Introspector(this, ObjectFacetFactorySet, ObjectClassStrategy, loggerFactory.CreateLogger<Introspector>()))
+                ? IntrospectPlaceholders(placeholders, () => new Introspector(this, FacetFactorySet, ClassStrategy, LoggerFactory.CreateLogger<Introspector>()))
                 : placeholders;
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
-            var ooTypes = reflectorConfiguration.ObjectTypes;
-
+            var ooTypes = objectReflectorConfiguration.ObjectTypes;
             return IntrospectObjectTypes(ooTypes);
-
-            //specDictionary.ForEach(i => initialMetamodel.Add(i.Value.Type, i.Value));
         }
     }
 

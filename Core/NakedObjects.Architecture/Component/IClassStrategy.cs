@@ -24,6 +24,8 @@ namespace NakedObjects.Architecture.Component {
         bool IsTypeToBeIntrospected(Type type);
 
         bool IsIgnored(MemberInfo member);
+
+        bool IsService(Type type);
     }
 
     // Copyright (c) Naked Objects Group Ltd.
