@@ -19,7 +19,6 @@ namespace NakedObjects.ParallelReflect.Component {
         public Type[] Services => Array.Empty<Type>();
         public string[] ModelNamespaces => Array.Empty<string>();
         public List<Type> SupportedSystemTypes => new List<Type>();
-        public (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus => null;
         public bool IgnoreCase => false;
         public bool ConcurrencyChecking => true;
         public bool HasConfig() => false;
@@ -29,12 +28,9 @@ namespace NakedObjects.ParallelReflect.Component {
     internal class NullFunctionalReflectorConfiguration : IFunctionalReflectorConfiguration {
         public Type[] Types => Array.Empty<Type>();
         public Type[] Functions => Array.Empty<Type>();
-        public Type[] Services => Array.Empty<Type>();
         public bool ConcurrencyChecking => true;
         public bool IgnoreCase => false;
-        public (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus => null;
         public List<Type> SupportedSystemTypes => new List<Type>();
-        public string[] ModelNamespaces => Array.Empty<string>();
         public bool HasConfig() => false;
     }
 
@@ -76,7 +72,7 @@ namespace NakedObjects.ParallelReflect.Component {
 
         public bool IgnoreCase { get; }
 
-        public Type[] Services => objectReflectorConfiguration.Services.Union(functionalReflectorConfiguration.Services).ToArray();
+        public Type[] Services => objectReflectorConfiguration.Services.ToArray();
 
         public Type[] ObjectTypes => Services.Union(GetObjectTypesToIntrospect()).ToArray();
 

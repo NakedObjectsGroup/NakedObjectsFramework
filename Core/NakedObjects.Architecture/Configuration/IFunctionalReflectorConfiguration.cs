@@ -7,17 +7,14 @@
 
 using System;
 using System.Collections.Generic;
-using NakedObjects.Menu;
 
 namespace NakedObjects.Architecture.Configuration {
     public interface IFunctionalReflectorConfiguration {
         Type[] Types { get; }
         Type[] Functions { get; }
-        Type[] Services { get; }
         bool ConcurrencyChecking { get; }
         bool IgnoreCase { get; }
         List<Type> SupportedSystemTypes { get; }
-        string[] ModelNamespaces { get; }
         bool HasConfig();
     }
 }

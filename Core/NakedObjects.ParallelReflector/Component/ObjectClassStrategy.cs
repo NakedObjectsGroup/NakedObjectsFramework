@@ -58,7 +58,7 @@ namespace NakedObjects.ParallelReflect.Component {
         private bool IsTypeWhiteListed(Type type) => IsTypeSupportedSystemType(type) || IsNamespaceMatch(type) || IsTypeExplicitlyRequested(type);
 
         private bool IsTypeExplicitlyRequested(Type type) {
-            var services = config.Services.Union(fConfig == null ? new Type[] { } : fConfig.Services).ToArray();
+            var services = config.Services.ToArray();
             return config.TypesToIntrospect.Any(t => t == type) ||
                    services.Any(t => t == type) ||
                    type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());

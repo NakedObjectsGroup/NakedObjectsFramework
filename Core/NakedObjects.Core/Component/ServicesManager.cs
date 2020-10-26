@@ -37,8 +37,7 @@ namespace NakedObjects.Core.Component {
             this.manager = manager ?? throw new InitialisationException($"{nameof(manager)} is null");
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
 
-            var fServices = fConfig == null ? Array.Empty<Type>() : fConfig.Services;
-            services = config.Services.Union(fServices).Select(Activator.CreateInstance).ToList();
+            services = config.Services.Select(Activator.CreateInstance).ToList();
         }
 
         private IList<object> Services {

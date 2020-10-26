@@ -15,19 +15,16 @@ namespace NakedObjects.Core.Configuration {
     public class FunctionalReflectorConfiguration : IFunctionalReflectorConfiguration {
         public FunctionalReflectorConfiguration(Type[] types,
                                                 Type[] functions,
-                                                string[] modelNamespaces = null,
                                                 bool concurrencyChecking = true) {
             
             Types = types;
             Functions = functions;
-            ModelNamespaces = modelNamespaces ?? Array.Empty<string>();
             ConcurrencyChecking = concurrencyChecking;
             IgnoreCase = false;
             SupportedSystemTypes = HasConfig() ? ReflectorDefaults.DefaultSystemTypes.ToList() : new List<Type>();
         }
 
         public List<Type> SupportedSystemTypes { get; set; }
-        public string[] ModelNamespaces { get; }
 
         public bool HasConfig() => Types?.Any() == true || Functions?.Any() == true;
 

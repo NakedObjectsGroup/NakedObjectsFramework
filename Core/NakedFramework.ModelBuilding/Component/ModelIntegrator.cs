@@ -16,7 +16,6 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
-using NakedObjects.Menu;
 using NakedObjects.Meta.Utils;
 
 namespace NakedFramework.ModelBuilding.Component {
@@ -26,24 +25,23 @@ namespace NakedFramework.ModelBuilding.Component {
         private readonly ILogger<ModelIntegrator> logger;
         private readonly ICoreConfiguration coreConfiguration;
         private readonly IObjectReflectorConfiguration objectReflectorConfiguration;
-        private readonly IFunctionalReflectorConfiguration functionalReflectorConfiguration;
 
         public ModelIntegrator(IMetamodelBuilder metamodelBuilder, 
                                IMenuFactory menuFactory,
                                ILogger<ModelIntegrator> logger, 
                                ICoreConfiguration coreConfiguration,
-                               IObjectReflectorConfiguration objectReflectorConfiguration, 
-                               IFunctionalReflectorConfiguration functionalReflectorConfiguration) {
+                               IObjectReflectorConfiguration objectReflectorConfiguration) {
             this.metamodelBuilder = metamodelBuilder;
             this.menuFactory = menuFactory;
             this.logger = logger;
             this.coreConfiguration = coreConfiguration;
             this.objectReflectorConfiguration = objectReflectorConfiguration;
-            this.functionalReflectorConfiguration = functionalReflectorConfiguration;
         }
 
         public void Integrate() {
-            var services =  objectReflectorConfiguration.Services.Union(functionalReflectorConfiguration.Services).ToArray();
+            // todo change so not dependent on specific reflector config 
+
+            var services =  objectReflectorConfiguration.Services;
             PopulateAssociatedActions(services, metamodelBuilder);
 
             PopulateAssociatedFunctions(metamodelBuilder);
@@ -53,7 +51,6 @@ namespace NakedFramework.ModelBuilding.Component {
             InstallObjectMenus(metamodelBuilder);
 
             // todo validation of model including no duplicate functions in menus 
-
         }
 
         private static bool IsStatic(ITypeSpecImmutable spec) => spec.GetFacet<ITypeIsStaticFacet>()?.Flag == true;

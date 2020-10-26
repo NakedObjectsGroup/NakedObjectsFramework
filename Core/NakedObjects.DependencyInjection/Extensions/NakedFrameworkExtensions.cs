@@ -95,7 +95,7 @@ namespace NakedObjects.DependencyInjection.Extensions {
         }
 
         public static FunctionalReflectorConfiguration FunctionalReflectorConfig(NakedFunctionsOptions options) =>
-            new FunctionalReflectorConfiguration(options.FunctionalTypes, options.Functions, null);
+            new FunctionalReflectorConfiguration(options.FunctionalTypes, options.Functions);
 
 
         public static CoreConfiguration CoreConfig(NakedCoreOptions options) => new CoreConfiguration(options.MainMenus);
