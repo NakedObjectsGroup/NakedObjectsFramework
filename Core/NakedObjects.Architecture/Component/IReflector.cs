@@ -20,7 +20,7 @@ namespace NakedObjects.Architecture.Component {
     /// </summary>
     public interface IReflector {
         //IClassStrategy ClassStrategy { get; }
-        IFacetFactorySet ObjectFacetFactorySet { get; }
+        //IFacetFactorySet ObjectFacetFactorySet { get; }
         ITypeSpecBuilder[] AllObjectSpecImmutables { get; }
         bool IgnoreCase { get; }
         bool ConcurrencyChecking { get; }

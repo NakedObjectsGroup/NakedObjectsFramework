@@ -37,11 +37,12 @@ namespace NakedObjects.ParallelReflect {
             this.reflector = reflector;
             ClassStrategy = classStrategy;
             this.logger = logger;
+            FacetFactorySet = facetFactorySet;
         }
 
         private IClassStrategy ClassStrategy { get; }
 
-        private IFacetFactorySet FacetFactorySet => reflector.ObjectFacetFactorySet;
+        private IFacetFactorySet FacetFactorySet { get; }
 
         private Type[] InterfacesTypes => IntrospectedType.GetInterfaces().Where(i => i.IsPublic).ToArray();
 

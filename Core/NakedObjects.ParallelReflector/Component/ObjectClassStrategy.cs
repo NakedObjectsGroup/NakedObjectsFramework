@@ -20,13 +20,10 @@ namespace NakedObjects.ParallelReflect.Component {
     [Serializable]
     public class ObjectClassStrategy : IClassStrategy {
         private readonly IObjectReflectorConfiguration config;
-        private readonly IFunctionalReflectorConfiguration fConfig;
 
-        public ObjectClassStrategy(IObjectReflectorConfiguration config,
-                                    IFunctionalReflectorConfiguration fConfig = null)
+        public ObjectClassStrategy(IObjectReflectorConfiguration config)
         {
             this.config = config;
-            this.fConfig = fConfig;
         }
 
         #region IClassStrategy Members

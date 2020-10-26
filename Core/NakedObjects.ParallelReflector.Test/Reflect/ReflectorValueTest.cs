@@ -16,11 +16,13 @@ namespace NakedObjects.ParallelReflect.Test {
     [TestClass]
     public class ReflectorValueTest : AbstractReflectorTest {
         protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(ParallelReflector reflector) {
+            var objectReflector = (ObjectReflector) reflector;
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
             (_, metamodel) = reflector.LoadSpecification(typeof(IEnumerable<char>), ClassStrategy, metamodel);
             (_, metamodel) = reflector.LoadSpecification(typeof(string), ClassStrategy, metamodel);
-            (_, metamodel) = reflector.IntrospectSpecification(typeof(IEnumerable<char>), metamodel, () => new Introspector(reflector, reflector.ObjectFacetFactorySet, ClassStrategy, null));
-            return reflector.IntrospectSpecification(typeof(string), metamodel, () => new Introspector(reflector, reflector.ObjectFacetFactorySet, ClassStrategy, null));
+
+            (_, metamodel) = reflector.IntrospectSpecification(typeof(IEnumerable<char>), metamodel, () => new Introspector(reflector, objectReflector.ObjectFacetFactorySet, ClassStrategy, null));
+            return reflector.IntrospectSpecification(typeof(string), metamodel, () => new Introspector(reflector, objectReflector.ObjectFacetFactorySet, ClassStrategy, null));
         }
 
         [TestMethod]

@@ -12,6 +12,7 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
+using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 
@@ -23,8 +24,15 @@ namespace NakedObjects.ParallelReflect.Component {
                                IEnumerable<IFacetDecorator> facetDecorators,
                                IEnumerable<IFacetFactory> facetFactories,
                                ILoggerFactory loggerFactory,
-                               ILogger<ParallelReflector> logger) : base(metamodel, objectReflectorConfiguration, functionalReflectorConfiguration, facetDecorators, facetFactories, loggerFactory, logger) { }
+                               ILogger<ParallelReflector> logger) : base(metamodel, objectReflectorConfiguration, functionalReflectorConfiguration, facetDecorators, facetFactories, loggerFactory, logger) {
+            ObjectClassStrategy = new ObjectClassStrategy(objectReflectorConfiguration);
+            ObjectFacetFactorySet = new FacetFactorySet(facetFactories.Where(f => f.ReflectionTypes.HasFlag(ReflectionType.ObjectOriented)).ToArray());
+        }
 
+
+        public IClassStrategy ObjectClassStrategy { get; }
+
+        public IFacetFactorySet ObjectFacetFactorySet { get; }
 
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectObjectTypes(Type[] ooTypes) {
             var placeholders = GetPlaceholders(ooTypes, ObjectClassStrategy);

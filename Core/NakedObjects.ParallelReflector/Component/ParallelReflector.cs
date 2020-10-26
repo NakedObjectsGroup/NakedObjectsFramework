@@ -34,14 +34,14 @@ namespace NakedObjects.ParallelReflect.Component {
                                     IEnumerable<IFacetFactory> facetFactories,
                                     ILoggerFactory loggerFactory,
                                     ILogger<ParallelReflector> logger) {
-            ObjectClassStrategy = new ObjectClassStrategy(objectReflectorConfiguration, functionalReflectorConfiguration);
+            
             FunctionalClassStrategy = new FunctionClassStrategy(functionalReflectorConfiguration);
             initialMetamodel = metamodel ?? throw new InitialisationException($"{nameof(metamodel)} is null");
             reflectorConfiguration = new CompositeReflectorConfiguration(objectReflectorConfiguration, functionalReflectorConfiguration);
             this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
             facetDecoratorSet = new FacetDecoratorSet(facetDecorators.ToArray());
-            ObjectFacetFactorySet = new FacetFactorySet(facetFactories.Where(f => f.ReflectionTypes.HasFlag(ReflectionType.ObjectOriented)).ToArray());
+           
             FunctionalFacetFactorySet = new FacetFactorySet(facetFactories.Where(f => f.ReflectionTypes.HasFlag(ReflectionType.Functional)).ToArray());
         }
 
@@ -152,11 +152,9 @@ namespace NakedObjects.ParallelReflect.Component {
 
         public bool IgnoreCase => reflectorConfiguration.IgnoreCase;
 
-        public IClassStrategy ObjectClassStrategy { get; }
+       // public IClassStrategy ObjectClassStrategy { get; }
 
         public IClassStrategy FunctionalClassStrategy { get; }
-
-        public IFacetFactorySet ObjectFacetFactorySet { get; }
 
         public IMetamodel Metamodel => null;
 
