@@ -21,7 +21,6 @@ namespace NakedObjects.ParallelReflect.Component {
 
         public ObjectReflector(IMetamodelBuilder metamodel,
                                IObjectReflectorConfiguration objectReflectorConfiguration,
-                               IFunctionalReflectorConfiguration functionalReflectorConfiguration,
                                IEnumerable<IFacetDecorator> facetDecorators,
                                IEnumerable<IFacetFactory> facetFactories,
                                ILoggerFactory loggerFactory,
@@ -37,7 +36,7 @@ namespace NakedObjects.ParallelReflect.Component {
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectObjectTypes(Type[] ooTypes) {
             var placeholders = GetPlaceholders(ooTypes, ClassStrategy);
             return placeholders.Any()
-                ? IntrospectPlaceholders(placeholders, () => new Introspector(this, FacetFactorySet, ClassStrategy, LoggerFactory.CreateLogger<Introspector>()))
+                ? IntrospectPlaceholders(placeholders, () => new ObjectIntrospector(this, FacetFactorySet, ClassStrategy, LoggerFactory.CreateLogger<ObjectIntrospector>()))
                 : placeholders;
         }
 

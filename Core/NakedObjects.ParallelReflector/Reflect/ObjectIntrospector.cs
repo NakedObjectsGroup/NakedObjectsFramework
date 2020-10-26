@@ -21,19 +21,18 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Meta.Utils;
-using NakedObjects.ParallelReflect.Component;
 using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflect {
-    public sealed class Introspector : IIntrospector {
-        private readonly ILogger<Introspector> logger;
+    public sealed class ObjectIntrospector : IIntrospector {
+        private readonly ILogger<ObjectIntrospector> logger;
         private readonly IReflector reflector;
         private MethodInfo[] methods;
         private IList<IAssociationSpecImmutable> orderedFields;
         private IList<IActionSpecImmutable> orderedObjectActions;
         private PropertyInfo[] properties;
 
-        public Introspector(IReflector reflector, IFacetFactorySet facetFactorySet, IClassStrategy classStrategy, ILogger<Introspector> logger) {
+        public ObjectIntrospector(IReflector reflector, IFacetFactorySet facetFactorySet, IClassStrategy classStrategy, ILogger<ObjectIntrospector> logger) {
             this.reflector = reflector;
             ClassStrategy = classStrategy;
             this.logger = logger;
