@@ -18,6 +18,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflect.FacetFactory;
+using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class TitleToStringMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
@@ -25,11 +26,11 @@ namespace NakedFunctions.Reflector.FacetFactory {
             RecognisedMethodsAndPrefixes.ToStringMethod
         };
 
-        private readonly ILogger<TitleMethodFacetFactory> logger;
+        private readonly ILogger<TitleToStringMethodFacetFactory> logger;
 
         public TitleToStringMethodFacetFactory(IFacetFactoryOrder<TitleToStringMethodFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces, ReflectionType.Functional) =>
-            logger = loggerFactory.CreateLogger<TitleMethodFacetFactory>();
+            logger = loggerFactory.CreateLogger<TitleToStringMethodFacetFactory>();
 
         public override string[] Prefixes => FixedPrefixes;
 

@@ -23,6 +23,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflect.FacetFactory;
+using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Util;
 
 namespace NakedFunctions.Reflector.FacetFactory {

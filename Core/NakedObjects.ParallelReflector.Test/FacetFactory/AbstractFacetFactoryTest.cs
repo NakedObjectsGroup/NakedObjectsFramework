@@ -18,6 +18,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflect.Component;
+using NakedObjects.Reflector.Component;
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {
     public abstract class AbstractFacetFactoryTest {

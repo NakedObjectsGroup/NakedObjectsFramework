@@ -22,6 +22,8 @@ using NakedObjects.Meta.Component;
 using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
 using NakedObjects.ParallelReflect.TypeFacetFactory;
+using NakedObjects.Reflector.Component;
+using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedObjects.ParallelReflect.Test {
     public abstract class AbstractReflectorTest {

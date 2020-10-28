@@ -8,8 +8,9 @@
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.ParallelReflect;
 
-namespace NakedObjects.ParallelReflect {
+namespace NakedObjects.Reflector.Reflect {
     public class ObjectIntrospector : Introspector, IIntrospector {
         public ObjectIntrospector(IReflector reflector, ILogger<ObjectIntrospector> logger) : base(reflector, logger) { }
 

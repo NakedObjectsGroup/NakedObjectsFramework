@@ -8,8 +8,9 @@
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.ParallelReflect.FacetFactory;
 
-namespace NakedObjects.ParallelReflect.FacetFactory {
+namespace NakedObjects.Reflector.FacetFactory {
     public abstract class AnnotationBasedFacetFactoryAbstract : FacetFactoryAbstract, IAnnotationBasedFacetFactory {
         protected AnnotationBasedFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes, ReflectionType reflectionTypes = ReflectionType.ObjectOriented)
             : base(numericOrder, loggerFactory, featureTypes, reflectionTypes) { }

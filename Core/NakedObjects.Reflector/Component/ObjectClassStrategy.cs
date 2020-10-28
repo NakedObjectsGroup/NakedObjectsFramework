@@ -11,9 +11,8 @@ using System.Reflection;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Util;
-using NakedObjects.Util;
 
-namespace NakedObjects.ParallelReflect.Component {
+namespace NakedObjects.Reflector.Component {
     /// <summary>
     ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
     /// </summary>

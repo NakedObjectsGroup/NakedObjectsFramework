@@ -32,6 +32,8 @@ using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
 using NakedObjects.ParallelReflect.Test;
 using NakedObjects.ParallelReflect.TypeFacetFactory;
+using NakedObjects.Reflector.Component;
+using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedFunctions.Reflect.Test {
 

@@ -19,6 +19,8 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Component;
 using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
+using NakedObjects.Reflector.Component;
+using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local

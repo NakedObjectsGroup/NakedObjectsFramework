@@ -13,6 +13,8 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflect.Component;
+using NakedObjects.Reflector.Component;
+using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.ParallelReflect.Test {
     public class TestPoco { }

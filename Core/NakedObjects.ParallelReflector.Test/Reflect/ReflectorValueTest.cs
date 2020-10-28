@@ -11,6 +11,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflect.Component;
+using NakedObjects.Reflector.Component;
+using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.ParallelReflect.Test {
     [TestClass]

@@ -19,9 +19,11 @@ using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflect.FacetFactory;
+
 #pragma warning disable 612
 
-namespace NakedObjects.ParallelReflect.FacetFactory {
+namespace NakedObjects.Reflector.FacetFactory {
     public abstract class MethodPrefixBasedFacetFactoryAbstract : FacetFactoryAbstract, IMethodPrefixBasedFacetFactory {
         private readonly ILogger<MethodPrefixBasedFacetFactoryAbstract> logger;
 

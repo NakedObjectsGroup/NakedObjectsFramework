@@ -9,6 +9,7 @@ using System;
 using NakedFunctions.Reflector.FacetFactory;
 using NakedObjects.ParallelReflect.FacetFactory;
 using NakedObjects.ParallelReflect.TypeFacetFactory;
+using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedObjects.ParallelReflect {
     /// <summary>

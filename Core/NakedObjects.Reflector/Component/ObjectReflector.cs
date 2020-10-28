@@ -14,8 +14,11 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.ParallelReflect;
+using NakedObjects.ParallelReflect.Component;
+using NakedObjects.Reflector.Reflect;
 
-namespace NakedObjects.ParallelReflect.Component {
+namespace NakedObjects.Reflector.Component {
     public sealed class ObjectReflector : ParallelReflector {
         private readonly IObjectReflectorConfiguration objectReflectorConfiguration;
 

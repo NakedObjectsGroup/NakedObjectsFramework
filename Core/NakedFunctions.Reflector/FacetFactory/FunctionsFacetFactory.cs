@@ -24,6 +24,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflect.FacetFactory;
+using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Util;
 
 namespace NakedFunctions.Reflector.FacetFactory {
@@ -33,11 +34,11 @@ namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class FunctionsFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodIdentifyingFacetFactory {
         private static readonly string[] FixedPrefixes = { };
 
-        private readonly ILogger<ActionMethodsFacetFactory> logger;
+        private readonly ILogger<FunctionsFacetFactory> logger;
 
         public FunctionsFacetFactory(IFacetFactoryOrder<FunctionsFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ActionsAndActionParameters, ReflectionType.Functional) =>
-            logger = loggerFactory.CreateLogger<ActionMethodsFacetFactory>();
+            logger = loggerFactory.CreateLogger<FunctionsFacetFactory>();
 
         public override string[] Prefixes => FixedPrefixes;
 
