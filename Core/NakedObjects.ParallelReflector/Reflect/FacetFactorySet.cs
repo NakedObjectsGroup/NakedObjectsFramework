@@ -103,14 +103,6 @@ namespace NakedObjects.ParallelReflect {
 
         public bool Recognizes(MethodInfo method) => Prefixes.Any(prefix => method.Name.StartsWith(prefix, StringComparison.Ordinal));
 
-        public void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) { }
-
-        public void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) { }
-
-        public void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType) { }
-
-        public void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification) { }
-
         public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (type.IsInterface) {
                 foreach (var facetFactory in GetFactoryByFeatureType(FeatureType.Interfaces)) {

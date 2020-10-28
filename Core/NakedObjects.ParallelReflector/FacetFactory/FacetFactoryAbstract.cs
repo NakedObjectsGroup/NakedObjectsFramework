@@ -43,14 +43,6 @@ namespace NakedObjects.ParallelReflect.FacetFactory {
         public virtual FeatureType FeatureTypes { get; }
         public ReflectionType ReflectionTypes { get; }
 
-        public void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification) { }
-
-        public void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification) { }
-
-        public void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) { }
-
-        public void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder) { }
-
         public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
 
         public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;

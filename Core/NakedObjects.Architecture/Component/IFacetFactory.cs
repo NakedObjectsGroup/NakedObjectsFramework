@@ -32,43 +32,6 @@ namespace NakedObjects.Architecture.Component {
 
         ReflectionType ReflectionTypes { get; }
 
-        //  Reflector - remove when Reflector is obsoleted in favor of ParallelReflector
-        /// <summary>
-        ///     Process the class, and return the correctly setup annotation if present.
-        /// </summary>
-        /// <param name="reflector"></param>
-        /// <param name="type">class being processed</param>
-        /// <param name="methodRemover">allow any methods of the class to be removed</param>
-        /// <param name="specification"> attach the facets to</param>
-        void Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification);
-
-        /// <summary>
-        ///     Process the method, and return the correctly setup annotation if present.
-        /// </summary>
-        /// <param name="reflector"></param>
-        /// <param name="method">MethodInfo representing the feature being processed</param>
-        /// <param name="methodRemover">allow any methods of the class to be removed</param>
-        /// <param name="specification"> attach the facets to</param>
-        void Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification);
-
-        /// <summary>
-        ///     Process the property, and return the correctly setup annotation if present.
-        /// </summary>
-        /// <param name="reflector"></param>
-        /// <param name="property">PropertyInfo representing the feature being processed</param>
-        /// <param name="methodRemover">allow any methods of the class to be removed</param>
-        /// <param name="specification"> attach the facets to</param>
-        void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification);
-
-        /// <summary>
-        ///     Process the parameters of the method, and return the correctly setup annotation if present.
-        /// </summary>
-        /// <param name="reflector"></param>
-        /// <param name="method">MethodInfo representing the feature being processed</param>
-        /// <param name="paramNum">zero-based index to the parameter to be processed</param>
-        /// <param name="holder">to attach the facets to</param>
-        void ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder);
-
         //  ParallelReflector
         /// <summary>
         ///     Process the class, and return the updated metamodel
