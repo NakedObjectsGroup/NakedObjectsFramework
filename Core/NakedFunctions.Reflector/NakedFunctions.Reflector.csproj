@@ -5,4 +5,8 @@
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj" />
+  </ItemGroup>
+
 </Project>

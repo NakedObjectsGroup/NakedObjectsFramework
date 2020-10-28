@@ -15,6 +15,7 @@
     <ProjectReference Include="..\..\Facade\NakedObjects.Facade\NakedObjects.Facade.csproj" />
     <ProjectReference Include="..\..\Rest\NakedObjects.Rest\NakedObjects.Rest.csproj" />
     <ProjectReference Include="..\NakedFramework.ModelBuilding\NakedFramework.ModelBuilding.csproj" />
+    <ProjectReference Include="..\NakedFunctions.Reflector\NakedFunctions.Reflector.csproj" />
     <ProjectReference Include="..\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj" />
     <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj" />
   </ItemGroup>

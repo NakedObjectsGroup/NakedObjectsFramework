@@ -9,8 +9,9 @@ using System;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.ParallelReflect;
 
-namespace NakedObjects.ParallelReflect {
+namespace NakedFunctions.Reflector.Reflect {
     public sealed class FunctionalIntrospector : Introspector, IIntrospector {
         public static Type[] Functions;
 

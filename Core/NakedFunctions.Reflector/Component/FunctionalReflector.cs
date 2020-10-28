@@ -10,12 +10,15 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using NakedFunctions.Reflector.Reflect;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.ParallelReflect;
+using NakedObjects.ParallelReflect.Component;
 
-namespace NakedObjects.ParallelReflect.Component {
+namespace NakedFunctions.Reflector.Component {
     public sealed class FunctionalReflector : ParallelReflector {
         private readonly IFunctionalReflectorConfiguration functionalReflectorConfiguration;
 

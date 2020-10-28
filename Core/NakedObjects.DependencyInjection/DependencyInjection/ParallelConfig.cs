@@ -8,6 +8,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.ModelBuilding.Component;
 using NakedFunctions;
+using NakedFunctions.Reflector.Component;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Authentication;
