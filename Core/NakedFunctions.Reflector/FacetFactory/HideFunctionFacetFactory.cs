@@ -12,6 +12,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
 using NakedFunctions.Reflector.Reflect;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -20,17 +21,17 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflect.FacetFactory;
 
-namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
-    public sealed class ActionValidateViaFunctionFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodFilteringFacetFactory {
+namespace NakedFunctions.Reflector.FacetFactory {
+    public sealed class HideFunctionFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodFilteringFacetFactory {
         private static readonly string[] FixedPrefixes = {
-            RecognisedMethodsAndPrefixes.ValidatePrefix
+            RecognisedMethodsAndPrefixes.HidePrefix
         };
 
-        private readonly ILogger<ActionValidateViaFunctionFacetFactory> logger;
+        private readonly ILogger<HideFunctionFacetFactory> logger;
 
-        public ActionValidateViaFunctionFacetFactory(IFacetFactoryOrder<ActionValidateViaFunctionFacetFactory> order, ILoggerFactory loggerFactory)
+        public HideFunctionFacetFactory(IFacetFactoryOrder<HideFunctionFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
-            logger = loggerFactory.CreateLogger<ActionValidateViaFunctionFacetFactory>();
+            logger = loggerFactory.CreateLogger<HideFunctionFacetFactory>();
 
         public override string[] Prefixes => FixedPrefixes;
 
@@ -39,8 +40,8 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
             pi.ParameterType == toMatch;
 
         private static bool NameMatches(MethodInfo compFunction, MethodInfo actionFunction) =>
-            compFunction.Name.StartsWith(RecognisedMethodsAndPrefixes.ValidatePrefix)
-            && compFunction.Name.Substring(RecognisedMethodsAndPrefixes.ValidatePrefix.Length) == actionFunction.Name;
+            compFunction.Name.StartsWith(RecognisedMethodsAndPrefixes.HidePrefix)
+            && compFunction.Name.Substring(RecognisedMethodsAndPrefixes.HidePrefix.Length) == actionFunction.Name;
 
         #region IMethodFilteringFacetFactory Members
 
@@ -48,20 +49,20 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
             var type = actionMethod.GetParameters().FirstOrDefault()?.ParameterType;
 
             if (type != null) {
-                // find matching disable function
+                // find matching Hide function
                 var match = FunctionalIntrospector.Functions.SelectMany(t => t.GetMethods()).Where(m => NameMatches(m, actionMethod)).SingleOrDefault(m => IsSameType(m.GetParameters().FirstOrDefault(), type));
 
                 if (match != null) {
-                    var facet = new ActionValidationViaFunctionFacet(match, action);
+                    var hideFacet = new HideForContextViaFunctionFacet(match, action);
 
-                    FacetUtils.AddFacet(facet);
+                    FacetUtils.AddFacet(hideFacet);
                 }
             }
 
             return metamodel;
         }
 
-        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.ValidatePrefix);
+        public bool Filters(MethodInfo method, IClassStrategy classStrategy) => method.Name.StartsWith(RecognisedMethodsAndPrefixes.HidePrefix);
 
         #endregion
     }

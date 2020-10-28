@@ -10,7 +10,6 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using NakedFunctions;
 using NakedFunctions.Meta.Facet;
 using NakedFunctions.Reflector.Reflect;
 using NakedObjects.Architecture.Component;
@@ -22,7 +21,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflect.FacetFactory;
 
-namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
+namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class ViewModelAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
         private readonly ILogger<ViewModelAnnotationFacetFactory> logger;
 

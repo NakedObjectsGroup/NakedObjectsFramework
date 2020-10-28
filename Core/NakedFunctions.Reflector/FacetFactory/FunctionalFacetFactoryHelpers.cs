@@ -9,10 +9,9 @@ using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Principal;
-using NakedFunctions;
 using NakedObjects.Core.Util;
 
-namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
+namespace NakedFunctions.Reflector.FacetFactory {
     public static class FunctionalFacetFactoryHelpers {
 
         public static bool IsInjectedParameter(MethodInfo method, int paramNum) {

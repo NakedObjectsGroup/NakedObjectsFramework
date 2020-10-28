@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -21,7 +22,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflect.FacetFactory;
 
-namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
+namespace NakedFunctions.Reflector.FacetFactory {
     /// <summary>
     ///     Creates an <see cref="IContributedActionFacet" /> based on the presence of an
     ///     <see cref="ContributedActionAttribute" /> annotation

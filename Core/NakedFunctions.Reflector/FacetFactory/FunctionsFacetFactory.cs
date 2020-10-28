@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -25,7 +26,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflect.FacetFactory;
 using NakedObjects.Util;
 
-namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
+namespace NakedFunctions.Reflector.FacetFactory {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
@@ -41,7 +42,7 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
         public override string[] Prefixes => FixedPrefixes;
 
         private bool IsQueryOnly(MethodInfo method) =>
-            method.GetCustomAttribute<IdempotentAttribute>() == null &&
+            method.GetCustomAttribute<NakedObjects.IdempotentAttribute>() == null &&
             method.GetCustomAttribute<QueryOnlyAttribute>() != null;
 
         // separate methods to reproduce old reflector behaviour

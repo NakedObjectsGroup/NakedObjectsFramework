@@ -10,6 +10,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -20,10 +21,10 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflect.FacetFactory;
 
-namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
+namespace NakedFunctions.Reflector.FacetFactory {
     /// <summary>
     ///     Creates an <see cref="IQueryOnlyFacet" /> or <see cref="IIdempotentFacet" />  based on the presence of a
-    ///     <see cref="QueryOnlyAttribute" /> or <see cref="IdempotentAttribute" /> annotation
+    ///     <see cref="QueryOnlyAttribute" /> or <see cref="NakedObjects.IdempotentAttribute" /> annotation
     /// </summary>
     public sealed class PotencyDerivedFromSignatureFacetFactory : FacetFactoryAbstract {
         private readonly ILogger<PotencyDerivedFromSignatureFacetFactory> logger;

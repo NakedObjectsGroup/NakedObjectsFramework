@@ -11,7 +11,6 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using Microsoft.Extensions.Logging;
-using NakedFunctions;
 using NakedFunctions.Meta.Facet;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -22,7 +21,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflect.FacetFactory;
 
-namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
+namespace NakedFunctions.Reflector.FacetFactory {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>

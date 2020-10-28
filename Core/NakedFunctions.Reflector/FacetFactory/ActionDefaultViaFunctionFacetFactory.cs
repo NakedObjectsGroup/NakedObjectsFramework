@@ -12,6 +12,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
 using NakedFunctions.Reflector.Reflect;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -21,7 +22,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflect.FacetFactory;
 using NakedObjects.Util;
 
-namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
+namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class ActionDefaultViaFunctionFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodFilteringFacetFactory {
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ParameterDefaultPrefix

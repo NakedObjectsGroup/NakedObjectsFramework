@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.ModelBuilding.Component;
 using NakedFunctions.Reflector.Component;
+using NakedFunctions.Reflector.FacetFactory;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -29,7 +30,6 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflect.FacetFactory;
-using NakedObjects.ParallelReflect.FunctionalFacetFactory;
 using NakedObjects.ParallelReflect.Test;
 using NakedObjects.ParallelReflect.TypeFacetFactory;
 

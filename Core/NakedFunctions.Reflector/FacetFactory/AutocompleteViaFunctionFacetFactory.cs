@@ -14,6 +14,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
 using NakedFunctions.Reflector.Reflect;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
@@ -23,7 +24,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflect.FacetFactory;
 using NakedObjects.Util;
 
-namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
+namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class AutocompleteViaFunctionFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodFilteringFacetFactory {
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.AutoCompletePrefix
@@ -53,7 +54,7 @@ namespace NakedObjects.ParallelReflect.FunctionalFacetFactory {
                     }
 
                     if (method != null) {
-                        var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
+                        var pageSizeAttr = method.GetCustomAttribute<NakedObjects.PageSizeAttribute>();
                         var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
 
                         var pageSize = pageSizeAttr?.Value ?? 0; // default to 0 ie system default
