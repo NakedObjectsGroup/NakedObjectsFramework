@@ -20,7 +20,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class ConcurrencyCheckAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class ConcurrencyCheckAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public ConcurrencyCheckAnnotationFacetFactory(IFacetFactoryOrder<ConcurrencyCheckAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Properties) { }
 

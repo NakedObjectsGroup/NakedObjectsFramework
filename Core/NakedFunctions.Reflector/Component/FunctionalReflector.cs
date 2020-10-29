@@ -10,16 +10,16 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using NakedFunctions.Reflector.FacetFactory;
 using NakedFunctions.Reflector.Reflect;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.ParallelReflect;
-using NakedObjects.ParallelReflect.Component;
+using NakedObjects.ParallelReflector.Component;
 
 namespace NakedFunctions.Reflector.Component {
-    public sealed class FunctionalReflector : ParallelReflector {
+    public sealed class FunctionalReflector : AbstractParallelReflector {
         private readonly IFunctionalReflectorConfiguration functionalReflectorConfiguration;
 
         public FunctionalReflector(IMetamodelBuilder metamodel,
@@ -27,10 +27,10 @@ namespace NakedFunctions.Reflector.Component {
                                    IEnumerable<IFacetDecorator> facetDecorators,
                                    IEnumerable<IFacetFactory> facetFactories,
                                    ILoggerFactory loggerFactory,
-                                   ILogger<ParallelReflector> logger) : base(metamodel, facetDecorators, loggerFactory, logger) {
+                                   ILogger<AbstractParallelReflector> logger) : base(metamodel, facetDecorators, loggerFactory, logger) {
             this.functionalReflectorConfiguration = functionalReflectorConfiguration;
             ClassStrategy = new FunctionClassStrategy(functionalReflectorConfiguration);
-            FacetFactorySet = new FacetFactorySet(facetFactories.Where(f => f.ReflectionTypes.HasFlag(ReflectionType.Functional)).ToArray());
+            FacetFactorySet = new FunctionalFacetFactorySet(facetFactories.OfType<FunctionalFacetFactoryProcessor>().ToArray());
         }
 
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectFunctionalTypes(Type[] records, Type[] functions, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {

@@ -22,7 +22,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class RegExAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class RegExAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         private readonly ILogger<RegExAnnotationFacetFactory> logger;
 
         public RegExAnnotationFacetFactory(IFacetFactoryOrder<RegExAnnotationFacetFactory> order, ILoggerFactory loggerFactory)

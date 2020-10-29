@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
+using NakedObjects.ParallelReflector.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
@@ -24,7 +25,7 @@ namespace NakedObjects.Reflector.FacetFactory {
     /// <para>
     ///     Does not add any <see cref="IFacet" />s
     /// </para>
-    public sealed class IteratorFilteringFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
+    public sealed class IteratorFilteringFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
         private static readonly string[] FixedPrefixes;
 
         static IteratorFilteringFacetFactory() => FixedPrefixes = new[] {RecognisedMethodsAndPrefixes.GetEnumeratorMethod};
@@ -32,11 +33,11 @@ namespace NakedObjects.Reflector.FacetFactory {
         public IteratorFilteringFacetFactory(IFacetFactoryOrder<IteratorFilteringFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        public override string[] Prefixes => FixedPrefixes;
+        public  string[] Prefixes => FixedPrefixes;
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (typeof(IEnumerable).IsAssignableFrom(type) && !FasterTypeUtils.IsSystem(type)) {
-                var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.GetEnumeratorMethod, null, Type.EmptyTypes, classStrategy);
+                var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.GetEnumeratorMethod, null, Type.EmptyTypes, classStrategy);
                 if (method != null) {
                     methodRemover.RemoveMethod(method);
                 }

@@ -19,7 +19,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class TypeMarkerFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class TypeMarkerFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public TypeMarkerFacetFactory(IFacetFactoryOrder<TypeMarkerFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces, ReflectionType.Both) { }
 

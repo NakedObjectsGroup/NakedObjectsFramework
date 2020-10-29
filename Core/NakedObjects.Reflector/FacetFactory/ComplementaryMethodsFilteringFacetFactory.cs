@@ -14,13 +14,12 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core;
-using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
-    public sealed class ComplementaryMethodsFilteringFacetFactory : FacetFactoryAbstract, IMethodFilteringFacetFactory {
+    public sealed class ComplementaryMethodsFilteringFacetFactory : ObjectFacetFactoryProcessor, IMethodFilteringFacetFactory {
         private static readonly string[] PropertyPrefixes = {
             RecognisedMethodsAndPrefixes.AutoCompletePrefix,
             RecognisedMethodsAndPrefixes.ModifyPrefix,

@@ -20,7 +20,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class DateOnlyFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class DateOnlyFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public DateOnlyFacetFactory(IFacetFactoryOrder<DateOnlyFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 

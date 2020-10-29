@@ -12,9 +12,10 @@ using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
+using NakedObjects.ParallelReflector.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public abstract class PropertyOrCollectionIdentifyingFacetFactoryAbstract : MethodPrefixBasedFacetFactoryAbstract, IPropertyOrCollectionIdentifyingFacetFactory {
+    public abstract class PropertyOrCollectionIdentifyingFacetFactoryAbstract : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory {
         protected PropertyOrCollectionIdentifyingFacetFactoryAbstract(int numericOrder, ILoggerFactory loggerFactory, FeatureType featureTypes, ReflectionType reflectionType)
             : base(numericOrder, loggerFactory, featureTypes, reflectionType) { }
 
@@ -22,5 +23,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             candidates.Where(property => property.GetGetMethod() != null &&
                                          classStrategy.IsTypeToBeIntrospected(property.PropertyType) &&
                                          !classStrategy.IsIgnored(property)).ToList();
+
+        public abstract string[] Prefixes { get; }
     }
 }

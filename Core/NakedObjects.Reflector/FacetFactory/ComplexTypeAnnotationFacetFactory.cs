@@ -20,7 +20,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class ComplexTypeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class ComplexTypeAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public ComplexTypeAnnotationFacetFactory(IFacetFactoryOrder<ComplexTypeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 

@@ -15,16 +15,17 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
+using NakedObjects.ParallelReflector.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
     ///     Removes any methods on a type that handle events.
     /// </summary>
-    public sealed class RemoveEventHandlerMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
+    public sealed class RemoveEventHandlerMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
         public RemoveEventHandlerMethodsFacetFactory(IFacetFactoryOrder<RemoveEventHandlerMethodsFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        public override string[] Prefixes {
+        public  string[] Prefixes {
             get { return new string[] { }; }
         }
 
@@ -35,7 +36,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         private static void RemoveIfNotNull(IMethodRemover methodRemover, MethodInfo mi) {
             if (mi != null) {
-                RemoveMethod(methodRemover, mi);
+                MethodHelpers.RemoveMethod(methodRemover, mi);
             }
         }
 

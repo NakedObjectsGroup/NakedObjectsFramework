@@ -24,7 +24,7 @@ using NakedObjects.Value;
 #pragma warning disable 612
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class TypicalLengthDerivedFromTypeFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class TypicalLengthDerivedFromTypeFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         private static readonly IDictionary<Type, int> TypeMap = new Dictionary<Type, int> {
             {typeof(bool), 5},
             {typeof(byte), 3},

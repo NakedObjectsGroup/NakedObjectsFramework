@@ -19,11 +19,10 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;
-using NakedObjects.ParallelReflect.FacetFactory;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.ParallelReflector.FacetFactory;
 
 namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class TitleFunctionFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodFilteringFacetFactory {
+    public sealed class TitleFunctionFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodFilteringFacetFactory {
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.TitleMethod
         };
@@ -34,7 +33,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.Objects, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<TitleFunctionFacetFactory>();
 
-        public override string[] Prefixes => FixedPrefixes;
+        public  string[] Prefixes => FixedPrefixes;
 
         private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
             pi != null &&

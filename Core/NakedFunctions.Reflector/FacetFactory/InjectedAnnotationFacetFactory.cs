@@ -10,15 +10,15 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;
-using NakedObjects.ParallelReflect.FacetFactory;
-using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class InjectedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class InjectedAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory
+    {
         public InjectedAnnotationFacetFactory(IFacetFactoryOrder<InjectedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ActionParameters, ReflectionType.Functional) { }
 

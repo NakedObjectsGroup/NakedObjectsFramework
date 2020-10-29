@@ -17,7 +17,6 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflect;
-using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
@@ -25,11 +24,11 @@ namespace NakedObjects.Reflector.FacetFactory {
     /// </summary>
     /// <para>
     ///     The idea is that this <see cref="IFacetFactory" /> is included early on in the
-    ///     <see cref="FacetFactorySet" />, but other <see cref="IMandatoryFacet" /> implementations
+    ///     <see cref="ObjectFacetFactorySet" />, but other <see cref="IMandatoryFacet" /> implementations
     ///     which don't require mandatory semantics will potentially replace these where the
     ///     property or parameter is annotated or otherwise indicated as being optional.
     /// </para>
-    public sealed class MandatoryDefaultFacetFactory : FacetFactoryAbstract {
+    public sealed class MandatoryDefaultFacetFactory : ObjectFacetFactoryProcessor {
         public MandatoryDefaultFacetFactory(IFacetFactoryOrder<MandatoryDefaultFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters, ReflectionType.Both) { }
 

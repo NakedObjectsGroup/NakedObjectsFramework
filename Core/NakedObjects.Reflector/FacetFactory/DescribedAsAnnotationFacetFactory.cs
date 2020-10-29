@@ -21,7 +21,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class DescribedAsAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class DescribedAsAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         private readonly ILogger<DescribedAsAnnotationFacetFactory> logger;
 
         public DescribedAsAnnotationFacetFactory(IFacetFactoryOrder<DescribedAsAnnotationFacetFactory> order, ILoggerFactory loggerFactory)

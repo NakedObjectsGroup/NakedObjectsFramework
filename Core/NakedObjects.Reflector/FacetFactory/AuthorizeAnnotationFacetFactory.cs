@@ -19,7 +19,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.Security;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class AuthorizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class AuthorizeAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         private readonly ILogger<AuthorizeAnnotationFacetFactory> logger;
 
         public AuthorizeAnnotationFacetFactory(IFacetFactoryOrder<AuthorizeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)

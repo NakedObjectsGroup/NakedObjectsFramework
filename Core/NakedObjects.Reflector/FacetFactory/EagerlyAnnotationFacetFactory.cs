@@ -17,10 +17,9 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class EagerlyAnnotationFacetFactory : FacetFactoryAbstract {
+    public sealed class EagerlyAnnotationFacetFactory : ObjectFacetFactoryProcessor {
         public EagerlyAnnotationFacetFactory(IFacetFactoryOrder<EagerlyAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.EverythingButActionParameters) { }
 

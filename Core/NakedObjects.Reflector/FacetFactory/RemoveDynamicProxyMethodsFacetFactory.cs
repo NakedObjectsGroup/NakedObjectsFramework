@@ -17,10 +17,9 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class RemoveDynamicProxyMethodsFacetFactory : FacetFactoryAbstract {
+    public sealed class RemoveDynamicProxyMethodsFacetFactory : ObjectFacetFactoryProcessor {
         private static readonly string[] MethodsToRemove = {"GetBasePropertyValue", "SetBasePropertyValue", "SetChangeTracker"};
 
         public RemoveDynamicProxyMethodsFacetFactory(IFacetFactoryOrder<RemoveDynamicProxyMethodsFacetFactory> order, ILoggerFactory loggerFactory)

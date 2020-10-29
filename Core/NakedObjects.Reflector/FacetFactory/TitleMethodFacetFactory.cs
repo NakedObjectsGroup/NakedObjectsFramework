@@ -19,9 +19,10 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflector.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class TitleMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
+    public sealed class TitleMethodFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ToStringMethod,
             RecognisedMethodsAndPrefixes.TitleMethod
@@ -33,7 +34,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
             logger = loggerFactory.CreateLogger<TitleMethodFacetFactory>();
 
-        public override string[] Prefixes => FixedPrefixes;
+        public  string[] Prefixes => FixedPrefixes;
 
         /// <summary>
         ///     If no title or ToString can be used then will use Facets provided by
@@ -58,7 +59,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             }
 
             try {
-                var titleMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.TitleMethod, typeof(string), Type.EmptyTypes, classStrategy);
+                var titleMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.TitleMethod, typeof(string), Type.EmptyTypes, classStrategy);
                 IFacet titleFacet = null;
 
                 if (titleMethod != null) {
@@ -66,7 +67,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                     titleFacet = new TitleFacetViaTitleMethod(titleMethod, specification, Logger<TitleFacetViaTitleMethod>());
                 }
 
-                var toStringMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes, classStrategy);
+                var toStringMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes, classStrategy);
                 if (toStringMethod != null && !(toStringMethod.DeclaringType == typeof(object))) {
                     methodRemover.RemoveMethod(toStringMethod);
                 }
@@ -75,7 +76,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                     toStringMethod = null;
                 }
 
-                var maskMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] {typeof(string)}, classStrategy);
+                var maskMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] {typeof(string)}, classStrategy);
 
                 if (maskMethod != null) {
                     methodRemover.RemoveMethod(maskMethod);

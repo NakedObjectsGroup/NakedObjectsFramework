@@ -15,9 +15,10 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflector.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class MenuFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
+    public sealed class MenuFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
         private static readonly string[] FixedPrefixes;
 
         static MenuFacetFactory() {
@@ -27,12 +28,12 @@ namespace NakedObjects.Reflector.FacetFactory {
         public MenuFacetFactory(IFacetFactoryOrder<MenuFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces, ReflectionType.Both) { }
 
-        public override string[] Prefixes => FixedPrefixes;
+        public  string[] Prefixes => FixedPrefixes;
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var method = FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, null, null, classStrategy);
+            var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, null, null, classStrategy);
             if (method != null) {
-                RemoveMethod(methodRemover, method);
+                MethodHelpers.RemoveMethod(methodRemover, method);
                 FacetUtils.AddFacet(new MenuFacetViaMethod(method, specification));
             }
             else {

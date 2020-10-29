@@ -7,9 +7,8 @@
 
 using System;
 using NakedFunctions.Reflector.FacetFactory;
-using NakedObjects.ParallelReflect.FacetFactory;
-using NakedObjects.ParallelReflect.TypeFacetFactory;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.TypeFacetFactory;
 
 namespace NakedObjects.ParallelReflect {
     /// <summary>
@@ -45,7 +44,7 @@ namespace NakedObjects.ParallelReflect {
                 typeof(ValidateObjectFacetFactory),
                 typeof(ComplexTypeAnnotationFacetFactory),
                 typeof(ViewModelFacetFactory),
-                typeof(BoundedAnnotationFacetFactory),
+                typeof(NakedObjects.Reflector.FacetFactory.BoundedAnnotationFacetFactory),
                 typeof(EnumFacetFactory),
                 typeof(ActionDefaultAnnotationFacetFactory),
                 typeof(PropertyDefaultAnnotationFacetFactory),
@@ -126,7 +125,8 @@ namespace NakedObjects.ParallelReflect {
                 typeof(ActionChoicesViaFunctionFacetFactory),
                 typeof(AutocompleteViaFunctionFacetFactory),
                 typeof(PotencyDerivedFromSignatureFacetFactory),
-                typeof(ViewModelAnnotationFacetFactory)
+                typeof(ViewModelAnnotationFacetFactory),
+                typeof(NakedFunctions.Reflector.FacetFactory.BoundedAnnotationFacetFactory)
             };
 
         public static int StandardIndexOf(Type factory) => Array.FindIndex(StandardFacetFactories(), x => x == factory);

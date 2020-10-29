@@ -20,7 +20,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class MultiLineAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class MultiLineAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public MultiLineAnnotationFacetFactory(IFacetFactoryOrder<MultiLineAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.EverythingButCollections, ReflectionType.Both) { }
 

@@ -16,7 +16,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
@@ -27,7 +26,7 @@ namespace NakedObjects.Reflector.FacetFactory {
     ///     This is an alternative to <see cref="MandatoryDefaultFacetFactory" />. Which works the same way but
     ///     makes everything optional by default. Requiring the use of annotations to indicate mandatoryness.
     /// </para>
-    public sealed class OptionalDefaultFacetFactory : FacetFactoryAbstract {
+    public sealed class OptionalDefaultFacetFactory : ObjectFacetFactoryProcessor {
         public OptionalDefaultFacetFactory(IFacetFactoryOrder<OptionalDefaultFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 

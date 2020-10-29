@@ -18,14 +18,13 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
     ///     Central point for providing some kind of default for any  <see cref="IFacet" />s required by the Naked Objects
     ///     Framework itself.
     /// </summary>
-    public sealed class FallbackFacetFactory : FacetFactoryAbstract {
+    public sealed class FallbackFacetFactory : ObjectFacetFactoryProcessor {
         public FallbackFacetFactory(IFacetFactoryOrder<FallbackFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Everything, ReflectionType.Both) { }
 

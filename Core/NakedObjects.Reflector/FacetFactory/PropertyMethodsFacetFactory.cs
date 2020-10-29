@@ -21,6 +21,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.FacetFactory {
@@ -69,12 +70,12 @@ namespace NakedObjects.Reflector.FacetFactory {
             FindAndRemoveDefaultMethod(reflector, classStrategy, facets, methodRemover, property.DeclaringType, capitalizedName, property.PropertyType, specification);
             FindAndRemoveValidateMethod(reflector, classStrategy, facets, methodRemover, property.DeclaringType, paramTypes, capitalizedName, specification);
 
-            AddHideForSessionFacetNone(facets, specification);
-            AddDisableForSessionFacetNone(facets, specification);
-            FindDefaultHideMethod(reflector, classStrategy, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", specification);
-            FindAndRemoveHideMethod(reflector, classStrategy, facets, methodRemover, property.DeclaringType, MethodType.Object, capitalizedName, specification);
-            FindDefaultDisableMethod(reflector, classStrategy, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", specification);
-            FindAndRemoveDisableMethod(reflector, classStrategy, facets, methodRemover, property.DeclaringType, MethodType.Object, capitalizedName, specification);
+            MethodHelpers.AddHideForSessionFacetNone(facets, specification);
+            MethodHelpers.AddDisableForSessionFacetNone(facets, specification);
+            MethodHelpers.FindDefaultHideMethod(reflector, classStrategy, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", specification, LoggerFactory);
+            MethodHelpers.FindAndRemoveHideMethod(reflector, classStrategy, facets, methodRemover, property.DeclaringType, MethodType.Object, capitalizedName, specification, LoggerFactory);
+            MethodHelpers.FindDefaultDisableMethod(reflector, classStrategy, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", specification, LoggerFactory);
+            MethodHelpers.FindAndRemoveDisableMethod(reflector, classStrategy, facets, methodRemover, property.DeclaringType, MethodType.Object, capitalizedName, specification, LoggerFactory);
 
             FacetUtils.AddFacets(facets);
             return metamodel;
@@ -88,22 +89,22 @@ namespace NakedObjects.Reflector.FacetFactory {
                                                string capitalizedName,
                                                Type[] parms,
                                                ISpecification property) {
-            var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ModifyPrefix + capitalizedName, typeof(void), parms, classStrategy);
-            RemoveMethod(methodRemover, method);
+            var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ModifyPrefix + capitalizedName, typeof(void), parms, classStrategy);
+            MethodHelpers.RemoveMethod(methodRemover, method);
             if (method != null) {
                 propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, capitalizedName, property, Logger<PropertySetterFacetViaModifyMethod>()));
             }
         }
 
         private void FindAndRemoveValidateMethod(IReflector reflector, IClassStrategy classStrategy, ICollection<IFacet> propertyFacets, IMethodRemover methodRemover, Type type, Type[] parms, string capitalizedName, ISpecification property) {
-            var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms, classStrategy);
-            RemoveMethod(methodRemover, method);
+            var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms, classStrategy);
+            MethodHelpers.RemoveMethod(methodRemover, method);
             if (method != null) {
                 propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property, Logger<PropertyValidateFacetViaMethod>()));
-                AddAjaxFacet(method, property);
+                MethodHelpers.AddAjaxFacet(method, property);
             }
             else {
-                AddAjaxFacet(null, property);
+                MethodHelpers.AddAjaxFacet(null, property);
             }
         }
 
@@ -115,11 +116,11 @@ namespace NakedObjects.Reflector.FacetFactory {
                                                 string capitalizedName,
                                                 Type returnType,
                                                 ISpecification property) {
-            var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes, classStrategy);
-            RemoveMethod(methodRemover, method);
+            var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes, classStrategy);
+            MethodHelpers.RemoveMethod(methodRemover, method);
             if (method != null) {
                 propertyFacets.Add(new PropertyDefaultFacetViaMethod(method, property, Logger<PropertyDefaultFacetViaMethod>()));
-                AddOrAddToExecutedWhereFacet(method, property);
+                MethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
             }
         }
 
@@ -132,11 +133,11 @@ namespace NakedObjects.Reflector.FacetFactory {
                                                                                           Type returnType,
                                                                                           ISpecification property,
                                                                                           IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var methods = FindMethods(reflector,
-                type,
-                MethodType.Object,
-                RecognisedMethodsAndPrefixes.ChoicesPrefix + capitalizedName,
-                typeof(IEnumerable<>).MakeGenericType(returnType));
+            var methods = MethodHelpers.FindMethods(reflector,
+                                                    type,
+                                                    MethodType.Object,
+                                                    RecognisedMethodsAndPrefixes.ChoicesPrefix + capitalizedName,
+                                                    typeof(IEnumerable<>).MakeGenericType(returnType));
 
             if (methods.Length > 1) {
                 var name = RecognisedMethodsAndPrefixes.ChoicesPrefix + capitalizedName;
@@ -144,7 +145,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             }
 
             var method = methods.FirstOrDefault();
-            RemoveMethod(methodRemover, method);
+            MethodHelpers.RemoveMethod(methodRemover, method);
             if (method != null) {
                 var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
 
@@ -155,7 +156,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                 }
 
                 propertyFacets.Add(new PropertyChoicesFacet(method, parameterNamesAndTypes.ToArray(), property, Logger<PropertyChoicesFacet>()));
-                AddOrAddToExecutedWhereFacet(method, property);
+                MethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
             }
 
             return metamodel;
@@ -191,21 +192,21 @@ namespace NakedObjects.Reflector.FacetFactory {
                     var pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default
                     var minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
 
-                    RemoveMethod(methodRemover, method);
+                    MethodHelpers.RemoveMethod(methodRemover, method);
                     propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property, Logger<AutoCompleteFacet>()));
-                    AddOrAddToExecutedWhereFacet(method, property);
+                    MethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
                 }
             }
         }
 
         private MethodInfo FindAutoCompleteMethod(IReflector reflector, IClassStrategy classStrategy, Type type, string capitalizedName, Type returnType) {
-            var method = FindMethod(reflector,
-                type,
-                MethodType.Object,
-                RecognisedMethodsAndPrefixes.AutoCompletePrefix + capitalizedName,
-                returnType,
-                new[] {typeof(string)},
-                classStrategy);
+            var method = MethodHelpers.FindMethod(reflector,
+                                                  type,
+                                                  MethodType.Object,
+                                                  RecognisedMethodsAndPrefixes.AutoCompletePrefix + capitalizedName,
+                                                  returnType,
+                                                  new[] {typeof(string)},
+                                                  classStrategy);
             return method;
         }
 

@@ -16,7 +16,6 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
-using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
@@ -25,7 +24,7 @@ namespace NakedObjects.Reflector.FacetFactory {
     /// <para>
     ///     Implementation - .Net fails to find methods properly for root class, so we used the saved set.
     /// </para>
-    public sealed class RemoveSuperclassMethodsFacetFactory : FacetFactoryAbstract {
+    public sealed class RemoveSuperclassMethodsFacetFactory : ObjectFacetFactoryProcessor {
         public RemoveSuperclassMethodsFacetFactory(IFacetFactoryOrder<RemoveSuperclassMethodsFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Objects) { }
 

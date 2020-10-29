@@ -23,15 +23,14 @@ using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.ParallelReflect.FacetFactory;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.Util;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
-    public sealed class FunctionsFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodIdentifyingFacetFactory {
+    public sealed class FunctionsFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodIdentifyingFacetFactory {
         private static readonly string[] FixedPrefixes = { };
 
         private readonly ILogger<FunctionsFacetFactory> logger;
@@ -40,7 +39,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.ActionsAndActionParameters, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<FunctionsFacetFactory>();
 
-        public override string[] Prefixes => FixedPrefixes;
+        public  string[] Prefixes => FixedPrefixes;
 
         private bool IsQueryOnly(MethodInfo method) =>
             method.GetCustomAttribute<NakedObjects.IdempotentAttribute>() == null &&
@@ -141,7 +140,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             }
 
 
-            RemoveMethod(methodRemover, actionMethod);
+            MethodHelpers.RemoveMethod(methodRemover, actionMethod);
 
             var invokeFacet = new ActionInvocationFacetViaStaticMethod(actionMethod, onType, (IObjectSpecImmutable) returnSpec, (IObjectSpecImmutable) elementSpec,
                                                                        action, isQueryable, LoggerFactory.CreateLogger<ActionInvocationFacetViaStaticMethod>());
@@ -150,8 +149,8 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
             DefaultNamedFacet(facets, actionMethod.Name, action); // must be called after the checkForXxxPrefix methods
 
-            AddHideForSessionFacetNone(facets, action);
-            AddDisableForSessionFacetNone(facets, action);
+            MethodHelpers.AddHideForSessionFacetNone(facets, action);
+            MethodHelpers.AddDisableForSessionFacetNone(facets, action);
 
             facets.Add(new StaticFunctionFacet(action));
 

@@ -17,11 +17,11 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.ParallelReflect.FacetFactory;
-using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.ParallelReflector.FacetFactory;
 
 namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class TitleToStringMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
+    public sealed class TitleToStringMethodFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory
+    {
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ToStringMethod
         };
@@ -32,14 +32,14 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces, ReflectionType.Functional) =>
             logger = loggerFactory.CreateLogger<TitleToStringMethodFacetFactory>();
 
-        public override string[] Prefixes => FixedPrefixes;
+        public  string[] Prefixes => FixedPrefixes;
 
         /// <summary>
         ///     use ToString for title
         /// </summary>
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             try {
-                var toStringMethod = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes, classStrategy);
+                var toStringMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes, classStrategy);
 
                 methodRemover.RemoveMethod(toStringMethod);
 

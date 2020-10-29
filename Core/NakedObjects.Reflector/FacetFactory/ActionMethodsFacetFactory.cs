@@ -21,13 +21,14 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
-    public sealed class ActionMethodsFacetFactory : MethodPrefixBasedFacetFactoryAbstract, IMethodIdentifyingFacetFactory {
+    public sealed class ActionMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodIdentifyingFacetFactory {
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.AutoCompletePrefix,
             RecognisedMethodsAndPrefixes.ParameterDefaultPrefix,
@@ -44,7 +45,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.ActionsAndActionParameters) =>
             logger = loggerFactory.CreateLogger<ActionMethodsFacetFactory>();
 
-        public override string[] Prefixes => FixedPrefixes;
+        public  string[] Prefixes => FixedPrefixes;
 
         #region IMethodIdentifyingFacetFactory Members
 
@@ -67,7 +68,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                 (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType, classStrategy, metamodel);
             }
 
-            RemoveMethod(methodRemover, actionMethod);
+            MethodHelpers.RemoveMethod(methodRemover, actionMethod);
             facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, isQueryable, Logger<ActionInvocationFacetViaMethod>()));
 
             var methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
@@ -76,12 +77,12 @@ namespace NakedObjects.Reflector.FacetFactory {
 
             DefaultNamedFacet(facets, actionMethod.Name, action); // must be called after the checkForXxxPrefix methods
 
-            AddHideForSessionFacetNone(facets, action);
-            AddDisableForSessionFacetNone(facets, action);
-            FindDefaultHideMethod(reflector, classStrategy, facets, methodRemover, type, methodType, "ActionDefault", action);
-            FindAndRemoveHideMethod(reflector, classStrategy, facets, methodRemover, type, methodType, capitalizedName, action);
-            FindDefaultDisableMethod(reflector, classStrategy, facets, methodRemover, type, methodType, "ActionDefault", action);
-            FindAndRemoveDisableMethod(reflector, classStrategy, facets, methodRemover, type, methodType, capitalizedName, action);
+            MethodHelpers.AddHideForSessionFacetNone(facets, action);
+            MethodHelpers.AddDisableForSessionFacetNone(facets, action);
+            MethodHelpers.FindDefaultHideMethod(reflector, classStrategy, facets, methodRemover, type, methodType, "ActionDefault", action, LoggerFactory);
+            MethodHelpers.FindAndRemoveHideMethod(reflector, classStrategy, facets, methodRemover, type, methodType, capitalizedName, action, LoggerFactory);
+            MethodHelpers.FindDefaultDisableMethod(reflector, classStrategy, facets, methodRemover, type, methodType, "ActionDefault", action, LoggerFactory);
+            MethodHelpers.FindAndRemoveDisableMethod(reflector, classStrategy, facets, methodRemover, type, methodType, capitalizedName, action, LoggerFactory);
 
             if (action is IActionSpecImmutable actionSpecImmutable) {
                 // Process the action's parameters names, descriptions and optional
@@ -177,9 +178,9 @@ namespace NakedObjects.Reflector.FacetFactory {
         private static void DefaultNamedFacet(ICollection<IFacet> actionFacets, string name, ISpecification action) => actionFacets.Add(new NamedFacetInferred(name, action));
 
         private void FindAndRemoveValidMethod(IReflector reflector, IClassStrategy classStrategy, ICollection<IFacet> actionFacets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] parms, ISpecification action) {
-            var method = FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms, classStrategy);
+            var method = MethodHelpers.FindMethod(reflector, type, methodType, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms, classStrategy);
             if (method != null) {
-                RemoveMethod(methodRemover, method);
+                MethodHelpers.RemoveMethod(methodRemover, method);
                 actionFacets.Add(new ActionValidationFacet(method, action, LoggerFactory.CreateLogger<ActionValidationFacet>()));
             }
         }
@@ -189,15 +190,15 @@ namespace NakedObjects.Reflector.FacetFactory {
                 var paramType = paramTypes[i];
                 var paramName = paramNames[i];
 
-                var methodUsingIndex = FindMethodWithOrWithoutParameters(reflector,
-                                                                         classStrategy,
-                    type,
-                    MethodType.Object,
-                    RecognisedMethodsAndPrefixes.ParameterDefaultPrefix + i + capitalizedName,
-                    paramType,
-                    paramTypes);
+                var methodUsingIndex = MethodHelpers.FindMethodWithOrWithoutParameters(reflector,
+                                                                                       classStrategy,
+                                                                                       type,
+                                                                                       MethodType.Object,
+                                                                                       RecognisedMethodsAndPrefixes.ParameterDefaultPrefix + i + capitalizedName,
+                                                                                       paramType,
+                                                                                       paramTypes);
 
-                var methodUsingName = FindMethod(
+                var methodUsingName = MethodHelpers.FindMethod(
                     reflector,
                     type,
                     MethodType.Object,
@@ -215,11 +216,11 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                 if (methodToUse != null) {
                     // deliberately not removing both if duplicate to show that method  is duplicate
-                    RemoveMethod(methodRemover, methodToUse);
+                    MethodHelpers.RemoveMethod(methodRemover, methodToUse);
 
                     // add facets directly to parameters, not to actions
                     FacetUtils.AddFacet(new ActionDefaultsFacetViaMethod(methodToUse, parameters[i], Logger<ActionDefaultsFacetViaMethod>()));
-                    AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
+                    MethodHelpers.AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                 }
             }
         }
@@ -238,7 +239,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                 var returnType = typeof(IEnumerable<>).MakeGenericType(paramType);
                 var methodName = RecognisedMethodsAndPrefixes.ParameterChoicesPrefix + i + capitalizedName;
 
-                var methods = FindMethods(
+                var methods = MethodHelpers.FindMethods(
                     reflector,
                     type,
                     MethodType.Object,
@@ -251,7 +252,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                 var methodUsingIndex = methods.FirstOrDefault();
 
-                var methodUsingName = FindMethod(
+                var methodUsingName = MethodHelpers.FindMethod(
                     reflector,
                     type,
                     MethodType.Object,
@@ -269,7 +270,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                 if (methodToUse != null) {
                     // deliberately not removing both if duplicate to show that method  is duplicate
-                    RemoveMethod(methodRemover, methodToUse);
+                    MethodHelpers.RemoveMethod(methodRemover, methodToUse);
 
                     // add facets directly to parameters, not to actions
                     var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
@@ -282,7 +283,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                     }
 
                     FacetUtils.AddFacet(new ActionChoicesFacetViaMethod(methodToUse, parameterNamesAndTypes.ToArray(), returnType, parameters[i], Logger<ActionChoicesFacetViaMethod>(), isMultiple));
-                    AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
+                    MethodHelpers.AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
                 }
             }
 
@@ -312,45 +313,45 @@ namespace NakedObjects.Reflector.FacetFactory {
                         var minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
 
                         // deliberately not removing both if duplicate to show that method  is duplicate
-                        RemoveMethod(methodRemover, method);
+                        MethodHelpers.RemoveMethod(methodRemover, method);
 
                         // add facets directly to parameters, not to actions
                         FacetUtils.AddFacet(new AutoCompleteFacet(method, pageSize, minLength, parameters[i], Logger<AutoCompleteFacet>()));
-                        AddOrAddToExecutedWhereFacet(method, parameters[i]);
+                        MethodHelpers.AddOrAddToExecutedWhereFacet(method, parameters[i]);
                     }
                 }
             }
         }
 
         private MethodInfo FindAutoCompleteMethod(IReflector reflector, IClassStrategy classStrategy, Type type, string capitalizedName, int i, Type returnType) {
-            var method = FindMethod(reflector,
-                type,
-                MethodType.Object,
-                RecognisedMethodsAndPrefixes.AutoCompletePrefix + i + capitalizedName,
-                returnType,
-                new[] {typeof(string)},
-                classStrategy);
+            var method = MethodHelpers.FindMethod(reflector,
+                                                  type,
+                                                  MethodType.Object,
+                                                  RecognisedMethodsAndPrefixes.AutoCompletePrefix + i + capitalizedName,
+                                                  returnType,
+                                                  new[] {typeof(string)},
+                                                  classStrategy);
             return method;
         }
 
         private void FindAndRemoveParametersValidateMethod(IReflector reflector, IClassStrategy classStrategy, IMethodRemover methodRemover, Type type, string capitalizedName, Type[] paramTypes, string[] paramNames, IActionParameterSpecImmutable[] parameters) {
             for (var i = 0; i < paramTypes.Length; i++) {
-                var methodUsingIndex = FindMethod(reflector,
-                    type,
-                    MethodType.Object,
-                    RecognisedMethodsAndPrefixes.ValidatePrefix + i + capitalizedName,
-                    typeof(string),
-                    new[] {paramTypes[i]}, 
-                    classStrategy);
+                var methodUsingIndex = MethodHelpers.FindMethod(reflector,
+                                                                type,
+                                                                MethodType.Object,
+                                                                RecognisedMethodsAndPrefixes.ValidatePrefix + i + capitalizedName,
+                                                                typeof(string),
+                                                                new[] {paramTypes[i]}, 
+                                                                classStrategy);
 
-                var methodUsingName = FindMethod(reflector,
-                    type,
-                    MethodType.Object,
-                    RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName,
-                    typeof(string),
-                    new[] {paramTypes[i]},
-                    classStrategy,
-                    new[] {paramNames[i]});
+                var methodUsingName = MethodHelpers.FindMethod(reflector,
+                                                               type,
+                                                               MethodType.Object,
+                                                               RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName,
+                                                               typeof(string),
+                                                               new[] {paramTypes[i]},
+                                                               classStrategy,
+                                                               new[] {paramNames[i]});
 
                 if (methodUsingIndex != null && methodUsingName != null) {
                     logger.LogWarning($"Duplicate validate parameter methods {methodUsingIndex.Name} and {methodUsingName.Name} using {methodUsingName.Name}");
@@ -360,15 +361,15 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                 if (methodToUse != null) {
                     // deliberately not removing both if duplicate to show that method  is duplicate
-                    RemoveMethod(methodRemover, methodToUse);
+                    MethodHelpers.RemoveMethod(methodRemover, methodToUse);
 
                     // add facets directly to parameters, not to actions
                     FacetUtils.AddFacet(new ActionParameterValidation(methodToUse, parameters[i], Logger<ActionParameterValidation>()));
-                    AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
-                    AddAjaxFacet(methodToUse, parameters[i]);
+                    MethodHelpers.AddOrAddToExecutedWhereFacet(methodToUse, parameters[i]);
+                    MethodHelpers.AddAjaxFacet(methodToUse, parameters[i]);
                 }
                 else {
-                    AddAjaxFacet(null, parameters[i]);
+                    MethodHelpers.AddAjaxFacet(null, parameters[i]);
                 }
             }
         }

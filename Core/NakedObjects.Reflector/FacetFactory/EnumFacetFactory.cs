@@ -20,11 +20,10 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.ParallelReflect.FacetFactory;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class EnumFacetFactory : FacetFactoryAbstract {
+    public sealed class EnumFacetFactory : ObjectFacetFactoryProcessor {
         public EnumFacetFactory(IFacetFactoryOrder<EnumFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters, ReflectionType.Both) { }
 

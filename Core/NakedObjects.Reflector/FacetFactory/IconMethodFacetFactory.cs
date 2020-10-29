@@ -17,23 +17,24 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflector.FacetFactory;
 
 #pragma warning disable 612
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class IconMethodFacetFactory : MethodPrefixBasedFacetFactoryAbstract {
+    public sealed class IconMethodFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
         private static readonly string[] FixedPrefixes = {RecognisedMethodsAndPrefixes.IconNameMethod};
 
         public IconMethodFacetFactory(IFacetFactoryOrder<IconMethodFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        public override string[] Prefixes => FixedPrefixes;
+        public  string[] Prefixes => FixedPrefixes;
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var method = FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.IconNameMethod, typeof(string), Type.EmptyTypes, classStrategy);
+            var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.IconNameMethod, typeof(string), Type.EmptyTypes, classStrategy);
             var attribute = type.GetCustomAttribute<IconNameAttribute>();
             if (method != null) {
-                RemoveMethod(methodRemover, method);
+                MethodHelpers.RemoveMethod(methodRemover, method);
                 FacetUtils.AddFacet(new IconFacetViaMethod(method, specification, attribute?.Value, Logger<IconFacetViaMethod>()));
             }
             else {

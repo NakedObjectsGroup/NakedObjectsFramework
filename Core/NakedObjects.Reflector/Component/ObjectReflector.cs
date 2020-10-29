@@ -15,11 +15,12 @@ using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflect;
-using NakedObjects.ParallelReflect.Component;
+using NakedObjects.ParallelReflector.Component;
+using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.Reflector.Component {
-    public sealed class ObjectReflector : ParallelReflector {
+    public sealed class ObjectReflector : AbstractParallelReflector {
         private readonly IObjectReflectorConfiguration objectReflectorConfiguration;
 
         public ObjectReflector(IMetamodelBuilder metamodel,
@@ -27,9 +28,9 @@ namespace NakedObjects.Reflector.Component {
                                IEnumerable<IFacetDecorator> facetDecorators,
                                IEnumerable<IFacetFactory> facetFactories,
                                ILoggerFactory loggerFactory,
-                               ILogger<ParallelReflector> logger) : base(metamodel, facetDecorators, loggerFactory, logger) {
+                               ILogger<AbstractParallelReflector> logger) : base(metamodel, facetDecorators, loggerFactory, logger) {
             this.objectReflectorConfiguration = objectReflectorConfiguration;
-            FacetFactorySet = new FacetFactorySet(facetFactories.Where(f => f.ReflectionTypes.HasFlag(ReflectionType.ObjectOriented)).ToArray());
+            FacetFactorySet = new ObjectFacetFactorySet(facetFactories.OfType<ObjectFacetFactoryProcessor>().ToArray());
             ClassStrategy = new ObjectClassStrategy(objectReflectorConfiguration);
         }
 

@@ -19,13 +19,13 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
-using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     /// <summary>
     ///     Sets up all the <see cref="IFacet" />s for an action in a single shot
     /// </summary>
-    public sealed class InjectedParameterFacetFactory : FacetFactoryAbstract {
+    public sealed class InjectedParameterFacetFactory : FunctionalFacetFactoryProcessor
+    {
         private readonly ILogger<InjectedParameterFacetFactory> logger;
 
         public InjectedParameterFacetFactory(IFacetFactoryOrder<InjectedParameterFacetFactory> order, ILoggerFactory loggerFactory)

@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.FacetFactory {
     ///     Creates an <see cref="IFindMenuFacet" /> based on the presence of an
     ///     <see cref="FindMenuAttribute" /> annotation
     /// </summary>
-    public sealed class FindMenuFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class FindMenuFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         private readonly ILogger<FindMenuFacetFactory> logger;
 
         public FindMenuFacetFactory(IFacetFactoryOrder<FindMenuFacetFactory> order, ILoggerFactory loggerFactory)

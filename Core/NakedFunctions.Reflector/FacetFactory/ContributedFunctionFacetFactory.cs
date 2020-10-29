@@ -20,14 +20,14 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Utils;
-using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     /// <summary>
     ///     Creates an <see cref="IContributedActionFacet" /> based on the presence of an
     ///     <see cref="ContributedActionAttribute" /> annotation
     /// </summary>
-    public sealed class ContributedFunctionFacetFactory : FacetFactoryAbstract {
+    public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProcessor
+    {
         private readonly ILogger<ContributedFunctionFacetFactory> logger;
 
         public ContributedFunctionFacetFactory(IFacetFactoryOrder<ContributedFunctionFacetFactory> order, ILoggerFactory loggerFactory)

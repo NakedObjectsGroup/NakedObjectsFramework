@@ -11,14 +11,13 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Core.Util;
-using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
     ///     This factory filters out properties on system types. So for example 'Length' will not show up when displaying a
     ///     string.
     /// </summary>
-    public sealed class SystemClassPropertyFilteringFactory : FacetFactoryAbstract, IPropertyFilteringFacetFactory {
+    public sealed class SystemClassPropertyFilteringFactory : ObjectFacetFactoryProcessor, IPropertyFilteringFacetFactory {
         private ILogger<SystemClassPropertyFilteringFactory> logger;
 
         public SystemClassPropertyFilteringFactory(IFacetFactoryOrder<SystemClassPropertyFilteringFactory> order, ILoggerFactory loggerFactory)

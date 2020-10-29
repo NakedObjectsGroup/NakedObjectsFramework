@@ -16,10 +16,9 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class PropertyValidateDefaultFacetFactory : FacetFactoryAbstract {
+    public sealed class PropertyValidateDefaultFacetFactory : ObjectFacetFactoryProcessor {
         public PropertyValidateDefaultFacetFactory(IFacetFactoryOrder<PropertyValidateDefaultFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Properties, ReflectionType.Both) { }
 

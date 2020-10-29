@@ -33,10 +33,10 @@ using NakedObjects.Menu;
 using NakedObjects.Meta.Component;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.ParallelReflect.Component;
-using NakedObjects.ParallelReflect.FacetFactory;
-using NakedObjects.ParallelReflect.TypeFacetFactory;
+using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.TypeFacetFactory;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -587,7 +587,8 @@ namespace NakedObjects.ParallelReflect.Test {
 
         #region Nested type: ReplacementBoundedAnnotationFacetFactory
 
-        public sealed class ReplacementBoundedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+        public sealed class ReplacementBoundedAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory
+        {
             public ReplacementBoundedAnnotationFacetFactory(IFacetFactoryOrder<BoundedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
                 : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) {
                 Assert.AreEqual(21, order.Order);
@@ -600,7 +601,8 @@ namespace NakedObjects.ParallelReflect.Test {
 
         #region Nested type: ReplacementDelegatingBoundedAnnotationFacetFactory
 
-        public sealed class ReplacementDelegatingBoundedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+        public sealed class ReplacementDelegatingBoundedAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory
+        {
             private readonly BoundedAnnotationFacetFactory originalFactory;
 
             public ReplacementDelegatingBoundedAnnotationFacetFactory(IFacetFactoryOrder<BoundedAnnotationFacetFactory> order, BoundedAnnotationFacetFactory originalFactory, ILoggerFactory loggerFactory)

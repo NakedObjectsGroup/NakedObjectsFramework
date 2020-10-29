@@ -20,6 +20,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflector.FacetFactory;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class CollectionFieldMethodsFacetFactory : PropertyOrCollectionIdentifyingFacetFactoryAbstract {
@@ -40,10 +41,10 @@ namespace NakedObjects.Reflector.FacetFactory {
 
             AddSetFacet(facets, property, collection);
 
-            AddHideForSessionFacetNone(facets, collection);
-            AddDisableFacetAlways(facets, collection);
-            FindDefaultHideMethod(reflector, classStrategy, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", collection);
-            FindAndRemoveHideMethod(reflector, classStrategy, facets, methodRemover, type, MethodType.Object, capitalizedName, collection);
+            MethodHelpers.AddHideForSessionFacetNone(facets, collection);
+            MethodHelpers.AddDisableFacetAlways(facets, collection);
+            MethodHelpers.FindDefaultHideMethod(reflector, classStrategy, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", collection, LoggerFactory);
+            MethodHelpers.FindAndRemoveHideMethod(reflector, classStrategy, facets, methodRemover, type, MethodType.Object, capitalizedName, collection, LoggerFactory);
             FacetUtils.AddFacets(facets);
             return metamodel;
         }

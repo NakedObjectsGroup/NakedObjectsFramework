@@ -19,6 +19,7 @@ using NakedObjects.Meta.Component;
 using NakedObjects.Meta.Menu;
 using NakedObjects.ParallelReflect;
 using NakedObjects.ParallelReflect.Component;
+using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Persistor.Entity.Component;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Service;

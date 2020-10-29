@@ -20,7 +20,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class DefaultNamingFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class DefaultNamingFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         private ILogger<DefaultNamingFacetFactory> logger;
 
         public DefaultNamingFacetFactory(IFacetFactoryOrder<DefaultNamingFacetFactory> order, ILoggerFactory loggerFactory)

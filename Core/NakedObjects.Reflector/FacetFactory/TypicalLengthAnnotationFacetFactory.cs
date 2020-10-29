@@ -21,7 +21,7 @@ using NakedObjects.Meta.Utils;
 #pragma warning disable 612
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class TypicalLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class TypicalLengthAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public TypicalLengthAnnotationFacetFactory(IFacetFactoryOrder<TypicalLengthAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters, ReflectionType.Both) { }
 

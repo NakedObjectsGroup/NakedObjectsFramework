@@ -20,10 +20,10 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Component;
 using NakedObjects.ParallelReflect.Component;
-using NakedObjects.ParallelReflect.FacetFactory;
-using NakedObjects.ParallelReflect.TypeFacetFactory;
+using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.TypeFacetFactory;
 
 namespace NakedObjects.ParallelReflect.Test {
     public abstract class AbstractReflectorTest {
@@ -129,7 +129,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var mockLogger = new Mock<ILogger<Metamodel>>().Object;
 
             var metamodel = new Metamodel(cache, mockLogger);
-            var mockLogger1 = new Mock<ILogger<ParallelReflector>>().Object;
+            var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
             var reflector = new ObjectReflector(metamodel, config, new IFacetDecorator[] { }, facetFactories, mockLoggerFactory, mockLogger1);
@@ -139,7 +139,7 @@ namespace NakedObjects.ParallelReflect.Test {
             Specification = spec as IObjectSpecImmutable;
         }
 
-        protected abstract (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(ParallelReflector reflector);
+        protected abstract (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(AbstractParallelReflector reflector);
 
         public static void AssertSpec(Type type, ITypeSpecBuilder spec) {
             Assert.IsNotNull(spec, type.FullName);

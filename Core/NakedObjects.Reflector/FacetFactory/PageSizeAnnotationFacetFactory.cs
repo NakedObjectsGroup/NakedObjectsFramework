@@ -22,7 +22,7 @@ namespace NakedObjects.Reflector.FacetFactory {
     ///     Creates an <see cref="IPageSizeFacet" /> based on the presence of an
     ///     <see cref="PageSizeAttribute" /> annotation
     /// </summary>
-    public sealed class PageSizeAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class PageSizeAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public PageSizeAnnotationFacetFactory(IFacetFactoryOrder<PageSizeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Actions, ReflectionType.Both) { }
 

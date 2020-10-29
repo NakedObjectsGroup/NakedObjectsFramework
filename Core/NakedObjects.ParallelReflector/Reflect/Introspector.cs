@@ -24,7 +24,7 @@ using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
-namespace NakedObjects.ParallelReflect {
+namespace NakedObjects.ParallelReflector.Reflect {
     public abstract class Introspector : IIntrospector {
         private readonly ILogger logger;
 
@@ -73,6 +73,18 @@ namespace NakedObjects.ParallelReflect {
         public ITypeSpecBuilder[] Interfaces { get; set; }
         public ITypeSpecBuilder Superclass { get; set; }
 
+
+        protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessType(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+
+        protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessCollection(PropertyInfo property, IOneToManyAssociationSpecImmutable collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+
+        protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessProperty(PropertyInfo property, IOneToOneAssociationSpecImmutable referenceProperty, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+
+        protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessAction(MethodInfo actionMethod, MethodInfo[] actions, IActionSpecImmutable action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+
+        protected abstract IImmutableDictionary<string, ITypeSpecBuilder> ProcessParameter(MethodInfo actionMethod, int i, IActionParameterSpecImmutable param, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+
+
         public virtual IImmutableDictionary<string, ITypeSpecBuilder> IntrospectType(Type typeToIntrospect, ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!TypeUtils.IsPublic(typeToIntrospect)) {
                 throw new ReflectionException(string.Format(Resources.NakedObjects.DomainClassReflectionError, typeToIntrospect));
@@ -91,8 +103,7 @@ namespace NakedObjects.ParallelReflect {
 
             // Process facets at object level
             // this will also remove some methods, such as the superclass methods.
-            var methodRemover = new IntrospectorMethodRemover(Methods);
-            metamodel = FacetFactorySet.Process(Reflector, ClassStrategy, IntrospectedType, methodRemover, spec, metamodel);
+            metamodel = ProcessType(spec, metamodel);
 
             if (SuperclassType != null && ClassStrategy.IsTypeToBeIntrospected(SuperclassType)) {
                 (Superclass, metamodel) = Reflector.LoadSpecification(SuperclassType, ClassStrategy, metamodel);
@@ -171,6 +182,8 @@ namespace NakedObjects.ParallelReflect {
             return (collectionSpecs.Union(refSpecs).ToArray(), metamodel);
         }
 
+
+
         protected (IEnumerable<IAssociationSpecImmutable>, IImmutableDictionary<string, ITypeSpecBuilder>) CreateCollectionSpecs(IEnumerable<PropertyInfo> collectionProperties, IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var specs = new List<IAssociationSpecImmutable>();
 
@@ -188,12 +201,13 @@ namespace NakedObjects.ParallelReflect {
 
                 var collection = ImmutableSpecFactory.CreateOneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
 
-                metamodel = FacetFactorySet.Process(Reflector, ClassStrategy, property, new IntrospectorMethodRemover(Methods), collection, FeatureType.Collections, metamodel);
+                metamodel = ProcessCollection(property,  collection, metamodel);
                 specs.Add(collection);
             }
 
             return (specs, metamodel);
         }
+
 
         protected (IEnumerable<IAssociationSpecImmutable>, IImmutableDictionary<string, ITypeSpecBuilder>) CreateRefPropertySpecs(IEnumerable<PropertyInfo> foundProperties, IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var specs = new List<IAssociationSpecImmutable>();
@@ -212,7 +226,7 @@ namespace NakedObjects.ParallelReflect {
                 var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec);
 
                 // Process facets for the property
-                metamodel = FacetFactorySet.Process(Reflector, ClassStrategy, property, new IntrospectorMethodRemover(Methods), referenceProperty, FeatureType.Properties, metamodel);
+                metamodel = ProcessProperty(property, referenceProperty, metamodel);
                 specs.Add(referenceProperty);
             }
 
@@ -227,6 +241,8 @@ namespace NakedObjects.ParallelReflect {
                     : ClassStrategy.GetType(type);
 
 
+
+      
         protected (IActionSpecImmutable[], IImmutableDictionary<string, ITypeSpecBuilder>) FindActionMethods(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var actionSpecs = new List<IActionSpecImmutable>();
             var actions = FacetFactorySet.FindActions(Methods.Where(m => m != null).ToArray(), ClassStrategy).Where(a => !FacetFactorySet.Filters(a, ClassStrategy)).ToArray();
@@ -263,9 +279,9 @@ namespace NakedObjects.ParallelReflect {
                     var action = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, spec, actionParams.ToArray());
 
                     // Process facets on the action & parameters
-                    metamodel = FacetFactorySet.Process(Reflector, ClassStrategy, actionMethod, new IntrospectorMethodRemover(actions), action, FeatureType.Actions, metamodel);
+                    metamodel = ProcessAction( actionMethod,actions, action, metamodel);
                     for (var l = 0; l < actionParams.Count; l++) {
-                        metamodel = FacetFactorySet.ProcessParams(Reflector, ClassStrategy, actionMethod, l, actionParams[l], metamodel);
+                        metamodel = ProcessParameter(actionMethod, l, actionParams[l], metamodel);
                     }
 
                     actionSpecs.Add(action);

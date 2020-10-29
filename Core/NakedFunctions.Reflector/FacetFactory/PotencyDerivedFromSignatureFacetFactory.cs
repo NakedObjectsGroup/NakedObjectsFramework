@@ -19,14 +19,14 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.ParallelReflect.FacetFactory;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     /// <summary>
     ///     Creates an <see cref="IQueryOnlyFacet" /> or <see cref="IIdempotentFacet" />  based on the presence of a
     ///     <see cref="QueryOnlyAttribute" /> or <see cref="NakedObjects.IdempotentAttribute" /> annotation
     /// </summary>
-    public sealed class PotencyDerivedFromSignatureFacetFactory : FacetFactoryAbstract {
+    public sealed class PotencyDerivedFromSignatureFacetFactory : FunctionalFacetFactoryProcessor
+    {
         private readonly ILogger<PotencyDerivedFromSignatureFacetFactory> logger;
 
         public PotencyDerivedFromSignatureFacetFactory(IFacetFactoryOrder<PotencyDerivedFromSignatureFacetFactory> order, ILoggerFactory loggerFactory)

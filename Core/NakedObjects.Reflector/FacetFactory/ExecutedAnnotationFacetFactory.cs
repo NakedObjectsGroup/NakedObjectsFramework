@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.FacetFactory {
     ///     Creates an <see cref="IExecutedFacet" /> based on the presence of an
     ///     <see cref="ExecutedAttribute" /> annotation
     /// </summary>
-    public sealed class ExecutedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class ExecutedAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public ExecutedAnnotationFacetFactory(IFacetFactoryOrder<ExecutedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Actions) { }
 

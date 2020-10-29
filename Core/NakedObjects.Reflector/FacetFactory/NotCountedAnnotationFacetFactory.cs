@@ -18,7 +18,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class NotCountedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class NotCountedAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public NotCountedAnnotationFacetFactory(IFacetFactoryOrder<NotCountedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Collections) { }
 

@@ -21,7 +21,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class MaxLengthAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    public sealed class MaxLengthAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         private readonly ILogger<MaxLengthAnnotationFacetFactory> logger;
 
         public MaxLengthAnnotationFacetFactory(IFacetFactoryOrder<MaxLengthAnnotationFacetFactory> order, ILoggerFactory loggerFactory)

@@ -18,7 +18,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Meta.Component;
 using NakedObjects.ParallelReflect.Component;
-using NakedObjects.ParallelReflect.FacetFactory;
+using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.FacetFactory;
 
@@ -105,7 +105,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var menuFactory = new NullMenuFactory();
             var classStrategy = new ObjectClassStrategy(reflectorConfiguration);
             var metamodel = new Metamodel(cache, null);
-            var mockLogger = new Mock<ILogger<ParallelReflector>>().Object;
+            var mockLogger = new Mock<ILogger<AbstractParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
             Reflector = new ObjectReflector( metamodel, reflectorConfiguration, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory}, mockLoggerFactory, mockLogger);
