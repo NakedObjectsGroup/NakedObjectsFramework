@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -24,8 +25,8 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.Util;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class PropertyMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory
+namespace NakedFunctions.Reflector.FacetFactory {
+    public sealed class PropertyMethodsFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory
     {
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ModifyPrefix
@@ -43,6 +44,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             candidates.Where(property => property.GetGetMethod() != null &&
                                          classStrategy.IsTypeToBeIntrospected(property.PropertyType) &&
                                          !classStrategy.IsIgnored(property)).ToList();
+
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = property.Name;
@@ -192,7 +194,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                 }
 
                 if (method != null) {
-                    var pageSizeAttr = method.GetCustomAttribute<PageSizeAttribute>();
+                    var pageSizeAttr = method.GetCustomAttribute<NakedObjects.PageSizeAttribute>();
                     var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
 
                     var pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default

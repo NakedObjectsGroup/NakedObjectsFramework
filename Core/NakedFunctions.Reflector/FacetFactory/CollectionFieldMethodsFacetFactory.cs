@@ -11,6 +11,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -22,8 +23,8 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.FacetFactory;
 
-namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class CollectionFieldMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory
+namespace NakedFunctions.Reflector.FacetFactory {
+    public sealed class CollectionFieldMethodsFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory
     {
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ModifyPrefix
