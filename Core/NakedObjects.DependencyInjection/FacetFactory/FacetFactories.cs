@@ -160,7 +160,7 @@ namespace NakedObjects.ParallelReflect {
                 typeof(NakedFunctions.Reflector.FacetFactory.TypicalLengthDerivedFromTypeFacetFactory),
                 typeof(NakedFunctions.Reflector.FacetFactory.TypicalLengthAnnotationFacetFactory),
                 typeof(EagerlyAnnotationFacetFactory),
-                typeof(NakedFunctions.Reflector.FacetFactory.PresentationHintAnnotationFacetFactory),
+                typeof(NakedFunctions.Reflector.FacetFactory.PresentationHintAnnotationFacetFactory)
             };
 
         public static int StandardIndexOf(Type factory) => Array.FindIndex(StandardFacetFactories(), x => x == factory);

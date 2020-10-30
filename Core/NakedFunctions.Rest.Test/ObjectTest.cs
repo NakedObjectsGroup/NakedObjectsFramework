@@ -28,7 +28,7 @@ using NUnit.Framework;
 
 namespace NakedFunctions.Rest.Test {
 
-    [Ignore("need to add facets")]
+   
     public class ObjectTest : AcceptanceTestCase {
         private readonly Type[] FunctionTypes = {typeof(SimpleRecordFunctions)};
 

@@ -218,10 +218,43 @@ namespace NakedFunctions.Reflect.Test {
             RegisterFacetFactory<ArrayValueTypeFacetFactory<byte>>("ArrayValueTypeFacetFactory<byte>", services);
             RegisterFacetFactory<CollectionFacetFactory>("CollectionFacetFactory", services); // written to not trample over TypeOf if already installed
 
-            RegisterFacetFactory<FunctionsFacetFactory>(nameof(FunctionsFacetFactory), services);
-            RegisterFacetFactory<ContributedFunctionFacetFactory>(nameof(ContributedFunctionFacetFactory), services);
-            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.BoundedAnnotationFacetFactory>("BoundedAnnotationFacetFactory", services);
 
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.FunctionsFacetFactory>("FunctionsFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.BoundedAnnotationFacetFactory>("BoundedAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.MenuFacetFactory>("MenuFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.TypeMarkerFacetFactory>("TypeMarkerFacetFactory", services);
+            // must be before any other FacetFactories that install MandatoryFacet.class facets
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.MandatoryDefaultFacetFactory>("MandatoryDefaultFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.PropertyValidateDefaultFacetFactory>("PropertyValidateDefaultFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.CollectionFieldMethodsFacetFactory>("CollectionFieldMethodsFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.PropertyMethodsFacetFactory>("PropertyMethodsFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.EnumFacetFactory>("EnumFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.ActionDefaultAnnotationFacetFactory>("ActionDefaultAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.PropertyDefaultAnnotationFacetFactory>("PropertyDefaultAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.DescribedAsAnnotationFacetFactory>("DescribedAsAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.DisabledAnnotationFacetFactory>("DisabledAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.PageSizeAnnotationFacetFactory>("PageSizeAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.HiddenAnnotationFacetFactory>("HiddenAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.MaxLengthAnnotationFacetFactory>("MaxLengthAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.RangeAnnotationFacetFactory>("RangeAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.MemberOrderAnnotationFacetFactory>("MemberOrderAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.MultiLineAnnotationFacetFactory>("MultiLineAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.NamedAnnotationFacetFactory>("NamedAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.OptionalAnnotationFacetFactory>("OptionalAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.PluralAnnotationFacetFactory>("PluralAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.RegExAnnotationFacetFactory>("RegExAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.DefaultNamingFacetFactory>("DefaultNamingFacetFactory", services);
+            // must come after any facets that install titles
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.MaskAnnotationFacetFactory>("MaskAnnotationFacetFactory", services);
+            // must come after any facets that install titles, and after mask
+            // if takes precedence over mask.
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.TypeOfAnnotationFacetFactory>("TypeOfAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.TableViewAnnotationFacetFactory>("TableViewAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.TypicalLengthDerivedFromTypeFacetFactory>("TypicalLengthDerivedFromTypeFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.TypicalLengthAnnotationFacetFactory>("TypicalLengthAnnotationFacetFactory", services);
+            RegisterFacetFactory<EagerlyAnnotationFacetFactory>("BoundedAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.PresentationHintAnnotationFacetFactory>("PresentationHintAnnotationFacetFactory", services);
+            RegisterFacetFactory<NakedFunctions.Reflector.FacetFactory.ContributedFunctionFacetFactory>("ContributedFunctionFacetFactory", services);
         }
 
         protected virtual void RegisterTypes(IServiceCollection services, ICoreConfiguration cc, IFunctionalReflectorConfiguration frc, IObjectReflectorConfiguration orc = null) {
@@ -419,7 +452,6 @@ namespace NakedFunctions.Reflect.Test {
             Assert.AreEqual(0, spec.Fields.Count);
         }
 
-        [Ignore]
         [TestMethod] 
         public void ReflectDefaultValueParameter()
         {

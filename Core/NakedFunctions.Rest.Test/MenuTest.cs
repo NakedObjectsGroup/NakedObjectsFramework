@@ -28,7 +28,7 @@ using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace NakedFunctions.Rest.Test {
-    [Ignore("need to add facets")]
+   
     public class MenuTest : AcceptanceTestCase {
         private readonly Type[] FunctionTypes = {typeof(SimpleMenuFunctions)};
 
