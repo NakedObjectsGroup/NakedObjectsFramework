@@ -74,13 +74,25 @@ namespace NakedObjects.Menu {
         ///     Where a sub-menu exists of the correct name, actions will be added to that.
         ///     Will throw an exception if SetDefaultType has not been called.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>This menu (for fluent programming)</returns>
         IMenu AddContributedActions();
 
-
+        /// <summary>
+        ///     Add an action from the specified Type.
+        /// </summary>
+        /// <param name="actionName"></param>
+        /// <param name="renamedTo"></param>
+        /// <returns>This menu (for fluent programming)</returns>
         IMenu AddAction(Type fromType, string actionName);
         IMenu AddAllActions(Type fromType);
         IMenu AddRemainingActions(Type fromType);
+
+        /// <summary>
+        ///     Specify the default type so that actions may then be added from this type, without specifying the type each time.
+        /// </summary>
+        /// <param name="actionName"></param>
+        /// <param name="renamedTo"></param>
+        /// <returns>This menu (for fluent programming)</returns>
         IMenu WithDefaultType(Type defaultType);
     }
 }
