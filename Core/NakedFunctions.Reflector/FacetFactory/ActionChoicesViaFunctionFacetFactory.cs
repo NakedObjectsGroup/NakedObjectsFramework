@@ -48,7 +48,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
              .ToArray();
 
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindChoicesMethod(IReflector reflector, IClassStrategy classStrategy, Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> FindChoicesMethod(IReflector reflector, Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 var paramType = paramTypes[i];
                 var isMultiple = false;
@@ -67,7 +67,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                     var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
 
                     foreach (var p in FilterParms(methodToUse)) {
-                        var result = reflector.LoadSpecification(p.ParameterType, classStrategy, metamodel);
+                        var result = reflector.LoadSpecification(p.ParameterType, metamodel);
                         metamodel = result.Item2;
                         var spec = result.Item1 as IObjectSpecImmutable;
                         var name = p.Name.ToLower();
@@ -101,7 +101,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         #region IMethodFilteringFacetFactory Members
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
             var type = actionMethod.DeclaringType;
@@ -111,7 +111,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             var actionSpecImmutable = action as IActionSpecImmutable;
             if (actionSpecImmutable != null) {
                 var actionParameters = actionSpecImmutable.Parameters;
-                metamodel = FindChoicesMethod(reflector, classStrategy, type, capitalizedName, paramTypes, actionParameters, metamodel);
+                metamodel = FindChoicesMethod(reflector, type, capitalizedName, paramTypes, actionParameters, metamodel);
             }
 
             return metamodel;

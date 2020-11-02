@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         public ConcurrencyCheckAnnotationFacetFactory(IFacetFactoryOrder<ConcurrencyCheckAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Attribute attribute = property.GetCustomAttribute<ConcurrencyCheckAttribute>();
             FacetUtils.AddFacet(Create(reflector, attribute, specification));
             return metamodel;

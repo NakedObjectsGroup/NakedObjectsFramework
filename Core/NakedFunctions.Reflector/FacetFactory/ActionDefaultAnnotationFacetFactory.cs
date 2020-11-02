@@ -23,7 +23,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public ActionDefaultAnnotationFacetFactory(IFacetFactoryOrder<ActionDefaultAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ActionParameters) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, IClassStrategy classStrategy, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];
             var attribute = (Attribute) parameter.GetCustomAttribute<System.ComponentModel.DefaultValueAttribute>() ?? parameter.GetCustomAttribute<NakedFunctions.DefaultValueAttribute>();
             FacetUtils.AddFacet(

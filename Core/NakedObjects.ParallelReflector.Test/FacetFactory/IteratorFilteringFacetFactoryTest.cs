@@ -43,7 +43,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var enumeratorMethod = FindMethod(typeof(Customer), "GetEnumerator");
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, typeof(Customer), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, typeof(Customer), MethodRemover, Specification, metamodel);
             AssertMethodRemoved(enumeratorMethod);
             Assert.IsNotNull(metamodel);
         }

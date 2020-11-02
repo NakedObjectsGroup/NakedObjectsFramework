@@ -24,12 +24,12 @@ namespace NakedObjects.Reflector.FacetFactory {
         public CollectionFacetFactory(IFacetFactoryOrder<CollectionFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndCollections) { }
 
-        private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessArray(IReflector reflector, IClassStrategy classStrategy, Type type, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessArray(IReflector reflector,  Type type, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FacetUtils.AddFacet(new ArrayFacet(holder));
             FacetUtils.AddFacet(new TypeOfFacetInferredFromArray(holder));
 
             var elementType = type.GetElementType();
-            (_, metamodel) = reflector.LoadSpecification(elementType, classStrategy, metamodel);
+            (_, metamodel) = reflector.LoadSpecification(elementType,  metamodel);
             return metamodel;
         }
 
@@ -54,37 +54,37 @@ namespace NakedObjects.Reflector.FacetFactory {
             FacetUtils.AddFacet(facet);
         }
 
-        private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessCollection(IReflector reflector, IClassStrategy classStrategy, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private static IImmutableDictionary<string, ITypeSpecBuilder> ProcessCollection(IReflector reflector,  ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var collectionElementType = typeof(object);
             IObjectSpecBuilder oSpec;
-            (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(collectionElementType, classStrategy, metamodel);
+            (oSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(collectionElementType,  metamodel);
             FacetUtils.AddFacet(new TypeOfFacetDefaultToType(holder, collectionElementType, oSpec));
             FacetUtils.AddFacet(new CollectionFacet(holder));
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (CollectionUtils.IsGenericEnumerable(type)) {
                 ProcessGenericEnumerable(type, specification);
                 return metamodel;
             }
 
             if (type.IsArray) {
-                return ProcessArray(reflector, classStrategy, type, specification, metamodel);
+                return ProcessArray(reflector,  type, specification, metamodel);
             }
 
             return CollectionUtils.IsCollectionButNotArray(type)
-                ? ProcessCollection(reflector, classStrategy, specification, metamodel)
+                ? ProcessCollection(reflector,  specification, metamodel)
                 : metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (CollectionUtils.IsCollectionButNotArray(property.PropertyType)) {
                 specification.AddFacet(new CollectionResetFacet(property, specification));
                 return metamodel;
             }
 
-            return base.Process(reflector, classStrategy, property, methodRemover, specification, metamodel);
+            return base.Process(reflector,  property, methodRemover, specification, metamodel);
         }
     }
 }

@@ -84,7 +84,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         #region IMethodIdentifyingFacetFactory Members
 
-        private (ITypeSpecBuilder, Type, IImmutableDictionary<string, ITypeSpecBuilder>) LoadReturnSpecs(Type returnType, IClassStrategy classStrategy, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, IReflector reflector, MethodInfo actionMethod) {
+        private (ITypeSpecBuilder, Type, IImmutableDictionary<string, ITypeSpecBuilder>) LoadReturnSpecs(Type returnType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, IReflector reflector, MethodInfo actionMethod) {
             ITypeSpecBuilder onType = null;
 
             if (FacetUtils.IsTuple(returnType)) {
@@ -97,18 +97,18 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 // count down so final result is first parameter
                 for (var index = genericTypes.Length - 1; index >= 0; index--) {
                     var t = genericTypes[index];
-                    (onType, returnType, metamodel) = LoadReturnSpecs(t, classStrategy, metamodel, reflector, actionMethod);
+                    (onType, returnType, metamodel) = LoadReturnSpecs(t, metamodel, reflector, actionMethod);
                 }
             }
             else {
-                (onType, metamodel) = reflector.LoadSpecification(returnType, classStrategy, metamodel);
+                (onType, metamodel) = reflector.LoadSpecification(returnType, metamodel);
             }
 
             return (onType, returnType, metamodel);
         }
 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // must be true
             if (!actionMethod.IsStatic) {
                 throw new ReflectionException($"{actionMethod.DeclaringType}.{actionMethod.Name} must be static");
@@ -120,10 +120,10 @@ namespace NakedFunctions.Reflector.FacetFactory {
             var facets = new List<IFacet>();
             ITypeSpecBuilder onType;
             ITypeSpecBuilder returnSpec;
-            (onType, metamodel) = reflector.LoadSpecification(type, classStrategy, metamodel);
+            (onType, metamodel) = reflector.LoadSpecification(type, metamodel);
 
             Type returnType;
-            (returnSpec, returnType, metamodel) = LoadReturnSpecs(actionMethod.ReturnType, classStrategy, metamodel, reflector, actionMethod);
+            (returnSpec, returnType, metamodel) = LoadReturnSpecs(actionMethod.ReturnType, metamodel, reflector, actionMethod);
 
             if (!(returnSpec is IObjectSpecImmutable)) {
                 throw new ReflectionException($"{returnSpec.Identifier} must be Object spec");
@@ -133,7 +133,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             var isQueryable = IsQueryOnly(actionMethod) || CollectionUtils.IsQueryable(returnType);
             if (returnSpec is IObjectSpecBuilder && IsCollection(returnType)) {
                 var elementType = CollectionUtils.ElementType(returnType);
-                (elementSpec, metamodel) = reflector.LoadSpecification(elementType, classStrategy, metamodel);
+                (elementSpec, metamodel) = reflector.LoadSpecification(elementType, metamodel);
                 if (!(elementSpec is IObjectSpecImmutable)) {
                     throw new ReflectionException($"{elementSpec.Identifier} must be Object spec");
                 }
@@ -159,7 +159,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, IClassStrategy classStrategy, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector,  MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];
             var facets = new List<IFacet>();
 
@@ -168,7 +168,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             }
 
             ITypeSpecBuilder returnSpec;
-            (returnSpec, metamodel) = reflector.LoadSpecification(parameter.ParameterType, classStrategy, metamodel);
+            (returnSpec, metamodel) = reflector.LoadSpecification(parameter.ParameterType, metamodel);
 
 
             if (!(returnSpec is IObjectSpecImmutable)) {
@@ -178,7 +178,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             if (IsParameterCollection(parameter.ParameterType)) {
                 var elementType = CollectionUtils.ElementType(parameter.ParameterType);
                 ITypeSpecImmutable elementSpec;
-                (elementSpec, metamodel) = reflector.LoadSpecification(elementType, classStrategy, metamodel);
+                (elementSpec, metamodel) = reflector.LoadSpecification(elementType, metamodel);
                 if (!(elementSpec is IObjectSpecImmutable)) {
                     throw new ReflectionException($"{elementSpec.Identifier} must be Object spec");
                 }

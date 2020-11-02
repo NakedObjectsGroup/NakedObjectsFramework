@@ -140,19 +140,19 @@ namespace NakedObjects.ParallelReflector.Component {
         public abstract bool ConcurrencyChecking { get; }
         public abstract bool IgnoreCase { get; }
 
-        public virtual (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IClassStrategy classStrategy, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public virtual (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (type == null) {
                 throw new NakedObjectSystemException("cannot load specification for null");
             }
 
-            var actualType = classStrategy.GetType(type) ?? type;
+            var actualType = ClassStrategy.GetType(type) ?? type;
             var typeKey = TypeKeyUtils.GetKeyForType(actualType);
             return metamodel.ContainsKey(typeKey) ? (metamodel[typeKey], metamodel) : LoadPlaceholder(actualType, metamodel);
         }
 
-        public virtual (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type, IClassStrategy classStrategy, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) where T : class, ITypeSpecImmutable {
+        public virtual (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) where T : class, ITypeSpecImmutable {
             ITypeSpecBuilder spec;
-            (spec, metamodel) = LoadSpecification(type, classStrategy, metamodel);
+            (spec, metamodel) = LoadSpecification(type, metamodel);
             return (spec as T, metamodel);
         }
 

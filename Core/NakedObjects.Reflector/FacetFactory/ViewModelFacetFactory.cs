@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.FacetFactory {
     public sealed class ViewModelFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public ViewModelFacetFactory(IFacetFactoryOrder<ViewModelFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             IFacet facet = null;
 
             if (!type.IsInterface && typeof(IViewModel).IsAssignableFrom(type)) {

@@ -27,12 +27,12 @@ namespace NakedObjects.Architecture.Component {
         IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary);
 
         // new for ParallelReflector
-        (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IClassStrategy classStrategy, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
+        (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
 
         /// <summary>
         ///     For when you know the expected subclass of the Spec
         /// </summary>
-        (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type, IClassStrategy classStrategy, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) where T : class, ITypeSpecImmutable;
+        (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type,  IImmutableDictionary<string, ITypeSpecBuilder> metamodel) where T : class, ITypeSpecImmutable;
     }
 
     // Copyright (c) Naked Objects Group Ltd.

@@ -18,12 +18,12 @@ namespace NakedObjects.Reflector.TypeFacetFactory {
     public sealed class UIntValueTypeFacetFactory : ValueUsingValueSemanticsProviderFacetFactory {
         public UIntValueTypeFacetFactory(IFacetFactoryOrder<UIntValueTypeFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!UIntValueSemanticsProvider.IsAdaptedType(type)) {
                 return metamodel;
             }
 
-            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(UIntValueSemanticsProvider.AdaptedType, classStrategy, metamodel);
+            var (oSpec, mm) = reflector.LoadSpecification<IObjectSpecImmutable>(UIntValueSemanticsProvider.AdaptedType, metamodel);
             AddValueFacets(new UIntValueSemanticsProvider(oSpec, specification), specification);
             return mm;
         }

@@ -33,7 +33,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestImmutableAnnotationPickedUpOnClassAndDefaultsToAlways() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, null,typeof(Customer), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,typeof(Customer), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
@@ -47,7 +47,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestImmutableAnnotationAlwaysPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, null,typeof(Customer1), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,typeof(Customer1), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
@@ -61,7 +61,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestImmutableAnnotationNeverPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, null,typeof(Customer2), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,typeof(Customer2), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
@@ -85,7 +85,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestImmutableAnnotationOncePersistedPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, null,typeof(Customer3), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,typeof(Customer3), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);
@@ -99,7 +99,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestImmutableAnnotationUntilPersistedPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, null,typeof(Customer4), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,typeof(Customer4), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IImmutableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ImmutableFacetAnnotation);

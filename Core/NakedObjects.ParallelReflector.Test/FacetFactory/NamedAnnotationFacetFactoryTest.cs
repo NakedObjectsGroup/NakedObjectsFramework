@@ -170,7 +170,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var actionMethod = FindMethod(typeof(Customer18), "SomeAction");
             var actionMethod1 = FindMethod(typeof(Customer18), "SomeAction1");
 
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -179,7 +179,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
 
-            metamodel = facetFactory.Process(Reflector, null,actionMethod1, MethodRemover, facetHolder1, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod1, MethodRemover, facetHolder1, metamodel);
             facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -197,7 +197,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var actionMethod = FindMethod(typeof(Customer13), "SomeAction");
             var actionMethod1 = FindMethod(typeof(Customer13), "SomeAction1");
 
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -206,7 +206,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             AssertNoMethodsRemoved();
             Assert.IsNotNull(metamodel);
 
-            metamodel = facetFactory.Process(Reflector, null,actionMethod1, MethodRemover, facetHolder1, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod1, MethodRemover, facetHolder1, metamodel);
             facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -223,10 +223,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var property = FindProperty(typeof(Customer16), "NumberOfOrders");
             var property1 = FindProperty(typeof(Customer16), "NumberOfOrders1");
 
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
             Assert.IsNotNull(metamodel);
 
-            metamodel = facetFactory.Process(Reflector, null,property1, MethodRemover, facetHolder1, metamodel);
+            metamodel = facetFactory.Process(Reflector,property1, MethodRemover, facetHolder1, metamodel);
             var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -248,7 +248,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer8), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -262,7 +262,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestDisplayNameAnnotationPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, null,typeof(Customer5), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,typeof(Customer5), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -277,7 +277,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer7), "Orders");
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -292,7 +292,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer6), "NumberOfOrders");
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -319,10 +319,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var property = FindProperty(typeof(Customer11), "NumberOfOrders");
             var property1 = FindProperty(typeof(Customer11), "NumberOfOrders1");
 
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
             Assert.IsNotNull(metamodel);
 
-            metamodel = facetFactory.Process(Reflector, null,property1, MethodRemover, facetHolder1, metamodel);
+            metamodel = facetFactory.Process(Reflector,property1, MethodRemover, facetHolder1, metamodel);
             var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -344,7 +344,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -359,7 +359,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer4), "SomeAction", new[] {typeof(int)});
-            metamodel = facetFactory.ProcessParams(Reflector, null,actionMethod, 0, Specification, metamodel);
+            metamodel = facetFactory.ProcessParams(Reflector,actionMethod, 0, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -372,7 +372,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestNamedAnnotationPickedUpOnClass() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, null,typeof(Customer), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,typeof(Customer), MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -387,7 +387,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer2), "Orders");
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -402,7 +402,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var property = FindProperty(typeof(Customer1), "NumberOfOrders");
-            metamodel = facetFactory.Process(Reflector, null,property, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,property, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NamedFacetAbstract);
@@ -427,10 +427,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var property1 = FindProperty(typeof(Customer19), "SomeProperty");
             var property2 = FindProperty(typeof(Customer19), "Property");
-            metamodel = facetFactory.Process(Reflector, null,property1, MethodRemover, specification1, metamodel);
+            metamodel = facetFactory.Process(Reflector,property1, MethodRemover, specification1, metamodel);
             Assert.IsNotNull(metamodel);
 
-            metamodel = facetFactory.Process(Reflector, null,property2, MethodRemover, specification2, metamodel);
+            metamodel = facetFactory.Process(Reflector,property2, MethodRemover, specification2, metamodel);
             var facet1 = specification1.GetFacet(typeof(INamedFacet));
             var facet2 = specification2.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet1);

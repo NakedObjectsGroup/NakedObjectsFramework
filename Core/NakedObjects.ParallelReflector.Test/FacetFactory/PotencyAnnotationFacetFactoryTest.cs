@@ -44,7 +44,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IIdempotentFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IdempotentFacet);
@@ -57,7 +57,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer3), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IIdempotentFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is IdempotentFacet);
@@ -72,7 +72,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer2), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
             Assert.IsNull(facet);
             facet = Specification.GetFacet(typeof(IIdempotentFacet));
@@ -87,7 +87,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IQueryOnlyFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is QueryOnlyFacet);

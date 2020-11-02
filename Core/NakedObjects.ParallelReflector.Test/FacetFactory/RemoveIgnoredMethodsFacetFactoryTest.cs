@@ -48,7 +48,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestMethodsMarkedIgnoredAreRemoved() {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
-            metamodel = facetFactory.Process(Reflector, null,typeof(Customer1), MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,typeof(Customer1), MethodRemover, Specification, metamodel);
             AssertRemovedCalled(2);
             Assert.IsNotNull(metamodel);
         }

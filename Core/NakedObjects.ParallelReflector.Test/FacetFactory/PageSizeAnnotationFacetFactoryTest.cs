@@ -39,7 +39,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
             var identifier = new IdentifierImpl("Customer1", "SomeAction");
             var actionPeer = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, null, null);
-            metamodel = new FallbackFacetFactory(new FacetFactoryOrder<FallbackFacetFactory>(), null).Process(Reflector, null,actionMethod, MethodRemover, actionPeer, metamodel);
+            metamodel = new FallbackFacetFactory(new FacetFactoryOrder<FallbackFacetFactory>(), null).Process(Reflector,actionMethod, MethodRemover, actionPeer, metamodel);
             var facet = actionPeer.GetFacet(typeof(IPageSizeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PageSizeFacetDefault);
@@ -64,7 +64,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IPageSizeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PageSizeFacetAnnotation);

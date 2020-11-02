@@ -124,7 +124,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer), "SomeAction");
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionInvocationFacetViaMethod);
@@ -141,7 +141,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer33), "SomeQueryableAction1");
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionInvocationFacetViaMethod);
@@ -158,7 +158,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(Customer33), "SomeQueryableAction2");
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionInvocationFacetViaMethod);
@@ -176,10 +176,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var type = typeof(Customer16);
             var actionMethod = FindMethod(type, "SomeAction");
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
             var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod) facet;
-            var (_, expectedSpec) = Reflector.LoadSpecification(type, null, null);
+            var (_, expectedSpec) = Reflector.LoadSpecification(type, null);
             Assert.AreEqual(expectedSpec, actionInvocationFacetViaMethod.OnType);
             Assert.AreEqual(0, metamodel.Count);
         }
@@ -190,10 +190,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var actionMethod = FindMethod(typeof(Customer15), "SomeAction");
             //   reflector.LoadSpecification(typeof(string));
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
             var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod) facet;
-            var (_, expectedSpec) = Reflector.LoadSpecification(typeof(string), null, null);
+            var (_, expectedSpec) = Reflector.LoadSpecification(typeof(string), null);
             Assert.AreEqual(expectedSpec, actionInvocationFacetViaMethod.ReturnType);
             Assert.AreEqual(0, metamodel.Count);
         }
@@ -204,10 +204,10 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var actionMethod = FindMethod(typeof(Customer14), "SomeAction");
             //     reflector.setLoadSpecificationClassReturn(voidNoSpec);
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionInvocationFacet));
             var actionInvocationFacetViaMethod = (ActionInvocationFacetViaMethod) facet;
-            var (_, expectedSpec) = Reflector.LoadSpecification(typeof(void), null, null);
+            var (_, expectedSpec) = Reflector.LoadSpecification(typeof(void), null);
             Assert.AreEqual(expectedSpec, actionInvocationFacetViaMethod.ReturnType);
             Assert.AreEqual(0, metamodel.Count);
         }
@@ -217,7 +217,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethodIgnoreParms(typeof(Customer1), "AnActionWithNullableParm");
-            metamodel = facetFactory.ProcessParams(Reflector, null,method, 0, Specification, metamodel);
+            metamodel = facetFactory.ProcessParams(Reflector,method, 0, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INullableFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is NullableFacetAlways);
@@ -230,7 +230,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var method = FindMethodIgnoreParms(typeof(Customer25), "SomeAction");
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, null,method, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector,method, MethodRemover, facetHolderWithParms, metamodel);
             var facet = facetHolderWithParms.Parameters[0].GetFacet(typeof(IAjaxFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is AjaxFacet);
@@ -244,7 +244,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var method = FindMethodIgnoreParms(typeof(Customer24), "SomeAction");
             var propertyValidateMethod = FindMethod(typeof(Customer24), "ValidateSomeAction", new[] {typeof(int)});
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, method, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, facetHolderWithParms, metamodel);
             var facet = facetHolderWithParms.Parameters[0].GetFacet(typeof(IAjaxFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is AjaxFacet);
@@ -260,7 +260,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var method = FindMethodIgnoreParms(typeof(Customer23), "SomeAction");
             var propertyValidateMethod = FindMethod(typeof(Customer23), "ValidateSomeAction", new[] {typeof(int)});
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, method, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, facetHolderWithParms, metamodel);
             var facet = facetHolderWithParms.Parameters[0].GetFacet(typeof(IAjaxFacet));
             Assert.IsNull(facet);
 
@@ -275,7 +275,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var method = FindMethodIgnoreParms(typeof(Customer20), "SomeAction");
             var propertyValidateMethod = FindMethod(typeof(Customer20), "ValidateSomeAction", new[] {typeof(int)});
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, method, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, method, MethodRemover, facetHolderWithParms, metamodel);
             var facet = facetHolderWithParms.Parameters[0].GetFacet(typeof(IAjaxFacet));
             Assert.IsNull(facet);
 
@@ -288,7 +288,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethodIgnoreParms(typeof(Customer1), "AnActionWithoutNullableParm");
-            metamodel = facetFactory.ProcessParams(Reflector, null,method, 0, Specification, metamodel);
+            metamodel = facetFactory.ProcessParams(Reflector,method, 0, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INullableFacet));
             Assert.IsNull(facet);
             Assert.AreEqual(0, metamodel.Count);
@@ -314,7 +314,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var autoComplete2Method = FindMethodIgnoreParms(typeof(Customer27), "AutoComplete2SomeAction");
 
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckAutoCompleteFacetIsNull(autoComplete0Method, facetHolderWithParms.Parameters[0]);
             CheckAutoCompleteFacetIsNull(autoComplete1Method, facetHolderWithParms.Parameters[1]);
@@ -327,7 +327,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(CustomerStatic), "SomeAction", new[] {typeof(int), typeof(long)});
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IDisableForSessionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is DisableForSessionFacetNone);
@@ -339,7 +339,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var actionMethod = FindMethod(typeof(CustomerStatic), "SomeAction", new[] {typeof(int), typeof(long)});
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IHideForSessionFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is HideForSessionFacetNone);
@@ -355,7 +355,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var autoComplete1Method = FindMethodIgnoreParms(typeof(Customer28), "AutoComplete1SomeAction");
 
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckAutoCompleteFacet(autoComplete0Method, facetHolderWithParms.Parameters[0], 33, 2);
             CheckAutoCompleteFacet(autoComplete1Method, facetHolderWithParms.Parameters[1], 66, 3);
@@ -372,7 +372,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var autoComplete2Method = FindMethodIgnoreParms(typeof(Customer26), "AutoComplete2SomeAction");
 
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckAutoCompleteFacet(autoComplete0Method, facetHolderWithParms.Parameters[0], 50, 0);
             CheckAutoCompleteFacet(autoComplete1Method, facetHolderWithParms.Parameters[1], 50, 0);
@@ -390,7 +390,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var autoComplete2Method = FindMethodIgnoreParms(typeof(Customer32), "AutoComplete2SomeAction");
 
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckAutoCompleteFacet(autoComplete0Method, facetHolderWithParms.Parameters[0], 50, 0);
             CheckAutoCompleteFacet(autoComplete1Method, facetHolderWithParms.Parameters[1], 50, 0);
@@ -408,7 +408,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var choices2Method = FindMethod(typeof(Customer13), "Choices2SomeAction", new Type[] { });
 
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckChoicesFacet(choices0Method, facetHolderWithParms.Parameters[0]);
 
@@ -442,7 +442,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var choices0Method3 = FindMethod(typeof(Customer30), "Choices0SomeAction", new Type[] { });
 
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckChoicesFacet(choices0Method1, facetHolderWithParms.Parameters[0]);
 
@@ -464,7 +464,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var choices2Method = FindMethod(typeof(Customer30), "Choices2SomeAction", new Type[] { });
 
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, null,actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector,actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckChoicesFacet(choices0Method, facetHolderWithParms.Parameters[0]);
 
@@ -498,7 +498,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var choices2Method = FindMethod(typeof(Customer21), "Choices2SomeAction", new Type[] { });
 
             var facetHolderWithParms = CreateHolderWithParms();
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckChoicesFacet(choices0Method, facetHolderWithParms.Parameters[0]);
 
@@ -533,7 +533,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var facetHolderWithParms = CreateHolderWithParms();
 
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckDefaultFacet(default0Method, facetHolderWithParms.Parameters[0]);
 
@@ -568,7 +568,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var facetHolderWithParms = CreateHolderWithParms();
 
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckDefaultFacet(default0Method, facetHolderWithParms.Parameters[0]);
 
@@ -602,7 +602,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var facetHolderWithParms = CreateHolderWithParms();
 
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckValidateParameterFacet(validateParameter0Method, facetHolderWithParms.Parameters[0]);
 
@@ -626,7 +626,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var facetHolderWithParms = CreateHolderWithParms();
 
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, facetHolderWithParms, metamodel);
 
             CheckValidateParameterFacet(validateParameter0Method, facetHolderWithParms.Parameters[0]);
 
@@ -646,7 +646,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var actionMethod = FindMethod(typeof(Customer8), "SomeAction");
             var validateMethod = FindMethod(typeof(Customer8), "ValidateSomeAction");
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionValidationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionValidationFacet);
@@ -662,7 +662,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var actionMethod = FindMethod(typeof(Customer9), "SomeAction", new[] {typeof(int), typeof(int)});
             var validateMethod = FindMethod(typeof(Customer9), "ValidateSomeAction", new[] {typeof(int), typeof(int)});
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(IActionValidationFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is ActionValidationFacet);
@@ -678,7 +678,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var actionMethod = FindMethodIgnoreParms(typeof(Customer18), "SomeActionThree");
             var disableMethod = FindMethodIgnoreParms(typeof(Customer18), "DisableActionDefault");
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
             var facet = Specification.GetFacet<IDisableForContextFacet>();
             Assert.IsNotNull(facet);
@@ -694,7 +694,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var actionMethod = FindMethodIgnoreParms(typeof(Customer19), "SomeActionThree");
             var disableMethod = FindMethodIgnoreParms(typeof(Customer19), "HideActionDefault");
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
             var facet = Specification.GetFacet<IHideForContextFacet>();
             Assert.IsNotNull(facet);
@@ -710,7 +710,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var actionMethod = FindMethodIgnoreParms(typeof(Customer12), "SomeActionThree");
             var hideMethod = FindMethodIgnoreParms(typeof(Customer12), "DisableSomeActionThree");
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
             var facet = Specification.GetFacet<IDisableForContextFacet>();
             Assert.IsNotNull(facet);
@@ -725,7 +725,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var actionMethod = FindMethod(typeof(Customer12), "SomeActionOne");
             var hideMethod = FindMethod(typeof(Customer12), "DisableSomeActionOne");
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
             var facet = Specification.GetFacet<IDisableForContextFacet>();
             Assert.IsNotNull(facet);
@@ -740,7 +740,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var actionMethod = FindMethodIgnoreParms(typeof(Customer18), "SomeActionTwo");
             var disableMethod = FindMethodIgnoreParms(typeof(Customer18), "DisableSomeActionTwo");
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
             var facet = Specification.GetFacet<IDisableForContextFacet>();
             Assert.IsNotNull(facet);
@@ -755,7 +755,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var actionMethod = FindMethodIgnoreParms(typeof(Customer12), "SomeActionTwo");
             var hideMethod = FindMethodIgnoreParms(typeof(Customer12), "DisableSomeActionTwo");
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
             var facet = Specification.GetFacet<IDisableForContextFacet>();
             Assert.IsNotNull(facet);
@@ -770,7 +770,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var actionMethod = FindMethodIgnoreParms(typeof(Customer10), "SomeActionThree");
             var hideMethod = FindMethodIgnoreParms(typeof(Customer10), "HideSomeActionThree");
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
             var facet = Specification.GetFacet<IHideForContextFacet>();
             Assert.IsNotNull(facet);
@@ -785,7 +785,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var actionMethod = FindMethod(typeof(Customer10), "SomeActionOne");
             var hideMethod = FindMethod(typeof(Customer10), "HideSomeActionOne");
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
             var facet = Specification.GetFacet<IHideForContextFacet>();
             Assert.IsNotNull(facet);
@@ -800,7 +800,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var actionMethod = FindMethodIgnoreParms(typeof(Customer19), "SomeActionTwo");
             var hideMethod = FindMethodIgnoreParms(typeof(Customer19), "HideSomeActionTwo");
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
             var facet = Specification.GetFacet<IHideForContextFacet>();
             Assert.IsNotNull(facet);
@@ -815,7 +815,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
             var actionMethod = FindMethodIgnoreParms(typeof(Customer10), "SomeActionTwo");
             var hideMethod = FindMethodIgnoreParms(typeof(Customer10), "HideSomeActionTwo");
-            metamodel = facetFactory.Process(Reflector, ClassStrategy, actionMethod, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector, actionMethod, MethodRemover, Specification, metamodel);
 
             var facet = Specification.GetFacet<IHideForContextFacet>();
             Assert.IsNotNull(facet);
@@ -829,7 +829,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             var method = FindMethod(typeof(Customer1), "AnActionWithNamedAnnotation");
-            metamodel = facetFactory.Process(Reflector, null,method, MethodRemover, Specification, metamodel);
+            metamodel = facetFactory.Process(Reflector,method, MethodRemover, Specification, metamodel);
             var facet = Specification.GetFacet(typeof(INamedFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is INamedFacet);

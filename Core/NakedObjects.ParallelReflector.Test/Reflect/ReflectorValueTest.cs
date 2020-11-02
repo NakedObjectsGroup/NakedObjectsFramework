@@ -20,8 +20,8 @@ namespace NakedObjects.ParallelReflect.Test {
         protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(AbstractParallelReflector reflector) {
             var objectReflector = (ObjectReflector) reflector;
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            (_, metamodel) = reflector.LoadSpecification(typeof(IEnumerable<char>), ClassStrategy, metamodel);
-            (_, metamodel) = reflector.LoadSpecification(typeof(string), ClassStrategy, metamodel);
+            (_, metamodel) = reflector.LoadSpecification(typeof(IEnumerable<char>), metamodel);
+            (_, metamodel) = reflector.LoadSpecification(typeof(string), metamodel);
 
             (_, metamodel) = reflector.IntrospectSpecification(typeof(IEnumerable<char>), metamodel, () => new ObjectIntrospector(reflector, null));
             return reflector.IntrospectSpecification(typeof(string), metamodel, () => new ObjectIntrospector(reflector, null));

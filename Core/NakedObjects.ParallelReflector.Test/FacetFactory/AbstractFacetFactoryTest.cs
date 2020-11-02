@@ -51,13 +51,16 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             mockMethodRemover.Setup(remover => remover.RemoveMethods(It.IsAny<IList<MethodInfo>>()));
 
             mockReflector.Setup(reflector =>
-                reflector.LoadSpecification(It.IsAny<Type>(), It.IsAny<IClassStrategy>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IClassStrategy c, IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
+                reflector.LoadSpecification(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
 
             mockReflector.Setup(reflector =>
-                reflector.LoadSpecification<ITypeSpecBuilder>(It.IsAny<Type>(), It.IsAny<IClassStrategy>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IClassStrategy c, IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
+                reflector.LoadSpecification<ITypeSpecBuilder>(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
 
             mockReflector.Setup(reflector =>
-                reflector.LoadSpecification<IObjectSpecBuilder>(It.IsAny<Type>(), It.IsAny<IClassStrategy>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t, IClassStrategy c,  IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
+                reflector.LoadSpecification<IObjectSpecBuilder>(It.IsAny<Type>(), It.IsAny<IImmutableDictionary<string, ITypeSpecBuilder>>())).Returns((Type t,   IImmutableDictionary<string, ITypeSpecBuilder> m) => (null, m));
+
+            mockReflector.Setup(reflector => reflector.ClassStrategy).Returns(ClassStrategy);
+
         }
 
         public virtual void TearDown() {

@@ -39,7 +39,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                                          classStrategy.IsTypeToBeIntrospected(property.PropertyType) &&
                                          !classStrategy.IsIgnored(property)).ToList();
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = property.Name;
             var type = property.DeclaringType;
 
@@ -49,8 +49,8 @@ namespace NakedObjects.Reflector.FacetFactory {
 
             MethodHelpers.AddHideForSessionFacetNone(facets, collection);
             MethodHelpers.AddDisableFacetAlways(facets, collection);
-            MethodHelpers.FindDefaultHideMethod(reflector, classStrategy, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", collection, LoggerFactory);
-            MethodHelpers.FindAndRemoveHideMethod(reflector, classStrategy, facets, methodRemover, type, MethodType.Object, capitalizedName, collection, LoggerFactory);
+            MethodHelpers.FindDefaultHideMethod(reflector,  facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", collection, LoggerFactory);
+            MethodHelpers.FindAndRemoveHideMethod(reflector,  facets, methodRemover, type, MethodType.Object, capitalizedName, collection, LoggerFactory);
             FacetUtils.AddFacets(facets);
             return metamodel;
         }

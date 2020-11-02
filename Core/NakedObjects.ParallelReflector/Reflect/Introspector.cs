@@ -106,7 +106,7 @@ namespace NakedObjects.ParallelReflector.Reflect {
             metamodel = ProcessType(spec, metamodel);
 
             if (SuperclassType != null && ClassStrategy.IsTypeToBeIntrospected(SuperclassType)) {
-                (Superclass, metamodel) = Reflector.LoadSpecification(SuperclassType, ClassStrategy, metamodel);
+                (Superclass, metamodel) = Reflector.LoadSpecification(SuperclassType, metamodel);
             }
 
             AddAsSubclass(spec);
@@ -115,7 +115,7 @@ namespace NakedObjects.ParallelReflector.Reflect {
             foreach (var interfaceType in InterfacesTypes) {
                 if (interfaceType != null && ClassStrategy.IsTypeToBeIntrospected(interfaceType)) {
                     ITypeSpecBuilder interfaceSpec;
-                    (interfaceSpec, metamodel) = Reflector.LoadSpecification(interfaceType, ClassStrategy, metamodel);
+                    (interfaceSpec, metamodel) = Reflector.LoadSpecification(interfaceType, metamodel);
                     interfaceSpec.AddSubclass(spec);
                     interfaces.Add(interfaceSpec);
                 }
@@ -193,11 +193,11 @@ namespace NakedObjects.ParallelReflector.Reflect {
                 // create a collection property spec
                 var returnType = property.PropertyType;
                 IObjectSpecImmutable returnSpec;
-                (returnSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(returnType, ClassStrategy, metamodel);
+                (returnSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(returnType, metamodel);
 
                 var defaultType = typeof(object);
                 IObjectSpecImmutable defaultSpec;
-                (defaultSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(defaultType, ClassStrategy, metamodel);
+                (defaultSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(defaultType, metamodel);
 
                 var collection = ImmutableSpecFactory.CreateOneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
 
@@ -217,7 +217,7 @@ namespace NakedObjects.ParallelReflector.Reflect {
                 var identifier = new IdentifierImpl(FullName, property.Name);
                 var propertyType = property.PropertyType;
                 IObjectSpecImmutable propertySpec;
-                (propertySpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(propertyType, ClassStrategy, metamodel);
+                (propertySpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(propertyType, metamodel);
 
                 if (propertySpec == null) {
                     throw new ReflectionException($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}. If the property is intended to be an injected service it should have a protected get.");
@@ -262,7 +262,7 @@ namespace NakedObjects.ParallelReflector.Reflect {
                     // build action & its parameters
 
                     if (ClassStrategy.LoadReturnType(actionMethod)) {
-                        (_, metamodel) = Reflector.LoadSpecification(actionMethod.ReturnType, ClassStrategy, metamodel);
+                        (_, metamodel) = Reflector.LoadSpecification(actionMethod.ReturnType, metamodel);
                     }
 
                     IIdentifier identifier = new IdentifierImpl(FullName, fullMethodName, actionMethod.GetParameters().ToArray());
@@ -271,7 +271,7 @@ namespace NakedObjects.ParallelReflector.Reflect {
 
                     foreach (var pt in parameterTypes) {
                         IObjectSpecBuilder oSpec;
-                        (oSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecBuilder>(pt, ClassStrategy, metamodel);
+                        (oSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecBuilder>(pt, metamodel);
                         var actionSpec = ImmutableSpecFactory.CreateActionParameterSpecImmutable(oSpec, identifier);
                         actionParams.Add(actionSpec);
                     }

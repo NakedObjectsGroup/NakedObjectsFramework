@@ -78,7 +78,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
 
         private void Process(Type type) {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
-            facetFactory.Process(Reflector, null, type, MethodRemover, Specification, metamodel);
+            facetFactory.Process(Reflector, type, MethodRemover, Specification, metamodel);
         }
 
         [TestMethod]
