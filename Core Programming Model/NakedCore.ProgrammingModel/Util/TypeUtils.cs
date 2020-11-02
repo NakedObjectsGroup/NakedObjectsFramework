@@ -10,6 +10,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("NakedObjects.Reflector")]
+[assembly: InternalsVisibleTo("NakedObjects.Core")]
+[assembly: InternalsVisibleTo("NakedObjects.SystemTest")]
+[assembly: InternalsVisibleTo("NakedObjects.Helpers.Test")]
 
 namespace NakedObjects.Util {
     /// <summary>
