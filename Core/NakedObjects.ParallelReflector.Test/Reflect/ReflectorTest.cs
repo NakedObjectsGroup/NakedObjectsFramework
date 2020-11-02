@@ -50,6 +50,11 @@ namespace NakedObjects.ParallelReflect.Test {
 
         public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) => null;
 
+        public IMenu AddAction(Type fromType, string actionName) => null;
+        public IMenu AddAllActions(Type fromType) => null;
+        public IMenu AddRemainingActions(Type fromType) => null;
+        public IMenu WithDefaultType(Type defaultType) => null;
+
         #endregion
 
         public IMenu NewMenu(string name) => null;
