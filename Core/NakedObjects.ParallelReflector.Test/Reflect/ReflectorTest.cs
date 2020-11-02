@@ -38,6 +38,7 @@ using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.TypeFacetFactory;
+using NakedObjects.Menu;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
