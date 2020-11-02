@@ -42,18 +42,19 @@ using NakedObjects.Reflector.TypeFacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.ParallelReflect.Test {
-    public class NullMenuFactory : IMenuFactory {
+namespace NakedObjects.ParallelReflect.Test
+{
+    public class NullMenuFactory : IMenuFactory
+    {
         #region IMenuFactory Members
 
         public IMenu NewMenu<T>(bool addAllActions, string name = null) => null;
 
         public IMenu NewMenu(Type type, bool addAllActions = false, string name = null) => null;
 
-        public IMenu AddAction(Type fromType, string actionName) => null;
-        public IMenu AddAllActions(Type fromType) => null;
-        public IMenu AddRemainingActions(Type fromType) => null;
-        public IMenu WithDefaultType(Type defaultType) => null;
+        public IMenu NewMenu(string name, string id);
+
+        public IMenu NewMenu(string name, string id, Type defaultType, bool addAllActions = false);
 
         #endregion
 
@@ -61,10 +62,12 @@ namespace NakedObjects.ParallelReflect.Test {
     }
 
     [TestClass]
-    public class ReflectorTest {
+    public class ReflectorTest
+    {
         #region TestEnum enum
 
-        public enum TestEnum {
+        public enum TestEnum
+        {
             Value1,
             Value2
         }
@@ -75,21 +78,25 @@ namespace NakedObjects.ParallelReflect.Test {
 
         private IHostBuilder CreateHostBuilder(string[] args, ICoreConfiguration cc, IObjectReflectorConfiguration rc) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureServices((hostContext, services) => {
+                .ConfigureServices((hostContext, services) =>
+                {
                     RegisterTypes(services, cc, rc);
                 });
 
-        protected IServiceProvider GetContainer(ICoreConfiguration cc, IObjectReflectorConfiguration rc) {
+        protected IServiceProvider GetContainer(ICoreConfiguration cc, IObjectReflectorConfiguration rc)
+        {
             ImmutableSpecFactory.ClearCache();
             var hostBuilder = CreateHostBuilder(new string[] { }, cc, rc).Build();
             return hostBuilder.Services;
         }
 
-        private static void RegisterFacetFactory<T>(string name, IServiceCollection services) {
+        private static void RegisterFacetFactory<T>(string name, IServiceCollection services)
+        {
             ConfigHelpers.RegisterFacetFactory(typeof(T), services);
         }
 
-        protected virtual void RegisterFacetFactories(IServiceCollection services) {
+        protected virtual void RegisterFacetFactories(IServiceCollection services)
+        {
             RegisterFacetFactory<FallbackFacetFactory>("FallbackFacetFactory", services);
             RegisterFacetFactory<IteratorFilteringFacetFactory>("IteratorFilteringFacetFactory", services);
             RegisterFacetFactory<SystemClassMethodFilteringFactory>("UnsupportedParameterTypesMethodFilteringFactory", services);
@@ -172,10 +179,11 @@ namespace NakedObjects.ParallelReflect.Test {
             RegisterFacetFactory<FileAttachmentValueTypeFacetFactory>("FileAttachmentValueTypeFacetFactory", services);
             RegisterFacetFactory<ImageValueTypeFacetFactory>("ImageValueTypeFacetFactory", services);
             RegisterFacetFactory<ArrayValueTypeFacetFactory<byte>>("ArrayValueTypeFacetFactory<byte>", services);
-            RegisterFacetFactory<CollectionFacetFactory>("CollectionFacetFactory", services); 
+            RegisterFacetFactory<CollectionFacetFactory>("CollectionFacetFactory", services);
         }
 
-        protected virtual void RegisterTypes(IServiceCollection services, ICoreConfiguration cc, IObjectReflectorConfiguration rc) {
+        protected virtual void RegisterTypes(IServiceCollection services, ICoreConfiguration cc, IObjectReflectorConfiguration rc)
+        {
             RegisterFacetFactories(services);
 
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
@@ -191,7 +199,7 @@ namespace NakedObjects.ParallelReflect.Test {
 
             services.AddSingleton(cc);
             services.AddSingleton(rc);
-            services.AddSingleton<IFunctionalReflectorConfiguration>(new FunctionalReflectorConfiguration(new Type[]{}, new Type[]{} ));
+            services.AddSingleton<IFunctionalReflectorConfiguration>(new FunctionalReflectorConfiguration(new Type[] { }, new Type[] { }));
 
             TestHook(services);
         }
@@ -203,13 +211,14 @@ namespace NakedObjects.ParallelReflect.Test {
         }
 
         [TestMethod]
-        public void ReflectNoTypes() {
+        public void ReflectNoTypes()
+        {
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(new CoreConfiguration(),  rc);
+            var container = GetContainer(new CoreConfiguration(), rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -218,10 +227,11 @@ namespace NakedObjects.ParallelReflect.Test {
         }
 
         [TestMethod]
-        public void ReflectObjectType() {
+        public void ReflectObjectType()
+        {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] {typeof(object)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(object) }, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -235,10 +245,11 @@ namespace NakedObjects.ParallelReflect.Test {
         }
 
         [TestMethod]
-        public void ReflectListTypes() {
+        public void ReflectListTypes()
+        {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] {typeof(List<object>), typeof(List<int>), typeof(object), typeof(int)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(List<object>), typeof(List<int>), typeof(object), typeof(int) }, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -254,10 +265,11 @@ namespace NakedObjects.ParallelReflect.Test {
         }
 
         [TestMethod]
-        public void ReflectSetTypes() {
+        public void ReflectSetTypes()
+        {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] {typeof(SetWrapper<>), typeof(object)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(SetWrapper<>), typeof(object) }, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -272,12 +284,13 @@ namespace NakedObjects.ParallelReflect.Test {
         }
 
         [TestMethod]
-        public void ReflectQueryableTypes() {
+        public void ReflectQueryableTypes()
+        {
             var qo = new List<object>().AsQueryable();
             var qi = new List<int>().AsQueryable();
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] {qo.GetType(), qi.GetType(), typeof(int), typeof(object)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { qo.GetType(), qi.GetType(), typeof(int), typeof(object) }, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -293,11 +306,12 @@ namespace NakedObjects.ParallelReflect.Test {
         }
 
         [TestMethod]
-        public void ReflectWhereIterator() {
-            var it = new List<int> {1, 2, 3}.Where(i => i == 2);
+        public void ReflectWhereIterator()
+        {
+            var it = new List<int> { 1, 2, 3 }.Where(i => i == 2);
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { it.GetType().GetGenericTypeDefinition(), typeof(object) }, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -312,11 +326,12 @@ namespace NakedObjects.ParallelReflect.Test {
         }
 
         [TestMethod]
-        public void ReflectWhereSelectIterator() {
-            var it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
+        public void ReflectWhereSelectIterator()
+        {
+            var it = new List<int> { 1, 2, 3 }.Where(i => i == 2).Select(i => i);
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { it.GetType().GetGenericTypeDefinition(), typeof(object) }, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -330,15 +345,17 @@ namespace NakedObjects.ParallelReflect.Test {
             AbstractReflectorTest.AssertSpec(it.GetType().GetGenericTypeDefinition(), specs);
         }
 
-        private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs) {
+        private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs)
+        {
             return specs.Single(s => s.FullName == type.FullName);
         }
 
         [TestMethod]
-        public void ReflectInt() {
+        public void ReflectInt()
+        {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] {typeof(int)}, new Type[] { }, new[] {"System"});
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(int) }, new Type[] { }, new[] { "System" });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -359,10 +376,11 @@ namespace NakedObjects.ParallelReflect.Test {
         }
 
         [TestMethod]
-        public void ReflectByteArray() {
+        public void ReflectByteArray()
+        {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] {typeof(TestObjectWithByteArray)}, new Type[] { }, new[] {"System"});
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(TestObjectWithByteArray) }, new Type[] { }, new[] { "System" });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -407,10 +425,11 @@ namespace NakedObjects.ParallelReflect.Test {
         }
 
         [TestMethod]
-        public void ReflectStringArray() {
+        public void ReflectStringArray()
+        {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] {typeof(TestObjectWithStringArray), typeof(string)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(TestObjectWithStringArray), typeof(string) }, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -426,10 +445,11 @@ namespace NakedObjects.ParallelReflect.Test {
         }
 
         [TestMethod]
-        public void ReflectWithScalars() {
+        public void ReflectWithScalars()
+        {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] {typeof(WithScalars)}, new Type[] { }, new[] {"System"});
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(WithScalars) }, new Type[] { }, new[] { "System" });
             rc.SupportedSystemTypes.Clear();
             var container = GetContainer(new CoreConfiguration(), rc);
 
@@ -515,10 +535,11 @@ namespace NakedObjects.ParallelReflect.Test {
         }
 
         [TestMethod]
-        public void ReflectSimpleDomainObject() {
+        public void ReflectSimpleDomainObject()
+        {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] {typeof(SimpleDomainObject)}, new Type[] { }, new[] {"System"});
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(SimpleDomainObject) }, new Type[] { }, new[] { "System" });
             rc.SupportedSystemTypes.Clear();
             var container = GetContainer(new CoreConfiguration(), rc);
 
@@ -550,12 +571,13 @@ namespace NakedObjects.ParallelReflect.Test {
         }
 
         [TestMethod]
-        public void ReplaceFacetFactory() {
+        public void ReplaceFacetFactory()
+        {
             TestHook = services => ConfigHelpers.RegisterReplacementFacetFactory<ReplacementBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
 
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] {typeof(SimpleBoundedObject)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(SimpleBoundedObject) }, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -571,12 +593,13 @@ namespace NakedObjects.ParallelReflect.Test {
         }
 
         [TestMethod]
-        public void ReplaceDelegatingFacetFactory() {
+        public void ReplaceDelegatingFacetFactory()
+        {
             TestHook = services => ConfigHelpers.RegisterReplacementFacetFactoryDelegatingToOriginal<ReplacementDelegatingBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
 
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] {typeof(SimpleBoundedObject)}, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(SimpleBoundedObject) }, new Type[] { }, new string[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -585,7 +608,7 @@ namespace NakedObjects.ParallelReflect.Test {
             builder.Build();
             var specs = AllObjectSpecImmutables(container);
 
-            Assert.AreEqual(1,specs.Length);
+            Assert.AreEqual(1, specs.Length);
             var spec = specs.First();
 
             Assert.IsFalse(spec.ContainsFacet<IBoundedFacet>());
@@ -596,7 +619,8 @@ namespace NakedObjects.ParallelReflect.Test {
         public sealed class ReplacementBoundedAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory
         {
             public ReplacementBoundedAnnotationFacetFactory(IFacetFactoryOrder<BoundedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-                : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) {
+                : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces)
+            {
                 Assert.AreEqual(21, order.Order);
             }
 
@@ -612,12 +636,14 @@ namespace NakedObjects.ParallelReflect.Test {
             private readonly BoundedAnnotationFacetFactory originalFactory;
 
             public ReplacementDelegatingBoundedAnnotationFacetFactory(IFacetFactoryOrder<BoundedAnnotationFacetFactory> order, BoundedAnnotationFacetFactory originalFactory, ILoggerFactory loggerFactory)
-                : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) {
+                : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces)
+            {
                 this.originalFactory = originalFactory;
                 Assert.AreEqual(21, order.Order);
             }
 
-            public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
+            {
                 Assert.IsNotNull(originalFactory);
                 return metamodel;
             }
@@ -627,7 +653,8 @@ namespace NakedObjects.ParallelReflect.Test {
 
         #region Nested type: SetWrapper
 
-        public class SetWrapper<T> : ISet<T> {
+        public class SetWrapper<T> : ISet<T>
+        {
             private readonly ICollection<T> wrapped;
 
             public SetWrapper(ICollection<T> wrapped) => this.wrapped = wrapped;
@@ -655,16 +682,19 @@ namespace NakedObjects.ParallelReflect.Test {
 
             public bool SetEquals(IEnumerable<T> other) => false;
 
-            public bool Add(T item) {
+            public bool Add(T item)
+            {
                 wrapped.Add(item);
                 return true;
             }
 
-            void ICollection<T>.Add(T item) {
+            void ICollection<T>.Add(T item)
+            {
                 wrapped.Add(item);
             }
 
-            public void Clear() {
+            public void Clear()
+            {
                 wrapped.Clear();
             }
 
@@ -686,7 +716,8 @@ namespace NakedObjects.ParallelReflect.Test {
         #region Nested type: SimpleBoundedObject
 
         [Bounded]
-        public class SimpleBoundedObject {
+        public class SimpleBoundedObject
+        {
             [Key]
             [Title]
             [ConcurrencyCheck]
@@ -697,7 +728,8 @@ namespace NakedObjects.ParallelReflect.Test {
 
         #region Nested type: SimpleDomainObject
 
-        public class SimpleDomainObject {
+        public class SimpleDomainObject
+        {
             [Key]
             [Title]
             [ConcurrencyCheck]
@@ -712,7 +744,8 @@ namespace NakedObjects.ParallelReflect.Test {
 
         #region Nested type: TestObjectWithByteArray
 
-        public class TestObjectWithByteArray {
+        public class TestObjectWithByteArray
+        {
             public byte[] ByteArray { get; set; }
         }
 
@@ -720,7 +753,8 @@ namespace NakedObjects.ParallelReflect.Test {
 
         #region Nested type: TestObjectWithStringArray
 
-        public class TestObjectWithStringArray {
+        public class TestObjectWithStringArray
+        {
             public string[] StringArray { get; set; }
         }
 
@@ -728,8 +762,10 @@ namespace NakedObjects.ParallelReflect.Test {
 
         #region Nested type: WithScalars
 
-        public class WithScalars {
-            public WithScalars() {
+        public class WithScalars
+        {
+            public WithScalars()
+            {
                 Init();
             }
 
@@ -757,7 +793,8 @@ namespace NakedObjects.ParallelReflect.Test {
             [NotMapped]
             public virtual ulong ULong { get; set; }
 
-            public virtual char Char {
+            public virtual char Char
+            {
                 get => '3';
                 // ReSharper disable once ValueParameterNotUsed
                 set { }
@@ -782,7 +819,8 @@ namespace NakedObjects.ParallelReflect.Test {
             [EnumDataType(typeof(TestEnum))]
             public virtual int EnumByAttributeChoices { get; set; }
 
-            private void Init() {
+            private void Init()
+            {
                 SByte = 10;
                 UInt = 14;
                 ULong = 15;
