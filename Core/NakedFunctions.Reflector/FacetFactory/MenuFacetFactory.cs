@@ -27,7 +27,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         }
 
         public MenuFacetFactory(IFacetFactoryOrder<MenuFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces, ReflectionType.Both) { }
+            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
         public  string[] Prefixes => FixedPrefixes;
 

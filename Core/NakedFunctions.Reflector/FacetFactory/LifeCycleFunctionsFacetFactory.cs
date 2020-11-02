@@ -36,7 +36,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private readonly ILogger<LifeCycleFunctionsFacetFactory> logger;
 
         public LifeCycleFunctionsFacetFactory(IFacetFactoryOrder<LifeCycleFunctionsFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Objects, ReflectionType.Functional) =>
+            : base(order.Order, loggerFactory, FeatureType.Objects) =>
             logger = loggerFactory.CreateLogger<LifeCycleFunctionsFacetFactory>();
 
         public  string[] Prefixes => FixedPrefixes;

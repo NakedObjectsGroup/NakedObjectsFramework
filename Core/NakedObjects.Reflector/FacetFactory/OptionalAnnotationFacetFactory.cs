@@ -23,7 +23,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         private readonly ILogger<OptionalAnnotationFacetFactory> logger;
 
         public OptionalAnnotationFacetFactory(IFacetFactoryOrder<OptionalAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters, ReflectionType.Both) =>
+            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
             logger = loggerFactory.CreateLogger<OptionalAnnotationFacetFactory>();
 
         private static void Process(MemberInfo member, ISpecification holder) {

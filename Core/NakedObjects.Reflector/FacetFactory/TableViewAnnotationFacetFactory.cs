@@ -25,7 +25,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         private readonly ILogger<TableViewAnnotationFacetFactory> logger;
 
         public TableViewAnnotationFacetFactory(IFacetFactoryOrder<TableViewAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.CollectionsAndActions, ReflectionType.Both) =>
+            : base(order.Order, loggerFactory, FeatureType.CollectionsAndActions) =>
             logger = loggerFactory.CreateLogger<TableViewAnnotationFacetFactory>();
 
         private void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {

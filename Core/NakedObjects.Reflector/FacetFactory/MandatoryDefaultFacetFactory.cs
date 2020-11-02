@@ -30,7 +30,7 @@ namespace NakedObjects.Reflector.FacetFactory {
     /// </para>
     public sealed class MandatoryDefaultFacetFactory : ObjectFacetFactoryProcessor {
         public MandatoryDefaultFacetFactory(IFacetFactoryOrder<MandatoryDefaultFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters, ReflectionType.Both) { }
+            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FacetUtils.AddFacet(Create(specification));

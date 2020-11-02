@@ -31,7 +31,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private readonly ILogger<ContributedFunctionFacetFactory> logger;
 
         public ContributedFunctionFacetFactory(IFacetFactoryOrder<ContributedFunctionFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
+            : base(order.Order, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<ContributedFunctionFacetFactory>();
 
 

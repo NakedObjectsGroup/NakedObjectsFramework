@@ -20,8 +20,7 @@ namespace NakedObjects.Reflector.TypeFacetFactory {
     public abstract class TypeFacetFactoryProcessor :  FacetFactoryAbstract,  ITypeFacetFactoryProcessor {
         protected TypeFacetFactoryProcessor(int numericOrder,
                                               ILoggerFactory loggerFactory,
-                                              FeatureType featureTypes,
-                                              ReflectionType reflectionType = ReflectionType.ObjectOriented) : base(numericOrder, loggerFactory, featureTypes, reflectionType) { }
+                                              FeatureType featureTypes) : base(numericOrder, loggerFactory, featureTypes) { }
 
 
         public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;

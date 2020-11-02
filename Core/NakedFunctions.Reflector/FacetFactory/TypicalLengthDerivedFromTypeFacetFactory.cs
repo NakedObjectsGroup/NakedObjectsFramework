@@ -50,7 +50,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         };
 
         public TypicalLengthDerivedFromTypeFacetFactory(IFacetFactoryOrder<TypicalLengthDerivedFromTypeFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters, ReflectionType.Both) { }
+            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             AddFacetDerivedFromTypeIfPresent(specification, property.PropertyType, classStrategy);

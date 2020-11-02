@@ -24,7 +24,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         private readonly ILogger<RangeAnnotationFacetFactory> logger;
 
         public RangeAnnotationFacetFactory(IFacetFactoryOrder<RangeAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters, ReflectionType.Both) =>
+            : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) =>
             logger = loggerFactory.CreateLogger<RangeAnnotationFacetFactory>();
 
         private void Process(MemberInfo member, bool isDate, ISpecification specification) {

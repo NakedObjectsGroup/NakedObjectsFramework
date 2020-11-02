@@ -15,12 +15,10 @@ namespace NakedObjects.ParallelReflector.FacetFactory {
     public abstract class FacetFactoryAbstract : IFacetFactory {
         protected FacetFactoryAbstract(int numericOrder,
                                        ILoggerFactory loggerFactory,
-                                       FeatureType featureTypes,
-                                       ReflectionType reflectionType = ReflectionType.ObjectOriented) {
+                                       FeatureType featureTypes) {
             NumericOrder = numericOrder;
             LoggerFactory = loggerFactory;
             FeatureTypes = featureTypes;
-            ReflectionTypes = reflectionType;
         }
 
         protected ILoggerFactory LoggerFactory { get; }
@@ -36,7 +34,6 @@ namespace NakedObjects.ParallelReflector.FacetFactory {
         public int NumericOrder { get; }
 
         public virtual FeatureType FeatureTypes { get; }
-        public ReflectionType ReflectionTypes { get; }
 
         public int CompareTo(IFacetFactory other) => NumericOrder.CompareTo(other.NumericOrder);
 

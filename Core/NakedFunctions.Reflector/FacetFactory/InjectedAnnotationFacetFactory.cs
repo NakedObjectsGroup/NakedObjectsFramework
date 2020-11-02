@@ -20,7 +20,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class InjectedAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory
     {
         public InjectedAnnotationFacetFactory(IFacetFactoryOrder<InjectedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ActionParameters, ReflectionType.Functional) { }
+            : base(order.Order, loggerFactory, FeatureType.ActionParameters) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, IClassStrategy classStrategy, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (FunctionalFacetFactoryHelpers.IsInjectedParameter(method, paramNum)) {

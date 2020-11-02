@@ -20,7 +20,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class PropertyValidateDefaultFacetFactory : ObjectFacetFactoryProcessor {
         public PropertyValidateDefaultFacetFactory(IFacetFactoryOrder<PropertyValidateDefaultFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Properties, ReflectionType.Both) { }
+            : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, PropertyInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FacetUtils.AddFacet(Create(specification));

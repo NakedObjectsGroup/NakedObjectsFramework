@@ -22,7 +22,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class TypeOfAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public TypeOfAnnotationFacetFactory(IFacetFactoryOrder<TypeOfAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.CollectionsAndActions, ReflectionType.Both) { }
+            : base(order.Order, loggerFactory, FeatureType.CollectionsAndActions) { }
 
         private static IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type methodReturnType, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (!CollectionUtils.IsCollection(methodReturnType)) {

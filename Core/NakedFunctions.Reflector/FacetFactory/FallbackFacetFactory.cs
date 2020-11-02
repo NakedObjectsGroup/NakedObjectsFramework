@@ -27,7 +27,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class FallbackFacetFactory : FunctionalFacetFactoryProcessor
     {
         public FallbackFacetFactory(IFacetFactoryOrder<FallbackFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Everything, ReflectionType.Both) { }
+            : base(order.Order, loggerFactory, FeatureType.Everything) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FacetUtils.AddFacets(

@@ -22,7 +22,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class ActionDefaultAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public ActionDefaultAnnotationFacetFactory(IFacetFactoryOrder<ActionDefaultAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ActionParameters, ReflectionType.Both) { }
+            : base(order.Order, loggerFactory, FeatureType.ActionParameters) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, IClassStrategy classStrategy, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];

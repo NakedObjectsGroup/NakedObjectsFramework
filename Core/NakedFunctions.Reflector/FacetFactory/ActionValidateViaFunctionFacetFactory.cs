@@ -30,7 +30,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private readonly ILogger<ActionValidateViaFunctionFacetFactory> logger;
 
         public ActionValidateViaFunctionFacetFactory(IFacetFactoryOrder<ActionValidateViaFunctionFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
+            : base(order.Order, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<ActionValidateViaFunctionFacetFactory>();
 
         public  string[] Prefixes => FixedPrefixes;

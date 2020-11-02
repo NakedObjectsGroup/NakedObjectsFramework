@@ -20,7 +20,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class MemberOrderAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public MemberOrderAnnotationFacetFactory(IFacetFactoryOrder<MemberOrderAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions, ReflectionType.Both) { }
+            : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = member.GetCustomAttribute<MemberOrderAttribute>();

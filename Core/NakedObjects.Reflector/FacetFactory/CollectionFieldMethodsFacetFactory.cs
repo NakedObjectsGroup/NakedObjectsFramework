@@ -30,7 +30,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         };
 
         public CollectionFieldMethodsFacetFactory(IFacetFactoryOrder<CollectionFieldMethodsFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Collections, ReflectionType.Both) { }
+            : base(order.Order, loggerFactory, FeatureType.Collections) { }
 
         public string[] Prefixes => FixedPrefixes;
 

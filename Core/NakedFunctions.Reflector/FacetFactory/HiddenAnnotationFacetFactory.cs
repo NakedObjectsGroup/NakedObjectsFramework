@@ -23,7 +23,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class HiddenAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public HiddenAnnotationFacetFactory(IFacetFactoryOrder<HiddenAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions, ReflectionType.Both) { }
+            : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(type.GetCustomAttribute<NakedObjects.HiddenAttribute>,

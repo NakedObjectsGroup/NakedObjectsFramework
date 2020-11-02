@@ -26,7 +26,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private readonly ILogger<ViewModelAnnotationFacetFactory> logger;
 
         public ViewModelAnnotationFacetFactory(IFacetFactoryOrder<ViewModelAnnotationFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory,
-                                                                                                                                               FeatureType.ObjectsAndInterfaces, ReflectionType.Functional) =>
+                                                                                                                                               FeatureType.ObjectsAndInterfaces) =>
             logger = loggerFactory.CreateLogger<ViewModelAnnotationFacetFactory>();
 
         private static bool IsSameType(ParameterInfo pi, Type toMatch) =>

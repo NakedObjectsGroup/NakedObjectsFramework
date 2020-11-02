@@ -33,7 +33,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private readonly ILogger<AutocompleteViaFunctionFacetFactory> logger;
 
         public AutocompleteViaFunctionFacetFactory(IFacetFactoryOrder<AutocompleteViaFunctionFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
+            : base(order.Order, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<AutocompleteViaFunctionFacetFactory>();
 
         public  string[] Prefixes => FixedPrefixes;

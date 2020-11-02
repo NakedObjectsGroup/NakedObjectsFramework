@@ -21,7 +21,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class PluralAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public PluralAnnotationFacetFactory(IFacetFactoryOrder<PluralAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces, ReflectionType.Both) { }
+            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var attribute = type.GetCustomAttribute<PluralAttribute>();

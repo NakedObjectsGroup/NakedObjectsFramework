@@ -21,7 +21,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class PresentationHintAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public PresentationHintAnnotationFacetFactory(IFacetFactoryOrder<PresentationHintAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Everything, ReflectionType.Both) { }
+            : base(order.Order, loggerFactory, FeatureType.Everything) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var attribute = type.GetCustomAttribute<PresentationHintAttribute>();

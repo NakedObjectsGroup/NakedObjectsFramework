@@ -6,13 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Immutable;
-using System.Reflection;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Architecture.Spec;
-using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Architecture.Component {
     public interface IFacetFactory : IComparable<IFacetFactory> {
@@ -29,8 +24,5 @@ namespace NakedObjects.Architecture.Component {
         ///     queried when building up the meta-model.
         /// </para>
         FeatureType FeatureTypes { get; }
-
-        ReflectionType ReflectionTypes { get; }
-
     }
 }

@@ -30,7 +30,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private readonly ILogger<PotencyDerivedFromSignatureFacetFactory> logger;
 
         public PotencyDerivedFromSignatureFacetFactory(IFacetFactoryOrder<PotencyDerivedFromSignatureFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions, ReflectionType.Functional) =>
+            : base(order.Order, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<PotencyDerivedFromSignatureFacetFactory>();
 
 

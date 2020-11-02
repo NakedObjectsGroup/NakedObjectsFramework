@@ -25,7 +25,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private readonly ILogger<DescribedAsAnnotationFacetFactory> logger;
 
         public DescribedAsAnnotationFacetFactory(IFacetFactoryOrder<DescribedAsAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Everything, ReflectionType.Both) =>
+            : base(order.Order, loggerFactory, FeatureType.Everything) =>
             logger = loggerFactory.CreateLogger<DescribedAsAnnotationFacetFactory>();
 
         private void Process(MemberInfo member, ISpecification holder) {

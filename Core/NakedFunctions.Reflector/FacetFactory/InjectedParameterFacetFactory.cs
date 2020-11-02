@@ -29,7 +29,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private readonly ILogger<InjectedParameterFacetFactory> logger;
 
         public InjectedParameterFacetFactory(IFacetFactoryOrder<InjectedParameterFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ActionParameters, ReflectionType.Functional) =>
+            : base(order.Order, loggerFactory, FeatureType.ActionParameters) =>
             logger = loggerFactory.CreateLogger<InjectedParameterFacetFactory>();
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, IClassStrategy classStrategy, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

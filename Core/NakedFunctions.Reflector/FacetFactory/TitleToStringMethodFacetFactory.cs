@@ -29,7 +29,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private readonly ILogger<TitleToStringMethodFacetFactory> logger;
 
         public TitleToStringMethodFacetFactory(IFacetFactoryOrder<TitleToStringMethodFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces, ReflectionType.Functional) =>
+            : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) =>
             logger = loggerFactory.CreateLogger<TitleToStringMethodFacetFactory>();
 
         public  string[] Prefixes => FixedPrefixes;

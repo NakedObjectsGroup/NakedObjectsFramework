@@ -22,7 +22,7 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class PropertyDefaultAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public PropertyDefaultAnnotationFacetFactory(IFacetFactoryOrder<PropertyDefaultAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Properties, ReflectionType.Both) { }
+            : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
             var attribute = (Attribute) member.GetCustomAttribute<DefaultValueAttribute>() ?? member.GetCustomAttribute<NakedFunctions.DefaultValueAttribute>();

@@ -25,7 +25,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private readonly ILogger<MaxLengthAnnotationFacetFactory> logger;
 
         public MaxLengthAnnotationFacetFactory(IFacetFactoryOrder<MaxLengthAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters, ReflectionType.Both) =>
+            : base(order.Order, loggerFactory, FeatureType.ObjectsInterfacesPropertiesAndActionParameters) =>
             logger = loggerFactory.CreateLogger<MaxLengthAnnotationFacetFactory>();
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, IClassStrategy classStrategy, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
