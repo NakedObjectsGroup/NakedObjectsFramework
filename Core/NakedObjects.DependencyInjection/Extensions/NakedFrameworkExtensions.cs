@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
+using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;
 using NakedObjects.Facade.Impl.Implementation;

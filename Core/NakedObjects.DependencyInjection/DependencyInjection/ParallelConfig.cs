@@ -15,16 +15,15 @@ using NakedObjects.Core.Authentication;
 using NakedObjects.Core.Component;
 using NakedObjects.Core.Framework;
 using NakedObjects.Core.Spec;
+using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Component;
 using NakedObjects.Meta.Menu;
-using NakedObjects.ParallelReflect;
-using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Persistor.Entity.Component;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Service;
 
-namespace NakedObjects.DependencyInjection {
+namespace NakedObjects.DependencyInjection.DependencyInjection {
     public static class ParallelConfig {
         public static void RegisterCoreSingletonTypes(IServiceCollection services) {
             services.AddSingleton<ObjectClassStrategy, ObjectClassStrategy>();

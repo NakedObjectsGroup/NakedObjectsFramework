@@ -17,9 +17,9 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
+using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Component;
-using NakedObjects.ParallelReflect.Component;
 using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.FacetFactory;
@@ -28,92 +28,96 @@ using NakedObjects.Reflector.TypeFacetFactory;
 namespace NakedObjects.ParallelReflect.Test {
     public abstract class AbstractReflectorTest {
         private static readonly ILoggerFactory MockLoggerFactory = new Mock<ILoggerFactory>().Object;
-
-        private readonly IFacetFactory[] facetFactories = {
-            new FallbackFacetFactory(new FacetFactoryOrder<FallbackFacetFactory>(), MockLoggerFactory),
-            new IteratorFilteringFacetFactory(new FacetFactoryOrder<IteratorFilteringFacetFactory>(), MockLoggerFactory),
-            new SystemClassMethodFilteringFactory(new FacetFactoryOrder<SystemClassMethodFilteringFactory>(), MockLoggerFactory),
-            new RemoveSuperclassMethodsFacetFactory(new FacetFactoryOrder<RemoveSuperclassMethodsFacetFactory>(), MockLoggerFactory),
-            new RemoveDynamicProxyMethodsFacetFactory(new FacetFactoryOrder<RemoveDynamicProxyMethodsFacetFactory>(), MockLoggerFactory),
-            new RemoveEventHandlerMethodsFacetFactory(new FacetFactoryOrder<RemoveEventHandlerMethodsFacetFactory>(), MockLoggerFactory),
-            new TypeMarkerFacetFactory(new FacetFactoryOrder<TypeMarkerFacetFactory>(), MockLoggerFactory),
-            new MandatoryDefaultFacetFactory(new FacetFactoryOrder<MandatoryDefaultFacetFactory>(), MockLoggerFactory),
-            new PropertyValidateDefaultFacetFactory(new FacetFactoryOrder<PropertyValidateDefaultFacetFactory>(), MockLoggerFactory),
-            new ComplementaryMethodsFilteringFacetFactory(new FacetFactoryOrder<ComplementaryMethodsFilteringFacetFactory>(), MockLoggerFactory),
-            new ActionMethodsFacetFactory(new FacetFactoryOrder<ActionMethodsFacetFactory>(), MockLoggerFactory),
-            new CollectionFieldMethodsFacetFactory(new FacetFactoryOrder<CollectionFieldMethodsFacetFactory>(), MockLoggerFactory),
-            new PropertyMethodsFacetFactory(new FacetFactoryOrder<PropertyMethodsFacetFactory>(), MockLoggerFactory),
-            new IconMethodFacetFactory(new FacetFactoryOrder<IconMethodFacetFactory>(), MockLoggerFactory),
-            new CallbackMethodsFacetFactory(new FacetFactoryOrder<CallbackMethodsFacetFactory>(), MockLoggerFactory),
-            new TitleMethodFacetFactory(new FacetFactoryOrder<TitleMethodFacetFactory>(), MockLoggerFactory),
-            new ValidateObjectFacetFactory(new FacetFactoryOrder<ValidateObjectFacetFactory>(), MockLoggerFactory),
-            new ComplexTypeAnnotationFacetFactory(new FacetFactoryOrder<ComplexTypeAnnotationFacetFactory>(), MockLoggerFactory),
-            new ViewModelFacetFactory(new FacetFactoryOrder<ViewModelFacetFactory>(), MockLoggerFactory),
-            new BoundedAnnotationFacetFactory(new FacetFactoryOrder<BoundedAnnotationFacetFactory>(), MockLoggerFactory),
-            new EnumFacetFactory(new FacetFactoryOrder<EnumFacetFactory>(), MockLoggerFactory),
-            new ActionDefaultAnnotationFacetFactory(new FacetFactoryOrder<ActionDefaultAnnotationFacetFactory>(), MockLoggerFactory),
-            new PropertyDefaultAnnotationFacetFactory(new FacetFactoryOrder<PropertyDefaultAnnotationFacetFactory>(), MockLoggerFactory),
-            new DescribedAsAnnotationFacetFactory(new FacetFactoryOrder<DescribedAsAnnotationFacetFactory>(), MockLoggerFactory),
-            new DisabledAnnotationFacetFactory(new FacetFactoryOrder<DisabledAnnotationFacetFactory>(), MockLoggerFactory),
-            new PasswordAnnotationFacetFactory(new FacetFactoryOrder<PasswordAnnotationFacetFactory>(), MockLoggerFactory),
-            new ExecutedAnnotationFacetFactory(new FacetFactoryOrder<ExecutedAnnotationFacetFactory>(), MockLoggerFactory),
-            new PotencyAnnotationFacetFactory(new FacetFactoryOrder<PotencyAnnotationFacetFactory>(), MockLoggerFactory),
-            new PageSizeAnnotationFacetFactory(new FacetFactoryOrder<PageSizeAnnotationFacetFactory>(), MockLoggerFactory),
-            new HiddenAnnotationFacetFactory(new FacetFactoryOrder<HiddenAnnotationFacetFactory>(), MockLoggerFactory),
-            new HiddenDefaultMethodFacetFactory(new FacetFactoryOrder<HiddenDefaultMethodFacetFactory>(), MockLoggerFactory),
-            new DisableDefaultMethodFacetFactory(new FacetFactoryOrder<DisableDefaultMethodFacetFactory>(), MockLoggerFactory),
-            new AuthorizeAnnotationFacetFactory(new FacetFactoryOrder<AuthorizeAnnotationFacetFactory>(), MockLoggerFactory),
-            new ValidateProgrammaticUpdatesAnnotationFacetFactory(new FacetFactoryOrder<ValidateProgrammaticUpdatesAnnotationFacetFactory>(), MockLoggerFactory),
-            new ImmutableAnnotationFacetFactory(new FacetFactoryOrder<ImmutableAnnotationFacetFactory>(), MockLoggerFactory),
-            new MaxLengthAnnotationFacetFactory(new FacetFactoryOrder<MaxLengthAnnotationFacetFactory>(), MockLoggerFactory),
-            new RangeAnnotationFacetFactory(new FacetFactoryOrder<RangeAnnotationFacetFactory>(), MockLoggerFactory),
-            new MemberOrderAnnotationFacetFactory(new FacetFactoryOrder<MemberOrderAnnotationFacetFactory>(), MockLoggerFactory),
-            new MultiLineAnnotationFacetFactory(new FacetFactoryOrder<MultiLineAnnotationFacetFactory>(), MockLoggerFactory),
-            new NamedAnnotationFacetFactory(new FacetFactoryOrder<NamedAnnotationFacetFactory>(), MockLoggerFactory),
-            new NotPersistedAnnotationFacetFactory(new FacetFactoryOrder<NotPersistedAnnotationFacetFactory>(), MockLoggerFactory),
-            new ProgramPersistableOnlyAnnotationFacetFactory(new FacetFactoryOrder<ProgramPersistableOnlyAnnotationFacetFactory>(), MockLoggerFactory),
-            new OptionalAnnotationFacetFactory(new FacetFactoryOrder<OptionalAnnotationFacetFactory>(), MockLoggerFactory),
-            new RequiredAnnotationFacetFactory(new FacetFactoryOrder<RequiredAnnotationFacetFactory>(), MockLoggerFactory),
-            new PluralAnnotationFacetFactory(new FacetFactoryOrder<PluralAnnotationFacetFactory>(), MockLoggerFactory),
-            new DefaultNamingFacetFactory(new FacetFactoryOrder<DefaultNamingFacetFactory>(), MockLoggerFactory),
-            new ConcurrencyCheckAnnotationFacetFactory(new FacetFactoryOrder<ConcurrencyCheckAnnotationFacetFactory>(), MockLoggerFactory),
-            new ContributedActionAnnotationFacetFactory(new FacetFactoryOrder<ContributedActionAnnotationFacetFactory>(), MockLoggerFactory),
-            new FinderActionFacetFactory(new FacetFactoryOrder<FinderActionFacetFactory>(), MockLoggerFactory),
-            new MaskAnnotationFacetFactory(new FacetFactoryOrder<MaskAnnotationFacetFactory>(), MockLoggerFactory),
-            new RegExAnnotationFacetFactory(new FacetFactoryOrder<RegExAnnotationFacetFactory>(), MockLoggerFactory),
-            new TypeOfAnnotationFacetFactory(new FacetFactoryOrder<TypeOfAnnotationFacetFactory>(), MockLoggerFactory),
-            new TableViewAnnotationFacetFactory(new FacetFactoryOrder<TableViewAnnotationFacetFactory>(), MockLoggerFactory),
-            new TypicalLengthDerivedFromTypeFacetFactory(new FacetFactoryOrder<TypicalLengthDerivedFromTypeFacetFactory>(), MockLoggerFactory),
-            new TypicalLengthAnnotationFacetFactory(new FacetFactoryOrder<TypicalLengthAnnotationFacetFactory>(), MockLoggerFactory),
-            new EagerlyAnnotationFacetFactory(new FacetFactoryOrder<EagerlyAnnotationFacetFactory>(), MockLoggerFactory),
-            new PresentationHintAnnotationFacetFactory(new FacetFactoryOrder<PresentationHintAnnotationFacetFactory>(), MockLoggerFactory),
-            new BooleanValueTypeFacetFactory(new FacetFactoryOrder<BooleanValueTypeFacetFactory>(), MockLoggerFactory),
-            new ByteValueTypeFacetFactory(new FacetFactoryOrder<ByteValueTypeFacetFactory>(), MockLoggerFactory),
-            new SbyteValueTypeFacetFactory(new FacetFactoryOrder<SbyteValueTypeFacetFactory>(), MockLoggerFactory),
-            new ShortValueTypeFacetFactory(new FacetFactoryOrder<ShortValueTypeFacetFactory>(), MockLoggerFactory),
-            new IntValueTypeFacetFactory(new FacetFactoryOrder<IntValueTypeFacetFactory>(), MockLoggerFactory),
-            new LongValueTypeFacetFactory(new FacetFactoryOrder<LongValueTypeFacetFactory>(), MockLoggerFactory),
-            new UShortValueTypeFacetFactory(new FacetFactoryOrder<UShortValueTypeFacetFactory>(), MockLoggerFactory),
-            new UIntValueTypeFacetFactory(new FacetFactoryOrder<UIntValueTypeFacetFactory>(), MockLoggerFactory),
-            new ULongValueTypeFacetFactory(new FacetFactoryOrder<ULongValueTypeFacetFactory>(), MockLoggerFactory),
-            new FloatValueTypeFacetFactory(new FacetFactoryOrder<FloatValueTypeFacetFactory>(), MockLoggerFactory),
-            new DoubleValueTypeFacetFactory(new FacetFactoryOrder<DoubleValueTypeFacetFactory>(), MockLoggerFactory),
-            new DecimalValueTypeFacetFactory(new FacetFactoryOrder<DecimalValueTypeFacetFactory>(), MockLoggerFactory),
-            new CharValueTypeFacetFactory(new FacetFactoryOrder<CharValueTypeFacetFactory>(), MockLoggerFactory),
-            new DateTimeValueTypeFacetFactory(new FacetFactoryOrder<DateTimeValueTypeFacetFactory>(), MockLoggerFactory),
-            new TimeValueTypeFacetFactory(new FacetFactoryOrder<TimeValueTypeFacetFactory>(), MockLoggerFactory),
-            new StringValueTypeFacetFactory(new FacetFactoryOrder<StringValueTypeFacetFactory>(), MockLoggerFactory),
-            new GuidValueTypeFacetFactory(new FacetFactoryOrder<GuidValueTypeFacetFactory>(), MockLoggerFactory),
-            new EnumValueTypeFacetFactory(new FacetFactoryOrder<EnumValueTypeFacetFactory>(), MockLoggerFactory),
-            new FileAttachmentValueTypeFacetFactory(new FacetFactoryOrder<FileAttachmentValueTypeFacetFactory>(), MockLoggerFactory),
-            new ImageValueTypeFacetFactory(new FacetFactoryOrder<ImageValueTypeFacetFactory>(), MockLoggerFactory),
-            new ArrayValueTypeFacetFactory<byte>(new FacetFactoryOrder<ArrayValueTypeFacetFactory<byte>>(), MockLoggerFactory),
-            new CollectionFacetFactory(new FacetFactoryOrder<CollectionFacetFactory>(), MockLoggerFactory)
-        };
-
+        protected IClassStrategy ClassStrategy;
         protected IImmutableDictionary<string, ITypeSpecBuilder> Metamodel;
         protected IObjectSpecImmutable Specification;
-        protected IClassStrategy ClassStrategy;
+
+
+        private IFacetFactory[] FacetFactories =>
+            new[] {
+                NewFacetFactory<FallbackFacetFactory>(),
+                NewFacetFactory<IteratorFilteringFacetFactory>(),
+                NewFacetFactory<SystemClassMethodFilteringFactory>(),
+                NewFacetFactory<RemoveSuperclassMethodsFacetFactory>(),
+                NewFacetFactory<RemoveDynamicProxyMethodsFacetFactory>(),
+                NewFacetFactory<RemoveEventHandlerMethodsFacetFactory>(),
+                NewFacetFactory<TypeMarkerFacetFactory>(),
+                NewFacetFactory<MandatoryDefaultFacetFactory>(),
+                NewFacetFactory<PropertyValidateDefaultFacetFactory>(),
+                NewFacetFactory<ComplementaryMethodsFilteringFacetFactory>(),
+                NewFacetFactory<ActionMethodsFacetFactory>(),
+                NewFacetFactory<CollectionFieldMethodsFacetFactory>(),
+                NewFacetFactory<PropertyMethodsFacetFactory>(),
+                NewFacetFactory<IconMethodFacetFactory>(),
+                NewFacetFactory<CallbackMethodsFacetFactory>(),
+                NewFacetFactory<TitleMethodFacetFactory>(),
+                NewFacetFactory<ValidateObjectFacetFactory>(),
+                NewFacetFactory<ComplexTypeAnnotationFacetFactory>(),
+                NewFacetFactory<ViewModelFacetFactory>(),
+                NewFacetFactory<BoundedAnnotationFacetFactory>(),
+                NewFacetFactory<EnumFacetFactory>(),
+                NewFacetFactory<ActionDefaultAnnotationFacetFactory>(),
+                NewFacetFactory<PropertyDefaultAnnotationFacetFactory>(),
+                NewFacetFactory<DescribedAsAnnotationFacetFactory>(),
+                NewFacetFactory<DisabledAnnotationFacetFactory>(),
+                NewFacetFactory<PasswordAnnotationFacetFactory>(),
+                NewFacetFactory<ExecutedAnnotationFacetFactory>(),
+                NewFacetFactory<PotencyAnnotationFacetFactory>(),
+                NewFacetFactory<PageSizeAnnotationFacetFactory>(),
+                NewFacetFactory<HiddenAnnotationFacetFactory>(),
+                NewFacetFactory<HiddenDefaultMethodFacetFactory>(),
+                NewFacetFactory<DisableDefaultMethodFacetFactory>(),
+                NewFacetFactory<AuthorizeAnnotationFacetFactory>(),
+                NewFacetFactory<ValidateProgrammaticUpdatesAnnotationFacetFactory>(),
+                NewFacetFactory<ImmutableAnnotationFacetFactory>(),
+                NewFacetFactory<MaxLengthAnnotationFacetFactory>(),
+                NewFacetFactory<RangeAnnotationFacetFactory>(),
+                NewFacetFactory<MemberOrderAnnotationFacetFactory>(),
+                NewFacetFactory<MultiLineAnnotationFacetFactory>(),
+                NewFacetFactory<NamedAnnotationFacetFactory>(),
+                NewFacetFactory<NotPersistedAnnotationFacetFactory>(),
+                NewFacetFactory<ProgramPersistableOnlyAnnotationFacetFactory>(),
+                NewFacetFactory<OptionalAnnotationFacetFactory>(),
+                NewFacetFactory<RequiredAnnotationFacetFactory>(),
+                NewFacetFactory<PluralAnnotationFacetFactory>(),
+                NewFacetFactory<DefaultNamingFacetFactory>(),
+                NewFacetFactory<ConcurrencyCheckAnnotationFacetFactory>(),
+                NewFacetFactory<ContributedActionAnnotationFacetFactory>(),
+                NewFacetFactory<FinderActionFacetFactory>(),
+                NewFacetFactory<MaskAnnotationFacetFactory>(),
+                NewFacetFactory<RegExAnnotationFacetFactory>(),
+                NewFacetFactory<TypeOfAnnotationFacetFactory>(),
+                NewFacetFactory<TableViewAnnotationFacetFactory>(),
+                NewFacetFactory<TypicalLengthDerivedFromTypeFacetFactory>(),
+                NewFacetFactory<TypicalLengthAnnotationFacetFactory>(),
+                NewFacetFactory<EagerlyAnnotationFacetFactory>(),
+                NewFacetFactory<PresentationHintAnnotationFacetFactory>(),
+                NewFacetFactory<BooleanValueTypeFacetFactory>(),
+                NewFacetFactory<ByteValueTypeFacetFactory>(),
+                NewFacetFactory<SbyteValueTypeFacetFactory>(),
+                NewFacetFactory<ShortValueTypeFacetFactory>(),
+                NewFacetFactory<IntValueTypeFacetFactory>(),
+                NewFacetFactory<LongValueTypeFacetFactory>(),
+                NewFacetFactory<UShortValueTypeFacetFactory>(),
+                NewFacetFactory<UIntValueTypeFacetFactory>(),
+                NewFacetFactory<ULongValueTypeFacetFactory>(),
+                NewFacetFactory<FloatValueTypeFacetFactory>(),
+                NewFacetFactory<DoubleValueTypeFacetFactory>(),
+                NewFacetFactory<DecimalValueTypeFacetFactory>(),
+                NewFacetFactory<CharValueTypeFacetFactory>(),
+                NewFacetFactory<DateTimeValueTypeFacetFactory>(),
+                NewFacetFactory<TimeValueTypeFacetFactory>(),
+                NewFacetFactory<StringValueTypeFacetFactory>(),
+                NewFacetFactory<GuidValueTypeFacetFactory>(),
+                NewFacetFactory<EnumValueTypeFacetFactory>(),
+                NewFacetFactory<FileAttachmentValueTypeFacetFactory>(),
+                NewFacetFactory<ImageValueTypeFacetFactory>(),
+                NewFacetFactory<ArrayValueTypeFacetFactory<byte>>(),
+                NewFacetFactory<CollectionFacetFactory>()
+            };
+
+
+        private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory => (T) Activator.CreateInstance(typeof(T), new FacetFactoryOrder<T>(), MockLoggerFactory);
 
         protected static void AssertIsInstanceOfType<T>(object o) => Assert.IsInstanceOfType(o, typeof(T));
 
@@ -132,7 +136,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
-            var reflector = new ObjectReflector(metamodel, config, new IFacetDecorator[] { }, facetFactories, mockLoggerFactory, mockLogger1);
+            var reflector = new ObjectReflector(metamodel, config, new IFacetDecorator[] { }, FacetFactories, mockLoggerFactory, mockLogger1);
 
             ITypeSpecBuilder spec;
             (spec, Metamodel) = LoadSpecification(reflector);

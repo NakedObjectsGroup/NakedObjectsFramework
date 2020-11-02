@@ -15,8 +15,8 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Facet;
-using NakedObjects.ParallelReflect.Component;
 using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedObjects.ParallelReflect.Test.FacetFactory {

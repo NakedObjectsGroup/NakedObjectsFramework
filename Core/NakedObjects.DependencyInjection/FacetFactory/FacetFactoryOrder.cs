@@ -7,9 +7,8 @@
 
 using System;
 using NakedObjects.Architecture.Component;
-using NakedObjects.ParallelReflect;
 
-namespace NakedObjects.ParallelReflect.Component {
+namespace NakedObjects.DependencyInjection.FacetFactory {
     public class FacetFactoryOrder<T> : IFacetFactoryOrder<T> {
         public int Order => Array.IndexOf(FacetFactories.StandardFacetFactories(), typeof(T));
     }

@@ -17,8 +17,8 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Adapter;
+using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Facet;
-using NakedObjects.ParallelReflect.Component;
 using NakedObjects.Reflector.FacetFactory;
 
 #pragma warning disable 612

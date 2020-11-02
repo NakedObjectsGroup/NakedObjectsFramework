@@ -20,9 +20,9 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
+using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
-using NakedObjects.ParallelReflect.Component;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.FacetFactory;
 

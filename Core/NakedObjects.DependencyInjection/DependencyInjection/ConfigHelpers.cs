@@ -11,7 +11,7 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.DependencyInjection {
+namespace NakedObjects.DependencyInjection.DependencyInjection {
     public static class ConfigHelpers {
 
         private static MethodInfo GetRegisterMethod(Type type) =>

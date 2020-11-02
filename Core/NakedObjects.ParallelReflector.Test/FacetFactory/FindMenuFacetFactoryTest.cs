@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.ParallelReflect.Component;
+using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Global

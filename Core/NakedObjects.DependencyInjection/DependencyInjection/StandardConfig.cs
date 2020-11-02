@@ -5,19 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Core.Authentication;
-using NakedObjects.Core.Component;
-using NakedObjects.Core.Spec;
-using NakedObjects.Meta.Component;
-using NakedObjects.Meta.Menu;
-using NakedObjects.Persistor.Entity.Component;
-using NakedObjects.Service;
-
-namespace NakedObjects.DependencyInjection {
+namespace NakedObjects.DependencyInjection.DependencyInjection {
     public static class StandardConfig {
         //public static void RegisterCoreSingletonTypes(IServiceCollection services) {
         //    services.AddSingleton<IClassStrategy, DefaultClassStrategy>();
