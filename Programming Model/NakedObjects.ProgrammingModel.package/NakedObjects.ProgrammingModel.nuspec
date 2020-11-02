@@ -21,9 +21,11 @@
     <file src="..\NakedObjects.Helpers\bin\Debug\**\NakedObjects.Helpers.dll" target="lib"/>
     <file src="..\NakedObjects.PMResources\bin\Debug\**\NakedObjects.PMResources.dll" target="lib"/>
     <file src="..\NakedObjects.Types\bin\Debug\**\NakedObjects.Types.dll" target="lib"/>
+    <file src="..\..\Core Programming Model\NakedCore.ProgrammingModel\bin\Debug\**\NakedCore.ProgrammingModel.dll" target="lib"/>
     <file src="..\NakedObjects.Attributes\bin\Debug\**\NakedObjects.Attributes.pdb" target="lib"/>
     <file src="..\NakedObjects.Helpers\bin\Debug\**\NakedObjects.Helpers.pdb" target="lib"/>
     <file src="..\NakedObjects.PMResources\bin\Debug\**\NakedObjects.PMResources.pdb" target="lib"/>
     <file src="..\NakedObjects.Types\bin\Debug\**\NakedObjects.Types.pdb" target="lib"/>
+    <file src="..\..\Core Programming Model\NakedCore.ProgrammingModel\bin\Debug\**\NakedCore.ProgrammingModel.pdb" target="lib"/>
   </files>
 </package>

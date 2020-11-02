@@ -19,7 +19,9 @@
     <file src="icon.png" target="images\"/>
     <file src="..\NakedFunctions.Attributes\bin\Debug\**\NakedFunctions.Attributes.dll" target="lib"/>
     <file src="..\NakedFunctions.Helpers\bin\Debug\**\NakedFunctions.Helpers.dll" target="lib"/>
+    <file src="..\..\Core Programming Model\NakedCore.ProgrammingModel\bin\Debug\**\NakedCore.ProgrammingModel.dll" target="lib"/>
     <file src="..\NakedFunctions.Attributes\bin\Debug\**\NakedFunctions.Attributes.pdb" target="lib"/>
-    <file src="..\NakedFunctions.Helpers\bin\Debug\**\NakedFunctions.Helpers.pdb" target="lib"/>  
+    <file src="..\NakedFunctions.Helpers\bin\Debug\**\NakedFunctions.Helpers.pdb" target="lib"/>
+    <file src="..\..\Core Programming Model\NakedCore.ProgrammingModel\bin\Debug\**\NakedCore.ProgrammingModel.pdb" target="lib"/>
   </files>
 </package>

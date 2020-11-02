@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.ProgrammingM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Attributes", "Functional Programming Model\NakedFunctions.Attributes\NakedFunctions.Attributes.csproj", "{3F339A4C-96AB-4A9F-B74E-2246918BAC55}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedCore.ProgrammingModel", "Core Programming Model\NakedCore.ProgrammingModel\NakedCore.ProgrammingModel.csproj", "{AA093FD4-3F39-45AF-98C5-95879BE2F372}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{3F339A4C-96AB-4A9F-B74E-2246918BAC55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F339A4C-96AB-4A9F-B74E-2246918BAC55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F339A4C-96AB-4A9F-B74E-2246918BAC55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA093FD4-3F39-45AF-98C5-95879BE2F372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA093FD4-3F39-45AF-98C5-95879BE2F372}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA093FD4-3F39-45AF-98C5-95879BE2F372}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA093FD4-3F39-45AF-98C5-95879BE2F372}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
