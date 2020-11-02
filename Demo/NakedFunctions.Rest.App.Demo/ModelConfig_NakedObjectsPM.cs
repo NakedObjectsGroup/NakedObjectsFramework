@@ -1,5 +1,6 @@
 ﻿using AdventureWorksModel;
 using Microsoft.Extensions.Configuration;
+using NakedObjects.Menu;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -25,7 +26,7 @@ namespace NakedFunctions.Rest.App.Demo
                    // typeof(ProductModelProductDescriptionCulture)
         };
 
-        public static (string name, Type rootType)[] MainMenus() => new []
+        public static (string name, Type rootType)[] MainMenus_OLD() => new []
         {
             ("Customers - NO", typeof(CustomerRepository)),
                // ("Orders", typeof(OrderRepository)),
@@ -35,6 +36,11 @@ namespace NakedFunctions.Rest.App.Demo
                 //("Purchase Orders", typeof(PurchaseOrderRepository)),
                 //("Work Orders", typeof(WorkOrderRepository))
                 // ("Products - NO", typeof(ProductRepository)),
+        };
+
+        public static IMenu[] MainMenus(IMenuFactory mf) => new[] {
+            mf.NewMenu("Customers - NO", "customers_no", typeof(CustomerRepository), true),
+            mf.NewMenu("Vendors - NO", "vendors_no", typeof(VendorRepository), true),
         };
 
         public static Type[] Services() => new [] {

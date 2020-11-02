@@ -38,7 +38,7 @@ namespace NakedFunctions.Rest.App.Demo {
             services.AddHttpContextAccessor();
             services.AddNakedCore(options => { 
                 options.ContextInstallers = new[] {ModelConfig_NakedFunctionsPM.DbContextInstaller};
-                options.MainMenus = ModelConfig_NakedObjectsPM.MainMenus().Select(t => (t.rootType, t.name, true, (Action<IMenu>)null)).ToArray();
+                options.MainMenus = ModelConfig_NakedObjectsPM.MainMenus_OLD().Select(t => (t.rootType, t.name, true, (Action<IMenu>)null)).ToArray();
             });
             services.AddNakedObjects(options => {
                 options.ModelNamespaces = ModelConfig_NakedObjectsPM.ModelNamespaces();
