@@ -22,6 +22,7 @@ using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Persistor.Entity.Component;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Service;
+using NakedObjects.Menu;
 
 namespace NakedObjects.DependencyInjection.DependencyInjection {
     public static class ParallelConfig {
