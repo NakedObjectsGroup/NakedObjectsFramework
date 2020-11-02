@@ -17,6 +17,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
+using NakedObjects.Menu;
 
 namespace NakedFramework.ModelBuilding.Component {
     public class ModelIntegrator : IModelIntegrator {
