@@ -22,21 +22,30 @@ using NakedObjects.Meta.Utils;
 namespace NakedObjects.Meta.Menu {
     [Serializable]
     public class MenuImpl : IMenu, IMenuImmutable, ISerializable, IDeserializationCallback {
-        public MenuImpl(IMetamodel metamodel, Type type, bool addAllActions, string name) {
+        public MenuImpl(IMetamodel metamodel, Type defaultType, bool addAllActions, string name, string id = null) {
             Metamodel = metamodel;
-            Type = type;
+            Type = defaultType;
             Name = name ?? ObjectSpec.GetFacet<INamedFacet>().NaturalName;
-            Id = type.Name;
+            Id = id ?? defaultType.Name;
             if (addAllActions) {
                 AddRemainingNativeActions();
                 AddContributedActions();
             }
         }
 
+        public MenuImpl(IMetamodel metamodel, string name, string id = null)
+        {
+            Metamodel = metamodel;
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(id)) throw new Exception($"Menu Name and Id must not be null, unless a default type is specified");
+            Name = name;
+            Id = id;
+        }
+
         private ITypeSpecImmutable ObjectSpec => Metamodel.GetSpecification(Type);
 
         private IList<IActionSpecImmutable> ActionsForObject => ObjectSpec.ObjectActions.ToList();
 
+        private IList<IActionSpecImmutable> ActionsForType(Type type) => Metamodel.GetSpecification(type).ObjectActions.ToList();
         #region IMenu Members
 
         public IMenu WithMenuName(string name) {
@@ -52,6 +61,10 @@ namespace NakedObjects.Meta.Menu {
         }
 
         public IMenu AddAction(string actionName) {
+            if(Type == null)
+            {
+                throw new Exception($"No type has been specified for the action: {actionName}");
+            }
             var actionSpec = ActionsForObject.FirstOrDefault(a => a.Identifier.MemberName == actionName);
             if (actionSpec == null) {
                 throw new ReflectionException($"No such action: {actionName} on {Type}");
@@ -73,14 +86,49 @@ namespace NakedObjects.Meta.Menu {
         }
 
         public IMenu AddRemainingNativeActions() {
+            if (Type == null)
+            {
+                throw new Exception($"No default type has been specified (as the source for the remaining native actions)");
+            }
             AddOrderableElementsToMenu(ActionsForObject, this);
             return this;
         }
 
         public IMenu AddContributedActions() {
+            if (Type == null)
+            {
+                throw new Exception($"No default type has been specified (as the source for the contributed actions)");
+            }
             ObjectSpec?.ContributedActions.ForEach(AddContributed);
             return this;
         }
+
+       public IMenu AddAction(Type fromType, string actionName)
+        {
+            var actionSpec = ActionsForType(fromType).FirstOrDefault(a => a.Identifier.MemberName == actionName);
+            if (actionSpec == null)
+            {
+                throw new ReflectionException($"No such action: {actionName} on {fromType}");
+            }
+            AddMenuItem(new MenuAction(actionSpec));
+            return this;
+        }
+        public IMenu AddAllActions(Type fromType)
+        {
+            AddRemainingActions(fromType);
+            return this;
+        }
+        public IMenu AddRemainingActions(Type fromType)
+        {
+            AddOrderableElementsToMenu(ActionsForType(fromType), this);
+            return this;
+        }
+        public IMenu WithDefaultType(Type defaultType)
+        {
+            Type = defaultType;
+            return this;
+        }
+
 
         #endregion
 

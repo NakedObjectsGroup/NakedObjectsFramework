@@ -20,5 +20,9 @@ namespace NakedObjects.Architecture.Menu {
         //Creates a new menu with the Type specified. If the optional name
         //parameter is not specified, then the menu takes its name from the type.
         IMenu NewMenu(Type type, bool addAllActions = false, string name = null);
+
+        IMenu NewMenu(string name, string id);
+        IMenu NewMenu(string name, string id, Type defaultType, bool addAllActions = false);
+
     }
 }

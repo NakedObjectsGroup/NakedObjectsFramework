@@ -74,5 +74,12 @@ namespace NakedObjects.Menu {
         /// </summary>
         /// <returns></returns>
         IMenu AddContributedActions();
+
+
+        IMenu AddAction(Type fromType, string actionName);
+        IMenu AddAllActions(Type fromType);
+        IMenu AddRemainingActions(Type fromType);
+        IMenu WithDefaultType(Type defaultType);
+
     }
 }
