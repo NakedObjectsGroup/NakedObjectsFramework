@@ -38,7 +38,7 @@ namespace NakedFunctions.Rest.App.Demo {
             services.AddHttpContextAccessor();
             services.AddNakedCore(options => { 
                 options.ContextInstallers = new[] {ModelConfig_NakedFunctionsPM.DbContextInstaller};
-                options.MainMenus = ModelConfig_NakedObjectsPM.MainMenus_OLD().Select(t => (t.rootType, t.name, true, (Action<IMenu>)null)).ToArray();
+                options.MainMenus = CombinedNOandNFMenus;
             });
             services.AddNakedObjects(options => {
                 options.ModelNamespaces = ModelConfig_NakedObjectsPM.ModelNamespaces();
@@ -85,6 +85,13 @@ namespace NakedFunctions.Rest.App.Demo {
             app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
             app.UseRestfulObjects();
+        }
+
+        private static IMenu[] CombinedNOandNFMenus(IMenuFactory mf)
+        {
+            var menus = ModelConfig_NakedFunctionsPM.MainMenus(mf).ToList();
+            menus.AddRange(ModelConfig_NakedObjectsPM.MainMenus(mf));
+            return menus.ToArray();
         }
     }
 }
