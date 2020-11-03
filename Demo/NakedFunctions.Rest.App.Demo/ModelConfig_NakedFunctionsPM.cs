@@ -64,18 +64,11 @@ namespace NakedFunctions.Rest.App.Demo
             typeof(Vendor_Functions)  //Testing a function contributed to an NO type
         };
 
-        public static (string name, Type rootType)[] MainMenus_OLD() => new[] {
-            ("Products", typeof(Product_MenuFunctions)),
-            ("Special Offers", typeof(SpecialOffer_MenuFunctions)),
-           ("Employees", typeof(Employee_MenuFunctions)),
-           ("Customers NF", typeof(Customer_MenuFunctions)),
-        };
-
-        public static IMenu[] MainMenus2(IMenuFactory mf) => new[] {
+       public static IMenu[] MainMenus(IMenuFactory mf) => new[] {
             mf.NewMenu("Products", "products", typeof(Product_MenuFunctions), true),
             mf.NewMenu("Special Offers", "offers", typeof(SpecialOffer_MenuFunctions)),
             mf.NewMenu("Employees", "employees", typeof(Employee_MenuFunctions)),
-            mf.NewMenu("Customers NF","customers", typeof(Customer_MenuFunctions))
+            mf.NewMenu("Customers NF","customersnf", typeof(Customer_MenuFunctions))
         };
     }
 }

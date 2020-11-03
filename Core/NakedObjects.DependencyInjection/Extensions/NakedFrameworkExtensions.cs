@@ -39,7 +39,7 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public Func<IConfiguration, DbContext>[] ContextInstallers { get; set; }
         public IAuthorizationConfiguration AuthorizationConfiguration { get; set; }
         public IAuditConfiguration AuditConfiguration { get; set; }
-        public (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus { get; set; }
+        public Func<IMenuFactory, IMenu[]> MainMenus { get; set; }
     }
 
     public class NakedObjectsOptions {

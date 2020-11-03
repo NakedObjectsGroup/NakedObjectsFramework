@@ -47,7 +47,7 @@ namespace NakedFunctions.Rest.Test {
             }
         }
 
-        protected override (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus => new (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] {(typeof(SimpleMenuFunctions), "Test menu", true, null)};
+        protected override IMenu[] MainMenus(IMenuFactory factory) =>  new[] {factory.NewMenu(typeof(SimpleMenuFunctions), true, "Test menu")};
 
         private IFunctionalReflectorConfiguration FunctionalReflectorConfiguration() => new FunctionalReflectorConfiguration(RecordTypes, FunctionTypes);
 

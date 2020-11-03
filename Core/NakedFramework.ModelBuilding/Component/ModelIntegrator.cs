@@ -128,7 +128,7 @@ namespace NakedFramework.ModelBuilding.Component {
         }
 
         private void InstallMainMenus(IMetamodelBuilder metamodel) {
-            var menus = coreConfiguration.GetMainMenus()?.Invoke(menuFactory);
+            var menus = coreConfiguration.MainMenus?.Invoke(menuFactory);
             // Unlike other things specified in objectReflectorConfiguration, this one can't be checked when ObjectReflectorConfiguration is constructed.
             // Allows developer to deliberately not specify any menus
             if (menus != null) {

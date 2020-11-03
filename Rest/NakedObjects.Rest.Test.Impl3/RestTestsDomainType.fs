@@ -24,6 +24,7 @@ open NakedObjects.Architecture.Menu
 open Microsoft.Extensions.DependencyInjection
 open Newtonsoft.Json
 open NakedObjects.Rest.Snapshot.Utility
+open NakedObjects.Menu
 
 [<TestFixture>]
 type Tests() = 
@@ -71,12 +72,13 @@ type Tests() =
 
         override x.Namespaces = [| "RestfulObjects.Test.Data" |]
 
-        override x.MainMenus = 
-            [| (typeof<RestDataRepository>, null, true, null);
-               (typeof<WithActionService>, null, true, null);
-               (typeof<ContributorService>, null, true, null);
-               (typeof<TestTypeCodeMapper>, null, true, null); 
-               (typeof<TestKeyCodeMapper>, null, true, null) |]
+        override x.MainMenus (factory : IMenuFactory)  = 
+               let menu1 = factory.NewMenu<RestDataRepository>(true)
+               let menu2 = factory.NewMenu<WithActionService>(true)
+               let menu3 = factory.NewMenu<ContributorService>(true)
+               let menu4 = factory.NewMenu<TestTypeCodeMapper>(true)
+               let menu5 = factory.NewMenu<TestKeyCodeMapper>(true)
+               [| menu1; menu2; menu3; menu4; menu5 |]
 
         override x.Persistor =
            let config = new EntityObjectStoreConfiguration()

@@ -23,22 +23,18 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
-using NakedObjects.DependencyInjection;
 using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Component;
 using NakedObjects.Meta.SpecImmutable;
-using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.TypeFacetFactory;
-using NakedObjects.Menu;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local

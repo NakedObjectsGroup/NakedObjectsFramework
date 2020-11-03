@@ -26,18 +26,6 @@ namespace NakedFunctions.Rest.App.Demo
                    // typeof(ProductModelProductDescriptionCulture)
         };
 
-        public static (string name, Type rootType)[] MainMenus_OLD() => new []
-        {
-            ("Customers - NO", typeof(CustomerRepository)),
-               // ("Orders", typeof(OrderRepository)),
-               // ("Employees", typeof(EmployeeRepository)),
-               // ("Persons", typeof(PersonRepository)),
-                ("Vendors - NO", typeof(VendorRepository)),
-                //("Purchase Orders", typeof(PurchaseOrderRepository)),
-                //("Work Orders", typeof(WorkOrderRepository))
-                // ("Products - NO", typeof(ProductRepository)),
-        };
-
         public static IMenu[] MainMenus(IMenuFactory mf) => new[] {
             mf.NewMenu("Customers - NO", "customers_no", typeof(CustomerRepository), true),
             mf.NewMenu("Vendors - NO", "vendors_no", typeof(VendorRepository), true),
