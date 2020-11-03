@@ -16,7 +16,5 @@ namespace NakedObjects.Architecture.Configuration {
         ///     implementation of IMenuFactory.
         /// </summary>
         Func<IMenuFactory, IMenu[]> MainMenus { get; }
-
-        public Func<IMenuFactory, IMenu[]> GetMainMenus();
     }
 }

@@ -6,9 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.Menu;
 
 namespace NakedObjects.Core.Configuration {
@@ -16,7 +14,5 @@ namespace NakedObjects.Core.Configuration {
         public CoreConfiguration(Func<IMenuFactory, IMenu[]> mainMenus = null) => MainMenus = mainMenus;
 
         public Func<IMenuFactory, IMenu[]> MainMenus { get; }
-        //TODO: Remove redundancy between property & method now doing same thing!
-        public Func<IMenuFactory, IMenu[]> GetMainMenus() => MainMenus;
     }
 }
