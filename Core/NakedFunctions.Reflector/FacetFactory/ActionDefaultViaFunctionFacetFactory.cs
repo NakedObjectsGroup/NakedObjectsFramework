@@ -11,7 +11,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
-using NakedFunctions.Reflector.Reflect;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
@@ -23,8 +22,7 @@ using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.Util;
 
 namespace NakedFunctions.Reflector.FacetFactory {
-    public sealed class ActionDefaultViaFunctionFacetFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory, IMethodPrefixBasedFacetFactory
-    {
+    public sealed class ActionDefaultViaFunctionFacetFactory : FunctionalFacetFactoryProcessor, IMethodFilteringFacetFactory, IMethodPrefixBasedFacetFactory {
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ParameterDefaultPrefix
         };
@@ -35,21 +33,16 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<ActionDefaultViaFunctionFacetFactory>();
 
-        public  string[] Prefixes => FixedPrefixes;
+        public string[] Prefixes => FixedPrefixes;
 
-        private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
-            pi != null &&
-            pi.ParameterType == toMatch;
-
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindDefaultMethod(IReflector reflector, Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private static IImmutableDictionary<string, ITypeSpecBuilder> FindDefaultMethod(Type declaringType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 var paramType = paramTypes[i];
 
-                var methodToUse = FindDefaultMethod(reflector, type, capitalizedName, i, paramType);
+                var methodToUse = FindDefaultMethod(declaringType, capitalizedName, i, paramType);
 
                 if (methodToUse != null) {
                     // add facets directly to parameters, not to actions
-
                     FacetUtils.AddFacet(new ActionDefaultsFacetViaFunction(methodToUse, parameters[i]));
                 }
             }
@@ -57,19 +50,14 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static bool Matches(MethodInfo m, string name, Type type, Type returnType) =>
-            m.Name == name &&
-            m.DeclaringType == type &&
-            m.ReturnType == returnType;
+        private static bool Matches(MethodInfo methodInfo, string name, Type type, Type returnType) =>
+            methodInfo.Name == name &&
+            methodInfo.DeclaringType == type &&
+            methodInfo.ReturnType == returnType;
 
-        private MethodInfo FindDefaultMethod(IReflector reflector, Type type, string capitalizedName, int i, Type returnType) {
+        private static MethodInfo FindDefaultMethod(Type declaringType, string capitalizedName, int i, Type returnType) {
             var name = RecognisedMethodsAndPrefixes.ParameterDefaultPrefix + i + capitalizedName;
-            var match = FunctionalIntrospector.Functions.SelectMany(t => t.GetMethods())
-                                              .Where(m => m.Name == name)
-                                              .Where(m => m.ReturnType == returnType)
-                                              .SingleOrDefault(m => Matches(m, name, type, returnType));
-
-            return match;
+            return declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, returnType));
         }
 
         #region IMethodFilteringFacetFactory Members
@@ -77,14 +65,13 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
 
-            var type = actionMethod.DeclaringType;
+            var declaringType = actionMethod.DeclaringType;
 
             var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
 
-            var actionSpecImmutable = action as IActionSpecImmutable;
-            if (actionSpecImmutable != null) {
+            if (action is IActionSpecImmutable actionSpecImmutable) {
                 var actionParameters = actionSpecImmutable.Parameters;
-                metamodel = FindDefaultMethod(reflector, type, capitalizedName, paramTypes, actionParameters, metamodel);
+                metamodel = FindDefaultMethod(declaringType, capitalizedName, paramTypes, actionParameters, metamodel);
             }
 
             return metamodel;

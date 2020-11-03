@@ -13,7 +13,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
-using NakedFunctions.Reflector.Reflect;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
@@ -36,21 +35,21 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<AutocompleteViaFunctionFacetFactory>();
 
-        public  string[] Prefixes => FixedPrefixes;
+        public string[] Prefixes => FixedPrefixes;
 
-        private void FindAutoCompleteMethod(IReflector reflector, Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters) {
+        private static void FindAutoCompleteMethod(Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 // only support on strings and reference types
                 var paramType = paramTypes[i];
                 if (paramType.IsClass || paramType.IsInterface) {
                     //returning an IQueryable ...
                     //.. or returning a single object
-                    var method = FindAutoCompleteMethod(reflector, type, capitalizedName, i, typeof(IQueryable<>).MakeGenericType(paramType)) ??
-                                 FindAutoCompleteMethod(reflector, type, capitalizedName, i, paramType);
+                    var method = FindAutoCompleteMethod(type, capitalizedName, i, typeof(IQueryable<>).MakeGenericType(paramType)) ??
+                                 FindAutoCompleteMethod(type, capitalizedName, i, paramType);
 
                     //... or returning an enumerable of string
                     if (method == null && TypeUtils.IsString(paramType)) {
-                        method = FindAutoCompleteMethod(reflector, type, capitalizedName, i, typeof(IEnumerable<string>));
+                        method = FindAutoCompleteMethod(type, capitalizedName, i, typeof(IEnumerable<string>));
                     }
 
                     if (method != null) {
@@ -67,34 +66,26 @@ namespace NakedFunctions.Reflector.FacetFactory {
             }
         }
 
-        private static bool Matches(MethodInfo m, string name, Type type, Type returnType) =>
-            m.Name == name &&
-            m.DeclaringType == type &&
-            m.ReturnType == returnType;
+        private static bool Matches(MethodInfo methodInfo, string name, Type type, Type returnType) =>
+            methodInfo.Name == name &&
+            methodInfo.DeclaringType == type &&
+            methodInfo.ReturnType == returnType;
 
-        private MethodInfo FindAutoCompleteMethod(IReflector reflector, Type type, string capitalizedName, int i, Type returnType) {
+        private static MethodInfo FindAutoCompleteMethod(Type declaringType, string capitalizedName, int i, Type returnType) {
             var name = RecognisedMethodsAndPrefixes.AutoCompletePrefix + i + capitalizedName;
-            var match = FunctionalIntrospector.Functions.SelectMany(t => t.GetMethods())
-                                              .Where(m => m.Name == name)
-                                              .Where(m => m.ReturnType == returnType)
-                                              .SingleOrDefault(m => Matches(m, name, type, returnType));
-
-            return match;
+            return declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, returnType));
         }
 
         #region IMethodFilteringFacetFactory Members
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
-
-            var type = actionMethod.DeclaringType;
-
+            var declaringType = actionMethod.DeclaringType;
             var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
 
-            var actionSpecImmutable = action as IActionSpecImmutable;
-            if (actionSpecImmutable != null) {
+            if (action is IActionSpecImmutable actionSpecImmutable) {
                 var actionParameters = actionSpecImmutable.Parameters;
-                FindAutoCompleteMethod(reflector, type, capitalizedName, paramTypes, actionParameters);
+                FindAutoCompleteMethod(declaringType, capitalizedName, paramTypes, actionParameters);
             }
 
             return metamodel;

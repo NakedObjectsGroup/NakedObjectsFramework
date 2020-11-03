@@ -13,7 +13,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
-using NakedFunctions.Reflector.Reflect;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
@@ -37,18 +36,13 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<ActionChoicesViaFunctionFacetFactory>();
 
-        public  string[] Prefixes => FixedPrefixes;
+        public string[] Prefixes => FixedPrefixes;
 
-        private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
-            pi != null &&
-            pi.ParameterType == toMatch;
-
-        private ParameterInfo[] FilterParms(MethodInfo m) =>
+        private static ParameterInfo[] FilterParms(MethodInfo m) =>
             m.GetParameters().Where(p => !p.IsDefined(typeof(InjectedAttribute), false) && (!m.IsDefined(typeof(ExtensionAttribute), false) || p.Position > 0))
              .ToArray();
 
-
-        private IImmutableDictionary<string, ITypeSpecBuilder> FindChoicesMethod(IReflector reflector, Type type, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private  IImmutableDictionary<string, ITypeSpecBuilder> FindChoicesMethod(IReflector reflector, Type declaringType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             for (var i = 0; i < paramTypes.Length; i++) {
                 var paramType = paramTypes[i];
                 var isMultiple = false;
@@ -60,18 +54,22 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
                 var returnType = typeof(IEnumerable<>).MakeGenericType(paramType);
 
-                var methodToUse = FindChoicesMethod(reflector, type, capitalizedName, i, returnType);
+                var methodToUse = FindChoicesMethod(declaringType, capitalizedName, i, returnType);
 
                 if (methodToUse != null) {
                     // add facets directly to parameters, not to actions
                     var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
 
-                    foreach (var p in FilterParms(methodToUse)) {
-                        var result = reflector.LoadSpecification(p.ParameterType, metamodel);
-                        metamodel = result.Item2;
-                        var spec = result.Item1 as IObjectSpecImmutable;
-                        var name = p.Name.ToLower();
-                        parameterNamesAndTypes.Add((name, spec));
+                    foreach (var parameterInfo in FilterParms(methodToUse)) {
+                        ITypeSpecBuilder typeSpecBuilder;
+                        (typeSpecBuilder, metamodel) = reflector.LoadSpecification(parameterInfo.ParameterType, metamodel);
+                        var name = parameterInfo.Name?.ToLower();
+                        if (typeSpecBuilder is IObjectSpecBuilder objectSpec && name is not null) {
+                            parameterNamesAndTypes.Add((name, objectSpec));
+                        }
+                        else {
+                            logger.LogWarning($"Unexpected name: {name} or spec: {typeSpecBuilder}");
+                        }
                     }
 
                     FacetUtils.AddFacet(new ActionChoicesFacetViaFunction(methodToUse, parameterNamesAndTypes.ToArray(), returnType, parameters[i], isMultiple));
@@ -82,36 +80,27 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static bool Matches(MethodInfo m, string name, Type type, Type returnType) =>
-            m.Name == name &&
-            m.DeclaringType == type &&
-            MatchReturnType(m.ReturnType, returnType);
+        private static bool Matches(MethodInfo methodInfo, string name, Type type, Type returnType) =>
+            methodInfo.Name == name &&
+            MatchReturnType(methodInfo.ReturnType, returnType);
 
         private static bool MatchReturnType(Type returnType, Type toMatch) => CollectionUtils.IsGenericEnumerable(returnType) && returnType.GenericTypeArguments.SequenceEqual(toMatch.GenericTypeArguments);
 
-
-        private MethodInfo FindChoicesMethod(IReflector reflector, Type type, string capitalizedName, int i, Type returnType) {
+        private static MethodInfo FindChoicesMethod(Type declaringType, string capitalizedName, int i, Type returnType) {
             var name = RecognisedMethodsAndPrefixes.ParameterChoicesPrefix + i + capitalizedName;
-            var match = FunctionalIntrospector.Functions.SelectMany(t => t.GetMethods())
-                                              .Where(m => m.Name == name)
-                                              .SingleOrDefault(m => Matches(m, name, type, returnType));
-
-            return match;
+            return declaringType.GetMethods().SingleOrDefault(methodInfo => Matches(methodInfo, name, declaringType, returnType));
         }
 
         #region IMethodFilteringFacetFactory Members
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = NameUtils.CapitalizeName(actionMethod.Name);
-
-            var type = actionMethod.DeclaringType;
-
+            var declaringType = actionMethod.DeclaringType;
             var paramTypes = actionMethod.GetParameters().Select(p => p.ParameterType).ToArray();
 
-            var actionSpecImmutable = action as IActionSpecImmutable;
-            if (actionSpecImmutable != null) {
+            if (action is IActionSpecImmutable actionSpecImmutable) {
                 var actionParameters = actionSpecImmutable.Parameters;
-                metamodel = FindChoicesMethod(reflector, type, capitalizedName, paramTypes, actionParameters, metamodel);
+                metamodel = FindChoicesMethod(reflector, declaringType, capitalizedName, paramTypes, actionParameters, metamodel);
             }
 
             return metamodel;

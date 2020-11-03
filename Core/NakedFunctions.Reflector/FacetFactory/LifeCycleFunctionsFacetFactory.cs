@@ -39,7 +39,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.Objects) =>
             logger = loggerFactory.CreateLogger<LifeCycleFunctionsFacetFactory>();
 
-        public  string[] Prefixes => FixedPrefixes;
+        public string[] Prefixes => FixedPrefixes;
 
         private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
             pi != null &&
@@ -75,7 +75,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         #region IMethodFilteringFacetFactory Members
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var facets = new List<IFacet>();
 
             facets = AddPersistingFacet(facets, type, specification);

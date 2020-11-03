@@ -11,7 +11,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
-using NakedFunctions.Reflector.Reflect;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
@@ -33,7 +32,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.Actions) =>
             logger = loggerFactory.CreateLogger<DisableFunctionFacetFactory>();
 
-        public  string[] Prefixes => FixedPrefixes;
+        public string[] Prefixes => FixedPrefixes;
 
         private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
             pi != null &&
@@ -45,17 +44,16 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         #region IMethodFilteringFacetFactory Members
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var type = actionMethod.GetParameters().FirstOrDefault()?.ParameterType;
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var parameterType = actionMethod.GetParameters().FirstOrDefault()?.ParameterType;
 
-            if (type != null) {
+            if (parameterType is not null) {
+                var declaringType = actionMethod.DeclaringType;
                 // find matching disable function
-                var match = FunctionalIntrospector.Functions.SelectMany(t => t.GetMethods()).Where(m => NameMatches(m, actionMethod)).SingleOrDefault(m => IsSameType(m.GetParameters().FirstOrDefault(), type));
+                var match = declaringType?.GetMethods().SingleOrDefault(m => NameMatches(m, actionMethod) && IsSameType(m.GetParameters().FirstOrDefault(), parameterType));
 
-                if (match != null) {
-                    var disableFacet = new DisableForContextViaFunctionFacet(match, action);
-
-                    FacetUtils.AddFacet(disableFacet);
+                if (match is not null) {
+                    FacetUtils.AddFacet(new DisableForContextViaFunctionFacet(match, action));
                 }
             }
 
