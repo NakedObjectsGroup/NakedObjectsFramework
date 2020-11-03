@@ -13,17 +13,14 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.ModelBuilding.Component;
 using NakedFunctions.Reflector.Component;
-using NakedFunctions.Reflector.FacetFactory;
 using NakedFunctions.Reflector.Reflect;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
-using NakedObjects.DependencyInjection;
 using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Menu;
@@ -31,14 +28,12 @@ using NakedObjects.Meta.Component;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.ParallelReflect.Test;
 using NakedObjects.Reflector.Component;
-using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.Reflect;
-using NakedObjects.Reflector.TypeFacetFactory;
 
 namespace NakedFunctions.Reflect.Test {
+    public class NullMenuFactory : IMenuFactory {
+        public IMenu NewMenu(string name) => null;
 
-    public class NullMenuFactory : IMenuFactory
-    {
         #region IMenuFactory Members
 
         public IMenu NewMenu<T>(bool addAllActions, string name = null) => null;
@@ -50,25 +45,23 @@ namespace NakedFunctions.Reflect.Test {
         public IMenu NewMenu(string name, string id, Type defaultType, bool addAllActions = false) => null;
 
         #endregion
-
-        public IMenu NewMenu(string name) => null;
     }
 
     [Bounded]
-    public record BoundedClass { }
+    public record BoundedClass {
+    }
 
-   
+
     public record IgnoredClass {
-        [NakedFunctionsIgnore]
-        public virtual string IgnoredProperty { get; set; }
+    [NakedFunctionsIgnore] public virtual string IgnoredProperty { get; set; }
     }
 
     public static class ParameterDefaultClass {
-        public static SimpleClass ParameterWithDefaultFunction(this SimpleClass target, [NakedFunctions.DefaultValue("a default")] string parameter) => target;
+        public static SimpleClass ParameterWithDefaultFunction(this SimpleClass target, [DefaultValue("a default")] string parameter) => target;
     }
 
     public record SimpleClass {
-        public virtual SimpleClass SimpleProperty { get; set; }
+    public virtual SimpleClass SimpleProperty { get; set; }
     }
 
     public class NavigableClass {
@@ -76,88 +69,66 @@ namespace NakedFunctions.Reflect.Test {
     }
 
     public static class SimpleFunctions {
-        public static SimpleClass SimpleFunction(this SimpleClass target) {
-            return target;
-        }
+        public static SimpleClass SimpleFunction(this SimpleClass target) => target;
 
-        public static IList<SimpleClass> SimpleFunction1(this SimpleClass target)
-        {
-            return new []{target};
+        public static IList<SimpleClass> SimpleFunction1(this SimpleClass target) {
+            return new[] {target};
         }
     }
 
     public static class SimpleInjectedFunctions {
-        public static SimpleClass SimpleInjectedFunction(IQueryable<SimpleClass> injected) {
-            return injected.First();
-        }
+        public static SimpleClass SimpleInjectedFunction(IQueryable<SimpleClass> injected) => injected.First();
     }
 
 
-    public static class TupleFunctions
-    {
-        public static (SimpleClass, SimpleClass) TupleFunction(IQueryable<SimpleClass> injected)
-        {
-            return (injected.First(), injected.First());
-        }
+    public static class TupleFunctions {
+        public static (SimpleClass, SimpleClass) TupleFunction(IQueryable<SimpleClass> injected) => (injected.First(), injected.First());
 
-        public static (IList<SimpleClass>, IList<SimpleClass>) TupleFunction1(IQueryable<SimpleClass> injected)
-        {
-            return (injected.ToList(), injected.ToList());
-        }
+        public static (IList<SimpleClass>, IList<SimpleClass>) TupleFunction1(IQueryable<SimpleClass> injected) => (injected.ToList(), injected.ToList());
     }
 
-    public static class UnsupportedTupleFunctions
-    {
-        public static ValueTuple TupleFunction(IQueryable<SimpleClass> injected)
-        {
-            return new ValueTuple();
-        }
+    public static class UnsupportedTupleFunctions {
+        public static ValueTuple TupleFunction(IQueryable<SimpleClass> injected) => new ValueTuple();
+    }
 
+    public static class LifeCycleFunctions {
+        public static SimpleClass Persisting(this SimpleClass target) => target;
+        public static SimpleClass Persisted(this SimpleClass target) => target;
+        public static SimpleClass Updating(this SimpleClass target) => target;
+        public static SimpleClass Updated(this SimpleClass target) => target;
     }
 
 
     [TestClass]
     public class ReflectorTest {
+        private Action<IServiceCollection> TestHook { get; } = services => { };
 
-        private Action<IServiceCollection> TestHook { get; set; } = services => { };
-
-        private IHostBuilder CreateHostBuilder(string[] args, ICoreConfiguration cc,  IFunctionalReflectorConfiguration rc, IObjectReflectorConfiguration orc = null) =>
+        private IHostBuilder CreateHostBuilder(string[] args, ICoreConfiguration cc, IFunctionalReflectorConfiguration rc, IObjectReflectorConfiguration orc = null) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureServices((hostContext, services) => {
-                    RegisterTypes(services, cc, rc, orc);
-                });
+                .ConfigureServices((hostContext, services) => { RegisterTypes(services, cc, rc, orc); });
 
-        protected IServiceProvider GetContainer(ICoreConfiguration cc, IFunctionalReflectorConfiguration rc, IObjectReflectorConfiguration orc = null)
-        {
+        protected IServiceProvider GetContainer(ICoreConfiguration cc, IFunctionalReflectorConfiguration rc, IObjectReflectorConfiguration orc = null) {
             ImmutableSpecFactory.ClearCache();
             var hostBuilder = CreateHostBuilder(new string[] { }, cc, rc, orc).Build();
             return hostBuilder.Services;
         }
 
-        private static void RegisterFacetFactory<T>(string name, IServiceCollection services)
-        {
+        private static void RegisterFacetFactory<T>(string name, IServiceCollection services) {
             ConfigHelpers.RegisterFacetFactory(typeof(T), services);
         }
 
-        private static void RegisterFacetFactory(Type facetFactorType, IServiceCollection services)
-        {
+        private static void RegisterFacetFactory(Type facetFactorType, IServiceCollection services) {
             ConfigHelpers.RegisterFacetFactory(facetFactorType, services);
         }
 
-        protected virtual void RegisterFacetFactories(IServiceCollection services)
-        {
-         
-
-            foreach (var facetFactory in ObjectFacetFactories.StandardFacetFactories())
-            {
+        protected virtual void RegisterFacetFactories(IServiceCollection services) {
+            foreach (var facetFactory in ObjectFacetFactories.StandardFacetFactories()) {
                 RegisterFacetFactory(facetFactory, services);
             }
 
             foreach (var facetFactory in FunctionalFacetFactories.StandardFacetFactories()) {
                 RegisterFacetFactory(facetFactory, services);
             }
-
-
         }
 
         protected virtual void RegisterTypes(IServiceCollection services, ICoreConfiguration cc, IFunctionalReflectorConfiguration frc, IObjectReflectorConfiguration orc = null) {
@@ -166,23 +137,23 @@ namespace NakedFunctions.Reflect.Test {
 
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
             services.AddSingleton<IClassStrategy, ObjectClassStrategy>();
-            services.AddSingleton<IReflector,ObjectReflector>();
+            services.AddSingleton<IReflector, ObjectReflector>();
             services.AddSingleton<IReflector, FunctionalReflector>();
-            services.AddSingleton<IMetamodel, NakedObjects.Meta.Component.Metamodel>();
-            services.AddSingleton<IMetamodelBuilder, NakedObjects.Meta.Component.Metamodel>();
+            services.AddSingleton<IMetamodel, Metamodel>();
+            services.AddSingleton<IMetamodelBuilder, Metamodel>();
             services.AddSingleton<IMenuFactory, NullMenuFactory>();
             services.AddSingleton<IModelBuilder, ModelBuilder>();
             services.AddSingleton<IModelIntegrator, ModelIntegrator>();
             services.AddSingleton(typeof(IFacetFactoryOrder<>), typeof(FacetFactoryOrder<>));
 
-            var dflt = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { "NakedFunctions" });
+            var dflt = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {"NakedFunctions"});
             dflt.SupportedSystemTypes.Clear();
 
             var rc = orc ?? dflt;
 
-            services.AddSingleton<ICoreConfiguration>(cc);
-            services.AddSingleton<IObjectReflectorConfiguration>(rc);
-            services.AddSingleton<IFunctionalReflectorConfiguration>(frc);
+            services.AddSingleton(cc);
+            services.AddSingleton(rc);
+            services.AddSingleton(frc);
 
             TestHook(services);
         }
@@ -210,11 +181,10 @@ namespace NakedFunctions.Reflect.Test {
         }
 
         [TestMethod]
-        public void ReflectSimpleType()
-        {
+        public void ReflectSimpleType() {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[0]);
+            var rc = new FunctionalReflectorConfiguration(new[] {typeof(SimpleClass)}, new Type[0]);
 
             var container = GetContainer(new CoreConfiguration(), rc);
 
@@ -225,11 +195,10 @@ namespace NakedFunctions.Reflect.Test {
         }
 
         [TestMethod]
-        public void ReflectSimpleFunction()
-        {
+        public void ReflectSimpleFunction() {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[] { typeof(SimpleFunctions) });
+            var rc = new FunctionalReflectorConfiguration(new[] {typeof(SimpleClass)}, new[] {typeof(SimpleFunctions)});
 
             var container = GetContainer(new CoreConfiguration(), rc);
 
@@ -244,11 +213,11 @@ namespace NakedFunctions.Reflect.Test {
         public void ReflectTupleFunction() {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var orc = new ObjectReflectorConfiguration(new Type[]{}, new Type[] { }, new string[] { "NakedFunctions" });
+            var orc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {"NakedFunctions"});
             orc.SupportedSystemTypes.Clear();
             orc.SupportedSystemTypes.Add(typeof(IQueryable<>));
 
-            var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[] { typeof(TupleFunctions) });
+            var rc = new FunctionalReflectorConfiguration(new[] {typeof(SimpleClass)}, new[] {typeof(TupleFunctions)});
 
             var container = GetContainer(new CoreConfiguration(), rc, orc);
 
@@ -262,11 +231,10 @@ namespace NakedFunctions.Reflect.Test {
         }
 
         [TestMethod]
-        public void ReflectUnsupportedTuple()
-        {
+        public void ReflectUnsupportedTuple() {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new FunctionalReflectorConfiguration(new[] { typeof(UnsupportedTupleFunctions) }, new Type[0]);
+            var rc = new FunctionalReflectorConfiguration(new[] {typeof(UnsupportedTupleFunctions)}, new Type[0]);
 
             var container = GetContainer(new CoreConfiguration(), rc);
 
@@ -284,15 +252,14 @@ namespace NakedFunctions.Reflect.Test {
         }
 
         [TestMethod]
-        public void ReflectSimpleInjectedFunction()
-        {
+        public void ReflectSimpleInjectedFunction() {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var orc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { "NakedFunctions" });
+            var orc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {"NakedFunctions"});
             orc.SupportedSystemTypes.Clear();
             orc.SupportedSystemTypes.Add(typeof(IQueryable<>));
 
-            var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass) }, new Type[] { typeof(SimpleInjectedFunctions) });
+            var rc = new FunctionalReflectorConfiguration(new[] {typeof(SimpleClass)}, new[] {typeof(SimpleInjectedFunctions)});
 
             var container = GetContainer(new CoreConfiguration(), rc, orc);
 
@@ -304,16 +271,15 @@ namespace NakedFunctions.Reflect.Test {
             AbstractReflectorTest.AssertSpec(typeof(SimpleInjectedFunctions), specs);
             AbstractReflectorTest.AssertSpec(typeof(IQueryable<>), specs);
 
-           // Assert.AreEqual(1, specs[0].ObjectActions.Count);
+            // Assert.AreEqual(1, specs[0].ObjectActions.Count);
         }
 
 
         [TestMethod]
-        public void ReflectNavigableType()
-        {
+        public void ReflectNavigableType() {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new FunctionalReflectorConfiguration(new[] { typeof(NavigableClass) }, new Type[0]);
+            var rc = new FunctionalReflectorConfiguration(new[] {typeof(NavigableClass)}, new Type[0]);
 
             var container = GetContainer(new CoreConfiguration(), rc);
 
@@ -340,11 +306,10 @@ namespace NakedFunctions.Reflect.Test {
         }
 
         [TestMethod]
-        public void ReflectIgnoredProperty()
-        {
+        public void ReflectIgnoredProperty() {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new FunctionalReflectorConfiguration(new[] { typeof(IgnoredClass) }, new Type[0]);
+            var rc = new FunctionalReflectorConfiguration(new[] {typeof(IgnoredClass)}, new Type[0]);
 
             var container = GetContainer(new CoreConfiguration(), rc);
 
@@ -355,12 +320,11 @@ namespace NakedFunctions.Reflect.Test {
             Assert.AreEqual(0, spec.Fields.Count);
         }
 
-        [TestMethod] 
-        public void ReflectDefaultValueParameter()
-        {
+        [TestMethod]
+        public void ReflectDefaultValueParameter() {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new FunctionalReflectorConfiguration(new Type[] { typeof(SimpleClass) }, new Type[] { typeof(ParameterDefaultClass) });
+            var rc = new FunctionalReflectorConfiguration(new[] {typeof(SimpleClass)}, new[] {typeof(ParameterDefaultClass)});
 
             var container = GetContainer(new CoreConfiguration(), rc);
 
@@ -376,6 +340,29 @@ namespace NakedFunctions.Reflect.Test {
             var (defaultValue, type) = facet.GetDefault(null, null, null);
             Assert.AreEqual("a default", defaultValue);
             Assert.AreEqual("Explicit", type.ToString());
+        }
+
+        [TestMethod]
+        public void ReflectLifeCycleFunctions() {
+            ObjectReflectorConfiguration.NoValidate = true;
+
+            var rc = new FunctionalReflectorConfiguration(new[] {typeof(SimpleClass)}, new[] {typeof(LifeCycleFunctions)});
+
+            var container = GetContainer(new CoreConfiguration(), rc);
+
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
+            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.SimpleClass");
+
+            IFacet facet = spec.GetFacet<IPersistingCallbackFacet>();
+            Assert.IsNotNull(facet);
+            facet = spec.GetFacet<IPersistedCallbackFacet>();
+            Assert.IsNotNull(facet);
+            facet = spec.GetFacet<IUpdatingCallbackFacet>();
+            Assert.IsNotNull(facet);
+            facet = spec.GetFacet<IUpdatedCallbackFacet>();
+            Assert.IsNotNull(facet);
         }
     }
 }

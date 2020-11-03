@@ -12,7 +12,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedFunctions.Meta.Facet;
-using NakedFunctions.Reflector.Reflect;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -20,7 +19,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Meta.Facet;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.FacetFactory;
 
@@ -41,50 +40,39 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         public string[] Prefixes => FixedPrefixes;
 
-        private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
-            pi != null &&
-            pi.ParameterType == toMatch;
-
-        private List<IFacet> AddPersistingFacet(List<IFacet> facets, Type type, ISpecificationBuilder holder) {
-            var match = FunctionalIntrospector.Functions.SelectMany(t => t.GetMethods()).Where(m => m.Name == RecognisedMethodsAndPrefixes.PersistingMethod).SingleOrDefault(m => IsSameType(m.GetParameters().FirstOrDefault(), type));
-            var facet = match != null ? (IFacet) new PersistingCallbackFacetViaFunction(match, holder) : new PersistingCallbackFacetNull(holder);
-            facets.Add(facet);
-            return facets;
-        }
-
-        private List<IFacet> AddPersistedFacet(List<IFacet> facets, Type type, ISpecificationBuilder holder) {
-            var match = FunctionalIntrospector.Functions.SelectMany(t => t.GetMethods()).Where(m => m.Name == RecognisedMethodsAndPrefixes.PersistedMethod).SingleOrDefault(m => IsSameType(m.GetParameters().FirstOrDefault(), type));
-            var facet = match != null ? (IFacet) new PersistedCallbackFacetViaFunction(match, holder) : new PersistedCallbackFacetNull(holder);
-            facets.Add(facet);
-            return facets;
-        }
-
-        private List<IFacet> AddUpdatingFacet(List<IFacet> facets, Type type, ISpecificationBuilder holder) {
-            var match = FunctionalIntrospector.Functions.SelectMany(t => t.GetMethods()).Where(m => m.Name == RecognisedMethodsAndPrefixes.UpdatingMethod).SingleOrDefault(m => IsSameType(m.GetParameters().FirstOrDefault(), type));
-            var facet = match != null ? (IFacet) new UpdatingCallbackFacetViaFunction(match, holder) : new UpdatingCallbackFacetNull(holder);
-            facets.Add(facet);
-            return facets;
-        }
-
-        private List<IFacet> AddUpdatedFacet(List<IFacet> facets, Type type, ISpecificationBuilder holder) {
-            var match = FunctionalIntrospector.Functions.SelectMany(t => t.GetMethods()).Where(m => m.Name == RecognisedMethodsAndPrefixes.UpdatedMethod).SingleOrDefault(m => IsSameType(m.GetParameters().FirstOrDefault(), type));
-            var facet = match != null ? (IFacet) new UpdatedCallbackFacetViaFunction(match, holder) : new UpdatedCallbackFacetNull(holder);
-            facets.Add(facet);
-            return facets;
-        }
-
         #region IMethodFilteringFacetFactory Members
 
+        private static readonly IDictionary<string, Func<MethodInfo, ISpecification, IFacet>> matchingFacet = new Dictionary<string, Func<MethodInfo, ISpecification, IFacet>> {
+            {RecognisedMethodsAndPrefixes.PersistingMethod, (m, s) => new PersistingCallbackFacetViaFunction(m, s)},
+            {RecognisedMethodsAndPrefixes.PersistedMethod, (m, s) => new PersistedCallbackFacetViaFunction(m, s)},
+            {RecognisedMethodsAndPrefixes.UpdatingMethod, (m, s) => new UpdatingCallbackFacetViaFunction(m, s)},
+            {RecognisedMethodsAndPrefixes.UpdatedMethod, (m, s) => new UpdatedCallbackFacetViaFunction(m, s)}
+        };
+
+        private static Action<IMetamodelBuilder> GetAddAction(Type type, string methodName) {
+            var recognizedMethod = type.GetMethods().SingleOrDefault(m => m.Name == methodName);
+            Action<IMetamodelBuilder> action = m => { };
+
+            if (recognizedMethod is not null) {
+                var onType = FunctionalFacetFactoryHelpers.GetContributedToType(recognizedMethod);
+                if (onType is not null) {
+                    var facetCreator = matchingFacet[methodName];
+                    action = m => {
+                        var spec = m.GetSpecification(onType);
+                        var facet = facetCreator(recognizedMethod, spec);
+                        FacetUtils.AddFacet(facet);
+                    };
+                }
+            }
+
+            return action;
+        }
+
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var facets = new List<IFacet>();
-
-            facets = AddPersistingFacet(facets, type, specification);
-            facets = AddPersistedFacet(facets, type, specification);
-            facets = AddUpdatingFacet(facets, type, specification);
-            facets = AddUpdatedFacet(facets, type, specification);
-
-            FacetUtils.AddFacets(facets);
-
+            var actions = Prefixes.Select(methodName => GetAddAction(type, methodName));
+            void Action(IMetamodelBuilder m) => actions.ForEach(a => a(m));
+            var facet = new LifeCycleMethodsIntegrationFacet(specification, Action);
+            FacetUtils.AddFacet(facet);
             return metamodel;
         }
 

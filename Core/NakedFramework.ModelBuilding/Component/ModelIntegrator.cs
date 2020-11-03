@@ -42,6 +42,15 @@ namespace NakedFramework.ModelBuilding.Component {
         public void Integrate() {
             // todo change so not dependent on specific reflector config 
 
+            // new way of doing things =- introduce integration facets
+
+            var integrationFacets = metamodelBuilder.AllSpecifications.Select(s => s.GetFacet<IIntegrationFacet>()).Where(f => f is not null).ToArray();
+
+            integrationFacets.ForEach(f => f.Execute(metamodelBuilder));
+            // todo should we remove after use to reduce size of metamodel ?
+            // integrationFacets.ForEach(f => f.Remove());
+
+
             var services =  objectReflectorConfiguration.Services;
             PopulateAssociatedActions(services, metamodelBuilder);
 

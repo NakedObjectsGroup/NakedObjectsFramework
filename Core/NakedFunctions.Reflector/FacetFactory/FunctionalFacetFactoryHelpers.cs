@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Principal;
@@ -27,5 +28,8 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 _ => false
             };
         }
+
+        public static Type GetContributedToType(MethodInfo method)
+            => method.IsDefined(typeof(ExtensionAttribute), false) ? method.GetParameters().FirstOrDefault()?.ParameterType : null;
     }
 }

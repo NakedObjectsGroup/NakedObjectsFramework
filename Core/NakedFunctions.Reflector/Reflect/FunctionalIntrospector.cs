@@ -21,7 +21,6 @@ namespace NakedFunctions.Reflector.Reflect {
         public FunctionalIntrospector(IReflector reflector, Type[] functions, ILogger<FunctionalIntrospector> logger) : base(reflector, logger) => Functions = functions;
 
 
-
         protected override IImmutableDictionary<string, ITypeSpecBuilder> ProcessType(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
             ((FunctionalFacetFactorySet)FacetFactorySet).Process(Reflector, IntrospectedType, new IntrospectorMethodRemover(Methods), spec, metamodel);
 
