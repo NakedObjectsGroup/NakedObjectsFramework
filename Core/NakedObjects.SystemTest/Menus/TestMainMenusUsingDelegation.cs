@@ -97,8 +97,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
 
     public class FooService {
         public static void Menu(IMenu menu) {
-            menu.Type = typeof(FooService);
-            menu.AddRemainingNativeActions();
+            menu.AddRemainingActions(typeof(FooService));
         }
 
         public void FooAction0() { }
@@ -111,13 +110,13 @@ namespace NakedObjects.SystemTest.Menus.Service {
     [Named("Subs")]
     public class ServiceWithSubMenus {
         public static void Menu(IMenu menu) {
-            menu.Type = typeof(ServiceWithSubMenus);
+            var type = typeof(ServiceWithSubMenus);
             var sub1 = menu.CreateSubMenu("Sub1");
-            sub1.AddAction("Action1");
-            sub1.AddAction("Action3");
+            sub1.AddAction(type,"Action1");
+            sub1.AddAction(type, "Action3");
             var sub2 = menu.CreateSubMenu("Sub2");
-            sub2.AddAction("Action2");
-            sub2.AddAction("Action0");
+            sub2.AddAction(type, "Action2");
+            sub2.AddAction(type, "Action0");
         }
 
         public void Action0() { }
@@ -132,8 +131,7 @@ namespace NakedObjects.SystemTest.Menus.Service {
     [Named("Bars")]
     public class BarService {
         public static void Menu(IMenu menu) {
-            menu.Type = typeof(BarService);
-            menu.AddRemainingNativeActions();
+            menu.AddRemainingActions(typeof(BarService));
         }
 
         [MemberOrder(10)]

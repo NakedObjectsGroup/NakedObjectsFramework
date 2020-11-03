@@ -53,7 +53,7 @@ namespace NakedObjects.Meta.Menu {
             return this;
         }
 
-        public Type Type { get; set; }
+        private Type Type { get; set; }
 
         public IMenu WithId(string id) {
             Id = id;
@@ -113,23 +113,11 @@ namespace NakedObjects.Meta.Menu {
             AddMenuItem(new MenuAction(actionSpec));
             return this;
         }
-        public IMenu AddAllActions(Type fromType)
-        {
-            AddRemainingActions(fromType);
-            return this;
-        }
         public IMenu AddRemainingActions(Type fromType)
         {
             AddOrderableElementsToMenu(ActionsForType(fromType), this);
             return this;
         }
-        public IMenu WithDefaultType(Type defaultType)
-        {
-            Type = defaultType;
-            return this;
-        }
-
-
         #endregion
 
         private MenuImpl CreateMenuImmutableAsSubMenu(string subMenuName, string id = null) {

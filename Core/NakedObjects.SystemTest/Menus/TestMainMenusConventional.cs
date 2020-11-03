@@ -181,13 +181,10 @@ namespace NakedObjects.SystemTest.Menus.Service2 {
             sub2.AddAction("Action2");
             sub2.AddAction("Action0");
 
-            var hyb = factory.NewMenu<object>(false, "Hybrid");
-            hyb.Type = typeof(FooService);
-            hyb.AddAction("FooAction0");
-            hyb.Type = typeof(BarService);
-            hyb.AddAction("BarAction0");
-            hyb.Type = typeof(QuxService);
-            hyb.AddRemainingNativeActions();
+            var hyb = factory.NewMenu("Hybrid", "hybrid");
+              hyb.AddAction(typeof(FooService),"FooAction0");
+            hyb.AddAction(typeof(BarService),"BarAction0");
+            hyb.AddRemainingActions(typeof(QuxService));
 
             var empty = factory.NewMenu<object>(false, "Empty");
 
