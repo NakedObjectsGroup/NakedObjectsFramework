@@ -75,7 +75,14 @@ namespace NakedFunctions.Rest.App.Demo
             mf.NewMenu("Products", "products", typeof(Product_MenuFunctions), true),
             mf.NewMenu("Special Offers", "offers", typeof(SpecialOffer_MenuFunctions)),
             mf.NewMenu("Employees", "employees", typeof(Employee_MenuFunctions)),
-            mf.NewMenu("Customers NF","customers", typeof(Customer_MenuFunctions))
+            mf.NewMenu("Customers NF","customersnf", typeof(Customer_MenuFunctions))
+        };
+
+        public static Action<IMenu>[] MainMenus3() => new Action<IMenu>[]  {
+            menu => menu.WithMenuName("Products").WithId("products").AddAllActions(typeof(Product_MenuFunctions)),
+            menu => menu.WithMenuName("Special Offers").WithId("specialOffers").AddAllActions(typeof(SpecialOffer_MenuFunctions)),
+            menu => menu.WithMenuName("Employees").WithId("employees").AddAllActions(typeof(Employee_MenuFunctions)),
+            menu => menu.WithMenuName("Customers NF").WithId("customersnf").AddAllActions(typeof(Customer_MenuFunctions)),
         };
     }
 }

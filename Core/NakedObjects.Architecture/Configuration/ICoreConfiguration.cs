@@ -15,7 +15,7 @@ namespace NakedObjects.Architecture.Configuration {
         ///     Specify a function that can create the array of main menus, having been passed-in an
         ///     implementation of IMenuFactory.
         /// </summary>
-        (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus { get; }
+        Func<IMenuFactory, IMenu[]> MainMenus { get; }
 
         public Func<IMenuFactory, IMenu[]> GetMainMenus();
     }

@@ -137,12 +137,12 @@ namespace NakedObjects.Xat {
         /// </summary>
         protected virtual IServiceProvider GetConfiguredContainer() => scopeServiceProvider;
 
-        protected virtual (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus => null; //Allows tests not to define menus if not needed.
+        protected virtual IMenu[] MainMenus(IMenuFactory factory) => null; //Allows tests not to define menus if not needed.
 
         protected virtual void StartTest() {
             ServiceScope = RootServiceProvider.CreateScope();
             scopeServiceProvider = ServiceScope.ServiceProvider;
-            NakedObjectsFramework = scopeServiceProvider.GetService<INakedObjectsFramework>();
+            NakedObjectsFramework = scopeServiceProvider.GetService<INakedObjectsFramework>(); 
             LoggerFactory = scopeServiceProvider.GetService<ILoggerFactory>();
         }
 

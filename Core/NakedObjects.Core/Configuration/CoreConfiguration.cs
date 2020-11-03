@@ -13,26 +13,10 @@ using NakedObjects.Menu;
 
 namespace NakedObjects.Core.Configuration {
     public class CoreConfiguration : ICoreConfiguration {
-        public CoreConfiguration((Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] mainMenus = null) => MainMenus = mainMenus;
+        public CoreConfiguration(Func<IMenuFactory, IMenu[]> mainMenus = null) => MainMenus = mainMenus;
 
-        public (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus { get; }
-
-        public Func<IMenuFactory, IMenu[]> GetMainMenus() =>
-            mf => {
-                var mainMenus = MainMenus;
-                IMenu[] menus = null;
-
-                if (mainMenus is not null && mainMenus.Any())
-                {
-                    menus = mainMenus.Select(tuple => {
-                        var (type, name, addAll, action) = tuple;
-                        var menu = mf.NewMenu(type, addAll, name);
-                        action?.Invoke(menu);
-                        return menu;
-                    }).ToArray();
-                }
-
-                return menus;
-            };
+        public Func<IMenuFactory, IMenu[]> MainMenus { get; }
+        //TODO: Remove redundancy between property & method now doing same thing!
+        public Func<IMenuFactory, IMenu[]> GetMainMenus() => MainMenus;
     }
 }

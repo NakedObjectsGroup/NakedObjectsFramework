@@ -50,7 +50,8 @@ namespace NakedObjects.SystemTest.Menus.Service {
             MenusDbContext.Delete();
         }
 
-        protected override (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus => LocalMainMenus.MainMenus();
+        protected override IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
+
 
         [Test]
         public virtual void TestMainMenus() {
@@ -72,13 +73,26 @@ namespace NakedObjects.SystemTest.Menus.Service {
 
     #region Classes used in test
 
-    public class LocalMainMenus {
-        public static (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] MainMenus() =>
-            new (Type rootType, string name, bool allActions, Action<IMenu> customConstruction)[] {
-                (typeof(FooService), null, false, FooService.Menu),
-                (typeof(BarService), null, true, BarService.Menu),
-                (typeof(ServiceWithSubMenus), null, true, ServiceWithSubMenus.Menu)
+    public class LocalMainMenus
+    {
+        public static IMenu[] MainMenus(IMenuFactory factory)
+        {
+            var menuDefs = new Dictionary<Type, Action<IMenu>> {
+                {typeof(FooService), FooService.Menu},
+                {typeof(BarService), BarService.Menu},
+                {typeof(ServiceWithSubMenus), ServiceWithSubMenus.Menu}
             };
+
+            var menus = new List<IMenu>();
+            foreach (var menuDef in menuDefs)
+            {
+                var menu = factory.NewMenu(menuDef.Key);
+                menuDef.Value(menu);
+                menus.Add(menu);
+            }
+
+            return menus.ToArray();
+        }
     }
 
     public class FooService {
