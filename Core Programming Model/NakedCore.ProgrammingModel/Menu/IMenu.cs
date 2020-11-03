@@ -14,15 +14,6 @@ namespace NakedObjects.Menu {
     /// </summary>
     public interface IMenu {
         /// <summary>
-        ///     The type on which the actions to be added are defined. Will normally be the
-        ///     object on which the Menu is defined, but may be changed to allow actions
-        ///     to be added from another service.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns>This menu (for fluent programming)</returns>
-        Type Type { get; set; }
-
-        /// <summary>
         ///     Allows the default name for the menu to be over-ridden
         ///     The type on which the actions to be added are defined. Will normally be the
         ///     object on which the Menu is defined, but may be changed to allow actions
@@ -84,15 +75,6 @@ namespace NakedObjects.Menu {
         /// <param name="renamedTo"></param>
         /// <returns>This menu (for fluent programming)</returns>
         IMenu AddAction(Type fromType, string actionName);
-        IMenu AddAllActions(Type fromType);
         IMenu AddRemainingActions(Type fromType);
-
-        /// <summary>
-        ///     Specify the default type so that actions may then be added from this type, without specifying the type each time.
-        /// </summary>
-        /// <param name="actionName"></param>
-        /// <param name="renamedTo"></param>
-        /// <returns>This menu (for fluent programming)</returns>
-        IMenu WithDefaultType(Type defaultType);
     }
 }
