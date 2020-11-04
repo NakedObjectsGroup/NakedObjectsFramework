@@ -61,7 +61,13 @@ namespace NakedFunctions.Reflect.Test {
     }
 
     public record SimpleClass {
-    public virtual SimpleClass SimpleProperty { get; set; }
+         public virtual SimpleClass SimpleProperty { get; set; }
+    }
+
+    [ViewModel]
+    public record SimpleViewModel
+    {
+        public virtual SimpleClass SimpleProperty { get; set; }
     }
 
     public class NavigableClass {
@@ -97,6 +103,13 @@ namespace NakedFunctions.Reflect.Test {
         public static SimpleClass Updating(this SimpleClass target) => target;
         public static SimpleClass Updated(this SimpleClass target) => target;
     }
+
+    public static class ViewModelFunctions {
+        public static string[] DeriveKeys(this SimpleViewModel target) => null;
+
+        public static SimpleViewModel PopulateUsingKeys(this SimpleViewModel target, string[] keys) => target;
+    }
+
 
 
     [TestClass]
@@ -364,5 +377,25 @@ namespace NakedFunctions.Reflect.Test {
             facet = spec.GetFacet<IUpdatedCallbackFacet>();
             Assert.IsNotNull(facet);
         }
+
+        [TestMethod]
+        public void ReflectViewModelFunctions()
+        {
+            ObjectReflectorConfiguration.NoValidate = true;
+
+            var rc = new FunctionalReflectorConfiguration(new[] { typeof(SimpleClass), typeof(SimpleViewModel) }, new[] { typeof(ViewModelFunctions) });
+
+            var container = GetContainer(new CoreConfiguration(), rc);
+
+            var builder = container.GetService<IModelBuilder>();
+            builder.Build();
+            var specs = AllObjectSpecImmutables(container);
+            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.SimpleViewModel");
+
+            IFacet facet = spec.GetFacet<IViewModelFacet>();
+            Assert.IsNotNull(facet);
+        }
+
+
     }
 }
