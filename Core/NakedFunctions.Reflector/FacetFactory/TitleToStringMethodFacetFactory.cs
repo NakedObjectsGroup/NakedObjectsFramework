@@ -41,11 +41,11 @@ namespace NakedFunctions.Reflector.FacetFactory {
             try {
                 var toStringMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes);
 
-                methodRemover.RemoveMethod(toStringMethod);
-
-                IFacet titleFacet = new TitleFacetViaToStringMethod(toStringMethod, specification, Logger<TitleFacetViaToStringMethod>());
-
-                FacetUtils.AddFacet(titleFacet);
+                if (toStringMethod is not null) {
+                    methodRemover.RemoveMethod(toStringMethod);
+                    IFacet titleFacet = new TitleFacetViaToStringMethod(toStringMethod, specification, Logger<TitleFacetViaToStringMethod>());
+                    FacetUtils.AddFacet(titleFacet);
+                }
             }
             catch (Exception e) {
                 logger.LogError(e, "Unexpected Exception");
