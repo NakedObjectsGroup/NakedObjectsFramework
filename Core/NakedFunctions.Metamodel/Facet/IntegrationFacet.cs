@@ -12,11 +12,9 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 
 namespace NakedFunctions.Meta.Facet {
-    public class LifeCycleMethodsIntegrationFacet : AbstractIntegrationFacet {
+    public class IntegrationFacet : AbstractIntegrationFacet {
         private readonly Action<IMetamodelBuilder> toExecute;
-        public LifeCycleMethodsIntegrationFacet(ISpecification holder, Action<IMetamodelBuilder> toExecute) : base(holder) {
-            this.toExecute = toExecute;
-        }
+        public IntegrationFacet(ISpecification holder, Action<IMetamodelBuilder> toExecute) : base(holder) => this.toExecute = toExecute;
 
         public override void Execute(IMetamodelBuilder metamodelBuilder) => toExecute(metamodelBuilder);
     }

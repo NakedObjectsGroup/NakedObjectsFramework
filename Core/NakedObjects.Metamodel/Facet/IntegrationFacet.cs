@@ -10,7 +10,6 @@ using System;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Meta.Facet;
 
 namespace NakedObjects.Meta.Facet {
     public abstract class AbstractIntegrationFacet : FacetAbstract, IIntegrationFacet {
