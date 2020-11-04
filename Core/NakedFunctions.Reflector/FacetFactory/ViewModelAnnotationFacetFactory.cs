@@ -18,6 +18,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
@@ -41,36 +42,71 @@ namespace NakedFunctions.Reflector.FacetFactory {
                    mi.ReturnType == toMatch;
         }
 
-        private MethodInfo GetDeriveMethod(Type type) => FunctionalIntrospector.Functions.SelectMany(t => t.GetMethods()).Where(m => m.Name == "DeriveKeys").SingleOrDefault(m => IsSameType(m.GetParameters().FirstOrDefault(), type));
+        private static MethodInfo GetMethod(Type type, string name) => type.GetMethods().SingleOrDefault(m => m.Name == name);
 
-        private MethodInfo GetPopulateMethod(Type type) => FunctionalIntrospector.Functions.SelectMany(t => t.GetMethods()).Where(m => m.Name == "PopulateUsingKeys").SingleOrDefault(m => IsSameTypeAndReturnType(m, type));
+        private static MethodInfo GetDeriveMethod(Type type) => GetMethod(type, "DeriveKeys");
 
-        private MethodInfo GetIsEditMethod(Type type) => FunctionalIntrospector.Functions.SelectMany(t => t.GetMethods()).Where(m => m.Name == "IsEditView").SingleOrDefault(m => IsSameType(m.GetParameters().FirstOrDefault(), type));
+        private static MethodInfo GetPopulateMethod(Type type) => GetMethod(type, "PopulateUsingKeys");
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            IFacet facet = null;
+        private static MethodInfo GetIsEditMethod(Type type) => GetMethod(type, "IsEditView");
 
-            if (type.GetCustomAttribute<ViewModelAttribute>() != null ||
-                type.GetCustomAttribute<ViewModelEditAttribute>() != null) {
-                var deriveMethod = GetDeriveMethod(type);
-                var populateMethod = GetPopulateMethod(type);
-                var isEditMethod = GetIsEditMethod(type);
+        private static Type GetAndValidateContributedToType(MethodInfo deriveMethod, MethodInfo populateMethod, MethodInfo isEditMethod) {
+            var t1 = FunctionalFacetFactoryHelpers.GetContributedToType(deriveMethod);
+            var t2 = FunctionalFacetFactoryHelpers.GetContributedToType(populateMethod);
+            var t3 = isEditMethod is null ? null : FunctionalFacetFactoryHelpers.GetContributedToType(isEditMethod);
 
-                if (deriveMethod != null && populateMethod != null) {
-                    if (type.GetCustomAttribute<ViewModelEditAttribute>() != null) {
-                        facet = new ViewModelEditFacetViaFunctionsConvention(specification, deriveMethod, populateMethod);
-                    }
-                    else if (isEditMethod != null) {
-                        facet = new ViewModelSwitchableFacetViaFunctionsConvention(specification, deriveMethod, populateMethod, isEditMethod);
-                    }
-                    else {
-                        facet = new ViewModelFacetViaFunctionsConvention(specification, deriveMethod, populateMethod);
+            if (t1 != t2) {
+                throw new ReflectionException($"View model functions {deriveMethod.Name} and {populateMethod.Name} on {deriveMethod.DeclaringType} have mismatched types");
+            }
+
+            if (t3 is not null && t3 != t1) {
+                throw new ReflectionException($"View model function {isEditMethod.Name} on {deriveMethod.DeclaringType} has mismatched types");
+            }
+
+            return t1;
+        }
+
+
+        private static Action<IMetamodelBuilder> GetAddAction(Type type) {
+            var deriveMethod = GetDeriveMethod(type);
+            var populateMethod = GetPopulateMethod(type);
+            var isEditMethod = GetIsEditMethod(type);
+
+            if (deriveMethod is not null && populateMethod is not null) {
+                var onType = GetAndValidateContributedToType(deriveMethod, populateMethod, isEditMethod);
+                if (onType is not null) {
+                    if (onType.GetCustomAttribute<ViewModelAttribute>() != null ||onType.GetCustomAttribute<ViewModelEditAttribute>() != null) {
+                        IFacet FacetCreator(ISpecification spec) {
+                            if (type.GetCustomAttribute<ViewModelEditAttribute>() is not null) {
+                                return new ViewModelEditFacetViaFunctionsConvention(spec, deriveMethod, populateMethod);
+                            }
+
+                            if (isEditMethod is not null) {
+                                return new ViewModelSwitchableFacetViaFunctionsConvention(spec, deriveMethod, populateMethod, isEditMethod);
+                            }
+
+                            return new ViewModelFacetViaFunctionsConvention(spec, deriveMethod, populateMethod);
+                        }
+
+                        return m => {
+                            var spec = m.GetSpecification(onType);
+                            var facet = FacetCreator(spec);
+                            FacetUtils.AddFacet(facet);
+                        };
                     }
                 }
             }
 
-            FacetUtils.AddFacet(facet);
+            return null;
+        }
 
+
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var action = GetAddAction(type);
+            if (action is not null) {
+                var facet = new LifeCycleMethodsIntegrationFacet(specification, action);
+                FacetUtils.AddFacet(facet);
+            }
             return metamodel;
         }
     }

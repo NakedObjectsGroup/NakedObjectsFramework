@@ -16,7 +16,7 @@ using NakedObjects.ParallelReflector.Reflect;
 
 namespace NakedFunctions.Reflector.Reflect {
     public sealed class FunctionalIntrospector : Introspector, IIntrospector {
-        public static Type[] Functions;
+        private static Type[] Functions;
 
         public FunctionalIntrospector(IReflector reflector, Type[] functions, ILogger<FunctionalIntrospector> logger) : base(reflector, logger) => Functions = functions;
 
