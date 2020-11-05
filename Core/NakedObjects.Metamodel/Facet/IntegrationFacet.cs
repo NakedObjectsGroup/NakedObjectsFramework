@@ -18,5 +18,6 @@ namespace NakedObjects.Meta.Facet {
         public static Type Type => typeof(IIntegrationFacet);
 
         public abstract void Execute(IMetamodelBuilder metamodelBuilder);
+        public abstract void AddAction(Action<IMetamodelBuilder> action);
     }
 }

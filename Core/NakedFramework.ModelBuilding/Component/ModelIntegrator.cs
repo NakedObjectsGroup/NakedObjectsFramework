@@ -39,6 +39,7 @@ namespace NakedFramework.ModelBuilding.Component {
             this.objectReflectorConfiguration = objectReflectorConfiguration;
         }
 
+
         public void Integrate() {
             // todo change so not dependent on specific reflector config 
 

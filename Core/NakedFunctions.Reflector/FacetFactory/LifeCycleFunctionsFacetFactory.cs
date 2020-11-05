@@ -71,8 +71,17 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var actions = Prefixes.Select(methodName => GetAddAction(type, methodName));
             void Action(IMetamodelBuilder m) => actions.ForEach(a => a(m));
-            var facet = new IntegrationFacet(specification, Action);
-            FacetUtils.AddFacet(facet);
+            var integrationFacet = specification.GetFacet<IIntegrationFacet>();
+
+            if (integrationFacet is null) {
+                integrationFacet = new IntegrationFacet(specification, Action);
+                FacetUtils.AddFacet(integrationFacet);
+            }
+            else {
+                integrationFacet.AddAction(Action);
+            }
+
+            
             return metamodel;
         }
 

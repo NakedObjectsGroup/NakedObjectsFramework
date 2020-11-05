@@ -396,6 +396,5 @@ namespace NakedFunctions.Reflect.Test {
             Assert.IsNotNull(facet);
         }
 
-
     }
 }

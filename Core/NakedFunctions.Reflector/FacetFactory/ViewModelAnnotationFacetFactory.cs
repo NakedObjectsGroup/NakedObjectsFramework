@@ -104,8 +104,15 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var action = GetAddAction(type);
             if (action is not null) {
-                var facet = new IntegrationFacet(specification, action);
-                FacetUtils.AddFacet(facet);
+                var integrationFacet = specification.GetFacet<IIntegrationFacet>();
+
+                if (integrationFacet is null) {
+                    integrationFacet = new IntegrationFacet(specification, action);
+                    FacetUtils.AddFacet(integrationFacet);
+                }
+                else {
+                    integrationFacet.AddAction(action);
+                }
             }
             return metamodel;
         }

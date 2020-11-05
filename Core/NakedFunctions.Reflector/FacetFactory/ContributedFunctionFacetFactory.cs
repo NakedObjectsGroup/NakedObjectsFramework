@@ -15,7 +15,6 @@ using NakedFunctions.Meta.Facet;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
@@ -26,8 +25,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
     ///     Creates an <see cref="IContributedActionFacet" /> based on the presence of an
     ///     <see cref="ContributedActionAttribute" /> annotation
     /// </summary>
-    public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProcessor
-    {
+    public sealed class ContributedFunctionFacetFactory : FunctionalFacetFactoryProcessor {
         private readonly ILogger<ContributedFunctionFacetFactory> logger;
 
         public ContributedFunctionFacetFactory(IFacetFactoryOrder<ContributedFunctionFacetFactory> order, ILoggerFactory loggerFactory)
@@ -44,24 +42,19 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private static Type GetContributeeType(MethodInfo member) => IsContributed(member) ? member.GetParameters().First().ParameterType : member.DeclaringType;
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo member, ISpecification holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // all functions are contributed to first parameter or if menu, itself
 
-            var facet = new ContributedFunctionFacet(holder);
+            var facet = new ContributedFunctionFacet(specification);
 
-            var contributeeType = GetContributeeType(member);
-            var result = reflector.LoadSpecification(contributeeType, metamodel);
-            metamodel = result.Item2;
+            var contributeeType = GetContributeeType(method);
+            ITypeSpecImmutable type;
+            (type, metamodel) = reflector.LoadSpecification(contributeeType, metamodel);
 
-            var type = result.Item1 as ITypeSpecImmutable;
-            if (type is not null) {
-                facet.AddContributee(type);
-            }
+            facet.AddContributee(type);
 
             FacetUtils.AddFacet(facet);
             return metamodel;
         }
-
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => Process(reflector, method, specification, metamodel);
     }
 }

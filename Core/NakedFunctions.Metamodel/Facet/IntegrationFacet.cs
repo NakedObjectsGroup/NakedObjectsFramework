@@ -13,9 +13,18 @@ using NakedObjects.Meta.Facet;
 
 namespace NakedFunctions.Meta.Facet {
     public class IntegrationFacet : AbstractIntegrationFacet {
-        private readonly Action<IMetamodelBuilder> toExecute;
+        private Action<IMetamodelBuilder> toExecute;
         public IntegrationFacet(ISpecification holder, Action<IMetamodelBuilder> toExecute) : base(holder) => this.toExecute = toExecute;
 
         public override void Execute(IMetamodelBuilder metamodelBuilder) => toExecute(metamodelBuilder);
+
+        public override void AddAction(Action<IMetamodelBuilder> action) {
+            var oldToExecute = toExecute;
+
+            toExecute = mb => {
+                oldToExecute(mb);
+                action(mb);
+            };
+        }
     }
 }

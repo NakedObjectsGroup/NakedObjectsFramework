@@ -6,10 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 
+using System;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.Architecture.Facet {
     public interface IIntegrationFacet : IFacet {
         public void Execute(IMetamodelBuilder metamodelBuilder);
+        public void AddAction(Action<IMetamodelBuilder> action);
     }
 }
