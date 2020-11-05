@@ -28,7 +28,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public EnumFacetFactory(IFacetFactoryOrder<EnumFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.PropertiesAndActionParameters) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var attribute = property.GetCustomAttribute<EnumDataTypeAttribute>();
 
             AddEnumFacet(attribute, specification, property.PropertyType);

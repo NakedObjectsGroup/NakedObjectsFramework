@@ -44,7 +44,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         #region IMethodFilteringFacetFactory Members
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod,  ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameterType = actionMethod.GetParameters().FirstOrDefault()?.ParameterType;
 
             if (parameterType is not null) {

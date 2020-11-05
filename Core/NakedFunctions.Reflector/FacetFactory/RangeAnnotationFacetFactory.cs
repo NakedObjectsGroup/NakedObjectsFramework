@@ -31,7 +31,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             FacetUtils.AddFacet(Create(attribute, isDate, specification));
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var isDate = property.PropertyType.IsAssignableFrom(typeof(DateTime));
             Process(property, isDate, specification);
             return metamodel;

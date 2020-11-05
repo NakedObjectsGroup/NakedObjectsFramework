@@ -78,10 +78,10 @@ namespace NakedObjects.Reflector.FacetFactory {
 
             MethodHelpers.AddHideForSessionFacetNone(facets, specification);
             MethodHelpers.AddDisableForSessionFacetNone(facets, specification);
-            MethodHelpers.FindDefaultHideMethod(reflector,  facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", specification, LoggerFactory);
-            MethodHelpers.FindAndRemoveHideMethod(reflector,  facets, methodRemover, property.DeclaringType, MethodType.Object, capitalizedName, specification, LoggerFactory);
-            MethodHelpers.FindDefaultDisableMethod(reflector,  facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", specification, LoggerFactory);
-            MethodHelpers.FindAndRemoveDisableMethod(reflector,  facets, methodRemover, property.DeclaringType, MethodType.Object, capitalizedName, specification, LoggerFactory);
+            MethodHelpers.FindDefaultHideMethod(reflector,  facets, property.DeclaringType, MethodType.Object, "PropertyDefault", specification, LoggerFactory);
+            MethodHelpers.FindAndRemoveHideMethod(reflector,  facets, property.DeclaringType, MethodType.Object, capitalizedName, specification, LoggerFactory, methodRemover);
+            MethodHelpers.FindDefaultDisableMethod(reflector,  facets, property.DeclaringType, MethodType.Object, "PropertyDefault", specification, LoggerFactory);
+            MethodHelpers.FindAndRemoveDisableMethod(reflector,  facets, property.DeclaringType, MethodType.Object, capitalizedName, specification, LoggerFactory, methodRemover);
 
             FacetUtils.AddFacets(facets);
             return metamodel;

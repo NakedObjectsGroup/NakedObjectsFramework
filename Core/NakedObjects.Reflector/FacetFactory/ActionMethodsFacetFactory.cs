@@ -79,10 +79,10 @@ namespace NakedObjects.Reflector.FacetFactory {
 
             MethodHelpers.AddHideForSessionFacetNone(facets, action);
             MethodHelpers.AddDisableForSessionFacetNone(facets, action);
-            MethodHelpers.FindDefaultHideMethod(reflector,  facets, methodRemover, type, methodType, "ActionDefault", action, LoggerFactory);
-            MethodHelpers.FindAndRemoveHideMethod(reflector,  facets, methodRemover, type, methodType, capitalizedName, action, LoggerFactory);
-            MethodHelpers.FindDefaultDisableMethod(reflector,  facets, methodRemover, type, methodType, "ActionDefault", action, LoggerFactory);
-            MethodHelpers.FindAndRemoveDisableMethod(reflector,  facets, methodRemover, type, methodType, capitalizedName, action, LoggerFactory);
+            MethodHelpers.FindDefaultHideMethod(reflector,  facets, type, methodType, "ActionDefault", action, LoggerFactory);
+            MethodHelpers.FindAndRemoveHideMethod(reflector,  facets, type, methodType, capitalizedName, action, LoggerFactory, methodRemover);
+            MethodHelpers.FindDefaultDisableMethod(reflector,  facets, type, methodType, "ActionDefault", action, LoggerFactory);
+            MethodHelpers.FindAndRemoveDisableMethod(reflector,  facets, type, methodType, capitalizedName, action, LoggerFactory, methodRemover);
 
             if (action is IActionSpecImmutable actionSpecImmutable) {
                 // Process the action's parameters names, descriptions and optional

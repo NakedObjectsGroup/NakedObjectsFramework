@@ -108,7 +108,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         }
 
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod, IMethodRemover methodRemover, ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod,  ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // must be true
             if (!actionMethod.IsStatic) {
                 throw new ReflectionException($"{actionMethod.DeclaringType}.{actionMethod.Name} must be static");
@@ -138,9 +138,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
                     throw new ReflectionException($"{elementSpec.Identifier} must be Object spec");
                 }
             }
-
-
-            MethodHelpers.RemoveMethod(methodRemover, actionMethod);
 
             var invokeFacet = new ActionInvocationFacetViaStaticMethod(actionMethod, onType, (IObjectSpecImmutable) returnSpec, (IObjectSpecImmutable) elementSpec,
                                                                        action, isQueryable, LoggerFactory.CreateLogger<ActionInvocationFacetViaStaticMethod>());

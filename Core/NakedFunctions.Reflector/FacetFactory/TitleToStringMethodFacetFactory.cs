@@ -37,12 +37,11 @@ namespace NakedFunctions.Reflector.FacetFactory {
         /// <summary>
         ///     use ToString for title
         /// </summary>
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             try {
                 var toStringMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes);
 
                 if (toStringMethod is not null) {
-                    methodRemover.RemoveMethod(toStringMethod);
                     IFacet titleFacet = new TitleFacetViaToStringMethod(toStringMethod, specification, Logger<TitleFacetViaToStringMethod>());
                     FacetUtils.AddFacet(titleFacet);
                 }

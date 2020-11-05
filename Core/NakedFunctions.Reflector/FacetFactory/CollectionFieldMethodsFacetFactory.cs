@@ -40,7 +40,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                                          classStrategy.IsTypeToBeIntrospected(property.PropertyType) &&
                                          !classStrategy.IsIgnored(property)).ToList();
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property,  ISpecificationBuilder collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var capitalizedName = property.Name;
             var type = property.DeclaringType;
 
@@ -50,8 +50,8 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
             MethodHelpers.AddHideForSessionFacetNone(facets, collection);
             MethodHelpers.AddDisableFacetAlways(facets, collection);
-            MethodHelpers.FindDefaultHideMethod(reflector, facets, methodRemover, property.DeclaringType, MethodType.Object, "PropertyDefault", collection, LoggerFactory);
-            MethodHelpers.FindAndRemoveHideMethod(reflector, facets, methodRemover, type, MethodType.Object, capitalizedName, collection, LoggerFactory);
+            MethodHelpers.FindDefaultHideMethod(reflector, facets, property.DeclaringType, MethodType.Object, "PropertyDefault", collection, LoggerFactory);
+            MethodHelpers.FindAndRemoveHideMethod(reflector, facets, type, MethodType.Object, capitalizedName, collection, LoggerFactory);
             FacetUtils.AddFacets(facets);
             return metamodel;
         }

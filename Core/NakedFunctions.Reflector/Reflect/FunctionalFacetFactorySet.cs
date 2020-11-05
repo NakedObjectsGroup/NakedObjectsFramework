@@ -107,12 +107,12 @@ namespace NakedFunctions.Reflector.Reflect {
         public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (type.IsInterface) {
                 foreach (var facetFactory in GetFactoryByFeatureType(FeatureType.Interfaces)) {
-                    metamodel = facetFactory.Process(reflector, type, methodRemover, specification, metamodel);
+                    metamodel = facetFactory.Process(reflector, type, specification, metamodel);
                 }
             }
             else {
                 foreach (var facetFactory in GetFactoryByFeatureType(FeatureType.Objects)) {
-                    metamodel = facetFactory.Process(reflector, type, methodRemover, specification, metamodel);
+                    metamodel = facetFactory.Process(reflector, type, specification, metamodel);
                 }
             }
 
@@ -121,7 +121,7 @@ namespace NakedFunctions.Reflector.Reflect {
 
         public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             foreach (var facetFactory in GetFactoryByFeatureType(featureType)) {
-                metamodel = facetFactory.Process(reflector, method, methodRemover, specification, metamodel);
+                metamodel = facetFactory.Process(reflector, method, specification, metamodel);
             }
 
             return metamodel;
@@ -129,7 +129,7 @@ namespace NakedFunctions.Reflector.Reflect {
 
         public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             foreach (var facetFactory in GetFactoryByFeatureType(featureType)) {
-                metamodel = facetFactory.Process(reflector, property, methodRemover, specification, metamodel);
+                metamodel = facetFactory.Process(reflector, property, specification, metamodel);
             }
 
             return metamodel;
