@@ -37,10 +37,12 @@ namespace NakedObjects.Reflector.Component {
         public override bool ConcurrencyChecking => objectReflectorConfiguration.ConcurrencyChecking;
         public override bool IgnoreCase => objectReflectorConfiguration.IgnoreCase;
 
+        protected override IIntrospector GetNewIntrospector() => new ObjectIntrospector(this, LoggerFactory.CreateLogger<ObjectIntrospector>());
+
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectObjectTypes(Type[] ooTypes) {
             var placeholders = GetPlaceholders(ooTypes, ClassStrategy);
             return placeholders.Any()
-                ? IntrospectPlaceholders(placeholders, () => new ObjectIntrospector(this, LoggerFactory.CreateLogger<ObjectIntrospector>()))
+                ? IntrospectPlaceholders(placeholders)
                 : placeholders;
         }
 

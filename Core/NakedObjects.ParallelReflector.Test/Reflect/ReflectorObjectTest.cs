@@ -26,7 +26,7 @@ namespace NakedObjects.ParallelReflect.Test {
             var objectReflector = reflector as ObjectReflector;
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
             (_, metamodel) = reflector.LoadSpecification(typeof(TestDomainObject), metamodel);
-            return reflector.IntrospectSpecification(typeof(TestDomainObject), metamodel, () => new ObjectIntrospector(reflector, null));
+            return reflector.IntrospectSpecification(typeof(TestDomainObject), metamodel);
         }
 
         [TestMethod]

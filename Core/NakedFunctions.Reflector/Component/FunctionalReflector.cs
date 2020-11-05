@@ -38,11 +38,13 @@ namespace NakedFunctions.Reflector.Component {
 
             var placeholders = GetPlaceholders(allFunctionalTypes, ClassStrategy);
             return placeholders.Any()
-                ? IntrospectPlaceholders(specDictionary.AddRange(placeholders), () => new FunctionalIntrospector(this, functions, LoggerFactory.CreateLogger<FunctionalIntrospector>()))
+                ? IntrospectPlaceholders(specDictionary.AddRange(placeholders))
                 : specDictionary;
         }
 
         public override bool IgnoreCase => functionalReflectorConfiguration.IgnoreCase;
+        protected override IIntrospector GetNewIntrospector() => new FunctionalIntrospector(this, LoggerFactory.CreateLogger<FunctionalIntrospector>());
+
         public override bool ConcurrencyChecking => functionalReflectorConfiguration.ConcurrencyChecking;
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
