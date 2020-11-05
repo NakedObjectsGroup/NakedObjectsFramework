@@ -35,7 +35,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public string[] Prefixes => FixedPrefixes;
 
         private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
-            pi != null &&
+            pi is not null &&
             pi.ParameterType == toMatch;
 
         private static bool NameMatches(MethodInfo compFunction, MethodInfo actionFunction) =>
@@ -47,7 +47,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo actionMethod,  ISpecificationBuilder action, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var type = actionMethod.GetParameters().FirstOrDefault()?.ParameterType;
 
-            if (type != null) {
+            if (type is not null) {
                 var declaringType = actionMethod.DeclaringType;
 
                 // find matching disable function

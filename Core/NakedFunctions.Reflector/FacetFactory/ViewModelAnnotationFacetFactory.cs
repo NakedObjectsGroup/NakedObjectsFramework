@@ -31,13 +31,13 @@ namespace NakedFunctions.Reflector.FacetFactory {
             logger = loggerFactory.CreateLogger<ViewModelAnnotationFacetFactory>();
 
         private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
-            pi != null &&
+            pi is not null &&
             pi.ParameterType == toMatch;
 
         private static bool IsSameTypeAndReturnType(MethodInfo mi, Type toMatch) {
             var pi = mi.GetParameters().FirstOrDefault();
 
-            return pi != null &&
+            return pi is not null &&
                    pi.ParameterType == toMatch &&
                    mi.ReturnType == toMatch;
         }
@@ -75,7 +75,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             if (deriveMethod is not null && populateMethod is not null) {
                 var onType = GetAndValidateContributedToType(deriveMethod, populateMethod, isEditMethod);
                 if (onType is not null) {
-                    if (onType.GetCustomAttribute<ViewModelAttribute>() != null ||onType.GetCustomAttribute<ViewModelEditAttribute>() != null) {
+                    if (onType.GetCustomAttribute<ViewModelAttribute>() is not null ||onType.GetCustomAttribute<ViewModelEditAttribute>() is not null) {
                         IFacet FacetCreator(ISpecification spec) {
                             if (type.GetCustomAttribute<ViewModelEditAttribute>() is not null) {
                                 return new ViewModelEditFacetViaFunctionsConvention(spec, deriveMethod, populateMethod);

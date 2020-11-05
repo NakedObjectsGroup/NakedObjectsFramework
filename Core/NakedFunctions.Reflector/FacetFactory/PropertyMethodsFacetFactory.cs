@@ -41,7 +41,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public string[] Prefixes => FixedPrefixes;
 
         private IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
-            candidates.Where(property => property.GetGetMethod() != null &&
+            candidates.Where(property => property.GetGetMethod() is not null &&
                                          classStrategy.IsTypeToBeIntrospected(property.PropertyType) &&
                                          !classStrategy.IsIgnored(property)).ToList();
 
@@ -56,7 +56,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 facets.Add(new NullableFacetAlways(specification));
             }
 
-            if (property.GetSetMethod() != null) {
+            if (property.GetSetMethod() is not null) {
                 if (property.PropertyType == typeof(byte[])) {
                     facets.Add(new DisabledFacetAlways(specification));
                 }
@@ -96,14 +96,14 @@ namespace NakedFunctions.Reflector.FacetFactory {
                                                Type[] parms,
                                                ISpecification property) {
             var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ModifyPrefix + capitalizedName, typeof(void), parms);
-            if (method != null) {
+            if (method is not null) {
                 propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, capitalizedName, property, Logger<PropertySetterFacetViaModifyMethod>()));
             }
         }
 
         private void FindAndRemoveValidateMethod(IReflector reflector,  ICollection<IFacet> propertyFacets,  Type type, Type[] parms, string capitalizedName, ISpecification property) {
             var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
-            if (method != null) {
+            if (method is not null) {
                 propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property, Logger<PropertyValidateFacetViaMethod>()));
                 MethodHelpers.AddAjaxFacet(method, property);
             }
@@ -121,7 +121,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                                                 Type returnType,
                                                 ISpecification property) {
             var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes);
-            if (method != null) {
+            if (method is not null) {
                 propertyFacets.Add(new PropertyDefaultFacetViaMethod(method, property, Logger<PropertyDefaultFacetViaMethod>()));
                 MethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
             }
@@ -147,7 +147,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
             var method = methods.FirstOrDefault();
             
-            if (method != null) {
+            if (method is not null) {
                 var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
 
                 foreach (var p in method.GetParameters()) {
@@ -184,12 +184,12 @@ namespace NakedFunctions.Reflector.FacetFactory {
                     method = FindAutoCompleteMethod(reflector, type, capitalizedName, typeof(IEnumerable<string>));
                 }
 
-                if (method != null) {
+                if (method is not null) {
                     var pageSizeAttr = method.GetCustomAttribute<NakedObjects.PageSizeAttribute>();
                     var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
 
-                    var pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default
-                    var minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
+                    var pageSize = pageSizeAttr is not null ? pageSizeAttr.Value : 0; // default to 0 ie system default
+                    var minLength = minLengthAttr is not null ? minLengthAttr.Length : 0;
 
                     propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property, Logger<AutoCompleteFacet>()));
                     MethodHelpers.AddOrAddToExecutedWhereFacet(method, property);

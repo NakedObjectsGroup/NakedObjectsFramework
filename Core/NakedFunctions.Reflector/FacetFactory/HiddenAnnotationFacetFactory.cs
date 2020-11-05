@@ -35,7 +35,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private static void Process(Func<Attribute> getHidden, Func<Attribute> getScaffold, ISpecification specification) {
             var attribute = getHidden();
-            FacetUtils.AddFacet(attribute != null ? Create((NakedObjects.HiddenAttribute) attribute, specification) : Create((ScaffoldColumnAttribute) getScaffold(), specification));
+            FacetUtils.AddFacet(attribute is not null ? Create((NakedObjects.HiddenAttribute) attribute, specification) : Create((ScaffoldColumnAttribute) getScaffold(), specification));
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

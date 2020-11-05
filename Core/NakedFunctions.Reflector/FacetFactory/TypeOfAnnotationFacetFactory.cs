@@ -54,7 +54,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             Process(reflector, method.ReturnType, specification, metamodel);
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
-            property.GetGetMethod() != null
+            property.GetGetMethod() is not null
                 ? Process(reflector, property.PropertyType, specification, metamodel)
                 : metamodel;
     }

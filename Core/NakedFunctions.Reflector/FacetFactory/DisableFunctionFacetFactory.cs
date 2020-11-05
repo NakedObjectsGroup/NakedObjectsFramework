@@ -35,7 +35,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public string[] Prefixes => FixedPrefixes;
 
         private static bool IsSameType(ParameterInfo pi, Type toMatch) =>
-            pi != null &&
+            pi is not null &&
             pi.ParameterType == toMatch;
 
         private static bool NameMatches(MethodInfo compFunction, MethodInfo actionFunction) =>

@@ -36,7 +36,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         }
 
         private static void AddEnumFacet(EnumDataTypeAttribute attribute, ISpecification holder, Type typeOfEnum) {
-            if (attribute != null) {
+            if (attribute is not null) {
                 FacetUtils.AddFacet(Create(attribute, holder));
                 return;
             }

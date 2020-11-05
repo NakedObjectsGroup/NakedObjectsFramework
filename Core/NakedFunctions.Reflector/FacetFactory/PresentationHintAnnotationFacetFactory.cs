@@ -51,6 +51,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IPresentationHintFacet Create(NakedObjects.PresentationHintAttribute attribute, ISpecification holder) => attribute != null ? new PresentationHintFacet(attribute.Value, holder) : null;
+        private static IPresentationHintFacet Create(NakedObjects.PresentationHintAttribute attribute, ISpecification holder) => attribute is not null ? new PresentationHintFacet(attribute.Value, holder) : null;
     }
 }

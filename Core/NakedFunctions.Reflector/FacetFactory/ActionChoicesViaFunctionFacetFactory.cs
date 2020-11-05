@@ -56,7 +56,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
                 var methodToUse = FindChoicesMethod(declaringType, capitalizedName, i, returnType);
 
-                if (methodToUse != null) {
+                if (methodToUse is not null) {
                     // add facets directly to parameters, not to actions
                     var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
 

@@ -41,7 +41,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
                 var methodToUse = FindDefaultMethod(declaringType, capitalizedName, i, paramType);
 
-                if (methodToUse != null) {
+                if (methodToUse is not null) {
                     // add facets directly to parameters, not to actions
                     FacetUtils.AddFacet(new ActionDefaultsFacetViaFunction(methodToUse, parameters[i]));
                 }

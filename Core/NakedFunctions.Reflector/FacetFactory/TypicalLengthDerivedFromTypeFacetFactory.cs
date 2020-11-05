@@ -74,18 +74,18 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private static ITypicalLengthFacet GetTypicalLengthFacet(Type type, ISpecification holder, IClassStrategy classStrategy) {
             var attribute = type.GetCustomAttribute<TypicalLengthAttribute>();
 
-            if (attribute != null) {
+            if (attribute is not null) {
                 return new TypicalLengthFacetDerivedFromType(attribute.Value, holder);
             }
 
             var length = GetValueTypeTypicalLength(type, classStrategy);
-            return length != null ? new TypicalLengthFacetDerivedFromType(length.Value, holder) : null;
+            return length is not null ? new TypicalLengthFacetDerivedFromType(length.Value, holder) : null;
         }
 
         private static int? GetValueTypeTypicalLength(Type type, IClassStrategy classStrategy) {
             var actualType = classStrategy.GetType(type);
 
-            if (actualType != null) {
+            if (actualType is not null) {
                 if (actualType.IsArray) {
                     var elementType = actualType.GetElementType();
 
@@ -95,7 +95,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
                     // byte[] has special facet factory
 
-                    if (elementType != null && elementType.IsValueType && elementType == typeof(byte)) {
+                    if (elementType is not null && elementType.IsValueType && elementType == typeof(byte)) {
                         return 20;
                     }
 

@@ -52,7 +52,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                         method = FindAutoCompleteMethod(type, capitalizedName, i, typeof(IEnumerable<string>));
                     }
 
-                    if (method != null) {
+                    if (method is not null) {
                         var pageSizeAttr = method.GetCustomAttribute<NakedObjects.PageSizeAttribute>();
                         var minLengthAttr = (MinLengthAttribute) Attribute.GetCustomAttribute(method.GetParameters().First(), typeof(MinLengthAttribute));
 

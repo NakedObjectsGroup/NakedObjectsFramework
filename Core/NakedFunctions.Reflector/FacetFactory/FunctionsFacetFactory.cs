@@ -41,20 +41,20 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         public  string[] Prefixes => FixedPrefixes;
 
-        private bool IsQueryOnly(MethodInfo method) =>
+        private static bool IsQueryOnly(MethodInfo method) =>
             method.GetCustomAttribute<NakedObjects.IdempotentAttribute>() == null &&
-            method.GetCustomAttribute<QueryOnlyAttribute>() != null;
+            method.GetCustomAttribute<QueryOnlyAttribute>() is not null;
 
         // separate methods to reproduce old reflector behaviour
-        private bool IsParameterCollection(Type type) =>
-            type != null && (
+        private static bool IsParameterCollection(Type type) =>
+            type is not null && (
                 CollectionUtils.IsGenericEnumerable(type) ||
                 type.IsArray ||
                 type == typeof(string) ||
                 CollectionUtils.IsCollectionButNotArray(type));
 
-        private bool IsCollection(Type type) =>
-            type != null && (
+        private static bool IsCollection(Type type) =>
+            type is not null && (
                 CollectionUtils.IsGenericEnumerable(type) ||
                 type.IsArray ||
                 type == typeof(string) ||
@@ -84,7 +84,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         #region IMethodIdentifyingFacetFactory Members
 
-        private (ITypeSpecBuilder, Type, IImmutableDictionary<string, ITypeSpecBuilder>) LoadReturnSpecs(Type returnType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, IReflector reflector, MethodInfo actionMethod) {
+        private static (ITypeSpecBuilder, Type, IImmutableDictionary<string, ITypeSpecBuilder>) LoadReturnSpecs(Type returnType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, IReflector reflector, MethodInfo actionMethod) {
             ITypeSpecBuilder onType = null;
 
             if (FacetUtils.IsTuple(returnType)) {
@@ -134,7 +134,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             if (returnSpec is IObjectSpecBuilder && IsCollection(returnType)) {
                 var elementType = CollectionUtils.ElementType(returnType);
                 (elementSpec, metamodel) = reflector.LoadSpecification(elementType, metamodel);
-                if (!(elementSpec is IObjectSpecImmutable)) {
+                if (elementSpec is not IObjectSpecImmutable) {
                     throw new ReflectionException($"{elementSpec.Identifier} must be Object spec");
                 }
             }

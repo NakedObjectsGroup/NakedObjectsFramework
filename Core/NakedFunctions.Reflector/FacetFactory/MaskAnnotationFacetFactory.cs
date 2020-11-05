@@ -51,6 +51,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IMaskFacet Create(NakedObjects.MaskAttribute attribute, ISpecification holder) => attribute != null ? new MaskFacet(attribute.Value, holder) : null;
+        private static IMaskFacet Create(NakedObjects.MaskAttribute attribute, ISpecification holder) => attribute is not null ? new MaskFacet(attribute.Value, holder) : null;
     }
 }

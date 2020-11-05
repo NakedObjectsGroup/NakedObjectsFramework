@@ -32,7 +32,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if ((method.ReturnType.IsPrimitive || TypeUtils.IsEnum(method.ReturnType)) && method.GetCustomAttribute<NakedObjects.OptionallyAttribute>() != null) {
+            if ((method.ReturnType.IsPrimitive || TypeUtils.IsEnum(method.ReturnType)) && method.GetCustomAttribute<NakedObjects.OptionallyAttribute>() is not null) {
                 logger.LogWarning($"Ignoring Optionally annotation on primitive parameter on {method.ReflectedType}.{method.Name}");
                 return metamodel;
             }
@@ -42,12 +42,12 @@ namespace NakedFunctions.Reflector.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if ((property.PropertyType.IsPrimitive || TypeUtils.IsEnum(property.PropertyType)) && property.GetCustomAttribute<NakedObjects.OptionallyAttribute>() != null) {
+            if ((property.PropertyType.IsPrimitive || TypeUtils.IsEnum(property.PropertyType)) && property.GetCustomAttribute<NakedObjects.OptionallyAttribute>() is not null) {
                 logger.LogWarning($"Ignoring Optionally annotation on primitive or un-readable parameter on {property.ReflectedType}.{property.Name}");
                 return metamodel;
             }
 
-            if (property.GetGetMethod() != null && !property.PropertyType.IsPrimitive) {
+            if (property.GetGetMethod() is not null && !property.PropertyType.IsPrimitive) {
                 Process(property, specification);
             }
 
@@ -57,7 +57,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector,  MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];
             if (parameter.ParameterType.IsPrimitive || TypeUtils.IsEnum(parameter.ParameterType)) {
-                if (method.GetCustomAttribute<NakedObjects.OptionallyAttribute>() != null) {
+                if (method.GetCustomAttribute<NakedObjects.OptionallyAttribute>() is not null) {
                     logger.LogWarning($"Ignoring Optionally annotation on primitive parameter {paramNum} on {method.ReflectedType}.{method.Name}");
                 }
 
@@ -69,6 +69,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IMandatoryFacet Create(NakedObjects.OptionallyAttribute attribute, ISpecification holder) => attribute != null ? new OptionalFacet(holder) : null;
+        private static IMandatoryFacet Create(NakedObjects.OptionallyAttribute attribute, ISpecification holder) => attribute is not null ? new OptionalFacet(holder) : null;
     }
 }

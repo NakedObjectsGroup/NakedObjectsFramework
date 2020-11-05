@@ -39,7 +39,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             var firstParam = member.GetParameters().FirstOrDefault();
 
             return member.IsDefined(typeof(ExtensionAttribute), false) ||
-                   firstParam != null && firstParam.IsDefined(typeof(ContributedActionAttribute), false);
+                   firstParam is not null && firstParam.IsDefined(typeof(ContributedActionAttribute), false);
         }
 
         private static Type GetContributeeType(MethodInfo member) => IsContributed(member) ? member.GetParameters().First().ParameterType : member.DeclaringType;
@@ -54,7 +54,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             metamodel = result.Item2;
 
             var type = result.Item1 as ITypeSpecImmutable;
-            if (type != null) {
+            if (type is not null) {
                 facet.AddContributee(type);
             }
 

@@ -40,13 +40,13 @@ namespace NakedFunctions.Reflector.Component {
             return IsTypeToBeIntrospected(returnType) ? returnType : null;
         }
 
-        public bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedFunctionsIgnoreAttribute>() != null;
+        public bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedFunctionsIgnoreAttribute>() is not null;
         public bool IsService(Type type) => false;
         public bool LoadReturnType(MethodInfo method) => false;
 
         #endregion
 
-        private bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedFunctionsIgnoreAttribute>() != null;
+        private bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedFunctionsIgnoreAttribute>() is not null;
 
 
         private bool IsTypeWhiteListed(Type type) => IsTypeSupportedSystemType(type) || IsTypeExplicitlyRequested(type);
