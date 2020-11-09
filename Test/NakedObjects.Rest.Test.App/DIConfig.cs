@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.DependencyInjection;
+using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;
 using NakedObjects.Facade.Impl.Implementation;
@@ -44,7 +45,7 @@ namespace NakedObjects.Rest.Test.App {
             ParallelConfig.RegisterCoreScopedTypes(services);
 
             // config 
-            services.AddSingleton<IReflectorConfiguration>(p => NakedObjectsRunSettings.ReflectorConfig());
+            services.AddSingleton<IObjectReflectorConfiguration>(p => NakedObjectsRunSettings.ReflectorConfig());
             services.AddSingleton<IEntityObjectStoreConfiguration>(p => NakedObjectsRunSettings.EntityObjectStoreConfig(configuration));
 
             // frameworkFacade

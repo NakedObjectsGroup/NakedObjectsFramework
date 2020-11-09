@@ -51,8 +51,8 @@ namespace NakedObjects.Rest.Test.App {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IReflector reflector) {
-            reflector.Reflect();
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IModelBuilder modelBuilder) {
+            modelBuilder.Build();
 
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();

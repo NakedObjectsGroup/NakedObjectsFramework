@@ -12,7 +12,6 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
@@ -70,8 +69,8 @@ namespace NakedObjects.Rest.Test.App {
             }
         }
 
-        public static ReflectorConfiguration ReflectorConfig() {
-            return new ReflectorConfiguration(Types, Services, Types.Select(t => t.Namespace).Distinct().ToArray(), null, false);
+        public static ObjectReflectorConfiguration ReflectorConfig() {
+            return new ObjectReflectorConfiguration(Types, Services, Types.Select(t => t.Namespace).Distinct().ToArray(), false);
         }
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration) {

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.DependencyInjection;
+using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;
 using NakedObjects.Facade.Impl.Implementation;
@@ -50,11 +51,11 @@ namespace NakedObjects.Rest.App.Demo {
 
             // add custom factories
 
-            ConfigHelpers.RegisterFacetFactory(typeof(AWNotNavigableFacetFactoryParallel), services, 1000);
-            ConfigHelpers.RegisterFacetFactory(typeof(AWNotCountedAnnotationFacetFactoryParallel), services, 1001);
+            //ConfigHelpers.RegisterFacetFactory(typeof(AWNotNavigableFacetFactoryParallel), services, 1000);
+            //ConfigHelpers.RegisterFacetFactory(typeof(AWNotCountedAnnotationFacetFactoryParallel), services, 1001);
 
             // config 
-            services.AddSingleton<IReflectorConfiguration>(p => NakedObjectsRunSettings.ReflectorConfig());
+            services.AddSingleton<IObjectReflectorConfiguration>(p => NakedObjectsRunSettings.ReflectorConfig());
             services.AddSingleton<IEntityObjectStoreConfiguration>(p => NakedObjectsRunSettings.EntityObjectStoreConfig(configuration));
 
             // frameworkFacade

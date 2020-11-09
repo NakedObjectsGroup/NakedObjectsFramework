@@ -60,7 +60,7 @@ namespace NakedObjects.Rest.App.Demo {
             }
         }
 
-        public static ReflectorConfiguration ReflectorConfig() => new ReflectorConfiguration(Types, Services, ModelNamespaces, MainMenus);
+        public static ObjectReflectorConfiguration ReflectorConfig() => new ObjectReflectorConfiguration(Types, Services, ModelNamespaces);
 
         public static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration) {
             var config = new EntityObjectStoreConfiguration();

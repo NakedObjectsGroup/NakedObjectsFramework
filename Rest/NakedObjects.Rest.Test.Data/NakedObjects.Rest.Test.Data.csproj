@@ -1,16 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework><LangVersion>9.0</LangVersion>
+    <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="NakedObjects.ProgrammingModel" Version="12.0.0-alpha01" />
+    <PackageReference Include="NakedObjects.Server" Version="12.0.0-alpha01" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Facade\NakedObjects.Facade\NakedObjects.Facade.csproj" />
-  </ItemGroup>
 
 </Project>

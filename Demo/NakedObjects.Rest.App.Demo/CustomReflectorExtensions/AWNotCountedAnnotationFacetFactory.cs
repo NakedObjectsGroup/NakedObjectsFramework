@@ -17,39 +17,39 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Reflect.FacetFactory;
+
 
 namespace NakedObjects.Rest.App.Demo.AWCustom {
-    public sealed class AWNotCountedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
-        public AWNotCountedAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Collections) { }
+    //public sealed class AWNotCountedAnnotationFacetFactory : AnnotationBasedFacetFactoryAbstract {
+    //    public AWNotCountedAnnotationFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
+    //        : base(numericOrder, loggerFactory, FeatureType.Collections) { }
 
-        private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<AWNotCountedAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
-        }
+    //    private static void Process(MemberInfo member, ISpecification holder) {
+    //        var attribute = member.GetCustomAttribute<AWNotCountedAttribute>();
+    //        FacetUtils.AddFacet(Create(attribute, holder));
+    //    }
 
-        public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
-            Process(property, specification);
-        }
+    //    public override void Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification) {
+    //        Process(property, specification);
+    //    }
 
-        private static INotCountedFacet Create(AWNotCountedAttribute attribute, ISpecification holder) => attribute == null ? null : new NotCountedFacet(holder);
-    }
+    //    private static INotCountedFacet Create(AWNotCountedAttribute attribute, ISpecification holder) => attribute == null ? null : new NotCountedFacet(holder);
+    //}
 
-    public sealed class AWNotCountedAnnotationFacetFactoryParallel : ParallelReflect.FacetFactory.AnnotationBasedFacetFactoryAbstract {
-        public AWNotCountedAnnotationFacetFactoryParallel(int numericOrder, ILoggerFactory loggerFactory)
-            : base(numericOrder, loggerFactory, FeatureType.Collections) { }
+    //public sealed class AWNotCountedAnnotationFacetFactoryParallel : ParallelReflect.FacetFactory.AnnotationBasedFacetFactoryAbstract {
+    //    public AWNotCountedAnnotationFacetFactoryParallel(int numericOrder, ILoggerFactory loggerFactory)
+    //        : base(numericOrder, loggerFactory, FeatureType.Collections) { }
 
-        private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<AWNotCountedAttribute>();
-            FacetUtils.AddFacet(Create(attribute, holder));
-        }
+    //    private static void Process(MemberInfo member, ISpecification holder) {
+    //        var attribute = member.GetCustomAttribute<AWNotCountedAttribute>();
+    //        FacetUtils.AddFacet(Create(attribute, holder));
+    //    }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(property, specification);
-            return metamodel;
-        }
+    //    public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+    //        Process(property, specification);
+    //        return metamodel;
+    //    }
 
-        private static INotCountedFacet Create(AWNotCountedAttribute attribute, ISpecification holder) => attribute == null ? null : new NotCountedFacet(holder);
-    }
+    //    private static INotCountedFacet Create(AWNotCountedAttribute attribute, ISpecification holder) => attribute == null ? null : new NotCountedFacet(holder);
+    //}
 }
