@@ -26,6 +26,12 @@ open Newtonsoft.Json
 open NakedObjects.Rest.Snapshot.Utility
 open NakedObjects.Menu
 
+type NullStringHasher() = 
+    interface IStringHasher with
+        member x.GetHash(toHash : string) : string = null;
+    end
+
+
 [<TestFixture>]
 type Tests() = 
     class

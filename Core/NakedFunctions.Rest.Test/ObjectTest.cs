@@ -28,7 +28,11 @@ using NUnit.Framework;
 
 namespace NakedFunctions.Rest.Test {
 
-   
+    public class NullStringHasher : IStringHasher {
+        public string GetHash(string toHash) => null;
+    }
+
+
     public class ObjectTest : AcceptanceTestCase {
         private readonly Type[] FunctionTypes = {typeof(SimpleRecordFunctions)};
 

@@ -28,7 +28,8 @@ using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 namespace NakedFunctions.Rest.Test {
-   
+
+
     public class MenuTest : AcceptanceTestCase {
         private readonly Type[] FunctionTypes = {typeof(SimpleMenuFunctions)};
 
