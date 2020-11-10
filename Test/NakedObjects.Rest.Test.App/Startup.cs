@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NakedObjects.Architecture.Component;
+using NakedObjects.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 
 namespace NakedObjects.Rest.Test.App {
@@ -30,7 +31,15 @@ namespace NakedObjects.Rest.Test.App {
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
-            services.AddNakedObjects(Configuration);
+            services.AddNakedCore(options => {
+                options.ContextInstallers = new[] { NakedObjectsRunSettings.DbContextInstaller };
+                options.MainMenus = null;
+            });
+            services.AddNakedObjects(options => {
+                options.ModelNamespaces = NakedObjectsRunSettings.NameSpaces;
+                options.Services = NakedObjectsRunSettings.Services;
+                options.NoValidate = true;
+            });
 
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
@@ -60,7 +69,7 @@ namespace NakedObjects.Rest.Test.App {
 
             app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
-            app.UseMvc(RestfulObjectsConfig.RegisterRestfulObjectsRoutes);
+            app.UseRestfulObjects();
         }
     }
 }

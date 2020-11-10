@@ -21,7 +21,7 @@ using RestfulObjects.Test.Data;
 namespace NakedObjects.Rest.Test.App {
     public class NakedObjectsRunSettings {
 
-        private static Type[] Types {
+        public static Type[] Types {
             get {
                 return new[] {
                     typeof(TestEnum),
@@ -58,7 +58,7 @@ namespace NakedObjects.Rest.Test.App {
             }
         }
 
-        private static Type[] Services {
+        public static Type[] Services {
             get {
                 return new[] {
                     typeof(RestDataRepository),
@@ -68,6 +68,11 @@ namespace NakedObjects.Rest.Test.App {
                 };
             }
         }
+
+        public static string[] NameSpaces => Types.Select(t => t.Namespace).Distinct().ToArray();
+
+        public static Func<IConfiguration, DbContext> DbContextInstaller => c => new CodeFirstContextLocal(c.GetConnectionString("RestTest"));
+
 
         public static ObjectReflectorConfiguration ReflectorConfig() {
             return new ObjectReflectorConfiguration(Types, Services, Types.Select(t => t.Namespace).Distinct().ToArray(), false);
