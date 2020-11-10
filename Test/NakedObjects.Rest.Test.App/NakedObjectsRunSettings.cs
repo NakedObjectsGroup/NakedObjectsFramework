@@ -71,7 +71,10 @@ namespace NakedObjects.Rest.Test.App {
 
         public static string[] NameSpaces => Types.Select(t => t.Namespace).Distinct().ToArray();
 
-        public static Func<IConfiguration, DbContext> DbContextInstaller => c => new CodeFirstContextLocal(c.GetConnectionString("RestTest"));
+        public static Func<IConfiguration, DbContext> DbContextInstaller => c => {
+            var cs = c.GetConnectionString("RestTest");
+            return cs.Contains("SQLEXPRESS") ? (DbContext) new CodeFirstContextLocal(cs) : new CodeFirstContext(cs);
+        };
 
 
         public static ObjectReflectorConfiguration ReflectorConfig() {
