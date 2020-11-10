@@ -37,6 +37,7 @@ namespace NakedObjects.Rest.Test.App {
             });
             services.AddNakedObjects(options => {
                 options.ModelNamespaces = NakedObjectsRunSettings.NameSpaces;
+                options.Types = NakedObjectsRunSettings.Types;
                 options.Services = NakedObjectsRunSettings.Services;
                 options.NoValidate = true;
             });
