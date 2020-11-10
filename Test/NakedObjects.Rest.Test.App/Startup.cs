@@ -39,6 +39,7 @@ namespace NakedObjects.Rest.Test.App {
                 options.ModelNamespaces = NakedObjectsRunSettings.NameSpaces;
                 options.Types = NakedObjectsRunSettings.Types;
                 options.Services = NakedObjectsRunSettings.Services;
+                options.ConcurrencyCheck = false;
                 options.NoValidate = true;
             });
 
