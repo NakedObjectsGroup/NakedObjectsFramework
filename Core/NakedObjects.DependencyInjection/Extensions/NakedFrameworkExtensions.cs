@@ -49,13 +49,14 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public Type[] Types { get; set; } = Array.Empty<Type>();
         public Type[] Services { get; set; } = Array.Empty<Type>();
         public string[] ModelNamespaces { get; set; } = Array.Empty<string>();
-       
+        public bool ConcurrencyCheck { get; set; } = true;
         public bool NoValidate { get; set; }
     }
 
     public class NakedFunctionsOptions {
         public Type[] FunctionalTypes { get; set; } = Array.Empty<Type>();
         public Type[] Functions { get; set; } = Array.Empty<Type>();
+        public bool ConcurrencyCheck { get; set; } = true;
     }
 
     public class RestfulObjectsOptions {
@@ -95,11 +96,11 @@ namespace NakedObjects.DependencyInjection.Extensions {
 
         private static ObjectReflectorConfiguration ObjectReflectorConfig(NakedObjectsOptions options) {
             ObjectReflectorConfiguration.NoValidate = options.NoValidate;
-            return new ObjectReflectorConfiguration(options.Types, options.Services, options.ModelNamespaces);
+            return new ObjectReflectorConfiguration(options.Types, options.Services, options.ModelNamespaces, options.ConcurrencyCheck);
         }
 
         public static FunctionalReflectorConfiguration FunctionalReflectorConfig(NakedFunctionsOptions options) =>
-            new FunctionalReflectorConfiguration(options.FunctionalTypes, options.Functions);
+            new FunctionalReflectorConfiguration(options.FunctionalTypes, options.Functions, options.ConcurrencyCheck);
 
 
         public static CoreConfiguration CoreConfig(NakedCoreOptions options) => new CoreConfiguration(options.MainMenus);
