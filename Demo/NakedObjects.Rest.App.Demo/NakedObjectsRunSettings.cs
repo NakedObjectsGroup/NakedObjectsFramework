@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using AdventureWorksModel;
@@ -20,11 +21,11 @@ using NakedObjects.Persistor.Entity.Configuration;
 
 namespace NakedObjects.Rest.App.Demo {
     public static class NakedObjectsRunSettings {
-        private static string[] ModelNamespaces {
+        public static string[] ModelNamespaces {
             get { return new string[] {"AdventureWorksModel"}; }
         }
 
-        private static Type[] Types {
+        public static Type[] Types {
             get {
                 return new[] {
                     typeof(EntityCollection<object>),
@@ -39,7 +40,7 @@ namespace NakedObjects.Rest.App.Demo {
             }
         }
 
-        private static Type[] Services {
+        public static Type[] Services {
             get {
                 return new[] {
                     typeof(CustomerRepository),
@@ -68,6 +69,8 @@ namespace NakedObjects.Rest.App.Demo {
             config.UsingContext(() => new AdventureWorksContext(cs));
             return config;
         }
+
+        public static Func<IConfiguration, DbContext> DbContextInstaller => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
 
         public static IAuditConfiguration AuditConfig() => null;
 

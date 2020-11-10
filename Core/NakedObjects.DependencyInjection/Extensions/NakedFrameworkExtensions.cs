@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NakedFunctions.Reflector.Component;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Util;
@@ -28,6 +30,7 @@ using NakedObjects.Menu;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Reflector.Component;
 using NakedObjects.Rest;
 
 namespace NakedObjects.DependencyInjection.Extensions {
@@ -142,7 +145,7 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public static void AddNakedObjects(this IServiceCollection services, Action<NakedObjectsOptions> setupAction) {
             var options = new NakedObjectsOptions();
             setupAction(options);
-
+            services.AddSingleton<IReflector, ObjectReflector>();
             services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));
         }
 
@@ -151,6 +154,7 @@ namespace NakedObjects.DependencyInjection.Extensions {
             setupAction(options);
 
             ParallelConfig.RegisterWellKnownServices(services);
+            services.AddSingleton<IReflector, FunctionalReflector>();
             services.AddSingleton<IFunctionalReflectorConfiguration>(p => FunctionalReflectorConfig(options));
         }
 

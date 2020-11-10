@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFunctions.Reflector.Component;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -30,6 +31,7 @@ using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.Menu;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Reflector.Component;
 
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
@@ -351,6 +353,11 @@ namespace NakedObjects.Xat {
             ParallelConfig.RegisterCoreSingletonTypes(services);
             ParallelConfig.RegisterCoreScopedTypes(services);
             ParallelConfig.RegisterWellKnownServices(services);
+
+            services.AddSingleton<IReflector, ObjectReflector>();
+            services.AddSingleton<IReflector, FunctionalReflector>();
+
+            // todo - use DI code ? 
 
             // config 
             services.AddSingleton<IObjectReflectorConfiguration>(Reflector);
