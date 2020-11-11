@@ -50,6 +50,7 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public Type[] Services { get; set; } = Array.Empty<Type>();
         public string[] ModelNamespaces { get; set; } = Array.Empty<string>();
         public bool ConcurrencyCheck { get; set; } = true;
+        public Action<IServiceCollection> RegisterCustomTypes { get; set; } = null;
         public bool NoValidate { get; set; }
     }
 
@@ -57,6 +58,7 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public Type[] FunctionalTypes { get; set; } = Array.Empty<Type>();
         public Type[] Functions { get; set; } = Array.Empty<Type>();
         public bool ConcurrencyCheck { get; set; } = true;
+        public Action<IServiceCollection> RegisterCustomTypes { get; set; } = null;
     }
 
     public class RestfulObjectsOptions {
@@ -146,6 +148,9 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public static void AddNakedObjects(this IServiceCollection services, Action<NakedObjectsOptions> setupAction) {
             var options = new NakedObjectsOptions();
             setupAction(options);
+
+            options.RegisterCustomTypes?.Invoke(services);
+
             services.AddSingleton<IReflector, ObjectReflector>();
             services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));
         }
@@ -153,6 +158,8 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public static void AddNakedFunctions(this IServiceCollection services, Action<NakedFunctionsOptions> setupAction) {
             var options = new NakedFunctionsOptions();
             setupAction(options);
+
+            options.RegisterCustomTypes?.Invoke(services);
 
             ParallelConfig.RegisterWellKnownServices(services);
             services.AddSingleton<IReflector, FunctionalReflector>();

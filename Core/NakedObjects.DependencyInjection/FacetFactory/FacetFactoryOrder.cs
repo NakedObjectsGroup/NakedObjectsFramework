@@ -12,4 +12,11 @@ namespace NakedObjects.DependencyInjection.FacetFactory {
     public class FacetFactoryOrder<T> : IFacetFactoryOrder<T> {
         public int Order => Array.IndexOf(FacetFactories.StandardFacetFactories(), typeof(T));
     }
+
+
+    public class AppendFacetFactoryOrder<T> : IFacetFactoryOrder<T> {
+        private int LastIndex { get; set; } = FacetFactories.StandardFacetFactories().Length - 1;
+
+        public int Order => ++LastIndex;
+    }
 }

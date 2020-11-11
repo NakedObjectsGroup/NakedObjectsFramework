@@ -12,7 +12,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
+using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.DependencyInjection.Extensions;
+using NakedObjects.DependencyInjection.FacetFactory;
+using NakedObjects.Rest.App.Demo.AWCustom;
 using Newtonsoft.Json;
 
 namespace NakedObjects.Rest.App.Demo {
@@ -40,6 +43,11 @@ namespace NakedObjects.Rest.App.Demo {
                 options.ModelNamespaces = NakedObjectsRunSettings.ModelNamespaces;
                 options.Types = NakedObjectsRunSettings.Types;
                 options.Services = NakedObjectsRunSettings.Services;
+                options.RegisterCustomTypes = services => {
+                    services.AddSingleton(typeof(AppendFacetFactoryOrder<>), typeof(AppendFacetFactoryOrder<>));
+                    services.AddSingleton(typeof(IFacetFactory), typeof(AWNotNavigableFacetFactoryParallel));
+                    services.AddSingleton(typeof(IFacetFactory), typeof(AWNotNavigableFacetFactoryParallel));
+                };
             });
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
