@@ -38,8 +38,8 @@ namespace NakedObjects.Rest.App.Demo {
             });
             services.AddNakedObjects(options => {
                 options.ModelNamespaces = NakedObjectsRunSettings.ModelNamespaces;
+                options.Types = NakedObjectsRunSettings.Types;
                 options.Services = NakedObjectsRunSettings.Services;
-                options.NoValidate = true;
             });
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
