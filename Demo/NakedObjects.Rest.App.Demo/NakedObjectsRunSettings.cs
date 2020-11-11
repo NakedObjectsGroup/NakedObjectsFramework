@@ -12,17 +12,12 @@ using System.Data.Entity.Core.Objects.DataClasses;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
 using Microsoft.Extensions.Configuration;
-using NakedObjects.Architecture.Menu;
-using NakedObjects.Core.Configuration;
 using NakedObjects.Menu;
-using NakedObjects.Meta.Audit;
-using NakedObjects.Meta.Authorization;
-using NakedObjects.Persistor.Entity.Configuration;
 
 namespace NakedObjects.Rest.App.Demo {
     public static class NakedObjectsRunSettings {
         public static string[] ModelNamespaces {
-            get { return new string[] {"AdventureWorksModel"}; }
+            get { return new[] {"AdventureWorksModel"}; }
         }
 
         public static Type[] Types {
@@ -61,30 +56,19 @@ namespace NakedObjects.Rest.App.Demo {
             }
         }
 
-        public static ObjectReflectorConfiguration ReflectorConfig() => new ObjectReflectorConfiguration(Types, Services, ModelNamespaces);
-
-        public static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration) {
-            var config = new EntityObjectStoreConfiguration();
-            var cs = configuration.GetConnectionString("AdventureWorksContext");
-            config.UsingContext(() => new AdventureWorksContext(cs));
-            return config;
-        }
 
         public static Func<IConfiguration, DbContext> DbContextInstaller => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
 
-        public static IAuditConfiguration AuditConfig() => null;
-
-        public static IAuthorizationConfiguration AuthorizationConfig() => null;
 
         /// <summary>
-        /// Return an array of IMenus (obtained via the factory, then configured) to
-        /// specify the Main Menus for the application. If none are returned then
-        /// the Main Menus will be derived automatically from the Services.
+        ///     Return an array of IMenus (obtained via the factory, then configured) to
+        ///     specify the Main Menus for the application. If none are returned then
+        ///     the Main Menus will be derived automatically from the Services.
         /// </summary>
         public static IMenu[] MainMenus(IMenuFactory factory) {
-            var customerMenu = factory.NewMenu<CustomerRepository>(false);
+            var customerMenu = factory.NewMenu<CustomerRepository>();
             CustomerRepository.Menu(customerMenu);
-            var salesMenu = factory.NewMenu<SalesRepository>(false);
+            var salesMenu = factory.NewMenu<SalesRepository>();
             SalesRepository.Menu(salesMenu);
             return new[] {
                 customerMenu,

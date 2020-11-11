@@ -16,25 +16,21 @@ using Newtonsoft.Json;
 
 namespace NakedObjects.Rest.Test.App {
     public class Startup {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
-        public Startup(IConfiguration configuration) {
-            Configuration = configuration;
-            RestfulObjectsConfig.RestPreStart();
-        }
-
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration) { }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddControllers()
-                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+                    .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedCore(options => {
-                options.ContextInstallers = new[] { NakedObjectsRunSettings.DbContextInstaller };
+                options.ContextInstallers = new[] {NakedObjectsRunSettings.DbContextInstaller};
                 options.MainMenus = null;
             });
+            services.AddRestfulObjects(options => options.DebugWarnings = true);
             services.AddNakedObjects(options => {
                 options.ModelNamespaces = NakedObjectsRunSettings.NameSpaces;
                 options.Types = NakedObjectsRunSettings.Types;
@@ -47,12 +43,12 @@ namespace NakedObjects.Rest.Test.App {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
                     builder
                         .WithOrigins("http://localhost:49998",
-                            "http://localhost:8080",
-                            "http://nakedobjectstest.azurewebsites.net",
-                            "http://nakedobjectstest2.azurewebsites.net",
-                            "https://nakedobjectstest.azurewebsites.net",
-                            "https://nakedobjectstest2.azurewebsites.net",
-                            "http://localhost")
+                                     "http://localhost:8080",
+                                     "http://nakedobjectstest.azurewebsites.net",
+                                     "http://nakedobjectstest2.azurewebsites.net",
+                                     "https://nakedobjectstest.azurewebsites.net",
+                                     "https://nakedobjectstest2.azurewebsites.net",
+                                     "http://localhost")
                         .AllowAnyHeader()
                         .WithExposedHeaders("Warning", "ETag")
                         .AllowAnyMethod()

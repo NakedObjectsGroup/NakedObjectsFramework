@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
-using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Rest.App.Demo.AWCustom;
@@ -20,24 +19,26 @@ using Newtonsoft.Json;
 
 namespace NakedObjects.Rest.App.Demo {
     public class Startup {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
-        public Startup(IConfiguration configuration) {
-            Configuration = configuration;
-            RestfulObjectsConfig.RestPreStart();
-        }
+        public Startup(IConfiguration configuration) { }
 
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddControllers()
-                .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
+                    .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedCore(options => {
-                options.ContextInstallers = new[] { NakedObjectsRunSettings.DbContextInstaller };
+                options.ContextInstallers = new[] {NakedObjectsRunSettings.DbContextInstaller};
                 options.MainMenus = NakedObjectsRunSettings.MainMenus;
+            });
+            services.AddRestfulObjects(options => {
+                options.DebugWarnings = true;
+                options.InlineDetailsInActionMemberRepresentations = false;
+                options.InlineDetailsInCollectionMemberRepresentations = false;
+                options.InlineDetailsInPropertyMemberRepresentations = false;
             });
             services.AddNakedObjects(options => {
                 options.ModelNamespaces = NakedObjectsRunSettings.ModelNamespaces;
@@ -45,7 +46,7 @@ namespace NakedObjects.Rest.App.Demo {
                 options.Services = NakedObjectsRunSettings.Services;
                 options.RegisterCustomTypes = services => {
                     services.AddSingleton(typeof(AppendFacetFactoryOrder<>), typeof(AppendFacetFactoryOrder<>));
-                    services.AddSingleton(typeof(IFacetFactory), typeof(AWNotNavigableFacetFactoryParallel));
+                    services.AddSingleton(typeof(IFacetFactory), typeof(AWNotCountedAnnotationFacetFactoryParallel));
                     services.AddSingleton(typeof(IFacetFactory), typeof(AWNotNavigableFacetFactoryParallel));
                 };
             });
@@ -53,12 +54,12 @@ namespace NakedObjects.Rest.App.Demo {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
                     builder
                         .WithOrigins("http://localhost:49998",
-                            "http://localhost:8080",
-                            "http://nakedobjectstest.azurewebsites.net",
-                            "http://nakedobjectstest2.azurewebsites.net",
-                            "https://nakedobjectstest.azurewebsites.net",
-                            "https://nakedobjectstest2.azurewebsites.net",
-                            "http://localhost")
+                                     "http://localhost:8080",
+                                     "http://nakedobjectstest.azurewebsites.net",
+                                     "http://nakedobjectstest2.azurewebsites.net",
+                                     "https://nakedobjectstest.azurewebsites.net",
+                                     "https://nakedobjectstest2.azurewebsites.net",
+                                     "http://localhost")
                         .AllowAnyHeader()
                         .WithExposedHeaders("Warning", "ETag", "Set-Cookie")
                         .AllowAnyMethod()
@@ -69,10 +70,9 @@ namespace NakedObjects.Rest.App.Demo {
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IModelBuilder modelBuilder, ILoggerFactory loggerFactory) {
-            
             // for Demo use Log4Net. Configured in log4net.config  
             loggerFactory.AddLog4Net();
-            
+
             modelBuilder.Build();
 
             if (env.IsDevelopment()) {

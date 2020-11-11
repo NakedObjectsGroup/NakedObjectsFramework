@@ -12,15 +12,11 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
-using NakedObjects.Core.Configuration;
-using NakedObjects.Menu;
-using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Value;
 using RestfulObjects.Test.Data;
 
 namespace NakedObjects.Rest.Test.App {
     public class NakedObjectsRunSettings {
-
         public static Type[] Types {
             get {
                 return new[] {
@@ -73,26 +69,7 @@ namespace NakedObjects.Rest.Test.App {
 
         public static Func<IConfiguration, DbContext> DbContextInstaller => c => {
             var cs = c.GetConnectionString("RestTest");
-            return cs.Contains("SQLEXPRESS") ? (DbContext) new CodeFirstContextLocal(cs) : new CodeFirstContext(cs);
+            return cs.Contains("(localdb)") ? (DbContext) new CodeFirstContextLocal(cs) : new CodeFirstContext(cs);
         };
-
-
-        public static ObjectReflectorConfiguration ReflectorConfig() {
-            return new ObjectReflectorConfiguration(Types, Services, Types.Select(t => t.Namespace).Distinct().ToArray(), false);
-        }
-
-        public static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration) {
-            var config = new EntityObjectStoreConfiguration();
-            var cs = configuration.GetConnectionString("RestTest");
-            DbContext GetContext() => cs.Contains("SQLEXPRESS") ? (DbContext) new CodeFirstContextLocal(cs) : new CodeFirstContext(cs);
-
-            config.UsingContext(GetContext);
-            return config;
-        }
-
-        public static IMenu[] MainMenus(IMenuFactory factory) {
-            //e.g. var menu1 = factory.NewMenu<MyService1>(true); //then add to returned array
-            return new IMenu[] { };
-        }
     }
 }
