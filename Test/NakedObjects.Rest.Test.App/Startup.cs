@@ -30,7 +30,10 @@ namespace NakedObjects.Rest.Test.App {
                 options.ContextInstallers = new[] {NakedObjectsRunSettings.DbContextInstaller};
                 options.MainMenus = null;
             });
-            services.AddRestfulObjects(options => options.DebugWarnings = true);
+            services.AddRestfulObjects(options => {
+                options.AcceptHeaderStrict = true;
+                options.DebugWarnings = true;
+            });
             services.AddNakedObjects(options => {
                 options.ModelNamespaces = NakedObjectsRunSettings.NameSpaces;
                 options.Types = NakedObjectsRunSettings.Types;
