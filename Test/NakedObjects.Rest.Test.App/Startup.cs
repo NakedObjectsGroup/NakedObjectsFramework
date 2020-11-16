@@ -33,6 +33,9 @@ namespace NakedObjects.Rest.Test.App {
             services.AddRestfulObjects(options => {
                 options.AcceptHeaderStrict = true;
                 options.DebugWarnings = true;
+                options.InlineDetailsInActionMemberRepresentations = true;
+                options.InlineDetailsInCollectionMemberRepresentations = true;
+                options.InlineDetailsInPropertyMemberRepresentations = true;
             });
             services.AddNakedObjects(options => {
                 options.ModelNamespaces = NakedObjectsRunSettings.NameSpaces;
