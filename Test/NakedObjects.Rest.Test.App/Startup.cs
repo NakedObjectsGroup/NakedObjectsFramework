@@ -33,6 +33,7 @@ namespace NakedObjects.Rest.Test.App {
             services.AddRestfulObjects(options => {
                 options.AcceptHeaderStrict = true;
                 options.DebugWarnings = true;
+                options.DefaultPageSize = 20;
                 options.InlineDetailsInActionMemberRepresentations = true;
                 options.InlineDetailsInCollectionMemberRepresentations = true;
                 options.InlineDetailsInPropertyMemberRepresentations = true;

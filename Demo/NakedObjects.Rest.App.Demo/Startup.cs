@@ -35,7 +35,9 @@ namespace NakedObjects.Rest.App.Demo {
                 options.MainMenus = NakedObjectsRunSettings.MainMenus;
             });
             services.AddRestfulObjects(options => {
+                options.AcceptHeaderStrict = true;
                 options.DebugWarnings = true;
+                options.DefaultPageSize = 20;
                 options.InlineDetailsInActionMemberRepresentations = false;
                 options.InlineDetailsInCollectionMemberRepresentations = false;
                 options.InlineDetailsInPropertyMemberRepresentations = false;
