@@ -12,8 +12,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 
-namespace NakedObjects.Selenium {
+namespace NakedObjects.Spa.Selenium.Test.ObjectTests {
     public abstract class CopyAndPasteTestsRoot : AWTest {
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+
         public virtual void CopyTitleOrPropertyIntoClipboard() {
             Debug.WriteLine(nameof(CopyTitleOrPropertyIntoClipboard));
             GeminiUrl("object/object?o1=___1.Product--990&o2=___1.Customer--13179");

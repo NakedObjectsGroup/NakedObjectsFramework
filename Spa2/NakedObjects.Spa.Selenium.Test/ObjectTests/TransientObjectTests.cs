@@ -10,10 +10,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Spa.Selenium.Test.ObjectTests;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium {
     public abstract class TransientObjectTestsRoot : AWTest {
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+
         public virtual void CreateAndSaveTransientObject() {
             Debug.WriteLine(nameof(CreateAndSaveTransientObject));
             GeminiUrl("object?o1=___1.Person--12043&as1=open");

@@ -9,8 +9,11 @@ using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium {
+namespace NakedObjects.Spa.Selenium.Test.ObjectTests {
     public abstract class PerformanceTestsRoot : AWTest {
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+
         public virtual void RetrieveRandomEmployees() {
             Debug.WriteLine(nameof(RetrieveRandomEmployees));
             var stopWatch = new Stopwatch();

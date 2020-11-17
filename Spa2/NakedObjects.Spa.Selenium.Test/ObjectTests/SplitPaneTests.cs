@@ -10,8 +10,11 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium {
+namespace NakedObjects.Spa.Selenium.Test.ObjectTests {
     public abstract class SplitPaneTestsRoot : AWTest {
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+
         public virtual void ListInSplitPaneUpdatesWhenSearchParamsChange() {
             Debug.WriteLine(nameof(ListInSplitPaneUpdatesWhenSearchParamsChange));
             GeminiUrl("home?m1=ProductRepository&d1=FindProductByName");
@@ -131,8 +134,8 @@ namespace NakedObjects.Selenium {
 
         #region Actions within split panes
 
-        private const string TwoObjects = GeminiBaseUrl + "object/object?o1=___1.Customer--555&as1=open&o2=___1.SalesOrderHeader--71926&as2=open";
-        private const string TwoObjectsB = GeminiBaseUrl + "object/object?o1=___1.Store--350&as1=open&o2=___1.SalesOrderHeader--71926&as2=open";
+        private  string TwoObjects => $"{GeminiBaseUrl}object/object?o1=___1.Customer--555&as1=open&o2=___1.SalesOrderHeader--71926&as2=open";
+        private  string TwoObjectsB => GeminiBaseUrl + "object/object?o1=___1.Store--350&as1=open&o2=___1.SalesOrderHeader--71926&as2=open";
 
         public virtual void RightClickReferenceInLeftPaneObject() {
             Debug.WriteLine(nameof(RightClickReferenceInLeftPaneObject));

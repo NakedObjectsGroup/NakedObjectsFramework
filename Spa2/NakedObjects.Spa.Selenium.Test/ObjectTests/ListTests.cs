@@ -11,11 +11,13 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium {
+namespace NakedObjects.Spa.Selenium.Test.ObjectTests {
     /// <summary>
     /// Tests applied from a List view.
     /// </summary>
     public abstract class ListTestsRoot : AWTest {
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
 
         private bool PageTitleOK() {
             var text = WaitForCss(".list .summary .details").Text;

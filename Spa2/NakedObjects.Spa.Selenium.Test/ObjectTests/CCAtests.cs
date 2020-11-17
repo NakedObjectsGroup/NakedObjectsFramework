@@ -12,11 +12,14 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium {
+namespace NakedObjects.Spa.Selenium.Test.ObjectTests {
     /// <summary>
     /// Tests for collection-contributedActions
     /// </summary>
     public abstract class CCATestsRoot : AWTest {
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+
         public virtual void ListViewWithParmDialogAlreadyOpen() {
             Debug.WriteLine(nameof(ListViewWithParmDialogAlreadyOpen));
             GeminiUrl("home");

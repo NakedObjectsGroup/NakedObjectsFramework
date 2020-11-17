@@ -8,8 +8,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium {
+namespace NakedObjects.Spa.Selenium.Test.ObjectTests {
     public abstract class CustomTemplateTestsRoot : AWTest {
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+
         public virtual void CustomViewTemplate() {
             GeminiUrl("object?i1=View&o1=___1.Location--60");
             WaitForView(Pane.Single, PaneType.Object, "Location - custom view");

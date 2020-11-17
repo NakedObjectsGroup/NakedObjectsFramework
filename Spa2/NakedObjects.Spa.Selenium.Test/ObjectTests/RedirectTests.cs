@@ -8,11 +8,14 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium {
+namespace NakedObjects.Spa.Selenium.Test.ObjectTests {
     /// <summary>
     /// Tests content and operations within from Home representation
     /// </summary>
     public abstract class RedirectTestsRoot : AWTest {
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+
         public virtual void RedirectFromActionResult() {
             GeminiUrl("home?m1=SalesRepository");
             Click(GetObjectEnabledAction("Random Sales Tax Rate"));

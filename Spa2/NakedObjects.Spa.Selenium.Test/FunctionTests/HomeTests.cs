@@ -6,27 +6,32 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Selenium;
+using NakedObjects.Spa.Selenium.Test.ObjectTests;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium {
+namespace NakedObjects.Spa.Selenium.Test.FunctionTests {
     /// <summary>
     /// Tests content and operations within from Home representation
     /// </summary>
     public abstract class HomeTestsRoot : AWTest {
+
+        protected override string BaseUrl => TestConfig.BaseFunctionalUrl;
+
         public virtual void WaitForSingleHome() {
             WaitForView(Pane.Single, PaneType.Home, "Home");
             WaitForCss(".main-column");
             var menus = WaitForCss("nof-menu-bar nof-action input", MainMenusCount);
-            Assert.AreEqual("Customers", menus[0].GetAttribute("value"));
-            Assert.AreEqual("Orders", menus[1].GetAttribute("value"));
-            Assert.AreEqual("Products", menus[2].GetAttribute("value"));
-            Assert.AreEqual("Employees", menus[3].GetAttribute("value"));
-            Assert.AreEqual("Sales", menus[4].GetAttribute("value"));
-            Assert.AreEqual("Special Offers", menus[5].GetAttribute("value"));
-            Assert.AreEqual("Contacts", menus[6].GetAttribute("value"));
-            Assert.AreEqual("Vendors", menus[7].GetAttribute("value"));
-            Assert.AreEqual("Purchase Orders", menus[8].GetAttribute("value"));
-            Assert.AreEqual("Work Orders", menus[9].GetAttribute("value"));
+            //Assert.AreEqual("Customers", menus[0].GetAttribute("value"));
+            //Assert.AreEqual("Orders", menus[1].GetAttribute("value"));
+            //Assert.AreEqual("Products", menus[2].GetAttribute("value"));
+            //Assert.AreEqual("Employees", menus[3].GetAttribute("value"));
+            //Assert.AreEqual("Sales", menus[4].GetAttribute("value"));
+            //Assert.AreEqual("Special Offers", menus[5].GetAttribute("value"));
+            //Assert.AreEqual("Contacts", menus[6].GetAttribute("value"));
+            //Assert.AreEqual("Vendors", menus[7].GetAttribute("value"));
+            //Assert.AreEqual("Purchase Orders", menus[8].GetAttribute("value"));
+            //Assert.AreEqual("Work Orders", menus[9].GetAttribute("value"));
             AssertFooterExists();
 
             //AssertHasFocus(menus[0]); //TODO: Test all focus separately
@@ -218,16 +223,18 @@ namespace NakedObjects.Selenium {
     }
 
     public class MegaHomeTestBase : HomeTestsRoot {
+
+
         [TestMethod] //Mega
         [Priority(0)]
         public virtual void HomeTests() {
             WaitForSingleHome();
-            ClickOnVariousMenus();
-            OpenAndCloseSubMenus();
-            SelectSuccessiveDialogActionsThenCancel();
-            ZeroParamReturnsObject();
-            ZeroParamReturnsCollection();
-            ZeroParamReturnsEmptyCollection();
+            //ClickOnVariousMenus();
+            //OpenAndCloseSubMenus();
+            //SelectSuccessiveDialogActionsThenCancel();
+            //ZeroParamReturnsObject();
+            //ZeroParamReturnsCollection();
+            //ZeroParamReturnsEmptyCollection();
             
         }
 

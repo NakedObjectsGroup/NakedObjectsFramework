@@ -14,12 +14,15 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
-namespace NakedObjects.Selenium {
+namespace NakedObjects.Spa.Selenium.Test.ObjectTests {
     /// <summary>
     /// Tests for the detailed operation of dialogs, including parameter rendering,
     /// choices, auto-complete, default values, formatting, and validation
     /// </summary>
     public abstract class DialogTestsRoot : AWTest {
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+
         public virtual void PasswordParam() {
             Debug.WriteLine(nameof(PasswordParam));
             GeminiUrl("object?i1=View&o1=___1.Person--11656&as1=open&d1=ChangePassword&f1_oldPassword=%22%22&f1_newPassword=%22%22&f1_confirm=%22%22");

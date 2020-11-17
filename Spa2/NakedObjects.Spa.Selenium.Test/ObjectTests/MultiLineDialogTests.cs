@@ -11,8 +11,11 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium {
+namespace NakedObjects.Spa.Selenium.Test.ObjectTests {
     public abstract class MultiLineDialogTestsRoot : AWTest {
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+
         public virtual void MultiLineMenuAction() {
             Debug.WriteLine(nameof(MultiLineMenuAction));
             GeminiUrl("home?m1=SpecialOfferRepository");

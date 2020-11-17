@@ -7,10 +7,14 @@
 
 using System.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Spa.Selenium.Test.ObjectTests;
 using OpenQA.Selenium;
 
 namespace NakedObjects.Selenium {
     public abstract class FooterTestsRoot : AWTest {
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+
         public virtual void Home() {
             Debug.WriteLine(nameof(Home));
             GeminiUrl("object?o1=___1.Product--968");

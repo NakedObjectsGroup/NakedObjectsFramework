@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Selenium;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
@@ -20,7 +21,7 @@ using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 
-namespace NakedObjects.Selenium {
+namespace NakedObjects.Spa.Selenium.Test.ObjectTests {
     public abstract class GeminiTest {
         #region chrome helper
 
@@ -62,8 +63,8 @@ namespace NakedObjects.Selenium {
 
         #region overhead
 
-        protected const string BaseUrl = TestConfig.BaseUrl;
-        protected const string GeminiBaseUrl = TestConfig.BaseUrl + "gemini/";
+        protected abstract string BaseUrl { get; }
+        protected string GeminiBaseUrl => BaseUrl + "gemini/";
 
         protected IWebDriver br;
         protected SafeWebDriverWait wait;
@@ -716,7 +717,7 @@ namespace NakedObjects.Selenium {
         #region Cicero helper methods
 
         protected void CiceroUrl(string url) {
-            br.Navigate().GoToUrl(TestConfig.BaseUrl + "cicero/" + url);
+            br.Navigate().GoToUrl(TestConfig.BaseObjectUrl + "cicero/" + url);
         }
 
         protected void WaitForOutput(string output) {

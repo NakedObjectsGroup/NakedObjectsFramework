@@ -10,11 +10,15 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Spa.Selenium.Test.ObjectTests;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
 namespace NakedObjects.Selenium {
     public abstract class ObjectViewTestsRoot : AWTest {
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+
         public virtual void ActionsAlreadyOpen() {
             GeminiUrl("object?o1=___1.Customer--555&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles, AW00000555");

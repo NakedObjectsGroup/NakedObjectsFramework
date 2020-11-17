@@ -11,12 +11,15 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium {
+namespace NakedObjects.Spa.Selenium.Test.ObjectTests {
     /// <summary>
     /// Tests only that a given URLs return the correct views. No actions performed on them
     /// </summary>
     /// 
     public abstract class UrlTestsRoot : AWTest {
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+
         public virtual void UnrecognisedUrlGoesToHome() {
             Debug.WriteLine(nameof(UnrecognisedUrlGoesToHome));
             GeminiUrl("unrecognised");

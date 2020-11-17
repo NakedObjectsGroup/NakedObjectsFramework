@@ -9,8 +9,12 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium {
+namespace NakedObjects.Spa.Selenium.Test.ObjectTests {
     public abstract class LocalCollectionActionsTestsRoot : AWTest {
+
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+
         public virtual void LocalCollectionActionsHonourMemberOrder() {
             GeminiUrl("object?i1=View&r1=1&o1=___1.SalesOrderHeader--71105&c1_Details=Table");
             wait.Until(dr => dr.FindElements(By.CssSelector(".collection"))[0].FindElements(By.CssSelector("nof-action-bar nof-action")).Count >= 2);

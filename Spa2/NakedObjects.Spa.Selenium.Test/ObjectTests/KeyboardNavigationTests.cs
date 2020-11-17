@@ -8,8 +8,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium {
+namespace NakedObjects.Spa.Selenium.Test.ObjectTests {
     public abstract class KeyboardNavigationTestsRoot : AWTest {
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+
         public virtual void EnterEquivalentToLeftClick() {
             GeminiUrl("object?o1=___1.Store--350&as1=open");
             WaitForView(Pane.Single, PaneType.Object, "Twin Cycles");

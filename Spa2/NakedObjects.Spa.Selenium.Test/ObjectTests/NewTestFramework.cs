@@ -8,8 +8,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 
-namespace NakedObjects.Selenium {
+namespace NakedObjects.Spa.Selenium.Test.ObjectTests {
     public class NewTestFramework : GeminiTest {
+
+        protected override string BaseUrl => TestConfig.BaseObjectUrl;
+
         #region Helpers
 
         private string CurrentOutput() {
