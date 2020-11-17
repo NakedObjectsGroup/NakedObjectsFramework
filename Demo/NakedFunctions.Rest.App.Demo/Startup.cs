@@ -56,7 +56,7 @@ namespace NakedFunctions.Rest.App.Demo {
                     builder
                         .WithOrigins("http://localhost:49998",
                                      "http://localhost:8080",
-                                     "http://nakedfunctionstest.azurewebsites.net"
+                                     "http://nakedfunctionstest.azurewebsites.net",
                                      "https://nakedfunctionstest.azurewebsites.net")
                         .AllowAnyHeader()
                         .WithExposedHeaders("Warning", "ETag", "Set-Cookie")
