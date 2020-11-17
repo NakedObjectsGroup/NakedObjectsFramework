@@ -84,7 +84,8 @@
                         "scripts": [],
                         "assets": [
                             "src/favicon.ico",
-                            "src/assets"
+                            "src/assets",
+                            "src/config.json"
                         ]
                     }
                 },
@@ -229,7 +230,8 @@
                                 "glob": "favicon.ico",
                                 "input": "src",
                                 "output": "/"
-                            }
+                            },
+                            "src/config.json"
                         ],
                         "styles": [
                             "src/theme.css",
