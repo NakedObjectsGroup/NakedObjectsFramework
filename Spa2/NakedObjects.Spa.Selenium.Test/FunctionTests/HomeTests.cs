@@ -21,17 +21,12 @@ namespace NakedObjects.Spa.Selenium.Test.FunctionTests {
         public virtual void WaitForSingleHome() {
             WaitForView(Pane.Single, PaneType.Home, "Home");
             WaitForCss(".main-column");
-            var menus = WaitForCss("nof-menu-bar nof-action input", MainMenusCount);
-            //Assert.AreEqual("Customers", menus[0].GetAttribute("value"));
-            //Assert.AreEqual("Orders", menus[1].GetAttribute("value"));
-            //Assert.AreEqual("Products", menus[2].GetAttribute("value"));
-            //Assert.AreEqual("Employees", menus[3].GetAttribute("value"));
-            //Assert.AreEqual("Sales", menus[4].GetAttribute("value"));
-            //Assert.AreEqual("Special Offers", menus[5].GetAttribute("value"));
-            //Assert.AreEqual("Contacts", menus[6].GetAttribute("value"));
-            //Assert.AreEqual("Vendors", menus[7].GetAttribute("value"));
-            //Assert.AreEqual("Purchase Orders", menus[8].GetAttribute("value"));
-            //Assert.AreEqual("Work Orders", menus[9].GetAttribute("value"));
+            var menus = WaitForCss("nof-menu-bar nof-action input", 3);
+           
+            Assert.AreEqual("Products", menus[0].GetAttribute("value"));
+            Assert.AreEqual("Customers - NO", menus[1].GetAttribute("value"));
+            Assert.AreEqual("Vendors - NO", menus[2].GetAttribute("value"));
+        
             AssertFooterExists();
 
             //AssertHasFocus(menus[0]); //TODO: Test all focus separately
@@ -222,6 +217,7 @@ namespace NakedObjects.Spa.Selenium.Test.FunctionTests {
         #endregion
     }
 
+    [TestCategory("Functional")]
     public class MegaHomeTestBase : HomeTestsRoot {
 
 
@@ -241,7 +237,7 @@ namespace NakedObjects.Spa.Selenium.Test.FunctionTests {
         [TestMethod]
         [Priority(-1)]
         public void ProblematicTests() {
-            DialogActionOK();
+            //DialogActionOK();
         }
     }
 
