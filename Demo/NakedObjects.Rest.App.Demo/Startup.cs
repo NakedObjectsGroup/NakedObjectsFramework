@@ -57,7 +57,7 @@ namespace NakedObjects.Rest.App.Demo {
                     builder
                         .WithOrigins("http://localhost:49998",
                                      "http://localhost:8080",
-                                     "https://nakedobjectstest2.azurewebsites.net")
+                                     "https://nakedobjectsrodemo.azurewebsites.net")
                         .AllowAnyHeader()
                         .WithExposedHeaders("Warning", "ETag", "Set-Cookie")
                         .AllowAnyMethod()
