@@ -51,11 +51,7 @@ namespace NakedObjects.Rest.Test.App {
                     builder
                         .WithOrigins("http://localhost:49998",
                                      "http://localhost:8080",
-                                     "http://nakedobjectstest.azurewebsites.net",
-                                     "http://nakedobjectstest2.azurewebsites.net",
-                                     "https://nakedobjectstest.azurewebsites.net",
-                                     "https://nakedobjectstest2.azurewebsites.net",
-                                     "http://localhost")
+                                     "https://nakedfunctionstest.azurewebsites.net")
                         .AllowAnyHeader()
                         .WithExposedHeaders("Warning", "ETag")
                         .AllowAnyMethod()
