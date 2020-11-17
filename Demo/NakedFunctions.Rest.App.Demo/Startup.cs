@@ -55,10 +55,8 @@ namespace NakedFunctions.Rest.App.Demo {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
                     builder
                         .WithOrigins("http://localhost:49998",
-                            "http://localhost:8080",
-                            "http://localhost:5001",
-                            "http://nakedfunctionstest.azurewebsites.net",
-                            "http://localhost")
+                                     "http://localhost:8080",
+                                     "https://nakedfunctionstest.azurewebsites.net")
                         .AllowAnyHeader()
                         .WithExposedHeaders("Warning", "ETag", "Set-Cookie")
                         .AllowAnyMethod()
