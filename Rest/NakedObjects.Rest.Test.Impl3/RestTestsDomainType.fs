@@ -62,6 +62,10 @@ type Tests() =
                 typeof<WithNestedViewModelEdit>
                 typeof<WithReferenceViewModelEdit>
                 typeof<MostSimple>
+                typeof<MostSimplePersist>
+                typeof<WithValuePersist>
+                typeof<WithReferencePersist>
+                typeof<WithCollectionPersist>
                 typeof<MostSimpleViewModel>
                 typeof<WithValue>
                 typeof<TestEnum>

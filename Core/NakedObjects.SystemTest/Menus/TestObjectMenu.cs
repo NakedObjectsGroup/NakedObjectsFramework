@@ -24,6 +24,17 @@ namespace NakedObjects.SystemTest.Menus {
     public class TestObjectMenu : AbstractSystemTest<MenusDbContext> {
         protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
 
+        protected override Type[] Types =>
+            new[] {
+                typeof(Foo),
+                typeof(Foo2),
+                typeof(Bar),
+                typeof(Bar2),
+                typeof(Bar3),
+                typeof(Bar4),
+                typeof(Bar5)
+            };
+
         protected override Type[] Services =>
             new[] {
                 typeof(SimpleRepository<Foo>),

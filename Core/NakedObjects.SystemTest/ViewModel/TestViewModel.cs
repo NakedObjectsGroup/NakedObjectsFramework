@@ -23,7 +23,7 @@ namespace NakedObjects.Helpers.Test.ViewModel {
         private ITestObject foo1;
         private ITestService views;
 
-        protected override Type[] Types => new[] {typeof(Foo)};
+        protected override Type[] Types => new[] {typeof(Foo), typeof(ViewFoo) };
 
         protected override Type[] Services => new[] {typeof(ViewModelService), typeof(SimpleRepository<Foo>)};
 

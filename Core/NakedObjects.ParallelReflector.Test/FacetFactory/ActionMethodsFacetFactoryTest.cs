@@ -842,7 +842,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
         public void TestFindActions() {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var config = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {typeof(Customer34).Namespace});
+            var config = new ObjectReflectorConfiguration(new Type[] { typeof(Customer34) }, new Type[] { }, new[] {typeof(Customer34).Namespace});
 
             var classStrategy = new ObjectClassStrategy(config);
 

@@ -41,6 +41,62 @@ namespace NakedObjects.SystemTest.Attributes {
 
         protected override string[] Namespaces => new[] {"NakedObjects.SystemTest.Attributes", "SystemTest.Attributes"};
 
+        protected override Type[] Types
+        {
+            get {
+                return base.Types.Union(new[] {
+                    typeof(Default1),
+                    typeof(Describedas1),
+                    typeof(Describedas2),
+                    typeof(Description1),
+                    typeof(Description2),
+                    typeof(Disabled1),
+                    typeof(Displayname1),
+                    typeof(Hidden1),
+                    typeof(Iconname1),
+                    typeof(Iconname2),
+                    typeof(Iconname3),
+                    typeof(Iconname4),
+                    typeof(Immutable1),
+                    typeof(Immutable2),
+                    typeof(Immutable3),
+                    typeof(Mask1),
+                    typeof(Mask2),
+                    typeof(Maxlength1),
+                    typeof(Maxlength2),
+                    typeof(NakedObjectsIgnore1),
+                    typeof(NakedObjectsIgnore2), //But this one won't be visible
+                    typeof(NakedObjectsIgnore3),
+                    typeof(NakedObjectsIgnore4),
+                    typeof(NakedObjectsIgnore5),
+                    typeof(NakedObjectsIgnore6),
+                    typeof(NakedObjectsIgnore7),
+                    typeof(Named1),
+                    typeof(Range1),
+                    typeof(Regex1),
+                    typeof(Regex2),
+                    typeof(Memberorder1),
+                    typeof(Memberorder2),
+                    typeof(Stringlength1),
+                    typeof(Title1),
+                    typeof(Title2),
+                    typeof(Title3),
+                    typeof(Title4),
+                    typeof(Title5),
+                    typeof(Title6),
+                    typeof(Title7),
+                    typeof(Title8),
+                    typeof(Title9),
+                    typeof(Validateprogrammaticupdates1),
+                    typeof(Validateprogrammaticupdates2),
+                    typeof(Contributee),
+                    typeof(Contributee2),
+                    typeof(Contributee3),
+                    typeof(FinderAction1)
+                }).ToArray();
+            }
+        }
+
         protected override Type[] Services {
             get {
                 return new[] {

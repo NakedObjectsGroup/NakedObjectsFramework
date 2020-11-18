@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using NakedObjects.Services;
+using NakedObjects.SystemTest.ObjectFinderGuid;
 using NakedObjects.Util;
 using NUnit.Framework;
 
@@ -20,6 +21,15 @@ namespace NakedObjects.SystemTest.ObjectFinderInstances {
     [TestFixture]
     public class TestObjectFinderInstances : AbstractSystemTest<PaymentContext> {
         protected override string[] Namespaces => new[] {typeof(Customer).Namespace};
+
+        protected override Type[] Types =>
+            new[] {
+                typeof(IPayee),
+                typeof(Payment),
+                typeof(Customer),
+                typeof(Supplier)
+            };
+
 
         protected override Type[] Services =>
             new[] {

@@ -136,8 +136,12 @@ type EntityTestSuite() =
                              typeof<SimpleRepository<Product>>;
                              typeof<SimpleRepository<Address>> |]
 
-    override x.Types = [| typeof<TestData.Person>;
+    override x.Types = [| typeof<TestData.TestHelper>;
+                          typeof<TestData.Person>;
+                          typeof<TestData.Pet>;
+                          typeof<TestData.Address>;
                           typeof<TestData.Order>;
+                          typeof<TestData.Product>;
                           typeof<TestData.OrderFail>;
                           typeof<TestData.Person[]>;
                           typeof<EntityCollection<TestData.Person>>;

@@ -24,6 +24,14 @@ namespace NakedObjects.SystemTest.Menus {
     public class TestAccessingMenuActionsViaGetAction : AbstractSystemTest<CADbContext> {
         protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
 
+        protected override Type[] Types =>
+            new[] {
+                typeof(Foo),
+                typeof(Foo2),
+                typeof(Bar),
+            };
+
+
         protected override Type[] Services =>
             new[] {
                 typeof(SimpleRepository<Foo>),

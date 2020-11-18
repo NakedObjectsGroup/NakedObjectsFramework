@@ -20,6 +20,13 @@ namespace NakedObjects.SystemTest.ParentChild {
         public class TestParentChildPersistence : AbstractSystemTest<ParentChildDbContext> {
             protected override string[] Namespaces => new[] {typeof(Parent).Namespace};
 
+            protected override Type[] Types =>
+                new[] {
+                    typeof(Parent),
+                    typeof(Parent2),
+                    typeof(Child)
+                };
+
             protected override Type[] Services =>
                 new[] {
                     typeof(SimpleRepository<Parent>),

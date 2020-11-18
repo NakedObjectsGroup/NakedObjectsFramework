@@ -48,12 +48,12 @@ namespace NakedObjects.Reflector.Component {
 
         private bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
 
-        private bool IsNamespaceMatch(Type type) {
-            var ns = type.Namespace ?? "";
-            return config.ModelNamespaces.Any(sn => ns.StartsWith(sn, StringComparison.Ordinal));
-        }
+        //private bool IsNamespaceMatch(Type type) {
+        //    var ns = type.Namespace ?? "";
+        //    return config.ModelNamespaces.Any(sn => ns.StartsWith(sn, StringComparison.Ordinal));
+        //}
 
-        private bool IsTypeWhiteListed(Type type) => IsTypeSupportedSystemType(type) || IsNamespaceMatch(type) || IsTypeExplicitlyRequested(type);
+        private bool IsTypeWhiteListed(Type type) => IsTypeSupportedSystemType(type) || IsTypeExplicitlyRequested(type);
 
         private bool IsTypeExplicitlyRequested(Type type) {
             var services = config.Services.ToArray();

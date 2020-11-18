@@ -281,6 +281,8 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
         protected override Type[] Types {
             get {
                 return new[] {
+                    typeof(IPayee),
+                    typeof(IPayableItem),
                     typeof(PolymorphicPayment),
                     typeof(PolymorphicPaymentPayeeLink),
                     typeof(PolymorphicPaymentPayableItemLink),

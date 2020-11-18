@@ -29,6 +29,15 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
 
         protected override string[] Namespaces => new[] {typeof(Payment).Namespace};
 
+        protected override Type[] Types =>
+            new[] {
+                typeof(IPayee),
+                typeof(Payment),
+                typeof(Customer),
+                typeof(Supplier),
+                typeof(Employee)
+            };
+
         protected override Type[] Services =>
             new[] {
                 typeof(ObjectFinder),

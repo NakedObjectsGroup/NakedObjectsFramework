@@ -31,6 +31,7 @@ namespace NakedObjects.SystemTest.ObjectFinderGuid {
 
         protected override Type[] Types =>
             new[] {
+                typeof(IPayee),
                 typeof(ObjectFinder),
                 typeof(Payment),
                 typeof(Customer),

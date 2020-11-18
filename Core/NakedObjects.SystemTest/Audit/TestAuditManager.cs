@@ -26,6 +26,9 @@ namespace NakedObjects.SystemTest.Audit {
     [TestFixture]
     public class TestAuditManager : AbstractSystemTest<AuditDbContext> {
         protected override Type[] Types => new[] {
+            typeof(Foo),
+            typeof(Bar),
+            typeof(Qux),
             typeof(MyDefaultAuditor),
             typeof(FooAuditor),
             typeof(QuxAuditor),
@@ -35,8 +38,10 @@ namespace NakedObjects.SystemTest.Audit {
         protected override Type[] Services => new[] {
             typeof(SimpleRepository<Foo>),
             typeof(SimpleRepository<Bar>),
-            typeof(SimpleRepository<Qux>), typeof(FooService),
-            typeof(BarService), typeof(QuxService)
+            typeof(SimpleRepository<Qux>),
+            typeof(FooService),
+            typeof(BarService),
+            typeof(QuxService)
         };
 
         protected override string[] Namespaces => new[] {typeof(Foo).Namespace};

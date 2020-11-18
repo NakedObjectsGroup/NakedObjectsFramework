@@ -29,7 +29,7 @@ namespace NakedObjects.Architecture.Configuration {
         /// <remarks>
         ///     These match on the start so 'MyDomain' will  match 'MyDomain.SomeTypes'  and MyDomain.OtherTypes'
         /// </remarks>
-        string[] ModelNamespaces { get; }
+        //string[] ModelNamespaces { get; }
 
         /// <summary>
         ///     Standard implementation of this contains system value and collection types recognized by the Framework.

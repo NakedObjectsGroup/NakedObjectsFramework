@@ -22,7 +22,10 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
     [TestFixture]
     public class TestUsersAndRoles : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
-        protected override Type[] Types => new[] {typeof(MyDefaultAuthorizer)};
+        protected override Type[] Types => new[] {
+            typeof(Foo),
+            typeof(MyDefaultAuthorizer)
+        };
 
         protected override Type[] Services {
             get {

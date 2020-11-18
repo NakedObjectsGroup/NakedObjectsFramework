@@ -88,7 +88,7 @@ namespace NakedObjects.Core.Configuration {
                                             Type[] services,
                                             string[] modelNamespaces,
                                             bool concurrencyChecking = true) {
-            ModelNamespaces = modelNamespaces;
+            //ModelNamespaces = modelNamespaces;
             SupportedSystemTypes = ReflectorDefaults.DefaultSystemTypes.ToList();
             TypesToIntrospect = typesToIntrospect;
             Services = services;
@@ -115,10 +115,10 @@ namespace NakedObjects.Core.Configuration {
                 msg += "No services specified;\r\n";
             }
 
-            if (ModelNamespaces == null || !ModelNamespaces.Any()) {
-                configError = true;
-                msg += "No Namespaces specified;\r\n";
-            }
+            //if (ModelNamespaces == null || !ModelNamespaces.Any()) {
+            //    configError = true;
+            //    msg += "No Namespaces specified;\r\n";
+            //}
 
             if (configError) {
                 throw new InitialisationException(msg);
@@ -155,7 +155,7 @@ namespace NakedObjects.Core.Configuration {
         public bool HasConfig() => TypesToIntrospect.Any() && Services.Any();
 
         public Type[] Services { get; }
-        public string[] ModelNamespaces { get; }
+        //public string[] ModelNamespaces { get; }
         public List<Type> SupportedSystemTypes { get; }
 
 

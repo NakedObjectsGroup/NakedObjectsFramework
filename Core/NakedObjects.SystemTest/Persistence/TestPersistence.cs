@@ -23,6 +23,9 @@ namespace NakedObjects.SystemTest.Persistence {
 
         protected override Type[] Types =>
             new[] {
+                typeof(Foo1),
+                typeof(Bar1),
+                typeof(Qux1),
                 typeof(ObjectQuery<Qux1>),
                 typeof(Foo1)
             };

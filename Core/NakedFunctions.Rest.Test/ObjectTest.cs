@@ -98,8 +98,6 @@ namespace NakedFunctions.Rest.Test {
             return JObject.Parse(json);
         }
 
-
-
         [Test]
         public void TestASimpleRecord() {
             var parsedResult = GetObject($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");

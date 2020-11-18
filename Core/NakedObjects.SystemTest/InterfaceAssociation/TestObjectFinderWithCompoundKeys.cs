@@ -18,6 +18,18 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
     public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {
         protected override string[] Namespaces => new[] {typeof(Payment).Namespace};
 
+        protected override Type[] Types =>
+            new[] {
+                typeof(IPayee),
+                typeof(Payment),
+                typeof(CustomerOne),
+                typeof(CustomerTwo),
+                typeof(CustomerThree),
+                typeof(CustomerFour),
+                typeof(Supplier),
+                typeof(Employee)
+            };
+
         protected override Type[] Services =>
             new[] {
                 typeof(ObjectFinder),
