@@ -28,6 +28,7 @@ namespace NakedFunctions.Rest.Test.Data {
             context.SimpleRecords.Add(new SimpleRecord {Name = "Fred"});
             context.SimpleRecords.Add(new SimpleRecord { Name = "Bill" });
             context.SimpleRecords.Add(new SimpleRecord { Name = "Jack" });
+            context.GuidRecords.Add(new GuidRecord());
             context.SaveChanges();
         }
     }
@@ -36,6 +37,7 @@ namespace NakedFunctions.Rest.Test.Data {
         protected TestDbContext(string cs) : base(cs) { }
 
         public DbSet<SimpleRecord> SimpleRecords { get; set; }
+        public DbSet<GuidRecord> GuidRecords { get; set; }
 
         protected void OnModelCreating<T>(DbModelBuilder modelBuilder) where T : TestDbContext {
             Database.SetInitializer(new DatabaseInitializer<T>());

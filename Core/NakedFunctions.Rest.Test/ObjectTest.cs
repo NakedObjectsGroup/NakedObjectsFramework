@@ -36,7 +36,7 @@ namespace NakedFunctions.Rest.Test {
     public class ObjectTest : AcceptanceTestCase {
         private readonly Type[] FunctionTypes = {typeof(SimpleRecordFunctions)};
 
-        private readonly Type[] RecordTypes = {typeof(SimpleRecord)};
+        private readonly Type[] RecordTypes = {typeof(SimpleRecord), typeof(GuidRecord)};
         protected override Type[] Types { get; } = { };
 
         protected override Type[] Services { get; } = { };
@@ -219,6 +219,24 @@ namespace NakedFunctions.Rest.Test {
             resultObj.AssertObject("Fred4", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
 
            
+        }
+
+        [Test]
+        public void TestARecordWithGuid()
+        {
+            var parsedResult = GetObject($"NakedFunctions.Rest.Test.Data.{nameof(GuidRecord)}", "1");
+
+            Assert.AreEqual("00000001-0002-0003-0405-060708090a0b", parsedResult["title"].ToString());
+
+            var members = parsedResult["members"] as JObject;
+            Assert.AreEqual(2, members?.Count);
+
+
+            var propertyName = members[nameof(GuidRecord.Name)];
+
+            propertyName.AssertProperty(nameof(GuidRecord.Name), "00000001-0002-0003-0405-060708090a0b", false);
+            propertyName["extensions"].AssertExtensions(5); // todo add 
+
         }
     }
 }

@@ -6,14 +6,20 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography.X509Certificates;
 
 namespace NakedFunctions.Rest.Test.Data {
     public record SimpleRecord {
-        [Key] public int Id { get; init; }
-        public string Name { get; init; }
+    [Key] public int Id { get; init; }
+    public string Name { get; init; }
+    public override string ToString() => Name;
+    }
 
-        public override string ToString() => Name;
+    public record GuidRecord
+    {
+    [Key] public int Id { get; init; }
+    public Guid Name => new Guid(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
+    public override string ToString() => Name.ToString();
     }
 }
