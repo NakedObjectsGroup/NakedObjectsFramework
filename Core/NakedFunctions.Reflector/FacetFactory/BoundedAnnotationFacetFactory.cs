@@ -23,12 +23,12 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public BoundedAnnotationFacetFactory(IFacetFactoryOrder<BoundedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Attribute attribute = (Attribute) type.GetCustomAttribute<NakedObjects.BoundedAttribute>() ?? type.GetCustomAttribute<NakedFunctions.BoundedAttribute>();
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var attribute = type.GetCustomAttribute<BoundedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
             return metamodel;
         }
 
-        private static IBoundedFacet Create(Attribute attribute, ISpecification holder) => attribute == null ? null : new BoundedFacet(holder);
+        private static IBoundedFacet Create(BoundedAttribute attribute, ISpecification holder) => attribute == null ? null : new BoundedFacet(holder);
     }
 }
