@@ -30,6 +30,8 @@ namespace NakedObjects.Rest.Test.App {
                     typeof(WithReferenceViewModel),
                     typeof(WithCollectionViewModel),
                     typeof(WithActionViewModel),
+                    typeof(WithAction),
+                    typeof(WithActionObject),
                     typeof(FormViewModel),
                     typeof(MostSimplePersist),
                     typeof(VerySimplePersist),
