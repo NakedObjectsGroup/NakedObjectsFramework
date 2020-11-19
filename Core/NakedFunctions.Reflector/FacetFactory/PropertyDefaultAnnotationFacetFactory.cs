@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
@@ -24,23 +23,15 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = (Attribute) member.GetCustomAttribute<System.ComponentModel.DefaultValueAttribute>() ?? member.GetCustomAttribute<NakedFunctions.DefaultValueAttribute>();
-            FacetUtils.AddFacet(
-                attribute switch {
-                    System.ComponentModel.DefaultValueAttribute a => Create(a, holder),
-                    NakedFunctions.DefaultValueAttribute a => Create(a, holder),
-                    _ => null
-                }
-            );
+            var attribute = member.GetCustomAttribute<DefaultValueAttribute>();
+            FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(property, specification);
             return metamodel;
         }
 
-        private static IPropertyDefaultFacet Create(System.ComponentModel.DefaultValueAttribute attribute, ISpecification holder) => attribute == null ? null : new PropertyDefaultFacetAnnotation(attribute.Value, holder);
-        private static IPropertyDefaultFacet Create(NakedFunctions.DefaultValueAttribute attribute, ISpecification holder) => attribute == null ? null : new PropertyDefaultFacetAnnotation(attribute.Value, holder);
-
+        private static IPropertyDefaultFacet Create(DefaultValueAttribute attribute, ISpecification holder) => attribute == null ? null : new PropertyDefaultFacetAnnotation(attribute.Value, holder);
     }
 }

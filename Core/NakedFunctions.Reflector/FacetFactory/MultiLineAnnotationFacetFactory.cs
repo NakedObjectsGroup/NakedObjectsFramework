@@ -25,13 +25,13 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.EverythingButCollections) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = type.GetCustomAttribute<NakedObjects.MultiLineAttribute>();
+            var attribute = type.GetCustomAttribute<MultiLineAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
             return metamodel;
         }
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<NakedObjects.MultiLineAttribute>();
+            var attribute = member.GetCustomAttribute<MultiLineAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
@@ -51,13 +51,13 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector,  MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];
             if (TypeUtils.IsString(parameter.ParameterType)) {
-                var attribute = parameter.GetCustomAttribute<NakedObjects.MultiLineAttribute>();
+                var attribute = parameter.GetCustomAttribute<MultiLineAttribute>();
                 FacetUtils.AddFacet(Create(attribute, holder));
             }
 
             return metamodel;
         }
 
-        private static IMultiLineFacet Create(NakedObjects.MultiLineAttribute attribute, ISpecification holder) => attribute is not null ? new MultiLineFacetAnnotation(attribute.NumberOfLines, attribute.Width, holder) : null;
+        private static IMultiLineFacet Create(MultiLineAttribute attribute, ISpecification holder) => attribute is not null ? new MultiLineFacetAnnotation(attribute.NumberOfLines, attribute.Width, holder) : null;
     }
 }

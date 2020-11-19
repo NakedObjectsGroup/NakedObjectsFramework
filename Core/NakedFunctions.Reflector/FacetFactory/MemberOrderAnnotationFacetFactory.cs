@@ -23,7 +23,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<NakedObjects.MemberOrderAttribute>();
+            var attribute = member.GetCustomAttribute<MemberOrderAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
@@ -37,6 +37,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IMemberOrderFacet Create(NakedObjects.MemberOrderAttribute attribute, ISpecification holder) => attribute == null ? null : new MemberOrderFacet(attribute.Name, attribute.Sequence, holder);
+        private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) => attribute == null ? null : new MemberOrderFacet(attribute.Name, attribute.Sequence.ToString(), holder);
     }
 }

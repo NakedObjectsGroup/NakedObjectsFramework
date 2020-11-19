@@ -23,34 +23,34 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public PresentationHintAnnotationFacetFactory(IFacetFactoryOrder<PresentationHintAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.Everything) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = type.GetCustomAttribute<NakedObjects.PresentationHintAttribute>();
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var attribute = type.GetCustomAttribute<PresentationHintAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
             return metamodel;
         }
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<NakedObjects.PresentationHintAttribute>();
+            var attribute = member.GetCustomAttribute<PresentationHintAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(method, specification);
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(property, specification);
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector,  MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];
-            var attribute = parameter.GetCustomAttribute<NakedObjects.PresentationHintAttribute>();
+            var attribute = parameter.GetCustomAttribute<PresentationHintAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
             return metamodel;
         }
 
-        private static IPresentationHintFacet Create(NakedObjects.PresentationHintAttribute attribute, ISpecification holder) => attribute is not null ? new PresentationHintFacet(attribute.Value, holder) : null;
+        private static IPresentationHintFacet Create(PresentationHintAttribute attribute, ISpecification holder) => attribute is not null ? new PresentationHintFacet(attribute.Value, holder) : null;
     }
 }

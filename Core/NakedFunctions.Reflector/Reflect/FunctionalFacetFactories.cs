@@ -39,7 +39,6 @@ namespace NakedFunctions.Reflector.Reflect {
                 typeof(ActionDefaultAnnotationFacetFactory),
                 typeof(PropertyDefaultAnnotationFacetFactory),
                 typeof(DescribedAsAnnotationFacetFactory),
-                typeof(DisabledAnnotationFacetFactory),
                 typeof(PageSizeAnnotationFacetFactory),
                 typeof(HiddenAnnotationFacetFactory),
                 typeof(MaxLengthAnnotationFacetFactory),
@@ -48,7 +47,6 @@ namespace NakedFunctions.Reflector.Reflect {
                 typeof(MultiLineAnnotationFacetFactory),
                 typeof(NamedAnnotationFacetFactory),
                 typeof(OptionalAnnotationFacetFactory),
-                typeof(PluralAnnotationFacetFactory),
                 typeof(RegExAnnotationFacetFactory),
                 typeof(SystemClassMethodFilteringFactory),
                 typeof(SystemClassPropertyFilteringFactory),
@@ -60,7 +58,6 @@ namespace NakedFunctions.Reflector.Reflect {
                 typeof(TypeOfAnnotationFacetFactory),
                 typeof(TableViewAnnotationFacetFactory),
                 typeof(TypicalLengthDerivedFromTypeFacetFactory),
-                typeof(TypicalLengthAnnotationFacetFactory),
                 typeof(PresentationHintAnnotationFacetFactory)
             };
     }

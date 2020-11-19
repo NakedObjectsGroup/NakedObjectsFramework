@@ -27,15 +27,15 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.Actions) { }
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<NakedObjects.PageSizeAttribute>();
+            var attribute = member.GetCustomAttribute<PageSizeAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(method, specification);
             return metamodel;
         }
 
-        private static IPageSizeFacet Create(NakedObjects.PageSizeAttribute attribute, ISpecification holder) => attribute == null ? null : new PageSizeFacetAnnotation(attribute.Value, holder);
+        private static IPageSizeFacet Create(PageSizeAttribute attribute, ISpecification holder) => attribute == null ? null : new PageSizeFacetAnnotation(attribute.Value, holder);
     }
 }

@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.ComponentModel;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
@@ -16,7 +15,6 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
@@ -28,50 +26,32 @@ namespace NakedFunctions.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.Everything) =>
             logger = loggerFactory.CreateLogger<NamedAnnotationFacetFactory>();
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = type.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) type.GetCustomAttribute<NakedObjects.NamedAttribute>();
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var attribute = type.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = method.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) method.GetCustomAttribute<NakedObjects.NamedAttribute>();
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var attribute = method.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, specification));
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var attribute = property.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) property.GetCustomAttribute<NakedObjects.NamedAttribute>();
-            FacetUtils.AddFacet(CreateProperty(attribute, specification));
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var attribute = property.GetCustomAttribute<NamedAttribute>();
+            FacetUtils.AddFacet(Create(attribute, specification));
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector,  MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];
-            var attribute = parameter.GetCustomAttribute<DisplayNameAttribute>() ?? (Attribute) parameter.GetCustomAttribute<NakedObjects.NamedAttribute>();
+            var attribute = parameter.GetCustomAttribute<NamedAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
             return metamodel;
         }
 
-        private INamedFacet Create(Attribute attribute, ISpecification holder) =>
-            attribute switch {
-                null => null,
-                NakedObjects.NamedAttribute namedAttribute => new NamedFacetAnnotation(namedAttribute.Value, holder),
-                DisplayNameAttribute nameAttribute => new NamedFacetAnnotation(nameAttribute.DisplayName, holder),
-                _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
-            };
-
-        private INamedFacet CreateProperty(Attribute attribute, ISpecification holder) =>
-            attribute switch {
-                null => null,
-                NakedObjects.NamedAttribute namedAttribute => Create(namedAttribute, holder),
-                DisplayNameAttribute nameAttribute => Create(nameAttribute, holder),
-                _ => throw new ArgumentException(logger.LogAndReturn($"Unexpected attribute type: {attribute.GetType()}"))
-            };
-
-        private static INamedFacet Create(NakedObjects.NamedAttribute attribute, ISpecification holder) => CreateAnnotation(attribute.Value, holder);
-
-        private static INamedFacet Create(DisplayNameAttribute attribute, ISpecification holder) => CreateAnnotation(attribute.DisplayName, holder);
+        private static INamedFacet Create(NamedAttribute attribute, ISpecification holder) => attribute is null ? null : CreateAnnotation(attribute.Value, holder);
 
         private static INamedFacet CreateAnnotation(string name, ISpecification holder) => new NamedFacetAnnotation(name, holder);
     }

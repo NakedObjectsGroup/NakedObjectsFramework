@@ -27,12 +27,12 @@ namespace NakedFunctions.Reflector.FacetFactory {
             logger = loggerFactory.CreateLogger<OptionalAnnotationFacetFactory>();
 
         private static void Process(MemberInfo member, ISpecification holder) {
-            var attribute = member.GetCustomAttribute<NakedObjects.OptionallyAttribute>();
+            var attribute = member.GetCustomAttribute<OptionallyAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if ((method.ReturnType.IsPrimitive || TypeUtils.IsEnum(method.ReturnType)) && method.GetCustomAttribute<NakedObjects.OptionallyAttribute>() is not null) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            if ((method.ReturnType.IsPrimitive || TypeUtils.IsEnum(method.ReturnType)) && method.GetCustomAttribute<OptionallyAttribute>() is not null) {
                 logger.LogWarning($"Ignoring Optionally annotation on primitive parameter on {method.ReflectedType}.{method.Name}");
                 return metamodel;
             }
@@ -41,8 +41,8 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if ((property.PropertyType.IsPrimitive || TypeUtils.IsEnum(property.PropertyType)) && property.GetCustomAttribute<NakedObjects.OptionallyAttribute>() is not null) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            if ((property.PropertyType.IsPrimitive || TypeUtils.IsEnum(property.PropertyType)) && property.GetCustomAttribute<OptionallyAttribute>() is not null) {
                 logger.LogWarning($"Ignoring Optionally annotation on primitive or un-readable parameter on {property.ReflectedType}.{property.Name}");
                 return metamodel;
             }
@@ -54,21 +54,21 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector,  MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];
             if (parameter.ParameterType.IsPrimitive || TypeUtils.IsEnum(parameter.ParameterType)) {
-                if (method.GetCustomAttribute<NakedObjects.OptionallyAttribute>() is not null) {
+                if (method.GetCustomAttribute<OptionallyAttribute>() is not null) {
                     logger.LogWarning($"Ignoring Optionally annotation on primitive parameter {paramNum} on {method.ReflectedType}.{method.Name}");
                 }
 
                 return metamodel;
             }
 
-            var attribute = parameter.GetCustomAttribute<NakedObjects.OptionallyAttribute>();
+            var attribute = parameter.GetCustomAttribute<OptionallyAttribute>();
             FacetUtils.AddFacet(Create(attribute, holder));
             return metamodel;
         }
 
-        private static IMandatoryFacet Create(NakedObjects.OptionallyAttribute attribute, ISpecification holder) => attribute is not null ? new OptionalFacet(holder) : null;
+        private static IMandatoryFacet Create(OptionallyAttribute attribute, ISpecification holder) => attribute is not null ? new OptionalFacet(holder) : null;
     }
 }

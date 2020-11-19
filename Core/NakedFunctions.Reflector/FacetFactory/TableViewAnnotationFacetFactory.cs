@@ -30,13 +30,13 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private void Process(MemberInfo member, Type methodReturnType, ISpecification specification) {
             if (CollectionUtils.IsGenericEnumerable(methodReturnType) || CollectionUtils.IsCollection(methodReturnType)) {
-                var attribute = member.GetCustomAttribute<NakedObjects.TableViewAttribute>();
+                var attribute = member.GetCustomAttribute<TableViewAttribute>();
                 FacetUtils.AddFacet(Create(attribute, specification));
             }
         }
 
-        private ITableViewFacet CreateTableViewFacet(NakedObjects.TableViewAttribute attribute, ISpecification holder) {
-            var columns = attribute.Columns == null ? new string[] { } : attribute.Columns;
+        private ITableViewFacet CreateTableViewFacet(TableViewAttribute attribute, ISpecification holder) {
+            var columns = attribute.Columns ?? new string[] { };
             var distinctColumns = columns.Distinct().ToArray();
 
             if (columns.Length != distinctColumns.Length) {
@@ -50,14 +50,14 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return new TableViewFacet(attribute.Title, columns, holder);
         }
 
-        private ITableViewFacet Create(NakedObjects.TableViewAttribute attribute, ISpecification holder) => attribute == null ? null : CreateTableViewFacet(attribute, holder);
+        private ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) => attribute == null ? null : CreateTableViewFacet(attribute, holder);
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(method, method.ReturnType, specification);
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (property.GetGetMethod() is not null) {
                 Process(property, property.PropertyType, specification);
             }
