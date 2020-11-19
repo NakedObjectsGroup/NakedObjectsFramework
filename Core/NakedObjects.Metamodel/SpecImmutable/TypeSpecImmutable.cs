@@ -48,6 +48,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             ObjectActions = introspector.ObjectActions;
             DecorateAllFacets(decorator);
             Type = introspector.SpecificationType;
+            ReflectionStatus = ReflectionStatus.Introspected;
             return metamodel;
         }
 
@@ -168,6 +169,8 @@ namespace NakedObjects.Meta.SpecImmutable {
         {
             ContributedActions = ContributedActions.Union(contributedFunctions).ToImmutableList();
         }
+
+        public ReflectionStatus ReflectionStatus { get; set; } = ReflectionStatus.PlaceHolder;
 
         public void AddContributedActions(IList<IActionSpecImmutable> contributedActions) => ContributedActions = contributedActions.ToImmutableList();
 

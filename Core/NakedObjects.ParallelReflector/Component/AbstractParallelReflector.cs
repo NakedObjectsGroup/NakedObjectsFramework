@@ -55,7 +55,7 @@ namespace NakedObjects.ParallelReflector.Component {
 
 
         protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var ph = metamodel.Where(i => string.IsNullOrEmpty(i.Value.FullName)).Select(i => i.Value.Type);
+            var ph = metamodel.Where(i => i.Value.ReflectionStatus == ReflectionStatus.PlaceHolder).Select(i => i.Value.Type);
             var mm = ph.AsParallel().SelectMany(type => IntrospectSpecification(type, metamodel).metamodel).Distinct(new TypeSpecKeyComparer()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value).ToImmutableDictionary();
 
             return mm.Any(i => string.IsNullOrEmpty(i.Value.FullName))
@@ -64,8 +64,8 @@ namespace NakedObjects.ParallelReflector.Component {
         }
 
 
-        private ITypeSpecBuilder GetPlaceholder(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var specification = CreateSpecification(type, metamodel);
+        private ITypeSpecBuilder GetPlaceholder(Type type) {
+            var specification = CreateSpecification(type);
 
             if (specification == null) {
                 throw new ReflectionException(Logger.LogAndReturn($"unrecognised type {type.FullName}"));
@@ -75,7 +75,7 @@ namespace NakedObjects.ParallelReflector.Component {
         }
 
         private (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadPlaceholder(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var specification = CreateSpecification(type, metamodel);
+            var specification = CreateSpecification(type);
 
             if (specification == null) {
                 throw new ReflectionException(Logger.LogAndReturn($"unrecognised type {type.FullName}"));
@@ -90,7 +90,7 @@ namespace NakedObjects.ParallelReflector.Component {
             types.Select(t => classStrategy.GetType(t))
                  .Where(t => t != null)
                  .Distinct(new TypeKeyComparer())
-                 .ToDictionary(t => TypeKeyUtils.GetKeyForType(t), t => GetPlaceholder(t, null)).ToImmutableDictionary();
+                 .ToDictionary(t => TypeKeyUtils.GetKeyForType(t), t => GetPlaceholder(t)).ToImmutableDictionary();
 
         private (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecificationAndCache(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var specification = metamodel[TypeKeyUtils.GetKeyForType(type)];
@@ -104,9 +104,9 @@ namespace NakedObjects.ParallelReflector.Component {
             return (specification, metamodel);
         }
 
-        private ITypeSpecBuilder CreateSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        private ITypeSpecBuilder CreateSpecification(Type type) {
             TypeUtils.GetType(type.FullName); // This should ensure type is cached
-            return ImmutableSpecFactory.CreateTypeSpecImmutable(type, ClassStrategy.IsService(type), metamodel);
+            return ImmutableSpecFactory.CreateTypeSpecImmutable(type, ClassStrategy.IsService(type));
         }
 
         #region Nested type: TypeKeyComparer

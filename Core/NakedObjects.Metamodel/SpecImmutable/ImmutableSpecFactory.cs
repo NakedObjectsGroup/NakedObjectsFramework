@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
@@ -28,7 +27,7 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public static IOneToOneAssociationSpecImmutable CreateOneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec) => new OneToOneAssociationSpecImmutable(identifier, ownerSpec, returnSpec);
 
-        public static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public static IObjectSpecBuilder CreateObjectSpecImmutable(Type type) {
             lock (SpecCache) {
                 if (!SpecCache.ContainsKey(type)) {
                     SpecCache.Add(type, new ObjectSpecImmutable(type));
@@ -38,7 +37,7 @@ namespace NakedObjects.Meta.SpecImmutable {
             }
         }
 
-        public static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public static IServiceSpecBuilder CreateServiceSpecImmutable(Type type) {
             lock (SpecCache) {
                 if (!SpecCache.ContainsKey(type)) {
                     SpecCache.Add(type, new ServiceSpecImmutable(type));
@@ -48,11 +47,11 @@ namespace NakedObjects.Meta.SpecImmutable {
             }
         }
 
-        public static ITypeSpecBuilder CreateTypeSpecImmutable(Type type, bool isService, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
+        public static ITypeSpecBuilder CreateTypeSpecImmutable(Type type, bool isService)
         {
             return isService
-                ? (ITypeSpecBuilder)CreateServiceSpecImmutable(type, metamodel)
-                : CreateObjectSpecImmutable(type, metamodel);
+                ? (ITypeSpecBuilder)CreateServiceSpecImmutable(type)
+                : CreateObjectSpecImmutable(type);
         }
 
         public static void ClearCache() {

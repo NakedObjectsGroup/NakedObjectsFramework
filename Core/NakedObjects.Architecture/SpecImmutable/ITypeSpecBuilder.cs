@@ -10,6 +10,13 @@ using System.Collections.Immutable;
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.Architecture.SpecImmutable {
+
+    public enum ReflectionStatus {
+        PlaceHolder,
+        PendingIntrospection, 
+        Introspected   
+    }
+
     public interface ITypeSpecBuilder : ITypeSpecImmutable {
         /// <summary>
         ///     Discovers what attributes and behaviour the type specified by this specification. As specification are
@@ -23,5 +30,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
 
         void AddSubclass(ITypeSpecImmutable subclass);
         void AddContributedFunctions(IList<IActionSpecImmutable> result);
+
+        ReflectionStatus ReflectionStatus { get; }
     }
 }
