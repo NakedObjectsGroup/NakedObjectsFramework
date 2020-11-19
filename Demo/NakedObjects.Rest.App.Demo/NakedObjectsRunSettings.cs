@@ -9,6 +9,8 @@ using System;
 using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
+using System.Linq;
+using System.Reflection;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
 using Microsoft.Extensions.Configuration;
@@ -20,21 +22,25 @@ namespace NakedObjects.Rest.App.Demo {
             get { return new[] {"AdventureWorksModel"}; }
         }
 
-        public static Type[] Types {
-            get {
-                return new[] {
-                    typeof(EntityCollection<object>),
-                    typeof(ObjectQuery<object>),
-                    typeof(CustomerCollectionViewModel),
-                    typeof(OrderLine),
-                    typeof(OrderStatus),
-                    typeof(QuickOrderForm),
-                    typeof(ProductProductPhoto),
-                    typeof(ProductModelProductDescriptionCulture)
-                };
-            }
-        }
+        private static Type[] AllAdventureWorksTypes => 
+            Assembly.GetAssembly(typeof(AdventureWorksModel.AssemblyHook)).GetTypes().
+                     Where(t => t.IsPublic).
+                     Where(t => t.Namespace == "AdventureWorksModel").
+                     ToArray();
 
+
+        public static Type[] Types => AllAdventureWorksTypes;
+
+        //return new[] {
+        //    typeof(EntityCollection<object>),
+        //    typeof(ObjectQuery<object>),
+        //    typeof(CustomerCollectionViewModel),
+        //    typeof(OrderLine),
+        //    typeof(OrderStatus),
+        //    typeof(QuickOrderForm),
+        //    typeof(ProductProductPhoto),
+        //    typeof(ProductModelProductDescriptionCulture)
+        //};
         public static Type[] Services {
             get {
                 return new[] {

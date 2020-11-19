@@ -7,6 +7,7 @@
 
 using System;
 using System.Linq;
+using AdventureWorksModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -42,6 +43,20 @@ namespace NakedFunctions.Rest.App.Demo {
             });
             services.AddNakedObjects(options => {
                 options.ModelNamespaces = ModelConfig_NakedObjectsPM.ModelNamespaces();
+                options.Types = new[] {
+                    typeof(Vendor),
+                    typeof(Person),
+                    typeof(Customer),
+                    typeof(Shift),
+                    typeof(Store),
+                    typeof(BusinessEntity),
+                    typeof(EmployeeDepartmentHistory),
+                    typeof(Department),
+                    typeof(EmployeePayHistory),
+                    typeof(SpecialOfferProduct),
+                    typeof(CustomerDashboard),
+                    typeof(IEmployee)
+                };
                 options.Services = ModelConfig_NakedObjectsPM.Services().ToArray();
                 options.NoValidate = true;
             });
