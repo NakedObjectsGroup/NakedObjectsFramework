@@ -11,50 +11,21 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using NakedObjects.Value;
 using RestfulObjects.Test.Data;
 
 namespace NakedObjects.Rest.Test.App {
     public class NakedObjectsRunSettings {
-        public static Type[] Types {
-            get {
-                return new[] {
-                    typeof(TestEnum),
-                    typeof(MostSimple),
-                    typeof(VerySimple),
-                    typeof(WithValue),
-                    typeof(WithReference),
-                    typeof(WithCollection),
-                    typeof(WithValueViewModel),
-                    typeof(WithReferenceViewModel),
-                    typeof(WithCollectionViewModel),
-                    typeof(WithActionViewModel),
-                    typeof(WithAction),
-                    typeof(WithActionObject),
-                    typeof(FormViewModel),
-                    typeof(MostSimplePersist),
-                    typeof(VerySimplePersist),
-                    typeof(WithValuePersist),
-                    typeof(WithReferencePersist),
-                    typeof(WithCollectionPersist),
-                    typeof(SetWrapper<MostSimple>),
-                    typeof(List<MostSimple>),
-                    typeof(HashSet<MostSimple>),
-                    typeof(WithScalars),
-                    typeof(WithAttachments),
-                    typeof(VerySimpleEager),
-                    typeof(Immutable),
-                    typeof(MostSimple[]),
-                    typeof(Image),
-                    typeof(FileAttachment),
-                    typeof(EntityCollection<object>),
-                    typeof(ObjectQuery<object>),
-                    typeof(EntityCollection<object>),
-                    typeof(ObjectQuery<object>)
-                };
-            }
-        }
+        private static Type[] AllTypes =>
+            Assembly.GetAssembly(typeof(CodeFirstContext)).GetTypes().
+                     Where(t => t.IsPublic).
+                     Where(t => t.Namespace == "RestfulObjects.Test.Data").
+                     ToArray();
+
+
+        public static Type[] Types => AllTypes;
 
         public static Type[] Services {
             get {
