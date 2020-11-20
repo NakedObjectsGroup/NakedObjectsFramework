@@ -82,18 +82,13 @@ namespace NakedObjects.Xat {
             get { return new Type[] { }; }
         }
 
-        protected virtual string[] Namespaces {
-            get { return new string[] { }; }
-        }
-
         protected virtual EntityObjectStoreConfiguration Persistor => new EntityObjectStoreConfiguration();
 
         protected virtual ObjectReflectorConfiguration Reflector {
             get {
                 var reflectorConfig = new ObjectReflectorConfiguration(
                     Types ?? new Type[] { },
-                    Services,
-                    Namespaces ?? new string[] { });
+                    Services);
                 ObjectReflectorConfiguration.NoValidate = true;
                 return reflectorConfig;
             }

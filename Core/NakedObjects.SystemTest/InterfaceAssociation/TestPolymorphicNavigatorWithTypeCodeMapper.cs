@@ -17,8 +17,6 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
     public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract {
         private const string DatabaseName = "TestPolymorphicNavigatorWithTypeCodeMapper";
 
-        protected override string[] Namespaces => new[] {typeof(PolymorphicPayment).Namespace};
-
         protected override EntityObjectStoreConfiguration Persistor {
             get {
                 var config = new EntityObjectStoreConfiguration {EnforceProxies = false};

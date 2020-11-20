@@ -87,13 +87,6 @@ type DomainTests() =
                typeof<One.TransformFull>;
                typeof<Two.TransformFull>;
                typeof<IXmlSnapshotService>  |]
-        
-        override x.Namespaces = 
-            [| "Snapshot.Xml.Test";
-               "Snapshot.Xml.Test.Two";
-               "Snapshot.Xml.Test.One";
-               "NakedObjects.XmlSnapshotService.DomainTests";
-               "NakedObjects.Snapshot" |]
 
         override x.Services =         
             [| typeof<SimpleRepository<TestObject>>

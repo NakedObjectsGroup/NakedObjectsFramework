@@ -13,7 +13,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMapper {
     [TestFixture]
     public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinderWithCompoundKeysAbstract {
-        protected override string[] Namespaces => new[] {typeof(Payment).Namespace};
 
         protected override Type[] Types => new[] {
             typeof(IPayee),

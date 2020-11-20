@@ -212,7 +212,7 @@ namespace NakedObjects.ParallelReflect.Test
         {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -228,7 +228,7 @@ namespace NakedObjects.ParallelReflect.Test
         {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(object) }, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(object) }, new Type[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -246,7 +246,7 @@ namespace NakedObjects.ParallelReflect.Test
         {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(List<object>), typeof(List<int>), typeof(object), typeof(int) }, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(List<object>), typeof(List<int>), typeof(object), typeof(int) }, new Type[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -266,7 +266,7 @@ namespace NakedObjects.ParallelReflect.Test
         {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(SetWrapper<>), typeof(object) }, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(SetWrapper<>), typeof(object) }, new Type[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -287,7 +287,7 @@ namespace NakedObjects.ParallelReflect.Test
             var qi = new List<int>().AsQueryable();
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] { qo.GetType(), qi.GetType(), typeof(int), typeof(object) }, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { qo.GetType(), qi.GetType(), typeof(int), typeof(object) }, new Type[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -308,7 +308,7 @@ namespace NakedObjects.ParallelReflect.Test
             var it = new List<int> { 1, 2, 3 }.Where(i => i == 2);
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] { it.GetType().GetGenericTypeDefinition(), typeof(object) }, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { it.GetType().GetGenericTypeDefinition(), typeof(object) }, new Type[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -328,7 +328,7 @@ namespace NakedObjects.ParallelReflect.Test
             var it = new List<int> { 1, 2, 3 }.Where(i => i == 2).Select(i => i);
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] { it.GetType().GetGenericTypeDefinition(), typeof(object) }, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { it.GetType().GetGenericTypeDefinition(), typeof(object) }, new Type[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -352,7 +352,7 @@ namespace NakedObjects.ParallelReflect.Test
         {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(int) }, new Type[] { }, new[] { "System" });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(int) }, new Type[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -377,7 +377,7 @@ namespace NakedObjects.ParallelReflect.Test
         {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(TestObjectWithByteArray), typeof(byte), typeof(byte[]) }, new Type[] { }, new[] { "System" });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(TestObjectWithByteArray), typeof(byte), typeof(byte[]) }, new Type[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -426,7 +426,7 @@ namespace NakedObjects.ParallelReflect.Test
         {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(TestObjectWithStringArray), typeof(string) }, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(TestObjectWithStringArray), typeof(string) }, new Type[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -446,7 +446,7 @@ namespace NakedObjects.ParallelReflect.Test
         {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(WithScalars) }, new Type[] { }, new[] { "System" });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(WithScalars) }, new Type[] { });
             rc.SupportedSystemTypes.Clear();
             var container = GetContainer(new CoreConfiguration(), rc);
 
@@ -536,7 +536,7 @@ namespace NakedObjects.ParallelReflect.Test
         {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(SimpleDomainObject) }, new Type[] { }, new[] { "System" });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(SimpleDomainObject) }, new Type[] { });
             rc.SupportedSystemTypes.Clear();
             var container = GetContainer(new CoreConfiguration(), rc);
 
@@ -574,7 +574,7 @@ namespace NakedObjects.ParallelReflect.Test
 
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(SimpleBoundedObject) }, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(SimpleBoundedObject) }, new Type[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
@@ -596,7 +596,7 @@ namespace NakedObjects.ParallelReflect.Test
 
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(SimpleBoundedObject) }, new Type[] { }, new string[] { });
+            var rc = new ObjectReflectorConfiguration(new[] { typeof(SimpleBoundedObject) }, new Type[] { });
             rc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);

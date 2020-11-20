@@ -90,7 +90,7 @@ namespace NakedObjects.ParallelReflector.Component {
             types.Select(t => classStrategy.GetType(t))
                  .Where(t => t != null)
                  .Distinct(new TypeKeyComparer())
-                 .ToDictionary(t => TypeKeyUtils.GetKeyForType(t), t => GetPlaceholder(t)).ToImmutableDictionary();
+                 .ToDictionary(TypeKeyUtils.GetKeyForType, GetPlaceholder).ToImmutableDictionary();
 
         private (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecificationAndCache(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var specification = metamodel[TypeKeyUtils.GetKeyForType(type)];

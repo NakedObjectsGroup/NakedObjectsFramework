@@ -16,7 +16,6 @@ using Assert = NUnit.Framework.Assert;
 namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
     [TestFixture]
     public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {
-        protected override string[] Namespaces => new[] {typeof(Payment).Namespace};
 
         protected override Type[] Types =>
             new[] {

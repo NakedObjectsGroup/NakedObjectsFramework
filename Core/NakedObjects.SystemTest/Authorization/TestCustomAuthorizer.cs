@@ -26,8 +26,6 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
 
         protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
 
-        protected override string[] Namespaces => Types.Select(t => t.Namespace).ToArray();
-
         protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);
             var config = new AuthorizationConfiguration<TDefault>();

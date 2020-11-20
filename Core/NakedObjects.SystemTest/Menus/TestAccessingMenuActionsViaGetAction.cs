@@ -22,7 +22,6 @@ namespace NakedObjects.SystemTest.Menus {
     //of GetAction, including with specified subMenu.
     [TestFixture]
     public class TestAccessingMenuActionsViaGetAction : AbstractSystemTest<CADbContext> {
-        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
 
         protected override Type[] Types =>
             new[] {

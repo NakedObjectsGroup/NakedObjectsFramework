@@ -29,7 +29,7 @@ let ModelConfig =
     pc
 
 ObjectReflectorConfiguration.NoValidate <- true
-let config = new ObjectReflectorConfiguration([||], [| typeof<NakedObjects.Services.SimpleRepository<Person>> |], [||]  )
+let config = new ObjectReflectorConfiguration([||], [| typeof<NakedObjects.Services.SimpleRepository<Person>> |] )
 
 let mockLoggerFactory = new Mock<ILoggerFactory>();
 let mockLogger = new Mock<ILogger<DomainObjectContainerInjector>>();

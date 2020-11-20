@@ -18,7 +18,6 @@ namespace NakedObjects.SystemTest.ParentChild {
     namespace ParentChild {
         [TestFixture]
         public class TestParentChildPersistence : AbstractSystemTest<ParentChildDbContext> {
-            protected override string[] Namespaces => new[] {typeof(Parent).Namespace};
 
             protected override Type[] Types =>
                 new[] {

@@ -17,7 +17,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Container {
     [TestFixture]
     public class TestContainer : AbstractSystemTest<ContainerDbContext> {
-        protected override string[] Namespaces => new[] {typeof(Object1).Namespace};
 
         protected override Type[] Types => new[] {typeof(Object1), typeof(Object2), typeof(ViewModel2)};
 

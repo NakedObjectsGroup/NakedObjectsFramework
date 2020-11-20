@@ -27,8 +27,6 @@ namespace NakedObjects.SystemTest.Menus.Service {
                 typeof(QuxService)
             };
 
-        protected override string[] Namespaces => Types.Select(t => t.Namespace).Distinct().ToArray();
-
         [SetUp]
         public void SetUp() => StartTest();
 

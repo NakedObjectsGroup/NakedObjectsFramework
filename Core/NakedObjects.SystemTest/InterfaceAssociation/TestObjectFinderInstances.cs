@@ -20,7 +20,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.ObjectFinderInstances {
     [TestFixture]
     public class TestObjectFinderInstances : AbstractSystemTest<PaymentContext> {
-        protected override string[] Namespaces => new[] {typeof(Customer).Namespace};
 
         protected override Type[] Types =>
             new[] {

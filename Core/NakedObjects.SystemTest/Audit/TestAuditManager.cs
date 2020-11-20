@@ -44,8 +44,6 @@ namespace NakedObjects.SystemTest.Audit {
             typeof(QuxService)
         };
 
-        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
-
         [SetUp]
         public void SetUp() {
             StartTest();

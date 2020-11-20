@@ -26,8 +26,6 @@ namespace NakedObjects.SystemTest.Repositories {
                 typeof(SimpleRepository<Customer>)
             };
 
-        protected override string[] Namespaces => new[] {typeof(Customer).Namespace};
-
         [SetUp]
         public void SetUp() {
             StartTest();

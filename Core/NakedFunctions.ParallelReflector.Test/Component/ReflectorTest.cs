@@ -159,7 +159,7 @@ namespace NakedFunctions.Reflect.Test {
             services.AddSingleton<IModelIntegrator, ModelIntegrator>();
             services.AddSingleton(typeof(IFacetFactoryOrder<>), typeof(FacetFactoryOrder<>));
 
-            var dflt = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {"NakedFunctions"});
+            var dflt = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { });
             dflt.SupportedSystemTypes.Clear();
 
             var rc = orc ?? dflt;
@@ -226,7 +226,7 @@ namespace NakedFunctions.Reflect.Test {
         public void ReflectTupleFunction() {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var orc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {"NakedFunctions"});
+            var orc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { });
             orc.SupportedSystemTypes.Clear();
             orc.SupportedSystemTypes.Add(typeof(IQueryable<>));
 
@@ -268,7 +268,7 @@ namespace NakedFunctions.Reflect.Test {
         public void ReflectSimpleInjectedFunction() {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var orc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new[] {"NakedFunctions"});
+            var orc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { });
             orc.SupportedSystemTypes.Clear();
             orc.SupportedSystemTypes.Add(typeof(IQueryable<>));
 

@@ -25,8 +25,6 @@ namespace NakedObjects.SystemTest.Component {
 
         protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
 
-        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
-
         [SetUp]
         public void Initialize() {
             StartTest();

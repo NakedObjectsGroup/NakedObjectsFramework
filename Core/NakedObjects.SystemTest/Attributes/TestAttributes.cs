@@ -39,8 +39,6 @@ namespace NakedObjects.SystemTest.Attributes {
         private static readonly string todayPlus30 = DateTime.Today.AddDays(30).ToShortDateString();
         private static readonly string todayPlus31 = DateTime.Today.AddDays(31).ToShortDateString();
 
-        protected override string[] Namespaces => new[] {"NakedObjects.SystemTest.Attributes", "SystemTest.Attributes"};
-
         protected override Type[] Types
         {
             get {

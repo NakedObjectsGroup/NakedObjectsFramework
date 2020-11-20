@@ -36,8 +36,6 @@ namespace NakedObjects.SystemTest.XATs {
 
         #endregion
 
-        protected override string[] Namespaces => new[] {typeof(Object1).Namespace};
-
         protected override Type[] Types => new[] { typeof(Object1), typeof(TestEnum) };
 
         protected override Type[] Services => new[] {typeof(SimpleRepository<Object1>), typeof(MyService1), typeof(MyService2)};

@@ -98,7 +98,7 @@ namespace NakedObjects.ParallelReflect.Test.FacetFactory {
             var cache = new ImmutableInMemorySpecCache();
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var reflectorConfiguration = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { }, new string[] { });
+            var reflectorConfiguration = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { });
             var functionalReflectorConfiguration = new FunctionalReflectorConfiguration(new Type[] { }, new Type[] { });
 
             facetFactory = new RemoveEventHandlerMethodsFacetFactory(new FacetFactoryOrder<RemoveEventHandlerMethodsFacetFactory>(), LoggerFactory);

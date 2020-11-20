@@ -22,7 +22,6 @@ using TestObjectMenu;
 namespace NakedObjects.SystemTest.Menus {
     [TestFixture]
     public class TestObjectMenu : AbstractSystemTest<MenusDbContext> {
-        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
 
         protected override Type[] Types =>
             new[] {

@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using NakedObjects.Menu;
 
 namespace NakedObjects.Architecture.Configuration {
     public interface IObjectReflectorConfiguration {
@@ -22,14 +21,6 @@ namespace NakedObjects.Architecture.Configuration {
         Type[] TypesToIntrospect { get; }
 
         Type[] Services { get; }
-
-        /// <summary>
-        ///     A whitelist of namespaces of the types that will be introspected.
-        /// </summary>
-        /// <remarks>
-        ///     These match on the start so 'MyDomain' will  match 'MyDomain.SomeTypes'  and MyDomain.OtherTypes'
-        /// </remarks>
-        //string[] ModelNamespaces { get; }
 
         /// <summary>
         ///     Standard implementation of this contains system value and collection types recognized by the Framework.

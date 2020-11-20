@@ -40,8 +40,6 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
             typeof(SimpleRepository<Foo2>)
         };
 
-        protected override string[] Namespaces => Types.Select(t => t.Namespace).ToArray();
-
         [SetUp]
         public void SetUp() {
             StartTest();

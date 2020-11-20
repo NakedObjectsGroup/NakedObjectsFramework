@@ -41,8 +41,6 @@ namespace NakedFunctions.Rest.Test {
 
         protected override Type[] Services { get; } = { };
 
-        protected override string[] Namespaces { get; } = {"NakedFunctions.Rest.Test.Data"};
-
         protected override EntityObjectStoreConfiguration Persistor {
             get {
                 var config = new EntityObjectStoreConfiguration {EnforceProxies = false};

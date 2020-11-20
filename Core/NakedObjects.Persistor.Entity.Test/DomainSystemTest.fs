@@ -35,8 +35,6 @@ type DomainSystemTests() =
                           typeof<ProductCategory>;
                           typeof<EntityCollection<Product>>;
                           typeof<EntityCollection<ProductSubcategory>> |]
-
-    override x.Namespaces = [| "AdventureWorksModel" |]
     
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)

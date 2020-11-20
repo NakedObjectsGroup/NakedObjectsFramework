@@ -29,8 +29,6 @@ namespace NakedObjects.SystemTest.Performance {
             typeof(SimpleRepository<Qux>)
         };
 
-        protected override string[] Namespaces => new[] {typeof(Qux).Namespace};
-
         [SetUp]
         public void SetUp() => StartTest();
 

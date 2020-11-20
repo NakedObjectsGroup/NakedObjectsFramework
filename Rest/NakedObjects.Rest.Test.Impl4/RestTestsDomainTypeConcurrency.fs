@@ -76,8 +76,6 @@ type Tests() =
               typeof<TestTypeCodeMapper>
               typeof<TestKeyCodeMapper> |]
 
-        override x.Namespaces = [| "RestfulObjects.Test.Data" |]
-
         override x.MainMenus (factory : IMenuFactory)  = 
                let menu1 = factory.NewMenu<RestDataRepository>(true)
                let menu2 = factory.NewMenu<WithActionService>(true)

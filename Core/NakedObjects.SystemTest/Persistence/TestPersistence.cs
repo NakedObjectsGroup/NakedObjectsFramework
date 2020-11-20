@@ -36,8 +36,6 @@ namespace NakedObjects.SystemTest.Persistence {
             typeof(SimpleRepository<Qux1>)
         };
 
-        protected override string[] Namespaces => new[] {typeof(Foo1).Namespace};
-
         [SetUp]
         public void SetUp() => StartTest();
 

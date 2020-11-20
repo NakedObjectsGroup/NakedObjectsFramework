@@ -146,8 +146,6 @@ type EntityTestSuite() =
                           typeof<TestData.Person[]>;
                           typeof<EntityCollection<TestData.Person>>;
                           typeof<System.Collections.Generic.List<TestData.Person>> |]
-
-    override x.Namespaces = [| "TestData" |]
     
     member x.ClearOldTestData() = ()
     

@@ -46,8 +46,6 @@ namespace NakedObjects.SystemTest.Menus.Service2 {
                 typeof(QuxService)
             };
 
-        protected override string[] Namespaces => Types.Select(t => t.Namespace).Distinct().ToArray();
-
         protected override IMenu[] MainMenus(IMenuFactory factory) => LocalMainMenus.MainMenus(factory);
 
         [Test]

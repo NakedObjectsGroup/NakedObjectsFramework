@@ -31,8 +31,6 @@ namespace NakedObjects.SystemTest.Profile {
 
         protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
 
-        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
-
         [SetUp]
         public void SetUp() {
             StartTest();

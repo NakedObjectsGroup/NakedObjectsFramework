@@ -27,8 +27,6 @@ namespace NakedObjects.Helpers.Test.ViewModel {
 
         protected override Type[] Services => new[] {typeof(ViewModelService), typeof(SimpleRepository<Foo>)};
 
-        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
-
         [SetUp]
         public void Initialize() {
             StartTest();

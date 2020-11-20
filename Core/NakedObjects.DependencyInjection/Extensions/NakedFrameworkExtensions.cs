@@ -98,7 +98,7 @@ namespace NakedObjects.DependencyInjection.Extensions {
 
         private static ObjectReflectorConfiguration ObjectReflectorConfig(NakedObjectsOptions options) {
             ObjectReflectorConfiguration.NoValidate = options.NoValidate;
-            return new ObjectReflectorConfiguration(options.Types, options.Services, options.ModelNamespaces, options.ConcurrencyCheck);
+            return new ObjectReflectorConfiguration(options.Types, options.Services, options.ConcurrencyCheck);
         }
 
         public static FunctionalReflectorConfiguration FunctionalReflectorConfig(NakedFunctionsOptions options) =>

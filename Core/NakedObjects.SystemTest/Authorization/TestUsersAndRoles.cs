@@ -36,8 +36,6 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
             }
         }
 
-        protected override string[] Namespaces => new[] {typeof(Foo).Namespace};
-
         [SetUp]
         public void SetUp() {
             StartTest();

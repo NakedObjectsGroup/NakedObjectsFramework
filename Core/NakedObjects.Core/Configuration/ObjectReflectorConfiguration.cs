@@ -12,11 +12,9 @@ using System.Data.Entity.Core.Objects.DataClasses;
 using System.Drawing;
 using System.Linq;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Menu;
 using NakedObjects.Value;
 
 namespace NakedObjects.Core.Configuration {
-
     public static class ReflectorDefaults {
         public static readonly Type[] DefaultSystemTypes = {
             typeof(bool),
@@ -86,17 +84,14 @@ namespace NakedObjects.Core.Configuration {
     public class ObjectReflectorConfiguration : IObjectReflectorConfiguration {
         public ObjectReflectorConfiguration(Type[] typesToIntrospect,
                                             Type[] services,
-                                            string[] modelNamespaces,
                                             bool concurrencyChecking = true) {
-            //ModelNamespaces = modelNamespaces;
             SupportedSystemTypes = ReflectorDefaults.DefaultSystemTypes.ToList();
             TypesToIntrospect = typesToIntrospect;
             Services = services;
             IgnoreCase = false;
             ConcurrencyChecking = concurrencyChecking;
-            
-            ValidateConfig();
 
+            ValidateConfig();
         }
 
         // for testing
@@ -115,20 +110,13 @@ namespace NakedObjects.Core.Configuration {
                 msg += "No services specified;\r\n";
             }
 
-            //if (ModelNamespaces == null || !ModelNamespaces.Any()) {
-            //    configError = true;
-            //    msg += "No Namespaces specified;\r\n";
-            //}
-
             if (configError) {
                 throw new InitialisationException(msg);
             }
         }
 
-        private static Type EnsureGenericTypeIsComplete(Type type)
-        {
-            if (type.IsGenericType && !type.IsConstructedGenericType)
-            {
+        private static Type EnsureGenericTypeIsComplete(Type type) {
+            if (type.IsGenericType && !type.IsConstructedGenericType) {
                 var genericType = type.GetGenericTypeDefinition();
                 var genericParms = genericType.GetGenericArguments().Select(a => typeof(object)).ToArray();
 
@@ -138,11 +126,10 @@ namespace NakedObjects.Core.Configuration {
             return type;
         }
 
-        private Type[] GetObjectTypesToIntrospect()
-        {
+        private Type[] GetObjectTypesToIntrospect() {
             var types = TypesToIntrospect.Select(EnsureGenericTypeIsComplete);
             var oSystemTypes = SupportedSystemTypes.Select(EnsureGenericTypeIsComplete);
-   
+
             var systemTypes = oSystemTypes;
             return types.Union(systemTypes).ToArray();
         }
@@ -155,12 +142,10 @@ namespace NakedObjects.Core.Configuration {
         public bool HasConfig() => TypesToIntrospect.Any() && Services.Any();
 
         public Type[] Services { get; }
-        //public string[] ModelNamespaces { get; }
         public List<Type> SupportedSystemTypes { get; }
 
 
         public Type[] ObjectTypes => Services.Union(GetObjectTypesToIntrospect()).ToArray();
-
 
         #endregion
     }

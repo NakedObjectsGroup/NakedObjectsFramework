@@ -38,8 +38,6 @@ type CodeSystemTests() =
                           typeof<AbstractTestCode>;
                           typeof<CountryCode> |]
 
-    override x.Namespaces = [| "TestCodeOnly" |]
-
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = 
         CodeFirstSetup()

@@ -22,7 +22,6 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Method {
     [TestFixture]
     public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
-        protected override string[] Namespaces => new[] {typeof(Auto1).Namespace};
 
         protected override Type[] Types =>
             new[] {
