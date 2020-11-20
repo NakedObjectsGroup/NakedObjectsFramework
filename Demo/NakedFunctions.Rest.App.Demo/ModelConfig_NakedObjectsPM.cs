@@ -11,19 +11,19 @@ namespace NakedFunctions.Rest.App.Demo
     {
         public static Func<IConfiguration, DbContext> ContextInstaller => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
 
-        public static string[] ModelNamespaces() => new[]
-        {
-            "AdventureWorksModel"
-        };
-
-        public static List<Type> DomainTypes() => new List<Type>
-        {
-                   //typeof(CustomerCollectionViewModel),
-                   // //typeof(OrderLine),
-                   // typeof(OrderStatus),
-                   //// typeof(QuickOrderForm),
-                   // typeof(ProductProductPhoto),
-                   // typeof(ProductModelProductDescriptionCulture)
+        public static Type[] DomainTypes() => new[] {
+            typeof(Vendor),
+            typeof(Person),
+            typeof(Customer),
+            typeof(Shift),
+            typeof(Store),
+            typeof(BusinessEntity),
+            typeof(EmployeeDepartmentHistory),
+            typeof(Department),
+            typeof(EmployeePayHistory),
+            typeof(SpecialOfferProduct),
+            typeof(CustomerDashboard),
+            typeof(IEmployee)
         };
 
         public static IMenu[] MainMenus(IMenuFactory mf) => new[] {

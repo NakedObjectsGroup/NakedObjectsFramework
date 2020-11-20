@@ -43,7 +43,6 @@ namespace NakedObjects.Rest.App.Demo {
                 options.InlineDetailsInPropertyMemberRepresentations = false;
             });
             services.AddNakedObjects(options => {
-                options.ModelNamespaces = NakedObjectsRunSettings.ModelNamespaces;
                 options.Types = NakedObjectsRunSettings.Types;
                 options.Services = NakedObjectsRunSettings.Services;
                 options.RegisterCustomTypes = services => {

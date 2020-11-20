@@ -38,8 +38,6 @@ namespace NakedObjects.Rest.Test.App {
             }
         }
 
-        public static string[] NameSpaces => Types.Select(t => t.Namespace).Distinct().ToArray();
-
         public static Func<IConfiguration, DbContext> DbContextInstaller => c => {
             var cs = c.GetConnectionString("RestTest");
             return cs.Contains("(localdb)") ? (DbContext) new CodeFirstContextLocal(cs) : new CodeFirstContext(cs);

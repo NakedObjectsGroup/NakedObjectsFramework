@@ -7,8 +7,6 @@
 
 using System;
 using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using System.Reflection;
 using AdventureWorksModel;
@@ -18,9 +16,6 @@ using NakedObjects.Menu;
 
 namespace NakedObjects.Rest.App.Demo {
     public static class NakedObjectsRunSettings {
-        public static string[] ModelNamespaces {
-            get { return new[] {"AdventureWorksModel"}; }
-        }
 
         private static Type[] AllAdventureWorksTypes => 
             Assembly.GetAssembly(typeof(AdventureWorksModel.AssemblyHook)).GetTypes().
@@ -31,16 +26,6 @@ namespace NakedObjects.Rest.App.Demo {
 
         public static Type[] Types => AllAdventureWorksTypes;
 
-        //return new[] {
-        //    typeof(EntityCollection<object>),
-        //    typeof(ObjectQuery<object>),
-        //    typeof(CustomerCollectionViewModel),
-        //    typeof(OrderLine),
-        //    typeof(OrderStatus),
-        //    typeof(QuickOrderForm),
-        //    typeof(ProductProductPhoto),
-        //    typeof(ProductModelProductDescriptionCulture)
-        //};
         public static Type[] Services {
             get {
                 return new[] {

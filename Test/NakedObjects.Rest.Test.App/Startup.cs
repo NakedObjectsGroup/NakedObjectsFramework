@@ -39,7 +39,6 @@ namespace NakedObjects.Rest.Test.App {
                 options.InlineDetailsInPropertyMemberRepresentations = true;
             });
             services.AddNakedObjects(options => {
-                options.ModelNamespaces = NakedObjectsRunSettings.NameSpaces;
                 options.Types = NakedObjectsRunSettings.Types;
                 options.Services = NakedObjectsRunSettings.Services;
                 options.ConcurrencyCheck = false;

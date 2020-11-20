@@ -42,22 +42,8 @@ namespace NakedFunctions.Rest.App.Demo {
                 options.MainMenus = CombinedNOandNFMenus;
             });
             services.AddNakedObjects(options => {
-                options.ModelNamespaces = ModelConfig_NakedObjectsPM.ModelNamespaces();
-                options.Types = new[] {
-                    typeof(Vendor),
-                    typeof(Person),
-                    typeof(Customer),
-                    typeof(Shift),
-                    typeof(Store),
-                    typeof(BusinessEntity),
-                    typeof(EmployeeDepartmentHistory),
-                    typeof(Department),
-                    typeof(EmployeePayHistory),
-                    typeof(SpecialOfferProduct),
-                    typeof(CustomerDashboard),
-                    typeof(IEmployee)
-                };
-                options.Services = ModelConfig_NakedObjectsPM.Services().ToArray();
+                options.Types = ModelConfig_NakedObjectsPM.DomainTypes();
+                options.Services = ModelConfig_NakedObjectsPM.Services();
                 options.NoValidate = true;
             });
             services.AddNakedFunctions(options => {
