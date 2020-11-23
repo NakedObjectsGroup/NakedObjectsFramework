@@ -14,9 +14,8 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
-using NakedObjects.Reflector.Reflect;
 
-namespace NakedObjects.ParallelReflect.Test {
+namespace NakedObjects.Reflector.Test.Reflect {
     [TestClass]
     public class ReflectorCollectionTest : AbstractReflectorTest {
         protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(AbstractParallelReflector reflector) {

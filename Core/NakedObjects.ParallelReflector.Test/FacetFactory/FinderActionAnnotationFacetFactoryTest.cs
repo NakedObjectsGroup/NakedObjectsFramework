@@ -17,7 +17,7 @@ using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.ParallelReflect.Test.FacetFactory {
+namespace NakedObjects.Reflector.Test.FacetFactory {
     [TestClass]
     public class FinderActionAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private FinderActionFacetFactory facetFactory;

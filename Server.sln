@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Xat", "Core\Na
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Metamodel.Test", "Core\NakedObjects.Metamodel.Test\NakedObjects.Metamodel.Test.csproj", "{5C607273-C219-496A-9698-CCF65EFA3BCB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.ParallelReflector.Test", "Core\NakedObjects.ParallelReflector.Test\NakedObjects.ParallelReflector.Test.csproj", "{B2114D36-4A5B-40FC-B85F-194641435265}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Reflector.Test", "Core\NakedObjects.ParallelReflector.Test\NakedObjects.Reflector.Test.csproj", "{B2114D36-4A5B-40FC-B85F-194641435265}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly", "Core\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly.csproj", "{D0FBC51F-070B-4184-B1EE-D13B82159311}"
 EndProject
@@ -69,7 +69,7 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedObjects.Rest.Test.Impl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Metamodel", "Core\NakedFunctions.Metamodel\NakedFunctions.Metamodel.csproj", "{8C803ABA-4FE4-4B6F-8367-D93C17654D0F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.ParallelReflector.Test", "Core\NakedFunctions.ParallelReflector.Test\NakedFunctions.ParallelReflector.Test.csproj", "{5A3E2EC8-DA9F-43E1-8084-4D1E17FE4B9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Reflector.Test", "Core\NakedFunctions.ParallelReflector.Test\NakedFunctions.Reflector.Test.csproj", "{5A3E2EC8-DA9F-43E1-8084-4D1E17FE4B9C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Rest.Test", "Core\NakedFunctions.Rest.Test\NakedFunctions.Rest.Test.csproj", "{6CF516A1-E2E3-4862-BE38-ED428F2BA218}"
 EndProject
@@ -77,9 +77,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Rest.Test.Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.ModelBuilding", "Core\NakedFramework.ModelBuilding\NakedFramework.ModelBuilding.csproj", "{B6CA1647-2D70-4E6D-A0D2-6E220AC4C9D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedFunctions.Reflector", "Core\NakedFunctions.Reflector\NakedFunctions.Reflector.csproj", "{59676F13-B1D2-417D-9040-B07CDC2E4D07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Reflector", "Core\NakedFunctions.Reflector\NakedFunctions.Reflector.csproj", "{59676F13-B1D2-417D-9040-B07CDC2E4D07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.Reflector", "Core\NakedObjects.Reflector\NakedObjects.Reflector.csproj", "{5F989AAB-52E5-4296-B362-657EA522EA53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Reflector", "Core\NakedObjects.Reflector\NakedObjects.Reflector.csproj", "{5F989AAB-52E5-4296-B362-657EA522EA53}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

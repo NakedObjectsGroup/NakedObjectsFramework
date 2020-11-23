@@ -13,7 +13,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.ParallelReflect.Test.FacetFactory {
+namespace NakedObjects.Reflector.Test.FacetFactory {
     // Reflector place holder for defaulted naming facet factory tests !!!
     [TestClass]
     public class DefaultedNamingFacetFactoryTest : AbstractFacetFactoryTest {

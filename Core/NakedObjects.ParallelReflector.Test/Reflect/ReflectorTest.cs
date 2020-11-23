@@ -12,7 +12,6 @@ using System.Collections.Immutable;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Runtime.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -39,7 +38,7 @@ using NakedObjects.Reflector.TypeFacetFactory;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.ParallelReflect.Test
+namespace NakedObjects.Reflector.Test.Reflect
 {
     public class NullMenuFactory : IMenuFactory
     {

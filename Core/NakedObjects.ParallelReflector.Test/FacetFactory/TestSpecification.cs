@@ -7,7 +7,7 @@
 
 using NakedObjects.Meta.Spec;
 
-namespace NakedObjects.ParallelReflect.Test.FacetFactory {
+namespace NakedObjects.Reflector.Test.FacetFactory {
     // This is for testing of facets 
     internal class TestSpecification : Specification { }
 }

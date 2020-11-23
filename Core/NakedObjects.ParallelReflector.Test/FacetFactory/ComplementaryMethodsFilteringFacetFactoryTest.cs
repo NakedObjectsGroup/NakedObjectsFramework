@@ -15,7 +15,7 @@ using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedObjects.ParallelReflect.Test.FacetFactory {
+namespace NakedObjects.Reflector.Test.FacetFactory {
     [TestClass]
     public class ComplementaryMethodsFilteringFacetFactoryTest : AbstractFacetFactoryTest {
         private ComplementaryMethodsFilteringFacetFactory facetFactory;

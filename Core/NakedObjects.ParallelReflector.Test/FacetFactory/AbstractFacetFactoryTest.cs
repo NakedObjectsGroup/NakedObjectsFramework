@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
@@ -19,7 +18,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Reflector.Component;
 
-namespace NakedObjects.ParallelReflect.Test.FacetFactory {
+namespace NakedObjects.Reflector.Test.FacetFactory {
     public abstract class AbstractFacetFactoryTest {
         private ILogger<AbstractFacetFactoryTest> logger;
         protected ILoggerFactory LoggerFactory;

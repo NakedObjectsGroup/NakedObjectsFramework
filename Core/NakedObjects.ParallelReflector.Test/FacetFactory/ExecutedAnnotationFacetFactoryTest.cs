@@ -19,7 +19,7 @@ using NakedObjects.Reflector.FacetFactory;
 
 #pragma warning disable 612
 
-namespace NakedObjects.ParallelReflect.Test.FacetFactory {
+namespace NakedObjects.Reflector.Test.FacetFactory {
     [TestClass]
     public class ExecutedAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private ExecutedAnnotationFacetFactory facetFactory;

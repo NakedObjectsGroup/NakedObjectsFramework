@@ -15,7 +15,7 @@ using NakedObjects.Meta.Facet;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedObjects.ParallelReflect.Test.FacetFactory {
+namespace NakedObjects.Reflector.Test.FacetFactory {
     [TestClass]
     public class ActionParameterValidationFacetViaMethodTest {
         private IActionParameterValidationFacet facet;

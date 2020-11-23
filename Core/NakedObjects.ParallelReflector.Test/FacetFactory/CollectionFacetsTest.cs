@@ -19,7 +19,7 @@ using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 
-namespace NakedObjects.ParallelReflect.Test.FacetFactory {
+namespace NakedObjects.Reflector.Test.FacetFactory {
     [TestClass]
     public class CollectionFacetsTest {
         private readonly ILifecycleManager lifecycleManager;

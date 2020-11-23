@@ -13,9 +13,8 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
-using NakedObjects.Reflector.Reflect;
 
-namespace NakedObjects.ParallelReflect.Test {
+namespace NakedObjects.Reflector.Test.Reflect {
     public class TestDomainObject {
         public void Action(DateTime? test) { }
     }

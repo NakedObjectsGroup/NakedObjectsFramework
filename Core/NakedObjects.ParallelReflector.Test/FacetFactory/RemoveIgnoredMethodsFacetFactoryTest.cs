@@ -21,11 +21,12 @@ using NakedObjects.Meta.Component;
 using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.Test.Reflect;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.ParallelReflect.Test.FacetFactory {
+namespace NakedObjects.Reflector.Test.FacetFactory {
     [TestClass]
     public class RemoveIgnoredMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         private RemoveIgnoredMethodsFacetFactory facetFactory;

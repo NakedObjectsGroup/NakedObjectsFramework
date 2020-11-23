@@ -25,7 +25,7 @@ using NakedObjects.Reflector.FacetFactory;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 
-namespace NakedObjects.ParallelReflect.Test.FacetFactory {
+namespace NakedObjects.Reflector.Test.FacetFactory {
     [TestClass]
     public class CallbackMethodsFacetFactoryTest : AbstractFacetFactoryTest {
         private CallbackMethodsFacetFactory facetFactory;

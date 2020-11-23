@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.Extensions.Logging;
@@ -25,7 +24,7 @@ using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.TypeFacetFactory;
 
-namespace NakedObjects.ParallelReflect.Test {
+namespace NakedObjects.Reflector.Test.Reflect {
     public abstract class AbstractReflectorTest {
         private static readonly ILoggerFactory MockLoggerFactory = new Mock<ILoggerFactory>().Object;
         protected IClassStrategy ClassStrategy;

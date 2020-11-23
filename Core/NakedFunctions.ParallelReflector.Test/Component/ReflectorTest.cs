@@ -26,11 +26,11 @@ using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Component;
 using NakedObjects.Meta.SpecImmutable;
-using NakedObjects.ParallelReflect.Test;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Reflect;
+using NakedObjects.Reflector.Test.Reflect;
 
-namespace NakedFunctions.Reflect.Test {
+namespace NakedFunctions.Reflector.Test.Component {
     public class NullMenuFactory : IMenuFactory {
         public IMenu NewMenu(string name) => null;
 
@@ -260,7 +260,7 @@ namespace NakedFunctions.Reflect.Test {
             catch (AggregateException ae) {
                 var re = ae.InnerExceptions.FirstOrDefault();
                 Assert.IsInstanceOfType(re, typeof(ReflectionException));
-                Assert.AreEqual("Cannot reflect empty tuple on NakedFunctions.Reflect.Test.UnsupportedTupleFunctions.TupleFunction", re.Message);
+                Assert.AreEqual("Cannot reflect empty tuple on NakedFunctions.Reflector.Test.Component.UnsupportedTupleFunctions.TupleFunction", re.Message);
             }
         }
 
@@ -314,7 +314,7 @@ namespace NakedFunctions.Reflect.Test {
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
             var specs = AllObjectSpecImmutables(container);
-            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.BoundedClass");
+            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.BoundedClass");
             Assert.IsTrue(spec.IsBoundedSet());
         }
 
@@ -329,7 +329,7 @@ namespace NakedFunctions.Reflect.Test {
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
             var specs = AllObjectSpecImmutables(container);
-            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.IgnoredClass");
+            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.IgnoredClass");
             Assert.AreEqual(0, spec.Fields.Count);
         }
 
@@ -344,7 +344,7 @@ namespace NakedFunctions.Reflect.Test {
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
             var specs = AllObjectSpecImmutables(container);
-            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.SimpleClass");
+            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.SimpleClass");
             var actionSpec = spec.ContributedActions.Single();
             var parmSpec = actionSpec.Parameters[1];
             var facet = parmSpec.GetFacet<IActionDefaultsFacet>();
@@ -366,7 +366,7 @@ namespace NakedFunctions.Reflect.Test {
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
             var specs = AllObjectSpecImmutables(container);
-            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.SimpleClass");
+            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.SimpleClass");
 
             IFacet facet = spec.GetFacet<IPersistingCallbackFacet>();
             Assert.IsNotNull(facet);
@@ -390,7 +390,7 @@ namespace NakedFunctions.Reflect.Test {
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
             var specs = AllObjectSpecImmutables(container);
-            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflect.Test.SimpleViewModel");
+            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.SimpleViewModel");
 
             IFacet facet = spec.GetFacet<IViewModelFacet>();
             Assert.IsNotNull(facet);

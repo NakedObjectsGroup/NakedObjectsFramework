@@ -19,7 +19,7 @@ using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.ParallelReflect.Test.FacetFactory {
+namespace NakedObjects.Reflector.Test.FacetFactory {
     [TestClass]
     public class EagerlyAnnotationFacetFactoryTest : AbstractFacetFactoryTest {
         private EagerlyAnnotationFacetFactory annotationFacetFactory;

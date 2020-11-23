@@ -12,7 +12,7 @@ using NakedObjects.Meta.Utils;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.ParallelReflect.Test.FacetFactory {
+namespace NakedObjects.Reflector.Test.FacetFactory {
     [TestClass]
     public class MemberOrderComparatorTest {
         private MemberOrderComparator<MemberPeerStub> comparator;

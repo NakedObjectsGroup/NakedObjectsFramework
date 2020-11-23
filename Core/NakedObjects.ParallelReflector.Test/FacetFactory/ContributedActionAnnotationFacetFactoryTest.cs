@@ -19,7 +19,7 @@ using NakedObjects.Reflector.FacetFactory;
 
 // ReSharper disable UnusedMember.Global
 
-namespace NakedObjects.ParallelReflect.Test.FacetFactory {
+namespace NakedObjects.Reflector.Test.FacetFactory {
     /// <summary>
     ///     Note: This is a limited test;  it does not test collection-contributed actions
     ///     due to dependency on other facets.  That is done in system tests
