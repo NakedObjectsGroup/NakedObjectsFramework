@@ -22,7 +22,7 @@ using NUnit.Framework;
 
 namespace NakedObjects.SystemTest.Authorization.Installer {
     public abstract class TestCustomAuthorizer<TDefault> : AbstractSystemTest<CustomAuthorizerInstallerDbContext> where TDefault : ITypeAuthorizer<object> {
-        protected override Type[] Types => new[] {typeof(TDefault), typeof(Foo)};
+        protected override Type[] ObjectTypes => new[] {typeof(TDefault), typeof(Foo)};
 
         protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
 

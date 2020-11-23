@@ -31,12 +31,12 @@ type ModelSystemTests() =
 
     override x.Services = [| typeof<SimpleRepository<Person>> |]
 
-    override x.Types = [| typeof<SimpleDatabase.Fruit>;
-                          typeof<SimpleDatabase.Person>;
-                          typeof<SimpleDatabase.NameType>;
-                          typeof<SimpleDatabase.ComplexType1>;
-                          typeof<SimpleDatabase.AbstractTestCode>;
-                          typeof<List<SimpleDatabase.Food>> |]
+    override x.ObjectTypes = [| typeof<SimpleDatabase.Fruit>;
+                                typeof<SimpleDatabase.Person>;
+                                typeof<SimpleDatabase.NameType>;
+                                typeof<SimpleDatabase.ComplexType1>;
+                                typeof<SimpleDatabase.AbstractTestCode>;
+                                typeof<List<SimpleDatabase.Food>> |]
   
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)

@@ -19,7 +19,7 @@ namespace NakedObjects.SystemTest.ParentChild {
         [TestFixture]
         public class TestParentChildPersistence : AbstractSystemTest<ParentChildDbContext> {
 
-            protected override Type[] Types =>
+            protected override Type[] ObjectTypes =>
                 new[] {
                     typeof(Parent),
                     typeof(Parent2),

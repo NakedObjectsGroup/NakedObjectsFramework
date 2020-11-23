@@ -278,7 +278,7 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
 
         #region Run configuration
 
-        protected override Type[] Types {
+        protected override Type[] ObjectTypes {
             get {
                 return new[] {
                     typeof(IPayee),

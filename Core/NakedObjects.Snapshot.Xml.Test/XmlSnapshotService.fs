@@ -77,7 +77,7 @@ type DomainTests() =
         [<SetUp>]
         member x.Setup() = x.StartTest()
                      
-        override x.Types = 
+        override x.ObjectTypes = 
             [| typeof<IXmlSnapshot>;
                typeof<XmlSnapshot>;
                typeof<TestObject>; 

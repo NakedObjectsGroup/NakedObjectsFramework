@@ -21,7 +21,7 @@ namespace NakedObjects.SystemTest.Persistence {
     public class TestPersistence : AbstractSystemTest<PersistenceDbContext> {
         private static bool triggerFail;
 
-        protected override Type[] Types =>
+        protected override Type[] ObjectTypes =>
             new[] {
                 typeof(Foo1),
                 typeof(Bar1),

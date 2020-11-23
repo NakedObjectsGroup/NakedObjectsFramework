@@ -18,7 +18,7 @@ namespace NakedObjects.SystemTest.Container {
     [TestFixture]
     public class TestContainer : AbstractSystemTest<ContainerDbContext> {
 
-        protected override Type[] Types => new[] {typeof(Object1), typeof(Object2), typeof(ViewModel2)};
+        protected override Type[] ObjectTypes => new[] {typeof(Object1), typeof(Object2), typeof(ViewModel2)};
 
         protected override Type[] Services =>
             new[] {

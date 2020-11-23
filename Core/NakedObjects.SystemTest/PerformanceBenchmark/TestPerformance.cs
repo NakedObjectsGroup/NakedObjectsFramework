@@ -19,7 +19,7 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Performance {
     [TestFixture]
     public class TestPerformance : AbstractSystemTest<PerformanceDbContext> {
-        protected override Type[] Types =>
+        protected override Type[] ObjectTypes =>
             new[] {
                 typeof(ObjectQuery<Qux>),
                 typeof(Qux)

@@ -21,7 +21,7 @@ namespace NakedObjects.SystemTest.ObjectFinderInstances {
     [TestFixture]
     public class TestObjectFinderInstances : AbstractSystemTest<PaymentContext> {
 
-        protected override Type[] Types =>
+        protected override Type[] ObjectTypes =>
             new[] {
                 typeof(IPayee),
                 typeof(Payment),

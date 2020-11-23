@@ -36,7 +36,7 @@ type Tests() =
     class
         inherit NakedObjects.Xat.AcceptanceTestCase()
         
-        override x.Types = 
+        override x.ObjectTypes = 
              [| typeof<Immutable>
                 typeof<WithActionViewModel>
                 typeof<WithCollectionViewModel>

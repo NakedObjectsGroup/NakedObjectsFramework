@@ -28,13 +28,13 @@ type DomainSystemTests() =
 
     override x.Services =  [| typeof<SimpleRepository<ScrapReason>> |]
 
-    override x.Types = [| typeof<Product>;
-                          typeof<ScrapReason>;
-                          typeof<WorkOrder>;
-                          typeof<ProductSubcategory>;
-                          typeof<ProductCategory>;
-                          typeof<EntityCollection<Product>>;
-                          typeof<EntityCollection<ProductSubcategory>> |]
+    override x.ObjectTypes = [| typeof<Product>;
+                                typeof<ScrapReason>;
+                                typeof<WorkOrder>;
+                                typeof<ProductSubcategory>;
+                                typeof<ProductCategory>;
+                                typeof<EntityCollection<Product>>;
+                                typeof<EntityCollection<ProductSubcategory>> |]
     
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)

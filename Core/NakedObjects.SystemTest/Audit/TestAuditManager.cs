@@ -25,7 +25,7 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Audit {
     [TestFixture]
     public class TestAuditManager : AbstractSystemTest<AuditDbContext> {
-        protected override Type[] Types => new[] {
+        protected override Type[] ObjectTypes => new[] {
             typeof(Foo),
             typeof(Bar),
             typeof(Qux),

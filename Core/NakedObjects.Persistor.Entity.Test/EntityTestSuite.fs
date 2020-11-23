@@ -136,16 +136,16 @@ type EntityTestSuite() =
                              typeof<SimpleRepository<Product>>;
                              typeof<SimpleRepository<Address>> |]
 
-    override x.Types = [| typeof<TestData.TestHelper>;
-                          typeof<TestData.Person>;
-                          typeof<TestData.Pet>;
-                          typeof<TestData.Address>;
-                          typeof<TestData.Order>;
-                          typeof<TestData.Product>;
-                          typeof<TestData.OrderFail>;
-                          typeof<TestData.Person[]>;
-                          typeof<EntityCollection<TestData.Person>>;
-                          typeof<System.Collections.Generic.List<TestData.Person>> |]
+    override x.ObjectTypes = [| typeof<TestData.TestHelper>;
+                                typeof<TestData.Person>;
+                                typeof<TestData.Pet>;
+                                typeof<TestData.Address>;
+                                typeof<TestData.Order>;
+                                typeof<TestData.Product>;
+                                typeof<TestData.OrderFail>;
+                                typeof<TestData.Person[]>;
+                                typeof<EntityCollection<TestData.Person>>;
+                                typeof<System.Collections.Generic.List<TestData.Person>> |]
     
     member x.ClearOldTestData() = ()
     

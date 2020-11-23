@@ -16,7 +16,7 @@ namespace NakedObjects.SystemTest.Repositories {
         private Customer cust1;
         private Customer cust2;
 
-        protected override Type[] Types =>
+        protected override Type[] ObjectTypes =>
             new[] {
                 typeof(Customer)
             };

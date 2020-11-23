@@ -39,10 +39,10 @@ namespace NakedObjects.SystemTest.Attributes {
         private static readonly string todayPlus30 = DateTime.Today.AddDays(30).ToShortDateString();
         private static readonly string todayPlus31 = DateTime.Today.AddDays(31).ToShortDateString();
 
-        protected override Type[] Types
+        protected override Type[] ObjectTypes
         {
             get {
-                return base.Types.Union(new[] {
+                return base.ObjectTypes.Union(new[] {
                     typeof(Default1),
                     typeof(Describedas1),
                     typeof(Describedas2),

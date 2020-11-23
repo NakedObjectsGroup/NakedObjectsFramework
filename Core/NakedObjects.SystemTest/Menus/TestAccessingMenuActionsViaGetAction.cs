@@ -23,7 +23,7 @@ namespace NakedObjects.SystemTest.Menus {
     [TestFixture]
     public class TestAccessingMenuActionsViaGetAction : AbstractSystemTest<CADbContext> {
 
-        protected override Type[] Types =>
+        protected override Type[] ObjectTypes =>
             new[] {
                 typeof(Foo),
                 typeof(Foo2),

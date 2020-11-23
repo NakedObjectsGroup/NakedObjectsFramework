@@ -18,7 +18,7 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Enum {
     [TestFixture]
     public class EnumTest : AbstractSystemTest<EnumDbContext> {
-        protected override Type[] Types => new[] {typeof(Foo), typeof(Sexes), typeof(HairColours)};
+        protected override Type[] ObjectTypes => new[] {typeof(Foo), typeof(Sexes), typeof(HairColours)};
 
         protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
 

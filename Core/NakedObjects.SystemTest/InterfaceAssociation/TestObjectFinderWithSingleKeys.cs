@@ -27,7 +27,7 @@ namespace NakedObjects.SystemTest.ObjectFinderSingleKey {
         private ITestObject payment1;
         private ITestObject supplier1;
 
-        protected override Type[] Types =>
+        protected override Type[] ObjectTypes =>
             new[] {
                 typeof(IPayee),
                 typeof(Payment),

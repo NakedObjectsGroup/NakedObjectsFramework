@@ -17,7 +17,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
     [TestFixture]
     public class TestObjectFinderWithCompoundKeys : TestObjectFinderWithCompoundKeysAbstract {
 
-        protected override Type[] Types =>
+        protected override Type[] ObjectTypes =>
             new[] {
                 typeof(IPayee),
                 typeof(Payment),

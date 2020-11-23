@@ -23,7 +23,7 @@ namespace NakedObjects.SystemTest.Method {
     [TestFixture]
     public class TestRecognisedMethods : AbstractSystemTest<MethodsDbContext> {
 
-        protected override Type[] Types =>
+        protected override Type[] ObjectTypes =>
             new[] {
                 typeof(Sex),
                 typeof(Auto1),

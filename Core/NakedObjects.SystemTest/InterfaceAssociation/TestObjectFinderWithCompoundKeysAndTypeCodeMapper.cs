@@ -14,7 +14,7 @@ namespace NakedObjects.SystemTest.TestObjectFinderWithCompoundKeysAndTypeCodeMap
     [TestFixture]
     public class TestObjectFinderWithCompoundKeysAndTypeCodeMapper : TestObjectFinderWithCompoundKeysAbstract {
 
-        protected override Type[] Types => new[] {
+        protected override Type[] ObjectTypes => new[] {
             typeof(IPayee),
             typeof(Payment),
             typeof(CustomerOne),

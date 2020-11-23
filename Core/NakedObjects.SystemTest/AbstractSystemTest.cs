@@ -33,7 +33,7 @@ namespace NakedObjects.SystemTest {
 
     public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase
         where TContext : DbContext {
-        protected override Type[] Types {
+        protected override Type[] ObjectTypes {
             get {
                 return new[] {
                     typeof(List<object>),

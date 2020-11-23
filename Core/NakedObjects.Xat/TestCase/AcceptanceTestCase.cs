@@ -78,29 +78,39 @@ namespace NakedObjects.Xat {
             get { return new Type[] { }; }
         }
 
-        protected virtual Type[] Types {
+        protected virtual Type[] ObjectTypes {
             get { return new Type[] { }; }
         }
 
+        protected virtual Type[] Records
+        {
+            get { return new Type[] { }; }
+        }
+
+        protected virtual Type[] Functions
+        {
+            get { return new Type[] { }; }
+        }
+
+
         protected virtual EntityObjectStoreConfiguration Persistor => new EntityObjectStoreConfiguration();
 
-        protected virtual ObjectReflectorConfiguration Reflector {
+        protected virtual ObjectReflectorConfiguration ObjectReflectorConfig {
             get {
                 var reflectorConfig = new ObjectReflectorConfiguration(
-                    Types ?? new Type[] { },
+                    ObjectTypes,
                     Services);
                 ObjectReflectorConfiguration.NoValidate = true;
                 return reflectorConfig;
             }
         }
 
-        protected virtual FunctionalReflectorConfiguration FunctionalReflector {
+        protected virtual FunctionalReflectorConfiguration FunctionalReflectorConfig {
             get {
                 var reflectorConfig = new FunctionalReflectorConfiguration(
-                    new Type[] { },
-                    new Type[] { }
+                    Records,
+                    Functions
                 );
-                ObjectReflectorConfiguration.NoValidate = true;
                 return reflectorConfig;
             }
         }
@@ -355,9 +365,9 @@ namespace NakedObjects.Xat {
             // todo - use DI code ? 
 
             // config 
-            services.AddSingleton<IObjectReflectorConfiguration>(Reflector);
+            services.AddSingleton<IObjectReflectorConfiguration>(ObjectReflectorConfig);
             services.AddSingleton<IEntityObjectStoreConfiguration>(Persistor);
-            services.AddSingleton<IFunctionalReflectorConfiguration>(FunctionalReflector);
+            services.AddSingleton<IFunctionalReflectorConfiguration>(FunctionalReflectorConfig);
             services.AddSingleton<ICoreConfiguration>(CoreConfig);
 
             //Externals

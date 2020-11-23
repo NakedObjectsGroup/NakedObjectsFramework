@@ -21,7 +21,7 @@ namespace NakedObjects.SystemTest.Component {
     [TestFixture]
     public class ComponentUnusedApiTest : AbstractSystemTest<FooContext> {
         private ITestObject foo1;
-        protected override Type[] Types => new[] {typeof(Foo)};
+        protected override Type[] ObjectTypes => new[] {typeof(Foo)};
 
         protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
 

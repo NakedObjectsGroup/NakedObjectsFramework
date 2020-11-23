@@ -32,11 +32,11 @@ type CodeSystemTests() =
 
     override x.Services =  [| typeof<SimpleRepository<Person>> |]
 
-    override x.Types = [| typeof<Category>;
-                          typeof<Person>;
-                          typeof<Product>;
-                          typeof<AbstractTestCode>;
-                          typeof<CountryCode> |]
+    override x.ObjectTypes = [| typeof<Category>;
+                                typeof<Person>;
+                                typeof<Product>;
+                                typeof<AbstractTestCode>;
+                                typeof<CountryCode> |]
 
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = 

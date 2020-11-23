@@ -23,7 +23,7 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     [TestFixture]
     public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
-        protected override Type[] Types => new[] {
+        protected override Type[] ObjectTypes => new[] {
             typeof(Foo),
             typeof(FooSub),
             typeof(SubTypeOfFoo),

@@ -167,7 +167,7 @@ namespace NakedObjects.Spa.Selenium.Test.FunctionTests {
         #endregion
     }
 
-    public abstract class HomeTests : HomeTestsRoot {
+    public abstract class  HomeTests : HomeTestsRoot {
         [TestMethod]
         public override void WaitForSingleHome() {
             base.WaitForSingleHome();

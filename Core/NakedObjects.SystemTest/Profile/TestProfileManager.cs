@@ -24,7 +24,7 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Profile {
     [TestFixture]
     public class TestProfileManager : AbstractSystemTest<ProfileDbContext> {
-        protected override Type[] Types => new[] {
+        protected override Type[] ObjectTypes => new[] {
             typeof(Foo),
             typeof(QueryableList<Foo>)
         };

@@ -19,7 +19,7 @@ namespace NakedObjects.SystemTest.Injection {
     [TestFixture]
     public class TestInjection : AbstractSystemTest<InjectionDbContext> {
 
-        protected override Type[] Types => new[] {
+        protected override Type[] ObjectTypes => new[] {
             typeof(Object1),
             typeof(Object2),
             typeof(Object3),

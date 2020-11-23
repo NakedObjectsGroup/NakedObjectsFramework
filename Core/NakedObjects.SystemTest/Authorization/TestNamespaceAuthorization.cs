@@ -26,7 +26,7 @@ using NUnit.Framework;
 namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
     [TestFixture]
     public class TestNamespaceAuthorization : AbstractSystemTest<NamespaceAuthorizationDbContext> {
-        protected override Type[] Types => new[] {
+        protected override Type[] ObjectTypes => new[] {
             typeof(Bar1),
             typeof(Bar2),
             typeof(Foo1),

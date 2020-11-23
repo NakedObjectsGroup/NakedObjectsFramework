@@ -37,7 +37,7 @@ namespace NakedFunctions.Rest.Test {
         private readonly Type[] FunctionTypes = {typeof(SimpleRecordFunctions)};
 
         private readonly Type[] RecordTypes = {typeof(SimpleRecord), typeof(GuidRecord)};
-        protected override Type[] Types { get; } = { };
+        protected override Type[] ObjectTypes { get; } = { };
 
         protected override Type[] Services { get; } = { };
 
