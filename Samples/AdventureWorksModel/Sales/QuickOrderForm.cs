@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedObjects;
 
-namespace AdventureWorksModel.Sales {
+namespace AdventureWorksModel {
     public class OrderLine : IViewModel {
         public IDomainObjectContainer Container { protected get; set; }
 

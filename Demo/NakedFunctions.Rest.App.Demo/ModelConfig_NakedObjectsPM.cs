@@ -23,7 +23,19 @@ namespace NakedFunctions.Rest.App.Demo
             typeof(EmployeePayHistory),
             typeof(SpecialOfferProduct),
             typeof(CustomerDashboard),
-            typeof(IEmployee)
+            typeof(IEmployee),
+            typeof(PersonCreditCard),
+            typeof(CurrencyRate),
+            typeof(CountryRegion),
+            typeof(SalesOrderHeaderSalesReason),
+            typeof(EmailStatus),
+            typeof(ICreditCardCreator),
+            typeof(SalesTerritoryHistory),
+            typeof(SalesOrderDetail),
+            typeof(SalesPersonQuotaHistory),
+            typeof(AddressType),
+            typeof(StateProvince),
+            typeof(ShipMethod)
         };
 
         public static IMenu[] MainMenus(IMenuFactory mf) => new[] {

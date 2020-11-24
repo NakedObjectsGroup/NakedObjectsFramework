@@ -8,7 +8,6 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
-using AdventureWorksModel.Sales;
 using NakedObjects;
 using NakedObjects.Services;
 

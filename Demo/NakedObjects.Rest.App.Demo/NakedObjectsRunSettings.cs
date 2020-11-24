@@ -17,10 +17,13 @@ using NakedObjects.Menu;
 namespace NakedObjects.Rest.App.Demo {
     public static class NakedObjectsRunSettings {
 
+       // Unintrospected specs: AdventureWorksModel.SalesOrderHeader+SalesReasonCategories,AdventureWorksModel.Sales.QuickOrderForm,
+
         private static Type[] AllAdventureWorksTypes => 
             Assembly.GetAssembly(typeof(AdventureWorksModel.AssemblyHook)).GetTypes().
                      Where(t => t.IsPublic).
                      Where(t => t.Namespace == "AdventureWorksModel").
+                     Append(typeof(SalesOrderHeader.SalesReasonCategories)).
                      ToArray();
 
 
