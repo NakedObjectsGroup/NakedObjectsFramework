@@ -26,13 +26,14 @@ namespace NakedObjects.Meta.SpecImmutable {
         private IIdentifier identifier;
         private ImmutableList<ITypeSpecImmutable> subclasses;
 
-        protected TypeSpecImmutable(Type type) {
+        protected TypeSpecImmutable(Type type, bool isRecognized) {
             Type = type.IsGenericType && CollectionUtils.IsCollection(type) ? type.GetGenericTypeDefinition() : type;
             Interfaces = ImmutableList<ITypeSpecImmutable>.Empty;
             subclasses = ImmutableList<ITypeSpecImmutable>.Empty;
             ContributedActions = ImmutableList<IActionSpecImmutable>.Empty;
             CollectionContributedActions = ImmutableList<IActionSpecImmutable>.Empty;
             FinderActions = ImmutableList<IActionSpecImmutable>.Empty;
+            ReflectionStatus = isRecognized ? ReflectionStatus.PlaceHolder : ReflectionStatus.PendingIntrospection;
         }
 
         #region ITypeSpecBuilder Members
@@ -170,7 +171,11 @@ namespace NakedObjects.Meta.SpecImmutable {
             ContributedActions = ContributedActions.Union(contributedFunctions).ToImmutableList();
         }
 
-        public ReflectionStatus ReflectionStatus { get; set; } = ReflectionStatus.PlaceHolder;
+        public bool IsPlaceHolder => ReflectionStatus == ReflectionStatus.PlaceHolder;
+
+        public bool IsPendingIntrospection => ReflectionStatus == ReflectionStatus.PendingIntrospection;
+
+        private ReflectionStatus ReflectionStatus { get; set; }
 
         public void AddContributedActions(IList<IActionSpecImmutable> contributedActions) => ContributedActions = contributedActions.ToImmutableList();
 

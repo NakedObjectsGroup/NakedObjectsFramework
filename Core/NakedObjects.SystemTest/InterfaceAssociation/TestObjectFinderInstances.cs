@@ -24,6 +24,7 @@ namespace NakedObjects.SystemTest.ObjectFinderInstances {
         protected override Type[] ObjectTypes =>
             new[] {
                 typeof(IPayee),
+                typeof(NakedObjects.SystemTest.ObjectFinderGuid.IPayee),
                 typeof(Payment),
                 typeof(Customer),
                 typeof(Supplier)

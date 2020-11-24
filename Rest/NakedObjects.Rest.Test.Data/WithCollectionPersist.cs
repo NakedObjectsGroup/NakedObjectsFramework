@@ -14,6 +14,10 @@ using NakedObjects;
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
+
+    
+
+
 namespace RestfulObjects.Test.Data {
     public class WithCollectionPersist {
         private ICollection<MostSimpleViewModel> aCollectionViewModels = new List<MostSimpleViewModel>();

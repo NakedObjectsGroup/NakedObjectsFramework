@@ -16,6 +16,12 @@ open System.Data.Entity.Core.Objects.DataClasses
 open SystemTestCode
 open TestCode
 
+
+
+
+
+
+
 [<TestFixture>]
 type DomainSystemTests() = 
     inherit NakedObjects.Xat.AcceptanceTestCase()
@@ -28,12 +34,73 @@ type DomainSystemTests() =
 
     override x.Services =  [| typeof<SimpleRepository<ScrapReason>> |]
 
-    override x.ObjectTypes = [| typeof<Product>;
+    override x.ObjectTypes = [| typeof<ProductReview>;
+                                typeof<ProductDocument>;
+                                typeof<ProductCostHistory>;
+                                typeof<ProductListPriceHistory>;
+                                typeof<TransactionHistory>;
+                                typeof<UnitMeasure>;
+                                typeof<ProductModel>;
+                                typeof<PurchaseOrderDetail>;
+                                typeof<ProductInventory>;
+                                typeof<ProductVendor>;
+                                typeof<ShoppingCartItem>;
+                                typeof<SpecialOfferProduct>;
+                                typeof<ProductProductPhoto>;
+                                typeof<BillOfMaterial>;
+                                typeof<WorkOrderRouting>;
+                                typeof<Product>;
                                 typeof<ScrapReason>;
                                 typeof<WorkOrder>;
                                 typeof<ProductSubcategory>;
                                 typeof<ProductCategory>;
                                 typeof<EntityCollection<Product>>;
+                                typeof<Location>;
+                                typeof<SpecialOffer>;
+                                typeof<Document>;
+                                typeof<ProductPhoto>;
+                                typeof<PurchaseOrderHeader>;
+                                typeof<ProductModelProductDescriptionCulture>;
+                                typeof<SalesOrderDetail>;
+                                typeof<ProductModelIllustration>;
+                                typeof<Vendor>;
+                                typeof<Culture>;
+                                typeof<VendorContact>;
+                                typeof<Employee>;
+                                typeof<ProductDescription>;
+                                typeof<VendorAddress>;
+                                typeof<SalesOrderHeader>;
+                                typeof<Illustration>;
+                                typeof<ShipMethod>;
+                                typeof<SalesTerritory>;
+                                typeof<Customer>;
+                                typeof<CreditCard>;
+                                typeof<EmployeePayHistory>;
+                                typeof<JobCandidate>;
+                                typeof<Contact>;
+                                typeof<EmployeeDepartmentHistory>;
+                                typeof<AddressType>;
+                                typeof<EmployeeAddress>;
+                                typeof<SalesPerson>;
+                                typeof<ContactType>;
+                                typeof<CurrencyRate>;
+                                typeof<Address>;
+                                typeof<SalesOrderHeaderSalesReason>;
+                                typeof<ContactCreditCard>;
+                                typeof<StateProvince>;
+                                typeof<Individual>;
+                                typeof<Department>;
+                                typeof<CustomerAddress>;
+                                typeof<SalesPersonQuotaHistory>;
+                                typeof<Store>;
+                                typeof<SalesTerritoryHistory>;
+                                typeof<StoreContact>;
+                                typeof<Shift>;
+                                typeof<SalesReason>;
+                                typeof<Currency>;
+                                typeof<SalesTaxRate>;
+                                typeof<CountryRegion>;
+                                typeof<CountryRegionCurrency>;
                                 typeof<EntityCollection<ProductSubcategory>> |]
     
     [<OneTimeSetUpAttribute>]

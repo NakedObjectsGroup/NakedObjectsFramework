@@ -18,7 +18,7 @@ namespace NakedObjects.SystemTest.Container {
     [TestFixture]
     public class TestContainer : AbstractSystemTest<ContainerDbContext> {
 
-        protected override Type[] ObjectTypes => new[] {typeof(Object1), typeof(Object2), typeof(ViewModel2)};
+        protected override Type[] ObjectTypes => new[] {typeof(Object1), typeof(Object2), typeof(ViewModel2), typeof(TestEnum) };
 
         protected override Type[] Services =>
             new[] {
@@ -97,6 +97,7 @@ namespace NakedObjects.SystemTest.Container {
     }
 
     public class Object1 {
+        [NakedObjectsIgnore] // as container is public for test
         public IDomainObjectContainer Container { get; set; }
         public virtual int Id { get; set; }
 

@@ -54,7 +54,8 @@ let checkResults resultsFile s =
         let actionView = getTestData resultsFile
         let nd = normalizeData actionView s
         Assert.AreEqual(fst(nd), snd(nd))
-                
+   
+
 [<TestFixture>]
 type DomainTests() = 
     class
@@ -86,6 +87,7 @@ type DomainTests() =
                typeof<System.Collections.Generic.List<TestObject>>;
                typeof<One.TransformFull>;
                typeof<Two.TransformFull>;
+               typeof<XmlSchema>;
                typeof<IXmlSnapshotService>  |]
 
         override x.Services =         

@@ -27,31 +27,35 @@ namespace NakedObjects.Reflector.Component {
 
         #region IClassStrategy Members
 
-        public virtual bool IsTypeToBeIntrospected(Type type) {
+        public virtual bool IsNotIgnored(Type type) {
+            var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
+            return !IsTypeIgnored(returnType) &&
+                   !IsTypeUnsupportedByReflector(returnType) &&
+                   (!FasterTypeUtils.IsGenericCollection(type) || type.GetGenericArguments().All(IsNotIgnored));
+        }
+
+        public bool IsTypeRecognized(Type type)
+        {
             var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
             return !IsTypeIgnored(returnType) &&
                    !IsTypeUnsupportedByReflector(returnType) &&
                    IsTypeWhiteListed(returnType) &&
-                   (!FasterTypeUtils.IsGenericCollection(type) || type.GetGenericArguments().All(IsTypeToBeIntrospected));
+                   (!FasterTypeUtils.IsGenericCollection(type) || type.GetGenericArguments().All(IsTypeRecognized));
         }
 
         public bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
+
         public bool IsService(Type type) => config.Services.Contains(type);
         public bool LoadReturnType(MethodInfo method) => method.ReturnType != typeof(void);
 
         public virtual Type GetType(Type type) {
             var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
-            return IsTypeToBeIntrospected(returnType) ? returnType : null;
+            return IsNotIgnored(returnType) ? returnType : null;
         }
 
         #endregion
 
-        private bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
-
-        //private bool IsNamespaceMatch(Type type) {
-        //    var ns = type.Namespace ?? "";
-        //    return config.ModelNamespaces.Any(sn => ns.StartsWith(sn, StringComparison.Ordinal));
-        //}
+        private bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null || IsUnSupportedSystemType(type);
 
         private bool IsTypeWhiteListed(Type type) => IsTypeSupportedSystemType(type) || IsTypeExplicitlyRequested(type);
 
@@ -62,9 +66,11 @@ namespace NakedObjects.Reflector.Component {
                    type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
         }
 
-        private Type ToMatch(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() : type;
+        private static Type ToMatch(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() : type;
 
         private bool IsTypeSupportedSystemType(Type type) => config.SupportedSystemTypes.Any(t => t == ToMatch(type));
+
+        private bool IsUnSupportedSystemType(Type type) => FasterTypeUtils.IsSystem(type) && !IsTypeSupportedSystemType(type);
 
         private bool IsTypeUnsupportedByReflector(Type type) =>
             type.IsPointer ||

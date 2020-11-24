@@ -64,6 +64,10 @@ type Tests() =
                typeof<MostSimple>
                typeof<MostSimpleViewModel>
                typeof<WithValue>
+               typeof<WithValuePersist>
+               typeof<MostSimplePersist>
+               typeof<WithReferencePersist>
+               typeof<WithCollectionPersist>
                typeof<TestEnum>
                typeof<MostSimple []>
                typeof<FormViewModel>

@@ -18,6 +18,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.Value;
@@ -83,7 +84,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         }
 
         private static int? GetValueTypeTypicalLength(Type type, IClassStrategy classStrategy) {
-            var actualType = classStrategy.GetType(type);
+            var actualType = TypeKeyUtils.FilterNullableAndProxies(type);
 
             if (actualType is not null) {
                 if (actualType.IsArray) {

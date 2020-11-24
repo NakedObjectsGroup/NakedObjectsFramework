@@ -32,7 +32,8 @@ type CodeSystemTests() =
 
     override x.Services =  [| typeof<SimpleRepository<Person>> |]
 
-    override x.ObjectTypes = [| typeof<Category>;
+    override x.ObjectTypes = [| typeof<Address>;
+                                typeof<Category>;
                                 typeof<Person>;
                                 typeof<Product>;
                                 typeof<AbstractTestCode>;

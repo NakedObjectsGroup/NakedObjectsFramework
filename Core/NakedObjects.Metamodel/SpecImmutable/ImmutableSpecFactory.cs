@@ -19,39 +19,39 @@ namespace NakedObjects.Meta.SpecImmutable {
 
         public static IActionSpecImmutable CreateActionSpecImmutable(IIdentifier identifier, ITypeSpecImmutable ownerSpec, IActionParameterSpecImmutable[] parameters) => new ActionSpecImmutable(identifier, ownerSpec, parameters);
 
-        public static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, IMetamodel metamodel) => new ObjectSpecImmutable(type);
+        //public static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, IMetamodel metamodel) => new ObjectSpecImmutable(type);
 
-        public static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, IMetamodel metamodel) => new ServiceSpecImmutable(type);
+        //public static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, IMetamodel metamodel) => new ServiceSpecImmutable(type);
 
         public static IOneToManyAssociationSpecImmutable CreateOneToManyAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec, IObjectSpecImmutable defaultElementSpec) => new OneToManyAssociationSpecImmutable(identifier, ownerSpec, returnSpec, defaultElementSpec);
 
         public static IOneToOneAssociationSpecImmutable CreateOneToOneAssociationSpecImmutable(IIdentifier identifier, IObjectSpecImmutable ownerSpec, IObjectSpecImmutable returnSpec) => new OneToOneAssociationSpecImmutable(identifier, ownerSpec, returnSpec);
 
-        public static IObjectSpecBuilder CreateObjectSpecImmutable(Type type) {
+        public static IObjectSpecBuilder CreateObjectSpecImmutable(Type type, bool isRecognized) {
             lock (SpecCache) {
                 if (!SpecCache.ContainsKey(type)) {
-                    SpecCache.Add(type, new ObjectSpecImmutable(type));
+                    SpecCache.Add(type, new ObjectSpecImmutable(type, isRecognized));
                 }
 
                 return SpecCache[type] as IObjectSpecBuilder;
             }
         }
 
-        public static IServiceSpecBuilder CreateServiceSpecImmutable(Type type) {
+        public static IServiceSpecBuilder CreateServiceSpecImmutable(Type type, bool isRecognized) {
             lock (SpecCache) {
                 if (!SpecCache.ContainsKey(type)) {
-                    SpecCache.Add(type, new ServiceSpecImmutable(type));
+                    SpecCache.Add(type, new ServiceSpecImmutable(type, isRecognized));
                 }
 
                 return SpecCache[type] as IServiceSpecBuilder;
             }
         }
 
-        public static ITypeSpecBuilder CreateTypeSpecImmutable(Type type, bool isService)
+        public static ITypeSpecBuilder CreateTypeSpecImmutable(Type type, bool isService, bool isRecognized)
         {
             return isService
-                ? (ITypeSpecBuilder)CreateServiceSpecImmutable(type)
-                : CreateObjectSpecImmutable(type);
+                ? (ITypeSpecBuilder)CreateServiceSpecImmutable(type, isRecognized)
+                : CreateObjectSpecImmutable(type, isRecognized);
         }
 
         public static void ClearCache() {

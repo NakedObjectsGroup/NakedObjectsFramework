@@ -28,25 +28,27 @@ namespace NakedObjects.ParallelReflector.Component {
 
         #region IClassStrategy Members
 
-        public bool IsTypeToBeIntrospected(Type type) {
+        public bool IsNotIgnored(Type type) {
             lock (Cache) {
                 var flags = Setup(type);
-                flags.IsTypeToBeIntrospected ??= classStrategy.IsTypeToBeIntrospected(type);
+                flags.IsTypeToBeIntrospected ??= classStrategy.IsNotIgnored(type);
                 return flags.IsTypeToBeIntrospected.Value;
             }
         }
+
+        public bool IsTypeRecognized(Type type) => classStrategy.IsTypeRecognized(type);
 
         public bool IsIgnored(MemberInfo member) => classStrategy.IsIgnored(member);
         public bool IsService(Type type) => classStrategy.IsService(type);
         public bool LoadReturnType(MethodInfo method) => classStrategy.LoadReturnType(method);
 
-        public Type GetType(Type type) {
-            lock (Cache) {
-                var flags = Setup(type);
-                flags.Type ??= classStrategy.GetType(type);
-                return flags.Type;
-            }
-        }
+        //public Type GetType(Type type) {
+        //    lock (Cache) {
+        //        var flags = Setup(type);
+        //        flags.Type ??= classStrategy.GetType(type);
+        //        return flags.Type;
+        //    }
+        //}
 
         #endregion
 

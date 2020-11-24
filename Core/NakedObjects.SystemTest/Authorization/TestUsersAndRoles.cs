@@ -24,6 +24,7 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
     public class TestUsersAndRoles : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
         protected override Type[] ObjectTypes => new[] {
             typeof(Foo),
+            typeof(NakedObjects.SystemTest.Audit.Foo),
             typeof(MyDefaultAuthorizer)
         };
 

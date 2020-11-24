@@ -129,7 +129,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return candidates.Where(methodInfo => methodInfo.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
                                                   !methodInfo.IsStatic &&
                                                   !methodInfo.IsGenericMethod &&
-                                                  classStrategy.IsTypeToBeIntrospected(methodInfo.ReturnType) &&
+                                                  classStrategy.IsNotIgnored(methodInfo.ReturnType) &&
                                                   ParametersAreSupported(methodInfo, classStrategy)).ToArray();
         }
 
@@ -159,7 +159,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         private bool ParametersAreSupported(MethodInfo method, IClassStrategy classStrategy) {
             foreach (var parameterInfo in method.GetParameters()) {
-                if (!classStrategy.IsTypeToBeIntrospected(parameterInfo.ParameterType)) {
+                if (!classStrategy.IsNotIgnored(parameterInfo.ParameterType)) {
                     // log if not a System or NOF type
                     if (!TypeUtils.IsSystem(method.DeclaringType) && !TypeUtils.IsNakedObjects(method.DeclaringType)) {
                         logger.LogWarning($"Ignoring method: {method.DeclaringType}.{method.Name} because parameter '{parameterInfo.Name}' is of type {parameterInfo.ParameterType}");

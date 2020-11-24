@@ -292,7 +292,7 @@ namespace NakedFunctions.Reflector.Test.Component {
         public void ReflectNavigableType() {
             ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new FunctionalReflectorConfiguration(new[] {typeof(NavigableClass)}, new Type[0]);
+            var rc = new FunctionalReflectorConfiguration(new[] {typeof(NavigableClass), typeof(SimpleClass) }, new Type[0]);
 
             var container = GetContainer(new CoreConfiguration(), rc);
 

@@ -12,7 +12,7 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedObjects.Meta.SpecImmutable {
     [Serializable]
     public sealed class ServiceSpecImmutable : TypeSpecImmutable, IServiceSpecBuilder {
-        public ServiceSpecImmutable(Type type) : base(type) { }
+        public ServiceSpecImmutable(Type type, bool isRecognized) : base(type, isRecognized) { }
 
         // The special constructor is used to deserialize values. 
         public ServiceSpecImmutable(SerializationInfo info, StreamingContext context) : base(info, context) { }

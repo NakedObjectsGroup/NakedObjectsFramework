@@ -37,7 +37,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
             candidates.Where(property => property.GetGetMethod() is not null &&
-                                         classStrategy.IsTypeToBeIntrospected(property.PropertyType) &&
+                                         classStrategy.IsNotIgnored(property.PropertyType) &&
                                          !classStrategy.IsIgnored(property)).ToList();
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property,  ISpecificationBuilder collection, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {

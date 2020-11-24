@@ -25,6 +25,7 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
     public class TestCustomAuthorizationManager : AbstractSystemTest<CustomAuthorizationManagerDbContext> {
         protected override Type[] ObjectTypes => new[] {
             typeof(Foo),
+            typeof(NakedObjects.SystemTest.Audit.Foo),
             typeof(FooSub),
             typeof(SubTypeOfFoo),
             typeof(Bar),

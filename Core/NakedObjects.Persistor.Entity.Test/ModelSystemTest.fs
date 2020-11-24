@@ -31,7 +31,8 @@ type ModelSystemTests() =
 
     override x.Services = [| typeof<SimpleRepository<Person>> |]
 
-    override x.ObjectTypes = [| typeof<SimpleDatabase.Fruit>;
+    override x.ObjectTypes = [| typeof<SimpleDatabase.Food>;
+                                typeof<SimpleDatabase.Fruit>;
                                 typeof<SimpleDatabase.Person>;
                                 typeof<SimpleDatabase.NameType>;
                                 typeof<SimpleDatabase.ComplexType1>;

@@ -31,6 +31,7 @@ namespace NakedObjects.Architecture.SpecImmutable {
         void AddSubclass(ITypeSpecImmutable subclass);
         void AddContributedFunctions(IList<IActionSpecImmutable> result);
 
-        ReflectionStatus ReflectionStatus { get; }
+        bool IsPlaceHolder { get; }
+        bool IsPendingIntrospection { get; }
     }
 }

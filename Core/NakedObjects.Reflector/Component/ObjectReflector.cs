@@ -39,16 +39,19 @@ namespace NakedObjects.Reflector.Component {
 
         protected override IIntrospector GetNewIntrospector() => new ObjectIntrospector(this, LoggerFactory.CreateLogger<ObjectIntrospector>());
 
-        private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectObjectTypes(Type[] ooTypes) {
+        private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectObjectTypes(Type[] ooTypes, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
             var placeholders = GetPlaceholders(ooTypes, ClassStrategy);
+            var pending = specDictionary.Where(i => i.Value.IsPendingIntrospection).Select(i => i.Value.Type);
+            var toIntrospect = placeholders.Select(kvp => kvp.Value.Type).Union(pending).ToArray();
             return placeholders.Any()
-                ? IntrospectPlaceholders(placeholders)
-                : placeholders;
+                ? IntrospectTypes(toIntrospect, specDictionary.AddRange(placeholders))
+                : specDictionary;
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
             var ooTypes = objectReflectorConfiguration.ObjectTypes;
-            return IntrospectObjectTypes(ooTypes);
+            specDictionary = IntrospectObjectTypes(ooTypes, specDictionary);
+            return specDictionary;
         }
     }
 

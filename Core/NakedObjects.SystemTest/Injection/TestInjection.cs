@@ -174,6 +174,7 @@ namespace NakedObjects.SystemTest.Injection {
     }
 
     public class Object1 {
+        [NakedObjectsIgnore] // because public getter for test
         public IDomainObjectContainer Container { get; set; }
 
         public virtual int Id { get; set; }
@@ -238,8 +239,10 @@ namespace NakedObjects.SystemTest.Injection {
     }
 
     public class Object6 {
+        [NakedObjectsIgnore] // because public getter for test
         public ILoggerFactory LoggerFactory { get; set; }
 
+        [NakedObjectsIgnore] // because public getter for test
         public ILogger<Object6> Logger { get; set; }
 
         public virtual int Id { get; set; }

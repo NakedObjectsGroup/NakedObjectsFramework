@@ -211,6 +211,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             return parentElement.Descendants().Where(element => localName.Equals("*") || element.Name.LocalName.Equals(localName));
         }
 
+        [NakedObjectsIgnore]
         public INakedObjectAdapter GetObject() => rootPlace.NakedObjectAdapter;
 
         //  return true if able to navigate the complete vector of field names
@@ -341,6 +342,7 @@ namespace NakedObjects.Snapshot.Xml.Utility {
             return childElement;
         }
 
+        [NakedObjectsIgnore]
         public Place ObjectToElement(INakedObjectAdapter nakedObjectAdapter) {
             var nos = (IObjectSpec) nakedObjectAdapter.Spec;
 

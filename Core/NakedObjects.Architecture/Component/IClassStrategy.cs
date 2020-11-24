@@ -19,15 +19,18 @@ namespace NakedObjects.Architecture.Component {
         ///     proxies or other means to wrap a Type, then this method should return the
         ///     underlying Type which should be exposed by the introspector.
         /// </summary>
-        Type GetType(Type type);
+        //Type GetType(Type type);
 
-        bool IsTypeToBeIntrospected(Type type);
+        bool IsNotIgnored(Type type);
+
+        bool IsTypeRecognized(Type type);
 
         bool IsIgnored(MemberInfo member);
 
         bool IsService(Type type);
 
         bool LoadReturnType(MethodInfo method);
+     
     }
 
     // Copyright (c) Naked Objects Group Ltd.

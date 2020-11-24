@@ -54,13 +54,22 @@ namespace NakedObjects.ParallelReflector.Component {
         }
 
 
-        protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            var ph = metamodel.Where(i => i.Value.ReflectionStatus == ReflectionStatus.PlaceHolder).Select(i => i.Value.Type);
-            var mm = ph.AsParallel().SelectMany(type => IntrospectSpecification(type, metamodel).metamodel).Distinct(new TypeSpecKeyComparer()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value).ToImmutableDictionary();
+        protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectTypes(Type[] toIntrospect,  IImmutableDictionary<string, ITypeSpecBuilder> specDictionary)
+        {
+            specDictionary = toIntrospect.Any()
+                ? toIntrospect.AsParallel().SelectMany(type => IntrospectSpecification(type, specDictionary).metamodel).Distinct(new TypeSpecKeyComparer()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value).ToImmutableDictionary()
+                : specDictionary;
 
-            return mm.Any(i => string.IsNullOrEmpty(i.Value.FullName))
-                ? IntrospectPlaceholders(mm)
-                : mm;
+            // todo is this now necessary ?
+            return specDictionary.Any(i => i.Value.IsPlaceHolder)
+                ? IntrospectPlaceholders(specDictionary)
+                : specDictionary;
+        }
+
+
+        protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPlaceholders(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
+            var ph = specDictionary.Where(i => i.Value.IsPlaceHolder).Select(i => i.Value.Type).ToArray();
+            return IntrospectTypes(ph, specDictionary);
         }
 
 
@@ -87,8 +96,7 @@ namespace NakedObjects.ParallelReflector.Component {
         }
 
         protected IImmutableDictionary<string, ITypeSpecBuilder> GetPlaceholders(Type[] types, IClassStrategy classStrategy) =>
-            types.Select(t => classStrategy.GetType(t))
-                 .Where(t => t != null)
+            types.Select(TypeKeyUtils.FilterNullableAndProxies)
                  .Distinct(new TypeKeyComparer())
                  .ToDictionary(TypeKeyUtils.GetKeyForType, GetPlaceholder).ToImmutableDictionary();
 
@@ -106,7 +114,7 @@ namespace NakedObjects.ParallelReflector.Component {
 
         private ITypeSpecBuilder CreateSpecification(Type type) {
             TypeUtils.GetType(type.FullName); // This should ensure type is cached
-            return ImmutableSpecFactory.CreateTypeSpecImmutable(type, ClassStrategy.IsService(type));
+            return ImmutableSpecFactory.CreateTypeSpecImmutable(type, ClassStrategy.IsService(type), ClassStrategy.IsTypeRecognized(type));
         }
 
         #region Nested type: TypeKeyComparer
@@ -147,7 +155,7 @@ namespace NakedObjects.ParallelReflector.Component {
                 throw new NakedObjectSystemException("cannot load specification for null");
             }
 
-            var actualType = ClassStrategy.GetType(type) ?? type;
+            var actualType = TypeKeyUtils.FilterNullableAndProxies(type);
             var typeKey = TypeKeyUtils.GetKeyForType(actualType);
             return metamodel.ContainsKey(typeKey) ? (metamodel[typeKey], metamodel) : LoadPlaceholder(actualType, metamodel);
         }

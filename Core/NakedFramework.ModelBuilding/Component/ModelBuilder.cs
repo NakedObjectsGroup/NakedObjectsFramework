@@ -10,6 +10,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core;
 using NakedObjects.Core.Util;
 
 namespace NakedFramework.ModelBuilding.Component {
@@ -28,10 +29,21 @@ namespace NakedFramework.ModelBuilding.Component {
             IImmutableDictionary<string, ITypeSpecBuilder> specDictionary = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
 
             specDictionary = reflectors.Aggregate(specDictionary, (current, reflector) => reflector.Reflect(current));
+            Validate(specDictionary);
+
 
             specDictionary.ForEach(i => initialMetamodel.Add(i.Value.Type, i.Value));
 
             integrator.Integrate();
+        }
+
+        private static void Validate(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
+            var unIntrospectedSpecs = specDictionary.Values.Where(v => v.IsPlaceHolder || v.IsPendingIntrospection);
+
+            if (unIntrospectedSpecs.Any()) {
+                var names = unIntrospectedSpecs.Aggregate("", (s, sp) => $"{s}{sp.Type},");
+                throw new ReflectionException($"Unintrospected specs: {names}");
+            }
         }
     }
 }

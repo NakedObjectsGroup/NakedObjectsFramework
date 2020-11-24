@@ -37,8 +37,10 @@ namespace NakedFunctions.Reflector.Component {
             var allFunctionalTypes = records.Union(functions).ToArray();
 
             var placeholders = GetPlaceholders(allFunctionalTypes, ClassStrategy);
+            var pending = specDictionary.Where(i => i.Value.IsPendingIntrospection).Select(i => i.Value.Type);
+            var toIntrospect = placeholders.Select(kvp => kvp.Value.Type).Union(pending).ToArray();
             return placeholders.Any()
-                ? IntrospectPlaceholders(specDictionary.AddRange(placeholders))
+                ? IntrospectTypes(toIntrospect, specDictionary.AddRange(placeholders))
                 : specDictionary;
         }
 
@@ -50,7 +52,8 @@ namespace NakedFunctions.Reflector.Component {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Reflect(IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
             var records = functionalReflectorConfiguration.Types;
             var functions = functionalReflectorConfiguration.Functions;
-            return IntrospectFunctionalTypes(records, functions, specDictionary);
+            specDictionary = IntrospectFunctionalTypes(records, functions, specDictionary);
+            return specDictionary;
         }
     }
 

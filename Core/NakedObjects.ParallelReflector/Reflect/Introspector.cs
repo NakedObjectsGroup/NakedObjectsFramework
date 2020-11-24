@@ -105,7 +105,7 @@ namespace NakedObjects.ParallelReflector.Reflect {
             // this will also remove some methods, such as the superclass methods.
             metamodel = ProcessType(spec, metamodel);
 
-            if (SuperclassType != null && ClassStrategy.IsTypeToBeIntrospected(SuperclassType)) {
+            if (SuperclassType != null && ClassStrategy.IsTypeRecognized(SuperclassType)) {
                 (Superclass, metamodel) = Reflector.LoadSpecification(SuperclassType, metamodel);
             }
 
@@ -113,7 +113,7 @@ namespace NakedObjects.ParallelReflector.Reflect {
 
             var interfaces = new List<ITypeSpecBuilder>();
             foreach (var interfaceType in InterfacesTypes) {
-                if (interfaceType != null && ClassStrategy.IsTypeToBeIntrospected(interfaceType)) {
+                if (interfaceType != null && ClassStrategy.IsTypeRecognized(interfaceType)) {
                     ITypeSpecBuilder interfaceSpec;
                     (interfaceSpec, metamodel) = Reflector.LoadSpecification(interfaceType, metamodel);
                     interfaceSpec.AddSubclass(spec);
@@ -238,7 +238,7 @@ namespace NakedObjects.ParallelReflector.Reflect {
                 ? type.GetGenericTypeDefinition()
                 : FasterTypeUtils.IsObjectArray(type)
                     ? typeof(Array)
-                    : ClassStrategy.GetType(type);
+                    : TypeKeyUtils.FilterNullableAndProxies(type);
 
 
 
