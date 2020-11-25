@@ -8,69 +8,34 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Core.Util;
+using NakedObjects.ParallelReflector.Component;
 
 namespace NakedFunctions.Reflector.Component {
     /// <summary>
     ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
     /// </summary>
     [Serializable]
-    public class FunctionClassStrategy : IClassStrategy {
+    public class FunctionClassStrategy : AbstractClassStrategy {
         private readonly IFunctionalReflectorConfiguration config;
 
         public FunctionClassStrategy(IFunctionalReflectorConfiguration config) => this.config = config;
 
-        private bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedFunctionsIgnoreAttribute>() is not null || IsUnSupportedSystemType(type);
+        protected override bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedFunctionsIgnoreAttribute>() is not null || IsUnSupportedSystemType(type);
 
-
-        private bool IsTypeWhiteListed(Type type) => IsTypeSupportedSystemType(type) || IsTypeExplicitlyRequested(type);
-
-        private bool IsTypeExplicitlyRequested(Type type) {
+        protected override bool IsTypeExplicitlyRequested(Type type) {
             var types = config.Types.Union(config.Functions).ToArray();
             return types.Any(t => t == type) ||
                    type.IsGenericType && types.Any(t => t == type.GetGenericTypeDefinition());
         }
 
-        private Type ToMatch(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() : type;
-
-        private bool IsTypeSupportedSystemType(Type type) => config.SupportedSystemTypes.Any(t => t == ToMatch(type));
-
-        private bool IsUnSupportedSystemType(Type type) => FasterTypeUtils.IsSystem(type) && !IsTypeSupportedSystemType(type);
-
-        private bool IsTypeUnsupportedByReflector(Type type) =>
-            type.IsPointer ||
-            type.IsByRef ||
-            CollectionUtils.IsDictionary(type) ||
-            type.IsGenericParameter ||
-            type.ContainsGenericParameters;
+        protected override bool IsTypeSupportedSystemType(Type type) => config.SupportedSystemTypes.Any(t => t == ToMatch(type));
 
         #region IClassStrategy Members
 
-        public virtual bool IsNotIgnored(Type type) {
-            var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
-            return !IsTypeIgnored(returnType) &&
-                   !IsTypeUnsupportedByReflector(returnType) &&
-                   (!FasterTypeUtils.IsGenericCollection(type) || type.GetGenericArguments().All(IsNotIgnored));
-        }
-
-        public bool IsTypeRecognized(Type type) {
-            var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
-            return !IsTypeIgnored(returnType) &&
-                   !IsTypeUnsupportedByReflector(returnType) &&
-                   IsTypeWhiteListed(returnType) &&
-                   (!FasterTypeUtils.IsGenericCollection(type) || type.GetGenericArguments().All(IsTypeRecognized));
-        }
-
-        public virtual Type GetType(Type type) {
-            var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
-            return IsNotIgnored(returnType) ? returnType : null;
-        }
-
-        public bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedFunctionsIgnoreAttribute>() is not null;
-        public bool IsService(Type type) => false;
-        public bool LoadReturnType(MethodInfo method) => false;
+        public override bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedFunctionsIgnoreAttribute>() is not null;
+        public override bool IsService(Type type) => false;
+        public override bool LoadReturnType(MethodInfo method) => false;
 
         #endregion
 

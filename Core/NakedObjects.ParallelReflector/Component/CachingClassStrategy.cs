@@ -36,19 +36,13 @@ namespace NakedObjects.ParallelReflector.Component {
             }
         }
 
+        public bool IsIgnored(Type type) => classStrategy.IsIgnored(type);
+
         public bool IsTypeRecognized(Type type) => classStrategy.IsTypeRecognized(type);
 
         public bool IsIgnored(MemberInfo member) => classStrategy.IsIgnored(member);
         public bool IsService(Type type) => classStrategy.IsService(type);
         public bool LoadReturnType(MethodInfo method) => classStrategy.LoadReturnType(method);
-
-        //public Type GetType(Type type) {
-        //    lock (Cache) {
-        //        var flags = Setup(type);
-        //        flags.Type ??= classStrategy.GetType(type);
-        //        return flags.Type;
-        //    }
-        //}
 
         #endregion
 

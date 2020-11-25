@@ -8,78 +8,37 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Core.Util;
+using NakedObjects.ParallelReflector.Component;
 
 namespace NakedObjects.Reflector.Component {
     /// <summary>
     ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
     /// </summary>
     [Serializable]
-    public class ObjectClassStrategy : IClassStrategy {
+    public class ObjectClassStrategy : AbstractClassStrategy {
         private readonly IObjectReflectorConfiguration config;
 
-        public ObjectClassStrategy(IObjectReflectorConfiguration config)
-        {
-            this.config = config;
-        }
+        public ObjectClassStrategy(IObjectReflectorConfiguration config) => this.config = config;
 
-        #region IClassStrategy Members
+        protected override bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null || IsUnSupportedSystemType(type);
 
-        public virtual bool IsNotIgnored(Type type) {
-            var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
-            return !IsTypeIgnored(returnType) &&
-                   !IsTypeUnsupportedByReflector(returnType) &&
-                   (!FasterTypeUtils.IsGenericCollection(type) || type.GetGenericArguments().All(IsNotIgnored));
-        }
-
-        public bool IsTypeRecognized(Type type)
-        {
-            var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
-            return !IsTypeIgnored(returnType) &&
-                   !IsTypeUnsupportedByReflector(returnType) &&
-                   IsTypeWhiteListed(returnType) &&
-                   (!FasterTypeUtils.IsGenericCollection(type) || type.GetGenericArguments().All(IsTypeRecognized));
-        }
-
-        public bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
-
-        public bool IsService(Type type) => config.Services.Contains(type);
-        public bool LoadReturnType(MethodInfo method) => method.ReturnType != typeof(void);
-
-        public virtual Type GetType(Type type) {
-            var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
-            return IsNotIgnored(returnType) ? returnType : null;
-        }
-
-        #endregion
-
-        private bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null || IsUnSupportedSystemType(type);
-
-        private bool IsTypeWhiteListed(Type type) => IsTypeSupportedSystemType(type) || IsTypeExplicitlyRequested(type);
-
-        private bool IsTypeExplicitlyRequested(Type type) {
+        protected override bool IsTypeExplicitlyRequested(Type type) {
             var services = config.Services.ToArray();
             return config.TypesToIntrospect.Any(t => t == type) ||
                    services.Any(t => t == type) ||
                    type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
         }
 
-        private static Type ToMatch(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() : type;
+        protected override bool IsTypeSupportedSystemType(Type type) => config.SupportedSystemTypes.Any(t => t == ToMatch(type));
 
-        private bool IsTypeSupportedSystemType(Type type) => config.SupportedSystemTypes.Any(t => t == ToMatch(type));
+        #region IClassStrategy Members
 
-        private bool IsUnSupportedSystemType(Type type) => FasterTypeUtils.IsSystem(type) && !IsTypeSupportedSystemType(type);
+        public override bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
+        public override bool IsService(Type type) => config.Services.Contains(type);
+        public override bool LoadReturnType(MethodInfo method) => method.ReturnType != typeof(void);
 
-        private bool IsTypeUnsupportedByReflector(Type type) =>
-            type.IsPointer ||
-            type.IsByRef ||
-            CollectionUtils.IsDictionary(type) ||
-            type.IsGenericParameter ||
-            type.ContainsGenericParameters;
-
-        // because Sets don't implement IEnumerable<>
+        #endregion
     }
 
     // Copyright (c) Naked Objects Group Ltd.

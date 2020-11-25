@@ -14,14 +14,9 @@ namespace NakedObjects.Architecture.Component {
     ///     used as a field. Alternative implementations could, for example, exclude types in a specific namespace.
     /// </summary>
     public interface IClassStrategy {
-        /// <summary>
-        ///     Return the actual Type for the supplied Type.  For example, if the application uses
-        ///     proxies or other means to wrap a Type, then this method should return the
-        ///     underlying Type which should be exposed by the introspector.
-        /// </summary>
-        //Type GetType(Type type);
-
         bool IsNotIgnored(Type type);
+
+        bool IsIgnored(Type type);
 
         bool IsTypeRecognized(Type type);
 
@@ -30,7 +25,6 @@ namespace NakedObjects.Architecture.Component {
         bool IsService(Type type);
 
         bool LoadReturnType(MethodInfo method);
-     
     }
 
     // Copyright (c) Naked Objects Group Ltd.
