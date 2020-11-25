@@ -14,8 +14,6 @@ namespace NakedObjects.Architecture.Component {
     ///     used as a field. Alternative implementations could, for example, exclude types in a specific namespace.
     /// </summary>
     public interface IClassStrategy {
-        bool IsNotIgnored(Type type);
-
         bool IsIgnored(Type type);
 
         bool IsTypeRecognized(Type type);

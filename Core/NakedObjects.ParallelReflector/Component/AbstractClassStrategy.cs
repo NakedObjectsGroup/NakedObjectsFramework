@@ -38,13 +38,6 @@ namespace NakedObjects.ParallelReflector.Component {
 
         #region IClassStrategy Members
 
-        public virtual bool IsNotIgnored(Type type) {
-            var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
-            return !IsTypeIgnored(returnType) &&
-                   !IsTypeUnsupportedByReflector(returnType) &&
-                   (!FasterTypeUtils.IsGenericCollection(type) || type.GetGenericArguments().All(IsNotIgnored));
-        }
-
         public virtual bool IsIgnored(Type type) {
             var returnType = TypeKeyUtils.FilterNullableAndProxies(type);
             return IsTypeIgnored(returnType) ||

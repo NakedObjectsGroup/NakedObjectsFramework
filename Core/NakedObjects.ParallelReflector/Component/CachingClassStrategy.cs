@@ -28,14 +28,6 @@ namespace NakedObjects.ParallelReflector.Component {
 
         #region IClassStrategy Members
 
-        public bool IsNotIgnored(Type type) {
-            lock (Cache) {
-                var flags = Setup(type);
-                flags.IsTypeToBeIntrospected ??= classStrategy.IsNotIgnored(type);
-                return flags.IsTypeToBeIntrospected.Value;
-            }
-        }
-
         public bool IsIgnored(Type type) => classStrategy.IsIgnored(type);
 
         public bool IsTypeRecognized(Type type) => classStrategy.IsTypeRecognized(type);
