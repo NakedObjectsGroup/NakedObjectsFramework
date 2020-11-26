@@ -132,6 +132,7 @@ namespace NakedObjects.ParallelReflector.Reflect {
 
         private static IList<T> CreateSortedListOfMembers<T>(T[] members) where T : IMemberSpecImmutable => members.OrderBy(m => m, new MemberOrderComparator<T>()).ToArray();
 
+        protected bool IsUnsupportedSystemType(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => FasterTypeUtils.IsSystem(type) && !Reflector.FindSpecification(type, metamodel);
 
         protected IImmutableDictionary<string, ITypeSpecBuilder> IntrospectPropertiesAndCollections(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (spec is IObjectSpecImmutable objectSpec) {
@@ -183,26 +184,31 @@ namespace NakedObjects.ParallelReflector.Reflect {
         }
 
 
-
         protected (IEnumerable<IAssociationSpecImmutable>, IImmutableDictionary<string, ITypeSpecBuilder>) CreateCollectionSpecs(IEnumerable<PropertyInfo> collectionProperties, IObjectSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var specs = new List<IAssociationSpecImmutable>();
 
             foreach (var property in collectionProperties) {
-                IIdentifier identifier = new IdentifierImpl(FullName, property.Name);
-
-                // create a collection property spec
                 var returnType = property.PropertyType;
-                IObjectSpecImmutable returnSpec;
-                (returnSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(returnType, metamodel);
+                if (IsUnsupportedSystemType(returnType, metamodel)) {
+                   // logger.LogInformation($"Ignoring property: {property} on type: {property.DeclaringType} with return type: {returnType}");
+                }
+                else {
+                    IIdentifier identifier = new IdentifierImpl(FullName, property.Name);
 
-                var defaultType = typeof(object);
-                IObjectSpecImmutable defaultSpec;
-                (defaultSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(defaultType, metamodel);
+                    // create a collection property spec
 
-                var collection = ImmutableSpecFactory.CreateOneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
+                    IObjectSpecImmutable returnSpec;
+                    (returnSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(returnType, metamodel);
 
-                metamodel = ProcessCollection(property,  collection, metamodel);
-                specs.Add(collection);
+                    var defaultType = typeof(object);
+                    IObjectSpecImmutable defaultSpec;
+                    (defaultSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(defaultType, metamodel);
+
+                    var collection = ImmutableSpecFactory.CreateOneToManyAssociationSpecImmutable(identifier, spec, returnSpec, defaultSpec);
+
+                    metamodel = ProcessCollection(property, collection, metamodel);
+                    specs.Add(collection);
+                }
             }
 
             return (specs, metamodel);
@@ -213,21 +219,28 @@ namespace NakedObjects.ParallelReflector.Reflect {
             var specs = new List<IAssociationSpecImmutable>();
 
             foreach (var property in foundProperties) {
-                // create a reference property spec
-                var identifier = new IdentifierImpl(FullName, property.Name);
                 var propertyType = property.PropertyType;
-                IObjectSpecImmutable propertySpec;
-                (propertySpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(propertyType, metamodel);
 
-                if (propertySpec == null) {
-                    throw new ReflectionException($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}. If the property is intended to be an injected service it should have a protected get.");
+                if (IsUnsupportedSystemType(propertyType, metamodel)) {
+                   // logger.LogInformation($"Ignoring property: {property} on type: {property.DeclaringType} with return type: {propertyType}");
                 }
+                else {
+                    // create a reference property spec
+                    var identifier = new IdentifierImpl(FullName, property.Name);
 
-                var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec);
+                    IObjectSpecImmutable propertySpec;
+                    (propertySpec, metamodel) = Reflector.LoadSpecification<IObjectSpecImmutable>(propertyType, metamodel);
 
-                // Process facets for the property
-                metamodel = ProcessProperty(property, referenceProperty, metamodel);
-                specs.Add(referenceProperty);
+                    if (propertySpec == null) {
+                        throw new ReflectionException($"Type {propertyType.Name} is a service and cannot be used in public property {property.Name} on type {property.DeclaringType?.Name}. If the property is intended to be an injected service it should have a protected get.");
+                    }
+
+                    var referenceProperty = ImmutableSpecFactory.CreateOneToOneAssociationSpecImmutable(identifier, spec, propertySpec);
+
+                    // Process facets for the property
+                    metamodel = ProcessProperty(property, referenceProperty, metamodel);
+                    specs.Add(referenceProperty);
+                }
             }
 
             return (specs, metamodel);
@@ -240,9 +253,11 @@ namespace NakedObjects.ParallelReflector.Reflect {
                     ? typeof(Array)
                     : TypeKeyUtils.FilterNullableAndProxies(type);
 
+        protected virtual bool ReturnOrParameterTypesUnsupported(MethodInfo method, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            var types = method.GetParameters().Select(pi => pi.ParameterType).Append(method.ReturnType);
+            return types.Any(t => IsUnsupportedSystemType(t, metamodel));
+        }
 
-
-      
         protected (IActionSpecImmutable[], IImmutableDictionary<string, ITypeSpecBuilder>) FindActionMethods(ITypeSpecImmutable spec, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var actionSpecs = new List<IActionSpecImmutable>();
             var actions = FacetFactorySet.FindActions(Methods.Where(m => m != null).ToArray(), ClassStrategy).Where(a => !FacetFactorySet.Filters(a, ClassStrategy)).ToArray();
@@ -255,36 +270,43 @@ namespace NakedObjects.ParallelReflector.Reflect {
 
                 // actions are potentially being nulled within this loop
                 if (actionMethod != null) {
-                    var fullMethodName = actionMethod.Name;
 
-                    var parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
-
-                    // build action & its parameters
-
-                    if (ClassStrategy.LoadReturnType(actionMethod)) {
-                        (_, metamodel) = Reflector.LoadSpecification(actionMethod.ReturnType, metamodel);
+                    if (ReturnOrParameterTypesUnsupported(actionMethod, metamodel)) {
+                        //logger.LogInformation($"Ignoring action: {actionMethod} on type: {actionMethod.DeclaringType}");
                     }
+                    else {
 
-                    IIdentifier identifier = new IdentifierImpl(FullName, fullMethodName, actionMethod.GetParameters().ToArray());
+                        var fullMethodName = actionMethod.Name;
 
-                    var actionParams = new List<IActionParameterSpecImmutable>();
+                        var parameterTypes = actionMethod.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
 
-                    foreach (var pt in parameterTypes) {
-                        IObjectSpecBuilder oSpec;
-                        (oSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecBuilder>(pt, metamodel);
-                        var actionSpec = ImmutableSpecFactory.CreateActionParameterSpecImmutable(oSpec, identifier);
-                        actionParams.Add(actionSpec);
+                        // build action & its parameters
+
+                        if (ClassStrategy.LoadReturnType(actionMethod)) {
+                            (_, metamodel) = Reflector.LoadSpecification(actionMethod.ReturnType, metamodel);
+                        }
+
+                        IIdentifier identifier = new IdentifierImpl(FullName, fullMethodName, actionMethod.GetParameters().ToArray());
+
+                        var actionParams = new List<IActionParameterSpecImmutable>();
+
+                        foreach (var pt in parameterTypes) {
+                            IObjectSpecBuilder oSpec;
+                            (oSpec, metamodel) = Reflector.LoadSpecification<IObjectSpecBuilder>(pt, metamodel);
+                            var actionSpec = ImmutableSpecFactory.CreateActionParameterSpecImmutable(oSpec, identifier);
+                            actionParams.Add(actionSpec);
+                        }
+
+                        var action = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, spec, actionParams.ToArray());
+
+                        // Process facets on the action & parameters
+                        metamodel = ProcessAction(actionMethod, actions, action, metamodel);
+                        for (var l = 0; l < actionParams.Count; l++) {
+                            metamodel = ProcessParameter(actionMethod, l, actionParams[l], metamodel);
+                        }
+
+                        actionSpecs.Add(action);
                     }
-
-                    var action = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, spec, actionParams.ToArray());
-
-                    // Process facets on the action & parameters
-                    metamodel = ProcessAction( actionMethod,actions, action, metamodel);
-                    for (var l = 0; l < actionParams.Count; l++) {
-                        metamodel = ProcessParameter(actionMethod, l, actionParams[l], metamodel);
-                    }
-
-                    actionSpecs.Add(action);
                 }
             }
 

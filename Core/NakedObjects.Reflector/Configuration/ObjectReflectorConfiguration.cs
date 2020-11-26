@@ -7,85 +7,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Core.Objects.DataClasses;
-using System.Drawing;
 using System.Linq;
 using NakedObjects.Architecture.Configuration;
-using NakedObjects.Value;
+using NakedObjects.Core;
+using NakedObjects.Core.Configuration;
 
-namespace NakedObjects.Core.Configuration {
-    public static class ReflectorDefaults {
-        public static readonly Type[] DefaultSystemTypes = {
-            typeof(bool),
-            typeof(byte),
-            typeof(char),
-            typeof(Color),
-            typeof(DateTime),
-            typeof(decimal),
-            typeof(double),
-            typeof(FileAttachment),
-            typeof(float),
-            typeof(Guid),
-            typeof(Image),
-            typeof(int),
-            typeof(long),
-            typeof(sbyte),
-            typeof(short),
-            typeof(string),
-            typeof(TimeSpan),
-            typeof(uint),
-            typeof(ulong),
-            typeof(ushort),
-            typeof(bool[]),
-            typeof(byte[]),
-            typeof(char[]),
-            typeof(Color[]),
-            typeof(DateTime[]),
-            typeof(decimal[]),
-            typeof(double[]),
-            typeof(FileAttachment[]),
-            typeof(float[]),
-            typeof(Guid[]),
-            typeof(Image[]),
-            typeof(int[]),
-            typeof(long[]),
-            typeof(sbyte[]),
-            typeof(short[]),
-            typeof(string[]),
-            typeof(TimeSpan[]),
-            typeof(uint[]),
-            typeof(ulong[]),
-            typeof(ushort[]),
-            typeof(object),
-            typeof(void),
-            typeof(List<>),
-            typeof(ObjectQuery<>),
-            typeof(EnumerableQuery<>),
-            typeof(ISet<>),
-            typeof(IList<>),
-            typeof(ICollection<>),
-            typeof(IEnumerable<>),
-            typeof(IQueryable<>),
-            typeof(HashSet<>),
-            typeof(EntityCollection<>),
-            // WhereEnumerableIterator
-            new List<int>().Where(i => true).GetType().GetGenericTypeDefinition(),
-            // WhereSelectEnumerableIterator
-            new List<int>().Where(i => true).Select(i => i).GetType().GetGenericTypeDefinition(),
-            // UnionIterator
-            new List<int>().Union(new List<int>()).GetType().GetGenericTypeDefinition(),
-            typeof(Action<>)
-        };
-    }
-
-
+namespace NakedObjects.Reflector.Configuration {
     [Serializable]
     public class ObjectReflectorConfiguration : IObjectReflectorConfiguration {
         public ObjectReflectorConfiguration(Type[] typesToIntrospect,
                                             Type[] services,
                                             bool concurrencyChecking = true) {
-            SupportedSystemTypes = ReflectorDefaults.DefaultSystemTypes.ToList();
+            
             TypesToIntrospect = typesToIntrospect;
             Services = services;
             IgnoreCase = false;
@@ -128,10 +61,7 @@ namespace NakedObjects.Core.Configuration {
 
         private Type[] GetObjectTypesToIntrospect() {
             var types = TypesToIntrospect.Select(EnsureGenericTypeIsComplete);
-            var oSystemTypes = SupportedSystemTypes.Select(EnsureGenericTypeIsComplete);
-
-            var systemTypes = oSystemTypes;
-            return types.Union(systemTypes).ToArray();
+            return types.ToArray();
         }
 
         #region IObjectReflectorConfiguration Members
@@ -142,8 +72,6 @@ namespace NakedObjects.Core.Configuration {
         public bool HasConfig() => TypesToIntrospect.Any() && Services.Any();
 
         public Type[] Services { get; }
-        public List<Type> SupportedSystemTypes { get; }
-
 
         public Type[] ObjectTypes => Services.Union(GetObjectTypesToIntrospect()).ToArray();
 

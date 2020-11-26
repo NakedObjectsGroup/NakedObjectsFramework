@@ -84,6 +84,9 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         #region IMethodIdentifyingFacetFactory Members
 
+        private static bool IsUnsupportedSystemType(IReflector reflector, Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => FasterTypeUtils.IsSystem(type) && !reflector.FindSpecification(type, metamodel);
+
+
         private static (ITypeSpecBuilder, Type, IImmutableDictionary<string, ITypeSpecBuilder>) LoadReturnSpecs(Type returnType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel, IReflector reflector, MethodInfo actionMethod) {
             ITypeSpecBuilder onType = null;
 
@@ -101,7 +104,9 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 }
             }
             else {
-                (onType, metamodel) = reflector.LoadSpecification(returnType, metamodel);
+                if (!IsUnsupportedSystemType(reflector, returnType, metamodel)) {
+                    (onType, metamodel) = reflector.LoadSpecification(returnType, metamodel);
+                }
             }
 
             return (onType, returnType, metamodel);

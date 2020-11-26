@@ -24,6 +24,7 @@ using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflector.Component;
+using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.FacetFactory;
 
 #pragma warning disable 612
@@ -838,31 +839,31 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.AreEqual(0, metamodel.Count);
         }
 
-        [TestMethod]
-        public void TestFindActions() {
-            ObjectReflectorConfiguration.NoValidate = true;
+        //[TestMethod]
+        //public void TestFindActions() {
+        //    ObjectReflectorConfiguration.NoValidate = true;
 
-            var config = new ObjectReflectorConfiguration(new Type[] { typeof(Customer34) }, new Type[] { });
+        //    var config = new ObjectReflectorConfiguration(new Type[] { typeof(Customer34) }, new Type[] { });
 
-            var classStrategy = new ObjectClassStrategy(config);
+        //    var classStrategy = new ObjectClassStrategy(config);
 
-            var methods = typeof(Customer34).GetMethods().ToList();
-            var actions = facetFactory.FindActions(methods, classStrategy);
+        //    var methods = typeof(Customer34).GetMethods().ToList();
+        //    var actions = facetFactory.FindActions(methods, classStrategy);
 
-            var expectedNames = new List<string> {
-                "ActionWithNoParameters",
-                "ActionWithOneGoodParameter",
-                "ActionWithTwoGoodParameter",
-                "ActionWithNullableParameter",
-                "ToString",
-                "Equals",
-                "GetHashCode"
-            };
+        //    var expectedNames = new List<string> {
+        //        "ActionWithNoParameters",
+        //        "ActionWithOneGoodParameter",
+        //        "ActionWithTwoGoodParameter",
+        //        "ActionWithNullableParameter",
+        //        "ToString",
+        //        "Equals",
+        //        "GetHashCode"
+        //    };
 
-            Assert.AreEqual(expectedNames.Count, actions.Count);
+        //    Assert.AreEqual(expectedNames.Count, actions.Count);
 
-            expectedNames.ForEach(n => Assert.IsTrue(actions.Select(a => a.Name).Contains(n)));
-        }
+        //    expectedNames.ForEach(n => Assert.IsTrue(actions.Select(a => a.Name).Contains(n)));
+        //}
 
         #region Setup/Teardown
 

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFunctions.Reflector.Component;
+using NakedFunctions.Reflector.Configuration;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
@@ -27,6 +28,7 @@ using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Reflector.Component;
+using NakedObjects.Reflector.Configuration;
 using NakedObjects.Rest;
 
 namespace NakedObjects.DependencyInjection.Extensions {
@@ -47,7 +49,15 @@ namespace NakedObjects.DependencyInjection.Extensions {
             new FunctionalReflectorConfiguration(options.FunctionalTypes, options.Functions, options.ConcurrencyCheck);
 
 
-        public static CoreConfiguration CoreConfig(NakedCoreOptions options) => new CoreConfiguration(options.MainMenus);
+        public static CoreConfiguration CoreConfig(NakedCoreOptions options) {
+            var config = new CoreConfiguration(options.MainMenus);
+
+            if (options.SupportedSystemTypes is not null) {
+                config.SupportedSystemTypes = options.SupportedSystemTypes(config.SupportedSystemTypes.ToArray()).ToList();
+            }
+
+            return config;
+        }
 
         private static void AddNakedCoreFramework(this IServiceCollection services, NakedCoreOptions options) {
             ParallelConfig.RegisterStandardFacetFactories(services);
@@ -65,6 +75,7 @@ namespace NakedObjects.DependencyInjection.Extensions {
             }
 
             services.AddSingleton<ICoreConfiguration>(p => CoreConfig(options));
+            services.AddSingleton<IReflector, SystemTypeReflector>();
 
 
             // frameworkFacade

@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.ModelBuilding.Component;
 using NakedFunctions.Reflector.Component;
+using NakedFunctions.Reflector.Configuration;
 using NakedFunctions.Reflector.Reflect;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -27,6 +28,7 @@ using NakedObjects.Menu;
 using NakedObjects.Meta.Component;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflector.Component;
+using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.Reflect;
 using NakedObjects.Reflector.Test.Reflect;
 
@@ -150,6 +152,7 @@ namespace NakedFunctions.Reflector.Test.Component {
 
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
             services.AddSingleton<IClassStrategy, ObjectClassStrategy>();
+            services.AddSingleton<IReflector, SystemTypeReflector>();
             services.AddSingleton<IReflector, ObjectReflector>();
             services.AddSingleton<IReflector, FunctionalReflector>();
             services.AddSingleton<IMetamodel, Metamodel>();
@@ -160,7 +163,6 @@ namespace NakedFunctions.Reflector.Test.Component {
             services.AddSingleton(typeof(IFacetFactoryOrder<>), typeof(FacetFactoryOrder<>));
 
             var dflt = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { });
-            dflt.SupportedSystemTypes.Clear();
 
             var rc = orc ?? dflt;
 
@@ -184,6 +186,8 @@ namespace NakedFunctions.Reflector.Test.Component {
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new FunctionalReflectorConfiguration(new Type[0], new Type[0]);
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
 
             var container = GetContainer(new CoreConfiguration(), rc);
 
@@ -227,12 +231,13 @@ namespace NakedFunctions.Reflector.Test.Component {
             ObjectReflectorConfiguration.NoValidate = true;
 
             var orc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { });
-            orc.SupportedSystemTypes.Clear();
-            orc.SupportedSystemTypes.Add(typeof(IQueryable<>));
 
             var rc = new FunctionalReflectorConfiguration(new[] {typeof(SimpleClass)}, new[] {typeof(TupleFunctions)});
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
+            cc.SupportedSystemTypes.AddRange(new []{ typeof(IQueryable<>), typeof(IList<>)});
 
-            var container = GetContainer(new CoreConfiguration(), rc, orc);
+            var container = GetContainer(cc, rc, orc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -269,12 +274,13 @@ namespace NakedFunctions.Reflector.Test.Component {
             ObjectReflectorConfiguration.NoValidate = true;
 
             var orc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { });
-            orc.SupportedSystemTypes.Clear();
-            orc.SupportedSystemTypes.Add(typeof(IQueryable<>));
 
             var rc = new FunctionalReflectorConfiguration(new[] {typeof(SimpleClass)}, new[] {typeof(SimpleInjectedFunctions)});
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
+            cc.SupportedSystemTypes.Add(typeof(IQueryable<>));
 
-            var container = GetContainer(new CoreConfiguration(), rc, orc);
+            var container = GetContainer(cc, rc, orc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();

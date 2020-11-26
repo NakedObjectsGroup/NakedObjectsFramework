@@ -36,8 +36,7 @@ type ModelSystemTests() =
                                 typeof<SimpleDatabase.Person>;
                                 typeof<SimpleDatabase.NameType>;
                                 typeof<SimpleDatabase.ComplexType1>;
-                                typeof<SimpleDatabase.AbstractTestCode>;
-                                typeof<List<SimpleDatabase.Food>> |]
+                                typeof<SimpleDatabase.AbstractTestCode>  |]
   
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)

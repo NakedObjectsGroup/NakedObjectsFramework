@@ -83,8 +83,6 @@ type DomainTests() =
                typeof<XmlSnapshot>;
                typeof<TestObject>; 
                typeof<Snapshot.Xml.Test.Two.TransformSubObject>; 
-               typeof<TestObject[]>;
-               typeof<System.Collections.Generic.List<TestObject>>;
                typeof<One.TransformFull>;
                typeof<Two.TransformFull>;
                typeof<XmlSchema>;

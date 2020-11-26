@@ -160,6 +160,17 @@ namespace NakedObjects.ParallelReflector.Component {
             return metamodel.ContainsKey(typeKey) ? (metamodel[typeKey], metamodel) : LoadPlaceholder(actualType, metamodel);
         }
 
+        public virtual bool FindSpecification(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            if (type == null) {
+                throw new NakedObjectSystemException("cannot find specification for null");
+            }
+
+            var actualType = TypeKeyUtils.FilterNullableAndProxies(type);
+            var typeKey = TypeKeyUtils.GetKeyForType(actualType);
+            return metamodel.ContainsKey(typeKey);
+        }
+
+
         public virtual (T, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification<T>(Type type, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) where T : class, ITypeSpecImmutable {
             ITypeSpecBuilder spec;
             (spec, metamodel) = LoadSpecification(type, metamodel);

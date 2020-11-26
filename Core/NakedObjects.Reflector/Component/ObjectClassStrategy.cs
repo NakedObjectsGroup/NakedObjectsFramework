@@ -21,7 +21,7 @@ namespace NakedObjects.Reflector.Component {
 
         public ObjectClassStrategy(IObjectReflectorConfiguration config) => this.config = config;
 
-        protected override bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null || IsUnSupportedSystemType(type);
+        protected override bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null;
 
         protected override bool IsTypeExplicitlyRequested(Type type) {
             var services = config.Services.ToArray();
@@ -29,8 +29,6 @@ namespace NakedObjects.Reflector.Component {
                    services.Any(t => t == type) ||
                    type.IsGenericType && config.TypesToIntrospect.Any(t => t == type.GetGenericTypeDefinition());
         }
-
-        protected override bool IsTypeSupportedSystemType(Type type) => config.SupportedSystemTypes.Any(t => t == ToMatch(type));
 
         #region IClassStrategy Members
 

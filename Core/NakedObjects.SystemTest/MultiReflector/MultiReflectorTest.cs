@@ -9,7 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using NakedFunctions.Reflector.Configuration;
 using NakedObjects.Core.Configuration;
+using NakedObjects.Reflector.Configuration;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.Audit;
 using NUnit.Framework;
@@ -54,8 +56,6 @@ namespace NakedObjects.SystemTest.MultiReflector {
         protected override ObjectReflectorConfiguration ObjectReflectorConfig {
             get {
                 var config = base.ObjectReflectorConfig;
-                config.SupportedSystemTypes.Clear();
-                config.SupportedSystemTypes.AddRange(new []{typeof(string), typeof(int)});
                 return config;
             }
         }
@@ -63,10 +63,19 @@ namespace NakedObjects.SystemTest.MultiReflector {
         protected override FunctionalReflectorConfiguration FunctionalReflectorConfig {
             get {
                 var config = base.FunctionalReflectorConfig;
-                config.SupportedSystemTypes.Clear();
                 return config;
             }
         }
+
+        protected override CoreConfiguration CoreConfig {
+            get {
+                var config = base.CoreConfig;
+                config.SupportedSystemTypes.Clear();
+                config.SupportedSystemTypes.AddRange(new[] { typeof(string), typeof(int) });
+                return config;
+            }
+        }
+
 
         [Test]
         public virtual void AllSpecs() {

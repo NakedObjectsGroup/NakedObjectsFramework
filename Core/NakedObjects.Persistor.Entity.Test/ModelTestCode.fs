@@ -20,6 +20,7 @@ open System.Data.Entity.Core.Objects
 open TestCode
 open TestTypes
 open Microsoft.Extensions.Logging
+open NakedObjects.Reflector.Configuration
 
 let ModelConfig = 
     let pc = new CodeFirstEntityContextConfiguration()

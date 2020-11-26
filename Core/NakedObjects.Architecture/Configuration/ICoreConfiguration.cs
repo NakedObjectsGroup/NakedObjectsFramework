@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Architecture.Menu;
+using System.Collections.Generic;
 using NakedObjects.Menu;
 
 namespace NakedObjects.Architecture.Configuration {
@@ -16,5 +16,7 @@ namespace NakedObjects.Architecture.Configuration {
         ///     implementation of IMenuFactory.
         /// </summary>
         Func<IMenuFactory, IMenu[]> MainMenus { get; }
+
+        List<Type> SupportedSystemTypes { get; }
     }
 }

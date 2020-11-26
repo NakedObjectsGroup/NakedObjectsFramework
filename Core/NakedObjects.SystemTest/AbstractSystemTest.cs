@@ -33,15 +33,6 @@ namespace NakedObjects.SystemTest {
 
     public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase
         where TContext : DbContext {
-        protected override Type[] ObjectTypes {
-            get {
-                return new[] {
-                    typeof(List<object>),
-                    typeof(EntityCollection<object>),
-                    typeof(ObjectQuery<object>)
-                };
-            }
-        }
 
         protected override EntityObjectStoreConfiguration Persistor {
             get {

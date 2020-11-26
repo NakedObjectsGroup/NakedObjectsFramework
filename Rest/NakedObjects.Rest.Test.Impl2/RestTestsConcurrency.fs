@@ -69,7 +69,6 @@ type Tests() =
                typeof<MostSimpleViewModel>
                typeof<WithValue>
                typeof<TestEnum>
-               typeof<MostSimple []>
                typeof<FormViewModel>
                typeof<SetWrapper<MostSimple>> |]
 

@@ -17,21 +17,22 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflector.FacetFactory;
 
 namespace NakedObjects.Reflector.TypeFacetFactory {
-    public abstract class TypeFacetFactoryProcessor :  FacetFactoryAbstract,  ITypeFacetFactoryProcessor {
-        protected TypeFacetFactoryProcessor(int numericOrder,
+    public abstract class SystemTypeFacetFactoryProcessor : FacetFactoryAbstract, ISystemTypeFacetFactoryProcessor
+    {
+        protected SystemTypeFacetFactoryProcessor(int numericOrder,
                                               ILoggerFactory loggerFactory,
                                               FeatureType featureTypes) : base(numericOrder, loggerFactory, featureTypes) { }
 
 
-        public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
+        public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
 
 
-        public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
+        public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
 
 
-        public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
+        public virtual IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
 
 
-        public virtual IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector,  MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
+        public virtual IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => metamodel;
     }
 }

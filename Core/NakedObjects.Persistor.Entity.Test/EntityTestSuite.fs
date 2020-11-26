@@ -142,10 +142,7 @@ type EntityTestSuite() =
                                 typeof<TestData.Address>;
                                 typeof<TestData.Order>;
                                 typeof<TestData.Product>;
-                                typeof<TestData.OrderFail>;
-                                typeof<TestData.Person[]>;
-                                typeof<EntityCollection<TestData.Person>>;
-                                typeof<System.Collections.Generic.List<TestData.Person>> |]
+                                typeof<TestData.OrderFail> |]
     
     member x.ClearOldTestData() = ()
     

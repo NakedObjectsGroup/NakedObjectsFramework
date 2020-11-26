@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 
 namespace NakedObjects.Architecture.Configuration {
     public interface IObjectReflectorConfiguration {
@@ -23,17 +22,6 @@ namespace NakedObjects.Architecture.Configuration {
         Type[] Services { get; }
 
         /// <summary>
-        ///     Standard implementation of this contains system value and collection types recognized by the Framework.
-        ///     The list is exposed so that types can be added or removed before reflection. Generic collection types should be
-        ///     specified
-        ///     without type parameters.
-        /// </summary>
-        /// <remarks>
-        ///     These types will always be introspected and so are implicitly 'whitelisted'
-        /// </remarks>
-        List<Type> SupportedSystemTypes { get; }
-
-        /// <summary>
         ///     Instructs the reflector to ignore case on method names i.e. not to enforce the
         ///     documented case conventions.
         /// </summary>
@@ -45,7 +33,5 @@ namespace NakedObjects.Architecture.Configuration {
         bool ConcurrencyChecking { get; }
 
         Type[] ObjectTypes { get; }
-
-        bool HasConfig();
     }
 }

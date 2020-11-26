@@ -5,25 +5,42 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Core.Configuration;
+using NakedObjects.Meta.Component;
 using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
+using NakedObjects.Reflector.Configuration;
 
 namespace NakedObjects.Reflector.Test.Reflect {
     [TestClass]
     public class ReflectorValueTest : AbstractReflectorTest {
-        protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(AbstractParallelReflector reflector) {
-            var objectReflector = (ObjectReflector) reflector;
+
+        protected override IReflector Reflector(Metamodel metamodel, ILoggerFactory lf)
+        {
+            var config = new CoreConfiguration();
+            ClassStrategy = new SystemTypeClassStrategy(config);
+            var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
+            return new SystemTypeReflector(metamodel, config, new IFacetDecorator[] { }, FacetFactories, lf, mockLogger1);
+        }
+
+
+        protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
             (_, metamodel) = reflector.LoadSpecification(typeof(IEnumerable<char>), metamodel);
             (_, metamodel) = reflector.LoadSpecification(typeof(string), metamodel);
 
-            (_, metamodel) = reflector.IntrospectSpecification(typeof(IEnumerable<char>), metamodel);
-            return reflector.IntrospectSpecification(typeof(string), metamodel);
+            (_, metamodel) = ((AbstractParallelReflector) reflector).IntrospectSpecification(typeof(IEnumerable<char>), metamodel);
+            return ((AbstractParallelReflector)reflector).IntrospectSpecification(typeof(string), metamodel);
         }
 
         [TestMethod]

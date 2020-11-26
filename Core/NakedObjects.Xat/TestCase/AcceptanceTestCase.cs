@@ -19,6 +19,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Reflector.Component;
+using NakedFunctions.Reflector.Configuration;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -32,6 +33,7 @@ using NakedObjects.Menu;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Reflector.Component;
+using NakedObjects.Reflector.Configuration;
 
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
@@ -359,6 +361,7 @@ namespace NakedObjects.Xat {
             ParallelConfig.RegisterCoreScopedTypes(services);
             ParallelConfig.RegisterWellKnownServices(services);
 
+            services.AddSingleton<IReflector, SystemTypeReflector>();
             services.AddSingleton<IReflector, ObjectReflector>();
             services.AddSingleton<IReflector, FunctionalReflector>();
 

@@ -95,7 +95,9 @@ namespace NakedObjects.Core.Test.Adapter {
 
     [TestFixture]
     public class CollectionMementoTest : AcceptanceTestCase {
-        protected override Type[] ObjectTypes => new[] {typeof(TestDomainObject), typeof(TestDomainObject[]), typeof(List<TestDomainObject>), typeof(ObjectQuery<TestDomainObject>), typeof(List<int>)};
+        protected override Type[] ObjectTypes => new[] {
+            typeof(TestDomainObject)
+        };
 
         protected override object[] Fixtures => new object[] {new TestDataFixture()};
 

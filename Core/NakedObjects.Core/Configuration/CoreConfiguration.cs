@@ -6,6 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Menu;
 
@@ -14,5 +16,17 @@ namespace NakedObjects.Core.Configuration {
         public CoreConfiguration(Func<IMenuFactory, IMenu[]> mainMenus = null) => MainMenus = mainMenus;
 
         public Func<IMenuFactory, IMenu[]> MainMenus { get; }
+
+        /// <summary>
+        ///     Standard implementation of this contains system value and collection types recognized by the Framework.
+        ///     The list is exposed so that types can be added or removed before reflection. Generic collection types should be
+        ///     specified
+        ///     without type parameters.
+        /// </summary>
+        /// <remarks>
+        ///     These types will always be introspected and so are implicitly 'whitelisted'
+        /// </remarks>
+        ///
+        public List<Type> SupportedSystemTypes { get; set; } = ReflectorDefaults.DefaultSystemTypes.ToList();
     }
 }

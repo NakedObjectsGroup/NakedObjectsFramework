@@ -26,7 +26,6 @@ namespace NakedObjects.SystemTest.Persistence {
                 typeof(Foo1),
                 typeof(Bar1),
                 typeof(Qux1),
-                typeof(ObjectQuery<Qux1>),
                 typeof(Foo1)
             };
 

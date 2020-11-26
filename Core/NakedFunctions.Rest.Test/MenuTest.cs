@@ -10,8 +10,6 @@ using System.Collections.Generic;
 using System.Net;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFunctions.Rest.Test.Data;
-using NakedObjects.Architecture.Configuration;
-using NakedObjects.Core.Configuration;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;
 using NakedObjects.Facade.Impl.Implementation;
@@ -20,6 +18,7 @@ using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Menu;
 using NakedObjects.Persistor.Entity.Configuration;
+using NakedObjects.Reflector.Configuration;
 using NakedObjects.Rest;
 using NakedObjects.Rest.Model;
 using NakedObjects.Xat;
@@ -31,9 +30,11 @@ namespace NakedFunctions.Rest.Test {
 
 
     public class MenuTest : AcceptanceTestCase {
-        private readonly Type[] FunctionTypes = {typeof(SimpleMenuFunctions)};
+        protected override Type[] Functions { get; } = { typeof(SimpleMenuFunctions)};
 
-        private readonly Type[] RecordTypes = {typeof(SimpleRecord)};
+        // todo should IAlert be here or should we ignore?
+        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(IAlert) };
+
         protected override Type[] ObjectTypes { get; } = { };
 
         protected override Type[] Services { get; } = { };
@@ -48,8 +49,6 @@ namespace NakedFunctions.Rest.Test {
 
         protected override IMenu[] MainMenus(IMenuFactory factory) =>  new[] {factory.NewMenu(typeof(SimpleMenuFunctions), true, "Test menu")};
 
-        private IFunctionalReflectorConfiguration FunctionalReflectorConfiguration() => new FunctionalReflectorConfiguration(RecordTypes, FunctionTypes);
-
         protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);
             services.AddScoped<IOidStrategy, EntityOidStrategy>();
@@ -57,11 +56,9 @@ namespace NakedFunctions.Rest.Test {
             services.AddScoped<IFrameworkFacade, FrameworkFacade>();
             services.AddScoped<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>();
             services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
-            services.AddSingleton(FunctionalReflectorConfiguration());
             services.AddMvc(options => options.EnableEndpointRouting = false)
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
         }
-
 
         [SetUp]
         public void SetUp() => StartTest();

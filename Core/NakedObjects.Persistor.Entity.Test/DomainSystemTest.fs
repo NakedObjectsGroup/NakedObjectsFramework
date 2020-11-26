@@ -54,7 +54,6 @@ type DomainSystemTests() =
                                 typeof<WorkOrder>;
                                 typeof<ProductSubcategory>;
                                 typeof<ProductCategory>;
-                                typeof<EntityCollection<Product>>;
                                 typeof<Location>;
                                 typeof<SpecialOffer>;
                                 typeof<Document>;
@@ -100,8 +99,7 @@ type DomainSystemTests() =
                                 typeof<Currency>;
                                 typeof<SalesTaxRate>;
                                 typeof<CountryRegion>;
-                                typeof<CountryRegionCurrency>;
-                                typeof<EntityCollection<ProductSubcategory>> |]
+                                typeof<CountryRegionCurrency> |]
     
     [<OneTimeSetUpAttribute>]
     member x.SetupFixture() = NakedObjects.Xat.AcceptanceTestCase.InitializeNakedObjectsFramework(x)

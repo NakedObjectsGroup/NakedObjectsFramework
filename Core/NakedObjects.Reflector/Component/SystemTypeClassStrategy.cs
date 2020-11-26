@@ -9,35 +9,34 @@ using System;
 using System.Linq;
 using System.Reflection;
 using NakedObjects.Architecture.Configuration;
+using NakedObjects.Core.Util;
 using NakedObjects.ParallelReflector.Component;
 
-namespace NakedFunctions.Reflector.Component {
+namespace NakedObjects.Reflector.Component {
     /// <summary>
     ///     Standard way of determining which fields are to be exposed in a Naked Objects system.
     /// </summary>
     [Serializable]
-    public class FunctionClassStrategy : AbstractClassStrategy {
-        private readonly IFunctionalReflectorConfiguration config;
+    public class SystemTypeClassStrategy : AbstractClassStrategy {
+        private Type[] supportedSystemTypes;
 
-        public FunctionClassStrategy(IFunctionalReflectorConfiguration config) => this.config = config;
+        public SystemTypeClassStrategy(ICoreConfiguration coreConfiguration) => supportedSystemTypes = coreConfiguration.SupportedSystemTypes.ToArray();
 
-        protected override bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedFunctionsIgnoreAttribute>() is not null;
+        protected bool IsUnSupportedSystemType(Type type) => FasterTypeUtils.IsSystem(type) && !IsTypeSupportedSystemType(type);
 
-        protected override bool IsTypeExplicitlyRequested(Type type) {
-            var types = config.Types.Union(config.Functions).ToArray();
-            return types.Any(t => t == type) ||
-                   type.IsGenericType && types.Any(t => t == type.GetGenericTypeDefinition());
-        }
+        protected override bool IsTypeIgnored(Type type) => IsUnSupportedSystemType(type);
+
+        protected override bool IsTypeExplicitlyRequested(Type type) => IsTypeSupportedSystemType(type);
+
+        protected bool IsTypeSupportedSystemType(Type type) => supportedSystemTypes.Any(t => t == ToMatch(type));
 
         #region IClassStrategy Members
 
-        public override bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedFunctionsIgnoreAttribute>() is not null;
+        public override bool IsIgnored(MemberInfo member) => false;
         public override bool IsService(Type type) => false;
-        public override bool LoadReturnType(MethodInfo method) => false;
+        public override bool LoadReturnType(MethodInfo method) => method.ReturnType != typeof(void);
 
         #endregion
-
-        // because Sets don't implement IEnumerable<>
     }
 
     // Copyright (c) Naked Objects Group Ltd.

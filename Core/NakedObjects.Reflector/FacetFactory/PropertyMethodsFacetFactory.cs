@@ -41,7 +41,6 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         private IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
             candidates.Where(property => property.GetGetMethod() != null &&
-                                        
                                          !classStrategy.IsIgnored(property.PropertyType) &&
                                          !classStrategy.IsIgnored(property)).ToList();
 

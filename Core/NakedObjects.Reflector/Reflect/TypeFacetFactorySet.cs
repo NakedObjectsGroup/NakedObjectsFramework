@@ -21,7 +21,7 @@ using NakedObjects.Reflector.TypeFacetFactory;
 namespace NakedObjects.ParallelReflector.Reflect {
     public sealed class TypeFacetFactorySet : IFacetFactorySet {
         private readonly IList<IMethodIdentifyingFacetFactory> actionIdentifyingFactories;
-        private readonly IDictionary<FeatureType, IList<TypeFacetFactoryProcessor>> factoriesByFeatureType = new Dictionary<FeatureType, IList<TypeFacetFactoryProcessor>>();
+        private readonly IDictionary<FeatureType, IList<SystemTypeFacetFactoryProcessor>> factoriesByFeatureType = new Dictionary<FeatureType, IList<SystemTypeFacetFactoryProcessor>>();
 
         /// <summary>
         ///     All registered <see cref="IFacetFactory" />s that implement
@@ -51,7 +51,7 @@ namespace NakedObjects.ParallelReflector.Reflect {
         /// </para>
         private readonly IList<IPropertyOrCollectionIdentifyingFacetFactory> propertyOrCollectionIdentifyingFactories;
 
-        public TypeFacetFactorySet(TypeFacetFactoryProcessor[] factories) {
+        public TypeFacetFactorySet(SystemTypeFacetFactoryProcessor[] factories) {
             var allFactories = factories.ToList();
             allFactories.Sort();
 
@@ -145,6 +145,6 @@ namespace NakedObjects.ParallelReflector.Reflect {
 
         #endregion
 
-        private IList<TypeFacetFactoryProcessor> GetFactoryByFeatureType(FeatureType featureType) => factoriesByFeatureType[featureType];
+        private IList<SystemTypeFacetFactoryProcessor> GetFactoryByFeatureType(FeatureType featureType) => factoriesByFeatureType[featureType];
     }
 }

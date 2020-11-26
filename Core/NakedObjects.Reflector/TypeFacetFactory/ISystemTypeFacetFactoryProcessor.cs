@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Reflector.TypeFacetFactory {
-    public interface ITypeFacetFactoryProcessor {
+    public interface ISystemTypeFacetFactoryProcessor {
         IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
         IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);
         IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel);

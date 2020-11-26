@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 
 namespace NakedObjects.Architecture.Configuration {
     public interface IFunctionalReflectorConfiguration {
@@ -14,7 +13,5 @@ namespace NakedObjects.Architecture.Configuration {
         Type[] Functions { get; }
         bool ConcurrencyChecking { get; }
         bool IgnoreCase { get; }
-        List<Type> SupportedSystemTypes { get; }
-        bool HasConfig();
     }
 }

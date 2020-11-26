@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
@@ -20,11 +21,10 @@ namespace NakedObjects.Reflector.Test.Reflect {
 
     [TestClass]
     public class ReflectorArrayTest : AbstractReflectorTest {
-        protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(AbstractParallelReflector reflector) {
-            var objectReflector = (ObjectReflector) reflector;
+        protected override (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector) {
             IImmutableDictionary<string, ITypeSpecBuilder> metamodel = new Dictionary<string, ITypeSpecBuilder>().ToImmutableDictionary();
             (_, metamodel) = reflector.LoadSpecification(typeof(TestPoco[]), metamodel);
-            return reflector.IntrospectSpecification(typeof(TestPoco[]), metamodel);
+            return ((AbstractParallelReflector) reflector).IntrospectSpecification(typeof(TestPoco[]), metamodel);
         }
 
         [TestMethod]

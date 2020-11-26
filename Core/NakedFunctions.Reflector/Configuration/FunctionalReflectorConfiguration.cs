@@ -6,11 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Configuration;
 
-namespace NakedObjects.Core.Configuration {
+namespace NakedFunctions.Reflector.Configuration {
     public class FunctionalReflectorConfiguration : IFunctionalReflectorConfiguration {
         public FunctionalReflectorConfiguration(Type[] types,
                                                 Type[] functions,
@@ -20,10 +19,7 @@ namespace NakedObjects.Core.Configuration {
             Functions = functions;
             ConcurrencyChecking = concurrencyChecking;
             IgnoreCase = false;
-            SupportedSystemTypes = HasConfig() ? ReflectorDefaults.DefaultSystemTypes.ToList() : new List<Type>();
         }
-
-        public List<Type> SupportedSystemTypes { get; set; }
 
         public bool HasConfig() => Types?.Any() == true || Functions?.Any() == true;
 

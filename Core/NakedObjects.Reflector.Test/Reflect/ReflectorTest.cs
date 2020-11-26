@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.ModelBuilding.Component;
 using NakedFunctions.Reflector.Component;
+using NakedFunctions.Reflector.Configuration;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -32,6 +33,7 @@ using NakedObjects.Menu;
 using NakedObjects.Meta.Component;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflector.Component;
+using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.TypeFacetFactory;
 
@@ -184,6 +186,7 @@ namespace NakedObjects.Reflector.Test.Reflect
 
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
             services.AddSingleton<IClassStrategy, ObjectClassStrategy>();
+            //services.AddSingleton<IReflector, SystemTypeReflector>();
             services.AddSingleton<IReflector, ObjectReflector>();
             services.AddSingleton<IReflector, FunctionalReflector>();
             services.AddSingleton<IMetamodel, Metamodel>();
@@ -212,9 +215,10 @@ namespace NakedObjects.Reflector.Test.Reflect
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { });
-            rc.SupportedSystemTypes.Clear();
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(new CoreConfiguration(), rc);
+            var container = GetContainer(cc, rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -228,9 +232,10 @@ namespace NakedObjects.Reflector.Test.Reflect
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new ObjectReflectorConfiguration(new[] { typeof(object) }, new Type[] { });
-            rc.SupportedSystemTypes.Clear();
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(new CoreConfiguration(), rc);
+            var container = GetContainer(cc, rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -246,9 +251,10 @@ namespace NakedObjects.Reflector.Test.Reflect
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new ObjectReflectorConfiguration(new[] { typeof(List<object>), typeof(List<int>), typeof(object), typeof(int) }, new Type[] { });
-            rc.SupportedSystemTypes.Clear();
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(new CoreConfiguration(), rc);
+            var container = GetContainer(cc, rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -266,9 +272,10 @@ namespace NakedObjects.Reflector.Test.Reflect
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new ObjectReflectorConfiguration(new[] { typeof(SetWrapper<>), typeof(object) }, new Type[] { });
-            rc.SupportedSystemTypes.Clear();
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(new CoreConfiguration(), rc);
+            var container = GetContainer(cc, rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -287,9 +294,10 @@ namespace NakedObjects.Reflector.Test.Reflect
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new ObjectReflectorConfiguration(new[] { qo.GetType(), qi.GetType(), typeof(int), typeof(object) }, new Type[] { });
-            rc.SupportedSystemTypes.Clear();
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(new CoreConfiguration(), rc);
+            var container = GetContainer(cc, rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -308,9 +316,10 @@ namespace NakedObjects.Reflector.Test.Reflect
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new ObjectReflectorConfiguration(new[] { it.GetType().GetGenericTypeDefinition(), typeof(object) }, new Type[] { });
-            rc.SupportedSystemTypes.Clear();
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(new CoreConfiguration(), rc);
+            var container = GetContainer(cc, rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -328,9 +337,10 @@ namespace NakedObjects.Reflector.Test.Reflect
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new ObjectReflectorConfiguration(new[] { it.GetType().GetGenericTypeDefinition(), typeof(object) }, new Type[] { });
-            rc.SupportedSystemTypes.Clear();
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(new CoreConfiguration(), rc);
+            var container = GetContainer(cc, rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -352,9 +362,10 @@ namespace NakedObjects.Reflector.Test.Reflect
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new ObjectReflectorConfiguration(new[] { typeof(int) }, new Type[] { });
-            rc.SupportedSystemTypes.Clear();
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(new CoreConfiguration(), rc);
+            var container = GetContainer(cc, rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -377,9 +388,10 @@ namespace NakedObjects.Reflector.Test.Reflect
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new ObjectReflectorConfiguration(new[] { typeof(TestObjectWithByteArray), typeof(byte), typeof(byte[]) }, new Type[] { });
-            rc.SupportedSystemTypes.Clear();
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(new CoreConfiguration(), rc);
+            var container = GetContainer(cc, rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -426,9 +438,10 @@ namespace NakedObjects.Reflector.Test.Reflect
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new ObjectReflectorConfiguration(new[] { typeof(TestObjectWithStringArray), typeof(string) }, new Type[] { });
-            rc.SupportedSystemTypes.Clear();
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(new CoreConfiguration(), rc);
+            var container = GetContainer(cc, rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -446,8 +459,10 @@ namespace NakedObjects.Reflector.Test.Reflect
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new ObjectReflectorConfiguration(new[] { typeof(WithScalars) }, new Type[] { });
-            rc.SupportedSystemTypes.Clear();
-            var container = GetContainer(new CoreConfiguration(), rc);
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
+
+            var container = GetContainer(cc, rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
@@ -536,8 +551,10 @@ namespace NakedObjects.Reflector.Test.Reflect
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new ObjectReflectorConfiguration(new[] { typeof(SimpleDomainObject) }, new Type[] { });
-            rc.SupportedSystemTypes.Clear();
-            var container = GetContainer(new CoreConfiguration(), rc);
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
+
+            var container = GetContainer(cc, rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder?.Build();
@@ -574,10 +591,10 @@ namespace NakedObjects.Reflector.Test.Reflect
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new ObjectReflectorConfiguration(new[] { typeof(SimpleBoundedObject) }, new Type[] { });
-            rc.SupportedSystemTypes.Clear();
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(new CoreConfiguration(), rc);
-
+            var container = GetContainer(cc, rc);
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
             var specs = AllObjectSpecImmutables(container);
@@ -596,9 +613,10 @@ namespace NakedObjects.Reflector.Test.Reflect
             ObjectReflectorConfiguration.NoValidate = true;
 
             var rc = new ObjectReflectorConfiguration(new[] { typeof(SimpleBoundedObject) }, new Type[] { });
-            rc.SupportedSystemTypes.Clear();
+            var cc = new CoreConfiguration();
+            cc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(new CoreConfiguration(), rc);
+            var container = GetContainer(cc, rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();

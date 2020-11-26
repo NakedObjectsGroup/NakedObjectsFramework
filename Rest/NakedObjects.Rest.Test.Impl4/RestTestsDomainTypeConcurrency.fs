@@ -69,7 +69,6 @@ type Tests() =
                typeof<WithReferencePersist>
                typeof<WithCollectionPersist>
                typeof<TestEnum>
-               typeof<MostSimple []>
                typeof<FormViewModel>
                typeof<SetWrapper<MostSimple>> |]
 

@@ -22,6 +22,7 @@ open System.Collections
 open System.Security.Principal
 open TestTypes
 open Microsoft.Extensions.Logging
+open NakedObjects.Reflector.Configuration
 
 let resetPersistor (p : EntityObjectStore) = 
     p.SetupContexts()

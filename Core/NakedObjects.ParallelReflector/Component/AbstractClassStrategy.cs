@@ -19,13 +19,9 @@ namespace NakedObjects.ParallelReflector.Component {
     public abstract class AbstractClassStrategy : IClassStrategy {
         protected abstract bool IsTypeIgnored(Type type);
 
-        private bool IsTypeWhiteListed(Type type) => IsTypeSupportedSystemType(type) || IsTypeExplicitlyRequested(type);
+        private bool IsTypeWhiteListed(Type type) => IsTypeExplicitlyRequested(type);
 
         protected abstract bool IsTypeExplicitlyRequested(Type type);
-
-        protected abstract bool IsTypeSupportedSystemType(Type type);
-
-        protected virtual bool IsUnSupportedSystemType(Type type) => FasterTypeUtils.IsSystem(type) && !IsTypeSupportedSystemType(type);
 
         protected virtual Type ToMatch(Type type) => type.IsGenericType ? type.GetGenericTypeDefinition() : type;
 

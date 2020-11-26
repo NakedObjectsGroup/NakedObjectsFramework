@@ -18,5 +18,7 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public IAuthorizationConfiguration AuthorizationConfiguration { get; set; }
         public IAuditConfiguration AuditConfiguration { get; set; }
         public Func<IMenuFactory, IMenu[]> MainMenus { get; set; }
+
+        public Func<Type[], Type[]> SupportedSystemTypes { get; set; }
     }
 }

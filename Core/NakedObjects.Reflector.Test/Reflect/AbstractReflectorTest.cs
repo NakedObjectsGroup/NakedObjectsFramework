@@ -12,6 +12,7 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NakedFunctions.Reflector.Configuration;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Configuration;
@@ -21,6 +22,7 @@ using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Component;
 using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
+using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.TypeFacetFactory;
 
@@ -32,7 +34,7 @@ namespace NakedObjects.Reflector.Test.Reflect {
         protected IObjectSpecImmutable Specification;
 
 
-        private IFacetFactory[] FacetFactories =>
+        protected IFacetFactory[] FacetFactories =>
             new[] {
                 NewFacetFactory<FallbackFacetFactory>(),
                 NewFacetFactory<IteratorFilteringFacetFactory>(),
@@ -115,34 +117,38 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 NewFacetFactory<CollectionFacetFactory>()
             };
 
-
         private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory => (T) Activator.CreateInstance(typeof(T), new FacetFactoryOrder<T>(), MockLoggerFactory);
 
         protected static void AssertIsInstanceOfType<T>(object o) => Assert.IsInstanceOfType(o, typeof(T));
+
+        protected virtual IReflector Reflector(Metamodel metamodel, ILoggerFactory lf) {
+            var config = new ObjectReflectorConfiguration(new[] { typeof(TestPoco), typeof(TestDomainObject), typeof(ArrayList) }, new Type[] { });
+            ClassStrategy = new ObjectClassStrategy(config);
+            var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
+            return  new ObjectReflector(metamodel, config, new IFacetDecorator[] { }, FacetFactories, lf, mockLogger1);
+        }
+
 
         [TestInitialize]
         public virtual void SetUp() {
             var cache = new ImmutableInMemorySpecCache();
             ObjectReflectorConfiguration.NoValidate = true;
-            var config = new ObjectReflectorConfiguration(new[] {typeof(TestPoco), typeof(TestDomainObject), typeof(ArrayList)}, new Type[] { });
-            var functionalReflectorConfiguration = new FunctionalReflectorConfiguration(new Type[] { }, new Type[] { });
 
-            var menuFactory = new NullMenuFactory();
-            ClassStrategy = new ObjectClassStrategy(config);
+          
+           
             var mockLogger = new Mock<ILogger<Metamodel>>().Object;
 
             var metamodel = new Metamodel(cache, mockLogger);
-            var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
-            var reflector = new ObjectReflector(metamodel, config, new IFacetDecorator[] { }, FacetFactories, mockLoggerFactory, mockLogger1);
+            var reflector = Reflector(metamodel, mockLoggerFactory);
 
             ITypeSpecBuilder spec;
             (spec, Metamodel) = LoadSpecification(reflector);
             Specification = spec as IObjectSpecImmutable;
         }
 
-        protected abstract (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(AbstractParallelReflector reflector);
+        protected abstract (ITypeSpecBuilder, IImmutableDictionary<string, ITypeSpecBuilder>) LoadSpecification(IReflector reflector);
 
         public static void AssertSpec(Type type, ITypeSpecBuilder spec) {
             Assert.IsNotNull(spec, type.FullName);
