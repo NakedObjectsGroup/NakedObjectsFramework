@@ -21,7 +21,6 @@ namespace NakedObjects.SystemTest.Performance {
     public class TestPerformance : AbstractSystemTest<PerformanceDbContext> {
         protected override Type[] ObjectTypes =>
             new[] {
-                typeof(ObjectQuery<Qux>),
                 typeof(Qux)
             };
 

@@ -252,11 +252,12 @@ namespace NakedObjects.Core.Adapter {
             str.Append("version", Version?.AsSequence());
         }
 
-        private void CallCallback<T>() where T : ICallbackFacet => Spec.GetFacet<T>().Invoke(this, session, lifecycleManager, metamodel);
+        // todo - better to handle null facet or bind in noop facet ? 
+        private void CallCallback<T>() where T : ICallbackFacet => Spec.GetFacet<T>()?.Invoke(this, session, lifecycleManager, metamodel);
 
         private object CallCallbackAndReturn<T>() where T : ICallbackFacet
         {
-            return Spec.GetFacet<T>().InvokeAndReturn(this, session, lifecycleManager, metamodel, persistor);
+            return Spec.GetFacet<T>()?.InvokeAndReturn(this, session, lifecycleManager, metamodel, persistor);
         }
     }
 

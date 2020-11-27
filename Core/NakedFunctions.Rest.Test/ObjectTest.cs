@@ -38,7 +38,7 @@ namespace NakedFunctions.Rest.Test {
     public class ObjectTest : AcceptanceTestCase {
         protected override Type[] Functions  {get; } = {typeof(SimpleRecordFunctions)};
 
-        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(GuidRecord)};
+        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(GuidRecord), typeof(IAlert) };
 
         protected override Type[] ObjectTypes { get; } = { };
 

@@ -189,7 +189,7 @@ namespace NakedFunctions.Reflector.Test.Component {
             var cc = new CoreConfiguration();
             cc.SupportedSystemTypes.Clear();
 
-            var container = GetContainer(new CoreConfiguration(), rc);
+            var container = GetContainer(cc, rc);
 
             var builder = container.GetService<IModelBuilder>();
             builder.Build();
