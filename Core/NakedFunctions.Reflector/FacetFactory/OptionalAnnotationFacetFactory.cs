@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflector.Utils;
 using NakedObjects.Util;
 
 namespace NakedFunctions.Reflector.FacetFactory {
@@ -47,7 +48,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 return metamodel;
             }
 
-            if (property.GetGetMethod() is not null && !property.PropertyType.IsPrimitive) {
+            if (property.HasPublicGetter() && !property.PropertyType.IsPrimitive) {
                 Process(property, specification);
             }
 

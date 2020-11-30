@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class RequiredAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
@@ -34,7 +35,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (property.GetGetMethod() != null) {
+            if (property.HasPublicGetter()) {
                 Process(property, specification);
             }
 

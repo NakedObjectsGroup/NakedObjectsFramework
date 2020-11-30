@@ -19,6 +19,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflector.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class TableViewAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
@@ -58,7 +59,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (property.GetGetMethod() is not null) {
+            if (property.HasPublicGetter()) {
                 Process(property, property.PropertyType, specification);
             }
 

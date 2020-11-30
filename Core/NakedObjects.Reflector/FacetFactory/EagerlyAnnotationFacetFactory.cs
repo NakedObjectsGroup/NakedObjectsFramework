@@ -19,7 +19,7 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class EagerlyAnnotationFacetFactory : ObjectFacetFactoryProcessor {
+    public sealed class EagerlyAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
         public EagerlyAnnotationFacetFactory(IFacetFactoryOrder<EagerlyAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.EverythingButActionParameters) { }
 

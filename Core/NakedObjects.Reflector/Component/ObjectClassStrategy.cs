@@ -32,7 +32,7 @@ namespace NakedObjects.Reflector.Component {
 
         #region IClassStrategy Members
 
-        public override bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null;
+        public override bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null;
         public override bool IsService(Type type) => config.Services.Contains(type);
         public override bool LoadReturnType(MethodInfo method) => method.ReturnType != typeof(void);
 

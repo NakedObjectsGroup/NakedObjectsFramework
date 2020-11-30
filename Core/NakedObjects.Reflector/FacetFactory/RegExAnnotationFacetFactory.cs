@@ -19,6 +19,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflector.Utils;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.FacetFactory {
@@ -49,7 +50,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if (property.GetGetMethod() != null && TypeUtils.IsString(property.PropertyType)) {
+            if (property.HasPublicGetter() && TypeUtils.IsString(property.PropertyType)) {
                 Process(property, specification);
             }
 

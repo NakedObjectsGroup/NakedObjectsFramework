@@ -23,6 +23,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.FacetFactory;
+using NakedObjects.ParallelReflector.Utils;
 using NakedObjects.Util;
 
 namespace NakedFunctions.Reflector.FacetFactory {
@@ -41,7 +42,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public string[] Prefixes => FixedPrefixes;
 
         private IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
-            candidates.Where(property => property.GetGetMethod() is not null &&
+            candidates.Where(property => property.HasPublicGetter() &&
                                          !classStrategy.IsIgnored(property.PropertyType) &&
                                          !classStrategy.IsIgnored(property)).ToList();
 

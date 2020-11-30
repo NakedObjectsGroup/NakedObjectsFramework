@@ -18,6 +18,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflector.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class TypeOfAnnotationFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {
@@ -54,7 +55,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             Process(reflector, method.ReturnType, specification, metamodel);
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
-            property.GetGetMethod() is not null
+            property.HasPublicGetter()
                 ? Process(reflector, property.PropertyType, specification, metamodel)
                 : metamodel;
     }

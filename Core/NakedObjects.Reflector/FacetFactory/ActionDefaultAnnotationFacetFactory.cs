@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Reflection;
@@ -24,22 +23,13 @@ namespace NakedObjects.Reflector.FacetFactory {
         public ActionDefaultAnnotationFacetFactory(IFacetFactoryOrder<ActionDefaultAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ActionParameters) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector,  MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];
-            var attribute = (Attribute) parameter.GetCustomAttribute<DefaultValueAttribute>() ?? parameter.GetCustomAttribute<NakedFunctions.DefaultValueAttribute>();
-            FacetUtils.AddFacet(
-                attribute switch {
-                    DefaultValueAttribute a => Create(a, holder),
-                    NakedFunctions.DefaultValueAttribute a => Create(a, holder),
-                    _ => null
-                }
-            );
+            var attribute = parameter.GetCustomAttribute<DefaultValueAttribute>();
+            FacetUtils.AddFacet(Create(attribute, holder));
             return metamodel;
         }
 
-
-        private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, ISpecification holder) => attribute == null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, holder);
-
-        private static IActionDefaultsFacet Create(NakedFunctions.DefaultValueAttribute attribute, ISpecification holder) => attribute == null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, holder);
+        private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, ISpecification holder) => attribute is null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, holder);
     }
 }

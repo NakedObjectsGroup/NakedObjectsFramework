@@ -33,9 +33,8 @@ namespace NakedObjects.Reflector.FacetFactory {
             var classAttribute = declaringType?.GetCustomAttribute<AuthorizeActionAttribute>();
             var methodAttribute = method.GetCustomAttribute<AuthorizeActionAttribute>();
 
-            if (classAttribute != null && methodAttribute != null) {
-                var declaringTypeName = declaringType.FullName;
-                logger.LogWarning($"Class and method level AuthorizeAttributes applied to class {declaringTypeName} - ignoring attribute on method {method.Name}");
+            if (classAttribute is not null && methodAttribute is not null) {
+                logger.LogWarning($"Class and method level AuthorizeAttributes applied to class {declaringType.FullName} - ignoring attribute on method {method.Name}");
             }
 
             Create(classAttribute ?? methodAttribute, specification);
@@ -47,7 +46,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             var classAttribute = declaringType?.GetCustomAttribute<AuthorizePropertyAttribute>();
             var propertyAttribute = property.GetCustomAttribute<AuthorizePropertyAttribute>();
 
-            if (classAttribute != null && propertyAttribute != null) {
+            if (classAttribute is not null && propertyAttribute is not null) {
                 var declaringTypeName = declaringType.FullName;
 
                 logger.LogWarning($"Class and property level AuthorizeAttributes applied to class {declaringTypeName} - ignoring attribute on property {property.Name}");
@@ -58,20 +57,20 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private static void Create(AuthorizePropertyAttribute attribute, ISpecification holder) {
-            if (attribute != null) {
-                if (attribute.ViewRoles != null || attribute.ViewUsers != null) {
+            if (attribute is not null) {
+                if (attribute.ViewRoles is not null || attribute.ViewUsers is not null) {
                     FacetUtils.AddFacet(new AuthorizationHideForSessionFacet(attribute.ViewRoles, attribute.ViewUsers, holder));
                 }
 
-                if (attribute.EditRoles != null || attribute.EditUsers != null) {
+                if (attribute.EditRoles is not null || attribute.EditUsers is not null) {
                     FacetUtils.AddFacet(new AuthorizationDisableForSessionFacet(attribute.EditRoles, attribute.EditUsers, holder));
                 }
             }
         }
 
         private static void Create(AuthorizeActionAttribute attribute, ISpecification holder) {
-            if (attribute != null) {
-                if (attribute.Roles != null || attribute.Users != null) {
+            if (attribute is not null) {
+                if (attribute.Roles is not null || attribute.Users is not null) {
                     FacetUtils.AddFacet(new AuthorizationHideForSessionFacet(attribute.Roles, attribute.Users, holder));
                     FacetUtils.AddFacet(new AuthorizationDisableForSessionFacet(attribute.Roles, attribute.Users, holder));
                 }

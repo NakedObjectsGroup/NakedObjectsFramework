@@ -16,6 +16,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.FacetFactory;
+using NakedObjects.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class MenuFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {

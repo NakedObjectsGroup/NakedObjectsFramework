@@ -22,6 +22,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.FacetFactory;
+using NakedObjects.ParallelReflector.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class CollectionFieldMethodsFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory
@@ -36,7 +37,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public string[] Prefixes => FixedPrefixes;
 
         private IList<PropertyInfo> PropertiesToBeIntrospected(IList<PropertyInfo> candidates, IClassStrategy classStrategy) =>
-            candidates.Where(property => property.GetGetMethod() is not null &&
+            candidates.Where(property => property.HasPublicGetter() &&
                                          !classStrategy.IsIgnored(property.PropertyType) &&
                                          !classStrategy.IsIgnored(property)).ToList();
 
@@ -63,7 +64,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         }
 
         public static IList<Type> BuildCollectionTypes(IEnumerable<PropertyInfo> properties) {
-            return properties.Where(property => property.GetGetMethod() is not null &&
+            return properties.Where(property => property.HasPublicGetter() &&
                                                 CollectionUtils.IsCollection(property.PropertyType) &&
                                                 !CollectionUtils.IsBlobOrClob(property.PropertyType) &&
                                                 property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&

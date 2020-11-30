@@ -22,6 +22,7 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.FacetFactory;
+using NakedObjects.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class ValidateObjectFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
@@ -39,7 +40,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         private static bool ContainsField(string name, Type type) =>
             type.GetProperties().Any(p => p.Name.Equals(name, StringComparison.Ordinal) &&
-                                          p.GetGetMethod() != null &&
+                                          p.HasPublicGetter() &&
                                           p.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
                                           !CollectionUtils.IsCollection(p.PropertyType) &&
                                           !CollectionUtils.IsQueryable(p.PropertyType));
