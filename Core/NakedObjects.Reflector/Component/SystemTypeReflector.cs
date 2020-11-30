@@ -14,17 +14,12 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.ParallelReflect;
 using NakedObjects.ParallelReflector.Component;
-using NakedObjects.ParallelReflector.Reflect;
 using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.Reflect;
-using NakedObjects.Reflector.TypeFacetFactory;
 
 namespace NakedObjects.Reflector.Component {
     public sealed class SystemTypeReflector : AbstractParallelReflector {
-        private ICoreConfiguration CoreConfiguration { get; }
-
         public SystemTypeReflector(IMetamodelBuilder metamodel,
                                    ICoreConfiguration coreConfiguration,
                                    IEnumerable<IFacetDecorator> facetDecorators,
@@ -33,14 +28,16 @@ namespace NakedObjects.Reflector.Component {
                                    ILogger<AbstractParallelReflector> logger) : base(metamodel, facetDecorators, loggerFactory, logger) {
             CoreConfiguration = coreConfiguration;
 
-            FacetFactorySet = new ObjectFacetFactorySet(facetFactories.OfType<ObjectFacetFactoryProcessor>().ToArray());
-            ClassStrategy = new SystemTypeClassStrategy(coreConfiguration);;
+            FacetFactorySet = new SystemTypeFacetFactorySet(facetFactories.OfType<ObjectFacetFactoryProcessor>().ToArray());
+            ClassStrategy = new SystemTypeClassStrategy(coreConfiguration);
         }
+
+        private ICoreConfiguration CoreConfiguration { get; }
 
         public override bool ConcurrencyChecking => false;
         public override bool IgnoreCase => false;
 
-        protected override IIntrospector GetNewIntrospector() => new ObjectIntrospector(this, LoggerFactory.CreateLogger<ObjectIntrospector>());
+        protected override IIntrospector GetNewIntrospector() => new SystemTypeIntrospector(this, LoggerFactory.CreateLogger<SystemTypeIntrospector>());
 
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectSystemTypes(Type[] systemTypes, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {
             var placeholders = GetPlaceholders(systemTypes, ClassStrategy);

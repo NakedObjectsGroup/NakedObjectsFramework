@@ -18,7 +18,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.Reflector.FacetFactory;
 
-namespace NakedObjects.ParallelReflect {
+namespace NakedObjects.Reflector.Reflect {
     public sealed class ObjectFacetFactorySet : IFacetFactorySet {
         private readonly IList<IMethodIdentifyingFacetFactory> actionIdentifyingFactories;
         private readonly IDictionary<FeatureType, IList<ObjectFacetFactoryProcessor>> factoriesByFeatureType = new Dictionary<FeatureType, IList<ObjectFacetFactoryProcessor>>();
