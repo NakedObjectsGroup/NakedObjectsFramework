@@ -38,10 +38,10 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         public  string[] Prefixes => FixedPrefixes;
 
-        private static bool ContainsField(string name, Type type) =>
+        private static bool ContainsField(string name, Type type, IClassStrategy classStrategy) =>
             type.GetProperties().Any(p => p.Name.Equals(name, StringComparison.Ordinal) &&
                                           p.HasPublicGetter() &&
-                                          p.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
+                                          !classStrategy.IsIgnored(p) &&
                                           !CollectionUtils.IsCollection(p.PropertyType) &&
                                           !CollectionUtils.IsQueryable(p.PropertyType));
 
@@ -53,7 +53,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                 foreach (var method in methods) {
                     var parameters = method.GetParameters();
                     if (parameters.Length >= 2) {
-                        var parametersMatch = parameters.Select(parameter => parameter.Name).Select(name => name[0].ToString(Thread.CurrentThread.CurrentCulture).ToUpper() + name.Substring(1)).All(p => ContainsField(p, type));
+                        var parametersMatch = parameters.Select(parameter => parameter.Name).Select(name => $"{name[0].ToString(Thread.CurrentThread.CurrentCulture).ToUpper()}{name.Substring(1)}").All(p => ContainsField(p, type, reflector.ClassStrategy));
                         if (parametersMatch) {
                             methodPeers.Add(new ValidateObjectFacet.NakedObjectValidationMethod(method, Logger<ValidateObjectFacet.NakedObjectValidationMethod>()));
                             methodRemover.RemoveMethod(method);

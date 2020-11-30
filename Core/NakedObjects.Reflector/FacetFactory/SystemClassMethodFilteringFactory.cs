@@ -18,11 +18,8 @@ namespace NakedObjects.Reflector.FacetFactory {
     ///     string.
     /// </summary>
     public sealed class SystemClassMethodFilteringFactory : ObjectFacetFactoryProcessor, IMethodFilteringFacetFactory {
-        private ILogger<SystemClassMethodFilteringFactory> logger;
-
         public SystemClassMethodFilteringFactory(IFacetFactoryOrder<SystemClassMethodFilteringFactory> order, ILoggerFactory loggerFactory)
-            : base(order.Order, loggerFactory, FeatureType.Actions) =>
-            logger = loggerFactory.CreateLogger<SystemClassMethodFilteringFactory>();
+            : base(order.Order, loggerFactory, FeatureType.Actions) { }
 
         #region IMethodFilteringFacetFactory Members
 

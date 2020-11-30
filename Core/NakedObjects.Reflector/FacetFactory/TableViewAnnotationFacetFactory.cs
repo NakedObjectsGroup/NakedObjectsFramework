@@ -37,7 +37,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private ITableViewFacet CreateTableViewFacet(TableViewAttribute attribute, ISpecification holder) {
-            var columns = attribute.Columns == null ? new string[] { } : attribute.Columns;
+            var columns = attribute.Columns ?? new string[] { };
             var distinctColumns = columns.Distinct().ToArray();
 
             if (columns.Length != distinctColumns.Length) {
@@ -51,7 +51,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return new TableViewFacet(attribute.Title, columns, holder);
         }
 
-        private ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) => attribute == null ? null : CreateTableViewFacet(attribute, holder);
+        private ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) => attribute is null ? null : CreateTableViewFacet(attribute, holder);
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(method, method.ReturnType, specification);

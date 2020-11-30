@@ -21,7 +21,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class TypeOfAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public sealed class TypeOfAnnotationFacetFactory : ObjectFacetFactoryProcessor {
         public TypeOfAnnotationFacetFactory(IFacetFactoryOrder<TypeOfAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.CollectionsAndActions) { }
 

@@ -49,6 +49,6 @@ namespace NakedObjects.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IMandatoryFacet Create(RequiredAttribute attribute, ISpecification holder) => attribute != null ? new MandatoryFacet(holder) : null;
+        private static IMandatoryFacet Create(RequiredAttribute attribute, ISpecification holder) => attribute is not null ? new MandatoryFacet(holder) : null;
     }
 }

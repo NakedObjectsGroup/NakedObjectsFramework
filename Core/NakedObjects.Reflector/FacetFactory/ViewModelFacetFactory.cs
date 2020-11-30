@@ -20,13 +20,12 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class ViewModelFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
-        public ViewModelFacetFactory(IFacetFactoryOrder<ViewModelFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
+    public sealed class ViewModelFacetFactory : ObjectFacetFactoryProcessor {
+        public ViewModelFacetFactory(IFacetFactoryOrder<ViewModelFacetFactory> order, ILoggerFactory loggerFactory) : base(order.Order, loggerFactory, FeatureType.Objects) { }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            IFacet facet = null;
-
-            if (!type.IsInterface && typeof(IViewModel).IsAssignableFrom(type)) {
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            if (typeof(IViewModel).IsAssignableFrom(type)) {
+                IFacet facet;
                 var deriveMethod = type.GetMethod("DeriveKeys", new Type[] { });
                 var populateMethod = type.GetMethod("PopulateUsingKeys", new[] {typeof(string[])});
 
@@ -45,9 +44,8 @@ namespace NakedObjects.Reflector.FacetFactory {
                 }
 
                 methodRemover.RemoveMethods(toRemove.ToArray());
+                FacetUtils.AddFacet(facet);
             }
-
-            FacetUtils.AddFacet(facet);
 
             return metamodel;
         }

@@ -62,16 +62,16 @@ namespace NakedObjects.Reflector.FacetFactory {
             }
         }
 
-        public static IList<Type> BuildCollectionTypes(IEnumerable<PropertyInfo> properties) {
+        public static IList<Type> BuildCollectionTypes(IEnumerable<PropertyInfo> properties, IClassStrategy classStrategy) {
             return properties.Where(property => property.HasPublicGetter() &&
                                                 CollectionUtils.IsCollection(property.PropertyType) &&
                                                 !CollectionUtils.IsBlobOrClob(property.PropertyType) &&
-                                                property.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
+                                                !classStrategy.IsIgnored(property) &&
                                                 !CollectionUtils.IsQueryable(property.PropertyType)).Select(p => p.PropertyType).ToArray();
         }
 
         public override IList<PropertyInfo> FindCollectionProperties(IList<PropertyInfo> candidates, IClassStrategy classStrategy) {
-            var collectionTypes = BuildCollectionTypes(candidates);
+            var collectionTypes = BuildCollectionTypes(candidates, classStrategy);
             candidates = candidates.Where(property => collectionTypes.Contains(property.PropertyType)).ToArray();
             return PropertiesToBeIntrospected(candidates, classStrategy);
         }

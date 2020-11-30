@@ -23,7 +23,7 @@ using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class TitleMethodFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+    public sealed class TitleMethodFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IAnnotationBasedFacetFactory {
         private static readonly string[] FixedPrefixes = {
             RecognisedMethodsAndPrefixes.ToStringMethod,
             RecognisedMethodsAndPrefixes.TitleMethod
@@ -44,7 +44,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             IList<MethodInfo> attributedMethods = new List<MethodInfo>();
             foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)) {
-                if (propertyInfo.GetCustomAttribute<TitleAttribute>() != null) {
+                if (propertyInfo.GetCustomAttribute<TitleAttribute>() is not null) {
                     if (attributedMethods.Count > 0) {
                         logger.LogWarning($"Title annotation is used more than once in {type.Name}, this time on property {propertyInfo.Name}; this will be ignored");
                     }
@@ -63,13 +63,13 @@ namespace NakedObjects.Reflector.FacetFactory {
                 var titleMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.TitleMethod, typeof(string), Type.EmptyTypes);
                 IFacet titleFacet = null;
 
-                if (titleMethod != null) {
+                if (titleMethod is not null) {
                     methodRemover.RemoveMethod(titleMethod);
                     titleFacet = new TitleFacetViaTitleMethod(titleMethod, specification, Logger<TitleFacetViaTitleMethod>());
                 }
 
                 var toStringMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes);
-                if (toStringMethod != null && !(toStringMethod.DeclaringType == typeof(object))) {
+                if (toStringMethod is not null && toStringMethod.DeclaringType != typeof(object)) {
                     methodRemover.RemoveMethod(toStringMethod);
                 }
                 else {
@@ -79,11 +79,12 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                 var maskMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] {typeof(string)});
 
-                if (maskMethod != null) {
+                if (maskMethod is not null) {
                     methodRemover.RemoveMethod(maskMethod);
                 }
 
-                if (titleFacet == null && toStringMethod != null) {
+                // todo does this make sense ? 
+                if (titleFacet is null && toStringMethod is not null) {
                     titleFacet = new TitleFacetViaToStringMethod(maskMethod, specification, Logger<TitleFacetViaToStringMethod>());
                 }
 

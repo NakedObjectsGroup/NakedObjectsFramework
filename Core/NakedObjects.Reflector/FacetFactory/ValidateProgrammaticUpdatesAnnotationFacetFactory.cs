@@ -29,6 +29,6 @@ namespace NakedObjects.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IValidateProgrammaticUpdatesFacet Create(ValidateProgrammaticUpdatesAttribute attribute, ISpecification holder) => attribute == null ? null : new ValidateProgrammaticUpdatesFacetAnnotation(holder);
+        private static IValidateProgrammaticUpdatesFacet Create(ValidateProgrammaticUpdatesAttribute attribute, ISpecification holder) => attribute is null ? null : new ValidateProgrammaticUpdatesFacetAnnotation(holder);
     }
 }
