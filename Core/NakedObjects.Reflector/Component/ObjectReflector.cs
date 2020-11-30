@@ -29,7 +29,7 @@ namespace NakedObjects.Reflector.Component {
                                ILoggerFactory loggerFactory,
                                ILogger<AbstractParallelReflector> logger) : base(metamodel, facetDecorators, loggerFactory, logger) {
             this.objectReflectorConfiguration = objectReflectorConfiguration;
-            FacetFactorySet = new ObjectFacetFactorySet(facetFactories.OfType<ObjectFacetFactoryProcessor>().ToArray());
+            FacetFactorySet = new ObjectFacetFactorySet(facetFactories.OfType<IObjectFacetFactoryProcessor>().ToArray());
             ClassStrategy = new ObjectClassStrategy(objectReflectorConfiguration);
         }
 

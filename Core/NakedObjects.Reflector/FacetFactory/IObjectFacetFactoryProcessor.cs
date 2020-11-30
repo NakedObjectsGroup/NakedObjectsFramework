@@ -15,7 +15,7 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedObjects.Reflector.FacetFactory
 {
-    public interface IObjectFacetFactoryProcessor
+    public interface IObjectFacetFactoryProcessor : IFacetFactory
     {
         //  AbstractParallelReflector
         /// <summary>

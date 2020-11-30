@@ -12,7 +12,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Reflect;
 
 namespace NakedObjects.ParallelReflector.FacetFactory {
-    public abstract class FacetFactoryAbstract : IFacetFactory {
+    public abstract class FacetFactoryAbstract  {
         protected FacetFactoryAbstract(int numericOrder,
                                        ILoggerFactory loggerFactory,
                                        FeatureType featureTypes) {

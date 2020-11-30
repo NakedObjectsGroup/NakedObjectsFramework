@@ -15,7 +15,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedObjects.Reflector.TypeFacetFactory {
-    public abstract class ValueUsingValueSemanticsProviderFacetFactory : ObjectFacetFactoryProcessor
+    public abstract class ValueUsingValueSemanticsProviderFacetFactory : SystemTypeFacetFactoryProcessor
     {
         protected ValueUsingValueSemanticsProviderFacetFactory(int numericOrder, ILoggerFactory loggerFactory)
             : base(numericOrder, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
