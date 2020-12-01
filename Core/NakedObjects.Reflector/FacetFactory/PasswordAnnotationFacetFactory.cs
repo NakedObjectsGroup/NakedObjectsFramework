@@ -40,6 +40,6 @@ namespace NakedObjects.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IPasswordFacet Create(DataTypeAttribute attribute, ISpecification holder) => attribute != null && attribute.DataType == DataType.Password ? new PasswordFacet(holder) : null;
+        private static IPasswordFacet Create(DataTypeAttribute attribute, ISpecification holder) => attribute is not null && attribute.DataType == DataType.Password ? new PasswordFacet(holder) : null;
     }
 }

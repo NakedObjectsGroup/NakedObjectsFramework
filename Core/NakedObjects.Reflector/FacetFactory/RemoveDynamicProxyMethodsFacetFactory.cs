@@ -30,7 +30,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (IsDynamicProxyType(type)) {
                 foreach (var method in type.GetMethods().Join(MethodsToRemove, mi => mi.Name, s => s, (mi, s) => mi)) {
-                    if (methodRemover != null && method != null) {
+                    if (methodRemover is not null && method is not null) {
                         methodRemover.RemoveMethod(method);
                     }
                 }

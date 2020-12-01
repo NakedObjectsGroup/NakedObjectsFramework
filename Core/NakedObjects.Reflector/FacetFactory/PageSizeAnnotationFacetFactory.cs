@@ -36,6 +36,6 @@ namespace NakedObjects.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IPageSizeFacet Create(PageSizeAttribute attribute, ISpecification holder) => attribute == null ? null : new PageSizeFacetAnnotation(attribute.Value, holder);
+        private static IPageSizeFacet Create(PageSizeAttribute attribute, ISpecification holder) => attribute is null ? null : new PageSizeFacetAnnotation(attribute.Value, holder);
     }
 }

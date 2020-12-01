@@ -31,6 +31,6 @@ namespace NakedObjects.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IProgramPersistableOnlyFacet Create(ProgramPersistableOnlyAttribute attribute, ISpecification holder) => attribute == null ? null : new ProgramPersistableOnly(holder);
+        private static IProgramPersistableOnlyFacet Create(ProgramPersistableOnlyAttribute attribute, ISpecification holder) => attribute is null ? null : new ProgramPersistableOnly(holder);
     }
 }

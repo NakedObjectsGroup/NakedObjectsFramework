@@ -22,13 +22,9 @@ namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
     ///     Removes any methods on a type that handle events.
     /// </summary>
-    public sealed class RemoveEventHandlerMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory {
+    public sealed class RemoveEventHandlerMethodsFacetFactory : ObjectFacetFactoryProcessor {
         public RemoveEventHandlerMethodsFacetFactory(IFacetFactoryOrder<RemoveEventHandlerMethodsFacetFactory> order, ILoggerFactory loggerFactory)
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
-
-        public  string[] Prefixes {
-            get { return new string[] { }; }
-        }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             FindAndRemoveEventHandlerMethods(type, methodRemover);
@@ -36,7 +32,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private static void RemoveIfNotNull(IMethodRemover methodRemover, MethodInfo mi) {
-            if (mi != null) {
+            if (mi is not null) {
                 MethodHelpers.RemoveMethod(methodRemover, mi);
             }
         }
