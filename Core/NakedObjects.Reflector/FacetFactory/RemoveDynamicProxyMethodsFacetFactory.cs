@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
+using NakedObjects.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class RemoveDynamicProxyMethodsFacetFactory : ObjectFacetFactoryProcessor {
@@ -30,9 +31,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (IsDynamicProxyType(type)) {
                 foreach (var method in type.GetMethods().Join(MethodsToRemove, mi => mi.Name, s => s, (mi, s) => mi)) {
-                    if (methodRemover is not null && method is not null) {
-                        methodRemover.RemoveMethod(method);
-                    }
+                    methodRemover.SafeRemoveMethod(method);
                 }
             }
 

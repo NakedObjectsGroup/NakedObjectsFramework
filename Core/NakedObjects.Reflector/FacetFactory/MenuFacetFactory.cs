@@ -9,6 +9,7 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
+using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
@@ -33,14 +34,9 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var method = MethodHelpers.FindMethod(reflector, type, MethodType.Class, RecognisedMethodsAndPrefixes.MenuMethod, null, null);
-            if (method != null) {
-                MethodHelpers.RemoveMethod(methodRemover, method);
-                FacetUtils.AddFacet(new MenuFacetViaMethod(method, specification));
-            }
-            else {
-                FacetUtils.AddFacet(new MenuFacetDefault(specification));
-            }
-
+            methodRemover.SafeRemoveMethod(method);
+            var facet = method is not null ? (IFacet)new MenuFacetViaMethod(method, specification) : new MenuFacetDefault(specification);
+            FacetUtils.AddFacet(facet);
             return metamodel;
         }
     }

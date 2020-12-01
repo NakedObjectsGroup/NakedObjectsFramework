@@ -25,8 +25,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.PropertiesCollectionsAndActions) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Process(type.GetCustomAttribute<HiddenAttribute>,
-                type.GetCustomAttribute<ScaffoldColumnAttribute>, specification);
+            Process(type.GetCustomAttribute<HiddenAttribute>, type.GetCustomAttribute<ScaffoldColumnAttribute>, specification);
             return metamodel;
         }
 
@@ -34,7 +33,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         private static void Process(Func<Attribute> getHidden, Func<Attribute> getScaffold, ISpecification specification) {
             var attribute = getHidden();
-            FacetUtils.AddFacet(attribute != null ? Create((HiddenAttribute) attribute, specification) : Create((ScaffoldColumnAttribute) getScaffold(), specification));
+            FacetUtils.AddFacet(attribute is not null ? Create((HiddenAttribute) attribute, specification) : Create((ScaffoldColumnAttribute) getScaffold(), specification));
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
@@ -47,8 +46,8 @@ namespace NakedObjects.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) => attribute == null ? null : new HiddenFacet(attribute.Value, holder);
+        private static IHiddenFacet Create(HiddenAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(attribute.Value, holder);
 
-        private static IHiddenFacet Create(ScaffoldColumnAttribute attribute, ISpecification holder) => attribute == null ? null : new HiddenFacet(attribute.Scaffold ? WhenTo.Never : WhenTo.Always, holder);
+        private static IHiddenFacet Create(ScaffoldColumnAttribute attribute, ISpecification holder) => attribute is null ? null : new HiddenFacet(attribute.Scaffold ? WhenTo.Never : WhenTo.Always, holder);
     }
 }

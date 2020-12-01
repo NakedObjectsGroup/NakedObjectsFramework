@@ -33,7 +33,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if ((method.ReturnType.IsPrimitive || TypeUtils.IsEnum(method.ReturnType)) && method.GetCustomAttribute<OptionallyAttribute>() != null) {
+            if ((method.ReturnType.IsPrimitive || TypeUtils.IsEnum(method.ReturnType)) && method.GetCustomAttribute<OptionallyAttribute>() is not null) {
                 logger.LogWarning($"Ignoring Optionally annotation on primitive parameter on {method.ReflectedType}.{method.Name}");
                 return metamodel;
             }
@@ -43,7 +43,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            if ((property.PropertyType.IsPrimitive || TypeUtils.IsEnum(property.PropertyType)) && property.GetCustomAttribute<OptionallyAttribute>() != null) {
+            if ((property.PropertyType.IsPrimitive || TypeUtils.IsEnum(property.PropertyType)) && property.GetCustomAttribute<OptionallyAttribute>() is not null) {
                 logger.LogWarning($"Ignoring Optionally annotation on primitive or un-readable parameter on {property.ReflectedType}.{property.Name}");
                 return metamodel;
             }
@@ -58,7 +58,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector,  MethodInfo method, int paramNum, ISpecificationBuilder holder, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var parameter = method.GetParameters()[paramNum];
             if (parameter.ParameterType.IsPrimitive || TypeUtils.IsEnum(parameter.ParameterType)) {
-                if (method.GetCustomAttribute<OptionallyAttribute>() != null) {
+                if (method.GetCustomAttribute<OptionallyAttribute>() is not null) {
                     logger.LogWarning($"Ignoring Optionally annotation on primitive parameter {paramNum} on {method.ReflectedType}.{method.Name}");
                 }
 
@@ -70,6 +70,6 @@ namespace NakedObjects.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IMandatoryFacet Create(OptionallyAttribute attribute, ISpecification holder) => attribute != null ? new OptionalFacet(holder) : null;
+        private static IMandatoryFacet Create(OptionallyAttribute attribute, ISpecification holder) => attribute is not null ? new OptionalFacet(holder) : null;
     }
 }

@@ -16,6 +16,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
+using NakedObjects.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
@@ -38,9 +39,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             var typeToMethods = new Dictionary<Type, MethodInfo[]>();
             InitForType(type, typeToMethods);
             foreach (var method in typeToMethods[type]) {
-                if (methodRemover is not null && method is not null) {
-                    methodRemover.RemoveMethod(method);
-                }
+                methodRemover.SafeRemoveMethod(method);
             }
         }
 

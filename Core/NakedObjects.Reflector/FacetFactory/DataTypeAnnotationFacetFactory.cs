@@ -45,7 +45,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private static IDataTypeFacet Create(DataTypeAttribute attribute, ISpecification holder) =>
-            attribute == null
+            attribute is null
                 ? null
                 : attribute.DataType == DataType.Custom
                     ? new DataTypeFacetAnnotation(attribute.CustomDataType, holder)

@@ -33,7 +33,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         private static void RemoveIfNotNull(IMethodRemover methodRemover, MethodInfo mi) {
             if (mi is not null) {
-                MethodHelpers.RemoveMethod(methodRemover, mi);
+                MethodHelpers.SafeRemoveMethod(methodRemover, mi);
             }
         }
 

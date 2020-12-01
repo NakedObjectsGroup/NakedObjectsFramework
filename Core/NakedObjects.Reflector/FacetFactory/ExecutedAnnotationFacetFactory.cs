@@ -43,6 +43,6 @@ namespace NakedObjects.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IExecutedFacet Create(ExecutedAttribute attribute, ISpecification holder) => attribute == null ? null : new ExecutedFacetAnnotation(attribute.Value, holder);
+        private static IExecutedFacet Create(ExecutedAttribute attribute, ISpecification holder) => attribute is null ? null : new ExecutedFacetAnnotation(attribute.Value, holder);
     }
 }

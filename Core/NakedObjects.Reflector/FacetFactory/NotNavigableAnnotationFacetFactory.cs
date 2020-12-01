@@ -28,6 +28,6 @@ namespace NakedObjects.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static INotNavigableFacet Create(NotNavigableAttribute attribute, ISpecification holder) => attribute == null ? null : new NotNavigableFacet(holder);
+        private static INotNavigableFacet Create(NotNavigableAttribute attribute, ISpecification holder) => attribute is null ? null : new NotNavigableFacet(holder);
     }
 }

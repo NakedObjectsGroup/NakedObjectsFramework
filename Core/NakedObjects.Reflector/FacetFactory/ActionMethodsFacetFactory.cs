@@ -69,7 +69,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                 (elementSpec, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(elementType,  metamodel);
             }
 
-            MethodHelpers.RemoveMethod(methodRemover, actionMethod);
+            MethodHelpers.SafeRemoveMethod(methodRemover, actionMethod);
             facets.Add(new ActionInvocationFacetViaMethod(actionMethod, onType, returnSpec, elementSpec, action, isQueryable, Logger<ActionInvocationFacetViaMethod>()));
 
             var methodType = actionMethod.IsStatic ? MethodType.Class : MethodType.Object;
@@ -180,8 +180,8 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         private void FindAndRemoveValidMethod(IReflector reflector,  ICollection<IFacet> actionFacets, IMethodRemover methodRemover, Type type, MethodType methodType, string capitalizedName, Type[] parms, ISpecification action) {
             var method = MethodHelpers.FindMethod(reflector, type, methodType, $"{RecognisedMethodsAndPrefixes.ValidatePrefix}{capitalizedName}", typeof(string), parms);
+            methodRemover.SafeRemoveMethod(method);
             if (method is not null) {
-                MethodHelpers.RemoveMethod(methodRemover, method);
                 actionFacets.Add(new ActionValidationFacet(method, action, LoggerFactory.CreateLogger<ActionValidationFacet>()));
             }
         }
@@ -215,7 +215,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                 if (methodToUse != null) {
                     // deliberately not removing both if duplicate to show that method  is duplicate
-                    MethodHelpers.RemoveMethod(methodRemover, methodToUse);
+                    MethodHelpers.SafeRemoveMethod(methodRemover, methodToUse);
 
                     // add facets directly to parameters, not to actions
                     FacetUtils.AddFacet(new ActionDefaultsFacetViaMethod(methodToUse, parameters[i], Logger<ActionDefaultsFacetViaMethod>()));
@@ -268,7 +268,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                 if (methodToUse != null) {
                     // deliberately not removing both if duplicate to show that method  is duplicate
-                    MethodHelpers.RemoveMethod(methodRemover, methodToUse);
+                    MethodHelpers.SafeRemoveMethod(methodRemover, methodToUse);
 
                     // add facets directly to parameters, not to actions
                     var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
@@ -311,7 +311,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                         var minLength = minLengthAttr?.Length ?? 0;
 
                         // deliberately not removing both if duplicate to show that method  is duplicate
-                        MethodHelpers.RemoveMethod(methodRemover, method);
+                        MethodHelpers.SafeRemoveMethod(methodRemover, method);
 
                         // add facets directly to parameters, not to actions
                         FacetUtils.AddFacet(new AutoCompleteFacet(method, pageSize, minLength, parameters[i], Logger<AutoCompleteFacet>()));
@@ -354,7 +354,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                 if (methodToUse is not null) {
                     // deliberately not removing both if duplicate to show that method  is duplicate
-                    MethodHelpers.RemoveMethod(methodRemover, methodToUse);
+                    MethodHelpers.SafeRemoveMethod(methodRemover, methodToUse);
 
                     // add facets directly to parameters, not to actions
                     FacetUtils.AddFacet(new ActionParameterValidation(methodToUse, parameters[i], Logger<ActionParameterValidation>()));

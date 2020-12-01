@@ -34,8 +34,8 @@ namespace NakedObjects.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.IconNameMethod, typeof(string), Type.EmptyTypes);
             var attribute = type.GetCustomAttribute<IconNameAttribute>();
-            if (method != null) {
-                MethodHelpers.RemoveMethod(methodRemover, method);
+            methodRemover.SafeRemoveMethod(method);
+            if (method is not null) {
                 FacetUtils.AddFacet(new IconFacetViaMethod(method, specification, attribute?.Value, Logger<IconFacetViaMethod>()));
             }
             else {

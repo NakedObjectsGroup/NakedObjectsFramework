@@ -59,6 +59,6 @@ namespace NakedObjects.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IEnumFacet Create(EnumDataTypeAttribute attribute, ISpecification holder) => attribute == null ? null : new EnumFacet(holder, attribute.EnumType);
+        private static IEnumFacet Create(EnumDataTypeAttribute attribute, ISpecification holder) => attribute is null ? null : new EnumFacet(holder, attribute.EnumType);
     }
 }

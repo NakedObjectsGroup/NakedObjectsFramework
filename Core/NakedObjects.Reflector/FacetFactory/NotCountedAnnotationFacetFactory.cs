@@ -32,6 +32,6 @@ namespace NakedObjects.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static INotCountedFacet Create(NotCountedAttribute attribute, ISpecification holder) => attribute == null ? null : new NotCountedFacet(holder);
+        private static INotCountedFacet Create(NotCountedAttribute attribute, ISpecification holder) => attribute is null ? null : new NotCountedFacet(holder);
     }
 }

@@ -15,6 +15,7 @@ using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.ParallelReflector.Utils;
 
 namespace NakedObjects.Reflector.FacetFactory {
     /// <summary>
@@ -31,8 +32,8 @@ namespace NakedObjects.Reflector.FacetFactory {
         }
 
         private static void RemoveExplicitlyIgnoredMembers(Type type, IMethodRemover methodRemover) {
-            foreach (var method in type.GetMethods().Where(m => m.GetCustomAttribute<NakedObjectsIgnoreAttribute>() != null)) {
-                methodRemover.RemoveMethod(method);
+            foreach (var method in type.GetMethods().Where(m => m.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is not null)) {
+                methodRemover.SafeRemoveMethod(method);
             }
         }
     }

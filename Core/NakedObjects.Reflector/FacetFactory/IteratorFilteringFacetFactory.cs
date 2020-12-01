@@ -39,9 +39,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             if (typeof(IEnumerable).IsAssignableFrom(type) && !FasterTypeUtils.IsSystem(type)) {
                 var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.GetEnumeratorMethod, null, Type.EmptyTypes);
-                if (method != null) {
-                    methodRemover.RemoveMethod(method);
-                }
+                methodRemover.SafeRemoveMethod(method);
             }
 
             return metamodel;

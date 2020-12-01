@@ -96,7 +96,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                                                Type[] parms,
                                                ISpecification property) {
             var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ModifyPrefix + capitalizedName, typeof(void), parms);
-            MethodHelpers.RemoveMethod(methodRemover, method);
+            MethodHelpers.SafeRemoveMethod(methodRemover, method);
             if (method is not null) {
                 propertyFacets.Add(new PropertySetterFacetViaModifyMethod(method, capitalizedName, property, Logger<PropertySetterFacetViaModifyMethod>()));
             }
@@ -104,7 +104,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         private void FindAndRemoveValidateMethod(IReflector reflector,  ICollection<IFacet> propertyFacets, IMethodRemover methodRemover, Type type, Type[] parms, string capitalizedName, ISpecification property) {
             var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ValidatePrefix + capitalizedName, typeof(string), parms);
-            MethodHelpers.RemoveMethod(methodRemover, method);
+            MethodHelpers.SafeRemoveMethod(methodRemover, method);
             if (method is not null) {
                 propertyFacets.Add(new PropertyValidateFacetViaMethod(method, property, Logger<PropertyValidateFacetViaMethod>()));
                 MethodHelpers.AddAjaxFacet(method, property);
@@ -122,7 +122,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                                                 Type returnType,
                                                 ISpecification property) {
             var method = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.DefaultPrefix + capitalizedName, returnType, Type.EmptyTypes);
-            MethodHelpers.RemoveMethod(methodRemover, method);
+            MethodHelpers.SafeRemoveMethod(methodRemover, method);
             if (method is not null) {
                 propertyFacets.Add(new PropertyDefaultFacetViaMethod(method, property, Logger<PropertyDefaultFacetViaMethod>()));
                 MethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
@@ -149,7 +149,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             }
 
             var method = methods.FirstOrDefault();
-            MethodHelpers.RemoveMethod(methodRemover, method);
+            MethodHelpers.SafeRemoveMethod(methodRemover, method);
             if (method is not null) {
                 var parameterNamesAndTypes = new List<(string, IObjectSpecImmutable)>();
 
@@ -195,7 +195,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                     var pageSize = pageSizeAttr != null ? pageSizeAttr.Value : 0; // default to 0 ie system default
                     var minLength = minLengthAttr != null ? minLengthAttr.Length : 0;
 
-                    MethodHelpers.RemoveMethod(methodRemover, method);
+                    MethodHelpers.SafeRemoveMethod(methodRemover, method);
                     propertyFacets.Add(new AutoCompleteFacet(method, pageSize, minLength, property, Logger<AutoCompleteFacet>()));
                     MethodHelpers.AddOrAddToExecutedWhereFacet(method, property);
                 }

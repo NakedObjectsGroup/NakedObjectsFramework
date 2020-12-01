@@ -43,7 +43,7 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var pType = property.PropertyType;
-            if ((pType.IsPrimitive || pType == typeof(string) || TypeUtils.IsEnum(pType)) && property.GetCustomAttribute<FindMenuAttribute>() != null) {
+            if ((pType.IsPrimitive || pType == typeof(string) || TypeUtils.IsEnum(pType)) && property.GetCustomAttribute<FindMenuAttribute>() is not null) {
                 logger.LogWarning($"Ignoring FindMenu annotation on primitive or un-readable parameter on {property.ReflectedType}.{property.Name}");
                 return metamodel;
             }
@@ -59,7 +59,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             var parameter = method.GetParameters()[paramNum];
             var pType = parameter.ParameterType;
             if (pType.IsPrimitive || pType == typeof(string) || TypeUtils.IsEnum(pType)) {
-                if (method.GetCustomAttribute<FindMenuAttribute>() != null) {
+                if (method.GetCustomAttribute<FindMenuAttribute>() is not null) {
                     logger.LogWarning($"Ignoring FindMenu annotation on primitive parameter {paramNum} on {method.ReflectedType}.{method.Name}");
                 }
 
@@ -71,6 +71,6 @@ namespace NakedObjects.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IFacet Create(FindMenuAttribute attribute, ISpecification holder) => attribute == null ? null : new FindMenuFacet(holder);
+        private static IFacet Create(FindMenuAttribute attribute, ISpecification holder) => attribute is null ? null : new FindMenuFacet(holder);
     }
 }

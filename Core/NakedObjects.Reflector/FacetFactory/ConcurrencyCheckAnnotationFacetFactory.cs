@@ -25,11 +25,11 @@ namespace NakedObjects.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.Properties) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Attribute attribute = property.GetCustomAttribute<ConcurrencyCheckAttribute>();
+            var attribute = property.GetCustomAttribute<ConcurrencyCheckAttribute>();
             FacetUtils.AddFacet(Create(reflector, attribute, specification));
             return metamodel;
         }
 
-        private static IConcurrencyCheckFacet Create(IReflector reflector, Attribute attribute, ISpecification holder) => attribute == null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet(holder);
+        private static IConcurrencyCheckFacet Create(IReflector reflector, Attribute attribute, ISpecification holder) => attribute is null || !reflector.ConcurrencyChecking ? null : new ConcurrencyCheckFacet(holder);
     }
 }

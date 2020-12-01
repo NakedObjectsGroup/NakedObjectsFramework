@@ -55,7 +55,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         private static IDateOnlyFacet Create(DataTypeAttribute attribute, ConcurrencyCheckAttribute concurrencyCheckAttribute, ISpecification holder) =>
             attribute?.DataType == DataType.Date
                 ? new DateOnlyFacet(holder)
-                : concurrencyCheckAttribute != null
+                : concurrencyCheckAttribute is not null
                     ? null
                     : attribute?.DataType == DataType.DateTime
                         ? null

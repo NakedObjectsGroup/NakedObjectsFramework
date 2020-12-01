@@ -27,8 +27,8 @@ namespace NakedObjects.Reflector.FacetFactory {
 
         static HiddenDefaultMethodFacetFactory() =>
             FixedPrefixes = new[] {
-                RecognisedMethodsAndPrefixes.HidePrefix + "Action" + RecognisedMethodsAndPrefixes.DefaultPrefix,
-                RecognisedMethodsAndPrefixes.HidePrefix + "Property" + RecognisedMethodsAndPrefixes.DefaultPrefix
+                $"{RecognisedMethodsAndPrefixes.HidePrefix}Action{RecognisedMethodsAndPrefixes.DefaultPrefix}",
+                $"{RecognisedMethodsAndPrefixes.HidePrefix}Property{RecognisedMethodsAndPrefixes.DefaultPrefix}"
             };
 
         public HiddenDefaultMethodFacetFactory(IFacetFactoryOrder<HiddenDefaultMethodFacetFactory> order, ILoggerFactory loggerFactory)
@@ -41,9 +41,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             try {
                 foreach (var methodName in FixedPrefixes) {
                     var methodInfo = MethodHelpers.FindMethod(reflector, type, MethodType.Object, methodName, typeof(bool), Type.EmptyTypes);
-                    if (methodInfo != null) {
-                        methodRemover.RemoveMethod(methodInfo);
-                    }
+                    methodRemover.SafeRemoveMethod(methodInfo);
                 }
             }
             catch (Exception e) {

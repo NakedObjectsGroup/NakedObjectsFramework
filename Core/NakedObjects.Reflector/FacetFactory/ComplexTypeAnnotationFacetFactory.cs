@@ -25,11 +25,11 @@ namespace NakedObjects.Reflector.FacetFactory {
             : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) { }
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
-            Attribute ctAttribute = type.GetCustomAttribute<ComplexTypeAttribute>();
-            FacetUtils.AddFacet(Create(ctAttribute, specification));
+            var attribute = type.GetCustomAttribute<ComplexTypeAttribute>();
+            FacetUtils.AddFacet(Create(attribute, specification));
             return metamodel;
         }
 
-        private static IComplexTypeFacet Create(Attribute attribute, ISpecification holder) => attribute == null ? null : new ComplexTypeFacetAnnotation(holder);
+        private static IComplexTypeFacet Create(Attribute attribute, ISpecification holder) => attribute is null ? null : new ComplexTypeFacetAnnotation(holder);
     }
 }

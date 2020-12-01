@@ -63,14 +63,14 @@ namespace NakedObjects.Reflector.FacetFactory {
                 var titleMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.TitleMethod, typeof(string), Type.EmptyTypes);
                 IFacet titleFacet = null;
 
+                methodRemover.SafeRemoveMethod(titleMethod);
                 if (titleMethod is not null) {
-                    methodRemover.RemoveMethod(titleMethod);
                     titleFacet = new TitleFacetViaTitleMethod(titleMethod, specification, Logger<TitleFacetViaTitleMethod>());
                 }
 
                 var toStringMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), Type.EmptyTypes);
                 if (toStringMethod is not null && toStringMethod.DeclaringType != typeof(object)) {
-                    methodRemover.RemoveMethod(toStringMethod);
+                    methodRemover.SafeRemoveMethod(toStringMethod);
                 }
                 else {
                     // on object do not use
@@ -79,9 +79,9 @@ namespace NakedObjects.Reflector.FacetFactory {
 
                 var maskMethod = MethodHelpers.FindMethod(reflector, type, MethodType.Object, RecognisedMethodsAndPrefixes.ToStringMethod, typeof(string), new[] {typeof(string)});
 
-                if (maskMethod is not null) {
-                    methodRemover.RemoveMethod(maskMethod);
-                }
+                
+                methodRemover.SafeRemoveMethod(maskMethod);
+                
 
                 // todo does this make sense ? 
                 if (titleFacet is null && toStringMethod is not null) {

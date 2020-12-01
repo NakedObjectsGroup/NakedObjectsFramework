@@ -108,8 +108,8 @@ namespace NakedObjects.ParallelReflector.Utils {
             (methodType == MethodType.Object ? BindingFlags.Instance : BindingFlags.Static) |
             (reflector.IgnoreCase ? BindingFlags.IgnoreCase : BindingFlags.Default);
 
-        public static void RemoveMethod(IMethodRemover methodRemover, MethodInfo method) {
-            if (method != null) {
+        public static void SafeRemoveMethod(this IMethodRemover methodRemover, MethodInfo method) {
+            if (method is not null) {
                 methodRemover?.RemoveMethod(method);
             }
         }

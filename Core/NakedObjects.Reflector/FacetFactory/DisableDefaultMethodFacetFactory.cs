@@ -41,9 +41,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             try {
                 foreach (var methodName in FixedPrefixes) {
                     var methodInfo = MethodHelpers.FindMethod(reflector, type, MethodType.Object, methodName, typeof(string), Type.EmptyTypes);
-                    if (methodInfo != null) {
-                        methodRemover.RemoveMethod(methodInfo);
-                    }
+                    methodRemover.SafeRemoveMethod(methodInfo);
                 }
             }
             catch (Exception e) {

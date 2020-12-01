@@ -35,7 +35,7 @@ namespace NakedObjects.Reflector.FacetFactory {
         private static bool IsParseable(Type type) => type.IsValueType;
 
         private static bool IsCollection(Type type) =>
-            type != null && (
+            type is not null && (
                 CollectionUtils.IsGenericEnumerable(type) ||
                 type.IsArray ||
                 CollectionUtils.IsCollectionButNotArray(type) ||
@@ -56,7 +56,7 @@ namespace NakedObjects.Reflector.FacetFactory {
                 IObjectSpecBuilder type;
                 (type, metamodel) = reflector.LoadSpecification<IObjectSpecBuilder>(p.ParameterType,  metamodel);
 
-                if (type != null) {
+                if (type is not null) {
                     if (IsParseable(parameterType)) {
                         logger.LogWarning($"ContributedAction attribute added to a value parameter type: {member.Name}");
                     }
@@ -106,6 +106,7 @@ namespace NakedObjects.Reflector.FacetFactory {
             return metamodel;
         }
 
-        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) => Process(reflector,  method, specification, metamodel);
+        public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) =>
+            Process(reflector,  method, specification, metamodel);
     }
 }

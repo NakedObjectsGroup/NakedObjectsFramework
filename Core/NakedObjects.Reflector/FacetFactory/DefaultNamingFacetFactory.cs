@@ -20,7 +20,7 @@ using NakedObjects.Meta.Utils;
 using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.FacetFactory {
-    public sealed class DefaultNamingFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
+    public sealed class DefaultNamingFacetFactory : ObjectFacetFactoryProcessor {
         private ILogger<DefaultNamingFacetFactory> logger;
 
         public DefaultNamingFacetFactory(IFacetFactoryOrder<DefaultNamingFacetFactory> order, ILoggerFactory loggerFactory)
@@ -30,13 +30,13 @@ namespace NakedObjects.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var facets = new List<IFacet>();
             var namedFacet = specification.GetFacet<INamedFacet>();
-            if (namedFacet == null) {
+            if (namedFacet is null) {
                 namedFacet = new NamedFacetInferred(type.Name, specification);
                 facets.Add(namedFacet);
             }
 
             var pluralFacet = specification.GetFacet<IPluralFacet>();
-            if (pluralFacet == null) {
+            if (pluralFacet is null) {
                 var pluralName = NameUtils.PluralName(namedFacet.NaturalName);
                 pluralFacet = new PluralFacetInferred(pluralName, specification);
                 facets.Add(pluralFacet);
