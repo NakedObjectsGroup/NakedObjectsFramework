@@ -50,7 +50,7 @@ namespace NakedObjects.Meta.Utils {
                 return adapter.Object;
             }
 
-            if (p.GetCustomAttribute<InjectedAttribute>() != null) {
+            if (p.GetCustomAttribute<InjectedAttribute>() is not null) {
                 var parameterType = p.ParameterType;
                 if (parameterType == typeof(DateTime)) {
                     return GetInjectedDateTimeValue();

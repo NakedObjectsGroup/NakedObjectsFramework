@@ -16,20 +16,20 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
-using NakedObjects.Meta.Utils;
 using NakedObjects.Menu;
+using NakedObjects.Meta.Utils;
 
 namespace NakedFramework.ModelBuilding.Component {
     public class ModelIntegrator : IModelIntegrator {
-        private readonly IMetamodelBuilder metamodelBuilder;
-        private readonly IMenuFactory menuFactory;
-        private readonly ILogger<ModelIntegrator> logger;
         private readonly ICoreConfiguration coreConfiguration;
+        private readonly ILogger<ModelIntegrator> logger;
+        private readonly IMenuFactory menuFactory;
+        private readonly IMetamodelBuilder metamodelBuilder;
         private readonly IObjectReflectorConfiguration objectReflectorConfiguration;
 
-        public ModelIntegrator(IMetamodelBuilder metamodelBuilder, 
+        public ModelIntegrator(IMetamodelBuilder metamodelBuilder,
                                IMenuFactory menuFactory,
-                               ILogger<ModelIntegrator> logger, 
+                               ILogger<ModelIntegrator> logger,
                                ICoreConfiguration coreConfiguration,
                                IObjectReflectorConfiguration objectReflectorConfiguration) {
             this.metamodelBuilder = metamodelBuilder;
@@ -52,7 +52,7 @@ namespace NakedFramework.ModelBuilding.Component {
             // integrationFacets.ForEach(f => f.Remove());
 
 
-            var services =  objectReflectorConfiguration.Services;
+            var services = objectReflectorConfiguration.Services;
             PopulateAssociatedActions(services, metamodelBuilder);
 
             PopulateAssociatedFunctions(metamodelBuilder);
@@ -70,20 +70,14 @@ namespace NakedFramework.ModelBuilding.Component {
 
         private static bool IsContributedFunction(IActionSpecImmutable sa, ITypeSpecImmutable ts) => sa.GetFacet<IContributedFunctionFacet>()?.IsContributedTo(ts) == true;
 
-
-        private void PopulateContributedFunctions(ITypeSpecBuilder spec, ITypeSpecImmutable[] functions, IMetamodel metamodel)
-        {
+        private static void PopulateContributedFunctions(ITypeSpecBuilder spec, ITypeSpecImmutable[] functions, IMetamodel metamodel) {
             var result = functions.AsParallel().SelectMany(functionsSpec => {
-
                 var serviceActions = functionsSpec.ObjectActions.Where(sa => sa != null).ToArray();
 
                 var matchingActionsForObject = new List<IActionSpecImmutable>();
 
-                foreach (var sa in serviceActions)
-                {
-
-                    if (IsContributedFunction(sa, spec))
-                    {
+                foreach (var sa in serviceActions) {
+                    if (IsContributedFunction(sa, spec)) {
                         matchingActionsForObject.Add(sa);
                     }
                 }
@@ -94,43 +88,35 @@ namespace NakedFramework.ModelBuilding.Component {
             spec.AddContributedFunctions(result);
         }
 
-        private void PopulateAssociatedFunctions(IMetamodelBuilder metamodel)
-        {
+        private static void PopulateAssociatedFunctions(IMetamodelBuilder metamodel) {
             // todo add facet for this 
             var functions = metamodel.AllSpecifications.Where(IsStatic).ToArray();
             var objects = metamodel.AllSpecifications.Where(IsNotStatic).Cast<ITypeSpecBuilder>();
 
-            foreach (var spec in objects)
-            {
+            foreach (var spec in objects) {
                 PopulateContributedFunctions(spec, functions, metamodel);
             }
         }
 
-        private void PopulateAssociatedActions(Type[] services, IMetamodelBuilder metamodel)
-        {
+        private void PopulateAssociatedActions(Type[] services, IMetamodelBuilder metamodel) {
             var nonServiceSpecs = metamodel.AllSpecifications.OfType<IObjectSpecBuilder>();
 
-            foreach (var spec in nonServiceSpecs)
-            {
+            foreach (var spec in nonServiceSpecs) {
                 PopulateAssociatedActions(spec, services, metamodel);
             }
         }
 
-        private void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services, IMetamodelBuilder metamodel)
-        {
-            if (string.IsNullOrWhiteSpace(spec.FullName))
-            {
+        private void PopulateAssociatedActions(IObjectSpecBuilder spec, Type[] services, IMetamodelBuilder metamodel) {
+            if (string.IsNullOrWhiteSpace(spec.FullName)) {
                 var id = spec.Identifier?.ClassName ?? "unknown";
                 logger.LogWarning($"Specification with id : {id} has null or empty name");
             }
 
-            if (FasterTypeUtils.IsSystem(spec.FullName) && !spec.IsCollection)
-            {
+            if (FasterTypeUtils.IsSystem(spec.FullName) && !spec.IsCollection) {
                 return;
             }
 
-            if (FasterTypeUtils.IsNakedObjects(spec.FullName))
-            {
+            if (FasterTypeUtils.IsNakedObjects(spec.FullName)) {
                 return;
             }
 
@@ -153,55 +139,48 @@ namespace NakedFramework.ModelBuilding.Component {
             }
         }
 
-        private static void InstallObjectMenus(IMetamodelBuilder metamodel)
-        {
+        private static void InstallObjectMenus(IMetamodelBuilder metamodel) {
             var menuFacets = metamodel.AllSpecifications.Where(s => s.ContainsFacet<IMenuFacet>()).Select(s => s.GetFacet<IMenuFacet>());
             menuFacets.ForEach(mf => mf.CreateMenu(metamodel));
         }
 
-        private static void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services, IMetamodel metamodel)
-        {
+        private static void PopulateContributedActions(IObjectSpecBuilder spec, Type[] services, IMetamodel metamodel) {
             var (contribActions, collContribActions, finderActions) = services.AsParallel().Select(serviceType => {
-                var serviceSpecification = (IServiceSpecImmutable)metamodel.GetSpecification(serviceType);
+                var serviceSpecification = (IServiceSpecImmutable) metamodel.GetSpecification(serviceType);
                 var serviceActions = serviceSpecification.ObjectActions.Where(sa => sa != null).ToArray();
 
                 var matchingActionsForObject = new List<IActionSpecImmutable>();
                 var matchingActionsForCollection = new List<IActionSpecImmutable>();
                 var matchingFinderActions = new List<IActionSpecImmutable>();
 
-                foreach (var sa in serviceActions)
-                {
-                    if (serviceType != spec.Type)
-                    {
-                        if (sa.IsContributedTo(spec))
-                        {
+                foreach (var sa in serviceActions) {
+                    if (serviceType != spec.Type) {
+                        if (sa.IsContributedTo(spec)) {
                             matchingActionsForObject.Add(sa);
                         }
 
-                        if (sa.IsContributedToCollectionOf(spec))
-                        {
+                        if (sa.IsContributedToCollectionOf(spec)) {
                             matchingActionsForCollection.Add(sa);
                         }
                     }
 
-                    if (sa.IsFinderMethodFor(spec))
-                    {
+                    if (sa.IsFinderMethodFor(spec)) {
                         matchingFinderActions.Add(sa);
                     }
                 }
 
                 return (matchingActionsForObject, matchingActionsForCollection, matchingFinderActions.OrderBy(a => a, new MemberOrderComparator<IActionSpecImmutable>()).ToList());
             }).Aggregate((new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>(), new List<IActionSpecImmutable>()),
-                (a, t) => {
-                    var (contrib, collContrib, finder) = a;
-                    var (ca, cca, fa) = t;
-                    contrib.AddRange(ca);
-                    collContrib.AddRange(cca);
-                    finder.AddRange(fa);
-                    return a;
-                });
+                         (a, t) => {
+                             var (contrib, collContrib, finder) = a;
+                             var (ca, cca, fa) = t;
+                             contrib.AddRange(ca);
+                             collContrib.AddRange(cca);
+                             finder.AddRange(fa);
+                             return a;
+                         });
 
-            var groupedContribActions = contribActions.GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new { service, actions }).OrderBy(a => Array.IndexOf(services, a.service)).SelectMany(a => a.actions).ToList();
+            var groupedContribActions = contribActions.GroupBy(i => i.OwnerSpec.Type, i => i, (service, actions) => new {service, actions}).OrderBy(a => Array.IndexOf(services, a.service)).SelectMany(a => a.actions).ToList();
 
             spec.AddContributedActions(groupedContribActions);
             spec.AddCollectionContributedActions(collContribActions);

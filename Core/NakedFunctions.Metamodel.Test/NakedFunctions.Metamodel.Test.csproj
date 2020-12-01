@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -21,9 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj" />
-    <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj" />
-    <ProjectReference Include="..\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj" />
+    <ProjectReference Include="..\NakedFunctions.Metamodel\NakedFunctions.Metamodel.csproj" />
   </ItemGroup>
 
 </Project>

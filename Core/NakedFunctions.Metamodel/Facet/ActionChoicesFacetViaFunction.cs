@@ -28,7 +28,8 @@ namespace NakedFunctions.Meta.Facet {
         private readonly string[] parameterNames;
 
         public ActionChoicesFacetViaFunction(MethodInfo choicesMethod,
-                                             (string, IObjectSpecImmutable)[] parameterNamesAndTypes, Type choicesType,
+                                             (string, IObjectSpecImmutable)[] parameterNamesAndTypes, 
+                                             Type choicesType,
                                              ISpecification holder,
                                              bool isMultiple = false)
             : base(holder) {
