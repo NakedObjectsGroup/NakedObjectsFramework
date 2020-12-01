@@ -51,25 +51,29 @@ namespace NakedObjects.Reflector.Reflect {
         /// </para>
         private readonly IList<IPropertyOrCollectionIdentifyingFacetFactory> propertyOrCollectionIdentifyingFactories;
 
-        public SystemTypeFacetFactorySet(IObjectFacetFactoryProcessor[] factories)
-        {
+        public SystemTypeFacetFactorySet(IObjectFacetFactoryProcessor[] factories) {
             var allFactories = factories.ToList();
             allFactories.Sort();
 
             Prefixes = allFactories.OfType<IMethodPrefixBasedFacetFactory>().SelectMany(prefixfactory => prefixfactory.Prefixes).ToArray();
 
-            foreach (FeatureType featureType in Enum.GetValues(typeof(FeatureType)))
-            {
-                factoriesByFeatureType[featureType] = allFactories.Where(f => f.FeatureTypes.HasFlag(featureType)).ToArray();
-            }
-
             methodFilteringFactories = allFactories.OfType<IMethodFilteringFacetFactory>().ToArray();
             propertyFilteringFactories = allFactories.OfType<IPropertyFilteringFacetFactory>().ToArray();
             propertyOrCollectionIdentifyingFactories = allFactories.OfType<IPropertyOrCollectionIdentifyingFacetFactory>().ToArray();
             actionIdentifyingFactories = allFactories.OfType<IMethodIdentifyingFacetFactory>().ToArray();
+
+            // no annotations for system types so remove annotation based factories
+
+            allFactories = allFactories.Except(allFactories.OfType<IAnnotationBasedFacetFactory>().Cast<IObjectFacetFactoryProcessor>()).ToList();
+
+            foreach (FeatureType featureType in Enum.GetValues(typeof(FeatureType))) {
+                factoriesByFeatureType[featureType] = allFactories.Where(f => f.FeatureTypes.HasFlag(featureType)).ToArray();
+            }
         }
 
         private string[] Prefixes { get; }
+
+        private IList<IObjectFacetFactoryProcessor> GetFactoryByFeatureType(FeatureType featureType) => factoriesByFeatureType[featureType];
 
         #region IFacetFactorySet Members
 
@@ -106,19 +110,14 @@ namespace NakedObjects.Reflector.Reflect {
 
         public bool Recognizes(MethodInfo method) => Prefixes.Any(prefix => method.Name.StartsWith(prefix, StringComparison.Ordinal));
 
-        public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
-        {
-            if (type.IsInterface)
-            {
-                foreach (var facetFactory in GetFactoryByFeatureType(FeatureType.Interfaces))
-                {
+        public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            if (type.IsInterface) {
+                foreach (var facetFactory in GetFactoryByFeatureType(FeatureType.Interfaces)) {
                     metamodel = facetFactory.Process(reflector, type, methodRemover, specification, metamodel);
                 }
             }
-            else
-            {
-                foreach (var facetFactory in GetFactoryByFeatureType(FeatureType.Objects))
-                {
+            else {
+                foreach (var facetFactory in GetFactoryByFeatureType(FeatureType.Objects)) {
                     metamodel = facetFactory.Process(reflector, type, methodRemover, specification, metamodel);
                 }
             }
@@ -126,30 +125,24 @@ namespace NakedObjects.Reflector.Reflect {
             return metamodel;
         }
 
-        public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
-        {
-            foreach (var facetFactory in GetFactoryByFeatureType(featureType))
-            {
+        public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            foreach (var facetFactory in GetFactoryByFeatureType(featureType)) {
                 metamodel = facetFactory.Process(reflector, method, methodRemover, specification, metamodel);
             }
 
             return metamodel;
         }
 
-        public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
-        {
-            foreach (var facetFactory in GetFactoryByFeatureType(featureType))
-            {
+        public IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, PropertyInfo property, IMethodRemover methodRemover, ISpecificationBuilder specification, FeatureType featureType, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            foreach (var facetFactory in GetFactoryByFeatureType(featureType)) {
                 metamodel = facetFactory.Process(reflector, property, methodRemover, specification, metamodel);
             }
 
             return metamodel;
         }
 
-        public IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
-        {
-            foreach (var facetFactory in GetFactoryByFeatureType(FeatureType.ActionParameters))
-            {
+        public IImmutableDictionary<string, ITypeSpecBuilder> ProcessParams(IReflector reflector, MethodInfo method, int paramNum, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
+            foreach (var facetFactory in GetFactoryByFeatureType(FeatureType.ActionParameters)) {
                 metamodel = facetFactory.ProcessParams(reflector, method, paramNum, specification, metamodel);
             }
 
@@ -157,7 +150,5 @@ namespace NakedObjects.Reflector.Reflect {
         }
 
         #endregion
-
-        private IList<IObjectFacetFactoryProcessor> GetFactoryByFeatureType(FeatureType featureType) => factoriesByFeatureType[featureType];
     }
 }
