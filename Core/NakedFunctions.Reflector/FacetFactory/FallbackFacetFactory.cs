@@ -99,7 +99,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
 
         private static void DefaultTypicalLength(ICollection<IFacet> facets, ISpecification specification, ISpecification holder) {
             var typicalLengthFacet = specification.GetFacet<ITypicalLengthFacet>();
-            if (typicalLengthFacet == null) {
+            if (typicalLengthFacet is null) {
                 typicalLengthFacet = new TypicalLengthFacetZero(holder);
             }
             else {

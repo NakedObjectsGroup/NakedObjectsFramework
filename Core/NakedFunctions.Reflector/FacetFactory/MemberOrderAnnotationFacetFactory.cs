@@ -37,6 +37,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) => attribute == null ? null : new MemberOrderFacet(attribute.Name, attribute.Sequence.ToString(), holder);
+        private static IMemberOrderFacet Create(MemberOrderAttribute attribute, ISpecification holder) => attribute is null ? null : new MemberOrderFacet(attribute.Name, attribute.Sequence.ToString(), holder);
     }
 }

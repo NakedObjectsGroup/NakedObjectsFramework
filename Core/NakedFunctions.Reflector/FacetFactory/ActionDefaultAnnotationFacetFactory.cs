@@ -30,6 +30,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
         }
 
 
-        private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, ISpecification holder) => attribute == null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, holder);
+        private static IActionDefaultsFacet Create(DefaultValueAttribute attribute, ISpecification holder) => attribute is null ? null : new ActionDefaultsFacetAnnotation(attribute.Value, holder);
     }
 }

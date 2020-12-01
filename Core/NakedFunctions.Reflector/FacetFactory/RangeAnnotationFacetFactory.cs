@@ -46,7 +46,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         }
 
         private IRangeFacet Create(System.ComponentModel.DataAnnotations.RangeAttribute attribute, bool isDate, ISpecification holder) {
-            if (attribute == null) {
+            if (attribute is null) {
                 return null;
             }
 

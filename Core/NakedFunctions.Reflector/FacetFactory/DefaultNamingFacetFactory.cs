@@ -30,13 +30,13 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector,  Type type,  ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             var facets = new List<IFacet>();
             var namedFacet = specification.GetFacet<INamedFacet>();
-            if (namedFacet == null) {
+            if (namedFacet is null) {
                 namedFacet = new NamedFacetInferred(type.Name, specification);
                 facets.Add(namedFacet);
             }
 
             var pluralFacet = specification.GetFacet<IPluralFacet>();
-            if (pluralFacet == null) {
+            if (pluralFacet is null) {
                 var pluralName = NameUtils.PluralName(namedFacet.NaturalName);
                 pluralFacet = new PluralFacetInferred(pluralName, specification);
                 facets.Add(pluralFacet);

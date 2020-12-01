@@ -32,6 +32,6 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IPropertyDefaultFacet Create(DefaultValueAttribute attribute, ISpecification holder) => attribute == null ? null : new PropertyDefaultFacetAnnotation(attribute.Value, holder);
+        private static IPropertyDefaultFacet Create(DefaultValueAttribute attribute, ISpecification holder) => attribute is null ? null : new PropertyDefaultFacetAnnotation(attribute.Value, holder);
     }
 }

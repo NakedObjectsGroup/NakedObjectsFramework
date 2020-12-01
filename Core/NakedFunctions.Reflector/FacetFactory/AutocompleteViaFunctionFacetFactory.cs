@@ -48,7 +48,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                                  FindAutoCompleteMethod(type, capitalizedName, i, paramType);
 
                     //... or returning an enumerable of string
-                    if (method == null && TypeUtils.IsString(paramType)) {
+                    if (method is null && TypeUtils.IsString(paramType)) {
                         method = FindAutoCompleteMethod(type, capitalizedName, i, typeof(IEnumerable<string>));
                     }
 

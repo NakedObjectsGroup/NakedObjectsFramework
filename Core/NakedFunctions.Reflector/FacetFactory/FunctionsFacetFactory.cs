@@ -43,7 +43,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public  string[] Prefixes => FixedPrefixes;
 
         private static bool IsQueryOnly(MethodInfo method) =>
-            method.GetCustomAttribute<NakedObjects.IdempotentAttribute>() == null &&
+            method.GetCustomAttribute<NakedObjects.IdempotentAttribute>() is null &&
             method.GetCustomAttribute<QueryOnlyAttribute>() is not null;
 
         // separate methods to reproduce old reflector behaviour
@@ -196,7 +196,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         private static bool IsStatic(Type type) => type.IsAbstract && type.IsSealed;
 
         public IList<MethodInfo> FindActions(IList<MethodInfo> candidates, IClassStrategy classStrategy) {
-            return candidates.Where(methodInfo => methodInfo.GetCustomAttribute<NakedObjectsIgnoreAttribute>() == null &&
+            return candidates.Where(methodInfo => methodInfo.GetCustomAttribute<NakedObjectsIgnoreAttribute>() is null &&
                                                   methodInfo.IsStatic &&
                                                   IsStatic(methodInfo.DeclaringType)).ToArray();
         }

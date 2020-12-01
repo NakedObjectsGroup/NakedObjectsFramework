@@ -43,7 +43,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             if (columns.Length != distinctColumns.Length) {
                 // we had duplicates - log
                 var duplicates = columns.GroupBy(x => x).Where(g => g.Count() > 1).Select(g => g.Key).Aggregate("", (s, t) => s != "" ? $"{s}, {t}" : t);
-                var name = holder.Identifier == null ? "Unknown" : holder.Identifier.ToString();
+                var name = holder.Identifier is null ? "Unknown" : holder.Identifier.ToString();
                 logger.LogWarning($"Table View on {name} had duplicate columns {duplicates}");
                 columns = distinctColumns;
             }
@@ -51,7 +51,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
             return new TableViewFacet(attribute.Title, columns, holder);
         }
 
-        private ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) => attribute == null ? null : CreateTableViewFacet(attribute, holder);
+        private ITableViewFacet Create(TableViewAttribute attribute, ISpecification holder) => attribute is null ? null : CreateTableViewFacet(attribute, holder);
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             Process(method, method.ReturnType, specification);

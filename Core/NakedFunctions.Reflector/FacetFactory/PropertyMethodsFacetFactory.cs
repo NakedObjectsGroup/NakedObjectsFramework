@@ -176,12 +176,12 @@ namespace NakedFunctions.Reflector.FacetFactory {
                                                     typeof(IQueryable<>).MakeGenericType(returnType));
 
                 //.. or returning a single object
-                if (method == null) {
+                if (method is null) {
                     method = FindAutoCompleteMethod(reflector, type, capitalizedName, returnType);
                 }
 
                 //... or returning an enumerable of string
-                if (method == null && TypeUtils.IsString(returnType)) {
+                if (method is null && TypeUtils.IsString(returnType)) {
                     method = FindAutoCompleteMethod(reflector, type, capitalizedName, typeof(IEnumerable<string>));
                 }
 
