@@ -9,7 +9,6 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Meta.Facet;
 using NakedObjects.Architecture.Adapter;
-using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedFunctions.Meta.Test.Facet {
     [TestClass]
@@ -18,14 +17,12 @@ namespace NakedFunctions.Meta.Test.Facet {
 
         [TestMethod]
         public void TestValidate() {
-
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Validate));
             var testFacet = new ActionValidationViaFunctionFacet(method, null);
 
             var result = testFacet.InvalidReason(null, Array.Empty<INakedObjectAdapter>());
 
             Assert.AreEqual(TestValue, result);
-         
         }
 
         public static class TestClass {

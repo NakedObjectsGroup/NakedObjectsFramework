@@ -10,23 +10,21 @@ using NakedFunctions.Meta.Facet;
 
 namespace NakedFunctions.Meta.Test.Facet {
     [TestClass]
-    public class AutoCompleteViaFunctionFacetTest {
-        private static readonly string[] TestValue = {"one", "two"};
+    public class DisableForContextViaFunctionFacetTest {
+        private static readonly string TestValue = "disabled";
 
         [TestMethod]
-        public void TestGetCompletions() {
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.Completions));
-            var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null);
+        public void TestDisabled() {
+            var method = typeof(TestClass).GetMethod(nameof(TestClass.Disables));
+            var testFacet = new DisableForContextViaFunctionFacet(method, null);
 
-            var result = testFacet.GetCompletions(null, null, null, null);
+            var result = testFacet.DisabledReason(null, null, null);
 
-            Assert.AreEqual(TestValue.Length, result.Length);
-            Assert.AreEqual(TestValue[0], result[0]);
-            Assert.AreEqual(TestValue[1], result[1]);
+            Assert.AreEqual(TestValue, result);
         }
 
         public static class TestClass {
-            public static string[] Completions() => TestValue;
+            public static string Disables() => TestValue;
         }
     }
 }

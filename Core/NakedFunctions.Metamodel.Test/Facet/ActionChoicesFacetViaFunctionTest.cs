@@ -13,11 +13,10 @@ using NakedObjects.Architecture.SpecImmutable;
 namespace NakedFunctions.Meta.Test.Facet {
     [TestClass]
     public class ActionChoicesFacetViaFunctionTest {
-        private static readonly string[] TestValue = { "one", "two" };
+        private static readonly string[] TestValue = {"one", "two"};
 
         [TestMethod]
         public void TestGetChoices() {
-
             var method = typeof(TestClass).GetMethod(nameof(TestClass.Choices));
             var testFacet = new ActionChoicesFacetViaFunction(method, Array.Empty<(string, IObjectSpecImmutable)>(), typeof(string), null);
 

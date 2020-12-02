@@ -6,27 +6,27 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using NakedFunctions.Meta.Facet;
+using NakedObjects.Architecture.Adapter;
 
 namespace NakedFunctions.Meta.Test.Facet {
     [TestClass]
-    public class AutoCompleteViaFunctionFacetTest {
-        private static readonly string[] TestValue = {"one", "two"};
+    public class HideForContextViaFunctionFacetTest {
+        private static readonly string TestValue = NakedObjects.Resources.NakedObjects.Hidden;
 
         [TestMethod]
-        public void TestGetCompletions() {
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.Completions));
-            var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null);
+        public void TestHidden() {
+            var method = typeof(TestClass).GetMethod(nameof(TestClass.Hides));
+            var testFacet = new HideForContextViaFunctionFacet(method, null);
 
-            var result = testFacet.GetCompletions(null, null, null, null);
+            var result = testFacet.HiddenReason(new Mock<INakedObjectAdapter>().Object, null, null);
 
-            Assert.AreEqual(TestValue.Length, result.Length);
-            Assert.AreEqual(TestValue[0], result[0]);
-            Assert.AreEqual(TestValue[1], result[1]);
+            Assert.AreEqual(TestValue, result);
         }
 
         public static class TestClass {
-            public static string[] Completions() => TestValue;
+            public static bool Hides() => true;
         }
     }
 }

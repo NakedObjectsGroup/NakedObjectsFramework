@@ -5,28 +5,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Meta.Facet;
 
 namespace NakedFunctions.Meta.Test.Facet {
     [TestClass]
-    public class AutoCompleteViaFunctionFacetTest {
-        private static readonly string[] TestValue = {"one", "two"};
-
+    public class InjectedGuidParameterFacetTest {
         [TestMethod]
-        public void TestGetCompletions() {
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.Completions));
-            var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null);
+        public void TestInject() {
+            var testFacet = new InjectedGuidParameterFacet(null);
 
-            var result = testFacet.GetCompletions(null, null, null, null);
+            var result = testFacet.GetInjectedValue(null);
 
-            Assert.AreEqual(TestValue.Length, result.Length);
-            Assert.AreEqual(TestValue[0], result[0]);
-            Assert.AreEqual(TestValue[1], result[1]);
-        }
-
-        public static class TestClass {
-            public static string[] Completions() => TestValue;
+            Assert.IsInstanceOfType(result, typeof(Guid));
         }
     }
 }

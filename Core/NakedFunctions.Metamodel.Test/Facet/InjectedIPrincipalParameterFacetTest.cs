@@ -5,36 +5,36 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
+using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFunctions.Meta.Facet;
 using NakedObjects;
-using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 
 namespace NakedFunctions.Meta.Test.Facet {
     [TestClass]
-    public class ActionInvocationFacetViaStaticMethodTest {
-        private static readonly object TestValue = new object();
+    public class InjectedIPrincipalParameterFacetTest {
         private readonly Mock<INakedObjectsFramework> mockFramework = new Mock<INakedObjectsFramework>();
 
-        private readonly Mock<INakedObjectManager> mockNakedObjectManager = new Mock<INakedObjectManager>();
+        private readonly Mock<IPrincipal> mockPrincipal = new Mock<IPrincipal>();
 
-        public ActionInvocationFacetViaStaticMethodTest() {
-            mockFramework.SetupGet(p => p.NakedObjectManager).Returns(mockNakedObjectManager.Object);
+        private readonly Mock<ISession> mockSession = new Mock<ISession>();
+
+
+        public InjectedIPrincipalParameterFacetTest() {
+            mockFramework.SetupGet(p => p.Session).Returns(mockSession.Object);
+            mockSession.SetupGet(s => s.Principal).Returns(mockPrincipal.Object);
         }
+
 
         [TestMethod]
-        public void TestInvoke() {
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.TestMethod1));
-            var testFacet = new ActionInvocationFacetViaStaticMethod(method, null, null, null, null, false, null);
+        public void TestInject() {
+            var testFacet = new InjectedIPrincipalParameterFacet(null);
 
-            var result = testFacet.Invoke(null, Array.Empty<INakedObjectAdapter>(), mockFramework.Object);
-        }
+            var result = testFacet.GetInjectedValue(mockFramework.Object);
 
-        public static class TestClass {
-            public static object TestMethod1() => TestValue;
+            Assert.IsInstanceOfType(result, typeof(IPrincipal));
         }
     }
 }
