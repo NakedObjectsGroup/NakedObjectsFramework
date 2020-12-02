@@ -91,7 +91,7 @@ namespace NakedObjects.DependencyInjection.Extensions {
 
 
         public static void AddNakedCore(this IServiceCollection services, Action<NakedCoreOptions> setupAction) {
-            var options = new NakedCoreOptions();
+            var options = new NakedCoreOptions(services);
             setupAction(options);
 
             services.AddNakedCoreFramework(options);
@@ -108,6 +108,16 @@ namespace NakedObjects.DependencyInjection.Extensions {
             services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));
         }
 
+        public static void AddNakedObjects(this NakedCoreOptions coreOptions, Action<NakedObjectsOptions> setupAction) {
+            var options = new NakedObjectsOptions();
+            setupAction(options);
+
+            options.RegisterCustomTypes?.Invoke(coreOptions.Services);
+
+            coreOptions.Services.AddSingleton<IReflector, ObjectReflector>();
+            coreOptions.Services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));
+        }
+
         public static void AddNakedFunctions(this IServiceCollection services, Action<NakedFunctionsOptions> setupAction) {
             var options = new NakedFunctionsOptions();
             setupAction(options);
@@ -117,6 +127,17 @@ namespace NakedObjects.DependencyInjection.Extensions {
             ParallelConfig.RegisterWellKnownServices(services);
             services.AddSingleton<IReflector, FunctionalReflector>();
             services.AddSingleton<IFunctionalReflectorConfiguration>(p => FunctionalReflectorConfig(options));
+        }
+
+        public static void AddNakedFunctions(this NakedCoreOptions coreOptions, Action<NakedFunctionsOptions> setupAction) {
+            var options = new NakedFunctionsOptions();
+            setupAction(options);
+
+            options.RegisterCustomTypes?.Invoke(coreOptions.Services);
+
+            ParallelConfig.RegisterWellKnownServices(coreOptions.Services);
+            coreOptions.Services.AddSingleton<IReflector, FunctionalReflector>();
+            coreOptions.Services.AddSingleton<IFunctionalReflectorConfiguration>(p => FunctionalReflectorConfig(options));
         }
 
         public static void AddRestfulObjects(this IServiceCollection services, Action<RestfulObjectsOptions> setupAction = null) {
@@ -134,9 +155,32 @@ namespace NakedObjects.DependencyInjection.Extensions {
             RestfulObjectsControllerBase.InlineDetailsInPropertyMemberRepresentations = options.InlineDetailsInPropertyMemberRepresentations;
         }
 
+        public static void AddRestfulObjects(this NakedCoreOptions coreOptions, Action<RestfulObjectsOptions> setupAction = null) {
+            var options = new RestfulObjectsOptions();
+            setupAction?.Invoke(options);
+
+            // TODO configure with config object ?
+            RestfulObjectsControllerBase.DebugWarnings = options.DebugWarnings;
+            RestfulObjectsControllerBase.IsReadOnly = options.IsReadOnly;
+            RestfulObjectsControllerBase.CacheSettings = options.CacheSettings;
+            RestfulObjectsControllerBase.AcceptHeaderStrict = options.AcceptHeaderStrict;
+            RestfulObjectsControllerBase.DefaultPageSize = options.DefaultPageSize;
+            RestfulObjectsControllerBase.InlineDetailsInActionMemberRepresentations = options.InlineDetailsInActionMemberRepresentations;
+            RestfulObjectsControllerBase.InlineDetailsInCollectionMemberRepresentations = options.InlineDetailsInCollectionMemberRepresentations;
+            RestfulObjectsControllerBase.InlineDetailsInPropertyMemberRepresentations = options.InlineDetailsInPropertyMemberRepresentations;
+        }
+
+
         public static void UseRestfulObjects(this IApplicationBuilder app, string restRoot = "") {
             restRoot ??= "";
             app.UseMvc(routeBuilder => RestfulObjectsRouting.AddRestRoutes(routeBuilder, restRoot));
+        }
+
+        public static void AddNakedFramework(this IServiceCollection services, Action<NakedCoreOptions> setupAction) {
+            var options = new NakedCoreOptions(services);
+            setupAction(options);
+
+            services.AddNakedCoreFramework(options);
         }
     }
 }
