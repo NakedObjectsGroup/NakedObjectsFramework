@@ -81,7 +81,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Reflector.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Reflector.Test", "Core\NakedObjects.Reflector.Test\NakedObjects.Reflector.Test.csproj", "{5BB31DE4-F0EA-4FF3-A8A0-472786B5AC0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedFunctions.Metamodel.Test", "Core\NakedFunctions.Metamodel.Test\NakedFunctions.Metamodel.Test.csproj", "{E1EDAE91-031D-4ECC-A52E-C041A9F2864E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Metamodel.Test", "Core\NakedFunctions.Metamodel.Test\NakedFunctions.Metamodel.Test.csproj", "{E1EDAE91-031D-4ECC-A52E-C041A9F2864E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NakedObjects.DependencyInjection.Test", "Core\NakedObjects.DependencyInjection.Test\NakedObjects.DependencyInjection.Test.csproj", "{486811D3-1485-48BB-B6D1-E772417F40E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -247,6 +249,10 @@ Global
 		{E1EDAE91-031D-4ECC-A52E-C041A9F2864E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1EDAE91-031D-4ECC-A52E-C041A9F2864E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1EDAE91-031D-4ECC-A52E-C041A9F2864E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{486811D3-1485-48BB-B6D1-E772417F40E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{486811D3-1485-48BB-B6D1-E772417F40E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{486811D3-1485-48BB-B6D1-E772417F40E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{486811D3-1485-48BB-B6D1-E772417F40E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
