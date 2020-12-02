@@ -5,31 +5,29 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using NakedFunctions.Meta.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedFunctions.Meta.Test.Facet {
     [TestClass]
-    public class ActionChoicesFacetViaFunctionTest {
-        private static readonly string[] TestValue = { "one", "two" };
+    public class ContributedFunctionFacetTest {
+        private readonly Mock<ITypeSpecImmutable> mockSpec = new Mock<ITypeSpecImmutable>();
 
-        [TestMethod]
-        public void TestGetChoices() {
-
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.Choices));
-            var testFacet = new ActionChoicesFacetViaFunction(method, Array.Empty<(string, IObjectSpecImmutable)>(), typeof(string), null);
-
-            var result = testFacet.GetChoices(null, null, null, null);
-
-            Assert.AreEqual(TestValue.Length, result.Length);
-            Assert.AreEqual(TestValue[0], result[0]);
-            Assert.AreEqual(TestValue[1], result[1]);
+        public ContributedFunctionFacetTest() {
+            mockSpec.Setup(s => s.IsOfType(mockSpec.Object)).Returns(true);
         }
 
-        public static class TestClass {
-            public static string[] Choices() => TestValue;
+
+        [TestMethod]
+        public void TestContributee() {
+            var testFacet = new ContributedFunctionFacet(null);
+
+            testFacet.AddContributee(mockSpec.Object);
+            var result = testFacet.IsContributedTo(mockSpec.Object);
+
+            Assert.IsTrue(result);
         }
     }
 }

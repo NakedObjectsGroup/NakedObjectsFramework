@@ -8,28 +8,28 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Meta.Facet;
+using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedFunctions.Meta.Test.Facet {
     [TestClass]
-    public class ActionChoicesFacetViaFunctionTest {
-        private static readonly string[] TestValue = { "one", "two" };
+    public class ActionValidationViaFunctionFacetTest {
+        private static readonly string TestValue = "fail";
 
         [TestMethod]
-        public void TestGetChoices() {
+        public void TestValidate() {
 
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.Choices));
-            var testFacet = new ActionChoicesFacetViaFunction(method, Array.Empty<(string, IObjectSpecImmutable)>(), typeof(string), null);
+            var method = typeof(TestClass).GetMethod(nameof(TestClass.Validate));
+            var testFacet = new ActionValidationViaFunctionFacet(method, null);
 
-            var result = testFacet.GetChoices(null, null, null, null);
+            var result = testFacet.InvalidReason(null, Array.Empty<INakedObjectAdapter>());
 
-            Assert.AreEqual(TestValue.Length, result.Length);
-            Assert.AreEqual(TestValue[0], result[0]);
-            Assert.AreEqual(TestValue[1], result[1]);
+            Assert.AreEqual(TestValue, result);
+         
         }
 
         public static class TestClass {
-            public static string[] Choices() => TestValue;
+            public static string Validate() => TestValue;
         }
     }
 }

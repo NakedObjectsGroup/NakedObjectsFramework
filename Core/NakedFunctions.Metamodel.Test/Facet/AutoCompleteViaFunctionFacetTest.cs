@@ -12,16 +12,17 @@ using NakedObjects.Architecture.SpecImmutable;
 
 namespace NakedFunctions.Meta.Test.Facet {
     [TestClass]
-    public class ActionChoicesFacetViaFunctionTest {
+    public class AutoCompleteViaFunctionFacetTest
+    {
         private static readonly string[] TestValue = { "one", "two" };
 
         [TestMethod]
-        public void TestGetChoices() {
+        public void TestGetCompletions() {
 
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.Choices));
-            var testFacet = new ActionChoicesFacetViaFunction(method, Array.Empty<(string, IObjectSpecImmutable)>(), typeof(string), null);
+            var method = typeof(TestClass).GetMethod(nameof(TestClass.Completions));
+            var testFacet = new AutoCompleteViaFunctionFacet(method, 0, 0, null);
 
-            var result = testFacet.GetChoices(null, null, null, null);
+            var result = testFacet.GetCompletions(null, null, null, null);
 
             Assert.AreEqual(TestValue.Length, result.Length);
             Assert.AreEqual(TestValue[0], result[0]);
@@ -29,7 +30,7 @@ namespace NakedFunctions.Meta.Test.Facet {
         }
 
         public static class TestClass {
-            public static string[] Choices() => TestValue;
+            public static string[] Completions() => TestValue;
         }
     }
 }

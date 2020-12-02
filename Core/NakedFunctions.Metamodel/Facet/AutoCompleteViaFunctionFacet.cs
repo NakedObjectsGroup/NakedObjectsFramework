@@ -29,7 +29,9 @@ namespace NakedFunctions.Meta.Facet {
         private AutoCompleteViaFunctionFacet(ISpecification holder)
             : base(Type, holder) { }
 
-        public AutoCompleteViaFunctionFacet(MethodInfo autoCompleteMethod, int pageSize, int minLength,
+        public AutoCompleteViaFunctionFacet(MethodInfo autoCompleteMethod,
+                                            int pageSize,
+                                            int minLength,
                                             ISpecification holder)
             : this(holder) {
             method = autoCompleteMethod;
@@ -54,24 +56,21 @@ namespace NakedFunctions.Meta.Facet {
             try {
                 var autoComplete = method.Invoke(null, method.GetParameterValues(inObjectAdapter, autoCompleteParm, session, persistor));
 
-                //returning an IQueryable
-                var queryable = autoComplete as IQueryable;
-                if (queryable != null) {
-                    return queryable.Take(PageSize).ToArray();
+                switch (autoComplete) {
+                    //returning an IQueryable
+                    case IQueryable queryable:
+                        return queryable.Take(PageSize).ToArray();
+                    //returning an IEnumerable (of string only)
+                    case IEnumerable<string> strings:
+                        return strings.Cast<object>().ToArray();
+                    default: {
+                        //return type is a single object
+                        if (!CollectionUtils.IsCollection(autoComplete.GetType())) {
+                            return new[] {autoComplete};
+                        }
+                        throw new NakedObjectDomainException($"Must return IQueryable or a single object from autoComplete method: {method.Name}");
+                    }
                 }
-
-                //returning an IEnumerable (of string only)
-                var strings = autoComplete as IEnumerable<string>;
-                if (strings != null) {
-                    return strings.Cast<object>().ToArray();
-                }
-
-                //return type is a single object
-                if (!CollectionUtils.IsCollection(autoComplete.GetType())) {
-                    return new[] {autoComplete};
-                }
-
-                throw new NakedObjectDomainException($"Must return IQueryable or a single object from autoComplete method: {method.Name}");
             }
             catch (ArgumentException ae) {
                 throw new InvokeException($"autoComplete exception: {method.Name} has mismatched parameter type - must be string", ae);

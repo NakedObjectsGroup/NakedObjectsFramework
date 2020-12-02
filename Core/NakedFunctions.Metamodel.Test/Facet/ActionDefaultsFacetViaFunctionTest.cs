@@ -5,31 +5,28 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Meta.Facet;
-using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.Architecture.Spec;
 
 namespace NakedFunctions.Meta.Test.Facet {
     [TestClass]
-    public class ActionChoicesFacetViaFunctionTest {
-        private static readonly string[] TestValue = { "one", "two" };
+    public class ActionDefaultsFacetViaFunctionTest {
+        private const string TestValue = "defaultvalue";
 
         [TestMethod]
-        public void TestGetChoices() {
+        public void TestGetDefault() {
+            var method = typeof(TestClass).GetMethod(nameof(TestClass.GetDefault));
+            var testFacet = new ActionDefaultsFacetViaFunction(method, null);
 
-            var method = typeof(TestClass).GetMethod(nameof(TestClass.Choices));
-            var testFacet = new ActionChoicesFacetViaFunction(method, Array.Empty<(string, IObjectSpecImmutable)>(), typeof(string), null);
+            var (result, defaultType) = testFacet.GetDefault(null, null, null);
 
-            var result = testFacet.GetChoices(null, null, null, null);
-
-            Assert.AreEqual(TestValue.Length, result.Length);
-            Assert.AreEqual(TestValue[0], result[0]);
-            Assert.AreEqual(TestValue[1], result[1]);
+            Assert.AreEqual(TestValue, result);
+            Assert.AreEqual(TypeOfDefaultValue.Explicit, defaultType);
         }
 
         public static class TestClass {
-            public static string[] Choices() => TestValue;
+            public static string GetDefault() => TestValue;
         }
     }
 }
