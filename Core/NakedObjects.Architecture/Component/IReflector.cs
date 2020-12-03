@@ -19,6 +19,8 @@ namespace NakedObjects.Architecture.Component {
     ///     the Reflector is not called at all.
     /// </summary>
     public interface IReflector {
+        int Order { get; } // todo temp fix 
+
         bool IgnoreCase { get; }
         bool ConcurrencyChecking { get; }
         IClassStrategy ClassStrategy { get;  }

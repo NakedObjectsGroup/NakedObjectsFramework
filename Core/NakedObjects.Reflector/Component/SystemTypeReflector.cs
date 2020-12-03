@@ -30,6 +30,7 @@ namespace NakedObjects.Reflector.Component {
 
             FacetFactorySet = new SystemTypeFacetFactorySet(facetFactories.OfType<IObjectFacetFactoryProcessor>().ToArray());
             ClassStrategy = new SystemTypeClassStrategy(coreConfiguration);
+            Order = 0;
         }
 
         private ICoreConfiguration CoreConfiguration { get; }

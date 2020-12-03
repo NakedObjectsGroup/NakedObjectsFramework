@@ -31,6 +31,7 @@ namespace NakedFunctions.Reflector.Component {
             this.functionalReflectorConfiguration = functionalReflectorConfiguration;
             ClassStrategy = new FunctionClassStrategy(functionalReflectorConfiguration);
             FacetFactorySet = new FunctionalFacetFactorySet(facetFactories.OfType<FunctionalFacetFactoryProcessor>().ToArray());
+            Order = 2;
         }
 
         private IImmutableDictionary<string, ITypeSpecBuilder> IntrospectFunctionalTypes(Type[] records, Type[] functions, IImmutableDictionary<string, ITypeSpecBuilder> specDictionary) {

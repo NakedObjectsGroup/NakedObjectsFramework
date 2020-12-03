@@ -31,6 +31,7 @@ namespace NakedObjects.Reflector.Component {
             this.objectReflectorConfiguration = objectReflectorConfiguration;
             FacetFactorySet = new ObjectFacetFactorySet(facetFactories.OfType<IObjectFacetFactoryProcessor>().ToArray());
             ClassStrategy = new ObjectClassStrategy(objectReflectorConfiguration);
+            Order = 1;
         }
 
         public override bool ConcurrencyChecking => objectReflectorConfiguration.ConcurrencyChecking;
