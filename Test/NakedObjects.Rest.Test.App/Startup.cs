@@ -26,25 +26,24 @@ namespace NakedObjects.Rest.Test.App {
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
-            services.AddNakedCore(options => {
-                options.ContextInstallers = new[] {NakedObjectsRunSettings.DbContextInstaller};
-                options.MainMenus = null;
+            services.AddNakedFramework(builder => {
+                builder.ContextInstallers = new[] {NakedObjectsRunSettings.DbContextInstaller};
+                builder.MainMenus = null;
+                builder.AddRestfulObjects(options => {
+                    options.AcceptHeaderStrict = true;
+                    options.DebugWarnings = true;
+                    options.DefaultPageSize = 20;
+                    options.InlineDetailsInActionMemberRepresentations = true;
+                    options.InlineDetailsInCollectionMemberRepresentations = true;
+                    options.InlineDetailsInPropertyMemberRepresentations = true;
+                });
+                builder.AddNakedObjects(options => {
+                    options.Types = NakedObjectsRunSettings.Types;
+                    options.Services = NakedObjectsRunSettings.Services;
+                    options.ConcurrencyCheck = false;
+                    options.NoValidate = true;
+                });
             });
-            services.AddRestfulObjects(options => {
-                options.AcceptHeaderStrict = true;
-                options.DebugWarnings = true;
-                options.DefaultPageSize = 20;
-                options.InlineDetailsInActionMemberRepresentations = true;
-                options.InlineDetailsInCollectionMemberRepresentations = true;
-                options.InlineDetailsInPropertyMemberRepresentations = true;
-            });
-            services.AddNakedObjects(options => {
-                options.Types = NakedObjectsRunSettings.Types;
-                options.Services = NakedObjectsRunSettings.Services;
-                options.ConcurrencyCheck = false;
-                options.NoValidate = true;
-            });
-
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
                     builder

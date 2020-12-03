@@ -37,21 +37,21 @@ namespace NakedFunctions.Rest.App.Demo {
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
-            services.AddNakedCore(options => { 
-                options.ContextInstallers = new[] {ModelConfig_NakedFunctionsPM.DbContextInstaller};
-                options.MainMenus = CombinedNOandNFMenus;
+            services.AddNakedFramework(builder => { 
+                builder.ContextInstallers = new[] {ModelConfig_NakedFunctionsPM.DbContextInstaller};
+                builder.MainMenus = CombinedNOandNFMenus;
+                builder.AddNakedObjects(options => {
+                    options.Types = ModelConfig_NakedObjectsPM.DomainTypes();
+                    options.Services = ModelConfig_NakedObjectsPM.Services();
+                    options.NoValidate = true;
+                });
+                builder.AddNakedFunctions(options => {
+                    options.FunctionalTypes = ModelConfig_NakedFunctionsPM.DomainTypes();
+                    options.Functions = ModelConfig_NakedFunctionsPM.ContributedFunctions();
+                });
+                builder.AddRestfulObjects();
             });
-            services.AddNakedObjects(options => {
-                options.Types = ModelConfig_NakedObjectsPM.DomainTypes();
-                options.Services = ModelConfig_NakedObjectsPM.Services();
-                options.NoValidate = true;
-            });
-            services.AddNakedFunctions(options => {
-                options.FunctionalTypes = ModelConfig_NakedFunctionsPM.DomainTypes();
-                options.Functions = ModelConfig_NakedFunctionsPM.ContributedFunctions();
-            });
-            services.AddRestfulObjects();
-
+            
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
                     builder

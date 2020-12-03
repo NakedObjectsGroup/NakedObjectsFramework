@@ -30,26 +30,26 @@ namespace NakedObjects.Rest.App.Demo {
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
-            services.AddNakedCore(options => {
-                options.ContextInstallers = new[] {NakedObjectsRunSettings.DbContextInstaller};
-                options.MainMenus = NakedObjectsRunSettings.MainMenus;
-            });
-            services.AddRestfulObjects(options => {
-                options.AcceptHeaderStrict = true;
-                options.DebugWarnings = true;
-                options.DefaultPageSize = 20;
-                options.InlineDetailsInActionMemberRepresentations = false;
-                options.InlineDetailsInCollectionMemberRepresentations = false;
-                options.InlineDetailsInPropertyMemberRepresentations = false;
-            });
-            services.AddNakedObjects(options => {
-                options.Types = NakedObjectsRunSettings.Types;
-                options.Services = NakedObjectsRunSettings.Services;
-                options.RegisterCustomTypes = services => {
-                    services.AddSingleton(typeof(AppendFacetFactoryOrder<>), typeof(AppendFacetFactoryOrder<>));
-                    services.AddSingleton(typeof(IFacetFactory), typeof(AWNotCountedAnnotationFacetFactoryParallel));
-                    services.AddSingleton(typeof(IFacetFactory), typeof(AWNotNavigableFacetFactoryParallel));
-                };
+            services.AddNakedFramework(builder => {
+                builder.ContextInstallers = new[] {NakedObjectsRunSettings.DbContextInstaller};
+                builder.MainMenus = NakedObjectsRunSettings.MainMenus;
+                builder.AddRestfulObjects(options => {
+                    options.AcceptHeaderStrict = true;
+                    options.DebugWarnings = true;
+                    options.DefaultPageSize = 20;
+                    options.InlineDetailsInActionMemberRepresentations = false;
+                    options.InlineDetailsInCollectionMemberRepresentations = false;
+                    options.InlineDetailsInPropertyMemberRepresentations = false;
+                });
+                builder.AddNakedObjects(options => {
+                    options.Types = NakedObjectsRunSettings.Types;
+                    options.Services = NakedObjectsRunSettings.Services;
+                    options.RegisterCustomTypes = services => {
+                        services.AddSingleton(typeof(AppendFacetFactoryOrder<>), typeof(AppendFacetFactoryOrder<>));
+                        services.AddSingleton(typeof(IFacetFactory), typeof(AWNotCountedAnnotationFacetFactoryParallel));
+                        services.AddSingleton(typeof(IFacetFactory), typeof(AWNotNavigableFacetFactoryParallel));
+                    };
+                });
             });
             services.AddCors(options => {
                 options.AddPolicy(MyAllowSpecificOrigins, builder => {
