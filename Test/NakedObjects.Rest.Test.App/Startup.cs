@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.DependencyInjection.Extensions;
+using NakedObjects.Reflector.Extensions;
+using NakedObjects.Rest.Extensions;
 using Newtonsoft.Json;
 
 namespace NakedObjects.Rest.Test.App {

@@ -14,9 +14,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Architecture.Component;
 using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.Menu;
+using NakedObjects.Reflector.Extensions;
+using NakedObjects.Rest.Extensions;
 using Newtonsoft.Json;
 
 namespace NakedFunctions.Rest.App.Demo {

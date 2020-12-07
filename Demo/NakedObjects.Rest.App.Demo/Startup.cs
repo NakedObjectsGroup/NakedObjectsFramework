@@ -14,7 +14,9 @@ using Microsoft.Extensions.Logging;
 using NakedObjects.Architecture.Component;
 using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.DependencyInjection.FacetFactory;
+using NakedObjects.Reflector.Extensions;
 using NakedObjects.Rest.App.Demo.AWCustom;
+using NakedObjects.Rest.Extensions;
 using Newtonsoft.Json;
 
 namespace NakedObjects.Rest.App.Demo {
