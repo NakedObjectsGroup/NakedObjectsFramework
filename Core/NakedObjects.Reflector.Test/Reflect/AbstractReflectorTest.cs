@@ -24,6 +24,7 @@ using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.Reflect;
 using NakedObjects.Reflector.TypeFacetFactory;
 
 namespace NakedObjects.Reflector.Test.Reflect {
@@ -117,15 +118,17 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 NewFacetFactory<CollectionFacetFactory>()
             };
 
-        private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory => (T) Activator.CreateInstance(typeof(T), new FacetFactoryOrder<T>(), MockLoggerFactory);
+        private IFacetFactory NewFacetFactory<T>() where T : IFacetFactory => (T) Activator.CreateInstance(typeof(T), new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories()) , MockLoggerFactory);
 
         protected static void AssertIsInstanceOfType<T>(object o) => Assert.IsInstanceOfType(o, typeof(T));
 
         protected virtual IReflector Reflector(Metamodel metamodel, ILoggerFactory lf) {
             var config = new ObjectReflectorConfiguration(new[] { typeof(TestPoco), typeof(TestDomainObject), typeof(ArrayList) }, new Type[] { });
+            var objectFactFactorySet = new ObjectFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>().ToArray());
+            
             ClassStrategy = new ObjectClassStrategy(config);
             var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
-            return  new ObjectReflector(metamodel, config, new IFacetDecorator[] { }, FacetFactories, lf, mockLogger1);
+            return  new ObjectReflector(objectFactFactorySet, (ObjectClassStrategy) ClassStrategy, metamodel, config, new IFacetDecorator[] { }, lf, mockLogger1);
         }
 
 

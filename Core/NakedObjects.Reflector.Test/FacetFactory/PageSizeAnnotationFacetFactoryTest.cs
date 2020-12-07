@@ -19,6 +19,7 @@ using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.Reflect;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
@@ -39,7 +40,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             var actionMethod = FindMethod(typeof(Customer1), "SomeAction");
             var identifier = new IdentifierImpl("Customer1", "SomeAction");
             var actionPeer = ImmutableSpecFactory.CreateActionSpecImmutable(identifier, null, null);
-            metamodel = new FallbackFacetFactory(new FacetFactoryOrder<FallbackFacetFactory>(), null).Process(Reflector,actionMethod, MethodRemover, actionPeer, metamodel);
+            metamodel = new FallbackFacetFactory(GetOrder<FallbackFacetFactory>(), null).Process(Reflector,actionMethod, MethodRemover, actionPeer, metamodel);
             var facet = actionPeer.GetFacet(typeof(IPageSizeFacet));
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is PageSizeFacetDefault);
@@ -98,7 +99,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new PageSizeAnnotationFacetFactory(new FacetFactoryOrder<PageSizeAnnotationFacetFactory>(), LoggerFactory);
+            facetFactory = new PageSizeAnnotationFacetFactory(GetOrder<PageSizeAnnotationFacetFactory>(), LoggerFactory);
         }
 
         [TestCleanup]

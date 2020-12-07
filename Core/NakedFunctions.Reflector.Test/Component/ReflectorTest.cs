@@ -14,6 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFramework.ModelBuilding.Component;
 using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Configuration;
+using NakedFunctions.Reflector.FacetFactory;
 using NakedFunctions.Reflector.Reflect;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -29,6 +30,7 @@ using NakedObjects.Meta.Component;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
+using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.Reflect;
 using NakedObjects.Reflector.Test.Reflect;
 
@@ -128,30 +130,17 @@ namespace NakedFunctions.Reflector.Test.Component {
             return hostBuilder.Services;
         }
 
-        private static void RegisterFacetFactory<T>(string name, IServiceCollection services) {
-            ConfigHelpers.RegisterFacetFactory(typeof(T), services);
-        }
-
-        private static void RegisterFacetFactory(Type facetFactorType, IServiceCollection services) {
-            ConfigHelpers.RegisterFacetFactory(facetFactorType, services);
-        }
-
-        protected virtual void RegisterFacetFactories(IServiceCollection services) {
-            foreach (var facetFactory in ObjectFacetFactories.StandardFacetFactories()) {
-                RegisterFacetFactory(facetFactory, services);
-            }
-
-            foreach (var facetFactory in FunctionalFacetFactories.StandardFacetFactories()) {
-                RegisterFacetFactory(facetFactory, services);
-            }
-        }
-
         protected virtual void RegisterTypes(IServiceCollection services, ICoreConfiguration cc, IFunctionalReflectorConfiguration frc, IObjectReflectorConfiguration orc = null) {
-            RegisterFacetFactories(services);
-
+          
 
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
-            services.AddSingleton<IClassStrategy, ObjectClassStrategy>();
+            services.AddSingleton<ObjectClassStrategy, ObjectClassStrategy>();
+            services.AddSingleton<FunctionClassStrategy, FunctionClassStrategy>();
+            services.AddSingleton<SystemTypeClassStrategy, SystemTypeClassStrategy>();
+            services.AddSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
+            services.AddSingleton<SystemTypeFacetFactorySet, SystemTypeFacetFactorySet>();
+            services.AddSingleton<FunctionalFacetFactorySet, FunctionalFacetFactorySet>();
+
             services.AddSingleton<IReflector, SystemTypeReflector>();
             services.AddSingleton<IReflector, ObjectReflector>();
             services.AddSingleton<IReflector, FunctionalReflector>();
@@ -160,7 +149,11 @@ namespace NakedFunctions.Reflector.Test.Component {
             services.AddSingleton<IMenuFactory, NullMenuFactory>();
             services.AddSingleton<IModelBuilder, ModelBuilder>();
             services.AddSingleton<IModelIntegrator, ModelIntegrator>();
+            services.AddSingleton<FacetFactoryTypesProvider, FacetFactoryTypesProvider>();
             services.AddSingleton(typeof(IFacetFactoryOrder<>), typeof(FacetFactoryOrder<>));
+
+            services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(ObjectFacetFactories.StandardFacetFactories());
+            services.RegisterFacetFactories<IFunctionalFacetFactoryProcessor>(FunctionalFacetFactories.StandardFacetFactories());
 
             var dflt = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { });
 

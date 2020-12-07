@@ -5,12 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFramework.ModelBuilding.Component;
 using NakedFunctions;
-using NakedFunctions.Reflector.Component;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Menu;
 using NakedObjects.Core.Authentication;
 using NakedObjects.Core.Component;
 using NakedObjects.Core.Framework;
@@ -20,21 +19,19 @@ using NakedObjects.Meta.Component;
 using NakedObjects.Meta.Menu;
 using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Persistor.Entity.Component;
-using NakedObjects.Reflector.Component;
 using NakedObjects.Service;
 using NakedObjects.Menu;
 
 namespace NakedObjects.DependencyInjection.DependencyInjection {
     public static class ParallelConfig {
         public static void RegisterCoreSingletonTypes(IServiceCollection services) {
-            services.AddSingleton<ObjectClassStrategy, ObjectClassStrategy>();
-            services.AddSingleton<IClassStrategy>(p => new CachingClassStrategy(p.GetService<ObjectClassStrategy>()));
             services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
             services.AddSingleton<IMetamodel, Metamodel>();
             services.AddSingleton<IMetamodelBuilder, Metamodel>();
             services.AddSingleton<IMenuFactory, MenuFactory>();
             services.AddSingleton<IModelIntegrator, ModelIntegrator>();
             services.AddSingleton<IModelBuilder, ModelBuilder>();
+            services.AddSingleton<FacetFactoryTypesProvider, FacetFactoryTypesProvider>();
             services.AddSingleton(typeof(IFacetFactoryOrder<>), typeof(FacetFactoryOrder<>));
         }
 
@@ -65,10 +62,9 @@ namespace NakedObjects.DependencyInjection.DependencyInjection {
             services.AddScoped<SpecFactory, SpecFactory>();
         }
 
-        public static void RegisterStandardFacetFactories(IServiceCollection services) {
-            var factoryTypes = FacetFactories.StandardFacetFactories();
-            for (var i = 0; i < factoryTypes.Length; i++) {
-                ConfigHelpers.RegisterFacetFactory(factoryTypes[i], services);
+        public static void RegisterFacetFactories<T>(this IServiceCollection services, Type[] facetFactories) where T : IFacetFactory {
+            foreach (var factory in facetFactories) {
+                services.RegisterFacetFactory<T>(factory);
             }
         }
 

@@ -16,6 +16,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.Reflect;
 
 // ReSharper disable UnusedMember.Global
 
@@ -130,7 +131,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ContributedActionAnnotationFacetFactory(new FacetFactoryOrder<ContributedActionAnnotationFacetFactory>(), LoggerFactory);
+            facetFactory = new ContributedActionAnnotationFacetFactory(GetOrder<ContributedActionAnnotationFacetFactory>(), LoggerFactory);
         }
 
         [TestCleanup]

@@ -16,6 +16,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.Reflect;
 
 #pragma warning disable 612
 
@@ -114,7 +115,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new TypicalLengthAnnotationFacetFactory(new FacetFactoryOrder<TypicalLengthAnnotationFacetFactory>(), LoggerFactory);
+            facetFactory = new TypicalLengthAnnotationFacetFactory(GetOrder<TypicalLengthAnnotationFacetFactory>(), LoggerFactory);
         }
 
         [TestCleanup]

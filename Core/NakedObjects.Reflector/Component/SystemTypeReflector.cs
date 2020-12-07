@@ -20,16 +20,17 @@ using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.Reflector.Component {
     public sealed class SystemTypeReflector : AbstractParallelReflector {
-        public SystemTypeReflector(IMetamodelBuilder metamodel,
+        public SystemTypeReflector(SystemTypeFacetFactorySet systemTypeFacetFactorySet,
+                                   SystemTypeClassStrategy systemTypeClassStrategy,
+                                   IMetamodelBuilder metamodel,
                                    ICoreConfiguration coreConfiguration,
                                    IEnumerable<IFacetDecorator> facetDecorators,
-                                   IEnumerable<IFacetFactory> facetFactories,
                                    ILoggerFactory loggerFactory,
                                    ILogger<AbstractParallelReflector> logger) : base(metamodel, facetDecorators, loggerFactory, logger) {
             CoreConfiguration = coreConfiguration;
 
-            FacetFactorySet = new SystemTypeFacetFactorySet(facetFactories.OfType<IObjectFacetFactoryProcessor>().ToArray());
-            ClassStrategy = new SystemTypeClassStrategy(coreConfiguration);
+            FacetFactorySet = systemTypeFacetFactorySet;
+            ClassStrategy = systemTypeClassStrategy;
             Order = 0;
         }
 

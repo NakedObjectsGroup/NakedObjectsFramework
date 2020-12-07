@@ -22,15 +22,16 @@ namespace NakedObjects.Reflector.Component {
     public sealed class ObjectReflector : AbstractParallelReflector {
         private readonly IObjectReflectorConfiguration objectReflectorConfiguration;
 
-        public ObjectReflector(IMetamodelBuilder metamodel,
+        public ObjectReflector(ObjectFacetFactorySet objectFacetFactorySet,
+                               ObjectClassStrategy objectClassStrategy,
+                               IMetamodelBuilder metamodel,
                                IObjectReflectorConfiguration objectReflectorConfiguration,
                                IEnumerable<IFacetDecorator> facetDecorators,
-                               IEnumerable<IFacetFactory> facetFactories,
                                ILoggerFactory loggerFactory,
                                ILogger<AbstractParallelReflector> logger) : base(metamodel, facetDecorators, loggerFactory, logger) {
             this.objectReflectorConfiguration = objectReflectorConfiguration;
-            FacetFactorySet = new ObjectFacetFactorySet(facetFactories.OfType<IObjectFacetFactoryProcessor>().ToArray());
-            ClassStrategy = new ObjectClassStrategy(objectReflectorConfiguration);
+            FacetFactorySet = objectFacetFactorySet;
+            ClassStrategy = objectClassStrategy;
             Order = 1;
         }
 

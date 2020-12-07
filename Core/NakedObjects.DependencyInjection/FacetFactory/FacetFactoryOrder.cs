@@ -9,13 +9,30 @@ using System;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.DependencyInjection.FacetFactory {
+
+
     public class FacetFactoryOrder<T> : IFacetFactoryOrder<T> {
-        public int Order => Array.IndexOf(FacetFactories.StandardFacetFactories(), typeof(T));
+        private readonly Type[] facetFactories;
+
+        public FacetFactoryOrder(FacetFactoryTypesProvider facetFactories) => this.facetFactories = facetFactories.FacetFactoryTypes;
+
+        public int Order => Array.IndexOf(facetFactories, typeof(T));
+    }
+
+    public class TestFacetFactoryOrder<T> : IFacetFactoryOrder<T>
+    {
+        private readonly Type[] facetFactories;
+
+        public TestFacetFactoryOrder(Type[] facetFactories) => this.facetFactories = facetFactories;
+
+        public int Order => Array.IndexOf(facetFactories, typeof(T));
     }
 
 
     public class AppendFacetFactoryOrder<T> : IFacetFactoryOrder<T> {
-        private int LastIndex { get; set; } = FacetFactories.StandardFacetFactories().Length - 1;
+        public AppendFacetFactoryOrder(Type[] facetFactories) => LastIndex = facetFactories.Length - 1;
+
+        private int LastIndex { get; set; }
 
         public int Order => ++LastIndex;
     }

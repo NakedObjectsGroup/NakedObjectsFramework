@@ -9,6 +9,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -20,6 +21,8 @@ using NakedObjects.Meta.Component;
 using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
+using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.Reflector.Test.Reflect {
     [TestClass]
@@ -29,8 +32,9 @@ namespace NakedObjects.Reflector.Test.Reflect {
         {
             var config = new CoreConfiguration();
             ClassStrategy = new SystemTypeClassStrategy(config);
+            var systemTypeFacetFactorySet = new SystemTypeFacetFactorySet(FacetFactories.OfType<IObjectFacetFactoryProcessor>());
             var mockLogger1 = new Mock<ILogger<AbstractParallelReflector>>().Object;
-            return new SystemTypeReflector(metamodel, config, new IFacetDecorator[] { }, FacetFactories, lf, mockLogger1);
+            return new SystemTypeReflector(systemTypeFacetFactorySet, (SystemTypeClassStrategy) ClassStrategy, metamodel, config, new IFacetDecorator[] { }, lf, mockLogger1);
         }
 
 

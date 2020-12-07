@@ -16,6 +16,7 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.Reflector.Test.FacetFactory {
     [TestClass]
@@ -77,7 +78,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ValidateProgrammaticUpdatesAnnotationFacetFactory(new FacetFactoryOrder<ValidateProgrammaticUpdatesAnnotationFacetFactory>(), LoggerFactory);
+            facetFactory = new ValidateProgrammaticUpdatesAnnotationFacetFactory(GetOrder<ValidateProgrammaticUpdatesAnnotationFacetFactory>(), LoggerFactory);
         }
 
         [TestCleanup]

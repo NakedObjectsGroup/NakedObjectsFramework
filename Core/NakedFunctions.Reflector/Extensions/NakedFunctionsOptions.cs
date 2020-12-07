@@ -8,7 +8,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace NakedObjects.DependencyInjection.Extensions {
+namespace NakedFunctions.Reflector.Extensions {
     public class NakedFunctionsOptions {
         public Type[] FunctionalTypes { get; set; } = Array.Empty<Type>();
         public Type[] Functions { get; set; } = Array.Empty<Type>();

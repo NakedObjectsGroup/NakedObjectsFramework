@@ -26,6 +26,7 @@ using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.Reflect;
 
 #pragma warning disable 612
 
@@ -870,7 +871,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new ActionMethodsFacetFactory(new FacetFactoryOrder<ActionMethodsFacetFactory>(), LoggerFactory);
+            facetFactory = new ActionMethodsFacetFactory(GetOrder<ActionMethodsFacetFactory>(), LoggerFactory);
         }
 
         [TestCleanup]

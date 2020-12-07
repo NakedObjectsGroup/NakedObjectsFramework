@@ -22,15 +22,17 @@ namespace NakedFunctions.Reflector.Component {
     public sealed class FunctionalReflector : AbstractParallelReflector {
         private readonly IFunctionalReflectorConfiguration functionalReflectorConfiguration;
 
-        public FunctionalReflector(IMetamodelBuilder metamodel,
+        public FunctionalReflector(FunctionalFacetFactorySet functionalFacetFactorySet,
+                                   FunctionClassStrategy functionClassStrategy,
+                                   IMetamodelBuilder metamodel,
                                    IFunctionalReflectorConfiguration functionalReflectorConfiguration,
                                    IEnumerable<IFacetDecorator> facetDecorators,
                                    IEnumerable<IFacetFactory> facetFactories,
                                    ILoggerFactory loggerFactory,
                                    ILogger<AbstractParallelReflector> logger) : base(metamodel, facetDecorators, loggerFactory, logger) {
             this.functionalReflectorConfiguration = functionalReflectorConfiguration;
-            ClassStrategy = new FunctionClassStrategy(functionalReflectorConfiguration);
-            FacetFactorySet = new FunctionalFacetFactorySet(facetFactories.OfType<FunctionalFacetFactoryProcessor>().ToArray());
+            ClassStrategy = functionClassStrategy;
+            FacetFactorySet = functionalFacetFactorySet;
             Order = 2;
         }
 

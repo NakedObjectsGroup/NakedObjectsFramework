@@ -51,7 +51,7 @@ namespace NakedObjects.Reflector.Reflect {
         /// </para>
         private readonly IList<IPropertyOrCollectionIdentifyingFacetFactory> propertyOrCollectionIdentifyingFactories;
 
-        public SystemTypeFacetFactorySet(IObjectFacetFactoryProcessor[] factories) {
+        public SystemTypeFacetFactorySet(IEnumerable<IObjectFacetFactoryProcessor> factories) {
             var allFactories = factories.ToList();
             allFactories.Sort();
 

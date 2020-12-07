@@ -10,51 +10,46 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Component;
+using NakedObjects.DependencyInjection.FacetFactory;
 
 namespace NakedObjects.DependencyInjection.DependencyInjection {
     public static class ConfigHelpers {
 
-        private static MethodInfo GetRegisterMethod(Type type) =>
-            typeof(ConfigHelpers).GetMethod(nameof(RegisterFacetFactory), BindingFlags.NonPublic | BindingFlags.Static)?.MakeGenericMethod(type);
-
-        public static void RegisterFacetFactory(Type factory, IServiceCollection services) =>
-            GetRegisterMethod(factory).Invoke(null, new object[] {services });
-
-        // register with type so we can find to remove 
-        // called by reflection
-        // ReSharper disable once UnusedMember.Local
-        private static void RegisterFacetFactory<T>(IServiceCollection services) =>  services.AddSingleton(typeof(IFacetFactory), typeof(T));
+        public static void RegisterFacetFactory<T>(this IServiceCollection services, Type factory) where T : IFacetFactory {
+            FacetFactoryTypesProvider.AddType(factory);
+            services.AddSingleton(typeof(T), factory);
+        }
 
         private static bool SafeMatch(this ServiceDescriptor descriptor, Type toMatch) {
             return descriptor.ImplementationType == toMatch;
         }
 
-        private static void RemoveFactory<T>(this IServiceCollection services) {
-            var serviceDescriptor = services.Where(descriptor => descriptor.ServiceType == typeof(IFacetFactory)).FirstOrDefault(descriptor => descriptor.SafeMatch(typeof(T)));
+        private static void RemoveFactory<TInterface, TOriginal>(this IServiceCollection services) {
+            var serviceDescriptor = services.Where(descriptor => descriptor.ServiceType == typeof(TInterface)).FirstOrDefault(descriptor => descriptor.SafeMatch(typeof(TOriginal)));
             if (serviceDescriptor != null) {
                 services.Remove(serviceDescriptor);
             }
         }
 
-        public static void RegisterReplacementFacetFactory<TReplacement, TOriginal>(IServiceCollection services)
+        public static void RegisterReplacementFacetFactory<TInterface, TReplacement, TOriginal>(IServiceCollection services)
             where TReplacement : IFacetFactory
             where TOriginal : IFacetFactory {
 
             // remove the original and register replacement.
-            services.RemoveFactory<TOriginal>();
-            services.AddSingleton(typeof(IFacetFactory), typeof(TReplacement));
+            services.RemoveFactory<TInterface, TOriginal>();
+            services.AddSingleton(typeof(TInterface), typeof(TReplacement));
         }
 
 
         // Helper method to, substitute a new implementation of a specific facet factory, but where the constructor
         // of the new one takes: a numeric order, and the standard NOF implementation of that facet factory. 
-        public static void RegisterReplacementFacetFactoryDelegatingToOriginal<TReplacement, TOriginal>(IServiceCollection services)
+        public static void RegisterReplacementFacetFactoryDelegatingToOriginal<TInterface, TReplacement, TOriginal>(IServiceCollection services)
             where TReplacement : IFacetFactory
             where TOriginal : IFacetFactory {
         
 
             // remove original as an IFacetFactory
-            services.RemoveFactory<TOriginal>();
+            services.RemoveFactory<TInterface, TOriginal>();
 
             // Register the original (standard NOF implementation). Note that although already registered by StandardConfig.RegisterStandardFacetFactories
             // that will be as a named impl of IFacetFactory.  This will be the only one registered as the concrete type
@@ -67,7 +62,7 @@ namespace NakedObjects.DependencyInjection.DependencyInjection {
             // Now add replacement using the standard pattern but using the same Name and orderNumber as the one being superseded. 
             // The original one will be auto-injected into it because of the implementation registered above
 
-            services.AddSingleton(typeof(IFacetFactory), typeof(TReplacement));
+            services.AddSingleton(typeof(TInterface), typeof(TReplacement));
         }
     }
 }

@@ -21,6 +21,6 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public IAuditConfiguration AuditConfiguration { get; set; }
         public Func<IMenuFactory, IMenu[]> MainMenus { get; set; }
         public Func<Type[], Type[]> SupportedSystemTypes { get; set; }
-        internal IServiceCollection Services { get; }
+        public IServiceCollection Services { get; }
     }
 }

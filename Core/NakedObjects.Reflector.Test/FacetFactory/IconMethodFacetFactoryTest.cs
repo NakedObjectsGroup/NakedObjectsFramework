@@ -20,6 +20,7 @@ using NakedObjects.Core.Adapter;
 using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.Reflect;
 
 #pragma warning disable 612
 
@@ -141,7 +142,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new IconMethodFacetFactory(new FacetFactoryOrder<IconMethodFacetFactory>(), LoggerFactory);
+            facetFactory = new IconMethodFacetFactory(GetOrder<IconMethodFacetFactory>(), LoggerFactory);
         }
 
         [TestCleanup]

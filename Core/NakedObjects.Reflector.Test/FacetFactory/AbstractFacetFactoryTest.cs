@@ -16,7 +16,9 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
+using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Reflector.Component;
+using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.Reflector.Test.FacetFactory {
     public abstract class AbstractFacetFactoryTest {
@@ -27,6 +29,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         private Mock<IMetamodelManager> mockMetadata;
         private Mock<IMethodRemover> mockMethodRemover;
         private Mock<IReflector> mockReflector;
+        
         protected IReflector Reflector;
         protected ISpecificationBuilder Specification;
         protected abstract Type[] SupportedTypes { get; }
@@ -67,6 +70,10 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             MethodRemover = null;
             Reflector = null;
         }
+
+        protected IFacetFactoryOrder<T> GetOrder<T>() => 
+            new TestFacetFactoryOrder<T>(ObjectFacetFactories.StandardFacetFactories());
+
 
         protected static bool Contains<T>(T[] array, T val) => array.Contains(val);
 

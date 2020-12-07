@@ -17,6 +17,7 @@ using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.Reflect;
 using NakedObjects.Security;
 
 // ReSharper disable UnusedMember.Global
@@ -975,7 +976,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         [TestInitialize]
         public override void SetUp() {
             base.SetUp();
-            facetFactory = new AuthorizeAnnotationFacetFactory(new FacetFactoryOrder<AuthorizeAnnotationFacetFactory>(), LoggerFactory);
+            facetFactory = new AuthorizeAnnotationFacetFactory(GetOrder<AuthorizeAnnotationFacetFactory>(), LoggerFactory);
 
             mockPersistor = new Mock<ILifecycleManager>();
             lifecycleManager = mockPersistor.Object;

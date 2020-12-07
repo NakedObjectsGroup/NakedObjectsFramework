@@ -20,6 +20,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Configuration;
+using NakedFunctions.Reflector.FacetFactory;
+using NakedFunctions.Reflector.Reflect;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -34,6 +36,8 @@ using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
+using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
@@ -356,10 +360,23 @@ namespace NakedObjects.Xat {
 
         protected virtual void RegisterTypes(IServiceCollection services) {
             //Standard configuration
-            ParallelConfig.RegisterStandardFacetFactories(services);
+           
+            // todo rework this to use standard config API
+
             ParallelConfig.RegisterCoreSingletonTypes(services);
             ParallelConfig.RegisterCoreScopedTypes(services);
             ParallelConfig.RegisterWellKnownServices(services);
+
+            services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(ObjectFacetFactories.StandardFacetFactories());
+            services.RegisterFacetFactories<IFunctionalFacetFactoryProcessor>(FunctionalFacetFactories.StandardFacetFactories());
+
+            services.AddSingleton<FunctionalFacetFactorySet, FunctionalFacetFactorySet>();
+            services.AddSingleton<FunctionClassStrategy, FunctionClassStrategy>();
+            services.AddSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
+            services.AddSingleton<ObjectClassStrategy, ObjectClassStrategy>();
+            services.AddSingleton<SystemTypeFacetFactorySet, SystemTypeFacetFactorySet>();
+            services.AddSingleton<SystemTypeClassStrategy, SystemTypeClassStrategy>();
+
 
             services.AddSingleton<IReflector, SystemTypeReflector>();
             services.AddSingleton<IReflector, ObjectReflector>();

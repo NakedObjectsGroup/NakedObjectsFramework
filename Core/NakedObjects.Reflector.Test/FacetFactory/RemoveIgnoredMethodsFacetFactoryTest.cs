@@ -23,6 +23,7 @@ using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.FacetFactory;
+using NakedObjects.Reflector.Reflect;
 using NakedObjects.Reflector.Test.Reflect;
 
 // ReSharper disable UnusedMember.Global
@@ -93,15 +94,14 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             ObjectReflectorConfiguration.NoValidate = true;
 
             var reflectorConfiguration = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { });
-            var functionalReflectorConfiguration = new FunctionalReflectorConfiguration(new Type[] { }, new Type[] { });
-            facetFactory = new RemoveIgnoredMethodsFacetFactory(new FacetFactoryOrder<RemoveIgnoredMethodsFacetFactory>(), LoggerFactory);
-            var menuFactory = new NullMenuFactory();
+            facetFactory = new RemoveIgnoredMethodsFacetFactory(GetOrder<RemoveIgnoredMethodsFacetFactory>(), LoggerFactory);
+            var objectFactFactorySet = new ObjectFacetFactorySet(new IObjectFacetFactoryProcessor[] { facetFactory });
             var classStrategy = new ObjectClassStrategy(reflectorConfiguration);
             var metamodel = new Metamodel(cache, null);
             var mockLogger = new Mock<ILogger<AbstractParallelReflector>>().Object;
             var mockLoggerFactory = new Mock<ILoggerFactory>().Object;
 
-            Reflector = new ObjectReflector( metamodel, reflectorConfiguration, new IFacetDecorator[] { }, new IFacetFactory[] {facetFactory}, mockLoggerFactory, mockLogger);
+            Reflector = new ObjectReflector(objectFactFactorySet, classStrategy,  metamodel, reflectorConfiguration, new IFacetDecorator[] { }, mockLoggerFactory, mockLogger);
         }
 
         [TestCleanup]
