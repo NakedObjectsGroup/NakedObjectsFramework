@@ -74,10 +74,10 @@ namespace AdventureWorksModel {
         //TODO:  Not working
         public static (Customer, Customer) CreateNewStoreCustomer(string name,
             [Optionally] string demographics,
-            [Injected] Guid g1,
-            [Injected] Guid g2,
-            [Injected] Guid g3,
-            [Injected] DateTime d)
+            Guid g1,
+            Guid g2,
+            Guid g3,
+            [Now] DateTime d)
         {
             throw new NotImplementedException();
             //var s = new Store(name, demographics, null, null, d, g1, 0, new List<BusinessEntityAddress>(), new List<BusinessEntityContact>(), g2, d);
@@ -87,8 +87,8 @@ namespace AdventureWorksModel {
 
         public static (Customer, Customer) CreateCustomerFromStore(
             Store store, 
-            [Injected] Guid guid,
-            [Injected] DateTime dt)
+            Guid guid,
+            [Now] DateTime dt)
         {
 
             throw new NotImplementedException();
@@ -100,9 +100,9 @@ namespace AdventureWorksModel {
         public static (Store, Store) CreateNewStoreOnly(
             string name,
             [Optionally] string demographics,
-            [Injected] Guid guid1,
-            [Injected] Guid guid2,
-            [Injected] DateTime dt
+            Guid guid1,
+            Guid guid2,
+            [Now] DateTime dt
             )
         {
 
@@ -121,7 +121,7 @@ namespace AdventureWorksModel {
 
         public static Customer RandomStore(
             IQueryable<Customer> customers,
-            [Injected] int random) {
+            [Random] int random) {
             return Random(customers.Where(t => t.StoreID != null), random);
         }
         #endregion
@@ -161,7 +161,7 @@ namespace AdventureWorksModel {
         [MemberOrder(70)]
         public static Customer RandomIndividual(
             IQueryable<Customer> customers,
-            [Injected] int random)
+            [Random] int random)
         {
             return Random(customers.Where(t => t.StoreID == null), random);
         }
@@ -174,8 +174,8 @@ namespace AdventureWorksModel {
         
         public static List<Customer> RandomCustomers(
             IQueryable<Customer> customers,
-            [Injected] int random1,
-            [Injected] int random2)
+            [Random] int random1,
+            [Random] int random2)
         {
             var list = new List<Customer>();
             list.Add(RandomIndividual(customers, random1));

@@ -17,13 +17,13 @@ namespace AdventureWorksModel
     {
 
         #region Life Cycle Methods
-        public static Employee Updating(this Employee x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static Employee Updating(this Employee x, [Now] DateTime now) => x with { ModifiedDate = now };
         #endregion
 
         //public static bool HideLoginID(
         //    Employee e,
         //    IQueryable<Employee> employees,
-        //    [Injected] IPrincipal principal)
+        //    IPrincipal principal)
         //{
         //    var userAsEmployee = EmployeeRepository.CurrentUserAsEmployee(null, employees, principal);
         //    return userAsEmployee != null ? userAsEmployee.LoginID != e.LoginID : true;
@@ -43,7 +43,7 @@ namespace AdventureWorksModel
         //[MemberOrder(10)]
         //public static (EmployeePayHistory, EmployeePayHistory) ChangePayRate(
         //    Employee e,
-        //    [Injected] DateTime now
+        //    [Now] DateTime now
         //)
         //{
         //    EmployeePayHistory current = CurrentEmployeePayHistory(e);
@@ -62,7 +62,7 @@ namespace AdventureWorksModel
         //    Employee e,
         //    Department department, 
         //     Shift shift,
-        //    [Injected] DateTime now)
+        //    [Now] DateTime now)
         //{
         //    var edh = CurrentAssignment(e) with {EndDate =  now};
         //    var newAssignment = new EmployeeDepartmentHistory(department, shift, e, now );

@@ -11,6 +11,6 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     public static class ProductCostHistoryFunctions
     {
-        public static ProductCostHistory Updating(ProductCostHistory c, [Injected] DateTime now) => c with {ModifiedDate =  now};
+        public static ProductCostHistory Updating(ProductCostHistory c, [Now] DateTime now) => c with {ModifiedDate =  now};
     }
 }

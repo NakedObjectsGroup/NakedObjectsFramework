@@ -47,8 +47,8 @@ namespace AdventureWorksModel {
 
         [MemberOrder(10)]
         public static Product RandomProduct(
-            [Injected] IQueryable<Product> products,
-            [Injected] int random)
+            IQueryable<Product> products,
+            [Random] int random)
         {
             return Random(products, random);
         }

@@ -12,7 +12,7 @@ using NakedFunctions;
 namespace AdventureWorksModel {
      public static class ProductCategoryFunctions
     {
-        public static ProductCategory Updating(ProductCategory a, [Injected] DateTime now) => a with {ModifiedDate =  now};
+        public static ProductCategory Updating(ProductCategory a, [Now] DateTime now) => a with {ModifiedDate =  now};
 
     }
 }

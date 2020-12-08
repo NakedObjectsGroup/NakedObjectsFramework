@@ -16,7 +16,7 @@ namespace AdventureWorksModel
     public static class SpecialOffer_MenuFunctions
     {
         [MemberOrder(0)]
-        public static SpecialOffer FirstOrDefault([Injected] IQueryable<SpecialOffer> offers)
+        public static SpecialOffer FirstOrDefault(IQueryable<SpecialOffer> offers)
         {
             return offers.FirstOrDefault();
         }
@@ -97,8 +97,8 @@ namespace AdventureWorksModel
 
         [MemberOrder(10)]
         public static (SpecialOffer, Action<IAlert>) RandomSpecialOffertWithAlert(
-[Injected] IQueryable<SpecialOffer> offers,
-[Injected] int random)
+            IQueryable<SpecialOffer> offers,
+            [Random] int random)
         {
             return (Random(offers, random), InformUser("This was randomly selected"));
         }
