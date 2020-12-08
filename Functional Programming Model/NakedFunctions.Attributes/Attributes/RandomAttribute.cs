@@ -5,12 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
 namespace NakedFunctions {
     /// <summary>
-    ///     TODO: To be removed. (Superseded by [Now] and [Random] attributes).
+    ///     When applied to an int or a double parameter on a function, indicates that this parameter should not be
+    ///     offered to the user ina  dialog, but should be injected with a random value, equivalent to having called 
+    ///      Next() or NextDouble(), respectively, on System.Random().
+    ///     
+    ///     Applying this attribute to a parameter that is not of type int or double will result in a reflection error.
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
-    public class InjectedAttribute : Attribute { }
+    public class RandomAttribute : Attribute { }
 }
