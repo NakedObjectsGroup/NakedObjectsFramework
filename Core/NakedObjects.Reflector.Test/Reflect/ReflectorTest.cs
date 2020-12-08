@@ -16,35 +16,26 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedFramework.ModelBuilding.Component;
-using NakedFunctions.Reflector.Component;
-using NakedFunctions.Reflector.Configuration;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Core.Configuration;
 using NakedObjects.DependencyInjection.DependencyInjection;
-using NakedObjects.DependencyInjection.FacetFactory;
+using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.Menu;
-using NakedObjects.Meta.Component;
 using NakedObjects.Meta.SpecImmutable;
-using NakedObjects.Reflector.Component;
-using NakedObjects.Reflector.Configuration;
+using NakedObjects.Reflector.Extensions;
 using NakedObjects.Reflector.FacetFactory;
-using NakedObjects.Reflector.Reflect;
-using NakedObjects.Reflector.TypeFacetFactory;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
-namespace NakedObjects.Reflector.Test.Reflect
-{
-    public class NullMenuFactory : IMenuFactory
-    {
+namespace NakedObjects.Reflector.Test.Reflect {
+    public class NullMenuFactory : IMenuFactory {
+        public IMenu NewMenu(string name) => null;
+
         #region IMenuFactory Members
 
         public IMenu NewMenu<T>(bool addAllActions, string name = null) => null;
@@ -56,17 +47,13 @@ namespace NakedObjects.Reflector.Test.Reflect
         public IMenu NewMenu(string name, string id, Type defaultType, bool addAllActions = false) => null;
 
         #endregion
-
-        public IMenu NewMenu(string name) => null;
     }
 
     [TestClass]
-    public class ReflectorTest
-    {
+    public class ReflectorTest {
         #region TestEnum enum
 
-        public enum TestEnum
-        {
+        public enum TestEnum {
             Value1,
             Value2
         }
@@ -75,483 +62,323 @@ namespace NakedObjects.Reflector.Test.Reflect
 
         private Action<IServiceCollection> TestHook { get; set; } = services => { };
 
-        private IHostBuilder CreateHostBuilder(string[] args, ICoreConfiguration cc, IObjectReflectorConfiguration rc) =>
+        private IHostBuilder CreateHostBuilder(string[] args, Action<NakedCoreOptions> setup) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureServices((hostContext, services) =>
-                {
-                    RegisterTypes(services, cc, rc);
-                });
+                .ConfigureServices((hostContext, services) => { RegisterTypes(services, setup); });
 
-        protected IServiceProvider GetContainer(ICoreConfiguration cc, IObjectReflectorConfiguration rc)
-        {
+        protected IServiceProvider GetContainer(Action<NakedCoreOptions> setup) {
             ImmutableSpecFactory.ClearCache();
-            var hostBuilder = CreateHostBuilder(new string[] { }, cc, rc).Build();
+            var hostBuilder = CreateHostBuilder(new string[] { }, setup).Build();
             return hostBuilder.Services;
         }
 
-    
-
-        protected virtual void RegisterTypes(IServiceCollection services, ICoreConfiguration cc, IObjectReflectorConfiguration rc)
-        {
-            
-
-            services.AddSingleton<ISpecificationCache, ImmutableInMemorySpecCache>();
-            services.AddSingleton<ObjectClassStrategy, ObjectClassStrategy>();
-            services.AddSingleton<SystemTypeClassStrategy, SystemTypeClassStrategy>();
-            services.AddSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
-            services.AddSingleton<SystemTypeFacetFactorySet, SystemTypeFacetFactorySet>();
-            //services.AddSingleton<IReflector, SystemTypeReflector>();
-            services.AddSingleton<IReflector, ObjectReflector>();
-            //services.AddSingleton<IReflector, FunctionalReflector>();
-            services.AddSingleton<IMetamodel, Metamodel>();
-            services.AddSingleton<IMetamodelBuilder, Metamodel>();
-            services.AddSingleton<IMenuFactory, NullMenuFactory>();
-            services.AddSingleton<IModelBuilder, ModelBuilder>();
-            services.AddSingleton<IModelIntegrator, ModelIntegrator>();
-            services.AddSingleton<FacetFactoryTypesProvider, FacetFactoryTypesProvider>();
-            services.AddSingleton(typeof(IFacetFactoryOrder<>), typeof(FacetFactoryOrder<>));
-
-            services.AddSingleton(cc);
-            services.AddSingleton(rc);
-           // services.AddSingleton<IFunctionalReflectorConfiguration>(new FunctionalReflectorConfiguration(new Type[] { }, new Type[] { }));
-
-            services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(ObjectFacetFactories.StandardFacetFactories());
-
+        protected virtual void RegisterTypes(IServiceCollection services, Action<NakedCoreOptions> setup) {
+            services.AddNakedFramework(setup);
             TestHook(services);
         }
 
-        private ITypeSpecBuilder[] AllObjectSpecImmutables(IServiceProvider provider)
-        {
+        private ITypeSpecBuilder[] AllObjectSpecImmutables(IServiceProvider provider) {
             var metaModel = provider.GetService<IMetamodel>();
             return metaModel.AllSpecifications.Cast<ITypeSpecBuilder>().ToArray();
         }
 
         [TestMethod]
-        public void ReflectNoTypes()
-        {
-            ObjectReflectorConfiguration.NoValidate = true;
+        public void ReflectNoTypes() {
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddNakedObjects(options => {
+                    options.Types = Array.Empty<Type>();
+                    options.Services = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
 
-            var rc = new ObjectReflectorConfiguration(new Type[] { }, new Type[] { });
-            var cc = new CoreConfiguration();
-            cc.SupportedSystemTypes.Clear();
+            var container = GetContainer(Setup);
 
-            var container = GetContainer(cc, rc);
-
-            var builder = container.GetService<IModelBuilder>();
-            builder.Build();
+            container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
             Assert.IsFalse(specs.Any());
         }
 
         [TestMethod]
-        public void ReflectObjectType()
-        {
-            ObjectReflectorConfiguration.NoValidate = true;
+        public void ReflectObjectType() {
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddNakedObjects(options => {
+                    options.Types = new[] {typeof(object)};
+                    options.Services = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(object) }, new Type[] { });
-            var cc = new CoreConfiguration();
-            cc.SupportedSystemTypes.Clear();
+            var container = GetContainer(Setup);
 
-            var container = GetContainer(cc, rc);
-
-            var builder = container.GetService<IModelBuilder>();
-            builder.Build();
+            container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(1, specs.Length);
-
             AbstractReflectorTest.AssertSpec(typeof(object), specs.First());
         }
 
         [TestMethod]
-        public void ReflectListTypes()
-        {
-            ObjectReflectorConfiguration.NoValidate = true;
+        public void ReflectListTypes() {
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddNakedObjects(options => {
+                    options.Types = new[] {typeof(List<object>), typeof(List<int>), typeof(object), typeof(int)};
+                    options.Services = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(List<object>), typeof(List<int>), typeof(object), typeof(int) }, new Type[] { });
-            var cc = new CoreConfiguration();
-            cc.SupportedSystemTypes.Clear();
+            var container = GetContainer(Setup);
 
-            var container = GetContainer(cc, rc);
-
-            var builder = container.GetService<IModelBuilder>();
-            builder.Build();
+            container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(3, specs.Length);
-
             AbstractReflectorTest.AssertSpec(typeof(int), specs);
             AbstractReflectorTest.AssertSpec(typeof(object), specs);
             AbstractReflectorTest.AssertSpec(typeof(List<>), specs);
         }
 
         [TestMethod]
-        public void ReflectSetTypes()
-        {
-            ObjectReflectorConfiguration.NoValidate = true;
+        public void ReflectSetTypes() {
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddNakedObjects(options => {
+                    options.Types = new[] {typeof(SetWrapper<>), typeof(object)};
+                    options.Services = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(SetWrapper<>), typeof(object) }, new Type[] { });
-            var cc = new CoreConfiguration();
-            cc.SupportedSystemTypes.Clear();
+            var container = GetContainer(Setup);
 
-            var container = GetContainer(cc, rc);
-
-            var builder = container.GetService<IModelBuilder>();
-            builder.Build();
+            container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(2, specs.Length);
-
             AbstractReflectorTest.AssertSpec(typeof(object), specs);
             AbstractReflectorTest.AssertSpec(typeof(SetWrapper<>), specs);
         }
 
         [TestMethod]
-        public void ReflectQueryableTypes()
-        {
+        public void ReflectQueryableTypes() {
             var qo = new List<object>().AsQueryable();
             var qi = new List<int>().AsQueryable();
-            ObjectReflectorConfiguration.NoValidate = true;
 
-            var rc = new ObjectReflectorConfiguration(new[] { qo.GetType(), qi.GetType(), typeof(int), typeof(object) }, new Type[] { });
-            var cc = new CoreConfiguration();
-            cc.SupportedSystemTypes.Clear();
+            void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddNakedObjects(options => {
+                    options.Types = new[] {qo.GetType(), qi.GetType(), typeof(int), typeof(object)};
+                    options.Services = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
 
-            var container = GetContainer(cc, rc);
+            var container = GetContainer(Setup);
 
-            var builder = container.GetService<IModelBuilder>();
-            builder.Build();
+            container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(3, specs.Length);
-
             AbstractReflectorTest.AssertSpec(typeof(int), specs);
             AbstractReflectorTest.AssertSpec(typeof(object), specs);
             AbstractReflectorTest.AssertSpec(typeof(EnumerableQuery<>), specs);
         }
 
         [TestMethod]
-        public void ReflectWhereIterator()
-        {
-            var it = new List<int> { 1, 2, 3 }.Where(i => i == 2);
-            ObjectReflectorConfiguration.NoValidate = true;
+        public void ReflectWhereIterator() {
+            var it = new List<int> {1, 2, 3}.Where(i => i == 2);
 
-            var rc = new ObjectReflectorConfiguration(new[] { it.GetType().GetGenericTypeDefinition(), typeof(object) }, new Type[] { });
-            var cc = new CoreConfiguration();
-            cc.SupportedSystemTypes.Clear();
+            void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddNakedObjects(options => {
+                    options.Types = new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)};
+                    options.Services = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
 
-            var container = GetContainer(cc, rc);
+            var container = GetContainer(Setup);
 
-            var builder = container.GetService<IModelBuilder>();
-            builder.Build();
+            container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(2, specs.Length);
-
             AbstractReflectorTest.AssertSpec(typeof(object), specs);
             AbstractReflectorTest.AssertSpec(it.GetType().GetGenericTypeDefinition(), specs);
         }
 
         [TestMethod]
-        public void ReflectWhereSelectIterator()
-        {
-            var it = new List<int> { 1, 2, 3 }.Where(i => i == 2).Select(i => i);
-            ObjectReflectorConfiguration.NoValidate = true;
+        public void ReflectWhereSelectIterator() {
+            var it = new List<int> {1, 2, 3}.Where(i => i == 2).Select(i => i);
 
-            var rc = new ObjectReflectorConfiguration(new[] { it.GetType().GetGenericTypeDefinition(), typeof(object) }, new Type[] { });
-            var cc = new CoreConfiguration();
-            cc.SupportedSystemTypes.Clear();
+            void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddNakedObjects(options => {
+                    options.Types = new[] {it.GetType().GetGenericTypeDefinition(), typeof(object)};
+                    options.Services = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
 
-            var container = GetContainer(cc, rc);
+            var container = GetContainer(Setup);
 
-            var builder = container.GetService<IModelBuilder>();
-            builder.Build();
+            container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(2, specs.Length);
-
             AbstractReflectorTest.AssertSpec(typeof(object), specs);
             AbstractReflectorTest.AssertSpec(it.GetType().GetGenericTypeDefinition(), specs);
         }
 
-        private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs)
-        {
+        private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs) {
             return specs.Single(s => s.FullName == type.FullName);
         }
 
         [TestMethod]
-        public void ReflectInt()
-        {
-            ObjectReflectorConfiguration.NoValidate = true;
+        public void ReflectInt() {
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddNakedObjects(options => {
+                    options.Types = new[] {typeof(int)};
+                    options.Services = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(int) }, new Type[] { });
-            var cc = new CoreConfiguration();
-            cc.SupportedSystemTypes.Clear();
+            var container = GetContainer(Setup);
 
-            var container = GetContainer(cc, rc);
-
-            var builder = container.GetService<IModelBuilder>();
-            builder.Build();
-
+            container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(1, specs.Length);
-            //AbstractReflectorTest.AssertSpec(typeof(IEquatable<int>), specs);
             AbstractReflectorTest.AssertSpec(typeof(int), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IConvertible), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(object), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(ValueType), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IComparable<int>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IComparable), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IFormattable), specs);
         }
 
         [TestMethod]
-        public void ReflectByteArray()
-        {
-            ObjectReflectorConfiguration.NoValidate = true;
+        public void ReflectByteArray() {
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddNakedObjects(options => {
+                    options.Types = new[] {typeof(TestObjectWithByteArray), typeof(byte), typeof(byte[])};
+                    options.Services = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(TestObjectWithByteArray), typeof(byte), typeof(byte[]) }, new Type[] { });
-            var cc = new CoreConfiguration();
-            cc.SupportedSystemTypes.Clear();
+            var container = GetContainer(Setup);
 
-            var container = GetContainer(cc, rc);
-
-            var builder = container.GetService<IModelBuilder>();
-            builder.Build();
-
+            container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(3, specs.Length);
-
-            //AbstractReflectorTest.AssertSpec(typeof(IList), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IEquatable<long>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IEquatable<int>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(int), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IComparable<byte>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IConvertible), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IEquatable<byte>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(object), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IComparable<bool>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IEquatable<bool>), specs);
             AbstractReflectorTest.AssertSpec(typeof(byte[]), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(Array), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(ValueType), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IComparable<long>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(long), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IStructuralComparable), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IComparable), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(ICollection), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(bool), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(ICloneable), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IList<>), specs);
             AbstractReflectorTest.AssertSpec(typeof(byte), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IFormattable), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IComparable<int>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IReadOnlyList<>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IReadOnlyCollection<>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IStructuralEquatable), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(ICollection<>), specs);
             AbstractReflectorTest.AssertSpec(typeof(TestObjectWithByteArray), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IEnumerable<>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IEnumerable), specs);
         }
 
         [TestMethod]
-        public void ReflectStringArray()
-        {
-            ObjectReflectorConfiguration.NoValidate = true;
+        public void ReflectStringArray() {
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddNakedObjects(options => {
+                    options.Types = new[] {typeof(TestObjectWithStringArray), typeof(string)};
+                    options.Services = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(TestObjectWithStringArray), typeof(string) }, new Type[] { });
-            var cc = new CoreConfiguration();
-            cc.SupportedSystemTypes.Clear();
+            var container = GetContainer(Setup);
 
-            var container = GetContainer(cc, rc);
-
-            var builder = container.GetService<IModelBuilder>();
-            builder.Build();
-
+            container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(2, specs.Length);
-
             AbstractReflectorTest.AssertSpec(typeof(TestObjectWithStringArray), specs);
             AbstractReflectorTest.AssertSpec(typeof(string), specs);
         }
 
         [TestMethod]
-        public void ReflectWithScalars()
-        {
-            ObjectReflectorConfiguration.NoValidate = true;
+        public void ReflectWithScalars() {
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddNakedObjects(options => {
+                    options.Types = new[] {typeof(WithScalars)};
+                    options.Services = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(WithScalars) }, new Type[] { });
-            var cc = new CoreConfiguration();
-            cc.SupportedSystemTypes.Clear();
+            var container = GetContainer(Setup);
 
-            var container = GetContainer(cc, rc);
-
-            var builder = container.GetService<IModelBuilder>();
-            builder.Build();
-
+            container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(1, specs.Length);
-
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<decimal>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(short), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IList), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(uint), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<string>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<long>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<int>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(decimal), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(int), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<byte>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IConvertible), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<byte>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(object), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<DateTime>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<float>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<bool>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<char>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<float>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<bool>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(byte[]), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(DateTimeKind), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(Array), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(char), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(ValueType), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<TimeSpan>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(DayOfWeek), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<ushort>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<long>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(long), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(DateTime), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IStructuralComparable), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<DateTime>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(ulong), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(Enum), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(sbyte[]), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<sbyte>), specs);
             AbstractReflectorTest.AssertSpecsContain(typeof(WithScalars), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(ICollection), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(bool), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<double>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<decimal>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<ushort>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<uint>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(ICloneable), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<short>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(TimeSpan), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<string>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IList<>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(byte), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<char>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(char[]), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<uint>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(float), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IFormattable), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(ISerializable), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<int>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(sbyte), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<sbyte>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(string), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IReadOnlyList<>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IReadOnlyCollection<>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IStructuralEquatable), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(ICollection<>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<ulong>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<TimeSpan>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(ushort), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<ulong>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEnumerable<>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IComparable<short>), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IDeserializationCallback), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEnumerable), specs);
-            //AbstractReflectorTest.AssertSpecsContain(typeof(IEquatable<double>), specs);
         }
 
         [TestMethod]
-        public void ReflectSimpleDomainObject()
-        {
-            ObjectReflectorConfiguration.NoValidate = true;
+        public void ReflectSimpleDomainObject() {
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddNakedObjects(options => {
+                    options.Types = new[] {typeof(SimpleDomainObject)};
+                    options.Services = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(SimpleDomainObject) }, new Type[] { });
-            var cc = new CoreConfiguration();
-            cc.SupportedSystemTypes.Clear();
+            var container = GetContainer(Setup);
 
-            var container = GetContainer(cc, rc);
-
-            var builder = container.GetService<IModelBuilder>();
-            builder?.Build();
-
+            container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
             Assert.AreEqual(1, specs.Length);
-
-            //AbstractReflectorTest.AssertSpec(typeof(IComparable<string>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IEquatable<int>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(int), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IConvertible), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(object), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IComparable<char>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(char), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(ValueType), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IComparable), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(ICloneable), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IEquatable<string>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IEquatable<char>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(void), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IFormattable), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IComparable<int>), specs);
             AbstractReflectorTest.AssertSpec(typeof(SimpleDomainObject), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(string), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IEnumerable<>), specs);
-            //AbstractReflectorTest.AssertSpec(typeof(IEnumerable), specs);
         }
 
         [TestMethod]
-        public void ReplaceFacetFactory()
-        {
+        public void ReplaceFacetFactory() {
             TestHook = services => ConfigHelpers.RegisterReplacementFacetFactory<IObjectFacetFactoryProcessor, ReplacementBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
 
-            ObjectReflectorConfiguration.NoValidate = true;
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddNakedObjects(options => {
+                    options.Types = new[] {typeof(SimpleBoundedObject)};
+                    options.Services = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(SimpleBoundedObject) }, new Type[] { });
-            var cc = new CoreConfiguration();
-            cc.SupportedSystemTypes.Clear();
+            var container = GetContainer(Setup);
 
-            var container = GetContainer(cc, rc);
-            var builder = container.GetService<IModelBuilder>();
-            builder.Build();
+            container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
-
             Assert.AreEqual(1, specs.Length);
             var spec = specs.First();
-
             Assert.IsFalse(spec.ContainsFacet<IBoundedFacet>());
         }
 
         [TestMethod]
-        public void ReplaceDelegatingFacetFactory()
-        {
+        public void ReplaceDelegatingFacetFactory() {
             TestHook = services => ConfigHelpers.RegisterReplacementFacetFactoryDelegatingToOriginal<IObjectFacetFactoryProcessor, ReplacementDelegatingBoundedAnnotationFacetFactory, BoundedAnnotationFacetFactory>(services);
 
-            ObjectReflectorConfiguration.NoValidate = true;
+            static void Setup(NakedCoreOptions coreOptions) {
+                coreOptions.SupportedSystemTypes = t => Array.Empty<Type>();
+                coreOptions.AddNakedObjects(options => {
+                    options.Types = new[] {typeof(SimpleBoundedObject)};
+                    options.Services = Array.Empty<Type>();
+                    options.NoValidate = true;
+                });
+            }
 
-            var rc = new ObjectReflectorConfiguration(new[] { typeof(SimpleBoundedObject) }, new Type[] { });
-            var cc = new CoreConfiguration();
-            cc.SupportedSystemTypes.Clear();
+            var container = GetContainer(Setup);
 
-            var container = GetContainer(cc, rc);
-
-            var builder = container.GetService<IModelBuilder>();
-            builder.Build();
+            container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
-
             Assert.AreEqual(1, specs.Length);
             var spec = specs.First();
-
             Assert.IsFalse(spec.ContainsFacet<IBoundedFacet>());
         }
 
         #region Nested type: ReplacementBoundedAnnotationFacetFactory
 
-        public sealed class ReplacementBoundedAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory
-        {
+        public sealed class ReplacementBoundedAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
             public ReplacementBoundedAnnotationFacetFactory(IFacetFactoryOrder<BoundedAnnotationFacetFactory> order, ILoggerFactory loggerFactory)
-                : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces)
-            {
+                : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) {
                 Assert.AreEqual(21, order.Order);
             }
 
@@ -562,19 +389,16 @@ namespace NakedObjects.Reflector.Test.Reflect
 
         #region Nested type: ReplacementDelegatingBoundedAnnotationFacetFactory
 
-        public sealed class ReplacementDelegatingBoundedAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory
-        {
+        public sealed class ReplacementDelegatingBoundedAnnotationFacetFactory : ObjectFacetFactoryProcessor, IAnnotationBasedFacetFactory {
             private readonly BoundedAnnotationFacetFactory originalFactory;
 
             public ReplacementDelegatingBoundedAnnotationFacetFactory(IFacetFactoryOrder<BoundedAnnotationFacetFactory> order, BoundedAnnotationFacetFactory originalFactory, ILoggerFactory loggerFactory)
-                : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces)
-            {
+                : base(order.Order, loggerFactory, FeatureType.ObjectsAndInterfaces) {
                 this.originalFactory = originalFactory;
                 Assert.AreEqual(21, order.Order);
             }
 
-            public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel)
-            {
+            public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, Type type, IMethodRemover methodRemover, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
                 Assert.IsNotNull(originalFactory);
                 return metamodel;
             }
@@ -584,8 +408,7 @@ namespace NakedObjects.Reflector.Test.Reflect
 
         #region Nested type: SetWrapper
 
-        public class SetWrapper<T> : ISet<T>
-        {
+        public class SetWrapper<T> : ISet<T> {
             private readonly ICollection<T> wrapped;
 
             public SetWrapper(ICollection<T> wrapped) => this.wrapped = wrapped;
@@ -613,19 +436,16 @@ namespace NakedObjects.Reflector.Test.Reflect
 
             public bool SetEquals(IEnumerable<T> other) => false;
 
-            public bool Add(T item)
-            {
+            public bool Add(T item) {
                 wrapped.Add(item);
                 return true;
             }
 
-            void ICollection<T>.Add(T item)
-            {
+            void ICollection<T>.Add(T item) {
                 wrapped.Add(item);
             }
 
-            public void Clear()
-            {
+            public void Clear() {
                 wrapped.Clear();
             }
 
@@ -647,24 +467,16 @@ namespace NakedObjects.Reflector.Test.Reflect
         #region Nested type: SimpleBoundedObject
 
         [Bounded]
-        public class SimpleBoundedObject
-        {
-            [Key]
-            [Title]
-            [ConcurrencyCheck]
-            public virtual int Id { get; set; }
+        public class SimpleBoundedObject {
+            [Key] [Title] [ConcurrencyCheck] public virtual int Id { get; set; }
         }
 
         #endregion
 
         #region Nested type: SimpleDomainObject
 
-        public class SimpleDomainObject
-        {
-            [Key]
-            [Title]
-            [ConcurrencyCheck]
-            public virtual int Id { get; set; }
+        public class SimpleDomainObject {
+            [Key] [Title] [ConcurrencyCheck] public virtual int Id { get; set; }
 
             public virtual void Action() { }
 
@@ -675,8 +487,7 @@ namespace NakedObjects.Reflector.Test.Reflect
 
         #region Nested type: TestObjectWithByteArray
 
-        public class TestObjectWithByteArray
-        {
+        public class TestObjectWithByteArray {
             public byte[] ByteArray { get; set; }
         }
 
@@ -684,8 +495,7 @@ namespace NakedObjects.Reflector.Test.Reflect
 
         #region Nested type: TestObjectWithStringArray
 
-        public class TestObjectWithStringArray
-        {
+        public class TestObjectWithStringArray {
             public string[] StringArray { get; set; }
         }
 
@@ -693,39 +503,29 @@ namespace NakedObjects.Reflector.Test.Reflect
 
         #region Nested type: WithScalars
 
-        public class WithScalars
-        {
-            public WithScalars()
-            {
+        public class WithScalars {
+            public WithScalars() {
                 Init();
             }
 
-            [Key]
-            [Title]
-            [ConcurrencyCheck]
-            public virtual int Id { get; set; }
+            [Key] [Title] [ConcurrencyCheck] public virtual int Id { get; set; }
 
-            [NotMapped]
-            public virtual sbyte SByte { get; set; }
+            [NotMapped] public virtual sbyte SByte { get; set; }
 
             public virtual byte Byte { get; set; }
             public virtual short Short { get; set; }
 
-            [NotMapped]
-            public virtual ushort UShort { get; set; }
+            [NotMapped] public virtual ushort UShort { get; set; }
 
             public virtual int Int { get; set; }
 
-            [NotMapped]
-            public virtual uint UInt { get; set; }
+            [NotMapped] public virtual uint UInt { get; set; }
 
             public virtual long Long { get; set; }
 
-            [NotMapped]
-            public virtual ulong ULong { get; set; }
+            [NotMapped] public virtual ulong ULong { get; set; }
 
-            public virtual char Char
-            {
+            public virtual char Char {
                 get => '3';
                 // ReSharper disable once ValueParameterNotUsed
                 set { }
@@ -744,14 +544,11 @@ namespace NakedObjects.Reflector.Test.Reflect
 
             public virtual ICollection<WithScalars> List { get; set; } = new List<WithScalars>();
 
-            [NotMapped]
-            public virtual ICollection<WithScalars> Set { get; set; } = new HashSet<WithScalars>();
+            [NotMapped] public virtual ICollection<WithScalars> Set { get; set; } = new HashSet<WithScalars>();
 
-            [EnumDataType(typeof(TestEnum))]
-            public virtual int EnumByAttributeChoices { get; set; }
+            [EnumDataType(typeof(TestEnum))] public virtual int EnumByAttributeChoices { get; set; }
 
-            private void Init()
-            {
+            private void Init() {
                 SByte = 10;
                 UInt = 14;
                 ULong = 15;

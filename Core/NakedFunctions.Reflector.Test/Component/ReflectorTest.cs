@@ -44,7 +44,6 @@ namespace NakedFunctions.Reflector.Test.Component {
     public record BoundedClass {
     }
 
-
     public record IgnoredClass {
     [NakedFunctionsIgnore] public virtual string IgnoredProperty { get; set; }
     }
@@ -79,7 +78,6 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static SimpleClass SimpleInjectedFunction(IQueryable<SimpleClass> injected) => injected.First();
     }
 
-
     public static class TupleFunctions {
         public static (SimpleClass, SimpleClass) TupleFunction(IQueryable<SimpleClass> injected) => (injected.First(), injected.First());
 
@@ -102,16 +100,13 @@ namespace NakedFunctions.Reflector.Test.Component {
         public static SimpleViewModel PopulateUsingKeys(this SimpleViewModel target, string[] keys) => target;
     }
 
-
     [TestClass]
     public class ReflectorTest {
         private Action<IServiceCollection> TestHook { get; } = services => { };
 
-
         private IHostBuilder CreateHostBuilder(string[] args, Action<NakedCoreOptions> setup) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) => { RegisterTypes(services, setup); });
-
 
         protected IServiceProvider GetContainer(Action<NakedCoreOptions> setup) {
             ImmutableSpecFactory.ClearCache();
@@ -123,7 +118,6 @@ namespace NakedFunctions.Reflector.Test.Component {
             services.AddNakedFramework(setup);
             TestHook(services);
         }
-
 
         public record Test(int a) { }
 
@@ -137,7 +131,6 @@ namespace NakedFunctions.Reflector.Test.Component {
             options.Services = Array.Empty<Type>();
             options.NoValidate = true;
         }
-
 
         [TestMethod]
         public void ReflectNoTypes() {
@@ -262,7 +255,6 @@ namespace NakedFunctions.Reflector.Test.Component {
             AbstractReflectorTest.AssertSpec(typeof(IQueryable<>), specs);
         }
 
-
         [TestMethod]
         public void ReflectNavigableType() {
             static void Setup(NakedCoreOptions coreOptions) {
@@ -357,7 +349,6 @@ namespace NakedFunctions.Reflector.Test.Component {
             }
 
             var container = GetContainer(Setup);
-
 
             container.GetService<IModelBuilder>()?.Build();
             var specs = AllObjectSpecImmutables(container);
