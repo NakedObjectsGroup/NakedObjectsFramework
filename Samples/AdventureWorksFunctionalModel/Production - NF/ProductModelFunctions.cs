@@ -36,6 +36,6 @@ namespace AdventureWorksModel
         return output.ToString();
     }
 
-    public static ProductInventory Updating(ProductInventory a, [Injected] DateTime now) => a with { ModifiedDate = now };
+    public static ProductInventory Updating(ProductInventory a, [Now] DateTime now) => a with { ModifiedDate = now };
 }
 }

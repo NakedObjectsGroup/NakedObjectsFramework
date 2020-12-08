@@ -33,9 +33,9 @@ namespace AdventureWorksModel {
     {
 
         #region Life Cycle Methods
-        public static Department Updating(this Department x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static Department Updating(this Department x, [Now] DateTime now) => x with { ModifiedDate = now };
 
-        public static Department Persisting(this Department x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static Department Persisting(this Department x, [Now] DateTime now) => x with { ModifiedDate = now };
         #endregion
     }
 }

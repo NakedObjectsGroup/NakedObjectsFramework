@@ -18,8 +18,7 @@ namespace AdventureWorksModel {
         public static IQueryable<Person> FindContactByName(
             
             [Optionally] string firstName, 
-            string lastName, [Injected]
-        IQueryable<Person> persons) {
+            string lastName, IQueryable<Person> persons) {
             return persons.Where(p => firstName == null || p.FirstName.ToUpper().StartsWith(firstName.ToUpper()) &&
                       p.LastName.ToUpper().StartsWith(lastName.ToUpper())).OrderBy(p => p.LastName).ThenBy(p => p.FirstName);
         }
@@ -28,7 +27,7 @@ namespace AdventureWorksModel {
         public static Person RandomContact(
             
             IQueryable<Person> persons, 
-            [Injected] int random) {
+            [Random] int random) {
             return Random(persons, random);
         }
 
@@ -36,8 +35,8 @@ namespace AdventureWorksModel {
         public static IQueryable<Person> RandomContacts(
             
             IQueryable<Person> persons,
-            [Injected] int random1, 
-            [Injected] int random2) {
+            [Random] int random1, 
+            [Random] int random2) {
             Person contact1 = RandomContact(persons, random1);
             Person contact2 = RandomContact(persons, random2);
             return new[] {contact1, contact2}.AsQueryable();

@@ -19,9 +19,9 @@ namespace AdventureWorksModel
     {
 
         #region Life Cycle Methods
-        public static SpecialOffer Updating(SpecialOffer x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static SpecialOffer Updating(SpecialOffer x, [Now] DateTime now) => x with { ModifiedDate = now };
 
-        public static SpecialOffer Persisting(SpecialOffer x, [Injected] DateTime now, [Injected] Guid guid) => x with { ModifiedDate = now, rowguid = guid };
+        public static SpecialOffer Persisting(SpecialOffer x, [Now] DateTime now, Guid guid) => x with { ModifiedDate = now, rowguid = guid };
         #endregion
 
         #region Edit
@@ -47,9 +47,9 @@ namespace AdventureWorksModel
         public static (SpecialOffer, SpecialOffer) EditDates(this SpecialOffer sp, DateTime startDate, DateTime endDate)
         => DisplayAndPersist(sp with { StartDate = startDate, EndDate = endDate });
 
-        public static DateTime Default0EditDates(this SpecialOffer sp, [Injected] DateTime now) => now;
+        public static DateTime Default0EditDates(this SpecialOffer sp, [Now] DateTime now) => now;
 
-        public static DateTime Default1EditDates(this SpecialOffer sp, [Injected] DateTime now) => now.AddDays(90);
+        public static DateTime Default1EditDates(this SpecialOffer sp, [Now] DateTime now) => now.AddDays(90);
 
         [Edit]
         public static (SpecialOffer, SpecialOffer) EditQuantities(this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty)
@@ -104,7 +104,7 @@ namespace AdventureWorksModel
 
         public static (IList<SpecialOffer>, IList<SpecialOffer>) TerminateActiveOffers(
             this IQueryable<SpecialOffer> offers,
-            [Injected] DateTime now)
+            [Now] DateTime now)
         {
             var yesterday = now.Date.AddDays(-1);
             var list = offers.Where(x => x.EndDate > yesterday).ToList().Select(x => x with { EndDate = yesterday }).ToList();

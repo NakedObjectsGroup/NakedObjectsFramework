@@ -82,7 +82,7 @@ namespace AdventureWorksModel {
         internal static Employee CurrentUserAsEmployee(
             
             IQueryable<Employee> employees,
-            [Injected] IPrincipal principal
+            IPrincipal principal
             )
         {
             return employees.Where(x => x.LoginID == "adventure-works\\" + principal.Identity.Name).FirstOrDefault();
@@ -92,14 +92,14 @@ namespace AdventureWorksModel {
         internal static Employee Me(
             
             IQueryable<Employee> employees,
-            [Injected] IPrincipal principal)
+            IPrincipal principal)
         {
             return CurrentUserAsEmployee( employees, principal);
         }
         internal static (IQueryable<Employee>, Action<IAlert>) MyDepartmentalColleagues(
 
             IQueryable<Employee> employees,
-            [Injected] IPrincipal principal,
+            IPrincipal principal,
             IQueryable<EmployeeDepartmentHistory> edhs)
         {
 
@@ -119,7 +119,7 @@ namespace AdventureWorksModel {
         public static Employee RandomEmployee(
              
              IQueryable<Employee> employees,
-             [Injected] int random)
+             [Random] int random)
         {
             return Random(employees, random);
         }
