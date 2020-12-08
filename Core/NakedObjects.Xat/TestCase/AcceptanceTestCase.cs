@@ -9,10 +9,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,6 +22,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Configuration;
+using NakedFunctions.Reflector.Extensions;
 using NakedFunctions.Reflector.FacetFactory;
 using NakedFunctions.Reflector.Reflect;
 using NakedObjects.Architecture.Component;
@@ -31,11 +34,13 @@ using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Fixture;
 using NakedObjects.Core.Util;
 using NakedObjects.DependencyInjection.DependencyInjection;
+using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.Menu;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
+using NakedObjects.Reflector.Extensions;
 using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.Reflect;
 
@@ -101,6 +106,8 @@ namespace NakedObjects.Xat {
 
         protected virtual EntityObjectStoreConfiguration Persistor => new EntityObjectStoreConfiguration();
 
+        protected virtual Func<IConfiguration, DbContext>[] ContextInstallers => null;
+
         protected virtual ObjectReflectorConfiguration ObjectReflectorConfig {
             get {
                 var reflectorConfig = new ObjectReflectorConfiguration(
@@ -110,6 +117,13 @@ namespace NakedObjects.Xat {
                 return reflectorConfig;
             }
         }
+
+        protected virtual Action<NakedObjectsOptions> NakedObjectsOptions =>
+            options => {
+                options.Types = ObjectTypes;
+                options.Services = Services;
+                options.NoValidate = true;
+            };
 
         protected virtual FunctionalReflectorConfiguration FunctionalReflectorConfig {
             get {
@@ -121,6 +135,13 @@ namespace NakedObjects.Xat {
             }
         }
 
+        protected virtual Action<NakedFunctionsOptions> NakedFunctionsOptions =>
+            options => {
+                options.FunctionalTypes = Records;
+                options.Functions = Functions;
+            };
+
+
 
         protected virtual CoreConfiguration CoreConfig {
             get {
@@ -131,6 +152,15 @@ namespace NakedObjects.Xat {
                 return coreConfig;
             }
         }
+
+        protected virtual Action<NakedCoreOptions> NakedCoreOptions =>
+            builder => {
+                builder.ContextInstallers = ContextInstallers;
+                builder.MainMenus = MainMenus;
+                builder.AddNakedObjects(NakedObjectsOptions);
+                builder.AddNakedFunctions(NakedFunctionsOptions);
+            };
+
 
 
         private IHostBuilder CreateHostBuilder(string[] args) =>
@@ -359,8 +389,12 @@ namespace NakedObjects.Xat {
         }
 
         protected virtual void RegisterTypes(IServiceCollection services) {
+
+            //services.AddNakedFramework(NakedCoreOptions);
+
+
             //Standard configuration
-           
+
             // todo rework this to use standard config API
 
             ParallelConfig.RegisterCoreSingletonTypes(services);

@@ -11,6 +11,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Util;
 using NakedObjects.Xat;
@@ -33,7 +34,7 @@ namespace NakedObjects.SystemTest {
 
     public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase
         where TContext : DbContext {
-
+      
         protected override EntityObjectStoreConfiguration Persistor {
             get {
                 var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
@@ -41,6 +42,9 @@ namespace NakedObjects.SystemTest {
                 return config;
             }
         }
+
+        protected override Func<IConfiguration, DbContext>[] ContextInstallers => 
+            new Func<IConfiguration, DbContext>[] { config => Activator.CreateInstance<TContext>() };
 
         /// <summary>
         ///     Assumes that a SimpleRepository for the type T has been registered in Services
