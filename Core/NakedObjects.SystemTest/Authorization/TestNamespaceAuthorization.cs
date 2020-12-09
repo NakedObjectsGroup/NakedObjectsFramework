@@ -76,17 +76,6 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
             }
         }
 
-        //protected override void RegisterTypes(IServiceCollection services) {
-        //    base.RegisterTypes(services);
-        //    var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
-        //    config.AddNamespaceAuthorizer<MyAppAuthorizer>("MyApp");
-        //    config.AddNamespaceAuthorizer<MyCluster1Authorizer>("MyApp.MyCluster1");
-        //    config.AddNamespaceAuthorizer<MyBar1Authorizer>("MyApp.MyCluster1.Bar1");
-
-        //    services.AddSingleton<IAuthorizationConfiguration>(config);
-        //    services.AddSingleton<IFacetDecorator, AuthorizationManager>();
-        //}
-
         [Test]
         public void AuthorizerWithMostSpecificNamespaceIsInvokedForVisibility() {
             //Bar1

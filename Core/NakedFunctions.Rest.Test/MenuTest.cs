@@ -41,19 +41,10 @@ namespace NakedFunctions.Rest.Test {
 
         protected override Type[] Services { get; } = { };
 
-        //protected override EntityObjectStoreConfiguration Persistor {
-        //    get {
-        //        var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-        //        config.UsingContext(Activator.CreateInstance<MenuDbContext>);
-        //        return config;
-        //    }
-        //}
-
         protected override bool EnforceProxies => false;
 
         protected override Func<IConfiguration, DbContext>[] ContextInstallers =>
             new Func<IConfiguration, DbContext>[] { config => new MenuDbContext()};
-
 
         protected override IMenu[] MainMenus(IMenuFactory factory) =>  new[] {factory.NewMenu(typeof(SimpleMenuFunctions), true, "Test menu")};
 

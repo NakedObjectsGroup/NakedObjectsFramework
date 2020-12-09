@@ -26,23 +26,15 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
 
 
-        protected override IAuthorizationConfiguration AuthorizationConfiguration
-        {
-            get
-            {
-                var config = new AuthorizationConfiguration<TDefault>();
-                return config;
-            }
-        }
+        protected override IAuthorizationConfiguration AuthorizationConfiguration => new AuthorizationConfiguration<TDefault>();
 
+        //protected override void RegisterTypes(IServiceCollection services) {
+        //    base.RegisterTypes(services);
+        //    var config = new AuthorizationConfiguration<TDefault>();
 
-        protected override void RegisterTypes(IServiceCollection services) {
-            base.RegisterTypes(services);
-            var config = new AuthorizationConfiguration<TDefault>();
-
-            services.AddSingleton<IAuthorizationConfiguration>(config);
-            services.AddSingleton<IFacetDecorator, AuthorizationManager>();
-        }
+        //    services.AddSingleton<IAuthorizationConfiguration>(config);
+        //    services.AddSingleton<IFacetDecorator, AuthorizationManager>();
+        //}
     }
 
     [TestFixture] //Use DefaultAuthorizer1

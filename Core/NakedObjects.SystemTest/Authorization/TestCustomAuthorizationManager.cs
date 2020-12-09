@@ -79,31 +79,6 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
             }
         }
 
-        //protected override void RegisterTypes(IServiceCollection services) {
-        //    base.RegisterTypes(services);
-        //    var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
-        //    config.AddTypeAuthorizer<Foo, FooAuthorizer>();
-        //    config.AddTypeAuthorizer<Qux, QuxAuthorizer>();
-
-        //    services.AddSingleton<IAuthorizationConfiguration>(config);
-        //    services.AddSingleton<IFacetDecorator, AuthorizationManager>();
-        //}
-
-        //protected override object[] Fixtures {
-        //    get { return new object[] { }; }
-        //}
-
-        //protected override object[] MenuServices {
-        //    get {
-        //        return new object[] {
-        //            new SimpleRepository<Foo>(),
-        //            new SimpleRepository<Bar>(),
-        //            new SimpleRepository<FooSub>(),
-        //            new SimpleRepository<Qux>()
-        //        };
-        //    }
-        //}
-
         [Test]
         public void DefaultAuthorizerCalledForNonSpecificType() {
             var bar1 = GetTestService(typeof(SimpleRepository<Bar>)).GetAction("New Instance").InvokeReturnObject();

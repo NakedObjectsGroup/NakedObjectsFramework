@@ -78,16 +78,6 @@ namespace NakedObjects.SystemTest.Audit {
             }
         }
 
-        //protected override void RegisterTypes(IServiceCollection services) {
-        //    base.RegisterTypes(services);
-        //    var config = new AuditConfiguration<MyDefaultAuditor>();
-        //    config.AddNamespaceAuditor<FooAuditor>(typeof(Foo).FullName);
-        //    config.AddNamespaceAuditor<QuxAuditor>(typeof(Qux).FullName);
-
-        //    services.AddSingleton<IAuditConfiguration>(config);
-        //    services.AddSingleton<IFacetDecorator, AuditManager>();
-        //}
-
         private static void UnexpectedCall(string auditor) {
             Assert.Fail("Unexpected call to {0} auditor", auditor);
         }
