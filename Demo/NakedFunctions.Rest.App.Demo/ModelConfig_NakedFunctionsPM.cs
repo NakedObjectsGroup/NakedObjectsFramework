@@ -12,7 +12,7 @@ namespace NakedFunctions.Rest.App.Demo
     {
         public static Func<IConfiguration, DbContext> DbContextInstaller => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
 
-        //public static Type[] DomainTypes() =>  typeof(Product).Assembly.GetTypes().Where(t => t.IsClass && !t.IsSealed).ToArray();
+        //public static Type[] DomainTypes() =>  typeof(Product).Assembly.GetTypes().Where(t => t.IsClass && !(t.IsAbstract && t.IsSealed).ToArray();
      
         public static Type[] DomainTypes() => new[]
         {
