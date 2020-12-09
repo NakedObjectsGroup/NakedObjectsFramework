@@ -66,10 +66,10 @@ namespace NakedObjects.Reflector.Test.Reflect {
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) => { RegisterTypes(services, setup); });
 
-        protected IServiceProvider GetContainer(Action<NakedCoreOptions> setup) {
+        protected (IServiceProvider, IHost) GetContainer(Action<NakedCoreOptions> setup) {
             ImmutableSpecFactory.ClearCache();
             var hostBuilder = CreateHostBuilder(new string[] { }, setup).Build();
-            return hostBuilder.Services;
+            return (hostBuilder.Services, hostBuilder);
         }
 
         protected virtual void RegisterTypes(IServiceCollection services, Action<NakedCoreOptions> setup) {
@@ -93,11 +93,13 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 });
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            Assert.IsFalse(specs.Any());
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.IsFalse(specs.Any());
+            }
         }
 
         [TestMethod]
@@ -111,12 +113,14 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 });
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            Assert.AreEqual(1, specs.Length);
-            AbstractReflectorTest.AssertSpec(typeof(object), specs.First());
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(1, specs.Length);
+                AbstractReflectorTest.AssertSpec(typeof(object), specs.First());
+            }
         }
 
         [TestMethod]
@@ -130,14 +134,16 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 });
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            Assert.AreEqual(3, specs.Length);
-            AbstractReflectorTest.AssertSpec(typeof(int), specs);
-            AbstractReflectorTest.AssertSpec(typeof(object), specs);
-            AbstractReflectorTest.AssertSpec(typeof(List<>), specs);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(3, specs.Length);
+                AbstractReflectorTest.AssertSpec(typeof(int), specs);
+                AbstractReflectorTest.AssertSpec(typeof(object), specs);
+                AbstractReflectorTest.AssertSpec(typeof(List<>), specs);
+            }
         }
 
         [TestMethod]
@@ -151,13 +157,15 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 });
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            Assert.AreEqual(2, specs.Length);
-            AbstractReflectorTest.AssertSpec(typeof(object), specs);
-            AbstractReflectorTest.AssertSpec(typeof(SetWrapper<>), specs);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(2, specs.Length);
+                AbstractReflectorTest.AssertSpec(typeof(object), specs);
+                AbstractReflectorTest.AssertSpec(typeof(SetWrapper<>), specs);
+            }
         }
 
         [TestMethod]
@@ -174,14 +182,16 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 });
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            Assert.AreEqual(3, specs.Length);
-            AbstractReflectorTest.AssertSpec(typeof(int), specs);
-            AbstractReflectorTest.AssertSpec(typeof(object), specs);
-            AbstractReflectorTest.AssertSpec(typeof(EnumerableQuery<>), specs);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(3, specs.Length);
+                AbstractReflectorTest.AssertSpec(typeof(int), specs);
+                AbstractReflectorTest.AssertSpec(typeof(object), specs);
+                AbstractReflectorTest.AssertSpec(typeof(EnumerableQuery<>), specs);
+            }
         }
 
         [TestMethod]
@@ -197,13 +207,15 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 });
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            Assert.AreEqual(2, specs.Length);
-            AbstractReflectorTest.AssertSpec(typeof(object), specs);
-            AbstractReflectorTest.AssertSpec(it.GetType().GetGenericTypeDefinition(), specs);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(2, specs.Length);
+                AbstractReflectorTest.AssertSpec(typeof(object), specs);
+                AbstractReflectorTest.AssertSpec(it.GetType().GetGenericTypeDefinition(), specs);
+            }
         }
 
         [TestMethod]
@@ -219,13 +231,15 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 });
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            Assert.AreEqual(2, specs.Length);
-            AbstractReflectorTest.AssertSpec(typeof(object), specs);
-            AbstractReflectorTest.AssertSpec(it.GetType().GetGenericTypeDefinition(), specs);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(2, specs.Length);
+                AbstractReflectorTest.AssertSpec(typeof(object), specs);
+                AbstractReflectorTest.AssertSpec(it.GetType().GetGenericTypeDefinition(), specs);
+            }
         }
 
         private static ITypeSpecBuilder GetSpec(Type type, ITypeSpecBuilder[] specs) {
@@ -243,12 +257,14 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 });
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            Assert.AreEqual(1, specs.Length);
-            AbstractReflectorTest.AssertSpec(typeof(int), specs);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(1, specs.Length);
+                AbstractReflectorTest.AssertSpec(typeof(int), specs);
+            }
         }
 
         [TestMethod]
@@ -262,14 +278,16 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 });
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            Assert.AreEqual(3, specs.Length);
-            AbstractReflectorTest.AssertSpec(typeof(byte[]), specs);
-            AbstractReflectorTest.AssertSpec(typeof(byte), specs);
-            AbstractReflectorTest.AssertSpec(typeof(TestObjectWithByteArray), specs);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(3, specs.Length);
+                AbstractReflectorTest.AssertSpec(typeof(byte[]), specs);
+                AbstractReflectorTest.AssertSpec(typeof(byte), specs);
+                AbstractReflectorTest.AssertSpec(typeof(TestObjectWithByteArray), specs);
+            }
         }
 
         [TestMethod]
@@ -283,13 +301,15 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 });
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            Assert.AreEqual(2, specs.Length);
-            AbstractReflectorTest.AssertSpec(typeof(TestObjectWithStringArray), specs);
-            AbstractReflectorTest.AssertSpec(typeof(string), specs);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(2, specs.Length);
+                AbstractReflectorTest.AssertSpec(typeof(TestObjectWithStringArray), specs);
+                AbstractReflectorTest.AssertSpec(typeof(string), specs);
+            }
         }
 
         [TestMethod]
@@ -303,12 +323,14 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 });
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            Assert.AreEqual(1, specs.Length);
-            AbstractReflectorTest.AssertSpecsContain(typeof(WithScalars), specs);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(1, specs.Length);
+                AbstractReflectorTest.AssertSpecsContain(typeof(WithScalars), specs);
+            }
         }
 
         [TestMethod]
@@ -322,12 +344,14 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 });
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            Assert.AreEqual(1, specs.Length);
-            AbstractReflectorTest.AssertSpec(typeof(SimpleDomainObject), specs);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(1, specs.Length);
+                AbstractReflectorTest.AssertSpec(typeof(SimpleDomainObject), specs);
+            }
         }
 
         [TestMethod]
@@ -343,13 +367,15 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 });
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            Assert.AreEqual(1, specs.Length);
-            var spec = specs.First();
-            Assert.IsFalse(spec.ContainsFacet<IBoundedFacet>());
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(1, specs.Length);
+                var spec = specs.First();
+                Assert.IsFalse(spec.ContainsFacet<IBoundedFacet>());
+            }
         }
 
         [TestMethod]
@@ -365,13 +391,15 @@ namespace NakedObjects.Reflector.Test.Reflect {
                 });
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            Assert.AreEqual(1, specs.Length);
-            var spec = specs.First();
-            Assert.IsFalse(spec.ContainsFacet<IBoundedFacet>());
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.AreEqual(1, specs.Length);
+                var spec = specs.First();
+                Assert.IsFalse(spec.ContainsFacet<IBoundedFacet>());
+            }
         }
 
         #region Nested type: ReplacementBoundedAnnotationFacetFactory

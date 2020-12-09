@@ -50,10 +50,6 @@ namespace NakedFunctions.Rest.Test {
 
         protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);
-            services.AddScoped<IOidStrategy, EntityOidStrategy>();
-            services.AddScoped<IStringHasher, NullStringHasher>();
-            services.AddScoped<IFrameworkFacade, FrameworkFacade>();
-            services.AddScoped<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>();
             services.AddTransient<RestfulObjectsController, RestfulObjectsController>();
             services.AddMvc(options => options.EnableEndpointRouting = false)
                     .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);

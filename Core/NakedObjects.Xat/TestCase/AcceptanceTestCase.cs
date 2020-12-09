@@ -348,8 +348,10 @@ namespace NakedObjects.Xat {
             SetUser(username, new string[] { });
         }
 
+        private static IHost host;
+
         protected static void InitializeNakedObjectsFramework(AcceptanceTestCase tc) {
-            var host = tc.CreateHostBuilder(new string[] { }).Build();
+            host = tc.CreateHostBuilder(new string[] { }).Build();
             tc.RootServiceProvider = host.Services;
             tc.servicesCache = new Dictionary<string, ITestService>();
             tc.RootServiceProvider.GetService<IModelBuilder>().Build();
@@ -363,6 +365,8 @@ namespace NakedObjects.Xat {
             tc.servicesCache = null;
             tc.testObjectFactory = null;
             tc.RootServiceProvider = null;
+            host.StopAsync().GetAwaiter().GetResult();
+            host.Dispose();
         }
 
         protected virtual void RegisterTypes(IServiceCollection services) {

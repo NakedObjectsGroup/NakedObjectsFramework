@@ -26,13 +26,6 @@ using NakedObjects.Meta.Profile;
 
 namespace NakedObjects.DependencyInjection.Extensions {
     public static class NakedFrameworkExtensions {
-        //private static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration, NakedCoreOptions options) {
-        //    var config = new EntityObjectStoreConfiguration();
-        //    var contexts = options.ContextInstallers.Select<Func<IConfiguration, DbContext>, Func<DbContext>>(f => () => f(configuration));
-        //    contexts.ForEach(c => config.UsingContext(c));
-        //    return config;
-        //}
-
         public static CoreConfiguration CoreConfig(NakedCoreOptions options) {
             var config = new CoreConfiguration(options.MainMenus);
 
@@ -69,7 +62,6 @@ namespace NakedObjects.DependencyInjection.Extensions {
 
             // frameworkFacade
             services.AddTransient<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>();
-
             services.AddTransient<IOidStrategy, EntityOidStrategy>();
             services.AddTransient<IStringHasher, InvariantStringHasher>();
             services.AddTransient<IFrameworkFacade, FrameworkFacade>();

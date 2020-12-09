@@ -89,13 +89,9 @@ type Tests() =
         override x.ContextInstallers = 
             [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new CodeFirstContextLocal(csRTA) :> Data.Entity.DbContext) |]
 
-
         override x.RegisterTypes(services) =
             base.RegisterTypes(services)
-            services.AddScoped<IOidStrategy, EntityOidStrategy>() |> ignore
             services.AddScoped<IStringHasher, NullStringHasher>() |> ignore
-            services.AddScoped<IFrameworkFacade, FrameworkFacade>() |> ignore
-            services.AddScoped<IOidTranslator, OidTranslatorSlashSeparatedTypeAndIds>() |> ignore
             services.AddTransient<RestfulObjectsController, RestfulObjectsController>() |> ignore
             services.AddMvc(fun (options) -> options.EnableEndpointRouting <- false)
                     .AddNewtonsoftJson(fun (options) -> options.SerializerSettings.DateTimeZoneHandling <- DateTimeZoneHandling.Utc)

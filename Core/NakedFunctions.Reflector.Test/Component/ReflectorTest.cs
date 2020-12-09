@@ -108,10 +108,10 @@ namespace NakedFunctions.Reflector.Test.Component {
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) => { RegisterTypes(services, setup); });
 
-        protected IServiceProvider GetContainer(Action<NakedCoreOptions> setup) {
+        protected (IServiceProvider, IHost) GetContainer(Action<NakedCoreOptions> setup) {
             ImmutableSpecFactory.ClearCache();
             var hostBuilder = CreateHostBuilder(new string[] { }, setup).Build();
-            return hostBuilder.Services;
+            return (hostBuilder.Services, hostBuilder);
         }
 
         protected virtual void RegisterTypes(IServiceCollection services, Action<NakedCoreOptions> setup) {
@@ -144,11 +144,13 @@ namespace NakedFunctions.Reflector.Test.Component {
                 );
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            Assert.IsFalse(specs.Any());
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                Assert.IsFalse(specs.Any());
+            }
         }
 
         [TestMethod]
@@ -162,11 +164,13 @@ namespace NakedFunctions.Reflector.Test.Component {
                 );
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
+            }
         }
 
         [TestMethod]
@@ -180,12 +184,14 @@ namespace NakedFunctions.Reflector.Test.Component {
                 );
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
-            AbstractReflectorTest.AssertSpec(typeof(SimpleFunctions), specs);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
+                AbstractReflectorTest.AssertSpec(typeof(SimpleFunctions), specs);
+            }
         }
 
         [TestMethod]
@@ -200,14 +206,16 @@ namespace NakedFunctions.Reflector.Test.Component {
                 );
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
-            AbstractReflectorTest.AssertSpec(typeof(TupleFunctions), specs);
-            AbstractReflectorTest.AssertSpec(typeof(IQueryable<>), specs);
-            AbstractReflectorTest.AssertSpec(typeof(IList<>), specs);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
+                AbstractReflectorTest.AssertSpec(typeof(TupleFunctions), specs);
+                AbstractReflectorTest.AssertSpec(typeof(IQueryable<>), specs);
+                AbstractReflectorTest.AssertSpec(typeof(IList<>), specs);
+            }
         }
 
         [TestMethod]
@@ -221,16 +229,18 @@ namespace NakedFunctions.Reflector.Test.Component {
                 );
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            try {
-                container.GetService<IModelBuilder>()?.Build();
-                Assert.Fail("exception expected");
-            }
-            catch (AggregateException ae) {
-                var re = ae.InnerExceptions.FirstOrDefault();
-                Assert.IsInstanceOfType(re, typeof(ReflectionException));
-                Assert.AreEqual("Cannot reflect empty tuple on NakedFunctions.Reflector.Test.Component.UnsupportedTupleFunctions.TupleFunction", re.Message);
+            using (host) {
+                try {
+                    container.GetService<IModelBuilder>()?.Build();
+                    Assert.Fail("exception expected");
+                }
+                catch (AggregateException ae) {
+                    var re = ae.InnerExceptions.FirstOrDefault();
+                    Assert.IsInstanceOfType(re, typeof(ReflectionException));
+                    Assert.AreEqual("Cannot reflect empty tuple on NakedFunctions.Reflector.Test.Component.UnsupportedTupleFunctions.TupleFunction", re.Message);
+                }
             }
         }
 
@@ -246,13 +256,15 @@ namespace NakedFunctions.Reflector.Test.Component {
                 );
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
-            AbstractReflectorTest.AssertSpec(typeof(SimpleInjectedFunctions), specs);
-            AbstractReflectorTest.AssertSpec(typeof(IQueryable<>), specs);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                AbstractReflectorTest.AssertSpec(typeof(SimpleClass), specs);
+                AbstractReflectorTest.AssertSpec(typeof(SimpleInjectedFunctions), specs);
+                AbstractReflectorTest.AssertSpec(typeof(IQueryable<>), specs);
+            }
         }
 
         [TestMethod]
@@ -266,11 +278,13 @@ namespace NakedFunctions.Reflector.Test.Component {
                 );
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            AbstractReflectorTest.AssertSpec(typeof(NavigableClass), specs);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                AbstractReflectorTest.AssertSpec(typeof(NavigableClass), specs);
+            }
         }
 
         [TestMethod]
@@ -284,12 +298,14 @@ namespace NakedFunctions.Reflector.Test.Component {
                 );
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.BoundedClass");
-            Assert.IsTrue(spec.IsBoundedSet());
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.BoundedClass");
+                Assert.IsTrue(spec.IsBoundedSet());
+            }
         }
 
         [TestMethod]
@@ -303,12 +319,14 @@ namespace NakedFunctions.Reflector.Test.Component {
                 );
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.IgnoredClass");
-            Assert.AreEqual(0, spec.Fields.Count);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.IgnoredClass");
+                Assert.AreEqual(0, spec.Fields.Count);
+            }
         }
 
         [TestMethod]
@@ -322,19 +340,21 @@ namespace NakedFunctions.Reflector.Test.Component {
                 );
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.SimpleClass");
-            var actionSpec = spec.ContributedActions.Single();
-            var parmSpec = actionSpec.Parameters[1];
-            var facet = parmSpec.GetFacet<IActionDefaultsFacet>();
-            Assert.IsNotNull(facet);
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.SimpleClass");
+                var actionSpec = spec.ContributedActions.Single();
+                var parmSpec = actionSpec.Parameters[1];
+                var facet = parmSpec.GetFacet<IActionDefaultsFacet>();
+                Assert.IsNotNull(facet);
 
-            var (defaultValue, type) = facet.GetDefault(null, null, null);
-            Assert.AreEqual("a default", defaultValue);
-            Assert.AreEqual("Explicit", type.ToString());
+                var (defaultValue, type) = facet.GetDefault(null, null, null);
+                Assert.AreEqual("a default", defaultValue);
+                Assert.AreEqual("Explicit", type.ToString());
+            }
         }
 
         [TestMethod]
@@ -348,20 +368,22 @@ namespace NakedFunctions.Reflector.Test.Component {
                 );
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.SimpleClass");
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.SimpleClass");
 
-            IFacet facet = spec.GetFacet<IPersistingCallbackFacet>();
-            Assert.IsNotNull(facet);
-            facet = spec.GetFacet<IPersistedCallbackFacet>();
-            Assert.IsNotNull(facet);
-            facet = spec.GetFacet<IUpdatingCallbackFacet>();
-            Assert.IsNotNull(facet);
-            facet = spec.GetFacet<IUpdatedCallbackFacet>();
-            Assert.IsNotNull(facet);
+                IFacet facet = spec.GetFacet<IPersistingCallbackFacet>();
+                Assert.IsNotNull(facet);
+                facet = spec.GetFacet<IPersistedCallbackFacet>();
+                Assert.IsNotNull(facet);
+                facet = spec.GetFacet<IUpdatingCallbackFacet>();
+                Assert.IsNotNull(facet);
+                facet = spec.GetFacet<IUpdatedCallbackFacet>();
+                Assert.IsNotNull(facet);
+            }
         }
 
         [TestMethod]
@@ -375,14 +397,16 @@ namespace NakedFunctions.Reflector.Test.Component {
                 );
             }
 
-            var container = GetContainer(Setup);
+            var (container, host) = GetContainer(Setup);
 
-            container.GetService<IModelBuilder>()?.Build();
-            var specs = AllObjectSpecImmutables(container);
-            var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.SimpleViewModel");
+            using (host) {
+                container.GetService<IModelBuilder>()?.Build();
+                var specs = AllObjectSpecImmutables(container);
+                var spec = specs.OfType<ObjectSpecImmutable>().Single(s => s.FullName == "NakedFunctions.Reflector.Test.Component.SimpleViewModel");
 
-            IFacet facet = spec.GetFacet<IViewModelFacet>();
-            Assert.IsNotNull(facet);
+                IFacet facet = spec.GetFacet<IViewModelFacet>();
+                Assert.IsNotNull(facet);
+            }
         }
     }
 }
