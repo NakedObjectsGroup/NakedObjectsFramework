@@ -7,7 +7,6 @@
 
 using System;
 using System.Data.Entity;
-using System.Linq;
 using System.Security.Principal;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Component;
@@ -25,6 +24,17 @@ namespace NakedObjects.SystemTest.Authorization.Installer {
         protected override Type[] ObjectTypes => new[] {typeof(TDefault), typeof(Foo)};
 
         protected override Type[] Services => new[] {typeof(SimpleRepository<Foo>)};
+
+
+        protected override IAuthorizationConfiguration AuthorizationConfiguration
+        {
+            get
+            {
+                var config = new AuthorizationConfiguration<TDefault>();
+                return config;
+            }
+        }
+
 
         protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);

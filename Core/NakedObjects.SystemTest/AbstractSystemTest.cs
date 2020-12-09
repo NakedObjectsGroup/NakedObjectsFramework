@@ -34,14 +34,6 @@ namespace NakedObjects.SystemTest {
 
     public abstract class AbstractSystemTest<TContext> : AcceptanceTestCase
         where TContext : DbContext {
-      
-        //protected override EntityObjectStoreConfiguration Persistor {
-        //    get {
-        //        var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-        //        config.UsingContext(Activator.CreateInstance<TContext>);
-        //        return config;
-        //    }
-        //}
 
         protected override bool EnforceProxies => false;
 

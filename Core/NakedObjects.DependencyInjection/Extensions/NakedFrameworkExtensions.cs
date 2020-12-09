@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Principal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
 using NakedObjects.DependencyInjection.DependencyInjection;
@@ -19,6 +20,9 @@ using NakedObjects.Facade.Impl.Implementation;
 using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
+using NakedObjects.Meta.Audit;
+using NakedObjects.Meta.Authorization;
+using NakedObjects.Meta.Profile;
 
 namespace NakedObjects.DependencyInjection.Extensions {
     public static class NakedFrameworkExtensions {
@@ -43,15 +47,22 @@ namespace NakedObjects.DependencyInjection.Extensions {
             ParallelConfig.RegisterCoreSingletonTypes(services);
             ParallelConfig.RegisterCoreScopedTypes(services);
 
-            //services.AddSingleton<IEntityObjectStoreConfiguration>(p => EntityObjectStoreConfig(p.GetService<IConfiguration>(), options));
-
             if (options.AuthorizationConfiguration is not null) {
                 services.AddSingleton(options.AuthorizationConfiguration);
+                services.AddSingleton<IFacetDecorator, AuthorizationManager>();
             }
 
             if (options.AuditConfiguration is not null) {
                 services.AddSingleton(options.AuditConfiguration);
+                services.AddSingleton<IFacetDecorator, AuditManager>();
             }
+
+            if (options.ProfileConfiguration is not null)
+            {
+                services.AddSingleton(options.ProfileConfiguration);
+                services.AddSingleton<IFacetDecorator, ProfileManager>();
+            }
+
 
             services.AddSingleton<ICoreConfiguration>(p => CoreConfig(options));
 

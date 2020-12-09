@@ -61,13 +61,22 @@ namespace NakedObjects.SystemTest.Authorization.UsersAndRoles {
             CustomAuthorizationManagerDbContext.Delete();
         }
 
-        protected override void RegisterTypes(IServiceCollection services) {
-            base.RegisterTypes(services);
-            var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
-
-            services.AddSingleton<IAuthorizationConfiguration>(config);
-            services.AddSingleton<IFacetDecorator, AuthorizationManager>();
+        protected override IAuthorizationConfiguration AuthorizationConfiguration
+        {
+            get
+            {
+                var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
+                return config;
+            }
         }
+
+        //protected override void RegisterTypes(IServiceCollection services) {
+        //    base.RegisterTypes(services);
+        //    var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
+
+        //    services.AddSingleton<IAuthorizationConfiguration>(config);
+        //    services.AddSingleton<IFacetDecorator, AuthorizationManager>();
+        //}
 
         [Test] //Pending #9227
         public void SetUserOnTestIsPassedThroughToAuthorizer() {

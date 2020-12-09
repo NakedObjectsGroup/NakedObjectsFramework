@@ -68,15 +68,26 @@ namespace NakedObjects.SystemTest.Authorization.CustomAuthorizer {
             CustomAuthorizationManagerDbContext.Delete();
         }
 
-        protected override void RegisterTypes(IServiceCollection services) {
-            base.RegisterTypes(services);
-            var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
-            config.AddTypeAuthorizer<Foo, FooAuthorizer>();
-            config.AddTypeAuthorizer<Qux, QuxAuthorizer>();
-
-            services.AddSingleton<IAuthorizationConfiguration>(config);
-            services.AddSingleton<IFacetDecorator, AuthorizationManager>();
+        protected override IAuthorizationConfiguration AuthorizationConfiguration
+        {
+            get
+            {
+                var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
+                config.AddTypeAuthorizer<Foo, FooAuthorizer>();
+                config.AddTypeAuthorizer<Qux, QuxAuthorizer>();
+                return config;
+            }
         }
+
+        //protected override void RegisterTypes(IServiceCollection services) {
+        //    base.RegisterTypes(services);
+        //    var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
+        //    config.AddTypeAuthorizer<Foo, FooAuthorizer>();
+        //    config.AddTypeAuthorizer<Qux, QuxAuthorizer>();
+
+        //    services.AddSingleton<IAuthorizationConfiguration>(config);
+        //    services.AddSingleton<IFacetDecorator, AuthorizationManager>();
+        //}
 
         //protected override object[] Fixtures {
         //    get { return new object[] { }; }

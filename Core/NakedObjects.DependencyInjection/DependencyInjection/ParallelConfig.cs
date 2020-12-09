@@ -39,10 +39,7 @@ namespace NakedObjects.DependencyInjection.DependencyInjection {
             services.AddScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
             services.AddScoped<SpecFactory, SpecFactory>();
             services.AddScoped<IMetamodelManager, MetamodelManager>();
-            //services.AddScoped<EntityOidGenerator, EntityOidGenerator>();
-            //services.AddScoped<IOidGenerator, EntityOidGenerator>();
             services.AddScoped<IPersistAlgorithm, FlatPersistAlgorithm>();
-            //services.AddScoped<IObjectStore, EntityObjectStore>();
             services.AddScoped<IIdentityMap, IdentityMapImpl>();
             services.AddScoped<ITransactionManager, TransactionManager>();
             services.AddScoped<INakedObjectManager, NakedObjectManager>();

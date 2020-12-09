@@ -59,27 +59,52 @@ namespace NakedObjects.SystemTest.Profile {
             ProfileDbContext.Delete();
         }
 
-        protected override void RegisterTypes(IServiceCollection services) {
-            base.RegisterTypes(services);
-            var config = new ProfileConfiguration<MyProfiler> {
-                EventsToProfile = new HashSet<ProfileEvent> {
-                    ProfileEvent.ActionInvocation,
-                    ProfileEvent.PropertySet,
-                    ProfileEvent.Created,
-                    ProfileEvent.Deleted,
-                    ProfileEvent.Deleting,
-                    ProfileEvent.Loaded,
-                    ProfileEvent.Loading,
-                    ProfileEvent.Persisted,
-                    ProfileEvent.Persisting,
-                    ProfileEvent.Updated,
-                    ProfileEvent.Updating
-                }
-            };
-
-            services.AddSingleton<IProfileConfiguration>(config);
-            services.AddSingleton<IFacetDecorator, ProfileManager>();
+        protected override IProfileConfiguration ProfileConfiguration
+        {
+            get
+            {
+                var config = new ProfileConfiguration<MyProfiler>
+                {
+                    EventsToProfile = new HashSet<ProfileEvent> {
+                        ProfileEvent.ActionInvocation,
+                        ProfileEvent.PropertySet,
+                        ProfileEvent.Created,
+                        ProfileEvent.Deleted,
+                        ProfileEvent.Deleting,
+                        ProfileEvent.Loaded,
+                        ProfileEvent.Loading,
+                        ProfileEvent.Persisted,
+                        ProfileEvent.Persisting,
+                        ProfileEvent.Updated,
+                        ProfileEvent.Updating
+                    }
+                };
+                return config;
+            }
         }
+
+
+        //protected override void RegisterTypes(IServiceCollection services) {
+        //    base.RegisterTypes(services);
+        //    var config = new ProfileConfiguration<MyProfiler> {
+        //        EventsToProfile = new HashSet<ProfileEvent> {
+        //            ProfileEvent.ActionInvocation,
+        //            ProfileEvent.PropertySet,
+        //            ProfileEvent.Created,
+        //            ProfileEvent.Deleted,
+        //            ProfileEvent.Deleting,
+        //            ProfileEvent.Loaded,
+        //            ProfileEvent.Loading,
+        //            ProfileEvent.Persisted,
+        //            ProfileEvent.Persisting,
+        //            ProfileEvent.Updated,
+        //            ProfileEvent.Updating
+        //        }
+        //    };
+
+        //    services.AddSingleton<IProfileConfiguration>(config);
+        //    services.AddSingleton<IFacetDecorator, ProfileManager>();
+        //}
 
         [Test]
         public void TestActionInvocation() {

@@ -64,16 +64,28 @@ namespace NakedObjects.SystemTest.Authorization.NamespaceAuthorization {
             NamespaceAuthorizationDbContext.Delete();
         }
 
-        protected override void RegisterTypes(IServiceCollection services) {
-            base.RegisterTypes(services);
-            var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
-            config.AddNamespaceAuthorizer<MyAppAuthorizer>("MyApp");
-            config.AddNamespaceAuthorizer<MyCluster1Authorizer>("MyApp.MyCluster1");
-            config.AddNamespaceAuthorizer<MyBar1Authorizer>("MyApp.MyCluster1.Bar1");
-
-            services.AddSingleton<IAuthorizationConfiguration>(config);
-            services.AddSingleton<IFacetDecorator, AuthorizationManager>();
+        protected override IAuthorizationConfiguration AuthorizationConfiguration
+        {
+            get
+            {
+                var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
+                config.AddNamespaceAuthorizer<MyAppAuthorizer>("MyApp");
+                config.AddNamespaceAuthorizer<MyCluster1Authorizer>("MyApp.MyCluster1");
+                config.AddNamespaceAuthorizer<MyBar1Authorizer>("MyApp.MyCluster1.Bar1");
+                return config;
+            }
         }
+
+        //protected override void RegisterTypes(IServiceCollection services) {
+        //    base.RegisterTypes(services);
+        //    var config = new AuthorizationConfiguration<MyDefaultAuthorizer>();
+        //    config.AddNamespaceAuthorizer<MyAppAuthorizer>("MyApp");
+        //    config.AddNamespaceAuthorizer<MyCluster1Authorizer>("MyApp.MyCluster1");
+        //    config.AddNamespaceAuthorizer<MyBar1Authorizer>("MyApp.MyCluster1.Bar1");
+
+        //    services.AddSingleton<IAuthorizationConfiguration>(config);
+        //    services.AddSingleton<IFacetDecorator, AuthorizationManager>();
+        //}
 
         [Test]
         public void AuthorizerWithMostSpecificNamespaceIsInvokedForVisibility() {

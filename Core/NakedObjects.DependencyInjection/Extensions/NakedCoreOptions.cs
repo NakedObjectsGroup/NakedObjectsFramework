@@ -6,19 +6,18 @@
 // // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Menu;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
+using NakedObjects.Meta.Profile;
 
 namespace NakedObjects.DependencyInjection.Extensions {
     public class NakedCoreOptions {
         public NakedCoreOptions(IServiceCollection services) => Services = services;
-        public Func<IConfiguration, DbContext>[] ContextInstallers { get; set; }
         public IAuthorizationConfiguration AuthorizationConfiguration { get; set; }
         public IAuditConfiguration AuditConfiguration { get; set; }
+        public IProfileConfiguration ProfileConfiguration { get; set; }
         public Func<IMenuFactory, IMenu[]> MainMenus { get; set; }
         public Func<Type[], Type[]> SupportedSystemTypes { get; set; }
         public IServiceCollection Services { get; }

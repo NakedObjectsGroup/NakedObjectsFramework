@@ -20,29 +20,20 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedFunctions.Reflector.Component;
-using NakedFunctions.Reflector.Configuration;
 using NakedFunctions.Reflector.Extensions;
-using NakedFunctions.Reflector.FacetFactory;
-using NakedFunctions.Reflector.Reflect;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;
-using NakedObjects.Core.Configuration;
 using NakedObjects.Core.Fixture;
 using NakedObjects.Core.Util;
-using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.Menu;
+using NakedObjects.Meta.Audit;
+using NakedObjects.Meta.Authorization;
+using NakedObjects.Meta.Profile;
 using NakedObjects.Meta.SpecImmutable;
-using NakedObjects.Persistor.Entity.Configuration;
-using NakedObjects.Reflector.Component;
-using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.Extensions;
-using NakedObjects.Reflector.FacetFactory;
-using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.Xat {
     public abstract class AcceptanceTestCase {
@@ -105,21 +96,15 @@ namespace NakedObjects.Xat {
 
         protected virtual Func<Type[], Type[]> SupportedSystemTypes => t => t;
 
-        // protected virtual EntityObjectStoreConfiguration Persistor => new EntityObjectStoreConfiguration();
-
         protected virtual Func<IConfiguration, DbContext>[] ContextInstallers => null;
 
-        protected virtual bool EnforceProxies => true;
+        protected virtual IAuthorizationConfiguration AuthorizationConfiguration => null;
 
-        //protected virtual ObjectReflectorConfiguration ObjectReflectorConfig {
-        //    get {
-        //        var reflectorConfig = new ObjectReflectorConfiguration(
-        //            ObjectTypes,
-        //            Services);
-        //        ObjectReflectorConfiguration.NoValidate = true;
-        //        return reflectorConfig;
-        //    }
-        //}
+        protected virtual IAuditConfiguration AuditConfiguration => null;
+
+        protected virtual IProfileConfiguration ProfileConfiguration => null;
+
+        protected virtual bool EnforceProxies => true;
 
         protected virtual Action<EntityPersistorOptions> PersistorOptions =>
             options => {
@@ -134,16 +119,6 @@ namespace NakedObjects.Xat {
                 options.NoValidate = true;
             };
 
-        //protected virtual FunctionalReflectorConfiguration FunctionalReflectorConfig {
-        //    get {
-        //        var reflectorConfig = new FunctionalReflectorConfiguration(
-        //            Records,
-        //            Functions
-        //        );
-        //        return reflectorConfig;
-        //    }
-        //}
-
         protected virtual Action<NakedFunctionsOptions> NakedFunctionsOptions =>
             options => {
                 options.FunctionalTypes = Records;
@@ -151,21 +126,12 @@ namespace NakedObjects.Xat {
             };
 
 
-
-        //protected virtual CoreConfiguration CoreConfig {
-        //    get {
-        //        var coreConfig = new CoreConfiguration(
-        //            MainMenus
-        //        );
-
-        //        return coreConfig;
-        //    }
-        //}
-
         protected virtual Action<NakedCoreOptions> NakedCoreOptions =>
             builder => {
-                //builder.ContextInstallers = ContextInstallers;
                 builder.MainMenus = MainMenus;
+                builder.AuthorizationConfiguration = AuthorizationConfiguration;
+                builder.AuditConfiguration = AuditConfiguration;
+                builder.ProfileConfiguration = ProfileConfiguration;
                 builder.SupportedSystemTypes = SupportedSystemTypes;
                 builder.AddEntityPersistor(PersistorOptions);
                 builder.AddNakedObjects(NakedObjectsOptions);
@@ -402,38 +368,6 @@ namespace NakedObjects.Xat {
         protected virtual void RegisterTypes(IServiceCollection services) {
 
             services.AddNakedFramework(NakedCoreOptions);
-
-
-            //Standard configuration
-
-            // todo rework this to use standard config API
-
-            //ParallelConfig.RegisterCoreSingletonTypes(services);
-            //ParallelConfig.RegisterCoreScopedTypes(services);
-            //ParallelConfig.RegisterWellKnownServices(services);
-
-            //services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(ObjectFacetFactories.StandardFacetFactories());
-            //services.RegisterFacetFactories<IFunctionalFacetFactoryProcessor>(FunctionalFacetFactories.StandardFacetFactories());
-
-            //services.AddSingleton<FunctionalFacetFactorySet, FunctionalFacetFactorySet>();
-            //services.AddSingleton<FunctionClassStrategy, FunctionClassStrategy>();
-            //services.AddSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
-            //services.AddSingleton<ObjectClassStrategy, ObjectClassStrategy>();
-            //services.AddSingleton<SystemTypeFacetFactorySet, SystemTypeFacetFactorySet>();
-            //services.AddSingleton<SystemTypeClassStrategy, SystemTypeClassStrategy>();
-
-
-            //services.AddSingleton<IReflector, SystemTypeReflector>();
-            //services.AddSingleton<IReflector, ObjectReflector>();
-            //services.AddSingleton<IReflector, FunctionalReflector>();
-
-            //// todo - use DI code ? 
-
-            //// config 
-            //services.AddSingleton<IObjectReflectorConfiguration>(ObjectReflectorConfig);
-            //services.AddSingleton<IEntityObjectStoreConfiguration>(Persistor);
-            //services.AddSingleton<IFunctionalReflectorConfiguration>(FunctionalReflectorConfig);
-            //services.AddSingleton<ICoreConfiguration>(CoreConfig);
 
             //Externals
             services.AddScoped(p => TestPrincipal);
