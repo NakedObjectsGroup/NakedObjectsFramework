@@ -4,6 +4,7 @@ using NakedObjects.Menu;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 
 namespace NakedFunctions.Rest.App.Demo
 {
@@ -11,6 +12,8 @@ namespace NakedFunctions.Rest.App.Demo
     {
         public static Func<IConfiguration, DbContext> DbContextInstaller => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
 
+        //public static Type[] DomainTypes() =>  typeof(Product).Assembly.GetTypes().Where(t => t.IsClass && !t.IsSealed).ToArray();
+     
         public static Type[] DomainTypes() => new[]
         {
             //Human Resources
@@ -44,15 +47,16 @@ namespace NakedFunctions.Rest.App.Demo
             typeof(ProductLineEnum),
             typeof(ProductClassEnum),
 
-
             //Sales
             typeof(SpecialOffer),
         };
 
+        //How to register ALL static types from an Assembly (getting the assembly via one type ensures it is loaded).
+        //public static Type[] DomainFunctions() =>typeof(Product_MenuFunctions).Assembly.GetTypes().Where(t => t.IsClass && t.IsSealed && t.IsAbstract).ToArray();
 
-        //Register static types that contain functions - all defined with 'extension method' syntax - that are to be contributed to a
-        //specific domain type, IQueryable<DomainType>, or an interface implemented by domain types
-        public static Type[] ContributedFunctions() => new[] {
+
+        //Register static types that contain functions intended as user actions
+        public static Type[] DomainFunctions() => new[] {
             typeof(Product_MenuFunctions),
             typeof(SpecialOffer_MenuFunctions),
             typeof(Employee_MenuFunctions),
@@ -64,11 +68,14 @@ namespace NakedFunctions.Rest.App.Demo
             typeof(Vendor_Functions)  //Testing a function contributed to an NO type
         };
 
-       public static IMenu[] MainMenus(IMenuFactory mf) => new[] {
+        public static IMenu[] MainMenus(IMenuFactory mf) => new[] {
             mf.NewMenu("Products", "products", typeof(Product_MenuFunctions), true),
             mf.NewMenu("Special Offers", "offers", typeof(SpecialOffer_MenuFunctions)),
             mf.NewMenu("Employees", "employees", typeof(Employee_MenuFunctions)),
             mf.NewMenu("Customers NF","customersnf", typeof(Customer_MenuFunctions))
         };
+
+        //Register services that can be used in returned Action<T> 
+        public static Type[] Services() => new Type[] { };
     }
 }
