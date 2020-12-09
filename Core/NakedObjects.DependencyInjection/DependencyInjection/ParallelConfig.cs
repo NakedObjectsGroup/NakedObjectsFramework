@@ -17,8 +17,6 @@ using NakedObjects.Core.Spec;
 using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Component;
 using NakedObjects.Meta.Menu;
-using NakedObjects.ParallelReflector.Component;
-using NakedObjects.Persistor.Entity.Component;
 using NakedObjects.Service;
 using NakedObjects.Menu;
 
@@ -41,10 +39,10 @@ namespace NakedObjects.DependencyInjection.DependencyInjection {
             services.AddScoped<IDomainObjectInjector, DomainObjectContainerInjector>();
             services.AddScoped<SpecFactory, SpecFactory>();
             services.AddScoped<IMetamodelManager, MetamodelManager>();
-            services.AddScoped<EntityOidGenerator, EntityOidGenerator>();
-            services.AddScoped<IOidGenerator, EntityOidGenerator>();
+            //services.AddScoped<EntityOidGenerator, EntityOidGenerator>();
+            //services.AddScoped<IOidGenerator, EntityOidGenerator>();
             services.AddScoped<IPersistAlgorithm, FlatPersistAlgorithm>();
-            services.AddScoped<IObjectStore, EntityObjectStore>();
+            //services.AddScoped<IObjectStore, EntityObjectStore>();
             services.AddScoped<IIdentityMap, IdentityMapImpl>();
             services.AddScoped<ITransactionManager, TransactionManager>();
             services.AddScoped<INakedObjectManager, NakedObjectManager>();

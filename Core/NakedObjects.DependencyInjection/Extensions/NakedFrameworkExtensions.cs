@@ -6,15 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Data.Entity;
 using System.Linq;
 using System.Security.Principal;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Configuration;
-using NakedObjects.Core.Util;
 using NakedObjects.DependencyInjection.DependencyInjection;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;
@@ -22,7 +19,6 @@ using NakedObjects.Facade.Impl.Implementation;
 using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
-using NakedObjects.Persistor.Entity.Configuration;
 
 namespace NakedObjects.DependencyInjection.Extensions {
     public static class NakedFrameworkExtensions {

@@ -30,9 +30,9 @@ namespace NakedObjects.DependencyInjection.Extensions {
             setupAction(options);
 
             coreOptions.Services.AddSingleton<IEntityObjectStoreConfiguration>(p => EntityObjectStoreConfiguration(p.GetService<IConfiguration>(), options));
-            //coreOptions.Services.AddScoped<EntityOidGenerator, EntityOidGenerator>();
-            //coreOptions.Services.AddScoped<IOidGenerator, EntityOidGenerator>();
-            //coreOptions.Services.AddScoped<IObjectStore, EntityObjectStore>();
+            coreOptions.Services.AddScoped<EntityOidGenerator, EntityOidGenerator>();
+            coreOptions.Services.AddScoped<IOidGenerator, EntityOidGenerator>();
+            coreOptions.Services.AddScoped<IObjectStore, EntityObjectStore>();
         }
     }
 }

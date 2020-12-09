@@ -7,10 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj" />
     <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Extensions\" />
+    <ProjectReference Include="..\NakedObjects.DependencyInjection\NakedObjects.DependencyInjection.csproj" />
   </ItemGroup>
 
 </Project>
