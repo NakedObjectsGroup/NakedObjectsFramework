@@ -29,8 +29,10 @@ namespace NakedObjects.Rest.Test.App {
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
-                builder.ContextInstallers = new[] {NakedObjectsRunSettings.DbContextInstaller};
                 builder.MainMenus = null;
+                builder.AddEntityPersistor(options => {
+                    options.ContextInstallers = new[] { NakedObjectsRunSettings.DbContextInstaller };
+                });
                 builder.AddRestfulObjects(options => {
                     options.AcceptHeaderStrict = true;
                     options.DebugWarnings = true;

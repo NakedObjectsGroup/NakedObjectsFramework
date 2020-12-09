@@ -9,8 +9,6 @@ using System;
 using NakedObjects.Architecture.Component;
 
 namespace NakedObjects.DependencyInjection.FacetFactory {
-
-
     public class FacetFactoryOrder<T> : IFacetFactoryOrder<T> {
         private readonly Type[] facetFactories;
 
@@ -19,8 +17,7 @@ namespace NakedObjects.DependencyInjection.FacetFactory {
         public int Order => Array.IndexOf(facetFactories, typeof(T));
     }
 
-    public class TestFacetFactoryOrder<T> : IFacetFactoryOrder<T>
-    {
+    public class TestFacetFactoryOrder<T> : IFacetFactoryOrder<T> {
         private readonly Type[] facetFactories;
 
         public TestFacetFactoryOrder(Type[] facetFactories) => this.facetFactories = facetFactories;
@@ -28,9 +25,8 @@ namespace NakedObjects.DependencyInjection.FacetFactory {
         public int Order => Array.IndexOf(facetFactories, typeof(T));
     }
 
-
     public class AppendFacetFactoryOrder<T> : IFacetFactoryOrder<T> {
-        public AppendFacetFactoryOrder(Type[] facetFactories) => LastIndex = facetFactories.Length - 1;
+        public AppendFacetFactoryOrder(FacetFactoryTypesProvider facetFactories) => LastIndex = facetFactories.FacetFactoryTypes.Length - 1;
 
         private int LastIndex { get; set; }
 

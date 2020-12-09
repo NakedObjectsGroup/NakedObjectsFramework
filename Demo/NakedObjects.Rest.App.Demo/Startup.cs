@@ -15,6 +15,7 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.DependencyInjection.Extensions;
 using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Reflector.Extensions;
+using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Rest.App.Demo.AWCustom;
 using NakedObjects.Rest.Extensions;
 using Newtonsoft.Json;
@@ -33,8 +34,10 @@ namespace NakedObjects.Rest.App.Demo {
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
-                builder.ContextInstallers = new[] {NakedObjectsRunSettings.DbContextInstaller};
                 builder.MainMenus = NakedObjectsRunSettings.MainMenus;
+                builder.AddEntityPersistor(options => {
+                    options.ContextInstallers = new[] { NakedObjectsRunSettings.DbContextInstaller };
+                });
                 builder.AddRestfulObjects(options => {
                     options.AcceptHeaderStrict = true;
                     options.DebugWarnings = true;
@@ -48,8 +51,8 @@ namespace NakedObjects.Rest.App.Demo {
                     options.Services = NakedObjectsRunSettings.Services;
                     options.RegisterCustomTypes = services => {
                         services.AddSingleton(typeof(AppendFacetFactoryOrder<>), typeof(AppendFacetFactoryOrder<>));
-                        services.AddSingleton(typeof(IFacetFactory), typeof(AWNotCountedAnnotationFacetFactoryParallel));
-                        services.AddSingleton(typeof(IFacetFactory), typeof(AWNotNavigableFacetFactoryParallel));
+                        services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(AWNotCountedAnnotationFacetFactoryParallel));
+                        services.AddSingleton(typeof(IObjectFacetFactoryProcessor), typeof(AWNotNavigableFacetFactoryParallel));
                     };
                 });
             });

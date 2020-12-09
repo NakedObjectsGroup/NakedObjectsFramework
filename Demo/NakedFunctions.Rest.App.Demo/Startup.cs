@@ -40,9 +40,11 @@ namespace NakedFunctions.Rest.App.Demo {
                 .AddNewtonsoftJson(options => options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc);
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
-            services.AddNakedFramework(builder => { 
-                builder.ContextInstallers = new[] {ModelConfig_NakedFunctionsPM.DbContextInstaller};
+            services.AddNakedFramework(builder => {
                 builder.MainMenus = CombinedNOandNFMenus;
+                builder.AddEntityPersistor(options => {
+                    options.ContextInstallers = new[] { ModelConfig_NakedFunctionsPM.DbContextInstaller };
+                });
                 builder.AddNakedObjects(options => {
                     options.Types = ModelConfig_NakedObjectsPM.DomainTypes();
                     options.Services = ModelConfig_NakedObjectsPM.Services();
