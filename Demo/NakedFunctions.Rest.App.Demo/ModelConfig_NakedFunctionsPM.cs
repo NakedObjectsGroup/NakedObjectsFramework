@@ -75,7 +75,5 @@ namespace NakedFunctions.Rest.App.Demo
             mf.NewMenu("Customers NF","customersnf", typeof(Customer_MenuFunctions))
         };
 
-        //Register services that can be used in returned Action<T> 
-        public static Type[] Services() => new Type[] { };
     }
 }
