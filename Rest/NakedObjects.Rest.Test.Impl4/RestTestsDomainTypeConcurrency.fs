@@ -32,7 +32,6 @@ type NullStringHasher() =
         member x.GetHash(toHash : string) : string = null;
     end
 
-
 [<TestFixture>]
 type Tests() = 
     class
@@ -87,13 +86,6 @@ type Tests() =
                let menu4 = factory.NewMenu<TestTypeCodeMapper>(true)
                let menu5 = factory.NewMenu<TestKeyCodeMapper>(true)
                [| menu1; menu2; menu3; menu4; menu5 |]
-
-        //override x.Persistor =
-        //  let config = new EntityObjectStoreConfiguration()
-        //  config.EnforceProxies <- false       
-        //  let f = (fun () -> new CodeFirstContextLocal(csRTB) :> Data.Entity.DbContext)
-        //  config.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
-        //  config
 
         override x.EnforceProxies = false
         

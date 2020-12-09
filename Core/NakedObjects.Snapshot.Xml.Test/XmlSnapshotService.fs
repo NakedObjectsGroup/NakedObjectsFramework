@@ -62,15 +62,6 @@ type DomainTests() =
     class
         inherit AcceptanceTestCase()
         
-        //override x.Persistor =
-        //    let config = new EntityObjectStoreConfiguration()
-        //    config.EnforceProxies <- false
-          
-        //    let config = new EntityObjectStoreConfiguration()
-        //    let f = (fun () -> new TestObjectContext(cs) :> DbContext)
-        //    config.UsingContext(Func<DbContext>(f)) |> ignore
-        //    config
-        
         override x.EnforceProxies = false
         
         override x.ContextInstallers = 

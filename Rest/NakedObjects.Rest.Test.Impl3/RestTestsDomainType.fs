@@ -89,13 +89,6 @@ type Tests() =
                let menu5 = factory.NewMenu<TestKeyCodeMapper>(true)
                [| menu1; menu2; menu3; menu4; menu5 |]
 
-        //override x.Persistor =
-        //   let config = new EntityObjectStoreConfiguration()
-        //   config.EnforceProxies <- false       
-        //   let f = (fun () -> new CodeFirstContextLocal(csRTB) :> Data.Entity.DbContext)
-        //   config.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
-        //   config
-
         override x.EnforceProxies = false
         
         override x.ContextInstallers = 

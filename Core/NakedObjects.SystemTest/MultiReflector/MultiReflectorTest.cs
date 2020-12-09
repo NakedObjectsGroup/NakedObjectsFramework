@@ -54,30 +54,6 @@ namespace NakedObjects.SystemTest.MultiReflector {
 
         protected override Func<Type[], Type[]> SupportedSystemTypes => t => new[] {typeof(string), typeof(int)};
 
-        //protected override ObjectReflectorConfiguration ObjectReflectorConfig {
-        //    get {
-        //        var config = base.ObjectReflectorConfig;
-        //        return config;
-        //    }
-        //}
-
-            //protected override FunctionalReflectorConfiguration FunctionalReflectorConfig {
-            //    get {
-            //        var config = base.FunctionalReflectorConfig;
-            //        return config;
-            //    }
-            //}
-
-        //protected override CoreConfiguration CoreConfig {
-        //    get {
-        //        var config = base.CoreConfig;
-        //        config.SupportedSystemTypes.Clear();
-        //        config.SupportedSystemTypes.AddRange(new[] { typeof(string), typeof(int) });
-        //        return config;
-        //    }
-        //}
-
-
         [Test]
         public virtual void AllSpecs() {
             var allSpecs = NakedObjectsFramework.MetamodelManager.AllSpecs;

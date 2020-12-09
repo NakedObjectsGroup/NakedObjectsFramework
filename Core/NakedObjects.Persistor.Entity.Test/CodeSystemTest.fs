@@ -24,12 +24,6 @@ open Microsoft.Extensions.Configuration
 [<TestFixture>]
 type CodeSystemTests() = 
     inherit NakedObjects.Xat.AcceptanceTestCase()
-     
-    //override x.Persistor =
-    //     let config = new EntityObjectStoreConfiguration()
-    //     let f = (fun () -> new CodeFirstContext(csCS) :> Data.Entity.DbContext)
-    //     config.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
-    //     config
 
     override x.ContextInstallers = 
         [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new CodeFirstContext(csCS) :> Data.Entity.DbContext) |]

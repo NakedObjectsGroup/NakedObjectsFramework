@@ -19,14 +19,6 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
     public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract {
         private const string DatabaseName = "TestPolymorphicNavigatorWithTypeCodeMapper";
 
-        //protected override EntityObjectStoreConfiguration Persistor {
-        //    get {
-        //        var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-        //        config.UsingContext(() => new PolymorphicNavigationContext(DatabaseName));
-        //        return config;
-        //    }
-        //}
-
         protected override bool EnforceProxies => false;
 
         protected override Func<IConfiguration, DbContext>[] ContextInstallers =>

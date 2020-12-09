@@ -124,14 +124,6 @@ type TestDataInitializer() =
 [<TestFixture>]
 type EntityTestSuite() = 
     inherit NakedObjects.Xat.AcceptanceTestCase()
-    
-    //override x.Persistor =
-    //    let config = new EntityObjectStoreConfiguration()
-    //    config.EnforceProxies <- false
-      
-    //    let f = (fun () -> new TestDataContext(csTDCO) :> Data.Entity.DbContext)
-    //    config.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
-    //    config
 
     override x.EnforceProxies = false
 

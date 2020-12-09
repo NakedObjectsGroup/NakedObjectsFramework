@@ -83,14 +83,6 @@ type Tests() =
                let menu2 = factory.NewMenu<WithActionService>(true)
                let menu3 = factory.NewMenu<ContributorService>(true)
                [| menu1; menu2; menu3 |]
-  
-
-        //override x.Persistor =
-        //    let config = new EntityObjectStoreConfiguration()
-        //    config.EnforceProxies <- false       
-        //    let f = (fun () -> new CodeFirstContextLocal(csRTZ) :> Data.Entity.DbContext)
-        //    config.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
-        //    config
            
         override x.EnforceProxies = false
 

@@ -31,10 +31,7 @@ namespace NakedObjects.SystemTest.ObjectFinderCompoundKeys {
         public DbSet<Employee> Employees { get; set; }
 
         public static void Delete() => Database.Delete(Cs);
-        //}
-        //    Database.SetInitializer(new DatabaseInitializer());
-
-        //protected override void OnModelCreating(DbModelBuilder modelBuilder) {
+      
     }
 
     public class DatabaseInitializer {
