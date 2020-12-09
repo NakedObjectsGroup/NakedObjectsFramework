@@ -50,7 +50,7 @@ namespace NakedFunctions.Rest.App.Demo {
                 });
                 builder.AddNakedFunctions(options => {
                     options.FunctionalTypes = ModelConfig_NakedFunctionsPM.DomainTypes();
-                    options.Functions = ModelConfig_NakedFunctionsPM.ContributedFunctions();
+                    options.Functions = ModelConfig_NakedFunctionsPM.DomainFunctions();
                 });
                 builder.AddRestfulObjects();
             });
