@@ -103,20 +103,29 @@ namespace NakedObjects.Xat {
             get { return new Type[] { }; }
         }
 
+        protected virtual Func<Type[], Type[]> SupportedSystemTypes => t => t;
 
-        protected virtual EntityObjectStoreConfiguration Persistor => new EntityObjectStoreConfiguration();
+        // protected virtual EntityObjectStoreConfiguration Persistor => new EntityObjectStoreConfiguration();
 
         protected virtual Func<IConfiguration, DbContext>[] ContextInstallers => null;
 
-        protected virtual ObjectReflectorConfiguration ObjectReflectorConfig {
-            get {
-                var reflectorConfig = new ObjectReflectorConfiguration(
-                    ObjectTypes,
-                    Services);
-                ObjectReflectorConfiguration.NoValidate = true;
-                return reflectorConfig;
-            }
-        }
+        protected virtual bool EnforceProxies => true;
+
+        //protected virtual ObjectReflectorConfiguration ObjectReflectorConfig {
+        //    get {
+        //        var reflectorConfig = new ObjectReflectorConfiguration(
+        //            ObjectTypes,
+        //            Services);
+        //        ObjectReflectorConfiguration.NoValidate = true;
+        //        return reflectorConfig;
+        //    }
+        //}
+
+        protected virtual Action<EntityPersistorOptions> PersistorOptions =>
+            options => {
+                options.ContextInstallers = ContextInstallers;
+                options.EnforceProxies = EnforceProxies;
+            };
 
         protected virtual Action<NakedObjectsOptions> NakedObjectsOptions =>
             options => {
@@ -125,15 +134,15 @@ namespace NakedObjects.Xat {
                 options.NoValidate = true;
             };
 
-        protected virtual FunctionalReflectorConfiguration FunctionalReflectorConfig {
-            get {
-                var reflectorConfig = new FunctionalReflectorConfiguration(
-                    Records,
-                    Functions
-                );
-                return reflectorConfig;
-            }
-        }
+        //protected virtual FunctionalReflectorConfiguration FunctionalReflectorConfig {
+        //    get {
+        //        var reflectorConfig = new FunctionalReflectorConfiguration(
+        //            Records,
+        //            Functions
+        //        );
+        //        return reflectorConfig;
+        //    }
+        //}
 
         protected virtual Action<NakedFunctionsOptions> NakedFunctionsOptions =>
             options => {
@@ -143,20 +152,22 @@ namespace NakedObjects.Xat {
 
 
 
-        protected virtual CoreConfiguration CoreConfig {
-            get {
-                var coreConfig = new CoreConfiguration(
-                    MainMenus
-                );
+        //protected virtual CoreConfiguration CoreConfig {
+        //    get {
+        //        var coreConfig = new CoreConfiguration(
+        //            MainMenus
+        //        );
 
-                return coreConfig;
-            }
-        }
+        //        return coreConfig;
+        //    }
+        //}
 
         protected virtual Action<NakedCoreOptions> NakedCoreOptions =>
             builder => {
-                builder.ContextInstallers = ContextInstallers;
+                //builder.ContextInstallers = ContextInstallers;
                 builder.MainMenus = MainMenus;
+                builder.SupportedSystemTypes = SupportedSystemTypes;
+                builder.AddEntityPersistor(PersistorOptions);
                 builder.AddNakedObjects(NakedObjectsOptions);
                 builder.AddNakedFunctions(NakedFunctionsOptions);
             };
@@ -390,39 +401,39 @@ namespace NakedObjects.Xat {
 
         protected virtual void RegisterTypes(IServiceCollection services) {
 
-            //services.AddNakedFramework(NakedCoreOptions);
+            services.AddNakedFramework(NakedCoreOptions);
 
 
             //Standard configuration
 
             // todo rework this to use standard config API
 
-            ParallelConfig.RegisterCoreSingletonTypes(services);
-            ParallelConfig.RegisterCoreScopedTypes(services);
-            ParallelConfig.RegisterWellKnownServices(services);
+            //ParallelConfig.RegisterCoreSingletonTypes(services);
+            //ParallelConfig.RegisterCoreScopedTypes(services);
+            //ParallelConfig.RegisterWellKnownServices(services);
 
-            services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(ObjectFacetFactories.StandardFacetFactories());
-            services.RegisterFacetFactories<IFunctionalFacetFactoryProcessor>(FunctionalFacetFactories.StandardFacetFactories());
+            //services.RegisterFacetFactories<IObjectFacetFactoryProcessor>(ObjectFacetFactories.StandardFacetFactories());
+            //services.RegisterFacetFactories<IFunctionalFacetFactoryProcessor>(FunctionalFacetFactories.StandardFacetFactories());
 
-            services.AddSingleton<FunctionalFacetFactorySet, FunctionalFacetFactorySet>();
-            services.AddSingleton<FunctionClassStrategy, FunctionClassStrategy>();
-            services.AddSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
-            services.AddSingleton<ObjectClassStrategy, ObjectClassStrategy>();
-            services.AddSingleton<SystemTypeFacetFactorySet, SystemTypeFacetFactorySet>();
-            services.AddSingleton<SystemTypeClassStrategy, SystemTypeClassStrategy>();
+            //services.AddSingleton<FunctionalFacetFactorySet, FunctionalFacetFactorySet>();
+            //services.AddSingleton<FunctionClassStrategy, FunctionClassStrategy>();
+            //services.AddSingleton<ObjectFacetFactorySet, ObjectFacetFactorySet>();
+            //services.AddSingleton<ObjectClassStrategy, ObjectClassStrategy>();
+            //services.AddSingleton<SystemTypeFacetFactorySet, SystemTypeFacetFactorySet>();
+            //services.AddSingleton<SystemTypeClassStrategy, SystemTypeClassStrategy>();
 
 
-            services.AddSingleton<IReflector, SystemTypeReflector>();
-            services.AddSingleton<IReflector, ObjectReflector>();
-            services.AddSingleton<IReflector, FunctionalReflector>();
+            //services.AddSingleton<IReflector, SystemTypeReflector>();
+            //services.AddSingleton<IReflector, ObjectReflector>();
+            //services.AddSingleton<IReflector, FunctionalReflector>();
 
-            // todo - use DI code ? 
+            //// todo - use DI code ? 
 
-            // config 
-            services.AddSingleton<IObjectReflectorConfiguration>(ObjectReflectorConfig);
-            services.AddSingleton<IEntityObjectStoreConfiguration>(Persistor);
-            services.AddSingleton<IFunctionalReflectorConfiguration>(FunctionalReflectorConfig);
-            services.AddSingleton<ICoreConfiguration>(CoreConfig);
+            //// config 
+            //services.AddSingleton<IObjectReflectorConfiguration>(ObjectReflectorConfig);
+            //services.AddSingleton<IEntityObjectStoreConfiguration>(Persistor);
+            //services.AddSingleton<IFunctionalReflectorConfiguration>(FunctionalReflectorConfig);
+            //services.AddSingleton<ICoreConfiguration>(CoreConfig);
 
             //Externals
             services.AddScoped(p => TestPrincipal);

@@ -6,7 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Data.Entity;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.PolymorphicAssociations;
@@ -17,13 +19,19 @@ namespace NakedObjects.SystemTest.PolymorphicNavigator {
     public class TestPolymorphicNavigatorWithTypeCodeMapper : TestPolymorphicNavigatorAbstract {
         private const string DatabaseName = "TestPolymorphicNavigatorWithTypeCodeMapper";
 
-        protected override EntityObjectStoreConfiguration Persistor {
-            get {
-                var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-                config.UsingContext(() => new PolymorphicNavigationContext(DatabaseName));
-                return config;
-            }
-        }
+        //protected override EntityObjectStoreConfiguration Persistor {
+        //    get {
+        //        var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+        //        config.UsingContext(() => new PolymorphicNavigationContext(DatabaseName));
+        //        return config;
+        //    }
+        //}
+
+        protected override bool EnforceProxies => false;
+
+        protected override Func<IConfiguration, DbContext>[] ContextInstallers =>
+            new Func<IConfiguration, DbContext>[] { config => new PolymorphicNavigationContext(DatabaseName) };
+
 
         protected override object[] Fixtures => new object[] {new FixtureEntities(), new FixtureLinksUsingTypeCode()};
 

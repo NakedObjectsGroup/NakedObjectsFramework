@@ -21,6 +21,7 @@ open System.Data.Entity
 open System.IO
 open System.Text.RegularExpressions
 open System.Xml.Linq
+open Microsoft.Extensions.Configuration
 
 let appveyorServer = @"Data Source=(local)\SQL2017;"
 let localServer =  @"Data Source=(localdb)\MSSQLLocalDB;"
@@ -61,15 +62,21 @@ type DomainTests() =
     class
         inherit AcceptanceTestCase()
         
-        override x.Persistor =
-            let config = new EntityObjectStoreConfiguration()
-            config.EnforceProxies <- false
+        //override x.Persistor =
+        //    let config = new EntityObjectStoreConfiguration()
+        //    config.EnforceProxies <- false
           
-            let config = new EntityObjectStoreConfiguration()
-            let f = (fun () -> new TestObjectContext(cs) :> DbContext)
-            config.UsingContext(Func<DbContext>(f)) |> ignore
-            config
+        //    let config = new EntityObjectStoreConfiguration()
+        //    let f = (fun () -> new TestObjectContext(cs) :> DbContext)
+        //    config.UsingContext(Func<DbContext>(f)) |> ignore
+        //    config
         
+        override x.EnforceProxies = false
+        
+        override x.ContextInstallers = 
+            [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new TestObjectContext(cs) :> Data.Entity.DbContext) |]
+
+
         [<OneTimeSetUp>]
         member x.FixtureSetup() = 
             AcceptanceTestCase.InitializeNakedObjectsFramework(x)

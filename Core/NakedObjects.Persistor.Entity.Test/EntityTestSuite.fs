@@ -19,6 +19,7 @@ open System.Data.Entity.Core.Objects.DataClasses
 open System.Security.Principal
 open TestCode
 open TestData
+open Microsoft.Extensions.Configuration
 
 let assemblyName = "NakedObjects.Persistor.Test.Data"
 
@@ -124,13 +125,18 @@ type TestDataInitializer() =
 type EntityTestSuite() = 
     inherit NakedObjects.Xat.AcceptanceTestCase()
     
-    override x.Persistor =
-        let config = new EntityObjectStoreConfiguration()
-        config.EnforceProxies <- false
+    //override x.Persistor =
+    //    let config = new EntityObjectStoreConfiguration()
+    //    config.EnforceProxies <- false
       
-        let f = (fun () -> new TestDataContext(csTDCO) :> Data.Entity.DbContext)
-        config.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
-        config
+    //    let f = (fun () -> new TestDataContext(csTDCO) :> Data.Entity.DbContext)
+    //    config.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
+    //    config
+
+    override x.EnforceProxies = false
+
+    override x.ContextInstallers = 
+        [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new TestDataContext(csTDCO) :> Data.Entity.DbContext) |]
 
     override x.Services = [| typeof<SimpleRepository<Person>>; 
                              typeof<SimpleRepository<Product>>;

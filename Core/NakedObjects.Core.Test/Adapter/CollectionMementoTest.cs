@@ -103,16 +103,23 @@ namespace NakedObjects.Core.Test.Adapter {
 
         protected override Type[] Services => new[] {typeof(SimpleRepository<TestDomainObject>)};
 
-        protected override EntityObjectStoreConfiguration Persistor {
-            get {
-                var c = new EntityObjectStoreConfiguration();
-                c.UsingContext(() => {
-                    var cs = RootServiceProvider.GetService<IConfiguration>().GetConnectionString("TestContext");
+        //protected override EntityObjectStoreConfiguration Persistor {
+        //    get {
+        //        var c = new EntityObjectStoreConfiguration();
+        //        c.UsingContext(() => {
+        //            var cs = RootServiceProvider.GetService<IConfiguration>().GetConnectionString("TestContext");
+        //            return new TestContext(cs);
+        //        });
+        //        return c;
+        //    }
+        //}
+
+        protected override Func<IConfiguration, DbContext>[] ContextInstallers =>
+            new Func<IConfiguration, DbContext>[] { config => {
+                    var cs = config.GetConnectionString("TestContext");
                     return new TestContext(cs);
-                });
-                return c;
-            }
-        }
+                }
+            };
 
         #region Setup/Teardown
 

@@ -7,7 +7,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Net;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFunctions.Reflector.Configuration;
 using NakedFunctions.Rest.Test.Data;
@@ -44,13 +46,19 @@ namespace NakedFunctions.Rest.Test {
 
         protected override Type[] Services { get; } = { };
 
-        protected override EntityObjectStoreConfiguration Persistor {
-            get {
-                var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
-                config.UsingContext(Activator.CreateInstance<ObjectDbContext>);
-                return config;
-            }
-        }
+        //protected override EntityObjectStoreConfiguration Persistor {
+        //    get {
+        //        var config = new EntityObjectStoreConfiguration {EnforceProxies = false};
+        //        config.UsingContext(Activator.CreateInstance<ObjectDbContext>);
+        //        return config;
+        //    }
+        //}
+
+        protected override bool EnforceProxies => false;
+
+        protected override Func<IConfiguration, DbContext>[] ContextInstallers =>
+            new Func<IConfiguration, DbContext>[] { config => new ObjectDbContext()};
+
 
         protected override void RegisterTypes(IServiceCollection services) {
             base.RegisterTypes(services);

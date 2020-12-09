@@ -26,12 +26,12 @@ using NakedObjects.Persistor.Entity.Configuration;
 
 namespace NakedObjects.DependencyInjection.Extensions {
     public static class NakedFrameworkExtensions {
-        private static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration, NakedCoreOptions options) {
-            var config = new EntityObjectStoreConfiguration();
-            var contexts = options.ContextInstallers.Select<Func<IConfiguration, DbContext>, Func<DbContext>>(f => () => f(configuration));
-            contexts.ForEach(c => config.UsingContext(c));
-            return config;
-        }
+        //private static EntityObjectStoreConfiguration EntityObjectStoreConfig(IConfiguration configuration, NakedCoreOptions options) {
+        //    var config = new EntityObjectStoreConfiguration();
+        //    var contexts = options.ContextInstallers.Select<Func<IConfiguration, DbContext>, Func<DbContext>>(f => () => f(configuration));
+        //    contexts.ForEach(c => config.UsingContext(c));
+        //    return config;
+        //}
 
         public static CoreConfiguration CoreConfig(NakedCoreOptions options) {
             var config = new CoreConfiguration(options.MainMenus);
@@ -47,7 +47,7 @@ namespace NakedObjects.DependencyInjection.Extensions {
             ParallelConfig.RegisterCoreSingletonTypes(services);
             ParallelConfig.RegisterCoreScopedTypes(services);
 
-            services.AddSingleton<IEntityObjectStoreConfiguration>(p => EntityObjectStoreConfig(p.GetService<IConfiguration>(), options));
+            //services.AddSingleton<IEntityObjectStoreConfiguration>(p => EntityObjectStoreConfig(p.GetService<IConfiguration>(), options));
 
             if (options.AuthorizationConfiguration is not null) {
                 services.AddSingleton(options.AuthorizationConfiguration);

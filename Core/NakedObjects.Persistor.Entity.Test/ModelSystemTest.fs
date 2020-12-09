@@ -17,17 +17,24 @@ open System.Collections.Generic
 open System.Linq
 open SystemTestCode
 open TestCode
+open Microsoft.Extensions.Configuration
 
 [<TestFixture>]
 type ModelSystemTests() = 
     inherit NakedObjects.Xat.AcceptanceTestCase()
     
-    override x.Persistor = 
-        let config = new EntityObjectStoreConfiguration()
-        config.EnforceProxies <- false                      
-        let f = (fun () -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext)
-        config.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
-        config
+    //override x.Persistor = 
+    //    let config = new EntityObjectStoreConfiguration()
+    //    config.EnforceProxies <- false                      
+    //    let f = (fun () -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext)
+    //    config.UsingContext(Func<Data.Entity.DbContext>(f)) |> ignore
+    //    config
+
+    override x.EnforceProxies = false
+
+    override x.ContextInstallers = 
+        [|  Func<IConfiguration, Data.Entity.DbContext> (fun (c : IConfiguration) -> new SimpleDatabaseDbContext(csMF) :> Data.Entity.DbContext) |]
+
 
     override x.Services = [| typeof<SimpleRepository<Person>> |]
 
