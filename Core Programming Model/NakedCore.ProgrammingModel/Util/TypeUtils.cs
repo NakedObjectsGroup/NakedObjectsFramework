@@ -17,7 +17,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("NakedObjects.SystemTest")]
 [assembly: InternalsVisibleTo("NakedObjects.Helpers.Test")]
 
-namespace NakedCore.Util {
+namespace NakedObjects.Util {
     /// <summary>
     /// Utility methods for safely obtaining and using types defined within
     /// a domain model.  The Naked Objects framework makes extensive
