@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Helpers", "Functional Programming Model\NakedFunctions.Helpers\NakedFunctions.Helpers.csproj", "{C6147CE2-6F82-40E8-A4D8-C4268D8610A8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.ProgrammingModel.package", "Functional Programming Model\NakedFunctions.ProgrammingModel.package\NakedFunctions.ProgrammingModel.package.csproj", "{AD8D5400-3D6A-471C-9FB0-07A11910AE44}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Attributes", "Functional Programming Model\NakedFunctions.Attributes\NakedFunctions.Attributes.csproj", "{3F339A4C-96AB-4A9F-B74E-2246918BAC55}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedCore.ProgrammingModel", "Core Programming Model\NakedCore.ProgrammingModel\NakedCore.ProgrammingModel.csproj", "{AA093FD4-3F39-45AF-98C5-95879BE2F372}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.ProgrammingModel", "Functional Programming Model\NakedFunctions.ProgrammingModel\NakedFunctions.ProgrammingModel.csproj", "{39931C6F-38B4-4E63-9FFE-BDB3BC94D288}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,20 +15,16 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C6147CE2-6F82-40E8-A4D8-C4268D8610A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6147CE2-6F82-40E8-A4D8-C4268D8610A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6147CE2-6F82-40E8-A4D8-C4268D8610A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6147CE2-6F82-40E8-A4D8-C4268D8610A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AD8D5400-3D6A-471C-9FB0-07A11910AE44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD8D5400-3D6A-471C-9FB0-07A11910AE44}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F339A4C-96AB-4A9F-B74E-2246918BAC55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F339A4C-96AB-4A9F-B74E-2246918BAC55}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F339A4C-96AB-4A9F-B74E-2246918BAC55}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F339A4C-96AB-4A9F-B74E-2246918BAC55}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AA093FD4-3F39-45AF-98C5-95879BE2F372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AA093FD4-3F39-45AF-98C5-95879BE2F372}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA093FD4-3F39-45AF-98C5-95879BE2F372}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA093FD4-3F39-45AF-98C5-95879BE2F372}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39931C6F-38B4-4E63-9FFE-BDB3BC94D288}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39931C6F-38B4-4E63-9FFE-BDB3BC94D288}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39931C6F-38B4-4E63-9FFE-BDB3BC94D288}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39931C6F-38B4-4E63-9FFE-BDB3BC94D288}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
