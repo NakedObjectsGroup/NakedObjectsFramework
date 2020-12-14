@@ -46,7 +46,7 @@ namespace NakedObjects.Rest.Snapshot.Representations {
         private void SetHeader() => Caching = CacheType.NonExpiring;
 
         private static string GetVersion(Assembly assembly, string resource) {
-            var resourceName = $"NakedObjects.Rest.Snapshot.{resource}.txt";
+            var resourceName = $"NakedFramework.Rest.Snapshot.{resource}.txt";
             var version = "";
 
             using var stream = assembly.GetManifestResourceStream(resourceName);
