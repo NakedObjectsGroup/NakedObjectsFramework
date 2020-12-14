@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="RestTestsConcurrency.fs" />
+    <Compile Include="RestTestsDomainTypeConcurrency.fs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,8 +25,8 @@
     <ProjectReference Include="..\..\Core\NakedObjects.Xat\NakedFramework.Xat.csproj" />
     <ProjectReference Include="..\..\Facade\NakedObjects.Facade.Impl\NakedFramework.Facade.Impl.csproj" />
     <ProjectReference Include="..\..\Facade\NakedObjects.Facade\NakedFramework.Facade.csproj" />
-    <ProjectReference Include="..\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj" />
-    <ProjectReference Include="..\NakedObjects.Rest.Test\NakedObjects.Rest.Test.fsproj" />
+    <ProjectReference Include="..\NakedObjects.Rest.Test.Data\NakedFramework.Rest.Test.Data.csproj" />
+    <ProjectReference Include="..\NakedObjects.Rest.Test\NakedFramework.Rest.Test.fsproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -33,9 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NakedObjects.Rest.Snapshot\NakedObjects.Rest.Snapshot.csproj" />
-    <ProjectReference Include="..\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj" />
-    <ProjectReference Include="..\NakedObjects.Rest\NakedObjects.Rest.csproj" />
+    <ProjectReference Include="..\NakedObjects.Rest.Snapshot\NakedFramework.Rest.Snapshot.csproj" />
+    <ProjectReference Include="..\NakedObjects.Rest.Test.Data\NakedFramework.Rest.Test.Data.csproj" />
+    <ProjectReference Include="..\NakedObjects.Rest\NakedFramework.Rest.csproj" />
   </ItemGroup>
 
   <ItemGroup>
