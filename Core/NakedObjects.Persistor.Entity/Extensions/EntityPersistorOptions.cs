@@ -20,5 +20,6 @@ namespace NakedObjects.DependencyInjection.Extensions {
         public bool RollBackOnError { get; set; } = false;
         public Func<IConfiguration, DbContext>[] ContextInstallers { get; set; }
         public Action<ObjectContext> CustomConfig { get; set; } = oc => { };
+        public bool RequireExplicitAssociationOfTypes { get; set; } = false;
     }
 }

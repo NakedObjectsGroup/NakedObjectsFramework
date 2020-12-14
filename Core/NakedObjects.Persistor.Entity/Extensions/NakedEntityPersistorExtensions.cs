@@ -18,7 +18,15 @@ using NakedObjects.Persistor.Entity.Configuration;
 namespace NakedObjects.DependencyInjection.Extensions {
     public static class NakedEntityPersistorExtensions {
         private static EntityObjectStoreConfiguration EntityObjectStoreConfiguration(IConfiguration configuration, EntityPersistorOptions options) {
-            var config = new EntityObjectStoreConfiguration {EnforceProxies = options.EnforceProxies};
+            var config = new EntityObjectStoreConfiguration {
+                EnforceProxies = options.EnforceProxies,
+                CustomConfig = options.CustomConfig,
+                DefaultMergeOption = options.DefaultMergeOption,
+                MaximumCommitCycles = options.MaximumCommitCycles,
+                NotPersistedTypes = options.NotPersistedTypes,
+                RollBackOnError = options.RollBackOnError,
+                RequireExplicitAssociationOfTypes = options.RequireExplicitAssociationOfTypes
+            };
 
             var contexts = options.ContextInstallers.Select<Func<IConfiguration, DbContext>, Func<DbContext>>(f => () => f(configuration));
             contexts.ForEach(c => config.UsingContext(c));
