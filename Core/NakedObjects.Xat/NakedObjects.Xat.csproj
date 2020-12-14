@@ -18,8 +18,8 @@
     <ProjectReference Include="..\NakedObjects.Core\NakedFramework.Core.csproj" />
     <ProjectReference Include="..\NakedObjects.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
     <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj" />
-    <ProjectReference Include="..\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj" />
-    <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj" />
+    <ProjectReference Include="..\NakedObjects.ParallelReflector\NakedFramework.ParallelReflector.csproj" />
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedFramework.Persistor.Entity.csproj" />
     <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
   </ItemGroup>
 

@@ -21,10 +21,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\NakedObjects.Architecture\NakedFramework.Architecture.csproj" />
-    <ProjectReference Include="..\..\Core\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj" />
+    <ProjectReference Include="..\..\Core\NakedObjects.Persistor.Entity\NakedFramework.Persistor.Entity.csproj" />
     <ProjectReference Include="..\..\Core\NakedObjects.Xat\NakedObjects.Xat.csproj" />
-    <ProjectReference Include="..\..\Facade\NakedObjects.Facade.Impl\NakedObjects.Facade.Impl.csproj" />
-    <ProjectReference Include="..\..\Facade\NakedObjects.Facade\NakedObjects.Facade.csproj" />
+    <ProjectReference Include="..\..\Facade\NakedObjects.Facade.Impl\NakedFramework.Facade.Impl.csproj" />
+    <ProjectReference Include="..\..\Facade\NakedObjects.Facade\NakedFramework.Facade.csproj" />
     <ProjectReference Include="..\NakedObjects.Rest.Test.Data\NakedObjects.Rest.Test.Data.csproj" />
     <ProjectReference Include="..\NakedObjects.Rest.Test\NakedObjects.Rest.Test.fsproj" />
   </ItemGroup>

@@ -21,7 +21,7 @@ open TestCode
 open TestData
 open Microsoft.Extensions.Configuration
 
-let assemblyName = "NakedObjects.Persistor.Test.Data"
+let assemblyName = "NakedFramework.Persistor.Test.Data"
 
 let LoadTestAssembly() = 
     let obj = new Person()

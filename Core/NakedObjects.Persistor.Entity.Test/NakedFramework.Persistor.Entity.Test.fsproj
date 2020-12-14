@@ -42,12 +42,12 @@
     <ProjectReference Include="..\NakedObjects.Architecture\NakedFramework.Architecture.csproj" />
     <ProjectReference Include="..\NakedObjects.Core\NakedFramework.Core.csproj" />
     <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj" />
-    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly.csproj" />
-    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.CodeOnly\NakedObjects.Persistor.Entity.Test.CodeOnly.csproj" />
-    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.SimpleDatabase\NakedObjects.Persistor.Entity.Test.SimpleDatabase.csproj" />
-    <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj" />
-    <ProjectReference Include="..\NakedObjects.Persistor.Test.Data\NakedObjects.Persistor.Test.Data.csproj" />
-    <ProjectReference Include="..\NakedObjects.Persistor.Test\NakedObjects.Persistor.Test.csproj" />
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly\NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly.csproj" />
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.CodeOnly\NakedFramework.Persistor.Entity.Test.CodeOnly.csproj" />
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.SimpleDatabase\NakedFramework.Persistor.Entity.Test.SimpleDatabase.csproj" />
+    <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedFramework.Persistor.Entity.csproj" />
+    <ProjectReference Include="..\NakedObjects.Persistor.Test.Data\NakedFramework.Persistor.Test.Data.csproj" />
+    <ProjectReference Include="..\NakedObjects.Persistor.Test\NakedFramework.Persistor.Test.csproj" />
     <ProjectReference Include="..\NakedObjects.Xat\NakedObjects.Xat.csproj" />
   </ItemGroup>
 

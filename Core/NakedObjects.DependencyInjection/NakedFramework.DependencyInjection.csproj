@@ -11,10 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Facade\NakedObjects.Facade.Impl\NakedObjects.Facade.Impl.csproj" />
-    <ProjectReference Include="..\..\Facade\NakedObjects.Facade\NakedObjects.Facade.csproj" />
+    <ProjectReference Include="..\..\Facade\NakedObjects.Facade.Impl\NakedFramework.Facade.Impl.csproj" />
+    <ProjectReference Include="..\..\Facade\NakedObjects.Facade\NakedFramework.Facade.csproj" />
     <ProjectReference Include="..\NakedFramework.ModelBuilding\NakedFramework.ModelBuilding.csproj" />
-    <ProjectReference Include="..\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj" />
+    <ProjectReference Include="..\NakedObjects.ParallelReflector\NakedFramework.ParallelReflector.csproj" />
   </ItemGroup>
 
 </Project>

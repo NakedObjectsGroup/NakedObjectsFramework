@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
-    <ProjectReference Include="..\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj" />
+    <ProjectReference Include="..\NakedObjects.ParallelReflector\NakedFramework.ParallelReflector.csproj" />
   </ItemGroup>
 
 </Project>
