@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj" />
+    <ProjectReference Include="..\NakedObjects.Architecture\NakedFramework.Architecture.csproj" />
     <ProjectReference Include="..\NakedObjects.DependencyInjection\NakedObjects.DependencyInjection.csproj" />
     <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj" />
     <ProjectReference Include="..\NakedObjects.Reflector.Test\NakedObjects.Reflector.Test.csproj" />

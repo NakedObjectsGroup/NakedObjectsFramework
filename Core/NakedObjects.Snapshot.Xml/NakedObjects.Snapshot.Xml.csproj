@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj" />
+    <ProjectReference Include="..\NakedObjects.Architecture\NakedFramework.Architecture.csproj" />
     <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj" />
   </ItemGroup>
 

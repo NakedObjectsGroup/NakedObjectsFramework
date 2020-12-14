@@ -43,7 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NakedObjects.Architecture\NakedObjects.Architecture.csproj" />
+    <ProjectReference Include="..\NakedObjects.Architecture\NakedFramework.Architecture.csproj" />
     <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj" />
     <ProjectReference Include="..\NakedObjects.DependencyInjection\NakedObjects.DependencyInjection.csproj" />
     <ProjectReference Include="..\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj" />

@@ -12,10 +12,18 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
+// todo remove redundant after renaming
+
 [assembly: InternalsVisibleTo("NakedObjects.Reflector")]
 [assembly: InternalsVisibleTo("NakedObjects.Core")]
 [assembly: InternalsVisibleTo("NakedObjects.SystemTest")]
 [assembly: InternalsVisibleTo("NakedObjects.Helpers.Test")]
+
+[assembly: InternalsVisibleTo("NakedFramework.Reflector")]
+[assembly: InternalsVisibleTo("NakedFramework.Core")]
+[assembly: InternalsVisibleTo("NakedFramework.SystemTest")]
+[assembly: InternalsVisibleTo("NakedFramework.Helpers.Test")]
+
 
 namespace NakedObjects.Util {
     /// <summary>
