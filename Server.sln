@@ -83,7 +83,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Reflector.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Metamodel.Test", "Core\NakedFunctions.Metamodel.Test\NakedFunctions.Metamodel.Test.csproj", "{E1EDAE91-031D-4ECC-A52E-C041A9F2864E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.DependencyInjection.Test", "Core\NakedObjects.DependencyInjection.Test\NakedObjects.DependencyInjection.Test.csproj", "{486811D3-1485-48BB-B6D1-E772417F40E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.DependencyInjection.Test", "Core\NakedObjects.DependencyInjection.Test\NakedFramework.DependencyInjection.Test.csproj", "{486811D3-1485-48BB-B6D1-E772417F40E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
