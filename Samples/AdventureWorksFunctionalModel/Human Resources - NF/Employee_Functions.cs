@@ -12,7 +12,7 @@ namespace AdventureWorksModel {
     public static class Employee_Functions {
         #region Life Cycle Methods
 
-        public static Employee Updating(this Employee x, [Now] DateTime now) => x with { ModifiedDate = now };
+        public static Employee Updating(this Employee x, [NakedFunctions.Now] DateTime now) => x with { ModifiedDate = now };
 
         #endregion
 
