@@ -24,7 +24,7 @@
     <ProjectReference Include="..\NakedFunctions.Reflector\NakedFunctions.Reflector.csproj" />
     <ProjectReference Include="..\NakedObjects.Architecture\NakedFramework.Architecture.csproj" />
     <ProjectReference Include="..\NakedObjects.Core\NakedFramework.Core.csproj" />
-    <ProjectReference Include="..\NakedObjects.DependencyInjection\NakedObjects.DependencyInjection.csproj" />
+    <ProjectReference Include="..\NakedObjects.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
     <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj" />
     <ProjectReference Include="..\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj" />
     <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />

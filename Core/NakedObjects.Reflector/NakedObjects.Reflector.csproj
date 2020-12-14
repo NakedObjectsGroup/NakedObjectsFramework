@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NakedObjects.DependencyInjection\NakedObjects.DependencyInjection.csproj" />
+    <ProjectReference Include="..\NakedObjects.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
     <ProjectReference Include="..\NakedObjects.ParallelReflector\NakedObjects.ParallelReflector.csproj" />
   </ItemGroup>
 

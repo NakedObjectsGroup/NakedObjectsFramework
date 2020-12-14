@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.ParallelReflec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Persistor.Entity", "Core\NakedObjects.Persistor.Entity\NakedObjects.Persistor.Entity.csproj", "{F8DDF8DB-BC84-4C84-9613-FD69CD10D673}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.DependencyInjection", "Core\NakedObjects.DependencyInjection\NakedObjects.DependencyInjection.csproj", "{09C0881A-4843-4A10-8B68-445D6F22DB83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.DependencyInjection", "Core\NakedObjects.DependencyInjection\NakedFramework.DependencyInjection.csproj", "{09C0881A-4843-4A10-8B68-445D6F22DB83}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Core.Test", "Core\NakedObjects.Core.Test\NakedFramework.Core.Test.csproj", "{D20B527C-5DA4-46DB-BA62-53307AB3457B}"
 EndProject

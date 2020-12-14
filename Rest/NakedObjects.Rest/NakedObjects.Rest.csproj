@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\NakedObjects.DependencyInjection\NakedObjects.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\Core\NakedObjects.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
     <ProjectReference Include="..\NakedObjects.Rest.Snapshot\NakedObjects.Rest.Snapshot.csproj" />
   </ItemGroup>
 
