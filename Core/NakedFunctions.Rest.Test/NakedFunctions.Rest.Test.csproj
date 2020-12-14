@@ -17,7 +17,7 @@
     <ProjectReference Include="..\..\Facade\NakedObjects.Facade.Impl\NakedFramework.Facade.Impl.csproj" />
     <ProjectReference Include="..\..\Rest\NakedObjects.Rest\NakedObjects.Rest.csproj" />
     <ProjectReference Include="..\NakedFunctions.Rest.Test.Data\NakedFunctions.Rest.Test.Data.csproj" />
-    <ProjectReference Include="..\NakedObjects.Xat\NakedObjects.Xat.csproj" />
+    <ProjectReference Include="..\NakedObjects.Xat\NakedFramework.Xat.csproj" />
   </ItemGroup>
 
 </Project>

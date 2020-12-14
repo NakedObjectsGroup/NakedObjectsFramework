@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\NakedObjects.Xat\NakedObjects.Xat.csproj" />
+    <ProjectReference Include="..\NakedObjects.Xat\NakedFramework.Xat.csproj" />
   </ItemGroup>
 
 </Project>
