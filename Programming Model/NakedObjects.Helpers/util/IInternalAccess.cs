@@ -14,6 +14,12 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("NakedObjects.SystemTest")]
 [assembly: InternalsVisibleTo("NakedObjects.Helpers.Test")]
 
+
+[assembly: InternalsVisibleTo("NakedFramework.Reflector")]
+[assembly: InternalsVisibleTo("NakedFramework.Core")]
+[assembly: InternalsVisibleTo("NakedFramework.SystemTest")]
+[assembly: InternalsVisibleTo("NakedFramework.Helpers.Test")]
+
 namespace NakedObjects.UtilInternal {
     internal interface IInternalAccess {
         PropertyInfo[] GetKeys(Type type);
