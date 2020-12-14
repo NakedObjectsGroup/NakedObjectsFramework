@@ -14,7 +14,7 @@ using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Resolve;
 
-[assembly: InternalsVisibleTo("NakedObjects.Core.Test")]
+[assembly: InternalsVisibleTo("NakedFramework.Core.Test")]
 
 namespace NakedObjects.Core.Resolve {
     public sealed class ResolveStateMachine : IResolveStateMachine {
