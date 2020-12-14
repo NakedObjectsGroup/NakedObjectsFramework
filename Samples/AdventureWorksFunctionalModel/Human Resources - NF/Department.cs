@@ -10,9 +10,8 @@ using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-        [Bounded]
-        public record Department:IHasModifiedDate {
-
+    [Bounded]
+    public record Department : IHasModifiedDate {
         [Hidden]
         public virtual short DepartmentID { get; init; }
 
@@ -23,19 +22,19 @@ namespace AdventureWorksModel {
         public virtual string GroupName { get; init; }
 
         [MemberOrder(99)]
-        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
     }
-    public static class DepartmentFunctions
-    {
 
+    public static class DepartmentFunctions {
         #region Life Cycle Methods
+
         public static Department Updating(this Department x, [Now] DateTime now) => x with { ModifiedDate = now };
 
         public static Department Persisting(this Department x, [Now] DateTime now) => x with { ModifiedDate = now };
+
         #endregion
     }
 }

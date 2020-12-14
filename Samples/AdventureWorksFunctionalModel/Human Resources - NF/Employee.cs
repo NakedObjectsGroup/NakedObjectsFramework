@@ -10,16 +10,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel
-{
-
+namespace AdventureWorksModel {
     public interface IEmployee : IBusinessEntity { } //Interface is for testing purposes
 
-        public record Employee : IEmployee, IHasRowGuid, IHasModifiedDate
-    {
-        [Hidden]
-        public virtual int BusinessEntityID { get; init; }
-
+    public record Employee : IEmployee, IHasRowGuid, IHasModifiedDate {
         [MemberOrder(1)]
         public virtual Person PersonDetails { get; init; }
 
@@ -34,11 +28,11 @@ namespace AdventureWorksModel
         public virtual DateTime? DateOfBirth { get; init; }
 
         [MemberOrder(14)]
-        
+
         public virtual string MaritalStatus { get; init; }
 
         [MemberOrder(15)]
-        
+
         public virtual string Gender { get; init; }
 
         [MemberOrder(16)]
@@ -60,7 +54,6 @@ namespace AdventureWorksModel
         [Hidden]
         public virtual int? ManagerID { get; init; }
 
-        
         [MemberOrder(30)]
         public virtual Employee Manager { get; init; }
 
@@ -70,29 +63,28 @@ namespace AdventureWorksModel
         [Hidden]
         public virtual SalesPerson SalesPerson { get; init; }
 
+        [TableView(true,
+                   nameof(EmployeeDepartmentHistory.StartDate),
+                   nameof(EmployeeDepartmentHistory.EndDate),
+                   nameof(EmployeeDepartmentHistory.Department),
+                   nameof(EmployeeDepartmentHistory.Shift))]
+        public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory { get; init; }
+
+        [TableView(true,
+                   nameof(EmployeePayHistory.RateChangeDate),
+                   nameof(EmployeePayHistory.Rate))]
+        public virtual ICollection<EmployeePayHistory> PayHistory { get; init; }
+
+        [Hidden]
+        public virtual int BusinessEntityID { get; init; }
+
         [MemberOrder(99)]
-        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        [TableView(true,
-            nameof(EmployeeDepartmentHistory.StartDate),
-            nameof(EmployeeDepartmentHistory.EndDate),
-            nameof(EmployeeDepartmentHistory.Department),
-            nameof(EmployeeDepartmentHistory.Shift))]
-        public virtual ICollection<EmployeeDepartmentHistory> DepartmentHistory { get; init; }
-
-        [TableView(true,
-            nameof(EmployeePayHistory.RateChangeDate),
-            nameof(EmployeePayHistory.Rate))]
-        public virtual ICollection<EmployeePayHistory> PayHistory { get; init; }
-
-        public override string ToString()
-        {
-            return $"{PersonDetails}";
-        }
+        public override string ToString() => $"{PersonDetails}";
     }
 }

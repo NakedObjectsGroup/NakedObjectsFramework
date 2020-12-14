@@ -7,17 +7,13 @@
 
 using System;
 using System.Linq;
-using NakedFunctions;
 
-
-namespace AdventureWorksModel
-{
-
-       public static class Employee_Functions
-    {
-
+namespace AdventureWorksModel {
+    public static class Employee_Functions {
         #region Life Cycle Methods
+
         public static Employee Updating(this Employee x, [Now] DateTime now) => x with { ModifiedDate = now };
+
         #endregion
 
         //public static bool HideLoginID(
@@ -32,8 +28,7 @@ namespace AdventureWorksModel
         public static IQueryable<Employee> ColleaguesInSameDept(
             this Employee e,
             IQueryable<EmployeeDepartmentHistory> edhs
-        )
-        {
+        ) {
             var allCurrent = edhs.Where(edh => edh.EndDate == null);
             var thisId = e.BusinessEntityID;
             var thisDeptId = allCurrent.Single(edh => edh.EmployeeID == thisId).DepartmentID;
@@ -51,9 +46,8 @@ namespace AdventureWorksModel
         //    return Result.DisplayAndPersist(eph);
         //}
 
-        public static EmployeePayHistory CurrentEmployeePayHistory(Employee e)
-        {
-           return e.PayHistory.OrderByDescending(x => x.RateChangeDate).FirstOrDefault();
+        public static EmployeePayHistory CurrentEmployeePayHistory(Employee e) {
+            return e.PayHistory.OrderByDescending(x => x.RateChangeDate).FirstOrDefault();
         }
 
         //#region ChangeDepartmentOrShift (Action)
@@ -83,10 +77,9 @@ namespace AdventureWorksModel
         //#endregion
 
         public static (Employee, Employee) SpecifyManager(
-            Employee e, 
-            IEmployee manager)
-        {
-            var e2 = e with {ManagerID =  manager.BusinessEntityID};
+            Employee e,
+            IEmployee manager) {
+            var e2 = e with {ManagerID = manager.BusinessEntityID};
             return (e2, e2);
         }
 
@@ -110,10 +103,6 @@ namespace AdventureWorksModel
         //    return new[] { "S", "M" };
         //}
 
-        public static (Employee, Employee) CreateNewEmployeeFromContact(this Person contactDetails)
-        {
-            return Employee_MenuFunctions.CreateNewEmployeeFromContact(contactDetails);
-        }
-
+        public static (Employee, Employee) CreateNewEmployeeFromContact(this Person contactDetails) => Employee_MenuFunctions.CreateNewEmployeeFromContact(contactDetails);
     }
 }

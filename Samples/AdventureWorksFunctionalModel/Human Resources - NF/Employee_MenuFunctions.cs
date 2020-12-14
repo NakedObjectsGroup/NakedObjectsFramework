@@ -5,7 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
 using System;
 using System.Linq;
 using System.Security.Principal;
@@ -15,48 +14,39 @@ using static NakedFunctions.Helpers;
 namespace AdventureWorksModel {
     [Named("Employees")]
     public static class Employee_MenuFunctions {
-
         [TableView(true,
-            nameof(Employee.Current),
-            nameof(Employee.JobTitle),
-            nameof(Employee.Manager))]
+                   nameof(Employee.Current),
+                   nameof(Employee.JobTitle),
+                   nameof(Employee.Manager))]
         [MultiLine]
         public static IQueryable<Employee> FindEmployeeByName(
-            
             [Optionally] string firstName,
             string lastName,
             IQueryable<Person> persons,
-            IQueryable<Employee> employees)
-        {
+            IQueryable<Employee> employees) {
+            var matchingContacts = Person_MenuFunctions.FindContactByName(firstName, lastName, persons);
 
-            IQueryable<Person> matchingContacts = Person_MenuFunctions.FindContactByName( firstName, lastName, persons);
-
-            IQueryable<Employee> query = from emp in employees
-                                         from contact in matchingContacts
-                                         where emp.PersonDetails.BusinessEntityID == contact.BusinessEntityID
-                                         orderby emp.PersonDetails.LastName
-                                         select emp;
+            var query = from emp in employees
+                        from contact in matchingContacts
+                        where emp.PersonDetails.BusinessEntityID == contact.BusinessEntityID
+                        orderby emp.PersonDetails.LastName
+                        select emp;
 
             return query;
         }
 
-        
         public static (Employee, Action<IAlert>) FindEmployeeByNationalIDNumber(
-            
             string nationalIDNumber,
-            IQueryable<Employee> employees)
-        {
-            IQueryable<Employee> query = from obj in employees
-                                         where obj.NationalIDNumber == nationalIDNumber
-                                         select obj;
+            IQueryable<Employee> employees) {
+            var query = from obj in employees
+                        where obj.NationalIDNumber == nationalIDNumber
+                        select obj;
 
             return SingleObjectWarnIfNoMatch(query);
         }
 
-        public static (Employee, Employee) CreateNewEmployeeFromContact(Person contactDetails)
-        {
-            var e = new Employee()
-            {
+        public static (Employee, Employee) CreateNewEmployeeFromContact(Person contactDetails) {
+            var e = new Employee {
                 BusinessEntityID = contactDetails.BusinessEntityID,
                 PersonDetails = contactDetails
             };
@@ -66,63 +56,44 @@ namespace AdventureWorksModel {
         [PageSize(20)]
         public static IQueryable<Person> AutoComplete0CreateNewEmployeeFromContact(
             [Range(2, 0)] string name,
-            IQueryable<Person> persons)
-        {
+            IQueryable<Person> persons) {
             return persons.Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
         }
 
         [RenderEagerly]
         [TableView(true, "GroupName")]
-        public static IQueryable<Department> ListAllDepartments(IQueryable<Department> depts)
-        {
-            return depts;
-        }
+        public static IQueryable<Department> ListAllDepartments(IQueryable<Department> depts) => depts;
 
         //TODO: 3 functions marked internal temporarily, as IPrincipal is being reflected over.
         internal static Employee CurrentUserAsEmployee(
-            
             IQueryable<Employee> employees,
             IPrincipal principal
-            )
-        {
+        ) {
             return employees.Where(x => x.LoginID == "adventure-works\\" + principal.Identity.Name).FirstOrDefault();
         }
 
-        
         internal static Employee Me(
-            
             IQueryable<Employee> employees,
-            IPrincipal principal)
-        {
-            return CurrentUserAsEmployee( employees, principal);
-        }
-        internal static (IQueryable<Employee>, Action<IAlert>) MyDepartmentalColleagues(
+            IPrincipal principal) =>
+            CurrentUserAsEmployee(employees, principal);
 
+        internal static (IQueryable<Employee>, Action<IAlert>) MyDepartmentalColleagues(
             IQueryable<Employee> employees,
             IPrincipal principal,
-            IQueryable<EmployeeDepartmentHistory> edhs)
-        {
-
+            IQueryable<EmployeeDepartmentHistory> edhs) {
             var me = CurrentUserAsEmployee(employees, principal);
-            if (me == null)
-            {
-                Action<IAlert> alert = WarnUser("Current user unknown");
-                return ((IQueryable<Employee>)null, alert);
+            if (me == null) {
+                var alert = WarnUser("Current user unknown");
+                return ((IQueryable<Employee>) null, alert);
             }
-            else
-            {
-                return (Employee_Functions.ColleaguesInSameDept(me, edhs), null);
-            }
-        }
 
+            return (me.ColleaguesInSameDept(edhs), null);
+        }
 
         public static Employee RandomEmployee(
-             
-             IQueryable<Employee> employees,
-             [Random] int random)
-        {
-            return Random(employees, random);
-        }
+            IQueryable<Employee> employees,
+            [Random] int random) =>
+            Random(employees, random);
 
         ////This method is to test use of nullable booleans
         //public static IQueryable<Employee> ListEmployees(
@@ -164,10 +135,7 @@ namespace AdventureWorksModel {
         //}
 
         public static IQueryable<Shift> Shifts(
-            
-            IQueryable<Shift> shifts)
-        {
-            return shifts;
-        }
+            IQueryable<Shift> shifts) =>
+            shifts;
     }
 }

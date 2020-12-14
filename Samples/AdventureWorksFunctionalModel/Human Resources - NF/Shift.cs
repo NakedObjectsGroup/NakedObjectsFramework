@@ -6,15 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
-using NakedFunctions;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using NakedFunctions;
 
 namespace AdventureWorksModel {
     [Bounded]
-        public record Shift : IHasModifiedDate  {
-
+    public record Shift : IHasModifiedDate {
         #region ID
 
         [Hidden]
@@ -29,42 +26,34 @@ namespace AdventureWorksModel {
 
         #endregion
 
+        [Mask("T")] [MemberOrder(3)]
+        public virtual TimeSpan StartTime { get; init; }
+
+        [Mask("T")] [MemberOrder(4)]
+        public virtual TimeSpan EndTime { get; init; }
+
         #region ModifiedDate
 
         [MemberOrder(99)]
-        
         [ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
- 
-        [Mask("T"), MemberOrder(3)]
-        public virtual TimeSpan StartTime { get; init; }
-
-        [Mask("T"), MemberOrder(4)]
-        public virtual TimeSpan EndTime { get; init; }
-
         public override string ToString() => Name;
     }
-    public static class ShiftFunctions
-    {
 
-        public static (Shift,Shift) ChangeTimes(Shift s, TimeSpan startTime, TimeSpan endTime)
-        {
-            throw new NotImplementedException();
-            //var s2 = s with { Times.StartTime = startTime } with {Times.EndTime,endTime);
-            //return DisplayAndPersist(s2);
-        }
+    public static class ShiftFunctions {
+        public static (Shift, Shift) ChangeTimes(Shift s, TimeSpan startTime, TimeSpan endTime) => throw new NotImplementedException();
 
-        public static TimeSpan Default0ChangeTimes(Shift s)
-        {
-            return new TimeSpan(0, 9, 0, 0);
-        }
+        //var s2 = s with { Times.StartTime = startTime } with {Times.EndTime,endTime);
+        //return DisplayAndPersist(s2);
+        public static TimeSpan Default0ChangeTimes(Shift s) => new(0, 9, 0, 0);
 
         #region Life Cycle Methods
+
         public static Shift Updating(this Shift x, [Now] DateTime now) => x with { ModifiedDate = now };
+
         #endregion
     }
-
 }
