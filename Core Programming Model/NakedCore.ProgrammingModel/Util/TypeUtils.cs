@@ -19,13 +19,13 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("NakedObjects.SystemTest")]
 [assembly: InternalsVisibleTo("NakedObjects.Helpers.Test")]
 
-[assembly: InternalsVisibleTo("NakedFramework.Reflector")]
-[assembly: InternalsVisibleTo("NakedFramework.Core")]
-[assembly: InternalsVisibleTo("NakedFramework.SystemTest")]
-[assembly: InternalsVisibleTo("NakedFramework.Helpers.Test")]
+[assembly: InternalsVisibleTo("NakedObjects.Reflector")]
+[assembly: InternalsVisibleTo("NakedObjects.Core")]
+[assembly: InternalsVisibleTo("NakedObjects.SystemTest")]
+[assembly: InternalsVisibleTo("NakedObjects.Helpers.Test")]
 
 
-namespace NakedObjects.Util {
+namespace NakedCore.Util {
     /// <summary>
     /// Utility methods for safely obtaining and using types defined within
     /// a domain model.  The Naked Objects framework makes extensive
@@ -333,7 +333,7 @@ namespace NakedObjects.Util {
         // DeclaringType + MethodName + Signature + DeclaringType instantiation + Method Instantiation + ReflectedType
         // And what most users would expect it to be can be expressed as:
         // DeclaringType + MethodName + Signature + DeclaringType Instantiation + Method Instantiation
-        // We can’t make them match because that would be a breaking change. However here is a little code snippet
+        // We canï¿½t make them match because that would be a breaking change. However here is a little code snippet
         // that will do the comparison using the latter definition of identity. This will work for all subclasses of
         // MemberInfo (Type, MethodBase, MethodInfo, ConstructorInfo, FieldInfo, PropertyInfo and EventInfo):
 
