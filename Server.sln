@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Architecture", "Core\NakedObjects.Architecture\NakedFramework.Architecture.csproj", "{8C2C6756-2E08-4A7F-9E4A-7ED33BF67826}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Core", "Core\NakedObjects.Core\NakedObjects.Core.csproj", "{C04A8FFE-E522-4E85-AD48-B6529287AF3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Core", "Core\NakedObjects.Core\NakedFramework.Core.csproj", "{C04A8FFE-E522-4E85-AD48-B6529287AF3C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.FWResources", "Core\NakedObjects.FWResources\NakedObjects.FWResources.csproj", "{A5A1C610-10DE-4A3F-8A6B-A1D6D8CF3CFE}"
 EndProject

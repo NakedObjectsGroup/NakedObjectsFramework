@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NakedObjects.Core\NakedObjects.Core.csproj" />
+    <ProjectReference Include="..\NakedObjects.Core\NakedFramework.Core.csproj" />
   </ItemGroup>
 
 </Project>
