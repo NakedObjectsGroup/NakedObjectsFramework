@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+    <GenerateProgramFile>false</GenerateProgramFile>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.0" />
+    <PackageReference Include="nunit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="RestTestsConcurrency.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
+    <ProjectReference Include="..\..\Core\NakedFramework.Persistor.Entity\NakedFramework.Persistor.Entity.csproj" />
+    <ProjectReference Include="..\..\Core\NakedFramework.Xat\NakedFramework.Xat.csproj" />
+    <ProjectReference Include="..\..\Facade\NakedFramework.Facade.Impl\NakedFramework.Facade.Impl.csproj" />
+    <ProjectReference Include="..\..\Facade\NakedFramework.Facade\NakedFramework.Facade.csproj" />
+    <ProjectReference Include="..\NakedFramework.Rest.Snapshot\NakedFramework.Rest.Snapshot.csproj" />
+    <ProjectReference Include="..\NakedFramework.Rest.Test.Data\NakedFramework.Rest.Test.Data.csproj" />
+    <ProjectReference Include="..\NakedFramework.Rest.Test\NakedFramework.Rest.Test.fsproj" />
+    <ProjectReference Include="..\NakedFramework.Rest\NakedFramework.Rest.csproj" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="5.0.0" />
+  </ItemGroup>
+
+</Project>

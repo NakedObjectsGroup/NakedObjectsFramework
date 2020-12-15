@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework><LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
+    <ProjectReference Include="..\..\Core\NakedFramework.Core\NakedFramework.Core.csproj" />
+    <ProjectReference Include="..\..\Core\NakedFramework.Metamodel\NakedFramework.Metamodel.csproj" />
+    <ProjectReference Include="..\NakedFramework.Facade\NakedFramework.Facade.csproj" />
+  </ItemGroup>
+
+ 
+
+</Project>

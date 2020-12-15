@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework><LangVersion>9.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="implversion.txt" />
+    <None Remove="specversion.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="specversion.txt" />
+    <EmbeddedResource Include="implversion.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Facade\NakedFramework.Facade\NakedFramework.Facade.csproj" />
+  </ItemGroup>
+
+  
+</Project>

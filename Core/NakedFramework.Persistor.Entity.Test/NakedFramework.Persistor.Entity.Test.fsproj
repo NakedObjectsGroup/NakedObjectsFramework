@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+    <GenerateProgramFile>false</GenerateProgramFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="TestTypes.fs" />
+    <Compile Include="TestCode.fs" />
+    <Compile Include="DomainTestCode.fs" />
+    <Compile Include="DomainTest.fs" />
+    <Compile Include="DomainNoProxiesTest.fs" />
+    <Compile Include="CodeOnlyTestCode.fs" />
+    <Compile Include="CodeOnlyTest.fs" />
+    <Compile Include="CodeOnlyCeTest.fs" />
+    <Compile Include="ModelTestCode.fs" />
+    <Compile Include="ModelTest.fs" />
+    <Compile Include="MultiDatabaseTestCode.fs" />
+    <Compile Include="AMultiDatabaseTest.fs" />
+    <Compile Include="AMultiDomainDatabaseTest.fs" />
+    <Compile Include="SystemTestCode.fs" />
+    <Compile Include="DomainSystemTest.fs" />
+    <Compile Include="ModelSystemTest.fs" />
+    <Compile Include="CodeSystemTest.fs" />
+    <Compile Include="EntityTestSuite.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="4.15.2" />
+    <PackageReference Include="nunit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
+    <ProjectReference Include="..\NakedFramework.Core\NakedFramework.Core.csproj" />
+    <ProjectReference Include="..\NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly\NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly.csproj" />
+    <ProjectReference Include="..\NakedFramework.Persistor.Entity.Test.CodeOnly\NakedFramework.Persistor.Entity.Test.CodeOnly.csproj" />
+    <ProjectReference Include="..\NakedFramework.Persistor.Entity.Test.SimpleDatabase\NakedFramework.Persistor.Entity.Test.SimpleDatabase.csproj" />
+    <ProjectReference Include="..\NakedFramework.Persistor.Entity\NakedFramework.Persistor.Entity.csproj" />
+    <ProjectReference Include="..\NakedFramework.Persistor.Test.Data\NakedFramework.Persistor.Test.Data.csproj" />
+    <ProjectReference Include="..\NakedFramework.Persistor.Test\NakedFramework.Persistor.Test.csproj" />
+    <ProjectReference Include="..\NakedFramework.Xat\NakedFramework.Xat.csproj" />
+    <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
+  </ItemGroup>
+
+  
+
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="5.0.0" />
+  </ItemGroup>
+
+</Project>

@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
     <PackageReference Include="Moq" Version="4.15.2" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />
@@ -21,10 +21,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
+    <ProjectReference Include="..\..\Rest\NakedFramework.Rest\NakedFramework.Rest.csproj" />
+    <ProjectReference Include="..\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
     <ProjectReference Include="..\NakedFunctions.Reflector\NakedFunctions.Reflector.csproj" />
-    <ProjectReference Include="..\NakedObjects.Reflector.Test\NakedObjects.Reflector.Test.csproj" />
     <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
   </ItemGroup>
+
 
 </Project>

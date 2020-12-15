@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OtherFlags>--warnon:1182</OtherFlags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="RestTestsHelpers.fs" />
+    <Compile Include="RestTestFunctions.fs" />
+    <Compile Include="HomePage5.fs" />
+    <Compile Include="User6.fs" />
+    <Compile Include="DomainServices7.fs" />
+    <Compile Include="Menus7.fs" />
+    <Compile Include="Version8.fs" />
+    <Compile Include="Objects9.fs" />
+    <Compile Include="Error10.fs" />
+    <Compile Include="DomainObject14.fs" />
+    <Compile Include="DomainService15.fs" />
+    <Compile Include="DomainMenu15.fs" />
+    <Compile Include="ObjectProperty16.fs" />
+    <Compile Include="ObjectCollection17.fs" />
+    <Compile Include="ObjectAction18.fs" />
+    <Compile Include="ObjectActionInvoke19.fs" />
+    <Compile Include="DomainTypeActionInvoke26.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.12.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
+    <ProjectReference Include="..\..\Facade\NakedFramework.Facade.Impl\NakedFramework.Facade.Impl.csproj" />
+    <ProjectReference Include="..\..\Facade\NakedFramework.Facade\NakedFramework.Facade.csproj" />
+    <ProjectReference Include="..\NakedFramework.Rest.Snapshot\NakedFramework.Rest.Snapshot.csproj" />
+    <ProjectReference Include="..\NakedFramework.Rest.Test.Data\NakedFramework.Rest.Test.Data.csproj" />
+    <ProjectReference Include="..\NakedFramework.Rest\NakedFramework.Rest.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="5.0.0" />
+  </ItemGroup>
+
+</Project>
