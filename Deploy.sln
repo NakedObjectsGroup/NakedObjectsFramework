@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksFunctionalMod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Rest.App.Demo", "Demo\NakedFunctions.Rest.App.Demo\NakedFunctions.Rest.App.Demo.csproj", "{B6DC0481-82CA-406E-9104-76DD36F1BB74}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Rest.Test.Data", "Rest\NakedObjects.Rest.Test.Data\NakedFramework.Rest.Test.Data.csproj", "{6BFC5180-60EA-40D2-947A-34141EEC037D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Rest.Test.Data", "Rest\NakedFramework.Rest.Test.Data\NakedFramework.Rest.Test.Data.csproj", "{17BEBD44-B5AE-48A5-B659-0FD1A99BCD4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{B6DC0481-82CA-406E-9104-76DD36F1BB74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6DC0481-82CA-406E-9104-76DD36F1BB74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6DC0481-82CA-406E-9104-76DD36F1BB74}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6BFC5180-60EA-40D2-947A-34141EEC037D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6BFC5180-60EA-40D2-947A-34141EEC037D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6BFC5180-60EA-40D2-947A-34141EEC037D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6BFC5180-60EA-40D2-947A-34141EEC037D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17BEBD44-B5AE-48A5-B659-0FD1A99BCD4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17BEBD44-B5AE-48A5-B659-0FD1A99BCD4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17BEBD44-B5AE-48A5-B659-0FD1A99BCD4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17BEBD44-B5AE-48A5-B659-0FD1A99BCD4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
