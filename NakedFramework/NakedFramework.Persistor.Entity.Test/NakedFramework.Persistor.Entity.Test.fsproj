@@ -48,7 +48,7 @@
     <ProjectReference Include="..\NakedFramework.Persistor.Test.Data\NakedFramework.Persistor.Test.Data.csproj" />
     <ProjectReference Include="..\NakedFramework.Persistor.Test\NakedFramework.Persistor.Test.csproj" />
     <ProjectReference Include="..\NakedFramework.Xat\NakedFramework.Xat.csproj" />
-    <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
+    <ProjectReference Include="..\..\NakedObjects\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
   </ItemGroup>
 
   

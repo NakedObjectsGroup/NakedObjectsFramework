@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Facade\NakedFramework.Facade.Impl\NakedFramework.Facade.Impl.csproj" />
-    <ProjectReference Include="..\..\Facade\NakedFramework.Facade\NakedFramework.Facade.csproj" />
+    <ProjectReference Include="..\NakedFramework.Facade.Impl\NakedFramework.Facade.Impl.csproj" />
+    <ProjectReference Include="..\NakedFramework.Facade\NakedFramework.Facade.csproj" />
     <ProjectReference Include="..\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
     <ProjectReference Include="..\NakedFramework.Metamodel\NakedFramework.Metamodel.csproj" />
     <ProjectReference Include="..\NakedFramework.ModelBuilding\NakedFramework.ModelBuilding.csproj" />

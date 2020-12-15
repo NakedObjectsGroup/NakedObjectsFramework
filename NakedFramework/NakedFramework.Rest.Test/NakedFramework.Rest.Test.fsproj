@@ -33,9 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
-    <ProjectReference Include="..\..\Facade\NakedFramework.Facade.Impl\NakedFramework.Facade.Impl.csproj" />
-    <ProjectReference Include="..\..\Facade\NakedFramework.Facade\NakedFramework.Facade.csproj" />
+    <ProjectReference Include="..\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
+    <ProjectReference Include="..\NakedFramework.Facade.Impl\NakedFramework.Facade.Impl.csproj" />
+    <ProjectReference Include="..\NakedFramework.Facade\NakedFramework.Facade.csproj" />
     <ProjectReference Include="..\NakedFramework.Rest.Snapshot\NakedFramework.Rest.Snapshot.csproj" />
     <ProjectReference Include="..\NakedFramework.Rest.Test.Data\NakedFramework.Rest.Test.Data.csproj" />
     <ProjectReference Include="..\NakedFramework.Rest\NakedFramework.Rest.csproj" />

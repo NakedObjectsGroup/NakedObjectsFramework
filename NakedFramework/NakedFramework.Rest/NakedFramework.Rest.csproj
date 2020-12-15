@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NakedFramework\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
-    <ProjectReference Include="..\..\Facade\NakedFramework.Facade\NakedFramework.Facade.csproj" />
+    <ProjectReference Include="..\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
+    <ProjectReference Include="..\NakedFramework.Facade\NakedFramework.Facade.csproj" />
     <ProjectReference Include="..\NakedFramework.Rest.Snapshot\NakedFramework.Rest.Snapshot.csproj" />
   </ItemGroup>
 

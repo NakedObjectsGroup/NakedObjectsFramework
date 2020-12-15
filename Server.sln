@@ -43,41 +43,41 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Snapshot.Xml
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.SystemTest", "NakedFramework\NakedFramework.SystemTest\NakedFramework.SystemTest.csproj", "{9E417E55-47B0-41BD-B8CD-89B05464EAD5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Facade", "Facade\NakedFramework.Facade\NakedFramework.Facade.csproj", "{02D8F580-CDF9-40F1-B8D5-2C5F86531D4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Facade", "NakedFramework\NakedFramework.Facade\NakedFramework.Facade.csproj", "{02D8F580-CDF9-40F1-B8D5-2C5F86531D4E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Facade.Impl", "Facade\NakedFramework.Facade.Impl\NakedFramework.Facade.Impl.csproj", "{F21030D2-292B-4808-955B-6BB551409092}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Facade.Impl", "NakedFramework\NakedFramework.Facade.Impl\NakedFramework.Facade.Impl.csproj", "{F21030D2-292B-4808-955B-6BB551409092}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Rest", "Rest\NakedFramework.Rest\NakedFramework.Rest.csproj", "{E7F9998F-6EF3-4A40-A3E0-8908C28FEC15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Rest", "NakedFramework\NakedFramework.Rest\NakedFramework.Rest.csproj", "{E7F9998F-6EF3-4A40-A3E0-8908C28FEC15}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Rest.Snapshot", "Rest\NakedFramework.Rest.Snapshot\NakedFramework.Rest.Snapshot.csproj", "{125CE9B1-3197-4381-B489-182AF194BC28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Rest.Snapshot", "NakedFramework\NakedFramework.Rest.Snapshot\NakedFramework.Rest.Snapshot.csproj", "{125CE9B1-3197-4381-B489-182AF194BC28}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Server.Package", "Server\NakedObjects.Server.Package\NakedObjects.Server.Package.csproj", "{30E890BC-ED34-45A1-B0B4-4366C713C0A3}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedFramework.Rest.Test", "Rest\NakedFramework.Rest.Test\NakedFramework.Rest.Test.fsproj", "{92D7015B-2708-4707-8B49-EBE661AEB394}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedFramework.Rest.Test", "NakedFramework\NakedFramework.Rest.Test\NakedFramework.Rest.Test.fsproj", "{92D7015B-2708-4707-8B49-EBE661AEB394}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Rest.Test.Data", "Rest\NakedFramework.Rest.Test.Data\NakedFramework.Rest.Test.Data.csproj", "{3513124F-574C-45DA-A608-9A87CBB4331D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Rest.Test.Data", "NakedFramework\NakedFramework.Rest.Test.Data\NakedFramework.Rest.Test.Data.csproj", "{3513124F-574C-45DA-A608-9A87CBB4331D}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedFramework.Rest.Test.Impl1", "Rest\NakedFramework.Rest.Test.Impl1\NakedFramework.Rest.Test.Impl1.fsproj", "{EDFE91BE-85C3-4E1B-8F9D-5687528DFE27}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedFramework.Rest.Test.Impl1", "NakedFramework\NakedFramework.Rest.Test.Impl1\NakedFramework.Rest.Test.Impl1.fsproj", "{EDFE91BE-85C3-4E1B-8F9D-5687528DFE27}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedFramework.Rest.Test.Impl2", "Rest\NakedFramework.Rest.Test.Impl2\NakedFramework.Rest.Test.Impl2.fsproj", "{900D842B-43FC-486E-AB07-4843D1B5F389}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedFramework.Rest.Test.Impl2", "NakedFramework\NakedFramework.Rest.Test.Impl2\NakedFramework.Rest.Test.Impl2.fsproj", "{900D842B-43FC-486E-AB07-4843D1B5F389}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedFramework.Rest.Test.Impl3", "Rest\NakedFramework.Rest.Test.Impl3\NakedFramework.Rest.Test.Impl3.fsproj", "{EE075EC3-C195-455B-A29C-EB4B1B3B13AB}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedFramework.Rest.Test.Impl3", "NakedFramework\NakedFramework.Rest.Test.Impl3\NakedFramework.Rest.Test.Impl3.fsproj", "{EE075EC3-C195-455B-A29C-EB4B1B3B13AB}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedFramework.Rest.Test.Impl4", "Rest\NakedFramework.Rest.Test.Impl4\NakedFramework.Rest.Test.Impl4.fsproj", "{200D0273-DF21-423A-A64F-63A789CF8293}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedFramework.Rest.Test.Impl4", "NakedFramework\NakedFramework.Rest.Test.Impl4\NakedFramework.Rest.Test.Impl4.fsproj", "{200D0273-DF21-423A-A64F-63A789CF8293}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Rest.Test", "NakedFramework\NakedFunctions.Rest.Test\NakedFunctions.Rest.Test.csproj", "{6CF516A1-E2E3-4862-BE38-ED428F2BA218}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Rest.Test", "NakedFunctions\NakedFunctions.Rest.Test\NakedFunctions.Rest.Test.csproj", "{6CF516A1-E2E3-4862-BE38-ED428F2BA218}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Rest.Test.Data", "NakedFramework\NakedFunctions.Rest.Test.Data\NakedFunctions.Rest.Test.Data.csproj", "{834E53E1-1A73-4E66-BA86-FA0CCC376D0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Rest.Test.Data", "NakedFunctions\NakedFunctions.Rest.Test.Data\NakedFunctions.Rest.Test.Data.csproj", "{834E53E1-1A73-4E66-BA86-FA0CCC376D0D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.ModelBuilding", "NakedFramework\NakedFramework.ModelBuilding\NakedFramework.ModelBuilding.csproj", "{B6CA1647-2D70-4E6D-A0D2-6E220AC4C9D6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Reflector", "NakedFramework\NakedFunctions.Reflector\NakedFunctions.Reflector.csproj", "{59676F13-B1D2-417D-9040-B07CDC2E4D07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Reflector", "NakedFunctions\NakedFunctions.Reflector\NakedFunctions.Reflector.csproj", "{59676F13-B1D2-417D-9040-B07CDC2E4D07}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Reflector", "NakedFramework\NakedObjects.Reflector\NakedObjects.Reflector.csproj", "{5F989AAB-52E5-4296-B362-657EA522EA53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Reflector", "NakedObjects\NakedObjects.Reflector\NakedObjects.Reflector.csproj", "{5F989AAB-52E5-4296-B362-657EA522EA53}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Reflector.Test", "NakedFramework\NakedFunctions.Reflector.Test\NakedFunctions.Reflector.Test.csproj", "{FC3DDF83-E05F-416D-8D70-17A1CB5B0D9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Reflector.Test", "NakedFunctions\NakedFunctions.Reflector.Test\NakedFunctions.Reflector.Test.csproj", "{FC3DDF83-E05F-416D-8D70-17A1CB5B0D9C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Reflector.Test", "NakedFramework\NakedObjects.Reflector.Test\NakedObjects.Reflector.Test.csproj", "{5BB31DE4-F0EA-4FF3-A8A0-472786B5AC0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Reflector.Test", "NakedObjects\NakedObjects.Reflector.Test\NakedObjects.Reflector.Test.csproj", "{5BB31DE4-F0EA-4FF3-A8A0-472786B5AC0F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.DependencyInjection.Test", "NakedFramework\NakedFramework.DependencyInjection.Test\NakedFramework.DependencyInjection.Test.csproj", "{486811D3-1485-48BB-B6D1-E772417F40E5}"
 EndProject

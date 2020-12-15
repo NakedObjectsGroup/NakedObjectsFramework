@@ -21,10 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Rest\NakedFramework.Rest\NakedFramework.Rest.csproj" />
+    <ProjectReference Include="..\NakedFramework.Rest\NakedFramework.Rest.csproj" />
     <ProjectReference Include="..\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
-    <ProjectReference Include="..\NakedFunctions.Reflector\NakedFunctions.Reflector.csproj" />
-    <ProjectReference Include="..\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
+    <ProjectReference Include="..\..\NakedFunctions\NakedFunctions.Reflector\NakedFunctions.Reflector.csproj" />
+    <ProjectReference Include="..\..\NakedObjects\NakedObjects.Reflector\NakedObjects.Reflector.csproj" />
   </ItemGroup>
 
 
