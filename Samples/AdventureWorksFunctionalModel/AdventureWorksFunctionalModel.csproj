@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="%28Old%29 AdventureWorksContext - Copy.cs" />
     <Compile Remove="Human Resources - NF\EmployeeAddress.cs" />
     <Compile Remove="Human Resources - NF\EmployeeDepartmentHistory.cs" />
     <Compile Remove="Human Resources - NF\EmployeePayHistory.cs" />
@@ -95,11 +94,6 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="NakedFunctions.ProgrammingModel" Version="12.0.0-alpha01" />
     <PackageReference Include="NakedObjects.ProgrammingModel" Version="12.0.0-alpha01" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Functional Programming Model\NakedFunctions.Attributes\NakedFunctions.Attributes.csproj" />
-    <ProjectReference Include="..\..\Functional Programming Model\NakedFunctions.Helpers\NakedFunctions.Helpers.csproj" />
   </ItemGroup>
 
 </Project>

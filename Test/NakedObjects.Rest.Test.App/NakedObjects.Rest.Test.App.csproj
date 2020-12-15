@@ -14,7 +14,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Rest\NakedFramework.Rest.Test.Data\NakedFramework.Rest.Test.Data.csproj" />
+    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Rest.Test.Data\NakedFramework.Rest.Test.Data.csproj" />
   </ItemGroup>
 
 </Project>
