@@ -41,7 +41,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NakedObjects.Architecture\NakedFramework.Architecture.csproj" />
     <ProjectReference Include="..\NakedObjects.Core\NakedFramework.Core.csproj" />
-    <ProjectReference Include="..\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj" />
+    <ProjectReference Include="..\NakedObjects.Metamodel\NakedFramework.Metamodel.csproj" />
     <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly\NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly.csproj" />
     <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.CodeOnly\NakedFramework.Persistor.Entity.Test.CodeOnly.csproj" />
     <ProjectReference Include="..\NakedObjects.Persistor.Entity.Test.SimpleDatabase\NakedFramework.Persistor.Entity.Test.SimpleDatabase.csproj" />

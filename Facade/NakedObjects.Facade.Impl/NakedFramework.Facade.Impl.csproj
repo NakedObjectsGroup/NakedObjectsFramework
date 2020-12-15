@@ -7,7 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\NakedObjects.Architecture\NakedFramework.Architecture.csproj" />
     <ProjectReference Include="..\..\Core\NakedObjects.Core\NakedFramework.Core.csproj" />
-    <ProjectReference Include="..\..\Core\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj" />
+    <ProjectReference Include="..\..\Core\NakedObjects.Metamodel\NakedFramework.Metamodel.csproj" />
     <ProjectReference Include="..\NakedObjects.Facade\NakedFramework.Facade.csproj" />
   </ItemGroup>
 

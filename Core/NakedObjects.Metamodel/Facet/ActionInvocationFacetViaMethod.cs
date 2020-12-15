@@ -18,7 +18,7 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 
-[assembly: InternalsVisibleTo("NakedObjects.Metamodel.Test")]
+[assembly: InternalsVisibleTo("NakedFramework.Metamodel.Test")]
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]

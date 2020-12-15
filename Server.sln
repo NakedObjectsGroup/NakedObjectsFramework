@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Core", "Core
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.FWResources", "Core\NakedObjects.FWResources\NakedFramework.FWResources.csproj", "{A5A1C610-10DE-4A3F-8A6B-A1D6D8CF3CFE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Metamodel", "Core\NakedObjects.Metamodel\NakedObjects.Metamodel.csproj", "{7D3DDF64-2092-449B-9F51-43CCACCD49BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Metamodel", "Core\NakedObjects.Metamodel\NakedFramework.Metamodel.csproj", "{7D3DDF64-2092-449B-9F51-43CCACCD49BC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.ParallelReflector", "Core\NakedObjects.ParallelReflector\NakedFramework.ParallelReflector.csproj", "{19419F9F-A6E0-4CB0-B939-A86998B0543A}"
 EndProject
@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Core.Test", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Xat", "Core\NakedObjects.Xat\NakedFramework.Xat.csproj", "{FC7E0077-E7DE-46C2-A913-0B8FA10EDF36}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Metamodel.Test", "Core\NakedObjects.Metamodel.Test\NakedObjects.Metamodel.Test.csproj", "{5C607273-C219-496A-9698-CCF65EFA3BCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Metamodel.Test", "Core\NakedObjects.Metamodel.Test\NakedFramework.Metamodel.Test.csproj", "{5C607273-C219-496A-9698-CCF65EFA3BCB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly", "Core\NakedObjects.Persistor.Entity.Test.AdventureWorksCodeOnly\NakedFramework.Persistor.Entity.Test.AdventureWorksCodeOnly.csproj", "{D0FBC51F-070B-4184-B1EE-D13B82159311}"
 EndProject
