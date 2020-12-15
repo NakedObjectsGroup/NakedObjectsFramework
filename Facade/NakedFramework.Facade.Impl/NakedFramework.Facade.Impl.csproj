@@ -5,9 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
-    <ProjectReference Include="..\..\Core\NakedFramework.Core\NakedFramework.Core.csproj" />
-    <ProjectReference Include="..\..\Core\NakedFramework.Metamodel\NakedFramework.Metamodel.csproj" />
+    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
+    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Core\NakedFramework.Core.csproj" />
+    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Metamodel\NakedFramework.Metamodel.csproj" />
     <ProjectReference Include="..\NakedFramework.Facade\NakedFramework.Facade.csproj" />
   </ItemGroup>
 

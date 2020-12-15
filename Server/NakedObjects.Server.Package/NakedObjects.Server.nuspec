@@ -31,33 +31,33 @@
   </metadata>
   <files>
     <file src="icon.png" target="images\" />
-    <file src="..\..\Core\NakedFramework.ModelBuilding\bin\Debug\**\NakedFramework.ModelBuilding.dll" target="lib" />
-    <file src="..\..\Core\NakedFunctions.Reflector\bin\Debug\**\NakedFunctions.Reflector.dll" target="lib" />
-    <file src="..\..\Core\NakedFramework.Architecture\bin\Debug\**\NakedFramework.Architecture.dll" target="lib" />
-    <file src="..\..\Core\NakedFramework.Core\bin\Debug\**\NakedFramework.Core.dll" target="lib" />
-    <file src="..\..\Core\NakedFramework.DependencyInjection\bin\Debug\**\NakedFramework.DependencyInjection.dll" target="lib" />
+    <file src="..\..\NakedFramework\NakedFramework.ModelBuilding\bin\Debug\**\NakedFramework.ModelBuilding.dll" target="lib" />
+    <file src="..\..\NakedFramework\NakedFunctions.Reflector\bin\Debug\**\NakedFunctions.Reflector.dll" target="lib" />
+    <file src="..\..\NakedFramework\NakedFramework.Architecture\bin\Debug\**\NakedFramework.Architecture.dll" target="lib" />
+    <file src="..\..\NakedFramework\NakedFramework.Core\bin\Debug\**\NakedFramework.Core.dll" target="lib" />
+    <file src="..\..\NakedFramework\NakedFramework.DependencyInjection\bin\Debug\**\NakedFramework.DependencyInjection.dll" target="lib" />
     <file src="..\..\Facade\NakedFramework.Facade\bin\Debug\**\NakedFramework.Facade.dll" target="lib" />
     <file src="..\..\Facade\NakedFramework.Facade.Impl\bin\Debug\**\NakedFramework.Facade.Impl.dll" target="lib" />
-    <file src="..\..\Core\NakedFramework.FWResources\bin\Debug\**\NakedFramework.FWResources.dll" target="lib" />
-    <file src="..\..\Core\NakedFramework.Metamodel\bin\Debug\**\NakedFramework.Metamodel.dll" target="lib" />
-    <file src="..\..\Core\NakedFramework.ParallelReflector\bin\Debug\**\NakedFramework.ParallelReflector.dll" target="lib" />
-    <file src="..\..\Core\NakedFramework.Persistor.Entity\bin\Debug\**\NakedFramework.Persistor.Entity.dll" target="lib" />
-    <file src="..\..\Core\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.dll" target="lib" /> 
+    <file src="..\..\NakedFramework\NakedFramework.FWResources\bin\Debug\**\NakedFramework.FWResources.dll" target="lib" />
+    <file src="..\..\NakedFramework\NakedFramework.Metamodel\bin\Debug\**\NakedFramework.Metamodel.dll" target="lib" />
+    <file src="..\..\NakedFramework\NakedFramework.ParallelReflector\bin\Debug\**\NakedFramework.ParallelReflector.dll" target="lib" />
+    <file src="..\..\NakedFramework\NakedFramework.Persistor.Entity\bin\Debug\**\NakedFramework.Persistor.Entity.dll" target="lib" />
+    <file src="..\..\NakedFramework\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.dll" target="lib" /> 
     <file src="..\..\Rest\NakedFramework.Rest\bin\Debug\**\NakedFramework.Rest.dll" target="lib" />
     <file src="..\..\Rest\NakedFramework.Rest.Snapshot\bin\Debug\**\NakedFramework.Rest.Snapshot.dll" target="lib" />
 
-    <file src="..\..\Core\NakedFramework.ModelBuilding\bin\Debug\**\NakedFramework.ModelBuilding.pdb" target="lib" />
-    <file src="..\..\Core\NakedFunctions.Reflector\bin\Debug\**\NakedFunctions.Reflector.pdb" target="lib" />
-    <file src="..\..\Core\NakedFramework.Architecture\bin\Debug\**\NakedFramework.Architecture.pdb" target="lib" />
-    <file src="..\..\Core\NakedFramework.Core\bin\Debug\**\NakedFramework.Core.pdb" target="lib" />
-    <file src="..\..\Core\NakedFramework.DependencyInjection\bin\Debug\**\NakedFramework.DependencyInjection.pdb" target="lib" />
+    <file src="..\..\NakedFramework\NakedFramework.ModelBuilding\bin\Debug\**\NakedFramework.ModelBuilding.pdb" target="lib" />
+    <file src="..\..\NakedFramework\NakedFunctions.Reflector\bin\Debug\**\NakedFunctions.Reflector.pdb" target="lib" />
+    <file src="..\..\NakedFramework\NakedFramework.Architecture\bin\Debug\**\NakedFramework.Architecture.pdb" target="lib" />
+    <file src="..\..\NakedFramework\NakedFramework.Core\bin\Debug\**\NakedFramework.Core.pdb" target="lib" />
+    <file src="..\..\NakedFramework\NakedFramework.DependencyInjection\bin\Debug\**\NakedFramework.DependencyInjection.pdb" target="lib" />
     <file src="..\..\Facade\NakedFramework.Facade\bin\Debug\**\NakedFramework.Facade.pdb" target="lib" />
     <file src="..\..\Facade\NakedFramework.Facade.Impl\bin\Debug\**\NakedFramework.Facade.Impl.pdb" target="lib" />
-    <file src="..\..\Core\NakedFramework.FWResources\bin\Debug\**\NakedFramework.FWResources.pdb" target="lib" />
-    <file src="..\..\Core\NakedFramework.Metamodel\bin\Debug\**\NakedFramework.Metamodel.pdb" target="lib" />
-    <file src="..\..\Core\NakedFramework.ParallelReflector\bin\Debug\**\NakedFramework.ParallelReflector.pdb" target="lib" />
-    <file src="..\..\Core\NakedFramework.Persistor.Entity\bin\Debug\**\NakedFramework.Persistor.Entity.pdb" target="lib" />
-    <file src="..\..\Core\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.pdb" target="lib" />
+    <file src="..\..\NakedFramework\NakedFramework.FWResources\bin\Debug\**\NakedFramework.FWResources.pdb" target="lib" />
+    <file src="..\..\NakedFramework\NakedFramework.Metamodel\bin\Debug\**\NakedFramework.Metamodel.pdb" target="lib" />
+    <file src="..\..\NakedFramework\NakedFramework.ParallelReflector\bin\Debug\**\NakedFramework.ParallelReflector.pdb" target="lib" />
+    <file src="..\..\NakedFramework\NakedFramework.Persistor.Entity\bin\Debug\**\NakedFramework.Persistor.Entity.pdb" target="lib" />
+    <file src="..\..\NakedFramework\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.pdb" target="lib" />
     <file src="..\..\Rest\NakedFramework.Rest\bin\Debug\**\NakedFramework.Rest.pdb" target="lib" />
     <file src="..\..\Rest\NakedFramework.Rest.Snapshot\bin\Debug\**\NakedFramework.Rest.Snapshot.pdb" target="lib" />
   </files>
