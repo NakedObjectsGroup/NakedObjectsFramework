@@ -58,6 +58,6 @@
     <file src="..\..\NakedFramework\NakedFramework.Persistor.Entity\bin\Debug\**\NakedFramework.Persistor.Entity.pdb" target="lib" />
     <file src="..\..\NakedFramework\NakedFramework.Rest\bin\Debug\**\NakedFramework.Rest.pdb" target="lib" />
     <file src="..\..\NakedFramework\NakedFramework.Rest.Snapshot\bin\Debug\**\NakedFramework.Rest.Snapshot.pdb" target="lib" />
-    <file src="..\NakedObjects\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.pdb" target="lib" />
+    <file src="..\NakedObjects.Reflector\bin\Debug\**\NakedObjects.Reflector.pdb" target="lib" />
   </files>
 </package>
