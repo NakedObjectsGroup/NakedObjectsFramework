@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksModel", "Samples\AdventureWorksModel\AdventureWorksModel.csproj", "{5DD9572A-5C56-42D8-AD1F-7FCC38EFD753}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Rest.App.Demo", "Demo\NakedObjects.Rest.App.Demo\NakedObjects.Rest.App.Demo.csproj", "{712DF750-F17E-4310-B1F7-4DDDC9E9DAB9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Rest.Test.App", "Test\NakedObjects.Rest.Test.App\NakedObjects.Rest.Test.App.csproj", "{5D63CDC7-D4EE-442D-810F-9D5E2547B6EC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksFunctionalModel", "Samples\AdventureWorksFunctionalModel\AdventureWorksFunctionalModel.csproj", "{4F2106EC-762C-435B-BCED-7DE5615CC4C5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Rest.App.Demo", "Demo\NakedFunctions.Rest.App.Demo\NakedFunctions.Rest.App.Demo.csproj", "{B6DC0481-82CA-406E-9104-76DD36F1BB74}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Rest.Test.Data", "NakedFramework\NakedFramework.Rest.Test.Data\NakedFramework.Rest.Test.Data.csproj", "{960953D9-E707-4C5A-965F-1FCB3F8E67CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksFunctionalModel", "Test\AdventureWorksFunctionalModel\AdventureWorksFunctionalModel.csproj", "{40C19FD9-4E96-48E8-9D3D-B451231EB766}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksModel", "Test\AdventureWorksModel\AdventureWorksModel.csproj", "{3449A3DD-8F08-4B48-97B8-0892DAA4D46E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Rest.App.Demo", "Test\NakedFunctions.Rest.App.Demo\NakedFunctions.Rest.App.Demo.csproj", "{A341BCD3-FB36-44A7-89E7-EFA71CEF888C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Rest.App.Demo", "Test\NakedObjects.Rest.App.Demo\NakedObjects.Rest.App.Demo.csproj", "{FA6F040A-CA86-4A05-9B37-5046744310A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,30 +21,30 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5DD9572A-5C56-42D8-AD1F-7FCC38EFD753}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DD9572A-5C56-42D8-AD1F-7FCC38EFD753}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DD9572A-5C56-42D8-AD1F-7FCC38EFD753}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DD9572A-5C56-42D8-AD1F-7FCC38EFD753}.Release|Any CPU.Build.0 = Release|Any CPU
-		{712DF750-F17E-4310-B1F7-4DDDC9E9DAB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{712DF750-F17E-4310-B1F7-4DDDC9E9DAB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{712DF750-F17E-4310-B1F7-4DDDC9E9DAB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{712DF750-F17E-4310-B1F7-4DDDC9E9DAB9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5D63CDC7-D4EE-442D-810F-9D5E2547B6EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5D63CDC7-D4EE-442D-810F-9D5E2547B6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D63CDC7-D4EE-442D-810F-9D5E2547B6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D63CDC7-D4EE-442D-810F-9D5E2547B6EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F2106EC-762C-435B-BCED-7DE5615CC4C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F2106EC-762C-435B-BCED-7DE5615CC4C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F2106EC-762C-435B-BCED-7DE5615CC4C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F2106EC-762C-435B-BCED-7DE5615CC4C5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B6DC0481-82CA-406E-9104-76DD36F1BB74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6DC0481-82CA-406E-9104-76DD36F1BB74}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6DC0481-82CA-406E-9104-76DD36F1BB74}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6DC0481-82CA-406E-9104-76DD36F1BB74}.Release|Any CPU.Build.0 = Release|Any CPU
 		{960953D9-E707-4C5A-965F-1FCB3F8E67CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{960953D9-E707-4C5A-965F-1FCB3F8E67CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{960953D9-E707-4C5A-965F-1FCB3F8E67CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{960953D9-E707-4C5A-965F-1FCB3F8E67CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40C19FD9-4E96-48E8-9D3D-B451231EB766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40C19FD9-4E96-48E8-9D3D-B451231EB766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40C19FD9-4E96-48E8-9D3D-B451231EB766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40C19FD9-4E96-48E8-9D3D-B451231EB766}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3449A3DD-8F08-4B48-97B8-0892DAA4D46E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3449A3DD-8F08-4B48-97B8-0892DAA4D46E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3449A3DD-8F08-4B48-97B8-0892DAA4D46E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3449A3DD-8F08-4B48-97B8-0892DAA4D46E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A341BCD3-FB36-44A7-89E7-EFA71CEF888C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A341BCD3-FB36-44A7-89E7-EFA71CEF888C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A341BCD3-FB36-44A7-89E7-EFA71CEF888C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A341BCD3-FB36-44A7-89E7-EFA71CEF888C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA6F040A-CA86-4A05-9B37-5046744310A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA6F040A-CA86-4A05-9B37-5046744310A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA6F040A-CA86-4A05-9B37-5046744310A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA6F040A-CA86-4A05-9B37-5046744310A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
