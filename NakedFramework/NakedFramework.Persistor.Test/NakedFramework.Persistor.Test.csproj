@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework><LangVersion>9.0</LangVersion>
-
+    <TargetFramework>net5.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -19,7 +18,5 @@
     <ProjectReference Include="..\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
     <ProjectReference Include="..\NakedFramework.Persistor.Test.Data\NakedFramework.Persistor.Test.Data.csproj" />
   </ItemGroup>
-
-
 
 </Project>

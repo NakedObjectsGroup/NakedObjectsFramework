@@ -1,14 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework><LangVersion>9.0</LangVersion>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
     <ProjectReference Include="..\NakedFramework.Core\NakedFramework.Core.csproj" />
   </ItemGroup>
-
- 
-
 </Project>

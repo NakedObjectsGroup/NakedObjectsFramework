@@ -51,8 +51,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Rest", "Nake
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Rest.Snapshot", "NakedFramework\NakedFramework.Rest.Snapshot\NakedFramework.Rest.Snapshot.csproj", "{125CE9B1-3197-4381-B489-182AF194BC28}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Server.Package", "Server\NakedObjects.Server.Package\NakedObjects.Server.Package.csproj", "{30E890BC-ED34-45A1-B0B4-4366C713C0A3}"
-EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "NakedFramework.Rest.Test", "NakedFramework\NakedFramework.Rest.Test\NakedFramework.Rest.Test.fsproj", "{92D7015B-2708-4707-8B49-EBE661AEB394}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.Rest.Test.Data", "NakedFramework\NakedFramework.Rest.Test.Data\NakedFramework.Rest.Test.Data.csproj", "{3513124F-574C-45DA-A608-9A87CBB4331D}"
@@ -80,6 +78,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Reflector.Test", "NakedObjects\NakedObjects.Reflector.Test\NakedObjects.Reflector.Test.csproj", "{5BB31DE4-F0EA-4FF3-A8A0-472786B5AC0F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.DependencyInjection.Test", "NakedFramework\NakedFramework.DependencyInjection.Test\NakedFramework.DependencyInjection.Test.csproj", "{486811D3-1485-48BB-B6D1-E772417F40E5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Server.Package", "NakedFunctions\NakedFunctions.Server.Package\NakedFunctions.Server.Package.csproj", "{AFC131CB-3336-4F11-9D60-8197CF716B4D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Server.Package", "NakedObjects\NakedObjects.Server.Package\NakedObjects.Server.Package.csproj", "{EB8B853D-D8A1-4E8A-99CC-A5F893026603}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -183,8 +185,6 @@ Global
 		{125CE9B1-3197-4381-B489-182AF194BC28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{125CE9B1-3197-4381-B489-182AF194BC28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{125CE9B1-3197-4381-B489-182AF194BC28}.Release|Any CPU.Build.0 = Release|Any CPU
-		{30E890BC-ED34-45A1-B0B4-4366C713C0A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{30E890BC-ED34-45A1-B0B4-4366C713C0A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92D7015B-2708-4707-8B49-EBE661AEB394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{92D7015B-2708-4707-8B49-EBE661AEB394}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92D7015B-2708-4707-8B49-EBE661AEB394}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -241,6 +241,10 @@ Global
 		{486811D3-1485-48BB-B6D1-E772417F40E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{486811D3-1485-48BB-B6D1-E772417F40E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{486811D3-1485-48BB-B6D1-E772417F40E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFC131CB-3336-4F11-9D60-8197CF716B4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFC131CB-3336-4F11-9D60-8197CF716B4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB8B853D-D8A1-4E8A-99CC-A5F893026603}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB8B853D-D8A1-4E8A-99CC-A5F893026603}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

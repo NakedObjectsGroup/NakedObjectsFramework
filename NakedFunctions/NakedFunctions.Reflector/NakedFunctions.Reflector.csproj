@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,7 +9,5 @@
     <ProjectReference Include="..\..\NakedFramework\NakedFramework.DependencyInjection\NakedFramework.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\NakedFramework\NakedFramework.ParallelReflector\NakedFramework.ParallelReflector.csproj" />
   </ItemGroup>
-
- 
 
 </Project>

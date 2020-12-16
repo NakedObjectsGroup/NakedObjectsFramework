@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework><LangVersion>9.0</LangVersion>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,5 +27,4 @@
     <ProjectReference Include="..\NakedFramework.Facade\NakedFramework.Facade.csproj" />
   </ItemGroup>
 
-  
 </Project>
