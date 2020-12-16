@@ -1,0 +1,70 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Helpers", "Programming Model\NakedFunctions\NakedFunctions.Helpers\NakedFunctions.Helpers.csproj", "{C6147CE2-6F82-40E8-A4D8-C4268D8610A8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.ProgrammingModel.package", "Programming Model\NakedFunctions\NakedFunctions.ProgrammingModel.package\NakedFunctions.ProgrammingModel.package.csproj", "{AD8D5400-3D6A-471C-9FB0-07A11910AE44}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Attributes", "Programming Model\NakedFunctions\NakedFunctions.Attributes\NakedFunctions.Attributes.csproj", "{3F339A4C-96AB-4A9F-B74E-2246918BAC55}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFramework.ProgrammingModel", "Programming Model\NakedFramework\NakedFramework.ProgrammingModel\NakedFramework.ProgrammingModel.csproj", "{33B82BFA-6571-47A1-8C53-A69DA71F5D2E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Attributes", "Programming Model\NakedObjects\NakedObjects.Attributes\NakedObjects.Attributes.csproj", "{AF235DA0-35A6-4D8F-8022-C579B803B90F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Helpers", "Programming Model\NakedObjects\NakedObjects.Helpers\NakedObjects.Helpers.csproj", "{F29B3FC5-2FFE-477D-BE42-D7D556CC086B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.PMResources", "Programming Model\NakedObjects\NakedObjects.PMResources\NakedObjects.PMResources.csproj", "{809AF08B-C5B3-481D-8C88-E150E3786E83}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.ProgrammingModel.Package", "Programming Model\NakedObjects\NakedObjects.ProgrammingModel.package\NakedObjects.ProgrammingModel.Package.csproj", "{2C2D5E4C-BC94-4BC1-8E26-4F8EDC867E72}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Types", "Programming Model\NakedObjects\NakedObjects.Types\NakedObjects.Types.csproj", "{604B9D25-CC44-4FA9-8FAA-7885D90792D1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C6147CE2-6F82-40E8-A4D8-C4268D8610A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6147CE2-6F82-40E8-A4D8-C4268D8610A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6147CE2-6F82-40E8-A4D8-C4268D8610A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6147CE2-6F82-40E8-A4D8-C4268D8610A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD8D5400-3D6A-471C-9FB0-07A11910AE44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD8D5400-3D6A-471C-9FB0-07A11910AE44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F339A4C-96AB-4A9F-B74E-2246918BAC55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F339A4C-96AB-4A9F-B74E-2246918BAC55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F339A4C-96AB-4A9F-B74E-2246918BAC55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F339A4C-96AB-4A9F-B74E-2246918BAC55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33B82BFA-6571-47A1-8C53-A69DA71F5D2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33B82BFA-6571-47A1-8C53-A69DA71F5D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33B82BFA-6571-47A1-8C53-A69DA71F5D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33B82BFA-6571-47A1-8C53-A69DA71F5D2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF235DA0-35A6-4D8F-8022-C579B803B90F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF235DA0-35A6-4D8F-8022-C579B803B90F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF235DA0-35A6-4D8F-8022-C579B803B90F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF235DA0-35A6-4D8F-8022-C579B803B90F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F29B3FC5-2FFE-477D-BE42-D7D556CC086B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F29B3FC5-2FFE-477D-BE42-D7D556CC086B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F29B3FC5-2FFE-477D-BE42-D7D556CC086B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F29B3FC5-2FFE-477D-BE42-D7D556CC086B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{809AF08B-C5B3-481D-8C88-E150E3786E83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{809AF08B-C5B3-481D-8C88-E150E3786E83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{809AF08B-C5B3-481D-8C88-E150E3786E83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{809AF08B-C5B3-481D-8C88-E150E3786E83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C2D5E4C-BC94-4BC1-8E26-4F8EDC867E72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C2D5E4C-BC94-4BC1-8E26-4F8EDC867E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C2D5E4C-BC94-4BC1-8E26-4F8EDC867E72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{604B9D25-CC44-4FA9-8FAA-7885D90792D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{604B9D25-CC44-4FA9-8FAA-7885D90792D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{604B9D25-CC44-4FA9-8FAA-7885D90792D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{604B9D25-CC44-4FA9-8FAA-7885D90792D1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {80648032-7D98-4643-9CF5-CBE74FDA7361}
+	EndGlobalSection
+EndGlobal
