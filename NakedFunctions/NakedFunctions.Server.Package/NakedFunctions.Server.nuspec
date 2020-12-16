@@ -18,7 +18,7 @@
     <dependencies>
       <group targetFramework="net5.0">
         <dependency id="NakedObjects.ProgrammingModel" version="[12.0.0-alpha01, 13)" />
-        <dependency id="NakedFunctions.ProgrammingModel" version="[12.0.0-alpha01, 13)" />
+        <dependency id="NakedFunctions.ProgrammingModel" version="[1.0.0-alpha01, 2)" />
         <dependency id="EntityFramework" version="[6.4.4, 7)" />
         <dependency id="Microsoft.Extensions.DependencyInjection" version="[5.0.0, 6)" />
         <dependency id="Microsoft.Extensions.Configuration" version="[5.0.0, 6)" />
