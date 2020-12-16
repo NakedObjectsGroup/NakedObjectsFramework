@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NakedFrameWork\NakedCore.ProgrammingModel\NakedCore.ProgrammingModel.csproj" />
+    <ProjectReference Include="..\..\NakedFramework\NakedFramework.ProgrammingModel\NakedFramework.ProgrammingModel.csproj" />
     <ProjectReference Include="..\NakedObjects.Attributes\NakedObjects.Attributes.csproj" />
     <ProjectReference Include="..\NakedObjects.PMResources\NakedObjects.PMResources.csproj" />
     <ProjectReference Include="..\Nakedobjects.Types\NakedObjects.Types.csproj" />
