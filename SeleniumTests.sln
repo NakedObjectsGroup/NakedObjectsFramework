@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Spa.Selenium.Test", "Spa2\NakedObjects.Spa.Selenium.Test\NakedObjects.Spa.Selenium.Test.csproj", "{A17B4A36-8FD3-4B35-B359-DE5A913DD49F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Spa.Selenium.Test", "Test\NakedObjects.Spa.Selenium.Test\NakedObjects.Spa.Selenium.Test.csproj", "{A17B4A36-8FD3-4B35-B359-DE5A913DD49F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
