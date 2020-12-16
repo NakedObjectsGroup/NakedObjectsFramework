@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <NoWarn />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\NakedFrameWork\NakedCore.ProgrammingModel\NakedCore.ProgrammingModel.csproj" />
+    <ProjectReference Include="..\NakedObjects.Attributes\NakedObjects.Attributes.csproj" />
+    <ProjectReference Include="..\NakedObjects.PMResources\NakedObjects.PMResources.csproj" />
+    <ProjectReference Include="..\Nakedobjects.Types\NakedObjects.Types.csproj" />
+  </ItemGroup>
+
+</Project>
