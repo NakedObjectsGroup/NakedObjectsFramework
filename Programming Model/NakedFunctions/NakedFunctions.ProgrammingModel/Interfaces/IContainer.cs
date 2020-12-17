@@ -24,7 +24,7 @@ namespace NakedFunctions
         //A new Guid. (Used to avoid creating an external system dependency in a function.)
         public Guid Guid { get; }
 
-        //Returns a copy of this container but with new random number in the Random property & new Guid in the Guid property.
+        //Returns a copy of this container but with new random number in the Random property (deterministic pseudo-random process).
         public IContainer Next();
 
         //Returns a copy of this container but with one or more objects to be saved added.
