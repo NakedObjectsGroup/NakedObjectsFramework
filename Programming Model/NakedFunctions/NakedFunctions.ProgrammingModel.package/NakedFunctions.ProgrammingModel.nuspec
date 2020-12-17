@@ -9,19 +9,17 @@
     <projectUrl>https://github.com/NakedObjectsGroup/</projectUrl>
     <icon>images\icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Naked Objects Programming Model. Add to a Model project (class library) for useful Attributes and Helper classes.</description>
-    <tags>naked objects nakedobjects</tags>
+    <description>Naked Functions Programming Model. Add to a Model project (class library) for useful Attributes. Interfaces, and Helper classes.</description>
+    <tags>functional programming nakedfunctions</tags>
     <dependencies>
       <group targetFramework="net5.0"/>
     </dependencies>
   </metadata>
   <files>
     <file src="icon.png" target="images\"/>
-    <file src="..\NakedFunctions.Attributes\bin\Debug\**\NakedFunctions.Attributes.dll" target="lib"/>
-    <file src="..\NakedFunctions.Helpers\bin\Debug\**\NakedFunctions.Helpers.dll" target="lib"/>
+    <file src="..\..\NakedFunctions\NakedFunctions.ProgrammingModel\bin\Debug\**\NakedFunctions.ProgrammingModel.dll" target="lib"/>
     <file src="..\..\NakedFramework\NakedFramework.ProgrammingModel\bin\Debug\**\NakedFramework.ProgrammingModel.dll" target="lib"/>
-    <file src="..\NakedFunctions.Attributes\bin\Debug\**\NakedFunctions.Attributes.pdb" target="lib"/>
-    <file src="..\NakedFunctions.Helpers\bin\Debug\**\NakedFunctions.Helpers.pdb" target="lib"/>
+    <file src="..\..\NakedFunctions\NakedFunctions.ProgrammingModel\bin\Debug\**\NakedFunctions.ProgrammingModel.pdb" target="lib"/>
     <file src="..\..\NakedFramework\NakedFramework.ProgrammingModel\bin\Debug\**\NakedFramework.ProgrammingModel.pdb" target="lib"/>
   </files>
 </package>
