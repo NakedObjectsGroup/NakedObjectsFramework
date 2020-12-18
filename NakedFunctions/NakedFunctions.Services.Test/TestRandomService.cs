@@ -1,7 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Text;
-using System;
-using NakedFunctions.Services;
 
 namespace NakedFunctions.Services.Test
 {
@@ -12,7 +10,7 @@ namespace NakedFunctions.Services.Test
         [TestMethod]
         public void Random1()
         {
-            IRandomSeeder seeder = new RandomSeeder(521288629, 362436069);
+            IRandomSeedGenerator seeder = new RandomSeedGenerator(521288629, 362436069);
             IRandom random = seeder.Seed;
             var sb = new StringBuilder();
             for (int i = 0; i < 10; i++)
@@ -20,14 +18,14 @@ namespace NakedFunctions.Services.Test
                 sb.Append(random.ValueInRange(0,10)).Append(" ");
                 random = random.Next();             
             }
-            string gen1Results = sb.ToString();
-            Assert.AreEqual("4 0 1 6 5 0 9 8 2 7 ", gen1Results);
+            string actual = sb.ToString();
+            Assert.AreEqual("4 0 1 6 5 0 9 8 2 7 ", actual);
         }
 
         [TestMethod]
         public void Random2()
         {
-            IRandomSeeder seeder = new RandomSeeder(new DateTime(2020,12,31));
+            IRandomSeedGenerator seeder = new RandomSeedGenerator(362436069, 521288629);
             IRandom random = seeder.Seed;
             var sb = new StringBuilder();
             for (int i = 0; i < 10; i++)
@@ -35,15 +33,15 @@ namespace NakedFunctions.Services.Test
                 sb.Append(random.ValueInRange(0, 10)).Append(" ");
                 random = random.Next();
             }
-            string gen1Results = sb.ToString();
-            Assert.AreEqual("4 0 7 4 6 3 7 8 7 8 ", gen1Results);
+            string actual = sb.ToString();
+            Assert.AreEqual("6 3 8 8 5 2 4 1 3 8 ", actual);
         }
 
 
         [TestMethod]
         public void Random3()
         {
-            IRandomSeeder seeder = new RandomSeeder(521288629, 362436069);
+            IRandomSeedGenerator seeder = new RandomSeedGenerator(521288629, 362436069);
             IRandom random = seeder.Seed;
             var sb = new StringBuilder();
             for (int i = 0; i < 10; i++)
@@ -51,14 +49,14 @@ namespace NakedFunctions.Services.Test
                 sb.Append(random.ValueInRange(3, 5)).Append(" ");
                 random = random.Next();
             }
-            string gen1Results = sb.ToString();
-            Assert.AreEqual("3 3 4 3 4 3 4 3 3 4 ", gen1Results);
+            string actual = sb.ToString();
+            Assert.AreEqual("3 3 4 3 4 3 4 3 3 4 ", actual);
         }
 
         [TestMethod]
         public void Random4()
         {
-            IRandomSeeder seeder = new RandomSeeder(521288629, 362436069);
+            IRandomSeedGenerator seeder = new RandomSeedGenerator(521288629, 362436069);
             IRandom random = seeder.Seed;
             var sb = new StringBuilder();
             for (int i = 0; i < 10; i++)
@@ -66,14 +64,14 @@ namespace NakedFunctions.Services.Test
                 sb.Append(random.ValueInRange(4)).Append(" ");
                 random = random.Next();
             }
-            string gen1Results = sb.ToString();
-            Assert.AreEqual("2 0 3 0 3 0 1 2 2 1 ", gen1Results);
+            string actual = sb.ToString();
+            Assert.AreEqual("2 0 3 0 3 0 1 2 2 1 ", actual);
         }
 
         [TestMethod] //Very crude test to check that there is an approximately even distribution of 0, 1 results
         public void RandomSeedFromClock()
         {
-            IRandomSeeder seeder = new RandomSeeder(DateTime.Now);
+            IRandomSeedGenerator seeder = new RandomSeedGenerator();
             IRandom random = seeder.Seed;
             int zeros = 0;
             int ones = 0;
@@ -89,7 +87,6 @@ namespace NakedFunctions.Services.Test
                     ones += 1;
                 }
             }
-
             Assert.AreEqual(1000, zeros + ones);
             Assert.IsTrue(zeros < 550);
             Assert.IsTrue(ones < 550);

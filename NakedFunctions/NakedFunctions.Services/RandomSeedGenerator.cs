@@ -1,0 +1,22 @@
+﻿
+
+using System;
+
+namespace NakedFunctions.Services
+{
+    public class RandomSeedGenerator : IRandomSeedGenerator
+    {
+        public RandomSeedGenerator()
+        {
+            var now = DateTime.Now.ToFileTime();
+            Seed = new RandomNumber((uint)(now >> 16), (uint)(now % 4294967296));
+        }
+
+        public RandomSeedGenerator(uint u, uint v)
+        {
+            Seed = new RandomNumber(u,v);
+        }
+
+        public IRandom Seed { get; init; }
+    }
+}
