@@ -1,0 +1,24 @@
+1. Product_MenuFunctions.FindProductByName
+- Minimal implementation of IContainer, with only Instances method working
+- Container to be automatically injected as a parameter.
+
+2. Product_MenuFunctions.RandomProduct
+- Implementation of Container.GetService<T>() 
+- Registration of the RandomSeedGenerator service (currently in new NakedFunctions.Services project) as of type IRandomSeedGenerator. Service should be instantiated each time it is used, and using the zero param constructor.
+
+3. Product_MenuFunctions.FindProductByNumber
+- Recognition of returned tuple ([domaintype], IContainer)
+- Implementation of Container.WithOutput method.
+- Implementation of IAlert service, resulting  in inclusion of user warnings/info in RO.
+
+4. SpecialOffer_Functions.EditDescription
+- Implementation of Container.WithPendingSave & PendingSave (see note on IContainer).
+- Use of this information to udate object(s).
+- Edit methods for Discount, Type & Category should also then work
+
+5. SpecialOffer_Functions.EditDates
+- Registration of Clock (implementation of IClock) service, found in NakedFunctions.Service
+
+6. SpecialOffer_Functions.AssociateWithProduct
+- Should now work, but testing that Container.PendingSave can now also save new objects.
+- ProductFunctions.AssociateWithSpecialOffer should then also work.

@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedFunctions;
 using System;
 using System.Linq;
 
@@ -12,7 +13,7 @@ namespace AdventureWorksModel {
     public static class Employee_Functions {
         #region Life Cycle Methods
 
-        public static Employee Updating(this Employee x, [NakedFunctions.Now] DateTime now) => x with { ModifiedDate = now };
+        public static Employee Updating(this Employee x, [Injected] DateTime now) => x with { ModifiedDate = now };
 
         #endregion
 

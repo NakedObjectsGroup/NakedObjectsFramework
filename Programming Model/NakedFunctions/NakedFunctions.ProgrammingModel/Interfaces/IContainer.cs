@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace NakedFunctions
@@ -15,8 +16,7 @@ namespace NakedFunctions
         public IContainer WithPendingSave(params object[] toBeSaved);
 
         //TODO: Do we need to consider possibility that a chained action modifies the same object more than once? What happend in NakedObjects now?
-
-        public object[] PendingSave { get; }
+        public ImmutableArray<object> PendingSave { get; }
 
         //Returns a copy of this container but with an Action<T> (where T is a service registered in services configuration) to be called by the framework after the method. has exited.
         public IContainer WithOutput<T>(Action<T> action);

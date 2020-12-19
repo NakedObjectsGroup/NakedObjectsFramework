@@ -31,26 +31,20 @@ namespace AdventureWorksModel {
         [MemberOrder(1), TableView(true, nameof(Product.ProductNumber), nameof(Product.ProductSubcategory), nameof(Product.ListPrice))]
         public static IQueryable<Product> FindProductByName(
             string searchString,
-            IQueryable<Product> products)
+            IContainer container)
         {
-            return products.Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
+            return container.Instances<Product>().Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
         }
 
         [MemberOrder(2)]
-        public static (Product, Action<IAlert>) FindProductByNumber(
+        public static (Product, IContainer) FindProductByNumber(string number, IContainer container) =>
+             SingleObjectWarnIfNoMatch(container.Instances<Product>().Where(x => x.ProductNumber == number), container);
 
-            string number,
-            IQueryable<Product> products)
-        {
-            return SingleObjectWarnIfNoMatch(products.Where(x => x.ProductNumber == number));
-        }
 
         [MemberOrder(10)]
-        public static Product RandomProduct(
-            IQueryable<Product> products,
-            [Injected] int random)
+        public static Product RandomProduct(IContainer container)
         {
-            return Random(products, random);
+            return Random<Product>(container);
         }
 
         //TODO:

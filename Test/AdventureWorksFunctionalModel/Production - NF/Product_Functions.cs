@@ -55,18 +55,14 @@ namespace AdventureWorksModel {
 
 
         #region Associate with Special Offer
-        public static (SpecialOfferProduct, SpecialOfferProduct, Action<IAlert>) AssociateWithSpecialOffer(
-            this Product product,
-            SpecialOffer offer,
-             IQueryable<SpecialOfferProduct> sops
-        )
-        => SpecialOffer_Functions.AssociateWithProduct(offer, product, sops);
+        public static (SpecialOfferProduct, IContainer) AssociateWithSpecialOffer(
+            this Product product, SpecialOffer offer,IContainer container)  => 
+            SpecialOffer_Functions.AssociateWithProduct(offer, product, container);
 
         [PageSize(20)]
         public static IQueryable<SpecialOffer> AutoComplete1AssociateWithSpecialOffer(
-            [Range(2, 0)] string name,
-            IQueryable<SpecialOffer> offers)
-        => offers.Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
+            [Range(2, 0)] string name, IContainer container) => 
+            container.Instances<SpecialOffer>().Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
         #endregion
 
         #region Property functions
