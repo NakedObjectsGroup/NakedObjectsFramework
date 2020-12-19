@@ -9,14 +9,14 @@ namespace NakedFunctions.Services
         public RandomSeedGenerator()
         {
             var now = DateTime.Now.ToFileTime();
-            Seed = new RandomNumber((uint)(now >> 16), (uint)(now % 4294967296));
+            Random = new RandomNumber((uint)(now >> 16), (uint)(now % 4294967296));
         }
 
         public RandomSeedGenerator(uint u, uint v)
         {
-            Seed = new RandomNumber(u,v);
+            Random = new RandomNumber(u,v);
         }
 
-        public IRandom Seed { get; init; }
+        public IRandom Random { get; init; }
     }
 }

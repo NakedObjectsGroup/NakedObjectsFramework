@@ -11,7 +11,7 @@ namespace NakedFunctions.Services.Test
         public void Random1()
         {
             IRandomSeedGenerator seeder = new RandomSeedGenerator(521288629, 362436069);
-            IRandom random = seeder.Seed;
+            IRandom random = seeder.Random;
             var sb = new StringBuilder();
             for (int i = 0; i < 10; i++)
             {
@@ -26,7 +26,7 @@ namespace NakedFunctions.Services.Test
         public void Random2()
         {
             IRandomSeedGenerator seeder = new RandomSeedGenerator(362436069, 521288629);
-            IRandom random = seeder.Seed;
+            IRandom random = seeder.Random;
             var sb = new StringBuilder();
             for (int i = 0; i < 10; i++)
             {
@@ -42,7 +42,7 @@ namespace NakedFunctions.Services.Test
         public void Random3()
         {
             IRandomSeedGenerator seeder = new RandomSeedGenerator(521288629, 362436069);
-            IRandom random = seeder.Seed;
+            IRandom random = seeder.Random;
             var sb = new StringBuilder();
             for (int i = 0; i < 10; i++)
             {
@@ -57,7 +57,7 @@ namespace NakedFunctions.Services.Test
         public void Random4()
         {
             IRandomSeedGenerator seeder = new RandomSeedGenerator(521288629, 362436069);
-            IRandom random = seeder.Seed;
+            IRandom random = seeder.Random;
             var sb = new StringBuilder();
             for (int i = 0; i < 10; i++)
             {
@@ -72,7 +72,7 @@ namespace NakedFunctions.Services.Test
         public void RandomSeedFromClock()
         {
             IRandomSeedGenerator seeder = new RandomSeedGenerator();
-            IRandom random = seeder.Seed;
+            IRandom random = seeder.Random;
             int zeros = 0;
             int ones = 0;
             for (int i = 0; i < 1000; i++)

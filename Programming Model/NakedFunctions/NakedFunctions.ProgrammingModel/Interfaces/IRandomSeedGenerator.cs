@@ -6,6 +6,6 @@
     {
         //Returns an initial random number, the value of which may be used.
         //Subsequent random numbers should be generated using the Next method(s) on the returned IRandom
-        IRandom Seed { get;  }
+        IRandom Random { get;  }
     }
 }
