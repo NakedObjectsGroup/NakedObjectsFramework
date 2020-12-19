@@ -8,9 +8,7 @@
 using System;
 
 namespace NakedFunctions {
-    /// <summary>
-    ///     TODO: To be removed. (Superseded by [Now] and [Random] attributes).
-    /// </summary>
+ 
     [AttributeUsage(AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
     public class InjectedAttribute : Attribute { }
 }
