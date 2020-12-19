@@ -12,9 +12,9 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     public static class PersonCreditCard_Functions {
         #region Life Cycle Methods
-        public static PersonCreditCard Updating(PersonCreditCard x, [Now] DateTime now) => x with { ModifiedDate = now };
+        public static PersonCreditCard Updating(PersonCreditCard x, [Injected] DateTime now) => x with { ModifiedDate = now };
 
-        public static PersonCreditCard Persisting(PersonCreditCard x, [Now] DateTime now) => x with {ModifiedDate = now };
+        public static PersonCreditCard Persisting(PersonCreditCard x, [Injected] DateTime now) => x with {ModifiedDate = now };
         #endregion
     }
 }

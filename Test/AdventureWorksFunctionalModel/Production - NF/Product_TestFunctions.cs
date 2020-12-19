@@ -108,37 +108,37 @@ namespace AdventureWorksFunctionalModel {
             return pp;
         }
 
-        public static IProduct TestInjectedGuid(this Product product, Guid guid) {
+        public static IProduct TestInjectedGuid(this Product product, [Injected] Guid guid) {
             var test = guid;
             return product;
         }
 
-        public static IProduct TestInjectedPrincipal(this Product product, IPrincipal principal) {
+        public static IProduct TestInjectedPrincipal(this Product product, [Injected] IPrincipal principal) {
             var test = principal;
             return product;
         }
 
-        public static IProduct TestInjectedDateTime(this Product product, [Now] DateTime dateTime) {
+        public static IProduct TestInjectedDateTime(this Product product, [Injected] DateTime dateTime) {
             var test = dateTime;
             return product;
         }
 
-        public static IProduct TestInjectedRandom(this Product product, [Random] int random) {
+        public static IProduct TestInjectedRandom(this Product product, [Injected] int random) {
             var test = random;
             return product;
         }
 
 
-        public static IProduct Persisting(this Product product, IQueryable<Product> allProducts, Guid guid)
+        public static IProduct Persisting(this Product product, IQueryable<Product> allProducts, [Injected] Guid guid)
             => product with { rowguid = guid };
 
-        public static IProduct Persisted(this Product product, IQueryable<Product> allProducts, Guid guid) {
+        public static IProduct Persisted(this Product product, IQueryable<Product> allProducts, [Injected] Guid guid) {
             return null;
         }
 
-        public static IProduct Updating(this Product product, IQueryable<Product> allProducts, Guid guid) => product with { rowguid = guid };
+        public static IProduct Updating(this Product product, IQueryable<Product> allProducts, [Injected] Guid guid) => product with { rowguid = guid };
 
-        public static IProduct Updated(this Product product, IQueryable<Product> allProducts, Guid guid) => null;
+        public static IProduct Updated(this Product product, IQueryable<Product> allProducts, [Injected] Guid guid) => null;
 
         public static Product FindProduct(this Product product, Product product1) => product1;
 

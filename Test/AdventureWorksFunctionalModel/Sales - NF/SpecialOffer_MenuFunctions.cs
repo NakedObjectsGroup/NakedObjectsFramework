@@ -98,7 +98,7 @@ namespace AdventureWorksModel
         [MemberOrder(10)]
         public static (SpecialOffer, Action<IAlert>) RandomSpecialOffertWithAlert(
             IQueryable<SpecialOffer> offers,
-            [Random] int random)
+            [Injected] int random)
         {
             return (Random(offers, random), InformUser("This was randomly selected"));
         }

@@ -52,7 +52,7 @@ namespace AdventureWorksModel {
 
         #region Life Cycle Methods
 
-        public static Shift Updating(this Shift x, [Now] DateTime now) => x with { ModifiedDate = now };
+        public static Shift Updating(this Shift x, [Injected] DateTime now) => x with { ModifiedDate = now };
 
         #endregion
     }

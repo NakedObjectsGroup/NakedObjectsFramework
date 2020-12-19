@@ -38,7 +38,7 @@ namespace AdventureWorksModel {
         //[MemberOrder(10)]
         //public static (EmployeePayHistory, EmployeePayHistory) ChangePayRate(
         //    Employee e,
-        //    [Now] DateTime now
+        //    [Injected] DateTime now
         //)
         //{
         //    EmployeePayHistory current = CurrentEmployeePayHistory(e);
@@ -56,7 +56,7 @@ namespace AdventureWorksModel {
         //    Employee e,
         //    Department department, 
         //     Shift shift,
-        //    [Now] DateTime now)
+        //    [Injected] DateTime now)
         //{
         //    var edh = CurrentAssignment(e) with {EndDate =  now};
         //    var newAssignment = new EmployeeDepartmentHistory(department, shift, e, now );

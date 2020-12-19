@@ -15,9 +15,9 @@ namespace AdventureWorksModel
     {
 
         #region Life Cycle Methods
-        public static TransactionHistory Updating(this TransactionHistory x, [Now] DateTime now) => x with { ModifiedDate = now };
+        public static TransactionHistory Updating(this TransactionHistory x, [Injected] DateTime now) => x with { ModifiedDate = now };
 
-        public static TransactionHistory Persisting(this TransactionHistory x, [Now] DateTime now) => x with { ModifiedDate = now };
+        public static TransactionHistory Persisting(this TransactionHistory x, [Injected] DateTime now) => x with { ModifiedDate = now };
         #endregion
     }
 }

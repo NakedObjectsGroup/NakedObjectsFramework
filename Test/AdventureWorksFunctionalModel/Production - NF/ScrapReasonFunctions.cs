@@ -15,8 +15,8 @@ namespace AdventureWorksModel
     {
 
         #region Life Cycle Methods
-        public static ScrapReason Updating(this ScrapReason x, [Now] DateTime now) => x with { ModifiedDate = now };
-        public static ScrapReason Persisting(this ScrapReason x, [Now] DateTime now) => x with { ModifiedDate = now };
+        public static ScrapReason Updating(this ScrapReason x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static ScrapReason Persisting(this ScrapReason x, [Injected] DateTime now) => x with { ModifiedDate = now };
         #endregion
     }
 }

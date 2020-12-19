@@ -15,9 +15,9 @@ namespace AdventureWorksModel
     {
 
         #region Life Cycle Methods
-        public static ProductPhoto Updating(this ProductPhoto x, [Now] DateTime now) => x with { ModifiedDate = now };
+        public static ProductPhoto Updating(this ProductPhoto x, [Injected] DateTime now) => x with { ModifiedDate = now };
 
-        public static ProductPhoto Persisting(this ProductPhoto x, [Now] DateTime now) => x with { ModifiedDate = now };
+        public static ProductPhoto Persisting(this ProductPhoto x, [Injected] DateTime now) => x with { ModifiedDate = now };
         #endregion
 
 

@@ -77,7 +77,7 @@ namespace AdventureWorksModel {
             Guid g1,
             Guid g2,
             Guid g3,
-            [Now] DateTime d)
+            [Injected] DateTime d)
         {
             throw new NotImplementedException();
             //var s = new Store(name, demographics, null, null, d, g1, 0, new List<BusinessEntityAddress>(), new List<BusinessEntityContact>(), g2, d);
@@ -87,8 +87,8 @@ namespace AdventureWorksModel {
 
         public static (Customer, Customer) CreateCustomerFromStore(
             Store store, 
-            Guid guid,
-            [Now] DateTime dt)
+            [Injected] Guid guid,
+            [Injected] DateTime dt)
         {
 
             throw new NotImplementedException();
@@ -102,7 +102,7 @@ namespace AdventureWorksModel {
             [Optionally] string demographics,
             Guid guid1,
             Guid guid2,
-            [Now] DateTime dt
+            [Injected] DateTime dt
             )
         {
 
@@ -121,7 +121,7 @@ namespace AdventureWorksModel {
 
         public static Customer RandomStore(
             IQueryable<Customer> customers,
-            [Random] int random) {
+            [Injected] int random) {
             return Random(customers.Where(t => t.StoreID != null), random);
         }
         #endregion
@@ -161,7 +161,7 @@ namespace AdventureWorksModel {
         [MemberOrder(70)]
         public static Customer RandomIndividual(
             IQueryable<Customer> customers,
-            [Random] int random)
+            [Injected] int random)
         {
             return Random(customers.Where(t => t.StoreID == null), random);
         }
@@ -174,8 +174,8 @@ namespace AdventureWorksModel {
         
         public static List<Customer> RandomCustomers(
             IQueryable<Customer> customers,
-            [Random] int random1,
-            [Random] int random2)
+            [Injected] int random1,
+            [Injected] int random2)
         {
             var list = new List<Customer>();
             list.Add(RandomIndividual(customers, random1));

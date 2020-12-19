@@ -13,9 +13,9 @@ namespace AdventureWorksModel {
 
     public static class ProductSubcategoryFunctions
     {
-       public static ProductSubcategory Updating(this ProductSubcategory x, [Now] DateTime now) => x with {ModifiedDate =  now};
+       public static ProductSubcategory Updating(this ProductSubcategory x, [Injected] DateTime now) => x with {ModifiedDate =  now};
 
-        public static ProductSubcategory Persisting(this ProductSubcategory x, Guid guid, [Now] DateTime now) => 
+        public static ProductSubcategory Persisting(this ProductSubcategory x, [Injected] Guid guid, [Injected] DateTime now) => 
             x with { ModifiedDate = now, rowguid = guid };
     }
 }

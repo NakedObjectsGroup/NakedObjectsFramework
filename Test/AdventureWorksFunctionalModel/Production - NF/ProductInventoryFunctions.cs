@@ -12,6 +12,6 @@ namespace AdventureWorksModel
 {
     public static class ProductInventoryFunctions
     {
-        public static ProductInventory Updating(ProductInventory a, [Now] DateTime now) => a with { ModifiedDate = now };
+        public static ProductInventory Updating(ProductInventory a, [Injected] DateTime now) => a with { ModifiedDate = now };
     }
 }

@@ -92,7 +92,7 @@ namespace AdventureWorksModel {
 
         public static Employee RandomEmployee(
             IQueryable<Employee> employees,
-            [Random] int random) =>
+            [Injected] int random) =>
             Random(employees, random);
 
         ////This method is to test use of nullable booleans

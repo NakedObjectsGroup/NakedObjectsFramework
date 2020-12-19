@@ -11,6 +11,6 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     public static class IllustrationFunctions
     {
-        public static Illustration Updating(Illustration ill, [Now] DateTime now) => ill with {ModifiedDate =  now};   
+        public static Illustration Updating(Illustration ill, [Injected] DateTime now) => ill with {ModifiedDate =  now};   
     }
 }

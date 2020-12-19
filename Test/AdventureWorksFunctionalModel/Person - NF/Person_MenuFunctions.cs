@@ -27,7 +27,7 @@ namespace AdventureWorksModel {
         public static Person RandomContact(
             
             IQueryable<Person> persons, 
-            [Random] int random) {
+            [Injected] int random) {
             return Random(persons, random);
         }
 
@@ -35,8 +35,8 @@ namespace AdventureWorksModel {
         public static IQueryable<Person> RandomContacts(
             
             IQueryable<Person> persons,
-            [Random] int random1, 
-            [Random] int random2) {
+            [Injected] int random1, 
+            [Injected] int random2) {
             Person contact1 = RandomContact(persons, random1);
             Person contact2 = RandomContact(persons, random2);
             return new[] {contact1, contact2}.AsQueryable();
