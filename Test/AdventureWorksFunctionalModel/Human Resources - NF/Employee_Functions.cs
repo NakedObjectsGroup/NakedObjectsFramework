@@ -13,7 +13,7 @@ namespace AdventureWorksModel {
     public static class Employee_Functions {
         #region Life Cycle Methods
 
-        public static Employee Updating(this Employee x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static Employee Updating(this Employee x, IContainer container) => x with { ModifiedDate = container.Now() };
 
         #endregion
 
@@ -27,10 +27,8 @@ namespace AdventureWorksModel {
         //}
 
         public static IQueryable<Employee> ColleaguesInSameDept(
-            this Employee e,
-            IQueryable<EmployeeDepartmentHistory> edhs
-        ) {
-            var allCurrent = edhs.Where(edh => edh.EndDate == null);
+            this Employee e, IContainer container) {
+            var allCurrent = container.Instances< EmployeeDepartmentHistory>().Where(edh => edh.EndDate == null);
             var thisId = e.BusinessEntityID;
             var thisDeptId = allCurrent.Single(edh => edh.EmployeeID == thisId).DepartmentID;
             return allCurrent.Where(edh => edh.DepartmentID == thisDeptId).Select(edh => edh.Employee);
@@ -77,11 +75,9 @@ namespace AdventureWorksModel {
 
         //#endregion
 
-        public static (Employee, Employee) SpecifyManager(
-            Employee e,
-            IEmployee manager) {
+        public static (Employee, IContainer) SpecifyManager(Employee e, IEmployee manager, IContainer container) {
             var e2 = e with {ManagerID = manager.BusinessEntityID};
-            return (e2, e2);
+            return Helpers.DisplayAndSave(e2, container);
         }
 
         //[PageSize(20)]
@@ -104,6 +100,6 @@ namespace AdventureWorksModel {
         //    return new[] { "S", "M" };
         //}
 
-        public static (Employee, Employee) CreateNewEmployeeFromContact(this Person contactDetails) => Employee_MenuFunctions.CreateNewEmployeeFromContact(contactDetails);
+        public static (Employee, IContainer) CreateNewEmployeeFromContact(this Person contactDetails, IContainer container) => Employee_MenuFunctions.CreateNewEmployeeFromContact(contactDetails, container);
     }
 }

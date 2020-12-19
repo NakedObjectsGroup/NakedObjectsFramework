@@ -10,7 +10,7 @@ using System.ComponentModel;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class Customer  {
+    public record Customer  {
         #region Injected Services
         public PersonRepository ContactRepository { set; protected get; }
         public IDomainObjectContainer Container { set; protected get; }

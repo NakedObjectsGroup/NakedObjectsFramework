@@ -27,36 +27,38 @@ namespace AdventureWorksModel
         #region Edit
         [Edit]
         public static (SpecialOffer, IContainer) EditDescription(this SpecialOffer sp, string description, IContainer container)
-        => DisplayAndPersist(sp with { Description = description }, container);
+        => DisplayAndSave(sp with { Description = description }, container);
 
         [Edit]
         public static (SpecialOffer, IContainer) EditDiscount(this SpecialOffer sp, decimal discountPct, IContainer container)
-        => DisplayAndPersist(sp with { DiscountPct = discountPct }, container);
+        => DisplayAndSave(sp with { DiscountPct = discountPct }, container);
 
         [Edit]
         public static (SpecialOffer, IContainer) EditType(this SpecialOffer sp, string type, IContainer container)
-        => DisplayAndPersist(sp with { Type = type }, container);
+        => DisplayAndSave(sp with { Type = type }, container);
 
         [Edit]
         public static (SpecialOffer, IContainer) EditCategory(this SpecialOffer sp, string category, IContainer container)
-        => DisplayAndPersist(sp with { Category = category }, container);
+        => DisplayAndSave(sp with { Category = category }, container);
 
         public static string[] Choices0Category(this SpecialOffer sp) => new[] { "Reseller", "Customer" };
 
         [Edit]
         public static (SpecialOffer, IContainer) EditDates(this SpecialOffer sp, DateTime startDate, DateTime endDate, IContainer container)
-        => DisplayAndPersist(sp with { StartDate = startDate, EndDate = endDate }, container);
+        => DisplayAndSave(sp with { StartDate = startDate, EndDate = endDate }, container);
 
         public static DateTime Default0EditDates(this SpecialOffer sp, IContainer container) => container.GetService<IClock>().Today();
 
         public static DateTime Default1EditDates(this SpecialOffer sp, IContainer container) => container.GetService<IClock>().Today().AddDays(90);
 
         [Edit]
-        public static (SpecialOffer, IContainer) EditQuantities(this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContainer container)
-=> DisplayAndPersist(sp with { MinQty = minQty, MaxQty = maxQty }, container);
+        public static (SpecialOffer, IContainer) EditQuantities(
+            this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty, IContainer container) => 
+            DisplayAndSave(sp with { MinQty = minQty, MaxQty = maxQty }, container);
 
-        public static string ValidateEditQuantities(this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty)
-=> minQty >= 1 && maxQty is null || maxQty.Value >= minQty ? null : "Quanties invalid";
+        public static string ValidateEditQuantities(
+            this SpecialOffer sp, [DefaultValue(1)] int minQty, [Optionally] int? maxQty) => 
+            minQty >= 1 && maxQty is null || maxQty.Value >= minQty ? null : "Quanties invalid";
         #endregion
 
         #region AssociateWithProduct

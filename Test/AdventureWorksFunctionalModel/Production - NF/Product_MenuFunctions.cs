@@ -38,7 +38,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(2)]
         public static (Product, IContainer) FindProductByNumber(string number, IContainer container) =>
-             SingleObjectWarnIfNoMatch(container.Instances<Product>().Where(x => x.ProductNumber == number), container);
+             container.Instances<Product>().Where(x => x.ProductNumber == number).SingleObjectWarnIfNoMatch(container);
 
 
         [MemberOrder(10)]

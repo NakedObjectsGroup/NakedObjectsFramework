@@ -13,10 +13,8 @@ using System.Linq;
 using NakedObjects;
 
 namespace AdventureWorksModel {
-    public class Store : BusinessEntity, IBusinessEntityWithContacts {
-        #region Injected Servives
-        public SalesRepository SalesRepository { set; protected get; }
-        #endregion
+    public record Store : BusinessEntity, IBusinessEntityWithContacts {
+
 
         #region Life Cycle Methods
         public override void Persisting() {
@@ -67,8 +65,9 @@ namespace AdventureWorksModel {
         public virtual SalesPerson SalesPerson { get; set; }
 
         [PageSize(20)]
-        public IQueryable<SalesPerson> AutoCompleteSalesPerson([MinLength(2)] string name) {
-            return SalesRepository.FindSalesPersonByName(null, name);
+        public IQueryable<SalesPerson> AutoCompleteSalesPerson([MinLength(2)] string name, IContainer container) {
+            throw new NotImplementedException();
+            //return Sales_MenuFunctions.FindSalesPersonByName(name, container);
         }
 
         #endregion

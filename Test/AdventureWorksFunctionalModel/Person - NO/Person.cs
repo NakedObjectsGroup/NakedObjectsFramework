@@ -18,7 +18,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdventureWorksModel {
 
-    public class Person : BusinessEntity {
+    public record Person : BusinessEntity {
 
         #region Life Cycle Methods
         public override void Persisting() {

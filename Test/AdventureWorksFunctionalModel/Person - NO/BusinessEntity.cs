@@ -5,7 +5,7 @@ namespace AdventureWorksModel {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class BusinessEntity : IBusinessEntity {
+    public record BusinessEntity : IBusinessEntity {
         #region Injected Services 
         public IDomainObjectContainer Container { set; protected get; }
         #endregion
