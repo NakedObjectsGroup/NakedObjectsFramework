@@ -45,11 +45,11 @@ namespace NakedFunctions.Rest.App.Demo {
                 builder.AddEntityPersistor(options => {
                     options.ContextInstallers = new[] { ModelConfig_NakedFunctionsPM.DbContextInstaller };
                 });
-                builder.AddNakedObjects(options => {
-                    options.Types = ModelConfig_NakedObjectsPM.DomainTypes();
-                    options.Services = ModelConfig_NakedObjectsPM.Services();
-                    options.NoValidate = true;
-                });
+                //builder.AddNakedObjects(options => {
+                //    options.Types = ModelConfig_NakedObjectsPM.DomainTypes();
+                //    options.Services = ModelConfig_NakedObjectsPM.Services();
+                //    options.NoValidate = true;
+                //});
                 builder.AddNakedFunctions(options => {
                     options.FunctionalTypes = ModelConfig_NakedFunctionsPM.DomainTypes();
                     options.Functions = ModelConfig_NakedFunctionsPM.DomainFunctions();
