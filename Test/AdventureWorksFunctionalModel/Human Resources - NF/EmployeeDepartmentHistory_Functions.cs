@@ -5,23 +5,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-    public record JobCandidate  {
-        public virtual int JobCandidateID { get; init; }
-        public virtual string Resume { get; init; }
 
-        [Hidden]
-        public virtual int? EmployeeID { get; init; }
+    public static class EmployeeDepartmentHistoryFunctions
+    {
+        #region Life Cycle Methods
+        public static EmployeeDepartmentHistory Updating(this EmployeeDepartmentHistory x, IContainer container) => x with { ModifiedDate = container.Now() };
 
-        public Employee Employee { get; init; }
-
-        [MemberOrder(99), ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; init; }
-
-        public override string ToString() => $"{Employee}";
+        public static EmployeeDepartmentHistory Persisting(this EmployeeDepartmentHistory x, IContainer container) => x with { ModifiedDate = container.Now() };
+        #endregion
     }
 }

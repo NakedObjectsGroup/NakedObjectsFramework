@@ -43,14 +43,4 @@ namespace AdventureWorksModel {
 
         public override string ToString() => $"{Department} {StartDate.ToString("d")}";
     }
-
-    public static class EmployeeDepartmentHistoryFunctions
-    {
-
-        #region Life Cycle Methods
-        public static EmployeeDepartmentHistory Updating(this EmployeeDepartmentHistory x, [Injected] DateTime now) => x with { ModifiedDate = now };
-
-        public static EmployeeDepartmentHistory Persisting(this EmployeeDepartmentHistory x, [Injected] DateTime now) => x with { ModifiedDate = now };
-        #endregion
-    }
 }

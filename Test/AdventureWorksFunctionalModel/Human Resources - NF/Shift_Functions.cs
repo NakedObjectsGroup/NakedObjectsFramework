@@ -6,22 +6,26 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
+using static AdventureWorksModel.Helpers;
 
 namespace AdventureWorksModel {
-    public record JobCandidate  {
-        public virtual int JobCandidateID { get; init; }
-        public virtual string Resume { get; init; }
 
-        [Hidden]
-        public virtual int? EmployeeID { get; init; }
+    public static class ShiftFunctions {
 
-        public Employee Employee { get; init; }
+        #region Life Cycle Methods
 
-        [MemberOrder(99), ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; init; }
+        public static Shift Updating(this Shift x, IContainer container) => x with { ModifiedDate = container.Now() };
 
-        public override string ToString() => $"{Employee}";
+        #endregion
+
+        public static (Shift, IContainer) ChangeTimes(this Shift s, TimeSpan startTime, TimeSpan endTime, IContainer container)
+        {
+            var s2 = s with { StartTime = startTime } with { EndTime = endTime };
+            return DisplayAndSave(s2, container);
+        }
+
+        public static TimeSpan Default0ChangeTimes(this Shift s) => new(0, 9, 0, 0);
+
     }
 }

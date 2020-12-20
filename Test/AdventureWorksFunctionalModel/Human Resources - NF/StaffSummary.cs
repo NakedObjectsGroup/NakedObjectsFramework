@@ -9,16 +9,6 @@ namespace AdventureWorksModel
     [NotMapped]
     public record StaffSummary
     {
-        #region Injected services
-        
-        #endregion
-
-        public override string ToString() => "Staff Summary";
-
-        public string DisablePropertyDefault()
-        {
-            return "Not editable";
-        }
         [MemberOrder(1)]
         public virtual int Female { get; init; }
 
@@ -28,5 +18,6 @@ namespace AdventureWorksModel
         [MemberOrder(3)]
         public virtual int TotalStaff { get; init; }
 
+        public override string ToString() => "Staff Summary";
     }
 }

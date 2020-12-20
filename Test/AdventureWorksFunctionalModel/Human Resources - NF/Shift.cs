@@ -12,19 +12,11 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     [Bounded]
     public record Shift : IHasModifiedDate {
-        #region ID
-
         [Hidden]
         public virtual byte ShiftID { get; init; }
 
-        #endregion
-
-        #region Name
-
         [MemberOrder(1)]
         public virtual string Name { get; init; }
-
-        #endregion
 
         [Mask("T")] [MemberOrder(3)]
         public virtual TimeSpan StartTime { get; init; }
@@ -36,19 +28,5 @@ namespace AdventureWorksModel {
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
-    }
-
-    public static class ShiftFunctions {
-        public static (Shift, Shift) ChangeTimes(Shift s, TimeSpan startTime, TimeSpan endTime) => throw new NotImplementedException();
-
-        //var s2 = s with { Times.StartTime = startTime } with {Times.EndTime,endTime);
-        //return DisplayAndPersist(s2);
-        public static TimeSpan Default0ChangeTimes(Shift s) => new(0, 9, 0, 0);
-
-        #region Life Cycle Methods
-
-        public static Shift Updating(this Shift x, [Injected] DateTime now) => x with { ModifiedDate = now };
-
-        #endregion
     }
 }
