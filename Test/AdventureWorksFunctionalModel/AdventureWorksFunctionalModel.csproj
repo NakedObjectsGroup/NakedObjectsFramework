@@ -30,6 +30,8 @@
     <Compile Remove="Human Resources - NF\EmployeeRepository.cs" />
     <Compile Remove="Human Resources - NF\TimePeriod.cs" />
     <Compile Remove="Human Resources - NF\TimePeriodValueSemanticsProvider.cs" />
+    <Compile Remove="Production - NF\ProductMenuTestFunction.cs" />
+    <Compile Remove="Production - NF\Product_TestFunctions.cs" />
   </ItemGroup>
 
   <ItemGroup>

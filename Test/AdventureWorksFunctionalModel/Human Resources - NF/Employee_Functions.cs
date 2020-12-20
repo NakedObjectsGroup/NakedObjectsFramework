@@ -6,89 +6,75 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFunctions;
-using System;
 using System.Linq;
+using static AdventureWorksModel.Helpers;
 
-namespace AdventureWorksModel {
-    public static class Employee_Functions {
+namespace AdventureWorksModel
+{
+    public static class Employee_Functions
+    {
         #region Life Cycle Methods
 
         public static Employee Updating(this Employee x, IContainer container) => x with { ModifiedDate = container.Now() };
 
         #endregion
 
-        //public static bool HideLoginID(
-        //    Employee e,
-        //    IQueryable<Employee> employees,
-        //    IPrincipal principal)
-        //{
-        //    var userAsEmployee = EmployeeRepository.CurrentUserAsEmployee(null, employees, principal);
-        //    return userAsEmployee != null ? userAsEmployee.LoginID != e.LoginID : true;
-        //}
+        public static bool HideLoginID(Employee e, IContainer container)
+        {
+            var userAsEmployee = Employee_MenuFunctions.CurrentUserAsEmployee(container);
+            return userAsEmployee != null ? userAsEmployee.LoginID != e.LoginID : true;
+        }
 
         public static IQueryable<Employee> ColleaguesInSameDept(
-            this Employee e, IContainer container) {
-            var allCurrent = container.Instances< EmployeeDepartmentHistory>().Where(edh => edh.EndDate == null);
+            this Employee e, IContainer container)
+        {
+            var allCurrent = container.Instances<EmployeeDepartmentHistory>().Where(edh => edh.EndDate == null);
             var thisId = e.BusinessEntityID;
             var thisDeptId = allCurrent.Single(edh => edh.EmployeeID == thisId).DepartmentID;
             return allCurrent.Where(edh => edh.DepartmentID == thisDeptId).Select(edh => edh.Employee);
         }
 
-        //[MemberOrder(10)]
-        //public static (EmployeePayHistory, EmployeePayHistory) ChangePayRate(
-        //    Employee e,
-        //    [Injected] DateTime now
-        //)
-        //{
-        //    EmployeePayHistory current = CurrentEmployeePayHistory(e);
-        //    var eph = new EmployeePayHistory(e, now, current.PayFrequency);
-        //    return Result.DisplayAndPersist(eph);
-        //}
-
-        public static EmployeePayHistory CurrentEmployeePayHistory(Employee e) {
-            return e.PayHistory.OrderByDescending(x => x.RateChangeDate).FirstOrDefault();
+        [MemberOrder(10)]
+        public static (EmployeePayHistory, IContainer) ChangePayRate(Employee e, IContainer container)
+        {
+            EmployeePayHistory current = CurrentEmployeePayHistory(e);
+            var eph = new EmployeePayHistory() { Employee = e, RateChangeDate = container.Now(), PayFrequency = current.PayFrequency };
+            return DisplayAndSave(eph, container);
         }
 
-        //#region ChangeDepartmentOrShift (Action)
-        //[MemberOrder(20)]
-        //public static (object[], object[]) ChangeDepartmentOrShift(
-        //    Employee e,
-        //    Department department, 
-        //     Shift shift,
-        //    [Injected] DateTime now)
-        //{
-        //    var edh = CurrentAssignment(e) with {EndDate =  now};
-        //    var newAssignment = new EmployeeDepartmentHistory(department, shift, e, now );
-        //    return Result.DisplayAndPersist(new object[] { edh, newAssignment });
-        //}
+        public static EmployeePayHistory CurrentEmployeePayHistory(Employee e) => e.PayHistory.OrderByDescending(x => x.RateChangeDate).FirstOrDefault();
 
-        //public static Department Default0ChangeDepartmentOrShift(Employee e)
-        //{
-        //    EmployeeDepartmentHistory current = CurrentAssignment(e);
-        //    return current != null ? current.Department : null;
-        //}
-
-        //private static EmployeeDepartmentHistory CurrentAssignment(Employee e)
-        //{
-        //    return e.DepartmentHistory.Where(n => n.EndDate == null).FirstOrDefault();
-        //}
-
-        //#endregion
-
-        public static (Employee, IContainer) SpecifyManager(Employee e, IEmployee manager, IContainer container) {
-            var e2 = e with {ManagerID = manager.BusinessEntityID};
-            return Helpers.DisplayAndSave(e2, container);
+        #region ChangeDepartmentOrShift
+        [MemberOrder(20)]
+        public static (Employee, IContainer) ChangeDepartmentOrShift(
+           this Employee e, Department department, Shift shift, IContainer container)
+        {
+            var edh = CurrentAssignment(e) with { EndDate = container.Now() };
+            var newAssignment = new EmployeeDepartmentHistory() { Department = department, Shift = shift, Employee = e, StartDate = container.Today() };
+            return (e, container.WithPendingSave(edh, newAssignment));
         }
 
-        //[PageSize(20)]
-        //public static IQueryable<Employee> AutoCompleteManager(
-        //     Employee e,
-        //    [Range(2,0)] string name,
-        //    IQueryable<Person> persons,
-        //    IQueryable<Employee> employees)
-        //{
-        //    return EmployeeRepository.FindEmployeeByName(null, null, name, persons, employees);
-        //}
+        public static Department Default0ChangeDepartmentOrShift(this Employee e)
+        {
+            EmployeeDepartmentHistory current = CurrentAssignment(e);
+            return current != null ? current.Department : null;
+        }
+
+        private static EmployeeDepartmentHistory CurrentAssignment(Employee e)
+        {
+            return e.DepartmentHistory.Where(n => n.EndDate == null).FirstOrDefault();
+        }
+
+        #endregion
+        [Edit]
+        public static (Employee, IContainer) EditManager(Employee e, IEmployee manager, IContainer container) =>
+            DisplayAndSave(e with { ManagerID = manager.BusinessEntityID }, container);
+
+        [PageSize(20)]
+        public static IQueryable<Employee> AutoCompleteManager(
+             this Employee e, [Range(2, 0)] string name, IContainer container) =>
+             Employee_MenuFunctions.FindEmployeeByName(null, name, container);
+
 
         //public static  IList<string> ChoicesGender(Employee e)
         //{

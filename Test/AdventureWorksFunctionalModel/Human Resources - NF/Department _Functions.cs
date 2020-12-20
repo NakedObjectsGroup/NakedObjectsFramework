@@ -10,20 +10,13 @@ using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [Bounded]
-    public record Department : IHasModifiedDate {
-        [Hidden]
-        public virtual short DepartmentID { get; init; }
+    public static class DepartmentFunctions {
+        #region Life Cycle Methods
 
-        [MemberOrder(1)]
-        public virtual string Name { get; init; }
-         
-        [MemberOrder(2)]
-        public virtual string GroupName { get; init; }
+        public static Department Updating(this Department x, IContainer container) => x with { ModifiedDate = container.Now() };
 
-        [MemberOrder(99),ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; init; }
+        public static Department Persisting(this Department x, IContainer container) => x with { ModifiedDate = container.Now() };
 
-        public override string ToString() => Name;
+        #endregion
     }
 }

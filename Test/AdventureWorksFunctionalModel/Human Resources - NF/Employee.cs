@@ -28,15 +28,12 @@ namespace AdventureWorksModel {
         public virtual DateTime? DateOfBirth { get; init; }
 
         [MemberOrder(14)]
-
         public virtual string MaritalStatus { get; init; }
 
         [MemberOrder(15)]
-
         public virtual string Gender { get; init; }
 
-        [MemberOrder(16)]
-        [Mask("d")]
+        [MemberOrder(16), Mask("d")]
         public virtual DateTime? HireDate { get; init; }
 
         [MemberOrder(17)]

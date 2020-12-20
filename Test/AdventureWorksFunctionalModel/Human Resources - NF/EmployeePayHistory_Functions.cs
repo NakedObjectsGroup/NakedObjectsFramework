@@ -10,20 +10,18 @@ using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-    [Bounded]
-    public record Department : IHasModifiedDate {
-        [Hidden]
-        public virtual short DepartmentID { get; init; }
+    public static class EmployeePayHistoryFunctions
+    {
+        #region Life Cycle Methods
+        public static EmployeePayHistory Updating(this EmployeePayHistory x, IContainer container) => x with { ModifiedDate = container.Now() };
 
-        [MemberOrder(1)]
-        public virtual string Name { get; init; }
-         
-        [MemberOrder(2)]
-        public virtual string GroupName { get; init; }
+        public static EmployeePayHistory Persisting(this EmployeePayHistory x, IContainer container) => x with { ModifiedDate = container.Now() };
 
-        [MemberOrder(99),ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; init; }
-
-        public override string ToString() => Name;
+        //TODO: I don't think this is necessary
+        //public static EmployeePayHistory Persisted(this EmployeePayHistory x, IContainer container)
+        //{
+        //    Employee.PayHistory.Add(this);
+        //}
+        #endregion
     }
 }

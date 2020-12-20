@@ -9,78 +9,27 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-            public record EmployeePayHistory {
-        private Employee e;
-        private DateTime now;
-
-        public EmployeePayHistory(Employee e, DateTime now, byte payFrequency)
-        {
-            this.e = e;
-            this.now = now;
-            PayFrequency = payFrequency;
-        }
-        public EmployeePayHistory()
-        {
-
-        }
-        #region Injected Services
-        
-        #endregion
-
-        #region EmployeeID
-
+namespace AdventureWorksModel
+{
+    public record EmployeePayHistory
+    {
         [Hidden]
         public virtual int EmployeeID { get; init; }
 
-        #endregion
-
-        [MemberOrder(1)]
-        [Mask("d")]
+        [MemberOrder(1), Mask("d")]
         public virtual DateTime RateChangeDate { get; init; }
 
-        #region Rate
-
-        [Mask("C")]
-        [MemberOrder(2)]
+        [MemberOrder(2), Mask("C")]
         public virtual decimal Rate { get; init; }
 
-        #endregion
-
-        #region Employee
-
-        
         [MemberOrder(4)]
         public virtual Employee Employee { get; init; }
-
-        #endregion
 
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{Rate.ToString("C")} from {RateChangeDate.ToString("d")}";
 
-        #region Life Cycle methods
-
-        public void Persisted() {
-            Employee.PayHistory.Add(this);
-        }
-
-        #endregion
-
-        #region PayFrequency
-
         public virtual byte PayFrequency { get; init; }
-
-        #endregion
-    }
-
-    public static class EmployeePayHistoryFunctions
-    {
-        #region Life Cycle Methods
-        public static EmployeePayHistory Updating(this EmployeePayHistory x, [Injected] DateTime now) => x with { ModifiedDate = now };
-
-        public static EmployeePayHistory Persisting(this EmployeePayHistory x, [Injected] DateTime now) => x with { ModifiedDate = now };
-        #endregion
     }
 }
