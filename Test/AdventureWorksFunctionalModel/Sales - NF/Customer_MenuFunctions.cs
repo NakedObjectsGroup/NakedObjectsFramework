@@ -11,7 +11,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using NakedFunctions;
-using static NakedFunctions.Helpers;
+using static AdventureWorksModel.Helpers;
 
 namespace AdventureWorksModel {
     public static class Customer_MenuFunctions {

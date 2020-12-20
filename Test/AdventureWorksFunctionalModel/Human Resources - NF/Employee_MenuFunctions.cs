@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using System.Security.Principal;
 using NakedFunctions;
-using static NakedFunctions.Helpers;
+using static AdventureWorksModel.Helpers;
 
 namespace AdventureWorksModel {
     [Named("Employees")]

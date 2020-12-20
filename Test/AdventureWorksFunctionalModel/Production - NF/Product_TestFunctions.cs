@@ -11,7 +11,8 @@ using System.Linq;
 using System.Security.Principal;
 using AdventureWorksModel;
 using NakedFunctions;
-using static NakedFunctions.Helpers;
+using static AdventureWorksModel.Helpers;
+
 
 namespace AdventureWorksFunctionalModel {
     public static class Product_TestFunctions {

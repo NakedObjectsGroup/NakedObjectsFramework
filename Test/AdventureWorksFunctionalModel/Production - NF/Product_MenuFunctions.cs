@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NakedFunctions;
-using static NakedFunctions.Helpers;
+using static AdventureWorksModel.Helpers;
 
 namespace AdventureWorksModel {
     public enum ProductLineEnum {

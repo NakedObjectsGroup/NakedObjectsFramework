@@ -1,5 +1,5 @@
 ﻿using NakedFunctions;
-using static NakedFunctions.Helpers;
+using static AdventureWorksModel.Helpers;
 using System;
 
 namespace AdventureWorksModel

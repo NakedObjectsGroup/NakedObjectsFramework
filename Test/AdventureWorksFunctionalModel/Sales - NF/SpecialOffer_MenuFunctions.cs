@@ -8,7 +8,7 @@
 using System;
 using System.Linq;
 using NakedFunctions;
-using static NakedFunctions.Helpers;
+using static AdventureWorksModel.Helpers;
 
 namespace AdventureWorksModel
 {

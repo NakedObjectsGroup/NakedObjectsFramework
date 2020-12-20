@@ -21,21 +21,7 @@ namespace AdventureWorksModel {
 
         public record Person : BusinessEntity, IHasRowGuid, IHasModifiedDate {
 
-            //AdditionalContactInfo = additionalContactInfo;
-            //NameStyle = nameStyle;
-            //Title = title;
-            //FirstName = firstName;
-            //LastName = lastName;
-            //MiddleName = middleName;
-            //Suffix = suffix;
-            //EmailPromotion = (EmailPromotion)emailPromotion;
-            //Password = password;
-            //ModifiedDate = modifiedDate;
-            //rowguid = rowGuid;
-            //EmailAddresses = emailAddresses;
-            //PhoneNumbers = phoneNumbers;
-
-        
+       
         [MemberOrder(30)]
         public virtual string AdditionalContactInfo { get; init; }
 

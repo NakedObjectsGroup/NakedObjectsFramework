@@ -10,7 +10,7 @@
 using System;
 using System.Linq;
 using NakedFunctions;
-using static NakedFunctions.Helpers;
+using static AdventureWorksModel.Helpers;
 
 namespace AdventureWorksModel {
     [Named("Work Orders")]
@@ -46,7 +46,6 @@ namespace AdventureWorksModel {
             IQueryable<Product> products) {
             return products.Where(p => p.Name.Contains(name));
         }
-
 
         #region CurrentWorkOrders
 

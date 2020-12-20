@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Principal;
+using NakedFunctions;
 
-namespace NakedFunctions
+namespace AdventureWorksModel
 {
     public static class Helpers
     {
@@ -13,11 +13,8 @@ namespace NakedFunctions
 
         public static Action<IAlert> WarnUser(string message) =>(IAlert ua) => ua.WarnUser(message);
 
-        public static IContainer WithWarnUser(this IContainer container, string message) => container.WithOutput((IAlert ua) => ua.WarnUser(message));
-
         public static Action<IAlert> InformUser(string message) => (IAlert ua) => ua.InformUser(message);
 
-        public static IContainer WithInformUser(this IContainer container, string message) => container.WithOutput((IAlert ua) => ua.InformUser(message));
 
         //TODO: Elimiate this version
         public static (T, Action<IAlert>) SingleObjectWarnIfNoMatch<T>(IQueryable<T> query)
@@ -63,14 +60,5 @@ namespace NakedFunctions
             return instances.Skip(random.ValueInRange(instances.Count())).FirstOrDefault();
         }
 
-        public static DateTime Now(this IContainer container) => container.GetService<IClock>().Now();
-
-        public static DateTime Today(this IContainer container) => container.GetService<IClock>().Today();
-
-        public static IPrincipal CurrentUser(this IContainer container) => container.GetService<IPrincipalProvider>().CurrentUser;
-
-        public static IRandom RandomSeed(this IContainer container) => container.GetService<IRandomSeedGenerator>().Random;
-
-        public static Guid NewGuid(this IContainer container) => container.GetService<IGuidGenerator>().NewGuid();
     }
 }
