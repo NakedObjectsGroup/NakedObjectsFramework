@@ -10,17 +10,16 @@ using System;
 using NakedFunctions;
 
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace AdventureWorksModel
 {
 
     //Redirects to the StateProvince object on the Azure server
-    public record SalesTaxRate : IRedirectedObject
+    public record SalesTaxRate
     {
 
         public override string ToString() => $"Tax Rate for: {StateProvince}";
-            return t.ToString();
-        }
 
     [Hidden]
     public virtual int SalesTaxRateID { get; set; }

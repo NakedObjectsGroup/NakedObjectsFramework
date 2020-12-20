@@ -6,26 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
-using AdventureWorksFunctionalModel;
-using NakedFunctions;
 using NakedFunctions;
 using static AdventureWorksModel.CustomerFunctions;
 
 namespace AdventureWorksModel {
         public record Customer 
     {
-        public Customer()
-        {
-
-        }
-        public Customer(Store store, Person person, Guid guid, DateTime dt)
-        {
-            Store = store;
-            Person = person;
-            CustomerRowguid = guid;
-            CustomerModifiedDate = dt;
-        }
 
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -57,7 +43,7 @@ namespace AdventureWorksModel {
         internal BusinessEntity BusinessEntity() {
             if (IsStore(this)) return Store;
             if (IsIndividual(this)) return Person;
-            throw new DomainException("Customer is neither Store nor Person!");
+            throw new Exception("Customer is neither Store nor Person!");
         }
 
         [Hidden]
@@ -84,39 +70,20 @@ namespace AdventureWorksModel {
             }
         }
 
-
-        #region ModifiedDate and rowguid
-
-        #region ModifiedDate
-
         [Hidden]
         //[ConcurrencyCheck]
         public virtual DateTime CustomerModifiedDate { get; set; }
 
-        #endregion
-
-        #region rowguid
-
         [Hidden]
         public virtual Guid CustomerRowguid { get; set; }
 
-        #endregion
-
-        #endregion
+        public override string ToString() => "No Title Yet";
+           // IsStore(this) ? Store : Person;
 
     }
 
     public static class CustomerFunctions
     {
-
-        //public  static string Title(Customer c)
-        //{
-        //    return c.CreateTitle($"{PartTitle(c)}, {c.AccountNumber}");
-        //}
-         private static string PartTitle(Customer c)
-        {
-            return IsStore(c) ? StoreFunctions.Title(c.Store) : PersonFunctions.Title(c.Person);
-        }
 
         #region Action to test switchable view model
         public static StoreSalesInfo ReviewSalesResponsibility()
@@ -145,15 +112,12 @@ namespace AdventureWorksModel {
             return !IsIndividual(c);
         }
 
-
-        [Hidden]
-        public static bool IsIndividual(Customer c)
+        internal static bool IsIndividual(Customer c)
         {
             return !IsStore(c);
         }
 
-        [Hidden]
-        public static bool IsStore(Customer c)
+        internal static bool IsStore(Customer c)
         {
             return c.Store != null;
         }

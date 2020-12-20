@@ -6,12 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using System.Linq;
 using AdventureWorksModel.Sales;
 using NakedFunctions;
-using NakedFunctions;
-using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
+using static AdventureWorksModel.Helpers;
 
 namespace AdventureWorksModel {
     [Named("Orders")]
@@ -30,13 +28,9 @@ namespace AdventureWorksModel {
         }
 
         [MemberOrder(20)]
-        public static (SalesOrderHeader, string) LastOrder(
-            this Customer customer,
-            IQueryable<SalesOrderHeader> headers) {
-
-            return SingleObjectWarnIfNoMatch(
-                headers.Where(x => x.Customer.CustomerID == customer.CustomerID).OrderByDescending(x => x.SalesOrderNumber));
-        }
+        public static (SalesOrderHeader, IContainer) LastOrder(this Customer customer, IContainer container) =>
+            Helpers.SingleObjectWarnIfNoMatch(container.Instances<SalesOrderHeader>().Where(x => x.Customer.CustomerID == customer.CustomerID).OrderByDescending(x => x.SalesOrderNumber), container);
+        
 
         [MemberOrder(21)]
         [TableView(true, "OrderDate", "TotalDue")]
@@ -49,7 +43,7 @@ namespace AdventureWorksModel {
         }
 
         
-        [FinderAction]
+        
         [TableView(true, "CurrencyRateDate", "AverageRate", "EndOfDayRate")]
         public static CurrencyRate FindRate(
             string currency, 
@@ -68,10 +62,9 @@ namespace AdventureWorksModel {
 
         #region Comments
 
-        public static void AppendComment(           
-            this IQueryable<SalesOrderHeader> toOrders, string commentToAppend) {
+        public static void AppendComment(this IQueryable<SalesOrderHeader> toOrders, string commentToAppend, IContainer container) {
             foreach (SalesOrderHeader order in toOrders) {
-                AppendComment(commentToAppend, order);
+                AppendComment(order, commentToAppend, container);
             }
         }
 
@@ -83,29 +76,25 @@ namespace AdventureWorksModel {
             return string.IsNullOrEmpty(commentToAppend) ? "Comment required" : null;
         }
 
-        public static void AppendComment(this SalesOrderHeader order, string commentToAppend) {
-            if (order.Comment == null) {
-                order.Comment = commentToAppend;
-            }
-            else {
-                order.Comment += "; " + commentToAppend;
-            }
+        public static (SalesOrderHeader, IContainer) AppendComment(this SalesOrderHeader order, string commentToAppend, IContainer container) {
+            string newComments = order.Comment == null? commentToAppend: order.Comment + "; " + commentToAppend;
+            return DisplayAndSave(order with {Comment = newComments }, container);
         }
 
         public static string ValidateAppendComment(string commentToAppend, SalesOrderHeader order) {
             return string.IsNullOrEmpty(commentToAppend) ? "Comment required" : null;
         }
 
-        public static void CommentAsUsersUnhappy(this IQueryable<SalesOrderHeader> toOrders) {
-            AppendComment("User unhappy", toOrders);
-        }
+        public static void CommentAsUsersUnhappy(this IQueryable<SalesOrderHeader> toOrders, IContainer container) => 
+            AppendComment(toOrders, "User unhappy", container);
+        
 
         public static string ValidateCommentAsUsersUnhappy(IQueryable<SalesOrderHeader> toOrders) {
             return toOrders.Any(o => !o.IsShipped()) ? "Not all shipped yet" : null;
         }
 
-        public static void CommentAsUserUnhappy(this SalesOrderHeader order) {
-            AppendComment("User unhappy", order);
+        public static void CommentAsUserUnhappy(this SalesOrderHeader order, IContainer container) {
+            AppendComment(order, "User unhappy", container);
         }
 
         public static string ValidateCommentAsUserUnhappy(SalesOrderHeader order) {
@@ -125,7 +114,7 @@ namespace AdventureWorksModel {
         [MemberOrder(12), PageSize(10)]
         [TableView(true, "OrderDate", "Status", "TotalDue")]
         public static IQueryable<SalesOrderHeader> SearchForOrders(
-            thisCustomer customer,
+            this Customer customer,
             [Optionally] [Mask("d")] DateTime? fromDate,
             [Optionally] [Mask("d")] DateTime? toDate,
             IQueryable<SalesOrderHeader> query) {
@@ -161,7 +150,7 @@ namespace AdventureWorksModel {
         #region CreateNewOrder
 
         [MemberOrder(1)]
-        public static SalesOrderHeader CreateNewOrder(thisCustomer customer,
+        public static SalesOrderHeader CreateNewOrder(this Customer customer,
                                                [Optionally] bool copyHeaderFromLastOrder,
                                                IQueryable<BusinessEntityAddress> addresses,
                                                IQueryable<SalesOrderHeader> headers)
@@ -196,7 +185,7 @@ namespace AdventureWorksModel {
         }
 
         [MemberOrder(1)]
-        public static QuickOrderForm QuickOrder(thisCustomer customer) {
+        public static QuickOrderForm QuickOrder(this Customer customer) {
             throw new NotImplementedException();
             //var qo = Container.NewViewModel<QuickOrderForm>();
             //qo.Customer = customer;

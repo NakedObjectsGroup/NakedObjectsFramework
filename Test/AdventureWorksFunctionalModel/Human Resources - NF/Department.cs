@@ -17,12 +17,11 @@ namespace AdventureWorksModel {
 
         [MemberOrder(1)]
         public virtual string Name { get; init; }
-
+         
         [MemberOrder(2)]
         public virtual string GroupName { get; init; }
 
-        [MemberOrder(99)]
-        [ConcurrencyCheck]
+        [MemberOrder(99),ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;

@@ -6,11 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-        public record ProductVendor {
+    public record ProductVendor {
 
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -52,10 +52,8 @@ namespace AdventureWorksModel {
         [MemberOrder(62)]
         public virtual int? OnOrderQty { get; set; }
 
-        //Title
         [MemberOrder(10)]
         public virtual Product Product { get; set; }
-
 
         [Hidden]
         public virtual string UnitMeasureCode { get; set; }
@@ -66,13 +64,9 @@ namespace AdventureWorksModel {
         [Hidden]
         public virtual Vendor Vendor { get; set; }
 
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
-        #endregion
+        public override string ToString() => $"{Product}";
     }
 }

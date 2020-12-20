@@ -7,15 +7,13 @@
 
 using System;
 using System.Globalization;
-using NakedFramework;
 
-
-namespace NakedObjects {
+namespace NakedFramework {
     /// <summary>
     ///     Helper class with DateTime extension methods for common date operations.
     /// </summary>
     /// <seealso cref="Calendar" />
-    public static class DateTimeExtensions {
+    public static class DateTimeHelper {
         #region StartOfPeriod
 
         /// <summary>
@@ -24,17 +22,24 @@ namespace NakedObjects {
         /// <remarks>
         ///     Uses <see cref="CultureInfo.CurrentCulture" /> to determine first day of week
         /// </remarks>
-        public static DateTime StartOfWeek(this DateTime referenceDate) => DateTimeHelper.StartOfWeek(referenceDate);
+        public static DateTime StartOfWeek(DateTime referenceDate) {
+            DayOfWeek currentDOW = CultureInfo.CurrentCulture.Calendar.GetDayOfWeek(referenceDate.Date);
+            return referenceDate.Date.Subtract(new TimeSpan((int) currentDOW, 0, 0, 0));
+        }
 
         /// <summary>
         ///     First day of the month of the passed in date
         /// </summary>
-        public static DateTime StartOfMonth(this DateTime referenceDate)  => DateTimeHelper.StartOfMonth(referenceDate);
+        public static DateTime StartOfMonth(DateTime referenceDate) {
+            return new DateTime(referenceDate.Year, referenceDate.Month, 1);
+        }
 
         /// <summary>
         ///     First day of the year of the passed in date
         /// </summary>
-        public static DateTime StartOfYear(this DateTime referenceDate) => DateTimeHelper.StartOfYear(referenceDate);
+        public static DateTime StartOfYear(DateTime referenceDate) {
+            return new DateTime(referenceDate.Year, 1, 1);
+        }
 
         #endregion
 
@@ -47,17 +52,23 @@ namespace NakedObjects {
         ///     Uses <see cref="CultureInfo.CurrentCulture" /> to determine <i>first</i> day of week
         ///     and then assumes 7 day week
         /// </remarks>
-        public static DateTime EndOfWeek(this DateTime referenceDate) => DateTimeHelper.EndOfWeek(referenceDate);
+        public static DateTime EndOfWeek(DateTime referenceDate) {
+            return StartOfWeek(referenceDate).AddDays(6);
+        }
 
         /// <summary>
         ///     Last day of the month of the passed in date
         /// </summary>
-        public static DateTime EndOfMonth(this DateTime referenceDate) => DateTimeHelper.EndOfMonth(referenceDate);
+        public static DateTime EndOfMonth(DateTime referenceDate) {
+            return StartOfMonth(referenceDate.Date.AddMonths(1)).AddDays(-1);
+        }
 
         /// <summary>
         ///     Last day of the year of the passed in date
         /// </summary>
-        public static DateTime EndOfYear(this DateTime referenceDate) => DateTimeHelper.EndOfYear(referenceDate);
+        public static DateTime EndOfYear(DateTime referenceDate) {
+            return StartOfYear(referenceDate.Date.AddYears(1)).AddDays(-1);
+        }
 
         #endregion
 
@@ -66,32 +77,44 @@ namespace NakedObjects {
         /// <summary>
         ///     Check if date is after today ignoring time
         /// </summary>
-        public static bool IsAfterToday(this DateTime referenceDate) => DateTimeHelper.IsAfterToday(referenceDate);
+        public static bool IsAfterToday(DateTime referenceDate) {
+            return referenceDate.Date > DateTime.Now.Date;
+        }
 
         /// <summary>
         ///     Check if date is before today ignoring time
         /// </summary>
-        public static bool IsBeforeToday(this DateTime referenceDate) => DateTimeHelper.IsBeforeToday(referenceDate);
+        public static bool IsBeforeToday(DateTime referenceDate) {
+            return referenceDate.Date < DateTime.Now.Date;
+        }
 
         /// <summary>
         ///     Check if date is today ignoring time
         /// </summary>
-        public static bool IsToday(this DateTime referenceDate) => DateTimeHelper.IsToday(referenceDate);
+        public static bool IsToday(DateTime referenceDate) {
+            return referenceDate.Date == DateTime.Now.Date;
+        }
 
         /// <summary>
         ///     Check if date is after today ignoring time
         /// </summary>
-        public static bool IsAfterToday(this DateTime? referenceDate) => DateTimeHelper.IsAfterToday(referenceDate);
+        public static bool IsAfterToday(DateTime? referenceDate) {
+            return referenceDate.HasValue && IsAfterToday(referenceDate.Value);
+        }
 
         /// <summary>
         ///     Check if date is before today ignoring time
         /// </summary>
-        public static bool IsBeforeToday(this DateTime? referenceDate) => DateTimeHelper.IsBeforeToday(referenceDate);
+        public static bool IsBeforeToday(DateTime? referenceDate) {
+            return referenceDate.HasValue && IsBeforeToday(referenceDate.Value);
+        }
 
         /// <summary>
         ///     Check if date is today ignoring time
         /// </summary>
-        public static bool IsToday(this DateTime? referenceDate) => DateTimeHelper.IsToday(referenceDate);
+        public static bool IsToday(DateTime? referenceDate) {
+            return referenceDate.HasValue && IsToday(referenceDate.Value);
+        }
 
         #endregion
 
@@ -100,12 +123,16 @@ namespace NakedObjects {
         /// <summary>
         ///     Check if two dates are the same ignoring time
         /// </summary>
-        public static bool IsSameDayAs(this DateTime referenceDate, DateTime? otherDate) => DateTimeHelper.IsSameDayAs(referenceDate, otherDate);
+        public static bool IsSameDayAs(DateTime referenceDate, DateTime? otherDate) {
+            return otherDate.HasValue && referenceDate.Date == otherDate.Value.Date;
+        }
 
         /// <summary>
         ///     Check if two dates are the same ignoring time
         /// </summary>
-        public static bool IsSameDayAs(this DateTime? referenceDate, DateTime? otherDate) => DateTimeHelper.IsSameDayAs(referenceDate, otherDate);
+        public static bool IsSameDayAs(DateTime? referenceDate, DateTime? otherDate) {
+            return referenceDate.HasValue && IsSameDayAs(referenceDate.Value,otherDate);
+        }
 
         #endregion
 
@@ -117,7 +144,9 @@ namespace NakedObjects {
         /// <remarks>
         ///     Uses <see cref="CultureInfo.CurrentCulture" /> to determine week
         /// </remarks>
-        public static bool IsSameWeekAs(this DateTime referenceDate, DateTime? otherDate) => DateTimeHelper.IsSameWeekAs(referenceDate, otherDate);
+        public static bool IsSameWeekAs(DateTime referenceDate, DateTime? otherDate) {
+            return otherDate.HasValue && StartOfWeek(referenceDate) == StartOfWeek(otherDate.Value);
+        }
 
         /// <summary>
         ///     Check if two dates are in the same week ignoring time
@@ -125,7 +154,9 @@ namespace NakedObjects {
         /// <remarks>
         ///     Uses <see cref="CultureInfo.CurrentCulture" /> to determine week
         /// </remarks>
-        public static bool IsSameWeekAs(this DateTime? referenceDate, DateTime? otherDate) => DateTimeHelper.IsSameWeekAs(referenceDate, otherDate);
+        public static bool IsSameWeekAs(DateTime? referenceDate, DateTime? otherDate) {
+            return referenceDate.HasValue && IsSameWeekAs(referenceDate.Value, otherDate);
+        }
 
         #endregion
 
@@ -134,11 +165,16 @@ namespace NakedObjects {
         /// <summary>
         ///     Check if two dates are in the same month ignoring time
         /// </summary>
-        public static bool IsSameMonthAs(this DateTime referenceDate, DateTime? otherDate) => DateTimeHelper.IsSameMonthAs(referenceDate, otherDate);
-    /// <summary>
-    ///     Check if two dates are in the same month ignoring time
-    /// </summary>
-    public static bool IsSameMonthAs(this DateTime? referenceDate, DateTime? otherDate) => DateTimeHelper.IsSameMonthAs(referenceDate, otherDate);
+        public static bool IsSameMonthAs(DateTime referenceDate, DateTime? otherDate) {
+            return otherDate.HasValue && StartOfMonth(referenceDate) == StartOfMonth(otherDate.Value);
+        }
+
+        /// <summary>
+        ///     Check if two dates are in the same month ignoring time
+        /// </summary>
+        public static bool IsSameMonthAs(DateTime? referenceDate, DateTime? otherDate) {
+            return referenceDate.HasValue && IsSameMonthAs(referenceDate.Value, otherDate);
+        }
 
         #endregion
 
@@ -147,11 +183,16 @@ namespace NakedObjects {
         /// <summary>
         ///     Check if two dates are in the same year ignoring time
         /// </summary>
-        public static bool IsSameYearAs(this DateTime referenceDate, DateTime? otherDate) => DateTimeHelper.IsSameYearAs(referenceDate, otherDate);
+        public static bool IsSameYearAs(DateTime referenceDate, DateTime? otherDate) {
+            return otherDate.HasValue && referenceDate.Date.Year == otherDate.Value.Date.Year;
+        }
+
         /// <summary>
         ///     Check if two dates are in the same year ignoring time
         /// </summary>
-        public static bool IsSameYearAs(this DateTime? referenceDate, DateTime? otherDate) => DateTimeHelper.IsSameYearAs(referenceDate, otherDate);
+        public static bool IsSameYearAs(DateTime? referenceDate, DateTime? otherDate) {
+            return referenceDate.HasValue && IsSameYearAs(referenceDate.Value, otherDate);
+        }
 
         #endregion
 
@@ -160,13 +201,16 @@ namespace NakedObjects {
         /// <summary>
         ///    Check if referenceDate is at least the day before the otherDate  ignoring time
         /// </summary>
-        public static bool IsAtLeastOneDayBefore(this DateTime referenceDate, DateTime? otherDate) => DateTimeHelper.IsAtLeastOneDayBefore(referenceDate, otherDate);
+        public static bool IsAtLeastOneDayBefore(DateTime referenceDate, DateTime? otherDate) {
+            return otherDate.HasValue && referenceDate.Date < otherDate.Value.Date;
+        }
 
         /// <summary>
         ///     Check if referenceDate is at least the day before the otherDate  ignoring time
         /// </summary>
-        public static bool IsAtLeastOneDayBefore(this DateTime? referenceDate, DateTime? otherDate) => DateTimeHelper.IsAtLeastOneDayBefore(referenceDate, otherDate);
-
+        public static bool IsAtLeastOneDayBefore(DateTime? referenceDate, DateTime? otherDate) {
+            return referenceDate.HasValue && IsAtLeastOneDayBefore(referenceDate.Value, otherDate);
+        }
 
         #endregion
 
@@ -175,14 +219,16 @@ namespace NakedObjects {
         /// <summary>
         ///     Check if referanceDate is at least one day after the otherDate ignoring time
         /// </summary>
-        public static bool IsAtLeastOneDayAfter(this DateTime referenceDate, DateTime? otherDate) => DateTimeHelper.IsAtLeastOneDayAfter(referenceDate, otherDate);
-
+        public static bool IsAtLeastOneDayAfter(DateTime referenceDate, DateTime? otherDate) {
+            return otherDate.HasValue && referenceDate.Date > otherDate.Value.Date;
+        }
 
         /// <summary>
         ///     Check if referenceDate is at least one day after the otherDate ignoring time
         /// </summary>
-        public static bool IsAtLeastOneDayAfter(this DateTime? referenceDate, DateTime? otherDate) => DateTimeHelper.IsAtLeastOneDayAfter(referenceDate, otherDate);
-
+        public static bool IsAtLeastOneDayAfter(DateTime? referenceDate, DateTime? otherDate) {
+            return referenceDate.HasValue && IsAtLeastOneDayAfter(referenceDate.Value, otherDate);
+        }
         #endregion
     }
 }

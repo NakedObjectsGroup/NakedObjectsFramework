@@ -105,7 +105,7 @@ namespace AdventureWorksModel
 
         #region Helper methods
 
-        internal static SpecialOffer NoDiscount(IQueryable<SpecialOffer> offers) => offers.Where(x => x.SpecialOfferID == 1).First();
+        internal static SpecialOffer NoDiscount(IContainer container) => container.Instances<SpecialOffer>().Where(x => x.SpecialOfferID == 1).First();
         #endregion
     }
 }

@@ -7,15 +7,14 @@
 
 using System;
 using System.Collections.Generic;
-
-
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-        public record Vendor : IBusinessEntity {
+    public record Vendor : IBusinessEntity {
         #region Injected Services
-        
+
         #endregion
 
         #region Life Cycle Methods
@@ -47,11 +46,11 @@ namespace AdventureWorksModel {
         [MemberOrder(50)]
         public virtual bool ActiveFlag { get; set; }
 
-        
+
         [MemberOrder(60)]
         public virtual string PurchasingWebServiceURL { get; set; }
 
-        public virtual IQueryable<string> AutoCompletePurchasingWebServiceURL([Range(2,0)] string value) {
+        public virtual IQueryable<string> AutoCompletePurchasingWebServiceURL([NakedFunctions.Range(2, 0)] string value) {
             var matchingNames = new List<string> { "http://www.store1.com", "http://www.store2.com", "http://www.store3.com" };
             return from p in matchingNames.AsQueryable() select p.Trim();
         }
@@ -84,32 +83,7 @@ namespace AdventureWorksModel {
         //    set { _VendorContact = value; }
         //}
 
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        public Person CreateNewContact() {
-            var _Contact = Container.NewTransientInstance<Person>();
-            _Contact.ForEntity = this;
-            return _Contact;
-        }
-
-        [DescribedAs("Get report from credit agency")]
-        public void CheckCredit()
-        {
-            //Not implemented.  Action is to test disable function only.
-        }
-
-        public string DisableCheckCredit()
-        {
-            var rb = new ReasonBuilder();
-            rb.AppendOnCondition(true, "Not yet implemented");
-            return rb.Reason;
-        }
     }
 }

@@ -28,11 +28,12 @@ namespace AdventureWorksModel
             string[] keys, 
             IQueryable<Customer> customers )
         {
-            int[] ids = keys == null ? new int[] { } : keys.Select(int.Parse).ToArray();
-            return vm.With(x => x.Customers, (from c in customers
-                         from id in ids
-                         where c.CustomerID == id
-                         select c).ToList());
+            throw new NotImplementedException();
+            //int[] ids = keys == null ? new int[] { } : keys.Select(int.Parse).ToArray();
+            //return vm.With(x => x.Customers, (from c in customers
+            //             from id in ids
+            //             where c.CustomerID == id
+            //             select c).ToList());
         }
     }
 }

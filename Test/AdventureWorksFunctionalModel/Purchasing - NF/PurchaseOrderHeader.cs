@@ -7,22 +7,19 @@
 
 using System;
 using System.Collections.Generic;
-
-
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFunctions;
-using NakedFunctions;
+using static AdventureWorksModel.Helpers;
 
 
 namespace AdventureWorksModel {
         public record PurchaseOrderHeader: IHasModifiedDate  {
 
-        //TODO: Constructors & include work specified in old Created method (below) effectively as default values?
-
         #region ID
 
         [Hidden]
-        public virtual int PurchaseOrderID { get; set; }
+        public virtual int PurchaseOrderID { get; init; }
 
         #endregion
 
@@ -30,31 +27,22 @@ namespace AdventureWorksModel {
 
         
         [MemberOrder(90)]
-        public virtual byte RevisionNumber { get; set; }
-
-        #endregion
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual byte RevisionNumber { get; init; }
 
         #endregion
 
         [Hidden]
-        public virtual int ShipMethodID { get; set; }
+        public virtual int ShipMethodID { get; init; }
 
         [MemberOrder(22)]
-        public virtual ShipMethod ShipMethod { get; set; }
+        public virtual ShipMethod ShipMethod { get; init; }
 
         #region Vendor
         [Hidden]
-        public virtual int VendorID { get; set; }
+        public virtual int VendorID { get; init; }
 
         [MemberOrder(1)]
-        public virtual Vendor Vendor { get; set; }
+        public virtual Vendor Vendor { get; init; }
 
         #endregion
 
@@ -64,17 +52,12 @@ namespace AdventureWorksModel {
 
         [Hidden]
         [MemberOrder(10)]
-        public virtual byte Status { get; set; }
+        public virtual byte Status { get; init; }
 
         [Named("Status")]
         [MemberOrder(1)]
         public virtual string StatusAsString {
             get { return statusLabels[Status - 1]; }
-        }
-
-        [Hidden]
-        public virtual bool IsPending() {
-            return Status == 1;
         }
 
         #endregion
@@ -84,11 +67,11 @@ namespace AdventureWorksModel {
         //Title
         [Mask("d")]
         [MemberOrder(11)]
-        public virtual DateTime OrderDate { get; set; }
+        public virtual DateTime OrderDate { get; init; }
 
         [Mask("d")]
         [MemberOrder(20)]
-        public virtual DateTime? ShipDate { get; set; }
+        public virtual DateTime? ShipDate { get; init; }
 
         #endregion
 
@@ -97,36 +80,39 @@ namespace AdventureWorksModel {
         [MemberOrder(31)]
         
         [Mask("C")]
-        public virtual decimal SubTotal { get; set; }
+        public virtual decimal SubTotal { get; init; }
 
         
         [MemberOrder(32)]
         [Mask("C")]
-        public virtual decimal TaxAmt { get; set; }
+        public virtual decimal TaxAmt { get; init; }
 
         
         [MemberOrder(33)]
         [Mask("C")]
-        public virtual decimal Freight { get; set; }
+        public virtual decimal Freight { get; init; }
 
         
         [MemberOrder(34)]
         [Mask("C")]
-        public virtual decimal TotalDue { get; set; }
+        public virtual decimal TotalDue { get; init; }
 
         #endregion
 
         #region Order Placed By (Employee)
         [Hidden]
-        public virtual int OrderPlacedByID { get; set; }
+        public virtual int OrderPlacedByID { get; init; }
 
         [MemberOrder(12)]
-        public virtual Employee OrderPlacedBy { get; set; }
+        public virtual Employee OrderPlacedBy { get; init; }
         #endregion
 
-         [RenderEagerly]
+        [MemberOrder(99), ConcurrencyCheck]
+        public virtual DateTime ModifiedDate { get; init; }
+
+        [RenderEagerly]
         [TableView(true, "OrderQty", "Product", "UnitPrice", "LineTotal")]
-        public virtual ICollection<PurchaseOrderDetail> Details { get; set; }
+        public virtual ICollection<PurchaseOrderDetail> Details { get; init; }
     }
 
     public static class PurchaseOrderHeaderFunctions
@@ -135,16 +121,12 @@ namespace AdventureWorksModel {
         [MemberOrder(1)]
         [MultiLine()]
         public static (object, PurchaseOrderDetail) AddNewDetails(
-            PurchaseOrderHeader header,
-            Product prod,
-            short qty,
-            decimal unitPrice,
-            [Injected] DateTime now)
+            PurchaseOrderHeader header, Product prod, short qty, decimal unitPrice, IContainer container)
         {
-            var det = AddNewDetail(header, prod, qty);
+            var det = AddNewDetail(header, prod, qty, container);
             //TODO:  create new detail directly calling constructor with all params
             var det2 = det.Item1 with {UnitPrice =  unitPrice}
-                 with {DueDate = now.Date.AddDays(7)} 
+                 with {DueDate = container.Today().Date.AddDays(7)} 
                  with {ReceivedQty = 0}
                  with {RejectedQty =  0};
             return(null, det2);
@@ -153,10 +135,10 @@ namespace AdventureWorksModel {
         [PageSize(10)]
         public static IQueryable<Product> AutoComplete0AddNewDetails(
             PurchaseOrderHeader header,
-            [Range(3,0)] string matching,
-            IQueryable<Product> products)
+            [NakedFunctions.Range(3,0)] string matching,
+            IContainer container)
         {
-            return ProductRepository.FindProductByName(matching, products);
+            return Product_MenuFunctions.FindProductByName(matching, container);
         }
 
         #endregion
@@ -167,7 +149,7 @@ namespace AdventureWorksModel {
             IQueryable<Employee> employees,
             [Injected] int random)
         {
-            return EmployeeRepository.RandomEmployee( employees, random);
+            return Employee_MenuFunctions.RandomEmployee( employees, random);
         }
 
         public static ShipMethod DefaultShipMethod(
@@ -180,13 +162,11 @@ namespace AdventureWorksModel {
         #region Add New Detail
 
         [MemberOrder(1)]
-        public static (PurchaseOrderDetail, PurchaseOrderDetail) AddNewDetail(
-            PurchaseOrderHeader header,
-            Product prod,
-            short qty)
+        public static (PurchaseOrderDetail, IContainer) AddNewDetail(
+            PurchaseOrderHeader header, Product prod, short qty, IContainer container)
         {
-            var pod = new PurchaseOrderDetail(header, prod, qty);
-            return (pod, pod);
+            var pod = new PurchaseOrderDetail() { PurchaseOrderHeader = header, Product = prod, OrderQty = qty };
+            return DisplayAndSave(pod, container);
         }
 
         public static string DisableAddNewDetail(PurchaseOrderHeader header)
@@ -224,6 +204,10 @@ namespace AdventureWorksModel {
         }
 
         #endregion
+
+
+        internal static bool IsPending(this PurchaseOrderHeader poh) => poh.Status == 1;
+ 
 
         #region Life Cycle Methods
 

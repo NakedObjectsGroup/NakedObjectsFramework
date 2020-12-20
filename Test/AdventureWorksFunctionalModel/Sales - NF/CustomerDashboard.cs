@@ -8,7 +8,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using NakedFunctions;
-using NakedFunctions;
 
 namespace AdventureWorksModel {
     /// <summary>
@@ -53,12 +52,13 @@ namespace AdventureWorksModel {
             return $"{Name} - Dashboard";
         }
 
-        public (SalesOrderHeader, SalesOrderHeader) NewOrder(
-            IQueryable<BusinessEntityAddress> addresses,
-            IQueryable<SalesOrderHeader> headers) {
-            var order = OrderContributedActions.CreateNewOrder(Root, true, addresses, headers);
-            return Result.DisplayAndPersist(order);
-        }
+        //TODO: not clear what was intended functionality?
+        //public (SalesOrderHeader, IContainer) NewOrder(
+        //    IQueryable<BusinessEntityAddress> addresses,
+        //    IQueryable<SalesOrderHeader> headers) {
+        //    var order = OrderContributedActions.CreateNewOrder(Root, true, addresses, headers);
+        //    return DisplayAndSave(order, container);
+        //}
 
         public string[] DeriveKeys() {
             return new[] {Root.CustomerID.ToString() };

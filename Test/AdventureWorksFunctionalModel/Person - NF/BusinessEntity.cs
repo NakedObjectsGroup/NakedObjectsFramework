@@ -6,20 +6,6 @@ using System.ComponentModel.DataAnnotations;
 namespace AdventureWorksModel {
 
     public record BusinessEntity : IBusinessEntity {
-        //public BusinessEntity(
-        //    int businessEntityID,
-        //    ICollection<BusinessEntityAddress> addresses,
-        //    ICollection<BusinessEntityContact> contacts,
-        //    Guid businessEntityRowguid,
-        //    DateTime businessEntityModifiedDate
-        //    )
-        //{
-        //    BusinessEntityID = businessEntityID;
-        //    Addresses = addresses;
-        //    Contacts = contacts;
-        //    BusinessEntityRowguid = businessEntityRowguid;
-        //    BusinessEntityModifiedDate = businessEntityModifiedDate;
-        //}
 
         public BusinessEntity() {}
 

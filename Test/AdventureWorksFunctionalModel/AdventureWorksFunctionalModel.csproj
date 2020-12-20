@@ -6,96 +6,39 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Human Resources - NO\**" />
     <Compile Remove="NakedFunctions\**" />
-    <Compile Remove="Person - NF\**" />
-    <Compile Remove="Sales - NF\**" />
+    <Compile Remove="Person - NO\**" />
+    <Compile Remove="Production - NO\**" />
+    <Compile Remove="Purchasing - NO\**" />
+    <Compile Remove="Sales - NO\**" />
+    <EmbeddedResource Remove="Human Resources - NO\**" />
     <EmbeddedResource Remove="NakedFunctions\**" />
-    <EmbeddedResource Remove="Person - NF\**" />
-    <EmbeddedResource Remove="Sales - NF\**" />
+    <EmbeddedResource Remove="Person - NO\**" />
+    <EmbeddedResource Remove="Production - NO\**" />
+    <EmbeddedResource Remove="Purchasing - NO\**" />
+    <EmbeddedResource Remove="Sales - NO\**" />
+    <None Remove="Human Resources - NO\**" />
     <None Remove="NakedFunctions\**" />
-    <None Remove="Person - NF\**" />
-    <None Remove="Sales - NF\**" />
+    <None Remove="Person - NO\**" />
+    <None Remove="Production - NO\**" />
+    <None Remove="Purchasing - NO\**" />
+    <None Remove="Sales - NO\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Human Resources - NF\EmployeeAddress.cs" />
-    <Compile Remove="Human Resources - NF\EmployeeDepartmentHistory.cs" />
-    <Compile Remove="Human Resources - NF\EmployeePayHistory.cs" />
     <Compile Remove="Human Resources - NF\EmployeeRepository.cs" />
-    <Compile Remove="Human Resources - NF\JobCandidate.cs" />
-    <Compile Remove="Human Resources - NF\StaffSummary.cs" />
     <Compile Remove="Human Resources - NF\TimePeriod.cs" />
     <Compile Remove="Human Resources - NF\TimePeriodValueSemanticsProvider.cs" />
-    <Compile Remove="Human Resources - NO\Department.cs" />
-    <Compile Remove="Human Resources - NO\Employee.cs" />
-    <Compile Remove="Human Resources - NO\Shift.cs" />
-    <Compile Remove="Person - NO\IAddressRole.cs" />
-    <Compile Remove="Person - NO\IBusinessEntity.cs" />
-    <Compile Remove="Person - NO\IBusinessEntityWithContacts.cs" />
-    <Compile Remove="Production - NO\BillOfMaterials.cs" />
-    <Compile Remove="Production - NO\Culture.cs" />
-    <Compile Remove="Production - NO\Document.cs" />
-    <Compile Remove="Production - NO\Illustration.cs" />
-    <Compile Remove="Production - NO\Location.cs" />
-    <Compile Remove="Production - NO\Product.cs" />
-    <Compile Remove="Production - NO\ProductCategory.cs" />
-    <Compile Remove="Production - NO\ProductCostHistory.cs" />
-    <Compile Remove="Production - NO\ProductDescription.cs" />
-    <Compile Remove="Production - NO\ProductDocument.cs" />
-    <Compile Remove="Production - NO\ProductInventory.cs" />
-    <Compile Remove="Production - NO\ProductListPriceHistory.cs" />
-    <Compile Remove="Production - NO\ProductModel.cs" />
-    <Compile Remove="Production - NO\ProductModelIllustration.cs" />
-    <Compile Remove="Production - NO\ProductModelProductDescriptionCulture.cs" />
-    <Compile Remove="Production - NO\ProductPhoto.cs" />
-    <Compile Remove="Production - NO\ProductProductPhoto.cs" />
-    <Compile Remove="Production - NO\ProductReview.cs" />
-    <Compile Remove="Production - NO\ProductSubcategory.cs" />
-    <Compile Remove="Production - NO\ScrapReason.cs" />
-    <Compile Remove="Production - NO\TransactionHistory.cs" />
-    <Compile Remove="Production - NO\UnitMeasure.cs" />
-    <Compile Remove="Production - NO\WorkOrder.cs" />
-    <Compile Remove="Production - NO\WorkOrderRepository.cs" />
-    <Compile Remove="Production - NO\WorkOrderRouting.cs" />
-    <Compile Remove="Purchasing - NF\ProductVendor.cs" />
-    <Compile Remove="Purchasing - NF\PurchaseOrderDetail.cs" />
-    <Compile Remove="Purchasing - NF\PurchaseOrderHeader.cs" />
-    <Compile Remove="Purchasing - NF\PurchaseOrderRepository.cs" />
-    <Compile Remove="Purchasing - NF\ShipMethod.cs" />
-    <Compile Remove="Purchasing - NF\Vendor.cs" />
-    <Compile Remove="Purchasing - NF\VendorRepository.cs" />
-    <Compile Remove="Sales - NO\Currency.cs" />
-    <Compile Remove="Sales - NO\PersonCreditCard.cs" />
-    <Compile Remove="Sales - NO\SalesTerritory.cs" />
-    <Compile Remove="Sales - NO\SpecialOffer.cs" />
-    <Compile Remove="Sales - NO\SpecialOfferContributedActions.cs" />
-    <Compile Remove="Sales - NO\SpecialOfferProduct.cs" />
-    <Compile Remove="Sales - NO\SpecialOfferRepository.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Person - NF\IAddressRole.cs" />
-    <Compile Include="Person - NF\IBusinessEntity.cs" />
-    <Compile Include="Person - NF\IBusinessEntityWithContacts.cs" />
-    <Compile Include="Person - NF\Person_MenuFunctions.cs" />
-    <Compile Include="Sales - NF\Currency.cs" />
-    <Compile Include="Sales - NF\Customer_MenuFunctions.cs" />
-    <Compile Include="Sales - NF\PersonCreditCard_Functions.cs" />
-    <Compile Include="Sales - NF\PersonCreditCard.cs" />
-    <Compile Include="Sales - NF\SalesTerritory.cs" />
-    <Compile Include="Sales - NF\SpecialOffer_Functions.cs" />
-    <Compile Include="Sales - NF\SpecialOffer.cs" />
-    <Compile Include="Sales - NF\SpecialOfferProduct.cs" />
-    <Compile Include="Sales - NF\SpecialOffer_MenuFunctions.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
-    <PackageReference Include="NakedObjects.ProgrammingModel" Version="12.0.0-alpha01" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Programming Model\NakedFramework\NakedFramework.ProgrammingModel\NakedFramework.ProgrammingModel.csproj" />
     <ProjectReference Include="..\..\Programming Model\NakedFunctions\NakedFunctions.ProgrammingModel\NakedFunctions.ProgrammingModel.csproj" />
   </ItemGroup>
 

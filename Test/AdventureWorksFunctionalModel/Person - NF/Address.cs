@@ -15,7 +15,7 @@ using NakedFunctions;
 namespace AdventureWorksModel {
             public record Address : IHasRowGuid, IHasModifiedDate
     {
-       [NakedObjectsIgnore]       
+       [NakedFunctionsIgnore]       
         public virtual int AddressID { get; init; }
 
         [MemberOrder(11)]        
@@ -30,25 +30,25 @@ namespace AdventureWorksModel {
         [MemberOrder(14)]     
         public virtual string PostalCode { get; init; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int StateProvinceID { get; init; }
 
         [MemberOrder(15)]
         public virtual StateProvince StateProvince { get; init; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int CountryRegionID { get; init; }
 
         [MemberOrder(16)]
         public virtual CountryRegion CountryRegion { get; init; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int AddressTypeID { get; init; }
     
         [MemberOrder(10)]
         public virtual AddressType AddressType { get; init; }
 
-        [NakedObjectsIgnore] 
+        [NakedFunctionsIgnore] 
         public virtual int AddressForID { get; init; }
         
         public virtual BusinessEntity AddressFor { get; init; }

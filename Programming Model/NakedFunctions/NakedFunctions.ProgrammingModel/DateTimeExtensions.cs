@@ -9,8 +9,7 @@ using System;
 using System.Globalization;
 using NakedFramework;
 
-
-namespace NakedObjects {
+namespace NakedFunctions {
     /// <summary>
     ///     Helper class with DateTime extension methods for common date operations.
     /// </summary>

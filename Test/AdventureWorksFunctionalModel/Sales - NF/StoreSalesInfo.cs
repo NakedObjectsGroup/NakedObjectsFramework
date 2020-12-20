@@ -7,8 +7,7 @@
 
 using System.Linq;
 using NakedFunctions;
-using NakedFunctions;
-
+using static AdventureWorksModel.Helpers;
 
 namespace AdventureWorksModel {
     //TODO: Need to think how we want to do ViewModels. Can't require methods to be implemented.
@@ -57,8 +56,8 @@ namespace AdventureWorksModel {
 
         public static StoreSalesInfo PopulateUsingKeys(StoreSalesInfo vm,
                                                        string[] keys,
-                                                       IQueryable<Customer> customers) {
-            var cus = CustomerRepository.FindCustomerByAccountNumber(keys[0], customers).Item1;
+                                                       IContainer container) {
+            var cus = Customer_MenuFunctions.FindCustomerByAccountNumber(keys[0], container).Item1;
             return vm with {AccountNumber =  keys[0]}
                  with {SalesTerritory =  cus.SalesTerritory}
                  with {SalesPerson =  cus.Store?.SalesPerson}
@@ -78,17 +77,13 @@ namespace AdventureWorksModel {
             return ssi.EditMode;
         }
 
-        public static (Customer, Customer) Save(this StoreSalesInfo vm,
-                                                IQueryable<Customer> customers) {
-            var (cus, _) = CustomerRepository.FindCustomerByAccountNumber(vm.AccountNumber, customers);
+        public static (Customer, IContainer) Save(this StoreSalesInfo vm, IContainer container) {
+            var (cus, _) = Customer_MenuFunctions.FindCustomerByAccountNumber(vm.AccountNumber, container);
             var st = vm.SalesTerritory;
             var sp = vm.SalesPerson;
             var sn = vm.StoreName;
-            var cus2 = cus
-                .With(c => c.SalesTerritory, st)
-                .With(c => c.Store.SalesPerson, sp)
-                .With(c => c.Store.Name, sn);
-            return DisplayAndPersist(cus2);
+            var cus2 = cus with { SalesTerritory = st }; //TODO:   Store.SalesPerson = sp, Store.Name = sn);
+            return DisplayAndSave(cus2, container);
         }
 
         public static bool HideSave(this StoreSalesInfo ssi) {

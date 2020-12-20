@@ -37,7 +37,7 @@ namespace AdventureWorksModel {
 
         #region NameStyle
 
-        [MemberOrder(15), DefaultValue(false), Named("Reverse name order")]
+        [MemberOrder(15),  Named("Reverse name order")] //DefaultValue(false),
         public virtual bool NameStyle { get; init; }
 
         #endregion
@@ -87,7 +87,7 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        [MemberOrder(21), DefaultValue(1)]
+        [MemberOrder(21)] //DefaultValue(1)
         public virtual EmailPromotion EmailPromotion { get; init; }
 
         [Hidden]
@@ -108,9 +108,8 @@ namespace AdventureWorksModel {
             nameof(PersonPhone.PhoneNumber))] 
         public virtual ICollection<PersonPhone> PhoneNumbers { get; init; }
 
-        //TODO
-        //[Hidden]
-        //public virtual Employee Employee { get; init; }
+        [Hidden]
+        public virtual Employee Employee { get; init; }
 
         #region Row Guid and Modified Date
 
@@ -131,6 +130,13 @@ namespace AdventureWorksModel {
 
         #endregion
 
+    }
+
+    public enum EmailPromotion
+    {
+        NoPromotions = 0,
+        AdventureworksOnly = 1,
+        AdventureworksAndPartners = 2
     }
 
     public static class PersonFunctions

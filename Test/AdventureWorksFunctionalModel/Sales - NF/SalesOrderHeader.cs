@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFunctions;
 
@@ -47,41 +48,6 @@ namespace AdventureWorksModel {
             return (byte)OrderStatus.InProcess;
         }
 
-        [Hidden]
-        public virtual bool IsInProcess()
-        {
-            return Status.Equals((byte)OrderStatus.InProcess);
-        }
-
-        [Hidden]
-        public virtual bool IsApproved()
-        {
-            return Status.Equals((byte)OrderStatus.Approved);
-        }
-
-        [Hidden]
-        public virtual bool IsBackOrdered()
-        {
-            return Status.Equals((byte)OrderStatus.BackOrdered);
-        }
-
-        [Hidden]
-        public virtual bool IsRejected()
-        {
-            return Status.Equals((byte)OrderStatus.Rejected);
-        }
-
-        [Hidden]
-        public virtual bool IsShipped()
-        {
-            return Status.Equals((byte)OrderStatus.Shipped);
-        }
-
-        [Hidden]
-        public virtual bool IsCancelled()
-        {
-            return Status.Equals((byte)OrderStatus.Cancelled);
-        }
 
         #endregion
 
@@ -156,11 +122,8 @@ namespace AdventureWorksModel {
         [MemberOrder(4)]
         public virtual Address BillingAddress { get; set; }
 
-        [Executed(Where.Remotely)]
-        public List<Address> ChoicesBillingAddress(IQueryable<BusinessEntityAddress> addresses)
-        {
-            return PersonRepository.AddressesFor(Customer.BusinessEntity(), addresses).ToList();
-        }
+        public List<Address> ChoicesBillingAddress(IContainer container) =>  Person_MenuFunctions.AddressesFor(Customer.BusinessEntity(), container).ToList();
+ 
 
         #endregion
 
@@ -179,11 +142,8 @@ namespace AdventureWorksModel {
         [MemberOrder(10)]
         public virtual Address ShippingAddress { get; set; }
 
-        [Executed(Where.Remotely)]
-        public List<Address> ChoicesShippingAddress(IQueryable<BusinessEntityAddress> addresses)
-        {
-            return ChoicesBillingAddress(addresses);
-        }
+        public List<Address> ChoicesShippingAddress(IContainer container) =>  ChoicesBillingAddress(container);
+      
         #endregion
 
         #region ShipMethod
@@ -193,11 +153,6 @@ namespace AdventureWorksModel {
 
         [MemberOrder(11)]
         public virtual ShipMethod ShipMethod { get; set; }
-
-        public ShipMethod DefaultShipMethod()
-        {
-            return Container.Instances<ShipMethod>().FirstOrDefault();
-        }
 
         #endregion
 
@@ -223,29 +178,7 @@ namespace AdventureWorksModel {
         [MemberOrder(21)]
         public virtual DateTime DueDate { get; set; }
 
-        public string DisableDueDate()
-        {
-            return DisableIfShipped();
-        }
 
-        public string ValidateDueDate(DateTime dueDate)
-        {
-            if (dueDate.Date < OrderDate.Date)
-            {
-                return "Due date cannot be before order date";
-            }
-
-            return null;
-        }
-
-        private string DisableIfShipped()
-        {
-            if (IsShipped())
-            {
-                return "Order has been shipped";
-            }
-            return null;
-        }
 
         #endregion
 
@@ -256,24 +189,8 @@ namespace AdventureWorksModel {
         [DataType(DataType.DateTime)]
         [Mask("d")]//Just to prove that you can, if perverse enough, make something
         //a dateTime and then mask it as a Date
-        [Range(-30, 0)]
+       // [NakedFunctions.Range(-30, 0)]
         public virtual DateTime? ShipDate { get; set; }
-
-        public string DisableShipDate()
-        {
-            return DisableIfShipped();
-        }
-
-        public string ValidateShipDate(DateTime? shipDate)
-        {
-            if (shipDate.HasValue && shipDate.Value.Date < OrderDate.Date)
-            {
-                return "Ship date cannot be before order date";
-            }
-
-            return null;
-        }
-
         #endregion
 
         #endregion
@@ -306,14 +223,7 @@ namespace AdventureWorksModel {
             TotalDue = SubTotal;
         }
 
-        public virtual string DisableRecalculate()
-        {
-            if (!IsInProcess())
-            {
-                return "Can only recalculate an 'In Process' order";
-            }
-            return null;
-        }
+
 
         #region CurrencyRate
 
@@ -322,7 +232,6 @@ namespace AdventureWorksModel {
 
 
         [MemberOrder(35)]
-        [FindMenu]
         public virtual CurrencyRate CurrencyRate { get; set; }
 
         #endregion
@@ -418,7 +327,7 @@ namespace AdventureWorksModel {
 
         [PageSize(10)]
         public IEnumerable<string> AutoComplete0AddComment(
-            [DescribedAs("Auto-complete")][Range(2, 0)] string matching)
+            [DescribedAs("Auto-complete")][NakedFunctions.Range(2, 0)] string matching)
         {
             return Choices0AddStandardComments().Where(c => c.ToLower().Contains(matching.ToLower()));
         }
@@ -431,7 +340,7 @@ namespace AdventureWorksModel {
 
         [PageSize(10)]
         public IList<string> AutoComplete0AddComment2(
-            [DescribedAs("Auto-complete")][Range(2, 0)] string matching)
+            [DescribedAs("Auto-complete")][NakedFunctions.Range(2, 0)] string matching)
         {
             return Choices0AddStandardComments().Where(c => c.ToLower().Contains(matching.ToLower())).ToList();
         }
@@ -453,12 +362,8 @@ namespace AdventureWorksModel {
 
         [PageSize(20)]
         public IQueryable<SalesPerson> AutoCompleteSalesPerson(
-            [Range(2, 0)] string name,
-            IQueryable<Person> persons,
-            IQueryable<SalesPerson> sps)
-        {
-            return SalesRepository.FindSalesPersonByName(null, name, persons, sps);
-        }
+            [NakedFunctions.Range(2, 0)] string name, IContainer container) =>
+            Sales_MenuFunctions.FindSalesPersonByName(null, name, container);
 
         #endregion
 

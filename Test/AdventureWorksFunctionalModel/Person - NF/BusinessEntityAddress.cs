@@ -9,13 +9,13 @@ namespace AdventureWorksModel
     {
          public BusinessEntityAddress() { }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int BusinessEntityID { get; init; }
 
         [MemberOrder(3)]
         public virtual BusinessEntity BusinessEntity { get; init; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int AddressTypeID { get; init; }
 
         [MemberOrder(1)]
@@ -27,7 +27,7 @@ namespace AdventureWorksModel
         [MemberOrder(2)]    
         public virtual Address Address { get; init; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]

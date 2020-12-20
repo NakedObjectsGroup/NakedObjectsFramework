@@ -21,7 +21,8 @@ namespace AdventureWorksModel {
         [MemberOrder(2)][DescribedAs("Without spaces")]
         public virtual string CardNumber { get; init; }
 
-        private string _ObfuscatedNumber;
+        //TODO: what was intended purpose?
+        //private string _ObfuscatedNumber;
 
         
         [MemberOrder(3)]

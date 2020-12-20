@@ -6,8 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
-
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
@@ -43,10 +42,6 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(SalesReason);
-            return t.ToString();
-        }
+        public override string ToString() => $"{SalesReason}";
     }
 }

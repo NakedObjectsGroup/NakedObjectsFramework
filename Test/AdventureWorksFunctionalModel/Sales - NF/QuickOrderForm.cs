@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFunctions;
-using NakedFunctions;
 
 namespace AdventureWorksModel.Sales {
 
@@ -33,7 +32,7 @@ namespace AdventureWorksModel.Sales {
         [Hidden]
         public Customer Customer { get; }
 
-        public string AccountNumber { get; }
+        public string AccountNumber { get;  }
 
         public ICollection<QuickOrderLine> Details { get; }
     }
@@ -71,14 +70,13 @@ namespace AdventureWorksModel.Sales {
         }
 
         public static QuickOrderForm AddDetail( 
-            QuickOrderForm vm, 
-            [FindMenu] Product product, 
-            short number)
+            QuickOrderForm vm, Product product,short number)
         {
-            var ol = new QuickOrderLine(product, number);
-            var details = vm.Details;
-            details.Add(ol); //TODO: redo using immutable collection
-            return vm with {Details =  details};
+            throw new NotImplementedException();
+            //var ol = new QuickOrderLine(product, number);
+            //var details = vm.Details;
+            //details.Add(ol); //TODO: redo using immutable collection
+            //return vm with {Details =  details};
         }
 
         public static (SalesOrderHeader, SalesOrderHeader) CreateOrder(

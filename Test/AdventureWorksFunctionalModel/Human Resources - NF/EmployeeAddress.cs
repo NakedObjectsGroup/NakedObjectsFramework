@@ -9,15 +9,12 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
+namespace AdventureWorksModel
+{
     //This class models an association table, and is never viewed directly by the user.
 
-        public record EmployeeAddress : IAddressRole {
-
-
-
-        #region Properties
-
+    public record EmployeeAddress : IAddressRole
+    {
         [Hidden]
         public virtual int EmployeeID { get; init; }
 
@@ -30,27 +27,11 @@ namespace AdventureWorksModel {
         [MemberOrder(2)] //Title
         public virtual Address Address { get; init; }
 
-        #region ModifiedDate and rowguid
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
-
-        #endregion
-
-        #region rowguid
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
-
-        #endregion
-
-        #endregion
-
-        #endregion
     }
 
     public static class EmployeeAddressFunctions

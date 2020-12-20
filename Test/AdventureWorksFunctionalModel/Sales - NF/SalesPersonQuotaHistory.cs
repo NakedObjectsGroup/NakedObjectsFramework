@@ -6,8 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
-using NakedFunctions;
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
@@ -60,13 +59,12 @@ namespace AdventureWorksModel {
         #endregion
 
         #endregion
+
+        public override string ToString() => $"{QuotaDate.ToString("d")} {SalesQuota.ToString("C")}";
     }
 
     public static class SalesPersonQuotaHistoryFunctions
     {
-        public static string Title(this SalesPersonQuotaHistory t)
-        {
-            return t.CreateTitle($"{t.QuotaDate.ToString("d")} {t.SalesQuota.ToString("C")}");
-        }
+
     }
 }

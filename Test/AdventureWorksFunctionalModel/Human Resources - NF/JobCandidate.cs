@@ -14,15 +14,12 @@ namespace AdventureWorksModel {
         public virtual int JobCandidateID { get; init; }
         public virtual string Resume { get; init; }
 
-        #region Employee
         [Hidden]
         public virtual int? EmployeeID { get; init; }
-        public Employee Employee { get; init; }
-        #endregion
 
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+        public Employee Employee { get; init; }
+
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{Employee}";

@@ -6,8 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
-using NakedFunctions;
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
@@ -70,14 +69,11 @@ namespace AdventureWorksModel {
         #endregion
 
         #endregion
+
+        public override string ToString()  => $"{SalesPerson} {SalesTerritory}";
     }
 
     public static class SalesTerritoryHistoryFunctions
-    {
-
-        public static string Title(this SalesTerritoryHistory t)
-        {
-            return t.CreateTitle($"{SalesPersonFunctions.Title(t.SalesPerson)} {SalesTerritoryFunctions.Title(t.SalesTerritory)}");
-        }
+    {    
     }
 }

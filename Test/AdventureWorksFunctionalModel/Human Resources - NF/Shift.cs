@@ -32,13 +32,8 @@ namespace AdventureWorksModel {
         [Mask("T")] [MemberOrder(4)]
         public virtual TimeSpan EndTime { get; init; }
 
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        [ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
-
-        #endregion
 
         public override string ToString() => Name;
     }

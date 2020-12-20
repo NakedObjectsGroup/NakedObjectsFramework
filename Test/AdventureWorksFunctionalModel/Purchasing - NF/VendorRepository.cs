@@ -8,14 +8,12 @@
 
 using System.Linq;
 using NakedFunctions;
-using NakedFunctions;
-using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
+using static AdventureWorksModel.Helpers;
 
 namespace AdventureWorksModel {
     [Named("Vendors")]
     public static class VendorRepository  {
 
-        [FinderAction]
         [TableView(true, "AccountNumber", "ActiveFlag", "PreferredVendorStatus")]
         public static IQueryable<Vendor> FindVendorByName(
             string name,
@@ -23,14 +21,11 @@ namespace AdventureWorksModel {
             return vendors.Where(v => v.Name == name).OrderBy(v => v.Name);
         }
 
-        [FinderAction]
-        public static (Vendor, string) FindVendorByAccountNumber(
-            string accountNumber,
-            IQueryable<Vendor> vendors) {
-            return SingleObjectWarnIfNoMatch(vendors.Where(x => x.AccountNumber == accountNumber));
+        public static (Vendor, IContainer) FindVendorByAccountNumber(
+            string accountNumber,IContainer container) {
+            return Helpers.SingleObjectWarnIfNoMatch(container.Instances<Vendor>().Where(x => x.AccountNumber == accountNumber), container);
         }
 
-        [FinderAction]
         public static Vendor RandomVendor(
             IQueryable<Vendor> vendors,
             [Injected] int random) {

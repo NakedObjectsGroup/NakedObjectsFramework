@@ -13,16 +13,16 @@ namespace AdventureWorksModel {
     [Bounded]
         public record AddressType: IHasModifiedDate, IHasRowGuid {
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int AddressTypeID { get; init; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual string Name { get; init; }
 
-        [NakedObjectsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        [NakedObjectsIgnore, ConcurrencyCheck]
+        [Hidden, ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;

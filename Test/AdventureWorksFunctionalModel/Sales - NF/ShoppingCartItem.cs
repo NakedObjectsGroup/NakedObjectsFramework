@@ -6,25 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
     public record ShoppingCartItem {
 
-        #region Injected Services
-        
-        #endregion
-
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
         [Hidden]
         public virtual int ShoppingCartItemID { get; set; }
 
@@ -47,16 +34,27 @@ namespace AdventureWorksModel {
 
         #region ModifiedDate
 
-        [ MemberOrder(99)]
-        [ConcurrencyCheck]
+        [ MemberOrder(99),ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
         #endregion
 
-        public string Title() {
-            var t = Container.NewTitleBuilder();
-            t.Append(Quantity).Append(" x", Product);
-            return t.ToString();
+        public override string ToString() => $"{Quantity}  x {Product}";
+    }
+
+    public static class ShoppingCartItem_Functions
+    {
+        #region Life Cycle Methods
+        public static void Persisting()
+        {
+            //TODO
+            //ModifiedDate = DateTime.Now;
         }
+
+        public static void Updating()
+        {
+            //ModifiedDate = DateTime.Now;
+        }
+        #endregion
     }
 }

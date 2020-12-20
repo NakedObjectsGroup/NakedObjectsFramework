@@ -5,29 +5,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+
+using System.Linq;
 using NakedFunctions;
 
+using System;
+
 namespace AdventureWorksModel {
-    public record CountryRegionCurrency  {
 
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
+
+    [Named("Customers")]
+    public static class CustomerQuery_Functions {
+
+        public static CustomerCollectionViewModel ShowCustomersWithAddressInRegion(this IQueryable<Customer> customers, CountryRegion region) {
+            throw new NotImplementedException();
+            //List<Customer> cc = customers.Where(c => c.Addresses.Any(a => a.Address.StateProvince.CountryRegion == region)).ToList();
+            //var ccvm = Container.NewViewModel<CustomerCollectionViewModel>();
+            //ccvm.Customers = cc.ToList();
+            //return ccvm;
         }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
-        public virtual string CountryRegionCode { get; set; }
-        public virtual string CurrencyCode { get; set; }
-        public virtual CountryRegion CountryRegion { get; set; }
-        public virtual Currency Currency { get; set; }
-
-        [MemberOrder(99), ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
     }
 }

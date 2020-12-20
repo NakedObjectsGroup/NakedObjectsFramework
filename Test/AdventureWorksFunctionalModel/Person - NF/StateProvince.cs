@@ -8,7 +8,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using NakedFunctions;
 
 namespace AdventureWorksModel
 {
@@ -41,7 +40,7 @@ namespace AdventureWorksModel
 
         public StateProvince() { }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int StateProvinceID { get; init; }
 
         public virtual string StateProvinceCode { get; init; }
@@ -50,22 +49,20 @@ namespace AdventureWorksModel
 
         public virtual string Name { get; init; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual string CountryRegionCode { get; init; }
 
         public virtual CountryRegion CountryRegion { get; init; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual int TerritoryID { get; init; }
 
         public virtual SalesTerritory SalesTerritory { get; set; }
 
-        [NakedObjectsIgnore]
+        [NakedFunctionsIgnore]
         public virtual Guid rowguid { get; init; }
 
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
     }
     public static class StateProvinceFunctions

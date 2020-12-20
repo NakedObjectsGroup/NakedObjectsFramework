@@ -5,13 +5,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-
-
 using System.Linq;
 using NakedFunctions;
-using static AdventureWorksModel.CommonFactoryAndRepositoryFunctions;
+using static AdventureWorksModel.Helpers;
 using System;
-using NakedFunctions;
 
 namespace AdventureWorksModel {
     public enum Ordering {
@@ -22,7 +19,7 @@ namespace AdventureWorksModel {
     [Named("Orders")]
     public static class OrderRepository  {
 
-        [FinderAction, MemberOrder(99)]
+        [ MemberOrder(99)]
         public static SalesOrderHeader RandomOrder(
             IQueryable<SalesOrderHeader> headers,
             [Injected] int random)
@@ -30,23 +27,22 @@ namespace AdventureWorksModel {
             return Random(headers, random);
         }
 
-        [FinderAction, MemberOrder(5)]
+        [ MemberOrder(5)]
         [TableView(true, "OrderDate", "DueDate")]
         public static IQueryable<SalesOrderHeader> OrdersInProcess(
              IQueryable<SalesOrderHeader> headers) {
             return headers.Where(x => x.Status == 1);
         }
 
-        [FinderAction]
+        
         [MemberOrder(10)]
-        public static (SalesOrderHeader, string) FindOrder(
-            [DefaultValue("SO")] string orderNumber,
-            IQueryable<SalesOrderHeader> headers)
+        public static (SalesOrderHeader, IContainer) FindOrder(
+            [DefaultValue("SO")] string orderNumber, IContainer container)
         {
-            return SingleObjectWarnIfNoMatch(headers.Where(x => x.SalesOrderNumber == orderNumber));
+            return Helpers.SingleObjectWarnIfNoMatch(container.Instances<SalesOrderHeader>().Where(x => x.SalesOrderNumber == orderNumber), container);
         }
 
-        [FinderAction, MemberOrder(90)]
+        [ MemberOrder(90)]
         [TableView(true, "TotalDue", "Customer", "OrderDate", "SalesPerson", "Comment")]
         public static IQueryable<SalesOrderHeader> HighestValueOrders(
             IQueryable<SalesOrderHeader> headers)
@@ -54,7 +50,7 @@ namespace AdventureWorksModel {
             return OrdersByValue(Ordering.Descending, headers);
         }
 
-        [FinderAction]
+        
         [MemberOrder(91)]
         [TableView(true, "TotalDue", "Customer", "OrderDate", "SalesPerson")]
         public static IQueryable<SalesOrderHeader> OrdersByValue(
@@ -78,8 +74,8 @@ namespace AdventureWorksModel {
         [PageSize(10)]
         public static Customer AutoComplete0OrdersForCustomer(
             [Range(10,0)] string accountNumber,
-            IQueryable<Customer> customers) {
-            return CustomerRepository.FindCustomerByAccountNumber(accountNumber, customers).Item1;
+            IContainer container) {
+            return Customer_MenuFunctions.FindCustomerByAccountNumber(accountNumber, container).Item1;
         }
         #endregion
 
@@ -110,9 +106,9 @@ namespace AdventureWorksModel {
         [PageSize(10)]
         public static Customer AutoComplete0FindOrders(
             [Range(10,0)] string accountNumber,
-            IQueryable<Customer> customers)
+            IContainer container)
         {
-            return CustomerRepository.FindCustomerByAccountNumber(accountNumber, customers).Item1;
+            return Customer_MenuFunctions.FindCustomerByAccountNumber(accountNumber, container).Item1;
         }
     }
 }

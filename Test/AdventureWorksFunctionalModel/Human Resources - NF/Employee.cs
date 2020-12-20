@@ -78,8 +78,7 @@ namespace AdventureWorksModel {
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
-        [MemberOrder(99)]
-        [ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]

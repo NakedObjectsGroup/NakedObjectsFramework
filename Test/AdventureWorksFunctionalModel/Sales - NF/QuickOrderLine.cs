@@ -1,5 +1,4 @@
 ﻿using NakedFunctions;
-using NakedFunctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +19,8 @@ namespace AdventureWorksModel.Sales
 
         [Hidden]
         public short Number { get; set; }
+
+        public override string ToString() =>  $"{Number} x {Product}";
     }
 
     public static class QuickOrderLineFunctions
@@ -30,26 +31,18 @@ namespace AdventureWorksModel.Sales
         }
 
         public static QuickOrderLine PopulateUsingKeys(
-            QuickOrderLine vm,
-            string[] keys,
-            IQueryable<Product> products)
+            QuickOrderLine vm, string[] keys,IContainer container)
         {
             int p = int.Parse(keys.First());
             short n = short.Parse(keys.Skip(1).First());
-            var product = products.Single(c => c.ProductID == p);
+            var product = container.Instances<Product>().Single(c => c.ProductID == p);
             return vm with {Product =  product, Number= n};
         }
 
-        public static string Title(QuickOrderLine vm)
-        {
-            return $"{vm.Number} x {vm.Product.Title()}";
-        }
 
-        public static (SalesOrderHeader, SalesOrderDetail) AddTo(QuickOrderLine vm, SalesOrderHeader salesOrder, IQueryable<SpecialOfferProduct> sops)
-        {
-            SalesOrderDetail sod = salesOrder.AddNewDetail(vm.Product, vm.Number, sops);
-            return (sod.SalesOrderHeader, sod);
-        }
+        public static (SalesOrderHeader, IContainer) AddTo(QuickOrderLine vm, SalesOrderHeader salesOrder, IContainer container) =>
+            salesOrder.AddNewDetail(vm.Product, vm.Number, container);
+        
     }
 
 }

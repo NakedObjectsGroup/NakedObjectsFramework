@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using AdventureWorksModel;
 using NakedFunctions;
 using static AdventureWorksModel.Helpers;
 
@@ -26,8 +25,8 @@ namespace AdventureWorksModel {
 
         [DescribedAs("Determines the best discount offered by current special offers for a specified order quantity")]
         public static SpecialOffer BestSpecialOffer(
-            Product p, short quantity, IQueryable<SpecialOfferProduct> sops, IQueryable<SpecialOffer> offers)
-           => BestSpecialOfferProduct(p, quantity, sops).SpecialOffer ?? SpecialOffer_MenuFunctions.NoDiscount(offers);
+            Product p, short quantity, IContainer container)
+           => BestSpecialOfferProduct(p, quantity, container).SpecialOffer ?? SpecialOffer_MenuFunctions.NoDiscount(container);
 
         public static string ValidateBestSpecialOffer(this Product p, short quantity)
             => quantity <= 0 ? "Quantity must be > 0" : null;
@@ -36,10 +35,8 @@ namespace AdventureWorksModel {
          => p.IsDiscontinued(now) ? "Product is discontinued" : null;
 
         public static SpecialOfferProduct BestSpecialOfferProduct(
-            this Product p,
-            short quantity,
-            IQueryable<SpecialOfferProduct> sops)
-        => sops.Where(obj => obj.Product.ProductID == p.ProductID &&
+            this Product p, short quantity, IContainer container) => 
+            container.Instances<SpecialOfferProduct>().Where(obj => obj.Product.ProductID == p.ProductID &&
                               obj.SpecialOffer.StartDate <= DateTime.Now &&
                               obj.SpecialOffer.EndDate >= new DateTime(2004, 6, 1) &&
                               obj.SpecialOffer.MinQty < quantity).

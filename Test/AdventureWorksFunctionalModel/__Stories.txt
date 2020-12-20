@@ -22,3 +22,6 @@
 6. SpecialOffer_Functions.AssociateWithProduct
 - Should now work, but testing that Container.PendingSave can now also save new objects.
 - ProductFunctions.AssociateWithSpecialOffer should then also work.
+
+7. Sales_MenuFunctions.Menu
+- Recognise NakedFramework.Menu.IMenu & IMenuFactory (in addition to NakedObjects versions) (& mark latter obsolete)

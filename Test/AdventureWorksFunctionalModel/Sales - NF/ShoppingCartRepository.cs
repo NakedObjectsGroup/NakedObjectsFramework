@@ -7,12 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-
 using System.Linq;
 using System.Security.Principal;
 using NakedFunctions;
-using NakedFunctions;
-
 
 namespace AdventureWorksModel {
     /// <summary>
@@ -22,11 +19,11 @@ namespace AdventureWorksModel {
     [Named("Cart")]
     public static class ShoppingCartRepository {
 
+        //TODO: The Cart should probably be a view model
         [Named("Show Cart")]
-        public static IQueryable<ShoppingCartItem> Cart(
-            IQueryable<ShoppingCartItem> items) {
+        public static IQueryable<ShoppingCartItem> Cart(IContainer container) {
             string id = GetShoppingCartIDForUser();
-            return items.Where(x => x.ShoppingCartID == id);
+            return container.Instances<ShoppingCartItem>().Where(x => x.ShoppingCartID == id);
         }
 
         public static string DisableCart() {
@@ -37,7 +34,6 @@ namespace AdventureWorksModel {
             return GetCustomerForUser().CustomerID.ToString();
         }
 
-        [Hidden]
         public static IQueryable<ShoppingCartItem> AddToShoppingCart(Product product) {
             //TODO: Transient object
             throw new NotImplementedException();
@@ -106,19 +102,15 @@ namespace AdventureWorksModel {
             return principal.Identity.Name;
         }
 
-        [Hidden]
-        public static (SalesOrderHeader, IEnumerable<SalesOrderDetail>) AddAllItemsInCartToOrder(
-            SalesOrderHeader order,
-            IQueryable<SpecialOfferProduct> sops,
-            IQueryable<ShoppingCartItem> items) {
+        public static (SalesOrderHeader, IContainer) AddAllItemsInCartToOrder(
+            SalesOrderHeader order, IContainer container) {
 
-            //TODO: Procedural!  Need to remove item as it is added?
-            var details = Cart(items).Select(item => order.AddNewDetail(item.Product, (short) item.Quantity, sops));
-            EmptyCart(items);
-            return (order, details);
+            var items = Cart(container);
+            var details = items.Select(item => order.AddNewDetail(item.Product, (short) item.Quantity, container));
+            EmptyCart(container);
+            return (order, container.WithPendingSave(details));
         }
 
-        [Hidden]
         public static void RemoveItems(IQueryable<ShoppingCartItem> items) {
             foreach (ShoppingCartItem item in items) {
 
@@ -127,19 +119,12 @@ namespace AdventureWorksModel {
             }
         }
 
-        public static void EmptyCart(IQueryable<ShoppingCartItem> items) {
-            RemoveItems(Cart(items));
+        public static void EmptyCart(IContainer container) {
+            RemoveItems(Cart(container));
         }
 
-        public static string DisableEmptyCart() {
-            return DisableIfNoCustomerForUser();
-        }
+        public static string DisableEmptyCart() =>  DisableIfNoCustomerForUser();
 
-        [Hidden]
-        public static string DisableIfNoCustomerForUser() {
-            var rb = new ReasonBuilder();
-            rb.AppendOnCondition(GetCustomerForUser() == null, "User is not a recognised Customer");
-            return rb.Reason;
-        }
+        public static string DisableIfNoCustomerForUser() =>  GetCustomerForUser() == null? "User is not a recognised Customer": null;
     }
 }

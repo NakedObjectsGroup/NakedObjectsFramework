@@ -6,23 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
+using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
+using static AdventureWorksModel.Helpers;
 
 namespace AdventureWorksModel {
         public record PurchaseOrderDetail {
-        private Product prod;
-        private short qty;
-
-        public PurchaseOrderDetail(PurchaseOrderHeader purchaseOrderHeader, Product prod, short qty)
-        {
-            PurchaseOrderHeader = purchaseOrderHeader;
-            this.prod = prod;
-            this.qty = qty;
-        }
-        #region Injected Services
-        
-        #endregion
 
         #region Life Cycle Methods
         public virtual void Persisting() {
@@ -68,16 +57,9 @@ namespace AdventureWorksModel {
         
         public virtual decimal StockedQty { get; set; }
 
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+        [MemberOrder(99),ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
-        #endregion
-
-        #region Product
         [Hidden]
         public virtual int ProductID { get; set; }
 
@@ -85,50 +67,26 @@ namespace AdventureWorksModel {
         [MemberOrder(10)]
         public virtual Product Product { get; set; }
 
-        #endregion
-
-        #region Header
-
         [Hidden]
         public virtual PurchaseOrderHeader PurchaseOrderHeader { get; set; }
 
-        #endregion
+        public override string ToString() => $"{OrderQty} x {Product}";
+    }
 
-        #region Title
-
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(OrderQty.ToString()).Append(" x", Product);
-            return t.ToString();
-        }
-
-        #endregion
-
-        #region ReceiveGoods (Action)
+    public static class PurchaseOrderDetail_Functions
+    {
 
         [MemberOrder(1)]
-        public void ReceiveGoods(int qtyReceived, int qtyRejected, int qtyIntoStock) {
-            ReceivedQty = qtyReceived;
-            RejectedQty = qtyRejected;
-            StockedQty = qtyIntoStock;
-        }
+        public static (PurchaseOrderDetail, IContainer) ReceiveGoods(
+            this PurchaseOrderDetail pod, int qtyReceived, int qtyRejected, int qtyIntoStock, IContainer container) =>
+            DisplayAndSave(pod with {ReceivedQty = qtyReceived, RejectedQty = qtyRejected, StockedQty = qtyIntoStock}, container);
 
-        public virtual int Default0ReceiveGoods() {
-            return OrderQty;
-        }
 
-        public virtual int Default2ReceiveGoods() {
-            return OrderQty;
-        }
+        public static int Default0ReceiveGoods(this PurchaseOrderDetail pod)=>  pod.OrderQty;
 
-        public virtual string ValidateReceiveGoods(int qtyReceived, int qtyRejected, int qtyIntoStock) {
-            var rb = new ReasonBuilder();
-            if (qtyRejected + qtyIntoStock != qtyReceived) {
-                rb.Append("Qty Into Stock + Qty Rejected must add up to Qty Received");
-            }
-            return rb.Reason;
-        }
+        public static int Default2ReceiveGoods(this PurchaseOrderDetail pod) => pod.OrderQty;
 
-        #endregion
+        public static string ValidateReceiveGoods(this PurchaseOrderDetail pod, int qtyReceived, int qtyRejected, int qtyIntoStock) =>
+        qtyRejected + qtyIntoStock != qtyReceived ? "Qty Into Stock + Qty Rejected must add up to Qty Received" : null;
     }
 }

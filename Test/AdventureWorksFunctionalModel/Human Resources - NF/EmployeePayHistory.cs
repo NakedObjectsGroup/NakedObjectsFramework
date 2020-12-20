@@ -35,13 +35,9 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region RateChangeDate
-
         [MemberOrder(1)]
         [Mask("d")]
         public virtual DateTime RateChangeDate { get; init; }
-
-        #endregion
 
         #region Rate
 
@@ -59,14 +55,8 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
-
-        #endregion
 
         public override string ToString() => $"{Rate.ToString("C")} from {RateChangeDate.ToString("d")}";
 

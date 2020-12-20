@@ -6,10 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
-
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using NakedFunctions;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
@@ -81,41 +79,10 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        public override string ToString() {
-            var t = Container.NewTitleBuilder();
-            t.Append(OrderQty.ToString()).Append(" x", Product);
-            return t.ToString();
-        }
+        public override string ToString() => $"{OrderQty} x {Product}";
 
-        #region Life Cycle methods
 
-        public void Persisted() {
-            SalesOrderHeader.Details.Add(this);
-            SalesOrderHeader.Recalculate();
-        }
 
-        #endregion
-
-        public void Recalculate() {
-            UnitPrice = SpecialOfferProduct.Product.ListPrice;
-            UnitPriceDiscount = (SpecialOfferProduct.SpecialOffer.DiscountPct*UnitPrice);
-            LineTotal = (UnitPrice - UnitPriceDiscount)*OrderQty;
-            if (Container.IsPersistent(this)) {
-                SalesOrderHeader.Recalculate();
-            }
-        }
-
-        public void ChangeQuantity(
-            short newQuantity,
-            IQueryable<SpecialOfferProduct> sops) {
-            OrderQty = newQuantity;
-            SpecialOfferProduct = ProductFunctions2.BestSpecialOfferProduct(Product, newQuantity, sops);
-            Recalculate();
-        }
-
-        public virtual string DisableChangeQuantity() {
-            return SalesOrderHeader.DisableAddNewDetail();
-        }
 
         #region ID
 
@@ -161,24 +128,48 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        #region ModifiedDate and rowguid
-
-        #region ModifiedDate
-
-        [MemberOrder(99)]
-        
-        [ConcurrencyCheck]
+       [MemberOrder(99),ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
-
-        #endregion
-
-        #region rowguid
 
         [Hidden]
         public virtual Guid rowguid { get; set; }
+    }
+
+    public static class SalesOrderDetail_Functions
+    {
+        #region Life Cycle methods
+
+        public static void Persisted(this SalesOrderDetail sod)
+        {
+            //TODO:
+            //SalesOrderHeader.Details.Add(this);
+            //SalesOrderHeader.Recalculate();
+        }
 
         #endregion
 
-        #endregion
+        public static (SalesOrderDetail, IContainer) Recalculate(this SalesOrderDetail sod)
+        {
+            throw new NotImplementedException();
+            //UnitPrice = SpecialOfferProduct.Product.ListPrice;
+            //UnitPriceDiscount = (SpecialOfferProduct.SpecialOffer.DiscountPct * UnitPrice);
+            //LineTotal = (UnitPrice - UnitPriceDiscount) * OrderQty;
+            //SalesOrderHeader.Recalculate();
+        }
+
+        public static (SalesOrderDetail, IContainer) ChangeQuantity(this SalesOrderDetail sod, short newQuantity, IContainer container)
+        {
+            throw new NotImplementedException();
+            //OrderQty = newQuantity;
+            //            IQueryable<SpecialOfferProduct> sops
+            //SpecialOfferProduct = ProductFunctions2.BestSpecialOfferProduct(Product, newQuantity, sops);
+            //Recalculate();
+        }
+
+        public static string DisableChangeQuantity()
+        {
+            throw new NotImplementedException();
+            //return SalesOrderHeader.DisableAddNewDetail();
+        }
     }
 }

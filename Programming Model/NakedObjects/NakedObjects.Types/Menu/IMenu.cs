@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Menu {
+namespace NakedObjects.Menu {
     /// <summary>
     ///     Provides methods for constructing a menu on a domain object. Implementation of this
     ///     interface will be provided by the framework.
