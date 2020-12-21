@@ -12,7 +12,6 @@ using NakedFunctions;
 namespace AdventureWorksModel
 {
     //This class models an association table, and is never viewed directly by the user.
-
     public record EmployeeAddress : IAddressRole
     {
         [Hidden]
@@ -24,7 +23,7 @@ namespace AdventureWorksModel
         [Hidden]
         public virtual Employee Employee { get; init; }
 
-        [MemberOrder(2)] //Title
+        [MemberOrder(2)]
         public virtual Address Address { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]
@@ -36,11 +35,10 @@ namespace AdventureWorksModel
 
     public static class EmployeeAddressFunctions
     {
-        //TODO: remains to be converted
         #region Life Cycle Methods
-        public static EmployeeAddress Updating(this EmployeeAddress x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static EmployeeAddress Updating(this EmployeeAddress x, IContainer container) => x with { ModifiedDate = container.Now() };
 
-        public static EmployeeAddress Persisting(this EmployeeAddress x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static EmployeeAddress Persisting(this EmployeeAddress x, IContainer container) => x with { ModifiedDate = container.Now() };
         #endregion
     }
 }

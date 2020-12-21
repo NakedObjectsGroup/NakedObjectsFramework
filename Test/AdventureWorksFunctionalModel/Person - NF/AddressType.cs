@@ -9,14 +9,15 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
+namespace AdventureWorksModel
+{
     [Bounded]
-        public record AddressType: IHasModifiedDate, IHasRowGuid {
-
-        [NakedFunctionsIgnore]
+    public record AddressType : IHasModifiedDate, IHasRowGuid
+    {
+        [Hidden]
         public virtual int AddressTypeID { get; init; }
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual string Name { get; init; }
 
         [Hidden]
@@ -26,10 +27,5 @@ namespace AdventureWorksModel {
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
-    }
-
-    public static class AddressTypeFunctions
-    {
-        public static AddressType Updating(this AddressType a, [Injected] DateTime now) => a with { ModifiedDate = now };
     }
 }

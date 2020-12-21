@@ -5,30 +5,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel
 {
-    [Bounded]
-    public record Shift : IHasModifiedDate
+    public static class AddressTypeFunctions
     {
-        [Hidden]
-        public virtual byte ShiftID { get; init; }
-
-        [MemberOrder(1)]
-        public virtual string Name { get; init; }
-
-        [MemberOrder(3), Mask("T")]
-        public virtual TimeSpan StartTime { get; init; }
-
-        [MemberOrder(4), Mask("T")]
-        public virtual TimeSpan EndTime { get; init; }
-
-        [MemberOrder(99), ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; init; }
-
-        public override string ToString() => Name;
+        public static AddressType Updating(this AddressType a, IContainer container) => a with { ModifiedDate = container.Now() };
     }
 }

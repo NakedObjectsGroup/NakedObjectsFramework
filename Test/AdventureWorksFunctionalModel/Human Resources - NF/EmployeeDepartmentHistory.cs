@@ -9,9 +9,10 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-        public record EmployeeDepartmentHistory {
-
+namespace AdventureWorksModel
+{
+    public record EmployeeDepartmentHistory
+    {
         [Hidden]
         public virtual int EmployeeID { get; init; }
 
@@ -21,12 +22,10 @@ namespace AdventureWorksModel {
         [Hidden]
         public virtual byte ShiftID { get; init; }
 
-        [Mask("d")]
-        [MemberOrder(4)]
+        [MemberOrder(4), Mask("d")]
         public virtual DateTime StartDate { get; init; }
 
-        [Mask("d")]
-        [MemberOrder(5)]
+        [MemberOrder(5), Mask("d")]
         public virtual DateTime? EndDate { get; init; }
 
         [MemberOrder(2)]

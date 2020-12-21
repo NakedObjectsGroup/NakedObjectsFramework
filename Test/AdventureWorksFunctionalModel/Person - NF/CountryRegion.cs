@@ -9,22 +9,20 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-        [Bounded]
-        public record CountryRegion: IHasModifiedDate {
-
-        public virtual string CountryRegionCode { get; init; }
-
+namespace AdventureWorksModel
+{
+    [Bounded]
+    public record CountryRegion : IHasModifiedDate
+    {
+        [MemberOrder(1)]
         public virtual string Name { get; init; }
+
+        [MemberOrder(2)]
+        public virtual string CountryRegionCode { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
-    }
-
-    public static class CountryRegionFunctions
-    {
-        public static CountryRegion Updating(CountryRegion cr, [Injected] DateTime now) => cr with { ModifiedDate = now };
     }
 }

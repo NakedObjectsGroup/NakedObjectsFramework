@@ -6,16 +6,6 @@ namespace AdventureWorksModel {
     [Named("Contact")]
     public record BusinessEntityContact: IHasRowGuid, IHasModifiedDate {
 
-            //BusinessEntityID = businessEntityId;
-            //BusinessEntity = businessEntity;
-            //PersonID = personID;
-            //Person = person;
-            //ContactTypeID = contactTypeID;
-            //ContactType = contactType;
-            //this.rowguid = rowguid;
-            //this.ModifiedDate = ModifiedDate;
-
-
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
@@ -25,10 +15,13 @@ namespace AdventureWorksModel {
         [Hidden]
         public virtual int PersonID { get; init; }
 
+        [MemberOrder(1)]
         public virtual Person Person { get; init; }
 
         [Hidden]
         public virtual int ContactTypeID { get; init; }
+
+        [MemberOrder(2)]
         public virtual ContactType ContactType { get; init; }
 
         [Hidden]
@@ -36,5 +29,7 @@ namespace AdventureWorksModel {
 
         [MemberOrder(99),ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
+
+        public override string ToString() => $"{Person}";
     }
 }

@@ -9,19 +9,21 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
+namespace AdventureWorksModel
+{
     [Bounded]
-    public record Department : IHasModifiedDate {
+    public record Department : IHasModifiedDate
+    {
         [Hidden]
         public virtual short DepartmentID { get; init; }
 
         [MemberOrder(1)]
         public virtual string Name { get; init; }
-         
+
         [MemberOrder(2)]
         public virtual string GroupName { get; init; }
 
-        [MemberOrder(99),ConcurrencyCheck]
+        [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;

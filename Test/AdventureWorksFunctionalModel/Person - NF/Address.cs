@@ -8,54 +8,53 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using NakedFunctions;
 
 
-namespace AdventureWorksModel {
-            public record Address : IHasRowGuid, IHasModifiedDate
+namespace AdventureWorksModel
+{
+    public record Address : IHasRowGuid, IHasModifiedDate
     {
-       [NakedFunctionsIgnore]       
+        [Hidden]
         public virtual int AddressID { get; init; }
 
-        [MemberOrder(11)]        
+        [MemberOrder(11)]
         public virtual string AddressLine1 { get; init; }
 
         [MemberOrder(12)]
         public virtual string AddressLine2 { get; init; }
 
-        [MemberOrder(13)]        
+        [MemberOrder(13)]
         public virtual string City { get; init; }
 
-        [MemberOrder(14)]     
+        [MemberOrder(14)]
         public virtual string PostalCode { get; init; }
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual int StateProvinceID { get; init; }
 
         [MemberOrder(15)]
         public virtual StateProvince StateProvince { get; init; }
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual int CountryRegionID { get; init; }
 
         [MemberOrder(16)]
         public virtual CountryRegion CountryRegion { get; init; }
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual int AddressTypeID { get; init; }
-    
+
         [MemberOrder(10)]
         public virtual AddressType AddressType { get; init; }
 
-        [NakedFunctionsIgnore] 
+        [Hidden]
         public virtual int AddressForID { get; init; }
-        
+
         public virtual BusinessEntity AddressFor { get; init; }
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
-
 
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }

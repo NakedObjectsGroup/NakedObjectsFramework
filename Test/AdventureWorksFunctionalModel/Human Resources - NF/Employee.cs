@@ -10,10 +10,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
+namespace AdventureWorksModel
+{
     public interface IEmployee : IBusinessEntity { } //Interface is for testing purposes
 
-    public record Employee : IEmployee, IHasRowGuid, IHasModifiedDate {
+    public record Employee : IEmployee, IHasRowGuid, IHasModifiedDate
+    {
         [MemberOrder(1)]
         public virtual Person PersonDetails { get; init; }
 
@@ -23,8 +25,7 @@ namespace AdventureWorksModel {
         [MemberOrder(12)]
         public virtual string JobTitle { get; init; }
 
-        [MemberOrder(13)]
-        [Mask("d")]
+        [MemberOrder(13), Mask("d")]
         public virtual DateTime? DateOfBirth { get; init; }
 
         [MemberOrder(14)]

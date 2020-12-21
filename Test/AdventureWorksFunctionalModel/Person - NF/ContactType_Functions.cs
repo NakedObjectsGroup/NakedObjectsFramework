@@ -6,17 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 namespace AdventureWorksModel {
-    public static class DepartmentFunctions {
-        #region Life Cycle Methods
 
-        public static Department Updating(this Department x, IContainer container) => x with { ModifiedDate = container.Now() };
-
-        public static Department Persisting(this Department x, IContainer container) => x with { ModifiedDate = container.Now() };
-
-        #endregion
+    public static class ContactTypeFunctions
+    {
+        public static ContactType Updating(ContactType ct, IContainer container) => ct with { ModifiedDate = container.Now() };
     }
 }

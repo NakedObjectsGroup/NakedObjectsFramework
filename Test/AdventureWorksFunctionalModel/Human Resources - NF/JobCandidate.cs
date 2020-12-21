@@ -9,9 +9,13 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
-    public record JobCandidate  {
+namespace AdventureWorksModel
+{
+    public record JobCandidate
+    {
+        [Hidden]
         public virtual int JobCandidateID { get; init; }
+
         public virtual string Resume { get; init; }
 
         [Hidden]

@@ -13,19 +13,15 @@ namespace AdventureWorksModel {
     [Bounded]
     public record ContactType : IHasModifiedDate {
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual int ContactTypeID { get; init; }
 
+        [MemberOrder(1)]
         public virtual string Name { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
-    }
-
-    public static class ContactTypeFunctions
-    {
-        public static ContactType Updating(ContactType ct, [Injected] DateTime now) => ct with { ModifiedDate = now };
     }
 }

@@ -9,26 +9,14 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel
-{
-    [Bounded]
-    public record Shift : IHasModifiedDate
-    {
-        [Hidden]
-        public virtual byte ShiftID { get; init; }
+namespace AdventureWorksModel {
+    public static class Department_Functions {
+        #region Life Cycle Methods
 
-        [MemberOrder(1)]
-        public virtual string Name { get; init; }
+        public static Department Updating(this Department x, IContainer container) => x with { ModifiedDate = container.Now() };
 
-        [MemberOrder(3), Mask("T")]
-        public virtual TimeSpan StartTime { get; init; }
+        public static Department Persisting(this Department x, IContainer container) => x with { ModifiedDate = container.Now() };
 
-        [MemberOrder(4), Mask("T")]
-        public virtual TimeSpan EndTime { get; init; }
-
-        [MemberOrder(99), ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; init; }
-
-        public override string ToString() => Name;
+        #endregion
     }
 }

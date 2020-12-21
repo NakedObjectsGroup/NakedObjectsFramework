@@ -22,6 +22,9 @@ namespace AdventureWorksModel
         [MemberOrder(2), Mask("C")]
         public virtual decimal Rate { get; init; }
 
+        [MemberOrder(3)]
+        public virtual byte PayFrequency { get; init; }
+
         [MemberOrder(4)]
         public virtual Employee Employee { get; init; }
 
@@ -29,7 +32,5 @@ namespace AdventureWorksModel
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{Rate.ToString("C")} from {RateChangeDate.ToString("d")}";
-
-        public virtual byte PayFrequency { get; init; }
     }
 }
