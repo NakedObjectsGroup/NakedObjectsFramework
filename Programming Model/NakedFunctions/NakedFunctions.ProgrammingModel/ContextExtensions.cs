@@ -3,7 +3,7 @@ using System.Security.Principal;
 
 namespace NakedFunctions
 {
-    public static class ContainerExtensions
+    public static class ContextExtensions
     {
         public static IContext WithWarnUser(this IContext context, string message) => context.WithOutput((IAlert ua) => ua.WarnUser(message));
 

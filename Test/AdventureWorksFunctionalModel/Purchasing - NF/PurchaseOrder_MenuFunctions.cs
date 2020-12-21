@@ -16,51 +16,30 @@ namespace AdventureWorksModel
 
     public static class PurchaseOrder_MenuFunctions
     {
-        [DescribedAs("For demonstration purposes only")]
-        
+
         [MemberOrder(1)]
-        public static PurchaseOrderHeader RandomPurchaseOrder(
-            IQueryable<PurchaseOrderHeader> pohs, 
-            [Injected] int random)
-        {
-            return Random(pohs, random);
-        }
+        public static PurchaseOrderHeader RandomPurchaseOrder(IContext context) => Random<PurchaseOrderHeader>(context);
 
         //returns most recently-modified first
         [MemberOrder(2)]
-        public static IQueryable<PurchaseOrderHeader> AllPurchaseOrders(
-            IQueryable<PurchaseOrderHeader> pohs)
-        {
-            return pohs.OrderByDescending(poh => poh.ModifiedDate);
-        }
+        public static IQueryable<PurchaseOrderHeader> AllPurchaseOrders(IContext context) =>
+            context.Instances<PurchaseOrderHeader>().OrderByDescending(poh => poh.ModifiedDate);
 
         [MemberOrder(2)]
         [TableView(true, "Vendor", "OrderDate", "TotalDue")]
-        public static IQueryable<PurchaseOrderHeader> AllOpenPurchaseOrders(
-             IQueryable<PurchaseOrderHeader> pohs)
-        {
-            return pohs.Where(poh => poh.Status <= 2);
-        }
+        public static IQueryable<PurchaseOrderHeader> AllOpenPurchaseOrders(IContext context) =>
+          context.Instances<PurchaseOrderHeader>().Where(poh => poh.Status <= 2);
 
         #region OpenPurchaseOrdersForVendor
-
         [MemberOrder(3)]
         [TableView(true, "OrderDate", "TotalDue")]
-        public static IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForVendor(
-            this Vendor vendor,
-             IQueryable<PurchaseOrderHeader> pohs)
-        {
-            return AllOpenPurchaseOrders(pohs).Where(poh => poh.Vendor.BusinessEntityID == vendor.BusinessEntityID);
-        }
+        public static IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForVendor(Vendor vendor, IContext context) =>
+            AllOpenPurchaseOrders(context).Where(poh => poh.Vendor.BusinessEntityID == vendor.BusinessEntityID);
+  
 
         [PageSize(20)]
-        public static IQueryable<Vendor> AutoComplete0OpenPurchaseOrdersForVendor(
-            [Range(2,0)] string name,
-            IQueryable<Vendor> vendors)
-        {
-            return vendors.Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
-        }
-
+        public static IQueryable<Vendor> AutoComplete0OpenPurchaseOrdersForVendor([Range(2)] string name, IContext context) =>
+          context.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
         #endregion
 
         #region ListPurchaseOrdersForVendor
@@ -68,28 +47,20 @@ namespace AdventureWorksModel
         [MemberOrder(4,"Purchase Orders")]
         [TableView(true, "OrderDate", "Status", "TotalDue")]
         public static IQueryable<PurchaseOrderHeader> ListPurchaseOrders(
-            Vendor vendor,
-            DateTime? fromDate, 
-            DateTime? toDate,
-            IQueryable<PurchaseOrderHeader> pohs)
-        {
-            return from obj in pohs
+            Vendor vendor, DateTime? fromDate, DateTime? toDate, IContext context) =>
+                    from obj in context.Instances<PurchaseOrderHeader>()
                    where obj.Vendor.BusinessEntityID == vendor.BusinessEntityID &&
                    (fromDate == null || obj.OrderDate >= fromDate) &&
                    (toDate == null || obj.OrderDate <= toDate)
                    orderby obj.OrderDate
                    select obj;
-        }
+
 
         [PageSize(20)]
         public static IQueryable<Vendor> AutoComplete0ListPurchaseOrders(
-            [Range(2,0)] string name,
-            IQueryable<Vendor> vendors)
-        {
-            return vendors.Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
-        }
+            [Range(2,0)] string name, IContext context) =>
+             context.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
 
-        //TODO: Should match action, ignoring any injected properties, on either action or this
         public static string ValidateListPurchaseOrders(
             Vendor vendor, 
             DateTime? fromDate, 
@@ -104,7 +75,8 @@ namespace AdventureWorksModel
         [MemberOrder(5, "Purchase Orders")]
         [TableView(true, "Vendor", "OrderDate", "Status")]
         public static IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForProduct(
-             this Product product, IContext context) => from obj in context.Instances<PurchaseOrderDetail>()
+             this Product product, IContext context) => 
+            from obj in context.Instances<PurchaseOrderDetail>()
                    where obj.Product.ProductID == product.ProductID &&
                          obj.PurchaseOrderHeader.Status <= 2
                    select obj.PurchaseOrderHeader;
@@ -112,10 +84,9 @@ namespace AdventureWorksModel
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete0OpenPurchaseOrdersForProduct(
-            [Range(2,0)] string name,
-            IQueryable<Product> products)
+            [Range(2,0)] string name,IContext context)
         {
-            return products.Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
+            return context.Instances<Product>().Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
         }
 
         // for autoautocomplete testing
@@ -149,12 +120,8 @@ namespace AdventureWorksModel
 
         #region FindById
         [MemberOrder(7)]
-        public static PurchaseOrderHeader FindById(
-            int id,
-            IQueryable<PurchaseOrderHeader> headers)
-        {
-            return headers.Where(x => x.PurchaseOrderID == id).FirstOrDefault();
-        }
+        public static PurchaseOrderHeader FindById(int id, IContext context) =>
+            context.Instances<PurchaseOrderHeader>().Where(x => x.PurchaseOrderID == id).FirstOrDefault();
         #endregion
     }
 }
