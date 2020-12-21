@@ -12,6 +12,6 @@ namespace AdventureWorksModel {
 
     public static class ContactTypeFunctions
     {
-        public static ContactType Updating(ContactType ct, IContainer container) => ct with { ModifiedDate = container.Now() };
+        public static ContactType Updating(ContactType ct, IContext context) => ct with { ModifiedDate = context.Now() };
     }
 }

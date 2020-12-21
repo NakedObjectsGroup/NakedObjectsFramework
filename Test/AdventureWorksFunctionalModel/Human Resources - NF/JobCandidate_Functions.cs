@@ -11,9 +11,9 @@ namespace AdventureWorksModel {
     public static class JobCandidateFunctions
     {
         #region Life Cycle Methods
-        public static JobCandidate Updating(this JobCandidate x, IContainer container) => x with { ModifiedDate = container.Now() };
+        public static JobCandidate Updating(this JobCandidate x, IContext context) => x with { ModifiedDate = context.Now() };
 
-        public static JobCandidate Persisting(this JobCandidate x, IContainer container) => x with { ModifiedDate = container.Now() };
+        public static JobCandidate Persisting(this JobCandidate x, IContext context) => x with { ModifiedDate = context.Now() };
         #endregion
     }
 

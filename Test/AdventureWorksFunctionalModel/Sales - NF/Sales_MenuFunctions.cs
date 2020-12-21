@@ -19,9 +19,9 @@ namespace AdventureWorksModel {
         #region FindSalesPersonByName
         [TableView(true, "SalesTerritory")]
         public static IQueryable<SalesPerson> FindSalesPersonByName(      
-            [Optionally] string firstName, string lastName, IContainer container) {
-            IQueryable<Person> matchingPersons = Person_MenuFunctions.FindContactByName( firstName, lastName, container);
-            return from sp in container.Instances<SalesPerson>()
+            [Optionally] string firstName, string lastName, IContext context) {
+            IQueryable<Person> matchingPersons = Person_MenuFunctions.FindContactByName( firstName, lastName, context);
+            return from sp in context.Instances<SalesPerson>()
                 from person in matchingPersons
                 where sp.BusinessEntityID == person.BusinessEntityID
                 orderby sp.EmployeeDetails.PersonDetails.LastName, sp.EmployeeDetails.PersonDetails.FirstName

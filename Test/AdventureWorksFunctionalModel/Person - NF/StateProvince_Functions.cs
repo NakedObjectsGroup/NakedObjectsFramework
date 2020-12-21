@@ -7,25 +7,13 @@
 
 using System;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
 
-namespace AdventureWorksModel {
-
-    public static class ShiftFunctions {
-
-        #region Life Cycle Methods
-
-        public static Shift Updating(this Shift x, IContext context) => x with { ModifiedDate = context.Now() };
-
-        #endregion
-
-        public static (Shift, IContext) ChangeTimes(this Shift s, TimeSpan startTime, TimeSpan endTime, IContext context)
-        {
-            var s2 = s with { StartTime = startTime } with { EndTime = endTime };
-            return DisplayAndSave(s2, context);
-        }
-
-        public static TimeSpan Default0ChangeTimes(this Shift s) => new(0, 9, 0, 0);
+namespace AdventureWorksModel
+{
+    
+    public static class StateProvinceFunctions
+    {
+        public static StateProvince Updating(StateProvince sp, IContext context) => sp with { ModifiedDate = context.Now() };
 
     }
 }

@@ -4,16 +4,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AdventureWorksModel
 {
-    public record PersonPhone : IHasModifiedDate {
-
+    public record PersonPhone : IHasModifiedDate
+    {
 
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
         public virtual string PhoneNumber { get; init; }
 
-        //[Hidden]
-        //public virtual int PersonID { get; init; }
+        [Hidden]
+        public virtual int PersonID { get; init; }
 
         [Hidden]
         public virtual Person Person { get; init; }

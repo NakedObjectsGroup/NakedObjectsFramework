@@ -15,43 +15,43 @@ namespace AdventureWorksModel
     {
         #region Life Cycle Methods
 
-        public static Employee Updating(this Employee x, IContainer container) => x with { ModifiedDate = container.Now() };
+        public static Employee Updating(this Employee x, IContext context) => x with { ModifiedDate = context.Now() };
 
         #endregion
 
-        public static bool HideLoginID(Employee e, IContainer container)
+        public static bool HideLoginID(Employee e, IContext context)
         {
-            var userAsEmployee = Employee_MenuFunctions.CurrentUserAsEmployee(container);
+            var userAsEmployee = Employee_MenuFunctions.CurrentUserAsEmployee(context);
             return userAsEmployee != null ? userAsEmployee.LoginID != e.LoginID : true;
         }
 
         public static IQueryable<Employee> ColleaguesInSameDept(
-            this Employee e, IContainer container)
+            this Employee e, IContext context)
         {
-            var allCurrent = container.Instances<EmployeeDepartmentHistory>().Where(edh => edh.EndDate == null);
+            var allCurrent = context.Instances<EmployeeDepartmentHistory>().Where(edh => edh.EndDate == null);
             var thisId = e.BusinessEntityID;
             var thisDeptId = allCurrent.Single(edh => edh.EmployeeID == thisId).DepartmentID;
             return allCurrent.Where(edh => edh.DepartmentID == thisDeptId).Select(edh => edh.Employee);
         }
 
         [MemberOrder(10)]
-        public static (EmployeePayHistory, IContainer) ChangePayRate(Employee e, IContainer container)
+        public static (EmployeePayHistory, IContext) ChangePayRate(Employee e, IContext context)
         {
             EmployeePayHistory current = CurrentEmployeePayHistory(e);
-            var eph = new EmployeePayHistory() { Employee = e, RateChangeDate = container.Now(), PayFrequency = current.PayFrequency };
-            return DisplayAndSave(eph, container);
+            var eph = new EmployeePayHistory() { Employee = e, RateChangeDate = context.Now(), PayFrequency = current.PayFrequency };
+            return DisplayAndSave(eph, context);
         }
 
         public static EmployeePayHistory CurrentEmployeePayHistory(Employee e) => e.PayHistory.OrderByDescending(x => x.RateChangeDate).FirstOrDefault();
 
         #region ChangeDepartmentOrShift
         [MemberOrder(20)]
-        public static (Employee, IContainer) ChangeDepartmentOrShift(
-           this Employee e, Department department, Shift shift, IContainer container)
+        public static (Employee, IContext) ChangeDepartmentOrShift(
+           this Employee e, Department department, Shift shift, IContext context)
         {
-            var edh = CurrentAssignment(e) with { EndDate = container.Now() };
-            var newAssignment = new EmployeeDepartmentHistory() { Department = department, Shift = shift, Employee = e, StartDate = container.Today() };
-            return (e, container.WithPendingSave(edh, newAssignment));
+            var edh = CurrentAssignment(e) with { EndDate = context.Now() };
+            var newAssignment = new EmployeeDepartmentHistory() { Department = department, Shift = shift, Employee = e, StartDate = context.Today() };
+            return (e, context.WithPendingSave(edh, newAssignment));
         }
 
         public static Department Default0ChangeDepartmentOrShift(this Employee e)
@@ -67,13 +67,13 @@ namespace AdventureWorksModel
 
         #endregion
         [Edit]
-        public static (Employee, IContainer) EditManager(Employee e, IEmployee manager, IContainer container) =>
-            DisplayAndSave(e with { ManagerID = manager.BusinessEntityID }, container);
+        public static (Employee, IContext) EditManager(Employee e, IEmployee manager, IContext context) =>
+            DisplayAndSave(e with { ManagerID = manager.BusinessEntityID }, context);
 
         [PageSize(20)]
         public static IQueryable<Employee> AutoCompleteManager(
-             this Employee e, [Range(2, 0)] string name, IContainer container) =>
-             Employee_MenuFunctions.FindEmployeeByName(null, name, container);
+             this Employee e, [Range(2, 0)] string name, IContext context) =>
+             Employee_MenuFunctions.FindEmployeeByName(null, name, context);
 
 
         //public static  IList<string> ChoicesGender(Employee e)
@@ -86,6 +86,6 @@ namespace AdventureWorksModel
         //    return new[] { "S", "M" };
         //}
 
-        public static (Employee, IContainer) CreateNewEmployeeFromContact(this Person contactDetails, IContainer container) => Employee_MenuFunctions.CreateNewEmployeeFromContact(contactDetails, container);
+        public static (Employee, IContext) CreateNewEmployeeFromContact(this Person contactDetails, IContext context) => Employee_MenuFunctions.CreateNewEmployeeFromContact(contactDetails, context);
     }
 }

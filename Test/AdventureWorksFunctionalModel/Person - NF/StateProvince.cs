@@ -11,36 +11,10 @@ using NakedFunctions;
 
 namespace AdventureWorksModel
 {
-            [Bounded]
-    public record StateProvince :  IHasRowGuid, IHasModifiedDate
+    [Bounded]
+    public record StateProvince : IHasRowGuid, IHasModifiedDate
     {
-        //TODO: Extend ctor to include all properties
-        public StateProvince(
-            int stateProvinceID,
-            string stateProvinceCode,
-            bool isOnlyStateProvinceFlag,
-            string name,
-            string countryRegionCode,
-            int territoryID,
-            SalesTerritory salesTerritory,
-            Guid rowguid,
-            DateTime modifiedDate
-            )
-        {
-            StateProvinceID = stateProvinceID;
-            StateProvinceCode = stateProvinceCode;
-            IsOnlyStateProvinceFlag = isOnlyStateProvinceFlag;
-            Name = name;
-            CountryRegionCode = countryRegionCode;
-            TerritoryID = territoryID;
-            SalesTerritory = salesTerritory;
-            this.rowguid = rowguid;
-            ModifiedDate = modifiedDate;
-        }
-
-        public StateProvince() { }
-
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual int StateProvinceID { get; init; }
 
         public virtual string StateProvinceCode { get; init; }
@@ -49,25 +23,23 @@ namespace AdventureWorksModel
 
         public virtual string Name { get; init; }
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual string CountryRegionCode { get; init; }
 
         public virtual CountryRegion CountryRegion { get; init; }
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual int TerritoryID { get; init; }
 
         public virtual SalesTerritory SalesTerritory { get; set; }
 
-        [NakedFunctionsIgnore]
+        [Hidden]
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
-    }
-    public static class StateProvinceFunctions
-    {
-          public static StateProvince Updating(StateProvince sp, [Injected] DateTime now)  => sp with { ModifiedDate = now };
 
+        public override string ToString() => Name;
     }
+
 }

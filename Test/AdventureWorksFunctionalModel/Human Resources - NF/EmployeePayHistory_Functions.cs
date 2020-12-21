@@ -13,12 +13,12 @@ namespace AdventureWorksModel {
     public static class EmployeePayHistoryFunctions
     {
         #region Life Cycle Methods
-        public static EmployeePayHistory Updating(this EmployeePayHistory x, IContainer container) => x with { ModifiedDate = container.Now() };
+        public static EmployeePayHistory Updating(this EmployeePayHistory x, IContext context) => x with { ModifiedDate = context.Now() };
 
-        public static EmployeePayHistory Persisting(this EmployeePayHistory x, IContainer container) => x with { ModifiedDate = container.Now() };
+        public static EmployeePayHistory Persisting(this EmployeePayHistory x, IContext context) => x with { ModifiedDate = context.Now() };
 
         //TODO: I don't think this is necessary
-        //public static EmployeePayHistory Persisted(this EmployeePayHistory x, IContainer container)
+        //public static EmployeePayHistory Persisted(this EmployeePayHistory x, IContainer context)
         //{
         //    Employee.PayHistory.Add(this);
         //}

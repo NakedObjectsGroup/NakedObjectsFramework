@@ -12,7 +12,7 @@ using System.Security.Principal;
 namespace NakedObjects {
     /// <summary>
     ///     In a typical Naked Objects application this provides the sole point of contact between the domain model
-    ///     and the framework. An implementation of this container may be injected into any domain object or service.
+    ///     and the framework. An implementation of this context may be injected into any domain object or service.
     /// </summary>
     public interface IDomainObjectContainer {
         /// <summary>
@@ -106,7 +106,7 @@ namespace NakedObjects {
         void InformUser(string message);
 
         /// <summary>
-        ///     Warn the user about a situation with the specified message. The container should guarantee to display
+        ///     Warn the user about a situation with the specified message. The context should guarantee to display
         ///     this warning to the user.
         /// </summary>
         /// <seealso cref="InformUser" />

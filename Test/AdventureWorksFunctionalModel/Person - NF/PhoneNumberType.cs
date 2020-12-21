@@ -16,8 +16,4 @@ namespace AdventureWorksModel {
 
         public override string ToString() => Name;
     }
-    public static class PhoneNumberTypeFunctions
-    {
-        public static PhoneNumberType Updating(PhoneNumberType pnt, [Injected] DateTime now) => pnt with { ModifiedDate = now };
-    }
 }

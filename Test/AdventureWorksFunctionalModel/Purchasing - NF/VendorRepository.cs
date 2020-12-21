@@ -21,9 +21,9 @@ namespace AdventureWorksModel {
             return vendors.Where(v => v.Name == name).OrderBy(v => v.Name);
         }
 
-        public static (Vendor, IContainer) FindVendorByAccountNumber(
-            string accountNumber,IContainer container) {
-            return Helpers.SingleObjectWarnIfNoMatch(container.Instances<Vendor>().Where(x => x.AccountNumber == accountNumber), container);
+        public static (Vendor, IContext) FindVendorByAccountNumber(
+            string accountNumber,IContext context) {
+            return Helpers.SingleObjectWarnIfNoMatch(context.Instances<Vendor>().Where(x => x.AccountNumber == accountNumber), context);
         }
 
         public static Vendor RandomVendor(

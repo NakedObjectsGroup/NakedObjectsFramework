@@ -122,7 +122,7 @@ namespace AdventureWorksModel {
         [MemberOrder(4)]
         public virtual Address BillingAddress { get; set; }
 
-        public List<Address> ChoicesBillingAddress(IContainer container) =>  Person_MenuFunctions.AddressesFor(Customer.BusinessEntity(), container).ToList();
+        public List<Address> ChoicesBillingAddress(IContext context) =>  Person_MenuFunctions.AddressesFor(Customer.BusinessEntity(), context).ToList();
  
 
         #endregion
@@ -142,7 +142,7 @@ namespace AdventureWorksModel {
         [MemberOrder(10)]
         public virtual Address ShippingAddress { get; set; }
 
-        public List<Address> ChoicesShippingAddress(IContainer container) =>  ChoicesBillingAddress(container);
+        public List<Address> ChoicesShippingAddress(IContext context) =>  ChoicesBillingAddress(context);
       
         #endregion
 
@@ -362,8 +362,8 @@ namespace AdventureWorksModel {
 
         [PageSize(20)]
         public IQueryable<SalesPerson> AutoCompleteSalesPerson(
-            [NakedFunctions.Range(2, 0)] string name, IContainer container) =>
-            Sales_MenuFunctions.FindSalesPersonByName(null, name, container);
+            [NakedFunctions.Range(2, 0)] string name, IContext context) =>
+            Sales_MenuFunctions.FindSalesPersonByName(null, name, context);
 
         #endregion
 

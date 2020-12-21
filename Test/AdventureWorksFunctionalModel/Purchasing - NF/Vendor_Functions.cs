@@ -14,8 +14,8 @@ namespace AdventureWorksModel
             return vendor.Products.Select(vp => vp.Product).ToList();
         }
 
-        public static (Person, IContainer) CreateNewContact(this Vendor vendor, IContainer container) =>
-          DisplayAndSave(new Person() with { ForEntity = vendor }, container);
+        public static (Person, IContext) CreateNewContact(this Vendor vendor, IContext context) =>
+          DisplayAndSave(new Person() with { ForEntity = vendor }, context);
 
         [DescribedAs("Get report from credit agency")]
         public static Vendor CheckCredit(this Vendor v)

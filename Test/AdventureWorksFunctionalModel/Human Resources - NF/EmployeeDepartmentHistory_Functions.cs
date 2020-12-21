@@ -12,9 +12,9 @@ namespace AdventureWorksModel {
     public static class EmployeeDepartmentHistoryFunctions
     {
         #region Life Cycle Methods
-        public static EmployeeDepartmentHistory Updating(this EmployeeDepartmentHistory x, IContainer container) => x with { ModifiedDate = container.Now() };
+        public static EmployeeDepartmentHistory Updating(this EmployeeDepartmentHistory x, IContext context) => x with { ModifiedDate = context.Now() };
 
-        public static EmployeeDepartmentHistory Persisting(this EmployeeDepartmentHistory x, IContainer container) => x with { ModifiedDate = container.Now() };
+        public static EmployeeDepartmentHistory Persisting(this EmployeeDepartmentHistory x, IContext context) => x with { ModifiedDate = context.Now() };
         #endregion
     }
 }

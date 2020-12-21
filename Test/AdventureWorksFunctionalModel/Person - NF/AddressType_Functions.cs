@@ -11,6 +11,6 @@ namespace AdventureWorksModel
 {
     public static class AddressTypeFunctions
     {
-        public static AddressType Updating(this AddressType a, IContainer container) => a with { ModifiedDate = container.Now() };
+        public static AddressType Updating(this AddressType a, IContext context) => a with { ModifiedDate = context.Now() };
     }
 }

@@ -56,8 +56,8 @@ namespace AdventureWorksModel {
 
         public static StoreSalesInfo PopulateUsingKeys(StoreSalesInfo vm,
                                                        string[] keys,
-                                                       IContainer container) {
-            var cus = Customer_MenuFunctions.FindCustomerByAccountNumber(keys[0], container).Item1;
+                                                       IContext context) {
+            var cus = Customer_MenuFunctions.FindCustomerByAccountNumber(keys[0], context).Item1;
             return vm with {AccountNumber =  keys[0]}
                  with {SalesTerritory =  cus.SalesTerritory}
                  with {SalesPerson =  cus.Store?.SalesPerson}
@@ -77,13 +77,13 @@ namespace AdventureWorksModel {
             return ssi.EditMode;
         }
 
-        public static (Customer, IContainer) Save(this StoreSalesInfo vm, IContainer container) {
-            var (cus, _) = Customer_MenuFunctions.FindCustomerByAccountNumber(vm.AccountNumber, container);
+        public static (Customer, IContext) Save(this StoreSalesInfo vm, IContext context) {
+            var (cus, _) = Customer_MenuFunctions.FindCustomerByAccountNumber(vm.AccountNumber, context);
             var st = vm.SalesTerritory;
             var sp = vm.SalesPerson;
             var sn = vm.StoreName;
             var cus2 = cus with { SalesTerritory = st }; //TODO:   Store.SalesPerson = sp, Store.Name = sn);
-            return DisplayAndSave(cus2, container);
+            return DisplayAndSave(cus2, context);
         }
 
         public static bool HideSave(this StoreSalesInfo ssi) {

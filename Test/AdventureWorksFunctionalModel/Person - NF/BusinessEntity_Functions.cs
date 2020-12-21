@@ -19,7 +19,7 @@ namespace AdventureWorksModel
         }
 
         #region Life Cycle Methods
-        public static BusinessEntity Updating(BusinessEntity be, IContainer container) => be with { BusinessEntityModifiedDate = container.Now() };
+        public static BusinessEntity Updating(BusinessEntity be, IContext context) => be with { BusinessEntityModifiedDate = context.Now() };
         #endregion
     }
 }

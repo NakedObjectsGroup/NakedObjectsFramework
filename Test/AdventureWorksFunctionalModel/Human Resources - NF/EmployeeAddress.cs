@@ -36,9 +36,9 @@ namespace AdventureWorksModel
     public static class EmployeeAddressFunctions
     {
         #region Life Cycle Methods
-        public static EmployeeAddress Updating(this EmployeeAddress x, IContainer container) => x with { ModifiedDate = container.Now() };
+        public static EmployeeAddress Updating(this EmployeeAddress x, IContext context) => x with { ModifiedDate = context.Now() };
 
-        public static EmployeeAddress Persisting(this EmployeeAddress x, IContainer container) => x with { ModifiedDate = container.Now() };
+        public static EmployeeAddress Persisting(this EmployeeAddress x, IContext context) => x with { ModifiedDate = context.Now() };
         #endregion
     }
 }

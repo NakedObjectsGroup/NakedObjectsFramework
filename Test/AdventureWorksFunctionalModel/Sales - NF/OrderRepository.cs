@@ -36,10 +36,10 @@ namespace AdventureWorksModel {
 
         
         [MemberOrder(10)]
-        public static (SalesOrderHeader, IContainer) FindOrder(
-            [DefaultValue("SO")] string orderNumber, IContainer container)
+        public static (SalesOrderHeader, IContext) FindOrder(
+            [DefaultValue("SO")] string orderNumber, IContext context)
         {
-            return Helpers.SingleObjectWarnIfNoMatch(container.Instances<SalesOrderHeader>().Where(x => x.SalesOrderNumber == orderNumber), container);
+            return Helpers.SingleObjectWarnIfNoMatch(context.Instances<SalesOrderHeader>().Where(x => x.SalesOrderNumber == orderNumber), context);
         }
 
         [ MemberOrder(90)]
@@ -74,8 +74,8 @@ namespace AdventureWorksModel {
         [PageSize(10)]
         public static Customer AutoComplete0OrdersForCustomer(
             [Range(10,0)] string accountNumber,
-            IContainer container) {
-            return Customer_MenuFunctions.FindCustomerByAccountNumber(accountNumber, container).Item1;
+            IContext context) {
+            return Customer_MenuFunctions.FindCustomerByAccountNumber(accountNumber, context).Item1;
         }
         #endregion
 
@@ -106,9 +106,9 @@ namespace AdventureWorksModel {
         [PageSize(10)]
         public static Customer AutoComplete0FindOrders(
             [Range(10,0)] string accountNumber,
-            IContainer container)
+            IContext context)
         {
-            return Customer_MenuFunctions.FindCustomerByAccountNumber(accountNumber, container).Item1;
+            return Customer_MenuFunctions.FindCustomerByAccountNumber(accountNumber, context).Item1;
         }
     }
 }

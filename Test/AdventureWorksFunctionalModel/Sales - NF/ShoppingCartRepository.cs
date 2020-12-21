@@ -21,9 +21,9 @@ namespace AdventureWorksModel {
 
         //TODO: The Cart should probably be a view model
         [Named("Show Cart")]
-        public static IQueryable<ShoppingCartItem> Cart(IContainer container) {
+        public static IQueryable<ShoppingCartItem> Cart(IContext context) {
             string id = GetShoppingCartIDForUser();
-            return container.Instances<ShoppingCartItem>().Where(x => x.ShoppingCartID == id);
+            return context.Instances<ShoppingCartItem>().Where(x => x.ShoppingCartID == id);
         }
 
         public static string DisableCart() {
@@ -102,13 +102,13 @@ namespace AdventureWorksModel {
             return principal.Identity.Name;
         }
 
-        public static (SalesOrderHeader, IContainer) AddAllItemsInCartToOrder(
-            SalesOrderHeader order, IContainer container) {
+        public static (SalesOrderHeader, IContext) AddAllItemsInCartToOrder(
+            SalesOrderHeader order, IContext context) {
 
-            var items = Cart(container);
-            var details = items.Select(item => order.AddNewDetail(item.Product, (short) item.Quantity, container));
-            EmptyCart(container);
-            return (order, container.WithPendingSave(details));
+            var items = Cart(context);
+            var details = items.Select(item => order.AddNewDetail(item.Product, (short) item.Quantity, context));
+            EmptyCart(context);
+            return (order, context.WithPendingSave(details));
         }
 
         public static void RemoveItems(IQueryable<ShoppingCartItem> items) {
@@ -119,8 +119,8 @@ namespace AdventureWorksModel {
             }
         }
 
-        public static void EmptyCart(IContainer container) {
-            RemoveItems(Cart(container));
+        public static void EmptyCart(IContext context) {
+            RemoveItems(Cart(context));
         }
 
         public static string DisableEmptyCart() =>  DisableIfNoCustomerForUser();

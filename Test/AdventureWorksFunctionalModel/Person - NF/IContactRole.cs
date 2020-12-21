@@ -7,6 +7,7 @@
 
 namespace AdventureWorksModel {
     public interface IContactRole {
-        ContactType ContactType { get; set; }
+
+        ContactType ContactType { get; }
     }
 }

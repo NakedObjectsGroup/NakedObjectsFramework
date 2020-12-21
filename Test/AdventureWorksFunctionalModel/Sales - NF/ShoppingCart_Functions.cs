@@ -20,9 +20,9 @@ namespace AdventureWorksModel {
 
         public IQueryable<ShoppingCartItem> RemoveItems(
             IQueryable<ShoppingCartItem> items,
-            IContainer container) {
+            IContext context) {
             ShoppingCartRepository.RemoveItems(items);
-            return ShoppingCartRepository.Cart(container);
+            return ShoppingCartRepository.Cart(context);
         }
 
         public void AddToCart(Product product) {

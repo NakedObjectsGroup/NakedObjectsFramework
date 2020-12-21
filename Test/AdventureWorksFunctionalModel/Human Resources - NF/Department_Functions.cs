@@ -13,9 +13,9 @@ namespace AdventureWorksModel {
     public static class Department_Functions {
         #region Life Cycle Methods
 
-        public static Department Updating(this Department x, IContainer container) => x with { ModifiedDate = container.Now() };
+        public static Department Updating(this Department x, IContext context) => x with { ModifiedDate = context.Now() };
 
-        public static Department Persisting(this Department x, IContainer container) => x with { ModifiedDate = container.Now() };
+        public static Department Persisting(this Department x, IContext context) => x with { ModifiedDate = context.Now() };
 
         #endregion
     }

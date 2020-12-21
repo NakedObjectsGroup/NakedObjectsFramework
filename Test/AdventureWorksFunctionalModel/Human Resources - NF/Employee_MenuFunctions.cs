@@ -22,10 +22,10 @@ namespace AdventureWorksModel {
         public static IQueryable<Employee> FindEmployeeByName(
             [Optionally] string firstName,
             string lastName,
-            IContainer container) {
-            var matchingContacts = Person_MenuFunctions.FindContactByName(firstName, lastName, container);
+            IContext context) {
+            var matchingContacts = Person_MenuFunctions.FindContactByName(firstName, lastName, context);
 
-            var query = from emp in container.Instances<Employee>()
+            var query = from emp in context.Instances<Employee>()
                         from contact in matchingContacts
                         where emp.PersonDetails.BusinessEntityID == contact.BusinessEntityID
                         orderby emp.PersonDetails.LastName
@@ -44,32 +44,32 @@ namespace AdventureWorksModel {
             return SingleObjectWarnIfNoMatch(query);
         }
 
-        public static (Employee, IContainer) CreateNewEmployeeFromContact(Person contactDetails, IContainer container) {
+        public static (Employee, IContext) CreateNewEmployeeFromContact(Person contactDetails, IContext context) {
             var e = new Employee {
                 BusinessEntityID = contactDetails.BusinessEntityID,
                 PersonDetails = contactDetails
             };
-            return DisplayAndSave(e, container);
+            return DisplayAndSave(e, context);
         }
 
         [PageSize(20)]
         public static IQueryable<Person> AutoComplete0CreateNewEmployeeFromContact(
-            [Range(2, 0)] string name, IContainer container) =>  container.Instances<Person>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
+            [Range(2, 0)] string name, IContext context) =>  context.Instances<Person>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
 
         [RenderEagerly]
         [TableView(true, "GroupName")]
         public static IQueryable<Department> ListAllDepartments(IQueryable<Department> depts) => depts;
 
         //TODO: 3 functions marked internal temporarily, as IPrincipal is being reflected over.
-        internal static Employee CurrentUserAsEmployee(IContainer container) =>
-            container.Instances<Employee>().Where(x => x.LoginID == "adventure-works\\" + container.CurrentUser().Identity.Name).FirstOrDefault();
+        internal static Employee CurrentUserAsEmployee(IContext context) =>
+            context.Instances<Employee>().Where(x => x.LoginID == "adventure-works\\" + context.CurrentUser().Identity.Name).FirstOrDefault();
 
-        internal static Employee Me(IContainer container) =>CurrentUserAsEmployee(container);
+        internal static Employee Me(IContext context) =>CurrentUserAsEmployee(context);
 
-        internal static (IQueryable<Employee>, IContainer) MyDepartmentalColleagues(IContainer container) {
-            var me = CurrentUserAsEmployee(container);
-            return me is null? ((IQueryable<Employee>) null, container.WithWarnUser("Current user unknown")) : 
-                (me.ColleaguesInSameDept(container), container);
+        internal static (IQueryable<Employee>, IContext) MyDepartmentalColleagues(IContext context) {
+            var me = CurrentUserAsEmployee(context);
+            return me is null? ((IQueryable<Employee>) null, context.WithWarnUser("Current user unknown")) : 
+                (me.ColleaguesInSameDept(context), context);
         }
 
         public static Employee RandomEmployee(

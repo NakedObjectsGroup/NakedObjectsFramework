@@ -43,8 +43,8 @@ namespace AdventureWorksModel
 
         [PageSize(20)]
         public IQueryable<SalesPerson> AutoCompleteSalesPerson(
-            [Range(2,0)] string name, IContainer container) =>
-            Sales_MenuFunctions.FindSalesPersonByName(null, name, container);
+            [Range(2,0)] string name, IContext context) =>
+            Sales_MenuFunctions.FindSalesPersonByName(null, name, context);
 
 
         #endregion
@@ -86,7 +86,7 @@ namespace AdventureWorksModel
         }
         #endregion
 
-        public static (Store, IContainer) UpdateName(this Store s, string newName, IContainer container) =>
-           DisplayAndSave(s with { Name = newName }, container);
+        public static (Store, IContext) UpdateName(this Store s, string newName, IContext context) =>
+           DisplayAndSave(s with { Name = newName }, context);
     }
 }

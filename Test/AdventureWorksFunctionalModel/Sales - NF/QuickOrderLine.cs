@@ -31,17 +31,17 @@ namespace AdventureWorksModel.Sales
         }
 
         public static QuickOrderLine PopulateUsingKeys(
-            QuickOrderLine vm, string[] keys,IContainer container)
+            QuickOrderLine vm, string[] keys,IContext context)
         {
             int p = int.Parse(keys.First());
             short n = short.Parse(keys.Skip(1).First());
-            var product = container.Instances<Product>().Single(c => c.ProductID == p);
+            var product = context.Instances<Product>().Single(c => c.ProductID == p);
             return vm with {Product =  product, Number= n};
         }
 
 
-        public static (SalesOrderHeader, IContainer) AddTo(QuickOrderLine vm, SalesOrderHeader salesOrder, IContainer container) =>
-            salesOrder.AddNewDetail(vm.Product, vm.Number, container);
+        public static (SalesOrderHeader, IContext) AddTo(QuickOrderLine vm, SalesOrderHeader salesOrder, IContext context) =>
+            salesOrder.AddNewDetail(vm.Product, vm.Number, context);
         
     }
 

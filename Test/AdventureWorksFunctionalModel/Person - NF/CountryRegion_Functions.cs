@@ -11,6 +11,6 @@ namespace AdventureWorksModel
 {
     public static class CountryRegionFunctions
     {
-        public static CountryRegion Updating(CountryRegion cr, IContainer container) => cr with { ModifiedDate = container.Now() };
+        public static CountryRegion Updating(CountryRegion cr, IContext context) => cr with { ModifiedDate = context.Now() };
     }
 }

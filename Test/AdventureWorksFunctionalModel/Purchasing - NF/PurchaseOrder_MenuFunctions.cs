@@ -104,7 +104,7 @@ namespace AdventureWorksModel
         [MemberOrder(5, "Purchase Orders")]
         [TableView(true, "Vendor", "OrderDate", "Status")]
         public static IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForProduct(
-             this Product product, IContainer container) => from obj in container.Instances<PurchaseOrderDetail>()
+             this Product product, IContext context) => from obj in context.Instances<PurchaseOrderDetail>()
                    where obj.Product.ProductID == product.ProductID &&
                          obj.PurchaseOrderHeader.Status <= 2
                    select obj.PurchaseOrderHeader;
@@ -120,8 +120,8 @@ namespace AdventureWorksModel
 
         // for autoautocomplete testing
         public static IQueryable<PurchaseOrderHeader> OpenPurchaseOrdersForVendorAndProduct(
-            Vendor vendor, Product product, IContainer container) =>
-                    from obj in container.Instances<PurchaseOrderDetail>()
+            Vendor vendor, Product product, IContext context) =>
+                    from obj in context.Instances<PurchaseOrderDetail>()
                    where obj.Product.ProductID == product.ProductID &&
                          obj.PurchaseOrderHeader.Status <= 2 &&
                          obj.PurchaseOrderHeader.Vendor.BusinessEntityID == vendor.BusinessEntityID
@@ -132,18 +132,18 @@ namespace AdventureWorksModel
 
         #region Create New Purchase Order
         [MemberOrder(6, "Purchase Orders")]
-        public static (PurchaseOrderHeader, IContainer) CreateNewPurchaseOrder(this Vendor vendor, IContainer container) =>
-            DisplayAndSave(new PurchaseOrderHeader() { Vendor = vendor, ShipDate = container.Today() }, container);
+        public static (PurchaseOrderHeader, IContext) CreateNewPurchaseOrder(this Vendor vendor, IContext context) =>
+            DisplayAndSave(new PurchaseOrderHeader() { Vendor = vendor, ShipDate = context.Today() }, context);
 
 
         [PageSize(20)]
         public static IQueryable<Vendor> AutoComplete0CreateNewPurchaseOrder(
-            [Range(2,0)] string name, IContainer container) =>
-            container.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
+            [Range(2,0)] string name, IContext context) =>
+            context.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
 
         [MemberOrder(7)]
-        public static (PurchaseOrderHeader, IContainer) CreateNewPurchaseOrder2(IContainer container) =>
-             DisplayAndSave(new PurchaseOrderHeader() { OrderPlacedBy = null }, container);
+        public static (PurchaseOrderHeader, IContext) CreateNewPurchaseOrder2(IContext context) =>
+             DisplayAndSave(new PurchaseOrderHeader() { OrderPlacedBy = null }, context);
 
         #endregion
 

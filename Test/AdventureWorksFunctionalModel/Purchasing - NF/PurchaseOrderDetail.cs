@@ -77,9 +77,9 @@ namespace AdventureWorksModel {
     {
 
         [MemberOrder(1)]
-        public static (PurchaseOrderDetail, IContainer) ReceiveGoods(
-            this PurchaseOrderDetail pod, int qtyReceived, int qtyRejected, int qtyIntoStock, IContainer container) =>
-            DisplayAndSave(pod with {ReceivedQty = qtyReceived, RejectedQty = qtyRejected, StockedQty = qtyIntoStock}, container);
+        public static (PurchaseOrderDetail, IContext) ReceiveGoods(
+            this PurchaseOrderDetail pod, int qtyReceived, int qtyRejected, int qtyIntoStock, IContext context) =>
+            DisplayAndSave(pod with {ReceivedQty = qtyReceived, RejectedQty = qtyRejected, StockedQty = qtyIntoStock}, context);
 
 
         public static int Default0ReceiveGoods(this PurchaseOrderDetail pod)=>  pod.OrderQty;

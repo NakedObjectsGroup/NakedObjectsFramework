@@ -121,12 +121,12 @@ namespace AdventureWorksModel {
         [MemberOrder(1)]
         [MultiLine()]
         public static (object, PurchaseOrderDetail) AddNewDetails(
-            PurchaseOrderHeader header, Product prod, short qty, decimal unitPrice, IContainer container)
+            PurchaseOrderHeader header, Product prod, short qty, decimal unitPrice, IContext context)
         {
-            var det = AddNewDetail(header, prod, qty, container);
+            var det = AddNewDetail(header, prod, qty, context);
             //TODO:  create new detail directly calling constructor with all params
             var det2 = det.Item1 with {UnitPrice =  unitPrice}
-                 with {DueDate = container.Today().Date.AddDays(7)} 
+                 with {DueDate = context.Today().Date.AddDays(7)} 
                  with {ReceivedQty = 0}
                  with {RejectedQty =  0};
             return(null, det2);
@@ -136,9 +136,9 @@ namespace AdventureWorksModel {
         public static IQueryable<Product> AutoComplete0AddNewDetails(
             PurchaseOrderHeader header,
             [NakedFunctions.Range(3,0)] string matching,
-            IContainer container)
+            IContext context)
         {
-            return Product_MenuFunctions.FindProductByName(matching, container);
+            return Product_MenuFunctions.FindProductByName(matching, context);
         }
 
         #endregion
@@ -162,11 +162,11 @@ namespace AdventureWorksModel {
         #region Add New Detail
 
         [MemberOrder(1)]
-        public static (PurchaseOrderDetail, IContainer) AddNewDetail(
-            PurchaseOrderHeader header, Product prod, short qty, IContainer container)
+        public static (PurchaseOrderDetail, IContext) AddNewDetail(
+            PurchaseOrderHeader header, Product prod, short qty, IContext context)
         {
             var pod = new PurchaseOrderDetail() { PurchaseOrderHeader = header, Product = prod, OrderQty = qty };
-            return DisplayAndSave(pod, container);
+            return DisplayAndSave(pod, context);
         }
 
         public static string DisableAddNewDetail(PurchaseOrderHeader header)

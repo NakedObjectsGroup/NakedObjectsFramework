@@ -13,7 +13,6 @@ namespace AdventureWorksModel
 {
     public record BillOfMaterial : IHasModifiedDate
     {
-
         [Hidden]
         public virtual int BillOfMaterialID { get; init; }
 

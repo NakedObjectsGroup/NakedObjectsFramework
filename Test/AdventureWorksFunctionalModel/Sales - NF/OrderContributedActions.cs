@@ -28,8 +28,8 @@ namespace AdventureWorksModel {
         }
 
         [MemberOrder(20)]
-        public static (SalesOrderHeader, IContainer) LastOrder(this Customer customer, IContainer container) =>
-            Helpers.SingleObjectWarnIfNoMatch(container.Instances<SalesOrderHeader>().Where(x => x.Customer.CustomerID == customer.CustomerID).OrderByDescending(x => x.SalesOrderNumber), container);
+        public static (SalesOrderHeader, IContext) LastOrder(this Customer customer, IContext context) =>
+            Helpers.SingleObjectWarnIfNoMatch(context.Instances<SalesOrderHeader>().Where(x => x.Customer.CustomerID == customer.CustomerID).OrderByDescending(x => x.SalesOrderNumber), context);
         
 
         [MemberOrder(21)]
@@ -62,9 +62,9 @@ namespace AdventureWorksModel {
 
         #region Comments
 
-        public static void AppendComment(this IQueryable<SalesOrderHeader> toOrders, string commentToAppend, IContainer container) {
+        public static void AppendComment(this IQueryable<SalesOrderHeader> toOrders, string commentToAppend, IContext context) {
             foreach (SalesOrderHeader order in toOrders) {
-                AppendComment(order, commentToAppend, container);
+                AppendComment(order, commentToAppend, context);
             }
         }
 
@@ -76,25 +76,25 @@ namespace AdventureWorksModel {
             return string.IsNullOrEmpty(commentToAppend) ? "Comment required" : null;
         }
 
-        public static (SalesOrderHeader, IContainer) AppendComment(this SalesOrderHeader order, string commentToAppend, IContainer container) {
+        public static (SalesOrderHeader, IContext) AppendComment(this SalesOrderHeader order, string commentToAppend, IContext context) {
             string newComments = order.Comment == null? commentToAppend: order.Comment + "; " + commentToAppend;
-            return DisplayAndSave(order with {Comment = newComments }, container);
+            return DisplayAndSave(order with {Comment = newComments }, context);
         }
 
         public static string ValidateAppendComment(string commentToAppend, SalesOrderHeader order) {
             return string.IsNullOrEmpty(commentToAppend) ? "Comment required" : null;
         }
 
-        public static void CommentAsUsersUnhappy(this IQueryable<SalesOrderHeader> toOrders, IContainer container) => 
-            AppendComment(toOrders, "User unhappy", container);
+        public static void CommentAsUsersUnhappy(this IQueryable<SalesOrderHeader> toOrders, IContext context) => 
+            AppendComment(toOrders, "User unhappy", context);
         
 
         public static string ValidateCommentAsUsersUnhappy(IQueryable<SalesOrderHeader> toOrders) {
             return toOrders.Any(o => !o.IsShipped()) ? "Not all shipped yet" : null;
         }
 
-        public static void CommentAsUserUnhappy(this SalesOrderHeader order, IContainer container) {
-            AppendComment(order, "User unhappy", container);
+        public static void CommentAsUserUnhappy(this SalesOrderHeader order, IContext context) {
+            AppendComment(order, "User unhappy", context);
         }
 
         public static string ValidateCommentAsUserUnhappy(SalesOrderHeader order) {

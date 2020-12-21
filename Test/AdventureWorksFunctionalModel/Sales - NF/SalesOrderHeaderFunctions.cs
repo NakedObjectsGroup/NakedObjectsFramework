@@ -22,11 +22,11 @@ namespace AdventureWorksModel {
 #pragma warning disable 612,618
         [MemberOrder(2, "Details")]
 #pragma warning restore 612,618
-        public static (SalesOrderHeader, IContainer) AddNewDetail(
+        public static (SalesOrderHeader, IContext) AddNewDetail(
                 this SalesOrderHeader soh,
                 Product product,
                 [DefaultValue((short) 1), Range(1, 999)] short quantity,
-                IContainer container
+                IContext context
             ) {
             int stock = product.NumberInStock();
             var sod = new SalesOrderDetail()
@@ -34,16 +34,16 @@ namespace AdventureWorksModel {
                 SalesOrderHeader = soh,
                 SalesOrderID = soh.SalesOrderID,
                 OrderQty = quantity,
-                SpecialOfferProduct = Product_Functions.BestSpecialOfferProduct(product, quantity, container)
+                SpecialOfferProduct = Product_Functions.BestSpecialOfferProduct(product, quantity, context)
             };
             //TODO:
             //sod.Recalculate();
-            return (soh, container.WithPendingSave(sod).WithWarnUser(stock < quantity ? $"Current inventory of {product} is {stock}" : ""));
+            return (soh, context.WithPendingSave(sod).WithWarnUser(stock < quantity ? $"Current inventory of {product} is {stock}" : ""));
         }
 
         [PageSize(20)]
-        public static IQueryable<Product> AutoComplete0AddNewDetail(this SalesOrderHeader soh, [Range(2,0)] string name, IContainer container) => 
-            Product_MenuFunctions.FindProductByName( name, container);
+        public static IQueryable<Product> AutoComplete0AddNewDetail(this SalesOrderHeader soh, [Range(2,0)] string name, IContext context) => 
+            Product_MenuFunctions.FindProductByName( name, context);
 
         #endregion
 
@@ -316,7 +316,7 @@ namespace AdventureWorksModel {
         }
 
 
-        public static ShipMethod DefaultShipMethod(this SalesOrderHeader soh, IContainer container) => container.Instances<ShipMethod>().FirstOrDefault();
+        public static ShipMethod DefaultShipMethod(this SalesOrderHeader soh, IContext context) => context.Instances<ShipMethod>().FirstOrDefault();
 
 
         public static string DisableDueDate(this SalesOrderHeader soh)

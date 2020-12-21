@@ -148,7 +148,7 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        public static (SalesOrderDetail, IContainer) Recalculate(this SalesOrderDetail sod)
+        public static (SalesOrderDetail, IContext) Recalculate(this SalesOrderDetail sod)
         {
             throw new NotImplementedException();
             //UnitPrice = SpecialOfferProduct.Product.ListPrice;
@@ -157,7 +157,7 @@ namespace AdventureWorksModel {
             //SalesOrderHeader.Recalculate();
         }
 
-        public static (SalesOrderDetail, IContainer) ChangeQuantity(this SalesOrderDetail sod, short newQuantity, IContainer container)
+        public static (SalesOrderDetail, IContext) ChangeQuantity(this SalesOrderDetail sod, short newQuantity, IContext context)
         {
             throw new NotImplementedException();
             //OrderQty = newQuantity;

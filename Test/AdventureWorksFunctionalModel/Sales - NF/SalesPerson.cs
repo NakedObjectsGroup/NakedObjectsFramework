@@ -76,18 +76,18 @@ namespace AdventureWorksModel
     {
 
         #region Life Cycle Methods
-        public static SalesPerson Updating(SalesPerson x, IContainer container) => x with { ModifiedDate = container.Now() };
+        public static SalesPerson Updating(SalesPerson x, IContext context) => x with { ModifiedDate = context.Now() };
 
-        public static SalesPerson Persisting(SalesPerson x, IContainer container) => x with { rowguid = container.NewGuid(), ModifiedDate = container.Now() };
+        public static SalesPerson Persisting(SalesPerson x, IContext context) => x with { rowguid = context.NewGuid(), ModifiedDate = context.Now() };
         #endregion
 
 
         [MemberOrder(1)]
-        public static (SalesPerson, IContainer) RecalulateSalesYTD(this SalesPerson sp, IContainer container)
+        public static (SalesPerson, IContext) RecalulateSalesYTD(this SalesPerson sp, IContext context)
         {
             var startOfYear = new DateTime(DateTime.Now.Year, 1, 1);
             decimal newYTD = 0;
-            IQueryable<SalesOrderHeader> query = from obj in container.Instances<SalesOrderHeader>()
+            IQueryable<SalesOrderHeader> query = from obj in context.Instances<SalesOrderHeader>()
                                                  where obj.SalesPerson.BusinessEntityID == sp.BusinessEntityID &&
                                                        obj.Status == 5 &&
                                                        obj.OrderDate >= startOfYear
@@ -100,26 +100,26 @@ namespace AdventureWorksModel
             {
                 newYTD = 0;
             }
-            return DisplayAndSave(sp with { SalesYTD = newYTD }, container);
+            return DisplayAndSave(sp with { SalesYTD = newYTD }, context);
         }
 
         [MemberOrder(2)]
-        public static (SalesPerson, IContainer) ChangeSalesQuota(this SalesPerson sp, decimal newQuota, IContainer container)
+        public static (SalesPerson, IContext) ChangeSalesQuota(this SalesPerson sp, decimal newQuota, IContext context)
         {
             var newSP = sp with { SalesQuota = newQuota };
-            var history = new SalesPersonQuotaHistory() with { SalesPerson = sp, SalesQuota = newQuota, QuotaDate = container.Now() };
-            return (newSP, container.WithPendingSave(newSP, history));
+            var history = new SalesPersonQuotaHistory() with { SalesPerson = sp, SalesQuota = newQuota, QuotaDate = context.Now() };
+            return (newSP, context.WithPendingSave(newSP, history));
         }
 
         [MemberOrder(1)]
-        public static (SalesPerson, IContainer) ChangeSalesTerritory(this SalesPerson sp, SalesTerritory newTerritory, IContainer container)
+        public static (SalesPerson, IContext) ChangeSalesTerritory(this SalesPerson sp, SalesTerritory newTerritory, IContext context)
         {
 
-            var newHist = new SalesTerritoryHistory() with { SalesPerson = sp, SalesTerritory = newTerritory, StartDate = container.Now() };
+            var newHist = new SalesTerritoryHistory() with { SalesPerson = sp, SalesTerritory = newTerritory, StartDate = context.Now() };
             var prev = sp.TerritoryHistory.Where(n => n.EndDate == null).FirstOrDefault();
-            var newPrev = prev with { EndDate = container.Now() };
+            var newPrev = prev with { EndDate = context.Now() };
             var newSp = sp with { SalesTerritory = newTerritory };
-            return (newSp, container.WithPendingSave(newSp, newPrev, newHist));
+            return (newSp, context.WithPendingSave(newSp, newPrev, newHist));
         }
     }
 }

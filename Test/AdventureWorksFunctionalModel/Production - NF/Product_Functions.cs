@@ -25,8 +25,8 @@ namespace AdventureWorksModel {
 
         [DescribedAs("Determines the best discount offered by current special offers for a specified order quantity")]
         public static SpecialOffer BestSpecialOffer(
-            Product p, short quantity, IContainer container)
-           => BestSpecialOfferProduct(p, quantity, container).SpecialOffer ?? SpecialOffer_MenuFunctions.NoDiscount(container);
+            Product p, short quantity, IContext context)
+           => BestSpecialOfferProduct(p, quantity, context).SpecialOffer ?? SpecialOffer_MenuFunctions.NoDiscount(context);
 
         public static string ValidateBestSpecialOffer(this Product p, short quantity)
             => quantity <= 0 ? "Quantity must be > 0" : null;
@@ -35,8 +35,8 @@ namespace AdventureWorksModel {
          => p.IsDiscontinued(now) ? "Product is discontinued" : null;
 
         public static SpecialOfferProduct BestSpecialOfferProduct(
-            this Product p, short quantity, IContainer container) => 
-            container.Instances<SpecialOfferProduct>().Where(obj => obj.Product.ProductID == p.ProductID &&
+            this Product p, short quantity, IContext context) => 
+            context.Instances<SpecialOfferProduct>().Where(obj => obj.Product.ProductID == p.ProductID &&
                               obj.SpecialOffer.StartDate <= DateTime.Now &&
                               obj.SpecialOffer.EndDate >= new DateTime(2004, 6, 1) &&
                               obj.SpecialOffer.MinQty < quantity).
@@ -52,14 +52,14 @@ namespace AdventureWorksModel {
 
 
         #region Associate with Special Offer
-        public static (SpecialOfferProduct, IContainer) AssociateWithSpecialOffer(
-            this Product product, SpecialOffer offer,IContainer container)  => 
-            SpecialOffer_Functions.AssociateWithProduct(offer, product, container);
+        public static (SpecialOfferProduct, IContext) AssociateWithSpecialOffer(
+            this Product product, SpecialOffer offer,IContext context)  => 
+            SpecialOffer_Functions.AssociateWithProduct(offer, product, context);
 
         [PageSize(20)]
         public static IQueryable<SpecialOffer> AutoComplete1AssociateWithSpecialOffer(
-            [Range(2, 0)] string name, IContainer container) => 
-            container.Instances<SpecialOffer>().Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
+            [Range(2, 0)] string name, IContext context) => 
+            context.Instances<SpecialOffer>().Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
         #endregion
 
         #region Property functions
