@@ -92,7 +92,7 @@ namespace NakedFunctions.Rest.App.Demo {
         private static IMenu[] CombinedNOandNFMenus(IMenuFactory mf)
         {
             var menus = ModelConfig_NakedFunctionsPM.MainMenus(mf).ToList();
-            menus.AddRange(ModelConfig_NakedObjectsPM.MainMenus(mf));
+            //menus.AddRange(ModelConfig_NakedObjectsPM.MainMenus(mf));
             return menus.ToArray();
         }
     }
