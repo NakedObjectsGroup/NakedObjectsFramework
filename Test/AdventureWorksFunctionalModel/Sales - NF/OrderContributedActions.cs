@@ -150,10 +150,8 @@ namespace AdventureWorksModel {
         #region CreateNewOrder
 
         [MemberOrder(1)]
-        public static SalesOrderHeader CreateNewOrder(this Customer customer,
-                                               [Optionally] bool copyHeaderFromLastOrder,
-                                               IQueryable<BusinessEntityAddress> addresses,
-                                               IQueryable<SalesOrderHeader> headers)
+        public static (SalesOrderHeader, IContext) CreateNewOrder(
+            this Customer customer, [Optionally] bool copyHeaderFromLastOrder, IContext context)
         {
 
             throw new NotImplementedException(); //TODO

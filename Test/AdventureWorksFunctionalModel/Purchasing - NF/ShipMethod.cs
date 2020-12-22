@@ -13,42 +13,24 @@ namespace AdventureWorksModel {
         [Bounded]
         public record ShipMethod  {
 
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
         [Hidden]
         public virtual int ShipMethodID { get; set; }
 
-        //Title
+        [MemberOrder(1)]
         public virtual string Name { get; set; }
 
+        [MemberOrder(2)]
         public virtual decimal ShipBase { get; set; }
+
+        [MemberOrder(3)]
         public virtual decimal ShipRate { get; set; }
-
-        #region ModifiedDate and rowguid
-
-        #region ModifiedDate
 
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; set; }
 
-        #endregion
-
-        #region rowguid
-
         [Hidden]
         public virtual Guid rowguid { get; set; }
 
-        #endregion
-
-        #endregion
+        public override string ToString() => Name;
     }
 }

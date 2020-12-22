@@ -21,16 +21,14 @@ namespace AdventureWorksModel {
         public IQueryable<ShoppingCartItem> RemoveItems(
             IQueryable<ShoppingCartItem> items,
             IContext context) {
-            ShoppingCartRepository.RemoveItems(items);
-            return ShoppingCartRepository.Cart(context);
+            ShoppingCat_MenuFunctions.RemoveItems(items);
+            return ShoppingCat_MenuFunctions.Cart(context);
         }
 
-        public void AddToCart(Product product) {
-            ShoppingCartRepository.AddToShoppingCart(product);
-        }
+        public (Product, IContext) AddToCart(Product product, IContext context) =>  ShoppingCat_MenuFunctions.AddToShoppingCart(product, context);
 
-        public string DisableAddToCart() {
-            return ShoppingCartRepository.DisableIfNoCustomerForUser();
+        public string DisableAddToCart(IContext context) {
+            return ShoppingCat_MenuFunctions.DisableIfNoCustomerForUser(context);
         }
     }
 }

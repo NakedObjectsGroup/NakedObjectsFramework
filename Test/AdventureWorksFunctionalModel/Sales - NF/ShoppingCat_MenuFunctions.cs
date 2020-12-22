@@ -17,85 +17,75 @@ namespace AdventureWorksModel {
     /// </summary>
     /// 
     [Named("Cart")]
-    public static class ShoppingCartRepository {
+    public static class ShoppingCat_MenuFunctions {
 
         //TODO: The Cart should probably be a view model
         [Named("Show Cart")]
         public static IQueryable<ShoppingCartItem> Cart(IContext context) {
-            string id = GetShoppingCartIDForUser();
+            string id = GetShoppingCartIDForUser(context);
             return context.Instances<ShoppingCartItem>().Where(x => x.ShoppingCartID == id);
         }
 
-        public static string DisableCart() {
-            return DisableIfNoCustomerForUser();
+        public static string DisableCart(IContext context) {
+            return DisableIfNoCustomerForUser(context);
         }
 
-        private static string GetShoppingCartIDForUser() {
-            return GetCustomerForUser().CustomerID.ToString();
+        private static string GetShoppingCartIDForUser(IContext context) {
+            return GetCustomerForUser(context).CustomerID.ToString();
         }
 
-        public static IQueryable<ShoppingCartItem> AddToShoppingCart(Product product) {
-            //TODO: Transient object
-            throw new NotImplementedException();
-            //string id = GetShoppingCartIDForUser();
-            //var item = NewTransientInstance<ShoppingCartItem>();
-            //item.ShoppingCartID = id;
-            //item.Product = product;
-            //item.Quantity = 1;
-            //item.DateCreated = DateTime.Now;
-            //Persist(ref item);
-            //InformUser("1 x " + product.Name + " added to Cart");
-            //return Cart();
+        public static (Product, IContext) AddToShoppingCart(Product product, IContext context) {
+            string id = GetShoppingCartIDForUser(context);
+            var item = new ShoppingCartItem() with { ShoppingCartID = id, Product = product, Quantity = 1, DateCreated = context.Now()};
+            return (product, context.WithPendingSave(item).WithInformUser($"1 x {product} added to Cart"));
         }
 
-        public static  SalesOrderHeader CheckOut(
-            IQueryable<BusinessEntityAddress> addresses,
-            IQueryable<SalesOrderHeader> headers) {
-            var cust = GetCustomerForUser();
-            var order = OrderContributedActions.CreateNewOrder(cust, true, addresses, headers);
+        public static  (SalesOrderHeader, IContext) CheckOut(IContext context) {
+            var cust = GetCustomerForUser(context);
+            var (order, context2) = OrderContributedActions.CreateNewOrder(cust, true, context);
+            //TODO: Need to check idea of modifying an instance that is pending save from another method
             order.AddItemsFromCart = true;
-            return order;
+            return (order, context2);
         }
 
-        public static string DisableCheckOut() {
-            return DisableIfNoCustomerForUser();
+        public static string DisableCheckOut(IContext context) {
+            return DisableIfNoCustomerForUser(context);
         }
 
-        private static Customer GetCustomerForUser() {
+        private static Customer GetCustomerForUser(IContext context) {
             throw new NotImplementedException();
-            //Contact c = GetContactFromUserNameAsEmail();
+            //Person c = GetContactFromUserNameAsEmail(context);
             //if (c == null) return null;
 
-            //var individuals = Instances<Individual>();
+            //var individuals = context.Instances<Customer>();
             //var qi = from i in individuals
-            //    where i.Contact.BusinessEntityID == c.BusinessEntityID
-            //    select i;
-            //if (qi.Count() == 1) {
+            //         where i.Contact.BusinessEntityID == c.BusinessEntityID
+            //         select i;
+            //if (qi.Count() == 1)
+            //{
             //    return qi.First();
             //}
 
-            //var stores = Instances<Store>();
-            //var storeContacts = Instances<StoreContact>();
+            //var stores = context.Instances<Store>();
+            //var storeContacts = context.Instances<StoreContact>();
 
             //var qs = from s in storeContacts
             //         where s.Contact.BusinessEntityID == c.BusinessEntityID
-            //    select s;
-            //if (qs.Count() == 1) {
+            //         select s;
+            //if (qs.Count() == 1)
+            //{
             //    return qs.First().Store;
             //}
             //WarnUser("No Customer found with a Contact email address of: " + UserName());
             //return null;
         }
 
-        private static Person GetContactFromUserNameAsEmail(IPrincipal principal) {
-            string username = UserName(principal);
-
-            //var q = from c in Container.Instances<Person>()
-            //    where c.EmailAddress.Trim().ToUpper() == username.Trim().ToUpper()
-            //    select c;
-
-            //return q.FirstOrDefault();
-            return null;
+        private static Person GetContactFromUserNameAsEmail(IContext context) {
+            string username = UserName(context.CurrentUser()).Trim().ToUpper();
+            var q = from e in  context.Instances<EmailAddress>()
+                    where e.EmailAddress1.Trim().ToUpper() == username
+                    select e.Person;
+            return q.FirstOrDefault();
         }
 
         private static string UserName(IPrincipal principal) {
@@ -123,8 +113,8 @@ namespace AdventureWorksModel {
             RemoveItems(Cart(context));
         }
 
-        public static string DisableEmptyCart() =>  DisableIfNoCustomerForUser();
+        public static string DisableEmptyCart(IContext context) =>  DisableIfNoCustomerForUser(context);
 
-        public static string DisableIfNoCustomerForUser() =>  GetCustomerForUser() == null? "User is not a recognised Customer": null;
+        public static string DisableIfNoCustomerForUser(IContext context) =>  GetCustomerForUser(context) == null? "User is not a recognised Customer": null;
     }
 }
