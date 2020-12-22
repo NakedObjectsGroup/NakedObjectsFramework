@@ -10,9 +10,6 @@ namespace AdventureWorksModel
             // Primary Key
             HasKey(t => t.CustomerID);
 
-            //Ignores
-            Ignore(t => t.CustomerType);
-
             // Properties
             Property(t => t.AccountNumber)
                 .IsRequired()

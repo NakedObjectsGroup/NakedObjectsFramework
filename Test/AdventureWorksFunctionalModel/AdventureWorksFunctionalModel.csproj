@@ -27,11 +27,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Human Resources - NF\EmployeeRepository.cs" />
-    <Compile Remove="Human Resources - NF\TimePeriod.cs" />
-    <Compile Remove="Human Resources - NF\TimePeriodValueSemanticsProvider.cs" />
-    <Compile Remove="Production - NF\ProductMenuTestFunction.cs" />
-    <Compile Remove="Production - NF\Product_TestFunctions.cs" />
+    <Compile Remove="Human Resources\EmployeeRepository.cs" />
+    <Compile Remove="Human Resources\TimePeriod.cs" />
+    <Compile Remove="Human Resources\TimePeriodValueSemanticsProvider.cs" />
+    <Compile Remove="Production\ProductMenuTestFunction.cs" />
+    <Compile Remove="Production\Product_TestFunctions.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using NakedFunctions;
 
@@ -14,29 +13,20 @@ namespace AdventureWorksModel {
         public static class CreditCard_Functions {
         
         #region Life Cycle Methods
-        public static CreditCard Persisting(this CreditCard x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static CreditCard Persisting(this CreditCard x, IContext context) => x with { ModifiedDate = context.Now() };
 
         public static (PersonCreditCard, ICreditCardCreator) Persisted(this CreditCard x) 
             => (new PersonCreditCard() { CreditCard = x, Person = x.ForContact }, ICreditCardCreator.CreatedCardHasBeenSaved(x.Creator, x));
 
-        public static CreditCard Updating(this CreditCard x, [Injected] DateTime now) => x with { ModifiedDate = now };
-    #endregion
+        public static CreditCard Updating(this CreditCard x, IContext context) => x with { ModifiedDate = context.Now() };
+        #endregion
 
 
-
-    [MemberOrder(2), DisplayAsProperty]
-        [Named("Card No.")]
-        
-        public static string ObfuscatedNumber(this CreditCard cc) {
-            throw new NotImplementedException();
-
-                //if (_ObfuscatedNumber == null && CardNumber != null && CardNumber.Length > 4) {
-                //    _ObfuscatedNumber = CardNumber.Substring(CardNumber.Length - 4).PadLeft(CardNumber.Length, '*');
-                //}
-                //return _ObfuscatedNumber;
-            }
- 
-      
+        [MemberOrder(2), DisplayAsProperty, Named("Card No.")]
+        public static string ObfuscatedNumber(this CreditCard cc) =>
+            cc.CardNumber != null && cc.CardNumber.Length > 4 ?
+               cc.CardNumber.Substring(cc.CardNumber.Length - 4).PadLeft(cc.CardNumber.Length, '*')
+               : null;
 
         public static string Validate(this CreditCard cc, byte expMonth, short expYear) {
             if (expMonth == 0 || expYear == 0) {

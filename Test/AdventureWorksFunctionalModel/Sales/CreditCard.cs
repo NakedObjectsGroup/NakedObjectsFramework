@@ -54,8 +54,9 @@ namespace AdventureWorksModel {
         public override string ToString() => CreditCard_Functions.ObfuscatedNumber(this);
 
 
-        [Hidden]
-        
+        //TODO: I think this was (in NO version) a non-persisted property on a transient object. 
+        //If so then we need to instead create the (persisted) credit card from an action dialogue (or use a view model)
+        [Hidden]      
         public ICreditCardCreator Creator { get; init; }
 
         

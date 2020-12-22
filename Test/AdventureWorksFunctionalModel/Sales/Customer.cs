@@ -7,7 +7,6 @@
 
 using System;
 using NakedFunctions;
-using static AdventureWorksModel.CustomerFunctions;
 
 namespace AdventureWorksModel {
         public record Customer 
@@ -40,11 +39,6 @@ namespace AdventureWorksModel {
 
         #region Store & Personal customers
 
-        internal BusinessEntity BusinessEntity() {
-            if (IsStore(this)) return Store;
-            if (IsIndividual(this)) return Person;
-            throw new Exception("Customer is neither Store nor Person!");
-        }
 
         [Hidden]
         public virtual int? StoreID { get; set; }
@@ -63,12 +57,7 @@ namespace AdventureWorksModel {
 
         #endregion
 
-        [MemberOrder(15)]
-        public virtual string CustomerType {
-            get {
-                return CustomerFunctions.IsIndividual(this) ? "Individual" : "Store";
-            }
-        }
+
 
         [Hidden]
         //[ConcurrencyCheck]
@@ -80,46 +69,5 @@ namespace AdventureWorksModel {
         public override string ToString() => "No Title Yet";
            // IsStore(this) ? Store : Person;
 
-    }
-
-    public static class CustomerFunctions
-    {
-
-        #region Action to test switchable view model
-        public static StoreSalesInfo ReviewSalesResponsibility()
-        {
-            throw new NotImplementedException();
-            //var ssi = Container.NewViewModel<StoreSalesInfo>();
-            //ssi.PopulateUsingKeys(new string[] { AccountNumber, false.ToString() });
-            //return ssi;
-        }
-
-
-        public static bool HideReviewSalesResponsibility(Customer c)
-        {
-            return IsStore(c);
-        }
-
-        #endregion
-
-        public static bool HideStore(Customer c)
-        {
-            return !IsStore(c);
-        }
-
-        public static bool HidePerson(Customer c)
-        {
-            return !IsIndividual(c);
-        }
-
-        internal static bool IsIndividual(Customer c)
-        {
-            return !IsStore(c);
-        }
-
-        internal static bool IsStore(Customer c)
-        {
-            return c.Store != null;
-        }
     }
 }

@@ -14,6 +14,7 @@ namespace AdventureWorksModel {
     /// 
     /// </summary>
     //TODO: ViewModel
+    [ViewModel]
     public record CustomerDashboard {
 
         public CustomerDashboard(Customer cust)
@@ -26,7 +27,7 @@ namespace AdventureWorksModel {
       
 
         public string Name {
-            get { return CustomerFunctions.IsIndividual(Root) ? Root.Person.ToString() : Root.Store.Name; }
+            get { return Customer_Functions.IsIndividual(Root) ? Root.Person.ToString() : Root.Store.Name; }
         }
 
         [DisplayAsProperty]
