@@ -4,6 +4,8 @@ namespace NakedFunctions
 {
     /// <summary>
     /// Provides a statically-defined default value for an action parameter.
+    /// A DefaultValue of type Int may be applied to a DateTime parameter, where
+    /// the value 0 means 'today', -1 means 'yesterday', 30 means '30 days from today'.
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
     public class DefaultValueAttribute : Attribute
