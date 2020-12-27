@@ -53,7 +53,7 @@ namespace AdventureWorksModel
         #endregion
 
         #region Create New Special Offer
-        [MemberOrder(4), CreateObject]
+        [MemberOrder(4), CreateNew]
         public static (SpecialOffer, SpecialOffer) CreateNewSpecialOffer(string description)
        => DisplayAndPersist(new SpecialOffer { Description = description });
 
