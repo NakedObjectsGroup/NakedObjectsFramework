@@ -12,9 +12,8 @@ using static AdventureWorksModel.Helpers;
 
 namespace AdventureWorksModel
 {
-        public record Store : BusinessEntity, IBusinessEntityWithContacts, IHasModifiedDate
+    public record Store : BusinessEntity, IBusinessEntityWithContacts, IHasModifiedDate
     {
-
          #region Properties
 
         [Named("Store Name"), MemberOrder(20)]
