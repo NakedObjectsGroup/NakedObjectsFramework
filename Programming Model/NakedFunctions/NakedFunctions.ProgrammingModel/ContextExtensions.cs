@@ -5,9 +5,9 @@ namespace NakedFunctions
 {
     public static class ContextExtensions
     {
-        public static IContext WithWarnUser(this IContext context, string message) => context.WithOutput((IAlert ua) => ua.WarnUser(message));
+        public static IContext WithWarnUser(this IContext context, string message) => context.WithAction((IAlert ua) => ua.WarnUser(message));
 
-        public static IContext WithInformUser(this IContext context, string message) => context.WithOutput((IAlert ua) => ua.InformUser(message));
+        public static IContext WithInformUser(this IContext context, string message) => context.WithAction((IAlert ua) => ua.InformUser(message));
 
         public static DateTime Now(this IContext context) => context.GetService<IClock>().Now();
 

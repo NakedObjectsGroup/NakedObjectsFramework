@@ -79,7 +79,7 @@ namespace AdventureWorksModel
             {
 
                 Action<IAlert> msg = InformUser($"{offer} is already associated with { product}");
-                return (null, context.WithOutput(msg));
+                return (null, context.WithAction(msg));
             }
             var newSop = new SpecialOfferProduct() with
             {

@@ -19,6 +19,6 @@ namespace NakedFunctions
         public ImmutableArray<object> PendingSave { get; }
 
         //Returns a copy of this context but with an Action<T> (where T is a service registered in services configuration) to be called by the framework after the method. has exited.
-        public IContext WithOutput<T>(Action<T> action);
+        public IContext WithAction<T>(Action<T> action);
     }
 }

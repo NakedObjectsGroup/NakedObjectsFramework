@@ -34,7 +34,7 @@ namespace AdventureWorksModel
         }
 
         public static (T, IContext) SingleObjectWarnIfNoMatch<T>(this IQueryable<T> query, IContext context) =>
-            (query.FirstOrDefault(), query.Any() ? context : context.WithOutput(WarnUser("There is no matching object")));
+            (query.FirstOrDefault(), query.Any() ? context : context.WithAction(WarnUser("There is no matching object")));
 
         //TODO: Eliminate this version
         public static T Random<T>(IQueryable<T> query, int random) where T : class
