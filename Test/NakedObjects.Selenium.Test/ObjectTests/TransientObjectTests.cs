@@ -28,7 +28,10 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
             ClearFieldThenType("#cardnumber1", number);
             SelectDropDownOnField("#expmonth1", "12");
-            SelectDropDownOnField("#expyear1", "2020");
+
+            var year = (DateTime.Now.Year + 1).ToString();
+
+            SelectDropDownOnField("#expyear1", year);
             Click(SaveButton());
             WaitForView(Pane.Single, PaneType.Object, obfuscated);
         }
@@ -42,7 +45,10 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             var obfuscated = number.Substring(number.Length - 4).PadLeft(number.Length, '*');
             ClearFieldThenType("#cardnumber1", number);
             SelectDropDownOnField("#expmonth1", "12");
-            SelectDropDownOnField("#expyear1", "2020");
+
+            var year = (DateTime.Now.Year + 1).ToString();
+
+            SelectDropDownOnField("#expyear1", year);
             Click(SaveAndCloseButton());
             WaitForView(Pane.Single, PaneType.Object, "Arthur Wilson");
             //But check that credit card was saved nonetheless
@@ -56,7 +62,10 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             GeminiUrl("object?o1=___1.Person--12043&as1=open");
             Click(GetObjectEnabledAction("Create New Credit Card"));
             SelectDropDownOnField("#cardtype1", "Vista");
-            SelectDropDownOnField("#expyear1", "2020");
+
+            var year = (DateTime.Now.Year + 1).ToString();
+
+            SelectDropDownOnField("#expyear1", year);
             SaveButton().AssertIsDisabled().AssertHasTooltip("Missing mandatory fields: Card Number; Exp Month; ");
         }
 
@@ -67,7 +76,10 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             SelectDropDownOnField("#cardtype1", "Vista");
             ClearFieldThenType("input#cardnumber1", "123");
             SelectDropDownOnField("#expmonth1", "1");
-            SelectDropDownOnField("#expyear1", "2020");
+
+            var year = (DateTime.Now.Year + 1).ToString();
+
+            SelectDropDownOnField("#expyear1", year);
             Click(SaveButton());
             wait.Until(dr => dr.FindElements(
                 By.CssSelector(".validation")).Any(el => el.Text == "card number too short"));
@@ -81,7 +93,10 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             SelectDropDownOnField("#cardtype1", "Vista");
             ClearFieldThenType("#cardnumber1", "1111222233334444");
             SelectDropDownOnField("#expmonth1", "1");
-            SelectDropDownOnField("#expyear1", "2008");
+
+            var year = (DateTime.Now.Year - 1).ToString();
+
+            SelectDropDownOnField("#expyear1", year);
             Click(SaveButton());
             WaitForMessage("Expiry date must be in the future");
         }
