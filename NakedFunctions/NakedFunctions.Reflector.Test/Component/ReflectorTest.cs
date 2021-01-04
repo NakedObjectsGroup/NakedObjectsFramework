@@ -41,11 +41,10 @@ namespace NakedFunctions.Reflector.Test.Component {
     }
 
     [Bounded]
-    public record BoundedClass {
-    }
+    public record BoundedClass { }
 
     public record IgnoredClass {
-    [NakedFunctionsIgnore] public virtual string IgnoredProperty { get; set; }
+        internal virtual string IgnoredProperty { get; set; }
     }
 
     public static class ParameterDefaultClass {
@@ -53,13 +52,12 @@ namespace NakedFunctions.Reflector.Test.Component {
     }
 
     public record SimpleClass {
-    public virtual SimpleClass SimpleProperty { get; set; }
+        public virtual SimpleClass SimpleProperty { get; set; }
     }
 
     [ViewModel]
-    public record SimpleViewModel
-    {
-    public virtual SimpleClass SimpleProperty { get; set; }
+    public record SimpleViewModel {
+        public virtual SimpleClass SimpleProperty { get; set; }
     }
 
     public class NavigableClass {
@@ -85,7 +83,7 @@ namespace NakedFunctions.Reflector.Test.Component {
     }
 
     public static class UnsupportedTupleFunctions {
-        public static ValueTuple TupleFunction(IQueryable<SimpleClass> injected) => new ValueTuple();
+        public static ValueTuple TupleFunction(IQueryable<SimpleClass> injected) => new();
     }
 
     public static class LifeCycleFunctions {
@@ -118,8 +116,6 @@ namespace NakedFunctions.Reflector.Test.Component {
             services.AddNakedFramework(setup);
             TestHook(services);
         }
-
-        public record Test(int a) { }
 
         private ITypeSpecBuilder[] AllObjectSpecImmutables(IServiceProvider provider) {
             var metaModel = provider.GetService<IMetamodel>();
@@ -408,5 +404,7 @@ namespace NakedFunctions.Reflector.Test.Component {
                 Assert.IsNotNull(facet);
             }
         }
+
+        public record Test(int a) { }
     }
 }

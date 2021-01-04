@@ -21,7 +21,7 @@ namespace NakedFunctions.Reflector.Component {
 
         public FunctionClassStrategy(IFunctionalReflectorConfiguration config) => this.config = config;
 
-        protected override bool IsTypeIgnored(Type type) => type.GetCustomAttribute<NakedFunctionsIgnoreAttribute>() is not null;
+        protected override bool IsTypeIgnored(Type type) => false;
 
         protected override bool IsTypeExplicitlyRequested(Type type) {
             var types = config.Types.Union(config.Functions).ToArray();
@@ -31,7 +31,7 @@ namespace NakedFunctions.Reflector.Component {
 
         #region IClassStrategy Members
 
-        public override bool IsIgnored(MemberInfo member) => member.GetCustomAttribute<NakedFunctionsIgnoreAttribute>() is not null;
+        public override bool IsIgnored(MemberInfo member) => false;
         public override bool IsService(Type type) => false;
         public override bool LoadReturnType(MethodInfo method) => false;
 
