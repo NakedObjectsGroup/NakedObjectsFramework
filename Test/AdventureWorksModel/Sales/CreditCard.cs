@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using NakedObjects;
 
 namespace AdventureWorksModel {
@@ -128,9 +129,7 @@ namespace AdventureWorksModel {
             return new byte[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
         }
 
-        public virtual short[] ChoicesExpYear() {
-            return new short[] {2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020};
-        }
+        public virtual short[] ChoicesExpYear() => Enumerable.Range(DateTime.Now.Year, 10).Select(i => (short)i).ToArray();
 
         #region Logic for creating new cards
 

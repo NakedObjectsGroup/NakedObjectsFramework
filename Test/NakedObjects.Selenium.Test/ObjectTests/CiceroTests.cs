@@ -1253,8 +1253,11 @@ namespace NakedObjects.Selenium.Test.ObjectTests {
             WaitForOutputContaining("Card Number: " + number);
             EnterCommand("enter month,12");
             WaitForOutputContaining("Exp Month: 12");
-            EnterCommand("enter year,2020");
-            WaitForOutputContaining("Exp Year: 2020");
+
+            var year = (DateTime.Now.Year + 1).ToString();
+
+            EnterCommand($"enter year,{year}");
+            WaitForOutputContaining($"Exp Year: {year}");
             EnterCommand("save");
             WaitForOutput("Credit Card: " + obfuscated);
             //Incomplete fields
