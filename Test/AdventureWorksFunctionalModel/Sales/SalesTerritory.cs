@@ -55,9 +55,9 @@ namespace AdventureWorksModel
     public static class SalesTerritoryFunctions
     {
         #region Life Cycle Methods
-        public static Department Updating(this Department x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static Department Updating(this Department x,  DateTime now) => x with { ModifiedDate = now };
 
-        public static Department Persisting(this Department x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static Department Persisting(this Department x,  DateTime now) => x with { ModifiedDate = now };
         #endregion
     }
 }

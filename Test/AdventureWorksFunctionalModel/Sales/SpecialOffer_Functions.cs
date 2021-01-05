@@ -19,9 +19,9 @@ namespace AdventureWorksModel
     {
 
         #region Life Cycle Methods
-        public static SpecialOffer Updating(SpecialOffer x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static SpecialOffer Updating(SpecialOffer x,  DateTime now) => x with { ModifiedDate = now };
 
-        public static SpecialOffer Persisting(SpecialOffer x, [Injected] DateTime now, [Injected] Guid guid) => x with { ModifiedDate = now, rowguid = guid };
+        public static SpecialOffer Persisting(SpecialOffer x,  DateTime now,  Guid guid) => x with { ModifiedDate = now, rowguid = guid };
         #endregion
 
         #region Edit
@@ -106,7 +106,7 @@ namespace AdventureWorksModel
 
         public static (IList<SpecialOffer>, IList<SpecialOffer>) TerminateActiveOffers(
             this IQueryable<SpecialOffer> offers,
-            [Injected] DateTime now)
+             DateTime now)
         {
             var yesterday = now.Date.AddDays(-1);
             var list = offers.Where(x => x.EndDate > yesterday).ToList().Select(x => x with { EndDate = yesterday }).ToList();

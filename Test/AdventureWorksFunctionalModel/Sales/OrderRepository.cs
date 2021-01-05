@@ -22,7 +22,7 @@ namespace AdventureWorksModel {
         [ MemberOrder(99)]
         public static SalesOrderHeader RandomOrder(
             IQueryable<SalesOrderHeader> headers,
-            [Injected] int random)
+             int random)
          {
             return Random(headers, random);
         }

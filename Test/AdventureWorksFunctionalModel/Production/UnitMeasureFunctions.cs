@@ -12,8 +12,8 @@ namespace AdventureWorksModel
 {
     public static class UnitMeasureFunctions
     {
-        public static UnitMeasure Updating(this UnitMeasure x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static UnitMeasure Updating(this UnitMeasure x,  DateTime now) => x with { ModifiedDate = now };
 
-        public static UnitMeasure Persisting(this UnitMeasure x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static UnitMeasure Persisting(this UnitMeasure x,  DateTime now) => x with { ModifiedDate = now };
     }
 }

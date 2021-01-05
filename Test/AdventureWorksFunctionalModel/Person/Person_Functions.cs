@@ -35,7 +35,7 @@ namespace AdventureWorksModel {
             };
         }
 
-        public static Person Persisting(Person p, [Injected] Guid guid, [Injected] DateTime now)
+        public static Person Persisting(Person p,  Guid guid,  DateTime now)
         {
             throw new NotImplementedException();
             ////return Updating(p, now) with {rowguid =  guid).CreateSaltAndHash(p.InitialPassword}
@@ -43,7 +43,7 @@ namespace AdventureWorksModel {
             ////     with {BusinessEntityModifiedDate =  now};
         }
 
-        public static Person Updating(Person p, [Injected] DateTime now)
+        public static Person Updating(Person p,  DateTime now)
         {
             return p with {BusinessEntityModifiedDate =  now, ModifiedDate = now};
         }

@@ -16,7 +16,7 @@ namespace AdventureWorksModel {
     public static class Product_Functions {
 
         #region Life Cycle Methods
-        public static Product Updating(this Product p, [Injected] DateTime now) => p with { ModifiedDate = now };
+        public static Product Updating(this Product p,  DateTime now) => p with { ModifiedDate = now };
 
         #endregion
 
@@ -31,7 +31,7 @@ namespace AdventureWorksModel {
         public static string ValidateBestSpecialOffer(this Product p, short quantity)
             => quantity <= 0 ? "Quantity must be > 0" : null;
 
-        public static string DisableBestSpecialOffer(this Product p, [Injected] DateTime now)
+        public static string DisableBestSpecialOffer(this Product p,  DateTime now)
          => p.IsDiscontinued(now) ? "Product is discontinued" : null;
 
         public static SpecialOfferProduct BestSpecialOfferProduct(

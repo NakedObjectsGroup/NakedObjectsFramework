@@ -37,8 +37,8 @@ namespace AdventureWorksModel
 
     public static class SpecialOfferProductFunctions
     {
-        public static Product Updating(Product p, [Injected] DateTime now) => p with { ModifiedDate = now };
-        public static Product Persisting(Product p, [Injected] DateTime now, [Injected] Guid guid) => p with { rowguid = guid, ModifiedDate = now };
+        public static Product Updating(Product p,  DateTime now) => p with { ModifiedDate = now };
+        public static Product Persisting(Product p,  DateTime now,  Guid guid) => p with { rowguid = guid, ModifiedDate = now };
 
     }
 

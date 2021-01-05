@@ -17,7 +17,7 @@ namespace AdventureWorksModel
     {
 
         #region LifeCycle functions
-        public static WorkOrder Updating(WorkOrder wo, [Injected] DateTime now)
+        public static WorkOrder Updating(WorkOrder wo,  DateTime now)
         {
             return wo with { ModifiedDate = now };
         }
@@ -37,12 +37,12 @@ namespace AdventureWorksModel
             return qty <= 0 ? "Order Quantity must be > 0" : null;
         }
 
-        public static DateTime DefaultStartDate(WorkOrder wo, [Injected] DateTime now)
+        public static DateTime DefaultStartDate(WorkOrder wo,  DateTime now)
         {
             return now;
         }
 
-        public static DateTime DefaultDueDate([Injected] DateTime now)
+        public static DateTime DefaultDueDate( DateTime now)
         {
             return now.AddMonths(1).Date;
         }

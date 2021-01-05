@@ -147,7 +147,7 @@ namespace AdventureWorksModel {
         public static Employee DefaultOrderPlacedBy(
             PurchaseOrderHeader header,
             IQueryable<Employee> employees,
-            [Injected] int random)
+             int random)
         {
             return Employee_MenuFunctions.RandomEmployee( employees, random);
         }
@@ -221,7 +221,7 @@ namespace AdventureWorksModel {
 
         public static PurchaseOrderHeader Updating(
             PurchaseOrderHeader header,
-            [Injected] DateTime now)
+             DateTime now)
         {
             byte newRev = Convert.ToByte(header.RevisionNumber + 1);
             return header with {ModifiedDate =  now, RevisionNumber = newRev};

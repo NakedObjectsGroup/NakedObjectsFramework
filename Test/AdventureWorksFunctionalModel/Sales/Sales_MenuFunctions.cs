@@ -33,7 +33,7 @@ namespace AdventureWorksModel {
        
         public static SalesPerson RandomSalesPerson(
              IQueryable<SalesPerson> sps,
-            [Injected] int random) {
+             int random) {
             return Random(sps, random);
         }
 
@@ -78,7 +78,7 @@ namespace AdventureWorksModel {
 
         public static SalesTaxRate RandomSalesTaxRate(
             IQueryable<SalesTaxRate> strs,
-            [Injected] int random
+             int random
             )
         {
             return Random(strs, random);

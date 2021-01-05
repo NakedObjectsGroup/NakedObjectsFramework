@@ -18,7 +18,7 @@ namespace AdventureWorksModel {
 
         public static WorkOrder RandomWorkOrder(
             IQueryable<WorkOrder> workOrders,
-            [Injected] int random) {
+             int random) {
             return Random(workOrders, random);
         }
 

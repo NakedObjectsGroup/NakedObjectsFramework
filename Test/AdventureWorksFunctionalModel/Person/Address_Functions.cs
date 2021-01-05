@@ -18,13 +18,13 @@ namespace AdventureWorksModel {
     public static class Address_Functions
     {
         #region LifeCycle methods
-        public static Address Updating(Address x, [Injected] DateTime now) => x with { ModifiedDate = now };
+        public static Address Updating(Address x,  DateTime now) => x with { ModifiedDate = now };
 
-        public static Address Persisting(Address x, [Injected] Guid guid, [Injected] DateTime now) => x with { rowguid = guid, ModifiedDate = now };
+        public static Address Persisting(Address x,  Guid guid,  DateTime now) => x with { rowguid = guid, ModifiedDate = now };
 
         //Any object or list returned by Persisted (or Updated), is not for display but to be persisted/updated
         //themselves (equivalent to second Tuple value returned from an Action).
-        public static BusinessEntityAddress Persisted(Address a, [Injected] Guid guid, [Injected] DateTime now)
+        public static BusinessEntityAddress Persisted(Address a,  Guid guid,  DateTime now)
             =>  new BusinessEntityAddress() with { AddressID = a.AddressForID, AddressTypeID = a.AddressTypeID, BusinessEntityID = a.AddressForID, rowguid = guid, ModifiedDate = now };
         #endregion
 

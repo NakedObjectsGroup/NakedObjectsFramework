@@ -79,7 +79,7 @@ namespace AdventureWorksModel
         #region Life Cycle Methods
         public static Store Updating(
             Store sp,
-            [Injected] DateTime now)
+             DateTime now)
         {
             return sp with { ModifiedDate = now };
         }
