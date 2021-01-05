@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using NakedObjects.Core.Util;
+using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public static class FunctionalFacetFactoryHelpers {
@@ -20,13 +21,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
                 return false;
             }
 
-            return method.GetParameters()[paramNum] switch {
-                ParameterInfo parameter when parameter.IsDefined(typeof(InjectedAttribute), false) => true,
-                ParameterInfo parameter when CollectionUtils.IsQueryable(parameter.ParameterType) => true,
-                ParameterInfo parameter when parameter.ParameterType == typeof(Guid) => true,
-                ParameterInfo parameter when parameter.ParameterType == typeof(IPrincipal) => true,
-                _ => false
-            };
+            return method.GetParameters()[paramNum].IsInjectedParameter();
         }
 
         public static Type GetContributedToType(MethodInfo method)

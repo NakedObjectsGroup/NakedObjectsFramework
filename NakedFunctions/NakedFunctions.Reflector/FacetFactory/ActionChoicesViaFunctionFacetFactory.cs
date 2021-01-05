@@ -40,8 +40,7 @@ namespace NakedFunctions.Reflector.FacetFactory {
         public string[] Prefixes => FixedPrefixes;
 
         private static ParameterInfo[] FilterParms(MethodInfo m) =>
-            m.GetParameters().Where(p => !p.IsDefined(typeof(InjectedAttribute), false) && (!m.IsDefined(typeof(ExtensionAttribute), false) || p.Position > 0))
-             .ToArray();
+            m.GetParameters().Where(p => !p.IsInjectedParameter() && (!m.IsDefined(typeof(ExtensionAttribute), false) || p.Position > 0)).ToArray();
 
         private  IImmutableDictionary<string, ITypeSpecBuilder> FindChoicesMethod(IReflector reflector, Type declaringType, string capitalizedName, Type[] paramTypes, IActionParameterSpecImmutable[] parameters, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             for (var i = 0; i < paramTypes.Length; i++) {

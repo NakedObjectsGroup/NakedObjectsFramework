@@ -27,6 +27,8 @@ namespace NakedObjects.Meta.Utils {
 
         public static int GetInjectedRandomValue() => Random.Next();
 
+        public static bool IsInjectedParameter(this ParameterInfo p) => p.ParameterType == typeof(IContext);
+
         public static IPrincipal GetInjectedIPrincipalValue(ISession session) => session.Principal;
 
         public static Type GetMatchingImpl(Type typeOfQueryable) {
@@ -50,7 +52,7 @@ namespace NakedObjects.Meta.Utils {
                 return adapter.Object;
             }
 
-            if (p.GetCustomAttribute<InjectedAttribute>() is not null) {
+            if (p.IsInjectedParameter()) {
                 var parameterType = p.ParameterType;
                 if (parameterType == typeof(DateTime)) {
                     return GetInjectedDateTimeValue();
