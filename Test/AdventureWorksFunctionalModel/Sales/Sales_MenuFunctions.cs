@@ -31,11 +31,7 @@ namespace AdventureWorksModel {
         #endregion
 
        
-        public static SalesPerson RandomSalesPerson(
-             IQueryable<SalesPerson> sps,
-             int random) {
-            return Random(sps, random);
-        }
+        public static SalesPerson RandomSalesPerson(IContext context) => Random<SalesPerson>(context);
 
         [MemberOrder(1, "Sales")]
         [DescribedAs("... from an existing Employee")]
@@ -76,13 +72,7 @@ namespace AdventureWorksModel {
             return strs;
         }
 
-        public static SalesTaxRate RandomSalesTaxRate(
-            IQueryable<SalesTaxRate> strs,
-             int random
-            )
-        {
-            return Random(strs, random);
-        }
+        public static SalesTaxRate RandomSalesTaxRate(IContext context) => Random<SalesTaxRate>(context);
 
         #region Sub-menu hierarchy for testing only
 

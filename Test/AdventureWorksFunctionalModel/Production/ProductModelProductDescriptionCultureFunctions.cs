@@ -11,6 +11,6 @@ using NakedFunctions;
 namespace AdventureWorksModel {
      public static class ProductModelProductDescriptionCultureFunctions
     {
-        public static ProductDocument Updating(ProductDocument c,  DateTime now) => c with {ModifiedDate =  now};
+        public static ProductDocument Updating(ProductDocument x, IContext context) => x with { ModifiedDate = context.Now() };
     }
 }

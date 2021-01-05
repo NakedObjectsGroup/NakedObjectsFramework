@@ -13,6 +13,6 @@ namespace AdventureWorksModel
 {
     public static class LocationFunctions
     {
-        public static Location Updating(Location loc,  DateTime now) => loc with { ModifiedDate = now };
+        public static Location Updating(Location x, IContext context) => x with { ModifiedDate = context.Now() };
     }
 }

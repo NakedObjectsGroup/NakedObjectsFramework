@@ -34,15 +34,9 @@ namespace AdventureWorksModel {
             return query;
         }
 
-        public static (Employee, Action<IAlert>) FindEmployeeByNationalIDNumber(
-            string nationalIDNumber,
-            IQueryable<Employee> employees) {
-            var query = from obj in employees
-                        where obj.NationalIDNumber == nationalIDNumber
-                        select obj;
+        public static (Employee, IContext) FindEmployeeByNationalIDNumber(string nationalIDNumber, IContext context) 
+            => context.Instances<Employee>().Where(e => e.NationalIDNumber == nationalIDNumber).SingleObjectWarnIfNoMatch(context);
 
-            return SingleObjectWarnIfNoMatch(query);
-        }
 
         public static (Employee, IContext) CreateNewEmployeeFromContact(Person contactDetails, IContext context) {
             var e = new Employee {
@@ -73,9 +67,8 @@ namespace AdventureWorksModel {
         }
 
         public static Employee RandomEmployee(
-            IQueryable<Employee> employees,
-            int random) =>
-            Random(employees, random);
+            IQueryable<Employee> employees, IContext context) =>
+            Random<Employee>(context);
 
         ////This method is to test use of nullable booleans
         //public static IQueryable<Employee> ListEmployees(

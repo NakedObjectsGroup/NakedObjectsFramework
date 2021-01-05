@@ -19,9 +19,10 @@ namespace AdventureWorksModel
     {
 
         #region Life Cycle Methods
-        public static SpecialOffer Updating(SpecialOffer x,  DateTime now) => x with { ModifiedDate = now };
+        public static SpecialOffer Updating(SpecialOffer x,  IContext context) => x with { ModifiedDate = context.Now() };
 
-        public static SpecialOffer Persisting(SpecialOffer x,  DateTime now,  Guid guid) => x with { ModifiedDate = now, rowguid = guid };
+        public static SpecialOffer Persisting(SpecialOffer x, IContext context) =>
+            x with { ModifiedDate = context.Now(), rowguid = context.NewGuid() };
         #endregion
 
         #region Edit
@@ -96,21 +97,20 @@ namespace AdventureWorksModel
         #endregion
 
         #region Queryable-contributed
-        private static (IList<SpecialOffer>, IList<SpecialOffer>) Change(this IQueryable<SpecialOffer> offers, Func<SpecialOffer, SpecialOffer> change)
-=> DisplayAndPersist(offers.ToList().Select(change).ToList());
+        private static (IList<SpecialOffer>, IContext) Change(this IQueryable<SpecialOffer> offers, Func<SpecialOffer, SpecialOffer> change, IContext context)
+        => DisplayAndSave(offers.ToList().Select(change).ToList(), context);
 
         //TODO: This example shows we must permit returning a List (not a queryable) for display.
-        public static (IList<SpecialOffer>, IList<SpecialOffer>) ExtendOffers(this IQueryable<SpecialOffer> offers, DateTime toDate)
-        => Change(offers, x => x with { EndDate = toDate });
+        public static (IList<SpecialOffer>, IContext) ExtendOffers(this IQueryable<SpecialOffer> offers, DateTime toDate, IContext context)
+        => Change(offers, x => x with { EndDate = toDate }, context);
 
 
-        public static (IList<SpecialOffer>, IList<SpecialOffer>) TerminateActiveOffers(
-            this IQueryable<SpecialOffer> offers,
-             DateTime now)
+        public static (IList<SpecialOffer>, IContext) TerminateActiveOffers(
+            this IQueryable<SpecialOffer> offers, IContext context)
         {
-            var yesterday = now.Date.AddDays(-1);
+            var yesterday = context.Today().AddDays(-1);
             var list = offers.Where(x => x.EndDate > yesterday).ToList().Select(x => x with { EndDate = yesterday }).ToList();
-            return DisplayAndPersist(list);
+            return DisplayAndSave(list, context);
         }
         #endregion
     }

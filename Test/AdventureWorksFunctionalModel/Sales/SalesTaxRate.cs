@@ -57,9 +57,7 @@ namespace AdventureWorksModel
 
 public static class SalesTaxRateFunctions
 {
-    public static SalesTaxRate Updating(SalesTaxRate a,  DateTime now) => a with { ModifiedDate = now };
-
-    public static SalesTaxRate Updating(SalesTaxRate a,  DateTime now,  Guid guid) => a with { ModifiedDate = now, rowguid = guid };
+    public static SalesTaxRate Updating(SalesTaxRate x, IContext context) => x with { ModifiedDate = context.Now(), rowguid = context.NewGuid() };
 
 }
 }

@@ -20,12 +20,7 @@ namespace AdventureWorksModel {
     public static class OrderRepository  {
 
         [ MemberOrder(99)]
-        public static SalesOrderHeader RandomOrder(
-            IQueryable<SalesOrderHeader> headers,
-             int random)
-         {
-            return Random(headers, random);
-        }
+        public static SalesOrderHeader RandomOrder(IContext context) => Random<SalesOrderHeader>(context);
 
         [ MemberOrder(5)]
         [TableView(true, "OrderDate", "DueDate")]

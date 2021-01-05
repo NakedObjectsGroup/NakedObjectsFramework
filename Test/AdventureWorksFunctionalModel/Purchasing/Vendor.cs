@@ -13,9 +13,6 @@ using NakedFunctions;
 
 namespace AdventureWorksModel {
     public record Vendor : IBusinessEntity {
-        #region Injected Services
-
-        #endregion
 
         #region Life Cycle Methods
         public virtual void Persisting() {

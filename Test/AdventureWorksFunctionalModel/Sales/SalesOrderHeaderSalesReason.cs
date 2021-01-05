@@ -12,9 +12,6 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     [Named("Reason")]
         public record SalesOrderHeaderSalesReason {
-        #region Injected Services
-        
-        #endregion
 
         #region Life Cycle Methods
         public virtual void Persisting() {

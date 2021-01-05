@@ -11,10 +11,11 @@ namespace NakedFunctions
         //Gets a service that has been configured in services configuration.
         public T GetService<T>();
 
-       //Returns a copy of this context but with one or more objects to be saved added to the PendingSave array.
+       //Returns a copy of this context but with one or more objects to be saved added.
         public IContext WithPendingSave(params object[] toBeSaved);
 
-        //Returns a copy of this context but with an Action<T> (where T is a service registered in services configuration) to be called by the framework after the method. has exited.
+        //Returns a copy of this context but with an Action<T> (where T is a service registered in services configuration)
+        //to be called by the framework after the function has completed.
         public IContext WithAction<T>(Action<T> action);
     }
 }

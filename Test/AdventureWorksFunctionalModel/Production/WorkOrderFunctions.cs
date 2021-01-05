@@ -17,16 +17,13 @@ namespace AdventureWorksModel
     {
 
         #region LifeCycle functions
-        public static WorkOrder Updating(WorkOrder wo,  DateTime now)
-        {
-            return wo with { ModifiedDate = now };
-        }
+        public static WorkOrder Updating(WorkOrder x, IContext context) => x with { ModifiedDate = context.Now() };
+
         #endregion
 
-        public static (WorkOrder, WorkOrder) ChangeScrappedQuantity(this WorkOrder wo, short newQty)
-        {
-           return DisplayAndPersist(wo with { ScrappedQty = newQty });
-        }
+        public static (WorkOrder, IContext) ChangeScrappedQuantity(this WorkOrder wo, short newQty, IContext context)
+        =>  DisplayAndSave(wo with { ScrappedQty = newQty }, context);
+
         public static string Validate(WorkOrder wo, DateTime startDate, DateTime dueDate)
         {
             return startDate > dueDate ? "StartDate must be before DueDate" : null;
@@ -37,14 +34,16 @@ namespace AdventureWorksModel
             return qty <= 0 ? "Order Quantity must be > 0" : null;
         }
 
-        public static DateTime DefaultStartDate(WorkOrder wo,  DateTime now)
+        //TODO: Move to New method, as a DefaultValue attribute
+        public static DateTime DefaultStartDate(WorkOrder wo,  DateTime dt)
         {
-            return now;
+            throw new NotImplementedException();
         }
 
-        public static DateTime DefaultDueDate( DateTime now)
+        //TODO: Move to New method, as a DefaultValue(30) attribute
+        public static DateTime DefaultDueDate( DateTime dt)
         {
-            return now.AddMonths(1).Date;
+            throw new NotImplementedException();
         }
 
         [PageSize(20)]
@@ -54,7 +53,7 @@ namespace AdventureWorksModel
         }
 
         [MemberOrder(1)]
-        public static (WorkOrderRouting, WorkOrderRouting) AddNewRouting(WorkOrder wo, Location loc)
+        public static (WorkOrderRouting, IContext) AddNewRouting(WorkOrder wo, Location loc, IContext context)
         {
             int highestSequence = wo.WorkOrderRoutings.Count > 0 ? wo.WorkOrderRoutings.Max(n => n.OperationSequence) + 1 : 1;
             var wor = new WorkOrderRouting() with
@@ -63,7 +62,7 @@ namespace AdventureWorksModel
                 Location = loc,
                 OperationSequence = (short) highestSequence
             };
-            return DisplayAndPersist(wor);
+            return DisplayAndSave(wor, context);
         }
     }
 }

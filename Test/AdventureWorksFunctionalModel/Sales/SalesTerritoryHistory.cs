@@ -12,10 +12,6 @@ using NakedFunctions;
 namespace AdventureWorksModel {
         public record SalesTerritoryHistory {
 
-        #region Injected Services
-        
-        #endregion
-
         #region Life Cycle Methods
         public virtual void Persisting() {
             rowguid = Guid.NewGuid();

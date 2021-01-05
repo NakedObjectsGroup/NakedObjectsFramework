@@ -77,12 +77,7 @@ namespace AdventureWorksModel
     {
 
         #region Life Cycle Methods
-        public static Store Updating(
-            Store sp,
-             DateTime now)
-        {
-            return sp with { ModifiedDate = now };
-        }
+        public static Store Updating(Store x, IContext context) => x with { ModifiedDate = context.Now() };
         #endregion
 
         public static (Store, IContext) UpdateName(this Store s, string newName, IContext context) =>
