@@ -6,22 +6,22 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFunctions.Reflector.Component;
 using NakedObjects;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
-using NakedObjects.Meta.Utils;
 
 namespace NakedFunctions.Meta.Facet {
     [Serializable]
-    public sealed class InjectedRandomParameterFacet : FacetAbstract, IInjectedParameterFacet {
-        public InjectedRandomParameterFacet(ISpecification holder) : base(Type, holder) { }
+    public sealed class InjectedIContextParameterFacet : FacetAbstract, IInjectedParameterFacet {
+        public InjectedIContextParameterFacet(ISpecification holder) : base(Type, holder) { }
 
         public static Type Type => typeof(IInjectedParameterFacet);
 
         #region IInjectedParameterFacet Members
 
-        public object GetInjectedValue(INakedObjectsFramework framework) => InjectUtils.GetInjectedRandomValue();
+        public object GetInjectedValue(INakedObjectsFramework framework) => new Context(framework.Persistor);
 
         #endregion
     }

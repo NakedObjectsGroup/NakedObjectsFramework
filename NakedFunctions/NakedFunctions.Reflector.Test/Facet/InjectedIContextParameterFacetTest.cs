@@ -15,25 +15,24 @@ using NakedObjects.Core.Util;
 
 namespace NakedFunctions.Meta.Test.Facet {
     [TestClass]
-    public class InjectedQueryableParameterFacetTest {
-        private readonly Mock<INakedObjectsFramework> mockFramework = new Mock<INakedObjectsFramework>();
-        private readonly Mock<IObjectPersistor> mockPersistor = new Mock<IObjectPersistor>();
+    public class InjectedIContextParameterFacetTest {
+        private readonly Mock<INakedObjectsFramework> mockFramework = new();
+        private readonly Mock<IObjectPersistor> mockPersistor = new();
 
-        private readonly IQueryable<object> TestValue = new QueryableList<object>();
+        private readonly IQueryable<object> testValue = new QueryableList<object>();
 
-        public InjectedQueryableParameterFacetTest() {
+        public InjectedIContextParameterFacetTest() {
             mockFramework.SetupGet(p => p.Persistor).Returns(mockPersistor.Object);
-            mockPersistor.Setup(p => p.UntrackedInstances<object>()).Returns(TestValue);
+            mockPersistor.Setup(p => p.UntrackedInstances<object>()).Returns(testValue);
         }
-
 
         [TestMethod]
         public void TestInject() {
-            var testFacet = new InjectedQueryableParameterFacet(null, typeof(object));
+            var testFacet = new InjectedIContextParameterFacet(null);
 
-            var result = testFacet.GetInjectedValue(mockFramework.Object);
+            var result = ((IContext) testFacet.GetInjectedValue(mockFramework.Object)).Instances<object>();
 
-            Assert.AreEqual(result, TestValue);
+            Assert.AreEqual(result, testValue);
         }
     }
 }

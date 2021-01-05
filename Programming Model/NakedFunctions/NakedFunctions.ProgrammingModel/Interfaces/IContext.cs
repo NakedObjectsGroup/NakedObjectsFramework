@@ -6,7 +6,7 @@ namespace NakedFunctions
     public interface IContext
     {
         //Obtains a queryable of a given domain type, from the persistor.
-        public IQueryable<T> Instances<T>();
+        public IQueryable<T> Instances<T>() where T : class;
 
         //Gets a service that has been configured in services configuration.
         public T GetService<T>();
