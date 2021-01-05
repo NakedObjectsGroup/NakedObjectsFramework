@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Net;
+using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFunctions.Rest.Test.Data;
@@ -37,7 +38,7 @@ namespace NakedFunctions.Rest.Test
         protected override Type[] Functions { get; } = { typeof(SimpleMenuFunctions) };
 
         // todo should IAlert be here or should we ignore?
-        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(IAlert) };
+        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(IAlert), typeof(IContext) };
 
         protected override Type[] ObjectTypes { get; } = { };
 
@@ -105,33 +106,33 @@ namespace NakedFunctions.Rest.Test
             firstItem.AssertMenuLink("Test menu", "GET", nameof(SimpleMenuFunctions));
         }
 
-        //[Test]
-        //public void TestGetMenu() {
-        //    var api = Api();
-        //    var result = api.GetMenu(nameof(SimpleMenuFunctions));
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        //    Assert.AreEqual((int) HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
+        [Test]
+        public void TestGetMenu() {
+            var api = Api();
+            var result = api.GetMenu(nameof(SimpleMenuFunctions));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
 
-        //    Assert.AreEqual("Test menu", parsedResult["title"].ToString());
-        //    Assert.AreEqual(nameof(SimpleMenuFunctions), parsedResult["menuId"].ToString());
+            Assert.AreEqual("Test menu", parsedResult["title"].ToString());
+            Assert.AreEqual(nameof(SimpleMenuFunctions), parsedResult["menuId"].ToString());
 
-        //    var members = parsedResult["members"] as JObject;
-        //    Assert.AreEqual(11, members?.Count);
+            var members = parsedResult["members"] as JObject;
+            Assert.AreEqual(typeof(SimpleMenuFunctions).GetMethods(BindingFlags.Static | BindingFlags.Public).Length, members?.Count);
 
-        //    var function = members[nameof(SimpleMenuFunctions.GetSimpleRecord)];
+            var function = members[nameof(SimpleMenuFunctions.FindByName)];
 
-        //    function.AssertAction(nameof(SimpleMenuFunctions.GetSimpleRecord), "{}");
-        //    function["extensions"].AssertExtensions(5); // todo add 
+            function.AssertAction(nameof(SimpleMenuFunctions.FindByName));
+            function["extensions"].AssertExtensions(7); // todo add 
 
-        //    var links = function["links"] as JArray;
+            var links = function["links"] as JArray;
 
-        //    Assert.AreEqual(2, links.Count);
+            Assert.AreEqual(2, links.Count);
 
-        //    var invokeLink = links.Last;
+            var invokeLink = links.Last;
 
-        //    invokeLink.AssertMenuInvokeLink("{}", "GET", nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.GetSimpleRecord));
-        //}
+            invokeLink.AssertMenuInvokeLink("{\r\n  \"searchString\": {\r\n    \"value\": null\r\n  }\r\n}", "GET", nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.FindByName));
+        }
 
 
         //[Test]

@@ -92,7 +92,7 @@ namespace NakedObjects.Facade.Impl {
 
         public IObjectFacade[] GetCompletions(IObjectFacade objectFacade, string autoCompleteParm) => WrappedSpec.GetCompletions(((ObjectFacade) objectFacade).WrappedNakedObject, autoCompleteParm).Select(no => ObjectFacade.Wrap(no, FrameworkFacade, framework)).Cast<IObjectFacade>().ToArray();
 
-        public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) => WrappedSpec.GetDefaultType(((ObjectFacade) objectFacade).WrappedNakedObject) == TypeOfDefaultValue.Explicit;
+        public bool DefaultTypeIsExplicit(IObjectFacade objectFacade) => WrappedSpec.GetDefaultType(((ObjectFacade) objectFacade)?.WrappedNakedObject) == TypeOfDefaultValue.Explicit;
 
         public IObjectFacade GetDefault(IObjectFacade objectFacade) => ObjectFacade.Wrap(WrappedSpec.GetDefault(((ObjectFacade) objectFacade).WrappedNakedObject), FrameworkFacade, framework);
 

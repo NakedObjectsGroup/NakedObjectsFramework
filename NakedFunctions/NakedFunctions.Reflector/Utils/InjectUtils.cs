@@ -27,7 +27,7 @@ namespace NakedObjects.Meta.Utils {
 
         public static int GetInjectedRandomValue() => Random.Next();
 
-        public static bool IsInjectedParameter(this ParameterInfo p) => p.ParameterType == typeof(IContext);
+        public static bool IsInjectedParameter(this ParameterInfo p) => p.ParameterType.IsAssignableTo(typeof(IContext));
 
         public static IPrincipal GetInjectedIPrincipalValue(ISession session) => session.Principal;
 

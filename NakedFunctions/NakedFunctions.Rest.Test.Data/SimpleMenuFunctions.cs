@@ -12,51 +12,56 @@ using System.Linq;
 
 namespace NakedFunctions.Rest.Test.Data {
     public static class SimpleMenuFunctions {
-        public static SimpleRecord GetSimpleRecord(IQueryable<SimpleRecord> allSimpleRecords) => allSimpleRecords.First();
-        public static IList<SimpleRecord> GetSimpleRecordsSingle(IQueryable<SimpleRecord> allSimpleRecords) => new[] {allSimpleRecords.First()};
-        public static IList<SimpleRecord> GetSimpleRecordsMultiple(IQueryable<SimpleRecord> allSimpleRecords) => allSimpleRecords.ToList().SkipLast(1).ToList();
 
-        public static (SimpleRecord, SimpleRecord) GetAndUpdateSimpleRecord(IQueryable<SimpleRecord> allSimpleRecords) {
-            var sr = allSimpleRecords.ToList().Last();
-            var updatedSr = UpdateName(sr, "0");
-            return (updatedSr, updatedSr);
+        public static IQueryable<SimpleRecord> FindByName(string searchString, IContext context) {
+            return context.Instances<SimpleRecord>().Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
         }
 
-        public static (IList<SimpleRecord>, IList<SimpleRecord>) GetAndUpdateSimpleRecords(IQueryable<SimpleRecord> allSimpleRecords) {
-            var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "1")).ToList();
-            return (updated, updated);
-        }
+        //public static SimpleRecord GetSimpleRecord(IQueryable<SimpleRecord> allSimpleRecords) => allSimpleRecords.First();
+        //public static IList<SimpleRecord> GetSimpleRecordsSingle(IQueryable<SimpleRecord> allSimpleRecords) => new[] {allSimpleRecords.First()};
+        //public static IList<SimpleRecord> GetSimpleRecordsMultiple(IQueryable<SimpleRecord> allSimpleRecords) => allSimpleRecords.ToList().SkipLast(1).ToList();
 
-        public static (SimpleRecord, IList<SimpleRecord>) GetSimpleRecordAndUpdateSimpleRecords(IQueryable<SimpleRecord> allSimpleRecords) {
-            var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "2")).ToList();
-            return (updated.First(), updated);
-        }
+        //public static (SimpleRecord, SimpleRecord) GetAndUpdateSimpleRecord(IQueryable<SimpleRecord> allSimpleRecords) {
+        //    var sr = allSimpleRecords.ToList().Last();
+        //    var updatedSr = UpdateName(sr, "0");
+        //    return (updatedSr, updatedSr);
+        //}
 
-        public static (SimpleRecord, SimpleRecord, SimpleRecord) GetSimpleRecordAndUpdateSimpleRecordsByTuple(IQueryable<SimpleRecord> allSimpleRecords) {
-            var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "3")).ToList();
-            return (updated.First(), updated[0], updated[1]);
-        }
+        //public static (IList<SimpleRecord>, IList<SimpleRecord>) GetAndUpdateSimpleRecords(IQueryable<SimpleRecord> allSimpleRecords) {
+        //    var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "1")).ToList();
+        //    return (updated, updated);
+        //}
 
-        public static (IList<SimpleRecord>, SimpleRecord, SimpleRecord) GetAndUpdateSimpleRecordsByTuple(IQueryable<SimpleRecord> allSimpleRecords) {
-            var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "4")).ToList();
-            return (updated, updated[0], updated[1]);
-        }
+        //public static (SimpleRecord, IList<SimpleRecord>) GetSimpleRecordAndUpdateSimpleRecords(IQueryable<SimpleRecord> allSimpleRecords) {
+        //    var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "2")).ToList();
+        //    return (updated.First(), updated);
+        //}
 
-        public static (SimpleRecord, (SimpleRecord, SimpleRecord)) GetSimpleRecordAndUpdateSimpleRecordsBySubTuple(IQueryable<SimpleRecord> allSimpleRecords) {
-            var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "5")).ToList();
-            return (updated.First(), (updated[0], updated[1]));
-        }
+        //public static (SimpleRecord, SimpleRecord, SimpleRecord) GetSimpleRecordAndUpdateSimpleRecordsByTuple(IQueryable<SimpleRecord> allSimpleRecords) {
+        //    var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "3")).ToList();
+        //    return (updated.First(), updated[0], updated[1]);
+        //}
 
-        public static (IList<SimpleRecord>, (SimpleRecord, SimpleRecord)) GetAndUpdateSimpleRecordsBySubTuple(IQueryable<SimpleRecord> allSimpleRecords) {
-            var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "6")).ToList();
-            return (updated, (updated[0], updated[1]));
-        }
+        //public static (IList<SimpleRecord>, SimpleRecord, SimpleRecord) GetAndUpdateSimpleRecordsByTuple(IQueryable<SimpleRecord> allSimpleRecords) {
+        //    var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "4")).ToList();
+        //    return (updated, updated[0], updated[1]);
+        //}
 
-        public static (SimpleRecord, Action<IAlert>) GetSimpleRecordWithWarning(IQueryable<SimpleRecord> allSimpleRecords) =>
-            (allSimpleRecords.First(), a => a.WarnUser("a warning"));
+        //public static (SimpleRecord, (SimpleRecord, SimpleRecord)) GetSimpleRecordAndUpdateSimpleRecordsBySubTuple(IQueryable<SimpleRecord> allSimpleRecords) {
+        //    var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "5")).ToList();
+        //    return (updated.First(), (updated[0], updated[1]));
+        //}
 
-        private static SimpleRecord UpdateName(SimpleRecord sr, string suffix) => sr with {
-            Name = $"{sr.Name.Substring(0, 4)}{suffix}"
-        };
+        //public static (IList<SimpleRecord>, (SimpleRecord, SimpleRecord)) GetAndUpdateSimpleRecordsBySubTuple(IQueryable<SimpleRecord> allSimpleRecords) {
+        //    var updated = allSimpleRecords.ToList().Select(sr => UpdateName(sr, "6")).ToList();
+        //    return (updated, (updated[0], updated[1]));
+        //}
+
+        //public static (SimpleRecord, Action<IAlert>) GetSimpleRecordWithWarning(IQueryable<SimpleRecord> allSimpleRecords) =>
+        //    (allSimpleRecords.First(), a => a.WarnUser("a warning"));
+
+        //private static SimpleRecord UpdateName(SimpleRecord sr, string suffix) => sr with {
+        //    Name = $"{sr.Name.Substring(0, 4)}{suffix}"
+        //};
     }
 }

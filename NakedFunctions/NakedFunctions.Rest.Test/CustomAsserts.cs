@@ -21,6 +21,11 @@ namespace NakedFunctions.Rest.Test {
             Assert.AreEqual(parameters, action["parameters"].ToString());
         }
 
+        public static void AssertAction(this JToken action, string id)
+        {
+            action.AssertMember("action", id);
+        }
+
         public static void AssertProperty(this JToken property, string id, string value, bool hasChoices) {
             property.AssertMember("property", id);
             Assert.AreEqual(value, property["value"].ToString());
