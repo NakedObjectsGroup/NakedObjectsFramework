@@ -8,15 +8,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Principal;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
 
 namespace AdventureWorksModel {
     public static class Product_Functions {
 
         #region Life Cycle Methods
-        public static Product Updating(this Product p,  DateTime now) => p with { ModifiedDate = now };
+        public static Product Updating(this Product x, IContext context) => x with { rowguid = context.NewGuid(), ModifiedDate = context.Now() };
 
         #endregion
 
@@ -31,8 +29,8 @@ namespace AdventureWorksModel {
         public static string ValidateBestSpecialOffer(this Product p, short quantity)
             => quantity <= 0 ? "Quantity must be > 0" : null;
 
-        public static string DisableBestSpecialOffer(this Product p,  DateTime now)
-         => p.IsDiscontinued(now) ? "Product is discontinued" : null;
+        public static string DisableBestSpecialOffer(this Product p,  IContext context)
+         => p.IsDiscontinued(context) ? "Product is discontinued" : null;
 
         public static SpecialOfferProduct BestSpecialOfferProduct(
             this Product p, short quantity, IContext context) => 
@@ -43,11 +41,9 @@ namespace AdventureWorksModel {
                         OrderByDescending(obj => obj.SpecialOffer.DiscountPct)
                         .FirstOrDefault();
 
-        private static bool IsDiscontinued(this Product p, DateTime now)
-        {
-            return p.DiscontinuedDate != null ? p.DiscontinuedDate.Value < now : false;
-        }
-
+        private static bool IsDiscontinued(this Product p, IContext context) =>
+            p.DiscontinuedDate != null ? p.DiscontinuedDate.Value < context.Now() : false;
+        
         #endregion
 
 

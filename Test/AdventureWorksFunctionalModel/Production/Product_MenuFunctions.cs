@@ -13,44 +13,23 @@ using NakedFunctions;
 using static AdventureWorksModel.Helpers;
 
 namespace AdventureWorksModel {
-    public enum ProductLineEnum {
-        R,
-        M,
-        T,
-        S
-    }
 
-    public enum ProductClassEnum {
-        H,
-        M,
-        L
-    }
     public static class Product_MenuFunctions
     {
 
-        [MemberOrder(1), TableView(true, nameof(Product.ProductNumber), nameof(Product.ProductSubcategory), nameof(Product.ListPrice))]
-        public static IQueryable<Product> FindProductByName(
-            string searchString,
-            IContext context)
-        {
-            return context.Instances<Product>().Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
-        }
+        [MemberOrder(1)]
+        [TableView(true, nameof(Product.ProductNumber), nameof(Product.ProductSubcategory), nameof(Product.ListPrice))]
+        public static IQueryable<Product> FindProductByName(string searchString, IContext context)
+        => context.Instances<Product>().Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
+
 
         [MemberOrder(2)]
-        public static (Product, IContext) FindProductByNumber(string number, IContext context) =>
-             context.Instances<Product>().Where(x => x.ProductNumber == number).SingleObjectWarnIfNoMatch(context);
+        public static (Product, IContext) FindProductByNumber(string number, IContext context)
+         => context.Instances<Product>().Where(x => x.ProductNumber == number).SingleObjectWarnIfNoMatch(context);
 
 
         [MemberOrder(10)]
-        public static Product RandomProduct(IContext context)
-        {
-            return Random<Product>(context);
-        }
-
-        //TODO:
-        //[MemberOrder(9)]
-        //public static NewProductVM NewProduct() => new NewProductVM;
-
+        public static Product RandomProduct(IContext context) => Random<Product>(context);
 
         #region FindProduct
 
@@ -351,6 +330,10 @@ namespace AdventureWorksModel {
         {
             return photos;
         }
+
+        //TODO:
+        //[MemberOrder(9)]
+        //public static NewProductVM NewProduct() => new NewProductVM;
 
     }
 }

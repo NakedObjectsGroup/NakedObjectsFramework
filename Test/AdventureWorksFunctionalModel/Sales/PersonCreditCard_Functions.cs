@@ -5,16 +5,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-
 using NakedFunctions;
 
 namespace AdventureWorksModel {
     public static class PersonCreditCard_Functions {
         #region Life Cycle Methods
-        public static PersonCreditCard Updating(PersonCreditCard x,  DateTime now) => x with { ModifiedDate = now };
+        public static PersonCreditCard Updating(PersonCreditCard x,  IContext context) => x with { ModifiedDate = context.Now()};
 
-        public static PersonCreditCard Persisting(PersonCreditCard x,  DateTime now) => x with {ModifiedDate = now };
+        public static PersonCreditCard Persisting(PersonCreditCard x, IContext context) => x with { ModifiedDate = context.Now() };
         #endregion
     }
 }

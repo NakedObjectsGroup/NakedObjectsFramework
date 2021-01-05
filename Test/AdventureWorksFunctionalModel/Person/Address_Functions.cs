@@ -5,27 +5,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
-
 
 namespace AdventureWorksModel {
   
     public static class Address_Functions
     {
         #region LifeCycle methods
-        public static Address Updating(Address x,  DateTime now) => x with { ModifiedDate = now };
+        public static Address Updating(Address x,  IContext context) => x with { ModifiedDate = context.Now() };
 
-        public static Address Persisting(Address x,  Guid guid,  DateTime now) => x with { rowguid = guid, ModifiedDate = now };
+        public static Address Persisting(Address x,  IContext context) => x with { rowguid = context.NewGuid(), ModifiedDate = context.Now() };
 
         //Any object or list returned by Persisted (or Updated), is not for display but to be persisted/updated
         //themselves (equivalent to second Tuple value returned from an Action).
-        public static BusinessEntityAddress Persisted(Address a,  Guid guid,  DateTime now)
-            =>  new BusinessEntityAddress() with { AddressID = a.AddressForID, AddressTypeID = a.AddressTypeID, BusinessEntityID = a.AddressForID, rowguid = guid, ModifiedDate = now };
+        public static BusinessEntityAddress Persisted(Address x, IContext context)
+            =>  new BusinessEntityAddress() with { AddressID = x.AddressForID, AddressTypeID = x.AddressTypeID, BusinessEntityID = x.AddressForID, rowguid = context.NewGuid(), ModifiedDate = context.Now() };
         #endregion
 
         #region Property-associated functions

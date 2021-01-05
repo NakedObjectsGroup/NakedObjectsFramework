@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
@@ -59,9 +58,6 @@ namespace AdventureWorksModel
         [MemberOrder(99), ConcurrencyCheck]
         public virtual DateTime ModifiedDate { get; init; }
 
-        public override string ToString()
-        {
-            return $"{AddressLine1}...";
-        }
+        public override string ToString() => $"{AddressLine1}...";
     }
 }

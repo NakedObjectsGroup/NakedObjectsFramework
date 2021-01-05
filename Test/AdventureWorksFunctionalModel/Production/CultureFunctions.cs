@@ -11,7 +11,7 @@ using NakedFunctions;
 namespace AdventureWorksModel {
     public static class CultureFunctions
     {
-        public static Culture Updating(Culture c,  DateTime now) =>  c with { ModifiedDate = now };
+        public static Culture Updating(Culture x, IContext context) => x with { ModifiedDate = context.Now()};
 
     }
 }

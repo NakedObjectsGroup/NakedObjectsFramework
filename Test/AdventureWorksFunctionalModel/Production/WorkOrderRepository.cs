@@ -16,17 +16,12 @@ namespace AdventureWorksModel {
     [Named("Work Orders")]
     public static class WorkOrderRepository {
 
-        public static WorkOrder RandomWorkOrder(
-            IQueryable<WorkOrder> workOrders,
-             int random) {
-            return Random(workOrders, random);
-        }
+        public static WorkOrder RandomWorkOrder(IContext context) => Random<WorkOrder>(context);
 
-        public static (WorkOrder, WorkOrder) CreateNewWorkOrder(
-             [DescribedAs("product partial name")] this Product product) {
+        public static (WorkOrder, IContext context) CreateNewWorkOrder(
+             [DescribedAs("product partial name")] this Product product, IContext context) =>
             //TODO: Need to request all required fields for WO & pass into constructor
-            return DisplayAndPersist(new WorkOrder() { Product = product });
-        }
+             DisplayAndSave(new WorkOrder() { Product = product }, context);
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete0CreateNewWorkOrder(
@@ -35,9 +30,10 @@ namespace AdventureWorksModel {
             return products.Where(p => p.Name.Contains(name));
         }
 
-         public static(WorkOrder, WorkOrder) CreateNewWorkOrder3([DescribedAs("product partial name")] this Product product, int orderQty) {
-            (_, var wo) = CreateNewWorkOrder(product);
-            return DisplayAndPersist(wo with { OrderQty = orderQty, ScrappedQty = 0 });
+         public static(WorkOrder, IContext) CreateNewWorkOrder3(
+             [DescribedAs("product partial name")] this Product product, int orderQty, IContext context) {
+            (var wo, var context2 ) = CreateNewWorkOrder(product, context);
+            return DisplayAndSave(wo with { OrderQty = orderQty, ScrappedQty = 0 }, context2);
         }
 
         [PageSize(20)]

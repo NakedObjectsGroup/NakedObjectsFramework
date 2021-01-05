@@ -12,6 +12,6 @@ namespace AdventureWorksModel
 {
     public static class DocumentFunctions
     {
-        public static Document Updating(Document d,  DateTime now) => d with { ModifiedDate = now };
+        public static Document Updating(Document x, IContext context) => x with { ModifiedDate = context.Now() };
     }
 }

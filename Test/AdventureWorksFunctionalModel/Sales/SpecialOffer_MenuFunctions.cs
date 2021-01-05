@@ -54,8 +54,8 @@ namespace AdventureWorksModel
 
         #region Create New Special Offer
         [MemberOrder(4), CreateNew]
-        public static (SpecialOffer, SpecialOffer) CreateNewSpecialOffer(string description)
-       => DisplayAndPersist(new SpecialOffer { Description = description });
+        public static (SpecialOffer, IContext) CreateNewSpecialOffer(string description, IContext context)
+       => DisplayAndSave(new SpecialOffer { Description = description }, context);
 
         #endregion
 
@@ -96,12 +96,8 @@ namespace AdventureWorksModel
         #endregion
 
         [MemberOrder(10)]
-        public static (SpecialOffer, Action<IAlert>) RandomSpecialOffertWithAlert(
-            IQueryable<SpecialOffer> offers,
-             int random)
-        {
-            return (Random(offers, random), InformUser("This was randomly selected"));
-        }
+        public static (SpecialOffer, IContext) RandomSpecialOffertWithAlert(IContext context) =>
+            (Random<SpecialOffer>(context), context.WithAction(InformUser("This was randomly selected")));
 
         #region Helper methods
 

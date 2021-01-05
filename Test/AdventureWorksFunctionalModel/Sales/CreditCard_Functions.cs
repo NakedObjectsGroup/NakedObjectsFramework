@@ -15,8 +15,8 @@ namespace AdventureWorksModel {
         #region Life Cycle Methods
         public static CreditCard Persisting(this CreditCard x, IContext context) => x with { ModifiedDate = context.Now() };
 
-        public static (PersonCreditCard, ICreditCardCreator) Persisted(this CreditCard x) 
-            => (new PersonCreditCard() { CreditCard = x, Person = x.ForContact }, ICreditCardCreator.CreatedCardHasBeenSaved(x.Creator, x));
+        public static (PersonCreditCard, ICreditCardCreator) Persisted(this CreditCard x) =>
+            (new PersonCreditCard() { CreditCard = x, Person = x.ForContact }, ICreditCardCreator.CreatedCardHasBeenSaved(x.Creator, x));
 
         public static CreditCard Updating(this CreditCard x, IContext context) => x with { ModifiedDate = context.Now() };
         #endregion
@@ -28,37 +28,28 @@ namespace AdventureWorksModel {
                cc.CardNumber.Substring(cc.CardNumber.Length - 4).PadLeft(cc.CardNumber.Length, '*')
                : null;
 
-        public static string Validate(this CreditCard cc, byte expMonth, short expYear) {
+        public static string Validate(this CreditCard cc, byte expMonth, short expYear, IContext context) {
             if (expMonth == 0 || expYear == 0) {
                 return null;
             }
-
-            DateTime today = DateTime.Now.Date;
+            DateTime today = context.Today();
             DateTime expiryDate = new DateTime(expYear, expMonth, 1); //.EndOfMonth();
-
             if (expiryDate <= today) {
                 return "Expiry date must be in the future";
             }
             return null;
         }
 
-        public static string[] ChoicesCardType(this CreditCard cc) {
-            return new[] {"Vista", "Distinguish", "SuperiorCard", "ColonialVoice"};
-        }
+        public static string[] ChoicesCardType(this CreditCard cc) =>
+            new[] {"Vista", "Distinguish", "SuperiorCard", "ColonialVoice"};
 
-        public static string ValidateCardNumber(this CreditCard cc,string cardNumber) {
-            if (cardNumber != null && cardNumber.Length <= 4) {
-                return "card number too short";
-            }
+        public static string ValidateCardNumber(this CreditCard cc,string cardNumber) =>
+            cardNumber != null && cardNumber.Length <= 4 ? "card number too short" : null;
 
-            return null;
-        }
+        public static byte[] ChoicesExpMonth(this CreditCard cc)=> 
+            Enumerable.Range(1, 12).Select(x => Convert.ToByte(x)).ToArray();
 
-        public static byte[] ChoicesExpMonth(this CreditCard cc)
-            => Enumerable.Range(1, 12).Select(x => Convert.ToByte(x)).ToArray();
-
-
-        public static short[] ChoicesExpYear()
-            =>  new short[] {2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020};
+        public static short[] ChoicesExpYear() =>
+            new short[] {2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020};
     }
 }

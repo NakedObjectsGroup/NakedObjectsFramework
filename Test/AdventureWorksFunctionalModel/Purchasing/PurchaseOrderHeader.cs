@@ -144,20 +144,12 @@ namespace AdventureWorksModel {
         #endregion
 
 
-        public static Employee DefaultOrderPlacedBy(
-            PurchaseOrderHeader header,
-            IQueryable<Employee> employees,
-             int random)
-        {
-            return Employee_MenuFunctions.RandomEmployee( employees, random);
-        }
+        public static Employee DefaultOrderPlacedBy(this PurchaseOrderHeader header, IContext context) =>
+           Random<Employee>(context);
 
-        public static ShipMethod DefaultShipMethod(
-            PurchaseOrderHeader header,
-            IQueryable<ShipMethod> shipMethods)
-        {
-            return shipMethods.First();
-        }
+        public static ShipMethod DefaultShipMethod(this PurchaseOrderHeader header, IContext context) =>
+            context.Instances<ShipMethod>().First();
+        
 
         #region Add New Detail
 
@@ -219,12 +211,10 @@ namespace AdventureWorksModel {
             //OrderDate = DateTime.Today.Date;
         }
 
-        public static PurchaseOrderHeader Updating(
-            PurchaseOrderHeader header,
-             DateTime now)
+        public static PurchaseOrderHeader Updating(PurchaseOrderHeader x, IContext context)
         {
-            byte newRev = Convert.ToByte(header.RevisionNumber + 1);
-            return header with {ModifiedDate =  now, RevisionNumber = newRev};
+            byte newRev = Convert.ToByte(x.RevisionNumber + 1);
+            return x with {ModifiedDate =  context.Now(), RevisionNumber = newRev};
         }
         #endregion
     }

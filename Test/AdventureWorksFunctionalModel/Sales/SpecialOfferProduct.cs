@@ -37,8 +37,8 @@ namespace AdventureWorksModel
 
     public static class SpecialOfferProductFunctions
     {
-        public static Product Updating(Product p,  DateTime now) => p with { ModifiedDate = now };
-        public static Product Persisting(Product p,  DateTime now,  Guid guid) => p with { rowguid = guid, ModifiedDate = now };
+        public static Product Updating(Product x, IContext context) => x with { ModifiedDate = context.Now() };
+        public static Product Persisting(Product x, IContext context) => x with { rowguid = context.NewGuid(), ModifiedDate = context.Now() };
 
     }
 

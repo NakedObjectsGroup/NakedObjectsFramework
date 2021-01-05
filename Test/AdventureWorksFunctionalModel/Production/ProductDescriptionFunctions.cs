@@ -12,6 +12,6 @@ namespace AdventureWorksModel
 {
     public static class ProductDescriptionFunctions
     {
-        public static ProductDescription Updating(ProductDescription a,  DateTime now) =>  a with { ModifiedDate = now };
+        public static ProductDescription Updating(ProductDescription x, IContext context) => x with { ModifiedDate = context.Now() };
     }
 }

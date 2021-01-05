@@ -14,9 +14,9 @@ namespace AdventureWorksModel
     public static class ProductReviewFunctions
     {
         #region Life Cycle Methods
-        public static ProductReview Updating(this ProductReview x,  DateTime now) => x with { ModifiedDate = now };
+        public static ProductReview Updating(this ProductReview x,  IContext context) => x with { ModifiedDate = context.Now()};
 
-        public static ProductReview Persisting(this ProductReview x,  DateTime now) => x with { ModifiedDate = now };
+        public static ProductReview Persisting(this ProductReview x,  IContext context) => x with { ModifiedDate = context.Now()};
         #endregion
     }
 }
