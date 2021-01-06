@@ -45,11 +45,31 @@ namespace NakedFunctions.Rest.App.Demo {
                 builder.AddEntityPersistor(options => {
                     options.ContextInstallers = new[] { ModelConfig_NakedFunctionsPM.DbContextInstaller };
                 });
-                //builder.AddNakedObjects(options => {
-                //    options.Types = ModelConfig_NakedObjectsPM.DomainTypes();
-                //    options.Services = ModelConfig_NakedObjectsPM.Services();
-                //    options.NoValidate = true;
-                //});
+                // todo - outstanding issues 
+                // 1. Need to still add NakedObjects as missing dependencies - need to fix packaging
+                // 2. These types are still required in model - need to be ignored or removed from graph or added to NF config
+                builder.AddNakedObjects(options => {
+                    options.Types = new Type[] {
+                        typeof(Department),
+                        typeof(IEmployee),
+                        typeof(SpecialOfferProduct),
+                        typeof(PurchaseOrderHeader),
+                        typeof(EmployeeDepartmentHistory),
+                        typeof(Shift),
+                        typeof(Person),
+                        typeof(Vendor),
+                        typeof(Store),
+                        typeof(Customer),
+                        typeof(SalesPerson),
+                        typeof(EmployeePayHistory),
+                        typeof(PhoneNumberType),
+                        typeof(AddressType),
+                        typeof(StateProvince),
+                        typeof(Address)
+                    };
+
+                    options.NoValidate = true;
+                });
                 builder.AddNakedFunctions(options => {
                     options.FunctionalTypes = ModelConfig_NakedFunctionsPM.DomainTypes();
                     options.Functions = ModelConfig_NakedFunctionsPM.DomainFunctions();
