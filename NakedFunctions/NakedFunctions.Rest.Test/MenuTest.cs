@@ -12,6 +12,7 @@ using System.Net;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NakedFunctions.Reflector.Component;
 using NakedFunctions.Rest.Test.Data;
 using NakedObjects.Facade;
 using NakedObjects.Facade.Impl;
@@ -38,7 +39,7 @@ namespace NakedFunctions.Rest.Test
         protected override Type[] Functions { get; } = { typeof(SimpleMenuFunctions) };
 
         // todo should IAlert be here or should we ignore?
-        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(IAlert), typeof(IContext) };
+        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(IAlert) };
 
         protected override Type[] ObjectTypes { get; } = { };
 
@@ -132,6 +133,28 @@ namespace NakedFunctions.Rest.Test
             var invokeLink = links.Last;
 
             invokeLink.AssertMenuInvokeLink("{\r\n  \"searchString\": {\r\n    \"value\": null\r\n  }\r\n}", "GET", nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.FindByName));
+        }
+
+
+        [Test]
+        public void TestInvokeMenuActionThatReturnsSingleItemList()
+        {
+            var api = Api();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() { { "searchString", new ScalarValue("Fred") } } };
+            var result = api.GetInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.FindByName), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("list", parsedResult["resultType"].ToString());
+
+            var resultObj = parsedResult["result"];
+            var value = resultObj["value"] as JArray;
+
+            Assert.AreEqual(1, value.Count);
+
+            value[0].AssertObjectElementLink("Fred", "GET", Helpers.FullName<SimpleRecord>(), "1");
         }
 
 

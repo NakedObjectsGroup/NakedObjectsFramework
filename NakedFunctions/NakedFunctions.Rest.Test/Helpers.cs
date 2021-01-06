@@ -63,5 +63,7 @@ namespace NakedFunctions.Rest.Test {
             api.HttpContext.Request.Method = "GET";
             return api;
         }
+
+        public static string FullName<T>() => typeof(T).FullName;
     }
 }

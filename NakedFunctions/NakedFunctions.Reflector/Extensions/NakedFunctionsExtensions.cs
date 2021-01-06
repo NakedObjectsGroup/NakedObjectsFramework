@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Configuration;
@@ -19,12 +20,17 @@ using NakedObjects.DependencyInjection.Extensions;
 namespace NakedFunctions.Reflector.Extensions {
     public static class NakedFunctionsExtensions {
         public static FunctionalReflectorConfiguration FunctionalReflectorConfig(NakedFunctionsOptions options) =>
-            new FunctionalReflectorConfiguration(options.FunctionalTypes, options.Functions, options.ConcurrencyCheck);
+            new(options.FunctionalTypes, options.Functions, options.ConcurrencyCheck);
 
 
         public static void AddNakedFunctions(this NakedCoreOptions coreOptions, Action<NakedFunctionsOptions> setupAction) {
             var options = new NakedFunctionsOptions();
             setupAction(options);
+
+            // todo - refine
+            if (options.FunctionalTypes.Any()) {
+                options.FunctionalTypes = options.FunctionalTypes.Append(typeof(IContext)).Append(typeof(Context)).Distinct().ToArray();
+            }
 
             options.RegisterCustomTypes?.Invoke(coreOptions.Services);
 
