@@ -20,11 +20,11 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
         public virtual void WaitForSingleHome() {
             WaitForView(Pane.Single, PaneType.Home, "Home");
             WaitForCss(".main-column");
-            var menus = WaitForCss("nof-menu-bar nof-action input", 3);
+            var menus = WaitForCss("nof-menu-bar nof-action input", 1);
            
             Assert.AreEqual("Products", menus[0].GetAttribute("value"));
-            Assert.AreEqual("Customers - NO", menus[1].GetAttribute("value"));
-            Assert.AreEqual("Vendors - NO", menus[2].GetAttribute("value"));
+            //Assert.AreEqual("Customers - NO", menus[1].GetAttribute("value"));
+            //Assert.AreEqual("Vendors - NO", menus[2].GetAttribute("value"));
         
             AssertFooterExists();
 
