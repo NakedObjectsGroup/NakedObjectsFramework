@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
@@ -133,6 +134,30 @@ namespace NakedFunctions.Rest.Test
             var invokeLink = links.Last;
 
             invokeLink.AssertMenuInvokeLink("{\r\n  \"searchString\": {\r\n    \"value\": null\r\n  }\r\n}", "GET", nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.FindByName));
+        }
+
+
+        [Test]
+        public void TestGetMenuAction()
+        {
+            var api = Api();
+            var result = api.GetMenuAction(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.FindByName));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual(nameof(SimpleMenuFunctions.FindByName), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(1, parameters.Count());
+            var parameter = parameters["searchString"];
+            Assert.AreEqual(2, parameter.Count());
+            var links = parameter["links"];
+            var extensions = parameter["extensions"];
+            Assert.AreEqual(0, links.Count());
+            Assert.AreEqual(7, extensions.Count());
+
+            // todo test rest of json
+
         }
 
 

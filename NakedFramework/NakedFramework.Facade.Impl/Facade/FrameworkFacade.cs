@@ -782,10 +782,10 @@ namespace NakedObjects.Facade.Impl {
             return Framework.NakedObjectManager.GetAdapterFor(obj);
         }
 
-        private ParameterContext[] FilterParms(IActionSpec action, ITypeSpec targetSpec, string uid)
-        {
-            return action.IsStaticFunction ? FilterParmsForFunctions(action, uid, targetSpec is IServiceSpec) : FilterParmsForContributedActions(action, targetSpec, uid);
-        }
+        private ParameterContext[] FilterParms(IActionSpec action, ITypeSpec targetSpec, string uid) =>
+            action.IsStaticFunction 
+                ? FilterParmsForFunctions(action, uid) 
+                : FilterParmsForContributedActions(action, targetSpec, uid);
 
         private static ParameterContextFacade[] FilterMenuParms(IMenuActionFacade actionFacade)
         {
@@ -800,18 +800,15 @@ namespace NakedObjects.Facade.Impl {
             return parms.Select(p => new ParameterContextFacade { Parameter = p, Action = actionFacade.Action }).ToArray();
         }
 
-        private ParameterContext[] FilterParmsForFunctions(IActionSpec action, string uid, bool isService)
-        {
-            return action.Parameters
-                         .Where(p => (isService || p.Number > 0) && !p.IsInjected)
-                         .Select(p => new ParameterContext
-                         {
-                             Action = action,
-                             Parameter = p,
-                             OverloadedUniqueId = uid
-                         })
-                         .ToArray();
-        }
+        private ParameterContext[] FilterParmsForFunctions(IActionSpec action, string uid) =>
+            action.Parameters
+                  .Where(p => !p.IsInjected)
+                  .Select(p => new ParameterContext {
+                      Action = action,
+                      Parameter = p,
+                      OverloadedUniqueId = uid
+                  })
+                  .ToArray();
 
         private static ParameterContext[] FilterParmsForContributedActions(IActionSpec action, ITypeSpec targetSpec, string uid) {
             IActionParameterSpec[] parms;
