@@ -6,22 +6,19 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework;
 
 namespace NakedObjects {
     /// <summary>
     ///     Do not allow the state of annotated objects to be changed through the user interface.
     ///     It should be considered a programmer error to  do so programmatically
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class)]
     public class ImmutableAttribute : Attribute {
-        public ImmutableAttribute() {
-            Value = WhenTo.Always;
-        }
+        public ImmutableAttribute() => Value = WhenTo.Always;
 
-        public ImmutableAttribute(WhenTo w) {
-            Value = w;
-        }
+        public ImmutableAttribute(WhenTo w) => Value = w;
 
-        public WhenTo Value { get; private set; }
+        public WhenTo Value { get; }
     }
 }

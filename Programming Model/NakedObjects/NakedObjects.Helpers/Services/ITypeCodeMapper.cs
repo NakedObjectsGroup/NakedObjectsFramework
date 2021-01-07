@@ -9,7 +9,8 @@ using System;
 
 namespace NakedObjects.Services {
     /// <summary>
-    ///     Defines a service that can convert between a Type and a string code where you don't wish to use the fully-qualified type name as the string representation.
+    ///     Defines a service that can convert between a Type and a string code where you don't wish to use the fully-qualified
+    ///     type name as the string representation.
     ///     Possible uses include:
     ///     - To create compound keys for defining polymorphic associations
     ///     - To create Oids for use in URLs

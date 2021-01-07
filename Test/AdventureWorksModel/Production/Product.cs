@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using NakedFramework;
 using NakedObjects;
 using NakedObjects.Value;
 
@@ -360,7 +361,7 @@ namespace AdventureWorksModel {
 
         private ICollection<ProductInventory> _ProductInventory = new List<ProductInventory>();
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [Eagerly(Do.Rendering)]
         [TableView(false, nameof(AdventureWorksModel.ProductInventory.Quantity), 
                 nameof(AdventureWorksModel.ProductInventory.Location),
                     nameof(AdventureWorksModel.ProductInventory.Shelf),
@@ -388,7 +389,7 @@ namespace AdventureWorksModel {
             set { _SpecialOfferProduct = value; }
         }
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [Eagerly(Do.Rendering)]
         [TableView(true, "MinQty", "DiscountPct", "StartDate", "EndDate")]
         public virtual IList<SpecialOffer> SpecialOffers {
             get { return SpecialOfferProduct.Select(n => n.SpecialOffer).Where(so => so != null).ToList(); }

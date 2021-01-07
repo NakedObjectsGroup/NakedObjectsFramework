@@ -10,8 +10,8 @@ using System.IO;
 
 namespace NakedObjects.Value {
     /// <summary>
-    /// Type that may be used to present a File Attachment;  contains the file content (as a byte[]), plus, optionally
-    /// the file name and the MIME type.
+    ///     Type that may be used to present a File Attachment;  contains the file content (as a byte[]), plus, optionally
+    ///     the file name and the MIME type.
     /// </summary>
     [Serializable]
     public class FileAttachment : IStreamResource {
@@ -31,14 +31,35 @@ namespace NakedObjects.Value {
         }
 
         /// <summary>
-        /// Allows developer to specify an intention of whether the FileAttachment should be rendered in-line or not.  (It is up to the
-        /// presentation layer to interpret and make use of this, though).
+        ///     Allows developer to specify an intention of whether the FileAttachment should be rendered in-line or not.  (It is
+        ///     up to the
+        ///     presentation layer to interpret and make use of this, though).
         /// </summary>
         public string DispositionType { get; set; }
 
         public Func<FileAttachment, bool> Open { get; set; }
 
         public string Name { get; set; }
+
+        public void LoadResourceFromStream(Stream stream) {
+            if (stream != null) {
+                var len = (int) stream.Length;
+                stream.Position = 0;
+                buffer = new byte[len];
+                stream.Read(buffer, 0, len);
+            }
+            else {
+                buffer = null;
+            }
+        }
+
+        public byte[] GetResourceAsByteArray() => buffer;
+
+        public void LoadResourceFromByteArray(byte[] byteArray) {
+            buffer = byteArray;
+        }
+
+        public override string ToString() => "FileAttachment";
 
         #region IStreamResource Members
 
@@ -53,29 +74,5 @@ namespace NakedObjects.Value {
         }
 
         #endregion
-
-        public void LoadResourceFromStream(Stream stream) {
-            if (stream != null) {
-                var len = (int) stream.Length;
-                stream.Position = 0;
-                buffer = new byte[len];
-                stream.Read(buffer, 0, len);
-            }
-            else {
-                buffer = null;
-            }
-        }
-
-        public byte[] GetResourceAsByteArray() {
-            return buffer;
-        }
-
-        public void LoadResourceFromByteArray(byte[] byteArray) {
-            buffer = byteArray;
-        }
-
-        public override string ToString() {
-            return "FileAttachment";
-        }
     }
 }

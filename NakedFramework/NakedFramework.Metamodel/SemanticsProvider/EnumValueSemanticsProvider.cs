@@ -11,7 +11,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
-using NakedObjects.Util;
 
 namespace NakedObjects.Meta.SemanticsProvider {
     [Serializable]

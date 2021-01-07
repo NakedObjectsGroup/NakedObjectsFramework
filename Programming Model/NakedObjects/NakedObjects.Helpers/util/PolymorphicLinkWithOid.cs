@@ -21,11 +21,26 @@ namespace NakedObjects {
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
-        [NotPersisted, Disabled]
+        [NotPersisted] [Disabled]
         public virtual TRole AssociatedRoleObject {
-            get { return ObjectFinder.FindObject<TRole>(RoleObjectOid); }
-            set { RoleObjectOid = ObjectFinder.GetCompoundKey(value); }
+            get => ObjectFinder.FindObject<TRole>(RoleObjectOid);
+            set => RoleObjectOid = ObjectFinder.GetCompoundKey(value);
         }
+
+        /// <summary>
+        ///     To allow sub-classes to render property visible/invisible
+        /// </summary>
+        public virtual bool HideRoleObjectOid() => false;
+
+        /// <summary>
+        ///     To allow sub-classes to render property visible/invisible
+        /// </summary>
+        public virtual bool HideAssociatedRoleObject() => false;
+
+        /// <summary>
+        ///     To allow sub-classes to render property visible/invisible
+        /// </summary>
+        public virtual bool HideOwner() => false;
 
         #region IPolymorphicLinkWithOid<TRole,TOwner> Members
 
@@ -36,26 +51,5 @@ namespace NakedObjects {
         public virtual TOwner Owner { get; set; }
 
         #endregion
-
-        /// <summary>
-        ///     To allow sub-classes to render property visible/invisible
-        /// </summary>
-        public virtual bool HideRoleObjectOid() {
-            return false;
-        }
-
-        /// <summary>
-        ///     To allow sub-classes to render property visible/invisible
-        /// </summary>
-        public virtual bool HideAssociatedRoleObject() {
-            return false;
-        }
-
-        /// <summary>
-        ///     To allow sub-classes to render property visible/invisible
-        /// </summary>
-        public virtual bool HideOwner() {
-            return false;
-        }
     }
 }

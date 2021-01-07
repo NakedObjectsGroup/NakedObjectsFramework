@@ -20,6 +20,6 @@ namespace NakedObjects {
     ///         is not specified).
     ///     </para>
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
     public class BoundedAttribute : Attribute { }
 }

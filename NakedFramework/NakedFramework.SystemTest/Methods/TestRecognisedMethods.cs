@@ -12,6 +12,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using NakedFramework;
 using NakedObjects.Services;
 using NUnit.Framework;
 

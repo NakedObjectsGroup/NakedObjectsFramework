@@ -8,13 +8,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using NakedFramework;
 using NakedObjects;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local
 
 namespace RestfulObjects.Test.Data {
-    [Eagerly(EagerlyAttribute.Do.Rendering)]
+    [Eagerly(Do.Rendering)]
     public class VerySimpleEager {
         [Key]
         [Hidden(WhenTo.Always)]

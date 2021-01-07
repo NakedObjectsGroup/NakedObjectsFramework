@@ -17,7 +17,6 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
-using NakedObjects.Menu;
 using NakedObjects.Meta.Utils;
 
 namespace NakedFramework.ModelBuilding.Component {

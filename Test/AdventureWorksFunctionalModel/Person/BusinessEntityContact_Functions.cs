@@ -1,6 +1,5 @@
 using NakedFunctions;
 using AW.Types;
-using System;
 
 namespace AW.Functions {
     public static class BusinessEntityContactFunctions

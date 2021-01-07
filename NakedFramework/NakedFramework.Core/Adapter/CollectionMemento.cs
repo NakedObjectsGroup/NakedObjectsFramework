@@ -15,7 +15,6 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
-using NakedObjects.Util;
 
 namespace NakedObjects.Core.Adapter {
     public sealed class CollectionMemento : IEncodedToStrings, ICollectionMemento {

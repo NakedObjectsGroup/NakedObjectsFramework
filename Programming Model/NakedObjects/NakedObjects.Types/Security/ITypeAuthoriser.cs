@@ -12,7 +12,10 @@ namespace NakedObjects.Security {
     ///     Implement this interface to manage authorization for a specific class of domain objects.
     ///     The implementation should be registered via NakedObjects.Security.TypeAuthorizerInstaller in the Run class
     /// </summary>
-    /// <typeparam name="T">T should be a concrete domain type for a type-specific authorizer; 'Object' for a default authorizer</typeparam>
+    /// <typeparam name="T">
+    ///     T should be a concrete domain type for a type-specific authorizer; 'Object' for a default
+    ///     authorizer
+    /// </typeparam>
     public interface ITypeAuthorizer<T> {
         /// <summary>
         ///     Called only for properties on an object when user attempts to edit the object

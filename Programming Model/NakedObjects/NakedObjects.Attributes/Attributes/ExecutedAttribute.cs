@@ -6,11 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework;
 
 namespace NakedObjects {
-
     [Obsolete]
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
     public class ExecutedAttribute : Attribute {
         public ExecutedAttribute(Where w) {
             IsAjax = false;
@@ -22,8 +22,8 @@ namespace NakedObjects {
             AjaxValue = a;
         }
 
-        public Where Value { get; private set; }
-        public Ajax AjaxValue { get; private set; }
-        public bool IsAjax { get; private set; }
+        public Where Value { get; }
+        public Ajax AjaxValue { get; }
+        public bool IsAjax { get; }
     }
 }

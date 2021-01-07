@@ -8,7 +8,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using NakedObjects.Util;
 
 namespace NakedObjects.Services {
     /// <summary>
@@ -26,7 +25,7 @@ namespace NakedObjects.Services {
             where TLink : class, IPolymorphicLink<TRole, TOwner>
             where TOwner : class, IHasIntegerId {
             ThrowExceptionIfIdIsZero(value);
-            IQueryable<TLink> links = FindPolymorphicLinks<TLink, TRole, TOwner>(value);
+            var links = FindPolymorphicLinks<TLink, TRole, TOwner>(value);
             return links.Select(x => x.Owner);
         }
 
@@ -40,11 +39,11 @@ namespace NakedObjects.Services {
             where TLink : class, IPolymorphicLink<TRole, TOwner>
             where TOwner : class, IHasIntegerId {
             ThrowExceptionIfIdIsZero(value);
-            int id = value.Id;
-            string type = GetType(value);
-            int ownerId = owner.Id;
-            IQueryable<TLink> links = FindPolymorphicLinks<TLink, TRole, TOwner>(value);
-            IQueryable<TLink> matches = links.Where(x => x.Owner.Id == ownerId);
+            var id = value.Id;
+            var type = GetType(value);
+            var ownerId = owner.Id;
+            var links = FindPolymorphicLinks<TLink, TRole, TOwner>(value);
+            var matches = links.Where(x => x.Owner.Id == ownerId);
             return matches.SingleOrDefault();
         }
 
@@ -53,8 +52,8 @@ namespace NakedObjects.Services {
             where TLink : class, IPolymorphicLink<TRole, TOwner>
             where TOwner : class, IHasIntegerId {
             ThrowExceptionIfIdIsZero(value);
-            int id = value.Id;
-            string type = GetType(value);
+            var id = value.Id;
+            var type = GetType(value);
             return Container.Instances<TLink>().Where(x => x.AssociatedRoleObjectId == id && x.AssociatedRoleObjectType == type);
         }
 
@@ -69,8 +68,11 @@ namespace NakedObjects.Services {
             where TLink : class, IPolymorphicLink<TRole, TOwner>, new()
             where TOwner : class, IHasIntegerId {
             ThrowExceptionIfIdIsZero(value);
-            TLink link = FindPolymorphicLink<TLink, TRole, TOwner>(value, owner);
-            if (link != null) return null; //item is already associated,  so don't duplicate
+            var link = FindPolymorphicLink<TLink, TRole, TOwner>(value, owner);
+            if (link != null) {
+                return null; //item is already associated,  so don't duplicate
+            }
+
             link = NewTransientLink<TLink, TRole, TOwner>(value, owner);
             Container.Persist(ref link);
             return link;
@@ -81,8 +83,11 @@ namespace NakedObjects.Services {
             where TLink : class, IPolymorphicLink<TRole, TOwner>
             where TOwner : class, IHasIntegerId {
             ThrowExceptionIfIdIsZero(value);
-            TLink link = FindPolymorphicLink<TLink, TRole, TOwner>(value, owner);
-            if (link == null) return; //item is not associated
+            var link = FindPolymorphicLink<TLink, TRole, TOwner>(value, owner);
+            if (link == null) {
+                return; //item is not associated
+            }
+
             Container.DisposeInstance(link);
         }
 
@@ -90,7 +95,10 @@ namespace NakedObjects.Services {
             where TRole : class, IHasIntegerId
             where TLink : class, IPolymorphicLink<TRole, TOwner>, new()
             where TOwner : class, IHasIntegerId {
-            if (value == null) return null;
+            if (value == null) {
+                return null;
+            }
+
             ThrowExceptionIfIdIsZero(value);
             var link = Container.NewTransientInstance<TLink>();
             link.Owner = owner;
@@ -124,8 +132,14 @@ namespace NakedObjects.Services {
             where TRole : class, IHasIntegerId
             where TLink : class, IPolymorphicLink<TRole, TOwner>
             where TOwner : class, IHasIntegerId {
-            if (role != null) return role;
-            if (link == null) return null;
+            if (role != null) {
+                return role;
+            }
+
+            if (link == null) {
+                return null;
+            }
+
             role = link.AssociatedRoleObject;
             return role;
         }
@@ -134,28 +148,24 @@ namespace NakedObjects.Services {
         ///     Safe way to get the type name from a value.
         ///     delegates to the injected ITypeCodeMapper if one exists.  Otherwises returns default of fully-qualified type name.
         /// </summary>
-        public virtual string GetType(object value) {
-            return CodeFromType(value);
-        }
+        public virtual string GetType(object value) => CodeFromType(value);
 
         public virtual T FindObject<T>(string type, int id) where T : class, IHasIntegerId {
-            Type sysType = TypeFromCode(type);
+            var sysType = TypeFromCode(type);
             return FindByKey<T>(sysType, id);
         }
 
         private T FindByKey<T>(Type sysType, object id) {
             if (sysType != null && id != null) {
-                MethodInfo m = GetType().GetMethod("FindByKeyGeneric", BindingFlags.Instance | BindingFlags.NonPublic);
-                MethodInfo gm = m.MakeGenericMethod(new[] {sysType});
+                var m = GetType().GetMethod("FindByKeyGeneric", BindingFlags.Instance | BindingFlags.NonPublic);
+                var gm = m.MakeGenericMethod(sysType);
                 return (T) gm.Invoke(this, new[] {id});
             }
 
-            return default(T);
+            return default;
         }
 
-        protected virtual object FindByKeyGeneric<TActual>(object id) where TActual : class {
-            return Container.FindByKey<TActual>(id);
-        }
+        protected virtual object FindByKeyGeneric<TActual>(object id) where TActual : class => Container.FindByKey<TActual>(id);
 
         #region Injected Services
 
@@ -176,7 +186,7 @@ namespace NakedObjects.Services {
         }
 
         private string CodeFromType(object obj) {
-            Type type = obj.GetType().GetProxiedType();
+            var type = obj.GetType().GetProxiedType();
             if (TypeCodeMapper != null) {
                 return TypeCodeMapper.CodeFromType(type);
             }

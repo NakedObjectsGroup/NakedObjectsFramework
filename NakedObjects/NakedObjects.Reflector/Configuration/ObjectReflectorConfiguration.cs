@@ -6,11 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core;
-using NakedObjects.Core.Configuration;
 
 namespace NakedObjects.Reflector.Configuration {
     [Serializable]

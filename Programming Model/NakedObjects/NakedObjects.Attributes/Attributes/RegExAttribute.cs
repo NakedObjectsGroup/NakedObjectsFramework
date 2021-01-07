@@ -28,7 +28,7 @@ namespace NakedObjects {
     ///         </para>
     ///     </para>
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
     public class RegExAttribute : Attribute {
         public RegExAttribute() {
             CaseSensitive = false;

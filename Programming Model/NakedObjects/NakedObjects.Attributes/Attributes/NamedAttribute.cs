@@ -15,17 +15,16 @@ namespace NakedObjects {
     /// </summary>
     /// <remarks>
     ///     <para>
-    ///         Instead of this may use <see cref="System.ComponentModel.DisplayNameAttribute" /> but note that it is not applicable to interfaces
+    ///         Instead of this may use <see cref="System.ComponentModel.DisplayNameAttribute" /> but note that it is not
+    ///         applicable to interfaces
     ///         or parameters.
     ///     </para>
     /// </remarks>
     /// <seealso cref="PluralAttribute" />
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
     public class NamedAttribute : Attribute {
-        public NamedAttribute(string s) {
-            Value = s;
-        }
+        public NamedAttribute(string s) => Value = s;
 
-        public string Value { get; private set; }
+        public string Value { get; }
     }
 }

@@ -10,11 +10,11 @@ using System.Linq;
 using System.Text;
 using NakedObjects.Resources;
 
-namespace NakedObjects.Util {
+namespace NakedObjects {
     /// <summary>
-    /// Utility methods for manipulating type-name strings.  The Naked Objects framework makes extensive
-    /// use of these utils, but they are provided within the NakedObjects.Helpers
-    /// assembly to permit optional use within domain code.
+    ///     Utility methods for manipulating type-name strings.  The Naked Objects framework makes extensive
+    ///     use of these utils, but they are provided within the NakedObjects.Helpers
+    ///     assembly to permit optional use within domain code.
     /// </summary>
     public static class NameUtils {
         private const char space = ' ';
@@ -24,9 +24,9 @@ namespace NakedObjects.Util {
         /// </summary>
         public static string SimpleName(string name) {
             var sb = new StringBuilder(name.Length);
-            foreach (char ch in name) {
-                if (!Char.IsWhiteSpace(ch)) {
-                    sb.Append(Char.ToLower(ch));
+            foreach (var ch in name) {
+                if (!char.IsWhiteSpace(ch)) {
+                    sb.Append(char.ToLower(ch));
                 }
             }
 
@@ -38,7 +38,7 @@ namespace NakedObjects.Util {
         ///     word starts with a capital letter. E.g., "NextAvailableDate" is returned as "Next Available Date".
         /// </summary>
         public static string NaturalName(string name) {
-            int length = name.Length;
+            var length = name.Length;
 
             if (length <= 1) {
                 return name.ToUpper(); // ensure first character is upper case
@@ -46,25 +46,25 @@ namespace NakedObjects.Util {
 
             var naturalName = new StringBuilder(length);
 
-            char character = Char.ToUpper(name[0]); // ensure first character is upper case
+            var character = char.ToUpper(name[0]); // ensure first character is upper case
             naturalName.Append(character);
-            char nextCharacter = name[1];
+            var nextCharacter = name[1];
 
-            for (int pos = 2; pos < length; pos++) {
-                char previousCharacter = character;
+            for (var pos = 2; pos < length; pos++) {
+                var previousCharacter = character;
                 character = nextCharacter;
                 nextCharacter = name[pos];
 
-                if (!Char.IsWhiteSpace(previousCharacter)) {
-                    if (Char.IsUpper(character) && !Char.IsUpper(previousCharacter)) {
+                if (!char.IsWhiteSpace(previousCharacter)) {
+                    if (char.IsUpper(character) && !char.IsUpper(previousCharacter)) {
                         naturalName.Append(space);
                     }
 
-                    if (Char.IsUpper(character) && Char.IsLower(nextCharacter) && Char.IsUpper(previousCharacter)) {
+                    if (char.IsUpper(character) && char.IsLower(nextCharacter) && char.IsUpper(previousCharacter)) {
                         naturalName.Append(space);
                     }
 
-                    if (Char.IsDigit(character) && !Char.IsDigit(previousCharacter)) {
+                    if (char.IsDigit(character) && !char.IsDigit(previousCharacter)) {
                         naturalName.Append(space);
                     }
                 }
@@ -79,7 +79,7 @@ namespace NakedObjects.Util {
         public static string PluralName(string name) {
             string pluralName;
             if (name.EndsWith("y")) {
-                pluralName = name.Substring(0, (name.Length - 1) - (0)) + "ies";
+                pluralName = name.Substring(0, name.Length - 1 - 0) + "ies";
             }
             else if (name.EndsWith("s") || name.EndsWith("x")) {
                 pluralName = name + "es";
@@ -91,19 +91,15 @@ namespace NakedObjects.Util {
             return pluralName;
         }
 
-        public static string CapitalizeName(string name) {
-            return Char.ToUpper(name[0]) + name.Substring(1);
-        }
+        public static string CapitalizeName(string name) => char.ToUpper(name[0]) + name.Substring(1);
 
-        private static bool IsStartOfNewWord(char c, char previousChar) {
-            return char.IsUpper(c) || char.IsDigit(c) && !char.IsDigit(previousChar);
-        }
+        private static bool IsStartOfNewWord(char c, char previousChar) => char.IsUpper(c) || char.IsDigit(c) && !char.IsDigit(previousChar);
 
         public static string MakeTitle(string name) {
-            int pos = 0;
+            var pos = 0;
 
             // find first upper case character
-            while ((pos < name.Length) && char.IsLower(name[pos])) {
+            while (pos < name.Length && char.IsLower(name[pos])) {
                 pos++;
             }
 
@@ -112,9 +108,9 @@ namespace NakedObjects.Util {
             }
 
             var s = new StringBuilder(name.Length - pos); // remove is/get/set
-            for (int j = pos; j < name.Length; j++) {
+            for (var j = pos; j < name.Length; j++) {
                 // process english name - add spaces
-                if ((j > pos) && IsStartOfNewWord(name[j], name[j - 1])) {
+                if (j > pos && IsStartOfNewWord(name[j], name[j - 1])) {
                     s.Append(' ');
                 }
 
@@ -124,8 +120,6 @@ namespace NakedObjects.Util {
             return s.ToString();
         }
 
-        public static string[] NaturalNames(Type typeOfEnum) {
-            return Enum.GetNames(typeOfEnum).Select(NaturalName).ToArray();
-        }
+        public static string[] NaturalNames(Type typeOfEnum) => Enum.GetNames(typeOfEnum).Select(NaturalName).ToArray();
     }
 }

@@ -10,13 +10,13 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.Serialization;
+using NakedFramework;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
-using NakedObjects.Menu;
 using NakedObjects.Meta.Utils;
 
 namespace NakedObjects.Meta.Menu {

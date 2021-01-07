@@ -139,7 +139,7 @@ namespace NakedObjects {
         void AbortCurrentTransaction();
 
         /// <summary>
-        /// Get a service by its type. Return null if it doesn't exist.
+        ///     Get a service by its type. Return null if it doesn't exist.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
@@ -148,21 +148,21 @@ namespace NakedObjects {
         #region Titles
 
         /// <summary>
-        /// Convenience method to get hold of the title of any domain object,
-        /// without needing to know whether that is defined by a Title() method,
-        /// ToString() method, or a [Title] attribute on a property.
+        ///     Convenience method to get hold of the title of any domain object,
+        ///     without needing to know whether that is defined by a Title() method,
+        ///     ToString() method, or a [Title] attribute on a property.
         /// </summary>
         string TitleOf(object obj, string format = null);
 
         /// <summary>
-        /// Returns a framework-generated implementation of ITitleBuilder, which
+        ///     Returns a framework-generated implementation of ITitleBuilder, which
         /// </summary>
         ITitleBuilder NewTitleBuilder();
 
         /// <summary>
-        /// Creates a new ITitleBuilder object, 
-        /// containing the Title of the specified object with an optional default
-        /// title if the object has no specified title.
+        ///     Creates a new ITitleBuilder object,
+        ///     containing the Title of the specified object with an optional default
+        ///     title if the object has no specified title.
         /// </summary>
         ITitleBuilder NewTitleBuilder(object obj, string defaultTitle = null);
 

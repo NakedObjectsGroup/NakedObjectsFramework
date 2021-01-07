@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using NakedFramework;
 using NakedObjects;
 
 // ReSharper disable UnusedMember.Global

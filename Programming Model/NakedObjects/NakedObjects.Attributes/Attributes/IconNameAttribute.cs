@@ -9,12 +9,10 @@ using System;
 
 namespace NakedObjects {
     [Obsolete]
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
     public class IconNameAttribute : Attribute {
-        public IconNameAttribute(string s) {
-            Value = s;
-        }
+        public IconNameAttribute(string s) => Value = s;
 
-        public string Value { get; private set; }
+        public string Value { get; }
     }
 }

@@ -11,7 +11,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using NakedObjects.Resources;
-using NakedObjects.Util;
 
 namespace NakedObjects.Services {
     /// <summary>
@@ -24,46 +23,42 @@ namespace NakedObjects.Services {
 
         #endregion
 
-        protected object FindByKeyGeneric<TActual>(object id) where TActual : class {
-            return Container.FindByKey<TActual>(id);
-        }
+        protected object FindByKeyGeneric<TActual>(object id) where TActual : class => Container.FindByKey<TActual>(id);
 
         private T FindByKey<T>(Type type, object id) {
             if (type != null && id != null) {
-                MethodInfo m = GetType().GetMethod("FindByKeyGeneric", BindingFlags.Instance | BindingFlags.NonPublic);
-                MethodInfo gm = m.MakeGenericMethod(new[] {type});
+                var m = GetType().GetMethod("FindByKeyGeneric", BindingFlags.Instance | BindingFlags.NonPublic);
+                var gm = m.MakeGenericMethod(type);
                 return (T) gm.Invoke(this, new[] {id});
             }
 
-            return default(T);
+            return default;
         }
 
         private object GetSingleKey(object obj) {
-            object key = Container.GetSingleKey(obj.GetType()).GetValue(obj, null);
+            var key = Container.GetSingleKey(obj.GetType()).GetValue(obj, null);
             return key;
         }
 
-        protected object FindByKeysGeneric<TActual>(Dictionary<string, object> keyDict) where TActual : class {
-            return Container.FindByKeys<TActual>(keyDict.Values.ToArray());
-        }
+        protected object FindByKeysGeneric<TActual>(Dictionary<string, object> keyDict) where TActual : class => Container.FindByKeys<TActual>(keyDict.Values.ToArray());
 
         private T FindByKeys<T>(Type type, Dictionary<string, object> keyDict) {
             if (type != null && keyDict != null) {
-                MethodInfo m = GetType().GetMethod("FindByKeysGeneric", BindingFlags.Instance | BindingFlags.NonPublic);
-                MethodInfo gm = m.MakeGenericMethod(new[] {type});
+                var m = GetType().GetMethod("FindByKeysGeneric", BindingFlags.Instance | BindingFlags.NonPublic);
+                var gm = m.MakeGenericMethod(type);
                 return (T) gm.Invoke(this, new[] {keyDict});
             }
 
-            return default(T);
+            return default;
         }
 
         protected Type GetAssociatedObjectType(string compoundKey) {
-            string typeAsString = compoundKey.Split('|').ElementAt(0);
+            var typeAsString = compoundKey.Split('|').ElementAt(0);
             if (string.IsNullOrEmpty(typeAsString)) {
                 throw new DomainException(string.Format(ProgrammingModel.CompoundKeyDoesNotContainType, compoundKey));
             }
 
-            Type type = TypeFromCode(typeAsString);
+            var type = TypeFromCode(typeAsString);
             if (type == null) {
                 throw new DomainException(string.Format(ProgrammingModel.TypeCannotBeFound, typeAsString));
             }
@@ -74,8 +69,8 @@ namespace NakedObjects.Services {
         // Creates a dictionary of the keys of the form <keyPropertyName, keyPropertyValue) where the type of
         // the keyPropertyValue is the correct type based on key properties info extracted from the input type.
         private Dictionary<string, object> CreateKeyDictionary(Type type, string compoundKey) {
-            PropertyInfo[] keyProperties = Container.GetKeys(type);
-            string[] valuesAsStrings = ExtractKeyValuesAsStrings(compoundKey);
+            var keyProperties = Container.GetKeys(type);
+            var valuesAsStrings = ExtractKeyValuesAsStrings(compoundKey);
 
             //test that the number of key values is correct for the type
             if (valuesAsStrings.Count() != keyProperties.Count()) {
@@ -84,10 +79,10 @@ namespace NakedObjects.Services {
 
             //Create the dictionary
             var keyDict = new Dictionary<string, object>();
-            for (int i = 0; i < keyProperties.Count(); i++) {
-                string stringValue = valuesAsStrings[i];
+            for (var i = 0; i < keyProperties.Count(); i++) {
+                var stringValue = valuesAsStrings[i];
                 object value = null;
-                Type propType = keyProperties[i].PropertyType;
+                var propType = keyProperties[i].PropertyType;
                 try {
                     if (propType == typeof(string)) {
                         value = stringValue;
@@ -119,11 +114,11 @@ namespace NakedObjects.Services {
         }
 
         private string[] ExtractKeyValuesAsStrings(string compoundKey) {
-            string[] keyStrings = compoundKey.Split('|');
+            var keyStrings = compoundKey.Split('|');
 
             var keyValues = new List<string>();
             //Skip 1 as the first item is the type rather than a key
-            foreach (string keyString in keyStrings.Skip(1)) {
+            foreach (var keyString in keyStrings.Skip(1)) {
                 keyValues.Add(keyString);
             }
 
@@ -133,15 +128,15 @@ namespace NakedObjects.Services {
         #region Implementation of IObjectFinder
 
         public virtual T FindObject<T>(string compoundKey) {
-            Type type = GetAssociatedObjectType(compoundKey);
+            var type = GetAssociatedObjectType(compoundKey);
 
             if (typeof(IHasGuid).IsAssignableFrom(type)) {
-                MethodInfo m = GetType().GetMethod("FindObjectByGuid", BindingFlags.Instance | BindingFlags.NonPublic);
-                MethodInfo gm = m.MakeGenericMethod(new[] {type});
+                var m = GetType().GetMethod("FindObjectByGuid", BindingFlags.Instance | BindingFlags.NonPublic);
+                var gm = m.MakeGenericMethod(type);
                 return (T) gm.Invoke(this, new[] {compoundKey});
             }
 
-            Dictionary<string, object> keyDict = CreateKeyDictionary(type, compoundKey);
+            var keyDict = CreateKeyDictionary(type, compoundKey);
             if (keyDict.Any()) {
                 return FindByKeys<T>(type, keyDict);
             }
@@ -152,8 +147,8 @@ namespace NakedObjects.Services {
         public virtual string GetCompoundKey<T>(T obj) {
             var compoundKey = new StringBuilder();
             //In all cases, the key starts with the fully-qualified type name
-            string typeAsString = CodeFromType(obj);
-            compoundKey.Append((obj == null) ? null : typeAsString);
+            var typeAsString = CodeFromType(obj);
+            compoundKey.Append(obj == null ? null : typeAsString);
 
             if (typeof(IHasGuid).IsAssignableFrom(typeof(T))) {
                 compoundKey.Append("|");
@@ -161,33 +156,29 @@ namespace NakedObjects.Services {
                 compoundKey.Append(objWithGuid.Guid.ToString()); //but must generate this dynamically
             }
             else {
-                PropertyInfo[] keyProperties = Container.GetKeys(obj.GetType());
+                var keyProperties = Container.GetKeys(obj.GetType());
                 if (!keyProperties.Any()) {
                     throw new DomainException(string.Format(ProgrammingModel.NoKeysDefined, obj));
                 }
 
-                foreach (PropertyInfo key in keyProperties) {
+                foreach (var key in keyProperties) {
                     compoundKey.Append("|");
-                    compoundKey.Append((obj == null) ? null : key.GetValue(obj, null).ToString());
+                    compoundKey.Append(obj == null ? null : key.GetValue(obj, null).ToString());
                 }
             }
 
             return compoundKey.ToString();
         }
 
-        public object FindBySingleIntegerKey(Type type, int key) {
-            return FindByKey<object>(type, key);
-        }
+        public object FindBySingleIntegerKey(Type type, int key) => FindByKey<object>(type, key);
 
-        public T FindBySingleIntegerKey<T>(int key) where T : class {
-            return (T) FindByKeyGeneric<T>(key);
-        }
+        public T FindBySingleIntegerKey<T>(int key) where T : class => (T) FindByKeyGeneric<T>(key);
 
         private TActual FindObjectByGuid<TActual>(string compoundKey) where TActual : class, IHasGuid {
             var guidFromKey = new Guid(compoundKey.Split('|').ElementAt(1));
-            IQueryable<TActual> q = from t in Container.Instances<TActual>()
-                where t.Guid == guidFromKey
-                select t;
+            var q = from t in Container.Instances<TActual>()
+                    where t.Guid == guidFromKey
+                    select t;
             return q.FirstOrDefault();
         }
 
@@ -195,12 +186,10 @@ namespace NakedObjects.Services {
 
         #region Convert between Type and string representation (code) for Type
 
-        protected virtual Type TypeFromCode(string code) {
-            return TypeUtils.GetType(code);
-        }
+        protected virtual Type TypeFromCode(string code) => TypeUtils.GetType(code);
 
         protected virtual string CodeFromType(object obj) {
-            Type type = obj.GetType().GetProxiedType();
+            var type = obj.GetType().GetProxiedType();
             return type.FullName;
         }
 
@@ -208,14 +197,15 @@ namespace NakedObjects.Services {
 
         #region Instances
 
-        protected IQueryable<T> InstancesGeneric<T>() where T : class {
-            return Container.Instances<T>();
-        }
+        protected IQueryable<T> InstancesGeneric<T>() where T : class => Container.Instances<T>();
 
         public IQueryable<T> Instances<T>(Type type) {
-            if (!typeof(T).IsAssignableFrom(type)) throw new DomainException(type + " does not implement " + typeof(T));
-            MethodInfo m = GetType().GetMethod("InstancesGeneric", BindingFlags.Instance | BindingFlags.NonPublic);
-            MethodInfo gm = m.MakeGenericMethod(new[] {type});
+            if (!typeof(T).IsAssignableFrom(type)) {
+                throw new DomainException(type + " does not implement " + typeof(T));
+            }
+
+            var m = GetType().GetMethod("InstancesGeneric", BindingFlags.Instance | BindingFlags.NonPublic);
+            var gm = m.MakeGenericMethod(type);
             return gm.Invoke(this, new object[] { }) as IQueryable<T>;
         }
 

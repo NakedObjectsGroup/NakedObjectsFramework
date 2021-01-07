@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using NakedFramework;
 using NakedObjects;
 
 // ReSharper disable UnusedMember.Global
@@ -148,7 +149,7 @@ namespace RestfulObjects.Test.Data {
         [NotMapped]
         public virtual ISet<MostSimple> AnEmptySet { get; set; } = new HashSet<MostSimple>();
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [Eagerly(Do.Rendering)]
         public virtual ICollection<MostSimple> AnEagerCollection { get; set; } = new List<MostSimple>();
 
         public IList<MostSimple> LocallyContributedAction([ContributedAction] IList<MostSimple> acollection) => acollection;

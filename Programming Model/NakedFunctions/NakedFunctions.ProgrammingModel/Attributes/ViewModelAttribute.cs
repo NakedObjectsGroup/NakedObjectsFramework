@@ -9,12 +9,12 @@ using System;
 
 namespace NakedFunctions {
     /// <summary>
-    ///         /// </summary>
+    ///     ///
+    /// </summary>
     /// <remarks>
     ///     <para>
-    ///        
     ///     </para>
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
     public class ViewModelAttribute : Attribute { }
 }

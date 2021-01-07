@@ -21,18 +21,14 @@ namespace NakedObjects {
         /// <summary>
         ///     Creates a new, empty, TitleBuilder object
         /// </summary>
-        public ReasonBuilder() {
-            sb = new StringBuilder();
-        }
+        public ReasonBuilder() => sb = new StringBuilder();
 
         #endregion
 
         /// <summary>
         ///     Return the set of appended reasons (separated by semi-colons), or <c>null</c> if there are none
         /// </summary>
-        public string Reason {
-            get { return sb.Length == 0 ? null : sb.ToString(); }
-        }
+        public string Reason => sb.Length == 0 ? null : sb.ToString();
 
         /// <summary>
         ///     Append a reason to the list of existing reasons if the condition flag is true

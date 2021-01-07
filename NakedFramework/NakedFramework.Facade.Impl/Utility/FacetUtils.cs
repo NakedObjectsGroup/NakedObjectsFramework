@@ -7,6 +7,7 @@
 
 using System;
 using System.Text.RegularExpressions;
+using NakedFramework;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
@@ -60,7 +61,7 @@ namespace NakedObjects.Facade.Impl.Utility {
 
         public static bool GetRenderEagerly(this ISpecification spec) {
             var eagerlyFacet = spec.GetFacet<IEagerlyFacet>();
-            return eagerlyFacet?.What == EagerlyAttribute.Do.Rendering;
+            return eagerlyFacet?.What == Do.Rendering;
         }
 
         public static (bool title, string[] columns)? GetTableViewData(this ISpecification spec) {

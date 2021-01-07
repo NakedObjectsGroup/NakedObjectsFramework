@@ -6,17 +6,15 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
-using System.Reflection;
 using NakedObjects.Resources;
-using NakedObjects.Util;
 
 namespace NakedObjects.Services {
     /// <summary>
-    ///  As of version 7.0, the SimpleRepository is no longer recommended for use in
-    ///  prototyping, because its title (as rendered by the new main menu mechanism)
-    ///  does not reflect the type  -  it just says 'Simple Repository'.  It may still 
-    ///  be useful for writing XAT tests, though, where it may still be retrieved by 
-    ///  name, using the pluralised friendly-name of the type, as before.
+    ///     As of version 7.0, the SimpleRepository is no longer recommended for use in
+    ///     prototyping, because its title (as rendered by the new main menu mechanism)
+    ///     does not reflect the type  -  it just says 'Simple Repository'.  It may still
+    ///     be useful for writing XAT tests, though, where it may still be retrieved by
+    ///     name, using the pluralised friendly-name of the type, as before.
     /// </summary>
     public class SimpleRepository<T> : AbstractFactoryAndRepository where T : class, new() {
         private readonly string title;
@@ -30,30 +28,22 @@ namespace NakedObjects.Services {
         /// <summary>
         ///     Constructor for specifying title
         /// </summary>
-        public SimpleRepository(string title) {
-            this.title = title;
-        }
+        public SimpleRepository(string title) => this.title = title;
 
         /// <summary>
         ///     Icon name for service will be same as T.Name
         /// </summary>
-        public string IconName() {
-            return typeof(T).Name;
-        }
+        public string IconName() => typeof(T).Name;
 
         /// <summary>
         ///     Title of service
         /// </summary>
-        public string Title() {
-            return title;
-        }
+        public string Title() => title;
 
         /// <summary>
         ///     Title of service via ToString
         /// </summary>
-        public override string ToString() {
-            return Title();
-        }
+        public override string ToString() => Title();
 
         #region Creators
 
@@ -61,9 +51,7 @@ namespace NakedObjects.Services {
         ///     Returns a new transient instance of T
         /// </summary>
         [MemberOrder(Sequence = "1")]
-        public virtual T NewInstance() {
-            return NewTransientInstance<T>();
-        }
+        public virtual T NewInstance() => NewTransientInstance<T>();
 
         #endregion
 
@@ -73,18 +61,14 @@ namespace NakedObjects.Services {
         ///     All Instances of T
         /// </summary>
         [MemberOrder(Sequence = "2")]
-        public virtual IQueryable<T> AllInstances() {
-            return Container.Instances<T>();
-        }
+        public virtual IQueryable<T> AllInstances() => Container.Instances<T>();
 
         [MemberOrder(Sequence = "3")]
-        public virtual T GetRandom() {
-            return Random<T>();
-        }
+        public virtual T GetRandom() => Random<T>();
 
         [MemberOrder(Sequence = "4")]
         public virtual T FindByKey(int key) {
-            PropertyInfo keyProperty = Container.GetSingleKey(typeof(T));
+            var keyProperty = Container.GetSingleKey(typeof(T));
             if (keyProperty.PropertyType != typeof(int)) {
                 throw new DomainException(string.Format(ProgrammingModel.NoIntegerKey, typeof(T)));
             }

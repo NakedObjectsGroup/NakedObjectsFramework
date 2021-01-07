@@ -22,7 +22,6 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflector.Reflect {
     public abstract class Introspector : IIntrospector {

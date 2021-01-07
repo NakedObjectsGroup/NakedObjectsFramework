@@ -14,6 +14,29 @@ namespace NakedObjects.Services {
     ///     Delegates to an injected implementation of IObjectFinder.
     /// </summary>
     public class PolymorphicNavigatorWithOid : IPolymorphicNavigatorWithOid {
+        /// <summary>
+        ///     Searches all polymorphic links of type TLink to find those associated with the value
+        ///     then returns the one (if any) that has the specified owner.  If more than one link
+        ///     associates the same value and owner an error is thrown.
+        /// </summary>
+        public virtual TLink FindPolymorphicLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
+            where TRole : class
+            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>
+            where TOwner : class, IHasIntegerId {
+            var ownerId = owner.Id;
+            var links = FindPolymorphicLinks<TLink, TRole, TOwner>(value);
+            var matches = links.Where(x => x.Owner.Id == ownerId);
+            return matches.SingleOrDefault();
+        }
+
+        private IQueryable<TLink> FindPolymorphicLinks<TLink, TRole, TOwner>(TRole value)
+            where TRole : class
+            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>
+            where TOwner : class, IHasIntegerId {
+            var roleOid = ObjectFinder.GetCompoundKey(value);
+            return Container.Instances<TLink>().Where(x => x.RoleObjectOid == roleOid);
+        }
+
         #region IPolymorphicNavigatorWithOid Members
 
         /// <summary>
@@ -24,7 +47,7 @@ namespace NakedObjects.Services {
             where TRole : class
             where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
             where TOwner : class, IHasIntegerId {
-            IQueryable<TLink> links = FindPolymorphicLinks<TLink, TRole, TOwner>(value);
+            var links = FindPolymorphicLinks<TLink, TRole, TOwner>(value);
             return links.Select(x => x.Owner);
         }
 
@@ -32,8 +55,11 @@ namespace NakedObjects.Services {
             where TRole : class
             where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
             where TOwner : class, IHasIntegerId {
-            TLink link = FindPolymorphicLink<TLink, TRole, TOwner>(value, owner);
-            if (link != null) return null; //item is already associated,  so don't duplicate
+            var link = FindPolymorphicLink<TLink, TRole, TOwner>(value, owner);
+            if (link != null) {
+                return null; //item is already associated,  so don't duplicate
+            }
+
             link = NewTransientLink<TLink, TRole, TOwner>(value, owner);
             Container.Persist(ref link);
             return link;
@@ -43,8 +69,11 @@ namespace NakedObjects.Services {
             where TRole : class
             where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
             where TOwner : class, IHasIntegerId {
-            TLink link = FindPolymorphicLink<TLink, TRole, TOwner>(value, owner);
-            if (link == null) return; //item is not associated
+            var link = FindPolymorphicLink<TLink, TRole, TOwner>(value, owner);
+            if (link == null) {
+                return; //item is not associated
+            }
+
             Container.DisposeInstance(link);
         }
 
@@ -52,7 +81,9 @@ namespace NakedObjects.Services {
             where TRole : class
             where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>, new()
             where TOwner : class, IHasIntegerId {
-            if (value == null) return null;
+            if (value == null) {
+                return null;
+            }
 
             var link = Container.NewTransientInstance<TLink>();
             link.Owner = owner;
@@ -82,29 +113,6 @@ namespace NakedObjects.Services {
         }
 
         #endregion
-
-        /// <summary>
-        ///     Searches all polymorphic links of type TLink to find those associated with the value
-        ///     then returns the one (if any) that has the specified owner.  If more than one link
-        ///     associates the same value and owner an error is thrown.
-        /// </summary>
-        public virtual TLink FindPolymorphicLink<TLink, TRole, TOwner>(TRole value, TOwner owner)
-            where TRole : class
-            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>
-            where TOwner : class, IHasIntegerId {
-            int ownerId = owner.Id;
-            IQueryable<TLink> links = FindPolymorphicLinks<TLink, TRole, TOwner>(value);
-            IQueryable<TLink> matches = links.Where(x => x.Owner.Id == ownerId);
-            return matches.SingleOrDefault();
-        }
-
-        private IQueryable<TLink> FindPolymorphicLinks<TLink, TRole, TOwner>(TRole value)
-            where TRole : class
-            where TLink : class, IPolymorphicLinkWithOid<TRole, TOwner>
-            where TOwner : class, IHasIntegerId {
-            string roleOid = ObjectFinder.GetCompoundKey(value);
-            return Container.Instances<TLink>().Where(x => x.RoleObjectOid == roleOid);
-        }
 
         #region Injected Services
 

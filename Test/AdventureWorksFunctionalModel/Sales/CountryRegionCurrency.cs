@@ -7,8 +7,6 @@
 
 using System;
 
-using NakedFunctions;
-
 namespace AW.Types {
     public record CountryRegionCurrency  {
 

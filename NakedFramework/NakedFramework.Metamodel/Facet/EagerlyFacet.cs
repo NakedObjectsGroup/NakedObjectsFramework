@@ -6,13 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 
 namespace NakedObjects.Meta.Facet {
     [Serializable]
     public sealed class EagerlyFacet : FacetAbstract, IEagerlyFacet {
-        public EagerlyFacet(EagerlyAttribute.Do what, ISpecification holder)
+        public EagerlyFacet(Do what, ISpecification holder)
             : base(Type, holder) =>
             What = what;
 
@@ -20,7 +21,7 @@ namespace NakedObjects.Meta.Facet {
 
         #region IEagerlyFacet Members
 
-        public EagerlyAttribute.Do What { get; private set; }
+        public Do What { get; private set; }
 
         #endregion
     }

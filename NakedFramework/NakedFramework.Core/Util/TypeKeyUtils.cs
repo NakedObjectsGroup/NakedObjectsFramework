@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using NakedObjects.Util;
 
 namespace NakedObjects.Core.Util {
     public static class TypeKeyUtils {

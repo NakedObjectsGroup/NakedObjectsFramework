@@ -13,10 +13,8 @@ using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflector.FacetFactory;
-using NakedObjects.Reflector.Reflect;
 
 #pragma warning disable 612
 

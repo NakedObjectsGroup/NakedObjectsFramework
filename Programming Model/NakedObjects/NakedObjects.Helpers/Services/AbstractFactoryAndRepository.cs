@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
+using NakedFramework;
 using NakedObjects.Resources;
 
 namespace NakedObjects.Services {
@@ -27,16 +28,12 @@ namespace NakedObjects.Services {
         ///     Unique identifier for this service
         /// </summary>
         [Hidden(WhenTo.Always)]
-        public virtual string Id {
-            get { return GetType().Name; }
-        }
+        public virtual string Id => GetType().Name;
 
         /// <summary>
         ///     Fully qualified type name for this service
         /// </summary>
-        protected string ClassName {
-            get { return GetType().FullName; }
-        }
+        protected string ClassName => GetType().FullName;
 
         /// <summary>
         ///     Returns the first item from an IQueryable, but warns user
@@ -45,7 +42,7 @@ namespace NakedObjects.Services {
         protected T SingleObjectWarnIfNoMatch<T>(IQueryable<T> query) {
             if (!query.Any()) {
                 WarnUser(ProgrammingModel.NoMatchSingular);
-                return default(T);
+                return default;
             }
 
             return query.First();
@@ -55,15 +52,15 @@ namespace NakedObjects.Services {
         ///     Returns a random instance from the set of all instance of type T
         /// </summary>
         protected T Random<T>() where T : class {
-            IQueryable<T> query = Instances<T>();
-            int random = new Random().Next(query.Count());
+            var query = Instances<T>();
+            var random = new Random().Next(query.Count());
             //The OrderBy(...) doesn't do anything, but is a necessary precursor to using .Skip
             //which in turn is needed because LINQ to Entities doesn't support .ElementAt(x)
             return query.OrderBy(n => "").Skip(random).FirstOrDefault();
         }
 
         protected IQueryable FindByTitleAndType(Type type, string partialTitleString) {
-            MethodInfo m = GetType().GetMethod("FindByTitle", BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(type);
+            var m = GetType().GetMethod("FindByTitle", BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(type);
             return (IQueryable) m.Invoke(this, new object[] {partialTitleString});
         }
 
@@ -75,9 +72,7 @@ namespace NakedObjects.Services {
         /// <summary>
         ///     Get details about the current user
         /// </summary>
-        protected IPrincipal Principal {
-            get { return Container.Principal; }
-        }
+        protected IPrincipal Principal => Container.Principal;
 
         /// <summary>
         ///     Ensure that the this object is completely loaded into memory
@@ -103,9 +98,7 @@ namespace NakedObjects.Services {
         ///     Create a new instance of T, but do not persist it
         /// </summary>
         /// <seealso cref="Persist{T}" />
-        protected T NewTransientInstance<T>() where T : new() {
-            return Container.NewTransientInstance<T>();
-        }
+        protected T NewTransientInstance<T>() where T : new() => Container.NewTransientInstance<T>();
 
         /// <summary>
         ///     Create a new instance of type, but do not persist it
@@ -116,16 +109,12 @@ namespace NakedObjects.Services {
         ///     </para>
         /// </remarks>
         /// <seealso cref="Persist{T}" />
-        protected object NewTransientInstance(Type type) {
-            return Container.NewTransientInstance(type);
-        }
+        protected object NewTransientInstance(Type type) => Container.NewTransientInstance(type);
 
         /// <summary>
         ///     Determines if the specified object is persistent; that is is stored permanently outside of the virtual machine.
         /// </summary>
-        protected bool IsPersistent(object obj) {
-            return Container.IsPersistent(obj);
-        }
+        protected bool IsPersistent(object obj) => Container.IsPersistent(obj);
 
         /// <summary>
         ///     Make the specified transient object persistent. Throws an exception if object is already persistent.
@@ -175,17 +164,13 @@ namespace NakedObjects.Services {
         ///     Instances of T as starting point for LINQ query
         /// </summary>
         /// <seealso cref="Instances" />
-        protected IQueryable<T> Instances<T>() where T : class {
-            return Container.Instances<T>();
-        }
+        protected IQueryable<T> Instances<T>() where T : class => Container.Instances<T>();
 
         /// <summary>
         ///     Instances of Type as starting point for LINQ query. Use when Type is not known at compile time
         /// </summary>
         /// <seealso cref="Instances{T}" />
-        protected IQueryable Instances(Type type) {
-            return Container.Instances(type);
-        }
+        protected IQueryable Instances(Type type) => Container.Instances(type);
 
         #endregion
     }

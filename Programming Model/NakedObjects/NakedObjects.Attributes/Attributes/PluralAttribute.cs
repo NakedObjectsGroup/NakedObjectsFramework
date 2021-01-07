@@ -21,12 +21,10 @@ namespace NakedObjects {
     ///         the plural form of the name using the Plural atttibute
     ///     </para>
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class)]
     public class PluralAttribute : Attribute {
-        public PluralAttribute(string s) {
-            Value = s;
-        }
+        public PluralAttribute(string s) => Value = s;
 
-        public string Value { get; private set; }
+        public string Value { get; }
     }
 }

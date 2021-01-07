@@ -10,9 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Reflector.FacetFactory;
-using NakedObjects.Reflector.Reflect;
 
 namespace NakedObjects.Reflector.Test.FacetFactory {
     // Reflector place holder for defaulted naming facet factory tests !!!

@@ -7,7 +7,6 @@
 
 using System;
 using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
 using System.Diagnostics;
 using NakedObjects.Services;
 using NUnit.Framework;

@@ -6,6 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework;
 
 namespace NakedObjects {
     /// <summary>
@@ -22,16 +23,12 @@ namespace NakedObjects {
     ///         </para>
     ///     </para>
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
     public class DisabledAttribute : Attribute {
-        public DisabledAttribute() {
-            Value = WhenTo.Always;
-        }
+        public DisabledAttribute() => Value = WhenTo.Always;
 
-        public DisabledAttribute(WhenTo w) {
-            Value = w;
-        }
+        public DisabledAttribute(WhenTo w) => Value = w;
 
-        public WhenTo Value { get; private set; }
+        public WhenTo Value { get; }
     }
 }

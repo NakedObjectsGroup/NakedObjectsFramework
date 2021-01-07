@@ -23,7 +23,6 @@ using NakedObjects.Core.Util;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.ParallelReflector.Utils;
-using NakedObjects.Util;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class ActionChoicesViaFunctionFacetFactory : FunctionalFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IMethodFilteringFacetFactory {

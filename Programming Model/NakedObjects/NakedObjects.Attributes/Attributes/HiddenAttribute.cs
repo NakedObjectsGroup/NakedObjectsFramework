@@ -6,22 +6,20 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using NakedFramework;
 
 namespace NakedObjects {
     /// <summary>
     ///     Indicates that the member (property, collection or action) to which it is applied should never be
     ///     visible to the user
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property)]
     public class HiddenAttribute : Attribute {
-
-        public HiddenAttribute(WhenTo w) {
-            Value = w;
-        }
+        public HiddenAttribute(WhenTo w) => Value = w;
 
         //Equivalent to specifying WhenTo.Always
         public HiddenAttribute() : this(WhenTo.Always) { }
 
-        public WhenTo Value { get; private set; }
+        public WhenTo Value { get; }
     }
 }

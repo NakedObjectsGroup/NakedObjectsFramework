@@ -31,7 +31,6 @@ using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
 using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Persistor.Entity.Util;
-using NakedObjects.Util;
 
 [assembly: InternalsVisibleTo("NakedFramework.Persistor.Entity.Test")]
 

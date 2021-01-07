@@ -9,12 +9,10 @@ using System;
 
 namespace NakedObjects {
     [Obsolete]
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
     public class TypicalLengthAttribute : Attribute {
-        public TypicalLengthAttribute(int i) {
-            Value = i;
-        }
+        public TypicalLengthAttribute(int i) => Value = i;
 
-        public int Value { get; private set; }
+        public int Value { get; }
     }
 }

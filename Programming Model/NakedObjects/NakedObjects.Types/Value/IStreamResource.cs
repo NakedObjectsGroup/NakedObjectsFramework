@@ -9,8 +9,8 @@ using System.IO;
 
 namespace NakedObjects.Value {
     /// <summary>
-    /// Interface implemented by both FileAttachment and Image
-    /// (Not intended to be used directly within domain code.) 
+    ///     Interface implemented by both FileAttachment and Image
+    ///     (Not intended to be used directly within domain code.)
     /// </summary>
     public interface IStreamResource {
         string MimeType { get; }

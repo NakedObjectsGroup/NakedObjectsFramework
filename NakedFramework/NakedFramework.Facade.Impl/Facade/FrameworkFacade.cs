@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using Microsoft.Extensions.Logging;
+using NakedFramework;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
@@ -30,7 +31,6 @@ using NakedObjects.Facade.Interface;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Facade.Utility;
 using NakedObjects.Meta.Menu;
-using NakedObjects.Util;
 
 namespace NakedObjects.Facade.Impl {
     public class FrameworkFacade : IFrameworkFacade {

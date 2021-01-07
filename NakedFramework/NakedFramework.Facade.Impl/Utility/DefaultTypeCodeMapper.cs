@@ -7,7 +7,6 @@
 
 using System;
 using NakedObjects.Services;
-using NakedObjects.Util;
 
 namespace NakedObjects.Facade.Impl.Utility {
     public class DefaultTypeCodeMapper : ITypeCodeMapper {

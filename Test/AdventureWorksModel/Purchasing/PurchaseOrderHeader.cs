@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using NakedFramework;
 using NakedObjects;
 
 namespace AdventureWorksModel {
@@ -163,7 +164,7 @@ namespace AdventureWorksModel {
 
         private ICollection<PurchaseOrderDetail> _details = new List<PurchaseOrderDetail>();
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [Eagerly(Do.Rendering)]
         [TableView(true, "OrderQty", "Product", "UnitPrice", "LineTotal")]
         public virtual ICollection<PurchaseOrderDetail> Details {
             get { return _details; }

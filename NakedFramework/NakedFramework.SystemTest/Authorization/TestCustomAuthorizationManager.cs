@@ -8,8 +8,6 @@
 using System;
 using System.Data.Entity;
 using System.Security.Principal;
-using Microsoft.Extensions.DependencyInjection;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;

@@ -12,7 +12,7 @@ using System.Reflection;
 using AdventureWorksModel;
 using AdventureWorksModel.Sales;
 using Microsoft.Extensions.Configuration;
-using NakedObjects.Menu;
+using NakedFramework;
 
 namespace NakedObjects.Rest.App.Demo {
     public static class NakedObjectsRunSettings {

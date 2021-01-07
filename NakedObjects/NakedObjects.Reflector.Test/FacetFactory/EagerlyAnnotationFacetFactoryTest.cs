@@ -9,14 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Reflector.FacetFactory;
-using NakedObjects.Reflector.Reflect;
 
 // ReSharper disable UnusedMember.Local
 
@@ -38,7 +37,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
             var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
-            Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
+            Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
             Assert.IsNotNull(metamodel);
         }
 
@@ -52,7 +51,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
             var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
-            Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
+            Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
             Assert.IsNotNull(metamodel);
         }
 
@@ -66,7 +65,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
             var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
-            Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
+            Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
             Assert.IsNotNull(metamodel);
         }
 
@@ -80,7 +79,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
             Assert.IsNotNull(facet);
             Assert.IsTrue(facet is EagerlyFacet);
             var propertyDefaultFacetAnnotation = (EagerlyFacet) facet;
-            Assert.AreEqual(EagerlyAttribute.Do.Rendering, propertyDefaultFacetAnnotation.What);
+            Assert.AreEqual(Do.Rendering, propertyDefaultFacetAnnotation.What);
             Assert.IsNotNull(metamodel);
         }
 
@@ -140,14 +139,14 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
         #region Nested type: Customer1
 
         private class Customer1 {
-            [Eagerly(EagerlyAttribute.Do.Rendering)]
+            [Eagerly(Do.Rendering)]
 
             public int Prop { get; set; }
 
-            [Eagerly(EagerlyAttribute.Do.Rendering)]
+            [Eagerly(Do.Rendering)]
             public IList<Customer1> Coll { get; set; }
 
-            [Eagerly(EagerlyAttribute.Do.Rendering)]
+            [Eagerly(Do.Rendering)]
             public IList<Customer1> Act() => new List<Customer1>();
         }
 
@@ -155,7 +154,7 @@ namespace NakedObjects.Reflector.Test.FacetFactory {
 
         #region Nested type: Customer2
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [Eagerly(Do.Rendering)]
         private class Customer2 {
             public int Prop { get; set; }
             public IList<Customer1> Coll { get; set; }

@@ -19,9 +19,9 @@ namespace NakedObjects.Services {
     /// </summary>
     public interface IObjectFinder {
         /// <summary>
-        /// Given a compound key that defines both the type and the instance
-        /// (e.g. "MyNamespace.Foo|10786"), this method will retrieve that object
-        /// provided that it also implements the specified 'role interface' (T).
+        ///     Given a compound key that defines both the type and the instance
+        ///     (e.g. "MyNamespace.Foo|10786"), this method will retrieve that object
+        ///     provided that it also implements the specified 'role interface' (T).
         /// </summary>
         /// <typeparam name="T">The 'role interface' that defines the relationship.</typeparam>
         /// <param name="compoundKey"></param>
@@ -29,10 +29,10 @@ namespace NakedObjects.Services {
         T FindObject<T>(string compoundKey);
 
         /// <summary>
-        /// Generates a compound key for the object that defines both its type and
-        /// the instance, based on its keys e.g."MyNamespace.Foo|10786" or 
-        /// "MyNamespace.Bar|10|56|name". The object must implement the specified
-        /// 'role interface', T.
+        ///     Generates a compound key for the object that defines both its type and
+        ///     the instance, based on its keys e.g."MyNamespace.Foo|10786" or
+        ///     "MyNamespace.Bar|10|56|name". The object must implement the specified
+        ///     'role interface', T.
         /// </summary>
         /// <typeparam name="T">The 'role interface' that defines the relationship.</typeparam>
         /// <param name="obj"></param>
@@ -40,8 +40,8 @@ namespace NakedObjects.Services {
         string GetCompoundKey<T>(T obj);
 
         /// <summary>
-        /// Helper method for retring an object that has a single integer key and
-        /// where you know the object's type.
+        ///     Helper method for retring an object that has a single integer key and
+        ///     where you know the object's type.
         /// </summary>
         /// <param name="type"></param>
         /// <param name="key"></param>
@@ -49,8 +49,8 @@ namespace NakedObjects.Services {
         object FindBySingleIntegerKey(Type type, int key);
 
         /// <summary>
-        /// Helper method for retring an object that has a single integer key and
-        /// where you know the object's type.
+        ///     Helper method for retring an object that has a single integer key and
+        ///     where you know the object's type.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
@@ -58,7 +58,7 @@ namespace NakedObjects.Services {
         T FindBySingleIntegerKey<T>(int key) where T : class;
 
         /// <summary>
-        /// Generic mechanism to obtain a generic queryable of a given type.
+        ///     Generic mechanism to obtain a generic queryable of a given type.
         /// </summary>
         /// <typeparam name="T">A type (commonly an interface that is known to be implemented by the parameter type</typeparam>
         /// <param name="type"></param>

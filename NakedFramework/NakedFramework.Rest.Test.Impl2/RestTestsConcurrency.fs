@@ -24,8 +24,8 @@ open NakedObjects.Architecture.Menu
 open Microsoft.Extensions.DependencyInjection
 open Newtonsoft.Json
 open NakedObjects.Rest.Snapshot.Utility
-open NakedObjects.Menu
 open Microsoft.Extensions.Configuration
+open NakedFramework
 
 type NullStringHasher() = 
     interface IStringHasher with

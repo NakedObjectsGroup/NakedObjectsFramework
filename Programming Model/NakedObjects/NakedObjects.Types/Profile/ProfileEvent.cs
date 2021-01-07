@@ -17,6 +17,6 @@ namespace NakedObjects.Profile {
         Persisted,
         Persisting,
         Updated,
-        Updating,
+        Updating
     }
 }

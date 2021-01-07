@@ -8,8 +8,7 @@
 using System;
 
 namespace NakedObjects {
-    
     [Obsolete]
-    [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class)]
     public class ProgramPersistableOnlyAttribute : Attribute { }
 }

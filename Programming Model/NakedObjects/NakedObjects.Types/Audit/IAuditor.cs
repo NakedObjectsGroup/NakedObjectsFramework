@@ -9,7 +9,7 @@ using System.Security.Principal;
 
 namespace NakedObjects.Audit {
     /// <summary>
-    /// Allows domain programmers to define an auditing service.
+    ///     Allows domain programmers to define an auditing service.
     /// </summary>
     public interface IAuditor {
         void ActionInvoked(IPrincipal byPrincipal, string actionName, object onObject, bool queryOnly, object[] withParameters);

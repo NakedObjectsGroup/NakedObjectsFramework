@@ -12,7 +12,6 @@ using NakedObjects.Architecture.Menu;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core;
 using NakedObjects.Core.Util;
-using NakedObjects.Util;
 
 namespace NakedObjects.Meta.Component {
     [Serializable]

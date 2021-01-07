@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
+using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -17,7 +18,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedFunctions.Reflector.FacetFactory {
     public sealed class DefaultNamingFacetFactory : FunctionalFacetFactoryProcessor, IAnnotationBasedFacetFactory {

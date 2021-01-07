@@ -8,9 +8,9 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using NakedFramework;
 using NakedObjects;
 using NakedObjects.Services;
-using NakedObjects.Menu;
 
 namespace AdventureWorksModel {
     [DisplayName("Sales")]

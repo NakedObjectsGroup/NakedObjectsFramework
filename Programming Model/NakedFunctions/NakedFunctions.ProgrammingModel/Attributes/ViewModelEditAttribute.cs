@@ -8,7 +8,6 @@
 using System;
 
 namespace NakedFunctions {
-
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
     public class ViewModelEditAttribute : Attribute { }
 }

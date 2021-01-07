@@ -5,9 +5,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System;
-using System.Linq;
-using AdventureWorksModel;
 using AW;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,8 +15,6 @@ using Microsoft.Extensions.Logging;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Architecture.Component;
 using NakedObjects.DependencyInjection.Extensions;
-using NakedObjects.Menu;
-using NakedObjects.Reflector.Extensions;
 using NakedObjects.Rest.Extensions;
 using Newtonsoft.Json;
 

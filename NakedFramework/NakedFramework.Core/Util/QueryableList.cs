@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using NakedFramework;
 
 namespace NakedObjects.Core.Util {
     public class QueryableList<T> : IList, IList<T>, IQueryable<T> {

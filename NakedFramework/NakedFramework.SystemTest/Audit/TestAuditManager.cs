@@ -9,14 +9,10 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Principal;
-using Microsoft.Extensions.DependencyInjection;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Audit;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Audit;
-using NakedObjects.Meta.Authorization;
 using NakedObjects.Services;
-using NakedObjects.Util;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global

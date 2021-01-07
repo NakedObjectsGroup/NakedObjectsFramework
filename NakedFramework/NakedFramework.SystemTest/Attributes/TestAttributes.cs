@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading;
 using SystemTest.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NakedFramework;
 using NakedObjects;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core;

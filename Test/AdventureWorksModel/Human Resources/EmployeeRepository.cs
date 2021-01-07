@@ -9,6 +9,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using NakedFramework;
 using NakedObjects;
 using NakedObjects.Services;
 
@@ -82,7 +83,7 @@ namespace AdventureWorksModel {
         }
 
         [FinderAction]
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [Eagerly(Do.Rendering)]
         [TableView(true, "GroupName")]
         public IQueryable<Department> ListAllDepartments() {
             return Container.Instances<Department>();

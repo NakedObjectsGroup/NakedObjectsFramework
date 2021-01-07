@@ -7,8 +7,8 @@
 
 namespace NakedObjects {
     /// <summary>
-    /// Defines all the domain model methods recognised by NakedObjects, and the prefixes for 'complementary' methods
-    /// (associated with an action or property).
+    ///     Defines all the domain model methods recognised by NakedObjects, and the prefixes for 'complementary' methods
+    ///     (associated with an action or property).
     /// </summary>
     public static class RecognisedMethodsAndPrefixes {
         #region Standard methods ignored as actions
@@ -35,7 +35,7 @@ namespace NakedObjects {
         public static readonly string OnPersistingErrorMethod;
         public static readonly string OnUpdatingErrorMethod;
 
-        public static string[] RecognisedMethods = new string[] {
+        public static string[] RecognisedMethods = {
             CreatedMethod,
             DeletedMethod,
             DeletingMethod,
@@ -66,7 +66,7 @@ namespace NakedObjects {
         public static readonly string ParameterChoicesPrefix;
         public static readonly string ValidatePrefix;
 
-        public static string[] RecognisedPrefixes = new string[] {
+        public static string[] RecognisedPrefixes = {
             AutoCompletePrefix,
             ChoicesPrefix,
             ClearPrefix,
@@ -82,7 +82,7 @@ namespace NakedObjects {
         //Defines any other methods (not included in AllRecognisedMethods) that are
         //recognised by the NOF but solely for the purpose of not rendering them
         //as user-visible actions.
-        public static string[] OtherIgnoredMethods = new string[] {
+        public static string[] OtherIgnoredMethods = {
             GetEnumeratorMethod
         };
 

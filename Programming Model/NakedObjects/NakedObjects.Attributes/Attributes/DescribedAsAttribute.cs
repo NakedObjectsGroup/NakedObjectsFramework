@@ -22,12 +22,10 @@ namespace NakedObjects {
     ///         Instead of this may use <see cref="System.ComponentModel.DescriptionAttribute" />
     ///     </para>
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Parameter)]
     public class DescribedAsAttribute : Attribute {
-        public DescribedAsAttribute(string s) {
-            Value = s;
-        }
+        public DescribedAsAttribute(string s) => Value = s;
 
-        public string Value { get; private set; }
+        public string Value { get; }
     }
 }

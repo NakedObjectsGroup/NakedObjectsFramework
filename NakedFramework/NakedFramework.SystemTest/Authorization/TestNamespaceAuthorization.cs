@@ -7,13 +7,10 @@
 
 using System;
 using System.Data.Entity;
-using System.Linq;
 using System.Security.Principal;
-using Microsoft.Extensions.DependencyInjection;
 using MyApp.MyCluster1;
 using MyApp.MyCluster2;
 using NakedObjects;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Security;
 using NakedObjects.Services;

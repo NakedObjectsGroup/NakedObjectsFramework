@@ -8,6 +8,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using NakedFramework;
 using NakedObjects;
 
 // ReSharper disable UnusedMember.Global
@@ -40,7 +41,7 @@ namespace RestfulObjects.Test.Data {
         public virtual MostSimple AnAutoCompleteReference { get; set; }
         public virtual MostSimple AConditionalChoicesReference { get; set; }
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [Eagerly(Do.Rendering)]
         public virtual MostSimple AnEagerReference { get; set; }
 
         public virtual MostSimple[] ChoicesAChoicesReference() {

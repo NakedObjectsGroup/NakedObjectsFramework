@@ -17,7 +17,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Adapter;
 using NakedObjects.Core.Resolve;
 using NakedObjects.Core.Util;
-using NakedObjects.Util;
 
 namespace NakedObjects.Core.Component {
     public sealed class LifeCycleManager : ILifecycleManager {

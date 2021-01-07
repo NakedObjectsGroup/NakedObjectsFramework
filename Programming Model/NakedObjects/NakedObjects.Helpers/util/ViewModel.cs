@@ -26,7 +26,7 @@ namespace NakedObjects {
         }
 
         public void PopulateUsingKeys(string[] keys) {
-            int id = int.Parse(keys.Single());
+            var id = int.Parse(keys.Single());
             try {
                 Root = Container.Instances<T>().Where(x => x.Id == id).Single();
             }
@@ -35,9 +35,7 @@ namespace NakedObjects {
             }
         }
 
-        public virtual bool HideRoot() {
-            return true;
-        }
+        public virtual bool HideRoot() => true;
 
         // Virtual so that a given implementation may wish to render the Root object visible 
         // and perhaps rename it with DisplayName

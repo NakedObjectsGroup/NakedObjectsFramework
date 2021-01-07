@@ -10,8 +10,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Principal;
-using Microsoft.Extensions.DependencyInjection;
-using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Profile;
 using NakedObjects.Profile;

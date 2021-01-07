@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 namespace NakedObjects.Async {
     /// <summary>
-    /// Interface representation of the AsyncService class (in NakedObjects.Core.dll) -
-    /// for injection into domain code.
+    ///     Interface representation of the AsyncService class (in NakedObjects.Core.dll) -
+    ///     for injection into domain code.
     /// </summary>
     public interface IAsyncService {
         /// <summary>

@@ -11,7 +11,6 @@ using System.ComponentModel;
 using System.Linq;
 using NakedObjects;
 using NakedObjects.Services;
-using NakedObjects.Util;
 using System.Text;
 
 namespace AdventureWorksModel {

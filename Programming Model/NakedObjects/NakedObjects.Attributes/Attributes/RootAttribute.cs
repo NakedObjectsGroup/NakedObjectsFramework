@@ -13,6 +13,6 @@ namespace NakedObjects {
     ///     with the aggregate root. This is currently just used for Entity Framework complex types
     ///     - its use for other types of aggregated objects is under investigation.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class RootAttribute : Attribute { }
 }

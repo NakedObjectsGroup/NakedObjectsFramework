@@ -7,11 +7,11 @@
 
 using System;
 using System.Linq;
+using NakedFramework;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade.Impl.Utility;
-using NakedObjects.Util;
 using NakedObjects.Value;
 
 namespace NakedObjects.Facade.Impl {

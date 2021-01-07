@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using NakedFramework;
 using NakedObjects;
 
 // ReSharper disable UnusedMember.Global
@@ -42,7 +43,7 @@ namespace RestfulObjects.Test.Data {
         [MemberOrder(Sequence = "2")]
         public virtual ISet<MostSimple> AnEmptySet { get; set; } = new HashSet<MostSimple>();
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [Eagerly(Do.Rendering)]
         public virtual IList<MostSimple> AnEagerCollection { get; set; }
 
         #region IViewModel Members

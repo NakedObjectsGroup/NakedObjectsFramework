@@ -7,7 +7,7 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using NakedObjects.Menu;
+using NakedFramework;
 using NakedObjects.Meta.Audit;
 using NakedObjects.Meta.Authorization;
 using NakedObjects.Meta.Profile;

@@ -11,7 +11,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Services;
-using NakedObjects.Util;
 
 namespace NakedObjects.Facade.Impl.Implementation {
     public class OidTranslatorSlashSeparatedTypeAndIds : IOidTranslator {

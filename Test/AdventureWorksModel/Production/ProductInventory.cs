@@ -7,8 +7,8 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using NakedFramework;
 using NakedObjects;
-using NakedObjects.Menu;
 
 namespace AdventureWorksModel {
     [IconName("cartons.png")]

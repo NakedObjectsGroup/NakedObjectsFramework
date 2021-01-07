@@ -14,7 +14,6 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.ParallelReflector.Component;
-using NakedObjects.Reflector.Component;
 
 namespace NakedObjects.Reflector.Test.Reflect {
     public class TestPoco { }

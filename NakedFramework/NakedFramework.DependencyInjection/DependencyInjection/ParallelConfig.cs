@@ -7,10 +7,10 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using NakedFramework;
 using NakedFramework.Architecture.Component;
 using NakedFramework.Core.Component;
 using NakedFramework.ModelBuilding.Component;
-using NakedFunctions;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Authentication;
 using NakedObjects.Core.Component;
@@ -19,7 +19,6 @@ using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Component;
 using NakedObjects.Meta.Menu;
 using NakedObjects.Service;
-using NakedObjects.Menu;
 
 namespace NakedObjects.DependencyInjection.DependencyInjection {
     public static class ParallelConfig {

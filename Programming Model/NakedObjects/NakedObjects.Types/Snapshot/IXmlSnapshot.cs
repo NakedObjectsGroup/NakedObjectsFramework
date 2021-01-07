@@ -7,8 +7,8 @@
 
 namespace NakedObjects.Snapshot {
     /// <summary>
-    /// API for the XmlSnapshot that is defined in the NakedObjects Framework and is returned by
-    /// the GenerateSnapshot method on IXmlSnapshotService.
+    ///     API for the XmlSnapshot that is defined in the NakedObjects Framework and is returned by
+    ///     the GenerateSnapshot method on IXmlSnapshotService.
     /// </summary>
     public interface IXmlSnapshot {
         string Xml { get; }

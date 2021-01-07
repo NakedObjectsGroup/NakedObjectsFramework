@@ -9,6 +9,7 @@ using System;
 using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
+using NakedFramework;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.FacetFactory;
@@ -41,6 +42,6 @@ namespace NakedObjects.Reflector.FacetFactory {
             return metamodel;
         }
 
-        private static IEagerlyFacet Create(EagerlyAttribute attribute, ISpecification holder) => attribute == null ? null : new EagerlyFacet(EagerlyAttribute.Do.Rendering, holder);
+        private static IEagerlyFacet Create(EagerlyAttribute attribute, ISpecification holder) => attribute == null ? null : new EagerlyFacet(Do.Rendering, holder);
     }
 }

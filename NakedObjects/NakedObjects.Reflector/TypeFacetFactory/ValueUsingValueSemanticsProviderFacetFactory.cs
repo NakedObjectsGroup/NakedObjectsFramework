@@ -12,7 +12,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SemanticsProvider;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Reflector.FacetFactory;
 
 namespace NakedObjects.Reflector.TypeFacetFactory {
     public abstract class ValueUsingValueSemanticsProviderFacetFactory : SystemTypeFacetFactoryProcessor

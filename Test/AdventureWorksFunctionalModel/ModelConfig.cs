@@ -1,9 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
-using NakedObjects.Menu; //TODO: Replace with NakedFramework version when working.
+//TODO: Replace with NakedFramework version when working.
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using NakedFramework;
 
 namespace AW
 {

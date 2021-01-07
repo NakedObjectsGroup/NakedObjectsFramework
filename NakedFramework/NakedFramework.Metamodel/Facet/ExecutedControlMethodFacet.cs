@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using NakedFramework;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Spec;
 

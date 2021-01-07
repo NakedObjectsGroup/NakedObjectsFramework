@@ -7,7 +7,7 @@
 
 using System;
 using System.Linq;
-using NakedObjects.Menu;
+using NakedFramework;
 using NUnit.Framework;
 using TestObjectMenu;
 

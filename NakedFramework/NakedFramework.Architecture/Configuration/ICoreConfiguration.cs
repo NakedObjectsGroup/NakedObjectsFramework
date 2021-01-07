@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using NakedObjects.Menu;
+using NakedFramework;
 
 namespace NakedObjects.Architecture.Configuration {
     public interface ICoreConfiguration {

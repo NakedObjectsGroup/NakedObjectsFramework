@@ -8,18 +8,16 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using Framework_PM = NakedCore.Util.TypeUtils;
+using Framework_PM = NakedFramework.TypeUtils;
 
-namespace NakedObjects.Util
-{
+namespace NakedObjects {
     /// <summary>
-    /// Utility methods for safely obtaining and using types defined within
-    /// a domain model.  The framework makes extensive
-    /// use of these utils, but they are provided within the ProgrammingModel assemblies to permit optional use within domain code.
+    ///     Utility methods for safely obtaining and using types defined within
+    ///     a domain model.  The framework makes extensive
+    ///     use of these utils, but they are provided within the ProgrammingModel assemblies to permit optional use within
+    ///     domain code.
     /// </summary>
-    public static class TypeUtils
-    {
-
+    public static class TypeUtils {
         public static object NewInstance(Type type) => Framework_PM.NewInstance(type);
 
         public static Type ImplementingTypeOrNull(Type typeCandidate, Type requiredType) => Framework_PM.ImplementingTypeOrNull(typeCandidate, requiredType);

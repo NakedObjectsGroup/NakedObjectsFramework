@@ -23,7 +23,6 @@ using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
 using NakedObjects.ParallelReflector.FacetFactory;
 using NakedObjects.ParallelReflector.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class PropertyMethodsFacetFactory : ObjectFacetFactoryProcessor, IMethodPrefixBasedFacetFactory, IPropertyOrCollectionIdentifyingFacetFactory

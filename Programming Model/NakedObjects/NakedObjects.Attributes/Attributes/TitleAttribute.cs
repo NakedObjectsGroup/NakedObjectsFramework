@@ -17,6 +17,6 @@ namespace NakedObjects {
     ///         be marked so that it is used insteat of providing an additional title method.
     ///     </para>
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     public class TitleAttribute : Attribute { }
 }

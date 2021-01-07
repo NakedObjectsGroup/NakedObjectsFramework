@@ -9,44 +9,40 @@ using System;
 
 namespace NakedObjects {
     /// <summary>
-    ///  Attribute to apply to a domain type to indicate scope of reflection.
+    ///     Attribute to apply to a domain type to indicate scope of reflection.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public class NakedObjectsTypeAttribute : Attribute {
         /// <summary>
-        /// Sets the ReflectionScope to the default value of 'All'
+        ///     Sets the ReflectionScope to the default value of 'All'
         /// </summary>
-        public NakedObjectsTypeAttribute() {
-            ReflectionScope = ReflectOver.All;
-        }
+        public NakedObjectsTypeAttribute() => ReflectionScope = ReflectOver.All;
 
-        public NakedObjectsTypeAttribute(ReflectOver reflectionScope) {
-            ReflectionScope = reflectionScope;
-        }
+        public NakedObjectsTypeAttribute(ReflectOver reflectionScope) => ReflectionScope = reflectionScope;
 
         public ReflectOver ReflectionScope { get; set; }
     }
 
     public enum ReflectOver {
         /// <summary>
-        /// Type and all members (except where marked [NakedObjectsIgnore])
+        ///     Type and all members (except where marked [NakedObjectsIgnore])
         /// </summary>
         All = 1,
 
         /// <summary>
-        /// Typically used on a system service, where the type must be in the meta-model, but there are no
-        /// actions/properties for user display.
+        ///     Typically used on a system service, where the type must be in the meta-model, but there are no
+        ///     actions/properties for user display.
         /// </summary>
         TypeOnlyNoMembers = 2,
 
         /// <summary>
-        /// Allows an 'additive' style of coding, where only those members marked [NakedObjectsInclude] are
-        /// reflected over
+        ///     Allows an 'additive' style of coding, where only those members marked [NakedObjectsInclude] are
+        ///     reflected over
         /// </summary>
         ExplicitlyIncludedMembersOnly = 3,
 
         /// <summary>
-        /// The type and all members to be ignored by Naked Objects (and hence excluded from the meta-model)
+        ///     The type and all members to be ignored by Naked Objects (and hence excluded from the meta-model)
         /// </summary>
         None = 4
     }

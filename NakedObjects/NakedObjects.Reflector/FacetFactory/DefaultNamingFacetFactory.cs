@@ -17,7 +17,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class DefaultNamingFacetFactory : ObjectFacetFactoryProcessor {

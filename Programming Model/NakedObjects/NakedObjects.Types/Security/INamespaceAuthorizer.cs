@@ -9,7 +9,8 @@ using System.Security.Principal;
 
 namespace NakedObjects.Security {
     /// <summary>
-    ///     An implementation of this interface provides authorization for a single fully-qualified type, or for any types within
+    ///     An implementation of this interface provides authorization for a single fully-qualified type, or for any types
+    ///     within
     ///     a namespace.
     /// </summary>
     public interface INamespaceAuthorizer {

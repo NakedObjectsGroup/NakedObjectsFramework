@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using NakedFramework;
 using NakedObjects;
 
 // ReSharper disable UnusedMember.Global
@@ -45,7 +46,7 @@ namespace RestfulObjects.Test.Data {
         [NotMapped]
         public virtual MostSimple AFindMenuReference { get; set; }
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [Eagerly(Do.Rendering)]
         public virtual MostSimple AnEagerReference { get; set; }
 
         public virtual MostSimple[] ChoicesAChoicesReference() {

@@ -6,14 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
-using NakedObjects.Value;
 using RestfulObjects.Test.Data;
 
 namespace NakedObjects.Rest.Test.App {

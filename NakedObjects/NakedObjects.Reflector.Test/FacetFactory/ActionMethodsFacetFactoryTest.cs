@@ -14,19 +14,15 @@ using System.Reflection;
 using System.Security.Principal;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NakedFramework;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.Core.Configuration;
-using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.SpecImmutable;
-using NakedObjects.Reflector.Component;
-using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.FacetFactory;
-using NakedObjects.Reflector.Reflect;
 
 #pragma warning disable 612
 

@@ -6,11 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using NakedObjects.Util;
 
 namespace NakedObjects.Services {
     /// <summary>
-    ///     An implementation of IObjectFinder that will delegate the string representation of a type to an injected ITypeCodeMapper
+    ///     An implementation of IObjectFinder that will delegate the string representation of a type to an injected
+    ///     ITypeCodeMapper
     ///     service, if one exists. (Otherwise it will default to using the fully-qualified class name).
     /// </summary>
     public class ObjectFinderWithTypeCodeMapper : ObjectFinder {
@@ -22,12 +22,10 @@ namespace NakedObjects.Services {
 
         #region Convert between Type and string representation (code) for Type
 
-        protected override Type TypeFromCode(string code) {
-            return TypeCodeMapper.TypeFromCode(code);
-        }
+        protected override Type TypeFromCode(string code) => TypeCodeMapper.TypeFromCode(code);
 
         protected override string CodeFromType(object obj) {
-            Type type = obj.GetType().GetProxiedType();
+            var type = obj.GetType().GetProxiedType();
             return TypeCodeMapper.CodeFromType(type);
         }
 

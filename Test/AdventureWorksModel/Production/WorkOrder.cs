@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using NakedFramework;
 using NakedObjects;
 
 namespace AdventureWorksModel {
@@ -151,7 +152,7 @@ namespace AdventureWorksModel {
 
         [Disabled]
         [Hidden(WhenTo.UntilPersisted)]
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [Eagerly(Do.Rendering)]
         [TableView(true, "OperationSequence", "ScheduledStartDate", "ScheduledEndDate", "Location", "PlannedCost")]
         public virtual ICollection<WorkOrderRouting> WorkOrderRoutings {
             get { return _WorkOrderRouting; }

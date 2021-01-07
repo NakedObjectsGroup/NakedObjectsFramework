@@ -17,7 +17,6 @@ using NakedObjects.Core;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.SpecImmutable;
 using NakedObjects.ParallelReflector.Reflect;
-using NakedObjects.Util;
 
 namespace NakedObjects.ParallelReflector.Component {
     public abstract class AbstractParallelReflector : IReflector {

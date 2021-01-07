@@ -13,6 +13,6 @@ namespace NakedObjects {
     ///     persisted, or that properties within a class are not persisted.
     ///     Attempting to persist such an object programmatically would throw an exception.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
     public class NotPersistedAttribute : Attribute { }
 }

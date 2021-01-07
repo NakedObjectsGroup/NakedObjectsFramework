@@ -7,7 +7,7 @@
 
 using System;
 
-namespace NakedFramework.Menu {
+namespace NakedFramework {
     /// <summary>
     ///     Provides methods for constructing a menu on a domain object. Implementation of this
     ///     interface will be provided by the framework.
@@ -75,6 +75,7 @@ namespace NakedFramework.Menu {
         /// <param name="renamedTo"></param>
         /// <returns>This menu (for fluent programming)</returns>
         IMenu AddAction(Type fromType, string actionName);
+
         IMenu AddRemainingActions(Type fromType);
     }
 }

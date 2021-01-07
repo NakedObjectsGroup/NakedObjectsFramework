@@ -10,7 +10,7 @@ using System.IO;
 
 namespace NakedObjects.Value {
     /// <summary>
-    /// Specialised version of FileAttachment for handling images.
+    ///     Specialised version of FileAttachment for handling images.
     /// </summary>
     [Serializable]
     public class Image : FileAttachment {
@@ -20,8 +20,6 @@ namespace NakedObjects.Value {
 
         public Image(Stream resource, string name = null, string mimeType = null) : base(resource, name, mimeType) { }
 
-        public override string ToString() {
-            return "Image";
-        }
+        public override string ToString() => "Image";
     }
 }

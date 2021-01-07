@@ -8,7 +8,6 @@
 using System;
 using System.Data.Entity;
 using Microsoft.Extensions.Configuration;
-using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 using NUnit.Framework;
 

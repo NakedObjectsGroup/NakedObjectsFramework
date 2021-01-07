@@ -9,10 +9,10 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedObjects;
-using NakedObjects.Menu;
 using NakedObjects.Services;
 using System;
 using System.Collections.Generic;
+using NakedFramework;
 
 namespace AdventureWorksModel {
     [DisplayName("Customers")]

@@ -69,7 +69,7 @@ namespace AdventureWorksModel {
 
         //private ICollection<VendorAddress> _VendorAddress = new List<VendorAddress>();
 
-        //[Eagerly(EagerlyAttribute.Do.Rendering)]
+        //[Eagerly(Do.Rendering)]
         //[TableView(true)] // TableView == ListView
         //public virtual ICollection<VendorAddress> Addresses {
         //    get { return _VendorAddress; }
@@ -78,7 +78,7 @@ namespace AdventureWorksModel {
 
         //private ICollection<VendorContact> _VendorContact = new List<VendorContact>();
 
-        //[Eagerly(EagerlyAttribute.Do.Rendering)]
+        //[Eagerly(Do.Rendering)]
         //[TableView(true)] // TableView == ListView
         //public virtual ICollection<VendorContact> Contacts {
         //    get { return _VendorContact; }

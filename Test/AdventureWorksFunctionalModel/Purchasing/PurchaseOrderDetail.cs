@@ -8,7 +8,6 @@
 using System;
 
 using NakedFunctions;
-using static AW.Helpers;
 
 namespace AW.Types {
         public record PurchaseOrderDetail {

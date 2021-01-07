@@ -21,6 +21,21 @@ namespace NakedObjects {
         [NakedObjectsIgnore]
         public virtual int Id { get; set; }
 
+        /// <summary>
+        ///     To allow sub-classes to render property visible/invisible
+        /// </summary>
+        public virtual bool HideAssociatedRoleObjectType() => false;
+
+        /// <summary>
+        ///     To allow sub-classes to render property visible/invisible
+        /// </summary>
+        public virtual bool HideAssociatedRoleObjectId() => false;
+
+        /// <summary>
+        ///     To allow sub-classes to render property visible/invisible
+        /// </summary>
+        public virtual bool HideOwner() => false;
+
         #region IPolymorphicLink<TRole,TOwner> Members
 
         [Disabled]
@@ -29,9 +44,9 @@ namespace NakedObjects {
         [Disabled]
         public virtual int AssociatedRoleObjectId { get; set; }
 
-        [NotPersisted, Disabled]
+        [NotPersisted] [Disabled]
         public virtual TRole AssociatedRoleObject {
-            get { return PolymorphicNavigator.FindObject<TRole>(AssociatedRoleObjectType, AssociatedRoleObjectId); }
+            get => PolymorphicNavigator.FindObject<TRole>(AssociatedRoleObjectType, AssociatedRoleObjectId);
             set {
                 AssociatedRoleObjectType = PolymorphicNavigator.GetType(value);
                 AssociatedRoleObjectId = value.Id;
@@ -42,26 +57,5 @@ namespace NakedObjects {
         public virtual TOwner Owner { get; set; }
 
         #endregion
-
-        /// <summary>
-        ///     To allow sub-classes to render property visible/invisible
-        /// </summary>
-        public virtual bool HideAssociatedRoleObjectType() {
-            return false;
-        }
-
-        /// <summary>
-        ///     To allow sub-classes to render property visible/invisible
-        /// </summary>
-        public virtual bool HideAssociatedRoleObjectId() {
-            return false;
-        }
-
-        /// <summary>
-        ///     To allow sub-classes to render property visible/invisible
-        /// </summary>
-        public virtual bool HideOwner() {
-            return false;
-        }
     }
 }

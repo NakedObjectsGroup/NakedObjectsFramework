@@ -7,6 +7,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using NakedFramework;
 using NakedObjects;
 using NakedObjects.Security;
 

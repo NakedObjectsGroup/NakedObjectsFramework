@@ -11,12 +11,12 @@ using System.Reflection;
 using NakedObjects.Resources;
 using NakedObjects.UtilInternal;
 
-namespace NakedObjects.Util {
+namespace NakedObjects {
     /// <summary>
-    /// Utility methods for obtaining and making use of domain object keys, whether
-    /// explicitly defined, or inferred by convention.  The Naked Objects framework makes extensive
-    /// use of these utils, but they are provided within the NakedObjects.Helpers
-    /// assembly to permit optional use within domain code.
+    ///     Utility methods for obtaining and making use of domain object keys, whether
+    ///     explicitly defined, or inferred by convention.  The Naked Objects framework makes extensive
+    ///     use of these utils, but they are provided within the NakedObjects.Helpers
+    ///     assembly to permit optional use within domain code.
     /// </summary>
     public static class KeyUtils {
         //public static T FindByKey<T>(this IQueryable<T> source, string keyName, object keyValue) {
@@ -33,16 +33,12 @@ namespace NakedObjects.Util {
             return (T) ((IInternalAccess) container).FindByKeys(typeof(T), new[] {keyValue});
         }
 
-        public static T FindByKeys<T>(this IDomainObjectContainer container, object[] keys) {
-            return (T) ((IInternalAccess) container).FindByKeys(typeof(T), keys);
-        }
+        public static T FindByKeys<T>(this IDomainObjectContainer container, object[] keys) => (T) ((IInternalAccess) container).FindByKeys(typeof(T), keys);
 
-        public static PropertyInfo[] GetKeys(this IDomainObjectContainer container, Type type) {
-            return ((IInternalAccess) container).GetKeys(type).ToArray();
-        }
+        public static PropertyInfo[] GetKeys(this IDomainObjectContainer container, Type type) => ((IInternalAccess) container).GetKeys(type).ToArray();
 
         public static PropertyInfo GetSingleKey(this IDomainObjectContainer container, Type type) {
-            PropertyInfo[] keyProperties = container.GetKeys(type);
+            var keyProperties = container.GetKeys(type);
             if (keyProperties.Count() > 1) {
                 throw new DomainException(string.Format(ProgrammingModel.MultiPartKeyMessage, type));
             }

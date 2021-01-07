@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedObjects.ProgrammingModel</id>
@@ -18,14 +19,14 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="icon.png" target="images\"/>
-    <file src="..\NakedObjects.Attributes\bin\Debug\**\NakedObjects.Attributes.dll" target="lib"/>
-    <file src="..\NakedObjects.Helpers\bin\Debug\**\NakedObjects.Helpers.dll" target="lib"/>
-    <file src="..\NakedObjects.PMResources\bin\Debug\**\NakedObjects.PMResources.dll" target="lib"/>
-    <file src="..\NakedObjects.Types\bin\Debug\**\NakedObjects.Types.dll" target="lib"/>
-    <file src="..\NakedObjects.Attributes\bin\Debug\**\NakedObjects.Attributes.pdb" target="lib"/>
-    <file src="..\NakedObjects.Helpers\bin\Debug\**\NakedObjects.Helpers.pdb" target="lib"/>
-    <file src="..\NakedObjects.PMResources\bin\Debug\**\NakedObjects.PMResources.pdb" target="lib"/>
-    <file src="..\NakedObjects.Types\bin\Debug\**\NakedObjects.Types.pdb" target="lib"/>
+    <file src="icon.png" target="images\" />
+    <file src="..\NakedObjects.Attributes\bin\Debug\**\NakedObjects.Attributes.dll" target="lib" />
+    <file src="..\NakedObjects.Helpers\bin\Debug\**\NakedObjects.Helpers.dll" target="lib" />
+    <file src="..\NakedObjects.PMResources\bin\Debug\**\NakedObjects.PMResources.dll" target="lib" />
+    <file src="..\NakedObjects.Types\bin\Debug\**\NakedObjects.Types.dll" target="lib" />
+    <file src="..\NakedObjects.Attributes\bin\Debug\**\NakedObjects.Attributes.pdb" target="lib" />
+    <file src="..\NakedObjects.Helpers\bin\Debug\**\NakedObjects.Helpers.pdb" target="lib" />
+    <file src="..\NakedObjects.PMResources\bin\Debug\**\NakedObjects.PMResources.pdb" target="lib" />
+    <file src="..\NakedObjects.Types\bin\Debug\**\NakedObjects.Types.pdb" target="lib" />
   </files>
 </package>

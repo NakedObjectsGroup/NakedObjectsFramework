@@ -1,4 +1,5 @@
-﻿using NakedObjects;
+﻿using NakedFramework;
+using NakedObjects;
 
 namespace AdventureWorksModel {
     public class ServiceWithNoVisibleActions

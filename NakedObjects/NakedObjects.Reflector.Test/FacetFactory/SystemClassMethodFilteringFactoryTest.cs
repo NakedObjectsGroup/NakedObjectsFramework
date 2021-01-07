@@ -11,19 +11,15 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NakedFunctions.Reflector.Configuration;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
-using NakedObjects.Core.Configuration;
-using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Component;
 using NakedObjects.ParallelReflector.Component;
 using NakedObjects.Reflector.Component;
 using NakedObjects.Reflector.Configuration;
 using NakedObjects.Reflector.FacetFactory;
 using NakedObjects.Reflector.Reflect;
-using NakedObjects.Reflector.Test.Reflect;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local

@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NakedFunctions.ProgrammingModel</id>
@@ -18,8 +19,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="icon.png" target="images\"/>
-    <file src="..\NakedFunctions.ProgrammingModel\bin\Debug\**\NakedFunctions.ProgrammingModel.dll" target="lib"/>
-    <file src="..\NakedFunctions.ProgrammingModel\bin\Debug\**\NakedFunctions.ProgrammingModel.pdb" target="lib"/>
+    <file src="icon.png" target="images\" />
+    <file src="..\NakedFunctions.ProgrammingModel\bin\Debug\**\NakedFunctions.ProgrammingModel.dll" target="lib" />
+    <file src="..\NakedFunctions.ProgrammingModel\bin\Debug\**\NakedFunctions.ProgrammingModel.pdb" target="lib" />
   </files>
 </package>

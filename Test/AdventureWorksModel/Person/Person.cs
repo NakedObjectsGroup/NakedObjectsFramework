@@ -15,6 +15,7 @@ using NakedObjects;
 using System.Collections.Generic;
 using NakedObjects.Value;
 using System.ComponentModel.DataAnnotations.Schema;
+using NakedFramework;
 
 namespace AdventureWorksModel {
 
@@ -248,7 +249,7 @@ namespace AdventureWorksModel {
         private ICollection<EmailAddress> _EmailAddresses = new List<EmailAddress>();
 
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [Eagerly(Do.Rendering)]
         [TableView(false, nameof(EmailAddress.EmailAddress1))] 
         public virtual ICollection<EmailAddress> EmailAddresses {
             get {

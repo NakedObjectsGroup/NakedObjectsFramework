@@ -9,7 +9,6 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
-using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.PolymorphicAssociations;
 using NUnit.Framework;

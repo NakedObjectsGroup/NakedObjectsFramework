@@ -12,6 +12,6 @@ namespace NakedObjects {
     ///     Indicates that an action paramater, or an object property (in edit mode), should be rendered
     ///     with a 'Find' menu, offering actions (see FinderActionAttribute) that will return matching types.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property)]
     public class FindMenuAttribute : Attribute { }
 }

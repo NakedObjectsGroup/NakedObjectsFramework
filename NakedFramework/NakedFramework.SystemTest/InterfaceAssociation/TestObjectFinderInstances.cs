@@ -11,7 +11,6 @@ using System.Data.Entity;
 using System.Linq;
 using NakedObjects.Services;
 using NakedObjects.SystemTest.ObjectFinderGuid;
-using NakedObjects.Util;
 using NUnit.Framework;
 
 // ReSharper disable UnusedMember.Global

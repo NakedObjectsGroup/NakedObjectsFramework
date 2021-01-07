@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
+using NakedFramework;
 using NakedObjects;
 using NakedObjects.Security;
 
@@ -113,7 +114,7 @@ namespace RestfulObjects.Test.Data {
         public virtual void AnActionReturnsVoid() { }
 
         [PageSize(0)]
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [Eagerly(Do.Rendering)]
         [TableView(true, nameof(MostSimple.Id))]
         public virtual IQueryable<MostSimple> AnActionReturnsQueryable() {
             return Container.Instances<MostSimple>().Where(ms => ms.Id == 1 || ms.Id == 2);

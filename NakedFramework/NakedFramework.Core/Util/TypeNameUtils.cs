@@ -8,7 +8,6 @@
 using System;
 using System.Linq;
 using NakedObjects.Architecture.Spec;
-using NakedObjects.Util;
 
 namespace NakedObjects.Core.Util {
     public static class TypeNameUtils {

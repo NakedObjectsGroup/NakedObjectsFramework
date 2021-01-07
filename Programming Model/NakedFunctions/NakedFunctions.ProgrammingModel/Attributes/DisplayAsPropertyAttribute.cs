@@ -12,6 +12,6 @@ namespace NakedFunctions {
     ///     Use on a static function that would otherwise be an action, to have the result of the action
     ///     displayed as a non-persisted read-only derived property on a domain type.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method)]
     public class DisplayAsPropertyAttribute : Attribute { }
 }

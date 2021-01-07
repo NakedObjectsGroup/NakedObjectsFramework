@@ -20,7 +20,6 @@ using NakedObjects.Architecture.SpecImmutable;
 using NakedObjects.Core.Util;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Utils;
-using NakedObjects.Util;
 
 namespace NakedObjects.Reflector.FacetFactory {
     public sealed class EnumFacetFactory : ObjectFacetFactoryProcessor {

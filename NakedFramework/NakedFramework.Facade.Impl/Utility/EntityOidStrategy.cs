@@ -15,7 +15,6 @@ using NakedObjects.Architecture.Spec;
 using NakedObjects.Core.Util;
 using NakedObjects.Facade.Translation;
 using NakedObjects.Services;
-using NakedObjects.Util;
 
 namespace NakedObjects.Facade.Impl.Utility {
     public class EntityOidStrategy : IOidStrategy {

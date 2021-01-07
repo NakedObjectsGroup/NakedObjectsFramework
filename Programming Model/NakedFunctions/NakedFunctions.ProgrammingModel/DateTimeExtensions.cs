@@ -28,7 +28,7 @@ namespace NakedFunctions {
         /// <summary>
         ///     First day of the month of the passed in date
         /// </summary>
-        public static DateTime StartOfMonth(this DateTime referenceDate)  => DateTimeHelper.StartOfMonth(referenceDate);
+        public static DateTime StartOfMonth(this DateTime referenceDate) => DateTimeHelper.StartOfMonth(referenceDate);
 
         /// <summary>
         ///     First day of the year of the passed in date
@@ -134,10 +134,11 @@ namespace NakedFunctions {
         ///     Check if two dates are in the same month ignoring time
         /// </summary>
         public static bool IsSameMonthAs(this DateTime referenceDate, DateTime? otherDate) => DateTimeHelper.IsSameMonthAs(referenceDate, otherDate);
-    /// <summary>
-    ///     Check if two dates are in the same month ignoring time
-    /// </summary>
-    public static bool IsSameMonthAs(this DateTime? referenceDate, DateTime? otherDate) => DateTimeHelper.IsSameMonthAs(referenceDate, otherDate);
+
+        /// <summary>
+        ///     Check if two dates are in the same month ignoring time
+        /// </summary>
+        public static bool IsSameMonthAs(this DateTime? referenceDate, DateTime? otherDate) => DateTimeHelper.IsSameMonthAs(referenceDate, otherDate);
 
         #endregion
 
@@ -147,6 +148,7 @@ namespace NakedFunctions {
         ///     Check if two dates are in the same year ignoring time
         /// </summary>
         public static bool IsSameYearAs(this DateTime referenceDate, DateTime? otherDate) => DateTimeHelper.IsSameYearAs(referenceDate, otherDate);
+
         /// <summary>
         ///     Check if two dates are in the same year ignoring time
         /// </summary>
@@ -157,7 +159,7 @@ namespace NakedFunctions {
         #region IsAtLeastADayBefore
 
         /// <summary>
-        ///    Check if referenceDate is at least the day before the otherDate  ignoring time
+        ///     Check if referenceDate is at least the day before the otherDate  ignoring time
         /// </summary>
         public static bool IsAtLeastOneDayBefore(this DateTime referenceDate, DateTime? otherDate) => DateTimeHelper.IsAtLeastOneDayBefore(referenceDate, otherDate);
 
@@ -165,7 +167,6 @@ namespace NakedFunctions {
         ///     Check if referenceDate is at least the day before the otherDate  ignoring time
         /// </summary>
         public static bool IsAtLeastOneDayBefore(this DateTime? referenceDate, DateTime? otherDate) => DateTimeHelper.IsAtLeastOneDayBefore(referenceDate, otherDate);
-
 
         #endregion
 
@@ -175,7 +176,6 @@ namespace NakedFunctions {
         ///     Check if referanceDate is at least one day after the otherDate ignoring time
         /// </summary>
         public static bool IsAtLeastOneDayAfter(this DateTime referenceDate, DateTime? otherDate) => DateTimeHelper.IsAtLeastOneDayAfter(referenceDate, otherDate);
-
 
         /// <summary>
         ///     Check if referenceDate is at least one day after the otherDate ignoring time

@@ -12,7 +12,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NakedObjects.Menu;
+using NakedFramework;
 using NakedObjects.Services;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;

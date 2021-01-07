@@ -17,12 +17,10 @@ using NakedObjects.Architecture.Facet;
 using NakedObjects.Architecture.Reflect;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
-using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Adapter;
 using NakedObjects.Meta.Facet;
 using NakedObjects.Meta.Spec;
 using NakedObjects.Reflector.FacetFactory;
-using NakedObjects.Reflector.Reflect;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedMember.Local

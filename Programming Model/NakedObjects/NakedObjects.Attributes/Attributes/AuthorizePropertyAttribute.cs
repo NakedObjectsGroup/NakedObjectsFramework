@@ -9,10 +9,11 @@ using System;
 
 namespace NakedObjects.Security {
     /// <summary>
-    ///     Authorizes a list of roles (comma seperated) and/or users to view and/or edit the property. If the EditRoles/Users or ViewRoles/Users parameter is present then
+    ///     Authorizes a list of roles (comma seperated) and/or users to view and/or edit the property. If the EditRoles/Users
+    ///     or ViewRoles/Users parameter is present then
     ///     access is limited to that list. If it is absent then no restriction is imposed.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Property)]
     public class AuthorizePropertyAttribute : Attribute {
         public string ViewRoles { get; set; }
         public string EditRoles { get; set; }

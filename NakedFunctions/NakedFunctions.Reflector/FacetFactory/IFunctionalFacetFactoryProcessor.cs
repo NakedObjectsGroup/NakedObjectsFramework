@@ -9,7 +9,6 @@ using System;
 using System.Collections.Immutable;
 using System.Reflection;
 using NakedObjects.Architecture.Component;
-using NakedObjects.Architecture.FacetFactory;
 using NakedObjects.Architecture.Spec;
 using NakedObjects.Architecture.SpecImmutable;
 

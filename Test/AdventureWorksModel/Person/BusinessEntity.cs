@@ -1,3 +1,4 @@
+using NakedFramework;
 using NakedObjects;
 
 namespace AdventureWorksModel {
@@ -46,7 +47,7 @@ namespace AdventureWorksModel {
         #region Addresses
         private ICollection<BusinessEntityAddress> _addresses = new List<BusinessEntityAddress>();
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [Eagerly(Do.Rendering)]
         [TableView(false,
             nameof(BusinessEntityAddress.AddressType),
             nameof(BusinessEntityAddress.Address))] 
@@ -65,7 +66,7 @@ namespace AdventureWorksModel {
 
         private ICollection<BusinessEntityContact> _contacts = new List<BusinessEntityContact>();
 
-        [Eagerly(EagerlyAttribute.Do.Rendering)]
+        [Eagerly(Do.Rendering)]
         [TableView(false, "ContactType", "Person")] 
         public virtual ICollection<BusinessEntityContact> Contacts {
             get { return _contacts; }

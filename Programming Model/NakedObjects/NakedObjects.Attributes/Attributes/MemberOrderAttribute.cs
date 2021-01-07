@@ -12,19 +12,13 @@ namespace NakedObjects {
     ///     For specifying the order in which fields and/or actions are presented to
     ///     the user.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
     public class MemberOrderAttribute : Attribute {
-        public MemberOrderAttribute() {
-            Sequence = "";
-        }
+        public MemberOrderAttribute() => Sequence = "";
 
-        public MemberOrderAttribute(string sequence) {
-            Sequence = sequence;
-        }
+        public MemberOrderAttribute(string sequence) => Sequence = sequence;
 
-        public MemberOrderAttribute(double sequence) {
-            Sequence = "" + sequence;
-        }
+        public MemberOrderAttribute(double sequence) => Sequence = "" + sequence;
 
         public string Sequence { get; set; }
 

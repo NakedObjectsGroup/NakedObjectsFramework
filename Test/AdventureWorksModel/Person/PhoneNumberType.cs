@@ -1,6 +1,7 @@
 using NakedObjects;
 using System;
 using System.ComponentModel.DataAnnotations;
+using NakedFramework;
 
 namespace AdventureWorksModel {
     [Bounded]
