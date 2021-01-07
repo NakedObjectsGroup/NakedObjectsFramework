@@ -64,5 +64,19 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             WaitForView(Pane.Single, PaneType.List, "Find Product By Name");
             AssertTopItemInListIs("Handlebar Tube");
         }
+
+        [TestMethod, Priority(0)]
+        public virtual void UseOfRandomSeedGenerator()
+        {
+            //Corresponds to Story #200. Tests that IContext provides access to IRandomSeedGenerator & that the latter works
+            OpenMainMenuAction("Products", "Random Product");
+            WaitForView(Pane.Single, PaneType.Object);
+            Assert.IsTrue(br.Url.Contains(".Product-"));
+            string product1Url = br.Url;           
+            OpenMainMenuAction("Products", "Random Product");
+            WaitForView(Pane.Single, PaneType.Object);
+            Assert.IsTrue(br.Url.Contains(".Product-"));
+            Assert.AreNotEqual(product1Url, br.Url);
+        }
     }
 }
