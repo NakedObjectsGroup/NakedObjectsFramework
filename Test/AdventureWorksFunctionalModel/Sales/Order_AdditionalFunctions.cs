@@ -39,7 +39,7 @@ namespace AW.Functions {
             IQueryable<SalesOrderHeader> headers)
         {
             var id = customer.CustomerID;
-            return headers.Where(x => x.Customer.CustomerID == id && x.Status <= 3).OrderByDescending(x => x.SalesOrderNumber);
+            return headers.Where(x => x.Customer.CustomerID == id && x.StatusByte <= 3).OrderByDescending(x => x.SalesOrderNumber);
         }
 
         
@@ -103,7 +103,9 @@ namespace AW.Functions {
 
         public static void ClearComments(this IQueryable<SalesOrderHeader> toOrders) {
             foreach (SalesOrderHeader order in toOrders) {
-                order.Comment = null;
+                throw new NotImplementedException();
+                //TODO: 
+                //order.Comment = null;
             }
         }
 

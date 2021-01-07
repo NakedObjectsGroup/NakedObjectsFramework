@@ -21,7 +21,7 @@ namespace AW.Mapping
             Property(t => t.StartDate).HasColumnName("StartDate");
             Property(t => t.EndDate).HasColumnName("EndDate");
             Property(t => t.ListPrice).HasColumnName("ListPrice");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);

@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using System.Linq;
 using NakedFunctions;
 using static AW.Helpers;
@@ -17,10 +17,10 @@ namespace AW.Types
     public record SalesPerson : IBusinessEntity
     {
          [Hidden]
-        public virtual int BusinessEntityID { get; set; }
+        public virtual int BusinessEntityID { get; init; }
 
         [MemberOrder(10)]
-        public virtual Employee EmployeeDetails { get; set; }
+        public virtual Employee EmployeeDetails { get; init; }
 
         [MemberOrder(11)]
         public virtual Person PersonDetails
@@ -32,36 +32,36 @@ namespace AW.Types
         }
 
         [Hidden]
-        public virtual int? SalesTerritoryID { get; set; }
+        public virtual int? SalesTerritoryID { get; init; }
 
         [MemberOrder(20)]
-        public virtual SalesTerritory SalesTerritory { get; set; }
+        public virtual SalesTerritory SalesTerritory { get; init; }
 
         [MemberOrder(30)]
         [Mask("C")]
-        public virtual decimal? SalesQuota { get; set; }
+        public virtual decimal? SalesQuota { get; init; }
 
         [MemberOrder(40)]
         [Mask("C")]
-        public virtual decimal Bonus { get; set; }
+        public virtual decimal Bonus { get; init; }
 
         [MemberOrder(50)]
         [Mask("P")]
-        public virtual decimal CommissionPct { get; set; }
+        public virtual decimal CommissionPct { get; init; }
 
         [MemberOrder(60)]
         [Mask("C")]
-        public virtual decimal SalesYTD { get; set; }
+        public virtual decimal SalesYTD { get; init; }
 
         [MemberOrder(70)]
         [Mask("C")]
-        public virtual decimal SalesLastYear { get; set; }
+        public virtual decimal SalesLastYear { get; init; }
 
-        [MemberOrder(99), ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        [MemberOrder(99)]
+        public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         [TableView(false, "QuotaDate", "SalesQuota", "QuotaDate")] //Column name deliberately duplicated to test that this is ignored
         public virtual ICollection<SalesPersonQuotaHistory> QuotaHistory { get; init; } = new List<SalesPersonQuotaHistory>();
@@ -89,7 +89,7 @@ namespace AW.Types
             decimal newYTD = 0;
             IQueryable<SalesOrderHeader> query = from obj in context.Instances<SalesOrderHeader>()
                                                  where obj.SalesPerson.BusinessEntityID == sp.BusinessEntityID &&
-                                                       obj.Status == 5 &&
+                                                       obj.StatusByte == 5 &&
                                                        obj.OrderDate >= startOfYear
                                                  select obj;
             if (query.Count() > 0)

@@ -10,7 +10,7 @@ using System;
 using NakedFunctions;
 
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+
 
 namespace AW.Types
 {
@@ -22,19 +22,19 @@ namespace AW.Types
         public override string ToString() => $"Tax Rate for: {StateProvince}";
 
     [Hidden]
-    public virtual int SalesTaxRateID { get; set; }
-    public virtual byte TaxType { get; set; }
-    public virtual decimal TaxRate { get; set; }
-    public virtual string Name { get; set; }
+    public virtual int SalesTaxRateID { get; init; }
+    public virtual byte TaxType { get; init; }
+    public virtual decimal TaxRate { get; init; }
+    public virtual string Name { get; init; }
 
     [Hidden]
-    public virtual int StateProvinceID { get; set; }
-    public virtual StateProvince StateProvince { get; set; }
+    public virtual int StateProvinceID { get; init; }
+    public virtual StateProvince StateProvince { get; init; }
 
-    [MemberOrder(99), ConcurrencyCheck]
-    public virtual DateTime ModifiedDate { get; set; }
+    [MemberOrder(99)]
+    public virtual DateTime ModifiedDate { get; init; }
 
-    public virtual Guid rowguid { get; set; }
+    public virtual Guid rowguid { get; init; }
 
     [Hidden, NotMapped]
     public virtual string ServerName

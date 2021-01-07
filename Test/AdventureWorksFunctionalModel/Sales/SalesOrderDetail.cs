@@ -6,29 +6,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
+
 using System.Linq;
 using NakedFunctions;
 
 namespace AW.Types {
         public record SalesOrderDetail {
 
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
         #region OrderQty
 
         
         [MemberOrder(15)]
-        public virtual short OrderQty { get; set; }
+        public virtual short OrderQty { get; init; }
 
         #endregion
 
@@ -37,7 +26,7 @@ namespace AW.Types {
         
         [MemberOrder(20)]
         [Mask("C")]
-        public virtual decimal UnitPrice { get; set; }
+        public virtual decimal UnitPrice { get; init; }
 
         #endregion
 
@@ -47,7 +36,7 @@ namespace AW.Types {
         [Named("Discount")]
         [MemberOrder(30)]
         [Mask("C")]
-        public virtual decimal UnitPriceDiscount { get; set; }
+        public virtual decimal UnitPriceDiscount { get; init; }
 
         #endregion
 
@@ -56,7 +45,7 @@ namespace AW.Types {
         
         [MemberOrder(40)]
         [Mask("C")]
-        public virtual decimal LineTotal { get; set; }
+        public virtual decimal LineTotal { get; init; }
 
         #endregion
 
@@ -65,29 +54,26 @@ namespace AW.Types {
         
         [MemberOrder(50)]
         
-        public virtual string CarrierTrackingNumber { get; set; }
+        public virtual string CarrierTrackingNumber { get; init; }
 
         #endregion
 
         #region SalesOrder
 
         // [Hidden]
-        public virtual SalesOrderHeader SalesOrderHeader { get; set; }
+        public virtual SalesOrderHeader SalesOrderHeader { get; init; }
 
         #endregion
 
         public override string ToString() => $"{OrderQty} x {Product}";
 
-
-
-
         #region ID
 
         [Hidden]
-        public virtual int SalesOrderID { get; set; }
+        public virtual int SalesOrderID { get; init; }
 
         [Hidden]
-        public virtual int SalesOrderDetailID { get; set; }
+        public virtual int SalesOrderDetailID { get; init; }
 
         #endregion
 
@@ -96,13 +82,13 @@ namespace AW.Types {
         #region SpecialOfferProduct
 
         [Hidden]
-        public virtual int SpecialOfferID { get; set; }
+        public virtual int SpecialOfferID { get; init; }
 
         [Hidden]
-        public virtual int ProductID { get; set; }
+        public virtual int ProductID { get; init; }
 
         [Hidden]
-        public virtual SpecialOfferProduct SpecialOfferProduct { get; set; }
+        public virtual SpecialOfferProduct SpecialOfferProduct { get; init; }
 
         #endregion
 
@@ -125,11 +111,11 @@ namespace AW.Types {
 
         #endregion
 
-       [MemberOrder(99),ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+       [MemberOrder(99)]
+        public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
     }
 
     public static class SalesOrderDetail_Functions

@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedFunctions;
@@ -30,7 +30,7 @@ namespace AW.Types
         [Mask("d")]
         public virtual DateTime? EndDate { get; init; }
 
-        [MemberOrder(99),ConcurrencyCheck]
+        [MemberOrder(99)]
         public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]

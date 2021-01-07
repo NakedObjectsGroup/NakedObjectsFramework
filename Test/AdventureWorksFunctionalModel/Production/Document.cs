@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
 
 namespace AW.Types
@@ -26,7 +26,7 @@ namespace AW.Types
 
         public ICollection<ProductDocument> ProductDocument { get; init; } = new List<ProductDocument>();
 
-        [MemberOrder(99), ConcurrencyCheck]
+        [MemberOrder(99)]
         public virtual DateTime ModifiedDate { get; init; }
     }
 }

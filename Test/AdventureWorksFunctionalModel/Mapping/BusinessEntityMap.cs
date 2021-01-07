@@ -12,7 +12,7 @@ namespace AW.Mapping {
             // Table & Column Mappings
             ToTable("BusinessEntity", "Person");
             Property(t => t.BusinessEntityRowguid).HasColumnName("rowguid");
-            Property(t => t.BusinessEntityModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.BusinessEntityModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
 
             HasMany(t => t.Addresses).WithRequired(t => t.BusinessEntity);
         }

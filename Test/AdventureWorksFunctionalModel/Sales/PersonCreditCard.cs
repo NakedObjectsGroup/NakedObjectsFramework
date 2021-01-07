@@ -6,24 +6,24 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
 
 namespace AW.Types {
     public record PersonCreditCard {
 
         [Hidden]
-        public virtual int PersonID { get; set; }
+        public virtual int PersonID { get; init; }
 
         [Hidden]
-        public virtual int CreditCardID { get; set; }
+        public virtual int CreditCardID { get; init; }
 
-        public virtual Person Person { get; set; }
+        public virtual Person Person { get; init; }
 
-        public virtual CreditCard CreditCard { get; set; }
+        public virtual CreditCard CreditCard { get; init; }
 
-        [MemberOrder(99),ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        [MemberOrder(99)]
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{Person}";
     }

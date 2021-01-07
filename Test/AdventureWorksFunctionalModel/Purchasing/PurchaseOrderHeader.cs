@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using System.Linq;
 using NakedFunctions;
 using static AW.Helpers;
@@ -107,7 +107,7 @@ namespace AW.Types {
         public virtual Employee OrderPlacedBy { get; init; }
         #endregion
 
-        [MemberOrder(99), ConcurrencyCheck]
+        [MemberOrder(99)]
         public virtual DateTime ModifiedDate { get; init; }
 
         [RenderEagerly]

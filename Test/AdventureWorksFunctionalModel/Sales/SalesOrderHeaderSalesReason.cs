@@ -6,36 +6,26 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
 
 namespace AW.Types {
     [Named("Reason")]
         public record SalesOrderHeaderSalesReason {
 
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
         [Hidden]
-        public virtual int SalesOrderID { get; set; }
+        public virtual int SalesOrderID { get; init; }
 
-        public virtual int SalesReasonID { get; set; }
-        public virtual SalesOrderHeader SalesOrderHeader { get; set; }
-        public virtual SalesReason SalesReason { get; set; }
+        public virtual int SalesReasonID { get; init; }
+        public virtual SalesOrderHeader SalesOrderHeader { get; init; }
+        public virtual SalesReason SalesReason { get; init; }
 
         #region ModifiedDate
 
         [MemberOrder(99)]
         
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 

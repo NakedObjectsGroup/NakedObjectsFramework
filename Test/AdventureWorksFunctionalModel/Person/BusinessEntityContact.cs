@@ -1,6 +1,6 @@
 using NakedFunctions;
 using System;
-using System.ComponentModel.DataAnnotations;
+
 
 namespace AW.Types {
     [Named("Contact")]
@@ -27,7 +27,7 @@ namespace AW.Types {
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        [MemberOrder(99),ConcurrencyCheck]
+        [MemberOrder(99)]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{Person}";

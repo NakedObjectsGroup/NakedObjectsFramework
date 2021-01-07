@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using AW.Functions;
 using NakedFunctions;
@@ -16,14 +15,14 @@ namespace AW.Types {
     [Named("Sales Order")]
     public record SalesOrderHeader : ICreditCardCreator
     {
-        public bool AddItemsFromCart { get; set; }
+        public bool AddItemsFromCart { get; init; }
 
         #region Properties
 
         #region ID
 
         [Hidden]
-        public virtual int SalesOrderID { get; set; }
+        public virtual int SalesOrderID { get; init; }
 
         #endregion
 
@@ -32,22 +31,17 @@ namespace AW.Types {
         //Title
 
         [MemberOrder(1)]
-        public virtual string SalesOrderNumber { get; set; }
+        public virtual string SalesOrderNumber { get; init; }
 
         #endregion
 
         #region Status
 
-        //Properly, the Status property should be , and modified only through
-        //appropriate actions such as Approve.  It has been left modifiable here only
-        //to demonstrate the behaviour of Enum properties.
-        [MemberOrder(1), EnumDataType(typeof(OrderStatus))]
-        public virtual byte Status { get; set; }
+        [Hidden]
+        public virtual byte StatusByte { get; init; }
 
-        public byte DefaultStatus()
-        {
-            return (byte)OrderStatus.InProcess;
-        }
+        [MemberOrder(1)]
+        public OrderStatus Status => (OrderStatus)Status;
 
 
         #endregion
@@ -55,17 +49,17 @@ namespace AW.Types {
         #region Customer
 
         [Hidden]
-        public virtual int CustomerID { get; set; }
+        public virtual int CustomerID { get; init; }
 
         [MemberOrder(2)]
-        public virtual Customer Customer { get; set; }
+        public virtual Customer Customer { get; init; }
 
         #endregion
 
         #region Contact
 
         //[Hidden]
-        //public virtual int ContactID { get; set; }
+        //public virtual int ContactID { get; init; }
 
         //private Contact _contact;
         //[Hidden]
@@ -118,10 +112,10 @@ namespace AW.Types {
         #region BillingAddress
 
         [Hidden]
-        public virtual int BillingAddressID { get; set; }
+        public virtual int BillingAddressID { get; init; }
 
         [MemberOrder(4)]
-        public virtual Address BillingAddress { get; set; }
+        public virtual Address BillingAddress { get; init; }
 
         public List<Address> ChoicesBillingAddress(IContext context) =>  Person_MenuFunctions.AddressesFor(Customer.BusinessEntity(), context).ToList();
  
@@ -131,17 +125,17 @@ namespace AW.Types {
         #region PurchaseOrderNumber
 
         [MemberOrder(5)]
-        public virtual string PurchaseOrderNumber { get; set; }
+        public virtual string PurchaseOrderNumber { get; init; }
 
         #endregion
 
         #region ShippingAddress
 
         [Hidden]
-        public virtual int ShippingAddressID { get; set; }
+        public virtual int ShippingAddressID { get; init; }
 
         [MemberOrder(10)]
-        public virtual Address ShippingAddress { get; set; }
+        public virtual Address ShippingAddress { get; init; }
 
         public List<Address> ChoicesShippingAddress(IContext context) =>  ChoicesBillingAddress(context);
       
@@ -150,17 +144,17 @@ namespace AW.Types {
         #region ShipMethod
 
         [Hidden]
-        public virtual int ShipMethodID { get; set; }
+        public virtual int ShipMethodID { get; init; }
 
         [MemberOrder(11)]
-        public virtual ShipMethod ShipMethod { get; set; }
+        public virtual ShipMethod ShipMethod { get; init; }
 
         #endregion
 
         #region AccountNumber
 
         [Optionally, MemberOrder(12)]
-        public virtual string AccountNumber { get; set; }
+        public virtual string AccountNumber { get; init; }
 
         #endregion
 
@@ -170,14 +164,14 @@ namespace AW.Types {
 
 
         [MemberOrder(20)]
-        public virtual DateTime OrderDate { get; set; }
+        public virtual DateTime OrderDate { get; init; }
 
         #endregion
 
         #region DueDate
 
         [MemberOrder(21)]
-        public virtual DateTime DueDate { get; set; }
+        public virtual DateTime DueDate { get; init; }
 
 
 
@@ -187,11 +181,9 @@ namespace AW.Types {
 
 
         [MemberOrder(22)]
-        [DataType(DataType.DateTime)]
-        [Mask("d")]//Just to prove that you can, if perverse enough, make something
-        //a dateTime and then mask it as a Date
+        [Mask("d")]
        // [NakedFunctions.Range(-30, 0)]
-        public virtual DateTime? ShipDate { get; set; }
+        public virtual DateTime? ShipDate { get; init; }
         #endregion
 
         #endregion
@@ -201,39 +193,34 @@ namespace AW.Types {
 
         [MemberOrder(31)]
         [Mask("C")]
-        public virtual decimal SubTotal { get; set; }
+        public virtual decimal SubTotal { get; init; }
 
 
         [MemberOrder(32)]
         [Mask("C")]
-        public virtual decimal TaxAmt { get; set; }
+        public virtual decimal TaxAmt { get; init; }
 
 
         [MemberOrder(33)]
         [Mask("C")]
-        public virtual decimal Freight { get; set; }
+        public virtual decimal Freight { get; init; }
 
 
         [MemberOrder(34)]
         [Mask("C")]
-        public virtual decimal TotalDue { get; set; }
+        public virtual decimal TotalDue { get; init; }
 
-        public void Recalculate()
-        {
-            SubTotal = Details.Sum(d => d.LineTotal);
-            TotalDue = SubTotal;
-        }
 
 
 
         #region CurrencyRate
 
         [Hidden]
-        public virtual int? CurrencyRateID { get; set; }
+        public virtual int? CurrencyRateID { get; init; }
 
 
         [MemberOrder(35)]
-        public virtual CurrencyRate CurrencyRate { get; set; }
+        public virtual CurrencyRate CurrencyRate { get; init; }
 
         #endregion
 
@@ -245,17 +232,17 @@ namespace AW.Types {
 
         [MemberOrder(41)]
         [Named("Online Order")]
-        public virtual bool OnlineOrder { get; set; }
+        public virtual bool OnlineOrder { get; init; }
 
         #endregion
 
         #region CreditCard
         [Hidden]
-        public virtual int? CreditCardID { get; set; }
+        public virtual int? CreditCardID { get; init; }
 
 
         [MemberOrder(42)]
-        public virtual CreditCard CreditCard { get; set; }
+        public virtual CreditCard CreditCard { get; init; }
 
         #endregion
 
@@ -264,7 +251,7 @@ namespace AW.Types {
 
 
         [MemberOrder(43)]
-        public virtual string CreditCardApprovalCode { get; set; }
+        public virtual string CreditCardApprovalCode { get; init; }
 
         #endregion
 
@@ -272,7 +259,7 @@ namespace AW.Types {
 
 
         [MemberOrder(51)]
-        public virtual byte RevisionNumber { get; set; }
+        public virtual byte RevisionNumber { get; init; }
 
         #endregion
 
@@ -282,84 +269,20 @@ namespace AW.Types {
         [MultiLine(NumberOfLines = 3, Width = 50)]
         [MemberOrder(52)]
         [DescribedAs("Free-form text")]
-        public virtual string Comment { get; set; }
+        public virtual string Comment { get; init; }
 
 
-        public bool HideComment()
-        {
-            return Comment == null || Comment == "";
-        }
-
-        public void ClearComment()
-        {
-            this.Comment = null;
-        }
-
-        public void AddStandardComments(IEnumerable<string> comments)
-        {
-            foreach (string comment in comments)
-            {
-                Comment += comment + "\n";
-            }
-        }
-
-        public string[] Choices0AddStandardComments()
-        {
-            return new[] {
-                "Payment on delivery",
-                "Leave parcel with neighbour",
-                "Leave parcel round back"
-            };
-        }
-
-        public string[] Default0AddStandardComments()
-        {
-            return new[] {
-                "Payment on delivery",
-                "Leave parcel with neighbour"
-            };
-        }
-
-        //Action to demonstrate use of auto-complete that returns IEnumerable<string>
-        public void AddComment(string comment)
-        {
-            Comment += comment + "\n";
-        }
-
-        [PageSize(10)]
-        public IEnumerable<string> AutoComplete0AddComment(
-            [DescribedAs("Auto-complete")][NakedFunctions.Range(2, 0)] string matching)
-        {
-            return Choices0AddStandardComments().Where(c => c.ToLower().Contains(matching.ToLower()));
-        }
-
-        //Action to demonstrate use of auto-complete that returns IEnumerable<string>
-        public void AddComment2(string comment)
-        {
-            Comment += comment + "\n";
-        }
-
-        [PageSize(10)]
-        public IList<string> AutoComplete0AddComment2(
-            [DescribedAs("Auto-complete")][NakedFunctions.Range(2, 0)] string matching)
-        {
-            return Choices0AddStandardComments().Where(c => c.ToLower().Contains(matching.ToLower())).ToList();
-        }
-
-        public void AddMultiLineComment([MultiLine(NumberOfLines = 3)] string comment)
-        {
-            Comment += comment + "\n";
-        }
+       
         #endregion
 
         #region SalesPerson
 
         [Hidden]
-        public virtual int? SalesPersonID { get; set; }
+        public virtual int? SalesPersonID { get; init; }
 
 
         [MemberOrder(61)]
-        public virtual SalesPerson SalesPerson { get; set; }
+        public virtual SalesPerson SalesPerson { get; init; }
 
         [PageSize(20)]
         public IQueryable<SalesPerson> AutoCompleteSalesPerson(
@@ -370,11 +293,11 @@ namespace AW.Types {
 
         #region SalesTerritory
         [Hidden]
-        public virtual int? SalesTerritoryID { get; set; }
+        public virtual int? SalesTerritoryID { get; init; }
 
 
         [MemberOrder(62)]
-        public virtual SalesTerritory SalesTerritory { get; set; }
+        public virtual SalesTerritory SalesTerritory { get; init; }
 
         #endregion
 
@@ -384,15 +307,15 @@ namespace AW.Types {
 
         [MemberOrder(99)]
 
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         #endregion
 

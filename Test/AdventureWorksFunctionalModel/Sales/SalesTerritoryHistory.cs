@@ -6,44 +6,33 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
 
 namespace AW.Types {
         public record SalesTerritoryHistory {
 
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
         [MemberOrder(1)]
         [Mask("d")]
-        public virtual DateTime StartDate { get; set; }
+        public virtual DateTime StartDate { get; init; }
 
         [MemberOrder(2)]
         [Mask("d")]
-        public virtual DateTime? EndDate { get; set; }
+        public virtual DateTime? EndDate { get; init; }
 
         #region SalesPerson
         [Hidden]
-        public virtual int BusinessEntityID { get; set; }
+        public virtual int BusinessEntityID { get; init; }
 
         [MemberOrder(3)]
-        public virtual SalesPerson SalesPerson { get; set; }
+        public virtual SalesPerson SalesPerson { get; init; }
         #endregion
 
         #region Sales Territory
         [Hidden]
-        public virtual int SalesTerritoryID { get; set; }
+        public virtual int SalesTerritoryID { get; init; }
         [MemberOrder(4)]
-        public virtual SalesTerritory SalesTerritory { get; set; }
+        public virtual SalesTerritory SalesTerritory { get; init; }
         #endregion
 
         #region ModifiedDate and rowguid
@@ -52,24 +41,20 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         #endregion
 
         #endregion
 
         public override string ToString()  => $"{SalesPerson} {SalesTerritory}";
-    }
-
-    public static class SalesTerritoryHistoryFunctions
-    {    
     }
 }

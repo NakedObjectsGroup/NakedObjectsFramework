@@ -44,7 +44,8 @@ namespace AW.Functions {
             var cust = GetCustomerForUser(context);
             var (order, context2) = Order_AdditionalFunctions.CreateNewOrder(cust, true, context);
             //TODO: Need to check idea of modifying an instance that is pending save from another method
-            order.AddItemsFromCart = true;
+            //TODO: Need to convert the following to a function
+            //order.AddItemsFromCart = true;
             return (order, context2);
         }
 

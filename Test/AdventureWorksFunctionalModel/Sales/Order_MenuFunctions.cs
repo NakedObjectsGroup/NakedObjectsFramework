@@ -27,7 +27,7 @@ namespace AW.Functions {
         [TableView(true, "OrderDate", "DueDate")]
         public static IQueryable<SalesOrderHeader> OrdersInProcess(
              IQueryable<SalesOrderHeader> headers) {
-            return headers.Where(x => x.Status == 1);
+            return headers.Where(x => x.StatusByte == 1);
         }
 
         

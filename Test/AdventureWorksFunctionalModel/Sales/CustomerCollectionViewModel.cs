@@ -14,7 +14,7 @@ namespace AW.Types
         {
             Customers = customers;
         }
-        public IList<Customer> Customers { get; set; }
+        public IList<Customer> Customers { get; init; }
     }
     public static class CustomerCollectionViewModelFunctions { 
 

@@ -6,28 +6,16 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
 
 namespace AW.Types {
     public record CountryRegionCurrency  {
 
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
-        public virtual string CountryRegionCode { get; set; }
-        public virtual string CurrencyCode { get; set; }
-        public virtual CountryRegion CountryRegion { get; set; }
-        public virtual Currency Currency { get; set; }
-
-        [MemberOrder(99), ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual string CountryRegionCode { get; init; }
+        public virtual string CurrencyCode { get; init; }
+        public virtual CountryRegion CountryRegion { get; init; }
+        public virtual Currency Currency { get; init; }
+        public virtual DateTime ModifiedDate { get; init; }
     }
 }

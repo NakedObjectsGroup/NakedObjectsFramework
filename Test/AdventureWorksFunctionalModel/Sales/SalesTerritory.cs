@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
 
 namespace AW.Types
@@ -17,34 +17,34 @@ namespace AW.Types
     {
 
         [Hidden]
-        public virtual int TerritoryID { get; set; }
+        public virtual int TerritoryID { get; init; }
 
         [MemberOrder(10)]
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
         [MemberOrder(20)]
-        public virtual string CountryRegionCode { get; set; }
+        public virtual string CountryRegionCode { get; init; }
 
         [MemberOrder(30)]
-        public virtual string Group { get; set; }
+        public virtual string Group { get; init; }
 
         [MemberOrder(40), Mask("C")]
-        public virtual decimal SalesYTD { get; set; }
+        public virtual decimal SalesYTD { get; init; }
 
         [MemberOrder(41), Mask("C")]
-        public virtual decimal SalesLastYear { get; set; }
+        public virtual decimal SalesLastYear { get; init; }
 
         [MemberOrder(42), Mask("C")]
-        public virtual decimal CostYTD { get; set; }
+        public virtual decimal CostYTD { get; init; }
 
         [MemberOrder(43), Mask("C")]
-        public virtual decimal CostLastYear { get; set; }
+        public virtual decimal CostLastYear { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
-        [MemberOrder(99), ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        [MemberOrder(99)]
+        public virtual DateTime ModifiedDate { get; init; }
 
         [Named("States/Provinces covered"), TableView(true)] //Table View == List View
         public virtual ICollection<StateProvince> StateProvince { get; init; } = new List<StateProvince>();

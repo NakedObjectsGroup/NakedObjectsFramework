@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
 
 namespace AW.Types
@@ -76,7 +76,7 @@ namespace AW.Types
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
 
-        [MemberOrder(99), ConcurrencyCheck]
+        [MemberOrder(99)]
         public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]

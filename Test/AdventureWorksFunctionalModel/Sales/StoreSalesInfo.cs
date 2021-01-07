@@ -31,18 +31,18 @@ namespace AW.Types {
         public StoreSalesInfo() { }
 
         [MemberOrder(1), ]
-        public string AccountNumber { get; set; }
+        public string AccountNumber { get; init; }
 
         [MemberOrder(2)]
-        public string StoreName { get; set; }
+        public string StoreName { get; init; }
 
         [MemberOrder(3)]
-        public SalesTerritory SalesTerritory { get; set; }
+        public SalesTerritory SalesTerritory { get; init; }
 
         [MemberOrder(4)]
-        public SalesPerson SalesPerson { get; set; }
+        public SalesPerson SalesPerson { get; init; }
 
-        public bool EditMode { get; set; }
+        public bool EditMode { get; init; }
     }
 
     public static class StoreSalesInfoFunctions {

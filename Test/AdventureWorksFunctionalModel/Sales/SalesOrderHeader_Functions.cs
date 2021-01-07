@@ -9,10 +9,11 @@ using System;
 using AW.Types;
 using System.Linq;
 using NakedFunctions;
+using static AW.Helpers;
 
 namespace AW.Functions {
     [Named("Sales Order")]
-        public  static class SalesOrderHeaderFunctions { 
+        public  static class SalesOrderHeader_Functions { 
 
         #region Actions
 
@@ -366,6 +367,80 @@ namespace AW.Functions {
             }
             return null;
         }
+
+        #region Comments - all TODO
+        public static bool HideComment(this SalesOrderHeader soh)
+        {
+            throw new NotImplementedException();
+            //return Comment == null || Comment == "";
+        }
+
+        public static void ClearComment()
+        {
+            throw new NotImplementedException();
+            //this.Comment = null;
+        }
+
+        //public static void AddStandardComments(IEnumerable<string> comments)
+        //{
+        //    throw new NotImplementedException();
+        //    //foreach (string comment in comments)
+        //    //{
+        //    //    Comment += comment + "\n";
+        //    //}
+        //}
+
+        //public string[] Choices0AddStandardComments()
+        //{
+        //    return new[] {
+        //        "Payment on delivery",
+        //        "Leave parcel with neighbour",
+        //        "Leave parcel round back"
+        //    };
+        //}
+
+        //public string[] Default0AddStandardComments()
+        //{
+        //    return new[] {
+        //        "Payment on delivery",
+        //        "Leave parcel with neighbour"
+        //    };
+        //}
+
+        ////Action to demonstrate use of auto-complete that returns IEnumerable<string>
+        //public void AddComment(string comment)
+        //{
+        //    Comment += comment + "\n";
+        //}
+
+        //[PageSize(10)]
+        //public IEnumerable<string> AutoComplete0AddComment(
+        //    [DescribedAs("Auto-complete")][NakedFunctions.Range(2, 0)] string matching)
+        //{
+        //    return Choices0AddStandardComments().Where(c => c.ToLower().Contains(matching.ToLower()));
+        //}
+
+        ////Action to demonstrate use of auto-complete that returns IEnumerable<string>
+        //public void AddComment2(string comment)
+        //{
+        //    Comment += comment + "\n";
+        //}
+
+        //[PageSize(10)]
+        //public IList<string> AutoComplete0AddComment2(
+        //    [DescribedAs("Auto-complete")][NakedFunctions.Range(2, 0)] string matching)
+        //{
+        //    return Choices0AddStandardComments().Where(c => c.ToLower().Contains(matching.ToLower())).ToList();
+        //}
+
+        //public void AddMultiLineComment([MultiLine(NumberOfLines = 3)] string comment)
+        //{
+        //    Comment += comment + "\n";
+        //}
+        #endregion
+
+        public static (SalesOrderHeader, IContext) Recalculate(this SalesOrderHeader soh, IContext context) =>
+            DisplayAndSave(soh with {SubTotal = soh.Details.Sum(d => d.LineTotal), TotalDue = soh.SubTotal}, context);
     }
 
 }

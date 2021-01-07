@@ -1,5 +1,5 @@
 ﻿using NakedFunctions;
-using static AW.Functions.SalesOrderHeaderFunctions;
+using static AW.Functions.SalesOrderHeader_Functions;
 using System.Linq;
 
 
@@ -14,10 +14,10 @@ namespace AW.Types
             Number = number;
         }
         [Hidden]
-        public Product Product { get; set; }
+        public Product Product { get; init; }
 
         [Hidden]
-        public short Number { get; set; }
+        public short Number { get; init; }
 
         public override string ToString() =>  $"{Number} x {Product}";
     }

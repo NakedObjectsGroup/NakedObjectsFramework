@@ -7,45 +7,34 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using System.Linq;
 using NakedFunctions;
 
 namespace AW.Types {
     public record Vendor : IBusinessEntity {
-
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
         [Hidden]
-        public virtual int BusinessEntityID { get; set; }
+        public virtual int BusinessEntityID { get; init; }
 
         [MemberOrder(10)]
-        public virtual string AccountNumber { get; set; }
+        public virtual string AccountNumber { get; init; }
 
         //Title
         [MemberOrder(20)]
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
         [MemberOrder(30)]
-        public virtual byte CreditRating { get; set; }
+        public virtual byte CreditRating { get; init; }
 
         [MemberOrder(40)]
-        public virtual bool PreferredVendorStatus { get; set; }
+        public virtual bool PreferredVendorStatus { get; init; }
 
         [MemberOrder(50)]
-        public virtual bool ActiveFlag { get; set; }
+        public virtual bool ActiveFlag { get; init; }
 
 
         [MemberOrder(60)]
-        public virtual string PurchasingWebServiceURL { get; set; }
+        public virtual string PurchasingWebServiceURL { get; init; }
 
         public virtual IQueryable<string> AutoCompletePurchasingWebServiceURL([NakedFunctions.Range(2, 0)] string value) {
             var matchingNames = new List<string> { "http://www.store1.com", "http://www.store2.com", "http://www.store3.com" };
@@ -80,7 +69,7 @@ namespace AW.Types {
         //    set { _VendorContact = value; }
         //}
 
-        [MemberOrder(99), ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        [MemberOrder(99)]
+        public virtual DateTime ModifiedDate { get; init; }
     }
 }

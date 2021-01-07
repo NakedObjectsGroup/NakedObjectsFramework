@@ -6,36 +6,36 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
 
 namespace AW.Types {
     public record ShoppingCartItem {
 
         [Hidden]
-        public virtual int ShoppingCartItemID { get; set; }
+        public virtual int ShoppingCartItemID { get; init; }
 
         [Hidden]
-        public virtual string ShoppingCartID { get; set; }
+        public virtual string ShoppingCartID { get; init; }
 
         [MemberOrder(20)]
-        public virtual int Quantity { get; set; }
+        public virtual int Quantity { get; init; }
 
         [Hidden]
-        public virtual DateTime DateCreated { get; set; }
+        public virtual DateTime DateCreated { get; init; }
 
         #region Product
         [Hidden]
-        public virtual int ProductID { get; set; }
+        public virtual int ProductID { get; init; }
 
         [ MemberOrder(10)]
-        public virtual Product Product { get; set; }
+        public virtual Product Product { get; init; }
         #endregion
 
         #region ModifiedDate
 
-        [ MemberOrder(99),ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        [ MemberOrder(99)]
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 

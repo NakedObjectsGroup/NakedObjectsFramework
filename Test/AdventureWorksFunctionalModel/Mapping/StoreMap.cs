@@ -21,7 +21,7 @@ namespace AW.Mapping
             Property(t => t.SalesPersonID).HasColumnName("SalesPersonID");
             Property(t => t.Demographics).HasColumnName("Demographics");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
 
             // Relationships
             HasOptional(t => t.SalesPerson).WithMany().HasForeignKey(t => t.SalesPersonID);

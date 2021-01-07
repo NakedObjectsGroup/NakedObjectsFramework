@@ -6,36 +6,25 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
 
 namespace AW.Types {
         public record SalesPersonQuotaHistory  {
 
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            rowguid = Guid.NewGuid();
-            ModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            ModifiedDate = DateTime.Now;
-        }
-        #endregion
-
         [Hidden]
-        public virtual int BusinessEntityID { get; set; }
+        public virtual int BusinessEntityID { get; init; }
 
         [MemberOrder(1)]
         [Mask("d")]
-        public virtual DateTime QuotaDate { get; set; }
+        public virtual DateTime QuotaDate { get; init; }
 
         [MemberOrder(2)]
         [Mask("C")]
-        public virtual decimal SalesQuota { get; set; }
+        public virtual decimal SalesQuota { get; init; }
 
         [MemberOrder(3)]
-        public virtual SalesPerson SalesPerson { get; set; }
+        public virtual SalesPerson SalesPerson { get; init; }
 
         #region ModifiedDate and rowguid
 
@@ -43,15 +32,15 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         
-        [ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        
+        public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
         #region rowguid
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         #endregion
 

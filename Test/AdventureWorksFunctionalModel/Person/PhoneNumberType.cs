@@ -1,6 +1,6 @@
 using NakedFunctions;
 using System;
-using System.ComponentModel.DataAnnotations;
+
 
 namespace AW.Types {
     [Bounded]
@@ -11,7 +11,7 @@ namespace AW.Types {
         [Hidden]
         public virtual string Name { get; init; }
 
-        [Hidden, ConcurrencyCheck]
+        [Hidden]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;

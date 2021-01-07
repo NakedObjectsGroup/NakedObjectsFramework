@@ -1,6 +1,6 @@
 using NakedFunctions;
 using System;
-using System.ComponentModel.DataAnnotations;
+
 
 namespace AW.Types
 {
@@ -25,7 +25,7 @@ namespace AW.Types
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        [Hidden, ConcurrencyCheck]
+        [Hidden]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => EmailAddress1;

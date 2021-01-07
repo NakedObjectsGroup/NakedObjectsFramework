@@ -1,6 +1,6 @@
 using NakedFunctions;
 using System;
-using System.ComponentModel.DataAnnotations;
+
 
 namespace AW.Types
 {
@@ -23,7 +23,7 @@ namespace AW.Types
 
         public virtual PhoneNumberType PhoneNumberType { get; init; }
 
-        [ConcurrencyCheck]
+        
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{PhoneNumberType}:{PhoneNumber}";

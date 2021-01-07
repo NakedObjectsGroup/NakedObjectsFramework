@@ -6,32 +6,32 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
 
 namespace AW.Types {
         public record CurrencyRate {
 
         [Hidden]
-        public virtual int CurrencyRateID { get; set; }
+        public virtual int CurrencyRateID { get; init; }
 
-        public virtual DateTime CurrencyRateDate { get; set; }
+        public virtual DateTime CurrencyRateDate { get; init; }
 
         //Title
-        public virtual decimal AverageRate { get; set; }
+        public virtual decimal AverageRate { get; init; }
 
-        public virtual decimal EndOfDayRate { get; set; }
-
-        [Hidden]
-        public virtual string FromCurrencyCode { get; set; }
-        public virtual Currency Currency { get; set; }
+        public virtual decimal EndOfDayRate { get; init; }
 
         [Hidden]
-        public virtual string ToCurrencyCode { get; set; }
+        public virtual string FromCurrencyCode { get; init; }
+        public virtual Currency Currency { get; init; }
 
-        public virtual Currency Currency1 { get; set; }
+        [Hidden]
+        public virtual string ToCurrencyCode { get; init; }
 
-        [MemberOrder(99),ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual Currency Currency1 { get; init; }
+
+        [MemberOrder(99)]
+        public virtual DateTime ModifiedDate { get; init; }
     }
 }

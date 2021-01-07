@@ -24,7 +24,7 @@ namespace AW.Types {
         }
 
         [Hidden]
-        public virtual Customer Root { get; set; }
+        public virtual Customer Root { get; init; }
       
 
         public string Name {
@@ -48,7 +48,7 @@ namespace AW.Types {
         }
 
         //Empty field, not - to test that fields are not editable in a VM
-        public virtual string Comments { get; set; }
+        public virtual string Comments { get; init; }
 
         public override string ToString() {
             return $"{Name} - Dashboard";

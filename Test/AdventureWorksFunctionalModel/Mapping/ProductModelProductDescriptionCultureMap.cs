@@ -28,7 +28,7 @@ namespace AW.Mapping
             Property(t => t.ProductModelID).HasColumnName("ProductModelID");
             Property(t => t.ProductDescriptionID).HasColumnName("ProductDescriptionID");
             Property(t => t.CultureID).HasColumnName("CultureID");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Culture).WithMany().HasForeignKey(t => t.CultureID);

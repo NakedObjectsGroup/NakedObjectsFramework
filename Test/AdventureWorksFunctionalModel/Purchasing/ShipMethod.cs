@@ -6,7 +6,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
 
 namespace AW.Types {
@@ -14,22 +14,22 @@ namespace AW.Types {
         public record ShipMethod  {
 
         [Hidden]
-        public virtual int ShipMethodID { get; set; }
+        public virtual int ShipMethodID { get; init; }
 
         [MemberOrder(1)]
-        public virtual string Name { get; set; }
+        public virtual string Name { get; init; }
 
         [MemberOrder(2)]
-        public virtual decimal ShipBase { get; set; }
+        public virtual decimal ShipBase { get; init; }
 
         [MemberOrder(3)]
-        public virtual decimal ShipRate { get; set; }
+        public virtual decimal ShipRate { get; init; }
 
-        [MemberOrder(99), ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        [MemberOrder(99)]
+        public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid rowguid { get; set; }
+        public virtual Guid rowguid { get; init; }
 
         public override string ToString() => Name;
     }

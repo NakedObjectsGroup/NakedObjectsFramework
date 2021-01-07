@@ -6,56 +6,56 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.ComponentModel.DataAnnotations;
+
 using NakedFunctions;
 
 namespace AW.Types {
     public record ProductVendor {
 
         [Hidden]
-        public virtual int ProductID { get; set; }
+        public virtual int ProductID { get; init; }
 
         [Hidden]
-        public virtual int VendorID { get; set; }
+        public virtual int VendorID { get; init; }
 
         [MemberOrder(30)]
-        public virtual int AverageLeadTime { get; set; }
+        public virtual int AverageLeadTime { get; init; }
 
         [Mask("C")]
         [MemberOrder(40)]
-        public virtual decimal StandardPrice { get; set; }
+        public virtual decimal StandardPrice { get; init; }
 
         [Mask("C")]
         [MemberOrder(41)]
-        public virtual decimal? LastReceiptCost { get; set; }
+        public virtual decimal? LastReceiptCost { get; init; }
 
         [Mask("d")]
         [MemberOrder(50)]
-        public virtual DateTime? LastReceiptDate { get; set; }
+        public virtual DateTime? LastReceiptDate { get; init; }
 
         [MemberOrder(60)]
-        public virtual int MinOrderQty { get; set; }
+        public virtual int MinOrderQty { get; init; }
 
         [MemberOrder(61)]
-        public virtual int MaxOrderQty { get; set; }
+        public virtual int MaxOrderQty { get; init; }
 
         [MemberOrder(62)]
-        public virtual int? OnOrderQty { get; set; }
+        public virtual int? OnOrderQty { get; init; }
 
         [MemberOrder(10)]
-        public virtual Product Product { get; set; }
+        public virtual Product Product { get; init; }
 
         [Hidden]
-        public virtual string UnitMeasureCode { get; set; }
+        public virtual string UnitMeasureCode { get; init; }
 
         [MemberOrder(20)]
-        public virtual UnitMeasure UnitMeasure { get; set; }
+        public virtual UnitMeasure UnitMeasure { get; init; }
 
         [Hidden]
-        public virtual Vendor Vendor { get; set; }
+        public virtual Vendor Vendor { get; init; }
 
-        [MemberOrder(99), ConcurrencyCheck]
-        public virtual DateTime ModifiedDate { get; set; }
+        [MemberOrder(99)]
+        public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{Product}";
     }

@@ -31,7 +31,7 @@ namespace AW.Mapping
             Property(t => t.EmailAddress).HasColumnName("EmailAddress");
             Property(t => t.Rating).HasColumnName("Rating");
             Property(t => t.Comments).HasColumnName("Comments");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken(false);
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Product)

@@ -8,51 +8,40 @@
 using System;
 using NakedFunctions;
 
-namespace AW.Types {
-        public record Customer 
+namespace AW.Types
+{
+    public record Customer
     {
-
-        #region Life Cycle Methods
-        public virtual void Persisting() {
-            CustomerRowguid = Guid.NewGuid();
-            CustomerModifiedDate = DateTime.Now;
-        }
-
-        public virtual void Updating() {
-            CustomerModifiedDate = DateTime.Now;
-        }
-        #endregion
-
         [Hidden]
-        public virtual int CustomerID { get; set; }
+        public virtual int CustomerID { get; init; }
 
         [DescribedAs("xxx"), MemberOrder(10)]
-        public virtual string AccountNumber { get; set; }
+        public virtual string AccountNumber { get; init; }
 
         #region Sales Territory
         [Hidden]
-        public virtual int? SalesTerritoryID { get; set; }
+        public virtual int? SalesTerritoryID { get; init; }
 
-        [ MemberOrder(20)]
-        public virtual SalesTerritory SalesTerritory { get; set; }
+        [MemberOrder(20)]
+        public virtual SalesTerritory SalesTerritory { get; init; }
         #endregion
 
         #region Store & Personal customers
 
 
         [Hidden]
-        public virtual int? StoreID { get; set; }
+        public virtual int? StoreID { get; init; }
 
-        [ MemberOrder(20)]
-        public virtual Store Store { get; set; }
+        [MemberOrder(20)]
+        public virtual Store Store { get; init; }
 
 
 
         [Hidden]
-        public virtual int? PersonID { get; set; }
+        public virtual int? PersonID { get; init; }
 
-        [ MemberOrder(20)]
-        public virtual Person Person { get; set; }
+        [MemberOrder(20)]
+        public virtual Person Person { get; init; }
 
 
         #endregion
@@ -60,14 +49,14 @@ namespace AW.Types {
 
 
         [Hidden]
-        //[ConcurrencyCheck]
-        public virtual DateTime CustomerModifiedDate { get; set; }
+        //
+        public virtual DateTime CustomerModifiedDate { get; init; }
 
         [Hidden]
-        public virtual Guid CustomerRowguid { get; set; }
+        public virtual Guid CustomerRowguid { get; init; }
 
         public override string ToString() => "No Title Yet";
-           // IsStore(this) ? Store : Person;
+        // IsStore(this) ? Store : Person;
 
     }
 }

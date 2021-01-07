@@ -7,7 +7,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -42,7 +42,7 @@ namespace AW.Types
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        [MemberOrder(99), ConcurrencyCheck]
+        [MemberOrder(99)]
         public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;

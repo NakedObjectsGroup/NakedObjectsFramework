@@ -29,19 +29,19 @@ namespace AW.Types
 
 
         [MemberOrder(10), Optionally]
-        public virtual string To { get; set; }
+        public virtual string To { get; init; }
 
         [MemberOrder(20)]
-        public virtual string From { get; set; }
+        public virtual string From { get; init; }
 
         [MemberOrder(30)]
-        public virtual string Subject { get; set; }
+        public virtual string Subject { get; init; }
 
         [MemberOrder(40)]
-        public virtual string Message { get; set; }
+        public virtual string Message { get; init; }
 
         
-        public virtual EmailStatus Status { get; set; }
+        public virtual EmailStatus Status { get; init; }
 
         public override string ToString() => $"{Status} email";
     }
