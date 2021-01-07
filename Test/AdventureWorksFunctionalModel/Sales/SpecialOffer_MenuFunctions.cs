@@ -16,39 +16,33 @@ namespace AdventureWorksModel
     public static class SpecialOffer_MenuFunctions
     {
         [MemberOrder(0)]
-        public static SpecialOffer FirstOrDefault(IQueryable<SpecialOffer> offers)
-        {
-            return offers.FirstOrDefault();
-        }
+        public static SpecialOffer FirstOrDefault(IContext context) =>
+            context.Instances<SpecialOffer>().FirstOrDefault();
+
 
         #region CurrentSpecialOffers
 
         [MemberOrder(1)]
         [TableView(false, "Description", "XNoMatchingColumn", "Category", "DiscountPct")]
-        public static IQueryable<SpecialOffer> CurrentSpecialOffers(IQueryable<SpecialOffer> specialOffers)
-        {
-            return from obj in specialOffers
-                   where obj.StartDate <= DateTime.Now &&
-                         obj.EndDate >= new DateTime(2004, 6, 1)
-                   select obj;
-        }
+        public static IQueryable<SpecialOffer> CurrentSpecialOffers(IContext context) =>
+            AllSpecialOffers(context).Where(x => x.StartDate <= context.Now() &&
+                         x.EndDate >= new DateTime(2004, 6, 1));
 
         #endregion
 
         #region All Special Offers
         //Returns most recently-modified first
         [MemberOrder(2)]
-        public static IQueryable<SpecialOffer> AllSpecialOffers(IQueryable<SpecialOffer> specialOffers)
-        {
-            return specialOffers.OrderByDescending(so => so.ModifiedDate);
-        }
+        public static IQueryable<SpecialOffer> AllSpecialOffers(IContext context) =>
+         context.Instances<SpecialOffer>().OrderByDescending(so => so.ModifiedDate);
+
         #endregion
 
         #region Special Offers With No Minimum Qty
         [MemberOrder(3)]
-        public static IQueryable<SpecialOffer> SpecialOffersWithNoMinimumQty(IQueryable<SpecialOffer> specialOffers)
+        public static IQueryable<SpecialOffer> SpecialOffersWithNoMinimumQty(IContext context)
         {
-            return CurrentSpecialOffers(specialOffers).Where(s => s.MinQty <= 1);
+            return CurrentSpecialOffers(context).Where(s => s.MinQty <= 1);
         }
         #endregion
 

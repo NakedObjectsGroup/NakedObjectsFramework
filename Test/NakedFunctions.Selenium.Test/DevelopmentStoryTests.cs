@@ -55,12 +55,12 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
         #endregion 
 
         [TestMethod, Priority(0)]
-        public virtual void Story199()
+        public virtual void RetrieveObjectViaMenuAction()
         {
+            //Corresponds to Story #199. Tests that IContext is injected as param, and that its Instances<T> method works
             OpenMainMenuAction("Products", "Find Product By Name");
             ClearFieldThenType("#searchstring1", "handlebar tube");
             Click(OKButton());         
-            //Thread.Sleep(1000); // robustness hack
             WaitForView(Pane.Single, PaneType.List, "Find Product By Name");
             AssertTopItemInListIs("Handlebar Tube");
         }
