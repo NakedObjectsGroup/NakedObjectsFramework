@@ -14,6 +14,7 @@ using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Configuration;
 using NakedFunctions.Reflector.FacetFactory;
 using NakedFunctions.Reflector.Reflect;
+using NakedFunctions.Services;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.DependencyInjection.DependencyInjection;
@@ -36,13 +37,22 @@ namespace NakedFunctions.Reflector.Extensions {
 
             options.RegisterCustomTypes?.Invoke(coreOptions.Services);
 
-            ParallelConfig.RegisterWellKnownServices(coreOptions.Services);
+            RegisterWellKnownServices(coreOptions.Services);
             coreOptions.Services.RegisterFacetFactories<IFunctionalFacetFactoryProcessor>(FunctionalFacetFactories.StandardFacetFactories());
             coreOptions.Services.AddSingleton<FunctionalFacetFactorySet, FunctionalFacetFactorySet>();
             coreOptions.Services.AddSingleton<FunctionClassStrategy, FunctionClassStrategy>();
             coreOptions.Services.AddSingleton<IReflector, FunctionalReflector>();
             coreOptions.Services.AddSingleton<IFunctionalReflectorConfiguration>(p => FunctionalReflectorConfig(options));
             coreOptions.Services.AddSingleton<IServiceList>(p => new ServiceList());
+        }
+
+        public static void RegisterWellKnownServices(IServiceCollection services)
+        {
+            services.AddScoped<IAlert, Alert>();
+            services.AddScoped<IClock, Clock>();
+            services.AddScoped<IGuidGenerator, GuidGenerator>();
+            services.AddScoped<IRandom, RandomNumber>();
+            services.AddScoped<IRandomSeedGenerator, RandomSeedGenerator>();
         }
     }
 }
