@@ -12,7 +12,9 @@
     <description>Naked Objects Programming Model. Add to a Model project (class library) for useful Attributes and Helper classes.</description>
     <tags>naked objects nakedobjects</tags>
     <dependencies>
-      <group targetFramework="net5.0"/>
+      <group targetFramework="net5.0">
+        <dependency id="NakedFramework.ProgrammingModel" version="[12.0.0-alpha01, 13)" />
+      </group>
     </dependencies>
   </metadata>
   <files>
@@ -21,11 +23,9 @@
     <file src="..\NakedObjects.Helpers\bin\Debug\**\NakedObjects.Helpers.dll" target="lib"/>
     <file src="..\NakedObjects.PMResources\bin\Debug\**\NakedObjects.PMResources.dll" target="lib"/>
     <file src="..\NakedObjects.Types\bin\Debug\**\NakedObjects.Types.dll" target="lib"/>
-    <file src="..\..\NakedFramework\NakedFramework.ProgrammingModel\bin\Debug\**\NakedFramework.ProgrammingModel.dll" target="lib"/>
     <file src="..\NakedObjects.Attributes\bin\Debug\**\NakedObjects.Attributes.pdb" target="lib"/>
     <file src="..\NakedObjects.Helpers\bin\Debug\**\NakedObjects.Helpers.pdb" target="lib"/>
     <file src="..\NakedObjects.PMResources\bin\Debug\**\NakedObjects.PMResources.pdb" target="lib"/>
     <file src="..\NakedObjects.Types\bin\Debug\**\NakedObjects.Types.pdb" target="lib"/>
-    <file src="..\..\NakedFramework\NakedFramework.ProgrammingModel\bin\Debug\**\NakedFramework.ProgrammingModel.pdb" target="lib"/>
   </files>
 </package>

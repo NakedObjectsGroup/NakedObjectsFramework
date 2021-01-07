@@ -12,14 +12,14 @@
     <description>Naked Functions Programming Model. Add to a Model project (class library) for useful Attributes. Interfaces, and Helper classes.</description>
     <tags>functional programming nakedfunctions</tags>
     <dependencies>
-      <group targetFramework="net5.0"/>
+      <group targetFramework="net5.0">
+        <dependency id="NakedFramework.ProgrammingModel" version="[12.0.0-alpha01, 13)" />
+      </group>
     </dependencies>
   </metadata>
   <files>
     <file src="icon.png" target="images\"/>
-    <file src="..\..\NakedFunctions\NakedFunctions.ProgrammingModel\bin\Debug\**\NakedFunctions.ProgrammingModel.dll" target="lib"/>
-    <file src="..\..\NakedFramework\NakedFramework.ProgrammingModel\bin\Debug\**\NakedFramework.ProgrammingModel.dll" target="lib"/>
-    <file src="..\..\NakedFunctions\NakedFunctions.ProgrammingModel\bin\Debug\**\NakedFunctions.ProgrammingModel.pdb" target="lib"/>
-    <file src="..\..\NakedFramework\NakedFramework.ProgrammingModel\bin\Debug\**\NakedFramework.ProgrammingModel.pdb" target="lib"/>
+    <file src="..\NakedFunctions.ProgrammingModel\bin\Debug\**\NakedFunctions.ProgrammingModel.dll" target="lib"/>
+    <file src="..\NakedFunctions.ProgrammingModel\bin\Debug\**\NakedFunctions.ProgrammingModel.pdb" target="lib"/>
   </files>
 </package>

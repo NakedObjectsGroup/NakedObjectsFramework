@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\NakedFramework\NakedFramework.ProgrammingModel\NakedFramework.ProgrammingModel.csproj" />
+    <PackageReference Include="NakedFramework.ProgrammingModel" Version="12.0.0-alpha01" />
   </ItemGroup>
 
 </Project>
