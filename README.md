@@ -12,11 +12,11 @@ This branch contains the current release. These are the principal changes from t
 - Removal of redundant code
 - Restructuring of packages
 
-Under the new package structure, we will be publishing just two NuGet packages:
+Under the new package structure, we are publishing just two NuGet packages:
 
-- NakedObjects.Server (currently 11.0.0-rc01, soon to be released as version 11.0.0)
-- NakedObjects.ProgrammingModel (8.0.0.)	 
-	Note however that this is identical to 7.0.4 - the current release - except compiled against .NET Core 3,
+- NakedObjects.Server (currently v11.0.0)
+- NakedObjects.ProgrammingModel (currently v11.0.0.)	 
+	Note however that this is identical to 7.0.4 - the previous release - except compiled against .NET Core 3,
 	so no changes to domain object model code are required. (Members obsoleted since 7.0 have now been removed).
 	
 - The Naked Objects Client is built from a set of NPM packages. 
