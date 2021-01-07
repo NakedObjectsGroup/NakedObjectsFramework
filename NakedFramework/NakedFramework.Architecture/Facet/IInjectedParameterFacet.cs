@@ -5,9 +5,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System;
+
 namespace NakedObjects.Architecture.Facet {
     public interface IInjectedParameterFacet : IFacet{
 
-        object GetInjectedValue(INakedObjectsFramework framework);
+        object GetInjectedValue(INakedObjectsFramework framework, IServiceProvider provider);
     }
 }

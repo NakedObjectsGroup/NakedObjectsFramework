@@ -17,6 +17,11 @@ namespace NakedFunctions.Rest.Test.Data {
             return context.Instances<SimpleRecord>().Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
         }
 
+        public static SimpleRecord Random(IContext context) {
+            var instances = context.Instances<SimpleRecord>().OrderBy(n => "");
+            return instances.Skip(context.RandomSeed().ValueInRange(instances.Count())).FirstOrDefault();
+        }
+
         //public static SimpleRecord GetSimpleRecord(IQueryable<SimpleRecord> allSimpleRecords) => allSimpleRecords.First();
         //public static IList<SimpleRecord> GetSimpleRecordsSingle(IQueryable<SimpleRecord> allSimpleRecords) => new[] {allSimpleRecords.First()};
         //public static IList<SimpleRecord> GetSimpleRecordsMultiple(IQueryable<SimpleRecord> allSimpleRecords) => allSimpleRecords.ToList().SkipLast(1).ToList();

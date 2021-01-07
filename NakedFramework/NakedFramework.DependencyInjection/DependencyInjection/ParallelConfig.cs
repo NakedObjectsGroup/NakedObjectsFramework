@@ -14,7 +14,6 @@ using NakedFunctions;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Authentication;
 using NakedObjects.Core.Component;
-using NakedObjects.Core.Framework;
 using NakedObjects.Core.Spec;
 using NakedObjects.DependencyInjection.FacetFactory;
 using NakedObjects.Meta.Component;
@@ -64,10 +63,6 @@ namespace NakedObjects.DependencyInjection.DependencyInjection {
             foreach (var factory in facetFactories) {
                 services.RegisterFacetFactory<T>(factory);
             }
-        }
-
-        public static void RegisterWellKnownServices(IServiceCollection services) {
-            services.AddScoped<IAlert, Alert>();
         }
     }
 }

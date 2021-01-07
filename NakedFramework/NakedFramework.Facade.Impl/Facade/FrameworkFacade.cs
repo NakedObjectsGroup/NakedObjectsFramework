@@ -36,9 +36,17 @@ namespace NakedObjects.Facade.Impl {
     public class FrameworkFacade : IFrameworkFacade {
         private readonly ILogger<FrameworkFacade> logger;
         private readonly IStringHasher stringHasher;
+        private readonly IServiceProvider provider;
 
-        public FrameworkFacade(IOidStrategy oidStrategy, IOidTranslator oidTranslator, INakedObjectsFramework framework, IStringHasher stringHasher, ILogger<FrameworkFacade> logger) {
+        public FrameworkFacade(IOidStrategy oidStrategy,
+                               IOidTranslator oidTranslator,
+                               INakedObjectsFramework framework,
+                               IStringHasher stringHasher,
+                               IServiceProvider provider,
+                               ILogger<FrameworkFacade> logger) {
+            
             this.stringHasher = stringHasher;
+            this.provider = provider;
             this.logger = logger;
             oidStrategy.FrameworkFacade = this;
             OidStrategy = oidStrategy;
@@ -504,26 +512,21 @@ namespace NakedObjects.Facade.Impl {
             return oc.ToObjectContextFacade(this, Framework);
         }
 
-        private static void SetFirstParmFromTarget(ActionContext actionContext, IDictionary<string, object> rawParms)
-        {
+        private static void SetFirstParmFromTarget(ActionContext actionContext, IDictionary<string, object> rawParms) {
             if (actionContext.Target is not null) {
+                var parm = actionContext.Action.Parameters.FirstOrDefault(p => actionContext.Target.Spec.IsOfType(p.Spec));
 
-                IActionParameterSpec parm = actionContext.Action.Parameters.FirstOrDefault(p => actionContext.Target.Spec.IsOfType(p.Spec));
-
-                if (parm != null) {
+                if (parm is not null) {
                     rawParms[parm.Id] = actionContext.Target.Object;
                 }
             }
         }
 
-        private void SetInjectedParms(ActionContext actionContext, IDictionary<string, object> rawParms)
-        {
-            foreach (var parameterSpec in actionContext.Action.Parameters)
-            {
+        private void SetInjectedParms(ActionContext actionContext, IDictionary<string, object> rawParms) {
+            foreach (var parameterSpec in actionContext.Action.Parameters) {
                 var injectedFacet = parameterSpec.GetFacet<IInjectedParameterFacet>();
-                if (injectedFacet != null)
-                {
-                    rawParms[parameterSpec.Id] = injectedFacet.GetInjectedValue(Framework);
+                if (injectedFacet is not null) {
+                    rawParms[parameterSpec.Id] = injectedFacet.GetInjectedValue(Framework, provider);
                 }
             }
         }

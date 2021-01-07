@@ -5,10 +5,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using NakedFunctions;
 using NakedObjects.Architecture.Component;
 
-namespace NakedObjects.Core.Framework {
+namespace NakedFunctions.Services {
     public sealed class Alert : IAlert {
         private readonly IMessageBroker messageBroker;
 

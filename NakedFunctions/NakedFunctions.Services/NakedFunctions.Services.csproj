@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Programming Model\NakedFunctions\NakedFunctions.ProgrammingModel\NakedFunctions.ProgrammingModel.csproj" />
+    <PackageReference Include="NakedFunctions.ProgrammingModel" Version="1.0.0-alpha01" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\NakedFramework\NakedFramework.Architecture\NakedFramework.Architecture.csproj" />
+  </ItemGroup>
+
 
 </Project>

@@ -8,18 +8,21 @@
 using System;
 using System.Linq;
 using NakedObjects.Architecture.Component;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace NakedFunctions.Reflector.Component {
     public class Context : IContext {
         private readonly IObjectPersistor persistor;
+        private readonly IServiceProvider provider;
 
-        public Context(IObjectPersistor persistor) {
+        public Context(IObjectPersistor persistor, IServiceProvider provider) {
             this.persistor = persistor;
+            this.provider = provider;
         }
 
         public IQueryable<T> Instances<T>() where T : class => persistor.UntrackedInstances<T>();
 
-        public T GetService<T>() => throw new NotImplementedException();
+        public T GetService<T>() => provider.GetService<T>();
 
         public IContext WithPendingSave(params object[] toBeSaved) => throw new NotImplementedException();
 

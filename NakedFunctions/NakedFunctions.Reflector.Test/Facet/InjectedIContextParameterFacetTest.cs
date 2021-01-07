@@ -30,7 +30,7 @@ namespace NakedFunctions.Meta.Test.Facet {
         public void TestInject() {
             var testFacet = new InjectedIContextParameterFacet(null);
 
-            var result = ((IContext) testFacet.GetInjectedValue(mockFramework.Object)).Instances<object>();
+            var result = ((IContext) testFacet.GetInjectedValue(mockFramework.Object, null)).Instances<object>();
 
             Assert.AreEqual(result, testValue);
         }
