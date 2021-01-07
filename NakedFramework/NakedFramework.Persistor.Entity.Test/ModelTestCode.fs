@@ -21,6 +21,7 @@ open TestCode
 open TestTypes
 open Microsoft.Extensions.Logging
 open NakedObjects.Reflector.Configuration
+open NakedFramework.Core.Component
 
 let ModelConfig = 
     let pc = new CodeFirstEntityContextConfiguration()
@@ -31,10 +32,11 @@ let ModelConfig =
 
 ObjectReflectorConfiguration.NoValidate <- true
 let config = new ObjectReflectorConfiguration([||], [| typeof<NakedObjects.Services.SimpleRepository<Person>> |] )
+let serviceList = new AllServiceList ([|new ServiceList(config.Services)|])
 
 let mockLoggerFactory = new Mock<ILoggerFactory>();
 let mockLogger = new Mock<ILogger<DomainObjectContainerInjector>>();
-let injector = new DomainObjectContainerInjector(config, mockLoggerFactory.Object, mockLogger.Object);
+let injector = new DomainObjectContainerInjector(serviceList, mockLoggerFactory.Object, mockLogger.Object);
 
 injector.set_Framework (new Mock<INakedObjectsFramework>()).Object
 

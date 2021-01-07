@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Architecture.Facet;
@@ -22,27 +23,25 @@ using NakedObjects.Meta.Utils;
 namespace NakedFramework.ModelBuilding.Component {
     public class ModelIntegrator : IModelIntegrator {
         private readonly ICoreConfiguration coreConfiguration;
+        private readonly IAllServiceList serviceList;
         private readonly ILogger<ModelIntegrator> logger;
         private readonly IMenuFactory menuFactory;
         private readonly IMetamodelBuilder metamodelBuilder;
-        private readonly IObjectReflectorConfiguration objectReflectorConfiguration;
 
         public ModelIntegrator(IMetamodelBuilder metamodelBuilder,
                                IMenuFactory menuFactory,
                                ILogger<ModelIntegrator> logger,
                                ICoreConfiguration coreConfiguration,
-                               IObjectReflectorConfiguration objectReflectorConfiguration) {
+                               IAllServiceList serviceList) {
             this.metamodelBuilder = metamodelBuilder;
             this.menuFactory = menuFactory;
             this.logger = logger;
             this.coreConfiguration = coreConfiguration;
-            this.objectReflectorConfiguration = objectReflectorConfiguration;
+            this.serviceList = serviceList;
         }
 
 
         public void Integrate() {
-            // todo change so not dependent on specific reflector config 
-
             // new way of doing things =- introduce integration facets
 
             var integrationFacets = metamodelBuilder.AllSpecifications.Select(s => s.GetFacet<IIntegrationFacet>()).Where(f => f is not null).ToArray();
@@ -51,8 +50,7 @@ namespace NakedFramework.ModelBuilding.Component {
             // todo should we remove after use to reduce size of metamodel ?
             // integrationFacets.ForEach(f => f.Remove());
 
-
-            var services = objectReflectorConfiguration.Services;
+            var services = serviceList.Services;
             PopulateAssociatedActions(services, metamodelBuilder);
 
             PopulateAssociatedFunctions(metamodelBuilder);

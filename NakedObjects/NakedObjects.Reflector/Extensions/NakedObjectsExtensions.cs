@@ -7,6 +7,8 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.Architecture.Component;
+using NakedFramework.Core.Component;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.DependencyInjection.DependencyInjection;
@@ -41,6 +43,7 @@ namespace NakedObjects.Reflector.Extensions {
             coreOptions.Services.AddSingleton<IReflector, SystemTypeReflector>();
             coreOptions.Services.AddSingleton<IReflector, ObjectReflector>();
             coreOptions.Services.AddSingleton<IObjectReflectorConfiguration>(p => ObjectReflectorConfig(options));
+            coreOptions.Services.AddSingleton<IServiceList>(p => new ServiceList(options.Services));
         }
     }
 }

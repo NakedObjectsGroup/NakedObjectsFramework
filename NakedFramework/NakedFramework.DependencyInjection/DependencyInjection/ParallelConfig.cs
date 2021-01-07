@@ -7,6 +7,8 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.Architecture.Component;
+using NakedFramework.Core.Component;
 using NakedFramework.ModelBuilding.Component;
 using NakedFunctions;
 using NakedObjects.Architecture.Component;
@@ -31,6 +33,7 @@ namespace NakedObjects.DependencyInjection.DependencyInjection {
             services.AddSingleton<IModelBuilder, ModelBuilder>();
             services.AddSingleton<FacetFactoryTypesProvider, FacetFactoryTypesProvider>();
             services.AddSingleton(typeof(IFacetFactoryOrder<>), typeof(FacetFactoryOrder<>));
+            services.AddSingleton<IAllServiceList, AllServiceList>();
         }
 
         public static void RegisterCoreScopedTypes(IServiceCollection services) {

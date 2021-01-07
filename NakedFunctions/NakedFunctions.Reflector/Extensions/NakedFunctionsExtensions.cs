@@ -8,6 +8,8 @@
 using System;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using NakedFramework.Architecture.Component;
+using NakedFramework.Core.Component;
 using NakedFunctions.Reflector.Component;
 using NakedFunctions.Reflector.Configuration;
 using NakedFunctions.Reflector.FacetFactory;
@@ -40,6 +42,7 @@ namespace NakedFunctions.Reflector.Extensions {
             coreOptions.Services.AddSingleton<FunctionClassStrategy, FunctionClassStrategy>();
             coreOptions.Services.AddSingleton<IReflector, FunctionalReflector>();
             coreOptions.Services.AddSingleton<IFunctionalReflectorConfiguration>(p => FunctionalReflectorConfig(options));
+            coreOptions.Services.AddSingleton<IServiceList>(p => new ServiceList());
         }
     }
 }

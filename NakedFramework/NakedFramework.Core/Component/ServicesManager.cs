@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
@@ -30,14 +31,14 @@ namespace NakedObjects.Core.Component {
 
         public ServicesManager(IDomainObjectInjector injector,
                                INakedObjectManager manager,
-                               IObjectReflectorConfiguration config,
+                               IAllServiceList serviceList,
                                ILogger<ServicesManager> logger,
                                IFunctionalReflectorConfiguration fConfig = null) {
             this.injector = injector ?? throw new InitialisationException($"{nameof(injector)} is null");
             this.manager = manager ?? throw new InitialisationException($"{nameof(manager)} is null");
             this.logger = logger ?? throw new InitialisationException($"{nameof(logger)} is null");
 
-            services = config.Services.Select(Activator.CreateInstance).ToList();
+            services = serviceList.Services.Select(Activator.CreateInstance).ToList();
         }
 
         private IList<object> Services {

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using NakedFramework.Architecture.Component;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Architecture.Configuration;
 using NakedObjects.Core.Container;
@@ -21,11 +22,11 @@ namespace NakedObjects.Core.Component {
         private bool initialized;
         private List<object> services;
 
-        public DomainObjectContainerInjector(IObjectReflectorConfiguration config,
+        public DomainObjectContainerInjector(IAllServiceList services,
                                              ILoggerFactory loggerFactory,
                                              ILogger<DomainObjectContainerInjector> logger) {
             this.loggerFactory = loggerFactory ?? throw new InitialisationException($"{nameof(loggerFactory)} is null");
-            serviceTypes = config.Services.ToList();
+            serviceTypes = services.Services.ToList();
         }
 
         private List<object> Services => services ?? SetServices();

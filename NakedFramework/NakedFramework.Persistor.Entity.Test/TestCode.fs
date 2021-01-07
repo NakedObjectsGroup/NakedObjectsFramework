@@ -23,6 +23,7 @@ open System.Security.Principal
 open TestTypes
 open Microsoft.Extensions.Logging
 open NakedObjects.Reflector.Configuration
+open NakedFramework.Core.Component
 
 let resetPersistor (p : EntityObjectStore) = 
     p.SetupContexts()
@@ -32,9 +33,10 @@ let getEntityObjectStore (config) =
     let s = new SimpleSession(new GenericPrincipal(new GenericIdentity(""), [||]))
     ObjectReflectorConfiguration.NoValidate <- true
     let c = new ObjectReflectorConfiguration( [||], [||])
+    let serviceList = new AllServiceList ([|  new ServiceList(c.Services)|])
     let mlf = new Mock<ILoggerFactory>();
     let ml = new Mock<ILogger<DomainObjectContainerInjector>>();
-    let i = new DomainObjectContainerInjector(c, mlf.Object, ml.Object)
+    let i = new DomainObjectContainerInjector(serviceList, mlf.Object, ml.Object)
     let m = mockMetamodelManager.Object
     let nom = (new Mock<INakedObjectManager>()).Object
     let log = (new Mock<ILogger<EntityObjectStore>>()).Object;
