@@ -8,9 +8,9 @@
 
 using NakedFunctions;
 using System.Linq;
+using AW.Types;
 
-
-namespace AdventureWorksModel {
+namespace AW.Functions {
     /// <summary>
     /// 
     /// </summary>

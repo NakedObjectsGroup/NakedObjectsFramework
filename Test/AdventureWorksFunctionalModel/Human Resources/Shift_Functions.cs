@@ -7,9 +7,10 @@
 
 using System;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
+using static AW.Helpers;
+using AW.Types;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
 
     public static class ShiftFunctions {
 

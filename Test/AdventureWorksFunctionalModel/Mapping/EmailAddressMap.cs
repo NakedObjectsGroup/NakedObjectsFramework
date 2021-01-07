@@ -1,6 +1,7 @@
 using System.Data.Entity.ModelConfiguration;
+using AW.Types;
 
-namespace AdventureWorksModel {
+namespace AW.Mapping {
     public class EmailAddressMap : EntityTypeConfiguration<EmailAddress> {
         public EmailAddressMap() {
             // Primary Key

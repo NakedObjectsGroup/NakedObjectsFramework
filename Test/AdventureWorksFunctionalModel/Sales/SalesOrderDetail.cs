@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
+namespace AW.Types {
         public record SalesOrderDetail {
 
         #region Life Cycle Methods

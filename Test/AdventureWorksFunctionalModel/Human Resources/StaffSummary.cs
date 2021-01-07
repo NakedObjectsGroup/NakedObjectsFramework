@@ -1,7 +1,7 @@
 ﻿using NakedFunctions;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AdventureWorksModel
+namespace AW.Types
 {
 
     //Used to test creation/rendering of NotPersisted object

@@ -7,17 +7,18 @@
 
 using System.Linq;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
+using AW.Types;
+using static AW.Helpers;
 using System;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
     public enum Ordering {
         Ascending,
         Descending
     };
 
     [Named("Orders")]
-    public static class OrderRepository  {
+    public static class Order_MenuFunctions  {
 
         [ MemberOrder(99)]
         public static SalesOrderHeader RandomOrder(IContext context) => Random<SalesOrderHeader>(context);
@@ -63,7 +64,7 @@ namespace AdventureWorksModel {
             [DescribedAs("Enter the Account Number (AW + 8 digits) & select the customer")]Customer customer,
             IQueryable<SalesOrderHeader> headers
             ) {
-            return OrderContributedActions.RecentOrders(customer, headers);
+            return Order_AdditionalFunctions.RecentOrders(customer, headers);
         }
      
         [PageSize(10)]

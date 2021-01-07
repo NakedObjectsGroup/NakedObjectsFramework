@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
+namespace AW.Types {
     public record ProductModelIllustration : IHasModifiedDate {
         [Hidden]
         public virtual int ProductModelID { get; init; }

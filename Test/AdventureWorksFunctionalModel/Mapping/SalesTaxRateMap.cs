@@ -1,6 +1,7 @@
 using System.Data.Entity.ModelConfiguration;
+using AW.Types;
 
-namespace AdventureWorksModel
+namespace AW.Mapping
 {
     public class SalesTaxRateMap : EntityTypeConfiguration<SalesTaxRate>
     {

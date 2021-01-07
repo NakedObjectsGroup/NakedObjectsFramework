@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
+using AW.Types;
 
-namespace AdventureWorksModel
+namespace AW.Mapping
 {
     public class ProductModelIllustrationMap : EntityTypeConfiguration<ProductModelIllustration>
     {

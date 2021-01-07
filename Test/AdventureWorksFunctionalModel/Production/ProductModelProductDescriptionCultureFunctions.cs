@@ -7,8 +7,9 @@
 
 using System;
 using NakedFunctions;
+using AW.Types;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
      public static class ProductModelProductDescriptionCultureFunctions
     {
         public static ProductDocument Updating(ProductDocument x, IContext context) => x with { ModifiedDate = context.Now() };

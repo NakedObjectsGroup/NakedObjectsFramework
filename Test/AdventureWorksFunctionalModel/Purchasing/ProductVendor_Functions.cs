@@ -1,4 +1,5 @@
 ﻿using NakedFunctions;
+using AW.Types;
 
 namespace AdventureWorksModel
 {

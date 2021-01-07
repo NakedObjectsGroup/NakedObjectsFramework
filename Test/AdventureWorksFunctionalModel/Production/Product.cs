@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedFunctions;
 
-namespace AdventureWorksModel
+namespace AW.Types
 {
     public interface IProduct
     {
@@ -185,10 +185,10 @@ namespace AdventureWorksModel
         [TableView(true, nameof(ProductReview.Rating), nameof(ProductReview.Comments))]
         public virtual ICollection<ProductReview> ProductReviews { get; init; } = new List<ProductReview>();
 
-        [RenderEagerly, TableView(false, nameof(AdventureWorksModel.ProductInventory.Quantity),
-                nameof(AdventureWorksModel.ProductInventory.Location),
-                    nameof(AdventureWorksModel.ProductInventory.Shelf),
-                        nameof(AdventureWorksModel.ProductInventory.Bin))]
+        [RenderEagerly, TableView(false, nameof(Types.ProductInventory.Quantity),
+                nameof(Types.ProductInventory.Location),
+                    nameof(Types.ProductInventory.Shelf),
+                        nameof(Types.ProductInventory.Bin))]
         public virtual ICollection<ProductInventory> ProductInventory { get; init; } = new List<ProductInventory>();
 
         internal virtual int NumberInStock()

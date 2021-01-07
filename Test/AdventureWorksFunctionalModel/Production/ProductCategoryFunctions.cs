@@ -8,8 +8,9 @@
 using System;
 using System.Collections.Generic;
 using NakedFunctions;
+using AW.Types;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
      public static class ProductCategoryFunctions
     {
         public static ProductCategory Updating(ProductCategory x, IContext context) => x with { ModifiedDate = context.Now() };

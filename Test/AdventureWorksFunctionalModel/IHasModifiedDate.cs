@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AdventureWorksModel
+namespace AW
 {
     public interface IHasModifiedDate
     {

@@ -12,8 +12,9 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using NakedFunctions;
+using AW.Types;
 
-namespace AdventureWorksModel
+namespace AW.Functions
 {
     public static class ProductModelFunctions
     {

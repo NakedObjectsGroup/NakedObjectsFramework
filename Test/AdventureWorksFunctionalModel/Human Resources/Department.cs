@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel
+namespace AW.Types
 {
     [Bounded]
     public record Department : IHasModifiedDate

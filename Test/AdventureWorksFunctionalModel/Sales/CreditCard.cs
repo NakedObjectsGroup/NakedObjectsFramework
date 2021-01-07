@@ -9,8 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
+using AW.Functions;
 
-namespace AdventureWorksModel {
+namespace AW.Types {
         public record CreditCard {
         [Hidden]
         public virtual int CreditCardID { get; init; }

@@ -9,7 +9,7 @@ using System;
 using NakedFunctions;
 using System.Collections.Generic;
 
-namespace AdventureWorksModel {
+namespace AW.Types {
 
         public record Person : BusinessEntity, IHasRowGuid, IHasModifiedDate {
           

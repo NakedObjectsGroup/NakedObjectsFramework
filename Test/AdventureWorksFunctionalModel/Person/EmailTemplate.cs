@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using NakedFunctions;
 
-namespace AdventureWorksModel
+namespace AW.Types
 {
     [ViewModelEdit]
     public record EmailTemplate 

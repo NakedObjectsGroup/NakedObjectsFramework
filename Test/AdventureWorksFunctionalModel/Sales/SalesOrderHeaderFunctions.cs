@@ -6,11 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
+using AW.Types;
 using System.Linq;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
     [Named("Sales Order")]
         public  static class SalesOrderHeaderFunctions { 
 

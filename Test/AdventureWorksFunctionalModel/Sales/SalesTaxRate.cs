@@ -12,7 +12,7 @@ using NakedFunctions;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace AdventureWorksModel
+namespace AW.Types
 {
 
     //Redirects to the StateProvince object on the Azure server

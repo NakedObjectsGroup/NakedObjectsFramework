@@ -2,7 +2,7 @@ using NakedFunctions;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AdventureWorksModel
+namespace AW.Types
 {
     [Named("Address")]
     public record BusinessEntityAddress : IHasRowGuid, IHasModifiedDate

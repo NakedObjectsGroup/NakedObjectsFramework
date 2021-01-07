@@ -10,9 +10,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
+using static AW.Helpers;
 
-namespace AdventureWorksModel
+namespace AW.Types
 {
     public record SalesPerson : IBusinessEntity
     {

@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
+namespace AW.Types {
     public record Vendor : IBusinessEntity {
 
         #region Life Cycle Methods

@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedFunctions;
 
-namespace AdventureWorksModel
+namespace AW.Types
 {
     public record WorkOrder : IHasModifiedDate
     {

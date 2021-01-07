@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
+namespace AW.Types {
     public record Illustration  {
  
         public virtual int IllustrationID { get; init; }

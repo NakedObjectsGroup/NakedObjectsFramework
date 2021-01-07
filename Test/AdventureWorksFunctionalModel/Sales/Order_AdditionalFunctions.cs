@@ -7,13 +7,13 @@
 
 using System;
 using System.Linq;
-using AdventureWorksModel.Sales;
+using AW.Types;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
+using static AW.Helpers;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
     [Named("Orders")]
-    public static class OrderContributedActions {
+    public static class Order_AdditionalFunctions {
         private const string subMenu = "Orders";
 
         [MemberOrder(22)]

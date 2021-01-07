@@ -7,10 +7,11 @@
 
 using System;
 using System.Linq;
+using AW.Functions;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
+using static AW.Helpers;
 
-namespace AdventureWorksModel
+namespace AW.Types
 {
     public record Store : BusinessEntity, IBusinessEntityWithContacts, IHasModifiedDate
     {

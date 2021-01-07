@@ -1,8 +1,9 @@
 ﻿using NakedFunctions;
-using static AdventureWorksModel.Helpers;
+using AW.Types;
+using static AW.Helpers;
 using System;
 
-namespace AdventureWorksModel
+namespace AW.Functions
 {
     public static class WorkOrderRoutingFunctions
     {

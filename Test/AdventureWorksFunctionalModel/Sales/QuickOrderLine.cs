@@ -1,10 +1,9 @@
 ﻿using NakedFunctions;
-using System;
-using System.Collections.Generic;
+using static AW.Functions.SalesOrderHeaderFunctions;
 using System.Linq;
 
 
-namespace AdventureWorksModel.Sales
+namespace AW.Types
 {
     [ViewModel]
     public record QuickOrderLine 

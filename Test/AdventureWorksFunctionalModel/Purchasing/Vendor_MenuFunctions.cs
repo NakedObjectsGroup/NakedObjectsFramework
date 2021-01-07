@@ -8,9 +8,10 @@
 
 using System.Linq;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
+using AW.Types;
+using static AW.Helpers;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
     [Named("Vendors")]
     public static class Vendor_MenuFunctions  {
 

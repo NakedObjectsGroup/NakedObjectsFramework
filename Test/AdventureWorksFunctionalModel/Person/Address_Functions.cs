@@ -8,8 +8,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using NakedFunctions;
+using AW.Types;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
   
     public static class Address_Functions
     {

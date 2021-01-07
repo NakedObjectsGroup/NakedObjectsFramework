@@ -7,9 +7,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using AW.Functions;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
+namespace AW.Types {
     /// <summary>
     /// 
     /// </summary>
@@ -35,7 +36,7 @@ namespace AdventureWorksModel {
         public IList<SalesOrderHeader> RecentOrders(
             IQueryable<SalesOrderHeader> headers)
             {
-            return OrderContributedActions.RecentOrders(Root, headers).ToList();
+            return Order_AdditionalFunctions.RecentOrders(Root, headers).ToList();
         }
 
         [DisplayAsProperty]

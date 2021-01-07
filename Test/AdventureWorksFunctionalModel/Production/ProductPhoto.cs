@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 
-namespace AdventureWorksModel {
+namespace AW.Types {
     public record ProductPhoto  {
         private byte[] _LargePhoto = new byte[0];
         private byte[] _ThumbNailPhoto = new byte[0];

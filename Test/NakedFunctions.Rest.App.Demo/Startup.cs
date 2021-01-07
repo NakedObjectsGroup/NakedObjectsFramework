@@ -41,38 +41,15 @@ namespace NakedFunctions.Rest.App.Demo {
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddHttpContextAccessor();
             services.AddNakedFramework(builder => {
-                builder.MainMenus = CombinedNOandNFMenus;
+                builder.MainMenus = ModelConfig.MainMenus;
                 builder.AddEntityPersistor(options => {
-                    options.ContextInstallers = new[] { ModelConfig_NakedFunctionsPM.DbContextInstaller };
+                    options.ContextInstallers = new[] { ModelConfig.DbContextInstaller };
                 });
                 // todo - outstanding issues 
                 // 1. Need to still add NakedObjects as missing dependencies - need to fix packaging
-                // 2. These types are still required in model - need to be ignored or removed from graph or added to NF config
-                builder.AddNakedObjects(options => {
-                    options.Types = new Type[] {
-                        typeof(Department),
-                        typeof(IEmployee),
-                        typeof(SpecialOfferProduct),
-                        typeof(PurchaseOrderHeader),
-                        typeof(EmployeeDepartmentHistory),
-                        typeof(Shift),
-                        typeof(Person),
-                        typeof(Vendor),
-                        typeof(Store),
-                        typeof(Customer),
-                        typeof(SalesPerson),
-                        typeof(EmployeePayHistory),
-                        typeof(PhoneNumberType),
-                        typeof(AddressType),
-                        typeof(StateProvince),
-                        typeof(Address)
-                    };
-
-                    options.NoValidate = true;
-                });
                 builder.AddNakedFunctions(options => {
-                    options.FunctionalTypes = ModelConfig_NakedFunctionsPM.DomainTypes();
-                    options.Functions = ModelConfig_NakedFunctionsPM.DomainFunctions();
+                    options.FunctionalTypes = ModelConfig.DomainTypes();
+                    options.Functions = ModelConfig.DomainFunctions();
                 });
                 builder.AddRestfulObjects();
             });
@@ -107,13 +84,6 @@ namespace NakedFunctions.Rest.App.Demo {
             app.UseCors(MyAllowSpecificOrigins);
             app.UseRouting();
             app.UseRestfulObjects();
-        }
-
-        private static IMenu[] CombinedNOandNFMenus(IMenuFactory mf)
-        {
-            var menus = ModelConfig_NakedFunctionsPM.MainMenus(mf).ToList();
-            //menus.AddRange(ModelConfig_NakedObjectsPM.MainMenus(mf));
-            return menus.ToArray();
         }
     }
 }

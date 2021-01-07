@@ -2,7 +2,7 @@
 using System.Linq;
 using NakedFunctions;
 
-namespace AdventureWorksModel
+namespace AW
 {
     public static class Helpers
     {

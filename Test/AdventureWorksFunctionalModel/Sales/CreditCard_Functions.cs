@@ -7,9 +7,10 @@
 
 using System;
 using System.Linq;
+using AW.Types;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
         public static class CreditCard_Functions {
         
         #region Life Cycle Methods

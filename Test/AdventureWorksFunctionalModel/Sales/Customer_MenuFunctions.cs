@@ -11,9 +11,10 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
+using AW.Types;
+using static AW.Helpers;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
     public static class Customer_MenuFunctions {
 
 

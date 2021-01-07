@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace AdventureWorksModel {
+namespace AW.Types {
 
     public record BusinessEntity : IBusinessEntity {
 

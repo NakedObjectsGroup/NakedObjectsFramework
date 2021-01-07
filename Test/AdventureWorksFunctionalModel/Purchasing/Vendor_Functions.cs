@@ -1,9 +1,10 @@
 ﻿
 using NakedFunctions;
+using AW.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static AdventureWorksModel.Helpers;
+using static AW.Helpers;
 
 namespace AdventureWorksModel
 {

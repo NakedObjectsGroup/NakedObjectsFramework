@@ -10,9 +10,10 @@
 using System.Linq;
 using NakedFramework.Menu;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
+using AW.Types;
+using static AW.Helpers;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
     [Named("Sales")]
     public static class Sales_MenuFunctions  {
 

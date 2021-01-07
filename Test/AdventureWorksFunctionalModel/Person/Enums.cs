@@ -1,4 +1,4 @@
-﻿namespace AdventureWorksModel
+﻿namespace AW
 {
     public enum EmailPromotion
     {

@@ -9,8 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NakedFunctions;
+using AW.Types;
 
-namespace AdventureWorksModel.Sales {
+namespace AW.Types {
 
     [ViewModelEdit]
     public record QuickOrderForm  {

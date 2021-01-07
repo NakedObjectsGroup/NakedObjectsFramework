@@ -7,9 +7,10 @@
 
 using NakedFunctions;
 using System.Linq;
-using static AdventureWorksModel.Helpers;
+using static AW.Helpers;
+using AW.Types;
 
-namespace AdventureWorksModel
+namespace AW.Functions
 {
     public static class Employee_Functions
     {

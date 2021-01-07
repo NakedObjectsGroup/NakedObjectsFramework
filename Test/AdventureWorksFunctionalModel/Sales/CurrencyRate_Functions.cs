@@ -1,7 +1,8 @@
 ﻿using NakedFunctions;
+using AW.Types;
 using System;
 
-namespace AdventureWorksModel
+namespace AW.Functions
 {
     public static class CurrencyRate_Functions
     {

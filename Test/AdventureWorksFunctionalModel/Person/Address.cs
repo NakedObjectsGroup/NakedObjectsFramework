@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
 
-namespace AdventureWorksModel
+namespace AW.Types
 {
     public record Address : IHasRowGuid, IHasModifiedDate
     {

@@ -2,7 +2,7 @@ using NakedFunctions;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace AdventureWorksModel {
+namespace AW.Types {
     [Bounded]
     public record PhoneNumberType : IHasModifiedDate {
         [Hidden]

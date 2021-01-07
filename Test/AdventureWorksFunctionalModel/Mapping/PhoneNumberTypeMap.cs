@@ -1,6 +1,7 @@
 using System.Data.Entity.ModelConfiguration;
+using AW.Types;
 
-namespace AdventureWorksModel {
+namespace AW.Mapping {
     public class PhoneNumberTypeMap : EntityTypeConfiguration<PhoneNumberType> {
         public PhoneNumberTypeMap() {
             // Primary Key

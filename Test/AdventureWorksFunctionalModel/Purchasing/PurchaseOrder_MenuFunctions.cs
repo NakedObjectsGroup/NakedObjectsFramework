@@ -6,9 +6,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFunctions;
+using AW.Types;
 using System;
 using System.Linq;
-using static AdventureWorksModel.Helpers;
+using static AW.Helpers;
 
 
 namespace AdventureWorksModel

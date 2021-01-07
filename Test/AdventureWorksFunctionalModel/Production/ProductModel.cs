@@ -14,7 +14,7 @@ using System.Text;
 using System.Xml.Linq;
 using NakedFunctions;
 
-namespace AdventureWorksModel
+namespace AW.Types
 {
     public record ProductModel : IHasRowGuid, IHasModifiedDate
     {

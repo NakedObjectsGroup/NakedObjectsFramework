@@ -7,11 +7,11 @@
 
 using System;
 using System.Linq;
-using System.Security.Principal;
+using AW.Types;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
+using static AW.Helpers;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
     [Named("Employees")]
     public static class Employee_MenuFunctions {
         [TableView(true,

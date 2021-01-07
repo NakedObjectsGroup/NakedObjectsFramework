@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
+namespace AW.Types {
         public record ProductCostHistory : IHasModifiedDate {
         [Hidden]
         public virtual int ProductID { get; init; }

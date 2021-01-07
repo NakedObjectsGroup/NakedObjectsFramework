@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AdventureWorksModel {
+namespace AW {
     [AttributeUsage(AttributeTargets.Property)]
     public class AWNotCountedAttribute : Attribute { }
 }

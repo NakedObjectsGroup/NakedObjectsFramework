@@ -6,10 +6,11 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System.Linq;
+using AW.Functions;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
+using static AW.Helpers;
 
-namespace AdventureWorksModel {
+namespace AW.Types {
     //TODO: Need to think how we want to do ViewModels. Can't require methods to be implemented.
     //Probably just need a constructor that takes all keys, as well as any required Injected params
     [ViewModel]

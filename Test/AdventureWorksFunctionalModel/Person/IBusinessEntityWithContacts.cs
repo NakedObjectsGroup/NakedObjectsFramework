@@ -1,4 +1,4 @@
-﻿namespace AdventureWorksModel {
+﻿namespace AW.Types {
     public interface IBusinessEntityWithContacts : IBusinessEntity{
     }
 }

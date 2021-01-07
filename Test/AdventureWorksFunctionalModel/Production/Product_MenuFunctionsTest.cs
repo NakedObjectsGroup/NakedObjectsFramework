@@ -10,9 +10,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
+using AW.Types;
+using static AW.Helpers;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
 
     //Contains additional menu functions that may be used for testing purposes but which are not helpful for demo
     public static class Product_MenuFunctionsTest

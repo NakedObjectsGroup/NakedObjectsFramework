@@ -9,7 +9,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
 
-namespace AdventureWorksModel
+namespace AW.Types
 {
     //This class models an association table, and is never viewed directly by the user.
     public record EmployeeAddress : IAddressRole

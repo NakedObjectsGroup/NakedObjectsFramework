@@ -6,12 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using NakedFunctions;
+using AW.Types;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
     /// <summary>
     /// 
     /// </summary>
@@ -42,7 +42,7 @@ namespace AdventureWorksModel {
 
         public static  (SalesOrderHeader, IContext) CheckOut(IContext context) {
             var cust = GetCustomerForUser(context);
-            var (order, context2) = OrderContributedActions.CreateNewOrder(cust, true, context);
+            var (order, context2) = Order_AdditionalFunctions.CreateNewOrder(cust, true, context);
             //TODO: Need to check idea of modifying an instance that is pending save from another method
             order.AddItemsFromCart = true;
             return (order, context2);

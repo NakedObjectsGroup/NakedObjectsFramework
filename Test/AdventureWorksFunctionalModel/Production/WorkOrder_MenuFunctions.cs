@@ -10,11 +10,12 @@
 using System;
 using System.Linq;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
+using AW.Types;
+using static AW.Helpers;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
     [Named("Work Orders")]
-    public static class WorkOrderRepository {
+    public static class WorkOrder_MenuFunctions {
 
         public static WorkOrder RandomWorkOrder(IContext context) => Random<WorkOrder>(context);
 

@@ -12,9 +12,10 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using NakedFunctions;
+using AW.Types;
 using System.Collections.Generic;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
 
     public static class Person_Functions
     {

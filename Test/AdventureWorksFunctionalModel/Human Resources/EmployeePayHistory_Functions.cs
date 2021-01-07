@@ -8,8 +8,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
+using AW.Types;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
     public static class EmployeePayHistoryFunctions
     {
         #region Life Cycle Methods

@@ -6,8 +6,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using NakedFunctions;
+using AW.Types;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
     public static class IllustrationFunctions
     {
         public static Illustration Updating(Illustration x, IContext context) => x with { ModifiedDate = context.Now() };

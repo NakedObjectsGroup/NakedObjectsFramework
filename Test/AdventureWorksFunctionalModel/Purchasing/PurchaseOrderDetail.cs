@@ -8,9 +8,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using NakedFunctions;
-using static AdventureWorksModel.Helpers;
+using static AW.Helpers;
 
-namespace AdventureWorksModel {
+namespace AW.Types {
         public record PurchaseOrderDetail {
 
         #region Life Cycle Methods
@@ -71,22 +71,5 @@ namespace AdventureWorksModel {
         public virtual PurchaseOrderHeader PurchaseOrderHeader { get; set; }
 
         public override string ToString() => $"{OrderQty} x {Product}";
-    }
-
-    public static class PurchaseOrderDetail_Functions
-    {
-
-        [MemberOrder(1)]
-        public static (PurchaseOrderDetail, IContext) ReceiveGoods(
-            this PurchaseOrderDetail pod, int qtyReceived, int qtyRejected, int qtyIntoStock, IContext context) =>
-            DisplayAndSave(pod with {ReceivedQty = qtyReceived, RejectedQty = qtyRejected, StockedQty = qtyIntoStock}, context);
-
-
-        public static int Default0ReceiveGoods(this PurchaseOrderDetail pod)=>  pod.OrderQty;
-
-        public static int Default2ReceiveGoods(this PurchaseOrderDetail pod) => pod.OrderQty;
-
-        public static string ValidateReceiveGoods(this PurchaseOrderDetail pod, int qtyReceived, int qtyRejected, int qtyIntoStock) =>
-        qtyRejected + qtyIntoStock != qtyReceived ? "Qty Into Stock + Qty Rejected must add up to Qty Received" : null;
     }
 }

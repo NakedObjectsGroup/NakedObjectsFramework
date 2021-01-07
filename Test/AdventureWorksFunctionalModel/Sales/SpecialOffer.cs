@@ -8,7 +8,7 @@
 using System;
 using NakedFunctions;
 
-namespace AdventureWorksModel
+namespace AW.Types
 {
     public record SpecialOffer: IHasModifiedDate, IHasRowGuid     {
 

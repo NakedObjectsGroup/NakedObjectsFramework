@@ -8,7 +8,7 @@
 using NakedFunctions;
 using System;
 
-namespace AdventureWorksModel {
+namespace AW.Types {
     public interface ICreditCardCreator {
 
         public static ICreditCardCreator CreatedCardHasBeenSaved(ICreditCardCreator creator, CreditCard card)

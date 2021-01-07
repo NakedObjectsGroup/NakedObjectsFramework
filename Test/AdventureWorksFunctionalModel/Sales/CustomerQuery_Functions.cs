@@ -5,14 +5,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
-using System.Collections.Generic;
-
+using AW.Types;
 using System.Linq;
 using NakedFunctions;
 
 using System;
 
-namespace AdventureWorksModel {
+namespace AW.Functions {
 
 
     [Named("Customers")]

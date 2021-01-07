@@ -9,9 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using AW.Functions;
 using NakedFunctions;
 
-namespace AdventureWorksModel {
+namespace AW.Types {
     [Named("Sales Order")]
     public record SalesOrderHeader : ICreditCardCreator
     {
