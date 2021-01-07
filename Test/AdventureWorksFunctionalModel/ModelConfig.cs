@@ -7,12 +7,12 @@ namespace AW
 {
     public static class ModelConfig
     {
+        //IsAbstract && IsSealed tests for a static class. Not really necessary here, just extra safety check.
         public static Type[] EntityTypes() => 
-          Classes.Where(t => t.Namespace == "AW.Types").ToArray();
+          Classes.Where(t => t.Namespace == "AW.Types" && !(t.IsAbstract && t.IsSealed)).ToArray();
 
         public static Type[] FunctionTypes() =>
           Classes.Where(t => t.Namespace == "AW.Functions" && t.IsAbstract && t.IsSealed).ToArray();
-        //IsAbstract && IsSealed tests for a static class. Not really necessary here, just extra safety check.
 
         private static IEnumerable<Type> Classes =>
             typeof(ModelConfig).Assembly.GetTypes().Where(t => t.IsClass);
