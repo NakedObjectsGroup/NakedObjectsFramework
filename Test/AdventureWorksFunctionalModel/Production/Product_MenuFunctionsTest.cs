@@ -14,22 +14,9 @@ using static AdventureWorksModel.Helpers;
 
 namespace AdventureWorksModel {
 
-    public static class Product_MenuFunctions
+    //Contains additional menu functions that may be used for testing purposes but which are not helpful for demo
+    public static class Product_MenuFunctionsTest
     {
-
-        [MemberOrder(1)]
-        [TableView(true, nameof(Product.ProductNumber), nameof(Product.ProductSubcategory), nameof(Product.ListPrice))]
-        public static IQueryable<Product> FindProductByName(string searchString, IContext context)
-        => context.Instances<Product>().Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
-
-
-        [MemberOrder(2)]
-        public static (Product, IContext) FindProductByNumber(string number, IContext context)
-         => context.Instances<Product>().Where(x => x.ProductNumber == number).SingleObjectWarnIfNoMatch(context);
-
-
-        [MemberOrder(10)]
-        public static Product RandomProduct(IContext context) => Random<Product>(context);
 
         #region FindProduct
 
