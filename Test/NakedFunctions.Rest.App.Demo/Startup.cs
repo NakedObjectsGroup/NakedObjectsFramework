@@ -8,6 +8,7 @@
 using System;
 using System.Linq;
 using AdventureWorksModel;
+using AW;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -48,8 +49,8 @@ namespace NakedFunctions.Rest.App.Demo {
                 // todo - outstanding issues 
                 // 1. Need to still add NakedObjects as missing dependencies - need to fix packaging
                 builder.AddNakedFunctions(options => {
-                    options.FunctionalTypes = ModelConfig.DomainTypes();
-                    options.Functions = ModelConfig.DomainFunctions();
+                    options.FunctionalTypes = ModelConfig.FunctionalTypes();
+                    options.Functions = ModelConfig.Functions();
                 });
                 builder.AddRestfulObjects();
             });
