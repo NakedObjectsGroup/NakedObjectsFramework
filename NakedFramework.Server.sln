@@ -85,6 +85,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedObjects.Server.Package
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Services", "NakedFunctions\NakedFunctions.Services\NakedFunctions.Services.csproj", "{4028D634-6FCB-4707-8A84-C6653EC3817A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NakedFunctions.Services.Test", "NakedFunctions\NakedFunctions.Services.Test\NakedFunctions.Services.Test.csproj", "{F9C1AEE4-7677-43A5-B81E-A8BAA2634185}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -251,6 +253,10 @@ Global
 		{4028D634-6FCB-4707-8A84-C6653EC3817A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4028D634-6FCB-4707-8A84-C6653EC3817A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4028D634-6FCB-4707-8A84-C6653EC3817A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9C1AEE4-7677-43A5-B81E-A8BAA2634185}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9C1AEE4-7677-43A5-B81E-A8BAA2634185}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9C1AEE4-7677-43A5-B81E-A8BAA2634185}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9C1AEE4-7677-43A5-B81E-A8BAA2634185}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

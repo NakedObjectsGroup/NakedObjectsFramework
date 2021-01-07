@@ -9,6 +9,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using NakedFunctions.Meta.Facet;
+using NakedFunctions.Reflector.Component;
 using NakedObjects;
 using NakedObjects.Architecture.Component;
 using NakedObjects.Core.Util;
@@ -27,7 +28,17 @@ namespace NakedFunctions.Meta.Test.Facet {
         }
 
         [TestMethod]
-        public void TestInject() {
+        public void TestInjected()
+        {
+            var testFacet = new InjectedIContextParameterFacet(null);
+
+            var result = testFacet.GetInjectedValue(mockFramework.Object, null);
+
+            Assert.AreEqual(result.GetType(), typeof(Context));
+        }
+
+        [TestMethod]
+        public void TestInjectedInstances() {
             var testFacet = new InjectedIContextParameterFacet(null);
 
             var result = ((IContext) testFacet.GetInjectedValue(mockFramework.Object, null)).Instances<object>();
