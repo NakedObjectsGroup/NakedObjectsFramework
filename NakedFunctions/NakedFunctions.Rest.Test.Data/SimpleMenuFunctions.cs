@@ -12,9 +12,12 @@ using System.Linq;
 
 namespace NakedFunctions.Rest.Test.Data {
     public static class SimpleMenuFunctions {
-
         public static IQueryable<SimpleRecord> FindByName(string searchString, IContext context) {
             return context.Instances<SimpleRecord>().Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
+        }
+
+        public static IQueryable<SimpleRecord> FindByLength(int length, IContext context) {
+            return context.Instances<SimpleRecord>().Where(x => x.Name.Length == length).OrderBy(x => x.Name);
         }
 
         public static SimpleRecord Random(IContext context) {

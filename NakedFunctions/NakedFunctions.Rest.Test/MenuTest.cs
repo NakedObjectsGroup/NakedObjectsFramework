@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -183,22 +184,57 @@ namespace NakedFunctions.Rest.Test
         }
 
         [Test]
-        public void TestInvokeMenuActionThatReturnsRandomItem()
+        public void TestInvokeMenuActionThatReturnsMultipleItemList()
         {
             var api = Api();
-            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() };
-            var result = api.GetInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.Random), map);
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() { { "length", new ScalarValue(4) } } };
+            var result = api.GetInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.FindByLength), map);
             var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
 
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("list", parsedResult["resultType"].ToString());
+
+            var resultObj = parsedResult["result"];
+            var value = resultObj["value"] as JArray;
+
+            Assert.AreEqual(3, value.Count);
+
+            value[0].AssertObjectElementLink("Bill", "GET", Helpers.FullName<SimpleRecord>(), "2");
+            value[1].AssertObjectElementLink("Fred", "GET", Helpers.FullName<SimpleRecord>(), "1");
+            value[2].AssertObjectElementLink("Jack", "GET", Helpers.FullName<SimpleRecord>(), "3");
+        }
+
+
+        [Test]
+        public void TestInvokeMenuActionThatReturnsRandomItem() {
+            var api = Api();
+            var map = new ArgumentMap {Map = new Dictionary<string, IValue>()};
+            var result = api.GetInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.Random), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+
+            Assert.AreEqual((int) HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
             Assert.AreEqual("object", parsedResult["resultType"].ToString());
 
             var resultObj = parsedResult["result"];
 
-            // todo improve test
-            //resultObj.AssertObject("Fred", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            switch (resultObj["instanceId"].ToString()) {
+                case "1":
+                    resultObj.AssertObject("Fred", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+                    break;
+                case "2":
+                    resultObj.AssertObject("Bill", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "2");
+                    break;
+                case "3":
+                    resultObj.AssertObject("Jack", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "3");
+                    break;
+                default:
+                    Assert.Fail("unexpected result");
+                    break;
+            }
         }
 
         //[Test]
