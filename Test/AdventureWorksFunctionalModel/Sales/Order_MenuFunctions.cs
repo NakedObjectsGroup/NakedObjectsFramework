@@ -11,11 +11,17 @@ using AW.Types;
 using static AW.Helpers;
 using System;
 
-namespace AW.Functions {
-    public enum Ordering {
+namespace AW.Types {
+    public enum Ordering
+    {
         Ascending,
         Descending
     };
+}
+
+
+namespace AW.Functions {
+    
 
     [Named("Orders")]
     public static class Order_MenuFunctions  {

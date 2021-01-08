@@ -12,16 +12,16 @@ namespace AW
     {
         //IsAbstract && IsSealed tests for a static class. Not really necessary here, just extra safety check.
         public static Type[] FunctionalTypes() => 
-          Classes.Where(t => t.Namespace == "AW.Types" && !(t.IsAbstract && t.IsSealed)).ToArray();
+          Classes.Where(t => t.Namespace == "AW.Types" && t.IsPublic && !(t.IsAbstract && t.IsSealed)).ToArray();
 
         public static Type[] Functions() =>
-          Classes.Where(t => t.Namespace == "AW.Functions" && t.IsAbstract && t.IsSealed).ToArray();
+          Classes.Where(t => t.Namespace == "AW.Functions"  && t.IsPublic  && t.IsAbstract && t.IsSealed).ToArray();
 
         private static IEnumerable<Type> Classes =>
-            typeof(ModelConfig).Assembly.GetTypes().Where(t => t.IsClass);
+            typeof(ModelConfig).Assembly.GetTypes().Where(t => t.IsClass || t.IsInterface || t.IsEnum);
 
         public static IMenu[] MainMenus(IMenuFactory mf) =>
-            Functions().Where(t => t.FullName.Contains("MenuFunctions")).Select(t => mf.NewMenu(t)).ToArray();
+            Functions().Where(t => t.FullName.Contains("MenuFunctions")).Select(t => mf.NewMenu(t, true)).ToArray();
 
         public static Func<IConfiguration, DbContext> DbContextInstaller => c => new AdventureWorksContext(c.GetConnectionString("AdventureWorksContext"));
 

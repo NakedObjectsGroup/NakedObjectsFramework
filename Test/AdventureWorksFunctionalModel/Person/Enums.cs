@@ -1,4 +1,4 @@
-﻿namespace AW
+﻿namespace AW.Types
 {
     public enum EmailPromotion
     {

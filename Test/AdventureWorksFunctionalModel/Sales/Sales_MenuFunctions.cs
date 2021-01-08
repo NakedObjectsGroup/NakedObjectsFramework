@@ -20,7 +20,7 @@ namespace AW.Functions {
         #region FindSalesPersonByName
         [TableView(true, "SalesTerritory")]
         public static IQueryable<SalesPerson> FindSalesPersonByName(      
-            [Optionally] string firstName, string lastName, IContext context) {
+            string firstName, string lastName, IContext context) {
             IQueryable<Person> matchingPersons = Person_MenuFunctions.FindContactByName( firstName, lastName, context);
             return from sp in context.Instances<SalesPerson>()
                 from person in matchingPersons
@@ -77,7 +77,7 @@ namespace AW.Functions {
 
         #region Sub-menu hierarchy for testing only
 
-        public static void Menu(IMenu menu)
+        internal static void Menu(IMenu menu)
         {
             menu.AddAction(nameof(CreateNewSalesPerson));
             menu.AddAction(nameof(FindSalesPersonByName));

@@ -46,7 +46,7 @@ namespace AW.Mapping
             Property(t => t.EmailPromotion).HasColumnName("EmailPromotion");
             Property(t => t.AdditionalContactInfo).HasColumnName("AdditionalContactInfo");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
             //HasOptional(t => t.Employee).WithRequired(t => t.PersonDetails);
         }

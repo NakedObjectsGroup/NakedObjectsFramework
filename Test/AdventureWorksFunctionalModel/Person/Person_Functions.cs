@@ -177,13 +177,15 @@ namespace AW.Functions {
             return true;
         }
 
-        public static (Person, PersonPhone) CreateNewPhoneNumber(this Person p, PhoneNumberType type,
-    [RegEx(@"[0-9][0-9\s-]+")] string phoneNumber)
-            => (p, new PersonPhone()
-            {
-                BusinessEntityID = p.BusinessEntityID,
-                PhoneNumberType = type,
-                PhoneNumber = phoneNumber
-            });
+        // regex doesn't work!
+
+    //    public static (Person, PersonPhone) CreateNewPhoneNumber(this Person p, PhoneNumberType type,
+    //[RegEx(@"[0-9][0-9\s-]+")] string phoneNumber)
+    //        => (p, new PersonPhone()
+    //        {
+    //            BusinessEntityID = p.BusinessEntityID,
+    //            PhoneNumberType = type,
+    //            PhoneNumber = phoneNumber
+    //        });
     }
 }

@@ -38,7 +38,7 @@ namespace AW.Mapping
             Property(t => t.OrderDate).HasColumnName("OrderDate");
             Property(t => t.DueDate).HasColumnName("DueDate");
             Property(t => t.ShipDate).HasColumnName("ShipDate");
-            Property(t => t.Status).HasColumnName("Status");
+            Property(t => t.StatusByte).HasColumnName("Status");
             Property(t => t.OnlineOrder).HasColumnName("OnlineOrderFlag");
             Property(t => t.SalesOrderNumber).HasColumnName("SalesOrderNumber");
             Property(t => t.PurchaseOrderNumber).HasColumnName("PurchaseOrderNumber");

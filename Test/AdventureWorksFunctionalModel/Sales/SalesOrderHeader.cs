@@ -41,7 +41,7 @@ namespace AW.Types {
         public virtual byte StatusByte { get; init; }
 
         [MemberOrder(1)]
-        public OrderStatus Status => (OrderStatus)Status;
+        public OrderStatus Status => (OrderStatus)StatusByte;
 
 
         #endregion

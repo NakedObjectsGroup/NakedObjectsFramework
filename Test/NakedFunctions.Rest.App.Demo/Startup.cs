@@ -5,6 +5,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using System.Linq;
 using AW;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +16,8 @@ using Microsoft.Extensions.Logging;
 using NakedFunctions.Reflector.Extensions;
 using NakedObjects.Architecture.Component;
 using NakedObjects.DependencyInjection.Extensions;
+using NakedObjects.Reflector.Extensions;
+//using NakedObjects.Reflector.Extensions;
 using NakedObjects.Rest.Extensions;
 using Newtonsoft.Json;
 
@@ -43,6 +46,10 @@ namespace NakedFunctions.Rest.App.Demo {
                 });
                 // todo - outstanding issues 
                 // 1. Need to still add NakedObjects as missing dependencies - need to fix packaging
+                builder.AddNakedObjects(options =>
+                {
+                    options.NoValidate = true;
+                });
                 builder.AddNakedFunctions(options => {
                     options.FunctionalTypes = ModelConfig.FunctionalTypes();
                     options.Functions = ModelConfig.Functions();

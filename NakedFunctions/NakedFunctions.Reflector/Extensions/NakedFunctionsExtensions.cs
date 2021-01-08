@@ -51,7 +51,7 @@ namespace NakedFunctions.Reflector.Extensions {
             services.AddScoped<IAlert, Alert>();
             services.AddScoped<IClock, Clock>();
             services.AddScoped<IGuidGenerator, GuidGenerator>();
-            services.AddScoped<IRandom, RandomNumber>();
+            //services.AddScoped<IRandom, RandomNumber>();
             services.AddScoped<IRandomSeedGenerator, RandomSeedGenerator>();
         }
     }
