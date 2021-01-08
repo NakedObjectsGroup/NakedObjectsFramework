@@ -12,6 +12,7 @@ using static AW.Helpers;
 
 namespace AW.Functions {
 
+    [Named("Products")]
     public static class Product_MenuFunctions
     {
 

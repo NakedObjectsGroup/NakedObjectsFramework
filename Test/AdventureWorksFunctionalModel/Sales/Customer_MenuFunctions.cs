@@ -15,6 +15,8 @@ using AW.Types;
 using static AW.Helpers;
 
 namespace AW.Functions {
+
+    [Named("Customers")]
     public static class Customer_MenuFunctions {
 
 

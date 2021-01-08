@@ -1,24 +1,23 @@
 ﻿using Microsoft.Extensions.Configuration;
-//TODO: Replace with NakedFramework version when working.
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using NakedFramework;
+using System.Data.Entity;
 
 namespace AW
 {
     public static class ModelConfig
     {
-        //IsAbstract && IsSealed tests for a static class. Not really necessary here, just extra safety check.
+        //IsAbstract && IsSealed defines a static class. Not really necessary here, just extra safety check.
         public static Type[] FunctionalTypes() => 
-          Classes.Where(t => t.Namespace == "AW.Types" && t.IsPublic && !(t.IsAbstract && t.IsSealed)).ToArray();
+          DomainClasses.Where(t => t.Namespace == "AW.Types" && !(t.IsAbstract && t.IsSealed)).ToArray();
 
         public static Type[] Functions() =>
-          Classes.Where(t => t.Namespace == "AW.Functions"  && t.IsPublic  && t.IsAbstract && t.IsSealed).ToArray();
+          DomainClasses.Where(t => t.Namespace == "AW.Functions"   && t.IsAbstract && t.IsSealed).ToArray();
 
-        private static IEnumerable<Type> Classes =>
-            typeof(ModelConfig).Assembly.GetTypes().Where(t => t.IsClass || t.IsInterface || t.IsEnum);
+        private static IEnumerable<Type> DomainClasses =>
+            typeof(ModelConfig).Assembly.GetTypes().Where(t => t.IsPublic && (t.IsClass || t.IsInterface || t.IsEnum));
 
         public static IMenu[] MainMenus(IMenuFactory mf) =>
             Functions().Where(t => t.FullName.Contains("MenuFunctions")).Select(t => mf.NewMenu(t, true)).ToArray();

@@ -31,6 +31,7 @@
     <Compile Remove="Human Resources\TimePeriod.cs" />
     <Compile Remove="Human Resources\TimePeriodValueSemanticsProvider.cs" />
     <Compile Remove="Production\ProductMenuTestFunction.cs" />
+    <Compile Remove="Production\Product_MenuFunctionsTest.cs" />
     <Compile Remove="Production\Product_TestFunctions.cs" />
   </ItemGroup>
 
@@ -38,9 +39,6 @@
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="NakedFunctions.ProgrammingModel" Version="1.0.0-alpha01" />
   </ItemGroup>
 
