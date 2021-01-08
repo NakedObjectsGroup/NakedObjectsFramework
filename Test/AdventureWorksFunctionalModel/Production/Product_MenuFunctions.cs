@@ -32,9 +32,13 @@ namespace AW.Functions {
         public static (Product, IContext) FindProductByNumber2(string number, IContext context)
  => (context.Instances<Product>().Where(x => x.ProductNumber == number).FirstOrDefault(), context);
 
-        [MemberOrder(4)]
+        [MemberOrder(5)]
         public static Product FindProductByNumber3(string number, IContext context)
 => context.Instances<Product>().Where(x => x.ProductNumber == number).FirstOrDefault();
+
+        [MemberOrder(6)]
+        public static (Product, IContext) FindProductByNumber4(string number, IContext context)
+=> (null, context);
 
     }
 }
