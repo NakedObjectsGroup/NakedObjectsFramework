@@ -10,7 +10,8 @@ using NakedFunctions;
 using AW.Types;
 using static AW.Helpers;
 
-namespace AW.Functions {
+namespace AW.Functions
+{
 
     [Named("Products")]
     public static class Product_MenuFunctions
@@ -18,27 +19,15 @@ namespace AW.Functions {
 
         [MemberOrder(1)]
         [TableView(true, nameof(Product.ProductNumber), nameof(Product.ProductSubcategory), nameof(Product.ListPrice))]
-        public static IQueryable<Product> FindProductByName(string searchString, IContext context)
-        => context.Instances<Product>().Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
+        public static IQueryable<Product> FindProductByName(string searchString, IContext context) =>
+            context.Instances<Product>().Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
 
-       [MemberOrder(2)]
+        [MemberOrder(2)]
         public static Product RandomProduct(IContext context) => Random<Product>(context);
 
         [MemberOrder(3)]
-        public static (Product, IContext) FindProductByNumber(string number, IContext context)
- => context.Instances<Product>().Where(x => x.ProductNumber == number).SingleObjectWarnIfNoMatch(context);
-
-        [MemberOrder(4)]
-        public static (Product, IContext) FindProductByNumber2(string number, IContext context)
- => (context.Instances<Product>().Where(x => x.ProductNumber == number).FirstOrDefault(), context);
-
-        [MemberOrder(5)]
-        public static Product FindProductByNumber3(string number, IContext context)
-=> context.Instances<Product>().Where(x => x.ProductNumber == number).FirstOrDefault();
-
-        [MemberOrder(6)]
-        public static (Product, IContext) FindProductByNumber4(string number, IContext context)
-=> (null, context);
+        public static (Product, IContext) FindProductByNumber(string number, IContext context) =>
+            context.Instances<Product>().Where(x => x.ProductNumber == number).SingleObjectWarnIfNoMatch(context);
 
     }
 }

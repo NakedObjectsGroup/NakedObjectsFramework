@@ -13,28 +13,20 @@ using static AW.Helpers;
 namespace AW.Functions {
     [Named("Employees")]
     public static class Employee_MenuFunctions {
-        [TableView(true,
-                   nameof(Employee.Current),
-                   nameof(Employee.JobTitle),
-                   nameof(Employee.Manager))]
-        [MultiLine]
+
+        [TableView(true, nameof(Employee.Current), nameof(Employee.JobTitle), nameof(Employee.Manager))]
         public static IQueryable<Employee> FindEmployeeByName(
-            [Optionally] string firstName,
-            string lastName,
-            IContext context) {
-            var matchingContacts = Person_MenuFunctions.FindContactByName(firstName, lastName, context);
+            [Optionally] string firstName, string lastName, IContext context) =>
+                from emp in context.Instances<Employee>()
+                from p in context.Instances<Person>()
+                where emp.PersonDetails.BusinessEntityID == p.BusinessEntityID &&
+                      firstName == null || p.FirstName.ToUpper().StartsWith(firstName.ToUpper()) &&
+                      p.LastName.ToUpper().StartsWith(lastName.ToUpper())
+                orderby p.LastName
+                select emp;
 
-            var query = from emp in context.Instances<Employee>()
-                        from contact in matchingContacts
-                        where emp.PersonDetails.BusinessEntityID == contact.BusinessEntityID
-                        orderby emp.PersonDetails.LastName
-                        select emp;
-
-            return query;
-        }
-
-        public static (Employee, IContext) FindEmployeeByNationalIDNumber(string nationalIDNumber, IContext context) 
-            => context.Instances<Employee>().Where(e => e.NationalIDNumber == nationalIDNumber).SingleObjectWarnIfNoMatch(context);
+        public static Employee FindEmployeeByNationalIDNumber(string nationalIDNumber, IContext context) 
+            => context.Instances<Employee>().Where(e => e.NationalIDNumber == nationalIDNumber).FirstOrDefault();
 
 
         public static (Employee, IContext) CreateNewEmployeeFromContact(Person contactDetails, IContext context) {
@@ -51,7 +43,7 @@ namespace AW.Functions {
 
         [RenderEagerly]
         [TableView(true, "GroupName")]
-        public static IQueryable<Department> ListAllDepartments(IQueryable<Department> depts) => depts;
+        public static IQueryable<Department> ListAllDepartments(IContext context) => context.Instances<Department>();
 
         //TODO: 3 functions marked internal temporarily, as IPrincipal is being reflected over.
         internal static Employee CurrentUserAsEmployee(IContext context) =>
@@ -65,8 +57,7 @@ namespace AW.Functions {
                 (me.ColleaguesInSameDept(context), context);
         }
 
-        public static Employee RandomEmployee(
-            IQueryable<Employee> employees, IContext context) =>
+        public static Employee RandomEmployee(IContext context) =>
             Random<Employee>(context);
 
         ////This method is to test use of nullable booleans
@@ -108,8 +99,6 @@ namespace AW.Functions {
         //    return ListEmployees(m, current, married, salaried, olderThan50, employees);
         //}
 
-        public static IQueryable<Shift> Shifts(
-            IQueryable<Shift> shifts) =>
-            shifts;
+        public static IQueryable<Shift> Shifts(IContext context) => context.Instances<Shift>();
     }
 }
