@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Microsoft.Extensions.Logging;
+using NakedFunctions.Reflector.Component;
 using NakedObjects;
 using NakedObjects.Architecture.Adapter;
 using NakedObjects.Architecture.Component;
@@ -59,6 +60,10 @@ namespace NakedFunctions.Meta.Facet {
         public override bool IsQueryOnly { get; }
 
         private static INakedObjectAdapter AdaptResult(INakedObjectManager nakedObjectManager, object result) {
+            if (result is null) {
+                return null;
+            }
+
             if (CollectionUtils.IsCollection(result.GetType()) ||
                 CollectionUtils.IsQueryable(result.GetType())) {
                 return nakedObjectManager.CreateAdapter(result, null, null);
@@ -95,42 +100,21 @@ namespace NakedFunctions.Meta.Facet {
             return returnList ? result : result.First();
         }
 
-        private (IEnumerable<object>, IEnumerable<object>) HandleTupleItem(object item, 
-                                                                           IEnumerable<object> persisting,
-                                                                           IEnumerable<object> acting) =>
-            item switch {
-                ITuple tuple => HandleNestedTuple(tuple, persisting, acting),
-                IQueryable coll => (persisting.Union(coll.Cast<object>()), acting),
-                ICollection coll => (persisting.Union(coll.Cast<object>()), acting),
-                { } action  when FacetUtils.IsAction(action.GetType())  => (persisting, acting.Append(action)),
-                { } o => (persisting.Append(o), acting),
-                null => (persisting, acting)
-            };
+        private (object, Context) HandleTuple(ITuple tuple) =>
+            (tuple[0], (Context)tuple[1]);
 
+        private void HandleContext(Context context, INakedObjectsFramework framework) {
+            object[] toAct = {context.Action};
+            PerformActions(framework.ServicesManager, framework.ServiceProvider, toAct);
 
-        private (IEnumerable<object>, IEnumerable<object>) IterateTuple(ITuple tuple, int start,
-                                                                        IEnumerable<object> persisting,
-                                                                        IEnumerable<object> acting) {
-            for (var i = start; i < tuple.Length; i++) {
-                (persisting, acting) = HandleTupleItem(tuple[i], persisting, acting);
-            }
-
-            return (persisting, acting);
+            //var persisted = PersistResult(framework.LifecycleManager, toPersist);
+            //toReturn = ReplacePersisted(toReturn, persisted);
         }
-
-        private (IEnumerable<object>, IEnumerable<object>) HandleNestedTuple(ITuple tuple,
-                                                                             IEnumerable<object> persisting,
-                                                                             IEnumerable<object> acting) =>
-            IterateTuple(tuple, 0, persisting, acting);
-
-        private (object, (IEnumerable<object>, IEnumerable<object>)) HandleTuple(ITuple tuple, IEnumerable<object> persisting, IEnumerable<object> acting) =>
-            (tuple[0], IterateTuple(tuple, 1, persisting, acting));
 
         private INakedObjectAdapter HandleInvokeResult(INakedObjectsFramework framework,
                                                        object result) {
             object toReturn;
             IEnumerable<object> toPersist = new List<object>();
-            IEnumerable<object> toAct = new List<object>();
 
             if (result is ITuple tuple) {
                 var size = tuple.Length;
@@ -139,17 +123,13 @@ namespace NakedFunctions.Meta.Facet {
                     throw new InvokeException($"Invalid return type single item tuple on {ActionMethod.Name}");
                 }
 
-                (toReturn, (toPersist, toAct)) = HandleTuple(tuple, toPersist, toAct);
+                Context context;
+                (toReturn, context) = HandleTuple(tuple);
+                HandleContext(context, framework);
             }
             else {
                 toReturn = result;
             }
-
-            var persisted = PersistResult(framework.LifecycleManager, toPersist);
-
-            PerformActions(framework.ServicesManager, framework.ServiceProvider, toAct);
-
-            toReturn = ReplacePersisted(toReturn, persisted);
 
             return AdaptResult(framework.NakedObjectManager, toReturn);
         }

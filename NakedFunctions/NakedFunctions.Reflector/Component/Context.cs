@@ -7,11 +7,11 @@
 
 using System;
 using System.Linq;
-using NakedObjects.Architecture.Component;
 using Microsoft.Extensions.DependencyInjection;
+using NakedObjects.Architecture.Component;
 
 namespace NakedFunctions.Reflector.Component {
-    public class Context : IContext {
+    public record Context : IContext {
         private readonly IObjectPersistor persistor;
         private readonly IServiceProvider provider;
 
@@ -20,12 +20,14 @@ namespace NakedFunctions.Reflector.Component {
             this.provider = provider;
         }
 
+        public object Action { get; init; }
+
         public IQueryable<T> Instances<T>() where T : class => persistor.UntrackedInstances<T>();
 
         public T GetService<T>() => provider.GetService<T>();
 
         public IContext WithPendingSave(params object[] toBeSaved) => throw new NotImplementedException();
 
-        public IContext WithAction<T>(Action<T> action) => throw new NotImplementedException();
+        public IContext WithAction<T>(Action<T> action) => this with {Action = action};
     }
 }
