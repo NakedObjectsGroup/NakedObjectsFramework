@@ -21,14 +21,20 @@ namespace AW.Functions {
         public static IQueryable<Product> FindProductByName(string searchString, IContext context)
         => context.Instances<Product>().Where(x => x.Name.ToUpper().Contains(searchString.ToUpper())).OrderBy(x => x.Name);
 
+       [MemberOrder(2)]
+        public static Product RandomProduct(IContext context) => Random<Product>(context);
 
         [MemberOrder(3)]
         public static (Product, IContext) FindProductByNumber(string number, IContext context)
-         => context.Instances<Product>().Where(x => x.ProductNumber == number).SingleObjectWarnIfNoMatch(context);
+ => context.Instances<Product>().Where(x => x.ProductNumber == number).SingleObjectWarnIfNoMatch(context);
 
+        [MemberOrder(4)]
+        public static (Product, IContext) FindProductByNumber2(string number, IContext context)
+ => (context.Instances<Product>().Where(x => x.ProductNumber == number).FirstOrDefault(), context);
 
-        [MemberOrder(2)]
-        public static Product RandomProduct(IContext context) => Random<Product>(context);
+        [MemberOrder(4)]
+        public static Product FindProductByNumber3(string number, IContext context)
+=> context.Instances<Product>().Where(x => x.ProductNumber == number).FirstOrDefault();
 
     }
 }

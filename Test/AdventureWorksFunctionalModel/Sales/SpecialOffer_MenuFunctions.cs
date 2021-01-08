@@ -25,9 +25,12 @@ namespace AW.Functions
 
         [MemberOrder(1)]
         [TableView(false, "Description", "XNoMatchingColumn", "Category", "DiscountPct")]
-        public static IQueryable<SpecialOffer> CurrentSpecialOffers(IContext context) =>
-            AllSpecialOffers(context).Where(x => x.StartDate <= context.Now() &&
+        public static IQueryable<SpecialOffer> CurrentSpecialOffers(IContext context)
+        {
+            var today = context.Today();
+           return AllSpecialOffers(context).Where(x => x.StartDate <= today &&
                          x.EndDate >= new DateTime(2004, 6, 1));
+        }
 
         #endregion
 
