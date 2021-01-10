@@ -71,5 +71,7 @@ namespace AW.Types {
 
         [MemberOrder(99)]
         public virtual DateTime ModifiedDate { get; init; }
+
+        public override string ToString() => $"{Name}";
     }
 }
