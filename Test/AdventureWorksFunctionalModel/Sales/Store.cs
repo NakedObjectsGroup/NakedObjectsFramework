@@ -13,6 +13,7 @@ using static AW.Helpers;
 
 namespace AW.Types
 {
+    //TODO: rename to StoreDetails
     public record Store : BusinessEntity, IBusinessEntityWithContacts, IHasModifiedDate
     {
          #region Properties

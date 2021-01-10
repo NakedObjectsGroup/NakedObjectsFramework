@@ -6,10 +6,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
+using AW.Functions;
 using NakedFunctions;
 
 namespace AW.Types
 {
+    //TODO: Add a function to hide the Store or Person according to type & name both 'Details'.
     public record Customer
     {
         [Hidden]
@@ -55,8 +57,7 @@ namespace AW.Types
         [Hidden]
         public virtual Guid CustomerRowguid { get; init; }
 
-        public override string ToString() => "No Title Yet";
-        // IsStore(this) ? Store : Person;
+        public override string ToString() => $"{AccountNumber} {Person} {Store}";
 
     }
 }
