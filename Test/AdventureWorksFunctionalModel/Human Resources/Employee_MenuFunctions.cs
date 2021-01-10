@@ -16,14 +16,18 @@ namespace AW.Functions {
 
         [TableView(true, nameof(Employee.Current), nameof(Employee.JobTitle), nameof(Employee.Manager))]
         public static IQueryable<Employee> FindEmployeeByName(
-            [Optionally] string firstName, string lastName, IContext context) =>
-                from emp in context.Instances<Employee>()
-                from p in context.Instances<Person>()
-                where emp.PersonDetails.BusinessEntityID == p.BusinessEntityID &&
-                      firstName == null || p.FirstName.ToUpper().StartsWith(firstName.ToUpper()) &&
-                      p.LastName.ToUpper().StartsWith(lastName.ToUpper())
-                orderby p.LastName
-                select emp;
+            [Optionally] string firstName, string lastName, IContext context)
+        {
+            var employees = context.Instances<Employee>();
+            var persons = context.Instances<Person>();
+            return from emp in employees
+            from p in persons
+            where emp.PersonDetails.BusinessEntityID == p.BusinessEntityID &&
+                  firstName == null || p.FirstName.ToUpper().StartsWith(firstName.ToUpper()) &&
+                  p.LastName.ToUpper().StartsWith(lastName.ToUpper())
+            orderby p.LastName
+            select emp;     
+        }
 
         public static Employee FindEmployeeByNationalIDNumber(string nationalIDNumber, IContext context) 
             => context.Instances<Employee>().Where(e => e.NationalIDNumber == nationalIDNumber).FirstOrDefault();
