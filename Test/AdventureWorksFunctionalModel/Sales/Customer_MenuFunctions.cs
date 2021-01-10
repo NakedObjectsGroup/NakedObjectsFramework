@@ -91,7 +91,7 @@ namespace AW.Functions {
             context.Instances<Store>().Where(s => s.Name.ToUpper().Contains(name.ToUpper()));
 
         public static Customer RandomStore(IContext context) {
-            var stores = context.Instances<Customer>().Where(t => t.StoreID != null);
+            var stores = context.Instances<Customer>().Where(t => t.StoreID != null).OrderBy(t => "");
             var random = context.RandomSeed().ValueInRange(stores.Count());
             return stores.Skip(random).FirstOrDefault();
         }
