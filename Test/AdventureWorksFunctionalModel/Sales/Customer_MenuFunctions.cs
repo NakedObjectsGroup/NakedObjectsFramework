@@ -125,7 +125,12 @@ namespace AW.Functions {
         }
 
         [MemberOrder(70)]
-        public static Customer RandomIndividual(IContext context) => Random<Customer>(context);
+        public static Customer RandomIndividual(IContext context)
+        {
+            var indivs = context.Instances<Customer>().Where(t => t.PersonID != null).OrderBy(t => "");
+            var random = context.RandomSeed().ValueInRange(indivs.Count());
+            return indivs.Skip(random).FirstOrDefault();
+        }
 
         #endregion
 
@@ -138,7 +143,9 @@ namespace AW.Functions {
             IRandom random = context.RandomSeed().Next();
             list.Add(Random<Customer>(context));
             list.Add(RandomStore(context));
-            return list;
+            //TODO: Must use different random numbers
+            throw new NotImplementedException();
+            //return list;
         }
     }
 }
