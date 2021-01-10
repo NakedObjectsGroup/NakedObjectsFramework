@@ -59,6 +59,15 @@ namespace AW.Functions {
             context.Instances<SpecialOffer>().Where(specialOffer => specialOffer.Description.ToUpper().StartsWith(name.ToUpper()));
         #endregion
 
+        #region CurrentWorkOrders
+
+        [TableView(true, "Product", "OrderQty", "StartDate")]
+        public static IQueryable<WorkOrder> CurrentWorkOrders(
+            this Product product, IContext context) =>
+            WorkOrder_MenuFunctions.ListWorkOrders(product, true, context);
+
+        #endregion
+
         #region Property functions
         #region Product Line
         public static string[] ChoicesProductLine(this Product p)
@@ -96,5 +105,7 @@ namespace AW.Functions {
         }
         #endregion
         #endregion
+
+
     }
 }

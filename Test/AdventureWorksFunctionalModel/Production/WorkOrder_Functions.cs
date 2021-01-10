@@ -13,7 +13,7 @@ using static AW.Helpers;
 
 namespace AW.Functions
 {
-    public static class WorkOrderFunctions
+    public static class WorkOrder_Functions
     {
 
         #region LifeCycle functions

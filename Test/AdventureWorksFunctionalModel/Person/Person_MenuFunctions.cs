@@ -26,13 +26,13 @@ namespace AW.Functions {
         }
 
         [TableView(true, nameof(Person.AdditionalContactInfo))]
-        public static IQueryable<Person> RandomContacts(IContext context) {
+        public static Person[] RandomContacts(IContext context) {
             var instances = context.Instances<Person>().OrderBy(n => "");
             IRandom random1 = context.GetService<IRandomSeedGenerator>().Random;
             IRandom random2 = random1.Next();
             Person p1 = instances.Skip(random1.ValueInRange(instances.Count())).FirstOrDefault();
             Person p2 = instances.Skip(random2.ValueInRange(instances.Count())).FirstOrDefault();
-            return new[] {p1, p2}.AsQueryable();
+            return new[] {p1, p2};
         }
 
         /* This method is needed because the AW database insists that every address has a StateProvince (silly design!), yet

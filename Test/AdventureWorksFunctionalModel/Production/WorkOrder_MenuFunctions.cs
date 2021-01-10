@@ -23,36 +23,34 @@ namespace AW.Functions {
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete0CreateNewWorkOrder(
             [Length(2)] string name, IContext context) =>
-            context.Instances<Product>().Where(p => p.Name.Contains(name));
+            Product_MenuFunctions.FindProductByName(name, context);
 
-         public static(WorkOrder, IContext) CreateNewWorkOrder3(
+        public static(WorkOrder, IContext) CreateNewWorkOrder2(
              [DescribedAs("product partial name")] this Product product, int orderQty, IContext context) {
             (var wo, var context2 ) = CreateNewWorkOrder(product, context);
             return DisplayAndSave(wo with { OrderQty = orderQty, ScrappedQty = 0 }, context2);
         }
 
         [PageSize(20)]
-        public static IQueryable<Product> AutoComplete0CreateNewWorkOrder3(
-            [Length(2)] string name,
-            IQueryable<Product> products) {
-            return products.Where(p => p.Name.Contains(name));
-        }
+        public static IQueryable<Product> AutoComplete0CreateNewWorkOrder2(
+            [Length(2)] string name, IContext context) =>
+            Product_MenuFunctions.FindProductByName(name, context);
+    
+        public static IQueryable<Location> AllLocations(IContext context) => context.Instances<Location>();
 
         #region CurrentWorkOrders
 
         [TableView(true, "Product", "OrderQty", "StartDate")]
-        public static IQueryable<WorkOrder> WorkOrders(
-            this Product product, bool currentOrdersOnly, IContext context) =>
+        public static IQueryable<WorkOrder> ListWorkOrders(
+            Product product, [DefaultValue(true)] bool currentOrdersOnly, IContext context) =>
             context.Instances<WorkOrder>().Where(x => x.Product.ProductID == product.ProductID &&
                       (currentOrdersOnly == false || x.EndDate == null));
 
         [PageSize(20)]
-        public static IQueryable<Product> AutoComplete0WorkOrders(
+        public static IQueryable<Product> AutoComplete0ListWorkOrders(
             [Length(2)] string name, IContext context) =>
-            context.Instances<Product>().Where(p => p.Name.Contains(name));
+            Product_MenuFunctions.FindProductByName(name, context);
 
         #endregion
-
-        public static IQueryable<Location> AllLocations(IContext context) => context.Instances<Location>();  
     }
 }
