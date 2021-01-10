@@ -44,7 +44,7 @@ namespace AdventureWorksModel
 
         [PageSize(20)]
         public static IQueryable<Vendor> AutoComplete0ListPurchaseOrders(
-            this Vendor vendor, [Range(2, 0)] string name, IContext context) =>
+            this Vendor vendor, [Length(2)] string name, IContext context) =>
             PurchaseOrder_MenuFunctions.AutoComplete0ListPurchaseOrders(name, context);
 
         //TODO: Should match action, ignoring any injected properties, on either action or this

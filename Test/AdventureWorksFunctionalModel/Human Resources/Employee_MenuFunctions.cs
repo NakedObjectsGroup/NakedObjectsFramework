@@ -39,7 +39,7 @@ namespace AW.Functions {
 
         [PageSize(20)]
         public static IQueryable<Person> AutoComplete0CreateNewEmployeeFromContact(
-            [Range(2, 0)] string name, IContext context) =>  context.Instances<Person>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
+            [Length(2)] string name, IContext context) =>  context.Instances<Person>().Where(p => p.LastName.ToUpper().StartsWith(name.ToUpper()));
 
         [RenderEagerly]
         [TableView(true, "GroupName")]
@@ -57,8 +57,7 @@ namespace AW.Functions {
                 (me.ColleaguesInSameDept(context), context);
         }
 
-        public static Employee RandomEmployee(IContext context) =>
-            Random<Employee>(context);
+        public static Employee RandomEmployee(IContext context) => Random<Employee>(context);
 
         ////This method is to test use of nullable booleans
         //public static IQueryable<Employee> ListEmployees(

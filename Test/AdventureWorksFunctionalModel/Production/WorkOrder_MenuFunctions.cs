@@ -18,15 +18,12 @@ namespace AW.Functions {
 
         public static (WorkOrder, IContext context) CreateNewWorkOrder(
              [DescribedAs("product partial name")] this Product product, IContext context) =>
-            //TODO: Need to request all required fields for WO & pass into constructor
              DisplayAndSave(new WorkOrder() { Product = product }, context);
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete0CreateNewWorkOrder(
-            [Range(2,0)] string name,
-            IQueryable<Product> products) {
-            return products.Where(p => p.Name.Contains(name));
-        }
+            [Length(2)] string name, IContext context) =>
+            context.Instances<Product>().Where(p => p.Name.Contains(name));
 
          public static(WorkOrder, IContext) CreateNewWorkOrder3(
              [DescribedAs("product partial name")] this Product product, int orderQty, IContext context) {
@@ -36,7 +33,7 @@ namespace AW.Functions {
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete0CreateNewWorkOrder3(
-            [Range(2,0)] string name,
+            [Length(2)] string name,
             IQueryable<Product> products) {
             return products.Where(p => p.Name.Contains(name));
         }
@@ -45,26 +42,17 @@ namespace AW.Functions {
 
         [TableView(true, "Product", "OrderQty", "StartDate")]
         public static IQueryable<WorkOrder> WorkOrders(
-            this Product product,
-            bool currentOrdersOnly,
-            IQueryable<WorkOrder> workOrders) =>
-            workOrders.Where(x => x.Product.ProductID == product.ProductID &&
+            this Product product, bool currentOrdersOnly, IContext context) =>
+            context.Instances<WorkOrder>().Where(x => x.Product.ProductID == product.ProductID &&
                       (currentOrdersOnly == false || x.EndDate == null));
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete0WorkOrders(
-            [Range(2,0)] string name,
-            IQueryable<Product> products) {
-            return products.Where(p => p.Name.Contains(name));
-        }
+            [Length(2)] string name, IContext context) =>
+            context.Instances<Product>().Where(p => p.Name.Contains(name));
 
         #endregion
 
-        public static IQueryable<Location> AllLocations(
-            IQueryable<Location> locations
-            )
-        {
-            return locations;
-        }
+        public static IQueryable<Location> AllLocations(IContext context) => context.Instances<Location>();  
     }
 }

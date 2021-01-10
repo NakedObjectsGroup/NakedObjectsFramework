@@ -92,7 +92,7 @@ namespace AW.Functions
         }
 
         [PageSize(20)]
-        public static IQueryable<Product> AutoComplete1AssociateWithProduct([Range(2, 0)] string name, IContext context)
+        public static IQueryable<Product> AutoComplete1AssociateWithProduct([Length(2)] string name, IContext context)
             => context.Instances<Product>().Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
 
         #endregion

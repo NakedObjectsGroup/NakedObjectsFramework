@@ -59,7 +59,7 @@ namespace AdventureWorksModel
 
         [PageSize(20)]
         public static IQueryable<Vendor> AutoComplete0ListPurchaseOrders(
-            [Range(2,0)] string name, IContext context) =>
+            [Length(2)] string name, IContext context) =>
              context.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
 
         public static string ValidateListPurchaseOrders(
@@ -85,7 +85,7 @@ namespace AdventureWorksModel
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete0OpenPurchaseOrdersForProduct(
-            [Range(2,0)] string name,IContext context)
+            [Length(2)] string name,IContext context)
         {
             return context.Instances<Product>().Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
         }
@@ -110,7 +110,7 @@ namespace AdventureWorksModel
 
         [PageSize(20)]
         public static IQueryable<Vendor> AutoComplete0CreateNewPurchaseOrder(
-            [Range(2,0)] string name, IContext context) =>
+            [Length(2)] string name, IContext context) =>
             context.Instances<Vendor>().Where(v => v.Name.ToUpper().StartsWith(name.ToUpper()));
 
         [MemberOrder(7)]

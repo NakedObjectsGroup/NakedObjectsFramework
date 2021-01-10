@@ -68,7 +68,7 @@ namespace AW.Types
             return (et2, et2);
         }
 
-        public static IQueryable<string> AutoCompleteSubject(this EmailTemplate et, [Range(2, 0)] string value)
+        public static IQueryable<string> AutoCompleteSubject(this EmailTemplate et, [Length(2)] string value)
         {
             var matchingNames = new List<string> { "Subject1", "Subject2", "Subject3" };
             return from p in matchingNames.AsQueryable() select p.Trim();

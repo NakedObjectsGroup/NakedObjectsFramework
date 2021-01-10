@@ -13,7 +13,6 @@ namespace AW.Types
     [Bounded, PresentationHint("Topaz")]
     public record Location
     {
-
         [Hidden]
         public virtual short LocationID { get; init; }
 
