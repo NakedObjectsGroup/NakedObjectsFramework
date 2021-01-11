@@ -33,19 +33,14 @@ namespace NakedFunctions.Reflector.FacetFactory {
             logger = loggerFactory.CreateLogger<ContributedFunctionFacetFactory>();
 
 
-        private static bool IsContributed(MethodInfo member) {
-            var firstParam = member.GetParameters().FirstOrDefault();
+        private static bool IsContributedToObject(MethodInfo member) => member.IsDefined(typeof(ExtensionAttribute), false);
 
-            return member.IsDefined(typeof(ExtensionAttribute), false) ||
-                   firstParam is not null && firstParam.IsDefined(typeof(ContributedActionAttribute), false);
-        }
-
-        private static Type GetContributeeType(MethodInfo member) => IsContributed(member) ? member.GetParameters().First().ParameterType : member.DeclaringType;
+        private static Type GetContributeeType(MethodInfo member) => IsContributedToObject(member) ? member.GetParameters().First().ParameterType : member.DeclaringType;
 
         public override IImmutableDictionary<string, ITypeSpecBuilder> Process(IReflector reflector, MethodInfo method, ISpecificationBuilder specification, IImmutableDictionary<string, ITypeSpecBuilder> metamodel) {
             // all functions are contributed to first parameter or if menu, itself
 
-            var facet = new ContributedFunctionFacet(specification);
+            var facet = new ContributedFunctionFacet(specification, IsContributedToObject(method));
 
             var contributeeType = GetContributeeType(method);
             ITypeSpecImmutable type;
