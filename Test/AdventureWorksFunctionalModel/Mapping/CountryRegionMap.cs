@@ -23,7 +23,7 @@ namespace AW.Mapping
             ToTable("CountryRegion", "Person");
             Property(t => t.CountryRegionCode).HasColumnName("CountryRegionCode");
             Property(t => t.Name).HasColumnName("Name");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
         }
     }
 }
