@@ -11,12 +11,13 @@ namespace AW.Mapping
             HasKey(t => t.BusinessEntityID);
 
             //Ignores
+            //Ignores
+            //Ignore(t => t.InitialPassword);
             Ignore(t => t.ContactType);
             Ignore(t => t.ForEntity);
             //TODO: Temp ignored
-            //Ignore(t => t.Password);
-            Ignore(t => t.Employee);
-            // Properties
+            Ignore(t => t.Password);
+
             Property(t => t.Title)
                 .HasMaxLength(8);
 
@@ -48,7 +49,7 @@ namespace AW.Mapping
             Property(t => t.rowguid).HasColumnName("rowguid");
             Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
 
-            //HasOptional(t => t.Employee).WithRequired(t => t.PersonDetails);
+            HasOptional(t => t.Employee).WithRequired(t => t.PersonDetails);
         }
     }
 }
