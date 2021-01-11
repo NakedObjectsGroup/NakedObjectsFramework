@@ -75,6 +75,12 @@ namespace AW.Functions
 
         #endregion
 
+        public static List<Product> ListAssociatedProducts(this SpecialOffer specialOffer, IContext context)
+        {
+            int id = specialOffer.SpecialOfferID;
+            return context.Instances<SpecialOfferProduct>().Where(x => x.SpecialOfferID == id).Select(x => x.Product).ToList();
+        }
+
         #region Queryable-contributed
         private static (IList<SpecialOffer>, IContext) Change(this IQueryable<SpecialOffer> offers, Func<SpecialOffer, SpecialOffer> change, IContext context)
         => DisplayAndSave(offers.ToList().Select(change).ToList(), context);
