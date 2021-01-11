@@ -32,7 +32,7 @@ namespace NakedFunctions.Rest.Test
         protected override Type[] Functions { get; } = { typeof(SimpleMenuFunctions) };
 
         // todo should IAlert be here or should we ignore?
-        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(IAlert) };
+        protected override Type[] Records { get; } = { typeof(SimpleRecord) };
 
         protected override Type[] ObjectTypes { get; } = { };
 

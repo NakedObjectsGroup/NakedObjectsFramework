@@ -10,15 +10,25 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NakedFunctions.Rest.Test.Data {
     public record SimpleRecord {
-        [Key] 
+        [Key]
         public int Id { get; init; }
+
         public string Name { get; init; }
         public override string ToString() => Name;
     }
 
-    public record GuidRecord {
-        [Key] 
+    public record DateRecord {
+        [Key]
         public int Id { get; init; }
+
+        public DateTime EndDate { get; set; } = DateTime.Now;
+        public DateTime StartDate { get; set; } = DateTime.Now;
+    }
+
+    public record GuidRecord {
+        [Key]
+        public int Id { get; init; }
+
         public Guid Name => new(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11);
         public override string ToString() => Name.ToString();
     }
