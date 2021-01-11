@@ -103,12 +103,14 @@ namespace NakedFunctions.Meta.Facet {
         private (object, Context) HandleTuple(ITuple tuple) =>
             (tuple[0], (Context)tuple[1]);
 
-        private void HandleContext(Context context, INakedObjectsFramework framework) {
+        private object HandleContext(Context context, object toReturn,  INakedObjectsFramework framework) {
             object[] toAct = {context.Action};
             PerformActions(framework.ServicesManager, framework.ServiceProvider, toAct);
 
-            //var persisted = PersistResult(framework.LifecycleManager, toPersist);
-            //toReturn = ReplacePersisted(toReturn, persisted);
+            object[] toPersist = context.PendingSave;
+
+            var persisted = PersistResult(framework.LifecycleManager, toPersist);
+            return ReplacePersisted(toReturn, persisted);
         }
 
         private INakedObjectAdapter HandleInvokeResult(INakedObjectsFramework framework,
@@ -125,7 +127,7 @@ namespace NakedFunctions.Meta.Facet {
 
                 Context context;
                 (toReturn, context) = HandleTuple(tuple);
-                HandleContext(context, framework);
+                toReturn = HandleContext(context, toReturn, framework);
             }
             else {
                 toReturn = result;
@@ -143,16 +145,18 @@ namespace NakedFunctions.Meta.Facet {
 
 
         private void PerformAction(IServicesManager servicesManager, IServiceProvider serviceProvider, object action) {
-            var injectType = GetInjectArgumentType(action);
+            if (action is not null) {
+                var injectType = GetInjectArgumentType(action);
 
-            var injectedService = GetInjectedService(servicesManager, serviceProvider, injectType);
+                var injectedService = GetInjectedService(servicesManager, serviceProvider, injectType);
 
-            if (injectedService != null) {
-                var f = typeof(InjectUtils).GetMethod("PerformAction")?.MakeGenericMethod(injectType);
-                f?.Invoke(null, new object[] {action, injectedService});
-            }
-            else {
-                throw new InvokeException($"Failed to get service for injection argument type {injectType} on action {ActionMethod.Name}");
+                if (injectedService != null) {
+                    var f = typeof(InjectUtils).GetMethod("PerformAction")?.MakeGenericMethod(injectType);
+                    f?.Invoke(null, new object[] {action, injectedService});
+                }
+                else {
+                    throw new InvokeException($"Failed to get service for injection argument type {injectType} on action {ActionMethod.Name}");
+                }
             }
         }
 

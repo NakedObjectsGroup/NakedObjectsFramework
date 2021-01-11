@@ -228,9 +228,8 @@ namespace NakedFunctions.Rest.Test
             }
         }
 
-        // to discuss - this is a POST - should it be ? 
         [Test]
-        public void TestInvokeMenuActionThatGeneratesWarning()
+        public void TestInvokeMenuActionThatGeneratesWarningNoObject()
         {
             var api = Api().AsPost();
             var map = new ArgumentMap { Map = new Dictionary<string, IValue>() { { "number", new ScalarValue("4") } } };
@@ -249,6 +248,28 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual("", resultObj.ToString());
         }
 
+        [Test]
+        public void TestInvokeMenuActionThatGeneratesWarningObject()
+        {
+            var api = Api().AsPost();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue>() { { "number", new ScalarValue("1") } } };
+            var result = api.PostInvokeOnMenu(nameof(SimpleMenuFunctions), nameof(SimpleMenuFunctions.FindByNumber), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            Assert.AreEqual("object", parsedResult["resultType"].ToString());
+
+            Assert.AreEqual(null, parsedResult["extensions"]["x-ro-nof-warnings"]);
+
+            Assert.AreEqual("object", parsedResult["resultType"].ToString());
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Fred", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+                   
+        }
 
 
         //[Test]

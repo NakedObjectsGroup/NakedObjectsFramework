@@ -33,20 +33,14 @@ namespace NakedFunctions.Reflector.FacetFactory {
             logger = loggerFactory.CreateLogger<PotencyDerivedFromSignatureFacetFactory>();
 
 
-        private static bool TypeIncludesUpdate(Type type) =>
-            type switch {
-                _ when FacetUtils.IsTuple(type) => TupleIncludesUpdates(type, false),
-                _ when FacetUtils.IsAction(type) => false,
-                _ => true
-            };
-
-        private static bool TupleIncludesUpdates(Type tuple, bool skipFirst) => tuple.GetGenericArguments().Skip(skipFirst ? 1 : 0).Any(TypeIncludesUpdate);
-
-        private static bool IsSideEffectFree(Type returnType) => !FacetUtils.IsTuple(returnType) || !TupleIncludesUpdates(returnType, true);
+        private static bool IsSideEffectFree(Type returnType) => !FacetUtils.IsTuple(returnType);
 
         private static void Process(MemberInfo member, ISpecification holder) {
             if (member is MethodInfo method) {
-                if (IsSideEffectFree(method.ReturnType)) {
+                if (member.GetCustomAttribute<EditAttribute>() is not null) {
+                    FacetUtils.AddFacet(new IdempotentFacet(holder));
+                }
+                else if (IsSideEffectFree(method.ReturnType)) {
                     FacetUtils.AddFacet(new QueryOnlyFacet(holder));
                 }
             }
