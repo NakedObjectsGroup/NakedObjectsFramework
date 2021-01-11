@@ -13,7 +13,7 @@ namespace NakedFunctions.Rest.Test.Data {
     public static class SimpleRecordFunctions {
 
 
-        public static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithPendingSave(obj));
+        internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithPendingSave(obj));
 
         [Edit]
         public static (SimpleRecord, IContext) EditSimpleRecord(this SimpleRecord sp, string name, IContext context)

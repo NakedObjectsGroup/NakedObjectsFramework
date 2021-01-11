@@ -8,20 +8,12 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NakedFunctions.Reflector.Configuration;
 using NakedFunctions.Rest.Test.Data;
-using NakedObjects.Architecture.Configuration;
-using NakedObjects.Core.Configuration;
-using NakedObjects.Facade;
-using NakedObjects.Facade.Impl;
-using NakedObjects.Facade.Impl.Implementation;
-using NakedObjects.Facade.Impl.Utility;
 using NakedObjects.Facade.Interface;
-using NakedObjects.Facade.Translation;
-using NakedObjects.Persistor.Entity.Configuration;
 using NakedObjects.Reflector.Configuration;
 using NakedObjects.Rest;
 using NakedObjects.Rest.Model;
@@ -43,7 +35,7 @@ namespace NakedFunctions.Rest.Test
     {
         protected override Type[] Functions { get; } = { typeof(SimpleRecordFunctions) };
 
-        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(GuidRecord), typeof(IAlert) };
+        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(IAlert) };
 
         protected override Type[] ObjectTypes { get; } = { };
 
@@ -100,21 +92,46 @@ namespace NakedFunctions.Rest.Test
             return JObject.Parse(json);
         }
 
-        //[Test]
-        //public void TestInvokeUpdateAndPersistSimpleRecord() {
-        //    var api = Api().AsPut();
-        //    var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"name", new ScalarValue("Fred4")}}};
+        [Test]
+        public void TestGetObjectAction()
+        {
+            var api = Api();
+            var result = api.GetAction($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.EditSimpleRecord));
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
 
-        //    var result = api.PutInvoke($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.EditSimpleRecord), map);
-        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-        //    Assert.AreEqual((int) HttpStatusCode.OK, sc);
-        //    var parsedResult = JObject.Parse(json);
+            //Assert.AreEqual(nameof(SimpleRecordFunctions.EditSimpleRecord), parsedResult["id"].ToString());
+            //var parameters = parsedResult["parameters"];
+            //Assert.AreEqual(1, parameters.Count());
+            //var parameter = parameters["searchString"];
+            //Assert.AreEqual(2, parameter.Count());
+            //var links = parameter["links"];
+            //var extensions = parameter["extensions"];
+            //Assert.AreEqual(0, links.Count());
+            //Assert.AreEqual(7, extensions.Count());
 
-        //    var resultObj = parsedResult["result"];
+            // todo test rest of json
 
-        //    resultObj.AssertObject("Fred4", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-        //    Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
-        //}
+        }
+
+
+        [Test]
+        public void TestInvokeUpdateAndPersistSimpleRecord()
+        {
+            var api = Api().AsPut();
+            var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "name", new ScalarValue("Fred4") } } };
+
+            var result = api.PutInvoke($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.EditSimpleRecord), map);
+            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+            Assert.AreEqual((int)HttpStatusCode.OK, sc);
+            var parsedResult = JObject.Parse(json);
+
+            var resultObj = parsedResult["result"];
+
+            resultObj.AssertObject("Fred4", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+            Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
+        }
 
 
         //[Test]
