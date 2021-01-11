@@ -41,7 +41,7 @@ namespace AW.Types {
         public virtual string Suffix { get; init; }
         #endregion
 
-        [MemberOrder(21)]
+        [MemberOrder(21), Hidden]
         public virtual EmailPromotion EmailPromotion { get; init; }
 
         [Hidden]

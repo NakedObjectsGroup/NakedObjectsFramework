@@ -14,8 +14,8 @@ namespace AW.Mapping
             Ignore(t => t.ContactType);
             Ignore(t => t.ForEntity);
             //TODO: Temp ignored
-            Ignore(t => t.Password);
-
+            //Ignore(t => t.Password);
+            Ignore(t => t.Employee);
             // Properties
             Property(t => t.Title)
                 .HasMaxLength(8);
