@@ -35,20 +35,11 @@ namespace AW.Types
         [MemberOrder(15)]
         public virtual StateProvince StateProvince { get; init; }
 
-        [Hidden]
-        public virtual int CountryRegionID { get; init; }
-
         [MemberOrder(16)]
         public virtual CountryRegion CountryRegion { get; init; }
 
-        [Hidden]
-        public virtual int AddressTypeID { get; init; }
-
         [MemberOrder(10)]
         public virtual AddressType AddressType { get; init; }
-
-        [Hidden]
-        public virtual int AddressForID { get; init; }
 
         public virtual BusinessEntity AddressFor { get; init; }
 
