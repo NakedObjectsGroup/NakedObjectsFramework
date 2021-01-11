@@ -803,8 +803,11 @@ namespace NakedObjects.Facade.Impl {
             return parms.Select(p => new ParameterContextFacade { Parameter = p, Action = actionFacade.Action }).ToArray();
         }
 
+        private bool IsTargetParm(IActionSpec action, IActionParameterSpec parm) => parm.Number == 0 && action.GetFacet<IContributedFunctionFacet>()?.IsContributedToObject == true;
+
         private ParameterContext[] FilterParmsForFunctions(IActionSpec action, string uid) =>
             action.Parameters
+                  .Where(p => !IsTargetParm(action, p))
                   .Where(p => !p.IsInjected)
                   .Select(p => new ParameterContext {
                       Action = action,

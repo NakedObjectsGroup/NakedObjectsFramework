@@ -22,7 +22,7 @@ namespace NakedFunctions.Meta.Test.Facet {
 
         [TestMethod]
         public void TestContributee() {
-            var testFacet = new ContributedFunctionFacet(null);
+            var testFacet = new ContributedFunctionFacet(null, false);
 
             testFacet.AddContributee(mockSpec.Object);
             var result = testFacet.IsContributedTo(mockSpec.Object);

@@ -16,16 +16,18 @@ using NakedObjects.Meta.Facet;
 namespace NakedFunctions.Meta.Facet {
     [Serializable]
     public sealed class ContributedFunctionFacet : FacetAbstract, IContributedFunctionFacet {
-        private readonly List<ITypeSpecImmutable> objectContributees = new List<ITypeSpecImmutable>();
+        private readonly List<ITypeSpecImmutable> objectContributees = new();
 
-        public ContributedFunctionFacet(ISpecification holder) : base(typeof(IContributedFunctionFacet), holder) { }
+        public ContributedFunctionFacet(ISpecification holder, bool isContributedToObject) : base(typeof(IContributedFunctionFacet), holder) =>
+            IsContributedToObject = isContributedToObject;
+
+        public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);
 
         #region IContributedFunctionFacet Members
 
         public bool IsContributedTo(ITypeSpecImmutable spec) => objectContributees.Any(spec.IsOfType);
+        public bool IsContributedToObject { get; }
 
         #endregion
-
-        public void AddContributee(ITypeSpecImmutable type) => objectContributees.Add(type);
     }
 }

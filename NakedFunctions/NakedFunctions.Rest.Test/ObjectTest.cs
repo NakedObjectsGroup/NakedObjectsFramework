@@ -101,15 +101,15 @@ namespace NakedFunctions.Rest.Test
             Assert.AreEqual((int)HttpStatusCode.OK, sc);
             var parsedResult = JObject.Parse(json);
 
-            //Assert.AreEqual(nameof(SimpleRecordFunctions.EditSimpleRecord), parsedResult["id"].ToString());
-            //var parameters = parsedResult["parameters"];
-            //Assert.AreEqual(1, parameters.Count());
-            //var parameter = parameters["searchString"];
-            //Assert.AreEqual(2, parameter.Count());
-            //var links = parameter["links"];
-            //var extensions = parameter["extensions"];
-            //Assert.AreEqual(0, links.Count());
-            //Assert.AreEqual(7, extensions.Count());
+            Assert.AreEqual(nameof(SimpleRecordFunctions.EditSimpleRecord), parsedResult["id"].ToString());
+            var parameters = parsedResult["parameters"];
+            Assert.AreEqual(1, parameters.Count());
+            var parameter = parameters["name"];
+            Assert.AreEqual(2, parameter.Count());
+            var links = parameter["links"];
+            var extensions = parameter["extensions"];
+            Assert.AreEqual(0, links.Count());
+            Assert.AreEqual(7, extensions.Count());
 
             // todo test rest of json
 
