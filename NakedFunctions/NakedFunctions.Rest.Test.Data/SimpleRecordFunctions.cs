@@ -6,19 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-using System.Linq;
-using Microsoft.Extensions.Logging;
 
 namespace NakedFunctions.Rest.Test.Data {
     public static class SimpleRecordFunctions {
-
-
         internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithPendingSave(obj));
 
         [Edit]
         public static (SimpleRecord, IContext) EditSimpleRecord(this SimpleRecord sp, string name, IContext context)
-            => DisplayAndSave(sp with { Name = name }, context);
-
+            => DisplayAndSave(sp with {Name = name}, context);
 
         //public static SimpleRecord ReShowRecord(this SimpleRecord simpleRecord) => simpleRecord;
 
@@ -29,7 +24,6 @@ namespace NakedFunctions.Rest.Test.Data {
 
         //    return updatedSr;
         //}
-
 
         //public static (SimpleRecord, SimpleRecord) UpdateAndPersistSimpleRecord(this SimpleRecord simpleRecord, IQueryable<SimpleRecord> allSimpleRecords, string name) {
         //    var updatedSr = simpleRecord with
@@ -43,5 +37,17 @@ namespace NakedFunctions.Rest.Test.Data {
         //public static (SimpleRecord, Action<IAlert>) GetSimpleRecordWithWarning(this SimpleRecord simpleRecord) =>  (simpleRecord, a => a.WarnUser("a warning"));
 
         //public static (SimpleRecord, Action<ILogger<SimpleRecord>>) GetSimpleRecordWithLog(this SimpleRecord simpleRecord) => (simpleRecord, l => l.LogInformation("a log"));
+    }
+
+    public static class DateRecordFunctions {
+        internal static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithPendingSave(obj));
+
+        [Edit]
+        public static (DateRecord, IContext) EditDates(this DateRecord sp, DateTime startDate, DateTime endDate, IContext context)
+            => DisplayAndSave(sp with {StartDate = startDate, EndDate = endDate}, context);
+
+        public static DateTime Default0EditDates(this DateRecord sp, IContext context) => context.GetService<IClock>().Today();
+
+        public static DateTime Default1EditDates(this DateRecord sp, IContext context) => context.GetService<IClock>().Today().AddDays(90);
     }
 }

@@ -33,9 +33,9 @@ namespace NakedFunctions.Rest.Test
 
     public class ObjectTest : AcceptanceTestCase
     {
-        protected override Type[] Functions { get; } = { typeof(SimpleRecordFunctions) };
+        protected override Type[] Functions { get; } = { typeof(SimpleRecordFunctions), typeof(DateRecordFunctions) };
 
-        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(IAlert) };
+        protected override Type[] Records { get; } = { typeof(SimpleRecord), typeof(DateRecord) };
 
         protected override Type[] ObjectTypes { get; } = { };
 
@@ -115,7 +115,6 @@ namespace NakedFunctions.Rest.Test
 
         }
 
-
         [Test]
         public void TestInvokeUpdateAndPersistSimpleRecord()
         {
@@ -132,6 +131,25 @@ namespace NakedFunctions.Rest.Test
             resultObj.AssertObject("Fred4", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
             Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
         }
+
+
+        //[Test]
+        //public void TestInvokeEditDates()
+        //{
+        //    var api = Api().AsPut();
+        //    var map = new ArgumentMap { Map = new Dictionary<string, IValue> { { "name", new ScalarValue("Fred4") } } };
+
+        //    var result = api.PutInvoke($"NakedFunctions.Rest.Test.Data.{nameof(DateRecord)}", "1", nameof(DateRecordFunctions.EditDates), map);
+        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        //    Assert.AreEqual((int)HttpStatusCode.OK, sc);
+        //    var parsedResult = JObject.Parse(json);
+
+        //    //var resultObj = parsedResult["result"];
+
+        //    //resultObj.AssertObject("Fred4", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+        //    //Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
+        //}
+
 
 
         //[Test]
