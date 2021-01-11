@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NakedFunctions;
 using AW.Types;
+using System;
 
 namespace AW.Functions {
   
@@ -21,8 +22,9 @@ namespace AW.Functions {
 
         //Any object or list returned by Persisted (or Updated), is not for display but to be persisted/updated
         //themselves (equivalent to second Tuple value returned from an Action).
-        public static BusinessEntityAddress Persisted(Address x, IContext context)
-            =>  new BusinessEntityAddress() with { AddressID = x.AddressForID, AddressTypeID = x.AddressTypeID, BusinessEntityID = x.AddressForID, rowguid = context.NewGuid(), ModifiedDate = context.Now() };
+        public static BusinessEntityAddress Persisted(Address x, IContext context) =>
+            throw new NotImplementedException();
+            //=>  new BusinessEntityAddress() with { Address = x.AddressF, AddressTypeID = x.AddressTypeID, BusinessEntityID = x.AddressForID, rowguid = context.NewGuid(), ModifiedDate = context.Now() };
         #endregion
 
         #region Property-associated functions
