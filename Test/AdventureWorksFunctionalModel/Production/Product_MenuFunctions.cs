@@ -26,8 +26,8 @@ namespace AW.Functions
         public static Product RandomProduct(IContext context) => Random<Product>(context);
 
         [MemberOrder(3)]
-        public static (Product, IContext) FindProductByNumber(string number, IContext context) =>
-            context.Instances<Product>().Where(x => x.ProductNumber == number).SingleObjectWarnIfNoMatch(context);
+        public static Product FindProductByNumber(string number, IContext context) =>
+            context.Instances<Product>().Where(x => x.ProductNumber == number).FirstOrDefault();
 
     }
 }

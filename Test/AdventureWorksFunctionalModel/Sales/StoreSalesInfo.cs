@@ -58,7 +58,7 @@ namespace AW.Types {
         public static StoreSalesInfo PopulateUsingKeys(StoreSalesInfo vm,
                                                        string[] keys,
                                                        IContext context) {
-            var cus = Customer_MenuFunctions.FindCustomerByAccountNumber(keys[0], context).Item1;
+            var cus = Customer_MenuFunctions.FindCustomerByAccountNumber(keys[0], context);
             return vm with {AccountNumber =  keys[0]}
                  with {SalesTerritory =  cus.SalesTerritory}
                  with {SalesPerson =  cus.Store?.SalesPerson}
@@ -79,7 +79,7 @@ namespace AW.Types {
         }
 
         public static (Customer, IContext) Save(this StoreSalesInfo vm, IContext context) {
-            var (cus, _) = Customer_MenuFunctions.FindCustomerByAccountNumber(vm.AccountNumber, context);
+            var cus = Customer_MenuFunctions.FindCustomerByAccountNumber(vm.AccountNumber, context);
             var st = vm.SalesTerritory;
             var sp = vm.SalesPerson;
             var sn = vm.StoreName;
