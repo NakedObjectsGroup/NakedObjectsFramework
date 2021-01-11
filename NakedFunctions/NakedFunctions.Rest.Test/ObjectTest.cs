@@ -100,21 +100,21 @@ namespace NakedFunctions.Rest.Test
             return JObject.Parse(json);
         }
 
-        [Test]
-        public void TestInvokeUpdateAndPersistSimpleRecord() {
-            var api = Api().AsPut();
-            var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"name", new ScalarValue("Fred4")}}};
+        //[Test]
+        //public void TestInvokeUpdateAndPersistSimpleRecord() {
+        //    var api = Api().AsPut();
+        //    var map = new ArgumentMap {Map = new Dictionary<string, IValue> {{"name", new ScalarValue("Fred4")}}};
 
-            var result = api.PutInvoke($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.EditSimpleRecord), map);
-            var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
-            Assert.AreEqual((int) HttpStatusCode.OK, sc);
-            var parsedResult = JObject.Parse(json);
+        //    var result = api.PutInvoke($"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1", nameof(SimpleRecordFunctions.EditSimpleRecord), map);
+        //    var (json, sc, _) = Helpers.ReadActionResult(result, api.ControllerContext.HttpContext);
+        //    Assert.AreEqual((int) HttpStatusCode.OK, sc);
+        //    var parsedResult = JObject.Parse(json);
 
-            var resultObj = parsedResult["result"];
+        //    var resultObj = parsedResult["result"];
 
-            resultObj.AssertObject("Fred4", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
-            Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
-        }
+        //    resultObj.AssertObject("Fred4", $"NakedFunctions.Rest.Test.Data.{nameof(SimpleRecord)}", "1");
+        //    Assert.AreEqual("Fred4", resultObj["members"]["Name"]["value"].ToString());
+        //}
 
 
         //[Test]
