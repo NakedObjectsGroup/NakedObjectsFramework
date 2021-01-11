@@ -8,17 +8,5 @@
 namespace AW.Functions {
     public static class ShoppingCartItem_Functions
     {
-        #region Life Cycle Methods
-        public static void Persisting()
-        {
-            //TODO
-            //ModifiedDate = DateTime.Now;
-        }
-
-        public static void Updating()
-        {
-            //ModifiedDate = DateTime.Now;
-        }
-        #endregion
     }
 }

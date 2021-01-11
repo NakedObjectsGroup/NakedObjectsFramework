@@ -14,11 +14,6 @@ using AW.Types;
 namespace AW.Functions {
     public static class Product_Functions {
 
-        #region Life Cycle Methods
-        public static Product Updating(this Product x, IContext context) => x with { rowguid = context.NewGuid(), ModifiedDate = context.Now() };
-
-        #endregion
-
         #region BestSpecialOffer
 
 

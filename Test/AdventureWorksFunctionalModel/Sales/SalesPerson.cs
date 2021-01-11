@@ -75,13 +75,6 @@ namespace AW.Types
     public static class SalesPersonFunctions
     {
 
-        #region Life Cycle Methods
-        public static SalesPerson Updating(SalesPerson x, IContext context) => x with { ModifiedDate = context.Now() };
-
-        public static SalesPerson Persisting(SalesPerson x, IContext context) => x with { rowguid = context.NewGuid(), ModifiedDate = context.Now() };
-        #endregion
-
-
         [MemberOrder(1)]
         public static (SalesPerson, IContext) RecalulateSalesYTD(this SalesPerson sp, IContext context)
         {

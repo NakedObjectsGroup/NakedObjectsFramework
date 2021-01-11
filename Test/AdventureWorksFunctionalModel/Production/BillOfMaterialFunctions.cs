@@ -12,6 +12,6 @@ namespace AW.Functions
 {
     public static class BillOfMaterialFunctions
     {
-        public static BillOfMaterial Updating(BillOfMaterial x, IContext context) => x with { ModifiedDate = context.Now()};        
+      
     }
 }

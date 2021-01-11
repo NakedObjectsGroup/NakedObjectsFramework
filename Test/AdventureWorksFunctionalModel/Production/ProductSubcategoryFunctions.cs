@@ -13,8 +13,5 @@ namespace AW.Functions {
 
     public static class ProductSubcategoryFunctions
     {
-       public static ProductSubcategory Updating(this ProductSubcategory x,  IContext context) => x with {ModifiedDate =  context.Now()};
-
-        public static ProductSubcategory Persisting(this ProductSubcategory x, IContext context) => x with { rowguid = context.NewGuid(), ModifiedDate = context.Now() };
-    }
+     }
 }

@@ -14,11 +14,6 @@ namespace AW.Functions {
 
     public static class ShiftFunctions {
 
-        #region Life Cycle Methods
-
-        public static Shift Updating(this Shift x, IContext context) => x with { ModifiedDate = context.Now() };
-
-        #endregion
 
         public static (Shift, IContext) ChangeTimes(this Shift s, TimeSpan startTime, TimeSpan endTime, IContext context)
         {

@@ -12,6 +12,6 @@ namespace AW.Functions
 {
     public static class CountryRegionFunctions
     {
-        public static CountryRegion Updating(CountryRegion cr, IContext context) => cr with { ModifiedDate = context.Now() };
+
     }
 }

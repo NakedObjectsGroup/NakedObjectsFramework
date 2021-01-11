@@ -16,12 +16,7 @@ namespace AW.Functions {
     public static class Address_Functions
     {
         #region LifeCycle methods
-        public static Address Updating(Address x,  IContext context) => x with { ModifiedDate = context.Now() };
-
-        public static Address Persisting(Address x,  IContext context) => x with { rowguid = context.NewGuid(), ModifiedDate = context.Now() };
-
-        //Any object or list returned by Persisted (or Updated), is not for display but to be persisted/updated
-        //themselves (equivalent to second Tuple value returned from an Action).
+        //TODO
         public static BusinessEntityAddress Persisted(Address x, IContext context) =>
             throw new NotImplementedException();
             //=>  new BusinessEntityAddress() with { Address = x.AddressF, AddressTypeID = x.AddressTypeID, BusinessEntityID = x.AddressForID, rowguid = context.NewGuid(), ModifiedDate = context.Now() };

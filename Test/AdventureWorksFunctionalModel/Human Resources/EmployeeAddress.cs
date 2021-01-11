@@ -33,12 +33,4 @@ namespace AW.Types
         public virtual Guid rowguid { get; init; }
     }
 
-    public static class EmployeeAddressFunctions
-    {
-        #region Life Cycle Methods
-        public static EmployeeAddress Updating(this EmployeeAddress x, IContext context) => x with { ModifiedDate = context.Now() };
-
-        public static EmployeeAddress Persisting(this EmployeeAddress x, IContext context) => x with { ModifiedDate = context.Now() };
-        #endregion
-    }
 }

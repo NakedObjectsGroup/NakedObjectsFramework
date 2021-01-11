@@ -13,7 +13,5 @@ namespace AW.Functions
     
     public static class StateProvinceFunctions
     {
-        public static StateProvince Updating(StateProvince sp, IContext context) => sp with { ModifiedDate = context.Now() };
-
     }
 }

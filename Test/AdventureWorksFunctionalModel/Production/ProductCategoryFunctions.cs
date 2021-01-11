@@ -11,7 +11,5 @@ using AW.Types;
 namespace AW.Functions {
      public static class ProductCategoryFunctions
     {
-        public static ProductCategory Updating(ProductCategory x, IContext context) => x with { ModifiedDate = context.Now() };
-
     }
 }

@@ -36,6 +36,7 @@ namespace AW.Functions {
             };
         }
 
+        //TODO
         public static Person Persisting(Person p,  IContext context)
         {
             throw new NotImplementedException();
@@ -44,8 +45,10 @@ namespace AW.Functions {
             ////     with {BusinessEntityModifiedDate =  now};
         }
 
+        //TODO
         public static Person Updating(Person x,  IContext context) => 
          x with {BusinessEntityModifiedDate =  context.Now(), ModifiedDate = context.Now()};
+
 
         #endregion
 

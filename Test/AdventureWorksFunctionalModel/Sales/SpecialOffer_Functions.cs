@@ -17,13 +17,6 @@ namespace AW.Functions
     public static class SpecialOffer_Functions
     {
 
-        #region Life Cycle Methods
-        public static SpecialOffer Updating(SpecialOffer x,  IContext context) => x with { ModifiedDate = context.Now() };
-
-        public static SpecialOffer Persisting(SpecialOffer x, IContext context) =>
-            x with { ModifiedDate = context.Now(), rowguid = context.NewGuid() };
-        #endregion
-
         #region Edit
         [Edit]
         public static (SpecialOffer, IContext) EditDescription(this SpecialOffer sp, string description, IContext context)

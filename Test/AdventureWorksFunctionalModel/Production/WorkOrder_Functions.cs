@@ -16,11 +16,6 @@ namespace AW.Functions
     public static class WorkOrder_Functions
     {
 
-        #region LifeCycle functions
-        public static WorkOrder Updating(WorkOrder x, IContext context) => x with { ModifiedDate = context.Now() };
-
-        #endregion
-
         public static (WorkOrder, IContext) ChangeScrappedQuantity(this WorkOrder wo, short newQty, IContext context)
         =>  DisplayAndSave(wo with { ScrappedQty = newQty }, context);
 

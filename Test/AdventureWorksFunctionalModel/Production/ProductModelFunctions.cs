@@ -35,6 +35,5 @@ namespace AW.Functions
             return output.ToString();
         }
 
-        public static ProductInventory Updating(ProductInventory x, IContext context) => x with { ModifiedDate = context.Now() };
     }
 }
