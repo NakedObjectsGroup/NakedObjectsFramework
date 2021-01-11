@@ -63,7 +63,7 @@ namespace AW.Types
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        [TableView(false, "QuotaDate", "SalesQuota", "QuotaDate")] //Column name deliberately duplicated to test that this is ignored
+        [TableView(false, "QuotaDate", "SalesQuota")] //Column name deliberately duplicated to test that this is ignored
         public virtual ICollection<SalesPersonQuotaHistory> QuotaHistory { get; init; } = new List<SalesPersonQuotaHistory>();
 
         [TableView(false, "StartDate", "EndDate", "SalesTerritory")]
