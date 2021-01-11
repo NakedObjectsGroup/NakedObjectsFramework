@@ -94,8 +94,7 @@ namespace AW.Functions
         #endregion
 
         [MemberOrder(10)]
-        public static (SpecialOffer, IContext) RandomSpecialOffertWithAlert(IContext context) =>
-            (Random<SpecialOffer>(context), context.WithAction(InformUser("This was randomly selected")));
+        public static SpecialOffer RandomSpecialOffertWithAlert(IContext context) => Random<SpecialOffer>(context);
 
         #region Helper methods
 

@@ -14,8 +14,6 @@ using static AW.Helpers;
 
 namespace AW.Functions
 {
-
-
     public static class SpecialOffer_Functions
     {
 
@@ -66,30 +64,10 @@ namespace AW.Functions
         #region AssociateWithProduct
 
         public static (SpecialOfferProduct, IContext) AssociateWithProduct(
-        this SpecialOffer offer,
-        Product product,
-        IContext context
-            )
-        {
-            //First check if association already exists
-            IQueryable<SpecialOfferProduct> query = from sop in context.Instances<SpecialOfferProduct>()
-                                                    where sop.SpecialOfferID == offer.SpecialOfferID &&
-                                                    sop.ProductID == product.ProductID
-                                                    select sop;
-
-            if (query.Count() != 0)
-            {
-
-                Action<IAlert> msg = InformUser($"{offer} is already associated with { product}");
-                return (null, context.WithAction(msg));
-            }
-            var newSop = new SpecialOfferProduct() with
-            {
-                SpecialOffer = offer,
-                Product = product
-            };
-            return (newSop, context.WithPendingSave(newSop));
-        }
+            this SpecialOffer offer, Product product, IContext context) =>
+            context.Instances<SpecialOfferProduct>().Where(x => x.SpecialOfferID == offer.SpecialOfferID && x.ProductID == product.ProductID).Count() == 0 ?
+                DisplayAndSave(new SpecialOfferProduct() with { SpecialOffer = offer, Product = product }, context)
+                : (null, context.WithInformUser($"{offer} is already associated with { product}"));
 
         [PageSize(20)]
         public static IQueryable<Product> AutoComplete1AssociateWithProduct([Length(2)] string name, IContext context)
