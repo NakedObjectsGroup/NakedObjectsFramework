@@ -82,11 +82,12 @@ namespace AW.Functions {
         }
 
         private static Person GetContactFromUserNameAsEmail(IContext context) {
-            string username = UserName(context.CurrentUser()).Trim().ToUpper();
-            var q = from e in  context.Instances<EmailAddress>()
-                    where e.EmailAddress1.Trim().ToUpper() == username
-                    select e.Person;
-            return q.FirstOrDefault();
+            throw new NotImplementedException();
+            //string username = UserName(context.CurrentUser()).Trim().ToUpper();
+            //var q = from e in  context.Instances<EmailAddress>()
+            //        where e.EmailAddress1.Trim().ToUpper() == username
+            //        select e.Person;
+            //return q.FirstOrDefault();
         }
 
         private static string UserName(IPrincipal principal) {

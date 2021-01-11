@@ -17,12 +17,6 @@ namespace AW.Types
         public virtual string EmailAddress1 { get; init; }
 
         [Hidden]
-        public virtual int PersonId { get; init; }
-
-        [Hidden]
-        public virtual Person Person { get; init; }
-
-        [Hidden]
         public virtual Guid rowguid { get; init; }
 
         [Hidden]

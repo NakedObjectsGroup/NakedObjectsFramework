@@ -13,12 +13,6 @@ namespace AW.Types
         public virtual string PhoneNumber { get; init; }
 
         [Hidden]
-        public virtual int PersonID { get; init; }
-
-        [Hidden]
-        public virtual Person Person { get; init; }
-
-        [Hidden]
         public virtual int PhoneNumberTypeID { get; init; }
 
         public virtual PhoneNumberType PhoneNumberType { get; init; }
