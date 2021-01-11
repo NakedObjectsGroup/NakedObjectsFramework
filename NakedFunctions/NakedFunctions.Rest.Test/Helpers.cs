@@ -58,6 +58,12 @@ namespace NakedFunctions.Rest.Test {
             return api;
         }
 
+        public static RestfulObjectsControllerBase AsPut(this RestfulObjectsControllerBase api)
+        {
+            api.HttpContext.Request.Method = "PUT";
+            return api;
+        }
+
         public static RestfulObjectsControllerBase AsGet(this RestfulObjectsControllerBase api)
         {
             api.HttpContext.Request.Method = "GET";

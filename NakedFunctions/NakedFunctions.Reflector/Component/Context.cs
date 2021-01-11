@@ -21,12 +21,13 @@ namespace NakedFunctions.Reflector.Component {
         }
 
         public object Action { get; init; }
+        public object[] PendingSave { get; init; } = Array.Empty<object>();
 
         public IQueryable<T> Instances<T>() where T : class => persistor.UntrackedInstances<T>();
 
         public T GetService<T>() => provider.GetService<T>();
 
-        public IContext WithPendingSave(params object[] toBeSaved) => throw new NotImplementedException();
+        public IContext WithPendingSave(params object[] toBeSaved) => this with {PendingSave = PendingSave.Union(toBeSaved).ToArray()};
 
         public IContext WithAction<T>(Action<T> action) => this with {Action = action};
     }
