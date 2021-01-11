@@ -27,7 +27,7 @@ namespace AW.Functions
         #region Edit
         [Edit]
         public static (SpecialOffer, IContext) EditDescription(this SpecialOffer sp, string description, IContext context)
-        => DisplayAndSave(sp with { Description = description }, context);
+        => DisplayAndSave(sp with { Description = description, ModifiedDate = context.Now() }, context);
 
         [Edit]
         public static (SpecialOffer, IContext) EditDiscount(this SpecialOffer sp, decimal discountPct, IContext context)
