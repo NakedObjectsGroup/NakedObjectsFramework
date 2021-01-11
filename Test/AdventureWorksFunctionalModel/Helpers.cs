@@ -8,13 +8,6 @@ namespace AW
     {
         public static (T, IContext) DisplayAndSave<T>(T obj, IContext context) => (obj, context.WithPendingSave(obj));
 
-        public static Action<IAlert> WarnUser(string message) =>(IAlert ua) => ua.WarnUser(message);
-
-        public static Action<IAlert> InformUser(string message) => (IAlert ua) => ua.InformUser(message);
-
-        public static (T, IContext) SingleObjectWarnIfNoMatch<T>(this IQueryable<T> query, IContext context) =>
-            (query.FirstOrDefault(), query.Any() ? context : context.WithAction(WarnUser("There is no matching object")));
-
         /// <summary>
         ///     Returns a random instance from the set of all instance of type T
         /// </summary>

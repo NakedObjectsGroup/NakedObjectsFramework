@@ -28,12 +28,9 @@ namespace AW.Functions {
         //}
 
         [MemberOrder(10)]
-        public static (Customer, IContext) FindCustomerByAccountNumber(
+        public static Customer FindCustomerByAccountNumber(
             [DefaultValue("AW")] string accountNumber, IContext context) =>
-                                         (from obj in context.Instances<Customer>()
-                                         where obj.AccountNumber == accountNumber
-                                         orderby obj.AccountNumber
-                                         select obj).SingleObjectWarnIfNoMatch(context);
+            context.Instances<Customer>().Where(x => x.AccountNumber == accountNumber).FirstOrDefault();
 
         public static string ValidateFindCustomerByAccountNumber(string accountNumber)
         {

@@ -36,13 +36,9 @@ namespace AW.Functions {
             return headers.Where(x => x.StatusByte == 1);
         }
 
-        
         [MemberOrder(10)]
-        public static (SalesOrderHeader, IContext) FindOrder(
-            [DefaultValue("SO")] string orderNumber, IContext context)
-        {
-            return Helpers.SingleObjectWarnIfNoMatch(context.Instances<SalesOrderHeader>().Where(x => x.SalesOrderNumber == orderNumber), context);
-        }
+        public static SalesOrderHeader FindOrder([DefaultValue("SO")] string orderNumber, IContext context) =>
+         context.Instances<SalesOrderHeader>().Where(x => x.SalesOrderNumber == orderNumber).FirstOrDefault();
 
         [ MemberOrder(90)]
         [TableView(true, "TotalDue", "Customer", "OrderDate", "SalesPerson", "Comment")]
@@ -51,7 +47,6 @@ namespace AW.Functions {
         {
             return OrdersByValue(Ordering.Descending, headers);
         }
-
         
         [MemberOrder(91)]
         [TableView(true, "TotalDue", "Customer", "OrderDate", "SalesPerson")]
@@ -62,7 +57,6 @@ namespace AW.Functions {
             return ordering == Ordering.Descending ? headers.OrderByDescending(obj => obj.TotalDue) :
                 headers.OrderBy(obj => obj.TotalDue);
         }
-
 
         #region OrdersForCustomer
         //Action to demonstrate use of Auto-Complete that returns a single object
@@ -77,7 +71,7 @@ namespace AW.Functions {
         public static Customer AutoComplete0OrdersForCustomer(
             [Range(10,0)] string accountNumber,
             IContext context) {
-            return Customer_MenuFunctions.FindCustomerByAccountNumber(accountNumber, context).Item1;
+            return Customer_MenuFunctions.FindCustomerByAccountNumber(accountNumber, context);
         }
         #endregion
 
@@ -110,7 +104,7 @@ namespace AW.Functions {
             [Range(10,0)] string accountNumber,
             IContext context)
         {
-            return Customer_MenuFunctions.FindCustomerByAccountNumber(accountNumber, context).Item1;
+            return Customer_MenuFunctions.FindCustomerByAccountNumber(accountNumber, context);
         }
     }
 }
