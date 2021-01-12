@@ -107,5 +107,24 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             var msg = WaitForCss(".co-validation").Text;
             Assert.AreEqual("Mountain Tire Sale is already associated with LL Mountain Tire", msg);
         }
+
+        [TestMethod]
+        public void EditAction()
+        {
+            //Corresponds to Story #202
+            GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--6&as1=open&d1=EditDescription");
+            var title = WaitForCss(".title");
+            string original = "Volume Discount over 60";
+            Assert.AreEqual(original, title.Text);
+            string newDesc = "Volume Discount 60+";
+            TypeIntoFieldWithoutClearing("#description1", newDesc);
+            Click(OKButton());
+            wait.Until(d => d.FindElement(By.CssSelector(".title")).Text == newDesc);
+            OpenObjectActions();
+            OpenActionDialog("Edit Description");
+            TypeIntoFieldWithoutClearing("#description1", original);
+            Click(OKButton());
+            wait.Until(d => d.FindElement(By.CssSelector(".title")).Text == original);
+        }
     }
 }
