@@ -54,8 +54,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
         }
         #endregion 
 
-        [TestMethod, Priority(0)]
-        public virtual void RetrieveObjectViaMenuAction()
+        [TestMethod]
+        public  void RetrieveObjectViaMenuAction()
         {
             //Corresponds to Story #199. Tests that IContext is injected as param, and that its Instances<T> method works
             OpenMainMenuAction("Products", "Find Product By Name");
@@ -65,8 +65,8 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             AssertTopItemInListIs("Handlebar Tube");
         }
 
-        [TestMethod, Priority(0)]
-        public virtual void UseOfRandomSeedGenerator()
+        [TestMethod]
+        public  void UseOfRandomSeedGenerator()
         {
             //Corresponds to Story #200. Tests that IContext provides access to IRandomSeedGenerator & that the latter works
             OpenMainMenuAction("Products", "Random Product");
@@ -77,6 +77,35 @@ namespace NakedFunctions.Selenium.Test.FunctionTests {
             WaitForView(Pane.Single, PaneType.Object);
             Assert.IsTrue(br.Url.Contains(".Product-"));
             Assert.AreNotEqual(product1Url, br.Url);
+        }
+
+        [TestMethod]
+        public  void ObjectContributedAction()
+        {
+            //Tests that an action (side effect free) can be associated with an object
+            GeminiUrl("object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open");
+            WaitForView(Pane.Single, PaneType.Object);
+            var action = GetObjectAction("List Associated Products");
+            RightClick(action);
+            WaitForView(Pane.Right, PaneType.List);
+            var product = WaitForCss("td label[for=\"item2-0\"]");
+            Assert.AreEqual("LL Mountain Tire", product.Text);
+        }
+
+        [TestMethod]
+        public void InformUserViaIAlertService()
+        {
+            //Corresponds to Story #201
+            GeminiUrl("object/object?i1=View&o1=AW.Types.SpecialOffer--10&as1=open&d1=AssociateWithProduct&i2=View&o2=AW.Types.Product--928");
+            var title = WaitForCss("#pane2 .header .title");
+            Assert.AreEqual("LL Mountain Tire", title.Text);
+            title.Click();
+            CopyToClipboard(title);
+            PasteIntoInputField("#pane1 .parameter .value.droppable");
+            Click(OKButton());
+            wait.Until(d => d.FindElement(By.CssSelector(".co-validation")).Text != "");
+            var msg = WaitForCss(".co-validation").Text;
+            Assert.AreEqual("Mountain Tire Sale is already associated with LL Mountain Tire", msg);
         }
     }
 }
