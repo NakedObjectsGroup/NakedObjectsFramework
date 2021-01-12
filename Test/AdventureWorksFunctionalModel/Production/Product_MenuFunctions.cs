@@ -29,5 +29,8 @@ namespace AW.Functions
         public static Product FindProductByNumber(string number, IContext context) =>
             context.Instances<Product>().Where(x => x.ProductNumber == number).FirstOrDefault();
 
+        [MemberOrder(4)]
+        public static IQueryable<Product> AllProducts(IContext context) => context.Instances<Product>();
+
     }
 }

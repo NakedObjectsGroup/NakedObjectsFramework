@@ -201,10 +201,6 @@ namespace AW.Types
         [Hidden]
         public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; init; } = new List<SpecialOfferProduct>();
 
-        //TODO: NOt sure what this is supposed to be doing?
-        [NotMapped, RenderEagerly, TableView(true, "MinQty", "DiscountPct", "StartDate", "EndDate")]
-        public virtual IList<SpecialOffer> SpecialOffers { get; private set; } = new List<SpecialOffer>();
-
         public override string ToString()=> Name;
 
 		public override int GetHashCode() => HashCode(this, ProductID);        

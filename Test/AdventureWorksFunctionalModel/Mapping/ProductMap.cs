@@ -12,7 +12,6 @@ namespace AW.Mapping
 
             //Ignores
             Ignore(t => t.ProductCategory);
-            Ignore(t => t.SpecialOffers);
 
             // Properties
             Property(t => t.Name)
