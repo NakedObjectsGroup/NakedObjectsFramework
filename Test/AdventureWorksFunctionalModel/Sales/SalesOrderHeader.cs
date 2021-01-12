@@ -354,6 +354,8 @@ namespace AW.Types {
 
         #endregion
 
+        public override string ToString() => $"{SalesOrderNumber}";
+
     }
     public enum OrderStatus : byte {
         InProcess = 1,
