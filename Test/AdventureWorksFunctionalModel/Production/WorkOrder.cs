@@ -30,7 +30,8 @@ namespace AW.Types
         public virtual DateTime? EndDate { get; init; }
 
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
         public virtual short? ScrapReasonID { get; init; }

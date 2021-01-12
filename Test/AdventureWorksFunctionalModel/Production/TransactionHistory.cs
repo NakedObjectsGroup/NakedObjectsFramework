@@ -25,6 +25,7 @@ namespace AW.Types {
         public Product Product { get; init; }
 
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
     }
 }

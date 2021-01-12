@@ -27,6 +27,7 @@ namespace AW.Types
         public ICollection<ProductDocument> ProductDocument { get; init; } = new List<ProductDocument>();
 
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
     }
 }

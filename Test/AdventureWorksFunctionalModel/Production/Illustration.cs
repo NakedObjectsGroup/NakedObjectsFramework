@@ -19,6 +19,7 @@ namespace AW.Types {
         public ICollection<ProductModelIllustration> ProductModelIllustration { get; init; } = new List<ProductModelIllustration>();
 
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
     }
 }

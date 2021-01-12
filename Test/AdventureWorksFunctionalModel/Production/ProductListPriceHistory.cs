@@ -18,6 +18,7 @@ namespace AW.Types {
         public virtual decimal ListPrice { get; init; }
         public Product Product { get; init; }
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
     }
 }

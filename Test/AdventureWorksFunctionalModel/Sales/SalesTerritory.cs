@@ -44,7 +44,8 @@ namespace AW.Types
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
 
         [Named("States/Provinces covered"), TableView(true)] //Table View == List View
         public virtual ICollection<StateProvince> StateProvince { get; init; } = new List<StateProvince>();

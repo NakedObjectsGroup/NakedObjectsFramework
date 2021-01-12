@@ -104,7 +104,8 @@ namespace AW.Types {
         #endregion
 
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
 
         [RenderEagerly]
         [TableView(true, "OrderQty", "Product", "UnitPrice", "LineTotal")]

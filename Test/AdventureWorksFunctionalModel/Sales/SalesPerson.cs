@@ -58,7 +58,8 @@ namespace AW.Types
         public virtual decimal SalesLastYear { get; init; }
 
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
         public virtual Guid rowguid { get; init; }

@@ -16,6 +16,7 @@ namespace AW.Types {
         public virtual Document Document { get; init; }
         public virtual Product Product { get; init; }
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
     }
 }
