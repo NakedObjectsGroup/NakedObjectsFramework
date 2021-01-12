@@ -27,15 +27,15 @@ namespace AW.Functions {
         //    return new CustomerDashboard(cust);
         //}
 
-        [MemberOrder(10)]
+        [MemberOrder(10)]//[DefaultValue("AW")]
         public static Customer FindCustomerByAccountNumber(
-            [DefaultValue("AW")] string accountNumber, IContext context) =>
+             string accountNumber, IContext context) =>
             context.Instances<Customer>().Where(x => x.AccountNumber == accountNumber).FirstOrDefault();
 
-        public static string ValidateFindCustomerByAccountNumber(string accountNumber)
-        {
-            return accountNumber.StartsWith("AW") ? null : "Account number must start with AW";
-        }
+        //public static string ValidateFindCustomerByAccountNumber(string accountNumber)
+        //{
+        //    return accountNumber.StartsWith("AW") ? null : "Account number must start with AW";
+        //}
 
         //Method exists to test auto-complete
         public static Customer FindCustomer([DescribedAs("Enter Account Number")] Customer customer)
