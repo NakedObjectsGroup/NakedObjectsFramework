@@ -25,6 +25,20 @@ namespace NakedFunctions.Rest.Test.Data {
         public DateTime StartDate { get; set; } = DateTime.Now;
     }
 
+    public enum TestEnum {
+        ValueOne, 
+        ValueTwo
+    }
+
+    public record EnumRecord
+    {
+        [Key]
+        public int Id { get; init; }
+
+        public TestEnum TestEnum { get; set; }
+    }
+
+
     public record GuidRecord {
         [Key]
         public int Id { get; init; }
