@@ -18,7 +18,7 @@ namespace AW.Functions {
         [TableView(true, nameof(Person.AdditionalContactInfo))]
         public static IQueryable<Person> FindContactByName(        
             [Optionally] string firstName, string lastName, IContext context) =>
-                context.Instances<Person>().Where(p => firstName == null || p.FirstName.ToUpper().StartsWith(firstName.ToUpper()) &&
+                context.Instances<Person>().Where(p => (firstName == null || p.FirstName.ToUpper().StartsWith(firstName.ToUpper())) &&
                       p.LastName.ToUpper().StartsWith(lastName.ToUpper())).OrderBy(p => p.LastName).ThenBy(p => p.FirstName);
         
         public static Person RandomContact(IContext context) {
