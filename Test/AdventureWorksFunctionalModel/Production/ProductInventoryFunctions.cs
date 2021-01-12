@@ -12,6 +12,5 @@ namespace AW.Functions
 {
     public static class ProductInventoryFunctions
     {
-        public static ProductInventory Updating(ProductInventory x, IContext context) => x with { ModifiedDate = context.Now() };
     }
 }

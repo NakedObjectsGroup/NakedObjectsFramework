@@ -12,9 +12,6 @@ namespace AW.Functions {
     public static class EmployeePayHistoryFunctions
     {
         #region Life Cycle Methods
-        public static EmployeePayHistory Updating(this EmployeePayHistory x, IContext context) => x with { ModifiedDate = context.Now() };
-
-        public static EmployeePayHistory Persisting(this EmployeePayHistory x, IContext context) => x with { ModifiedDate = context.Now() };
 
         //TODO: I don't think this is necessary
         //public static EmployeePayHistory Persisted(this EmployeePayHistory x, IContainer context)

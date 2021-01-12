@@ -18,9 +18,5 @@ namespace AW.Functions
             //a.AddressFor = be;
             return a;
         }
-
-        #region Life Cycle Methods
-        public static BusinessEntity Updating(BusinessEntity be, IContext context) => be with { BusinessEntityModifiedDate = context.Now() };
-        #endregion
     }
 }

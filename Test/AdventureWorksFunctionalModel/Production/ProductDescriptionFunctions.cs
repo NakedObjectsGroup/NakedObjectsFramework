@@ -12,6 +12,5 @@ namespace AW.Functions
 {
     public static class ProductDescriptionFunctions
     {
-        public static ProductDescription Updating(ProductDescription x, IContext context) => x with { ModifiedDate = context.Now() };
     }
 }

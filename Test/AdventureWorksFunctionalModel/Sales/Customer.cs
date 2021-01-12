@@ -57,7 +57,7 @@ namespace AW.Types
         [Hidden]
         public virtual Guid CustomerRowguid { get; init; }
 
-        public override string ToString() => $"{AccountNumber} {Person} {Store}";
+        public override string ToString() => $"{AccountNumber} ";// + Store is null ? $"{Person}" : $"{Store}";
 
     }
 }

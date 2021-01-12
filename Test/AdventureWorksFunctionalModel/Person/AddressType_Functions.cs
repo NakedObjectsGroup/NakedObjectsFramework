@@ -12,6 +12,6 @@ namespace AW.Functions
 {
     public static class AddressTypeFunctions
     {
-        public static AddressType Updating(this AddressType a, IContext context) => a with { ModifiedDate = context.Now() };
+       
     }
 }

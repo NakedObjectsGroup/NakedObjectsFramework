@@ -57,7 +57,6 @@ namespace AW.Types
 
 public static class SalesTaxRateFunctions
 {
-    public static SalesTaxRate Updating(SalesTaxRate x, IContext context) => x with { ModifiedDate = context.Now(), rowguid = context.NewGuid() };
 
 }
 }

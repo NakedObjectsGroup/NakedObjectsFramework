@@ -11,6 +11,5 @@ using AW.Types;
 namespace AW.Functions {
     public static class IllustrationFunctions
     {
-        public static Illustration Updating(Illustration x, IContext context) => x with { ModifiedDate = context.Now() };
     }
 }

@@ -10,10 +10,6 @@ using AW.Types;
 
 namespace AW.Functions {
     public static class PersonCreditCard_Functions {
-        #region Life Cycle Methods
-        public static PersonCreditCard Updating(PersonCreditCard x,  IContext context) => x with { ModifiedDate = context.Now()};
 
-        public static PersonCreditCard Persisting(PersonCreditCard x, IContext context) => x with { ModifiedDate = context.Now() };
-        #endregion
     }
 }

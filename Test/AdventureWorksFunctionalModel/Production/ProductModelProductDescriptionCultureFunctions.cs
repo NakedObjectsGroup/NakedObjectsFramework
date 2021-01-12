@@ -11,6 +11,5 @@ using AW.Types;
 namespace AW.Functions {
      public static class ProductModelProductDescriptionCultureFunctions
     {
-        public static ProductDocument Updating(ProductDocument x, IContext context) => x with { ModifiedDate = context.Now() };
     }
 }

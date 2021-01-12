@@ -36,6 +36,7 @@ namespace AW.Functions {
             };
         }
 
+        //TODO
         public static Person Persisting(Person p,  IContext context)
         {
             throw new NotImplementedException();
@@ -44,8 +45,10 @@ namespace AW.Functions {
             ////     with {BusinessEntityModifiedDate =  now};
         }
 
+        //TODO
         public static Person Updating(Person x,  IContext context) => 
          x with {BusinessEntityModifiedDate =  context.Now(), ModifiedDate = context.Now()};
+
 
         #endregion
 
@@ -151,10 +154,9 @@ namespace AW.Functions {
         #region CreditCards
 
         //TODO: This must be changed to request all fields & return object to be persisted.
-        public static (CreditCard, CreditCard) CreateNewCreditCard(this Person p)
+        public static (CreditCard, IContext context) CreateNewCreditCard(this Person p)
         {
-            var c = new CreditCard(p);
-            return (c,c);
+            throw new NotImplementedException();
         }
 
         public static IList<CreditCard> ListCreditCards(this Person p, IQueryable<PersonCreditCard> pccs)

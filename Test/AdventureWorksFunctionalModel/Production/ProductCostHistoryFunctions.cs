@@ -11,6 +11,5 @@ using AW.Types;
 namespace AW.Functions {
     public static class ProductCostHistoryFunctions
     {
-        public static ProductCostHistory Updating(ProductCostHistory x, IContext context) => x with { ModifiedDate = context.Now() };
     }
 }

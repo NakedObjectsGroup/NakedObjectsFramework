@@ -14,12 +14,9 @@ namespace AW.Functions {
         public static class CreditCard_Functions {
         
         #region Life Cycle Methods
-        public static CreditCard Persisting(this CreditCard x, IContext context) => x with { ModifiedDate = context.Now() };
-
-        public static (PersonCreditCard, ICreditCardCreator) Persisted(this CreditCard x) =>
+             public static (PersonCreditCard, ICreditCardCreator) Persisted(this CreditCard x) =>
             (new PersonCreditCard() { CreditCard = x, Person = x.ForContact }, ICreditCardCreator.CreatedCardHasBeenSaved(x.Creator, x));
 
-        public static CreditCard Updating(this CreditCard x, IContext context) => x with { ModifiedDate = context.Now() };
         #endregion
 
 

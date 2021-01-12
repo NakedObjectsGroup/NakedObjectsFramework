@@ -12,6 +12,5 @@ namespace AW.Functions
 {
     public static class DocumentFunctions
     {
-        public static Document Updating(Document x, IContext context) => x with { ModifiedDate = context.Now() };
     }
 }

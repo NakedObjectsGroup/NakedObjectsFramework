@@ -40,24 +40,12 @@ namespace AW.Functions {
         public static SalesOrderHeader FindOrder([DefaultValue("SO")] string orderNumber, IContext context) =>
          context.Instances<SalesOrderHeader>().Where(x => x.SalesOrderNumber == orderNumber).FirstOrDefault();
 
-        [ MemberOrder(90)]
+        [MemberOrder(90)]
         [TableView(true, "TotalDue", "Customer", "OrderDate", "SalesPerson", "Comment")]
-        public static IQueryable<SalesOrderHeader> HighestValueOrders(
-            IQueryable<SalesOrderHeader> headers)
-        {
-            return OrdersByValue(Ordering.Descending, headers);
-        }
-        
-        [MemberOrder(91)]
-        [TableView(true, "TotalDue", "Customer", "OrderDate", "SalesPerson")]
-        public static IQueryable<SalesOrderHeader> OrdersByValue(
-            Ordering ordering,
-            IQueryable<SalesOrderHeader> headers)
-        {
-            return ordering == Ordering.Descending ? headers.OrderByDescending(obj => obj.TotalDue) :
-                headers.OrderBy(obj => obj.TotalDue);
-        }
+        public static IQueryable<SalesOrderHeader> HighestValueOrders(IContext context) =>
+          context.Instances<SalesOrderHeader>().OrderByDescending(obj => obj.TotalDue);
 
+ 
         #region OrdersForCustomer
         //Action to demonstrate use of Auto-Complete that returns a single object
         public static IQueryable<SalesOrderHeader> OrdersForCustomer(

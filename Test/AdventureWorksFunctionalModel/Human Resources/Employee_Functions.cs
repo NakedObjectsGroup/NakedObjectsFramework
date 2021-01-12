@@ -14,12 +14,6 @@ namespace AW.Functions
 {
     public static class Employee_Functions
     {
-        #region Life Cycle Methods
-
-        public static Employee Updating(this Employee x, IContext context) => x with { ModifiedDate = context.Now() };
-
-        #endregion
-
         public static bool HideLoginID(Employee e, IContext context)
         {
             var userAsEmployee = Employee_MenuFunctions.CurrentUserAsEmployee(context);

@@ -37,8 +37,6 @@ namespace AW.Types
 
     public static class SpecialOfferProductFunctions
     {
-        public static Product Updating(Product x, IContext context) => x with { ModifiedDate = context.Now() };
-        public static Product Persisting(Product x, IContext context) => x with { rowguid = context.NewGuid(), ModifiedDate = context.Now() };
 
     }
 

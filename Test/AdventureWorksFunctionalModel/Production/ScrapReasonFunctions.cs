@@ -12,10 +12,5 @@ namespace AW.Functions
 {
     public static class ScrapReasonFunctions
     {
-
-        #region Life Cycle Methods
-        public static ScrapReason Updating(this ScrapReason x,  IContext context) => x with { ModifiedDate = context.Now()};
-        public static ScrapReason Persisting(this ScrapReason x,  IContext context) => x with { ModifiedDate = context.Now()};
-        #endregion
     }
 }

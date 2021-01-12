@@ -17,13 +17,6 @@ namespace AW.Functions
     public static class SpecialOffer_Functions
     {
 
-        #region Life Cycle Methods
-        public static SpecialOffer Updating(SpecialOffer x,  IContext context) => x with { ModifiedDate = context.Now() };
-
-        public static SpecialOffer Persisting(SpecialOffer x, IContext context) =>
-            x with { ModifiedDate = context.Now(), rowguid = context.NewGuid() };
-        #endregion
-
         #region Edit
         [Edit]
         public static (SpecialOffer, IContext) EditDescription(this SpecialOffer sp, string description, IContext context)
@@ -74,6 +67,12 @@ namespace AW.Functions
             => context.Instances<Product>().Where(product => product.Name.ToUpper().StartsWith(name.ToUpper()));
 
         #endregion
+
+        public static List<Product> ListAssociatedProducts(this SpecialOffer specialOffer, IContext context)
+        {
+            int id = specialOffer.SpecialOfferID;
+            return context.Instances<SpecialOfferProduct>().Where(x => x.SpecialOfferID == id).Select(x => x.Product).ToList();
+        }
 
         #region Queryable-contributed
         private static (IList<SpecialOffer>, IContext) Change(this IQueryable<SpecialOffer> offers, Func<SpecialOffer, SpecialOffer> change, IContext context)

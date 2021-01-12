@@ -35,11 +35,6 @@ namespace AW.Types {
         private ICollection<PersonCreditCard> _links = new List<PersonCreditCard>();
         private Person p;
 
-        public CreditCard(Person p)
-        {
-            this.p = p;
-        }
-
         [Named("Persons")]
         [MemberOrder(5)]
         //[TableOrder(True, "Contact")]

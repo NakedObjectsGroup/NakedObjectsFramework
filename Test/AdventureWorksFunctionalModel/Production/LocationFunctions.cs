@@ -12,6 +12,5 @@ namespace AW.Functions
 {
     public static class LocationFunctions
     {
-        public static Location Updating(Location x, IContext context) => x with { ModifiedDate = context.Now() };
     }
 }

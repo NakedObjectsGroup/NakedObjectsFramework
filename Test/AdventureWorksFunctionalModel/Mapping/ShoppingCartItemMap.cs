@@ -22,7 +22,7 @@ namespace AW.Mapping
             Property(t => t.Quantity).HasColumnName("Quantity");
             Property(t => t.ProductID).HasColumnName("ProductID");
             Property(t => t.DateCreated).HasColumnName("DateCreated");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);

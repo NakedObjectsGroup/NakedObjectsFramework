@@ -11,11 +11,6 @@ using AW.Types;
 namespace AW.Functions {
     public static class JobCandidateFunctions
     {
-        #region Life Cycle Methods
-        public static JobCandidate Updating(this JobCandidate x, IContext context) => x with { ModifiedDate = context.Now() };
-
-        public static JobCandidate Persisting(this JobCandidate x, IContext context) => x with { ModifiedDate = context.Now() };
-        #endregion
     }
 
 }

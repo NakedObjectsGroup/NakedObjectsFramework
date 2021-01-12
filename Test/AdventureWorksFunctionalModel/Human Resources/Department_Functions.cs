@@ -10,12 +10,6 @@ using NakedFunctions;
 
 namespace AW.Functions {
     public static class Department_Functions {
-        #region Life Cycle Methods
 
-        public static Department Updating(this Department x, IContext context) => x with { ModifiedDate = context.Now() };
-
-        public static Department Persisting(this Department x, IContext context) => x with { ModifiedDate = context.Now() };
-
-        #endregion
     }
 }

@@ -12,10 +12,6 @@ namespace AW.Functions {
 
     public static class EmployeeDepartmentHistoryFunctions
     {
-        #region Life Cycle Methods
-        public static EmployeeDepartmentHistory Updating(this EmployeeDepartmentHistory x, IContext context) => x with { ModifiedDate = context.Now() };
 
-        public static EmployeeDepartmentHistory Persisting(this EmployeeDepartmentHistory x, IContext context) => x with { ModifiedDate = context.Now() };
-        #endregion
     }
 }

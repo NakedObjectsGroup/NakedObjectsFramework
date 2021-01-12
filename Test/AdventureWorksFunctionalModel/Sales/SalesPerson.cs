@@ -63,7 +63,7 @@ namespace AW.Types
         [Hidden]
         public virtual Guid rowguid { get; init; }
 
-        [TableView(false, "QuotaDate", "SalesQuota", "QuotaDate")] //Column name deliberately duplicated to test that this is ignored
+        [TableView(false, "QuotaDate", "SalesQuota")] //Column name deliberately duplicated to test that this is ignored
         public virtual ICollection<SalesPersonQuotaHistory> QuotaHistory { get; init; } = new List<SalesPersonQuotaHistory>();
 
         [TableView(false, "StartDate", "EndDate", "SalesTerritory")]
@@ -74,13 +74,6 @@ namespace AW.Types
 
     public static class SalesPersonFunctions
     {
-
-        #region Life Cycle Methods
-        public static SalesPerson Updating(SalesPerson x, IContext context) => x with { ModifiedDate = context.Now() };
-
-        public static SalesPerson Persisting(SalesPerson x, IContext context) => x with { rowguid = context.NewGuid(), ModifiedDate = context.Now() };
-        #endregion
-
 
         [MemberOrder(1)]
         public static (SalesPerson, IContext) RecalulateSalesYTD(this SalesPerson sp, IContext context)

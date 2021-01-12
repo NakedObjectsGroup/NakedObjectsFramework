@@ -31,7 +31,7 @@ namespace AW.Mapping
             Property(t => t.CardNumber).HasColumnName("CardNumber");
             Property(t => t.ExpMonth).HasColumnName("ExpMonth");
             Property(t => t.ExpYear).HasColumnName("ExpYear");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
             HasMany(t => t.PersonLinks).WithRequired(t => t.CreditCard);
         }

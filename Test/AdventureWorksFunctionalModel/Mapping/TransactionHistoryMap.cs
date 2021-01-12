@@ -26,7 +26,7 @@ namespace AW.Mapping
             Property(t => t.TransactionType).HasColumnName("TransactionType");
             Property(t => t.Quantity).HasColumnName("Quantity");
             Property(t => t.ActualCost).HasColumnName("ActualCost");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
 
             // Relationships
             HasRequired(t => t.Product).WithMany().HasForeignKey(t => t.ProductID);

@@ -11,7 +11,7 @@ using AW.Types;
 namespace AW.Functions {
     public static class CultureFunctions
     {
-        public static Culture Updating(Culture x, IContext context) => x with { ModifiedDate = context.Now()};
+
 
     }
 }

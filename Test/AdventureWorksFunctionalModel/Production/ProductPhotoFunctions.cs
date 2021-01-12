@@ -12,13 +12,5 @@ namespace AW.Functions
 {
     public static class ProductPhotoFunctions
     {
-
-        #region Life Cycle Methods
-        public static ProductPhoto Updating(this ProductPhoto x,  IContext context) => x with { ModifiedDate = context.Now()};
-
-        public static ProductPhoto Persisting(this ProductPhoto x,  IContext context) => x with { ModifiedDate = context.Now()};
-        #endregion
-
-
     }
 }

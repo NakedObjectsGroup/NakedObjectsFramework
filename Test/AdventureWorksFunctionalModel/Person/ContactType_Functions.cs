@@ -12,6 +12,6 @@ namespace AW.Functions {
 
     public static class ContactTypeFunctions
     {
-        public static ContactType Updating(ContactType ct, IContext context) => ct with { ModifiedDate = context.Now() };
+
     }
 }

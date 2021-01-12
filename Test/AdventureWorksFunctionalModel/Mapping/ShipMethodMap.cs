@@ -22,7 +22,7 @@ namespace AW.Mapping
             Property(t => t.ShipBase).HasColumnName("ShipBase");
             Property(t => t.ShipRate).HasColumnName("ShipRate");
             Property(t => t.rowguid).HasColumnName("rowguid");
-            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate").IsConcurrencyToken();
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
         }
     }
 }

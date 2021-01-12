@@ -77,12 +77,5 @@ namespace AW.Types
 
     public static class StoreFunctions
     {
-
-        #region Life Cycle Methods
-        public static Store Updating(Store x, IContext context) => x with { ModifiedDate = context.Now() };
-        #endregion
-
-        public static (Store, IContext) UpdateName(this Store s, string newName, IContext context) =>
-           DisplayAndSave(s with { Name = newName }, context);
     }
 }
