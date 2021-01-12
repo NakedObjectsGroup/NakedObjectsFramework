@@ -6,15 +6,14 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types
 {
     [Bounded]
     public record ScrapReason
     {
-
         [Hidden]
         public virtual short ScrapReasonID { get; init; }
 
@@ -22,6 +21,11 @@ namespace AW.Types
         public virtual string Name { get; init; }
 
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
+
+        public override string ToString() => Name;
+
+		public override int GetHashCode() => HashCode(this, ScrapReasonID);
     }
 }

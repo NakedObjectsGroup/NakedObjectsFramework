@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types
 {
@@ -44,15 +45,14 @@ namespace AW.Types
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
 
         [Named("States/Provinces covered"), TableView(true)] //Table View == List View
         public virtual ICollection<StateProvince> StateProvince { get; init; } = new List<StateProvince>();
 
         public override string ToString() => Name;
-    }
 
-    public static class SalesTerritoryFunctions
-    {
+		public override int GetHashCode() => HashCode(this, TerritoryID);    
     }
 }

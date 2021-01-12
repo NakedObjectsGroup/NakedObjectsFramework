@@ -8,6 +8,7 @@
 using System;
 using AW.Functions;
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types
 {
@@ -44,11 +45,7 @@ namespace AW.Types
 
         [MemberOrder(20)]
         public virtual Person Person { get; init; }
-
-
         #endregion
-
-
 
         [Hidden]
         //
@@ -57,7 +54,8 @@ namespace AW.Types
         [Hidden]
         public virtual Guid CustomerRowguid { get; init; }
 
-        public override string ToString() => $"{AccountNumber} ";// + Store is null ? $"{Person}" : $"{Store}";
+        public override string ToString() => AccountNumber + Store is null ? $"{Person}" : $"{Store}";
 
+		public override int GetHashCode() => HashCode(this, CustomerID);
     }
 }

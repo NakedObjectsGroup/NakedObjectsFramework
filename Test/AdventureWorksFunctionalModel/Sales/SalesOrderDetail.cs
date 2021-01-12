@@ -7,6 +7,7 @@
 
 using System;
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types {
         public record SalesOrderDetail {
@@ -63,8 +64,6 @@ namespace AW.Types {
 
         #endregion
 
-        public override string ToString() => $"{OrderQty} x {Product}";
-
         #region ID
 
         [Hidden]
@@ -110,47 +109,14 @@ namespace AW.Types {
         #endregion
 
        [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
-    }
 
-    public static class SalesOrderDetail_Functions
-    {
-        #region Life Cycle methods
+        public override string ToString() => $"{OrderQty} x {Product}";
 
-        public static void Persisted(this SalesOrderDetail sod)
-        {
-            //TODO:
-            //SalesOrderHeader.Details.Add(this);
-            //SalesOrderHeader.Recalculate();
-        }
-
-        #endregion
-
-        public static (SalesOrderDetail, IContext) Recalculate(this SalesOrderDetail sod)
-        {
-            throw new NotImplementedException();
-            //UnitPrice = SpecialOfferProduct.Product.ListPrice;
-            //UnitPriceDiscount = (SpecialOfferProduct.SpecialOffer.DiscountPct * UnitPrice);
-            //LineTotal = (UnitPrice - UnitPriceDiscount) * OrderQty;
-            //SalesOrderHeader.Recalculate();
-        }
-
-        public static (SalesOrderDetail, IContext) ChangeQuantity(this SalesOrderDetail sod, short newQuantity, IContext context)
-        {
-            throw new NotImplementedException();
-            //OrderQty = newQuantity;
-            //            IQueryable<SpecialOfferProduct> sops
-            //SpecialOfferProduct = ProductFunctions2.BestSpecialOfferProduct(Product, newQuantity, sops);
-            //Recalculate();
-        }
-
-        public static string DisableChangeQuantity()
-        {
-            throw new NotImplementedException();
-            //return SalesOrderHeader.DisableAddNewDetail();
-        }
+		public override int GetHashCode() => HashCode(this, SalesOrderID, SalesOrderDetailID);    
     }
 }

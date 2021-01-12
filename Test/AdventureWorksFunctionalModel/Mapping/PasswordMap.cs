@@ -8,7 +8,12 @@ namespace AW.Mapping {
             HasKey(t => t.BusinessEntityID);
 
             // Table & Column Mappings
-            this.ToTable("Password", "Person");
+            ToTable("Password", "Person");
+            Property(t => t.BusinessEntityID).HasColumnName("BusinessEntityID");
+            Property(t => t.PasswordHash).HasColumnName("PasswordHash");
+            Property(t => t.PasswordSalt).HasColumnName("PasswordSalt");
+            Property(t => t.rowguid).HasColumnName("rowguid");
+            Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");//.IsConcurrencyToken();
         }
     }
 }

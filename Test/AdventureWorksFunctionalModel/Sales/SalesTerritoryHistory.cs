@@ -8,6 +8,7 @@
 using System;
 
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types {
         public record SalesTerritoryHistory {
@@ -42,7 +43,8 @@ namespace AW.Types {
         [MemberOrder(99)]
         
         
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
@@ -56,5 +58,7 @@ namespace AW.Types {
         #endregion
 
         public override string ToString()  => $"{SalesPerson} {SalesTerritory}";
+
+		public override int GetHashCode() => HashCode(this, BusinessEntityID, SalesTerritoryID, StartDate.GetHashCode());    
     }
 }

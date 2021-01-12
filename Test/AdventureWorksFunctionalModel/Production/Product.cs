@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types
 {
@@ -175,7 +176,8 @@ namespace AW.Types
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
    
         [Hidden]
         public virtual ICollection<ProductProductPhoto> ProductProductPhoto { get; init; } = new List<ProductProductPhoto>();
@@ -199,11 +201,8 @@ namespace AW.Types
         [Hidden]
         public virtual ICollection<SpecialOfferProduct> SpecialOfferProduct { get; init; } = new List<SpecialOfferProduct>();
 
-        //TODO: NOt sure what this is supposed to be doing?
-        [NotMapped, RenderEagerly, TableView(true, "MinQty", "DiscountPct", "StartDate", "EndDate")]
-        public virtual IList<SpecialOffer> SpecialOffers { get; private set; } = new List<SpecialOffer>();
-
         public override string ToString()=> Name;
-        
+
+		public override int GetHashCode() => HashCode(this, ProductID);        
     }
 }

@@ -1,4 +1,5 @@
 using NakedFunctions;
+using static AW.Utilities;
 using System;
 
 
@@ -29,9 +30,11 @@ namespace AW.Types
         public virtual Guid rowguid { get; init; }
 
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{AddressType}: {Address}";
-    }
 
+		public override int GetHashCode() => HashCode(this, BusinessEntityID, AddressTypeID, AddressID);    
+    }
 }

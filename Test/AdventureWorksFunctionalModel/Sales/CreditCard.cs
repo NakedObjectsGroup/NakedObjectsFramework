@@ -7,8 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-
 using NakedFunctions;
+using static AW.Utilities;
 using AW.Functions;
 
 namespace AW.Types {
@@ -24,7 +24,6 @@ namespace AW.Types {
 
         //TODO: what was intended purpose?
         //private string _ObfuscatedNumber;
-
         
         [MemberOrder(3)]
         public virtual byte ExpMonth { get; init; }
@@ -33,7 +32,6 @@ namespace AW.Types {
         public virtual short ExpYear { get; init; }
 
         private ICollection<PersonCreditCard> _links = new List<PersonCreditCard>();
-        private Person p;
 
         [Named("Persons")]
         [MemberOrder(5)]
@@ -44,19 +42,18 @@ namespace AW.Types {
         }
 
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
-
-
-        public override string ToString() => CreditCard_Functions.ObfuscatedNumber(this);
-
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
 
         //TODO: I think this was (in NO version) a non-persisted property on a transient object. 
         //If so then we need to instead create the (persisted) credit card from an action dialogue (or use a view model)
         [Hidden]      
         public ICreditCardCreator Creator { get; init; }
 
-        
         public Person ForContact { get; init; }
 
+        public override string ToString() => CreditCard_Functions.ObfuscatedNumber(this);
+
+		public override int GetHashCode() => HashCode(this, CreditCardID);
     }
 }

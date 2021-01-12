@@ -6,12 +6,13 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
+using static AW.Utilities;
 
-namespace AW.Types {
-    public record ShoppingCartItem {
-
+namespace AW.Types
+{
+    public record ShoppingCartItem
+    {
         [Hidden]
         public virtual int ShoppingCartItemID { get; init; }
 
@@ -28,17 +29,20 @@ namespace AW.Types {
         [Hidden]
         public virtual int ProductID { get; init; }
 
-        [ MemberOrder(10)]
+        [MemberOrder(10)]
         public virtual Product Product { get; init; }
         #endregion
 
         #region ModifiedDate
 
-        [ MemberOrder(99)]
+        [MemberOrder(99)]
+        [Versioned]
         public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
         public override string ToString() => $"{Quantity}  x {Product}";
+
+        public override int GetHashCode() => HashCode(this, ShoppingCartItemID);
     }
 }

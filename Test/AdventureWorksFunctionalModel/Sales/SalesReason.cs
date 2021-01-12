@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types {
         [Bounded]
@@ -16,18 +16,15 @@ namespace AW.Types {
         [Hidden]
         public virtual int SalesReasonID { get; init; }
 
-        //Title
         public virtual string Name { get; init; }
 
         public virtual string ReasonType { get; init; }
 
-        #region ModifiedDate
+        [MemberOrder(99)] [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
 
-        [MemberOrder(99)]
-        
-        
-        public virtual DateTime ModifiedDate { get; init; }
+        public override string ToString() => Name;
 
-        #endregion
+		public override int GetHashCode() => HashCode(this, SalesReasonID);    
     }
 }

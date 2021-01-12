@@ -8,6 +8,7 @@
 using System;
 
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types {
     [Named("Reason")]
@@ -25,10 +26,13 @@ namespace AW.Types {
         [MemberOrder(99)]
         
         
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
-        public override string ToString() => $"{SalesReason}";
+        public override string ToString() => $"SalesOrderHeaderSalesReason: {SalesOrderID}-{SalesReasonID}";
+
+		public override int GetHashCode() => HashCode(this, SalesOrderID, SalesReasonID); 
     }
 }

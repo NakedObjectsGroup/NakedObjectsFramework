@@ -1,11 +1,13 @@
 using NakedFunctions;
+using static AW.Utilities;
 using System;
 using System.Collections.Generic;
 
 
 namespace AW.Types {
 
-    public record BusinessEntity : IBusinessEntity {
+    public record BusinessEntity : IBusinessEntity
+    {
 
         [Hidden]
         public virtual int BusinessEntityID { get; init; }
@@ -17,11 +19,15 @@ namespace AW.Types {
         public virtual DateTime BusinessEntityModifiedDate { get; init; }
 
         [RenderEagerly]
-        [TableView(false, nameof(BusinessEntityAddress.AddressType),nameof(BusinessEntityAddress.Address))] 
+        [TableView(false, nameof(BusinessEntityAddress.AddressType), nameof(BusinessEntityAddress.Address))]
         public virtual ICollection<BusinessEntityAddress> Addresses { get; init; }
 
         [RenderEagerly]
-        [TableView(false, nameof(BusinessEntityContact.ContactType),nameof(BusinessEntityContact.Person))] 
+        [TableView(false, nameof(BusinessEntityContact.ContactType), nameof(BusinessEntityContact.Person))]
         public virtual ICollection<BusinessEntityContact> Contacts { get; init; }
+
+        public override string ToString() => $"BusinessEntity: {BusinessEntityID}";
+
+		public override int GetHashCode() => HashCode(this, BusinessEntityID); 
     }
 }

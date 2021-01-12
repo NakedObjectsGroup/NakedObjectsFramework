@@ -8,6 +8,7 @@
 using System;
 
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types
 {
@@ -38,8 +39,11 @@ namespace AW.Types
         public virtual Shift Shift { get; init; }
 
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{Department} {StartDate.ToString("d")}";
+
+		public override int GetHashCode() => HashCode(this, EmployeeID, DepartmentID, ShiftID, StartDate.GetHashCode());
     }
 }

@@ -1,4 +1,5 @@
 using NakedFunctions;
+using static AW.Utilities;
 using System;
 
 
@@ -12,8 +13,11 @@ namespace AW.Types {
         public virtual string Name { get; init; }
 
         [Hidden]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
+
+		public override int GetHashCode() => HashCode(this, PhoneNumberTypeID);
     }
 }

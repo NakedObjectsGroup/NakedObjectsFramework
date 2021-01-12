@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using AW.Functions;
 using NakedFunctions;
-using static AW.Helpers;
+using static AW.Utilities;
 
 namespace AW.Types
 {
@@ -56,7 +56,8 @@ namespace AW.Types
 
         [MemberOrder(99)]
         
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
 
         #endregion
 
@@ -73,9 +74,6 @@ namespace AW.Types
 
         public override string ToString() => Name;
 
-    }
-
-    public static class StoreFunctions
-    {
+		public override int GetHashCode() => HashCode(this, BusinessEntityID);
     }
 }

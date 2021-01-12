@@ -8,55 +8,30 @@
 using System;
 
 using NakedFunctions;
-
-using System.ComponentModel.DataAnnotations.Schema;
-
+using static AW.Utilities;
 
 namespace AW.Types
 {
-
-    //Redirects to the StateProvince object on the Azure server
     public record SalesTaxRate
     {
+        [Hidden]
+        public virtual int SalesTaxRateID { get; init; }
+        public virtual byte TaxType { get; init; }
+        public virtual decimal TaxRate { get; init; }
+        public virtual string Name { get; init; }
+
+        [Hidden]
+        public virtual int StateProvinceID { get; init; }
+        public virtual StateProvince StateProvince { get; init; }
+
+        [MemberOrder(99)]
+        [Versioned]
+        public virtual DateTime ModifiedDate { get; init; }
+
+        public virtual Guid rowguid { get; init; }
 
         public override string ToString() => $"Tax Rate for: {StateProvince}";
 
-    [Hidden]
-    public virtual int SalesTaxRateID { get; init; }
-    public virtual byte TaxType { get; init; }
-    public virtual decimal TaxRate { get; init; }
-    public virtual string Name { get; init; }
-
-    [Hidden]
-    public virtual int StateProvinceID { get; init; }
-    public virtual StateProvince StateProvince { get; init; }
-
-    [MemberOrder(99)]
-    public virtual DateTime ModifiedDate { get; init; }
-
-    public virtual Guid rowguid { get; init; }
-
-    [Hidden, NotMapped]
-    public virtual string ServerName
-    {
-        get
-        {
-            return "nakedobjectsrodemo.azurewebsites.net";
-        }
+		public override int GetHashCode() => HashCode(this, SalesTaxRateID);  
     }
-
-    [Hidden, NotMapped]
-    public virtual string Oid
-    {
-        get
-        {
-            return "AdventureWorksModel.StateProvince/" + StateProvinceID;
-        }
-    }
-}
-
-public static class SalesTaxRateFunctions
-{
-
-}
 }

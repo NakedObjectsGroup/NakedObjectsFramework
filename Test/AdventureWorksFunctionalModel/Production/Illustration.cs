@@ -7,8 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types {
     public record Illustration  {
@@ -19,6 +19,11 @@ namespace AW.Types {
         public ICollection<ProductModelIllustration> ProductModelIllustration { get; init; } = new List<ProductModelIllustration>();
 
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
+
+        public override string ToString() => $"Illustration: {IllustrationID}";
+
+		public override int GetHashCode() => HashCode(this, IllustrationID);
     }
 }

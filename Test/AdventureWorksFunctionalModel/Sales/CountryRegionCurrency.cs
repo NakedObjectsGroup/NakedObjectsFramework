@@ -5,6 +5,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
 
+using NakedFunctions;
+using static AW.Utilities;
 using System;
 
 namespace AW.Types {
@@ -14,6 +16,10 @@ namespace AW.Types {
         public virtual string CurrencyCode { get; init; }
         public virtual CountryRegion CountryRegion { get; init; }
         public virtual Currency Currency { get; init; }
-        public virtual DateTime ModifiedDate { get; init; }
-    }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
+
+        public override string ToString() => $"CountryRegionCurrency: {CountryRegion} {Currency}";
+
+		public override int GetHashCode() => HashCode(this, CountryRegionCode.GetHashCode(), CurrencyCode.GetHashCode());    }
 }

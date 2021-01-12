@@ -8,10 +8,11 @@
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using NakedFramework;
 
 namespace AW {
-    internal class Utilities {
-        public static string FormatXML(string inputXML) {
+    internal static class Utilities {
+        internal static string FormatXML(string inputXML) {
             var output = new StringBuilder();
 
             if (!string.IsNullOrEmpty(inputXML)) {
@@ -19,5 +20,17 @@ namespace AW {
             }
             return output.ToString();
         }
+
+        internal static int HashCode(object obj, params int[] keys)
+        {
+            //Uses Josh Bloch's algorithm
+            int hash = 17 * 23 + TypeUtils.GetProxiedType(obj.GetType()).GetHashCode();           
+            foreach (int key in keys)
+            {
+                hash = hash * 23 + key.GetHashCode();
+            }
+            return hash;
+        }
+
     }
 }

@@ -7,10 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-
-using System.Linq;
 using NakedFunctions;
-using static AW.Helpers;
+using static AW.Utilities;
 
 namespace AW.Types
 {
@@ -58,7 +56,8 @@ namespace AW.Types
         public virtual decimal SalesLastYear { get; init; }
 
         [MemberOrder(99)]
-        public virtual DateTime ModifiedDate { get; init; }
+        [Versioned]
+		public virtual DateTime ModifiedDate { get; init; }
 
         [Hidden]
         public virtual Guid rowguid { get; init; }
@@ -70,49 +69,7 @@ namespace AW.Types
         public virtual ICollection<SalesTerritoryHistory> TerritoryHistory { get; init; } = new List<SalesTerritoryHistory>();
   
         public override string ToString() => $"{EmployeeDetails}";
-    }
 
-    public static class SalesPersonFunctions
-    {
-
-        [MemberOrder(1)]
-        public static (SalesPerson, IContext) RecalulateSalesYTD(this SalesPerson sp, IContext context)
-        {
-            var startOfYear = new DateTime(DateTime.Now.Year, 1, 1);
-            decimal newYTD = 0;
-            IQueryable<SalesOrderHeader> query = from obj in context.Instances<SalesOrderHeader>()
-                                                 where obj.SalesPerson.BusinessEntityID == sp.BusinessEntityID &&
-                                                       obj.StatusByte == 5 &&
-                                                       obj.OrderDate >= startOfYear
-                                                 select obj;
-            if (query.Count() > 0)
-            {
-                newYTD = query.Sum(n => n.SubTotal);
-            }
-            else
-            {
-                newYTD = 0;
-            }
-            return DisplayAndSave(sp with { SalesYTD = newYTD }, context);
-        }
-
-        [MemberOrder(2)]
-        public static (SalesPerson, IContext) ChangeSalesQuota(this SalesPerson sp, decimal newQuota, IContext context)
-        {
-            var newSP = sp with { SalesQuota = newQuota };
-            var history = new SalesPersonQuotaHistory() with { SalesPerson = sp, SalesQuota = newQuota, QuotaDate = context.Now() };
-            return (newSP, context.WithPendingSave(newSP, history));
-        }
-
-        [MemberOrder(1)]
-        public static (SalesPerson, IContext) ChangeSalesTerritory(this SalesPerson sp, SalesTerritory newTerritory, IContext context)
-        {
-
-            var newHist = new SalesTerritoryHistory() with { SalesPerson = sp, SalesTerritory = newTerritory, StartDate = context.Now() };
-            var prev = sp.TerritoryHistory.Where(n => n.EndDate == null).FirstOrDefault();
-            var newPrev = prev with { EndDate = context.Now() };
-            var newSp = sp with { SalesTerritory = newTerritory };
-            return (newSp, context.WithPendingSave(newSp, newPrev, newHist));
-        }
+		public override int GetHashCode() => HashCode(this, BusinessEntityID);
     }
 }
