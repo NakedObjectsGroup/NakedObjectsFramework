@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types {
         public record PurchaseOrderHeader: IHasModifiedDate  {
@@ -112,5 +113,7 @@ namespace AW.Types {
         public virtual ICollection<PurchaseOrderDetail> Details { get; init; }
 
         public override string ToString() => $"PO from {Vendor}, {OrderDate}";
+
+		public override int GetHashCode() => HashCode(this, PurchaseOrderID);
     }
 }

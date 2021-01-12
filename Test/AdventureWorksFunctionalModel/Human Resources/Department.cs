@@ -6,7 +6,6 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
 using static AW.Utilities;
 
@@ -30,7 +29,6 @@ namespace AW.Types
 
         public override string ToString() => Name;
 
-        public override int GetHashCode() => HashCode<Department>(DepartmentID);
-
+		public override int GetHashCode() => HashCode(this, DepartmentID);
     }
 }

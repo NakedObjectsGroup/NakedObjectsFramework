@@ -8,6 +8,7 @@
 using System;
 using AW.Functions;
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types
 {
@@ -55,5 +56,6 @@ namespace AW.Types
 
         public override string ToString() => AccountNumber + Store is null ? $"{Person}" : $"{Store}";
 
+		public override int GetHashCode() => HashCode(this, CustomerID);
     }
 }

@@ -4,10 +4,9 @@
 // Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and limitations under the License.
-
 using System;
-
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types
 {
@@ -25,5 +24,7 @@ namespace AW.Types
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => Name;
+
+		public override int GetHashCode() => HashCode(this, CultureID.GetHashCode());
     }
 }

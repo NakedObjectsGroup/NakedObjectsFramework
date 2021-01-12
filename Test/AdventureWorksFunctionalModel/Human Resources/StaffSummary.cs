@@ -1,12 +1,11 @@
 ﻿using NakedFunctions;
+using static AW.Utilities;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AW.Types
 {
 
-    //Used to test creation/rendering of NotPersisted object
-    //Note, however, that recommended pattern would be to use a ViewModel for this
-    [NotMapped]
+    [ViewModel]
     public record StaffSummary
     {
         [MemberOrder(1)]
@@ -20,4 +19,5 @@ namespace AW.Types
 
         public override string ToString() => "Staff Summary";
     }
+
 }

@@ -11,6 +11,8 @@ namespace AW.Mapping
             // Primary Key
             HasKey(t => t.WorkOrderID);
 
+            Ignore(t => t.AnAlwaysHiddenReadOnlyProperty);
+
             // Properties
             // Table & Column Mappings
             ToTable("WorkOrder", "Production");

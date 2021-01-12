@@ -21,10 +21,10 @@ namespace AW {
             return output.ToString();
         }
 
-        internal static int HashCode<T>(params int[] keys)
+        internal static int HashCode(object obj, params int[] keys)
         {
             //Uses Josh Bloch's algorithm
-            int hash = 17 * 23 + TypeUtils.GetProxiedType(typeof(T)).GetHashCode();           
+            int hash = 17 * 23 + TypeUtils.GetProxiedType(obj.GetType()).GetHashCode();           
             foreach (int key in keys)
             {
                 hash = hash * 23 + key.GetHashCode();

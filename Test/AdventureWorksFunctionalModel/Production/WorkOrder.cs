@@ -7,9 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-
-using System.ComponentModel.DataAnnotations.Schema;
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types
 {
@@ -65,12 +64,13 @@ namespace AW.Types
         // for testing 
 
         [Hidden]
-        [NotMapped]
         public virtual string AnAlwaysHiddenReadOnlyProperty
         {
             get { return ""; }
         } 
 
         public override string ToString() => $"{Product}: {StartDate}";
+
+		public override int GetHashCode() => HashCode(this, WorkOrderID);
     }
 }

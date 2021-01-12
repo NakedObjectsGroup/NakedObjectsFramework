@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types {
         public record PurchaseOrderDetail {
@@ -62,5 +62,7 @@ namespace AW.Types {
         public virtual PurchaseOrderHeader PurchaseOrderHeader { get; init; }
 
         public override string ToString() => $"{OrderQty} x {Product}";
+
+		public override int GetHashCode() => HashCode(this, PurchaseOrderID, PurchaseOrderDetailID);
     }
 }

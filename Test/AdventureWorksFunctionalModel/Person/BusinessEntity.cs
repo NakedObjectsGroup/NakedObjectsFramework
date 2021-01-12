@@ -1,4 +1,5 @@
 using NakedFunctions;
+using static AW.Utilities;
 using System;
 using System.Collections.Generic;
 
@@ -26,5 +27,7 @@ namespace AW.Types {
         public virtual ICollection<BusinessEntityContact> Contacts { get; init; }
 
         public override string ToString() => $"BusinessEntity: {BusinessEntityID}";
+
+		public override int GetHashCode() => HashCode(this, BusinessEntityID); 
     }
 }

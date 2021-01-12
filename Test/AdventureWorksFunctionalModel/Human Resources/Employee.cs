@@ -7,8 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types
 {
@@ -84,5 +84,7 @@ namespace AW.Types
         public virtual Guid rowguid { get; init; }
 
         public override string ToString() => $"{PersonDetails}";
+
+		public override int GetHashCode() => HashCode(this, BusinessEntityID); 
     }
 }

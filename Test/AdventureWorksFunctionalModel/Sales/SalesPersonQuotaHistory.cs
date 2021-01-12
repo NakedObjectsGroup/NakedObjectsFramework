@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types {
         public record SalesPersonQuotaHistory  {
@@ -48,10 +48,7 @@ namespace AW.Types {
         #endregion
 
         public override string ToString() => $"{QuotaDate.ToString("d")} {SalesQuota.ToString("C")}";
-    }
 
-    public static class SalesPersonQuotaHistoryFunctions
-    {
-
+		public override int GetHashCode() => HashCode(this, BusinessEntityID, QuotaDate.GetHashCode());    
     }
 }

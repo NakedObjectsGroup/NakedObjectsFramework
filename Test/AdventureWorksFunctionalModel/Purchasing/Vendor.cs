@@ -7,9 +7,9 @@
 
 using System;
 using System.Collections.Generic;
-
 using System.Linq;
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types {
     public record Vendor : IBusinessEntity {
@@ -74,5 +74,7 @@ namespace AW.Types {
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{Name}";
+
+		public override int GetHashCode() => HashCode(this, BusinessEntityID);
     }
 }

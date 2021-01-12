@@ -7,8 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-
 using NakedFunctions;
+using static AW.Utilities;
 using AW.Functions;
 
 namespace AW.Types {
@@ -53,5 +53,7 @@ namespace AW.Types {
         public Person ForContact { get; init; }
 
         public override string ToString() => CreditCard_Functions.ObfuscatedNumber(this);
+
+		public override int GetHashCode() => HashCode(this, CreditCardID);
     }
 }

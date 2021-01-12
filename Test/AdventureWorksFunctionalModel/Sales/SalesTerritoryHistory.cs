@@ -8,6 +8,7 @@
 using System;
 
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types {
         public record SalesTerritoryHistory {
@@ -57,5 +58,7 @@ namespace AW.Types {
         #endregion
 
         public override string ToString()  => $"{SalesPerson} {SalesTerritory}";
+
+		public override int GetHashCode() => HashCode(this, BusinessEntityID, SalesTerritoryID, StartDate.GetHashCode());    
     }
 }

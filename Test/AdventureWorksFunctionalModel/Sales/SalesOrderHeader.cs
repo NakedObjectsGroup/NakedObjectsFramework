@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AW.Functions;
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types {
     [Named("Sales Order")]
@@ -119,7 +120,6 @@ namespace AW.Types {
 
         public List<Address> ChoicesBillingAddress(IContext context) =>  Person_MenuFunctions.AddressesFor(Customer.BusinessEntity(), context).ToList();
  
-
         #endregion
 
         #region PurchaseOrderNumber
@@ -357,6 +357,7 @@ namespace AW.Types {
 
         public override string ToString() => $"{SalesOrderNumber}";
 
+		public override int GetHashCode() => HashCode(this, SalesOrderID);
     }
     public enum OrderStatus : byte {
         InProcess = 1,

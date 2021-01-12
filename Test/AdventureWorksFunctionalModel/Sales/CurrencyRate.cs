@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types {
         public record CurrencyRate {
@@ -30,10 +30,11 @@ namespace AW.Types {
 
         public virtual Currency Currency1 { get; init; }
 
-        [MemberOrder(99)]
-        [Versioned]
+        [MemberOrder(99)][Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{AverageRate}";
+
+		public override int GetHashCode() => HashCode(this, CurrencyRateID);
     }
 }

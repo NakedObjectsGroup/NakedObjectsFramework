@@ -8,6 +8,7 @@
 using System;
 
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types {
     [Named("Reason")]
@@ -31,5 +32,7 @@ namespace AW.Types {
         #endregion
 
         public override string ToString() => $"SalesOrderHeaderSalesReason: {SalesOrderID}-{SalesReasonID}";
+
+		public override int GetHashCode() => HashCode(this, SalesOrderID, SalesReasonID); 
     }
 }

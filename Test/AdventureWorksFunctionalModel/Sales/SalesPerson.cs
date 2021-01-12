@@ -7,10 +7,8 @@
 
 using System;
 using System.Collections.Generic;
-
-using System.Linq;
 using NakedFunctions;
-using static AW.Helpers;
+using static AW.Utilities;
 
 namespace AW.Types
 {
@@ -71,5 +69,7 @@ namespace AW.Types
         public virtual ICollection<SalesTerritoryHistory> TerritoryHistory { get; init; } = new List<SalesTerritoryHistory>();
   
         public override string ToString() => $"{EmployeeDetails}";
+
+		public override int GetHashCode() => HashCode(this, BusinessEntityID);
     }
 }

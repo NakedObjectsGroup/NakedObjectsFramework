@@ -1,4 +1,5 @@
 using NakedFunctions;
+using static AW.Utilities;
 using System;
 
 
@@ -32,5 +33,7 @@ namespace AW.Types {
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"{Person}";
+
+		public override int GetHashCode() => HashCode(this, BusinessEntityID, PersonID, ContactTypeID);    
     }
 }

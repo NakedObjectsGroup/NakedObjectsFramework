@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types
 {
@@ -205,6 +206,7 @@ namespace AW.Types
         public virtual IList<SpecialOffer> SpecialOffers { get; private set; } = new List<SpecialOffer>();
 
         public override string ToString()=> Name;
-        
+
+		public override int GetHashCode() => HashCode(this, ProductID);        
     }
 }

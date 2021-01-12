@@ -7,6 +7,7 @@
 
 using System;
 using NakedFunctions;
+using static AW.Utilities;
 using System.Collections.Generic;
 
 namespace AW.Types {
@@ -76,6 +77,7 @@ namespace AW.Types {
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => NameStyle ? $"{LastName} {FirstName}" : $"{FirstName} {LastName}";
-    
+
+		public override int GetHashCode() => HashCode(this, BusinessEntityID);    
     }
 }

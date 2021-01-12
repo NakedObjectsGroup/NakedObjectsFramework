@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types {
     public record ProductDocument : IHasModifiedDate {
@@ -19,5 +19,7 @@ namespace AW.Types {
         [Versioned]
 		public virtual DateTime ModifiedDate { get; init; }
         public override string ToString() => $"ProductDocument: {ProductID}-{DocumentID}";
+
+		public override int GetHashCode() => HashCode(this, ProductID, DocumentID);    
     }
 }

@@ -6,8 +6,8 @@
 // See the License for the specific language governing permissions and limitations under the License.
 
 using System;
-
 using NakedFunctions;
+using static AW.Utilities;
 
 namespace AW.Types {
     public record TransactionHistory  {
@@ -29,5 +29,7 @@ namespace AW.Types {
 		public virtual DateTime ModifiedDate { get; init; }
 
         public override string ToString() => $"TransactionHistory: {TransactionID}";
+
+		public override int GetHashCode() => HashCode(this, TransactionID);
     }
 }
